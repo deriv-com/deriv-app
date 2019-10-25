@@ -5,6 +5,7 @@ import Icon        from 'Assets/icon.jsx';
 import CloseButton from './close-button.jsx';
 import {
     default_delay,
+    icon_types,
     types }        from './constants';
 
 const Notification = ({
@@ -25,24 +26,47 @@ const Notification = ({
         setTimeout(destroy, data.delay || default_delay);
     }
 
+    const IconTypes = ({ type, class_suffix }) => (
+        <React.Fragment>
+            { !!type &&
+                <Icon
+                    icon={icon_types[type]}
+                    className={classNames('notification__icon-type', {
+                        [`notification__icon-type--${class_suffix}`]: class_suffix,
+                    })}
+                />
+            }
+        </React.Fragment>
+    );
+
     return (
         <div className={
             classNames('notification', types[data.type], {
                 'notification--small': (data.size === 'small'),
             })}
         >
+            <div className='notification__icon-background'>
+                <IconTypes type={data.type} class_suffix='is-background' />
+            </div>
             <div className='notification__icon'>
-                { data.type === 'danger'  && <Icon icon='IconDanger' className='notification__icon-type' /> }
-                { (data.type === 'info' || data.type === 'contract_sold')
-                    && <Icon icon='IconInformation' className='notification__icon-type' /> }
-                { data.type === 'success' && <Icon icon='IconSuccess' className='notification__icon-type' /> }
-                { data.type === 'warning' && <Icon icon='IconWarning' className='notification__icon-type' /> }
+                <IconTypes type={data.type} />
             </div>
             <div className='notification__text-container'>
-                <h4 className='notification__header'>{data.header}</h4>
-                <p className='notification__text-body'> {data.message}</p>
+                <h4 className='notification__header'>
+                    {data.header}
+                </h4>
+                <p className='notification__text-body'>
+                    {data.message}
+                </p>
             </div>
-            { data.should_hide_close_btn ? undefined : <CloseButton onClick={onClick} className='notification__close-button' />}
+            { data.should_hide_close_btn ?
+                undefined
+                :
+                <CloseButton
+                    className='notification__close-button'
+                    onClick={onClick}
+                />
+            }
         </div>
     );
 };

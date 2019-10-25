@@ -28,7 +28,7 @@ export const clientNotifications = (ui = {}) => {
                         <a
                             key={0}
                             type='button'
-                            className='link link--white'
+                            className='link'
                             onClick={ui.openRealAccountSignup}
                         />,
                     ]}
@@ -43,7 +43,7 @@ export const clientNotifications = (ui = {}) => {
                 <Localize
                     i18n_default_text='You have opted to be excluded from Binary.com until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
                     values={{ exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'), interpolation: { escapeValue: false } }}
-                    components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
+                    components={[ <a key={0} className='link' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
                 />
             ),
             type: 'danger',
@@ -57,7 +57,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <BinaryLink
                             key={0}
-                            className='link link--white'
+                            className='link'
                             to={routes.proof_of_identity}
                         />,
                     ]}
@@ -92,7 +92,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <BinaryLink
                             key={0}
-                            className='link link--white'
+                            className='link'
                             to={routes.proof_of_identity}
                         />,
                     ]}
@@ -106,7 +106,7 @@ export const clientNotifications = (ui = {}) => {
             message: (
                 <Localize
                     i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
+                    components={[ <a key={0} className='link' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
                 />
             ),
             type: 'danger',
@@ -117,7 +117,7 @@ export const clientNotifications = (ui = {}) => {
             message: (
                 <Localize
                     i18n_default_text='Binary Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
+                    components={[ <a key={0} className='link' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
                 />
             ),
             type: 'danger',
@@ -128,7 +128,7 @@ export const clientNotifications = (ui = {}) => {
             message: (
                 <Localize
                     i18n_default_text='Please set your <0>30-day turnover limit</0> to remove deposit limits.'
-                    components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/security/self_exclusionws', undefined, undefined, true)} /> ]}
+                    components={[ <a key={0} className='link' target='_blank' href={urlFor('user/security/self_exclusionws', undefined, undefined, true)} /> ]}
                 />
             ),
             type: 'warning',
@@ -142,7 +142,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <BinaryLink
                             key={0}
-                            className='link link--white'
+                            className='link'
                             to={routes.financial_assessment}
                         />,
                     ]}
@@ -159,7 +159,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <BinaryLink
                             key={0}
-                            className='link link--white'
+                            className='link'
                             to={routes.personal_details}
                         />,
                     ]}
@@ -173,7 +173,7 @@ export const clientNotifications = (ui = {}) => {
             message: (
                 <Localize
                     i18n_default_text='Please <0>accept the updated Terms and Conditions</0> to enable deposit and trading.'
-                    components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/tnc_approvalws', undefined, undefined, true)} /> ]}
+                    components={[ <a key={0} className='link' target='_blank' href={urlFor('user/tnc_approvalws', undefined, undefined, true)} /> ]}
                 />
             ),
             type: 'danger',
@@ -187,7 +187,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <BinaryLink
                             key={0}
-                            className='link link--white'
+                            className='link'
                             to={routes.personal_details}
                         />,
                     ]}
@@ -232,7 +232,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <BinaryLink
                             key={0}
-                            className='link link--white'
+                            className='link'
                             to={routes.proof_of_address}
                         />,
                     ]}
@@ -259,7 +259,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <BinaryLink
                             key={0}
-                            className='link link--white'
+                            className='link'
                             to={routes.proof_of_identity}
                         />,
                     ]}

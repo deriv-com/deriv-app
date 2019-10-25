@@ -4,6 +4,7 @@ import { localize } from 'App/i18n';
 import Localize     from '../../../../App/Components/Elements/localize.jsx';
 
 export const contractSold = (currency, sold_for) => ({
+    key    : 'contract_sold',
     header : localize('Contract sold'),
     message: (
         <Localize

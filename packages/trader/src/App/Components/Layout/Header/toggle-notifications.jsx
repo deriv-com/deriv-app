@@ -3,7 +3,7 @@ import React               from 'react';
 import { Popover }         from 'deriv-components';
 import NotificationsDialog from 'App/Containers/NotificationsDialog';
 import Icon                from 'Assets/icon.jsx';
-import                          'Sass/app/modules/notifications.scss';
+import                          'Sass/app/modules/notifications-dialog.scss';
 
 const ToggleNotificationsDrawer = ({ count, is_visible, toggleDialog, tooltip_message }) =>  (
     <div className={classNames('notifications-toggle', {

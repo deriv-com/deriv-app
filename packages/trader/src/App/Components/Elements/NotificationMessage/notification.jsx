@@ -1,6 +1,7 @@
 import PropTypes   from 'prop-types';
 import React       from 'react';
 import classNames  from 'classnames';
+// import { Button }  from 'deriv-components';
 import Icon        from 'Assets/icon.jsx';
 import CloseButton from './close-button.jsx';
 import {
@@ -67,6 +68,14 @@ const Notification = ({
                     onClick={onClick}
                 />
             }
+            {/* TODO: Re-enable once button or call to action flow is finalized */}
+            {/* !!data.action &&
+                <Button
+                    className={classNames('btn--secondary--default', 'notification__cta-button')}
+                    onClick={data.action.onClick}
+                    text={data.action.text}
+                />
+            */}
         </div>
     );
 };

@@ -6,10 +6,6 @@
     position: absolute;
     right: 0;
     top: 8px;
-
-    & > :not(:last-child) {
-        margin-bottom: 16px;
-    }
 }
 
 /** @define notification; */
@@ -92,5 +88,8 @@
             opacity: 0.07;
             z-index: 0;
         }
+    }
+    &:not(:last-child) {
+        margin-bottom: 16px;
     }
 }

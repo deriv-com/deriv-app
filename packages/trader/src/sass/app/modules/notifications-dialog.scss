@@ -48,7 +48,7 @@
             }
         }
         &:hover {
-            svg {
+            .notifications-toggle__icon {
                 @extend %inline-icon.active;
             }
         }
@@ -114,21 +114,21 @@
             margin-bottom: 8px;
 
             .color1-fill {
-                fill: var(--text-disabled);
+                fill: var(--text-less-prominent);
             }
         }
         &__header {
             font-size: 1.4rem;
             font-weight: bold;
             text-align: center;
-            color: var(--text-disabled);
+            color: var(--text-less-prominent);
             padding: 8px;
         }
         &__message {
             line-height: 1.5;
             font-size: 1.2rem;
             text-align: center;
-            color: var(--text-disabled);
+            color: var(--text-less-prominent);
         }
     }
     /** @define notifications-item; weak */

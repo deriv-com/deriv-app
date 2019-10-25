@@ -79,6 +79,8 @@
         }
         &__content {
             padding: 8px 0;
+            height: calc(100% - 37px);
+            border-radius: $BORDER_RADIUS;
 
             &--empty {
                 display: flex;

@@ -2,6 +2,7 @@ import PropTypes             from 'prop-types';
 import classNames            from 'classnames';
 import React                 from 'react';
 import { CSSTransition }     from 'react-transition-group';
+import { ThemedScrollbars }  from 'deriv-components';
 import { connect }           from 'Stores/connect';
 import { localize }          from 'App/i18n';
 import { toTitleCase }       from '_common/string_util';
@@ -57,33 +58,38 @@ class NotificationsDialog extends React.Component {
                         'notifications-dialog__content--empty': !(this.props.notifications && this.props.notifications.length),
                     })}
                     >
-                        {
-                            this.props.notifications && this.props.notifications.length ?
-                                this.props.notifications.map((item, idx) => (
-                                    <div className='notifications-item' key={idx}>
-                                        <h2 className='notifications-item__title'>
-                                            {item.type &&
-                                                <Icon
-                                                    icon={(item.type === 'info' || item.type === 'contract_sold') ?
-                                                        'IconInfoBlue'
-                                                        :
-                                                        `Icon${toTitleCase(item.type)}`
-                                                    }
-                                                    className={classNames('notifications-item__title-icon', {
-                                                        [`notifications-item__title-icon--${item.type}`]: item.type,
-                                                    })}
-                                                />
-                                            }
-                                            {item.header}
-                                        </h2>
-                                        <div className='notifications-item__message'>
-                                            {item.message}
+                        <ThemedScrollbars
+                            style={{ width: '100%', height: '100%' }}
+                            autoHide
+                        >
+                            {
+                                this.props.notifications && this.props.notifications.length ?
+                                    this.props.notifications.map((item, idx) => (
+                                        <div className='notifications-item' key={idx}>
+                                            <h2 className='notifications-item__title'>
+                                                {item.type &&
+                                                    <Icon
+                                                        icon={(item.type === 'info' || item.type === 'contract_sold') ?
+                                                            'IconInfoBlue'
+                                                            :
+                                                            `Icon${toTitleCase(item.type)}`
+                                                        }
+                                                        className={classNames('notifications-item__title-icon', {
+                                                            [`notifications-item__title-icon--${item.type}`]: item.type,
+                                                        })}
+                                                    />
+                                                }
+                                                {item.header}
+                                            </h2>
+                                            <div className='notifications-item__message'>
+                                                {item.message}
+                                            </div>
                                         </div>
-                                    </div>
-                                ))
-                                :
-                                <EmptyNotification />
-                        }
+                                    ))
+                                    :
+                                    <EmptyNotification />
+                            }
+                        </ThemedScrollbars>
                     </div>
                 </div>
             </CSSTransition>

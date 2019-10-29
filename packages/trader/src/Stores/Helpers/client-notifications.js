@@ -383,12 +383,13 @@ export const handleClientNotifications = (
     ui
 ) => {
     const { currency, excluded_until } = client;
+    if (loginid !== LocalStore.get('active_loginid')) return {};
     if (!currency)      addNotificationMessage(clientNotifications(ui).currency);
-    if (excluded_until) addNotificationMessage(clientNotifications(ui).self_exclusion(excluded_until));
+    if (excluded_until) {
+        addNotificationMessage(clientNotifications(ui).self_exclusion(excluded_until));
+    }
 
     const { has_risk_assessment } = checkAccountStatus(account_status, client, addNotificationMessage, loginid);
-
-    if (loginid !== LocalStore.get('active_loginid')) return {};
 
     if (shouldAcceptTnc(account_settings)) addNotificationMessage(clientNotifications(ui).tnc);
 

@@ -565,7 +565,7 @@ export default class ClientStore extends BaseStore {
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
-        const client = this.accounts[this.loginid];
+        let client = this.accounts[this.loginid];
 
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
@@ -583,6 +583,7 @@ export default class ClientStore extends BaseStore {
         reaction(
             () => [this.account_settings, this.account_status],
             () => {
+                client = this.accounts[this.loginid];
                 BinarySocket.wait('landing_company').then(() => {
                     if (client && !client.is_virtual) {
                         const { has_missing_required_field } = handleClientNotifications(

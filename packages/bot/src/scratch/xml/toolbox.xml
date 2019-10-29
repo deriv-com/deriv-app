@@ -344,9 +344,9 @@
     <!-- Utility -->
     <category id="utility" name="Utility" description="Math, text, logic, lists, etc." iconURI="ic-arrow">
 
-        <category name="Custom functions" id="custom_functions" description="Helps to make strategy clear" dynamic="PROCEDURE"></category>
+        <category name="Custom functions" id="custom_functions" description="Create your own functions" dynamic="PROCEDURE"></category>
 
-        <category name="Variables" id="variables" description="Store values during run time" dynamic="VARIABLE"></category>
+        <category name="Variables" id="variables" description="Create and name memory locations to store values" dynamic="VARIABLE"></category>
 
         <category name="Notifications" id="notifications" description="Run time messages">
             <block type="text_print">

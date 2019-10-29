@@ -787,7 +787,7 @@ export default class ClientStore extends BaseStore {
                 const has_mt5 = !ObjectUtils.isEmptyObject(total_mt5);
                 this.obj_total_balance = {
                     amount_real: +total_real.amount,
-                    amount_mt5 : has_mt5 ? +total_mt5.amount : this.obj_total_balance.mt5.amount,
+                    amount_mt5 : has_mt5 ? +total_mt5.amount : this.obj_total_balance.amount_mt5,
                     currency   : total_real.currency,
                 };
             }

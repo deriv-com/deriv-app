@@ -1,6 +1,7 @@
+import { localize }                     from 'deriv-translations/src/i18next/i18n';
 import { getLanguage }                  from '../lang/lang';
 import { observer as globalObserver }   from '../observer';
-import { translate, trackAndEmitError } from '../tools';
+import { trackAndEmitError }            from '../tools';
 import config                           from '../../constants';
 import { loadWorkspace, loadBlocks }    from '../../scratch';
 

@@ -1,5 +1,6 @@
-import { expect }                               from 'chai';
-import { translate, init, xml as translateXml } from '../lang/i18n';
+import { localize }                  from 'deriv-translations/src/i18next/i18n';
+import { expect }                    from 'chai';
+import { init, xml as translateXml } from '../lang/i18n';
 
 class Xml {
     constructor(el, children = {}) {

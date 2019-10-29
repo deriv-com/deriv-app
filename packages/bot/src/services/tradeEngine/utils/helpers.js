@@ -1,7 +1,7 @@
+import { localize }   from 'deriv-translations/src/i18next/i18n';
 import { notify }     from './broadcast';
 import config         from '../../../constants';
 import { getUTCTime } from '../../../utils/tools';
-import { localize }   from 'deriv-translations/src/i18next/i18n';
 
 export const noop = () => {};
 

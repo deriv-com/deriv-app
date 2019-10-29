@@ -1,6 +1,7 @@
+import { localize }                     from 'deriv-translations/src/i18next/i18n';
 import RenderHTML                       from 'react-render-html';
 import { observer as globalObserver }   from './observer';
-import { translate as i18nTranslate }   from './lang/i18n';
+
 
 export const getObjectValue = obj => obj[Object.keys(obj)[0]];
 
@@ -39,7 +40,7 @@ export const durationToSecond = duration => {
 export const translate = input => {
     if (Array.isArray(input) && input.length > 0) {
         const stringToBeTranslated = input[0].replace(/\[_([0-9])\]/g, '%$1');
-        let translatedString = i18nlocalize(stringToBeTranslated);
+        let translatedString = localize(stringToBeTranslated);
 
         input.slice(1).forEach((replacement, index) => {
             const regex = new RegExp(`%${index + 1}`, 'g');
@@ -47,7 +48,7 @@ export const translate = input => {
         });
         return RenderHTML(translatedString);
     }
-    return i18nlocalize(input);
+    return localize(input);
 };
 
 export const showSpinnerInButton = $buttonElement => {

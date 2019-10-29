@@ -1,3 +1,4 @@
+import { localize }  from 'deriv-translations/src/i18next/i18n';
 // const t = key => (key in translation ? translation[key] : fallbackLang[key]);
 
 
@@ -6,16 +7,16 @@ export const translate = str => str;
 
 // TODO: fix this for translating category names supplied to Blockly.
 export const translateLangToLang = (str, fromLang, toLang) => {
-    if (supportedLanguages[fromLang]) {
-        const hashIndex = Object.values(supportedLanguages[fromLang]).findIndex(translatedStr => str === translatedStr);
-        if (hashIndex !== -1) {
-            const hash = Object.keys(supportedLanguages[fromLang])[hashIndex];
-            const translatedStr = supportedLanguages[toLang][hash];
-            if (translatedStr) {
-                return translatedStr;
-            }
-        }
-    }
+    // if (supportedLanguages[fromLang]) {
+    //     const hashIndex = Object.values(supportedLanguages[fromLang]).findIndex(translatedStr => str === translatedStr);
+    //     if (hashIndex !== -1) {
+    //         const hash = Object.keys(supportedLanguages[fromLang])[hashIndex];
+    //         const translatedStr = supportedLanguages[toLang][hash];
+    //         if (translatedStr) {
+    //             return translatedStr;
+    //         }
+    //     }
+    // }
     return str;
 };
 

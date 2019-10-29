@@ -190,6 +190,11 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    setTradeStatus(status) {
+        this.is_trade_enabled = status;
+    }
+
+    @action.bound
     refresh() {
         this.proposal_info     = {};
         this.purchase_info     = {};
@@ -735,6 +740,9 @@ export default class TradeStore extends BaseStore {
         this.root_store.modules.contract_trade.onUnmount();
         this.refresh();
         this.resetErrorServices();
+        if (this.root_store.ui.is_notifications_visible) {
+            this.root_store.ui.toggleNotificationsModal();
+        }
         // clear url query string
         window.history.pushState(null, null, window.location.pathname);
         if (this.prev_chart_layout) {

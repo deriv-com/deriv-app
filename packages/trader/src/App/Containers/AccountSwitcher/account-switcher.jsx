@@ -172,9 +172,17 @@ class AccountSwitcher extends React.Component {
         requestLogout().then(this.props.cleanUp);
     };
 
-    redirectToMt5 = () => {
+    redirectToMt5 = (account_type) => {
         this.props.toggleAccountsDialog();
-        this.props.history.push(routes.mt5);
+        this.props.history.push(`${routes.mt5}#${account_type}`);
+    };
+
+    redirectToMt5Real = () => {
+        this.redirectToMt5('real');
+    };
+
+    redirectToMt5Demo = () => {
+        this.redirectToMt5('demo');
     };
 
     onClickUpgrade = () => {
@@ -260,6 +268,10 @@ class AccountSwitcher extends React.Component {
         return this.can_upgrade || this.can_manage_currency;
     }
 
+    get total_assets() {
+        return this.props.obj_total_balance.amount_real + this.props.obj_total_balance.amount_mt5;
+    }
+
     render() {
         if (!this.props.is_logged_in) return false;
 
@@ -329,13 +341,13 @@ class AccountSwitcher extends React.Component {
                                                             has_balance={'balance' in account}
                                                             has_demo_text={/^demo/.test(account.group)}
                                                             loginid={account.login}
-                                                            onClickAccount={this.redirectToMt5}
+                                                            onClickAccount={/^demo/.test(account.group) ? this.redirectToMt5Demo : this.redirectToMt5Real}
                                                         />
                                                     ))}
                                                 </div>
                                                 :
                                                 <ButtonAddAccount
-                                                    onClick={this.redirectToMt5}
+                                                    onClick={this.redirectToMt5Real}
                                                     text={<Localize i18n_default_text='Add DMT5 account' />}
                                                 />
                                             }
@@ -368,7 +380,7 @@ class AccountSwitcher extends React.Component {
                             amount={
                                 CurrencyUtils.formatMoney(
                                     this.props.obj_total_balance.currency,
-                                    this.props.obj_total_balance.amount,
+                                    this.total_assets,
                                     true
                                 )
                             }

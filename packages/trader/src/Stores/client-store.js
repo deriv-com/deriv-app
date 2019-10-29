@@ -52,7 +52,11 @@ export default class ClientStore extends BaseStore {
     @observable upgradeable_landing_companies = [];
     @observable mt5_login_list = [];
     @observable statement      = [];
-    @observable obj_total_balance = {};
+    @observable obj_total_balance = {
+        amount_real: undefined,
+        amount_mt5 : undefined,
+        currency   : '',
+    };
 
     @observable verification_code = {
         signup                : '',
@@ -760,15 +764,14 @@ export default class ClientStore extends BaseStore {
         if (this.accounts[obj_balance.loginid]) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
             if (obj_balance.total) {
-                // TODO: stop doing the addition in FE once API starts sending the total of MT5 + real
-                const currency = obj_balance.total.real.currency;
-                let amount = +obj_balance.total.real.amount;
-                if ('mt5' in obj_balance.total && obj_balance.total.mt5.amount && obj_balance.total.mt5.currency === currency) {
-                    amount += +obj_balance.total.mt5.amount;
-                }
+                const total_real = ObjectUtils.getPropertyValue(obj_balance, ['total', 'real']);
+                const total_mt5  = ObjectUtils.getPropertyValue(obj_balance, ['total', 'mt5']);
+                // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent
+                const has_mt5 = !ObjectUtils.isEmptyObject(total_mt5);
                 this.obj_total_balance = {
-                    amount,
-                    currency,
+                    amount_real: +total_real.amount,
+                    amount_mt5 : has_mt5 ? +total_mt5.amount : this.obj_total_balance.mt5.amount,
+                    currency   : total_real.currency,
                 };
             }
             this.resetLocalStorageValues(this.loginid);

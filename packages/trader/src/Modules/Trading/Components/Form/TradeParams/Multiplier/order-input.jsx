@@ -12,7 +12,6 @@ const OrderInput = ({
     name,
     label,
     onChange,
-    validation_errors,
 }) => {
     const [disabled, setDisabled] = useState(true);
 
@@ -28,7 +27,6 @@ const OrderInput = ({
             classNameInput='trade-container__input'
             currency={currency}
             is_disabled={disabled ? 'disabled' : undefined}
-            error_messages={validation_errors.amount}
             fractional_digits={CurrencyUtils.getDecimalPlaces(currency)}
             id={`dt_${name}_input`}
             inline_prefix={is_single_currency ? currency : null}
@@ -71,7 +69,6 @@ OrderInput.propTypes = {
     is_single_currency: PropTypes.bool,
     name              : PropTypes.string,
     onChange          : PropTypes.func,
-    validation_errors : PropTypes.object,
 };
 
 export default OrderInput;

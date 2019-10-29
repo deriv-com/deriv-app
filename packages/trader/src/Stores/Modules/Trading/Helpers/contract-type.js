@@ -133,7 +133,7 @@ const ContractType = (() => {
     );
 
     const getContractValues = (store) => {
-        const { contract_expiry_type, contract_type, basis, duration_unit, start_date, multiplier } = store;
+        const { contract_expiry_type, contract_type, basis, duration_unit, duration_units_list, expiry_type, start_date, multiplier } = store;
         const form_components   = getComponents(contract_type);
         const obj_basis         = getBasis(contract_type, basis);
         const obj_trade_types   = getTradeTypes(contract_type);
@@ -146,6 +146,7 @@ const ContractType = (() => {
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
 
         const obj_multiplier_range_list  = getMultiplierRange(contract_type, multiplier);
+        const obj_expiry_type            = getExpiryType(duration_units_list,expiry_type);
 
         return {
             ...form_components,
@@ -157,6 +158,7 @@ const ContractType = (() => {
             ...obj_duration_unit,
             ...obj_duration_units_list,
             ...obj_duration_units_min_max,
+            ...obj_expiry_type,
             ...obj_multiplier_range_list,
         };
     };
@@ -301,6 +303,12 @@ const ContractType = (() => {
             return { expiry_type: 'duration' };
         }
 
+        if (duration_units_list && duration_units_list.length === 0){
+            return {
+                expiry_type: null,
+            };
+        }
+
         return { expiry_type };
     };
 
@@ -417,7 +425,7 @@ const ContractType = (() => {
         const arr_multiplier = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'multiplier_range']) || [];
         
         return {
-            multiplier_range_list: arr_multiplier && arr_multiplier.map((m)=>({ text: `x${m}`, value: m })),
+            multiplier_range_list: arr_multiplier.map((m)=>({ text: `x${m}`, value: m })),
             multiplier           : getArrayDefaultValue(arr_multiplier, multiplier),
         };
     };

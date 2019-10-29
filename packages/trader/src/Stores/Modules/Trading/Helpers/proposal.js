@@ -70,11 +70,37 @@ export const createProposalRequests = (store) => {
     return requests;
 };
 
+const setProposalMultiplier = (store, obj_multiplier)=>{
+    obj_multiplier.multiplier = store.multiplier;
+
+    const has_limit_order = store.take_profit > 0 || store.stop_loss > 0;
+
+    if (!has_limit_order) {
+        return;
+    }
+
+    obj_multiplier.limit_order = {};
+
+    if (store.take_profit > 0){
+        obj_multiplier.limit_order.take_profit = store.take_profit;
+    }
+
+    if (store.stop_loss > 0){
+        obj_multiplier.limit_order.stop_loss = store.stop_loss;
+    }
+};
+
 const createProposalRequestForContract = (store, type_of_contract) => {
     const obj_expiry = {};
+    const obj_multiplier = {};
+
     if (store.expiry_type === 'endtime') {
         const expiry_date = toMoment(store.expiry_date);
         obj_expiry.date_expiry = convertToUnix(expiry_date.unix(), store.expiry_time);
+    }
+
+    if (store.contract_type === 'mult') {
+        setProposalMultiplier(store, obj_multiplier);
     }
 
     return {
@@ -106,5 +132,6 @@ const createProposalRequestForContract = (store, type_of_contract) => {
             store.barrier_count === 2 &&
             { barrier2: store.barrier_2 }
         ),
+        ...obj_multiplier,
     };
 };

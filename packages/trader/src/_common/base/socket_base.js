@@ -122,7 +122,7 @@ const BinarySocketBase = (() => {
     const subscribe = (request, cb) =>
         deriv_api.subscribe(request).subscribe(cb, cb); // Delegate error handling to the callback
 
-    const balanceAll = (cb) => deriv_api.send({ balance: 1, account: 'all' }, cb);
+    const balanceAll = () => deriv_api.send({ balance: 1, account: 'all' });
 
     const subscribeBalanceAll = (cb) => subscribe({ balance: 1, account: 'all' }, cb);
 

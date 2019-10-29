@@ -119,8 +119,8 @@ class AccountSignup extends React.Component {
                                                 type='button'
                                                 is_disabled={ !values.residence || !!errors.residence }
                                                 onClick={this.onResidenceSelection}
-                                                text={localize('Next')}
                                                 primary
+                                                text={localize('Next')}
                                             />
                                         </div>
                                         :

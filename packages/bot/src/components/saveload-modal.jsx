@@ -105,7 +105,7 @@ const SaveLoadModal = ({
                                                 )}
                                             </Field>
                                             <div className='saveload-type__checkbox-description'>
-                                                {localize('A collection allow you to save block as an individual part which can be add into other bot')}
+                                                {localize('This option allows you to save your strategy as a collection of individual blocks which you can add to other strategies.')}
                                             </div>
                                         </>
                                         : <input
@@ -120,21 +120,18 @@ const SaveLoadModal = ({
                             <div className='modal__footer'>
                                 <Button
                                     type='button'
-                                    className={classNames(
-                                        'modal__footer--cancel',
-                                        'btn--secondary--default',
-                                    )}
+                                    className='modal__footer--button'
                                     text={localize('Cancel')}
                                     onClick={() => toggleSaveLoadModal(is_save_modal)}
+                                    secondary
                                 />
                                 <Button
+                                    className='modal__footer--button'
                                     type='submit'
-                                    className={classNames(
-                                        'btn--primary--default',
-                                    )}
                                     is_loading={button_status === 1}
                                     is_submit_success={button_status === 2}
                                     text={localize('Continue')}
+                                    primary
                                 />
                             </div>
                         </Form>

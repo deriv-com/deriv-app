@@ -22,13 +22,15 @@ export default Engine =>
             this.sessionRuns = 0;
             this.sessionProfit = 0;
 
-            globalObserver.register('summary.clear', () => {
-                this.sessionRuns = 0;
-                this.sessionProfit = 0;
+            globalObserver.register('summary.clear', this.clearSummary.bind(this));
+        }
 
-                const { loginid: accountID } = this.accountInfo;
-                globalStat[accountID] = { ...skeleton };
-            });
+        clearSummary () {
+            this.sessionRuns = 0;
+            this.sessionProfit = 0;
+            if (!this.accountInfo) return;
+            const { loginid: accountID } = this.accountInfo;
+            globalStat[accountID] = { ...skeleton };
         }
 
         updateTotals(contract) {

@@ -23,11 +23,12 @@ class SendEmail extends React.Component {
                         <p className='withdraw__header'><Localize i18n_default_text='To initiate withdrawal, we need to authenticate you via email.' /></p>
                         <p className='withdraw__text'><Localize i18n_default_text='This is a safeguard against unauthorised withdrawals from your account.' /></p>
                         <Button
-                            className='btn--primary--default withdraw__verify-button'
-                            classNameSpan='withdraw__verify-button-text'
+                            className='withdraw__verify-button'
                             has_effect
                             text={localize('Request authentication email')}
                             onClick={this.props.sendVerificationEmail}
+                            primary
+                            large
                         />
                     </React.Fragment>
                 }

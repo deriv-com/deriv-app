@@ -1,4 +1,4 @@
-import { translate } from '../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 /* eslint-disable no-underscore-dangle */
 
@@ -12,7 +12,7 @@ import { translate } from '../../utils/lang/i18n';
  */
 Blockly.ContextMenu.wsCleanupOption = function(ws, numTopBlocks) {
     return {
-        text    : translate('Rearrange Vertically'),
+        text    : localize('Rearrange Vertically'),
         enabled : numTopBlocks > 1,
         callback: ws.cleanUp.bind(ws),
     };
@@ -30,7 +30,7 @@ Blockly.ContextMenu.wsCleanupOption = function(ws, numTopBlocks) {
 Blockly.ContextMenu.wsCollapseOption = function(hasExpandedBlocks, topBlocks) {
     return {
         enabled: hasExpandedBlocks,
-        text   : translate('Collapse Blocks'),
+        text   : localize('Collapse Blocks'),
         callback() {
             Blockly.ContextMenu.toggleCollapseFn_(topBlocks, true);
         },
@@ -49,7 +49,7 @@ Blockly.ContextMenu.wsCollapseOption = function(hasExpandedBlocks, topBlocks) {
 Blockly.ContextMenu.wsExpandOption = function(hasCollapsedBlocks, topBlocks) {
     return {
         enabled: hasCollapsedBlocks,
-        text   : translate('Expand Blocks'),
+        text   : localize('Expand Blocks'),
         callback() {
             Blockly.ContextMenu.toggleCollapseFn_(topBlocks, false);
         },

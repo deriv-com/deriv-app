@@ -5,6 +5,7 @@ import { Button,
 import classNames                             from 'classnames';
 import PropTypes                              from 'prop-types';
 import React                                  from 'react';
+import { localize }                           from 'deriv-translations/src/i18next/i18n';
 import Dialog                                 from './dialog.jsx';
 import { InfoOutlineIcon, RunIcon, StopIcon } from './Icons.jsx';
 import Journal                                from './journal.jsx';
@@ -12,7 +13,6 @@ import Summary                                from './summary.jsx';
 import TradeAnimation                         from './trade-animation.jsx';
 import Transactions                           from './transactions.jsx';
 import { connect }                            from '../stores/connect';
-import { translate }                          from '../utils/tools';
 import '../assets/sass/run-panel.scss';
 
 const drawerContent = ({
@@ -24,13 +24,13 @@ const drawerContent = ({
             active_index={active_index}
             onClickTabItem={setActiveTabIndex}
         >
-            <div label={translate('Summary')}>
+            <div label={localize('Summary')}>
                 <Summary />
             </div>
-            <div label={translate('Transactions')} >
+            <div label={localize('Transactions')} >
                 <Transactions />
             </div>
-            <div label={translate('Journal')}>
+            <div label={localize('Journal')}>
                 <Journal />
             </div>
         </Tabs>
@@ -59,7 +59,7 @@ const drawerFooter = ({
                     'run-panel__button',
                     { 'run-panel__button--disable': is_clear_stat_disable }
                 )}
-                text={translate('Clear stat')}
+                text={localize('Clear stat')}
                 onClick={onClearStatClick}
                 has_effect
             />
@@ -72,7 +72,7 @@ const drawerFooter = ({
                             'run-panel__button',
                             { 'run-panel__button--disable': !is_run_button_clicked }
                         )}
-                        text={translate('Stop bot')}
+                        text={localize('Stop bot')}
                         icon={<StopIcon className='run-panel__button--icon' />}
                         onClick={onStopButtonClick}
                         has_effect
@@ -83,7 +83,7 @@ const drawerFooter = ({
                             'run-panel__button',
                             'run-panel__button--run',
                         )}
-                        text={translate('Run bot')}
+                        text={localize('Run bot')}
                         icon={<RunIcon className='run-panel__button--icon' />}
                         onClick={onRunButtonClick}
                         has_effect
@@ -103,7 +103,7 @@ const drawerFooter = ({
                 className='run-panel__info'
                 classNameBubble='run-panel__info--bubble'
                 alignment='top'
-                message={translate(
+                message={localize(
                     `Stopping the bot will prevent further trades. Any ongoing trades will be completed 
                      by our system. Please be aware that some completed transactions may not be displayed
                      in the transaction table if the bot is stopped while placing trades. You may refer to

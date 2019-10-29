@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { observable, action }   from 'mobx';
+import { localize }             from 'deriv-translations/src/i18next/i18n';
 import config                   from '../constants';
-import { translate }            from '../utils/lang/i18n';
 
 export default class FlyoutStore {
     block_listeners = [];
@@ -48,12 +48,12 @@ export default class FlyoutStore {
 
             if (!has_result) {
                 const label = document.createElement('label');
-                label.setAttribute('text', translate('No Blocks Found'));
+                label.setAttribute('text', localize('No Blocks Found'));
 
                 processed_xml.push(label);
             } else {
                 const label = document.createElement('label');
-                label.setAttribute('text', translate('Result(s)'));
+                label.setAttribute('text', localize('Result(s)'));
 
                 processed_xml.push(label);
             }

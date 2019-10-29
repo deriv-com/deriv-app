@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.text_prompt_ext = {
     init() {
@@ -21,12 +21,12 @@ Blockly.Blocks.text_prompt_ext = {
     },
     definition(){
         return {
-            message0: translate('prompt for %1 with message %2'),
+            message0: localize('prompt for %1 with message %2'),
             args0   : [
                 {
                     type   : 'field_dropdown',
                     name   : 'TYPE',
-                    options: [[translate('string'), 'TEXT'], [translate('number'), 'NUMBER']],
+                    options: [[localize('string'), 'TEXT'], [localize('number'), 'NUMBER']],
                 },
                 {
                     type: 'input_value',
@@ -38,14 +38,14 @@ Blockly.Blocks.text_prompt_ext = {
             colour         : Blockly.Colours.Special3.colour,
             colourSecondary: Blockly.Colours.Special3.colourSecondary,
             colourTertiary : Blockly.Colours.Special3.colourTertiary,
-            tooltip        : translate('Request user input'),
+            tooltip        : localize('Request user input'),
             category       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Request user input'),
-            'description' : translate('Prompts for an input of either text or numbers with a specific display message.'),
+            'display_name': localize('Request user input'),
+            'description' : localize('Prompts for an input of either text or numbers with a specific display message.'),
         };
     },
 };

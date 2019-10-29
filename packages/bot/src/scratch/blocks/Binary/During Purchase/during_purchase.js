@@ -1,7 +1,7 @@
 // import ScratchStore          from '../../../../stores/scratch-store';
+import { localize }          from 'deriv-translations/src/i18next/i18n';
 import { sellContract }      from '../../images';
 import { setBlockTextColor } from '../../../utils';
-import { translate }         from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.during_purchase = {
     init() {
@@ -9,7 +9,7 @@ Blockly.Blocks.during_purchase = {
     },
     definition(){
         return {
-            message0: translate('%1 3. Sell conditions %2'),
+            message0: localize('%1 3. Sell conditions %2'),
             message1: '%1',
             args0   : [
                 {
@@ -33,7 +33,7 @@ Blockly.Blocks.during_purchase = {
             colour         : Blockly.Colours.RootBlock.colour,
             colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
             colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
-            tooltip        : translate(
+            tooltip        : localize(
                 'Sell your active contract if needed (optional)'
             ),
             category: Blockly.Categories.During_Purchase,
@@ -41,8 +41,8 @@ Blockly.Blocks.during_purchase = {
     },
     meta(){
         return {
-            'display_name': translate('Sell conditions'),
-            'description' : translate('Here is where you can decide to sell your contract before it expires. Only one copy of this block is allowed.'),
+            'display_name': localize('Sell conditions'),
+            'description' : localize('Here is where you can decide to sell your contract before it expires. Only one copy of this block is allowed.'),
         };
     },
     onchange(event) {

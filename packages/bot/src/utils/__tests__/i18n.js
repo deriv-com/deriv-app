@@ -45,14 +45,14 @@ const dom = new Xml(
 describe('i18n is able to', () => {
     describe('find the translation of a text without initializing', () => {
         it('Find translation of "Logic"', () => {
-            expect(translate('Logic')).to.be.equal('Logic');
+            expect(localize('Logic')).to.be.equal('Logic');
         });
     });
 
     describe('translate a text (id)', () => {
         beforeAll(() => init('id'));
         it('Find translation of "Logic"', () => {
-            expect(translate('Logic')).to.be.equal('Logika');
+            expect(localize('Logic')).to.be.equal('Logika');
         });
     });
 

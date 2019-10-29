@@ -7,7 +7,7 @@ import { loadWorkspace, loadBlocks }    from '../../scratch';
 /* eslint-disable */
 class GoogleDrive {
     constructor() {
-        this.botFolderName = `Binary Bot - ${translate('Strategies')}`;
+        this.botFolderName = `Binary Bot - ${localize('Strategies')}`;
         this.setInfo(config);
         this.googleAuth = null;
         this.isAuthorised = null;
@@ -80,7 +80,7 @@ class GoogleDrive {
                         if (response.error === 'access_denied') {
                             globalObserver.emit(
                                 'ui.log.warn',
-                                translate(
+                                localize(
                                     'Please grant permission to view and manage Google Drive folders created with Binary Bot'
                                 )
                             );
@@ -140,11 +140,11 @@ class GoogleDrive {
                                     loadFunction(xmlDom);
                                     resolve();
                                 } catch (error) {
-                                    trackAndEmitError(translate('Could not load Google Drive blocks'), error);
+                                    trackAndEmitError(localize('Could not load Google Drive blocks'), error);
                                     reject(error);
                                 }
                             } catch (error) {
-                                trackAndEmitError(translate('Unrecognized file format'), error);
+                                trackAndEmitError(localize('Unrecognized file format'), error);
                                 reject(error);
                             }
                         })
@@ -152,7 +152,7 @@ class GoogleDrive {
                             if (error.status && error.status === 401) {
                                 this.signOut();
                             }
-                            trackAndEmitError(translate('There was an error retrieving data from Google Drive'), error);
+                            trackAndEmitError(localize('There was an error retrieving data from Google Drive'), error);
                             reject(error);
                         });
                 } else if (data.action === google.picker.Action.CANCEL) {
@@ -176,7 +176,7 @@ class GoogleDrive {
                             const picker = new google.picker.PickerBuilder();
                             picker
                                 .setOrigin(`${window.location.protocol}//${window.location.host}`)
-                                .setTitle(translate('Select a Binary Bot strategy'))
+                                .setTitle(localize('Select a Binary Bot strategy'))
                                 .setLocale(this.getPickerLanguage())
                                 .setAppId(this.appId)
                                 .setOAuthToken(gapi.auth.getToken().access_token)
@@ -190,7 +190,7 @@ class GoogleDrive {
                             if (error.status && error.status === 401) {
                                 this.signOut();
                             }
-                            trackAndEmitError(translate('There was an error listing files from Google Drive'), error);
+                            trackAndEmitError(localize('There was an error listing files from Google Drive'), error);
                             reject(error);
                         });
                 })
@@ -233,7 +233,7 @@ class GoogleDrive {
                                         this.signOut();
                                     }
                                     trackAndEmitError(
-                                        translate('There was an error retrieving files from Google Drive'),
+                                        localize('There was an error retrieving files from Google Drive'),
                                         error
                                     );
                                     reject(error);
@@ -243,7 +243,7 @@ class GoogleDrive {
                             if (error.status && error.status === 401) {
                                 this.signOut();
                             }
-                            trackAndEmitError(translate('There was an error listing files from Google Drive'), error);
+                            trackAndEmitError(localize('There was an error listing files from Google Drive'), error);
                             reject(error);
                         });
                 })
@@ -281,7 +281,7 @@ class GoogleDrive {
                             if (xhr.status === 401) {
                                 this.signOut();
                             }
-                            trackAndEmitError(translate('There was an error processing your request'), xhr.status);
+                            trackAndEmitError(localize('There was an error processing your request'), xhr.status);
                             reject();
                         }
                     };
@@ -306,7 +306,7 @@ class GoogleDrive {
                             const picker = new google.picker.PickerBuilder();
                             picker
                                 .setOrigin(`${window.location.protocol}//${window.location.host}`)
-                                .setTitle(translate('Select a folder'))
+                                .setTitle(localize('Select a folder'))
                                 .addView(view)
                                 .setLocale(this.getPickerLanguage())
                                 .setAppId(this.appId)

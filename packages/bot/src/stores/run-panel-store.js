@@ -3,13 +3,13 @@ import {
     action,
     reaction,
     computed }             from 'mobx';
+import { localize }        from 'deriv-translations/src/i18next/i18n';
 import { CONTRACT_STAGES } from '../constants/contract-stage';
 import {
     runBot,
     stopBot,
     terminateBot }         from '../scratch';
 import { isEnded }         from '../utils/contract';
-import { translate }       from '../utils/lang/i18n';
 import { observer }        from '../utils/observer';
 
 export default class RunPanelStore {
@@ -177,8 +177,8 @@ export default class RunPanelStore {
         this.onOkButtonClick = this.onDialogOkButtonClick;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
-            title  : translate('Run error'),
-            message: translate('Please log in.'),
+            title  : localize('Run error'),
+            message: localize('Please log in.'),
         };
     }
 
@@ -187,8 +187,8 @@ export default class RunPanelStore {
         this.onOkButtonClick = this.onDialogOkButtonClick;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
-            title  : translate('DBot isn\'t quite ready for real accounts'),
-            message: translate('Please switch to your demo account to run your DBot.'),
+            title  : localize('DBot isn\'t quite ready for real accounts'),
+            message: localize('Please switch to your demo account to run your DBot.'),
         };
     }
 
@@ -206,8 +206,8 @@ export default class RunPanelStore {
         };
         this.onCancelButtonClick = this.onCloseDialog;
         this.dialog_options = {
-            title  : translate('Are you sure?'),
-            message: translate('This will clear all data in the summary, transactions, and journal panels. All counters will be reset to zero.'),
+            title  : localize('Are you sure?'),
+            message: localize('This will clear all data in the summary, transactions, and journal panels. All counters will be reset to zero.'),
         };
     }
 
@@ -228,7 +228,7 @@ export default class RunPanelStore {
                     () => client.loginid,
                     (loginid) => {
                         if (loginid) {
-                            this.root_store.journal.pushMessage(translate('You have switched accounts.'));
+                            this.root_store.journal.pushMessage(localize('You have switched accounts.'));
                         } else {
                             terminateAndClear();
                         }

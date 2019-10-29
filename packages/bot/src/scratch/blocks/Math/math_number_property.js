@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.math_number_property = {
     init() {
@@ -13,7 +13,7 @@ Blockly.Blocks.math_number_property = {
     },
     definition(){
         return {
-            message0: translate('%1 is %2'),
+            message0: localize('%1 is %2'),
             args0   : [
                 {
                     type: 'input_value',
@@ -23,13 +23,13 @@ Blockly.Blocks.math_number_property = {
                     type   : 'field_dropdown',
                     name   : 'PROPERTY',
                     options: [
-                        [translate('even'), 'EVEN'],
-                        [translate('odd'), 'ODD'],
-                        [translate('prime'), 'PRIME'],
-                        [translate('whole'), 'WHOLE'],
-                        [translate('positive'), 'POSITIVE'],
-                        [translate('negative'), 'NEGATIVE'],
-                        [translate('divisible by'), 'DIVISIBLE_BY'],
+                        [localize('even'), 'EVEN'],
+                        [localize('odd'), 'ODD'],
+                        [localize('prime'), 'PRIME'],
+                        [localize('whole'), 'WHOLE'],
+                        [localize('positive'), 'POSITIVE'],
+                        [localize('negative'), 'NEGATIVE'],
+                        [localize('divisible by'), 'DIVISIBLE_BY'],
                     ],
                 },
             ],
@@ -38,14 +38,14 @@ Blockly.Blocks.math_number_property = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            toolip         : translate('Math Number Tooltip'),
+            toolip         : localize('Math Number Tooltip'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Test a number'),
-            'description' : translate('Tests whether a given number is any of the following: Even, Odd, Prime, Whole, Positive, Negative, Divisible according to selection. Returns a boolean value (true or false).'),
+            'display_name': localize('Test a number'),
+            'description' : localize('Tests whether a given number is any of the following: Even, Odd, Prime, Whole, Positive, Negative, Divisible according to selection. Returns a boolean value (true or false).'),
         };
     },
     domToMutation(xmlElement) {

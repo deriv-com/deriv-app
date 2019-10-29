@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.math_number = {
     init() {
@@ -22,14 +22,14 @@ Blockly.Blocks.math_number = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Please use `.` as a decimal separator for fractional numbers.'),
+            tooltip        : localize('Please use `.` as a decimal separator for fractional numbers.'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Number block'),
-            'description' : translate('Enter integer or fractional number into this block. Please use `.` as a decimal separator for fractional numbers.'),
+            'display_name': localize('Number block'),
+            'description' : localize('Enter integer or fractional number into this block. Please use `.` as a decimal separator for fractional numbers.'),
         };
     },
     numberValidator(input) {

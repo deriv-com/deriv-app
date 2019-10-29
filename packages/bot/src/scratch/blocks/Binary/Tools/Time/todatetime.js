@@ -1,4 +1,4 @@
-import { translate } from '../../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.todatetime = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.todatetime = {
     },
     definition() {
         return {
-            message0: `${translate('To date/time %1')}%2`,
+            message0: `${localize('To date/time %1')}%2`,
             args0   : [
                 {
                     type : 'input_value',
@@ -23,7 +23,7 @@ Blockly.Blocks.todatetime = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate(
+            tooltip        : localize(
                 'Converts a number of seconds since Epoch into a string representing date and time. Example: 1546347825 will be converted to 2019-01-01 21:03:45.'
             ),
             category: Blockly.Categories.Time,
@@ -31,15 +31,15 @@ Blockly.Blocks.todatetime = {
     },
     meta() {
         return {
-            'display_name': translate('Convert to date/time'),
-            'description' : translate('Converts a number of seconds since Epoch into a string representing date and time. Example: 1546347825 will be converted to 2019-01-01 21:03:45.'),
+            'display_name': localize('Convert to date/time'),
+            'description' : localize('Converts a number of seconds since Epoch into a string representing date and time. Example: 1546347825 will be converted to 2019-01-01 21:03:45.'),
         };
     },
 };
 
 Blockly.JavaScript.todatetime = block => {
     const timestamp = Blockly.JavaScript.valueToCode(block, 'TIMESTAMP', Blockly.JavaScript.ORDER_ATOMIC);
-    const invalid_timestamp = `${translate('Invalid timestamp')}:`;
+    const invalid_timestamp = `${localize('Invalid timestamp')}:`;
 
     // eslint-disable-next-line no-underscore-dangle
     const function_name = Blockly.JavaScript.provideFunction_('timestampToDateString', [

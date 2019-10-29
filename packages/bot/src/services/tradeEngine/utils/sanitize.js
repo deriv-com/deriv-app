@@ -1,5 +1,5 @@
 import createError   from '../../../utils/error';
-import { translate } from '../../../utils/lang/i18n';
+import { localize }  from 'deriv-translations/src/i18next/i18n';
 
 const isPositiveNumber = num => Number.isFinite(num) && num > 0;
 
@@ -23,11 +23,11 @@ const expectOptions = options => {
     const { symbol, contractTypes } = options;
 
     if (!symbol) {
-        throw createError('OptionError', translate('Underlying market is not selected'));
+        throw createError('OptionError', localize('Underlying market is not selected'));
     }
 
     if (!contractTypes[0]) {
-        throw createError('OptionError', translate('Contract type is not selected'));
+        throw createError('OptionError', localize('Contract type is not selected'));
     }
 };
 
@@ -35,7 +35,7 @@ export const expectInitArg = args => {
     const [token, options] = args;
 
     if (!token) {
-        throw createError('LoginError', translate('Please login'));
+        throw createError('LoginError', localize('Please login'));
     }
 
     expectOptions(options);
@@ -46,9 +46,9 @@ export const expectInitArg = args => {
 export const expectTradeOptions = tradeOptions => {
     const { amount, duration } = tradeOptions;
 
-    expectPositiveInteger(duration, translate('Duration must be a positive integer'));
+    expectPositiveInteger(duration, localize('Duration must be a positive integer'));
 
-    expectPositiveNumber(amount, translate('Amount must be a positive number'));
+    expectPositiveNumber(amount, localize('Amount must be a positive number'));
 
     return tradeOptions;
 };
@@ -60,14 +60,14 @@ const isCandle = candle =>
 
 export const expectCandle = candle => {
     if (!isCandle(candle)) {
-        throw createError('CandleExpected', translate('Given candle is not valid'));
+        throw createError('CandleExpected', localize('Given candle is not valid'));
     }
     return candle;
 };
 
 export const expectCandles = candles => {
     if (!(candles instanceof Array) || !candles.every(c => isCandle(c))) {
-        throw createError('CandleListExpected', translate('Given candle list is not valid'));
+        throw createError('CandleListExpected', localize('Given candle list is not valid'));
     }
     return candles;
 };

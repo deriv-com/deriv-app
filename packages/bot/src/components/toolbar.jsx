@@ -11,6 +11,7 @@ import {
 }                           from 'formik';
 import PropTypes            from 'prop-types';
 import React                from 'react';
+import { localize }         from 'deriv-translations/src/i18next/i18n';
 import Dialog               from './dialog.jsx';
 import {
     ToolbarCloseIcon,
@@ -31,7 +32,6 @@ import {
 import SaveLoadModal        from './saveload-modal.jsx';
 import TradeAnimation       from './trade-animation.jsx';
 import { connect }          from '../stores/connect';
-import { translate }        from '../utils/tools';
 import                           '../assets/sass/scratch/toolbar.scss';
 
 const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
@@ -50,7 +50,7 @@ const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
                                     className='toolbar__form-field'
                                     type='text'
                                     name='search'
-                                    placeholder={translate('Search block...')}
+                                    placeholder={localize('Search block...')}
                                     onKeyUp={submitForm}
                                     onFocus={submitForm}
                                     onBlur={onSearchBlur}
@@ -93,8 +93,8 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
                                             setFieldValue('botname', value, false);
                                             submitForm();
                                         }}
-                                        label={translate('Bot name')}
-                                        placeholder={translate('Untitled Bot')}
+                                        label={localize('Bot name')}
+                                        placeholder={localize('Untitled Bot')}
                                         trailing_icon={
                                             <ToolbarRenameIcon />
                                         }
@@ -124,19 +124,19 @@ const ButtonGroup = ({
     <div className='toolbar__group toolbar__group-btn'>
         <Popover
             alignment='bottom'
-            message={translate('Import')}
+            message={localize('Import')}
         >
             <ToolbarOpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
         </Popover>
         <Popover
             alignment='bottom'
-            message={translate('Reset')}
+            message={localize('Reset')}
         >
             <ToolbarNewFileIcon className='toolbar__icon' onClick={onResetClick} />
         </Popover>
         <Popover
             alignment='bottom'
-            message={translate('Save')}
+            message={localize('Save')}
         >
             <ToolbarSaveIcon
                 className='toolbar__icon'
@@ -146,13 +146,13 @@ const ButtonGroup = ({
         <div className='vertical-divider' />
         <Popover
             alignment='bottom'
-            message={translate('Undo')}
+            message={localize('Undo')}
         >
             <ToolbarUndoIcon className='toolbar__icon' onClick={onUndoClick} />️
         </Popover>
         <Popover
             alignment='bottom'
-            message={translate('Redo')}
+            message={localize('Redo')}
         >
             <ToolbarRedoIcon className='toolbar__icon' onClick={onRedoClick} />
         </Popover>
@@ -160,7 +160,7 @@ const ButtonGroup = ({
         {is_run_button_clicked || is_running ?
             <Popover
                 alignment='bottom'
-                message={translate('Stop')}
+                message={localize('Stop')}
             >
                 <ToolbarStopIcon
                     className={classNames(
@@ -173,26 +173,26 @@ const ButtonGroup = ({
             :
             <Popover
                 alignment='bottom'
-                message={translate('Run')}
+                message={localize('Run')}
             >
                 <ToolbarRunIcon className='toolbar__icon' onClick={onRunClick} />
             </Popover>
         }
         <Popover
             alignment='bottom'
-            message={translate('Sort')}
+            message={localize('Sort')}
         >
             <ToolbarReaarangeIcon className='toolbar__icon' onClick={onSortClick} />
         </Popover>
         <Popover
             alignment='bottom'
-            message={translate('Zoom in')}
+            message={localize('Zoom in')}
         >
             <ToolbarZoomInIcon className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
         </Popover>
         <Popover
             alignment='bottom'
-            message={translate('Zoom out')}
+            message={localize('Zoom out')}
         >
             <ToolbarZoomOutIcon className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
         </Popover>
@@ -226,7 +226,7 @@ const Toolbar = ({
             <Popover
                 alignment='bottom'
                 classNameBubble='toolbar__bubble'
-                message={translate('Click here to start building your DBot.')}
+                message={localize('Click here to start building your DBot.')}
             >
                 <Button
                     id='start'
@@ -239,7 +239,7 @@ const Toolbar = ({
                     <ToolbarStartIcon />
                     <span
                         className='toolbar__btn--icon-text'
-                    >{translate('Get started')}
+                    >{localize('Get started')}
                     </span>
                 </Button>
             </Popover>
@@ -278,12 +278,12 @@ const Toolbar = ({
         <SaveLoadModal />
         {is_dialog_open &&
         <Dialog
-            title={translate('Are you sure?')}
+            title={localize('Are you sure?')}
             is_open={is_dialog_open}
             onOkButtonClick={onOkButtonClick}
             onCancelButtonClick={onCancelButtonClick}
         >
-            {translate('Any unsaved changes will be lost.')}
+            {localize('Any unsaved changes will be lost.')}
         </Dialog>
         }
     </div>

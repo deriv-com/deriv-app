@@ -1,6 +1,6 @@
+import { localize }                                    from 'deriv-translations/src/i18next/i18n';
 import { proposalsReady, clearProposals }              from './state/actions';
 import { tradeOptionToProposal, doUntilDone, getUUID } from '../utils/helpers';
-import { translate }                                   from '../../../utils/lang/i18n';
 
 export default Engine =>
     class Proposal extends Engine {
@@ -17,7 +17,7 @@ export default Engine =>
             let toBuy;
 
             if (!this.data.has('proposals')) {
-                throw Error(translate('Proposals are not ready'));
+                throw Error(localize('Proposals are not ready'));
             }
 
             this.data.get('proposals').forEach(proposal => {
@@ -31,7 +31,7 @@ export default Engine =>
             });
 
             if (!toBuy) {
-                throw Error(translate('Selected proposal does not exist'));
+                throw Error(localize('Selected proposal does not exist'));
             }
 
             return {

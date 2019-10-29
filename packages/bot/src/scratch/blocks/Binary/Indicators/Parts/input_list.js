@@ -1,11 +1,11 @@
-import { translate } from '../../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.input_list = {
     init() {
         this.requiredParentId = '';
 
         this.jsonInit({
-            message0: translate('Input List %1'),
+            message0: localize('Input List %1'),
             args0   : [
                 {
                     type : 'input_value',

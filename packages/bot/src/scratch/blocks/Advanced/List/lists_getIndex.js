@@ -1,18 +1,18 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.lists_getIndex = {
     init() {
         this.MODE_OPTIONS = [
-            [translate('get'), 'GET'],
-            [translate('get and remove'), 'GET_REMOVE'],
-            [translate('remove'), 'REMOVE'],
+            [localize('get'), 'GET'],
+            [localize('get and remove'), 'GET_REMOVE'],
+            [localize('remove'), 'REMOVE'],
         ];
         this.WHERE_OPTIONS = [
             ['#', 'FROM_START'],
-            [translate('# from end'), 'FROM_END'],
-            [translate('first'), 'FIRST'],
-            [translate('last'), 'LAST'],
-            [translate('random'), 'RANDOM'],
+            [localize('# from end'), 'FROM_END'],
+            [localize('first'), 'FIRST'],
+            [localize('last'), 'LAST'],
+            [localize('random'), 'RANDOM'],
         ];
         const modeMenu = new Blockly.FieldDropdown(this.MODE_OPTIONS, value => {
             const isStatement = value === 'REMOVE';
@@ -21,7 +21,7 @@ Blockly.Blocks.lists_getIndex = {
 
         this.appendValueInput('VALUE')
             .setCheck('Array')
-            .appendField(translate('in list'));
+            .appendField(localize('in list'));
         this.appendDummyInput().appendField(modeMenu, 'MODE');
         this.appendDummyInput('AT');
         // eslint-disable-next-line no-underscore-dangle
@@ -36,8 +36,8 @@ Blockly.Blocks.lists_getIndex = {
     },
     meta(){
         return {
-            'display_name': translate('Get list item'),
-            'description' : translate('This block extracts an item at given position from the list. It also can optionaly remove extracted item.'),
+            'display_name': localize('Get list item'),
+            'description' : localize('This block extracts an item at given position from the list. It also can optionaly remove extracted item.'),
             'category'    : Blockly.Categories.List,
         };
     },

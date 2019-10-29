@@ -1,4 +1,4 @@
-import { translate } from '../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 /* eslint-disable func-names, no-underscore-dangle */
 
@@ -71,14 +71,14 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
     if (this.workspace.options.collapse) {
         if (this.collapsed_) {
             const expandOption = { enabled: true };
-            expandOption.text = translate('Expand Block');
+            expandOption.text = localize('Expand Block');
             expandOption.callback = function() {
                 block.setCollapsed(false);
             };
             menuOptions.push(expandOption);
         } else {
             const collapseOption = { enabled: true };
-            collapseOption.text = translate('Collapse Block');
+            collapseOption.text = localize('Collapse Block');
             collapseOption.callback = function() {
                 block.setCollapsed(true);
             };
@@ -89,7 +89,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
     // Option to disable/enable block.
     if (this.workspace.options.disable) {
         const disableOption = {
-            text   : this.disabled ? translate('Enable Block') : translate('Disable Block'),
+            text   : this.disabled ? localize('Enable Block') : localize('Disable Block'),
             enabled: !this.getInheritedDisabled(),
             callback() {
                 const group = Blockly.Events.getGroup();

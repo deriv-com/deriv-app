@@ -1,4 +1,4 @@
-import { translate }         from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.procedures_callnoreturn = {
     init() {
@@ -33,7 +33,7 @@ Blockly.Blocks.procedures_callnoreturn = {
             colourTertiary   : Blockly.Colours.Special2.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Custom function'),
+            tooltip          : localize('Custom function'),
             category         : Blockly.Categories.Functions,
         };
     },
@@ -44,7 +44,7 @@ Blockly.Blocks.procedures_callnoreturn = {
      */
     meta() {
         return {
-            'display_name': translate('Custom function'),
+            'display_name': localize('Custom function'),
             'description' : '',
         };
     },
@@ -258,7 +258,7 @@ Blockly.Blocks.procedures_callnoreturn = {
         if (topRow) {
             if (this.arguments.length) {
                 if (!this.getField('WITH')) {
-                    topRow.appendField(translate('with:'), 'WITH');
+                    topRow.appendField(localize('with:'), 'WITH');
                     topRow.init();
                 }
             } else if (this.getField('WITH')) {
@@ -328,7 +328,7 @@ Blockly.Blocks.procedures_callnoreturn = {
         const { workspace } = this;
 
         const option = { enabled: true };
-        option.text = translate('Highlight function definition');
+        option.text = localize('Highlight function definition');
         option.callback = () => {
             const def = this.getProcedureDefinition(name);
             if (def) {

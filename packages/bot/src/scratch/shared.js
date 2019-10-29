@@ -1,9 +1,9 @@
 import filesaver                         from 'file-saver';
+import { localize }                      from 'deriv-translations/src/i18next/i18n';
 import { oppositesToDropdownOptions }    from './utils';
 import config                            from '../constants';
-import { translate }                     from '../utils/lang/i18n';
 
-let purchase_choices = [[translate('Click to select'), '']];
+let purchase_choices = [[localize('Click to select'), '']];
 
 export const saveAs = ({ data, filename, type }) => {
     const blob = new Blob([data], { type });
@@ -51,7 +51,7 @@ export const updatePurchaseChoices = (contract_type, event_group, opposite_name)
 export const expectValue = (block, field) => {
     const value = Blockly.JavaScript.valueToCode(block, field, Blockly.JavaScript.ORDER_ATOMIC);
     if (!value) {
-        throw Error(translate(`${field} cannot be empty`));
+        throw Error(localize(`${field} cannot be empty`));
     }
     return value;
 };

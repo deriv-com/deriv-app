@@ -1,7 +1,7 @@
 import React                from 'react';
 import { PropTypes }        from 'prop-types';
+import { localize }         from 'deriv-translations/src/i18next/i18n';
 import FlyoutBlock          from './flyout-block.jsx';
-import { translate }        from '../utils/tools';
 
 const FlyoutBlockGroup = (props) => {
     const {
@@ -21,13 +21,13 @@ const FlyoutBlockGroup = (props) => {
                         <div className='flyout__item-label'>{display_name}</div>
                         <div className='flyout__item-buttons'>
                             <button className='flyout__button flyout__button-add flyout__button-add-hide' onClick={() => Blockly.derivWorkspace.addBlockNode(block_nodes[key])}>
-                                {translate('Add')}
+                                {localize('Add')}
                             </button>
                         </div>
                     </div>
                     <div className='flyout__item-description'>
                         {description}
-                        {onInfoClick && <a className='flyout__item-info' onClick={onInfoClick}>{translate('Learn more')}</a>}
+                        {onInfoClick && <a className='flyout__item-info' onClick={onInfoClick}>{localize('Learn more')}</a>}
                     </div>
                     <FlyoutBlock
                         should_center_block={true}

@@ -10,7 +10,8 @@
     "url": "git+https://github.com/binary-com/deriv-app.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "build": "echo \"Build translations\""
   },
   "bugs": {
     "url": "https://github.com/binary-com/deriv-app/issues"

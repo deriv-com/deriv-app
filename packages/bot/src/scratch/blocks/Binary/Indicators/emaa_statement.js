@@ -1,5 +1,5 @@
+import { localize }    from 'deriv-translations/src/i18next/i18n';
 import { expectValue } from '../../../shared';
-import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.emaa_statement = {
     init() {
@@ -7,7 +7,7 @@ Blockly.Blocks.emaa_statement = {
     },
     definition(){
         return {
-            message0: translate('set %1 to Exponentional Moving Average Array %2'),
+            message0: localize('set %1 to Exponentional Moving Average Array %2'),
             message1: '%1',
             args0   : [
                 {
@@ -29,15 +29,15 @@ Blockly.Blocks.emaa_statement = {
             colour           : Blockly.Colours.Base.colour,
             colourSecondary  : Blockly.Colours.Base.colourSecondary,
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
-            tooltip          : translate('Calculates Exponential Moving Average (EMA) list from a list of values with a period'),
+            tooltip          : localize('Calculates Exponential Moving Average (EMA) list from a list of values with a period'),
             previousStatement: null,
             nextStatement    : null,
             category         : Blockly.Categories.Indicators,
         };
     }, meta(){
         return {
-            'display_name': translate('Exponential Moving Average Array (EMAA)'),
-            'description' : translate('Similar to EMA. This block gives you the entire EMA line based on the input list and the given period.'),
+            'display_name': localize('Exponential Moving Average Array (EMAA)'),
+            'description' : localize('Similar to EMA. This block gives you the entire EMA line based on the input list and the given period.'),
         };
     },
     onchange           : Blockly.Blocks.bb_statement.onchange,

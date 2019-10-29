@@ -1,4 +1,4 @@
-import { translate } from '../../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.notify_telegram = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.notify_telegram = {
     },
     definition() {
         return {
-            message0: translate('Notify Telegram %1 Access Token: %2 Chat ID: %3 Message: %4'),
+            message0: localize('Notify Telegram %1 Access Token: %2 Chat ID: %3 Message: %4'),
             args0   : [
                 {
                     type: 'input_dummy',
@@ -29,14 +29,14 @@ Blockly.Blocks.notify_telegram = {
             colourTertiary   : Blockly.Colours.Special3.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Sends a message to Telegram'),
+            tooltip          : localize('Sends a message to Telegram'),
             category         : Blockly.Categories.Miscellaneous,
         };
     },
     meta() {
         return {
-            'display_name': translate('Notify Telegram'),
-            'description' : translate('This block sends a message to a Telegram channel.'),
+            'display_name': localize('Notify Telegram'),
+            'description' : localize('This block sends a message to a Telegram channel.'),
         };
     },
 };

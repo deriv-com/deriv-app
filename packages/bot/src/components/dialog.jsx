@@ -3,7 +3,7 @@ import classNames         from 'classnames';
 import { Button, Modal }  from 'deriv-components';
 import PropTypes          from 'prop-types';
 import React              from 'react';
-import { translate }      from '../utils/tools';
+import { localize }       from 'deriv-translations/src/i18next/i18n';
 import '../assets/sass/dialog.scss';
 
 const Dialog = ({
@@ -34,7 +34,7 @@ const Dialog = ({
                                 'btn--secondary--default',
                                 'bot-dialog__cancel'
                             )}
-                            text={translate('Cancel')}
+                            text={localize('Cancel')}
                             onClick={onCancelButtonClick}
                             has_effect
                         />}
@@ -44,7 +44,7 @@ const Dialog = ({
                                 'btn--primary--default',
                                 'bot-dialog__ok'
                             )}
-                            text={translate('Ok')}
+                            text={localize('Ok')}
                             onClick={onOkButtonClick}
                             has_effect
                         />}

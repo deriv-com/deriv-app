@@ -1,6 +1,6 @@
+import { localize }          from 'deriv-translations/src/i18next/i18n';
 import { purchase }          from '../../images';
 import { setBlockTextColor } from '../../../utils';
-import { translate }         from '../../../../utils/lang/i18n';
 // import ScratchStore          from '../../../../stores/scratch-store';
 
 Blockly.Blocks.before_purchase = {
@@ -9,7 +9,7 @@ Blockly.Blocks.before_purchase = {
     },
     definition() {
         return {
-            message0: translate('%1 2. Purchase conditions %2'),
+            message0: localize('%1 2. Purchase conditions %2'),
             message1: '%1',
             args0   : [
                 {
@@ -33,14 +33,14 @@ Blockly.Blocks.before_purchase = {
             colour         : Blockly.Colours.RootBlock.colour,
             colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
             colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
-            tooltip        : translate('Specify contract type and purchase conditions.'),
+            tooltip        : localize('Specify contract type and purchase conditions.'),
             category       : Blockly.Categories.Before_Purchase,
         };
     },
     meta(){
         return {
-            'display_name': translate('Purchase conditions'),
-            'description' : translate('This block is mandatory. Only one copy of this block is allowed. You can place the Purchase block (see below) here as well as conditional blocks to define your purchase conditions.'),
+            'display_name': localize('Purchase conditions'),
+            'description' : localize('This block is mandatory. Only one copy of this block is allowed. You can place the Purchase block (see below) here as well as conditional blocks to define your purchase conditions.'),
         };
     },
     onchange(event) {

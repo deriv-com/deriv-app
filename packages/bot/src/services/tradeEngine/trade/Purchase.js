@@ -1,8 +1,8 @@
+import { localize }                      from 'deriv-translations/src/i18next/i18n';
 import { purchaseSuccessful }            from './state/actions';
 import { BEFORE_PURCHASE }               from './state/constants';
 import { contractStatus, info, notify }  from '../utils/broadcast';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
-import { translate }                     from '../../../utils/lang/i18n';
 
 let delayIndex = 0;
 
@@ -28,7 +28,7 @@ export default Engine =>
                 this.store.dispatch(purchaseSuccessful());
                 this.renewProposalsOnPurchase();
                 delayIndex = 0;
-                notify('info', `${translate('Bought')}: ${buy.longcode} (${translate('ID')}: ${buy.transaction_id})`);
+                notify('info', `${localize('Bought')}: ${buy.longcode} (${localize('ID')}: ${buy.transaction_id})`);
                 info({
                     accountID      : this.accountInfo.loginid,
                     totalRuns      : this.updateAndReturnTotalRuns(),

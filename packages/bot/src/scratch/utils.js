@@ -5,7 +5,7 @@ export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >
 
 export const oppositesToDropdownOptions = opposite_name => {
     return opposite_name.map(contract_type => {
-        // i.e. [['CALL', translate('Rise')]] becomes [[translate('Rise'), 'CALL']];
+        // i.e. [['CALL', localize('Rise')]] becomes [[localize('Rise'), 'CALL']];
         return Object.entries(contract_type)[0].reverse();
     });
 };

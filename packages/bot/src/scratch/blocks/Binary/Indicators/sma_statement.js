@@ -1,5 +1,5 @@
+import { localize }    from 'deriv-translations/src/i18next/i18n';
 import { expectValue } from '../../../shared';
-import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.sma_statement = {
     init() {
@@ -7,7 +7,7 @@ Blockly.Blocks.sma_statement = {
     },
     definition(){
         return {
-            message0: translate('set %1 to Simple Moving Average %2'),
+            message0: localize('set %1 to Simple Moving Average %2'),
             message1: '%1',
             args0   : [
                 {
@@ -29,7 +29,7 @@ Blockly.Blocks.sma_statement = {
             colour           : Blockly.Colours.Base.colour,
             colourSecondary  : Blockly.Colours.Base.colourSecondary,
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
-            tooltip          : translate('Calculates Simple Moving Average (SMA) from a list with a period'),
+            tooltip          : localize('Calculates Simple Moving Average (SMA) from a list with a period'),
             previousStatement: null,
             nextStatement    : null,
             category         : Blockly.Categories.Indicators,
@@ -37,8 +37,8 @@ Blockly.Blocks.sma_statement = {
     },
     meta(){
         return {
-            'display_name': translate('Simple Moving Average (SMA)'),
-            'description' : translate('SMA is a frequently used indicator in technical analysis. It calculates the average market price over a specified period, and is usually used to identify market trend direction: up or down. For example, if the SMA is moving upwards, it means the market trend is up. '),
+            'display_name': localize('Simple Moving Average (SMA)'),
+            'description' : localize('SMA is a frequently used indicator in technical analysis. It calculates the average market price over a specified period, and is usually used to identify market trend direction: up or down. For example, if the SMA is moving upwards, it means the market trend is up. '),
         };
     },
     onchange           : Blockly.Blocks.bb_statement.onchange,

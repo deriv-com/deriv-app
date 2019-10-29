@@ -1,8 +1,8 @@
 import {
     observable,
     action,
-} from 'mobx';
-import { translate } from '../utils/lang/i18n';
+}                   from 'mobx';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 export default class ToolbarStore {
     constructor(root_store) {
@@ -11,7 +11,7 @@ export default class ToolbarStore {
 
     @observable is_dialog_open = false;
     @observable is_toolbox_open = false;
-    @observable file_name = translate('Untitled Bot');
+    @observable file_name = localize('Untitled Bot');
 
     @action.bound
     onRunClick() {
@@ -76,7 +76,7 @@ export default class ToolbarStore {
         workspace.clear();
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.blocksXmlStr), workspace);
         Blockly.Events.setGroup(false);
-        this.file_name = translate('Untitled Bot');
+        this.file_name = localize('Untitled Bot');
         this.is_dialog_open = false;
     }
 

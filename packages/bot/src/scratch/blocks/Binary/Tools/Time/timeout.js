@@ -1,4 +1,4 @@
-import { translate } from '../../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.timeout = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.timeout = {
     },
     definition(){
         return {
-            message0: translate('%1 %2 Run after %3 second(s)'),
+            message0: localize('%1 %2 Run after %3 second(s)'),
             args0   : [
                 {
                     type: 'input_dummy',
@@ -25,14 +25,14 @@ Blockly.Blocks.timeout = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Run the blocks inside every n seconds'),
+            tooltip          : localize('Run the blocks inside every n seconds'),
             category         : Blockly.Categories.Time,
         };
     },
     meta(){
         return {
-            'display_name': translate('Run after a timeout'),
-            'description' : translate('This block runs postpones execution of embedded instructions for X number of seconds. Actually, bot pauses execution of any other instructions until this block’s instructions are done.'),
+            'display_name': localize('Run after a timeout'),
+            'description' : localize('This block runs postpones execution of embedded instructions for X number of seconds. Actually, bot pauses execution of any other instructions until this block’s instructions are done.'),
         };
     },
     onchange(event) {

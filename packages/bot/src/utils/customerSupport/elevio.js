@@ -1,4 +1,4 @@
-import { translate }               from '../lang/i18n';
+import { localize }                from 'deriv-translations/src/i18next/i18n';
 import { getLanguage }             from '../lang/lang';
 import { getTokenList }            from '../tokenHelper';
 import { generateLiveApiInstance } from '../../services/api/appId';
@@ -66,7 +66,7 @@ const Elevio = (() => {
         elev.setTranslations({
             modules: {
                 support: {
-                    thankyou: translate('Thank you, we\'ll get back to you within 24 hours'),
+                    thankyou: localize('Thank you, we\'ll get back to you within 24 hours'),
                 },
             },
         });

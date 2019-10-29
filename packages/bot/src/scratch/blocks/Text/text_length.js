@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.text_length = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.text_length = {
     },
     definition(){
         return {
-            message0: translate('length of %1'),
+            message0: localize('length of %1'),
             args0   : [
                 {
                     type: 'input_value',
@@ -18,14 +18,14 @@ Blockly.Blocks.text_length = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Text String Length'),
+            tooltip        : localize('Text String Length'),
             category       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Text String Length'),
-            'description' : translate('Returns the number of characters of a given string of text, including numbers, spaces, punctuation marks, and symbols.'),
+            'display_name': localize('Text String Length'),
+            'description' : localize('Returns the number of characters of a given string of text, including numbers, spaces, punctuation marks, and symbols.'),
         };
     },
 };

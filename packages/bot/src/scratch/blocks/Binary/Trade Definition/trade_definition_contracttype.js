@@ -1,5 +1,5 @@
+import { localize }            from 'deriv-translations/src/i18next/i18n';
 import config                  from '../../../../constants';
-import { translate }           from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.trade_definition_contracttype = {
     init() {
@@ -48,7 +48,7 @@ Blockly.Blocks.trade_definition_contracttype = {
         if (trade_type && trade_type !== 'na') {
             const { opposites } = config;
             contract_types      = [
-                [translate('Both'), 'both'],
+                [localize('Both'), 'both'],
                 ...opposites[trade_type.toUpperCase()].map(type => Object.entries(type)[0].reverse()),
             ];
         } else {

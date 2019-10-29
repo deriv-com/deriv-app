@@ -2,9 +2,9 @@ import classNames    from 'classnames';
 import { Money }     from 'deriv-components';
 import PropTypes     from 'prop-types';
 import React         from 'react';
+import { localize }  from 'deriv-translations/src/i18next/i18n';
 import ContractCard  from './contract-card.jsx';
 import { connect }   from '../stores/connect';
-import { translate } from '../utils/lang/i18n';
 import                    '../assets/sass/summary.scss';
 
 const SummaryTile = (props) => (
@@ -36,27 +36,27 @@ class Summary extends React.PureComponent {
                 <ContractCard />
                 <div className='summary__tiles'>
                     <SummaryTile
-                        title={translate('Total stake')}
+                        title={localize('Total stake')}
                         content={ Money({ amount: total_stake, currency }) }
                     />
                     <SummaryTile
-                        title={translate('Total payout')}
+                        title={localize('Total payout')}
                         content={ Money({ amount: total_payout, currency }) }
                     />
                     <SummaryTile
-                        title={translate('No. of runs')}
+                        title={localize('No. of runs')}
                         content={number_of_runs}
                     />
                     <SummaryTile
-                        title={translate('Loss contracts')}
+                        title={localize('Loss contracts')}
                         content={lost_contracts}
                     />
                     <SummaryTile
-                        title={translate('Win contracts')}
+                        title={localize('Win contracts')}
                         content={won_contracts}
                     />
                     <SummaryTile
-                        title={translate('Profit/Loss')}
+                        title={localize('Profit/Loss')}
                         content={Money({ amount: total_profit, currency, has_sign: true })}
                         contentClassName={classNames(
                             'summary__tile-content',

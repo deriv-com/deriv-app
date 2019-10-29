@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.controls_for = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.controls_for = {
     },
     definition(){
         return {
-            message0: translate('count with %1 from %2 to %3 by %4'),
+            message0: localize('count with %1 from %2 to %3 by %4'),
             args0   : [
                 {
                     type    : 'field_variable',
@@ -29,7 +29,7 @@ Blockly.Blocks.controls_for = {
                     check: 'Number',
                 },
             ],
-            message1: translate('do %1'),
+            message1: localize('do %1'),
             args1   : [
                 {
                     type: 'input_statement',
@@ -41,14 +41,14 @@ Blockly.Blocks.controls_for = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Repeats inside blocks until counter reaches target value.'),
+            tooltip          : localize('Repeats inside blocks until counter reaches target value.'),
             category         : Blockly.Categories.Loop,
         };
     },
     meta(){
         return {
-            'display_name': translate('Iterate (1)'),
-            'description' : translate('This block uses the variable "i" to control the number of iterations. “From” is the starting value, “to” is the end value, while “by” is the step by which the value of "i" is increased.'),
+            'display_name': localize('Iterate (1)'),
+            'description' : localize('This block uses the variable "i" to control the number of iterations. “From” is the starting value, “to” is the end value, while “by” is the step by which the value of "i" is increased.'),
         };
     },
 };

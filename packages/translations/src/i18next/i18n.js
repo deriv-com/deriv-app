@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { str as crc32 }     from 'crc-32';
 import i18n                 from 'i18next';
 import { initReactI18next } from 'react-i18next';

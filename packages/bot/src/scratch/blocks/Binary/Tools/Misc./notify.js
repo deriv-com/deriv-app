@@ -1,5 +1,5 @@
+import { localize }  from 'deriv-translations/src/i18next/i18n';
 import config        from '../../../../../constants';
-import { translate } from '../../../../../utils/lang/i18n';
 
 Blockly.Blocks.notify = {
     init() {
@@ -7,7 +7,7 @@ Blockly.Blocks.notify = {
     },
     definition() {
         return {
-            message0: translate('Notify %1 with sound: %2 %3'),
+            message0: localize('Notify %1 with sound: %2 %3'),
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -30,14 +30,14 @@ Blockly.Blocks.notify = {
             colourTertiary   : Blockly.Colours.Special3.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Displays a notification and optionally play selected sound'),
+            tooltip          : localize('Displays a notification and optionally play selected sound'),
             category         : Blockly.Categories.Miscellaneous,
         };
     },
     meta() {
         return {
-            'display_name': translate('Notify'),
-            'description' : translate('This block displays a message. You can specify the color of the message and choose from 6 different sound options.'),
+            'display_name': localize('Notify'),
+            'description' : localize('This block displays a message. You can specify the color of the message and choose from 6 different sound options.'),
         };
     },
 };
@@ -45,7 +45,7 @@ Blockly.Blocks.notify = {
 Blockly.JavaScript.notify = block => {
     const notificationType = block.getFieldValue('NOTIFICATION_TYPE');
     const sound = block.getFieldValue('NOTIFICATION_SOUND');
-    const message = Blockly.JavaScript.valueToCode(block, 'MESSAGE') || `"${translate('<empty message>')}"`;
+    const message = Blockly.JavaScript.valueToCode(block, 'MESSAGE') || `"${localize('<empty message>')}"`;
 
     const code = `Bot.notify({ className: '${notificationType}', message: ${message}, sound: '${sound}'});\n`;
     return code;

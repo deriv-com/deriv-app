@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.math_constant = {
     init() {
@@ -26,14 +26,14 @@ Blockly.Blocks.math_constant = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Mathematical Constants'),
+            tooltip        : localize('Mathematical Constants'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Mathematical Constants'),
-            'description' : translate('Returns the constant values according to selection.'),
+            'display_name': localize('Mathematical Constants'),
+            'description' : localize('Returns the constant values according to selection.'),
         };
     },
 };

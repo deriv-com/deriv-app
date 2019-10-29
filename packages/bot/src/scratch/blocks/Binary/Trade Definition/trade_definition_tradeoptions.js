@@ -1,6 +1,6 @@
+import { localize }  from 'deriv-translations/src/i18next/i18n';
 import config        from '../../../../constants';
 import ApiHelpers    from '../../../../services/api/api-helpers';
-import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
     init() {
@@ -13,8 +13,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         const is_stake = this.type === 'trade_definition_tradeoptions';
 
         return {
-            message0: translate('Duration: %1 %2'),
-            message1: `${(is_stake ? translate('Stake') : translate('Payout'))}: %1 %2`,
+            message0: localize('Duration: %1 %2'),
+            message1: `${(is_stake ? localize('Stake') : localize('Payout'))}: %1 %2`,
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -43,14 +43,14 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             colourTertiary   : Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Define your trade options such as duration and stake.'),
+            tooltip          : localize('Define your trade options such as duration and stake.'),
             category         : Blockly.Categories.Trade_Definition,
         };
     },
     meta(){
         return {
-            'display_name': translate('Trade options'),
-            'description' : translate('Define your trade options such as duration and stake. Some options are only applicable for certain trade types.'),
+            'display_name': localize('Trade options'),
+            'description' : localize('Define your trade options such as duration and stake. Some options are only applicable for certain trade types.'),
         };
     },
     onchange(event) {
@@ -112,7 +112,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             this.removeInput('PREDICTION', true);
         } else if (!this.getInput('PREDICTION')) {
             this.appendDummyInput('PREDICTION_LABEL')
-                .appendField(translate('Prediction:'));
+                .appendField(localize('Prediction:'));
 
             const prediction_input = this.appendValueInput('PREDICTION');
             const shadow_block = this.workspace.newBlock('math_number');
@@ -132,7 +132,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         const input_names  = ['BARRIER', 'SECONDBARRIER'];
 
         for (let i = 0; i < barriers.values.length; i++) {
-            const label = (barriers.values.length === 1 ? translate('Barrier') : config.BARRIER_LABELS[i]);
+            const label = (barriers.values.length === 1 ? localize('Barrier') : config.BARRIER_LABELS[i]);
             let input   = this.getInput(input_names[i]);
 
             if (input) {

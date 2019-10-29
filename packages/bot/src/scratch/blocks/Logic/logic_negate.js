@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.logic_negate = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.logic_negate = {
     },
     definition(){
         return {
-            message0: translate('not %1'),
+            message0: localize('not %1'),
             args0   : [
                 {
                     type: 'input_value',
@@ -18,14 +18,14 @@ Blockly.Blocks.logic_negate = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Converts a given True of False to the oposite value'),
+            tooltip        : localize('Converts a given True of False to the oposite value'),
             category       : Blockly.Categories.Logic,
         };
     },
     meta(){
         return {
-            'display_name': translate('Logic negate'),
-            'description' : translate('This block converts the boolean value (true or false) to its opposite.'),
+            'display_name': localize('Logic negate'),
+            'description' : localize('This block converts the boolean value (true or false) to its opposite.'),
         };
     },
 };

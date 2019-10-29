@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.text_append = {
     init() {
@@ -6,12 +6,12 @@ Blockly.Blocks.text_append = {
     },
     definition(){
         return {
-            message0: translate('to %1 append text %2'),
+            message0: localize('to %1 append text %2'),
             args0   : [
                 {
                     type    : 'field_variable',
                     name    : 'VAR',
-                    variable: translate('text'),
+                    variable: localize('text'),
                 },
                 {
                     type: 'input_value',
@@ -23,14 +23,14 @@ Blockly.Blocks.text_append = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Appends a given text to a varialbe'),
+            tooltip          : localize('Appends a given text to a varialbe'),
             category         : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Text Append'),
-            'description' : translate('Appends a given text to a variable.'),
+            'display_name': localize('Text Append'),
+            'description' : localize('Appends a given text to a variable.'),
         };
     },
 };

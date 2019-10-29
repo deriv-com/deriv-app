@@ -1,6 +1,6 @@
+import { localize }    from 'deriv-translations/src/i18next/i18n';
 import { expectValue } from '../../../shared';
 import config          from '../../../../constants';
-import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.macda_statement = {
     init() {
@@ -8,7 +8,7 @@ Blockly.Blocks.macda_statement = {
     },
     definition(){
         return {
-            message0: translate('set %1 to MACD Array %2 %3'),
+            message0: localize('set %1 to MACD Array %2 %3'),
             message1: '%1',
             args0   : [
                 {
@@ -35,7 +35,7 @@ Blockly.Blocks.macda_statement = {
             colour           : Blockly.Colours.Base.colour,
             colourSecondary  : Blockly.Colours.Base.colourSecondary,
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
-            tooltip          : translate('Calculates Moving Average Convergence Divergence (MACD) from a list'),
+            tooltip          : localize('Calculates Moving Average Convergence Divergence (MACD) from a list'),
             previousStatement: null,
             nextStatement    : null,
             category         : Blockly.Categories.Indicators,
@@ -43,8 +43,8 @@ Blockly.Blocks.macda_statement = {
     },
     meta(){
         return {
-            'display_name': translate('Moving Average Convergence Divergence'),
-            'description' : translate('MACD is calculated by subtracting the long-term EMA (26 periods) from the short-term EMA (12 periods). If the short-term EMA is greater or lower than the long-term EMA than there’s a possibility of a trend reversal.'),
+            'display_name': localize('Moving Average Convergence Divergence'),
+            'description' : localize('MACD is calculated by subtracting the long-term EMA (26 periods) from the short-term EMA (12 periods). If the short-term EMA is greater or lower than the long-term EMA than there’s a possibility of a trend reversal.'),
         };
     },
     

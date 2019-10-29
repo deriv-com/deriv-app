@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.math_modulo = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.math_modulo = {
     },
     definition(){
         return {
-            message0: translate('remainder of %1 ÷ %2'),
+            message0: localize('remainder of %1 ÷ %2'),
             args0   : [
                 {
                     type : 'input_value',
@@ -24,14 +24,14 @@ Blockly.Blocks.math_modulo = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Returns the remainder after a division'),
+            tooltip        : localize('Returns the remainder after a division'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Remainder after division'),
-            'description' : translate(' Returns the remainder after the division of the given numbers.'),
+            'display_name': localize('Remainder after division'),
+            'description' : localize(' Returns the remainder after the division of the given numbers.'),
         };
     },
 };

@@ -1,7 +1,7 @@
+import { localize }                      from 'deriv-translations/src/i18next/i18n';
 import { DURING_PURCHASE }               from './state/constants';
 import { contractStatus, notify }        from '../utils/broadcast';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
-import { translate }                     from '../../../utils/lang/i18n';
 
 let delayIndex = 0;
 
@@ -19,7 +19,7 @@ export default Engine =>
 
             if (!this.isSellAtMarketAvailable()) {
                 if (this.hasEntryTick) {
-                    const error = new Error(translate('Resale of this contract is not offered.'));
+                    const error = new Error(localize('Resale of this contract is not offered.'));
                     error.name = 'SellNotAvailable';
                     throw error;
                 } else {
@@ -30,7 +30,7 @@ export default Engine =>
             const onSuccess = ({ sell: { sold_for: soldFor } }) => {
                 delayIndex = 0;
                 contractStatus('purchase.sold');
-                notify('info', `${translate('Sold for')}: ${soldFor}`);
+                notify('info', `${localize('Sold for')}: ${soldFor}`);
                 return this.waitForAfter();
             };
 

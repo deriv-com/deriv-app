@@ -1,5 +1,5 @@
+import { localize }  from 'deriv-translations/src/i18next/i18n';
 import config        from '../../../../constants';
-import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.read_ohlc = {
     init() {
@@ -7,8 +7,8 @@ Blockly.Blocks.read_ohlc = {
     },
     definition(){
         return {
-            message0: translate('In candles list read %1 from end %2'),
-            message1: translate('with interval: %1'),
+            message0: localize('In candles list read %1 from end %2'),
+            message1: localize('with interval: %1'),
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -33,14 +33,14 @@ Blockly.Blocks.read_ohlc = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Read the selected candle value'),
+            tooltip        : localize('Read the selected candle value'),
             category       : Blockly.Categories.Tick_Analysis,
         };
     },
     meta(){
         return {
-            'display_name': translate('Read candle value (1)'),
-            'description' : translate('This block returns specified candle value for the selected time interval.'),
+            'display_name': localize('Read candle value (1)'),
+            'description' : localize('This block returns specified candle value for the selected time interval.'),
         };
     },
 };

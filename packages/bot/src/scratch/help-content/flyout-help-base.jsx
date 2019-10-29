@@ -1,5 +1,6 @@
 import React            from 'react';
 import PropTypes        from 'prop-types';
+import { localize }     from 'deriv-translations/src/i18next/i18n';
 import FlyoutVideo      from './help-components/flyout-video.jsx';
 import FlyoutText       from './help-components/flyout-text.jsx';
 import FlyoutImage      from './help-components/flyout-img.jsx';
@@ -8,7 +9,6 @@ import FlyoutBlock      from '../../components/flyout-block.jsx';
 import constant         from '../../constants';
 import { Arrow2Icon }   from '../../components/Icons.jsx';
 import { connect }      from '../../stores/connect';
-import { translate }    from '../../utils/tools';
 
 class HelpBase extends React.PureComponent {
     constructor(props) {
@@ -71,7 +71,7 @@ class HelpBase extends React.PureComponent {
                     <span className='flyout__help-title'>{title}</span>
                     <div className='flyout__item-buttons'>
                         <button className='flyout__button flyout__button-add' onClick={() => Blockly.derivWorkspace.addBlockNode(block_nodes[0])}>
-                            {translate('Add')}
+                            {localize('Add')}
                         </button>
                     </div>
                 </div>
@@ -118,8 +118,8 @@ class HelpBase extends React.PureComponent {
                     }
                 </div>
                 <div className='flyout__help-footer'>
-                    <button className='flyout__button flyout__button-previous' onClick={() => onSequenceClick(block_type, false)}>{translate('Previous')}</button>
-                    <button className='flyout__button flyout__button-next' onClick={() => onSequenceClick(block_type, true)}>{translate('Next')}</button>
+                    <button className='flyout__button flyout__button-previous' onClick={() => onSequenceClick(block_type, false)}>{localize('Previous')}</button>
+                    <button className='flyout__button flyout__button-next' onClick={() => onSequenceClick(block_type, true)}>{localize('Next')}</button>
                 </div>
             </React.Fragment >
         );

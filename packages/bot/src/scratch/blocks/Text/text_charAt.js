@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.text_charAt = {
     init() {
@@ -19,7 +19,7 @@ Blockly.Blocks.text_charAt = {
     },
     definition(){
         return {
-            message0: translate('in text %1 get %2'),
+            message0: localize('in text %1 get %2'),
             args0   : [
                 {
                     type: 'input_value',
@@ -29,11 +29,11 @@ Blockly.Blocks.text_charAt = {
                     type   : 'field_dropdown',
                     name   : 'WHERE',
                     options: [
-                        [translate('letter #'), 'FROM_START'],
-                        [translate('letter # from end'), 'FROM_END'],
-                        [translate('first letter'), 'FIRST'],
-                        [translate('last letter'), 'LAST'],
-                        [translate('random letter'), 'RANDOM'],
+                        [localize('letter #'), 'FROM_START'],
+                        [localize('letter # from end'), 'FROM_END'],
+                        [localize('first letter'), 'FIRST'],
+                        [localize('last letter'), 'LAST'],
+                        [localize('random letter'), 'RANDOM'],
                     ],
                 },
             ],
@@ -42,14 +42,14 @@ Blockly.Blocks.text_charAt = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Returns a specific character from a given string'),
+            tooltip        : localize('Returns a specific character from a given string'),
             category       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Get character'),
-            'description' : translate('Returns the specific character from a given string of text according to the selected option. '),
+            'display_name': localize('Get character'),
+            'description' : localize('Returns the specific character from a given string of text according to the selected option. '),
         };
     },
     mutationToDom() {

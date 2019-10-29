@@ -1,5 +1,5 @@
+import { localize }           from 'deriv-translations/src/i18next/i18n';
 import { getPurchaseChoices } from '../../../shared';
-import { translate }          from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.ask_price = {
     init() {
@@ -7,7 +7,7 @@ Blockly.Blocks.ask_price = {
     },
     definition(){
         return {
-            message0: translate('Ask Price %1'),
+            message0: localize('Ask Price %1'),
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -20,14 +20,14 @@ Blockly.Blocks.ask_price = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('This block returns purchase price for the selected trade type.'),
+            tooltip        : localize('This block returns purchase price for the selected trade type.'),
             category       : Blockly.Categories.Before_Purchase,
         };
     },
     meta(){
         return {
-            'display_name': translate('Purchase Price'),
-            'description' : translate('This block returns purchase price for the selected trade type. This block can be used only in the "Purchase conditions" root blocks.'),
+            'display_name': localize('Purchase Price'),
+            'description' : localize('This block returns purchase price for the selected trade type. This block can be used only in the "Purchase conditions" root blocks.'),
         };
     },
     onchange(event) {

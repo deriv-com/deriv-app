@@ -2,9 +2,9 @@ import classnames           from 'classnames';
 import proptypes            from 'prop-types';
 import React                from 'react';
 import { ThemedScrollbars } from 'deriv-components';
+import { localize }         from 'deriv-translations/src/i18next/i18n';
 import { message_types }    from '../constants/message-types';
 import { connect }          from '../stores/connect';
-import { translate }        from '../utils/tools';
 import '../assets/sass/journal.scss';
 
 const DateItem = ({
@@ -106,8 +106,8 @@ class Journal extends React.PureComponent {
                 <table className='journal__table'>
                     <thead className='journal__table--header'>
                         <tr>
-                            <th className='journal__table--th'>{translate('Date')}</th>
-                            <th className='journal__table--th'>{translate('Message')}</th>
+                            <th className='journal__table--th'>{localize('Date')}</th>
+                            <th className='journal__table--th'>{localize('Message')}</th>
                         </tr>
                     </thead>
                     <tbody className='journal__table--body'>

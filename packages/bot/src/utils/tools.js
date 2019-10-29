@@ -39,7 +39,7 @@ export const durationToSecond = duration => {
 export const translate = input => {
     if (Array.isArray(input) && input.length > 0) {
         const stringToBeTranslated = input[0].replace(/\[_([0-9])\]/g, '%$1');
-        let translatedString = i18nTranslate(stringToBeTranslated);
+        let translatedString = i18nlocalize(stringToBeTranslated);
 
         input.slice(1).forEach((replacement, index) => {
             const regex = new RegExp(`%${index + 1}`, 'g');
@@ -47,7 +47,7 @@ export const translate = input => {
         });
         return RenderHTML(translatedString);
     }
-    return i18nTranslate(input);
+    return i18nlocalize(input);
 };
 
 export const showSpinnerInButton = $buttonElement => {

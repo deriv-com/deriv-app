@@ -1,5 +1,5 @@
+import { localize }                   from 'deriv-translations/src/i18next/i18n';
 import { loadRemote }                 from '../../../../utils';
-import { translate }                  from '../../../../../utils/lang/i18n';
 import { observer as globalObserver } from '../../../../../utils/observer';
 
 Blockly.Blocks.loader = {
@@ -17,7 +17,7 @@ Blockly.Blocks.loader = {
     },
     definition(){
         return {
-            message0: translate('Load block from URL: %1'),
+            message0: localize('Load block from URL: %1'),
             args0   : [
                 {
                     type: 'field_input',
@@ -28,14 +28,14 @@ Blockly.Blocks.loader = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Loads blocks from URL'),
+            tooltip        : localize('Loads blocks from URL'),
             category       : Blockly.Categories.Miscellaneous,
         };
     },
     meta(){
         return {
-            'display_name': translate('Loads from URL'),
-            'description' : translate('This block allows you to load blocks from a URL. E.g. if you have blocks stored on a remote server and it’s accessible over the internet then you can dynamically load these blocks during bot run time.'),
+            'display_name': localize('Loads from URL'),
+            'description' : localize('This block allows you to load blocks from a URL. E.g. if you have blocks stored on a remote server and it’s accessible over the internet then you can dynamically load these blocks during bot run time.'),
         };
     },
     onFinishEditingUrl(newValue) {
@@ -58,7 +58,7 @@ Blockly.Blocks.loader = {
         loadRemote(this)
             .then(() => {
                 Blockly.Events.recordUndo = recordUndo;
-                globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
+                globalObserver.emit('ui.log.success', localize('Blocks are loaded successfully'));
             })
             .catch(errorMsg => {
                 Blockly.Events.recordUndo = recordUndo;

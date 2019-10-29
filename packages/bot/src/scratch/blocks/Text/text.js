@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/tools';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.text = {
     init() {
@@ -18,14 +18,14 @@ Blockly.Blocks.text = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Enter some text here'),
+            tooltip        : localize('Enter some text here'),
             category       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Text'),
-            'description' : translate('A  block that can contain text.'),
+            'display_name': localize('Text'),
+            'description' : localize('A  block that can contain text.'),
         };
     },
 };

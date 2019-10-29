@@ -1,19 +1,19 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.lists_getSublist = {
     init() {
         this.WHERE_OPTIONS_1 = [
-            [translate('get sub-list from #'), 'FROM_START'],
-            [translate('get sub-list from # from end'), 'FROM_END'],
-            [translate('get sub-list from first'), 'FIRST'],
+            [localize('get sub-list from #'), 'FROM_START'],
+            [localize('get sub-list from # from end'), 'FROM_END'],
+            [localize('get sub-list from first'), 'FIRST'],
         ];
         this.WHERE_OPTIONS_2 = [
-            [translate('#'), 'FROM_START'],
-            [translate('# from end'), 'FROM_END'],
-            [translate('last'), 'LAST'],
+            [localize('#'), 'FROM_START'],
+            [localize('# from end'), 'FROM_END'],
+            [localize('last'), 'LAST'],
         ];
 
-        this.appendValueInput('LIST').appendField(translate('in list'));
+        this.appendValueInput('LIST').appendField(localize('in list'));
         this.appendDummyInput('AT1');
         this.appendDummyInput('AT2');
 
@@ -31,8 +31,8 @@ Blockly.Blocks.lists_getSublist = {
     },
     meta() {
         return {
-            'display_name': translate('Get sub-list'),
-            'description' : translate('This block extracts a sub-list from a given list using specified items positions.'),
+            'display_name': localize('Get sub-list'),
+            'description' : localize('This block extracts a sub-list from a given list using specified items positions.'),
             'category'    : Blockly.Categories.List,
         };
     },

@@ -1,10 +1,10 @@
+import { localize }  from 'deriv-translations/src/i18next/i18n';
 import ApiHelpers    from '../../../../services/api/api-helpers';
-import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.trade_definition_tradetype = {
     init() {
         this.jsonInit({
-            message0: translate('Trade Type: %1 > %2'),
+            message0: localize('Trade Type: %1 > %2'),
             args0   : [
                 {
                     type   : 'field_dropdown',

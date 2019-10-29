@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.last_digit = {
     init() {
@@ -6,20 +6,20 @@ Blockly.Blocks.last_digit = {
     },
     definition(){
         return {
-            message0       : translate('Last Digit'),
+            message0       : localize('Last Digit'),
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Returns the last digit of the latest tick'),
+            tooltip        : localize('Returns the last digit of the latest tick'),
             category       : Blockly.Categories.Tick_Analysis,
         };
     },
     meta(){
         return {
-            'display_name': translate('Last Digit'),
-            'description' : translate('This block gives you the last digit of the latest tick value.'),
+            'display_name': localize('Last Digit'),
+            'description' : localize('This block gives you the last digit of the latest tick value.'),
         };
     },
 };

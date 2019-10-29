@@ -1,4 +1,4 @@
-import { translate } from '../../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/src/i18next/i18n';
 
 Blockly.Blocks.epoch = {
     init() {
@@ -6,20 +6,20 @@ Blockly.Blocks.epoch = {
     },
     definition(){
         return {
-            message0       : translate('Seconds Since Epoch'),
+            message0       : localize('Seconds Since Epoch'),
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Returns the number of seconds since January 1st, 1970'),
+            tooltip        : localize('Returns the number of seconds since January 1st, 1970'),
             category       : Blockly.Categories.Time,
         };
     },
     meta(){
         return {
-            'display_name': translate('Second Since Epoch'),
-            'description' : translate('This block returns the number of seconds since January 1st, 1970.'),
+            'display_name': localize('Second Since Epoch'),
+            'description' : localize('This block returns the number of seconds since January 1st, 1970.'),
         };
     },
 };

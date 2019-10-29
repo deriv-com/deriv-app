@@ -14,5 +14,14 @@
   },
   "bugs": {
     "url": "https://github.com/binary-com/deriv-app/issues"
+  },
+  "dependencies": {
+    "commander": "^3.0.2",
+    "crc-32": "^1.2.0",
+    "glob": "^7.1.5",
+    "i18next": "^18.0.0",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-i18next": "^11.0.0"
   }
 }

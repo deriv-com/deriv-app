@@ -1,0 +1,10 @@
+project_identifier: 'deriv-app'
+api_key_env: DERIV_CROWDIN_API_KEY
+
+files:
+  - source: /crowdin/messages.json
+    translation: /src/translations/%two_letters_code%.json
+    languages_mapping:
+      two_letters_code:
+        zh-CN: zh_cn
+        zh-TW: zh_tw

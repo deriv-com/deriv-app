@@ -64,7 +64,7 @@ export default class CommonStore extends BaseStore {
             trade_store.setTradeStatus(false);
 
         } else {
-            ui_store.addNotification(clientNotifications().you_are_offline);
+            ui_store.removeNotification(clientNotifications().you_are_offline);
             trade_store.setTradeStatus(true);
         }
     }

@@ -457,6 +457,7 @@ export default class ClientStore extends BaseStore {
                 LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
                 this.selectCurrency(currency);
                 this.root_store.ui.removeNotificationMessage({ key: 'currency' });
+                this.root_store.ui.removeNotificationByKey({ key: 'currency' });
                 // Refresh trade-store currency and proposal before requesting new proposal upon login
                 await this.root_store.modules.trade.initAccountCurrency(currency);
                 resolve(response);

@@ -341,6 +341,12 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    removeNofiticationByKey({ key }) {
+        this.notifications = this.notifications
+            .filter(n => n.key !== key);
+    }
+
+    @action.bound
     addNotificationMessage(notification) {
         if (!this.notification_messages.find(item => item.header === notification.header)) {
             this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);

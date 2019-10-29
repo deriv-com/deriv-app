@@ -7,9 +7,8 @@ import {
     PasswordMeter }           from 'deriv-components';
 import { withRouter }         from 'react-router-dom';
 import { connect }            from 'Stores/connect';
-import {
-    WS,
-    requestLogout }           from 'Services';
+import { requestLogout }      from 'Services';
+import { WS }                 from 'Services/ws-methods';
 import { localize }           from 'App/i18n';
 import AppRoutes              from 'Constants/routes';
 import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
@@ -23,16 +22,16 @@ class ChangePasswordForm extends React.Component {
     state = {
         is_loading  : false,
         new_pw_input: '',
-    }
+    };
 
     updateNewPassword = (string) => {
         this.setState({ new_pw_input: string });
-    }
+    };
 
     handlePasswordChange = () => {
         this.props.cleanUp();
         this.props.history.push(AppRoutes.trade);
-    }
+    };
 
     onSubmit = (values, { setSubmitting, setStatus })  => {
         setStatus({ msg: '' });

@@ -4,12 +4,16 @@ const { IS_RELEASE }              = require('./constants');
 const { transformContentUrlBase } = require('./helpers');
 
 const copyConfig = (base) => ([
-    { from: path.resolve(__dirname, '../node_modules/smartcharts-beta/dist/*.smartcharts.*'), to: 'js/smartcharts/', flatten: true },
-    { from: path.resolve(__dirname, '../node_modules/smartcharts-beta/dist/smartcharts.css*'), to: 'css/', flatten: true },
-    { from: path.resolve(__dirname, '../node_modules/deriv-bot/dist/bot.css*'), to: 'css/', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/deriv-bot/dist/bot.main.css*'), to: 'css/', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/deriv-bot/dist/media/**'), to: 'js/bot/media', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/deriv-bot/dist/xml/**'), to: 'js/bot/xml', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/deriv-bot/dist/*.*'), to: 'js/bot/', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/deriv-trader/dist/js/smartcharts/**'), to: 'js/smartcharts/', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/deriv-trader/dist/css/smartcharts.css*'), to: 'css/', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/deriv-trader/dist/public/**'), to: 'public', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/deriv-trader/dist/js/**'), to: 'js', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/deriv-trader/dist/css/**'), to: 'css', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/deriv-trader/dist/*.*'), to: 'js', flatten: true },
     { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file' },
     { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },
     { from: path.resolve(__dirname, '../src/root_files/robots.txt'), to: 'robots.txt', toType: 'file' },
@@ -29,7 +33,7 @@ const copyConfig = (base) => ([
 ]);
 
 const generateSWConfig = () => ({
-    importWorkboxFrom    : 'local',
+    importWorkboxFrom    : IS_RELEASE ? 'local' : 'disabled',
     cleanupOutdatedCaches: true,
     exclude              : [/CNAME$/, /index\.html$/, /404\.html$/],
     skipWaiting          : true,
@@ -50,7 +54,7 @@ const htmlOutputConfig = () => ({
 const htmlInjectConfig = () => ({
     links: [
         'css/smartcharts.css',
-        'css/bot.css',
+        'css/bot.main.css',
         {
             path: 'manifest.json',
             attributes: {
@@ -85,7 +89,7 @@ const htmlInjectConfig = () => ({
     append: false
 });
 
-const cssConfig = () => ({ filename: 'css/app.css', chunkFilename: 'css/[id].css' });
+const cssConfig = () => ({ filename: 'css/core.main.css', chunkFilename: 'css/core.[name].[contenthash].css' });
 
 const stylelintConfig = () => ({
     configFile: path.resolve(__dirname, '../.stylelintrc.js'),

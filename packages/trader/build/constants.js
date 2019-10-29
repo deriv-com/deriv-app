@@ -1,8 +1,8 @@
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const HtmlWebPackPlugin = require('html-webpack-plugin');
-const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
+// const HtmlWebPackPlugin = require('html-webpack-plugin');
+// const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 const IgnorePlugin = require('webpack').IgnorePlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -11,15 +11,15 @@ const StylelintPlugin = require('stylelint-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const AssetsManifestPlugin = require('webpack-manifest-plugin');
-const {GenerateSW} = require('workbox-webpack-plugin');
+// const {GenerateSW} = require('workbox-webpack-plugin');
 
 const {
     copyConfig,
     cssConfig,
-    htmlInjectConfig,
-    htmlOutputConfig,
+    // htmlInjectConfig,
+    // htmlOutputConfig,
     stylelintConfig,
-    generateSWConfig,
+    // generateSWConfig,
 } = require('./config');
 const {
     css_loaders,
@@ -112,13 +112,13 @@ const MINIMIZERS = !IS_RELEASE ? [] : [
 const plugins = (base, is_test_env, is_mocha_only) => ([
     new CleanWebpackPlugin(),
     new CopyPlugin(copyConfig(base)),
-    new HtmlWebPackPlugin(htmlOutputConfig()),
-    new HtmlWebpackTagsPlugin(htmlInjectConfig()),
+    // new HtmlWebPackPlugin(htmlOutputConfig()),
+    // new HtmlWebpackTagsPlugin(htmlInjectConfig()),
     new IgnorePlugin(/^\.\/locale$/, /moment$/),
     new MiniCssExtractPlugin(cssConfig()),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
     ...(IS_RELEASE && !is_test_env ? [
-        new GenerateSW(generateSWConfig())
+        // new GenerateSW(generateSWConfig())
     ] : [ new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: (file) => file.name !== 'CNAME' }) ]),
     ...(is_test_env && !is_mocha_only ? [
         new StylelintPlugin(stylelintConfig()),

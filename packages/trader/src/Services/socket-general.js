@@ -6,7 +6,7 @@ import BinarySocket      from '_common/base/socket_base';
 import { State }         from '_common/storage';
 import { localize }      from 'App/i18n';
 import { requestLogout } from './logout';
-import WS                from './ws-methods';
+import { WS }            from './ws-methods';
 
 let client_store,
     common_store,

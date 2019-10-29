@@ -1,6 +1,3 @@
-import BinarySocket              from '_common/base/socket_base';
-import { trackJSNetworkMonitor } from './trackjs';
+export let WS;
 
-const WS = BinarySocket;
-
-export default trackJSNetworkMonitor(WS);
+export const setWebsocket = (websocket) => { WS = websocket; };

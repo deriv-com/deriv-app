@@ -4,7 +4,7 @@ import {
     computed,
     observable,
 }                                     from 'mobx';
-import { WS }                         from 'Services';
+import { WS }                         from 'Services/ws-methods';
 import { toMoment }                   from 'Utils/Date';
 import { formatStatementTransaction } from './Helpers/format-response';
 import getDateBoundaries              from '../Profit/Helpers/format-request';
@@ -138,7 +138,7 @@ export default class StatementStore extends BaseStore {
         );
         this.client_loginid = this.root_store.client.loginid;
         this.onSwitchAccount(this.accountSwitcherListener);
-        await this.waitFor('authorize');
+        await WS.wait('authorize');
         this.fetchNextBatch(true);
     }
 

@@ -327,8 +327,4 @@ export default class BaseStore {
             this.partial_fetch_time = false;
         }
     }
-
-    waitFor = async (...prerequisites) => {
-        await BinarySocket.wait(...prerequisites);
-    };
 }

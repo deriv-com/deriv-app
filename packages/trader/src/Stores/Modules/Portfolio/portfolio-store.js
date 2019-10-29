@@ -4,7 +4,7 @@ import {
     observable,
     reaction }                     from 'mobx';
 import { createTransformer }       from 'mobx-utils';
-import { WS }                      from 'Services';
+import { WS }                      from 'Services/ws-methods';
 import ObjectUtils                 from 'deriv-shared/utils/object';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractSold }            from './Helpers/portfolio-notifications';
@@ -32,7 +32,7 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     initializePortfolio = async () => {
         this.is_loading = true;
-        await this.waitFor('authorize');
+        await WS.wait('authorize');
         WS.portfolio().then(this.portfolioHandler);
         WS.subscribeProposalOpenContract(null, this.proposalOpenContractHandler);
         WS.subscribeTransaction(this.transactionHandler);

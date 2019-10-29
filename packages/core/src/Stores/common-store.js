@@ -1,8 +1,9 @@
 import {
     action,
-    observable }                  from 'mobx';
+    observable }                 from 'mobx';
 import moment                     from 'moment';
-import { currentLanguage }        from 'Utils/Language/index';
+import { currentLanguage }       from 'Utils/Language/index';
+import { PromiseClass }           from '_common/utility';
 import BaseStore                  from './base-store';
 import { clientNotifications }    from './Helpers/client-notifications';
 
@@ -11,6 +12,7 @@ export default class CommonStore extends BaseStore {
         super({ root_store });
     }
 
+    @observable time_promise     = new PromiseClass();
     @observable server_time      = moment.utc();
     @observable current_language = currentLanguage;
     @observable has_error        = false;

@@ -3,7 +3,7 @@ import {
     computed,
     observable,
     runInAction }         from 'mobx';
-import { WS }             from 'Services';
+import { WS }             from 'Services/ws-methods';
 import BaseStore          from 'Stores/base-store';
 import {
     getMt5GroupConfig,

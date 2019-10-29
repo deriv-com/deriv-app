@@ -1,12 +1,11 @@
 import { flow }            from 'mobx';
-import BinarySocket        from '_common/base/socket_base';
 import { localize }        from 'App/i18n';
 import { LocalStore }      from '_common/storage';
 import { redirectToLogin } from '_common/base/login';
-import { WS }              from 'Services';
+import { WS }              from 'Services/ws-methods';
 
 export const showUnavailableLocationError = flow(function* (showError) {
-    const website_status = yield BinarySocket.wait('website_status');
+    const website_status = yield WS.wait('website_status');
     const residence_list = yield WS.residenceList();
 
     const clients_country_code = website_status.website_status.clients_country;

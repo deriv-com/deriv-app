@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run test && sudo webpack-dev-server --config \"./build/webpack.config.js\"",
     "serve": "echo \"Serving...\" && sudo webpack-dev-server --config \"./build/webpack.config.js\"",
-    "build": "f () { npm run test:stylelint && npm run test:eslint && webpack --config \"./build/webpack.config.js\" --env.base $1;}; f",
+    "build": "f () { webpack --config \"./build/webpack.config.js\" --env.base $1;}; f",
     "build:travis": "echo \"No build:travis specified\"",
     "test": "npm run test:stylelint && npm run test:eslint",
     "test:temp": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage --webpack-config \"./build/webpack.config-test.js\" \"src/**/__tests__/*.js\" --require ignore-styles",
@@ -111,6 +111,7 @@
     "deriv-bot": "^1.0.0",
     "deriv-components": "^1.0.0",
     "deriv-shared": "^1.0.0",
+    "deriv-trader": "^3.8.0",
     "event-source-polyfill": "^1.0.5",
     "formik": "^1.5.8",
     "i18next": "^17.0.3",

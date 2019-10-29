@@ -10,8 +10,7 @@ import {
 import CurrencyUtils                  from 'deriv-shared/utils/currency';
 import ObjectUtils                    from 'deriv-shared/utils/object';
 import { localize }                   from 'App/i18n';
-import { WS }                         from 'Services';
-import BinarySocket                   from '_common/base/socket_base';
+import { WS }                         from 'Services/ws-methods';
 import {
     isDigitContractType,
     isDigitTradeType      }           from 'Modules/Trading/Helpers/digits';
@@ -120,7 +119,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     init = async () => {
         // To be sure that the website_status response has been received before processing trading page.
-        await BinarySocket.wait('authorize', 'website_status');
+        await WS.wait('authorize', 'website_status');
         WS.storage.activeSymbols('brief').then(({ active_symbols }) => {
             runInAction(() => {
                 this.active_symbols = active_symbols;
@@ -220,7 +219,7 @@ export default class TradeStore extends BaseStore {
     async setActiveSymbols() {
         const { active_symbols, error } = this.should_refresh_active_symbols ?
             // if SmartCharts has requested active_symbols, we wait for the response
-            await BinarySocket.wait('active_symbols')
+            await WS.wait('active_symbols')
             : // else requests new active_symbols
             await WS.activeSymbols();
 
@@ -258,7 +257,7 @@ export default class TradeStore extends BaseStore {
         this.currency         = this.root_store.client.currency;
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
-        await BinarySocket.wait('authorize');
+        await WS.wait('authorize');
         await this.setActiveSymbols();
         runInAction(async() => {
             await this.setDefaultSymbol();
@@ -788,21 +787,21 @@ export default class TradeStore extends BaseStore {
             delete g_subscribers_map[key];
         }
         // WS.forget('ticks_history', callback, match);
-    }
+    };
 
     wsForgetStream = (stream_id) => {
         WS.forgetStream(stream_id);
-    }
+    };
 
     wsSendRequest = (req) => {
         if (req.time) {
-            return ServerTime.timePromise.then(() => ({
+            return ServerTime.timePromise().then((server_time) => ({
                 msg_type: 'time',
-                time    : ServerTime.get().unix(),
+                time    : server_time.unix(),
             }));
         }
         if (req.active_symbols) {
-            return BinarySocket.wait('active_symbols');
+            return WS.wait('active_symbols');
         }
         return WS.storage.send(req);
     };

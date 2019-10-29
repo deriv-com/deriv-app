@@ -6,7 +6,7 @@ import CurrencyUtils       from 'deriv-shared/utils/currency';
 import ObjectUtils         from 'deriv-shared/utils/object';
 import BinarySocket        from '_common/base/socket_base';
 import { localize }        from 'App/i18n';
-import { WS }              from 'Services';
+import { WS }              from 'Services/ws-methods';
 import BaseStore           from '../../base-store';
 import {
     getMT5AccountType,

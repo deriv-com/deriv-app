@@ -1,2 +1,2 @@
-export default        from './app';
+export default        from './app.jsx';
 export { BinaryLink } from './Components/Routes';

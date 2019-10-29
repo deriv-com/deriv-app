@@ -32,7 +32,6 @@ const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404
 
 const initRoutesConfig = () => ([
     { path: routes.contract,  component: ContractDetails, title: localize('Contract Details'),  is_authenticated: true },
-    { path: routes.index,     component: RouterRedirect,  title: '',                            to: routes.trade },
     { path: routes.mt5,       component: MT5,             title: localize('MT5'),               is_authenticated: true },
     {
         path            : routes.reports,
@@ -78,8 +77,6 @@ const initRoutesConfig = () => ([
         ],
     },
     { path: routes.trade,     component: Trade,           title: localize('Trade'),    exact: true },
-    { path: routes.error404,  component: Page404,         title: localize('Error 404') },
-    { path: routes.redirect,  component: Redirect,        title: localize('Redirect') },
 ]);
 
 let routesConfig;

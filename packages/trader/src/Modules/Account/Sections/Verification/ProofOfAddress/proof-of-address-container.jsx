@@ -1,6 +1,6 @@
 // // import PropTypes            from 'prop-types';
 import React              from 'react';
-import { WS }             from 'Services';
+import { WS }             from 'Services/ws-methods';
 import ProofOfAddressForm from './proof-of-address-form.jsx';
 import {
     Expired,

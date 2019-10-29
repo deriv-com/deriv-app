@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "name": "deriv-bot",
   "description": "Visual automation for deriv.app",
-  "main": "dist/bot.js",
+  "main": "dist/bot.main.js",
   "jest": {
     "setupFilesAfterEnv": [
       "<rootDir>/.jest"
@@ -15,7 +15,7 @@
   "scripts": {
     "start": "rimraf dist && npm run test && webpack --mode=development --progress --watch",
     "serve": "rimraf dist && webpack --mode=development --progress --watch",
-    "build": "rimraf dist && npm run test && webpack --mode=production --optimize-minimize --progress",
+    "build": "rimraf dist && webpack --mode=production --optimize-minimize --progress",
     "build:travis": "echo \"No build:travis specified\"",
     "test": "npm run test:eslint && npm run test:mocha",
     "test:mocha": "jest -w 1 --coverage",

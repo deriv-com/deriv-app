@@ -9,12 +9,11 @@ const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 
 const output = {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bot.js',
-    chunkFilename: '[name]-[chunkhash:6].bot.js',
+    filename: 'bot.main.js',
+    chunkFilename: 'bot.[name].[contenthash].js',
     libraryExport: 'default',
     library: 'deriv-bot',
     libraryTarget: 'umd',
-    hashDigestLength: 6,
 };
 
 module.exports = {
@@ -91,7 +90,7 @@ module.exports = {
         ],
     },
     plugins: [
-        new MiniCssExtractPlugin({ filename: 'bot.css' }),
+        new MiniCssExtractPlugin({ filename: 'bot.main.css' }),
         new StyleLintPlugin({ fix: true }),
         new CopyWebpackPlugin([
             { from: './src/scratch/xml', to: 'xml' },

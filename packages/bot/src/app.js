@@ -4,7 +4,7 @@ import { preloadSprite } from './components/Icons.jsx';
 const getUrlBase = (path = '') => {
     const l = window.location;
 
-    if (!/^\/(br_|bot)/.test(l.pathname)) return path;
+    if (!/^\/(br_|bot)/.test(l.pathname) || /^localhost/.test(location.hostname)) return path;
 
     return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
 };

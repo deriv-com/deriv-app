@@ -5,7 +5,7 @@ import Localize     from 'App/Components/Elements/localize.jsx';
 import ButtonLink   from 'App/Components/Routes/button-link.jsx';
 import { localize } from 'App/i18n';
 import Icon         from 'Assets/icon.jsx';
-import { WS }       from 'Services';
+import { WS }       from 'Services/ws-methods';
 import { connect }  from 'Stores/connect';
 
 const ErrorComponent = ({

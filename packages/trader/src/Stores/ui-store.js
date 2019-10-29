@@ -341,7 +341,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    removeNofiticationByKey({ key }) {
+    removeNotificationByKey({ key }) {
         this.notifications = this.notifications
             .filter(n => n.key !== key);
     }

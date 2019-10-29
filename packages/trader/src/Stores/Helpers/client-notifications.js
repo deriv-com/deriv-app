@@ -1,5 +1,6 @@
 import React            from 'react';
 import { formatDate }   from 'Utils/Date';
+import ObjectUtils      from 'deriv-shared/utils/object';
 import {
     getRiskAssessment,
     isAccountOfType,
@@ -324,7 +325,7 @@ const addVerificationNotifications = (identity, document, addNotificationMessage
 };
 
 const checkAccountStatus = (account_status, client, addNotificationMessage, loginid) => {
-    if (!account_status.length) return {};
+    if (ObjectUtils.isEmptyObject(account_status)) return {};
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
     const {

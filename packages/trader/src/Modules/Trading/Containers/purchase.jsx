@@ -10,6 +10,7 @@ const Purchase = ({
     contract_type,
     currency,
     is_client_allowed_to_visit,
+    is_multiplier,
     // is_purchase_confirm_on,
     purchased_states_arr,
     // is_purchase_locked,
@@ -51,6 +52,7 @@ const Purchase = ({
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={isLoading(info)}
+                is_multiplier={is_multiplier}
                 // is_purchase_confirm_on={is_purchase_confirm_on}
                 is_proposal_empty={is_proposal_empty}
                 is_proposal_error={is_proposal_error}
@@ -84,6 +86,7 @@ Purchase.propTypes = {
     basis                     : PropTypes.string,
     currency                  : PropTypes.string,
     is_client_allowed_to_visit: PropTypes.bool,
+    is_multiplier             : PropTypes.bool,
     // is_purchase_confirm_on    : PropTypes.bool,
     is_purchase_locked        : PropTypes.bool,
     is_trade_enabled          : PropTypes.bool,
@@ -105,6 +108,7 @@ export default connect(
         basis                     : modules.trade.basis,
         contract_type             : modules.trade.contract_type,
         is_trade_enabled          : modules.trade.is_trade_enabled,
+        is_multiplier             : modules.trade.is_multiplier,
         onClickPurchase           : modules.trade.onPurchase,
         onHoverPurchase           : modules.trade.onHoverPurchase,
         proposal_info             : modules.trade.proposal_info,

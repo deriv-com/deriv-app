@@ -23,6 +23,7 @@ const Amount = ({
     expiry_type,
     is_equal,
     is_minimized,
+    is_multiplier,
     is_nativepicker,
     is_single_currency,
     multiplier,
@@ -98,7 +99,7 @@ const Amount = ({
                 input
             }
             {
-                contract_type === 'mult' &&
+                is_multiplier &&
                 <div className='trade-container__multiplier-options'>
                     <Dropdown
                         id='multiplier'
@@ -146,6 +147,7 @@ Amount.propTypes = {
         PropTypes.string,
     ]),
     is_minimized      : PropTypes.bool,
+    is_multiplier     : PropTypes.bool,
     is_nativepicker   : PropTypes.bool,
     is_single_currency: PropTypes.bool,
     multiplier        : PropTypes.oneOfType([
@@ -170,6 +172,7 @@ export default connect(({ modules, client }) => ({
     expiry_type          : modules.trade.expiry_type,
     is_equal             : modules.trade.is_equal,
     is_single_currency   : client.is_single_currency,
+    is_multiplier        : modules.trade.is_multiplier,
     multiplier           : modules.trade.multiplier,
     multiplier_range_list: modules.trade.multiplier_range_list,
     onChange             : modules.trade.onChange,

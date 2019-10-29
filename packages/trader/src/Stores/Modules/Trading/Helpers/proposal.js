@@ -28,7 +28,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     const stake      = proposal.display_value;
     const basis_list = store.basis_list;
 
-    const contract_basis = (basis_list.find(o => o.value !== store.basis));
+    const contract_basis = (basis_list.find(o => o.value !== store.basis)) || {};
     const is_stake       = contract_basis.text === 'Stake';
     const price          = is_stake ? stake : proposal[contract_basis.value];
     let has_increased    = price > obj_prev_contract_basis.value;
@@ -99,7 +99,7 @@ const createProposalRequestForContract = (store, type_of_contract) => {
         obj_expiry.date_expiry = convertToUnix(expiry_date.unix(), store.expiry_time);
     }
 
-    if (store.contract_type === 'mult') {
+    if (store.is_multiplier) {
         setProposalMultiplier(store, obj_multiplier);
     }
 

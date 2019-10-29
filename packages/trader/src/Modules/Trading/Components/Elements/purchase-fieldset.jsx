@@ -27,6 +27,7 @@ class PurchaseFieldset extends React.PureComponent {
             is_disabled,
             is_high_low,
             is_loading,
+            is_multiplier,
             is_proposal_empty,
             is_proposal_error,
             purchased_states_arr,
@@ -48,6 +49,7 @@ class PurchaseFieldset extends React.PureComponent {
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={is_loading}
+                is_multiplier={is_multiplier}
                 is_proposal_empty={is_proposal_empty}
                 purchased_states_arr={purchased_states_arr}
                 onClickPurchase={onClickPurchase}
@@ -71,7 +73,7 @@ class PurchaseFieldset extends React.PureComponent {
                         },
                     )}
                 >
-                    <ContractInfo
+                    {!is_multiplier && <ContractInfo
                         basis={basis}
                         currency={currency}
                         proposal_info={info}
@@ -79,7 +81,7 @@ class PurchaseFieldset extends React.PureComponent {
                         is_loading={is_loading}
                         should_fade={this.state.should_fade}
                         type={type}
-                    />
+                    />}
                     <div
                         className={classNames(
                             'btn-purchase__shadow-wrapper', {
@@ -138,6 +140,7 @@ PurchaseFieldset.propTypes = {
     is_disabled         : PropTypes.bool,
     is_high_low         : PropTypes.bool,
     is_loading          : PropTypes.bool,
+    is_multiplier       : PropTypes.bool,
     is_proposal_empty   : PropTypes.bool,
     is_proposal_error   : PropTypes.bool,
     onClickPurchase     : PropTypes.func,

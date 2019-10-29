@@ -807,4 +807,9 @@ export default class TradeStore extends BaseStore {
         WS.activeSymbols(); // reset active symbols
         this.should_refresh_active_symbols = false;
     }
+
+    @computed
+    get is_multiplier() {
+        return this.contract_type === 'mult';
+    }
 }

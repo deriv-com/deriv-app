@@ -52,7 +52,11 @@ export default class ClientStore extends BaseStore {
     @observable upgradeable_landing_companies = [];
     @observable mt5_login_list = [];
     @observable statement      = [];
-    @observable obj_total_balance = {};
+    @observable obj_total_balance = {
+        amount_real: undefined,
+        amount_mt5 : undefined,
+        currency   : '',
+    };
 
     @observable verification_code = {
         signup                : '',
@@ -60,6 +64,8 @@ export default class ClientStore extends BaseStore {
         payment_withdraw      : '',
         payment_agent_withdraw: '',
     };
+
+    is_mt5_account_list_updated = false;
 
     constructor(root_store) {
         super({ root_store });
@@ -316,6 +322,11 @@ export default class ClientStore extends BaseStore {
     @computed
     get account_type() {
         return getClientAccountType(this.loginid);
+    }
+
+    @computed
+    get is_mt5_allowed() {
+        return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
     }
 
     /**
@@ -770,9 +781,14 @@ export default class ClientStore extends BaseStore {
         if (this.accounts[obj_balance.loginid]) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
             if (obj_balance.total) {
+                const total_real = ObjectUtils.getPropertyValue(obj_balance, ['total', 'real']);
+                const total_mt5  = ObjectUtils.getPropertyValue(obj_balance, ['total', 'mt5']);
+                // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent
+                const has_mt5 = !ObjectUtils.isEmptyObject(total_mt5);
                 this.obj_total_balance = {
-                    amount  : obj_balance.total.real.amount,
-                    currency: obj_balance.total.real.currency,
+                    amount_real: +total_real.amount,
+                    amount_mt5 : has_mt5 ? +total_mt5.amount : this.obj_total_balance.amount_mt5,
+                    currency   : total_real.currency,
                 };
             }
             this.resetLocalStorageValues(this.loginid);
@@ -1003,8 +1019,29 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    async updateMt5LoginList() {
+        if (!this.is_mt5_account_list_updated && !this.is_populating_mt5_account_list) {
+            const response = await WS.mt5LoginList();
+            this.responseMt5LoginList(response);
+            // update total balance since MT5 total only comes in non-stream balance call
+            WS.balanceAll().then((response) => {
+                this.setBalance(response.balance);
+            });
+        }
+    }
+
+    @action.bound
     responseMt5LoginList(response) {
         this.is_populating_mt5_account_list = false;
+        this.is_mt5_account_list_updated = true;
+        /** we need to update mt5_login_list on mount of account switcher
+         *  to get the new MT5 balances (balance does not stream for MT5 accounts due to API restriction)
+         *  but to avoid spamming this call since the rate limit is strict
+         *  keep the current mt5_login_list response cached for one minute
+         *  after one minute consider it outdated and allow re-requesting it */
+        setTimeout(() => {
+            this.is_mt5_account_list_updated = false;
+        }, 60000);
 
         if (!response.error) {
             this.mt5_login_list = response.mt5_login_list;

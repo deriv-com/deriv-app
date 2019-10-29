@@ -1,75 +1,158 @@
 import { action }    from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react';
+import {
+    boolean,
+    withKnobs }      from '@storybook/addon-knobs';
+import { withInfo }  from '@storybook/addon-info';
 import React         from 'react';
-import Button        from '../../src/components/button/button.jsx';
+import Button        from 'Components/button';
+import {
+    FlexWrapper,
+    GroupWrapper,
+    ButtonWrapper,
+    Text }           from './shared-style';
+import Theme         from '../shared/theme';
 
-storiesOf('Button', module)
+const stories = storiesOf('Button', module);
+
+stories.addDecorator(withKnobs).addDecorator(withInfo);
+
+const getButtonObject = (type) => ({
+    small: [
+        {
+            text: `${type} small`,
+            is_disabled: false,
+            has_effect: false,
+        },
+        {
+            text: `${type} small disabled`,
+            is_disabled: true,
+            has_effect: false,
+        },
+        {
+            text: `${type} small effect`,
+            is_disabled: false,
+            has_effect: true,
+        },
+    ],
+    medium: [
+        {
+            text: `${type} medium`,
+            is_disabled: false,
+            has_effect: false,
+        },
+        {
+            text: `${type} medium disabled`,
+            is_disabled: true,
+            has_effect: false,
+        },
+        {
+            text: `${type} medium effect`,
+            is_disabled: false,
+            has_effect: true,
+        },
+    ],
+    large: [
+        {
+            text: `${type} large`,
+            is_disabled: false,
+            has_effect: false,
+        },
+        {
+            text: `${type} large disabled`,
+            is_disabled: true,
+            has_effect: false,
+        },
+        {
+            text: `${type} large effect`,
+            is_disabled: false,
+            has_effect: true,
+        },
+    ],
+});
+
+stories
     .add(
-        'simple',
+        'primary',
         () => (
-            <Button
-                onClick={action('clicked')}
-                text='Simple'
-                classNameSpan='text-wrapper'
-                id='button_id'
-            />
-        ), {
-            notes: 'A very simple example of button example',
-        }
+            <Theme is_dark={boolean('Theme', false)}>
+                <FlexWrapper>
+                    {Object.keys(getButtonObject('primary')).map((size, idx) => (
+                        <GroupWrapper key={idx}>
+                            <Text size='1.6rem'>{size}</Text>
+                            {getButtonObject('primary')[size].map((item, index) => (
+                                <ButtonWrapper key={index}>
+                                    <Button
+                                        onClick={action('clicked')}
+                                        text={item.text}
+                                        primary
+                                        is_disabled={item.is_disabled}
+                                        has_effect={item.has_effect}
+                                        small={size === 'small'}
+                                        medium={size === 'medium'}
+                                        large={size === 'large'}
+                                    />
+                                </ButtonWrapper>
+                            ))}
+                        </GroupWrapper>
+                    ))}
+                </FlexWrapper>
+            </Theme>
+        )
     )
     .add(
-        'disabled',
+        'secondary',
         () => (
-            <Button
-                is_disabled={true}
-                onClick={action('clicked!!')}
-                id='button_id'
-                text='Disabled button'
-            />
-        ), {
-            notes: 'Set `is_disabled={true}` prop to make it disabled',
-        }
+            <Theme is_dark={boolean('Theme', false)}>
+                <FlexWrapper>
+                    {Object.keys(getButtonObject('secondary')).map((size, idx) => (
+                        <GroupWrapper key={idx}>
+                            <Text size='1.6rem'>{size}</Text>
+                            {getButtonObject('secondary')[size].map((item, index) => (
+                                <ButtonWrapper key={index}>
+                                    <Button
+                                        onClick={action('clicked')}
+                                        text={item.text}
+                                        secondary
+                                        is_disabled={item.is_disabled}
+                                        has_effect={item.has_effect}
+                                        small={size === 'small'}
+                                        medium={size === 'medium'}
+                                        large={size === 'large'}
+                                    />
+                                </ButtonWrapper>
+                            ))}
+                        </GroupWrapper>
+                    ))}
+                </FlexWrapper>
+            </Theme>
+        )
     )
     .add(
-        'with children',
+        'tertiary',
         () => (
-            <Button id='button_id' onClick={action('clicked!')}>
-                <h1>Multiline</h1>
-                <p>This is a simple paragraph</p>
-            </Button>
-        ),
-    )
-    .add(
-        'wrapped',
-        () => (
-            <Button
-                onClick={action('clicked!')}
-                text='This is wrapped inside class .wrapped'
-                id='button_id'
-                wrapperClassName='wrapped'
-            />
-        ), {
-            notes: 'if you pass `wrapperClassName=\'CLASSNAME\'` it will be wrapped inside another div with the given class name.',
-        }
-    )
-    .add(
-        'withEffect',
-        () => (
-            <div>
-                <Button
-                    id='button_id'
-                    has_effect={true}
-                    onClick={action('clicked!')}
-                    text='Click me!'
-                />
-                <Button
-                    id='button_id'
-                    has_effect={false}
-                    onClick={action('clicked!')}
-                    text='No effects'
-                />
-            </div>
-        ), {
-            notes: 'Enabling effects is as easy as passing `has_effect=true` to the prop',
-        }
+            <Theme is_dark={boolean('Theme', false)}>
+                <FlexWrapper>
+                    {Object.keys(getButtonObject('tertiary')).map((size, idx) => (
+                        <GroupWrapper key={idx}>
+                            <Text size='1.6rem'>{size}</Text>
+                            {getButtonObject('tertiary')[size].map((item, index) => (
+                                <ButtonWrapper key={index}>
+                                    <Button
+                                        onClick={action('clicked')}
+                                        text={item.text}
+                                        tertiary
+                                        is_disabled={item.is_disabled}
+                                        has_effect={item.has_effect}
+                                        small={size === 'small'}
+                                        medium={size === 'medium'}
+                                        large={size === 'large'}
+                                    />
+                                </ButtonWrapper>
+                            ))}
+                        </GroupWrapper>
+                    ))}
+                </FlexWrapper>
+            </Theme>
+        )
     );

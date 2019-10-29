@@ -134,11 +134,11 @@ const ButtonAddAccount = ({
     onClick,
     text,
 }) => (
-    <UpgradeButton onClick={onClick}>
-        <Icon icon='IconAdd' />
-        <div className='btn__text'>
-            {text}
-        </div>
+    <UpgradeButton
+        onClick={onClick}
+        icon={<Icon icon='IconAdd' />}
+    >
+        {text}
     </UpgradeButton>
 );
 

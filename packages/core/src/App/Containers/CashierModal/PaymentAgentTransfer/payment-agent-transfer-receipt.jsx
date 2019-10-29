@@ -52,16 +52,18 @@ class PaymentAgentTransferReceipt extends React.Component {
                     </div>
                     <div className='cashier__form-submit payment-agent-transfer__buttons'>
                         <Button
-                            className='btn--tertiary--default payment-agent__statement-button'
+                            className='payment-agent__statement-button'
                             has_effect
                             text={localize('View in statement')}
                             onClick={this.openStatement}
+                            tertiary
                         />
                         <Button
-                            className='btn--primary--default payment-agent__done-button payment-agent-transfer__done-button'
+                            className='payment-agent__done-button payment-agent-transfer__done-button'
                             has_effect
                             text={localize('Done')}
                             onClick={this.props.resetPaymentAgentTransfer}
+                            primary
                         />
                     </div>
                 </div>

@@ -118,7 +118,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     resetValuesIfNeeded() {
-        if (this.current_client !== this.root_store.client.loginid) {
+        if (this.current_client && this.current_client !== this.root_store.client.loginid) {
             this.onAccountSwitch();
         }
         this.current_client = this.root_store.client.loginid;

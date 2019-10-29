@@ -22,18 +22,20 @@ const ErrorComponent = ({
         {message && <p className='cashier__paragraph'>{message}</p>}
         {button_link &&
         <ButtonLink
-            className='btn--primary--default cashier-error__button'
+            className='cashier-error__button'
             to={button_link}
             onClick={onClickButton}
+            primary
         >
             <span className='btn__text'>{button_text}</span>
         </ButtonLink>
         }
         {!button_link && button_text &&
             <Button
-                className='btn--primary--default cashier-error__button'
+                className='cashier-error__button'
                 onClick={onClickButton}
                 text={button_text}
+                primary
             />
         }
         {footer && <h2 className='cashier-error__footer'>{footer}</h2>}

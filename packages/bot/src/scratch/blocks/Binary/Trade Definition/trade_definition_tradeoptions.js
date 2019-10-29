@@ -91,11 +91,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 // Update barrier suggested values when changing barrier type.
                 this.updateBarrierInputs(false, event.group);
                 this.enforceSingleBarrierType(event.name, false);
-            } else if (
-                event.name === 'SYMBOL_LIST' ||
-                event.name === 'TRADETYPECAT_LIST' ||
-                event.name === 'TRADETYPE_LIST'
-            ) {
+            } else if (event.name === 'TRADETYPE_LIST') {
                 // Update durations, barriers, and prediction when changing the trade type.
                 this.updateBarrierInputs(true);
                 this.enforceSingleBarrierType('BARRIERTYPE_LIST', true);

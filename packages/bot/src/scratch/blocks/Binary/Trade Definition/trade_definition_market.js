@@ -70,8 +70,7 @@ Blockly.Blocks.trade_definition_market = {
                 active_symbols.getSubmarketDropdownOptions(market).then(submarket_options => {
                     submarket_field.updateOptions(submarket_options, event.group, submarket, true, true);
                 });
-            }
-            if (event.name === 'SUBMARKET_LIST') {
+            } else if (event.name === 'SUBMARKET_LIST') {
                 active_symbols.getSymbolDropdownOptions(submarket).then(symbol_options => {
                     symbol_field.updateOptions(symbol_options, event.group, symbol, true, true);
                 });

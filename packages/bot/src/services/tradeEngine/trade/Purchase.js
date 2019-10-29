@@ -19,7 +19,7 @@ export default Engine =>
             const onSuccess = r => {
                 const { buy } = r;
                 contractStatus({
-                    id  : 'contract.purchase_recieved',
+                    id  : 'contract.purchase_received',
                     data: buy.transaction_id,
                     buy,
                 });

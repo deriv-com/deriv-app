@@ -2,7 +2,6 @@ import { Button,
     Drawer,
     Popover,
     Tabs }                                    from 'deriv-components';
-import classNames                             from 'classnames';
 import PropTypes                              from 'prop-types';
 import React                                  from 'react';
 import Dialog                                 from './dialog.jsx';
@@ -53,42 +52,46 @@ const drawerFooter = ({
     return (
         <div className='run-panel__footer'>
             <TradeAnimation className='run-panel__animation' should_show_overlay={active_index > 0} />
-            <Button
-                className={classNames(
-                    'btn--secondary--default',
-                    'run-panel__button',
-                    { 'run-panel__button--disable': is_clear_stat_disabled }
-                )}
-                text={translate('Clear stat')}
-                onClick={onClearStatClick}
-                has_effect
-            />
-
-            {
-                (is_stop_button_visible) ?
-                    <Button
-                        className={classNames(
-                            'btn--primary--default',
-                            'run-panel__button',
-                            { 'run-panel__button--disable': is_stop_button_disabled }
-                        )}
-                        text={translate('Stop bot')}
-                        icon={<StopIcon className='run-panel__button--icon' />}
-                        onClick={onStopButtonClick}
-                        has_effect
-                    /> :
-                    <Button
-                        className={classNames(
-                            'btn--primary',
-                            'run-panel__button',
-                            'run-panel__button--run',
-                        )}
-                        text={translate('Run bot')}
-                        icon={<RunIcon className='run-panel__button--icon' />}
-                        onClick={onRunButtonClick}
-                        has_effect
-                    />
-            }
+            <div className='run-panel__buttons'>
+                <Button
+                    is_disabled={is_clear_stat_disabled}
+                    text={translate('Clear stat')}
+                    onClick={onClearStatClick}
+                    has_effect
+                    secondary
+                />
+    
+                {
+                    (is_stop_button_visible) ?
+                        <Button
+                            is_disabled={is_stop_button_disabled}
+                            text={translate('Stop bot')}
+                            icon={<StopIcon className='run-panel__button--icon' />}
+                            onClick={onStopButtonClick}
+                            has_effect
+                            primary
+                        /> :
+                        <Button
+                            text={translate('Run bot')}
+                            icon={<RunIcon className='run-panel__button--icon' />}
+                            onClick={onRunButtonClick}
+                            has_effect
+                            green
+                        />
+                }
+                <Popover
+                    className='run-panel__info'
+                    classNameBubble='run-panel__info--bubble'
+                    alignment='top'
+                    message={translate(
+                        `Stopping the bot will prevent further trades. Any ongoing trades will be completed 
+                     by our system. Please be aware that some completed transactions may not be displayed
+                     in the transaction table if the bot is stopped while placing trades. You may refer to
+                     the statement page for details of all completed transactions.`)}
+                >
+                    <InfoOutlineIcon className='run-panel__icon-info' />
+                </Popover>
+            </div>
             {is_dialog_open &&
                 <Dialog
                     title={dialog_options.title}
@@ -99,18 +102,6 @@ const drawerFooter = ({
                     {dialog_options.message}
                 </Dialog>
             }
-            <Popover
-                className='run-panel__info'
-                classNameBubble='run-panel__info--bubble'
-                alignment='top'
-                message={translate(
-                    `Stopping the bot will prevent further trades. Any ongoing trades will be completed 
-                     by our system. Please be aware that some completed transactions may not be displayed
-                     in the transaction table if the bot is stopped while placing trades. You may refer to
-                     the statement page for details of all completed transactions.`)}
-            >
-                <InfoOutlineIcon className='run-panel__icon-info' />
-            </Popover>
         </div>
     );
 };

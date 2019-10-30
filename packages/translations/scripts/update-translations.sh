@@ -31,12 +31,11 @@ function confirm {
     echo "${RESET}"
 }
 
-# TODO: uncomment this before merge
 message "Checking out the dev branch" &&
-# git checkout dev &&
+git checkout dev &&
 message "Updating dev" &&
-# git fetch upstream dev &&
-# git reset --hard upstream/dev &&
+git fetch upstream dev &&
+git reset --hard upstream/dev &&
 message "Creating new branch $NEW_TRANSLATION_BRANCH from dev" &&
 if [ `git branch --list $NEW_TRANSLATION_BRANCH` ]
 then
@@ -54,19 +53,17 @@ then
     fi
 fi &&
 
-message "Creating new add_translations" &&
 git checkout -b add_translations &&
-
 confirm "Update the source file (messages.json) and push to Crowdin?" &&
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     message "Updating translations source file" &&
     cd $(git rev-parse --show-toplevel) && cd packages/translations/scripts && node extract-translations.js &&
     message "Uploading source file to Crowdin"
-    crowdin upload sources
-fi &&
+    cd $(git rev-parse --show-toplevel) && cd packages/translations && source ~/.bash_profile && crowdin upload sources
+fi
 
-confirm "Commit changes and push to $NEW_TRANSLATION_BRANCH?" &&
+confirm "Commit changes and push to the branch $NEW_TRANSLATION_BRANCH?" &&
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     cd $(git rev-parse --show-toplevel) &&
@@ -81,6 +78,6 @@ echo ${GREEN}"\nSuccessfully Done." &&
 confirm "Open github to submit the PR?" &&
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-    open "https://github.com/binary-com/deriv-app/compare/dev...${GIT_USERNAME}:$NEW_TRANSLATION_BRANCH"
+    open "https://github.com/binary-com/deriv-app/compare/dev...$GIT_USERNAME:$NEW_TRANSLATION_BRANCH"
     git checkout dev
 fi

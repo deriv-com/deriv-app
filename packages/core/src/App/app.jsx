@@ -1,15 +1,16 @@
-import PropTypes                   from 'prop-types';
-import React                       from 'react';
-import ReactDOM                    from 'react-dom';
+import PropTypes                    from 'prop-types';
+import React                        from 'react';
+import ReactDOM                     from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
-import WS                          from 'Services/ws-methods';
-import { MobxProvider }            from 'Stores/connect';
-import ErrorBoundary               from './Components/Elements/Errors/error-boundary.jsx';
-import AppContents                 from './Containers/Layout/app-contents.jsx';
-import Footer                      from './Containers/Layout/footer.jsx';
-import Header                      from './Containers/Layout/header.jsx';
-import Lazy                        from './Containers/Lazy';
-import Routes                      from './Containers/Routes/routes.jsx';
+import Client                       from '_common/base/client_base';
+import WS                           from 'Services/ws-methods';
+import { MobxProvider }             from 'Stores/connect';
+import ErrorBoundary                from './Components/Elements/Errors/error-boundary.jsx';
+import AppContents                  from './Containers/Layout/app-contents.jsx';
+import Footer                       from './Containers/Layout/footer.jsx';
+import Header                       from './Containers/Layout/header.jsx';
+import Lazy                         from './Containers/Lazy';
+import Routes                       from './Containers/Routes/routes.jsx';
 import './i18n';
 // eslint-disable-next-line import/extensions
 import initStore                   from './app.js';
@@ -37,7 +38,8 @@ const App = ({ root_store }) => {
                             <Header />
                             <ErrorBoundary>
                                 <AppContents>
-                                    <Routes passthrough={{ root_store, WS }} />
+                                    {/* TODO: [trader-remove-client-base] */}
+                                    <Routes passthrough={{ root_store, WS, client_base: Client }} />
                                     <Lazy
                                         ctor={() => import(/* webpackChunkName: "push-notification" */'./Containers/push-notification.jsx')}
                                         should_load={!root_store.ui.is_loading}

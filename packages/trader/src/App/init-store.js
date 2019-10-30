@@ -1,17 +1,15 @@
 import { configure }        from 'mobx';
-// import Client               from '_common/base/client_base';
-// import NetworkMonitor       from 'Services/network-monitor';
-// import OutdatedBrowser      from 'Services/outdated-browser';
 import RootStore            from 'Stores';
 import { setWebsocket }     from 'Services/ws-methods';
+import { setClientBase }    from '_common/base/client_base';
 import ServerTime           from '_common/base/server_time';
-// import { setStorageEvents } from 'Utils/Events/storage';
 
 configure({ enforceActions: 'observed' });
 
-const initStore = (core_store, websocket) => {
+const initStore = (core_store, websocket, client_base) => {
     ServerTime.init(core_store.common.time_promise, core_store.common.server_time);
     setWebsocket(websocket);
+    setClientBase(client_base);
     const root_store = new RootStore(core_store);
 
     root_store.modules.trade.init();

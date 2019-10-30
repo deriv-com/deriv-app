@@ -6,7 +6,6 @@ import {
     toJS,
     when }              from 'mobx';
 import ObjectUtils      from 'deriv-shared/utils/object';
-import BinarySocket     from '_common/base/socket_base';
 import Validator        from 'Utils/Validator';
 import { isProduction } from '../config';
 

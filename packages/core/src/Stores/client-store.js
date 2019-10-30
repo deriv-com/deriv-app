@@ -44,6 +44,7 @@ export default class ClientStore extends BaseStore {
     @observable account_settings               = {};
     @observable account_status                 = {};
     @observable device_data                    = {};
+    @observable has_logged_out                 = false;
     @observable landing_companies              = {
         financial_company: {},
         gaming_company   : {},
@@ -848,6 +849,17 @@ export default class ClientStore extends BaseStore {
         this.root_store.ui.removeAllNotifications();
         // this.root_store.modules.trade.refresh();
         // this.root_store.modules.trade.debouncedProposal();
+    }
+
+    @action.bound
+    logout() { // TODO: [add-client-action] - Move logout functionality to client store
+        this.setLogout(true);
+        return requestLogout();
+    }
+
+    @action.bound
+    setLogout(is_logged_out) {
+        this.has_logged_out = is_logged_out;
     }
 
     /* eslint-disable */

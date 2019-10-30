@@ -28,7 +28,7 @@ const RouteWithSubRoutes = route => {
             result = (
                 (route.is_authenticated && !route.is_logged_in) ?
                     <LoginPrompt
-                        onLogin={redirectToLogin}
+                        onLogin={() => redirectToLogin(route.is_logged_in)}
                         onSignup={redirectToSignUp}
                         page_title={route.title}
                     />

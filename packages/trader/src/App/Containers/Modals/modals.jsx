@@ -8,9 +8,6 @@ import ServicesErrorModal       from 'App/Components/Elements/Modals/ServicesErr
 import MT5ServerErrorDialog     from 'Modules/MT5/Containers/mt5-server-error-dialog.jsx';
 import 'Sass/app/modules/modals.scss';
 
-const AccountSignupModal       = React.lazy(() => import(/* webpackChunkName: "AccountSignupModal" */'../AccountSignupModal'));
-const ResetPasswordModal       = React.lazy(() => import(/* webpackChunkName: "ResetPasswordModal" */'../ResetPasswordModal'));
-
 const Modals = ({
     clearPurchaseInfo,
     is_denial_of_service_modal_visible,
@@ -83,9 +80,7 @@ const Modals = ({
                 services_error={services_error}
                 is_visible={is_services_error_visible}
             />
-            <AccountSignupModal />
             <MT5ServerErrorDialog />
-            <ResetPasswordModal />
         </React.Fragment>
     );
 };

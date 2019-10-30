@@ -12,8 +12,9 @@ import 'Sass/app.scss';
 class App extends React.Component {
     constructor(props) {
         super(props);
-        const { passthrough: { WS, root_store } } = props;
-        this.root_store = initStore(root_store, WS);
+        // TODO: [trader-remove-client-base] - Refactor codebase to remove usage of ClientBase in Trader
+        const { passthrough: { WS, root_store, client_base } } = props;
+        this.root_store = initStore(root_store, WS, client_base);
     }
 
     render() {

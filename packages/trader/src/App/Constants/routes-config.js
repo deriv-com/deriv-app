@@ -1,6 +1,4 @@
 import { lazy }                       from 'react';
-import { Redirect as RouterRedirect } from 'react-router-dom';
-import { Redirect }                   from 'App/Containers/Redirect';
 import { localize }                   from 'App/i18n';
 import { routes }                     from 'Constants';
 

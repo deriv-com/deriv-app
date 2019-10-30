@@ -254,7 +254,7 @@ class FinancialAssessment extends React.Component {
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                     <Button
-                                        className='account-form__footer-btn btn--primary--default'
+                                        className='account-form__footer-btn'
                                         type='submit'
                                         is_disabled={
                                             isSubmitting ||
@@ -272,6 +272,8 @@ class FinancialAssessment extends React.Component {
                                         is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
                                         text={localize('Submit')}
+                                        primary
+                                        large
                                     />
                                 </FormFooter>
                             </form>

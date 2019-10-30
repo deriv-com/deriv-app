@@ -33,10 +33,11 @@ class Virtual extends React.Component {
                                 <Localize i18n_default_text={'You need a real money account to use this feature. It\'s easy to create a real money account and start trading.'} />
                             </p>
                             <Button
-                                className='btn--primary--default cashier-error__button'
+                                className='cashier-error__button'
                                 has_effect
                                 text={localize('Create my real account')}
                                 onClick={this.onClickSignup}
+                                primary
                             />
                         </React.Fragment>
                     }

@@ -1,11 +1,7 @@
 import { action, observable } from 'mobx';
 import { isEnded }            from '../utils/contract';
-import { observer }           from '../utils/observer';
 
 export default class TransactionsStore {
-    constructor() {
-        observer.register('bot.contract', this.onBotContractEvent);
-    }
 
     @observable contracts = [];
 
@@ -24,7 +20,7 @@ export default class TransactionsStore {
             refrence_id  : data.transaction_ids.buy,
             entry_spot   : data.entry_tick_display_value,
             exit_spot    : data.exit_tick_display_value,
-            profit       : data.profit,
+            profit       : is_completed && data.profit,
             is_completed,
         };
         if (this.contracts.some(e => e.refrence_id === data.transaction_ids.buy)) {
@@ -37,9 +33,5 @@ export default class TransactionsStore {
     @action.bound
     clear(){
         this.contracts = this.contracts.slice(0,0);  // force array update
-    }
-
-    onUnmount() {
-        observer.unregister('contract.status', this.onBotContractEvent);
     }
 }

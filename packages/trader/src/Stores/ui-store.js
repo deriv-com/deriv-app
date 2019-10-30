@@ -350,7 +350,9 @@ export default class UIStore extends BaseStore {
     addNotificationMessage(notification) {
         if (!this.notification_messages.find(item => item.header === notification.header)) {
             this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
-            this.updateNotifications(this.notification_messages);
+            if (!excluded_notifications.includes(notification.key)) {
+                this.updateNotifications(this.notification_messages);
+            }
         }
     }
 

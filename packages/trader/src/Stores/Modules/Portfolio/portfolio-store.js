@@ -7,7 +7,7 @@ import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services';
 import ObjectUtils                 from 'deriv-shared/utils/object';
 import { formatPortfolioPosition } from './Helpers/format-response';
-import { contractSold }            from './Helpers/portfolio-notifcations';
+import { contractSold }            from './Helpers/portfolio-notifications';
 import {
     getCurrentTick,
     getDurationPeriod,

@@ -6,7 +6,7 @@ import BinarySocket           from '_common/base/socket_base';
 import { WS }                 from 'Services';
 import { localize }           from 'App/i18n';
 import ContractStore          from './contract-store';
-import { contractSold }       from '../Portfolio/Helpers/portfolio-notifcations';
+import { contractSold }       from '../Portfolio/Helpers/portfolio-notifications';
 import BaseStore              from '../../base-store';
 
 export default class ContractReplayStore extends BaseStore {

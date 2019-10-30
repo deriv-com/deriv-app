@@ -66,7 +66,8 @@ class FinancialAssessment extends React.Component {
                 setStatus({ msg: data.error.message });
             } else {
                 this.setState({ is_submit_success: true });
-                this.props.refreshNotifications();
+                this.props.removeNotificationMessage({ key: 'risk' });
+                this.props.removeNotificationByKey({ key: 'risk' });
             }
             setSubmitting(false);
         });
@@ -287,8 +288,9 @@ class FinancialAssessment extends React.Component {
 
 // FinancialAssessment.propTypes = {};
 export default connect(
-    ({ client }) => ({
-        is_virtual          : client.is_virtual,
-        refreshNotifications: client.refreshNotifications,
+    ({ client, ui }) => ({
+        is_virtual               : client.is_virtual,
+        removeNotificationMessage: ui.removeNotificationMessage,
+        removeNotificationByKey  : ui.removeNotificationByKey,
     }),
 )(FinancialAssessment);

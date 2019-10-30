@@ -387,8 +387,8 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     const is_mf_retail         = client.landing_company_shortcode === 'maltainvest' && !professional;
     const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
     const has_risk_assessment  = getRiskAssessment(account_status);
-    const needs_poa            = needs_verification.length && needs_verification.includes('document');
-    const needs_poi            = needs_verification.length && needs_verification.includes('identity');
+    const needs_poa            = needs_verification.length && needs_verification.includes('document') && !needs_verification.includes('identity');
+    const needs_poi            = needs_verification.length && needs_verification.includes('identity') && !needs_verification.includes('document');
 
     if (needs_poa)             addNotificationMessage(clientNotifications().needs_poa);
     if (needs_poi)             addNotificationMessage(clientNotifications().needs_poi);

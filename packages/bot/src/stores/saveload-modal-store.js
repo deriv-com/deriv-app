@@ -32,6 +32,8 @@ export default class SaveLoadModalStore {
         const { file_name } = this.root_store.toolbar;
         const { saveFile } = this.root_store.google_drive;
         const xml = Blockly.Xml.workspaceToDom(Blockly.derivWorkspace);
+
+        xml.setAttribute('is_dbot', 'true');
         xml.setAttribute('collection', save_as_collection ? 'true' : 'false');
 
         if (is_local) {

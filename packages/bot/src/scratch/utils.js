@@ -52,7 +52,9 @@ export const setBlockTextColor = block => {
 };
 
 export const save = (filename = 'deriv-bot', collection = false, xmlDom) => {
+    xmlDom.setAttribute('is_dbot', 'true');
     xmlDom.setAttribute('collection', collection ? 'true' : 'false');
+    
     const data = Blockly.Xml.domToPrettyText(xmlDom);
     saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
 };
@@ -77,10 +79,10 @@ export const load = (block_string, drop_event) => {
         console.error(e);  // eslint-disable-line
     }
 
-    const is_collection   = xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true';
-    const blockConversion = new BlockConversion(is_collection);
-
-    xml = blockConversion.convertStrategy(xml);
+    if (!(xml.hasAttribute('is_dbot') && xml.getAttribute('is_dbot') === 'true')) {
+        const blockConversion = new BlockConversion();
+        xml = blockConversion.convertStrategy(xml);
+    }
 
     const blockly_xml = xml.querySelectorAll('block');
 

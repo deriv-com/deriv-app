@@ -2,8 +2,6 @@ import { translate } from '../../../../../utils/lang/i18n';
 
 Blockly.Blocks.input_list = {
     init() {
-        this.requiredParentId = '';
-
         this.jsonInit({
             message0: translate('Input List %1'),
             args0   : [
@@ -28,27 +26,35 @@ Blockly.Blocks.input_list = {
             return;
         }
 
-        const surroundParent = this.getSurroundParent();
         if (event.type === Blockly.Events.END_DRAG) {
-            if (!this.requiredParentId && this.allowedParents.includes(surroundParent.type)) {
-                this.requiredParentId = surroundParent.id;
-            } else if (!surroundParent || surroundParent.id !== this.requiredParentId) {
+            const surround_parent = this.getSurroundParent();
+
+            if (
+                surround_parent
+                && !this.required_parent_id
+                && this.allowed_parents.includes(surround_parent.type)
+            ) {
+                this.required_parent_id = surround_parent.id;
+            } else if (!surround_parent || surround_parent.type !== this.required_parent_id) {
                 Blockly.Events.disable();
-                this.unplug(false);
+                this.unplug(true);
 
-                const parentBlock = this.workspace.getAllBlocks().find(block => block.id === this.requiredParentId);
+                const parent_block = this.workspace.getAllBlocks(true).find(block =>
+                    block.id === this.required_parent_id
+                );
 
-                if (parentBlock) {
-                    const parentConnection = parentBlock.getLastConnectionInStatement('STATEMENT');
-                    parentConnection.connect(this.previousConnection);
+                if (parent_block) {
+                    const parent_connection = parent_block.getLastConnectionInStatement('STATEMENT');
+                    parent_connection.connect(this.previousConnection);
                 } else {
                     this.dispose();
                 }
+
                 Blockly.Events.enable();
             }
         }
     },
-    allowedParents: [
+    allowed_parents: [
         'bb_statement',
         'bba_statement',
         'ema_statement',

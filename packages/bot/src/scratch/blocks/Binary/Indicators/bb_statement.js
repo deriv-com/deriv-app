@@ -65,7 +65,6 @@ Blockly.Blocks.bb_statement = {
             });
         }
     },
-    requiredParamBlocks: ['input_list', 'period', 'std_dev_multiplier_up', 'std_dev_multiplier_down'],
 };
 
 Blockly.JavaScript.bb_statement = block => {

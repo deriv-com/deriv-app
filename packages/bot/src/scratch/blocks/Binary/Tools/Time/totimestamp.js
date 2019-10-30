@@ -30,8 +30,8 @@ Blockly.Blocks.totimestamp = {
     },
     meta(){
         return {
-            'display_name': translate('Convetr to timestamp'),
-            'description' : translate('Converts a string representing a date/time string into seconds since Epoch. Example: 2019-01-01 21:03:45 GMT+0800 will be converted to 1546347825. Time and time zone offset are optional.'),
+            'display_name': translate('Convert to timestamp'),
+            'description' : translate('This block converts a string of text that represents the date and time into seconds since the Unix Epoch (1 January 1970). The time and time zone offset are optional. Example: 2019-01-01 21:03:45 GMT+0800 will be converted to 1546347825.'),
         };
     },
 };

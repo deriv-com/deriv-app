@@ -38,14 +38,14 @@ Blockly.Blocks.text_prompt_ext = {
             colour         : Blockly.Colours.Special3.colour,
             colourSecondary: Blockly.Colours.Special3.colourSecondary,
             colourTertiary : Blockly.Colours.Special3.colourTertiary,
-            tooltip        : translate('Request user input'),
+            tooltip        : translate('Request an input'),
             category       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Request user input'),
-            'description' : translate('Prompts for an input of either text or numbers with a specific display message.'),
+            'display_name': translate('Request an input'),
+            'description' : translate('This block creates a dialog box that uses a customised message to prompt for an input. The input can be either a string of text or a number.'),
         };
     },
 };

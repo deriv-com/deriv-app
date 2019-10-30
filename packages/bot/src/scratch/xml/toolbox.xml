@@ -348,7 +348,7 @@
 
         <category name="Variables" id="variables" description="Create and name memory locations to store values" dynamic="VARIABLE"></category>
 
-        <category name="Notifications" id="notifications" description="Run time messages">
+        <category name="Notifications" id="notifications" description="Create notification messages">
             <block type="text_print">
                 <value name="TEXT">
                     <shadow type="text">
@@ -391,7 +391,7 @@
             </block>
         </category>
 
-        <category name="Time" id="time" description="Arithmetical operations">
+        <category name="Time" id="time" description="Time-based blocks">
             <block type="epoch" />
             <block type="timeout" />
             <block type="totimestamp">

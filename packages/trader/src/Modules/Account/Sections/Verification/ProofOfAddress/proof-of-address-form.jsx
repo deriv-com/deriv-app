@@ -160,6 +160,8 @@ class ProofOfAddressForm extends React.Component {
                                             this.props.removeNotificationByKey({ key: 'authenticate' });
                                         }
                                     });
+                                    this.props.removeNotificationMessage({ key: 'needs_poa' });
+                                    this.props.removeNotificationByKey({ key: 'needs_poa' });
                                     this.props.removeNotificationMessage({ key: 'poa_expired' });
                                     this.props.removeNotificationByKey({ key: 'poa_expired' });
                                 });

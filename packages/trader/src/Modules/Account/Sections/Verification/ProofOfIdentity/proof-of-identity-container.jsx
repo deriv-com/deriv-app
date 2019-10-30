@@ -60,10 +60,8 @@ class ProofOfIdentityContainer extends React.Component {
                 return;
             }
             this.setState({ status: 'pending' });
-            if (!this.state.has_poa) {
-                this.props.removeNotificationMessage({ key: 'authenticate' });
-                this.props.removeNotificationByKey({ key: 'authenticate' });
-            }
+            this.props.removeNotificationMessage({ key: 'authenticate' });
+            this.props.removeNotificationByKey({ key: 'authenticate' });
             this.props.removeNotificationMessage({ key: 'poi_expired' });
             this.props.removeNotificationByKey({ key: 'poi_expired' });
 

@@ -32,7 +32,11 @@ class ProofOfAddressContainer extends React.Component {
             const { get_account_status } = response;
             const { document, identity } = get_account_status.authentication;
             const has_poi = !!(identity && identity.status === 'none');
-            this.setState({ status: document.status, has_poi, is_loading: false });
+            this.setState({
+                status       : document.status, has_poi,
+                is_loading   : false,
+                submitted_poa: (document.status === poa_status_codes.pending),
+            });
             this.props.refreshNotifications();
         });
     }
@@ -55,8 +59,8 @@ class ProofOfAddressContainer extends React.Component {
         } = this.state;
 
         if (is_loading)    return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (submitted_poa) return <Submitted needs_poi={has_poi} />;
         if (resubmit_poa)  return <ProofOfAddressForm onSubmit={this.onSubmit} />;
-        if (submitted_poa) return <Submitted has_poi={has_poi} />;
 
         switch (status) {
             case poa_status_codes.none:

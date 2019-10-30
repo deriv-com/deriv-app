@@ -224,6 +224,40 @@ export const clientNotifications = (ui = {}) => {
             ),
             type: 'info',
         },
+        needs_poi: {
+            key    : 'needs_poi',
+            header : localize('Proof of identity required'),
+            message: (
+                <Localize
+                    i18n_default_text='Please <0>submit</0> your proof of identity.'
+                    components={[
+                        <BinaryLink
+                            key={0}
+                            className='link'
+                            to={routes.proof_of_identity}
+                        />,
+                    ]}
+                />
+            ),
+            type: 'warning',
+        },
+        needs_poa: {
+            key    : 'needs_poa',
+            header : localize('Proof of address required'),
+            message: (
+                <Localize
+                    i18n_default_text='Please <0>submit</0> your proof of address.'
+                    components={[
+                        <BinaryLink
+                            key={0}
+                            className='link'
+                            to={routes.proof_of_address}
+                        />,
+                    ]}
+                />
+            ),
+            type: 'warning',
+        },
         poa_expired: {
             key    : 'poa_expired',
             header : localize('Document expired'),
@@ -333,6 +367,7 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
             document,
             identity,
             needs_verification,
+            prompt_client_to_authenticate,
         },
         status,
     } = account_status;
@@ -352,7 +387,11 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     const is_mf_retail         = client.landing_company_shortcode === 'maltainvest' && !professional;
     const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
     const has_risk_assessment  = getRiskAssessment(account_status);
+    const needs_poa            = needs_verification.length && needs_verification.includes('document');
+    const needs_poi            = needs_verification.length && needs_verification.includes('identity');
 
+    if (needs_poa)             addNotificationMessage(clientNotifications().needs_poa);
+    if (needs_poi)             addNotificationMessage(clientNotifications().needs_poi);
     if (cashier_locked)        addNotificationMessage(clientNotifications().cashier_locked);
     if (withdrawal_locked)     addNotificationMessage(clientNotifications().withdrawal_locked);
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
@@ -365,7 +404,9 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     }
     if (has_risk_assessment)               addNotificationMessage(clientNotifications().risk);
     if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
-    if (needs_authentication)              addNotificationMessage(clientNotifications().authenticate);
+    if (needs_authentication || prompt_client_to_authenticate) {
+        addNotificationMessage(clientNotifications().authenticate);
+    }
 
     return {
         has_risk_assessment,

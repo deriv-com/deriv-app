@@ -155,7 +155,7 @@ class ProofOfAddressForm extends React.Component {
                                         const { identity } = get_account_status.authentication;
                                         const has_poi = !(identity && identity.status === 'none');
                                         this.props.onSubmit({ has_poi });
-                                        if (!has_poi) {
+                                        if (has_poi) {
                                             this.props.removeNotificationMessage({ key: 'authenticate' });
                                             this.props.removeNotificationByKey({ key: 'authenticate' });
                                         }

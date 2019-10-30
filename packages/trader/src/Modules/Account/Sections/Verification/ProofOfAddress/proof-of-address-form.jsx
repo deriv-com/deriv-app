@@ -155,7 +155,13 @@ class ProofOfAddressForm extends React.Component {
                                         const { identity } = get_account_status.authentication;
                                         const has_poi = !(identity && identity.status === 'none');
                                         this.props.onSubmit({ has_poi });
+                                        if (!has_poi) {
+                                            this.props.removeNotificationMessage({ key: 'authenticate' });
+                                            this.props.removeNotificationByKey({ key: 'authenticate' });
+                                        }
                                     });
+                                    this.props.removeNotificationMessage({ key: 'poa_expired' });
+                                    this.props.removeNotificationByKey({ key: 'poa_expired' });
                                 });
                             }
                         }).catch((error) => {
@@ -336,7 +342,9 @@ class ProofOfAddressForm extends React.Component {
 // ProofOfAddressForm.propTypes = {};
 
 export default connect(
-    ({ client }) => ({
-        account_settings: client.account_settings,
+    ({ client, ui }) => ({
+        account_settings         : client.account_settings,
+        removeNotificationMessage: ui.removeNotificationMessage,
+        removeNotificationByKey  : ui.removeNotificationByKey,
     }),
 )(ProofOfAddressForm);

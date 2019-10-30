@@ -1,12 +1,12 @@
-import { action, flow }  from 'mobx';
-import ObjectUtils       from 'deriv-shared/utils/object';
+import { action, flow } from 'mobx';
+import ObjectUtils      from 'deriv-shared/utils/object';
 import Login,
-{ redirectToLogin }      from '_common/base/login';
-import ServerTime        from '_common/base/server_time';
-import BinarySocket      from '_common/base/socket_base';
-import { State }         from '_common/storage';
+{ redirectToLogin }     from '_common/base/login';
+import ServerTime       from '_common/base/server_time';
+import BinarySocket     from '_common/base/socket_base';
+import { State }        from '_common/storage';
 import { localize }      from 'App/i18n';
-import { requestLogout } from './logout';
+import { requestLogout }from './logout';
 import WS                from './ws-methods';
 
 let client_store,

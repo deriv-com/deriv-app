@@ -1,13 +1,16 @@
 import {
     action,
     observable,
-    toJS }           from 'mobx';
-import CurrencyUtils from 'deriv-shared/utils/currency';
-import ObjectUtils   from 'deriv-shared/utils/object';
-import BinarySocket  from '_common/base/socket_base';
-import { localize }  from 'App/i18n';
-import { WS }        from 'Services';
-import BaseStore     from '../../base-store';
+    toJS }                 from 'mobx';
+import CurrencyUtils       from 'deriv-shared/utils/currency';
+import ObjectUtils         from 'deriv-shared/utils/object';
+import BinarySocket        from '_common/base/socket_base';
+import { localize }        from 'App/i18n';
+import { WS }              from 'Services';
+import BaseStore           from '../../base-store';
+import {
+    getMT5AccountType,
+    getMT5AccountDisplay } from '../../Helpers/client';
 
 const bank_default_option = [{ text: localize('Any'), value: 0 }];
 
@@ -638,22 +641,6 @@ export default class CashierStore extends BaseStore {
         };
     }
 
-    getMT5AccountType = (group) => {
-        if (!group) return {};
-
-        const value = group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP)/, '');
-        let display_text = localize('MT5');
-        if (/svg$/.test(value)) {
-            display_text = localize('Synthetic indices');
-        } else if (/vanuatu/.test(value) || /svg_standard/.test(value)) {
-            display_text = localize('Standard');
-        } else if (/labuan/.test(value)) {
-            display_text = localize('Advanced');
-        }
-
-        return { display_text, value };
-    };
-
     @action.bound
     async sortAccountsTransfer(response_accounts) {
         const transfer_between_accounts = response_accounts || await WS.transferBetweenAccounts();
@@ -692,15 +679,14 @@ export default class CashierStore extends BaseStore {
         });
         const arr_accounts = [];
         accounts.forEach((account, idx) => {
-            const group = this.getMT5AccountType(account.mt5_group);
             const obj_values = {
-                text     : group.display_text || account.currency.toUpperCase(),
+                text     : account.mt5_group ? getMT5AccountDisplay(account.mt5_group) : account.currency.toUpperCase(),
                 value    : account.loginid,
                 balance  : account.balance,
                 currency : account.currency,
                 is_crypto: CurrencyUtils.isCryptocurrency(account.currency),
                 is_mt    : account.account_type === 'mt5',
-                ...(group.value && { mt_icon: group.value }),
+                ...(account.mt5_group && { mt_icon: getMT5AccountType(account.mt5_group) }),
             };
             if (idx === 0) {
                 this.config.account_transfer.selected_from = obj_values;
@@ -781,6 +767,15 @@ export default class CashierStore extends BaseStore {
                     this.config.account_transfer.selected_from.balance = account.balance;
                 } else if (account.loginid === this.config.account_transfer.selected_to.value) {
                     this.config.account_transfer.selected_to.balance = account.balance;
+                }
+                // if one of the accounts was mt5
+                if (account.mt5_group) {
+                    // update the balance for account switcher by renewing the mt5_login_list response
+                    WS.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
+                    // update total balance since MT5 total only comes in non-stream balance call
+                    WS.balanceAll().then((response) => {
+                        this.root_store.client.setBalance(response.balance);
+                    });
                 }
             });
             this.setIsTransferSuccessful(true);

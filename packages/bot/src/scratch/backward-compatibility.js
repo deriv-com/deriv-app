@@ -328,10 +328,12 @@ export default class BlockConversion {
         // Disable events (globally) to suppress block onchange listeners from firing.
         Blockly.Events.disable();
 
+        const xml = this.updateRenamedFields(strategy_node);
+
         const variable_nodes = [];
         const block_nodes    = [];
 
-        Array.from(strategy_node.children).forEach(strategy_child_node => {
+        Array.from(xml.children).forEach(strategy_child_node => {
             const tag_name = strategy_child_node.nodeName.toLowerCase();
 
             switch (tag_name) {
@@ -366,7 +368,7 @@ export default class BlockConversion {
 
         // Collection strategies don't pre-register variables, find these and register
         // variable instances for them if they don't exist yet.
-        registerVariables(strategy_node.querySelectorAll('field[name="VAR"]'));
+        registerVariables(xml.querySelectorAll('field[name="VAR"]'));
 
         block_nodes.forEach(block_node => this.convertBlockNode(block_node));
 
@@ -678,5 +680,32 @@ export default class BlockConversion {
         }
 
         return false;
+    }
+
+    updateRenamedFields(xml) {
+        const renamed_fields = {
+            MARKET_LIST: {
+                // volidx: 'synthetic_index', TODO: Re-enable when synthetic indices are released.
+            },
+            TRADETYPE_LIST: {
+                risefall: 'callput',
+            },
+        };
+
+        Object.keys(renamed_fields).forEach(field_name => {
+            const el_field = xml.querySelector(`field[name="${field_name}"]`);
+
+            if (el_field) {
+                const value = el_field.innerText;
+
+                Object.keys(renamed_fields[field_name]).forEach(old_name => {
+                    if (value === old_name) {
+                        el_field.innerText = renamed_fields[field_name][old_name];
+                    }
+                });
+            }
+        });
+
+        return xml;
     }
 }

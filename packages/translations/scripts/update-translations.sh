@@ -1,11 +1,11 @@
 #!/bin/sh
-# Fetch translations from crowdin + update translations to crowdIn
-
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 WHITE='\033[1;37m'
 RESET='\033[0m'
+GIT_USERNAME=$(git config user.name)
+NEW_TRANSLATION_BRANCH='add_translations'
 
 if ! [ -x "$(command -v crowdin)" ]; then
     if [ -f /usr/local/bin/crowdin-cli.jar ]; then
@@ -31,56 +31,56 @@ function confirm {
     echo "${RESET}"
 }
 
-# cd $(git rev-parse --show-toplevel) && cd packages/translations/ &&
-
-# TODO: enable this after merge
-# message "Updating dev branch" &&
+# TODO: uncomment this before merge
+message "Checking out the dev branch" &&
 # git checkout dev &&
+message "Updating dev" &&
 # git fetch upstream dev &&
 # git reset --hard upstream/dev &&
+message "Creating new branch $NEW_TRANSLATION_BRANCH from dev" &&
+if [ `git branch --list $NEW_TRANSLATION_BRANCH` ]
+then
+   echo "Branch name $NEW_TRANSLATION_BRANCH already exists."
+   confirm "Delete existing $NEW_TRANSLATION_BRANCH branch?"
+   if [[ $REPLY =~ ^[Yy]$ ]]
+   then
+       message "deleting branch locally" &&
+       git branch -D $NEW_TRANSLATION_BRANCH
+       message "deleting branch from remote" &&
+       git push -d origin $NEW_TRANSLATION_BRANCH
+       message "branch successfully deleted"
+    else
+       exit 1
+    fi
+fi &&
 
-# confirm "Include the master changes as well? (merge master into translations)" &&
-# if [[ $REPLY =~ ^[Yy]$ ]]
-# then
-#     message "Updating master branch" &&
-#     git fetch upstream master:master &&
-#     message "Merging master into translations"
-#     git merge upstream/master --no-edit
-# fi &&
+message "Creating new add_translations" &&
+git checkout -b add_translations &&
 
 confirm "Update the source file (messages.json) and push to Crowdin?" &&
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     message "Updating translations source file" &&
-    cd scripts/ && node extract-translations.js &&
+    cd $(git rev-parse --show-toplevel) && cd packages/translations/scripts && node extract-translations.js &&
     message "Uploading source file to Crowdin"
-    # crowdin upload sources
+    crowdin upload sources
+fi &&
+
+confirm "Commit changes and push to $NEW_TRANSLATION_BRANCH?" &&
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    cd $(git rev-parse --show-toplevel) &&
+    message "Committing"
+    git commit -a -m "Update translations" &&
+    message "Pushing the changes" &&
+    git push --set-upstream origin $NEW_TRANSLATION_BRANCH
 fi
 
-# confirm "Download translation files?" &&
-# if [[ $REPLY =~ ^[Yy]$ ]]
-# then
-#     message "Downloading translation files from Crowdin (*.json)" &&
-#     crowdin download
-# fi &&
+echo ${GREEN}"\nSuccessfully Done." &&
 
-# confirm "Commit changes and push to origin?" &&
-# if [[ $REPLY =~ ^[Yy]$ ]]
-# then
-#     cd $(git rev-parse --show-toplevel) &&
-#     message "Committing"
-#     git commit -a -m "Update translations" &&
-#     message "Pushing"
-#     git push origin translations
-# fi &&
-
-# echo ${GREEN}"\nSuccessfully Done." &&
-
-# if [[ $REPLY =~ ^[Yy]$ ]]
-# then
-#     confirm "Open github to submit the PR?" &&
-#     if [[ $REPLY =~ ^[Yy]$ ]]
-#     then
-#         open "https://github.com/binary-com/deriv-app"
-#     fi
-# fi
+confirm "Open github to submit the PR?" &&
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    open "https://github.com/binary-com/deriv-app/compare/dev...${GIT_USERNAME}:$NEW_TRANSLATION_BRANCH"
+    git checkout dev
+fi

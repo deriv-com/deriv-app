@@ -28,20 +28,20 @@ const FormSubmitButton = ({
             }
             {has_cancel &&
             <Button
-                className='btn--secondary--default'
                 has_effect
                 onClick={onCancel}
                 text={cancel_label}
                 type='button'
+                secondary
             />
             }
             <Button
-                className='btn--primary--default'
                 has_effect
                 is_disabled={is_disabled}
                 type='submit'
                 text={label}
                 is_loading={ is_loading }
+                primary
             />
         </div>
     );

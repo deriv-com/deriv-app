@@ -68,10 +68,10 @@ const onClick = () => {
     if (dropdown.classList.contains('open')) return;
     document.querySelector('.cq-symbol-select-btn').click();
     const left_panel = document.querySelector('.cq-filter-panel');
-    left_panel.querySelector('.ic-synthetic_index').parentNode.click();
+    left_panel.querySelector('.ic-volidx').parentNode.click();
 
     const node = document
-        .querySelector('.category-synthetic_index')
+        .querySelector('.category-volidx')
         .querySelector('.category-content');
     setTimeout(startAnimation.bind(this, node), 600);
 };
@@ -79,11 +79,12 @@ const onClick = () => {
 const MarketIsClosedOverlay = () => (
     <div className='market-is-closed-overlay'>
         <p><Localize i18n_default_text='Market is closed.' /></p>
-        <p><Localize i18n_default_text='Try Synthetic Indices which simulate real-world market volatility and are open 24/7.' /></p>
+        <p><Localize i18n_default_text='Try Volatility Indices which simulate real-world market volatility and are open 24/7.' /></p>
         <Button
-            className='btn--primary--default market-is-closed-overlay__button'
+            className='market-is-closed-overlay__button'
             onClick={onClick}
-            text={localize('Try Synthetic Indices')}
+            text={localize('Try Volatility Indices')}
+            primary
         />
     </div>
 );

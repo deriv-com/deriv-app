@@ -1,5 +1,4 @@
-import { getPurchaseChoices } from '../../../shared';
-import { translate }         from '../../../../utils/lang/i18n';
+import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.payout = {
     init() {
@@ -12,7 +11,7 @@ Blockly.Blocks.payout = {
                 {
                     type   : 'field_dropdown',
                     name   : 'PURCHASE_LIST',
-                    options: getPurchaseChoices,
+                    options: [['', '']],
                 },
             ],
             output         : 'Number',
@@ -30,21 +29,9 @@ Blockly.Blocks.payout = {
             'description' : translate('This block returns the potential payout for the selected trade type. This block can be used only in the "Purchase conditions" root block.'),
         };
     },
-    onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
-            return;
-        }
-
-        if (event.type === Blockly.Events.BLOCK_CREATE || event.type === Blockly.Events.END_DRAG) {
-            if (this.isDescendantOf('before_purchase')) {
-                if (this.disabled) {
-                    this.setDisabled(false);
-                }
-            } else if (!this.disabled) {
-                this.setDisabled(true);
-            }
-        }
-    },
+    onchange            : Blockly.Blocks.purchase.onchange,
+    populatePurchaseList: Blockly.Blocks.purchase.populatePurchaseList,
+    enforceLimitations  : Blockly.Blocks.purchase.enforceLimitations,
 };
 
 Blockly.JavaScript.payout = block => {

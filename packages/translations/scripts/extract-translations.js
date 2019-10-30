@@ -32,16 +32,16 @@ const getKeyHash = (string) => crc32(string);
         const i18n_marker = new RegExp(/i18n_default_text={?\s*(?:(?<![\\])['"])(.*?)(?:(?<![\\])['"])\s*}?|localize\(\s*(?:(?<![\\])['"])(.*?)(?:(?<![\\])['"])\s*\)?/g);
         const messages_json = {};
         // Trader: Find all file types listed in `globs`
-        for (let i = 0; i < globs.length; i++) {
-            let files_found = glob.sync(`../../trader/src/${globs[i]}`);
-            files_found = files_found.filter(file_path => file_path.indexOf('__tests__') === -1);
-            file_paths.push(...files_found);
-        }
+        // for (let i = 0; i < globs.length; i++) {
+        //     let files_found = glob.sync(`../../trader/src/${globs[i]}`);
+        //     files_found = files_found.filter(file_path => file_path.indexOf('__tests__') === -1);
+        //     file_paths.push(...files_found);
+        // }
         // Bot: Find all file types listed in `globs`
         for (let i = 0; i < globs.length; i++) {
             let files_found = glob.sync(`../../bot/src/${globs[i]}`);
             files_found = files_found.filter(file_path => file_path.indexOf('__tests__') === -1);
-            // file_paths.push(...files_found);
+            file_paths.push(...files_found);
         }
         // Iterate over files and extract all strings from the i18n marker
         for (let i = 0; i < file_paths.length; i++) {

@@ -26,16 +26,18 @@ function message {
 }
 
 function confirm {
+    echo "confirm"
     read -p "$(echo "\n${WHITE}$1 ${RESET}(y/n)${YELLOW}") " -n 1 -r &&
     echo "${RESET}"
 }
 
-cd $(git rev-parse --show-toplevel) && cd packages/trader/ &&
+# cd $(git rev-parse --show-toplevel) && cd packages/translations/ &&
 
-# message "Updating translations branch" &&
-# git checkout translations &&
-# git fetch upstream translations &&
-# git reset --hard upstream/translations &&
+# TODO: enable this after merge
+# message "Updating dev branch" &&
+# git checkout dev &&
+# git fetch upstream dev &&
+# git reset --hard upstream/dev &&
 
 # confirm "Include the master changes as well? (merge master into translations)" &&
 # if [[ $REPLY =~ ^[Yy]$ ]]
@@ -46,14 +48,14 @@ cd $(git rev-parse --show-toplevel) && cd packages/trader/ &&
 #     git merge upstream/master --no-edit
 # fi &&
 
-# confirm "Update the source file (messages.json) and push to Crowdin?" &&
-# if [[ $REPLY =~ ^[Yy]$ ]]
-# then
-#     message "Updating translations source file" &&
-#     ./extract-translations.js &&
-#     message "Uploading source file to Crowdin"
-#     # crowdin upload sources
-# fi &&
+confirm "Update the source file (messages.json) and push to Crowdin?" &&
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    message "Updating translations source file" &&
+    cd scripts/ && node extract-translations.js &&
+    message "Uploading source file to Crowdin"
+    # crowdin upload sources
+fi
 
 # confirm "Download translation files?" &&
 # if [[ $REPLY =~ ^[Yy]$ ]]

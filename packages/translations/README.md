@@ -10,6 +10,7 @@
 ### Setup: add the crowdin API key to your ~/.bash_profile
 ```sh
    $ echo "export DERIV_CROWDIN_API_KEY='apikeyhere'" >> ~/.bash_profile
+   $ source ~/.bash_profile
 ```
 ### To update strings to be translated in crowdin
 ```sh

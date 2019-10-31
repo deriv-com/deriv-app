@@ -57,11 +57,7 @@ Blockly.JavaScript.math_change = block => {
     // eslint-disable-next-line no-underscore-dangle
     const argument0 = Blockly.JavaScript.variableDB_.getName(variable, Blockly.Variables.NAME_TYPE);
     const argument1 = Blockly.JavaScript.valueToCode(block, 'DELTA', Blockly.JavaScript.ORDER_ADDITION) || '0';
+    const code      = `${argument0} = (typeof ${argument0} === 'number' ? ${argument0} : 0) + ${argument1};`;
 
-    const code = `
-    if (typeof ${argument0} != 'number') {
-        ${argument0} = 0;
-    };
-    ${argument0} += ${argument1};\n`;
     return code;
 };

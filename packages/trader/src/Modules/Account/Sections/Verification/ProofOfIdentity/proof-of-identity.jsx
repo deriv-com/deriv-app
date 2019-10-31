@@ -11,7 +11,7 @@ class ProofOfIdentity extends React.Component {
 
         return (
             <ProofOfIdentityContainer
-                addNotificationMessage={this.props.addNotificationMessage}
+                addNotificationByKey={this.props.addNotificationByKey}
                 removeNotificationByKey={this.props.removeNotificationByKey}
                 removeNotificationMessage={this.props.removeNotificationMessage}
                 refreshNotifications={this.props.refreshNotifications}

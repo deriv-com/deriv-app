@@ -307,7 +307,7 @@ class ProofOfAddressForm extends React.Component {
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                     <Button
-                                        className='account-form__footer-btn btn--primary'
+                                        className='account-form__footer-btn'
                                         type='submit'
                                         is_disabled={isSubmitting || (
                                             !!((errors.address_line_1 || !values.address_line_1) ||
@@ -321,6 +321,7 @@ class ProofOfAddressForm extends React.Component {
                                         is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
                                         text={localize('Save and submit')}
+                                        primary
                                     />
                                 </FormFooter>
                             </form>

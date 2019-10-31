@@ -16,67 +16,60 @@ const SummaryTile = (props) => (
     </div>
 );
 
-class Summary extends React.PureComponent {
-    // componentWillUnmount() {
-    //     this.props.onUnmount();
-    // }
+const Summary = ({
+    total_stake,
+    total_payout,
+    number_of_runs,
+    lost_contracts,
+    won_contracts,
+    total_profit,
+    currency,
+}) => {
 
-    render() {
-        const {
-            total_stake,
-            total_payout,
-            number_of_runs,
-            lost_contracts,
-            won_contracts,
-            total_profit,
-            currency } = this.props;
-
-        return (
-            <div className='summary'>
-                <ContractCard />
-                <div className='summary__tiles'>
-                    <SummaryTile
-                        title={translate('Total stake')}
-                        content={ Money({ amount: total_stake, currency }) }
-                    />
-                    <SummaryTile
-                        title={translate('Total payout')}
-                        content={ Money({ amount: total_payout, currency }) }
-                    />
-                    <SummaryTile
-                        title={translate('No. of runs')}
-                        content={number_of_runs}
-                    />
-                    <SummaryTile
-                        title={translate('Loss contracts')}
-                        content={lost_contracts}
-                    />
-                    <SummaryTile
-                        title={translate('Win contracts')}
-                        content={won_contracts}
-                    />
-                    <SummaryTile
-                        title={translate('Profit/Loss')}
-                        content={Money({ amount: total_profit, currency, has_sign: true })}
-                        contentClassName={classNames(
-                            'summary__tile-content',
-                            'summary__amount', {
-                                'summary__amount--positive': total_profit > 0,
-                                'summary__amount--negative': total_profit < 0,
-                            })}
-                    />
-                </div>
+    return (
+        <div className='summary'>
+            <ContractCard />
+            <div className='summary__tiles'>
+                <SummaryTile
+                    title={translate('Total stake')}
+                    content={ Money({ amount: total_stake, currency }) }
+                />
+                <SummaryTile
+                    title={translate('Total payout')}
+                    content={ Money({ amount: total_payout, currency }) }
+                />
+                <SummaryTile
+                    title={translate('No. of runs')}
+                    content={number_of_runs}
+                />
+                <SummaryTile
+                    title={translate('Loss contracts')}
+                    content={lost_contracts}
+                />
+                <SummaryTile
+                    title={translate('Win contracts')}
+                    content={won_contracts}
+                />
+                <SummaryTile
+                    title={translate('Profit/Loss')}
+                    content={Money({ amount: total_profit, currency, has_sign: true })}
+                    contentClassName={classNames(
+                        'summary__tile-content',
+                        'summary__amount', {
+                            'summary__amount--positive': total_profit > 0,
+                            'summary__amount--negative': total_profit < 0,
+                        })}
+                />
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 Summary.propTypes = {
     contract      : PropTypes.object,
     currency      : PropTypes.string,
     lost_contracts: PropTypes.number,
     number_of_runs: PropTypes.number,
-    onUnmount     : PropTypes.func,
     total_payout  : PropTypes.number,
     total_profit  : PropTypes.number,
     total_stake   : PropTypes.number,
@@ -88,7 +81,6 @@ export default connect(({ summary }) => ({
     currency      : summary.currency,
     lost_contracts: summary.lost_contracts,
     number_of_runs: summary.number_of_runs,
-    onUnmount     : summary.onUnmount,
     total_payout  : summary.total_payout,
     total_profit  : summary.total_profit,
     total_stake   : summary.total_stake,

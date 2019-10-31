@@ -1,7 +1,7 @@
 import {
     observable,
-    action }        from 'mobx';
-import { observer } from '../utils/observer';
+    action }          from 'mobx';
+import { observer }   from '../utils/observer';
 
 export default class SummaryStore {
     @observable currency        = '';
@@ -16,15 +16,13 @@ export default class SummaryStore {
         this.root_store        = root_store;
         const { client }       = this.root_store.core;
         this.currency          = client.currency;
-
-        observer.register('contract.status', this.onContractStatusEvent);
     }
 
     @action.bound
     onContractStatusEvent(contract_status) {
         switch (contract_status.id) {
             // TODO: Constants (coming from trade engine) for case labels below.
-            case ('contract.purchase_recieved'): {
+            case ('contract.purchase_received'): {
                 const { buy } = contract_status;
                 this.total_stake += buy.buy_price;
                 break;
@@ -71,10 +69,6 @@ export default class SummaryStore {
         this.total_payout   = 0;
         this.total_stake    = 0;
         this.won_contracts  = 0;
-    }
-
-    @action.bound
-    onUnmount() {
-        observer.unregister('contract.status', this.onContractStatusEvent);
+        observer.emit('summary.clear');
     }
 }

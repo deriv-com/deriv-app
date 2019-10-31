@@ -7,8 +7,8 @@ import {
     when,
     reaction,
 }                                    from 'mobx';
-import CurrencyUtils                from 'deriv-shared/utils/currency';
-import ObjectUtils                  from 'deriv-shared/utils/object';
+import CurrencyUtils                 from 'deriv-shared/utils/currency';
+import ObjectUtils                   from 'deriv-shared/utils/object';
 import {
     requestLogout,
     WS }                             from 'Services';

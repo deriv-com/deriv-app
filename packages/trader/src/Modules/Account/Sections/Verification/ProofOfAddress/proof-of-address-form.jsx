@@ -1,27 +1,26 @@
-// import PropTypes            from 'prop-types';
-import React                   from 'react';
+// import PropTypes           from 'prop-types';
+import React                  from 'react';
 import {
     Button,
-    Input }                    from 'deriv-components';
-import { Formik }              from 'formik';
-import BinarySocket            from '_common/base/socket_base';
-import { localize }            from 'App/i18n';
-import { WS }                  from 'Services';
-import { connect }             from 'Stores/connect';
-import { clientNotifications } from 'Stores/Helpers/client-notifications';
+    Input }                   from 'deriv-components';
+import { Formik }             from 'formik';
+import BinarySocket           from '_common/base/socket_base';
+import { localize }           from 'App/i18n';
+import { WS }                 from 'Services';
+import { connect }            from 'Stores/connect';
 import {
     validAddress,
     validPostCode,
-    validLetterSymbol }        from 'Utils/Validator/declarative-validation-rules';
-import FileUploaderContainer   from './file-uploader-container.jsx';
-import FormSubmitErrorMessage  from '../../ErrorMessages/FormSubmitErrorMessage';
-import LoadErrorMessage        from '../../ErrorMessages/LoadErrorMessage';
+    validLetterSymbol }       from 'Utils/Validator/declarative-validation-rules';
+import FileUploaderContainer  from './file-uploader-container.jsx';
+import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
+import LoadErrorMessage       from '../../ErrorMessages/LoadErrorMessage';
 import {
     FormFooter,
     FormBody,
-    FormSubHeader }            from '../../../Components/layout-components.jsx';
-import { LeaveConfirm }        from '../../../Components/leave-confirm.jsx';
-import Loading                 from '../../../../../templates/app/components/loading.jsx';
+    FormSubHeader }           from '../../../Components/layout-components.jsx';
+import { LeaveConfirm }       from '../../../Components/leave-confirm.jsx';
+import Loading                from '../../../../../templates/app/components/loading.jsx';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
@@ -165,7 +164,7 @@ class ProofOfAddressForm extends React.Component {
                                         this.props.removeNotificationMessage({ key: 'poa_expired' });
                                         this.props.removeNotificationByKey({ key: 'poa_expired' });
                                         if (needs_poi) {
-                                            this.props.addNotificationMessage(clientNotifications().needs_poi);
+                                            this.props.addNotificationByKey('needs_poi');
                                         }
                                     });
                                 });
@@ -350,7 +349,7 @@ class ProofOfAddressForm extends React.Component {
 export default connect(
     ({ client, ui }) => ({
         account_settings         : client.account_settings,
-        addNotificationMessage   : ui.addNotificationMessage,
+        addNotificationByKey     : ui.addNotificationMessageByKey,
         removeNotificationMessage: ui.removeNotificationMessage,
         removeNotificationByKey  : ui.removeNotificationByKey,
     }),

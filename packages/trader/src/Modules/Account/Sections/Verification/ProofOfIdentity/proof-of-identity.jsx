@@ -25,7 +25,7 @@ export default connect(
         has_missing_required_field: client.has_missing_required_field,
         is_virtual                : client.is_virtual,
         refreshNotifications      : client.refreshNotifications,
-        addNotificationMessage    : ui.addNotificationMessage,
+        addNotificationByKey      : ui.addNotificationMessageByKey,
         removeNotificationByKey   : ui.removeNotificationByKey,
         removeNotificationMessage : ui.removeNotificationMessage,
     }),

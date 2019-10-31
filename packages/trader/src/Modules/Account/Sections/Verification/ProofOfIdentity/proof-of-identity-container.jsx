@@ -1,13 +1,12 @@
-import * as Cookies            from 'js-cookie';
-import React                   from 'react';
-import { localize }            from 'App/i18n';
-import { WS }                  from 'Services';
-import { clientNotifications } from 'Stores/Helpers/client-notifications';
-import Onfido                  from './onfido.jsx';
-import { getIdentityStatus }   from './proof-of-identity';
-import { Unverified }          from './proof-of-identity-messages.jsx';
-import ErrorMessage            from '../../ErrorMessages/LoadErrorMessage';
-import Loading                 from '../../../../../templates/app/components/loading.jsx';
+import * as Cookies          from 'js-cookie';
+import React                 from 'react';
+import { localize }          from 'App/i18n';
+import { WS }                from 'Services';
+import Onfido                from './onfido.jsx';
+import { getIdentityStatus } from './proof-of-identity';
+import { Unverified }        from './proof-of-identity-messages.jsx';
+import ErrorMessage          from '../../ErrorMessages/LoadErrorMessage';
+import Loading               from '../../../../../templates/app/components/loading.jsx';
 
 class ProofOfIdentityContainer extends React.Component {
     state = {
@@ -68,7 +67,7 @@ class ProofOfIdentityContainer extends React.Component {
             this.props.removeNotificationByKey({ key: 'needs_poi' });
             this.props.removeNotificationMessage({ key: 'poi_expired' });
             this.props.removeNotificationByKey({ key: 'poi_expired' });
-            if (this.state.needs_poa) this.props.addNotificationMessage(clientNotifications().needs_poa);
+            if (this.state.needs_poa) this.props.addNotificationByKey('needs_poa');
         });
     };
 

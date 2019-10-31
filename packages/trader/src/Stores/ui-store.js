@@ -2,14 +2,16 @@ import {
     action,
     autorun,
     computed,
-    observable }                  from 'mobx';
+    observable }             from 'mobx';
 import {
     MAX_MOBILE_WIDTH,
-    MAX_TABLET_WIDTH }            from 'Constants/ui';
-import ObjectUtils                from 'deriv-shared/utils/object';
-import { sortNotifications }      from 'App/Components/Elements/NotificationMessage';
-import { excluded_notifications } from './Helpers/client-notifications';
-import BaseStore                  from './base-store';
+    MAX_TABLET_WIDTH }       from 'Constants/ui';
+import ObjectUtils           from 'deriv-shared/utils/object';
+import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
+import {
+    clientNotifications,
+    excluded_notifications } from './Helpers/client-notifications';
+import BaseStore             from './base-store';
 
 const store_name = 'ui_store';
 
@@ -344,6 +346,11 @@ export default class UIStore extends BaseStore {
     removeNotificationByKey({ key }) {
         this.notifications = this.notifications
             .filter(n => n.key !== key);
+    }
+
+    @action.bound
+    addNotificationMessageByKey(key) {
+        if (key) this.addNotificationMessage(clientNotifications()[key]);
     }
 
     @action.bound

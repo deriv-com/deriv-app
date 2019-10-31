@@ -149,7 +149,7 @@ export const clientNotifications = (ui = {}) => {
                     ]}
                 />
             ),
-            type: 'info',
+            type: 'warning',
         },
         tax: {
             key    : 'tax',

@@ -67,7 +67,6 @@ class OTC extends React.Component {
             >
                 <div className='otc' ref={this.setWrapperRef}>
                     <VerticalTab
-                        modal_index={1}
                         header_title={localize('OTC Payment')}
                         action_bar={action_bar_items}
                         action_bar_classname='otc__inset-header'
@@ -78,6 +77,8 @@ class OTC extends React.Component {
                         is_routed={true}
                         is_full_width={true}
                         list={menu_options()}
+                        tab_container_classname='otc__tab-container'
+                        has_subtitle
                     />
                 </div>
             </FadeWrapper>

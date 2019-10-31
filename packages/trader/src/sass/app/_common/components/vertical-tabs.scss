@@ -9,14 +9,6 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
     background-color: var(--general-section-1);
     height: 100%;
 
-    &__content-container {
-        position: relative;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        flex-flow: column nowrap;
-        flex-grow: 1;
-    }
     &--full-screen {
         min-height: $MIN_HEIGHT;
 
@@ -119,6 +111,20 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         position: relative;
         background-color: var(--general-main-1);
 
+        &-container {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-flow: column nowrap;
+            flex-grow: 1;
+        }
+        &-title {
+            font-size: var(--text-size-s);
+            font-weight: bold;
+            margin: 0 0.8rem;
+            color: var(--text-prominent);
+        }
         &.vertical-tab:not(.vertical-tab--full-screen) {
             @include toEm(padding, 24px);
             height: 100%;

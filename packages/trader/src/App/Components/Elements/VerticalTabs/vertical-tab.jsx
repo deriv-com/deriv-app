@@ -28,6 +28,12 @@ class VerticalTab extends React.Component {
     render() {
         const selected = this.props.list[this.props.modal_index] || this.props.list[0];
         const index_path = window.location.pathname;
+        const action_bar = [...this.props.action_bar];
+        if (this.props.has_subtitle) {
+            action_bar.push({
+                component: () => <h1 className='vertical-tab__content-title'>{selected.label}</h1>,
+            });
+        }
         return (
             <div
                 className={classNames('vertical-tab', {
@@ -46,12 +52,13 @@ class VerticalTab extends React.Component {
                 />
                 }
                 <VerticalTabContentContainer
-                    action_bar={this.props.action_bar}
+                    action_bar={action_bar}
                     action_bar_classname={this.props.action_bar_classname}
                     index_path={index_path}
                     items={this.props.list}
                     selected={selected}
                     is_routed={this.props.is_routed}
+                    tab_container_classname={this.props.tab_container_classname}
                 />
             </div>
         );
@@ -74,6 +81,7 @@ VerticalTab.propTypes = {
     action_bar_classname: PropTypes.string,
     classNameHeader     : PropTypes.string,
     current_path        : PropTypes.string,
+    has_subtitle        : PropTypes.bool,
     header_title        : PropTypes.string,
     is_full_width       : PropTypes.bool,
     is_routed           : PropTypes.bool,
@@ -87,10 +95,11 @@ VerticalTab.propTypes = {
             value  : PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
         }),
     ).isRequired,
-    modal_index   : PropTypes.number,
-    selected_index: PropTypes.number,
-    setModalIndex : PropTypes.func,
-    visible_items : PropTypes.array,
+    modal_index            : PropTypes.number,
+    selected_index         : PropTypes.number,
+    setModalIndex          : PropTypes.func,
+    tab_container_classname: PropTypes.string,
+    visible_items          : PropTypes.array,
 };
 
 export default connect(

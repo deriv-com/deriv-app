@@ -45,6 +45,7 @@ class DurationWrapper extends React.Component {
     };
 
     getDurationMinMaxValues = (duration_min_max, contract_expiry_type, duration_unit) => {
+        if (!duration_min_max[contract_expiry_type]) return [];
         const max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, duration_unit);
         const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, duration_unit);
 

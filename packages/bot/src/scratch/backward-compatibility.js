@@ -329,6 +329,40 @@ export default class BlockConversion {
         return current_previous_connection.sourceBlock_;
     }
 
+    // eslint-disable-next-line class-methods-use-this
+    updateRenamedFields(xml) {
+        const renamed_fields = {
+            MARKET_LIST: {
+                // volidx: 'synthetic_index', TODO: Re-enable when synthetic indices are released.
+            },
+            TRADETYPECAT_LIST: {
+                endsinout   : 'inout',
+                staysinout  : 'inout',
+                callputequal: 'callput',
+            },
+            TRADETYPE_LIST: {
+                risefall      : 'callput',
+                risefallequals: 'callputequal',
+            },
+        };
+
+        Object.keys(renamed_fields).forEach(field_name => {
+            const el_field = xml.querySelector(`field[name="${field_name}"]`);
+
+            if (el_field) {
+                const value = el_field.innerText;
+
+                Object.keys(renamed_fields[field_name]).forEach(old_name => {
+                    if (value === old_name) {
+                        el_field.innerText = renamed_fields[field_name][old_name];
+                    }
+                });
+            }
+        });
+
+        return xml;
+    }
+
     generateUniqueVariable(variable_name) {
         let current_name = variable_name;
         let counter = 0;
@@ -714,38 +748,5 @@ export default class BlockConversion {
         }
 
         return false;
-    }
-
-    updateRenamedFields(xml) {
-        const renamed_fields = {
-            MARKET_LIST: {
-                // volidx: 'synthetic_index', TODO: Re-enable when synthetic indices are released.
-            },
-            TRADETYPECAT_LIST: {
-                endsinout   : 'inout',
-                staysinout  : 'inout',
-                callputequal: 'callput',
-            },
-            TRADETYPE_LIST: {
-                risefall      : 'callput',
-                risefallequals: 'callputequal',
-            },
-        };
-
-        Object.keys(renamed_fields).forEach(field_name => {
-            const el_field = xml.querySelector(`field[name="${field_name}"]`);
-
-            if (el_field) {
-                const value = el_field.innerText;
-
-                Object.keys(renamed_fields[field_name]).forEach(old_name => {
-                    if (value === old_name) {
-                        el_field.innerText = renamed_fields[field_name][old_name];
-                    }
-                });
-            }
-        });
-
-        return xml;
     }
 }

@@ -45,7 +45,7 @@ Blockly.Blocks.purchase = {
             }
         } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.id) {
             const purchase_type_list = this.getField('PURCHASE_LIST');
-            const purchase_options   = purchase_type_list.menuGenerator_;
+            const purchase_options   = purchase_type_list.menuGenerator_; // eslint-disable-line
 
             if (purchase_options[0][0] === '') {
                 this.populatePurchaseList(event);

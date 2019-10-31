@@ -15,10 +15,6 @@ export default class ContractsFor {
                 trade_type: 'higherlower',
             },
             {
-                submarket : 'smart_fx',
-                trade_type: 'callputequal',
-            },
-            {
                 submarket : 'minor_pairs',
                 trade_type: 'higherlower',
             },

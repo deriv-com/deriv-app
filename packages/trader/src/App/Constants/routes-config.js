@@ -13,6 +13,10 @@ import AccountLimits       from 'Modules/Account/Sections/Security/AccountLimits
 import OpenPositions       from 'Modules/Reports/Containers/open-positions.jsx';
 import ProfitTable         from 'Modules/Reports/Containers/profit-table.jsx';
 import Statement           from 'Modules/Reports/Containers/statement.jsx';
+import BuySell           from 'Modules/OTC/containers/buy-sell.jsx';
+import Orders           from 'Modules/OTC/containers/orders.jsx';
+import MyAds           from 'Modules/OTC/containers/my-ads.jsx';
+import MyProfile           from 'Modules/OTC/containers/my-profile.jsx';
 
 import Trade from 'Modules/Trading';
 
@@ -24,6 +28,9 @@ const MT5 = lazy(() => import(/* webpackChunkName: "mt5", webpackPrefetch: true 
 // Reports Routes
 const Reports = lazy(() => import(/* webpackChunkName: "reports" */ 'Modules/Reports'));
 
+// OTC Routes
+const OTC = lazy(() => import(/* webpackChunkName: "reports" */ 'Modules/OTC'));
+
 // Account Management Routes
 const Account = lazy(() => import(/* webpackChunkName: "account" */ 'Modules/Account'));
 
@@ -34,6 +41,18 @@ const initRoutesConfig = () => ([
     { path: routes.contract,  component: ContractDetails, title: localize('Contract Details'),  is_authenticated: true },
     { path: routes.index,     component: RouterRedirect,  title: '',                            to: routes.trade },
     { path: routes.mt5,       component: MT5,             title: localize('MT5'),               is_authenticated: true },
+    {
+        path            : routes.otc,
+        component       : OTC,
+        is_authenticated: true,
+        title           : localize('OTC Payment'),
+        routes          : [
+            { path: routes.otc_buy_sell,   component: BuySell,       title: localize('Buy/Sell'),   icon_component: 'IconStatement', default: true },
+            { path: routes.otc_orders,     component: Orders,        title: localize('Orders'),     icon_component: 'IconStatement' },
+            { path: routes.otc_ads,        component: MyAds,         title: localize('My ads'),     icon_component: 'IconStatement' },
+            { path: routes.otc_my_profile, component: MyProfile,     title: localize('My profile'), icon_component: 'IconStatement' },
+        ],
+    },
     {
         path            : routes.reports,
         component       : Reports,

@@ -27,6 +27,7 @@ class VerticalTab extends React.Component {
 
     render() {
         const selected = this.props.list[this.props.modal_index] || this.props.list[0];
+        const index_path = window.location.pathname;
         return (
             <div
                 className={classNames('vertical-tab', {
@@ -47,6 +48,7 @@ class VerticalTab extends React.Component {
                 <VerticalTabContentContainer
                     action_bar={this.props.action_bar}
                     action_bar_classname={this.props.action_bar_classname}
+                    index_path={index_path}
                     items={this.props.list}
                     selected={selected}
                     is_routed={this.props.is_routed}

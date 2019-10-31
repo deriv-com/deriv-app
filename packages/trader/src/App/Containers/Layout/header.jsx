@@ -49,6 +49,13 @@ const Header = ({
             onClick   : toggleCashierModal,
             login_only: true,
         },
+        {
+            id        : 'dt_otc_payment_tab',
+            icon      : <Icon icon='IconReports' className='header__icon' />,
+            text      : localize('OTC Payment'),
+            link_to   : '/otc',
+            login_only: true,
+        },
     ];
 
     return (

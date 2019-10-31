@@ -18,6 +18,7 @@ export default class UIStore extends BaseStore {
     @observable is_positions_drawer_on      = false;
     @observable is_account_settings_visible = false;
     @observable is_reports_visible          = false;
+    @observable is_otc_visible              = false;
 
     @observable is_cashier_modal_on     = false;
     @observable is_dark_mode_on         = false;
@@ -295,6 +296,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleReports(is_visible) {
         this.is_reports_visible = is_visible;
+    }
+
+    @action.bound
+    toggleOtc(is_visible) {
+        this.is_otc_visible = is_visible;
     }
 
     @action.bound

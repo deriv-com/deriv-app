@@ -11,6 +11,7 @@ class ProofOfIdentity extends React.Component {
 
         return (
             <ProofOfIdentityContainer
+                addNotificationMessage={this.props.addNotificationMessage}
                 removeNotificationByKey={this.props.removeNotificationByKey}
                 removeNotificationMessage={this.props.removeNotificationMessage}
                 refreshNotifications={this.props.refreshNotifications}
@@ -24,6 +25,7 @@ export default connect(
         has_missing_required_field: client.has_missing_required_field,
         is_virtual                : client.is_virtual,
         refreshNotifications      : client.refreshNotifications,
+        addNotificationMessage    : ui.addNotificationMessage,
         removeNotificationByKey   : ui.removeNotificationByKey,
         removeNotificationMessage : ui.removeNotificationMessage,
     }),

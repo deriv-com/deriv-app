@@ -1,12 +1,13 @@
-import * as Cookies          from 'js-cookie';
-import React                 from 'react';
-import { localize }          from 'App/i18n';
-import { WS }                from 'Services';
-import Onfido                from './onfido.jsx';
-import { getIdentityStatus } from './proof-of-identity';
-import { Unverified }        from './proof-of-identity-messages.jsx';
-import ErrorMessage          from '../../ErrorMessages/LoadErrorMessage';
-import Loading               from '../../../../../templates/app/components/loading.jsx';
+import * as Cookies            from 'js-cookie';
+import React                   from 'react';
+import { localize }            from 'App/i18n';
+import { WS }                  from 'Services';
+import { clientNotifications } from 'Stores/Helpers/client-notifications';
+import Onfido                  from './onfido.jsx';
+import { getIdentityStatus }   from './proof-of-identity';
+import { Unverified }          from './proof-of-identity-messages.jsx';
+import ErrorMessage            from '../../ErrorMessages/LoadErrorMessage';
+import Loading                 from '../../../../../templates/app/components/loading.jsx';
 
 class ProofOfIdentityContainer extends React.Component {
     state = {
@@ -60,13 +61,14 @@ class ProofOfIdentityContainer extends React.Component {
                 return;
             }
             this.setState({ status: 'pending' });
+            // TODO: clean all of this up by simplifying the manually toggled notifications functions
             this.props.removeNotificationMessage({ key: 'authenticate' });
             this.props.removeNotificationByKey({ key: 'authenticate' });
             this.props.removeNotificationMessage({ key: 'needs_poi' });
             this.props.removeNotificationByKey({ key: 'needs_poi' });
             this.props.removeNotificationMessage({ key: 'poi_expired' });
             this.props.removeNotificationByKey({ key: 'poi_expired' });
-
+            if (this.state.needs_poa) this.props.addNotificationMessage(clientNotifications().needs_poa);
         });
     };
 
@@ -74,12 +76,13 @@ class ProofOfIdentityContainer extends React.Component {
         WS.authorized.getAccountStatus().then(response => {
             const { get_account_status } = response;
             this.getOnfidoServiceToken().then(onfido_service_token => {
-                const { identity, document } = get_account_status.authentication;
-                const { onfido_unsupported } = this.state;
-                const has_poa                = !(document && document.status === 'none');
-                const status                 = getIdentityStatus(identity, onfido_unsupported);
-                const unwelcome              = get_account_status.status.some(account_status => account_status === 'unwelcome');
-                this.setState({ is_loading: false, has_poa, status, onfido_service_token, unwelcome });
+                const { document, identity, needs_verification } = get_account_status.authentication;
+                const has_poa                          = !(document && document.status === 'none');
+                const needs_poa                        = needs_verification.length && needs_verification.includes('document');
+                const { onfido_unsupported }           = this.state;
+                const status                           = getIdentityStatus(identity, onfido_unsupported);
+                const unwelcome                        = get_account_status.status.some(account_status => account_status === 'unwelcome');
+                this.setState({ is_loading: false, has_poa, needs_poa, status, onfido_service_token, unwelcome });
             });
             this.props.refreshNotifications();
         });

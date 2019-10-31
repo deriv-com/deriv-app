@@ -8,6 +8,7 @@ import BinarySocket            from '_common/base/socket_base';
 import { localize }            from 'App/i18n';
 import { WS }                  from 'Services';
 import { connect }             from 'Stores/connect';
+import { clientNotifications } from 'Stores/Helpers/client-notifications';
 import {
     validAddress,
     validPostCode,
@@ -152,18 +153,21 @@ class ProofOfAddressForm extends React.Component {
                                         is_btn_loading   : false,
                                         is_submit_success: true,
                                     }, () => {
-                                        const { identity } = get_account_status.authentication;
-                                        const has_poi = !(identity && identity.status === 'none');
+                                        const { identity, needs_verification } = get_account_status.authentication;
+                                        const has_poi   = !(identity && identity.status === 'none');
+                                        // TODO: clean all of this up by simplifying the manually toggled notifications functions
+                                        const needs_poi = needs_verification.length && needs_verification.includes('identity');
                                         this.props.onSubmit({ has_poi });
-                                        if (has_poi) {
-                                            this.props.removeNotificationMessage({ key: 'authenticate' });
-                                            this.props.removeNotificationByKey({ key: 'authenticate' });
+                                        this.props.removeNotificationMessage({ key: 'authenticate' });
+                                        this.props.removeNotificationByKey({ key: 'authenticate' });
+                                        this.props.removeNotificationMessage({ key: 'needs_poa' });
+                                        this.props.removeNotificationByKey({ key: 'needs_poa' });
+                                        this.props.removeNotificationMessage({ key: 'poa_expired' });
+                                        this.props.removeNotificationByKey({ key: 'poa_expired' });
+                                        if (needs_poi) {
+                                            this.props.addNotificationMessage(clientNotifications().needs_poi);
                                         }
                                     });
-                                    this.props.removeNotificationMessage({ key: 'needs_poa' });
-                                    this.props.removeNotificationByKey({ key: 'needs_poa' });
-                                    this.props.removeNotificationMessage({ key: 'poa_expired' });
-                                    this.props.removeNotificationByKey({ key: 'poa_expired' });
                                 });
                             }
                         }).catch((error) => {
@@ -346,6 +350,7 @@ class ProofOfAddressForm extends React.Component {
 export default connect(
     ({ client, ui }) => ({
         account_settings         : client.account_settings,
+        addNotificationMessage   : ui.addNotificationMessage,
         removeNotificationMessage: ui.removeNotificationMessage,
         removeNotificationByKey  : ui.removeNotificationByKey,
     }),

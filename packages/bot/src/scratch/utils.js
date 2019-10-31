@@ -79,10 +79,8 @@ export const load = (block_string, drop_event) => {
         console.error(e);  // eslint-disable-line
     }
 
-    if (!(xml.hasAttribute('is_dbot') && xml.getAttribute('is_dbot') === 'true')) {
-        const blockConversion = new BlockConversion();
-        xml = blockConversion.convertStrategy(xml);
-    }
+    const blockConversion = new BlockConversion();
+    xml = blockConversion.convertStrategy(xml);
 
     const blockly_xml = xml.querySelectorAll('block');
 

@@ -4,8 +4,7 @@ import ApiHelpers    from '../services/api/api-helpers';
 
 /* eslint-disable no-underscore-dangle */
 export default class BlockConversion {
-    constructor(is_collection) {
-        this.is_collection            = is_collection;
+    constructor() {
         this.blocks_pending_reconnect = {};
         this.conversions              = this.getConversions();
         this.workspace                = this.createWorkspace();
@@ -80,6 +79,27 @@ export default class BlockConversion {
                 std_dev_multiplier_up  : [{ old: 'UPMULTIPLIER',      new: 'UPMULTIPLIER' }],
                 std_dev_multiplier_down: [{ old: 'DOWNMULTIPLIER',    new: 'DOWNMULTIPLIER' }],
             };
+
+            // Bollinger Bands + MACDA have some fields we need to carry over.
+            switch (block_type) {
+                case ('bb_statement'):
+                case ('bba_statement'): {
+                    const bb_result_list = block.getField('BBRESULT_LIST');
+                    if (bb_result_list) {
+                        bb_result_list.setValue(this.getFieldValue(block_node, 'BBRESULT_LIST'));
+                    }
+                    break;
+                }
+                case ('macda_statement'): {
+                    const macd_fields_list = block.getField('MACDFIELDS_LIST');
+                    if (macd_fields_list) {
+                        macd_fields_list.setValue(this.getFieldValue(block_node, 'MACDFIELDS_LIST'));
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
 
             // Attach required child blocks (these are defined on each indicator block).
             const required_child_blocks = block.required_child_blocks || [];
@@ -232,7 +252,7 @@ export default class BlockConversion {
                 const buy_sell_error_bool = this.workspace.newBlock('logic_boolean');
     
                 buy_sell_error_bool.setShadow(true);
-                buy_sell_error_bool.setFieldValue(this.getFieldValue(block_node, 'RESTARTONERROR'), 'BOOL');
+                buy_sell_error_bool.setFieldValue(this.getFieldValue(block_node, 'TIME_MACHINE_ENABLED'), 'BOOL');
                 buy_sell_error_input.connection.connect(buy_sell_error_bool.outputConnection);
     
                 Object.values(blocks_to_connect).forEach(child_block => {
@@ -330,6 +350,11 @@ export default class BlockConversion {
 
         const xml = this.updateRenamedFields(strategy_node);
 
+        // We only want to update renamed fields for modern strategies.
+        if (strategy_node.hasAttribute('is_dbot') && strategy_node.getAttribute('is_dbot') === 'true') {
+            return xml;
+        }
+
         const variable_nodes = [];
         const block_nodes    = [];
 
@@ -419,7 +444,7 @@ export default class BlockConversion {
 
         const converted_xml = Blockly.Xml.workspaceToDom(this.workspace);
 
-        if (this.is_collection) {
+        if (strategy_node.hasAttribute('collection') && strategy_node.getAttribute('collection') === 'true') {
             converted_xml.setAttribute('collection', 'true');
         }
 
@@ -436,18 +461,41 @@ export default class BlockConversion {
         const is_old_block = Object.keys(this.conversions).includes(block_type);
         let block          = null;
 
+        const is_collapsed   = el_block.getAttribute('collapsed') && el_block.getAttribute('collapsed') === 'true';
+        const is_immovable   = el_block.getAttribute('movable') && el_block.getAttribute('movable') === 'false';
+        const is_undeletable = el_block.getAttribute('deletable') && el_block.getAttribute('deletable') === 'false';
+        const is_disabled    = el_block.getAttribute('disabled') && el_block.getAttribute('disabled') === 'true';
+
+        const setBlockAttributes = (b) => {
+            if (is_collapsed) {
+                b.setCollapsed(true);
+            }
+            if (is_immovable) {
+                b.setMovable(false);
+            }
+            if (is_undeletable) {
+                b.setDeletable(false);
+            }
+            if (is_disabled) {
+                b.setDisabled(true);
+            }
+        };
+
         if (is_old_block) {
             const conversion_obj = this.conversions[block_type](el_block);
 
             // block is a value block that needs to be reattached. TODO?
             if (conversion_obj.block_to_attach) {
                 block = conversion_obj.block_to_attach;
+                setBlockAttributes(block);
             }
 
             // Statement blocks coming from the conversion_obj need to be attached to the block's previousConnection.
-            // That sibling shouldn't be part of a protected statement though, this needs to be handled.
             if (parent_block && conversion_obj.statement_blocks) {
                 conversion_obj.statement_blocks.forEach(statement_block => {
+                    // Persist block attributes.
+                    setBlockAttributes(statement_block);
+
                     const previous_connection = this.getClosestLegalPreviousConnection(parent_block);
 
                     if (previous_connection) {
@@ -466,6 +514,7 @@ export default class BlockConversion {
 
             if (is_legal_block) {
                 block = this.workspace.newBlock(block_type);
+                setBlockAttributes(block);
 
                 // Ensure mutations are correctly rendered. This logic happens here because
                 // we should ignore mutations on blocks that are already converted i.e mutations
@@ -536,24 +585,6 @@ export default class BlockConversion {
             }
         });
 
-        const is_collapsed   = el_block.getAttribute('collapsed') && el_block.getAttribute('collapsed') === 'true';
-        const is_immovable   = el_block.getAttribute('movable') && el_block.getAttribute('movable') === 'false';
-        const is_undeletable = el_block.getAttribute('deletable') && el_block.getAttribute('deletable') === 'false';
-        const is_disabled    = el_block.getAttribute('disabled') && el_block.getAttribute('disabled') === 'true';
-
-        if (is_collapsed) {
-            block.setCollapsed(true);
-        }
-        if (is_immovable) {
-            block.setMovable(false);
-        }
-        if (is_undeletable) {
-            block.setDeletable(false);
-        }
-        if (is_disabled) {
-            block.setDisabled(true);
-        }
-
         return block;
     }
 
@@ -615,7 +646,10 @@ export default class BlockConversion {
             // (i.e. nested in <next>) will be connected before less nested blocks.
             // Luckily Blockly API works in our favour and helps maintain the correct order.
             const statement_input = block_to_use.getInput(statement_name);
-            statement_input.connection.connect(input_child_block.previousConnection);
+
+            if (statement_input && input_child_block.previousConnection) {
+                statement_input.connection.connect(input_child_block.previousConnection);
+            }
         });
     }
 
@@ -687,8 +721,14 @@ export default class BlockConversion {
             MARKET_LIST: {
                 // volidx: 'synthetic_index', TODO: Re-enable when synthetic indices are released.
             },
+            TRADETYPECAT_LIST: {
+                endsinout   : 'inout',
+                staysinout  : 'inout',
+                callputequal: 'callput',
+            },
             TRADETYPE_LIST: {
-                risefall: 'callput',
+                risefall      : 'callput',
+                risefallequals: 'callputequal',
             },
         };
 

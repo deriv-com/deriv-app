@@ -386,6 +386,7 @@ export default class BlockConversion {
 
         // We only want to update renamed fields for modern strategies.
         if (strategy_node.hasAttribute('is_dbot') && strategy_node.getAttribute('is_dbot') === 'true') {
+            Blockly.Events.enable();
             return xml;
         }
 

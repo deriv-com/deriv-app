@@ -50,6 +50,6 @@ Blockly.JavaScript.logic_ternary = block => {
     const valueThen = Blockly.JavaScript.valueToCode(block, 'THEN', Blockly.JavaScript.ORDER_CONDITIONAL) || 'null';
     const valueElse = Blockly.JavaScript.valueToCode(block, 'ELSE', Blockly.JavaScript.ORDER_CONDITIONAL) || 'null';
 
-    const code = `${valueIf} ? ${valueThen} : ${valueElse}`;
+    const code = `(${valueIf} ? ${valueThen} : ${valueElse})`;
     return [code, Blockly.JavaScript.ORDER_CONDITIONAL];
 };

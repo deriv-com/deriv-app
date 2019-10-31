@@ -12,7 +12,8 @@
   "scripts": {
     "test": "echo \"Testing translations\"",
     "build": "echo \"Building translations\"",
-    "build:travis": "echo \"Building travis \""
+    "build:travis": "echo \"Building travis \"",
+    "translate": "sh ./scripts/update-translations.sh"
   },
   "bugs": {
     "url": "https://github.com/binary-com/deriv-app/issues"

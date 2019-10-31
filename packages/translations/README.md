@@ -14,7 +14,7 @@
 ```
 ### To update strings to be translated in crowdin
 ```sh
-   $ npm run update translations
+   $ npm run translate
 ```
 
 ## Project translations

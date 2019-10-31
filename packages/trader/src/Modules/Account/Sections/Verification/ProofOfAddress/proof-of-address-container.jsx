@@ -30,12 +30,12 @@ class ProofOfAddressContainer extends React.Component {
     componentDidMount(){
         WS.authorized.getAccountStatus().then(response => {
             const { get_account_status } = response;
-            const { document, identity } = get_account_status.authentication;
-            const has_poi = !!(identity && identity.status === 'none');
+            const { document, needs_verification } = get_account_status.authentication;
+            const needs_poi = needs_verification.length && needs_verification.includes('identity');
             this.setState({
-                status       : document.status, has_poi,
+                status       : document.status, needs_poi,
                 is_loading   : false,
-                submitted_poa: (document.status === poa_status_codes.pending),
+                submitted_poa: !(needs_verification.length && needs_verification.includes('document')),
             });
             this.props.refreshNotifications();
         });
@@ -52,14 +52,14 @@ class ProofOfAddressContainer extends React.Component {
     render() {
         const {
             is_loading,
-            has_poi,
+            needs_poi,
             resubmit_poa,
             status,
             submitted_poa,
         } = this.state;
 
         if (is_loading)    return <Loading is_fullscreen={false} className='account___intial-loader' />;
-        if (submitted_poa) return <Submitted needs_poi={has_poi} />;
+        if (submitted_poa) return <Submitted needs_poi={needs_poi} />;
         if (resubmit_poa)  return <ProofOfAddressForm onSubmit={this.onSubmit} />;
 
         switch (status) {
@@ -68,7 +68,7 @@ class ProofOfAddressContainer extends React.Component {
             case poa_status_codes.pending:
                 return <NeedsReview />;
             case poa_status_codes.verified:
-                return <Verified has_poi={has_poi} />;
+                return <Verified needs_poi={needs_poi} />;
             case poa_status_codes.expired:
                 return <Expired onClick={this.handleResubmit} />;
             case poa_status_codes.rejected:

@@ -35,7 +35,7 @@ Blockly.Blocks.math_change = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Adds a number to a variable'),
+            tooltip          : translate('This block adds the given number to the selected variable'),
             category         : Blockly.Categories.Mathematical,
         };
     },
@@ -47,7 +47,7 @@ Blockly.Blocks.math_change = {
     meta() {
         return {
             'display_name': translate('Change variable'),
-            'description' : translate('Adds a given number to the selected variable.'),
+            'description' : translate('This block adds the given number to the selected variable.'),
         };
     },
 };

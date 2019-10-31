@@ -32,14 +32,14 @@ Blockly.Blocks.math_on_list = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Agregate functions'),
+            tooltip        : translate('Aggregate operations'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Agregate functions'),
-            'description' : translate('This block performs the following operations on s given list: Sum, Minimum, Maximum, Average, Median, Modes, Standard deviation, Random item'),
+            'display_name': translate('Aggregate operations'),
+            'description' : translate('This block performs the following operations on a given list: sum, minimum, maximum, average, median, modes, standard deviation, random item.'),
         };
     },
 };

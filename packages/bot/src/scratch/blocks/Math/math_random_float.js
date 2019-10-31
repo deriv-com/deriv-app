@@ -12,14 +12,14 @@ Blockly.Blocks.math_random_float = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Random fraction number'),
+            tooltip        : translate('This block gives you a random fraction between 0.0 to 1.0'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
             'display_name': translate('Random fraction number'),
-            'description' : translate('Returns a random fraction from 0.0 to 1.0'),
+            'description' : translate('This block gives you a random fraction between 0.0 to 1.0.'),
         };
     },
 };

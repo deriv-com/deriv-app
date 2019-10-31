@@ -1,6 +1,6 @@
 {
     "text": [
-        "Performs the following operations between two numbers.",
+        "This block performs arithmetic operations between two numbers.",
         "Available operations:",
         "- Addition",
         "- Subtraction",

@@ -36,7 +36,7 @@ Blockly.Blocks.math_round = {
     meta(){
         return {
             'display_name': translate('Rounding operation'),
-            'description' : translate('Rounds a given number to an integer according to selection: Rounds up, Rounds down, Rounds.'),
+            'description' : translate('This block rounds a given number according to the selection: round, round up, round down.'),
         };
     },
 };

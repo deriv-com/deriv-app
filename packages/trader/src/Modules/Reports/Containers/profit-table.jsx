@@ -60,6 +60,8 @@ class ProfitTable extends React.Component {
             totals,
         } = this.props;
         if (error) return <p>{error}</p>;
+        console.log([...data])
+        console.log(getProfitTableColumnsTemplate(currency, data.length))
 
         const filter_component = (
             <React.Fragment>

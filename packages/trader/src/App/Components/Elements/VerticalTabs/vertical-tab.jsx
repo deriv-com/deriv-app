@@ -28,7 +28,7 @@ class VerticalTab extends React.Component {
     render() {
         const selected = this.props.list[this.props.modal_index] || this.props.list[0];
         const index_path = window.location.pathname;
-        const action_bar = [...this.props.action_bar];
+        const action_bar = this.props.action_bar;
         if (this.props.has_subtitle) {
             action_bar.push({
                 component: () => <h1 className='vertical-tab__content-title'>{selected.label}</h1>,

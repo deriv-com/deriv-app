@@ -131,7 +131,7 @@ Blockly.JavaScript.text_join = block => {
     if (elements.length === 0) {
         code = `${varName} = '';\n`;
     } else {
-        code = `${varName} = String(${elements.join(' + ')});\n`;
+        code = `${varName} = ${elements.join(' + ')};\n`;
     }
 
     return code;

@@ -118,10 +118,6 @@ const loadBlocks = (xml, drop_event) => {
     const block_ids    = Blockly.Xml.domToWorkspace(xml, workspace);
     const added_blocks = block_ids.map(block_id => workspace.getBlockById(block_id));
 
-    // Array.from(xml.children)
-    //     .filter(el_block => el_block.tagName.toLowerCase() === 'block')
-    //     .forEach(el_block => added_blocks.push(addDomAsBlock(el_block)));
-
     if (drop_event && Object.keys(drop_event).length !== 0) {
         cleanUpOnLoad(added_blocks, drop_event);
     } else {

@@ -8,8 +8,8 @@ import ServicesErrorModal       from 'App/Components/Elements/Modals/ServicesErr
 // import MT5ServerErrorDialog     from 'Modules/MT5/Containers/mt5-server-error-dialog.jsx';
 import 'Sass/app/modules/modals.scss';
 
-const AccountSignupModal       = React.lazy(() => import(/* webpackChunkName: "AccountSignupModal" */'../AccountSignupModal'));
-const ResetPasswordModal       = React.lazy(() => import(/* webpackChunkName: "ResetPasswordModal" */'../ResetPasswordModal'));
+const AccountSignupModal       = React.lazy(() => import(/* webpackChunkName: "account-signup-modal" */'../AccountSignupModal'));
+const ResetPasswordModal       = React.lazy(() => import(/* webpackChunkName: "reset-password-modal" */'../ResetPasswordModal'));
 
 const Modals = ({
     // clearPurchaseInfo,

@@ -32,19 +32,29 @@ const {
 
 const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
+const HOISTED_PACKAGES = {
+    'react'           : path.resolve(__dirname, '../node_modules/react'),
+    'react-dom'       : path.resolve(__dirname, '../node_modules/react-dom'),
+    'react-router'    : path.resolve(__dirname, '../node_modules/react-router'),
+    'react-router-dom': path.resolve(__dirname, '../node_modules/react-router-dom'),
+    'mobx'            : path.resolve(__dirname, '../node_modules/mobx'),
+    'mobx-react'      : path.resolve(__dirname, '../node_modules/mobx-react'),
+};
+
 const ALIASES = {
-    _common     : path.resolve(__dirname, '../src/_common'),
-    App         : path.resolve(__dirname, '../src/App'),
-    Assets      : path.resolve(__dirname, '../src/Assets'),
-    Constants   : path.resolve(__dirname, '../src/Constants'),
-    Fonts       : path.resolve(__dirname, '../src/public/fonts'),
-    Images      : path.resolve(__dirname, '../src/public/images'),
-    Modules     : path.resolve(__dirname, '../src/Modules'),
-    Sass        : path.resolve(__dirname, '../src/sass'),
-    Services    : path.resolve(__dirname, '../src/Services'),
-    Stores      : path.resolve(__dirname, '../src/Stores'),
-    Translations: path.resolve(__dirname, '../src/public/translations'),
-    Utils       : path.resolve(__dirname, '../src/Utils'),
+    _common           : path.resolve(__dirname, '../src/_common'),
+    App               : path.resolve(__dirname, '../src/App'),
+    Assets            : path.resolve(__dirname, '../src/Assets'),
+    Constants         : path.resolve(__dirname, '../src/Constants'),
+    Fonts             : path.resolve(__dirname, '../src/public/fonts'),
+    Images            : path.resolve(__dirname, '../src/public/images'),
+    Modules           : path.resolve(__dirname, '../src/Modules'),
+    Sass              : path.resolve(__dirname, '../src/sass'),
+    Services          : path.resolve(__dirname, '../src/Services'),
+    Stores            : path.resolve(__dirname, '../src/Stores'),
+    Translations      : path.resolve(__dirname, '../src/public/translations'),
+    Utils             : path.resolve(__dirname, '../src/Utils'),
+    ...HOISTED_PACKAGES,
 };
 
 const rules = (is_test_env = false, is_mocha_only = false) => ([
@@ -124,7 +134,7 @@ const plugins = (base, is_test_env, is_mocha_only) => ([
         new StylelintPlugin(stylelintConfig()),
     ] : [
         // ...(!IS_RELEASE ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
-    ])
+    ]),
 ]);
 
 module.exports = {

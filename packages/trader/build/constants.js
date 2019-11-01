@@ -11,7 +11,6 @@ const StylelintPlugin = require('stylelint-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const AssetsManifestPlugin = require('webpack-manifest-plugin');
-// const {GenerateSW} = require('workbox-webpack-plugin');
 
 const {
     copyConfig,
@@ -19,7 +18,6 @@ const {
     // htmlInjectConfig,
     // htmlOutputConfig,
     stylelintConfig,
-    // generateSWConfig,
 } = require('./config');
 const {
     css_loaders,
@@ -117,9 +115,7 @@ const plugins = (base, is_test_env, is_mocha_only) => ([
     new IgnorePlugin(/^\.\/locale$/, /moment$/),
     new MiniCssExtractPlugin(cssConfig()),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
-    ...(IS_RELEASE && !is_test_env ? [
-        // new GenerateSW(generateSWConfig())
-    ] : [ new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: (file) => file.name !== 'CNAME' }) ]),
+    ...(IS_RELEASE ? [] : [ new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: (file) => file.name !== 'CNAME' }) ]),
     ...(is_test_env && !is_mocha_only ? [
         new StylelintPlugin(stylelintConfig()),
     ] : [

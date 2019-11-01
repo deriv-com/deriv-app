@@ -4,6 +4,7 @@ const path                      = require('path');
 const StyleLintPlugin           = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
 const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
+// const BundleAnalyzerPlugin      = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
@@ -110,11 +111,14 @@ module.exports = {
                 'scratch.min.js': (code) => {
                     const uglifyjs = require('uglify-js');
                     return uglifyjs.minify(code).code;
-                }
-            }
-        })
+                },
+            },
+        }),
+        // ...(!is_release ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
     ],
     externals: {
+        'react'           : 'react',
+        'react-dom'       : 'react-dom',
         '@babel/polyfill' : '@babel/polyfill',
         'classnames'      : 'classnames',
         'deriv-components': 'deriv-components',

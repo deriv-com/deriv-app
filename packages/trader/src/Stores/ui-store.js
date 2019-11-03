@@ -177,6 +177,8 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     setPurchaseState(index) {
+        // eslint-disable-next-line no-console
+        console.log('setPurchaseState');
         this.purchase_states[index] = true;
 
         // TODO: Find better solution in the future for hack below
@@ -196,6 +198,8 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     resetPurchaseStates() {
+        // eslint-disable-next-line no-console
+        console.log('resetPurchaseStates');
         this.purchase_states = [ false, false ];
     }
 

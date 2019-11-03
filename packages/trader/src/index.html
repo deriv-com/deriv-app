@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script>
+        performance.mark('start');
+        const observer = new PerformanceObserver(function(list) {
+            const perfEntries = list.getEntries();
+            for (let i = 0; i < perfEntries.length; i++) {
+                console.log(JSON.stringify(perfEntries[i]));
+                const time = Math.round(perfEntries[i].startTime + perfEntries[i].duration);
+                console.log('time: ' + JSON.stringify(time));
+            }
+        });
+        // register observer for paint timing notifications
+        observer.observe({entryTypes: ['paint']});
+    </script>
     <!-- Set skeleton theme color properties -->
     <style>
         :root {

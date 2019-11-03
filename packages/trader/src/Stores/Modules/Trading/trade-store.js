@@ -17,6 +17,7 @@ import {
     isDigitTradeType      }           from 'Modules/Trading/Helpers/digits';
 import ServerTime                     from '_common/base/server_time';
 import Shortcode                      from 'Modules/Reports/Helpers/shortcode';
+import PerformanceChecker             from 'Services/perfomance-checker';
 import { processPurchase }            from './Actions/purchase';
 import * as Symbol                    from './Actions/symbol';
 import getValidationRules             from './Constants/validation-rules';
@@ -547,6 +548,8 @@ export default class TradeStore extends BaseStore {
             // const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
 
             const snapshot            = await processTradeParams(this, new_state);
+            // eslint-disable-next-line no-console
+            console.log('is_trade_enabled');
             snapshot.is_trade_enabled = true;
 
             this.updateStore({
@@ -605,6 +608,8 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onProposalResponse(response) {
+        // eslint-disable-next-line no-console
+        console.log('onProposalResponse');
         const contract_type           = response.echo_req.contract_type;
         const prev_proposal_info      = ObjectUtils.getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = ObjectUtils.getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
@@ -613,6 +618,9 @@ export default class TradeStore extends BaseStore {
             ...this.proposal_info,
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
         };
+
+        performance.mark('set_proposal_info');
+        PerformanceChecker.startChecking();
 
         this.setMainBarrier(response.echo_req);
 

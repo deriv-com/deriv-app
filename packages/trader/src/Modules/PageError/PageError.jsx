@@ -34,7 +34,7 @@ const PageError = ({
             </div>
             { redirect_label &&
             <ButtonLink
-                className='page-error__btn btn--primary--default'
+                className='page-error__btn'
                 to={redirect_url}
                 onClick={buttonOnClick}
             >

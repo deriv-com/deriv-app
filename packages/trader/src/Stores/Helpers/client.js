@@ -1,3 +1,5 @@
+import { localize } from 'App/i18n';
+
 // TODO: [move-to-shared] - Remove the implementation in ClientBase and add this to shared utils
 export const getClientAccountType = (loginid) => {
     let account_type;
@@ -9,3 +11,19 @@ export const getClientAccountType = (loginid) => {
 
 // TODO: [move-to-shared] - Remove the implementation in ClientBase and add this to shared utils
 export const getMT5AccountType = group => (group ? group.replace('\\', '_').replace(/_(\d+|master|EUR|GBP)/, '') : '');
+
+export const getMT5AccountDisplay = (group) => {
+    if (!group) return {};
+
+    const value = getMT5AccountType(group);
+    let display_text = localize('MT5');
+    if (/svg$/.test(value)) {
+        display_text = localize('Synthetic indices');
+    } else if (/vanuatu/.test(value) || /svg_standard/.test(value)) {
+        display_text = localize('Standard');
+    } else if (/labuan/.test(value)) {
+        display_text = localize('Advanced');
+    }
+
+    return display_text;
+};

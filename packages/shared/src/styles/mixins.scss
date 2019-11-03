@@ -115,13 +115,13 @@
     @if $align {
         text-align: $align;
     }
-    @if $size == 1.6em {
+    @if $size == 1.6rem {
         line-height: map-get($map: $LINEHEIGHTS, $key: 'large');
     }
-    @else if $size == 1.4em {
+    @else if $size == 1.4rem {
         line-height: map-get($map: $LINEHEIGHTS, $key: 'medium');
     }
-    @else if $size == 1.2em {
+    @else if $size == 1.2rem {
         line-height: map-get($map: $LINEHEIGHTS, $key: 'small');
     }
     @else {
@@ -200,37 +200,6 @@
 }
 
 /*
- * Implementation of themes
- * generate sets of themes keys object property (dark / light)
- * @param $themes - themes property
- * Usage example:
-   @include themify($themes) { color: themed('background_color') }
- */
-@mixin themify($themes) {
-    @each $theme, $map in $themes {
-        .theme--#{$theme} & {
-            $theme-map: () !global;
-            @each $key, $submap in $map {
-                $value: map-get(map-get($themes, $theme), '#{$key}');
-                $theme-map: map-merge($theme-map, ($key: $value)) !global;
-            }
-            @content;
-            $theme-map: null !global;
-        }
-    }
-}
-
-/*
- * Generate typefaces key-value pair of themefy object
- * Should be inside themify mixins
- * Example:
-   @include themify($themes) { border-color: 1px solid themed('background_color') }
- */
-@function themed($key) {
-    @return map-get($theme-map, $key);
-}
-
-/*
  * Tooltip colors
  * @param $color - color property
  * Usage example:
@@ -254,35 +223,6 @@
     &[data-tooltip-pos=bottom]:after {
         border-top-color: transparent;
         border-bottom-color: $color;
-    }
-}
-
-/*
- * Themified Tooltip colors
- * @param $color - color property
- * Usage example:
-   @include tooltipColor($COLOR_RED);
- */
-@mixin themifiedTooltipColor($color) {
-    @include themify($themes) {
-        &:before {
-            background: themed($color);
-        }
-        &:after, &[data-tooltip-pos=top]:after {
-            border-top-color: themed($color);
-        }
-        &[data-tooltip-pos=right]:after {
-            border-top-color: transparent;
-            border-right-color: themed($color);
-        }
-        &[data-tooltip-pos=left]:after {
-            border-top-color: transparent;
-            border-left-color: themed($color);
-        }
-        &[data-tooltip-pos=bottom]:after {
-            border-top-color: transparent;
-            border-bottom-color: themed($color);
-        }
     }
 }
 

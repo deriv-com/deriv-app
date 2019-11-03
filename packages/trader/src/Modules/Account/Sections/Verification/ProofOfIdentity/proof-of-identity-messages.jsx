@@ -15,7 +15,6 @@ import IconMessageContent     from '../../../Components/icon-message-content.jsx
 const ContinueTradingButton = () => (
     <ButtonLink
         to='/'
-        className='btn--primary--default'
     >
         <p className='btn__text'>{localize('Continue trading')}</p>
     </ButtonLink>
@@ -23,7 +22,6 @@ const ContinueTradingButton = () => (
 
 const PoaButton = () => (
     <ButtonLink
-        className='btn--primary--default'
         to='/account/proof-of-address'
     >
         <p className='btn__text'>{localize('Submit proof of address')}</p>
@@ -32,7 +30,6 @@ const PoaButton = () => (
 
 const GoToPersonalDetailsButton = () => (
     <ButtonLink
-        className='btn--primary--default'
         to='/account/personal-details'
     >
         <p className='btn__text'>{localize('Go to personal details')}</p>

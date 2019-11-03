@@ -191,6 +191,11 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    setTradeStatus(status) {
+        this.is_trade_enabled = status;
+    }
+
+    @action.bound
     refresh() {
         this.proposal_info     = {};
         this.purchase_info     = {};

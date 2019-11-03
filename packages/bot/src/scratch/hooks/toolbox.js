@@ -74,7 +74,7 @@ Blockly.Toolbox.prototype.populate_ = function (newTree) {
     const { quick_strategy } = ScratchStore.instance;
     const quick_strat_btn = document.createElement('BUTTON');
     quick_strat_btn.innerHTML = translate('Quick Strategy');
-    quick_strat_btn.className = 'toolbox__button btn effect btn--primary--red';
+    quick_strat_btn.className = 'toolbox__button btn effect btn--primary btn__medium';
     quick_strat_btn.onclick = quick_strategy.toggleStrategyModal;
 
     parent.appendChild(quick_strat_btn);

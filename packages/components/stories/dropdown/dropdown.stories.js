@@ -1,7 +1,6 @@
 import React         from 'react';
-import { action }    from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react';
-import Dropdown      from 'Components/dropdown/dropdown.jsx';
+import Dropdown      from 'Components/dropdown';
 // import 'Components/dropdown/dropdown.scss';
 import Theme         from '../shared/theme';
 

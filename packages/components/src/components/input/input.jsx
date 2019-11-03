@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import React      from 'react';
 import FieldError from 'Components/field-error';
-import                 './input.scss';
 
 const Input = ({
     className,

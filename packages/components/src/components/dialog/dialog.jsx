@@ -1,5 +1,5 @@
-import classNames         from 'classnames';
 import React              from 'react';
+import classNames         from 'classnames';
 import PropTypes          from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 import Button             from '../button/button.jsx';
@@ -72,25 +72,20 @@ class Dialog extends React.Component {
                             <div className='dc-dialog__footer'>
                                 { onCancel &&
                                 <Button
-                                    className={ classNames(
-                                        'dc-dialog__button',
-                                        'btn--tertiary--default',
-                                    ) }
+                                    className='dc-dialog__button'
                                     has_effect
                                     text={ cancel_button_text }
                                     onClick={ this.handleCancel }
+                                    tertiary
                                 />
                                 }
                                 { confirm_button_text &&
                                 <Button
-                                    className={ classNames(
-                                        'dc-dialog__button',
-                                        'btn--primary',
-                                        'btn--primary--default',
-                                    ) }
+                                    className='dc-dialog__button'
                                     has_effect
                                     text={ confirm_button_text }
                                     onClick={ this.handleConfirm }
+                                    primary
                                 />
                                 }
                             </div>

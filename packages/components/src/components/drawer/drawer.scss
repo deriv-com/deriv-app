@@ -1,6 +1,6 @@
 /** @define dc-drawer */
 .dc-drawer {
-    position: absolute;
+    position: fixed;
     top: 1px;
     left: calc(100vw - 18px);
     width: 366px;

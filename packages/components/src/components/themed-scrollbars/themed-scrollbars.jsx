@@ -5,6 +5,7 @@ class ThemedScrollbars extends React.Component {
     render() {
         return (
             <Scrollbars
+                ref={this.props.list_ref}
                 renderTrackHorizontal={ props =>
                     <div {...props} className='dc-themed-scrollbars__track--horizontal' />
                 }

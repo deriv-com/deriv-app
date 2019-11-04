@@ -171,10 +171,11 @@ const ModalContent = ()  => (
 const CompareAccountsModal = ({ toggleCompareAccounts, disableApp, enableApp, is_compare_accounts_visible }) => (
     <div className='mt5-compare-accounts-modal__wrapper'>
         <Button
-            className='btn--tertiary--default mt5-dashboard__welcome-message--button'
+            className='mt5-dashboard__welcome-message--button'
             has_effect
             text={localize('Compare accounts')}
             onClick={toggleCompareAccounts}
+            tertiary
         />
         <React.Suspense fallback={<UILoader />}>
             <Modal

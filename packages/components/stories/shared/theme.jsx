@@ -7,6 +7,7 @@ class Theme extends Component {
                 className={this.props.is_dark ? 'theme--dark' : 'theme--light'}
                 style={{
                     width: this.props.max_width ? `${this.props.max_width}px` : '100%',
+                    background: 'var(--general-main-1)',
                 }}
             >
                 {this.props.children}

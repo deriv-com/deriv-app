@@ -5,8 +5,9 @@ const Shortcode = (() => {
             underlying: '',
             barrier_1 : '',
         };
-
-        const pattern = new RegExp('^([A-Z]+)_((OTC_[A-Z0-9]+)|R_[\\d]{2,3}|[A-Z]+)'); // Used to get market name from shortcode
+        // First group of regex pattern captures the trade category, second group captures the market's underlying
+        // TODO: Confirm if short code naming convention for 1 tick per sec underlying as 1HZ__V is going to remain consistent
+        const pattern = new RegExp('^([A-Z]+)_((1HZ[0-9-V]+)|(OTC_[A-Z0-9]+)|R_[\\d]{2,3}|[A-Z]+)');
         const extracted = pattern.exec(shortcode);
         if (extracted !== null) {
             info_from_shortcode.category   = extracted[1].toLowerCase();

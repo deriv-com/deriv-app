@@ -1,4 +1,3 @@
-import classNames    from 'classnames';
 import {
     Modal,
     Button,
@@ -65,12 +64,11 @@ class Mt5TopUpDemoModal extends React.Component {
                         </div>
                         <div className='dc-modal__container_top-up-virtual--button'>
                             <Button
-                                className={classNames({
-                                    'btn--disabled': this.props.current_account.balance > 1000,
-                                })}
                                 is_disabled={this.props.current_account.balance > 1000}
                                 type='button'
                                 onClick={this.props.topUpVirtual}
+                                primary
+                                disabled={this.props.current_account.balance > 1000}
                             >
                                 <Localize
                                     i18n_default_text='Top up USD 10,000.00'

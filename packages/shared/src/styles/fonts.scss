@@ -8,24 +8,23 @@ $BASE_FONT_SIZE: 10px;
     Variables
 */
 $FONT_SIZES: (
-    'heading'   em(30px),
-    'large'     em(28px),
-    'title'     em(16px),
-    'paragraph' em(14px),
-    'small'     em(12px),
-    'xsmall'    em(10px),
-    'xxsmall'   em(8px),
-    'xxxsmall'  em(6px),
+    'heading'   3rem,
+    'large'     2.8rem,
+    'title'     1.6rem,
+    'paragraph' 1.4rem,
+    'small'     1.2rem,
+    'xsmall'    1rem,
+    'xxsmall'   0.8rem,
+    'xxxsmall'  0.6rem,
 );
 
 $FONT_COLORS: (
-    'active'   $COLOR_WHITE,
-    'black'    $COLOR_LIGHT_BLACK_1,
-    'grey'     $COLOR_LIGHT_BLACK_2,
-    'disabled' $COLOR_LIGHT_BLACK_3,
-    'green'    $COLOR_GREEN_1,
-    'red'      $COLOR_RED,
-    'orange'   $COLOR_ORANGE,
+    'active'   var(--text-colored-background),
+    'black'    var(--text-general),
+    'grey'     var(--text-less-prominent),
+    'disabled' var(--text-disabled),
+    'green'    var(--text-profit-success),
+    'red'      var(--text-loss-danger),
 );
 
 $FONT_WEIGHTS: (

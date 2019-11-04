@@ -154,13 +154,13 @@ class ContractDrawer extends Component {
                             >
                                 <Button
                                     className={classNames(
-                                        'btn--secondary--default',
                                         'btn--sell', {
                                             'btn--loading': is_sell_requested,
                                         })}
                                     is_disabled={!(isValidToSell(contract_info)) || is_sell_requested}
                                     text={localize('Sell contract')}
                                     onClick={() => onClickSell(contract_info.contract_id)}
+                                    secondary
                                 />
                             </div>
                         </CSSTransition>

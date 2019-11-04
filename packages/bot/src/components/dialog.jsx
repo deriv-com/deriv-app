@@ -1,5 +1,4 @@
 
-import classNames         from 'classnames';
 import { Button, Modal }  from 'deriv-components';
 import PropTypes          from 'prop-types';
 import React              from 'react';
@@ -30,23 +29,19 @@ const Dialog = ({
                 <div className='bot-dialog__footer'>
                     {onCancelButtonClick &&
                         <Button
-                            className={classNames(
-                                'btn--secondary--default',
-                                'bot-dialog__cancel'
-                            )}
+                            className='bot-dialog__cancel'
                             text={translate('Cancel')}
                             onClick={onCancelButtonClick}
                             has_effect
+                            secondary
                         />}
                     {onOkButtonClick &&
                         <Button
-                            className={classNames(
-                                'btn--primary--default',
-                                'bot-dialog__ok'
-                            )}
+                            className='bot-dialog__ok'
                             text={translate('Ok')}
                             onClick={onOkButtonClick}
                             has_effect
+                            primary
                         />}
                     {/* TODO Add array to send more buttons if requierd */}
                 </div>

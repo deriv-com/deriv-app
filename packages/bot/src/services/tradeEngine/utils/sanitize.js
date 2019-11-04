@@ -1,4 +1,4 @@
-import { localize }  from 'deriv-translations/src/i18next/i18n';
+const localize = str => str
 import createError   from '../../../utils/error';
 
 const isPositiveNumber = num => Number.isFinite(num) && num > 0;

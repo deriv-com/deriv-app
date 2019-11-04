@@ -5,7 +5,7 @@ import {
 import React                 from 'react';
 import PropTypes             from 'prop-types';
 import CurrencyUtils         from 'deriv-shared/utils/currency';
-import { localize }          from 'deriv-translations/src/i18next/i18n';
+import { localize }          from 'deriv-translations/lib/translate';
 import ContractCardLoader    from './contract-card-loading.jsx';
 import ContractResultOverlay from './contract-result-overlay.jsx';
 import {

@@ -45,6 +45,6 @@
 
 >
 ## FAQ:
-* Includes all Crowdin configuration
+* This package includes all Crowdin configuration
 * Crowdin source translation file --> crowdin/messages.json
 * Source for the translated strings in the project --> src/translations/fr|en|id....json

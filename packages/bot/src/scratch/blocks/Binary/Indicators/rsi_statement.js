@@ -1,4 +1,4 @@
-import { localize }    from 'deriv-translations/src/i18next/i18n';
+import { localize }    from 'deriv-translations/lib/translate';
 import { expectValue } from '../../../shared';
 
 Blockly.Blocks.rsi_statement = {

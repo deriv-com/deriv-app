@@ -2,10 +2,11 @@ import classNames    from 'classnames';
 import { Money }     from 'deriv-components';
 import PropTypes     from 'prop-types';
 import React         from 'react';
-import { localize }  from 'deriv-translations/src/i18next/i18n';
 import ContractCard  from './contract-card.jsx';
 import { connect }   from '../stores/connect';
 import                    '../assets/sass/summary.scss';
+
+import { localize }  from 'deriv-translations/lib/translate';
 
 const SummaryTile = (props) => (
     <div className={'summary__tile'}>

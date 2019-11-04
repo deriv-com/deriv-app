@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations/src/i18next/i18n';
+import { localize }                   from 'deriv-translations/lib/translate';
 import { info, notify }               from '../utils/broadcast';
 import { roundBalance }               from '../utils/helpers';
 import createError                    from '../../../utils/error';

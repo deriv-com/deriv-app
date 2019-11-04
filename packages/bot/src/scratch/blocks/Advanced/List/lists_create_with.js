@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations/src/i18next/i18n';
+import { localize }     from 'deriv-translations/lib/translate';
 import { plusIconDark } from '../../images';
 
 Blockly.Blocks.lists_create_with = {

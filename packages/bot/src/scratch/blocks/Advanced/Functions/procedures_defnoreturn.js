@@ -1,5 +1,5 @@
-import { localize } from 'deriv-translations/src/i18next/i18n';
-import { plusIconLight }     from '../../images';
+import { localize }      from 'deriv-translations/lib/translate';
+import { plusIconLight } from '../../images';
 
 Blockly.Blocks.procedures_defnoreturn = {
     init() {

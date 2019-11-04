@@ -1,4 +1,4 @@
-import { localize }                     from 'deriv-translations/src/i18next/i18n';
+const localize = str => str
 import { getLanguage }                  from '../lang/lang';
 import { observer as globalObserver }   from '../observer';
 import { trackAndEmitError }            from '../tools';

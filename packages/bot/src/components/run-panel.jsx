@@ -4,7 +4,7 @@ import { Button,
     Tabs }                                    from 'deriv-components';
 import PropTypes                              from 'prop-types';
 import React                                  from 'react';
-import { localize }                           from 'deriv-translations/src/i18next/i18n';
+import { localize }                           from 'deriv-translations/lib/translate';
 import Dialog                                 from './dialog.jsx';
 import { InfoOutlineIcon, RunIcon, StopIcon } from './Icons.jsx';
 import Journal                                from './journal.jsx';

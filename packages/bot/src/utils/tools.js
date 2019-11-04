@@ -1,4 +1,4 @@
-import { localize }                     from 'deriv-translations/src/i18next/i18n';
+const localize = str => str
 import RenderHTML                       from 'react-render-html';
 import { observer as globalObserver }   from './observer';
 

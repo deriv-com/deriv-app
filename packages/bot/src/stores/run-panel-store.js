@@ -4,7 +4,7 @@ import {
     reaction,
     computed,
 }                          from 'mobx';
-import { localize }        from 'deriv-translations/src/i18next/i18n';
+import { localize }        from 'deriv-translations/lib/translate';
 import { contract_stages } from '../constants/contract-stage';
 import {
     error_types,

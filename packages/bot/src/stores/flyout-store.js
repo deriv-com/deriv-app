@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
-import { observable, action }   from 'mobx';
-import { localize }             from 'deriv-translations/src/i18next/i18n';
-import config                   from '../constants';
+import { observable, action } from 'mobx';
+import { localize }           from 'deriv-translations/lib/translate';
+import config                 from '../constants';
 
 export default class FlyoutStore {
     block_listeners = [];

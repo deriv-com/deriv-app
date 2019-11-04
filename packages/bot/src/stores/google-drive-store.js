@@ -1,11 +1,11 @@
 import {
     observable,
     action,
-}                           from 'mobx';
-import { localize }         from 'deriv-translations/src/i18next/i18n';
-import config               from '../constants';
-import { getLanguage }      from '../utils/lang/lang';
-import { importExternal }   from '../utils/tools';
+}                         from 'mobx';
+import { localize }       from 'deriv-translations/lib/translate';
+import config             from '../constants';
+import { getLanguage }    from '../utils/lang/lang';
+import { importExternal } from '../utils/tools';
 
 export default class GoogleDriveStore {
     constructor(root_store) {

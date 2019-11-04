@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations/src/i18next/i18n';
+const localize = str => str
 import config       from '../constants';
 
 // TODO: use-shared-functions - These functions are duplicates of trader ones, export and use these instead.

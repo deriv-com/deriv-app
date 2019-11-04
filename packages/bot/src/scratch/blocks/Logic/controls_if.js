@@ -1,8 +1,8 @@
-import { localize }  from 'deriv-translations/src/i18next/i18n';
+import { localize } from 'deriv-translations/lib/translate';
 import {
     plusIconDark,
     minusIconDark,
-}                    from '../images';
+}                   from '../images';
 
 Blockly.Blocks.controls_if = {
     init() {

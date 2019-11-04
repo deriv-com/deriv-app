@@ -2,7 +2,8 @@ import {
     observable,
     action,
 }                   from 'mobx';
-import { localize } from 'deriv-translations/src/i18next/i18n';
+
+import { localize }  from 'deriv-translations/lib/translate';
 
 export default class ToolbarStore {
     constructor(root_store) {

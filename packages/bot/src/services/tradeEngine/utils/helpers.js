@@ -1,4 +1,4 @@
-import { localize }   from 'deriv-translations/src/i18next/i18n';
+const localize = str => str
 import { notify }     from './broadcast';
 import config         from '../../../constants';
 import { getUTCTime } from '../../../utils/tools';

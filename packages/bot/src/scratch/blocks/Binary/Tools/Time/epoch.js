@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations/src/i18next/i18n';
+import { localize } from 'deriv-translations/lib/translate';
 
 Blockly.Blocks.epoch = {
     init() {

@@ -1,5 +1,5 @@
 // import ScratchStore          from '../../../../stores/scratch-store';
-import { localize }          from 'deriv-translations/src/i18next/i18n';
+import { localize }          from 'deriv-translations/lib/translate';
 import { sellContract }      from '../../images';
 import { setBlockTextColor } from '../../../utils';
 

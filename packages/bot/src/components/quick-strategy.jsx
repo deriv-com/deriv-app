@@ -13,7 +13,7 @@ import {
     Form,
     Field,
 }                       from 'formik';
-import { localize }     from 'deriv-translations/src/i18next/i18n';
+import { localize }     from 'deriv-translations/lib/translate';
 import IconTradeType    from './icon-trade-types.jsx';
 import { connect }      from '../stores/connect';
 import config           from '../constants/index';

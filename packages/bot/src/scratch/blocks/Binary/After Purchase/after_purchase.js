@@ -1,6 +1,7 @@
-import { localize }          from 'deriv-translations/src/i18next/i18n';
+import { localize }          from 'deriv-translations/lib/translate';
 import { finishSign }        from '../../images';
 import { setBlockTextColor } from '../../../utils';
+
 // import ScratchStore          from '../../../../stores/scratch-store';
 
 Blockly.Blocks.after_purchase = {

@@ -5,7 +5,7 @@ const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 
 module.exports = {
     entry: {
-        i18next : path.resolve(__dirname, 'src', 'i18next/index.js'),
+        translate : path.resolve(__dirname, 'src', 'i18next/index.js'),
         localize: path.resolve(__dirname, 'src', 'components/index.js'),
     },
     output: {
@@ -21,6 +21,9 @@ module.exports = {
         // splitChunks: {
         //     chunks: 'all'
         // }
+    },
+    devServer: {
+        publicPath: '/dist/',
     },
     devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
     module : {

@@ -33,12 +33,12 @@ const ErrorModal = ({ message }) => (
         <a
             href='https://www.deriv.com/help-centre/'
             type='button'
-            className='btn btn--primary btn__medium'
+            className='btn btn--primary--default'
             target='_blank'
             rel='noopener noreferrer'
         >
             {/* TODO: the fontsize is incorrectly overriden somewhere, find the overriding class and remove it */}
-            <span className='btn__text'>
+            <span className='btn__text' style={{ fontSize: '1.4rem' }}>
                 <Localize
                     i18n_default_text='Go To Help Centre'
                 />

@@ -24,10 +24,16 @@
         background-color: var(--overlay-inside-dialog);
 
         &--won, &--won:after {
-            background-image: var(--gradient-success);
+            // TODO: [color] change to css var when the color is ready
+            @include themify($themes) {
+                background-image: themed('won_gradient_color');
+            }
         }
         &--lost, &--lost:after {
-            background-image: var(--gradient-danger);
+            // TODO: [color] change to css var when the color is ready
+            @include themify($themes) {
+                background-image: themed('lost_gradient_color');
+            }
         }
         &:hover {
             background: 0 !important;
@@ -303,6 +309,12 @@
     &--sell {
         margin: 8px 4px 4px !important;
         width: 100%;
+
+        .btn__text {
+            font-size: 1.2em;
+            font-weight: bold;
+            line-height: 1.5;
+        }
     }
 }
 

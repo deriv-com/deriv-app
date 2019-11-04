@@ -66,8 +66,7 @@ class FinancialAssessment extends React.Component {
                 setStatus({ msg: data.error.message });
             } else {
                 this.setState({ is_submit_success: true });
-                this.props.removeNotificationMessage({ key: 'risk' });
-                this.props.removeNotificationByKey({ key: 'risk' });
+                this.props.refreshNotifications();
             }
             setSubmitting(false);
         });
@@ -255,7 +254,7 @@ class FinancialAssessment extends React.Component {
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                     <Button
-                                        className='account-form__footer-btn'
+                                        className='account-form__footer-btn btn--primary--default'
                                         type='submit'
                                         is_disabled={
                                             isSubmitting ||
@@ -273,8 +272,6 @@ class FinancialAssessment extends React.Component {
                                         is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
                                         text={localize('Submit')}
-                                        primary
-                                        large
                                     />
                                 </FormFooter>
                             </form>
@@ -288,9 +285,8 @@ class FinancialAssessment extends React.Component {
 
 // FinancialAssessment.propTypes = {};
 export default connect(
-    ({ client, ui }) => ({
-        is_virtual               : client.is_virtual,
-        removeNotificationMessage: ui.removeNotificationMessage,
-        removeNotificationByKey  : ui.removeNotificationByKey,
+    ({ client }) => ({
+        is_virtual          : client.is_virtual,
+        refreshNotifications: client.refreshNotifications,
     }),
 )(FinancialAssessment);

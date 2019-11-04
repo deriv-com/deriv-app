@@ -30,13 +30,9 @@ class ProofOfAddressContainer extends React.Component {
     componentDidMount(){
         WS.authorized.getAccountStatus().then(response => {
             const { get_account_status } = response;
-            const { document, needs_verification } = get_account_status.authentication;
-            const needs_poi = needs_verification.length && needs_verification.includes('identity');
-            this.setState({
-                status       : document.status, needs_poi,
-                is_loading   : false,
-                submitted_poa: !(needs_verification.length && needs_verification.includes('document')),
-            });
+            const { document, identity } = get_account_status.authentication;
+            const has_poi = !!(identity && identity.status === 'none');
+            this.setState({ status: document.status, has_poi, is_loading: false });
             this.props.refreshNotifications();
         });
     }
@@ -45,30 +41,30 @@ class ProofOfAddressContainer extends React.Component {
         this.setState({ resubmit_poa: true });
     }
 
-    onSubmit = ({ needs_poi }) => {
-        this.setState({ submitted_poa: true, needs_poi });
+    onSubmit = ({ has_poi }) => {
+        this.setState({ submitted_poa: true, has_poi });
     }
 
     render() {
         const {
             is_loading,
-            needs_poi,
+            has_poi,
             resubmit_poa,
             status,
             submitted_poa,
         } = this.state;
 
         if (is_loading)    return <Loading is_fullscreen={false} className='account___intial-loader' />;
-        if (submitted_poa) return <Submitted needs_poi={needs_poi} />;
-        if (resubmit_poa)  return <ProofOfAddressForm onSubmit={() => this.onSubmit({ needs_poi })} />;
+        if (resubmit_poa)  return <ProofOfAddressForm onSubmit={this.onSubmit} />;
+        if (submitted_poa) return <Submitted has_poi={has_poi} />;
 
         switch (status) {
             case poa_status_codes.none:
-                return <ProofOfAddressForm onSubmit={() => this.onSubmit({ needs_poi })} />;
+                return <ProofOfAddressForm onSubmit={this.onSubmit} />;
             case poa_status_codes.pending:
                 return <NeedsReview />;
             case poa_status_codes.verified:
-                return <Verified needs_poi={needs_poi} />;
+                return <Verified has_poi={has_poi} />;
             case poa_status_codes.expired:
                 return <Expired onClick={this.handleResubmit} />;
             case poa_status_codes.rejected:

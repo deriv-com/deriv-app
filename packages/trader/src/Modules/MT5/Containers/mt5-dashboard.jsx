@@ -1,7 +1,6 @@
 import {
     Tabs }                       from 'deriv-components';
 import React                     from 'react';
-import { withRouter }            from 'react-router';
 import Localize                  from 'App/Components/Elements/localize.jsx';
 import { localize }              from 'App/i18n';
 import IconDeviceLaptop          from 'Assets/SvgComponents/mt5/download-center/icon-device-laptop.svg';
@@ -25,27 +24,11 @@ import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
 class MT5Dashboard extends React.Component {
     state = {
-        active_index    : 0,
         password_manager: {
             is_visible      : false,
             selected_login  : '',
             selected_account: '',
         },
-    };
-
-    componentDidMount() {
-        this.updateActiveIndex();
-    }
-
-    componentDidUpdate() {
-        this.updateActiveIndex();
-    }
-
-    updateActiveIndex = () => {
-        const index_to_set = /demo/.test(this.props.location.hash) ? 1 : 0;
-        if (this.state.active_index !== index_to_set) {
-            this.setState({ active_index: index_to_set });
-        }
     };
 
     openAccountTransfer = (data, meta) => {
@@ -59,7 +42,6 @@ class MT5Dashboard extends React.Component {
 
     togglePasswordManagerModal = (login, title) => {
         this.setState((prev_state) => ({
-            active_index    : prev_state.active_index,
             password_manager: {
                 is_visible      : !prev_state.password_manager.is_visible,
                 selected_login  : login || '',
@@ -101,7 +83,7 @@ class MT5Dashboard extends React.Component {
                         selected_account={ this.state.password_manager.selected_account }
                         toggleModal={ this.togglePasswordManagerModal }
                     />
-                    <Tabs active_index={this.state.active_index}>
+                    <Tabs>
                         <div label={localize('Real account')}>
                             <MT5RealAccountDisplay
                                 is_loading={ is_loading }
@@ -172,7 +154,7 @@ class MT5Dashboard extends React.Component {
     }
 }
 
-export default withRouter(connect(({ client, modules, ui }) => ({
+export default connect(({ client, modules, ui }) => ({
     beginRealSignupForMt5      : modules.mt5.beginRealSignupForMt5,
     createMT5Account           : modules.mt5.createMT5Account,
     current_list               : modules.mt5.current_list,
@@ -184,4 +166,4 @@ export default withRouter(connect(({ client, modules, ui }) => ({
     toggleCompareAccounts      : modules.mt5.toggleCompareAccountsModal,
     closeMt5AndOpenCashier     : modules.mt5.closeMt5AndOpenCashier,
     openTopUpModal             : ui.openTopUpModal,
-}))(MT5Dashboard));
+}))(MT5Dashboard);

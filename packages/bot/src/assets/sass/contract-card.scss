@@ -111,16 +111,15 @@
     }
     &--is-winning {
         #{$contract-card}__underlying {
-            background-image: var(--gradient-success);
+            background-image: $COLOR_LIGHT_GREEN_GRADIENT; // TODO: Update when gradients are added.
         }
     }
     &--is-losing {
         #{$contract-card}__underlying {
-            background-image: var(--gradient-danger);
+            background-image: $COLOR_LIGHT_RED_GRADIENT // TODO: Update when gradients are added.
         }
     }
     &--is-loading {
-        background-color: inherit;
         border: 1px solid var(--general-main-1);
     }
     &--completed {

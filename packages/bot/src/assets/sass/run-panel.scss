@@ -10,12 +10,21 @@
         height: 152px;
         margin: 16px 0;
     }
-    &__buttons {
-        display: inline-flex !important;
-        justify-content: space-between;
-        width: 67%;
-        height: 6rem;
-        align-items: center;
+    &__button {
+        margin-left: 0 !important;
+        opacity: 1;
+
+        &--run {
+            background: var(--purchase-main-1) !important;
+        }
+        &--disable {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        &--icon {
+            display: inline-block;
+            vertical-align: middle;
+        }
     }
     &__icon-info {
         vertical-align: middle;

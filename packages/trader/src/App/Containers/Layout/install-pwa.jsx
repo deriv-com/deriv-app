@@ -26,18 +26,16 @@ const InstallPWA = ({
         <React.Fragment>
             <p>{localize('Install {{website_name}} app?', { website_name })}</p>
             <Button
-                className='notification-bar__button'
+                className='btn--tertiary--default notification-bar__button'
                 has_effect
                 text={localize('No')}
                 onClick={onClose}
-                tertiary
             />
             <Button
-                className='notification-bar__button'
+                className='btn--primary--default notification-bar__button'
                 has_effect
                 text={localize('Yes')}
                 onClick={showPrompt}
-                primary
             />
         </React.Fragment>
     );

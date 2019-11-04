@@ -17,6 +17,7 @@
             }
             &-text {
                 @include typeface(--title-center-bold-active, none);
+                margin-left: 8px;
             }
         }
         &--start {
@@ -75,13 +76,6 @@
 
         &-field {
             margin-bottom: 0;
-
-            input {
-                width: 80%;
-            }
-            input::-ms-clear {
-                display: none;
-            }
         }
     }
     &__animation {

@@ -4,30 +4,34 @@
 .notification-messages {
     z-index: 9999;
     position: absolute;
-    right: 0;
+    right: 15px;
     top: 8px;
+
+    & > :not(:last-child) {
+        margin-bottom: 16px;
+    }
 }
 
 /** @define notification; */
 .notification {
     position: relative;
     display: flex;
-    border-radius: $BORDER_RADIUS;
+    border-radius: 4px;
     max-width: 348px;
     padding: 16px;
-    color: var(--text-prominent);
-    background-color: var(--general-main-2);
-    box-shadow: 0 4px 6px 0 var(--shadow-menu), 0 4px 6px 0 var(--shadow-menu);
-    overflow: hidden;
-    transition: transform 0.25s ease, opacity 0.25s linear;
+    color: $color-white;
 
-    &--enter-done {
-        opacity: 1;
-        transform: translateY(0);
+    &--danger {
+        background-color: var(--status-danger);
     }
-    &--enter, &--exit {
-        opacity: 0;
-        transform: translateY(-16px);
+    &--info {
+        background-color: var(--status-info);
+    }
+    &--success {
+        background-color: var(--status-success);
+    }
+    &--warning {
+        background-color: var(--status-warning);
     }
     &--small {
         max-width: 240px;
@@ -35,14 +39,13 @@
     &__text-container {
         display: flex;
         flex-direction: column;
-        z-index: 2;
     }
     &__text-body {
-        font-size: 1.4rem;
+        font-size: 14px;
         line-height: 1.43;
     }
     &__header {
-        font-size: 1.6rem;
+        font-size: 16px;
         font-weight: bold;
         line-height: 1.5;
         margin-bottom: 8px;
@@ -56,7 +59,6 @@
         border: none;
         padding: 0;
         cursor: pointer;
-        z-index: 2;
 
         &:focus, &:active {
             outline: none;
@@ -65,31 +67,12 @@
             content: '\0000D7';
             font-size: 30px;
             font-weight: 300;
-            color: var(--text-prominent);
+            color: $color-white;
         }
     }
     &__icon {
         &-type {
-            margin-right: 15px;
-            margin-top: 0.5rem;
-            width: 1.4rem;
-            height: 1.4rem;
-
-            &--is-background {
-                width: 160px;
-                height: 160px;
-            }
+            margin-right: 8px;
         }
-        &-background {
-            position: absolute;
-            left: -20px;
-            bottom: -20px;
-            pointer-events: none;
-            opacity: 0.07;
-            z-index: 0;
-        }
-    }
-    &:not(:last-child) {
-        margin-bottom: 16px;
     }
 }

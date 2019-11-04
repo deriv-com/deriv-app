@@ -12,6 +12,7 @@ import IconMessageContent from '../../../Components/icon-message-content.jsx';
 const ContinueTradingButton = () => (
     <ButtonLink
         to='/'
+        className='btn--primary--default'
     >
         <p className='btn__text'>{localize('Continue trading')}</p>
     </ButtonLink>
@@ -19,6 +20,7 @@ const ContinueTradingButton = () => (
 const PoiButton = () => (
     <ButtonLink
         to='/account/proof-of-identity'
+        className='btn--primary--default'
     >
         <p className='btn__text'>{localize('Submit proof of identity')}</p>
     </ButtonLink>
@@ -32,8 +34,8 @@ export const Expired = ({ onClick }) => (
     >
         <Button
             onClick={onClick}
+            className='btn--primary--default'
             has_effect
-            primary
         >
             <p className='btn__text'>{localize('Resubmit')}</p>
         </Button>

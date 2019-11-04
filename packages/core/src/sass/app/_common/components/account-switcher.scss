@@ -116,6 +116,7 @@
 
                 &__text {
                     color: var(--general-main-1);
+                    margin: 0 0 0 0.5em;
                 }
             }
         }
@@ -133,6 +134,11 @@
             padding: 0 0 0 0.8rem;
             height: 4rem;
             justify-content: left;
+
+            & > * {
+                display: block;
+                margin-right: 1rem;
+            }
         }
     }
     &__list {

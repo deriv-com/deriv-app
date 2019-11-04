@@ -8,18 +8,15 @@ import {
     MAX_TABLET_WIDTH }       from 'Constants/ui';
 import ObjectUtils           from 'deriv-shared/utils/object';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
-import {
-    clientNotifications,
-    excluded_notifications } from './Helpers/client-notifications';
 import BaseStore             from './base-store';
 
 const store_name = 'ui_store';
 
 export default class UIStore extends BaseStore {
-    @observable is_account_settings_visible = false;
     @observable is_main_drawer_on           = false;
-    @observable is_notifications_visible    = false;
+    @observable is_notifications_drawer_on  = false;
     @observable is_positions_drawer_on      = false;
+    @observable is_account_settings_visible = false;
     @observable is_reports_visible          = false;
 
     @observable is_cashier_modal_on     = false;
@@ -40,17 +37,16 @@ export default class UIStore extends BaseStore {
     // SmartCharts Controls
     // TODO: enable asset information
     // @observable is_chart_asset_info_visible = true;
-    @observable is_chart_countdown_visible = false;
-    @observable is_chart_layout_default    = true;
+    @observable is_chart_countdown_visible  = false;
+    @observable is_chart_layout_default     = true;
 
     // PWA event and config
     @observable pwa_prompt_event = null;
 
     @observable screen_width = window.innerWidth;
 
-    @observable notifications         = [];
     @observable notification_messages = [];
-    @observable push_notifications    = [];
+    @observable push_notifications = [];
 
     @observable is_advanced_duration   = false;
     @observable advanced_duration_unit = 't';
@@ -292,11 +288,6 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleNotificationsModal() {
-        this.is_notifications_visible = !this.is_notifications_visible;
-    }
-
-    @action.bound
     toggleAccountSettings(is_visible) {
         this.is_account_settings_visible = is_visible;
     }
@@ -312,13 +303,19 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    showMainDrawer() {
+    showMainDrawer() { // show main Drawer
         this.is_main_drawer_on = true;
     }
 
     @action.bound
-    hideDrawers() {
+    showNotificationsDrawer() { // show nofitications Drawer
+        this.is_notifications_drawer_on = true;
+    }
+
+    @action.bound
+    hideDrawers() { // hide both menu drawers
         this.is_main_drawer_on = false;
+        this.is_notifications_drawer_on = false;
     }
 
     @action.bound
@@ -332,45 +329,20 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    updateNotifications(notifications_array) {
-        this.notifications =
-            notifications_array.filter((message) => !excluded_notifications.includes(message.key));
-    }
-
-    @action.bound
-    removeNotifications() {
-        this.notifications = [];
-    }
-
-    @action.bound
-    removeNotificationByKey({ key }) {
-        this.notifications = this.notifications
-            .filter(n => n.key !== key);
-    }
-
-    @action.bound
-    addNotificationMessageByKey(key) {
-        if (key) this.addNotificationMessage(clientNotifications()[key]);
-    }
-
-    @action.bound
-    addNotificationMessage(notification) {
+    addNotification(notification) {
         if (!this.notification_messages.find(item => item.header === notification.header)) {
             this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
-            if (!excluded_notifications.includes(notification.key)) {
-                this.updateNotifications(this.notification_messages);
-            }
         }
     }
 
     @action.bound
-    removeNotificationMessage({ key }) {
+    removeNotification({ key }) {
         this.notification_messages = this.notification_messages
             .filter(n => n.key !== key);
     }
 
     @action.bound
-    removeAllNotificationMessages() {
+    removeAllNotifications() {
         this.notification_messages = [];
     }
 

@@ -152,11 +152,13 @@ class AccountSwitcher extends React.Component {
                     {this.can_manage_currency && !can_upgrade &&
                         <UpgradeButton
                             onClick={this.props.openRealAccountSignup}
-                            icon={<Icon icon='IconAdd' />}
                         >
-                            <Localize
-                                i18n_default_text='Add/manage account'
-                            />
+                            <Icon icon='IconAdd' />
+                            <div className='btn__text'>
+                                <Localize
+                                    i18n_default_text='Add/manage account'
+                                />
+                            </div>
                         </UpgradeButton>
                     }
                 </div>
@@ -169,11 +171,13 @@ class AccountSwitcher extends React.Component {
                             window.open(urlFor('new_account/maltainvestws', undefined, undefined, true));
                         }
                     }}
-                    icon={<Icon icon='IconAdd' />}
                 >
-                    <Localize
-                        i18n_default_text='Add a real account'
-                    />
+                    <Icon icon='IconAdd' />
+                    <div className='btn__text'>
+                        <Localize
+                            i18n_default_text='Add a real account'
+                        />
+                    </div>
                 </UpgradeButton>
                 }
                 <div className='acc-switcher__separator' />

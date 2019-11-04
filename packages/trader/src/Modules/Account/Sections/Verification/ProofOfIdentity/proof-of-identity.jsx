@@ -10,23 +10,15 @@ class ProofOfIdentity extends React.Component {
         if (this.props.has_missing_required_field) return <MissingPersonalDetails />;
 
         return (
-            <ProofOfIdentityContainer
-                addNotificationByKey={this.props.addNotificationByKey}
-                removeNotificationByKey={this.props.removeNotificationByKey}
-                removeNotificationMessage={this.props.removeNotificationMessage}
-                refreshNotifications={this.props.refreshNotifications}
-            />
+            <ProofOfIdentityContainer refreshNotifications={this.props.refreshNotifications} />
         );
     }
 }
 
 export default connect(
-    ({ client, ui }) => ({
+    ({ client }) => ({
         has_missing_required_field: client.has_missing_required_field,
         is_virtual                : client.is_virtual,
         refreshNotifications      : client.refreshNotifications,
-        addNotificationByKey      : ui.addNotificationMessageByKey,
-        removeNotificationByKey   : ui.removeNotificationByKey,
-        removeNotificationMessage : ui.removeNotificationMessage,
     }),
 )(ProofOfIdentity);

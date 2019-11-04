@@ -84,7 +84,6 @@ class OpenPositions extends React.Component {
                         footer={totals}
                         data_source={active_positions}
                         getRowAction={this.getRowAction}
-                        custom_width={'100%'}
                     >
                         <PlaceholderComponent
                             is_loading={is_loading}

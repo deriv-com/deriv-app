@@ -1,4 +1,5 @@
 import React         from 'react';
+import { action }    from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react';
 import Theme         from '../shared/theme';
 import Popover       from '../../src/components/popover/popover';

@@ -148,6 +148,7 @@ export const runBot = (limitations = {}) => {
 export const stopBot = () => {
     if (interpreter) {
         interpreter.stop();
+        interpreter = null;
     }
 };
 

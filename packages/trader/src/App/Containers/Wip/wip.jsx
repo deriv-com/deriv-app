@@ -33,7 +33,6 @@ const Wip = ({ is_dark_mode, pushDataLayer }) => {
                     classNameSpan='work-in-progress__btn--span'
                     onClick={onClick}
                     text={localize('Take me to SmartTrader')}
-                    primary
                 />
             </div>
         </div>

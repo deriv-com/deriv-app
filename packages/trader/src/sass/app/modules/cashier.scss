@@ -62,7 +62,14 @@
             }
         }
         &-submit-button {
+            width: 9.8rem;
+            min-width: 9.8rem;
+            display: inline-block;
             height: 4rem;
+            font-size: 1.4rem;
+            padding: 1rem 1.6rem;
+            font-weight: bold;
+            color: $COLOR_WHITE;
             margin: 1.6rem 2.4rem 2.4rem;
         }
     }
@@ -159,7 +166,8 @@
             margin: 10.7rem 0 1.6rem;
         }
         &-button {
-            margin: 3.2rem auto;
+            height: 4rem;
+            margin-top: 3.2rem;
         }
     }
     &__account-switch-icon {
@@ -199,8 +207,9 @@
             margin-bottom: 0.8rem;
         }
         &__button {
-            margin: 3.2rem auto 1.6rem;
+            margin-top: 3.2rem;
             height: 4rem;
+            margin-bottom: 1.6rem;
         }
         &__footer {
             font-size: 1.2rem;
@@ -223,16 +232,16 @@
         font-size: 1.4rem;
     }
     &__verify-button {
-        margin: 3.2rem auto;
+        margin-top: 3.2rem;
+        height: 4rem;
+
+        &-text {
+            font-size: 1.4rem;
+        }
     }
     &__icon {
         margin-top: 8rem;
         margin-bottom: 1.6rem;
-    }
-    &__resend {
-        &-button {
-            margin: 4rem auto 0;
-        }
     }
     &__email {
         &-sent {
@@ -472,8 +481,9 @@
         }
     }
     &__button-done {
+        margin-top: 3.2rem;
+        min-width: 6.5rem;
         height: 4rem;
-        margin: 3.2rem auto 0;
     }
 }
 

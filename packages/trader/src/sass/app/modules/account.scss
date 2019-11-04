@@ -5,7 +5,6 @@
 
     .vertical-tab {
         height: calc(100vh - 83px);
-        max-width: calc(100vw - 32px);
 
         &__tab {
             min-width: 240px;
@@ -144,10 +143,11 @@
                 width: 27.6rem;
             }
             &-btn {
-                height: 4rem;
+                height: 4em;
                 margin-top: 0;
                 margin-bottom: 0;
-                margin-left: 1.6rem;
+                margin-right: 0;
+                min-width: 6.4em;
             }
         }
     }
@@ -212,7 +212,6 @@
     .account-management__text-container {
         margin-top: 10px;
         max-width: 467px;
-        margin-bottom: 2em;
     }
     .account-management-flex-wrapper {
         display: flex;

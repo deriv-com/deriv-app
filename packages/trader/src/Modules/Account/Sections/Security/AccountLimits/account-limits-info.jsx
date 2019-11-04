@@ -16,6 +16,7 @@ const currency_name_map = {
     AUD: localize('Australian Dollar'),
     EUR: localize('Euro'),
     GBP: localize('Pound Sterling'),
+
 };
 
 const AccountLimitsInfo = ({

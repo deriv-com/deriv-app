@@ -158,7 +158,7 @@ const ModalContent = ()  => (
             columns={compareAccountsColumns}
             item_size={40}
             custom_height={ 400 }
-            custom_width={'100%'}
+            custom_width={ 845 }
         />
         <p className='mt5-compare-account--hint'>
             <Localize
@@ -171,11 +171,10 @@ const ModalContent = ()  => (
 const CompareAccountsModal = ({ toggleCompareAccounts, disableApp, enableApp, is_compare_accounts_visible }) => (
     <div className='mt5-compare-accounts-modal__wrapper'>
         <Button
-            className='mt5-dashboard__welcome-message--button'
+            className='btn--tertiary--default mt5-dashboard__welcome-message--button'
             has_effect
             text={localize('Compare accounts')}
             onClick={toggleCompareAccounts}
-            tertiary
         />
         <React.Suspense fallback={<UILoader />}>
             <Modal

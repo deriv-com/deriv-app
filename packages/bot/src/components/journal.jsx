@@ -1,8 +1,8 @@
 import classnames           from 'classnames';
-import PropTypes            from 'prop-types';
+import proptypes            from 'prop-types';
 import React                from 'react';
 import { ThemedScrollbars } from 'deriv-components';
-import { message_types }    from '../constants/messages';
+import { message_types }    from '../constants/message-types';
 import { connect }          from '../stores/connect';
 import { translate }        from '../utils/tools';
 import '../assets/sass/journal.scss';
@@ -89,50 +89,58 @@ const MessageItem = ({
     );
 };
 
-const Journal = ({
-    messages,
-}) => {
-    return (
-        <ThemedScrollbars
-            className='journal'
-            autoHide
-            style={{ height: 'calc(100vh - 324px)' }}
-        >
-            <table className='journal__table'>
-                <thead className='journal__table--header'>
-                    <tr>
-                        <th className='journal__table--th'>{translate('Date')}</th>
-                        <th className='journal__table--th'>{translate('Message')}</th>
-                    </tr>
-                </thead>
-                <tbody className='journal__table--body'>
-                    {
-                        messages.map((item, index) => {
-                            const { date, time, message, message_type } = item;
-                            const date_el = DateItem({ date, time });
-                            const message_el = MessageItem({ message });
+class Journal extends React.PureComponent {
+    componentWillUnmount() {
+        // this.props.onUnmount();
+    }
 
-                            return (
-                                <tr className='journal__table--tr' key={`${item.date}-${index}`}>
-                                    <td className='journal__table--td'>{date_el}</td>
-                                    <td className={classnames(
-                                        'journal__table--td',
-                                        { 'journal__table--red': message_type === message_types.ERROR })}
-                                    >{message_el}
-                                    </td>
-                                </tr>);
-                        })
-                    }
-                </tbody>
-            </table>
-        </ThemedScrollbars>
-    );
-};
+    render() {
+        const { messages } = this.props;
+
+        return (
+            <ThemedScrollbars
+                className='journal'
+                autoHide
+                style={{ height: 'calc(100vh - 324px)' }}
+            >
+                <table className='journal__table'>
+                    <thead className='journal__table--header'>
+                        <tr>
+                            <th className='journal__table--th'>{translate('Date')}</th>
+                            <th className='journal__table--th'>{translate('Message')}</th>
+                        </tr>
+                    </thead>
+                    <tbody className='journal__table--body'>
+                        {
+                            messages.map((item, index) => {
+                                const { date, time, message, message_type } = item;
+                                const date_el = DateItem({ date, time });
+                                const message_el = MessageItem({ message });
+
+                                return (
+                                    <tr className='journal__table--tr' key={`${item.date}-${index}`}>
+                                        <td className='journal__table--td'>{date_el}</td>
+                                        <td className={classnames(
+                                            'journal__table--td',
+                                            { 'journal__table--red': message_type === message_types.error })}
+                                        >{message_el}
+                                        </td>
+                                    </tr>);
+                            })
+                        }
+                    </tbody>
+                </table>
+            </ThemedScrollbars>
+        );
+    }
+}
 
 Journal.propTypes = {
-    messages: PropTypes.array,
+    messages : proptypes.array,
+    onUnmount: proptypes.func,
 };
 
 export default connect(({ journal }) => ({
-    messages: journal.messages,
+    messages : journal.messages,
+    onUnmount: journal.onUnmount,
 }))(Journal);

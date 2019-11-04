@@ -11,9 +11,8 @@
             .modal__footer {
                 text-align: right;
 
-                &--button {
-                    margin: 1.4rem 1.6rem 1.4rem 0;
-                    display: inline-block;
+                &--cancel {
+                    margin-right: 0;
                 }
             }
             .modal__content-row {

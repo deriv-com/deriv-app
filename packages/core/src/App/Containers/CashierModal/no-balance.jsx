@@ -19,11 +19,10 @@ class NoBalance extends React.Component {
                 <h2 className='withdraw__header'><Localize i18n_default_text='You have no funds in your {{currency}} account' values={{ currency: this.props.currency.toUpperCase() }} /></h2>
                 <p className='cashier__text'><Localize i18n_default_text='Please make a deposit to use this feature.' /></p>
                 <Button
-                    className='cashier__no-balance-button'
+                    className='btn--primary--default cashier__no-balance-button'
                     has_effect
                     text={localize('Deposit now')}
                     onClick={this.onClickDeposit}
-                    primary
                 />
             </div>
         );

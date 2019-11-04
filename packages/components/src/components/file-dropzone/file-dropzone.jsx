@@ -2,6 +2,7 @@ import classNames        from 'classnames';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
 import Dropzone          from 'react-dropzone';
+import                        './file-dropzone.scss';
 
 const FadeInMessage = ({ is_visible, children, key, timeout }) => (
     <CSSTransition

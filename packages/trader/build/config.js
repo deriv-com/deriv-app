@@ -25,7 +25,7 @@ const copyConfig = (base) => ([
 ]);
 
 const generateSWConfig = () => ({
-    importWorkboxFrom    : 'local',
+    importWorkboxFrom    : IS_RELEASE ? 'local' : 'disabled',
     cleanupOutdatedCaches: true,
     exclude              : [/CNAME$/, /index\.html$/, /404\.html$/],
     skipWaiting          : true,

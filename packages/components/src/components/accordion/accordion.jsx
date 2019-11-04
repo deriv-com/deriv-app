@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
+import './accordion.scss';
 
 // TODO: use-from-shared - Use this icon from icons' shared package
 const IconExpand = ({ className }) => (

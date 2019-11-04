@@ -15,7 +15,6 @@
     }
     &__button {
         margin: 0;
-        border: none;
         border-radius: 0px;
         width: 50%;
         background-color: var(--state-normal);
@@ -44,7 +43,6 @@
         border-radius: $BORDER_RADIUS;
         width: 100%;
         background-color: var(--state-normal);
-        display: flex;
 
         .button-menu {
             &__button, &__button--active {

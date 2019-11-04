@@ -5,6 +5,7 @@ import {
     TradeTypeAsianUp,
     TradeTypeCallBarrier,
     TradeTypeCall,
+    TradeTypeCalleLight,
     TradeTypeCallSpread,
     TradeTypePutSpread,
     TradeTypeDigitDiff,
@@ -15,6 +16,7 @@ import {
     TradeTypeDigitUnder,
     TradeTypeExpiryMiss,
     TradeTypeExpiryRange,
+    TradeTypeExpiryRangee,
     TradeTypeNoTouch,
     TradeTypeOneTouch,
     TradeTypePutBarrier,
@@ -36,6 +38,7 @@ const IconTradeType = ({ trade_type, className }) => {
         case 'call_barrier': return <TradeTypeCallBarrier className={className} />;
         case 'calle'       :
         case 'call'        : return <TradeTypeCall className={className} />;
+        case 'calle_light' : return <TradeTypeCalleLight className={className} />;
         case 'callspread'  : return <TradeTypeCallSpread className={className} />;
         case 'putspread'   : return <TradeTypePutSpread className={className} />;
         case 'digitdiff'   : return <TradeTypeDigitDiff className={className} />;
@@ -45,8 +48,8 @@ const IconTradeType = ({ trade_type, className }) => {
         case 'digitover'   : return <TradeTypeDigitOver className={className} />;
         case 'digitunder'  : return <TradeTypeDigitUnder className={className} />;
         case 'expirymiss'  : return <TradeTypeExpiryMiss className={className} />;
-        case 'expiryrangee':
         case 'expiryrange' : return <TradeTypeExpiryRange className={className} />;
+        case 'expiryrangee': return <TradeTypeExpiryRangee className={className} />;
         case 'notouch'     : return <TradeTypeNoTouch className={className} />;
         case 'onetouch'    : return <TradeTypeOneTouch className={className} />;
         case 'put_barrier' : return <TradeTypePutBarrier className={className} />;

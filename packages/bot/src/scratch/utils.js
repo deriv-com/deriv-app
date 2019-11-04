@@ -1,6 +1,5 @@
-import { saveAs } from './shared';
-import config     from '../constants';
-import ApiHelpers from '../services/api/api-helpers';
+import { saveAs }                   from './shared';
+import config                       from '../constants';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 
@@ -59,6 +58,10 @@ export const fixCollapsedBlocks = () =>
         block.setCollapsed(false);
         block.setCollapsed(true);
     });
+
+export const getBlockByType = type => Blockly.derivWorkspace.getAllBlocks().find(block => type === block.type);
+
+export const getTopBlocksByType = type => Blockly.derivWorkspace.getTopBlocks().filter(block => type === block.type);
 
 export const save = (filename = 'deriv-bot', collection = false, xmlDom) => {
     xmlDom.setAttribute('collection', collection ? 'true' : 'false');
@@ -139,7 +142,6 @@ export const load = (block_string = '', drop_event) => {
     let xml;
     try {
         xml = Blockly.Xml.textToDom(block_string);
-        xml = updateRenamedMarkets(xml);
     } catch (e) {
         // TODO
         console.error(e);  // eslint-disable-line
@@ -204,29 +206,4 @@ const loadWorkspace = (xml) => {
     Blockly.Xml.domToWorkspace(xml, workspace);
     fixCollapsedBlocks();
     Blockly.Events.setGroup(false);
-};
-
-// TODO: Refactor this into backward compatibility.
-const updateRenamedMarkets = (xml) => {
-    const el_market_list = xml.querySelector('field[name="MARKET_LIST"]');
-    
-    if (el_market_list) {
-        const { active_symbols } = ApiHelpers.instance;
-        const market_value       = el_market_list.innerText;
-        const renamed_fields     = { volidx: 'synthetic_index' };
-        const market_options     = Object.keys(active_symbols.processed_symbols).reduce(
-            (initial_value, current_value) => {
-                if (!initial_value.includes(current_value)) {
-                    initial_value.push(current_value);
-                }
-                return initial_value;
-            }, []
-        );
-
-        if (market_options.includes(renamed_fields[market_value])) {
-            el_market_list.innerText = renamed_fields[market_value];
-        }
-    }
-    
-    return xml;
 };

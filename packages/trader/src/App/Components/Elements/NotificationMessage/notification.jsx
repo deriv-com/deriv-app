@@ -1,18 +1,18 @@
-import classNames              from 'classnames';
-import PropTypes               from 'prop-types';
-import React                   from 'react';
-import CloseButton             from './close-button.jsx';
-import NotificationStatusIcons from './notification-status-icons.jsx';
+import PropTypes   from 'prop-types';
+import React       from 'react';
+import classNames  from 'classnames';
+import Icon        from 'Assets/icon.jsx';
+import CloseButton from './close-button.jsx';
 import {
     default_delay,
-    types }                    from './constants';
+    types }        from './constants';
 
 const Notification = ({
     data,
-    removeNotificationMessage,
+    removeNotification,
 }) => {
     const destroy = (is_closed_by_user) => {
-        removeNotificationMessage(data);
+        removeNotification(data);
 
         if (data.closeOnClick) {
             data.closeOnClick(data, is_closed_by_user);
@@ -31,36 +31,18 @@ const Notification = ({
                 'notification--small': (data.size === 'small'),
             })}
         >
-            <div className='notification__icon-background'>
-                <NotificationStatusIcons type={data.type} class_suffix='is-background' />
-            </div>
             <div className='notification__icon'>
-                <NotificationStatusIcons type={data.type} />
+                { data.type === 'danger'  && <Icon icon='IconDanger' className='notification__icon-type' /> }
+                { (data.type === 'info' || data.type === 'contract_sold')
+                    && <Icon icon='IconInformation' className='notification__icon-type' /> }
+                { data.type === 'success' && <Icon icon='IconSuccess' className='notification__icon-type' /> }
+                { data.type === 'warning' && <Icon icon='IconWarning' className='notification__icon-type' /> }
             </div>
             <div className='notification__text-container'>
-                <h4 className='notification__header'>
-                    {data.header}
-                </h4>
-                <p className='notification__text-body'>
-                    {data.message}
-                </p>
+                <h4 className='notification__header'>{data.header}</h4>
+                <p className='notification__text-body'> {data.message}</p>
             </div>
-            { data.should_hide_close_btn ?
-                undefined
-                :
-                <CloseButton
-                    className='notification__close-button'
-                    onClick={onClick}
-                />
-            }
-            {/* TODO: Re-enable once button or call to action flow is finalized */}
-            {/* !!data.action &&
-                <Button
-                    className={classNames('btn--secondary--default', 'notification__cta-button')}
-                    onClick={data.action.onClick}
-                    text={data.action.text}
-                />
-            */}
+            { data.should_hide_close_btn ? undefined : <CloseButton onClick={onClick} className='notification__close-button' />}
         </div>
     );
 };
@@ -76,7 +58,7 @@ Notification.propTypes = {
         size                 : PropTypes.oneOf(['small']),
         type                 : PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold']).isRequired,
     }),
-    removeNotificationMessage: PropTypes.func,
+    removeNotification: PropTypes.func,
 };
 
 export default Notification;

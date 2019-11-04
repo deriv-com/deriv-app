@@ -1,3 +1,4 @@
+import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
 import { Button }          from 'deriv-components';
@@ -7,11 +8,10 @@ import { localize }        from 'App/i18n';
 const LoginButton = ({ className }) => (
     <Button
         id='dt_login_button'
-        className={className}
+        className={classNames(className, 'btn--tertiary--default')}
         has_effect
         text={localize('Log in')}
         onClick={redirectToLogin}
-        tertiary
     />
 );
 

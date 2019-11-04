@@ -1,4 +1,4 @@
-import PopOver from './popover.jsx';
-import                    './popover.scss';
+import './popover.scss';
 
-export default PopOver;
+export default from './popover.jsx';
+

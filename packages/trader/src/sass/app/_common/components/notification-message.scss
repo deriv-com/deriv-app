@@ -32,6 +32,11 @@
     &--small {
         max-width: 240px;
     }
+    &__cta-button {
+        flex-grow: 1;
+        max-width: 150px;
+        align-self: flex-end;
+    }
     &__text-container {
         display: flex;
         flex-direction: column;

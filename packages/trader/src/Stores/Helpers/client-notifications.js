@@ -13,6 +13,7 @@ import {
     LocalStore,
     State }             from '_common/storage';
 import { urlFor }       from '_common/url';
+import { WS }           from 'Services';
 import Localize         from '../../App/Components/Elements/localize.jsx';
 
 // TODO: Update links to app_2 links when components are done.
@@ -39,7 +40,7 @@ export const clientNotifications = (ui = {}) => {
         },
         self_exclusion: (excluded_until) => ({
             key    : 'self_exclusion',
-            header : localize('Self-exclusion Detected'),
+            header : localize('Self-exclusion detected'),
             message: (
                 <Localize
                     i18n_default_text='You have opted to be excluded from Binary.com until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
@@ -51,7 +52,7 @@ export const clientNotifications = (ui = {}) => {
         }),
         authenticate: {
             key    : 'authenticate',
-            header : localize('Account Authentication'),
+            header : localize('Account authentication'),
             message: (
                 <Localize
                     i18n_default_text='<0>Authenticate your account</0> now to take full advantage of all payment methods available.'
@@ -68,25 +69,25 @@ export const clientNotifications = (ui = {}) => {
         },
         cashier_locked: {
             key    : 'cashier_locked',
-            header : localize('Cashier Disabled'),
+            header : localize('Cashier disabled'),
             message: localize('Deposits and withdrawals have been disabled on your account. Please check your email for more details.'),
             type   : 'warning',
         },
         withdrawal_locked: {
             key    : 'withdrawal_locked',
-            header : localize('Withdrawal Disabled'),
+            header : localize('Withdrawal disabled'),
             message: localize('Withdrawals have been disabled on your account. Please check your email for more details.'),
             type   : 'warning',
         },
         mt5_withdrawal_locked: {
             key    : 'mt5_withdrawal_locked',
-            header : localize('MT5 Withdrawal Disabled'),
+            header : localize('MT5 withdrawal disabled'),
             message: localize('MT5 withdrawals have been disabled on your account. Please check your email for more details.'),
             type   : 'warning',
         },
         document_needs_action: {
             key    : 'document_needs_action',
-            header : localize('Authentication Failed'),
+            header : localize('Authentication failed'),
             message: (
                 <Localize
                     i18n_default_text='<0>Your Proof of Identity or Proof of Address</0> did not meet our requirements. Please check your email for further instructions.'
@@ -103,7 +104,7 @@ export const clientNotifications = (ui = {}) => {
         },
         unwelcome: {
             key    : 'unwelcome',
-            header : localize('Trading and Deposits Disabled'),
+            header : localize('Trading and deposits disabled'),
             message: (
                 <Localize
                     i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
@@ -114,7 +115,7 @@ export const clientNotifications = (ui = {}) => {
         },
         mf_retail: {
             key    : 'mf_retail',
-            header : localize('Binary Options Trading Disabled'),
+            header : localize('Binary options trading disabled'),
             message: (
                 <Localize
                     i18n_default_text='Binary Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
@@ -125,7 +126,7 @@ export const clientNotifications = (ui = {}) => {
         },
         financial_limit: {
             key    : 'financial_limit',
-            header : localize('Remove Deposit Limits'),
+            header : localize('Remove deposit limits'),
             message: (
                 <Localize
                     i18n_default_text='Please set your <0>30-day turnover limit</0> to remove deposit limits.'
@@ -136,7 +137,7 @@ export const clientNotifications = (ui = {}) => {
         },
         risk: {
             key    : 'risk',
-            header : localize('Withdrawal and Trading Limits'),
+            header : localize('Withdrawal and trading limits'),
             message: (
                 <Localize
                     i18n_default_text='Please complete the <0>Financial Assessment form</0> to lift your withdrawal and trading limits.'
@@ -169,12 +170,20 @@ export const clientNotifications = (ui = {}) => {
             type: 'danger',
         },
         tnc: {
+            action: {
+                onClick: async () => {
+                    await WS.tncApproval();
+                    ui.removeNotificationByKey({ key: 'tnc' });
+                    ui.removeNotificationMessage({ key: 'tnc' });
+                },
+                text: localize('I accept'),
+            },
             key    : 'tnc',
-            header : localize('Terms & Conditions Updated'),
+            header : localize('Terms & conditions updated'),
             message: (
                 <Localize
-                    i18n_default_text='Please <0>accept the updated Terms and Conditions</0> to enable deposit and trading.'
-                    components={[ <a key={0} className='link' target='_blank' href={urlFor('user/tnc_approvalws', undefined, undefined, true)} /> ]}
+                    i18n_default_text='Please accept our <0>updated Terms and Conditions</0> to proceed.'
+                    components={[ <a key={0} className='link' target='_blank' href='https://www.deriv.com/terms-and-conditions/' /> ]}
                 />
             ),
             type: 'danger',

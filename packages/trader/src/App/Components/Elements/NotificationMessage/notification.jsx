@@ -1,6 +1,7 @@
 import classNames              from 'classnames';
 import PropTypes               from 'prop-types';
 import React                   from 'react';
+import { Button }              from 'deriv-components';
 import CloseButton             from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
 import {
@@ -44,6 +45,13 @@ const Notification = ({
                 <p className='notification__text-body'>
                     {data.message}
                 </p>
+                {!!data.action &&
+                    <Button
+                        className={classNames('btn--secondary', 'notification__cta-button')}
+                        onClick={data.action.onClick}
+                        text={data.action.text}
+                    />
+                }
             </div>
             { data.should_hide_close_btn ?
                 undefined
@@ -53,20 +61,16 @@ const Notification = ({
                     onClick={onClick}
                 />
             }
-            {/* TODO: Re-enable once button or call to action flow is finalized */}
-            {/* !!data.action &&
-                <Button
-                    className={classNames('btn--secondary--default', 'notification__cta-button')}
-                    onClick={data.action.onClick}
-                    text={data.action.text}
-                />
-            */}
         </div>
     );
 };
 
 Notification.propTypes = {
     data: PropTypes.shape({
+        action: PropTypes.shape({
+            onClick: PropTypes.func,
+            text   : PropTypes.string,
+        }),
         closeOnClick         : PropTypes.func,
         delay                : PropTypes.number,
         header               : PropTypes.string,

@@ -61,12 +61,12 @@ export class AccountActions extends Component {
                         count={notifications_count}
                         is_visible={is_notifications_visible}
                         toggleDialog={toggleNotifications}
-                        tooltip_message={localize('View Notifications')}
+                        tooltip_message={localize('View notifications')}
                     />
                     <Popover
                         classNameBubble='account-settings-toggle__tooltip'
                         alignment='bottom'
-                        message={localize('Manage Account Settings')}
+                        message={localize('Manage account settings')}
                     >
                         <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
                             <Icon icon='IconUser' />

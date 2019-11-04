@@ -88,20 +88,24 @@ const Transaction = ({ contract }) => {
                         </div>
                     </td>
                     <td className='transactions__col'>
-                        <div
-                            className={className(
-                                'transactions__inline',
-                                'transactions__middle',
-                                [Math.sign(contract.profit) !== -1 ?
-                                    'transactions__green' :
-                                    'transactions__red'])}
-                        >
-                            <Money
-                                amount={Math.abs(contract.profit)}
-                                currency={contract.currency}
-                            />
-                        </div>
-
+                        {contract.profit ?
+                            <div
+                                className={className(
+                                    'transactions__inline',
+                                    'transactions__middle',
+                                    {
+                                        'transactions__green': contract.profit > 0,
+                                        'transactions__red'  : contract.profit < 0,
+                                    })}
+                            >
+                                <Money
+                                    amount={Math.abs(contract.profit)}
+                                    currency={contract.currency}
+                                />
+                            </div>
+                            :
+                            null
+                        }
                     </td>
                     <td className='transactions__col'>
                         {
@@ -127,47 +131,39 @@ const Transaction = ({ contract }) => {
     );
 };
 
-class Transactions extends React.PureComponent {
-    componentWillUnmount() {
-        this.props.onUnmount();
-    }
+const Transactions = ({
+    contracts }) => {
 
-    render() {
-        const { contracts } = this.props;
-
-        return (
-            <div className='transactions'>
-                <div className='transactions__header'>
-                    <span className='transactions__header--col'>{translate('Trade information')}</span>
-                    <span className='transactions__header--col'>{translate('Entry/Exit spot')}</span>
-                    <span className='transactions__header--col'>{translate('Profit/Loss')}</span>
-                </div>
-                <div className='transactions__content'>
-                    <ThemedScrollbars
-                        autoHide
-                        style={{ height: 'calc(100vh - 365px)' }}
-                    >
-                        {
-                            contracts.map((contract, index) => {
-                                return <Transaction
-                                    key={`${contract.refrence_id}${index}`}
-                                    contract={contract}
-                                />;
-                            })
-                        }
-                    </ThemedScrollbars>
-                </div>
+    return (
+        <div className='transactions'>
+            <div className='transactions__header'>
+                <span className='transactions__header--col'>{translate('Trade information')}</span>
+                <span className='transactions__header--col'>{translate('Entry/Exit spot')}</span>
+                <span className='transactions__header--col'>{translate('Profit/Loss')}</span>
             </div>
-        );
-    }
-}
+            <div className='transactions__content'>
+                <ThemedScrollbars
+                    autoHide
+                    style={{ height: 'calc(100vh - 365px)' }}
+                >
+                    {
+                        contracts.map((contract, index) => {
+                            return <Transaction
+                                key={`${contract.refrence_id}${index}`}
+                                contract={contract}
+                            />;
+                        })
+                    }
+                </ThemedScrollbars>
+            </div>
+        </div>
+    );
+};
 
 Transactions.propTypes = {
     contracts: PropTypes.array,
-    onUnmount: PropTypes.func,
 };
 
 export default connect(({ transactions }) => ({
     contracts: transactions.contracts,
-    onUnmount: transactions.onUnmount,
 }))(Transactions);

@@ -57,6 +57,8 @@ export const getMarketNamesMap = () => ({
     WLDEUR    : localize('EUR Index'),
     WLDGBP    : localize('GBP Index'),
     WLDUSD    : localize('USD Index'),
+    '1HZ10V'  : localize('Volatility 10 (1s) Index'),
+    '1HZ100V' : localize('Volatility 100 (1s) Index'),
 });
 
 export const getUnsupportedContracts = () => ({

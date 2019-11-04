@@ -45,11 +45,11 @@ export default class GoogleDriveStore {
                         },
                         error => {
                             // TODO
-                            console.error(error); // eslint-disable-line
+                            console.warn(error); // eslint-disable-line
                         }
                     );
             },
-            onerror: console.error, // eslint-disable-line
+            onerror: console.warn, // eslint-disable-line
         });
     }
 

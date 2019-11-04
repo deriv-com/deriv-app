@@ -67,16 +67,18 @@ class PaymentAgentReceipt extends React.Component {
                 }
                 <div className='payment-agent__buttons'>
                     <Button
-                        className='btn--tertiary--default payment-agent__statement-button'
+                        className='payment-agent__statement-button'
                         has_effect
                         text={localize('View in statement')}
                         onClick={this.openStatement}
+                        tertiary
                     />
                     <Button
-                        className='btn--primary--default payment-agent__done-button'
+                        className='payment-agent__done-button'
                         has_effect
                         text={localize('Done')}
                         onClick={this.props.resetPaymentAgent}
+                        primary
                     />
                 </div>
             </React.Fragment>

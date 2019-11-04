@@ -115,13 +115,13 @@
     @if $align {
         text-align: $align;
     }
-    @if $size == 1.6em {
+    @if $size == 1.6rem {
         line-height: map-get($map: $LINEHEIGHTS, $key: 'large');
     }
-    @else if $size == 1.4em {
+    @else if $size == 1.4rem {
         line-height: map-get($map: $LINEHEIGHTS, $key: 'medium');
     }
-    @else if $size == 1.2em {
+    @else if $size == 1.2rem {
         line-height: map-get($map: $LINEHEIGHTS, $key: 'small');
     }
     @else {

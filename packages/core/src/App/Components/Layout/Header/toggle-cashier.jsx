@@ -1,4 +1,3 @@
-import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { Button, Modal } from 'deriv-components';
@@ -126,10 +125,11 @@ class ToggleCashier extends React.Component {
         return (
             <React.Fragment>
                 <Button
-                    className={classNames(className, 'btn--primary--default')}
+                    className={className}
                     has_effect
                     text={localize('Deposit')}
                     onClick={this.onClickDeposit}
+                    primary
                 />
                 <React.Suspense fallback={<UILoader />}>
                     <Modal

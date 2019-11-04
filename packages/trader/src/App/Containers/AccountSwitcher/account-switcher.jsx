@@ -223,7 +223,7 @@ class AccountSwitcher extends React.Component {
     get sorted_account_list() {
         // sort accounts as follows:
         // top is fiat, then crypto (each alphabetically by currency), then demo
-        return this.props.account_list.sort((a, b) => {
+        return this.props.account_list.slice().sort((a, b) => {
             const a_currency = this.props.accounts[a.loginid].currency;
             const b_currency = this.props.accounts[b.loginid].currency;
             const a_is_crypto = CurrencyUtils.isCryptocurrency(a_currency);
@@ -243,7 +243,7 @@ class AccountSwitcher extends React.Component {
 
     get sorted_mt5_list() {
         // for MT5, standard, advanced, then synthetic indices
-        return this.props.mt5_login_list.sort((a, b) => {
+        return this.props.mt5_login_list.slice().sort((a, b) => {
             if (/demo/.test(a.group) && !/demo/.test(b.group)) {
                 return 1;
             }

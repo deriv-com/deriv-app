@@ -1,7 +1,6 @@
 import { action, flow }     from 'mobx';
 import ObjectUtils          from 'deriv-shared/utils/object';
-import Login,
-{ redirectToLogin }         from '_common/base/login';
+import Login                from '_common/base/login';
 import ServerTime           from '_common/base/server_time';
 import BinarySocket         from '_common/base/socket_base';
 import { State }            from '_common/storage';
@@ -128,7 +127,7 @@ const BinarySocketGeneral = (() => {
                         message            : localize('Please Log in'),
                         should_show_refresh: false,
                         redirect_label     : localize('Log in'),
-                        redirectOnClick    : redirectToLogin,
+                        redirectOnClick    : Login.redirectToLogin,
                     });
                 });
             // no default

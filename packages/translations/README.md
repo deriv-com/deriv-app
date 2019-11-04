@@ -24,19 +24,19 @@
 * initialize translations in root app.jsx by importing i18n.js
 * in `app.jsx`
 ```jsx
-    import 'deriv-translations/src/components/localize';
+    import 'deriv-translations/lib/i18n';
 ```
 ### Usage
 * For strings use either `localize(...)` or `<Localize />`
 * [`<Localize />`](https://react.i18next.com/latest/trans-component) example:
 ```jsx
-    import Localize from 'deriv-translations/src/';
+    import Localize from 'deriv-translations/lib/localize';
 
     <Localize i18n_default_text='You cannot use your real money account with {{website_name}} at this time.' values={{ website_name }} />
 ```
 * localize example:
 ```jsx
-    import { localize } from 'deriv-translations/src/i18next/i18n';
+    import { localize } from 'deriv-translations/lib/i18n';
 
     <h4 className='drawer__notifications-header'>{localize('all notifications')}</h4>
 ```

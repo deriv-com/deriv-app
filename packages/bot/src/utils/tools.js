@@ -1,5 +1,5 @@
-import { localize }                     from 'deriv-translations/lib/i18n';
 import RenderHTML                       from 'react-render-html';
+import { localize }                     from 'deriv-translations/lib/i18n';
 import { observer as globalObserver }   from './observer';
 
 export const getObjectValue = obj => obj[Object.keys(obj)[0]];

@@ -1,5 +1,5 @@
-import { localize } from 'deriv-translations/lib/i18n';
 import { expect }                    from 'chai';
+import { localize }                  from 'deriv-translations/lib/i18n';
 import { init, xml as translateXml } from '../lang/i18n';
 
 class Xml {

@@ -116,7 +116,7 @@ export const load = (block_string, drop_event) => {
         } else {
             loadWorkspace(xml);
         }
-        journal.onSuccess(translate('Blocks are loaded successfully'));
+        journal.onLogSuccess(translate('Blocks are loaded successfully'));
     } catch (e) {
         return showInvalidStrategyError();
     }

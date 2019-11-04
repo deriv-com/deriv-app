@@ -17,7 +17,7 @@ import {
     isDigitTradeType      }           from 'Modules/Trading/Helpers/digits';
 import ServerTime                     from '_common/base/server_time';
 import Shortcode                      from 'Modules/Reports/Helpers/shortcode';
-import PerformanceChecker             from 'Services/perfomance-checker';
+import { measurePerformance }         from 'Services/perfomance-checker';
 import { processPurchase }            from './Actions/purchase';
 import * as Symbol                    from './Actions/symbol';
 import getValidationRules             from './Constants/validation-rules';
@@ -545,8 +545,6 @@ export default class TradeStore extends BaseStore {
             // const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
 
             const snapshot            = await processTradeParams(this, new_state);
-            // eslint-disable-next-line no-console
-            console.log('is_trade_enabled');
             snapshot.is_trade_enabled = true;
 
             this.updateStore({
@@ -616,9 +614,6 @@ export default class TradeStore extends BaseStore {
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
         };
 
-        performance.mark('set_proposal_info');
-        PerformanceChecker.startChecking();
-
         this.setMainBarrier(response.echo_req);
 
         if (response.error) {
@@ -631,6 +626,9 @@ export default class TradeStore extends BaseStore {
         }
 
         this.is_purchase_enabled = true;
+        performance.mark('set_proposal_info');
+        console.log('set_proposal_info');
+        measurePerformance('set_proposal_info');
     }
 
     @action.bound
@@ -701,6 +699,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onMount() {
+        performance.mark('trade_engine_start');
         this.onSwitchAccount(this.accountSwitcherListener);
         this.setChartStatus(true);
         runInAction(async() => {
@@ -708,6 +707,10 @@ export default class TradeStore extends BaseStore {
             this.refresh();
             await this.prepareTradeStore();
             this.debouncedProposal();
+            performance.mark('trade_engine_ready');
+            // eslint-disable-next-line no-console
+            console.log('calculate trade engine');
+            measurePerformance('trade_engine_ready','trade_engine_start');
         });
     }
 

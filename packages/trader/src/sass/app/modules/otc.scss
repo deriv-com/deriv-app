@@ -15,15 +15,17 @@
 
 /** @define buy-sell; weak */
 .buy-sell {
-    &--parameters {
-
-    }
-}
-
-/** @define buy-sell-table; weak */
-.buy-sell-table {
     height: 100%;
 
+    &__parameters {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        &-dropdown {
+            margin: 0.5rem;
+        }
+    }
     &__content {
         width: 100%;
         max-height: 100%;

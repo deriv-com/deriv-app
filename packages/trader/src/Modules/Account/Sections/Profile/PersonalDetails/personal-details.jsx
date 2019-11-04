@@ -213,7 +213,7 @@ class PersonalDetailsForm extends React.Component {
         // form_initial_values.tax_residence = form_initial_values.tax_residence ? getLocation(residence_list, tax_residence, 'text') : '';
         form_initial_values.place_of_birth = form_initial_values.place_of_birth ? getLocation(residence_list, form_initial_values.place_of_birth, 'text') : '';
         form_initial_values.address_state = form_initial_values.address_state ? getLocation(this.props.states_list, form_initial_values.address_state, 'text') : '';
-
+        console.log(this.props.residence_list)
         // if (!form_initial_values.tax_identification_number) form_initial_values tax_identification_number = '';
         return (
             <Formik

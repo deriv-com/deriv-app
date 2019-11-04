@@ -49,7 +49,11 @@ const Flyout = ({
             {
                 is_help_content ?
                     <HelpBase /> :
-                    <div className='flyout__content'>
+                    <div className={classNames(
+                        'flyout__content',
+                        { 'flyout__normal-content': !is_search_flyout }
+                    )}
+                    >
                         {
                             is_empty ?
                                 <div className='flyout__search-empty'>
@@ -94,7 +98,9 @@ const Flyout = ({
                                                     key={`${callback_key}${index}`}
                                                     className={
                                                         classNames(
-                                                            'flyout__button',
+                                                            'btn',
+                                                            'btn-effect',
+                                                            'btn--primary',
                                                             'flyout__button-new'
                                                         )
                                                     }

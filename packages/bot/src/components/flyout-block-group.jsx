@@ -1,3 +1,5 @@
+
+import { Button }           from 'deriv-components';
 import React                from 'react';
 import { PropTypes }        from 'prop-types';
 import FlyoutBlock          from './flyout-block.jsx';
@@ -16,9 +18,14 @@ const FlyoutBlockGroup = ({
             <div className='flyout__item-header'>
                 <div className='flyout__item-label'>{display_name}</div>
                 <div className='flyout__item-buttons'>
-                    <button className='flyout__button flyout__button-add flyout__button-add-hide' onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}>
-                        {translate('Add')}
-                    </button>
+                    <Button
+                        className='flyout__button-add flyout__button-add--hide'
+                        has_effect
+                        onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}
+                        primary
+                        text={translate('Add')}
+                        type='button'
+                    />
                 </div>
             </div>
             <div className='flyout__item-description'>

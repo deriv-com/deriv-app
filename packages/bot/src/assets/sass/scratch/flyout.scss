@@ -26,8 +26,8 @@
     min-width: 400px;
 
     &__item:hover {
-        .flyout__button-add-hide {
-            display: block;
+        .flyout__button-add--hide {
+            display: flex !important;
             animation: animate-fade-in 0.3s;
         }
     }
@@ -40,30 +40,18 @@
         margin-bottom: $default-margin;
     }
     &__button {
-        border: none;
-        border-radius: $BORDER_RADIUS;
-        padding: $button-padding;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: bold;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: 1.43;
-        letter-spacing: normal;
-        text-align: center;
-
         &-new {
             width: 100%;
             font-size: 100%;
             box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_2;
             margin: $default-margin 0;
+            background-color: var(--general-main-1);
         }
         &-add {
-            background-color: $COLOR_CORAL_RED;
             color: var(--general-main-1);
 
-            &-hide {
-                display: none;
+            &--hide {
+                display: none !important;
             }
         }
         &-back {
@@ -193,7 +181,7 @@
         }
     }
     &__normal {
-        #{$flyout}__content {
+        &-content {
             height: 100%;
         }
     }

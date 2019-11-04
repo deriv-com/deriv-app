@@ -47,17 +47,15 @@ const data_offers = [
 
 const BuySell = () => {
     return (
-        <div className='buy-sell'>
+        <React.Fragment>
             <div className='buy-sell__parameters'>Hi buy sell parameters</div>
-            <div className='buy-sell__datatable'>
-                <DataTable
-                    className='buy-sell__offers'
-                    columns={getBuySell(currency)}
-                    data_source={data_offers}
-                    custom_width={'100%'}
-                />
-            </div>
-        </div>
+            <DataTable
+                className='buy-sell-table'
+                columns={getBuySell(currency)}
+                data_source={data_offers}
+                custom_width={'100%'}
+            />
+        </React.Fragment>
     );
 };
  

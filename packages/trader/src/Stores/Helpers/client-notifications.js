@@ -1,6 +1,8 @@
 import React            from 'react';
 import { formatDate }   from 'Utils/Date';
-import { getRiskAssessment,
+import ObjectUtils      from 'deriv-shared/utils/object';
+import {
+    getRiskAssessment,
     isAccountOfType,
     shouldAcceptTnc,
     shouldCompleteTax } from '_common/base/client_base';
@@ -27,7 +29,7 @@ export const clientNotifications = (ui = {}) => {
                         <a
                             key={0}
                             type='button'
-                            className='link link--white'
+                            className='link'
                             onClick={ui.openRealAccountSignup}
                         />,
                     ]}
@@ -42,7 +44,7 @@ export const clientNotifications = (ui = {}) => {
                 <Localize
                     i18n_default_text='You have opted to be excluded from Binary.com until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
                     values={{ exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'), interpolation: { escapeValue: false } }}
-                    components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
+                    components={[ <a key={0} className='link' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
                 />
             ),
             type: 'danger',
@@ -56,7 +58,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <BinaryLink
                             key={0}
-                            className='link link--white'
+                            className='link'
                             to={routes.proof_of_identity}
                         />,
                     ]}
@@ -91,7 +93,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <BinaryLink
                             key={0}
-                            className='link link--white'
+                            className='link'
                             to={routes.proof_of_identity}
                         />,
                     ]}
@@ -105,7 +107,7 @@ export const clientNotifications = (ui = {}) => {
             message: (
                 <Localize
                     i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
+                    components={[ <a key={0} className='link' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
                 />
             ),
             type: 'danger',
@@ -116,7 +118,7 @@ export const clientNotifications = (ui = {}) => {
             message: (
                 <Localize
                     i18n_default_text='Binary Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
+                    components={[ <a key={0} className='link' target='_blank' href={urlFor('contact', undefined, undefined, true)} /> ]}
                 />
             ),
             type: 'danger',
@@ -127,7 +129,7 @@ export const clientNotifications = (ui = {}) => {
             message: (
                 <Localize
                     i18n_default_text='Please set your <0>30-day turnover limit</0> to remove deposit limits.'
-                    components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/security/self_exclusionws', undefined, undefined, true)} /> ]}
+                    components={[ <a key={0} className='link' target='_blank' href={urlFor('user/security/self_exclusionws', undefined, undefined, true)} /> ]}
                 />
             ),
             type: 'warning',
@@ -141,13 +143,13 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <BinaryLink
                             key={0}
-                            className='link link--white'
+                            className='link'
                             to={routes.financial_assessment}
                         />,
                     ]}
                 />
             ),
-            type: 'info',
+            type: 'warning',
         },
         tax: {
             key    : 'tax',
@@ -158,7 +160,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <BinaryLink
                             key={0}
-                            className='link link--white'
+                            className='link'
                             to={routes.personal_details}
                         />,
                     ]}
@@ -172,7 +174,7 @@ export const clientNotifications = (ui = {}) => {
             message: (
                 <Localize
                     i18n_default_text='Please <0>accept the updated Terms and Conditions</0> to enable deposit and trading.'
-                    components={[ <a key={0} className='link link--white' target='_blank' href={urlFor('user/tnc_approvalws', undefined, undefined, true)} /> ]}
+                    components={[ <a key={0} className='link' target='_blank' href={urlFor('user/tnc_approvalws', undefined, undefined, true)} /> ]}
                 />
             ),
             type: 'danger',
@@ -186,7 +188,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <BinaryLink
                             key={0}
-                            className='link link--white'
+                            className='link'
                             to={routes.personal_details}
                         />,
                     ]}
@@ -222,6 +224,40 @@ export const clientNotifications = (ui = {}) => {
             ),
             type: 'info',
         },
+        needs_poi: {
+            key    : 'needs_poi',
+            header : localize('Proof of identity required'),
+            message: (
+                <Localize
+                    i18n_default_text='Please <0>submit</0> your proof of identity.'
+                    components={[
+                        <BinaryLink
+                            key={0}
+                            className='link'
+                            to={routes.proof_of_identity}
+                        />,
+                    ]}
+                />
+            ),
+            type: 'warning',
+        },
+        needs_poa: {
+            key    : 'needs_poa',
+            header : localize('Proof of address required'),
+            message: (
+                <Localize
+                    i18n_default_text='Please <0>submit</0> your proof of address.'
+                    components={[
+                        <BinaryLink
+                            key={0}
+                            className='link'
+                            to={routes.proof_of_address}
+                        />,
+                    ]}
+                />
+            ),
+            type: 'warning',
+        },
         poa_expired: {
             key    : 'poa_expired',
             header : localize('Document expired'),
@@ -231,7 +267,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <BinaryLink
                             key={0}
-                            className='link link--white'
+                            className='link'
                             to={routes.proof_of_address}
                         />,
                     ]}
@@ -258,7 +294,7 @@ export const clientNotifications = (ui = {}) => {
                     components={[
                         <BinaryLink
                             key={0}
-                            className='link link--white'
+                            className='link'
                             to={routes.proof_of_identity}
                         />,
                     ]}
@@ -316,14 +352,14 @@ const getStatusValidations = status_arr =>
         return validations;
     }, {});
 
-const addVerificationNotifications = (identity, document, addNotification) => {
-    if (identity.status === 'expired') addNotification(clientNotifications().poi_expired);
+const addVerificationNotifications = (identity, document, addNotificationMessage) => {
+    if (identity.status === 'expired') addNotificationMessage(clientNotifications().poi_expired);
 
-    if (document.status === 'expired') addNotification(clientNotifications().poa_expired);
+    if (document.status === 'expired') addNotificationMessage(clientNotifications().poa_expired);
 };
 
-const checkAccountStatus = (account_status, client, addNotification, loginid) => {
-    if (!account_status.length) return {};
+const checkAccountStatus = (account_status, client, addNotificationMessage, loginid) => {
+    if (ObjectUtils.isEmptyObject(account_status)) return {};
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
     const {
@@ -331,6 +367,7 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
             document,
             identity,
             needs_verification,
+            prompt_client_to_authenticate,
         },
         status,
     } = account_status;
@@ -345,52 +382,67 @@ const checkAccountStatus = (account_status, client, addNotification, loginid) =>
         professional,
     } = getStatusValidations(status);
 
-    addVerificationNotifications(identity, document, addNotification);
+    addVerificationNotifications(identity, document, addNotificationMessage);
 
     const is_mf_retail         = client.landing_company_shortcode === 'maltainvest' && !professional;
     const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
     const has_risk_assessment  = getRiskAssessment(account_status);
+    const needs_poa            = needs_verification.length &&
+        needs_verification.includes('document') &&
+        !needs_verification.includes('identity') &&
+        document.status !== 'rejected';
+    const needs_poi            = needs_verification.length &&
+        needs_verification.includes('identity') &&
+        !needs_verification.includes('document') &&
+        identity.status !== 'rejected';
 
-    if (cashier_locked)        addNotification(clientNotifications().cashier_locked);
-    if (withdrawal_locked)     addNotification(clientNotifications().withdrawal_locked);
-    if (mt5_withdrawal_locked) addNotification(clientNotifications().mt5_withdrawal_locked);
-    if (document_needs_action) addNotification(clientNotifications().document_needs_action);
-    if (unwelcome)             addNotification(clientNotifications().unwelcome);
-    if (is_mf_retail)          addNotification(clientNotifications().mf_retail);
+    if (needs_poa)             addNotificationMessage(clientNotifications().needs_poa);
+    if (needs_poi)             addNotificationMessage(clientNotifications().needs_poi);
+    if (cashier_locked)        addNotificationMessage(clientNotifications().cashier_locked);
+    if (withdrawal_locked)     addNotificationMessage(clientNotifications().withdrawal_locked);
+    if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
+    if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
+    if (unwelcome)             addNotificationMessage(clientNotifications().unwelcome);
+    if (is_mf_retail)          addNotificationMessage(clientNotifications().mf_retail);
 
     if (ukrts_max_turnover_limit_not_set) {
-        addNotification(clientNotifications().financial_limit);
+        addNotificationMessage(clientNotifications().financial_limit);
     }
-    if (has_risk_assessment)               addNotification(clientNotifications().risk);
-    if (shouldCompleteTax(account_status)) addNotification(clientNotifications().tax);
-    if (needs_authentication)              addNotification(clientNotifications().authenticate);
+    if (has_risk_assessment)               addNotificationMessage(clientNotifications().risk);
+    if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
+    if (needs_authentication || prompt_client_to_authenticate) {
+        addNotificationMessage(clientNotifications().authenticate);
+    }
 
     return {
         has_risk_assessment,
     };
 };
 
+export const excluded_notifications = ['you_are_offline', 'password_changed', 'switch_to_tick_chart', 'contract_sold'];
+
 export const handleClientNotifications = (
     client,
     account_settings,
     account_status,
-    addNotification,
+    addNotificationMessage,
     loginid,
     ui
 ) => {
     const { currency, excluded_until } = client;
-    if (!currency)      addNotification(clientNotifications(ui).currency);
-    if (excluded_until) addNotification(clientNotifications(ui).self_exclusion(excluded_until));
-
-    const { has_risk_assessment } = checkAccountStatus(account_status, client, addNotification, loginid);
-
     if (loginid !== LocalStore.get('active_loginid')) return {};
+    if (!currency)      addNotificationMessage(clientNotifications(ui).currency);
+    if (excluded_until) {
+        addNotificationMessage(clientNotifications(ui).self_exclusion(excluded_until));
+    }
 
-    if (shouldAcceptTnc(account_settings)) addNotification(clientNotifications(ui).tnc);
+    const { has_risk_assessment } = checkAccountStatus(account_status, client, addNotificationMessage, loginid);
+
+    if (shouldAcceptTnc(account_settings)) addNotificationMessage(clientNotifications(ui).tnc);
 
     const has_missing_required_field = hasMissingRequiredField(account_settings, client);
     if (has_missing_required_field) {
-        addNotification(clientNotifications(ui).required_fields);
+        addNotificationMessage(clientNotifications(ui).required_fields);
     }
 
     return {

@@ -49,7 +49,7 @@
             #{$quick-strategy}__button {
                 &--create {
                     height: 40px;
-                    margin: 14px 0 0;
+                    margin: 14px 0 0 auto;
                 }
             }
         }
@@ -72,6 +72,6 @@
         height: 24px;
         padding: 3px;
         margin: 2px;
-        background-color: $COLOR_LIGHT_BLACK_4_SOLID;
+        background-color: var(--general-section-1);
     }
 }

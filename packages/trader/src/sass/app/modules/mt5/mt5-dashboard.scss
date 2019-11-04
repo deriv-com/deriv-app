@@ -149,15 +149,15 @@
 .mt5-compare-accounts {
     display: flex;
     flex-flow: column nowrap;
-    align-items: center;
+    flex-grow: 1;
 
     &__data {
-    width: 845px;
     //height: 50vh;
 
         &__table {
             //height: 50vh;
             flex: 1;
+            padding: 0px 30px;
         }
         &__row {
             /*                     attribute   standard advanced synthetic */
@@ -364,15 +364,10 @@
         display: flex;
         flex-flow: column nowrap;
         align-items: center;
-        .mt5-password-manager--button:last-child {
-            margin-top: 0;
-        }
     }
     &--button {
-        height: 4em;
-        color: var(--text-prominent);
+        margin-top: 1.6rem;
     }
-
 }
 
 .dc-modal {

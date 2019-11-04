@@ -228,9 +228,10 @@ class AccountTransferForm extends React.Component {
                                                 </React.Fragment>
                                                 }
                                                 <Button
-                                                    className='cashier__form-submit-button btn--primary--default'
+                                                    className='cashier__form-submit-button'
                                                     type='submit'
                                                     is_disabled={!isValid || isSubmitting}
+                                                    primary
                                                 >
                                                     <Localize i18n_default_text='Transfer' />
                                                 </Button>

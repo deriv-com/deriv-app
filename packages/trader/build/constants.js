@@ -117,11 +117,12 @@ const plugins = (base, is_test_env, is_mocha_only) => ([
     new IgnorePlugin(/^\.\/locale$/, /moment$/),
     new MiniCssExtractPlugin(cssConfig()),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
-    ...(IS_RELEASE ? [] : [ new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: (file) => file.name !== 'CNAME' }) ]),
+    ...(IS_RELEASE && !is_test_env ? [
+        new GenerateSW(generateSWConfig())
+    ] : [ new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: (file) => file.name !== 'CNAME' }) ]),
     ...(is_test_env && !is_mocha_only ? [
         new StylelintPlugin(stylelintConfig()),
     ] : [
-        new GenerateSW(generateSWConfig())
         // ...(!IS_RELEASE ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
     ])
 ]);

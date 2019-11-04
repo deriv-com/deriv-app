@@ -1,3 +1,4 @@
+import { Button }       from 'deriv-components';
 import React            from 'react';
 import PropTypes        from 'prop-types';
 import FlyoutVideo      from './help-components/flyout-video.jsx';
@@ -25,14 +26,19 @@ const HelpBase = ({
     return (
         <React.Fragment>
             <div className='flyout__help-header'>
-                <button className='flyout__button flyout__button-back' onClick={onBackClick}>
+                <button className='btn flyout__button-back' onClick={onBackClick}>
                     <Arrow2Icon />
                 </button>
                 <span className='flyout__help-title'>{title}</span>
                 <div className='flyout__item-buttons'>
-                    <button className='flyout__button flyout__button-add' onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}>
-                        {translate('Add')}
-                    </button>
+                    <Button
+                        className='flyout__button-add'
+                        has_effect
+                        onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}
+                        primary
+                        text={translate('Add')}
+                        type='button'
+                    />
                 </div>
             </div>
             <div className='flyout__help-content'>
@@ -74,16 +80,20 @@ const HelpBase = ({
             {
                 !is_search_flyout &&
                     <div className='flyout__help-footer'>
-                        <button
-                            className='flyout__button flyout__button-previous'
+                        <Button
+                            className='flyout__button-previous'
+                            has_effect
                             onClick={() => onSequenceClick(false)}
-                        >{translate('Previous')}
-                        </button>
-                        <button
-                            className='flyout__button flyout__button-next'
-                            onClick={() => onSequenceClick(true)}
-                        >{translate('Next')}
-                        </button>
+                            text={translate('Previous')}
+                            type='button'
+                        />
+                        <Button
+                            className='flyout__button-next'
+                            has_effect
+                            onClick={() => onSequenceClick(false)}
+                            text={translate('Next')}
+                            type='button'
+                        />
                     </div>
             }
         </React.Fragment >

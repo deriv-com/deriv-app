@@ -72,6 +72,7 @@
             margin-left: 1em;
             color: $COLOR_LIGHT_BLACK_1;
             background-color: var(--general-section-1);
+            display: flex;
 
             &:focus {
                 outline: none;
@@ -135,7 +136,7 @@
             padding: 1.5em;
             font-size: 0.8em;
             overflow-y: auto;
-            height: calc(100vh - 290px);
+            height: calc(100vh - 295px);
 
             #{$flyout}__item {
                 margin-bottom: 0.8em;
@@ -147,7 +148,8 @@
             font-weight: bold;
         }
         &-footer {
-            text-align: right;
+            display: flex;
+            justify-content: flex-end;
             padding: 0.5em 0.8em;
             border-top: solid 0.1em var(--general-section-1);
         }

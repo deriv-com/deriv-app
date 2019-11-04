@@ -61,9 +61,10 @@ export const save = (filename = 'deriv-bot', collection = false, xmlDom) => {
 };
 
 export const load = (block_string, drop_event) => {
+    const { journal, run_panel } = ScratchStore.instance.root_store;
+
     const showInvalidStrategyError = () => {
-        const error_message          = translate('XML file contains unsupported elements. Please check or modify file.');
-        const { journal, run_panel } = ScratchStore.instance.root_store;
+        const error_message = translate('XML file contains unsupported elements. Please check or modify file.');
         
         journal.onError(error_message);
         run_panel.setActiveTabIndex(2);
@@ -115,6 +116,7 @@ export const load = (block_string, drop_event) => {
         } else {
             loadWorkspace(xml);
         }
+        journal.onSuccess(translate('Blocks are loaded successfully'));
     } catch (e) {
         return showInvalidStrategyError();
     }

@@ -43,7 +43,7 @@ export default class ContractTradeStore extends BaseStore {
         LocalStore.set('contract_trade.granularity', granularity);
         this.granularity = granularity;
         if (this.granularity === 0) {
-            this.root_store.ui.removeNotification(
+            this.root_store.ui.removeNotificationMessage(
                 clientNotifications().switch_to_tick_chart
             );
         }
@@ -116,7 +116,7 @@ export default class ContractTradeStore extends BaseStore {
         this.contracts.push(contract);
 
         if (is_tick_contract && this.granularity !== 0) {
-            this.root_store.ui.addNotification(
+            this.root_store.ui.addNotificationMessage(
                 clientNotifications().switch_to_tick_chart
             );
         }
@@ -148,7 +148,7 @@ export default class ContractTradeStore extends BaseStore {
                 if (contract.contract_id === contract_id) {
                     contract.populateConfig(response.proposal_open_contract);
                     if (response.proposal_open_contract.is_sold) {
-                        this.root_store.ui.removeNotification(
+                        this.root_store.ui.removeNotificationMessage(
                             clientNotifications().switch_to_tick_chart
                         );
                     }

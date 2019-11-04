@@ -1,26 +1,26 @@
-// import PropTypes            from 'prop-types';
-import React                   from 'react';
+// import PropTypes           from 'prop-types';
+import React                  from 'react';
 import {
     Button,
-    Input }                    from 'deriv-components';
-import { Formik }              from 'formik';
-import BinarySocket            from '_common/base/socket_base';
-import { localize }            from 'App/i18n';
-import { WS }                  from 'Services';
-import { connect }             from 'Stores/connect';
+    Input }                   from 'deriv-components';
+import { Formik }             from 'formik';
+import BinarySocket           from '_common/base/socket_base';
+import { localize }           from 'App/i18n';
+import { WS }                 from 'Services';
+import { connect }            from 'Stores/connect';
 import {
     validAddress,
     validPostCode,
-    validLetterSymbol }        from 'Utils/Validator/declarative-validation-rules';
-import FileUploaderContainer   from './file-uploader-container.jsx';
-import FormSubmitErrorMessage  from '../../ErrorMessages/FormSubmitErrorMessage';
-import LoadErrorMessage        from '../../ErrorMessages/LoadErrorMessage';
+    validLetterSymbol }       from 'Utils/Validator/declarative-validation-rules';
+import FileUploaderContainer  from './file-uploader-container.jsx';
+import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
+import LoadErrorMessage       from '../../ErrorMessages/LoadErrorMessage';
 import {
     FormFooter,
     FormBody,
-    FormSubHeader }            from '../../../Components/layout-components.jsx';
-import { LeaveConfirm }        from '../../../Components/leave-confirm.jsx';
-import Loading                 from '../../../../../templates/app/components/loading.jsx';
+    FormSubHeader }           from '../../../Components/layout-components.jsx';
+import { LeaveConfirm }       from '../../../Components/leave-confirm.jsx';
+import Loading                from '../../../../../templates/app/components/loading.jsx';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
@@ -152,9 +152,20 @@ class ProofOfAddressForm extends React.Component {
                                         is_btn_loading   : false,
                                         is_submit_success: true,
                                     }, () => {
-                                        const { identity } = get_account_status.authentication;
-                                        const has_poi = !(identity && identity.status === 'none');
+                                        const { identity, needs_verification } = get_account_status.authentication;
+                                        const has_poi   = !(identity && identity.status === 'none');
+                                        // TODO: clean all of this up by simplifying the manually toggled notifications functions
+                                        const needs_poi = needs_verification.length && needs_verification.includes('identity');
                                         this.props.onSubmit({ has_poi });
+                                        this.props.removeNotificationMessage({ key: 'authenticate' });
+                                        this.props.removeNotificationByKey({ key: 'authenticate' });
+                                        this.props.removeNotificationMessage({ key: 'needs_poa' });
+                                        this.props.removeNotificationByKey({ key: 'needs_poa' });
+                                        this.props.removeNotificationMessage({ key: 'poa_expired' });
+                                        this.props.removeNotificationByKey({ key: 'poa_expired' });
+                                        if (needs_poi) {
+                                            this.props.addNotificationByKey('needs_poi');
+                                        }
                                     });
                                 });
                             }
@@ -336,7 +347,10 @@ class ProofOfAddressForm extends React.Component {
 // ProofOfAddressForm.propTypes = {};
 
 export default connect(
-    ({ client }) => ({
-        account_settings: client.account_settings,
+    ({ client, ui }) => ({
+        account_settings         : client.account_settings,
+        addNotificationByKey     : ui.addNotificationMessageByKey,
+        removeNotificationMessage: ui.removeNotificationMessage,
+        removeNotificationByKey  : ui.removeNotificationByKey,
     }),
 )(ProofOfAddressForm);

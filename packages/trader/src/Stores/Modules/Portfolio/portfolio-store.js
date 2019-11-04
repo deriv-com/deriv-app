@@ -7,7 +7,7 @@ import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services';
 import ObjectUtils                 from 'deriv-shared/utils/object';
 import { formatPortfolioPosition } from './Helpers/format-response';
-import { contractSold }            from './Helpers/portfolio-notifcations';
+import { contractSold }            from './Helpers/portfolio-notifications';
 import {
     getCurrentTick,
     getDurationPeriod,
@@ -198,7 +198,9 @@ export default class PortfolioStore extends BaseStore {
                 sell_price    : response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
-            this.root_store.ui.addNotification(contractSold(this.root_store.client.currency, response.sell.sold_for));
+            this.root_store.ui.addNotificationMessage(
+                contractSold(this.root_store.client.currency, response.sell.sold_for)
+            );
         }
     }
 

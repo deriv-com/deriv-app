@@ -1,9 +1,9 @@
-import PropTypes           from 'prop-types';
-import React, { useState } from 'react';
-import { Checkbox }        from 'deriv-components';
-import CurrencyUtils       from 'deriv-shared/utils/currency';
-import Fieldset            from 'App/Components/Form/fieldset.jsx';
-import InputField          from 'App/Components/Form/InputField';
+import PropTypes             from 'prop-types';
+import React, { useState }   from 'react';
+import { Checkbox, Popover } from 'deriv-components';
+import CurrencyUtils         from 'deriv-shared/utils/currency';
+import Fieldset              from 'App/Components/Form/fieldset.jsx';
+import InputField            from 'App/Components/Form/InputField';
 
 const OrderInput = ({
     amount,
@@ -12,6 +12,7 @@ const OrderInput = ({
     name,
     label,
     onChange,
+    tooltip_label,
 }) => {
     const [disabled, setDisabled] = useState(true);
 
@@ -45,7 +46,7 @@ const OrderInput = ({
 
     return (
         <Fieldset className='trade-container__fieldset center-text'>
-            <div className={`${name}-checkbox`}>
+            <div className={`${name}-checkbox trade-container__order-input`}>
                 <Checkbox
                     className={`${name}-checkbox__input-field`}
                     id={`dt_${name}-checkbox_input`}
@@ -54,6 +55,13 @@ const OrderInput = ({
                     name={`has_${name}`}
                     label={label}
                     classNameLabel={`${name}-checkbox__label`}
+                />
+                <Popover
+                    alignment='left'
+                    icon='info'
+                    id={`dt_${name}-checkbox__tooltip`}
+                    message={tooltip_label}
+                    margin={210}
                 />
             </div>
             {input}
@@ -70,6 +78,7 @@ OrderInput.propTypes = {
     is_single_currency: PropTypes.bool,
     name              : PropTypes.string,
     onChange          : PropTypes.func,
+    tooltip_label     : PropTypes.string,
 };
 
 export default OrderInput;

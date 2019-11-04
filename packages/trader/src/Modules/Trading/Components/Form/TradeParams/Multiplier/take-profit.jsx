@@ -17,7 +17,8 @@ const TakeProfit = ({
             currency={currency}
             is_single_currency={is_single_currency}
             name='take_profit'
-            label={localize('Close when profit is')}
+            label={localize('Take profit')}
+            tooltip_label={localize('Close the deal when my profit reaches this amount.')}
             onChange={onChange}
             validation_errors={validation_errors}
         />
@@ -32,6 +33,7 @@ TakeProfit.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
+    tooltip_label    : PropTypes.string,
     validation_errors: PropTypes.object,
 };
 

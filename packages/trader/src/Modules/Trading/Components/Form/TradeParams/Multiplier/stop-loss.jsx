@@ -17,7 +17,8 @@ const StopLoss = ({
             currency={currency}
             is_single_currency={is_single_currency}
             name='stop_loss'
-            label={localize('Close when loss is')}
+            label={localize('Stop loss')}
+            tooltip_label={localize('Close the deal when my loss reaches this amount.')}
             onChange={onChange}
             validation_errors={validation_errors}
         />
@@ -32,6 +33,7 @@ StopLoss.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
+    tooltip_label    : PropTypes.string,
     validation_errors: PropTypes.object,
 };
 

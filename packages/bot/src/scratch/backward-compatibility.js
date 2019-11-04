@@ -397,7 +397,8 @@ export default class BlockConversion {
             const tag_name = strategy_child_node.nodeName.toLowerCase();
 
             switch (tag_name) {
-                case ('block'): {
+                case ('block'):
+                case ('shadow'): {
                     block_nodes.push(strategy_child_node);
                     break;
                 }

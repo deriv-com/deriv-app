@@ -1,6 +1,7 @@
 import BlockConversion from './backward-compatibility';
 import { saveAs }      from './shared';
 import config          from '../constants';
+import ScratchStore    from '../stores/scratch-store';
 import { translate }   from '../utils/lang/i18n';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
@@ -60,43 +61,53 @@ export const save = (filename = 'deriv-bot', collection = false, xmlDom) => {
 };
 
 export const load = (block_string, drop_event) => {
+    const showInvalidStrategyError = () => {
+        const error_message          = translate('XML file contains unsupported elements. Please check or modify file.');
+        const { journal, run_panel } = ScratchStore.instance.root_store;
+        
+        journal.onError(error_message);
+        run_panel.setActiveTabIndex(2);
+    };
+
+    // Check if XML can be parsed correctly.
     try {
         const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
 
         if (xmlDoc.getElementsByTagName('parsererror').length) {
-            throw new Error();
+            return showInvalidStrategyError();
         }
     } catch (e) {
-        // TODO
-        console.error(e);  // eslint-disable-line
+        return showInvalidStrategyError();
     }
 
     let xml;
+
+    // Check if XML can be parsed into a strategy.
     try {
         xml = Blockly.Xml.textToDom(block_string);
     } catch (e) {
-        // TODO
-        console.error(e);  // eslint-disable-line
+        return showInvalidStrategyError();
     }
 
     const blockConversion = new BlockConversion();
     xml = blockConversion.convertStrategy(xml);
-
+    
     const blockly_xml = xml.querySelectorAll('block');
 
+    // Check if there are any blocks in this strategy.
     if (!blockly_xml.length) {
-        // TODO
-        console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
+        return showInvalidStrategyError();
     }
 
-    blockly_xml.forEach(block => {
+    // Check if all block types in XML are allowed.
+    const has_invalid_blocks = Array.from(blockly_xml).some(block => {
         const block_type = block.getAttribute('type');
-
-        if (!Object.keys(Blockly.Blocks).includes(block_type)) {
-            // TODO
-            console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
-        }
+        return !Object.keys(Blockly.Blocks).includes(block_type);
     });
+
+    if (has_invalid_blocks) {
+        return showInvalidStrategyError();
+    }
 
     try {
         if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
@@ -105,10 +116,10 @@ export const load = (block_string, drop_event) => {
             loadWorkspace(xml);
         }
     } catch (e) {
-        console.error(e); // eslint-disable-line
-        // TODO
-        console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
+        return showInvalidStrategyError();
     }
+
+    return true;
 };
 
 const loadBlocks = (xml, drop_event) => {

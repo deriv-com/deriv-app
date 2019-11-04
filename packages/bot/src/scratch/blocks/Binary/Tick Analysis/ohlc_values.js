@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations/lib/translate';
+import { localize } from 'deriv-translations/lib/i18n';
 import config       from '../../../../constants';
 
 Blockly.Blocks.ohlc_values = {

@@ -1,6 +1,6 @@
 import React         from 'react';
 import { PropTypes } from 'prop-types';
-import { localize }  from 'deriv-translations/lib/translate';
+import { localize }  from 'deriv-translations/lib/i18n';
 import FlyoutBlock   from './flyout-block.jsx';
 
 const FlyoutBlockGroup = (props) => {

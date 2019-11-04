@@ -12,7 +12,7 @@ import {
     Form,
     Field,
 }                       from 'formik';
-import { localize }     from 'deriv-translations/lib/translate';
+import { localize }     from 'deriv-translations/lib/i18n';
 import {
     ToolbarLocalIcon,
     ToolbarDriveIcon,

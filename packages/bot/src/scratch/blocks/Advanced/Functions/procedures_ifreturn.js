@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations/lib/translate';
+import { localize } from 'deriv-translations/lib/i18n';
 
 /**
  * Block for conditionally returning a value from a procedure.

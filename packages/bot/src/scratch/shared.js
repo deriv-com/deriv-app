@@ -1,5 +1,5 @@
 import filesaver                         from 'file-saver';
-import { localize }  from 'deriv-translations/lib/translate';
+import { localize }  from 'deriv-translations/lib/i18n';
 import { oppositesToDropdownOptions }    from './utils';
 import config                            from '../constants';
 

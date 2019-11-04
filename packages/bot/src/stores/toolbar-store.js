@@ -3,7 +3,7 @@ import {
     action,
 }                   from 'mobx';
 
-import { localize }  from 'deriv-translations/lib/translate';
+import { localize }  from 'deriv-translations/lib/i18n';
 
 export default class ToolbarStore {
     constructor(root_store) {

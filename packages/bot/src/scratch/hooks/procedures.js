@@ -1,5 +1,5 @@
 /* eslint-disable func-names, no-underscore-dangle */
-import { localize } from 'deriv-translations/lib/translate';
+import { localize } from 'deriv-translations/lib/i18n';
 
 /**
  * Construct the blocks required by the flyout for the procedure category.

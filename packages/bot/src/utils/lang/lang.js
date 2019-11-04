@@ -1,4 +1,4 @@
-const localize = str => str
+import { localize } from 'deriv-translations/lib/i18n';
 
 // TODO: should be derived from core
 export const getLanguage = () => {

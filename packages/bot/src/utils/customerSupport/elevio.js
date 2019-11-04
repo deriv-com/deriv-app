@@ -1,4 +1,4 @@
-const localize = str => str
+import { localize } from 'deriv-translations/lib/i18n';
 import { getLanguage }             from '../lang/lang';
 import { getTokenList }            from '../tokenHelper';
 import { generateLiveApiInstance } from '../../services/api/appId';

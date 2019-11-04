@@ -1,7 +1,7 @@
 import classNames    from 'classnames';
 import PropTypes     from 'prop-types';
 import React         from 'react';
-import { localize }  from 'deriv-translations/lib/translate';
+import { localize }  from 'deriv-translations/lib/i18n';
 import {
     CheckIcon,
     CrossIcon }      from './Icons.jsx';

@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations/lib/translate';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.lists_repeat = {
     init() {

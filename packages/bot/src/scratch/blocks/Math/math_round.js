@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations/lib/translate';
+import { localize } from 'deriv-translations/lib/i18n';
 
 // https://github.com/google/blockly/blob/master/generators/javascript/math.js
 Blockly.Blocks.math_round = {

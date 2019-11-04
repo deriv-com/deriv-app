@@ -1,4 +1,4 @@
-import { localize }                   from 'deriv-translations/lib/translate';
+import { localize }                   from 'deriv-translations/lib/i18n';
 import { loadRemote }                 from '../../../../utils';
 import { observer as globalObserver } from '../../../../../utils/observer';
 

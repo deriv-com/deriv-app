@@ -1,4 +1,4 @@
-const localize = str => str
+import { localize } from 'deriv-translations/lib/i18n';
 // const t = key => (key in translation ? translation[key] : fallbackLang[key]);
 
 

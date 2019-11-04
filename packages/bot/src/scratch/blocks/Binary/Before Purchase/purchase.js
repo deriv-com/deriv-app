@@ -1,4 +1,4 @@
-import { localize }                                  from 'deriv-translations/lib/translate';
+import { localize }                                  from 'deriv-translations/lib/i18n';
 import { getPurchaseChoices, updatePurchaseChoices } from '../../../shared';
 
 Blockly.Blocks.purchase = {

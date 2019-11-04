@@ -1,4 +1,4 @@
-import { localize }      from 'deriv-translations/lib/translate';
+import { localize }      from 'deriv-translations/lib/i18n';
 import { minusIconDark } from '../images';
 
 Blockly.Blocks.text_statement = {

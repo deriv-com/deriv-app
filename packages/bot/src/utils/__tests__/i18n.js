@@ -1,4 +1,4 @@
-const localize = str => str
+import { localize } from 'deriv-translations/lib/i18n';
 import { expect }                    from 'chai';
 import { init, xml as translateXml } from '../lang/i18n';
 

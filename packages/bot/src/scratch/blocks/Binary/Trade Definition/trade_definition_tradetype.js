@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations/lib/translate';
+import { localize } from 'deriv-translations/lib/i18n';
 import ApiHelpers   from '../../../../services/api/api-helpers';
 
 Blockly.Blocks.trade_definition_tradetype = {

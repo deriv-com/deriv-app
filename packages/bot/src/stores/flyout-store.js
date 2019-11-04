@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { observable, action } from 'mobx';
-import { localize }           from 'deriv-translations/lib/translate';
+import { localize }           from 'deriv-translations/lib/i18n';
 import config                 from '../constants';
 
 export default class FlyoutStore {

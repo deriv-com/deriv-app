@@ -1,4 +1,4 @@
-import { localize }          from 'deriv-translations/lib/translate';
+import { localize }          from 'deriv-translations/lib/i18n';
 import { finishSign }        from '../../images';
 import { setBlockTextColor } from '../../../utils';
 

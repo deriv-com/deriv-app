@@ -1,6 +1,6 @@
 import { localize } from 'deriv-translations/lib/i18n';
 
-// TODO: should be derived from core
+// TODO:  get from core once it's ready
 export const getLanguage = () => {
     // const queryLang = parseQueryString().l;
     // const lang = queryLang in supportedLanguages ? queryLang : localStorage.getItem('lang') || 'en';

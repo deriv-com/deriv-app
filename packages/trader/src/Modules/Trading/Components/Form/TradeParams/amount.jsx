@@ -9,6 +9,7 @@ import Fieldset                       from 'App/Components/Form/fieldset.jsx';
 import InputField                     from 'App/Components/Form/InputField';
 import { connect }                    from 'Stores/connect';
 import AllowEquals                    from './allow-equals.jsx';
+import MultiplierDropdown             from './Multiplier/dropdown.jsx';
 
 const Amount = ({
     amount,
@@ -26,8 +27,6 @@ const Amount = ({
     is_multiplier,
     is_nativepicker,
     is_single_currency,
-    multiplier,
-    multiplier_range_list,
     onChange,
     validation_errors,
 }) => {
@@ -98,23 +97,7 @@ const Amount = ({
                 :
                 input
             }
-            {
-                is_multiplier &&
-                <div className='trade-container__multiplier-options'>
-                    <Dropdown
-                        id='multiplier'
-                        className={classNames('trade-container__multiplier-options-dropdown')}
-                        classNameDisplay='trade-container__multiplier-options--display'
-                        is_alignment_left
-                        is_nativepicker={false}
-                        list={multiplier_range_list}
-                        name='multiplier'
-                        no_border={true}
-                        value={multiplier}
-                        onChange={onChange}
-                    />
-                </div>
-            }
+            {is_multiplier && <MultiplierDropdown />}
             <AllowEquals
                 contract_start_type={contract_start_type}
                 contract_type={contract_type}

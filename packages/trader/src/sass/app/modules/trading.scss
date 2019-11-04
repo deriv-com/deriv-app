@@ -261,15 +261,30 @@
         padding: 0 30px;
         border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
     }
-    &__multiplier-options-dropdown {
-        /* postcss-bem-linter: ignore */
-        .dc-dropdown__display-text {
-            padding-right: unset;
-            padding-left: 1em;
+    &__multiplier {
+        display: flex;
+        flex-direction: column;
+
+        &-dropdown {
+            /* postcss-bem-linter: ignore */
+            .dc-dropdown__display-text {
+                padding-right: unset;
+                padding-left: 1em;
+            }
+            /* postcss-bem-linter: ignore */
+            .dc-dropdown__display-text, .dc-list__item-text {
+                text-transform: unset;
+            }
+        }
+        &-tooltip-text {
+            margin-top: 0.8rem;
+            border-bottom: 1px dotted var(--text-general);
+            text-decoration: none;
+            width: fit-content;
         }
         /* postcss-bem-linter: ignore */
-        .dc-dropdown__display-text, .dc-list__item-text {
-            text-transform: unset;
+        .dc-popover {
+            align-self: flex-end;
         }
     }
     /* postcss-bem-linter: ignore */

@@ -105,15 +105,19 @@ class PopoverBubble extends React.PureComponent {
 }
 
 PopoverBubble.propTypes = {
-    alignment       : PropTypes.string,
-    children        : PropTypes.node,
-    className       : PropTypes.string,
-    has_error       : PropTypes.bool,
-    icon            : PropTypes.string,
-    id              : PropTypes.string,
-    is_open         : PropTypes.bool,
-    margin          : PropTypes.number,
-    message         : PropTypes.string.isRequired,
+    alignment: PropTypes.string,
+    children : PropTypes.node,
+    className: PropTypes.string,
+    has_error: PropTypes.bool,
+    icon     : PropTypes.string,
+    id       : PropTypes.string,
+    is_open  : PropTypes.bool,
+    margin   : PropTypes.number,
+    message  : PropTypes.oneOfType([
+        PropTypes.node,
+        PropTypes.object,
+        PropTypes.string,
+    ]).isRequired,
     target_rectangle: PropTypes.object,
 };
 

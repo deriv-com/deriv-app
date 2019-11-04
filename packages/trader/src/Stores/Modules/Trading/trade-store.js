@@ -111,10 +111,13 @@ export default class TradeStore extends BaseStore {
     // Chart loader observables
     @observable is_chart_loading;
 
+    // Multiplier trade params
     @observable multiplier;
     @observable multiplier_range_list = [];
     @observable stop_loss;
     @observable take_profit;
+    @observable has_stop_loss;
+    @observable has_take_profit;
 
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};

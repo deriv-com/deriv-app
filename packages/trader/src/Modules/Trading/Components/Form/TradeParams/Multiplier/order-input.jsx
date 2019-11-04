@@ -18,6 +18,7 @@ const OrderInput = ({
     const changeValue = (e) => {
         const { checked } = e.target;
         setDisabled(!checked);
+        onChange({ target: { name: e.target.name, value: checked } });
     };
 
     const input =
@@ -50,7 +51,7 @@ const OrderInput = ({
                     id={`dt_${name}-checkbox_input`}
                     onChange={changeValue}
                     defaultChecked={!disabled}
-                    name={`${name}-checkbox`}
+                    name={`has_${name}`}
                     label={label}
                     classNameLabel={`${name}-checkbox__label`}
                 />

@@ -84,7 +84,7 @@ class AccountLimits extends React.Component {
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
 
-        const { commodities, forex, indices, volidx } = market_specific;
+        const { commodities, forex, indices, synthetic_index  } = market_specific;
         const { currency, is_fully_authenticated } = this.props;
 
         return (
@@ -177,7 +177,7 @@ class AccountLimits extends React.Component {
                             { makeTurnoverLimitRow(currency, commodities) }
                             { makeTurnoverLimitRow(currency, forex, localize('Forex')) }
                             { makeTurnoverLimitRow(currency, indices) }
-                            { makeTurnoverLimitRow(currency, volidx) }
+                            { makeTurnoverLimitRow(currency, synthetic_index) }
                         </tbody>
                     </table>
                     <table className='account-management-table account-management-table--last'>

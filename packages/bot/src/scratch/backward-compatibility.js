@@ -333,7 +333,7 @@ export default class BlockConversion {
     updateRenamedFields(xml) {
         const renamed_fields = {
             MARKET_LIST: {
-                // volidx: 'synthetic_index', TODO: Re-enable when synthetic indices are released.
+                volidx: 'synthetic_index',
             },
             TRADETYPECAT_LIST: {
                 endsinout   : 'inout',

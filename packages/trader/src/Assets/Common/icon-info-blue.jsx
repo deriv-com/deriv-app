@@ -4,11 +4,8 @@ import React     from 'react';
 const IconInfoBlue = ({ className }) => (
     <svg className={className} width='16' height='16' viewBox='0 0 16 16'>
         <g fill='none' fillRule='evenodd'>
-            <circle cx='8' cy='8' r='8' fill='#2196F3' />
-            <g fill='#FFF' transform='translate(6.5 4)'>
-                <circle cx='1.5' cy='1' r='1' />
-                <rect width='2' height='5' x='.5' y='3' rx='1' />
-            </g>
+            <path fill='#2196F3' d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7 4V7a1 1 0 0 0-1-1H6a1 1 0 0 0 1 1v5a1 1 0 0 0 1 1h2a1 1 0 0 0-1-1zm0-8a1 1 0 1 0-2 0 1 1 0 0 0 2 0z' />
+            <path d='M0 0h16v16H0z' />
         </g>
     </svg>
 );

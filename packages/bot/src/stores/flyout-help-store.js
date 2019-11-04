@@ -1,5 +1,9 @@
-import { observable, action, runInAction }               from 'mobx';
-import config                               from '../constants';
+import {
+    observable,
+    action,
+    runInAction,
+}                   from 'mobx';
+import config       from '../constants';
 
 export default class FlyoutHelpStore {
     constructor(root_store) {

@@ -36,7 +36,9 @@ const Flyout = ({
             {
                 is_search_flyout && !is_help_content && (
                     <div className='flyout__search-header'>
-                        <span className='flyout__search-header-text'>{translate(`Results for "${search_term}"`)}</span>
+                        <span className='flyout__search-header-text'>
+                            {translate(`Results for "${search_term}"`)}
+                        </span>
                         <span className={classNames(
                             'flyout__search-header-text',
                             'flyout__search-header-results',
@@ -68,7 +70,7 @@ const Flyout = ({
 
                                             return (
                                                 <FlyoutBlockGroup
-                                                    key={node.getAttribute('type') + Date.now()}
+                                                    key={`${node.getAttribute('type')}${Date.now()}`}
                                                     id={`flyout__item-workspace--${index}`}
                                                     block_node={node}
                                                     onInfoClick={
@@ -81,7 +83,7 @@ const Flyout = ({
                                         case Blockly.Xml.NODE_LABEL: {
                                             return (
                                                 <div
-                                                    key={node.getAttribute('text') + index}
+                                                    key={`${node.getAttribute('text')}${index}`}
                                                     className='flyout__item-label'
                                                 >
                                                     {node.getAttribute('text')}

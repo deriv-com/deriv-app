@@ -133,7 +133,17 @@ const ContractType = (() => {
     );
 
     const getContractValues = (store) => {
-        const { contract_expiry_type, contract_type, basis, duration_unit, duration_units_list, expiry_type, start_date, multiplier } = store;
+        const {
+            contract_expiry_type,
+            contract_type,
+            basis,
+            duration_unit,
+            duration_units_list,
+            expiry_type,
+            multiplier,
+            start_date,
+        } = store;
+
         const form_components   = getComponents(contract_type);
         const obj_basis         = getBasis(contract_type, basis);
         const obj_trade_types   = getTradeTypes(contract_type);

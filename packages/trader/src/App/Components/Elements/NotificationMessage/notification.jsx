@@ -7,6 +7,7 @@ import NotificationStatusIcons from './notification-status-icons.jsx';
 import {
     default_delay,
     types }                    from './constants';
+import { BinaryLink }          from '../../Routes';
 
 const Notification = ({
     data,
@@ -45,12 +46,20 @@ const Notification = ({
                 <p className='notification__text-body'>
                     {data.message}
                 </p>
-                {!!data.action &&
+                {!!data.action && data.action.route ?
+                    <BinaryLink
+                        className={classNames('btn', 'btn--secondary', 'notification__cta-button')}
+                        to={data.action.route}
+                    >
+                        <span className='btn__text'>{data.action.text}</span>
+                    </BinaryLink>
+                    :
                     <Button
                         className={classNames('btn--secondary', 'notification__cta-button')}
                         onClick={data.action.onClick}
                         text={data.action.text}
                     />
+
                 }
             </div>
             { data.should_hide_close_btn ?
@@ -69,6 +78,7 @@ Notification.propTypes = {
     data: PropTypes.shape({
         action: PropTypes.shape({
             onClick: PropTypes.func,
+            route  : PropTypes.string,
             text   : PropTypes.string,
         }),
         closeOnClick         : PropTypes.func,

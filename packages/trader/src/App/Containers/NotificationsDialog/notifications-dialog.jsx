@@ -2,7 +2,10 @@ import PropTypes             from 'prop-types';
 import classNames            from 'classnames';
 import React                 from 'react';
 import { CSSTransition }     from 'react-transition-group';
-import { ThemedScrollbars }  from 'deriv-components';
+import {
+    Button,
+    ThemedScrollbars }       from 'deriv-components';
+import { BinaryLink }        from 'App/Components/Routes';
 import { connect }           from 'Stores/connect';
 import { localize }          from 'App/i18n';
 import { toTitleCase }       from '_common/string_util';
@@ -85,6 +88,20 @@ class NotificationsDialog extends React.Component {
                                                 <div className='notifications-item__message'>
                                                     {item.message}
                                                 </div>
+                                                {!!item.action && item.action.route ?
+                                                    <BinaryLink
+                                                        className={classNames('btn', 'btn--secondary', 'notifications-item__cta-button')}
+                                                        to={item.action.route}
+                                                    >
+                                                        <span className='btn__text'>{item.action.text}</span>
+                                                    </BinaryLink>
+                                                    :
+                                                    <Button
+                                                        className={classNames('btn--secondary', 'notifications-item__cta-button')}
+                                                        onClick={item.action.onClick}
+                                                        text={item.action.text}
+                                                    />
+                                                }
                                             </div>
                                         ))
                                     }

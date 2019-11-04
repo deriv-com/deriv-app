@@ -51,21 +51,14 @@ export const clientNotifications = (ui = {}) => {
             type: 'danger',
         }),
         authenticate: {
+            action: {
+                route: routes.proof_of_identity,
+                text : localize('Authenticate'),
+            },
             key    : 'authenticate',
             header : localize('Account authentication'),
-            message: (
-                <Localize
-                    i18n_default_text='<0>Authenticate your account</0> now to take full advantage of all payment methods available.'
-                    components={[
-                        <BinaryLink
-                            key={0}
-                            className='link'
-                            to={routes.proof_of_identity}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'info',
+            message: localize('Authenticate your account now to take full advantage of all payment methods available.'),
+            type   : 'info',
         },
         cashier_locked: {
             key    : 'cashier_locked',
@@ -136,38 +129,24 @@ export const clientNotifications = (ui = {}) => {
             type: 'warning',
         },
         risk: {
+            action: {
+                text : localize('Complete form'),
+                route: routes.financial_assessment,
+            },
             key    : 'risk',
             header : localize('Withdrawal and trading limits'),
-            message: (
-                <Localize
-                    i18n_default_text='Please complete the <0>Financial Assessment form</0> to lift your withdrawal and trading limits.'
-                    components={[
-                        <BinaryLink
-                            key={0}
-                            className='link'
-                            to={routes.financial_assessment}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'warning',
+            message: localize('Please complete the Financial Assessment form to lift your withdrawal and trading limits.'),
+            type   : 'warning',
         },
         tax: {
+            action: {
+                route: routes.personal_details,
+                text : localize('Complete details'),
+            },
             key    : 'tax',
             header : localize('Complete your personal details'),
-            message: (
-                <Localize
-                    i18n_default_text='Please complete your <0>Personal Details</0> before you proceed.'
-                    components={[
-                        <BinaryLink
-                            key={0}
-                            className='link'
-                            to={routes.personal_details}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'danger',
+            message: localize('Please complete your Personal Details before you proceed.'),
+            type   : 'danger',
         },
         tnc: {
             action: {
@@ -186,24 +165,17 @@ export const clientNotifications = (ui = {}) => {
                     components={[ <a key={0} className='link' target='_blank' href='https://www.deriv.com/terms-and-conditions/' /> ]}
                 />
             ),
-            type: 'danger',
+            type: 'warning',
         },
         required_fields: {
+            action: {
+                route: routes.personal_details,
+                text : localize('Complete details'),
+            },
             key    : 'required_fields',
             header : localize('Complete your personal details'),
-            message: (
-                <Localize
-                    i18n_default_text='Please complete your <0>Personal Details</0> before you proceed.'
-                    components={[
-                        <BinaryLink
-                            key={0}
-                            className='link'
-                            to={routes.personal_details}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'danger',
+            message: localize('Please complete your Personal Details before you proceed.'),
+            type   : 'danger',
         },
         switch_to_tick_chart: {
             key    : 'switch_to_tick_chart',
@@ -234,55 +206,34 @@ export const clientNotifications = (ui = {}) => {
             type: 'info',
         },
         needs_poi: {
+            action: {
+                route: routes.proof_of_identity,
+                text : localize('Verify identity'),
+            },
             key    : 'needs_poi',
             header : localize('Proof of identity required'),
-            message: (
-                <Localize
-                    i18n_default_text='Please <0>submit</0> your proof of identity.'
-                    components={[
-                        <BinaryLink
-                            key={0}
-                            className='link'
-                            to={routes.proof_of_identity}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'warning',
+            message: localize('Please submit your proof of identity.'),
+            type   : 'warning',
         },
         needs_poa: {
+            action: {
+                route: routes.proof_of_address,
+                text : localize('Verify address'),
+            },
             key    : 'needs_poa',
             header : localize('Proof of address required'),
-            message: (
-                <Localize
-                    i18n_default_text='Please <0>submit</0> your proof of address.'
-                    components={[
-                        <BinaryLink
-                            key={0}
-                            className='link'
-                            to={routes.proof_of_address}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'warning',
+            message: localize('Please submit your proof of address.'),
+            type   : 'warning',
         },
         poa_expired: {
+            action: {
+                route: routes.proof_of_address,
+                text : localize('Proof of address'),
+            },
             key    : 'poa_expired',
             header : localize('Document expired'),
-            message: (
-                <Localize
-                    i18n_default_text='Your documents for proof of address is expired. Please <0>submit</0> again.'
-                    components={[
-                        <BinaryLink
-                            key={0}
-                            className='link'
-                            to={routes.proof_of_address}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'danger',
+            message: localize('Your documents for proof of address is expired. Please submit again.'),
+            type   : 'danger',
         },
         poa_rejected: {
             key    : 'poa_rejected',
@@ -295,21 +246,14 @@ export const clientNotifications = (ui = {}) => {
             type: 'danger',
         },
         poi_expired: {
+            action: {
+                route: routes.proof_of_identity,
+                text : localize('Proof of identity'),
+            },
             key    : 'poi_expired',
             header : localize('Proof of identity expired'),
-            message: (
-                <Localize
-                    i18n_default_text='Your proof of identity document has expired. Please <0>submit</0> a new one.'
-                    components={[
-                        <BinaryLink
-                            key={0}
-                            className='link'
-                            to={routes.proof_of_identity}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'danger',
+            message: localize('Your proof of identity document has expired. Please submit a new one.'),
+            type   : 'danger',
         },
     };
 };

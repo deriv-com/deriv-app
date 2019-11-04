@@ -86,6 +86,7 @@ export const load = (block_string, drop_event) => {
     // Check if XML can be parsed into a strategy.
     try {
         xml = Blockly.Xml.textToDom(block_string);
+        xml = updateRenamedMarkets(xml);
     } catch (e) {
         return showInvalidStrategyError();
     }

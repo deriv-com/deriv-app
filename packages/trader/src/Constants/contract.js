@@ -182,11 +182,11 @@ export const getSupportedContracts = is_high_low => ({
         position: 'bottom',
     },
     MULTUP: {
-        name    : localize('Buy'),
+        name    : localize('Up'),
         position: 'top',
     },
     MULTDOWN: {
-        name    : localize('Sell'),
+        name    : localize('Down'),
         position: 'bottom',
     },
 });

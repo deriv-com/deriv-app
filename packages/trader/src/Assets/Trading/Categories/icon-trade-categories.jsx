@@ -218,6 +218,24 @@ const IconTradeCategory = ({ category, className }) => {
                     </div>
                 );
                 break;
+            case 'mult':
+                IconCategory = (
+                    <React.Fragment>
+                        <div className='category-wrapper'>
+                            <IconTradeType
+                                className='category-type'
+                                type='multup'
+                            />
+                        </div>
+                        <div className='category-wrapper'>
+                            <IconTradeType
+                                className='category-type'
+                                type='multdown'
+                            />
+                        </div>
+                    </React.Fragment>
+                );
+                break;
             default:
                 IconCategory = (
                     <div className='category-wrapper'>

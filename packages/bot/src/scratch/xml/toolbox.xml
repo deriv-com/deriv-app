@@ -615,7 +615,7 @@
             </block>
         </category>
 
-        <category name="Logic" id="logic" description="Comparison operations">
+        <category name="Logic" id="logic" description="Logic comparison blocks">
             <block type="controls_if"/>
             <block type="logic_compare" />
             <block type="logic_operation" />
@@ -625,7 +625,7 @@
             <block type="logic_ternary" />
         </category>
 
-        <category name="Lists" id="lists" description="Handling lists of text/numeric values">
+        <category name="Lists" id="lists" description="List-related blocks">
             <block type="lists_create_with">
                 <field name="VARIABLE" variabletype="">list</field>
                 <statement name="STACK">

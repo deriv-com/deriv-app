@@ -26,13 +26,13 @@ Blockly.Blocks.lists_setIndex = {
         );
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-
+        this.setTooltip(translate('This block replaces a specific item in a list with another given item. It can also insert the new item in the list at a specific position.'));
         this.updateAt(true);
     },
     meta(){
         return {
             'display_name': translate('Set list item'),
-            'description' : translate('This block replaces a specific item in a list with another given item. It can also insert new item in the list at specified position.'),
+            'description' : translate('This block replaces a specific item in a list with another given item. It can also insert the new item in the list at a specific position.'),
             'category'    : Blockly.Categories.List,
         };
     },

@@ -40,7 +40,7 @@ Blockly.Blocks.logic_ternary = {
     meta(){
         return {
             'display_name': translate('Test value'),
-            'description' : translate('Tests if a given value is True or false and returns respective item.'),
+            'description' : translate('This block tests if a given value is true or false and returns “True” or “False” accordingly'),
         };
     },
 };

@@ -326,6 +326,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_mt5_allowed() {
+        if (!this.landing_companies) return null;
         return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
     }
 

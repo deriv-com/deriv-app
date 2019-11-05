@@ -610,9 +610,15 @@ export default class BlockConversion {
                 }
                 case ('next'): {
                     const closest_statement = el_block_child.closest('statement');
+
                     if (closest_statement) {
                         const statement_name = closest_statement.getAttribute('name');
                         this.processStatementInputs(block, statement_name, el_block_child, block.conversion_parent);
+                    } else if (block.nextConnection) {
+                        Array.from(el_block_child.children).forEach(el_sibling_block => {
+                            const sibling_block = this.convertBlockNode(el_sibling_block);
+                            block.nextConnection.connect(sibling_block.previousConnection);
+                        });
                     }
                     break;
                 }

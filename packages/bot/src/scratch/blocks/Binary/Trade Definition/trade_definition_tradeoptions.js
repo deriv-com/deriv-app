@@ -89,8 +89,15 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
             }
-        } else if (event.type === Blockly.Events.BLOCK_CHANGE && !is_load_event) {
-            if (event.blockId === this.id) {
+        } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
+            if (is_load_event) {
+                if (event.name === 'TRADETYPE_LIST') {
+                    this.updateBarrierInputs(false, false);
+                    this.enforceSingleBarrierType(false);
+                    this.updateDurationInput(false, false);
+                    this.updatePredictionInput(false);
+                }
+            } else if (event.blockId === this.id) {
                 switch (event.name) {
                     case ('DURATIONTYPE_LIST'): {
                         this.updateBarrierInputs(true, true);

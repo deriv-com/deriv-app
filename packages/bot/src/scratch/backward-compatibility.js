@@ -153,13 +153,19 @@ export default class BlockConversion {
             };
         };
         const tradeOptions = (block_node, is_symbol_type = false) => {
-            const block           = this.workspace.newBlock('trade_definition_tradeoptions');
-            let block_node_to_use = block_node;
+            const block            = this.workspace.newBlock('trade_definition_tradeoptions');
+            const block_node_to_use  = block_node;
 
             // Legacy symbol blocks used a statement "CONDITION" populated with a trade type block.
             // This trade type block has the same structure as tradeOptions, hence we can use it here.
             if (is_symbol_type) {
-                block_node_to_use = block_node.firstElementChild.firstElementChild;
+                block_node.setAttribute('type', 'tradeOptions');
+
+                const el_condition_children = block_node.firstElementChild.firstElementChild.children;
+                const el_statement          = block_node.firstElementChild;
+
+                Array.from(el_condition_children).forEach(el_condition_child => block_node.appendChild(el_condition_child));
+                el_statement.parentNode.removeChild(el_statement);
             }
 
             const fields            = ['DURATIONTYPE_LIST', 'CURRENCY_LIST', 'BARRIEROFFSETTYPE_LIST', 'SECONDBARRIEROFFSETTYPE_LIST'];
@@ -197,7 +203,7 @@ export default class BlockConversion {
                     field.setValue(this.getFieldValue(block_node_to_use, field_name));
                 }
             });
-
+            
             return { block_to_attach: block };
         };
 
@@ -243,7 +249,7 @@ export default class BlockConversion {
                 const trade_error_bool = this.workspace.newBlock('logic_boolean');
     
                 trade_error_bool.setShadow(true);
-                trade_error_bool.setFieldValue(this.getFieldValue(block_node, 'RESTARTONERROR'), 'BOOL');
+                trade_error_bool.setFieldValue(this.getFieldValue(block_node, 'RESTARTONERROR') || 'FALSE', 'BOOL');
                 trade_error_input.connection.connect(trade_error_bool.outputConnection);
     
                 // Restart buy/sell on error.
@@ -252,7 +258,7 @@ export default class BlockConversion {
                 const buy_sell_error_bool = this.workspace.newBlock('logic_boolean');
     
                 buy_sell_error_bool.setShadow(true);
-                buy_sell_error_bool.setFieldValue(this.getFieldValue(block_node, 'TIME_MACHINE_ENABLED'), 'BOOL');
+                buy_sell_error_bool.setFieldValue(this.getFieldValue(block_node, 'TIME_MACHINE_ENABLED') || 'TRUE', 'BOOL');
                 buy_sell_error_input.connection.connect(buy_sell_error_bool.outputConnection);
     
                 Object.values(blocks_to_connect).forEach(child_block => {

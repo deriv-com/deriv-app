@@ -159,7 +159,7 @@ export default class BlockConversion {
             // Legacy symbol blocks used a statement "CONDITION" populated with a trade type block.
             // This trade type block has the same structure as tradeOptions, hence we can use it here.
             if (is_symbol_type) {
-                block_node_to_use = block_node.children(0).children(0);
+                block_node_to_use = block_node.firstElementChild.firstElementChild;
             }
 
             const fields            = ['DURATIONTYPE_LIST', 'CURRENCY_LIST', 'BARRIEROFFSETTYPE_LIST', 'SECONDBARRIEROFFSETTYPE_LIST'];

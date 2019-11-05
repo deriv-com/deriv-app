@@ -26,22 +26,30 @@ Blockly.Blocks.input_list = {
             return;
         }
 
-        if (event.type === Blockly.Events.END_DRAG) {
+        const setParentId = () => {
             const surround_parent = this.getSurroundParent();
-
-            if (
-                surround_parent
-                && !this.required_parent_id
-                && this.allowed_parents.includes(surround_parent.type)
-            ) {
+            if (surround_parent && !this.required_parent_id && this.allowed_parents.includes(surround_parent.type)) {
                 this.required_parent_id = surround_parent.id;
-            } else if (!surround_parent || surround_parent.type !== this.required_parent_id) {
-                Blockly.Events.disable();
+            }
+        };
+
+        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+            setParentId();
+        } else if (event.type === Blockly.Events.END_DRAG) {
+            setParentId();
+
+            const surround_parent   = this.getSurroundParent();
+            const has_no_parent     = !surround_parent;
+            const is_illegal_parent = surround_parent.id !== this.required_parent_id;
+
+            if (has_no_parent || is_illegal_parent) {
+                const { recordUndo }      = Blockly.Events;
+                Blockly.Events.recordUndo = false;
+
                 this.unplug(true);
 
-                const parent_block = this.workspace.getAllBlocks(true).find(block =>
-                    block.id === this.required_parent_id
-                );
+                // Attempt to re-connect this child to its original parent.
+                const parent_block = this.workspace.getAllBlocks().find(block => block.id === this.required_parent_id);
 
                 if (parent_block) {
                     const parent_connection = parent_block.getLastConnectionInStatement('STATEMENT');
@@ -50,7 +58,7 @@ Blockly.Blocks.input_list = {
                     this.dispose();
                 }
 
-                Blockly.Events.enable();
+                Blockly.Events.recordUndo = recordUndo;
             }
         }
     },

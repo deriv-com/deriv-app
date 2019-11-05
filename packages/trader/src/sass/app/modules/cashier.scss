@@ -380,38 +380,30 @@
     }
     &__receipt {
         text-align: center;
+        background-color: var(--general-section-1);
+        padding: 2.4rem;
+        width: 50.4rem;
+        margin: auto;
+        margin-bottom: 3.2rem;
     }
-    &__transferred {
-        &-contact {
-            margin-top: 16px;
-            margin-bottom: 8px;
+    &__transferred-contact {
+        margin-top: 1.6rem;
+        margin-bottom: 0.8rem;
+
+        &-wrapper {
+            margin: 3.2rem;
         }
     }
     &__contact {
         text-decoration: none;
         color: var(--brand-red-coral);
     }
-    &__separator {
-        border-bottom: var(--general-section-2);
-        margin-top: 32px;
-        margin-bottom: 16px;
-        // cover the whole container instead of within the container's padding
-        width: calc(100% + 2.4rem + 2.4rem);
-        margin-left: -2.4rem;
-    }
     &__explanation {
-        margin-top: -8px;
-        margin-bottom: 24px;
-    }
-    &__buttons {
-        justify-content: flex-end;
-        display: flex;
-    }
-    &__statement-button, &__done-button {
-        margin: 0;
+        margin-top: -0.8rem;
     }
     &__done-button {
-        margin-left: 8.5px;
+        width: 15.4rem;
+        margin-left: -1.6rem;
     }
     &__input {
         width: 12.6rem !important;

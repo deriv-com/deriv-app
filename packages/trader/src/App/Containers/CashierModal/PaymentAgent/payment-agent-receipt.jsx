@@ -51,11 +51,10 @@ class PaymentAgentReceipt extends React.Component {
                         </span>
                     </div>
                 </div>
-                <div className='payment-agent__separator' />
                 <h2 className='cashier__header'><Localize i18n_default_text='IMPORTANT NOTICE TO RECEIVE YOUR FUNDS' /></h2>
                 <p className='payment-agent__explanation cashier__paragraph'><Localize i18n_default_text={'You\'re not done yet. To receive the transferred funds, you must contact the payment agent for further instruction. A summary of this transaction has been emailed to you for your records.'} /></p>
                 {this.props.receipt.payment_agent_name &&
-                    <React.Fragment>
+                    <div className='payment-agent__transferred-contact-wrapper'>
                         <p className='cashier__paragraph payment-agent__paragraph'><Localize i18n_default_text='{{payment_agent}} agent contact details:' values={{ payment_agent: this.props.receipt.payment_agent_name }} options={{ interpolation: { escapeValue: false } }} /></p>
                         <PaymentAgentDetails
                             className='payment-agent__transferred-contact'
@@ -63,18 +62,18 @@ class PaymentAgentReceipt extends React.Component {
                             payment_agent_phone={this.props.receipt.payment_agent_phone}
                             payment_agent_url={this.props.receipt.payment_agent_url}
                         />
-                    </React.Fragment>
+                    </div>
                 }
-                <div className='payment-agent__buttons'>
+                <div className='cashier__form-submit'>
                     <Button
-                        className='payment-agent__statement-button'
+                        className='cashier__form-submit-button'
                         has_effect
                         text={localize('View in statement')}
                         onClick={this.openStatement}
-                        tertiary
+                        secondary
                     />
                     <Button
-                        className='payment-agent__done-button'
+                        className='cashier__form-submit-button payment-agent__done-button'
                         has_effect
                         text={localize('Done')}
                         onClick={this.props.resetPaymentAgent}

@@ -58,6 +58,7 @@ class PaymentAgentList extends React.Component {
                                 <Loading className='payment-agent__loader' />
                                 :
                                 <React.Fragment>
+                                    {this.props.supported_banks.length > 1 &&
                                     <div className='payment-agent__available-selector'>
                                         <Dropdown
                                             id='payment_methods'
@@ -71,6 +72,7 @@ class PaymentAgentList extends React.Component {
                                             onChange={this.props.onChangePaymentMethod}
                                         />
                                     </div>
+                                    }
                                     <Accordion
                                         className='payment-agent__accordion'
                                         list={this.props.payment_agent_list.map((payment_agent) => ({

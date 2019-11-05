@@ -20,9 +20,8 @@ import 'Sass/app.scss';
 const isTouchDevice = 'ontouchstart' in document.documentElement;
 
 const App = ({ root_store }) => {
-    const l = window.location;
-    const base = l.pathname.split('/')[1];
-    const has_base = /^\/(br_|bot)/.test(l.pathname) && !/^localhost/.test(location.hostname);
+    const base = window.location.pathname.split('/')[1];
+    const has_base = /^\/(br_)/.test(window.location.pathname);
 
     return (
         <Router basename={ has_base ? `/${base}` : null}>

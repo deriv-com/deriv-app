@@ -4,7 +4,6 @@ import React          from 'react';
 import ReactDOM       from 'react-dom';
 import { BinaryLink } from 'App/Components/Routes';
 import Icon           from 'Assets/icon.jsx';
-import { isBot }      from 'Utils/PlatformSwitcher';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 
 class PlatformDropdown extends React.PureComponent {
@@ -29,7 +28,6 @@ class PlatformDropdown extends React.PureComponent {
             platform_config,
             closeDrawer,
         } = this.props;
-        const is_bot = isBot();
 
         const platform_dropdown = (
             <div className='platform_dropdown'>
@@ -37,12 +35,10 @@ class PlatformDropdown extends React.PureComponent {
                     {platform_config.map((platform, idx) => (
                         <BinaryLink
                             to={platform.link_to}
-                            href={platform.href}
                             key={idx}
                             onClick={closeDrawer}
                             className={classNames(
                                 'platform_dropdown__list__platform',
-                                { 'active': is_bot && platform.href === '/bot' }
                             )}
                         >
                             <div className='platform_dropdown__list__platform__background' />

@@ -1,6 +1,5 @@
 import PropTypes        from 'prop-types';
 import React            from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { MobxProvider } from 'Stores/connect';
 import Routes           from './Containers/Routes/routes.jsx';
 // eslint-disable-next-line import/extensions
@@ -19,11 +18,9 @@ class App extends React.Component {
 
     render() {
         return (
-            <Router>
-                <MobxProvider store={ this.root_store }>
-                    <Routes />
-                </MobxProvider>
-            </Router>
+            <MobxProvider store={ this.root_store }>
+                <Routes />
+            </MobxProvider>
         );
     }
 }

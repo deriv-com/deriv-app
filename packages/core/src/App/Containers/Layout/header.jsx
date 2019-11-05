@@ -5,11 +5,12 @@ import {
     AccountActions,
     MenuLinks,
     PlatformSwitcher }   from 'App/Components/Layout/Header';
-import platform_config   from 'App/Constants/platform-config';
+import platform_config  from 'App/Constants/platform-config';
 import Lazy              from 'App/Containers/Lazy';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import { localize }      from 'App/i18n';
 import Icon              from 'Assets/icon.jsx';
+import routes            from 'Constants/routes';
 import { connect }       from 'Stores/connect';
 
 const Header = ({
@@ -42,7 +43,7 @@ const Header = ({
             id        : 'dt_reports_tab',
             icon      : <Icon icon='IconReports' className='header__icon' />,
             text      : localize('Reports'),
-            href      : '/reports',
+            link_to   : routes.reports,
             login_only: true,
         },
         {

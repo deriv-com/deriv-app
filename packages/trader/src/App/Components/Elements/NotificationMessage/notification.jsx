@@ -2,6 +2,7 @@ import classNames              from 'classnames';
 import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { Button }              from 'deriv-components';
+import ObjectUtils             from 'deriv-shared/utils/object';
 import CloseButton             from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
 import {
@@ -46,7 +47,7 @@ const Notification = ({
                 <p className='notification__text-body'>
                     {data.message}
                 </p>
-                {!!data.action && data.action.route ?
+                {!ObjectUtils.isEmptyObject(data.action) && data.action.route ?
                     <BinaryLink
                         className={classNames('btn', 'btn--secondary', 'notification__cta-button')}
                         to={data.action.route}

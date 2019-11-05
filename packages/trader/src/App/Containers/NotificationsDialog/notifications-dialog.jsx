@@ -9,6 +9,7 @@ import { BinaryLink }        from 'App/Components/Routes';
 import { connect }           from 'Stores/connect';
 import { localize }          from 'App/i18n';
 import { toTitleCase }       from '_common/string_util';
+import ObjectUtils           from 'deriv-shared/utils/object';
 import Icon                  from 'Assets/icon.jsx';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
@@ -88,7 +89,7 @@ class NotificationsDialog extends React.Component {
                                                 <div className='notifications-item__message'>
                                                     {item.message}
                                                 </div>
-                                                {!!item.action && item.action.route ?
+                                                {!ObjectUtils.isEmptyObject(item.action) && item.action.route ?
                                                     <BinaryLink
                                                         className={classNames('btn', 'btn--secondary', 'notifications-item__cta-button')}
                                                         to={item.action.route}

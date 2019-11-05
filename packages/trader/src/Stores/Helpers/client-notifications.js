@@ -21,22 +21,14 @@ import Localize         from '../../App/Components/Elements/localize.jsx';
 export const clientNotifications = (ui = {}) => {
     return {
         currency: {
+            action: {
+                text   : localize('Set currency'),
+                onClick: () => ui.openRealAccountSignup,
+            },
             key    : 'currency',
-            header : localize('Set Currency'),
-            message: (
-                <Localize
-                    i18n_default_text='Please set the <0>currency</0> of your account to enable trading.'
-                    components={[
-                        <a
-                            key={0}
-                            type='button'
-                            className='link'
-                            onClick={ui.openRealAccountSignup}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'danger',
+            header : localize('Set account currency'),
+            message: localize('Please set the currency of your account to enable trading.'),
+            type   : 'danger',
         },
         self_exclusion: (excluded_until) => ({
             key    : 'self_exclusion',

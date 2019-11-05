@@ -218,7 +218,7 @@ class PaymentAgentWithdraw extends React.Component {
                                                             {({ field }) => (
                                                                 <Input
                                                                     { ...field }
-                                                                    className='cashier__input dc-input--no-placeholder'
+                                                                    className='cashier__input cashier__input--short dc-input--no-placeholder'
                                                                     type='text'
                                                                     label={localize('Amount')}
                                                                     error={ touched.amount && errors.amount }
@@ -235,6 +235,7 @@ class PaymentAgentWithdraw extends React.Component {
                                                                 type='submit'
                                                                 is_disabled={!isValid || isSubmitting}
                                                                 primary
+                                                                large
                                                             >
                                                                 <Localize i18n_default_text='Withdraw' />
                                                             </Button>

@@ -61,17 +61,18 @@
             }
         }
         &-submit-button {
-            height: 4rem;
             margin: 1.6rem 2.4rem 2.4rem;
         }
     }
     &__input {
         display: inline-block !important;
         margin-bottom: 0 !important;
-        width: 29rem;
 
-        &-long {
-            width: auto;
+        &--short {
+            width: 29rem;
+        }
+        &--long {
+            width: 100%;
         }
     }
     &__drop-down {
@@ -152,9 +153,15 @@
         min-width: 24rem;
     }
     &__success {
+        text-align: center;
         background-color: var(--general-section-1);
-        padding: 2.4rem 3.4rem;
-        margin: 0 4.9rem;
+        padding: 2.4rem;
+        width: 50.4rem;
+        margin: 0 auto 3.2rem;
+    }
+    &__done-button {
+        width: 15.6rem;
+        margin-left: -1.6rem;
     }
     &__amount-symbol {
         top: 0.9rem;
@@ -378,14 +385,6 @@
             }
         }
     }
-    &__receipt {
-        text-align: center;
-        background-color: var(--general-section-1);
-        padding: 2.4rem;
-        width: 50.4rem;
-        margin: auto;
-        margin-bottom: 3.2rem;
-    }
     &__transferred-contact {
         margin-top: 1.6rem;
         margin-bottom: 0.8rem;
@@ -400,10 +399,6 @@
     }
     &__explanation {
         margin-top: -0.8rem;
-    }
-    &__done-button {
-        width: 15.4rem;
-        margin-left: -1.6rem;
     }
     &__input {
         width: 12.6rem !important;
@@ -496,17 +491,11 @@
     &__input {
         width: 29.6rem;
         display: inline-flex;
+        margin-bottom: 3.1rem;
 
         &:not(:first-child) {
             margin-left: 2.4rem;
         }
-    }
-    &__buttons {
-        margin-left: -10.7rem;
-        align-items: center;
-    }
-    &__done-button {
-        margin-right: 2.4rem;
     }
 }
 

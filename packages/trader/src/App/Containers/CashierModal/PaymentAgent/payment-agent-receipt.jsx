@@ -25,7 +25,7 @@ class PaymentAgentReceipt extends React.Component {
         const payment_agent = this.props.receipt.payment_agent_name || this.props.receipt.payment_agent_id;
         return (
             <React.Fragment>
-                <div className='payment-agent__receipt'>
+                <div className='cashier__success'>
                     <h2 className='cashier__header'>
                         <Localize
                             i18n_default_text='Your funds have been transferred to {{payment_agent}}.'
@@ -71,13 +71,15 @@ class PaymentAgentReceipt extends React.Component {
                         text={localize('View in statement')}
                         onClick={this.openStatement}
                         secondary
+                        large
                     />
                     <Button
-                        className='cashier__form-submit-button payment-agent__done-button'
+                        className='cashier__form-submit-button cashier__done-button'
                         has_effect
                         text={localize('Done')}
                         onClick={this.props.resetPaymentAgent}
                         primary
+                        large
                     />
                 </div>
             </React.Fragment>

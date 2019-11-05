@@ -128,6 +128,16 @@ export default class CashierStore extends BaseStore {
     async onMountCommon() {
         await BinarySocket.wait('authorize');
         this.resetValuesIfNeeded();
+
+        // we need to see if client's country has PA
+        // if yes, we can show the PA tab in cashier
+        if (!this.config.payment_agent.list.length) {
+            this.setPaymentAgentList().then(this.filterPaymentAgentList);
+        }
+
+        this.checkIsPaymentAgent();
+
+        this.sortAccountsTransfer();
     }
 
     @action.bound
@@ -154,16 +164,6 @@ export default class CashierStore extends BaseStore {
             // if no verification code, we should request again
             return;
         }
-
-        // we need to see if client's country has PA
-        // if yes, we can show the PA tab in cashier
-        if (!this.config.payment_agent.list.length) {
-            this.setPaymentAgentList().then(this.filterPaymentAgentList);
-        }
-
-        this.checkIsPaymentAgent();
-
-        this.sortAccountsTransfer();
 
         const response_cashier = await WS.cashier(this.active_container, verification_code);
 
@@ -689,13 +689,23 @@ export default class CashierStore extends BaseStore {
                 ...(account.mt5_group && { mt_icon: getMT5AccountType(account.mt5_group) }),
             };
             if (idx === 0) {
-                this.config.account_transfer.selected_from = obj_values;
+                this.setSelectedFrom(obj_values);
             } else if (idx === 1) {
-                this.config.account_transfer.selected_to = obj_values;
+                this.setSelectedTo(obj_values);
             }
             arr_accounts.push(obj_values);
         });
         this.setAccounts(arr_accounts);
+    }
+
+    @action.bound
+    setSelectedFrom(obj_values) {
+        this.config.account_transfer.selected_from = obj_values;
+    }
+
+    @action.bound
+    setSelectedTo(obj_values) {
+        this.config.account_transfer.selected_to = obj_values;
     }
 
     @action.bound

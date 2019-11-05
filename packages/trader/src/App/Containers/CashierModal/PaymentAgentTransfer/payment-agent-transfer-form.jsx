@@ -157,6 +157,7 @@ class PaymentAgentTransferForm extends React.Component {
                                         type='submit'
                                         is_disabled={!isValid || isSubmitting}
                                         primary
+                                        large
                                     >
                                         <Localize i18n_default_text='Transfer' />
                                     </Button>

@@ -89,19 +89,23 @@ class NotificationsDialog extends React.Component {
                                                 <div className='notifications-item__message'>
                                                     {item.message}
                                                 </div>
-                                                {!ObjectUtils.isEmptyObject(item.action) && item.action.route ?
-                                                    <BinaryLink
-                                                        className={classNames('btn', 'btn--secondary', 'notifications-item__cta-button')}
-                                                        to={item.action.route}
-                                                    >
-                                                        <span className='btn__text'>{item.action.text}</span>
-                                                    </BinaryLink>
-                                                    :
-                                                    <Button
-                                                        className={classNames('btn--secondary', 'notifications-item__cta-button')}
-                                                        onClick={item.action.onClick}
-                                                        text={item.action.text}
-                                                    />
+                                                {!ObjectUtils.isEmptyObject(item.action) &&
+                                                    <React.Fragment>
+                                                        { item.action.route ?
+                                                            <BinaryLink
+                                                                className={classNames('btn', 'btn--secondary', 'notifications-item__cta-button')}
+                                                                to={item.action.route}
+                                                            >
+                                                                <span className='btn__text'>{item.action.text}</span>
+                                                            </BinaryLink>
+                                                            :
+                                                            <Button
+                                                                className={classNames('btn--secondary', 'notifications-item__cta-button')}
+                                                                onClick={item.action.onClick}
+                                                                text={item.action.text}
+                                                            />
+                                                        }
+                                                    </React.Fragment>
                                                 }
                                             </div>
                                         ))

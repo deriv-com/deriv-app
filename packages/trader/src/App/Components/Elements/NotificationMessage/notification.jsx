@@ -47,20 +47,23 @@ const Notification = ({
                 <p className='notification__text-body'>
                     {data.message}
                 </p>
-                {!ObjectUtils.isEmptyObject(data.action) && data.action.route ?
-                    <BinaryLink
-                        className={classNames('btn', 'btn--secondary', 'notification__cta-button')}
-                        to={data.action.route}
-                    >
-                        <span className='btn__text'>{data.action.text}</span>
-                    </BinaryLink>
-                    :
-                    <Button
-                        className={classNames('btn--secondary', 'notification__cta-button')}
-                        onClick={data.action.onClick}
-                        text={data.action.text}
-                    />
-
+                {!ObjectUtils.isEmptyObject(data.action) &&
+                    <React.Fragment>
+                        { data.action.route ?
+                            <BinaryLink
+                                className={classNames('btn', 'btn--secondary', 'notification__cta-button')}
+                                to={data.action.route}
+                            >
+                                <span className='btn__text'>{data.action.text}</span>
+                            </BinaryLink>
+                            :
+                            <Button
+                                className={classNames('btn--secondary', 'notification__cta-button')}
+                                onClick={data.action.onClick}
+                                text={data.action.text}
+                            />
+                        }
+                    </React.Fragment>
                 }
             </div>
             { data.should_hide_close_btn ?

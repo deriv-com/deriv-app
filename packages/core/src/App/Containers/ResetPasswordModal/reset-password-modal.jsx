@@ -14,7 +14,7 @@ import { localize }          from 'App/i18n';
 import { connect }           from 'Stores/connect';
 import { validPassword }     from 'Utils/Validator/declarative-validation-rules';
 import { redirectToLogin }   from '_common/base/login';
-import { requestLogout, WS } from 'Services/index';
+import { WS }                from 'Services/index';
 
 const resetInitialValues = { password: '' };
 
@@ -33,7 +33,7 @@ class ResetPassword extends React.Component {
 
         actions.setStatus({ reset_complete: true });
 
-        requestLogout().then(() => {
+        this.props.logoutClient().then(() => {
             redirectToLogin();
         });
     };
@@ -156,6 +156,7 @@ const ResetPasswordModal = ({
     disableApp,
     is_loading,
     is_visible,
+    logoutClient,
     verification_code,
     toggleResetPasswordModal,
 }) => {
@@ -170,6 +171,7 @@ const ResetPasswordModal = ({
                 verification_code={verification_code}
                 isModalVisible={toggleResetPasswordModal}
                 enableApp={enableApp}
+                logoutClient={logoutClient}
             />
         </Dialog>
     );
@@ -180,6 +182,7 @@ ResetPasswordModal.propTypes = {
     enableApp               : PropTypes.func,
     is_loading              : PropTypes.bool,
     is_visible              : PropTypes.bool,
+    logoutClient            : PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
     verification_code       : PropTypes.string,
 };
@@ -190,6 +193,7 @@ export default connect(
         enableApp               : ui.enableApp,
         disableApp              : ui.disableApp,
         is_loading              : ui.is_loading,
+        logoutClient            : client.logout,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,
         verification_code       : client.verification_code.reset_password,
     }),

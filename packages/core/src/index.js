@@ -7,6 +7,9 @@ import registerServiceWorker from 'Utils/pwa';
 import 'event-source-polyfill';
 import '_common/lib/plugins';
 
-registerServiceWorker();
+if (!location.hostname.startsWith('localhost')) {
+    registerServiceWorker();
+}
+
 // eslint-disable-next-line
 import App from 'App/app.jsx';

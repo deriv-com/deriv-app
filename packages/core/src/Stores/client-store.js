@@ -745,8 +745,7 @@ export default class ClientStore extends BaseStore {
                     type   : 'danger',
                 });
                 // request a logout
-                requestLogout();
-                // this.root_store.modules.trade.clearContracts();
+                this.logout();
                 return;
             }
 
@@ -831,12 +830,6 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     cleanUp() {
-        this.backgroundCleanUp();
-        this.root_store.modules.trade.resetErrorServices();
-    }
-
-    @action.bound
-    backgroundCleanUp() {
         this.root_store.gtm.pushDataLayer({ event: 'log_out' });
         this.loginid      = null;
         this.upgrade_info = undefined;
@@ -844,17 +837,21 @@ export default class ClientStore extends BaseStore {
         runInAction(async () => {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
-        // this.root_store.modules.trade.should_refresh_active_symbols = true;
-        // this.root_store.modules.trade.clearContracts();
-        this.root_store.ui.removeAllNotifications();
-        // this.root_store.modules.trade.refresh();
-        // this.root_store.modules.trade.debouncedProposal();
+        this.root_store.ui.removeAllNotificationMessages();
     }
 
     @action.bound
-    logout() { // TODO: [add-client-action] - Move logout functionality to client store
-        this.setLogout(true);
-        return requestLogout();
+    async logout() { // TODO: [add-client-action] - Move logout functionality to client store
+        const logout_promise = requestLogout();
+
+        const response = await logout_promise;
+
+        if (response.logout === 1) {
+            this.cleanUp();
+            this.setLogout(true);
+        }
+
+        return response;
     }
 
     @action.bound

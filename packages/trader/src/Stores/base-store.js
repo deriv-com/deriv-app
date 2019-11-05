@@ -33,6 +33,9 @@ export default class BaseStore {
     switchAccountDisposer = null;
     switch_account_listener = null;
 
+    logoutDisposer = null;
+    logout_listener = null;
+
     @observable partial_fetch_time = 0;
 
     /**
@@ -306,6 +309,33 @@ export default class BaseStore {
     }
 
     @action.bound
+    onLogout(listener) {
+        this.logoutDisposer = when(
+            () => this.root_store.client.has_logged_out,
+            async () => {
+                try {
+                    const result = this.logout_listener();
+                    if (result && result.then && typeof result.then === 'function') {
+                        result.then(() => {
+                            this.root_store.client.setLogout(false);
+                            this.onLogout(this.logout_listener);
+                        });
+                    } else {
+                        throw new Error('Logout listeners are required to return a promise.');
+                    }
+                } catch (error) {
+                    // there is no listener currently active. so we can just ignore the error raised from treating
+                    // a null object as a function. Although, in development mode, we throw a console error.
+                    if (!isProduction()) {
+                        console.error(error); // eslint-disable-line
+                    }
+                }
+            },
+        );
+        this.logout_listener = listener;
+    }
+
+    @action.bound
     disposeSwitchAccount() {
         if (typeof this.switchAccountDisposer === 'function') {
             this.switchAccountDisposer();
@@ -314,8 +344,17 @@ export default class BaseStore {
     }
 
     @action.bound
+    disposeLogout() {
+        if (typeof this.logoutDisposer === 'function') {
+            this.logoutDisposer();
+        }
+        this.logout_listener = null;
+    }
+
+    @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
+        this.disposeLogout();
     }
 
     @action.bound

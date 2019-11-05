@@ -11,7 +11,6 @@ import { localize }       from 'App/i18n';
 import { urlFor }         from '_common/url';
 import UpgradeButton      from 'App/Containers/RealAccountSignup/upgrade-button.jsx';
 import Icon               from 'Assets/icon.jsx';
-import { requestLogout }  from 'Services/index';
 import { connect }        from 'Stores/connect';
 import Localize           from 'App/Components/Elements/localize.jsx';
 import routes             from 'Constants/routes';
@@ -169,7 +168,7 @@ class AccountSwitcher extends React.Component {
         if (this.props.is_positions_drawer_on) {
             this.props.togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
-        requestLogout().then(this.props.cleanUp);
+        this.props.logoutClient();
     };
 
     redirectToMt5 = (account_type) => {
@@ -404,7 +403,6 @@ AccountSwitcher.propTypes = {
     account_list          : PropTypes.array,
     account_loginid       : PropTypes.string,
     accounts              : PropTypes.object,
-    cleanUp               : PropTypes.func,
     // clearContracts        : PropTypes.func,
     // clearError            : PropTypes.func,
     // clearPositions        : PropTypes.func,
@@ -445,7 +443,7 @@ const account_switcher = withRouter(connect(
         mt5_login_list        : client.mt5_login_list,
         obj_total_balance     : client.obj_total_balance,
         switchAccount         : client.switchAccount,
-        cleanUp               : client.cleanUp,
+        logoutClient          : client.logout,
         updateMt5LoginList    : client.updateMt5LoginList,
         // clearError            : modules.contract_trade.clearError,
         // has_error             : modules.contract_trade.has_error,

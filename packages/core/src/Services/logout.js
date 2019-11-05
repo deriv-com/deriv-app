@@ -7,9 +7,11 @@ export const requestLogout = () =>
     WS.logout().then(doLogout);
 
 const doLogout = (response) => {
-    if (response.logout !== 1) return;
+    if (response.logout !== 1) return undefined;
     removeCookies('affiliate_token', 'affiliate_tracking', 'onfido_token');
     Client.clearAllAccounts();
     Client.set('loginid', '');
     SocketCache.clear();
+
+    return response;
 };

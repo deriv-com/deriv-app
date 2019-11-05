@@ -28,7 +28,6 @@ class ChangePasswordForm extends React.Component {
     };
 
     handlePasswordChange = () => {
-        this.props.cleanUp();
         this.props.history.push(AppRoutes.trade);
     };
 
@@ -170,7 +169,6 @@ class ChangePasswordForm extends React.Component {
 // ChangePasswordForm.propTypes = {};
 export default connect(
     ({ client }) => ({
-        cleanUp: client.cleanUp,
         logout : client.logout,
     })
 )(withRouter(ChangePasswordForm));

@@ -1,8 +1,8 @@
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import { localize } from 'App/i18n';
-import { connect }  from 'Stores/connect';
-import OrderInput   from './order-input.jsx';
+import PropTypes       from 'prop-types';
+import React           from 'react';
+import { localize }    from 'App/i18n';
+import { connect }     from 'Stores/connect';
+import LimitOrderInput from './limit-order-input.jsx';
 
 const StopLoss = ({
     currency,
@@ -12,15 +12,15 @@ const StopLoss = ({
     validation_errors,
 }) => {
     return (
-        <OrderInput
-            amount={stop_loss}
+        <LimitOrderInput
             currency={currency}
             is_single_currency={is_single_currency}
-            name='stop_loss'
             label={localize('Stop loss')}
-            tooltip_label={localize('Close the deal when my loss reaches this amount.')}
+            name='stop_loss'
             onChange={onChange}
+            tooltip_label={localize('Close the deal when my loss reaches this amount.')}
             validation_errors={validation_errors}
+            value={stop_loss}
         />
     );
 };
@@ -33,7 +33,6 @@ StopLoss.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
-    tooltip_label    : PropTypes.string,
     validation_errors: PropTypes.object,
 };
 

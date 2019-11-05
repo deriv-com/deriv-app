@@ -51,3 +51,5 @@ const digitTypeMap = (contract_info) => ({
     DIGITOVER : localize('Over {{barrier}}', { barrier: contract_info.barrier }),
     DIGITUNDER: localize('Under {{barrier}}', { barrier: contract_info.barrier }),
 });
+
+export const isMultiplier = (contract_type) => /MULT/.test(contract_type);

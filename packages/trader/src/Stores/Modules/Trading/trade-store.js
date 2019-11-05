@@ -118,6 +118,10 @@ export default class TradeStore extends BaseStore {
     @observable take_profit;
     @observable has_stop_loss;
     @observable has_take_profit;
+    @observable update_stop_loss;
+    @observable update_take_profit;
+    @observable has_update_stop_loss;
+    @observable has_update_take_profit;
 
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};

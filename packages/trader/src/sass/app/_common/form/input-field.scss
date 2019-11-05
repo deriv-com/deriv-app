@@ -72,6 +72,11 @@
     &--disabled {
         pointer-events: none;
     }
+    &--inline {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 }
 
 /** @define input */

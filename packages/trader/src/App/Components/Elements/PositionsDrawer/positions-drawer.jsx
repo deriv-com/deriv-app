@@ -58,6 +58,9 @@ class PositionsDrawer extends React.Component {
                                 is_dark_theme={is_dark_theme}
                                 onClickSell={onClickSell}
                                 onClickRemove={onClickRemove}
+                                // onChange={onChange}
+                                // update_take_profit={update_take_profit}
+                                // update_stop_loss={update_stop_loss}
                                 key={portfolio_position.id}
                                 currency={currency}
                                 toggleUnsupportedContractModal={toggleUnsupportedContractModal}

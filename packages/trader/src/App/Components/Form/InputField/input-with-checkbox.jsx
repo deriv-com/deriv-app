@@ -2,17 +2,19 @@ import PropTypes             from 'prop-types';
 import React, { useState }   from 'react';
 import { Checkbox, Popover } from 'deriv-components';
 import CurrencyUtils         from 'deriv-shared/utils/currency';
-import Fieldset              from 'App/Components/Form/fieldset.jsx';
-import InputField            from 'App/Components/Form/InputField';
+import InputField            from './input-field.jsx';
 
-const OrderInput = ({
-    amount,
+const InputWithCheckbox = ({
+    classNameInlinePrefix,
+    classNameInput,
+    className,
     currency,
     is_single_currency,
-    name,
     label,
+    name,
     onChange,
     tooltip_label,
+    value,
 }) => {
     const [disabled, setDisabled] = useState(true);
 
@@ -24,9 +26,9 @@ const OrderInput = ({
 
     const input =
         <InputField
-            className={'trade-container__amount'}
-            classNameInlinePrefix={'trade-container__currency'}
-            classNameInput='trade-container__input'
+            className={className}
+            classNameInlinePrefix={classNameInlinePrefix}
+            classNameInput={classNameInput}
             currency={currency}
             is_disabled={disabled ? 'disabled' : undefined}
             fractional_digits={CurrencyUtils.getDecimalPlaces(currency)}
@@ -41,14 +43,14 @@ const OrderInput = ({
             name={name}
             onChange={onChange}
             type='tel'
-            value={amount}
+            value={value}
         />;
 
     return (
-        <Fieldset className='trade-container__fieldset center-text'>
-            <div className={`${name}-checkbox trade-container__order-input`}>
+        <React.Fragment>
+            <div className='input-wrapper--inline'>
                 <Checkbox
-                    className={`${name}-checkbox__input-field`}
+                    className={`${name}-checkbox__input`}
                     id={`dt_${name}-checkbox_input`}
                     onChange={changeValue}
                     defaultChecked={!disabled}
@@ -56,30 +58,32 @@ const OrderInput = ({
                     label={label}
                     classNameLabel={`${name}-checkbox__label`}
                 />
-                <Popover
-                    alignment='left'
-                    icon='info'
-                    id={`dt_${name}-checkbox__tooltip`}
-                    message={tooltip_label}
-                    margin={210}
-                />
+                {tooltip_label &&
+                    <Popover
+                        alignment='left'
+                        icon='info'
+                        id={`dt_${name}-checkbox__tooltip`}
+                        message={tooltip_label}
+                        margin={210}
+                    />
+                }
             </div>
             {input}
-        </Fieldset>
+        </React.Fragment>
     );
 };
 
-OrderInput.propTypes = {
-    amount: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
+InputWithCheckbox.propTypes = {
     currency          : PropTypes.string,
     is_single_currency: PropTypes.bool,
     name              : PropTypes.string,
     onChange          : PropTypes.func,
     tooltip_label     : PropTypes.string,
+    value             : PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]),
 };
 
-export default OrderInput;
+export default InputWithCheckbox;
 

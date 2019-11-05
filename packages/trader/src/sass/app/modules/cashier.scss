@@ -79,7 +79,8 @@
 
         &-display {
             justify-content: left;
-            min-height: 4rem;
+            min-height: 3.2rem;
+            min-width: 22.4rem;
             height: auto;
 
             &-span {
@@ -200,7 +201,6 @@
         }
         &__button {
             margin: 3.2rem auto 1.6rem;
-            height: 4rem;
         }
         &__footer {
             font-size: 1.2rem;
@@ -276,31 +276,44 @@
 /** @define payment-agent */
 .payment-agent {
     &__instructions {
-        margin-top: 24px;
+        margin-top: 2.4rem;
         display: flex;
 
         &-section {
+            border: 1px solid var(--border-normal);
             flex: 1;
+            padding: 1.6rem;
 
             .payment-agent__header {
                 margin-bottom: 8px;
+                text-align: center;
             }
             &:not(:first-child) {
                 margin-left: 24px;
             }
         }
-    }
-    &__button {
-        margin: 0;
-        height: 40px;
+        &-button {
+            margin: auto;
+        }
     }
     &__available {
         &-header {
             margin-top: 32px;
+            font-size: 1.4rem;
+            line-height: 1.43;
         }
         &-selector {
-            margin-bottom: 16px;
+            margin-bottom: 8px;
             display: flex;
+            justify-content: flex-end;
+            margin-right: 1px;
+        }
+        &-line {
+            border-bottom: 1px solid var(--general-section-1);
+            position: relative;
+            width: 68%;
+            margin-left: 32%;
+            top: -25px;
         }
     }
     &__drop-down {
@@ -320,10 +333,10 @@
     }
     &__disclaimer {
         background-color: var(--general-section-1);
-        margin-top: 24px;
-        padding: 8px 16px;
+        margin-top: 2.4rem;
+        padding: 1.6rem;
         font-size: 1.2rem;
-        line-height: 1.42;
+        line-height: 1.5;
     }
     &__radio {
         display: none;
@@ -472,7 +485,6 @@
         }
     }
     &__button-done {
-        height: 4rem;
         margin: 3.2rem auto 0;
     }
 }

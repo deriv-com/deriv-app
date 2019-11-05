@@ -12,7 +12,7 @@ import {
     getMT5AccountType,
     getMT5AccountDisplay } from '../../Helpers/client';
 
-const bank_default_option = [{ text: localize('Any'), value: 0 }];
+const bank_default_option = [{ text: localize('Deposit/withdrawal method'), value: 0, is_disabled: true }];
 
 class Config {
     container          = '';
@@ -427,7 +427,7 @@ export default class CashierStore extends BaseStore {
             }
         });
 
-        // sort supported banks alphabetically by value, the option 'any' with value '' should be on top
+        // sort supported banks alphabetically by value, the option 'Deposit/withdrawal method' with value '' should be on top
         this.config.payment_agent.supported_banks.replace(
             this.config.payment_agent.supported_banks.slice().sort(function(a, b){
                 if (a.value < b.value) { return -1; }

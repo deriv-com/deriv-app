@@ -43,6 +43,7 @@ class PaymentAgentList extends React.Component {
                                 <div className='payment-agent__instructions-section'>
                                     <h2 className='cashier__header payment-agent__header'><Localize i18n_default_text='Withdrawal' /></h2>
                                     <Button
+                                        className='payment-agent__instructions-button'
                                         has_effect
                                         text={localize('Request withdrawal form')}
                                         onClick={this.props.sendVerificationEmail}
@@ -52,15 +53,15 @@ class PaymentAgentList extends React.Component {
                                 </div>
                             </div>
                             <h2 className='cashier__header payment-agent__available-header'><Localize i18n_default_text='Available Payment Agents' /></h2>
+                            <div className='payment-agent__available-line' />
                             {this.props.is_loading ?
                                 <Loading className='payment-agent__loader' />
                                 :
                                 <React.Fragment>
                                     <div className='payment-agent__available-selector'>
-                                        <p className='cashier__paragraph'><Localize i18n_default_text='Deposit/withdrawal method' /></p>
                                         <Dropdown
                                             id='payment_methods'
-                                            className='cashier__drop-down payment-agent__drop-down'
+                                            className='payment-agent__drop-down'
                                             classNameDisplay='cashier__drop-down-display'
                                             classNameDisplaySpan='cashier__drop-down-display-span'
                                             classNameItems='cashier__drop-down-items'

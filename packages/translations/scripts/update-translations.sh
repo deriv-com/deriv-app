@@ -31,29 +31,29 @@ function confirm {
     echo "${RESET}"
 }
 
-# message "Checking out the dev branch" &&
-# git checkout dev &&
-# message "Updating dev" &&
-# git fetch upstream dev &&
-# git reset --hard upstream/dev &&
-# message "Creating new branch $NEW_TRANSLATION_BRANCH from dev" &&
-# if [ `git branch --list $NEW_TRANSLATION_BRANCH` ]
-# then
-#    echo "Branch name $NEW_TRANSLATION_BRANCH already exists."
-#    confirm "Delete existing $NEW_TRANSLATION_BRANCH branch?"
-#    if [[ $REPLY =~ ^[Yy]$ ]]
-#    then
-#        message "deleting branch locally" &&
-#        git branch -D $NEW_TRANSLATION_BRANCH
-#        message "deleting branch from remote" &&
-#        git push -d origin $NEW_TRANSLATION_BRANCH
-#        message "branch successfully deleted"
-#     else
-#        exit 1
-#     fi
-# fi &&
+message "Checking out the dev branch" &&
+git checkout dev &&
+message "Updating dev" &&
+git fetch upstream dev &&
+git reset --hard upstream/dev &&
+message "Creating new branch $NEW_TRANSLATION_BRANCH from dev" &&
+if [ `git branch --list $NEW_TRANSLATION_BRANCH` ]
+then
+   echo "Branch name $NEW_TRANSLATION_BRANCH already exists."
+   confirm "Delete existing $NEW_TRANSLATION_BRANCH branch?"
+   if [[ $REPLY =~ ^[Yy]$ ]]
+   then
+       message "deleting branch locally" &&
+       git branch -D $NEW_TRANSLATION_BRANCH
+       message "deleting branch from remote" &&
+       git push -d origin $NEW_TRANSLATION_BRANCH
+       message "branch successfully deleted"
+    else
+       exit 1
+    fi
+fi &&
 
-# git checkout -b add_translations &&
+git checkout -b add_translations &&
 confirm "Update the source file (messages.json) and push to Crowdin?" &&
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
@@ -63,21 +63,21 @@ then
     cd $(git rev-parse --show-toplevel) && cd packages/translations && source ~/.bash_profile && crowdin upload sources
 fi
 
-# confirm "Commit changes and push to the branch $NEW_TRANSLATION_BRANCH?" &&
-# if [[ $REPLY =~ ^[Yy]$ ]]
-# then
-#     cd $(git rev-parse --show-toplevel) &&
-#     message "Committing"
-#     git commit -a -m "Update translations" &&
-#     message "Pushing the changes" &&
-#     git push --set-upstream origin $NEW_TRANSLATION_BRANCH
-# fi
+confirm "Commit changes and push to the branch $NEW_TRANSLATION_BRANCH?" &&
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    cd $(git rev-parse --show-toplevel) &&
+    message "Committing"
+    git commit -a -m "Update translations" &&
+    message "Pushing the changes" &&
+    git push --set-upstream origin $NEW_TRANSLATION_BRANCH
+fi
 
-# echo ${GREEN}"\nSuccessfully Done." &&
+echo ${GREEN}"\nSuccessfully Done." &&
 
-# confirm "Open github to submit the PR?" &&
-# if [[ $REPLY =~ ^[Yy]$ ]]
-# then
-#     open "https://github.com/binary-com/deriv-app/compare/dev...$GIT_USERNAME:$NEW_TRANSLATION_BRANCH"
-#     git checkout dev
-# fi
+confirm "Open github to submit the PR?" &&
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    open "https://github.com/binary-com/deriv-app/compare/dev...$GIT_USERNAME:$NEW_TRANSLATION_BRANCH"
+    git checkout dev
+fi

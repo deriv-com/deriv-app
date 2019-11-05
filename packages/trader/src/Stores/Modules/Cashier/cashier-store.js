@@ -12,7 +12,7 @@ import {
     getMT5AccountType,
     getMT5AccountDisplay } from '../../Helpers/client';
 
-const bank_default_option = [{ text: localize('Deposit/withdrawal method'), value: 0, is_disabled: true }];
+const bank_default_option = [{ text: localize('Deposit/withdrawal method'), value: 0 }];
 
 class Config {
     container          = '';

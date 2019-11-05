@@ -39,7 +39,6 @@
         &-submit {
             display: flex;
             justify-content: flex-end;
-            box-shadow: inset 0 1px 0 0 rgba(224, 224, 224, 0.5);
             width: calc(100% + 4.8rem);
             margin-left: -2.4rem;
             position: absolute;
@@ -66,21 +65,26 @@
             margin: 1.6rem 2.4rem 2.4rem;
         }
     }
-    &__input-long {
+    &__input {
         display: inline-block !important;
         margin-bottom: 0 !important;
+        width: 29rem;
+
+        &-long {
+            width: auto;
+        }
     }
     &__drop-down {
         display: inline-block;
-        min-width: 20rem;
+        min-width: 20.3rem;
         min-height: 4rem;
         margin: 0 0 16px;
         line-height: 1.43;
 
         &-display {
             justify-content: left;
-            min-height: 3.2rem;
-            min-width: 22.4rem;
+            min-height: 4rem;
+            min-width: 20.3rem;
             height: auto;
 
             &-span {
@@ -289,7 +293,7 @@
                 text-align: center;
             }
             &:not(:first-child) {
-                margin-left: 24px;
+                margin-left: 1.6rem;
             }
         }
         &-button {
@@ -318,9 +322,17 @@
     }
     &__drop-down {
         margin-left: 8px;
-        min-width: 20rem;
         width: auto;
         margin-bottom: 0;
+    }
+    &__filter {
+        min-width: 22.8rem;
+        margin-top: 0;
+
+        &-display {
+            min-height: 3.2rem;
+            min-width: 22.8rem;
+        }
     }
     &__accordion-content {
         &-line {
@@ -343,16 +355,11 @@
 
         &-group {
             display: block;
+            margin-bottom: 3.9rem;
         }
         &-wrapper {
             display: flex;
-
-            &:not(:last-child) {
-                margin-bottom: 1.6rem;
-            }
-            &:last-child {
-                margin-bottom: 2.7rem;
-            }
+            margin-bottom: 2rem;
         }
         &-circle {
             border: 2px solid var(--text-general);

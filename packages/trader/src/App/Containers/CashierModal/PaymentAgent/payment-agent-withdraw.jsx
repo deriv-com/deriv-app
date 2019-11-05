@@ -218,7 +218,7 @@ class PaymentAgentWithdraw extends React.Component {
                                                             {({ field }) => (
                                                                 <Input
                                                                     { ...field }
-                                                                    className='cashier__input-long dc-input--no-placeholder'
+                                                                    className='cashier__input dc-input--no-placeholder'
                                                                     type='text'
                                                                     label={localize('Amount')}
                                                                     error={ touched.amount && errors.amount }

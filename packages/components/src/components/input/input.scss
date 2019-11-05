@@ -130,7 +130,7 @@
         }
     }
     &__label {
-        color: var(--text-less-prominent);
+        color: var(--text-prominent);
         font-size: var(--text-size-xs);
         background-color: var(--fill-normal);
         position: absolute;
@@ -157,7 +157,7 @@
     &--no-placeholder {
         label {
             transform: translate(0, -1.8rem) scale(0.75);
-            color: var(--text-less-prominent);
+            color: var(--text-prominent);
             padding: 0 4px;
             background-color: var(--fill-normal);
         }

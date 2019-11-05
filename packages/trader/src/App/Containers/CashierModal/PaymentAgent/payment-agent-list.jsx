@@ -61,8 +61,8 @@ class PaymentAgentList extends React.Component {
                                     <div className='payment-agent__available-selector'>
                                         <Dropdown
                                             id='payment_methods'
-                                            className='payment-agent__drop-down'
-                                            classNameDisplay='cashier__drop-down-display'
+                                            className='payment-agent__drop-down payment-agent__filter'
+                                            classNameDisplay='cashier__drop-down-display payment-agent__filter-display'
                                             classNameDisplaySpan='cashier__drop-down-display-span'
                                             classNameItems='cashier__drop-down-items'
                                             list={this.props.supported_banks}

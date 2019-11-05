@@ -160,7 +160,7 @@ class AccountTransferForm extends React.Component {
                                                             this.props.setErrorMessage('');
                                                             handleChange(e);
                                                         }}
-                                                        className='cashier__input-long dc-input--no-placeholder'
+                                                        className='cashier__input cashier__input-long dc-input--no-placeholder'
                                                         type='text'
                                                         label={localize('Amount')}
                                                         error={ touched.amount && errors.amount }

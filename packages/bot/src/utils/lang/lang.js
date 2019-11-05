@@ -10,7 +10,6 @@ export const getLanguage = () => {
 };
 
 /* eslint-disable */
-// TODO: investigate if this is still needed
 export const addUiLang = () => {
     $('[data-i18n-text]').each(function each() {
         const el = $(this);

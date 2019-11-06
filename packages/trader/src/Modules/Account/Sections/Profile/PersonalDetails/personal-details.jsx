@@ -224,7 +224,11 @@ class PersonalDetailsForm extends React.Component {
         form_initial_values.citizen = form_initial_values.citizen ? getLocation(residence_list, form_initial_values.citizen, 'text') : '';
         // form_initial_values.tax_residence = form_initial_values.tax_residence ? getLocation(residence_list, tax_residence, 'text') : '';
         form_initial_values.place_of_birth = form_initial_values.place_of_birth ? getLocation(residence_list, form_initial_values.place_of_birth, 'text') : '';
-        form_initial_values.address_state = form_initial_values.address_state ? getLocation(states_list, form_initial_values.address_state, 'text') : '';
+        if (form_initial_values.address_state) {
+            form_initial_values.address_state = states_list.length ? getLocation(states_list, form_initial_values.address_state, 'text') : form_initial_values.address_state;
+        } else {
+            form_initial_values.address_state = '';
+        }
 
         // if (!form_initial_values.tax_identification_number) form_initial_values tax_identification_number = '';
         return (

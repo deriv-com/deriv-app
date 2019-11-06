@@ -60,7 +60,7 @@ const TradeTypeInfoItem = ({
                                     id={`dt_contract_info_${item.value}_button`}
                                     className='trade-type-info-dialog__choose-button'
                                     onClick={() => onSubmitButtonClick(type)}
-                                    text={`${localize('Choose')} ${item.text}`}
+                                    text={`${localize('Choose {{trade_type}}', { trade_type: item.text })}`}
                                     secondary
                                 />
                             </div>

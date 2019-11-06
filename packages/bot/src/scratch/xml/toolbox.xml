@@ -662,7 +662,7 @@
             <block type="lists_sort"></block>
         </category>
 
-        <category name="Loops" id="loops" description="Repeat instructions until condition is met">
+        <category name="Loops" id="loops" description="Create repetitive instructions">
             <block type="controls_repeat"></block>
             <block type="controls_repeat_ext"></block>
             <block type="controls_whileUntil"></block>
@@ -671,7 +671,7 @@
             <block type="controls_flow_statements"></block>
         </category>
 
-        <category name="Misc." id="misc" description="Misc.">
+        <category name="Miscellaneous" id="misc" description="Miscellaneous blocks">
             <block type="loader"></block>
             <block type="block_holder"></block>
         </category>

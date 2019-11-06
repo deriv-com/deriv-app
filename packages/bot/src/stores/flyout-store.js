@@ -146,7 +146,7 @@ export default class FlyoutStore {
 
         xmlList.forEach((node) => {
             const tag_name = node.tagName.toUpperCase();
-            
+
             if (tag_name === Blockly.Xml.NODE_BLOCK) {
                 const block_hw = Blockly.Block.getDimensions(node);
 
@@ -183,7 +183,7 @@ export default class FlyoutStore {
             // eslint-disable-next-line consistent-return
             if (!block_type) return;
             try {
-                await import(`../scratch/help-content/help-string/${block_type}.json`);
+                await import(/* webpackChunkName: `[request]` */ `../scratch/help-content/help-string/${block_type}.json`);
                 // eslint-disable-next-line consistent-return
                 return block_type;
             } catch (e) {
@@ -228,7 +228,7 @@ export default class FlyoutStore {
             if (!should_include_block_only || (should_include_block_only && type !== null)) {
                 block_group[type].push(node);
             }
-            
+
             return block_group;
         }, {});
     }

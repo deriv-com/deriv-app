@@ -27,14 +27,14 @@ class HelpBase extends React.PureComponent {
         const block_type = block_nodes[0].getAttribute('type');
         const title = Blockly.Blocks[block_type].meta().display_name;
 
-        import(`./help-string/${block_type}.json`)
+        import(/* webpackChunkName: `[request]` */ `./help-string/${block_type}.json`)
             .then(help_string => {
                 this.setState({ help_string, has_help_content: true });
             })
             .catch(() => this.setState({ has_help_content: false }));
 
         this.setState({ title, block_type });
-    }
+    };
 
     componentDidMount() {
         const { block_nodes } = this.props;

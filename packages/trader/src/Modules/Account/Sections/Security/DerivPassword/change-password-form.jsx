@@ -44,7 +44,7 @@ class ChangePasswordForm extends React.Component {
             }
             setSubmitting(false);
         });
-    }
+    };
 
     validateFields = values => {
         this.setState({ is_submit_success: false });
@@ -169,6 +169,6 @@ class ChangePasswordForm extends React.Component {
 // ChangePasswordForm.propTypes = {};
 export default connect(
     ({ client }) => ({
-        logout : client.logout,
+        logout: client.logout,
     })
 )(withRouter(ChangePasswordForm));

@@ -1027,11 +1027,12 @@ export default class ClientStore extends BaseStore {
             }).then(response => {
                 if (response.error) {
                     reject(response.error);
+                } else {
+                    runInAction(() => {
+                        this.states_list = response.states_list || [];
+                        resolve();
+                    })
                 }
-                runInAction(() => {
-                    this.states_list = response.states_list || [];
-                    resolve();
-                })
             })
         })
     }

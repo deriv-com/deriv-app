@@ -112,11 +112,12 @@ class InputField extends React.Component {
             const is_crypto      = !!currency && CurrencyUtils.isCryptocurrency(currency);
 
             if (is_crypto || (!currency && is_float)) {
-                const new_value = parseFloat(+value) + parseFloat(1 * 10 ** (0 - decimal_places));
+                const new_value = parseFloat(+(value || 0)) + parseFloat(1 * 10 ** (0 - decimal_places));
                 increment_value = parseFloat(new_value).toFixed(decimal_places);
             } else {
-                increment_value = parseFloat((+value) + 1).toFixed(decimal_places);
+                increment_value = parseFloat((+(value || 0)) + 1).toFixed(decimal_places);
             }
+
             onChange({ target: { value: increment_value, name } });
         };
 
@@ -127,10 +128,10 @@ class InputField extends React.Component {
             const is_crypto      = !!currency && CurrencyUtils.isCryptocurrency(currency);
 
             if (is_crypto || (!currency && is_float)) {
-                const new_value = parseFloat(+value) - parseFloat(1 * 10 ** (0 - decimal_places));
+                const new_value = parseFloat(+(value || 0)) - parseFloat(1 * 10 ** (0 - decimal_places));
                 decrement_value = parseFloat(new_value).toFixed(decimal_places);
             } else {
-                decrement_value = parseFloat((+value) - 1).toFixed(decimal_places);
+                decrement_value = parseFloat((+(value || 0)) - 1).toFixed(decimal_places);
             }
             return decrement_value;
         };

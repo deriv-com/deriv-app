@@ -1,6 +1,5 @@
 import React         from 'react';
 import { PropTypes } from 'prop-types';
-
 import { localize }  from 'deriv-translations/lib/i18n';
 
 const FlyoutText = props => {

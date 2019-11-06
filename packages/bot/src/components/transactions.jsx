@@ -37,7 +37,7 @@ const Transaction = ({ contract }) => {
                                 <Popover
                                     className='transactions__inline transactions__middle'
                                     alignment='left'
-                                    message={localize('Refrence ID')}
+                                    message={localize('Reference ID')}
                                 >
                                     <RefrenceIdIcon className='transactions__middle' />
                                 </Popover>

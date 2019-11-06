@@ -21,9 +21,7 @@ const FadeIn = posed.span({
 });
 
 class PopoverBubble extends React.PureComponent {
-    isBubbleOutOfBoundary = (position, width) => {
-        return Boolean(window.innerWidth < (position + width));
-    }
+    isBubbleOutOfBoundary = (position, width) => window.innerWidth < (position + width);
 
     calculateBubblePosition = () => {
         const { alignment, target_rectangle, margin = 0 } = this.props;
@@ -78,7 +76,7 @@ class PopoverBubble extends React.PureComponent {
                 { is_open &&
                 <FadeIn key='fade_in' initialPose='exit' style={{ position: 'fixed', zIndex: 999 }}>
                     <span
-                        style={ target_rectangle ? this.calculateBubblePosition() : {}}
+                        style={ this.calculateBubblePosition()}
                         data-popover-pos={alignment}
                         className={classNames(
                             className,

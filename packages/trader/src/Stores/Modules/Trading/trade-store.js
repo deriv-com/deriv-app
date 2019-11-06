@@ -415,7 +415,7 @@ export default class TradeStore extends BaseStore {
                         this.purchase_info = response;
                         this.proposal_requests = {};
                         this.debouncedProposal();
-                        this.root_store.gtm.pushPurchaseData(contract_data);
+                        this.pushPurchaseDataToGtm(contract_data);
                         return;
                     }
                 } else if (response.error) {
@@ -565,6 +565,41 @@ export default class TradeStore extends BaseStore {
     @computed
     get show_digits_stats() {
         return isDigitTradeType(this.contract_type);
+    }
+
+    @action.bound
+    pushPurchaseDataToGtm(contract_data) {
+        const data = {
+            event   : 'buy_contract',
+            bom_ui  : 'new',
+            contract: {
+                amount       : contract_data.amount,
+                barrier1     : contract_data.barrier,
+                barrier2     : contract_data.barrier2,
+                basis        : contract_data.basis,
+                buy_price    : contract_data.buy_price,
+                contract_type: contract_data.contract_type,
+                currency     : contract_data.currency,
+                date_expiry  : contract_data.date_expiry,
+                date_start   : contract_data.date_start,
+                duration     : contract_data.duration,
+                duration_unit: contract_data.duration_unit,
+                payout       : contract_data.payout,
+                symbol       : contract_data.symbol,
+            },
+            settings: {
+                theme           : this.root_store.ui.is_dark_mode_on ? 'dark' : 'light',
+                positions_drawer: this.root_store.ui.is_positions_drawer_on ? 'open' : 'closed',
+                purchase_confirm: this.root_store.ui.is_purchase_confirm_on ? 'enabled' : 'disabled',
+                chart           : {
+                    toolbar_position: this.root_store.ui.is_chart_layout_default ? 'bottom' : 'left',
+                    chart_asset_info: this.root_store.ui.is_chart_asset_info_visible ? 'visible' : 'hidden',
+                    chart_type      : this.root_store.modules.contract_trade.chart_type,
+                    granularity     : this.root_store.modules.contract_trade.granularity,
+                },
+            },
+        };
+        this.root_store.gtm.pushDataLayer(data);
     }
 
     @action.bound

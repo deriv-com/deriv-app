@@ -11,28 +11,6 @@ export default class BlockConversion {
         this.workspace_variables      = {};
     }
 
-    getIllegalBlocks() {
-        const illegal_blocks = [];
-
-        // Legacy symbol + trade_type blocks are special cases, they are turned into multiple blocks.
-        // We don't convert these atm, as a workaround users can import to BBot, then export and load
-        // into DBot.
-        const { active_symbols } = ApiHelpers.instance.active_symbols;
-        const { opposites }      = config;
-
-        active_symbols.forEach(active_symbol => {
-            const symbol_name = active_symbol.symbol.toLowerCase();
-            if (!illegal_blocks.includes(symbol_name)) {
-                illegal_blocks.push(symbol_name);
-            }
-        });
-
-        // All trade types blocks cannot be converted at this time.
-        Object.keys(opposites).forEach(opposites_name => illegal_blocks.push(opposites_name));
-
-        return illegal_blocks;
-    }
-
     getConversions() {
         const generateGrowingListBlock = (block_node, block_type, variable_name, child_value_input_name) => {
             const block             = this.workspace.newBlock(block_type);
@@ -287,6 +265,29 @@ export default class BlockConversion {
         };
 
         return conversions;
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    getIllegalBlocks() {
+        const illegal_blocks = [];
+
+        // Legacy symbol + trade_type blocks are special cases, they are turned into multiple blocks.
+        // We don't convert these atm, as a workaround users can import to BBot, then export and load
+        // into DBot.
+        const { active_symbols } = ApiHelpers.instance.active_symbols;
+        const { opposites }      = config;
+
+        active_symbols.forEach(active_symbol => {
+            const symbol_name = active_symbol.symbol.toLowerCase();
+            if (!illegal_blocks.includes(symbol_name)) {
+                illegal_blocks.push(symbol_name);
+            }
+        });
+
+        // All trade types blocks cannot be converted at this time.
+        Object.keys(opposites).forEach(opposites_name => illegal_blocks.push(opposites_name));
+
+        return illegal_blocks;
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -642,6 +643,7 @@ export default class BlockConversion {
                     block.comment.iconXY_ = { x: 0, y: 0 };
                     block.comment.setVisible(true);
                     block.comment.setMinimized(is_minimised);
+                    break;
                 }
                 default:
                     break;

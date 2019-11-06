@@ -58,14 +58,20 @@ module.exports = function (env, argv) {
             library: 'deriv-trader',
             libraryTarget: 'umd',
         },
-        externals: {
-            'react': 'react',
-            'react-dom': 'react-dom',
-            'react-router-dom': 'react-router-dom',
-            'react-router': 'react-router',
-            'mobx': 'mobx',
-            'mobx-react': 'mobx-react',
-        },
+        externals: [
+            {
+                'react': 'react',
+                'react-dom': 'react-dom',
+                'react-router-dom': 'react-router-dom',
+                'react-router': 'react-router',
+                'mobx': 'mobx',
+                'mobx-react': 'mobx-react',
+                'deriv-shared': 'deriv-shared',
+                'deriv-components': 'deriv-components',
+            },
+            /^deriv-shared\/.+$/,
+            /^deriv-components\/.+$/
+        ],
         target: 'web',
         plugins     : plugins(base, false),
     };

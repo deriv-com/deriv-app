@@ -116,13 +116,17 @@ module.exports = {
         }),
         // ...(!is_release ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
     ],
-    externals: {
-        'react'           : 'react',
-        'react-dom'       : 'react-dom',
-        '@babel/polyfill' : '@babel/polyfill',
-        'classnames'      : 'classnames',
-        'deriv-components': 'deriv-components',
-        'deriv-shared'    : 'deriv-shared',
-        'formik'          : 'formik',
-    },
+    externals: [
+        {
+            'react'           : 'react',
+            'react-dom'       : 'react-dom',
+            '@babel/polyfill' : '@babel/polyfill',
+            'classnames'      : 'classnames',
+            'deriv-components': 'deriv-components',
+            'deriv-shared'    : 'deriv-shared',
+            'formik'          : 'formik',
+        },
+        /^deriv-shared\/.+$/,
+        /^deriv-components\/.+$/,
+    ],
 };

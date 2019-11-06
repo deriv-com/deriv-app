@@ -24,7 +24,7 @@ class PaymentAgentReceipt extends React.Component {
     render() {
         const payment_agent = this.props.receipt.payment_agent_name || this.props.receipt.payment_agent_id;
         return (
-            <React.Fragment>
+            <div className='cashier__wrapper--align-left'>
                 <div className='cashier__success'>
                     <h2 className='cashier__header'>
                         <Localize
@@ -82,7 +82,7 @@ class PaymentAgentReceipt extends React.Component {
                         large
                     />
                 </div>
-            </React.Fragment>
+            </div>
         );
     }
 }

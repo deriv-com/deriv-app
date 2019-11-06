@@ -4,7 +4,8 @@ import React                from 'react';
 import {
     Button,
     Dropdown,
-    Input }                 from 'deriv-components';
+    Input,
+    Money }                 from 'deriv-components';
 import {
     Field,
     Formik,
@@ -165,92 +166,106 @@ class PaymentAgentWithdraw extends React.Component {
     };
 
     render() {
+        if (this.props.is_loading) {
+            return <Loading className='cashier__loader' />;
+        }
+        if (this.props.error.message) {
+            return <Error error={this.props.error} />;
+        }
+        if (this.props.is_withdraw_successful) {
+            return <PaymentAgentReceipt />;
+        }
         return (
-            <React.Fragment>
-                {this.props.is_loading ?
-                    <Loading className='cashier__loader' />
-                    :
-                    <React.Fragment>
-                        {this.props.error.message ?
-                            <Error error={this.props.error} />
-                            :
-                            <div className='cashier__wrapper--align-left'>
-                                {this.props.is_withdraw_successful ?
-                                    <PaymentAgentReceipt />
-                                    :
-                                    <React.Fragment>
-                                        <h2 className='cashier__header'>
-                                            <Localize i18n_default_text='Payment agent withdrawal' />
-                                        </h2>
-                                        <Formik
-                                            initialValues={{
-                                                amount        : '',
-                                                payment_agent : '',
-                                                payment_agents: (this.props.payment_agent_list[0] || {}).value,
-                                                payment_method: 'payment_agents',
-                                            }}
-                                            validate={this.validateWithdrawalPassthrough}
-                                            onSubmit={this.onWithdrawalPassthrough}
-                                        >
-                                            {
-                                                ({ errors, isSubmitting, isValid, values, touched }) => (
-                                                    <Form>
-                                                        <div className='payment-agent__radio-group'>
-                                                            <Field
-                                                                id='payment_agents'
-                                                                component={RadioDropDown}
-                                                                payment_agent_list={this.props.payment_agent_list}
-                                                                className='payment-agent__radio'
-                                                                name='payment_method'
-                                                                values={values}
-                                                            />
-                                                            <Field
-                                                                id='payment_agent'
-                                                                component={RadioInput}
-                                                                touched={touched}
-                                                                errors={errors}
-                                                                values={values}
-                                                                className='payment-agent__radio'
-                                                                name='payment_method'
-                                                            />
-                                                        </div>
-                                                        <Field name='amount'>
-                                                            {({ field }) => (
-                                                                <Input
-                                                                    { ...field }
-                                                                    className='cashier__input cashier__input--short dc-input--no-placeholder'
-                                                                    type='text'
-                                                                    label={localize('Amount')}
-                                                                    error={ touched.amount && errors.amount }
-                                                                    required
-                                                                    leading_icon={<span className={classNames('cashier__amount-symbol', 'symbols', `symbols--${this.props.currency.toLowerCase()}`)} />}
-                                                                    autoComplete='off'
-                                                                    maxLength='30'
-                                                                />
-                                                            )}
-                                                        </Field>
-                                                        <div className='cashier__form-submit'>
-                                                            <Button
-                                                                className='cashier__form-submit-button'
-                                                                type='submit'
-                                                                is_disabled={!isValid || isSubmitting}
-                                                                primary
-                                                                large
-                                                            >
-                                                                <Localize i18n_default_text='Withdraw' />
-                                                            </Button>
-                                                        </div>
-                                                    </Form>
-                                                )
-                                            }
-                                        </Formik>
-                                    </React.Fragment>
-                                }
+            <div className='cashier__wrapper--align-left'>
+                <h2 className='cashier__header'>
+                    <Localize i18n_default_text='Payment agent withdrawal' />
+                </h2>
+                <Formik
+                    initialValues={{
+                        amount        : '',
+                        payment_agent : '',
+                        payment_agents: (this.props.payment_agent_list[0] || {}).value,
+                        payment_method: 'payment_agents',
+                    }}
+                    validate={this.validateWithdrawalPassthrough}
+                    onSubmit={this.onWithdrawalPassthrough}
+                >
+                    {({ errors, isSubmitting, isValid, values, touched }) => (
+                        <Form>
+                            <div className='payment-agent__radio-group'>
+                                <Field
+                                    id='payment_agents'
+                                    component={RadioDropDown}
+                                    payment_agent_list={this.props.payment_agent_list}
+                                    className='payment-agent__radio'
+                                    name='payment_method'
+                                    values={values}
+                                />
+                                <Field
+                                    id='payment_agent'
+                                    component={RadioInput}
+                                    touched={touched}
+                                    errors={errors}
+                                    values={values}
+                                    className='payment-agent__radio'
+                                    name='payment_method'
+                                />
                             </div>
-                        }
-                    </React.Fragment>
-                }
-            </React.Fragment>
+                            <Field name='amount'>
+                                {({ field }) => (
+                                    <Input
+                                        { ...field }
+                                        className='cashier__input cashier__input--short dc-input--no-placeholder'
+                                        type='text'
+                                        label={localize('Amount')}
+                                        error={ touched.amount && errors.amount }
+                                        required
+                                        leading_icon={<span className={classNames('cashier__amount-symbol', 'symbols', `symbols--${this.props.currency.toLowerCase()}`)} />}
+                                        autoComplete='off'
+                                        maxLength='30'
+                                        hint={
+                                            values.payment_method === 'payment_agents' &&
+                                            this.props.payment_agent_list.find(
+                                                pa => pa.value === values.payment_agents
+                                            ) &&
+                                            <Localize
+                                                i18n_default_text='Withdrawal limits: <0 />-<1 />'
+                                                components={[
+                                                    <Money
+                                                        key={0}
+                                                        amount={this.props.payment_agent_list
+                                                            .find(pa => pa.value === values.payment_agents)
+                                                            .min_withdrawal}
+                                                        currency={this.props.currency}
+                                                    />,
+                                                    <Money
+                                                        key={1}
+                                                        amount={this.props.payment_agent_list
+                                                            .find(pa => pa.value === values.payment_agents)
+                                                            .max_withdrawal}
+                                                        currency={this.props.currency}
+                                                    />,
+                                                ]}
+                                            />
+                                        }
+                                    />
+                                )}
+                            </Field>
+                            <div className='cashier__form-submit'>
+                                <Button
+                                    className='cashier__form-submit-button'
+                                    type='submit'
+                                    is_disabled={!isValid || isSubmitting}
+                                    primary
+                                    large
+                                >
+                                    <Localize i18n_default_text='Withdraw' />
+                                </Button>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
+            </div>
         );
     }
 }

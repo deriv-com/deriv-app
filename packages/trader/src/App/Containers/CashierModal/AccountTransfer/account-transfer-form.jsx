@@ -173,12 +173,18 @@ class AccountTransferForm extends React.Component {
                                                         autoComplete='off'
                                                         maxLength='30'
                                                         hint={
+                                                            this.props.transfer_limit.min &&
                                                             this.props.transfer_limit.max &&
                                                             <Localize
-                                                                i18n_default_text='Transfer limit: <0 />'
+                                                                i18n_default_text='Transfer limits: <0 />-<1 />'
                                                                 components={[
                                                                     <Money
                                                                         key={0}
+                                                                        amount={this.props.transfer_limit.min}
+                                                                        currency={this.props.selected_from.currency}
+                                                                    />,
+                                                                    <Money
+                                                                        key={1}
                                                                         amount={this.props.transfer_limit.max}
                                                                         currency={this.props.selected_from.currency}
                                                                     />,

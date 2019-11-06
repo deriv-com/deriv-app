@@ -20,6 +20,7 @@ const poa_status_codes = {
 };
 
 class ProofOfAddressContainer extends React.Component {
+    is_mounted = false;
     state = {
         is_loading   : true,
         has_poi      : false,
@@ -27,18 +28,25 @@ class ProofOfAddressContainer extends React.Component {
         resubmit_poa : false,
     };
 
-    componentDidMount(){
+    componentDidMount() {
+        this.is_mounted = true;
         WS.authorized.getAccountStatus().then(response => {
             const { get_account_status } = response;
             const { document, needs_verification } = get_account_status.authentication;
             const needs_poi = needs_verification.length && needs_verification.includes('identity');
-            this.setState({
-                status       : document.status, needs_poi,
-                is_loading   : false,
-                submitted_poa: !(needs_verification.length && needs_verification.includes('document')),
-            });
-            this.props.refreshNotifications();
+            if (this.is_mounted) {
+                this.setState({
+                    status       : document.status, needs_poi,
+                    is_loading   : false,
+                    submitted_poa: !(needs_verification.length && needs_verification.includes('document')),
+                });
+                this.props.refreshNotifications();
+            }
         });
+    }
+
+    componentWillUnmount() {
+        this.is_mounted = false;
     }
 
     handleResubmit = () => {

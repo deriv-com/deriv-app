@@ -14,7 +14,7 @@ export const compressImageFiles = (files) => {
                     compressImg(img).then((compressed_img) => {
                         const file_arr = f;
                         file_arr.file = compressed_img;
-                        resolve(file_arr);
+                        resolve(file_arr.file);
                     });
                 });
             } else {
@@ -34,27 +34,22 @@ export const readFiles = (files) => {
         const promise = new Promise((resolve) => {
             fr.onload = () => {
                 const file_obj    = {
-                    filename      : isImageType(f.type) ? f.file.name : f.name,
+                    filename      : f.name,
                     buffer        : fr.result,
                     documentType  : 'proofaddress',
                     documentFormat: getFormatFromMIME(f),
-                    file_size     : isImageType(f.type) ? f.file.size : f.size,
+                    file_size     : f.size,
                 };
                 resolve(file_obj);
             };
 
             fr.onerror = () => {
                 resolve({
-                    message: localize('Unable to read file [_1]', isImageType(f.type) ? f.file.name : f.name),
+                    message: localize('Unable to read file [_1]', f.name),
                 });
             };
 
-            if (isImageType(f.type)) {
-                fr.readAsArrayBuffer(f.file);
-            } else {
-                fr.readAsArrayBuffer(f);
-            }
-
+            fr.readAsArrayBuffer(f);
         });
 
         promises.push(promise);

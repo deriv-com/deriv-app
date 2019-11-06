@@ -22,6 +22,7 @@ Blockly.Blocks.total_runs = {
             'description' : translate('This block returns the number of runsd since counters has been reset. You can reset counters by presising "Clear stats" on in the Transaction Stats panel or by refreshing a page in your browser.'),
         };
     },
+    onchange: Blockly.Blocks.total_profit.onchange,
 };
 
 Blockly.JavaScript.total_runs = () => ['Bot.getTotalRuns()', Blockly.JavaScript.ORDER_ATOMIC];

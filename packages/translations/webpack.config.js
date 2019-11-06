@@ -47,8 +47,6 @@ module.exports = {
     },
     externals: {
         'react'                     : 'react',
-        'react-dom'                 : 'react-dom',
-        'react-pose'                : 'react-pose',
         'babel-polyfill'            : 'babel-polyfill',
         'prop-types'                : 'prop-types',
     },

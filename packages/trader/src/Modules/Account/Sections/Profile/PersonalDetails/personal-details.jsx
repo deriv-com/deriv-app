@@ -56,7 +56,7 @@ const InputGroup = ({ children, className }) => (
 );
 
 class PersonalDetailsForm extends React.Component {
-    state = { is_loading: true, show_form: true }
+    state = { is_loading: true, is_state_loading: false, show_form: true }
 
     onSubmit = (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
@@ -197,22 +197,24 @@ class PersonalDetailsForm extends React.Component {
             form_initial_values: { ...form_initial_values },
             api_error,
             is_loading,
+            is_state_loading,
             is_btn_loading,
             is_submit_success,
             show_form,
         } = this.state;
 
-        const { is_fully_authenticated, residence_list, has_residence, states_list } = this.props;
+        const { is_fully_authenticated, residence_list, states_list } = this.props;
 
         if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
-        const should_wait_for_residence_states = (!residence_list.length || (has_residence && !states_list.length));
-        if (is_loading || should_wait_for_residence_states) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading || is_state_loading || !residence_list.length) {
+            return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        }
 
         form_initial_values.citizen = form_initial_values.citizen ? getLocation(residence_list, form_initial_values.citizen, 'text') : '';
         // form_initial_values.tax_residence = form_initial_values.tax_residence ? getLocation(residence_list, tax_residence, 'text') : '';
         form_initial_values.place_of_birth = form_initial_values.place_of_birth ? getLocation(residence_list, form_initial_values.place_of_birth, 'text') : '';
-        form_initial_values.address_state = form_initial_values.address_state ? getLocation(this.props.states_list, form_initial_values.address_state, 'text') : '';
+        form_initial_values.address_state = form_initial_values.address_state ? getLocation(states_list, form_initial_values.address_state, 'text') : '';
 
         // if (!form_initial_values.tax_identification_number) form_initial_values tax_identification_number = '';
         return (
@@ -563,7 +565,13 @@ class PersonalDetailsForm extends React.Component {
         const { fetchResidenceList, fetchStatesList, has_residence } = this.props;
 
         fetchResidenceList();
-        if (has_residence) fetchStatesList();
+        if (has_residence) {
+            this.setState({ is_state_loading: true }, () => {
+                fetchStatesList().then(() => {
+                    this.setState({ is_state_loading: false });
+                });
+            });
+        }
 
         BinarySocket.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
             const { getChangeableFields, is_virtual, account_settings } = this.props;

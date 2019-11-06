@@ -1021,11 +1021,17 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     fetchStatesList() {
-        WS.statesList({
-            states_list: this.accounts[this.loginid].residence
-        }).then(response => {
-            runInAction(() => {
-                this.states_list = response.states_list || [];
+        return new Promise((resolve, reject) => {
+            WS.statesList({
+                states_list: this.accounts[this.loginid].residence
+            }).then(response => {
+                if (response.error) {
+                    reject(response.error);
+                }
+                runInAction(() => {
+                    this.states_list = response.states_list || [];
+                    resolve();
+                })
             })
         })
     }

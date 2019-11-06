@@ -21,14 +21,20 @@ const FadeIn = posed.span({
 });
 
 class PopoverBubble extends React.PureComponent {
-    calculatePosition = () => {
+    isBubbleOutOfBoundary = (position, width) => {
+        return Boolean(window.innerWidth < (position + width));
+    }
+
+    calculateBubblePosition = () => {
         const { alignment, target_rectangle, margin = 0 } = this.props;
 
         switch (alignment) {
             case 'top': return {
-                left     : (target_rectangle.width / 2) + target_rectangle.left,
-                bottom   : (window.innerHeight - target_rectangle.top) + margin,
-                transform: 'translateX(-50%)',
+                left: this.isBubbleOutOfBoundary(target_rectangle.left, 280)
+                    ? window.innerWidth - 280
+                    : (target_rectangle.width / 2) + target_rectangle.left,
+                bottom     : (window.innerHeight - target_rectangle.top) + margin,
+                marginRight: 10,
             };
             case 'bottom': return {
                 left     : (target_rectangle.width / 2) + target_rectangle.left,
@@ -72,7 +78,7 @@ class PopoverBubble extends React.PureComponent {
                 { is_open &&
                 <FadeIn key='fade_in' initialPose='exit' style={{ position: 'fixed', zIndex: 999 }}>
                     <span
-                        style={ target_rectangle ? this.calculatePosition() : {}}
+                        style={ target_rectangle ? this.calculateBubblePosition() : {}}
                         data-popover-pos={alignment}
                         className={classNames(
                             className,
@@ -90,7 +96,7 @@ class PopoverBubble extends React.PureComponent {
                         <span className='dc-popover__bubble__text'>
                             { message }
                         </span>
-                        <span className='dc-popover__bubble__arrow' />
+                        <span style={{ left: ((target_rectangle.width / 2) + target_rectangle.left) - (window.innerWidth - 280) }} className='dc-popover__bubble__arrow' />
                     </span>
                 </FadeIn>
                 }

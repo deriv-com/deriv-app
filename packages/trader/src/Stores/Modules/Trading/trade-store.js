@@ -36,7 +36,8 @@ import {
     getProposalInfo }                 from './Helpers/proposal';
 import { isBarrierSupported }         from '../SmartChart/Helpers/barriers';
 import { ChartBarrierStore }          from '../SmartChart/chart-barrier-store';
-import { BARRIER_COLORS }             from '../SmartChart/Constants/barriers';
+import { BARRIER_COLORS,
+    BARRIER_LINE_STYLES }             from '../SmartChart/Constants/barriers';
 import BaseStore                      from '../../base-store';
 
 const store_name = 'trade_store';
@@ -84,6 +85,7 @@ export default class TradeStore extends BaseStore {
     @observable barrier_2     = '';
     @observable barrier_count = 0;
     @observable main_barrier  = null;
+    @observable barriers = [];
 
     // Start Time
     @observable start_date       = Number(0); // Number(0) refers to 'now'
@@ -345,8 +347,22 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onHoverPurchase(is_over, contract_type) {
-        if (this.is_purchase_enabled && this.main_barrier) {
+        if (this.is_purchase_enabled && this.main_barrier && !this.is_multiplier) {
             this.main_barrier.updateBarrierShade(is_over, contract_type);
+        }
+        this.hovered_contract_type = is_over ? contract_type : null;
+        this.setBarriers(is_over ? this.proposal_info[contract_type] || {} : {});
+    }
+
+    @action.bound
+    onHoverPositionDrawerCard(is_over, position){
+        if (!this.is_multiplier) {
+            return;
+        }
+        this.setBarriers(is_over ? position.contract_info || {} : {});
+        this.hovered_position_id = is_over ? position.id : null;
+        if (this.main_barrier) {
+            this.main_barrier.updateBarrierShade(is_over, position.contract_info.contract_type);
         }
     }
 
@@ -374,6 +390,46 @@ export default class TradeStore extends BaseStore {
             // this.main_barrier.updateBarrierShade(true, contract_type);
         } else { this.main_barrier = null; }
     }
+
+    @computed
+    get barriers_flattened(){
+        return this.barriers && toJS(this.barriers);
+    }
+
+    setBarriers = (proposal) => {
+        const barriers = [];
+
+        if (this.is_multiplier && proposal.limit_order) {
+            Object.keys(proposal.limit_order).forEach((key)=>{
+                const obj_order = proposal.limit_order[key];
+
+                const barrier = new ChartBarrierStore(
+                    obj_order.value
+                );
+                barrier.titleTag = {
+                    label : `${obj_order.display_name}: `,
+                    amount: CurrencyUtils.formatMoney(this.currency, obj_order.order_amount, true),
+                };
+                barrier.color = key === 'take_profit' ? BARRIER_COLORS.GREEN : BARRIER_COLORS.RED;
+                barrier.currency = this.currency;
+                barrier.draggable = false;
+                barrier.lineStyle = key === 'stop_out' ? BARRIER_LINE_STYLES.DOTTED : BARRIER_LINE_STYLES.SOLID;
+                barrier.hideOffscreenLines = true;
+                barriers.push(barrier);
+            });
+
+            if (proposal.current_spot || proposal.entry_spot){
+                const main_barrier = new ChartBarrierStore(
+                    Math.max(proposal.current_spot, proposal.entry_spot),
+                    Math.min(proposal.current_spot, proposal.entry_spot),
+                );
+                main_barrier.hidePriceLines = true;
+                this.main_barrier = main_barrier;
+            }
+        }
+
+        this.barriers = barriers;
+    };
 
     @action.bound
     onPurchase(proposal_id, price, type) {
@@ -624,7 +680,13 @@ export default class TradeStore extends BaseStore {
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
         };
 
-        this.setMainBarrier(response.echo_req);
+        if (this.hovered_contract_type === contract_type) {
+            this.setBarriers(this.proposal_info[this.hovered_contract_type] || {});
+        }
+
+        if (!this.is_multiplier){
+            this.setMainBarrier(response.echo_req);
+        }
 
         if (response.error) {
             const error_id = getProposalErrorField(response);

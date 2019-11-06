@@ -47,6 +47,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
         has_error        : !!response.error,
         has_error_details: !!getProposalErrorField(response),
         has_increased,
+        limit_order      : proposal.limit_order,
         message          : proposal.longcode || response.error.message,
         obj_contract_basis,
         payout           : proposal.payout,
@@ -85,7 +86,7 @@ const setProposalMultiplier = (store, obj_multiplier)=>{
         obj_multiplier.limit_order.take_profit = store.take_profit;
     }
 
-    if (store.stop_loss > 0 && store.has_stop_loss) {
+    if (store.stop_loss < 0 && store.has_stop_loss) {
         obj_multiplier.limit_order.stop_loss = store.stop_loss;
     }
 };

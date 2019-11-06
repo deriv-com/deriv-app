@@ -34,6 +34,7 @@ class PositionsDrawer extends React.Component {
             onClickRemove,
             toggleDrawer,
             toggleUnsupportedContractModal,
+            onHoverPositionDrawerCard,
         } = this.props;
 
         // Show only 5 most recent open contracts
@@ -61,6 +62,12 @@ class PositionsDrawer extends React.Component {
                                 // onChange={onChange}
                                 // update_take_profit={update_take_profit}
                                 // update_stop_loss={update_stop_loss}
+                                onMouseEnter={() => {
+                                    onHoverPositionDrawerCard(true, portfolio_position);
+                                }}
+                                onMouseLeave={() => {
+                                    onHoverPositionDrawerCard(false, portfolio_position);
+                                }}
                                 key={portfolio_position.id}
                                 currency={currency}
                                 toggleUnsupportedContractModal={toggleUnsupportedContractModal}
@@ -144,6 +151,7 @@ export default connect(
         onClickRemove                 : modules.portfolio.removePositionById,
         onMount                       : modules.portfolio.onMount,
         onUnmount                     : modules.portfolio.onUnmount,
+        onHoverPositionDrawerCard     : modules.trade.onHoverPositionDrawerCard,
         is_dark_theme                 : ui.is_dark_mode_on,
         is_positions_drawer_on        : ui.is_positions_drawer_on,
         toggleDrawer                  : ui.togglePositionsDrawer,

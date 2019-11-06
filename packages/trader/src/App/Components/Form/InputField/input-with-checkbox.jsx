@@ -38,7 +38,7 @@ const InputWithCheckbox = ({
             is_float
             is_hj_whitelisted
             is_incrementable
-            is_negative_disabled
+            is_negative_disabled={name === 'take_profit'}
             max_length={10}
             name={name}
             onChange={onChange}

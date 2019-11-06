@@ -38,6 +38,8 @@ const PositionsDrawerCard = ({
     status,
     toggleUnsupportedContractModal,
     type,
+    onMouseEnter,
+    onMouseLeave,
 }) => {
     const loader_el = (
         <div className='positions-drawer-card__content-loader'>
@@ -222,6 +224,12 @@ const PositionsDrawerCard = ({
         <div
             id={`dt_drawer_card_${id}`}
             className={classNames('positions-drawer-card__wrapper', className)}
+            onMouseEnter={() => {
+                onMouseEnter(true, contract_info);
+            }}
+            onMouseLeave={() => {
+                onMouseLeave(false, contract_info);
+            }}
         >
             <ResultOverlay
                 contract_id={id}

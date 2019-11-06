@@ -3,12 +3,13 @@ import { str as crc32 }     from 'crc-32';
 import i18n                 from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import en                   from '../translations/en.json';
-import fr                   from '../translations/fr.json';
+// TODO: import the rest of the language json files when they are ready
+// import fr                   from '../translations/fr.json';
 
 const i18n_config = {
     resources: {
         EN: { translation: { ...en } },
-        FR: { translation: { ...fr } },
+        // FR: { translation: { ...fr } },
     },
     react: {
         hashTransKey(defaultValue) {

@@ -48,7 +48,7 @@ export const readFiles = (files) => {
                     message: localize('Unable to read file [_1]', f.name),
                 });
             };
-
+            // Reading file
             fr.readAsArrayBuffer(f);
         });
 

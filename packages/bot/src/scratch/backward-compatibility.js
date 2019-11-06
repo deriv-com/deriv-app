@@ -1,14 +1,36 @@
 import config        from '../constants';
 import { translate } from '../utils/lang/i18n';
 import ApiHelpers    from '../services/api/api-helpers';
+import ScratchStore from '../stores/scratch-store';
 
 /* eslint-disable no-underscore-dangle */
 export default class BlockConversion {
     constructor() {
         this.blocks_pending_reconnect = {};
-        this.conversions              = this.getConversions();
         this.workspace                = this.createWorkspace();
         this.workspace_variables      = {};
+    }
+
+    getIllegalBlocks() {
+        const illegal_blocks = [];
+
+        // Legacy symbol + trade_type blocks are special cases, they are turned into multiple blocks.
+        // We don't convert these atm, as a workaround users can import to BBot, then export and load
+        // into DBot.
+        const { active_symbols } = ApiHelpers.instance.active_symbols;
+        const { opposites }      = config;
+
+        active_symbols.forEach(active_symbol => {
+            const symbol_name = active_symbol.symbol.toLowerCase();
+            if (!illegal_blocks.includes(symbol_name)) {
+                illegal_blocks.push(symbol_name);
+            }
+        });
+
+        // All trade types blocks cannot be converted at this time.
+        Object.keys(opposites).forEach(opposites_name => illegal_blocks.push(opposites_name));
+
+        return illegal_blocks;
     }
 
     getConversions() {
@@ -159,13 +181,7 @@ export default class BlockConversion {
             // Legacy symbol blocks used a statement "CONDITION" populated with a trade type block.
             // This trade type block has the same structure as tradeOptions, hence we can use it here.
             if (is_symbol_type) {
-                block_node.setAttribute('type', 'tradeOptions');
-
-                const el_condition_children = block_node.firstElementChild.firstElementChild.children;
-                const el_statement          = block_node.firstElementChild;
-
-                Array.from(el_condition_children).forEach(el_condition_child => block_node.appendChild(el_condition_child));
-                el_statement.parentNode.removeChild(el_statement);
+                return false;
             }
 
             const fields            = ['DURATIONTYPE_LIST', 'CURRENCY_LIST', 'BARRIEROFFSETTYPE_LIST', 'SECONDBARRIEROFFSETTYPE_LIST'];
@@ -206,7 +222,6 @@ export default class BlockConversion {
             
             return { block_to_attach: block };
         };
-
         const conversions = {
             bb               : (block_node) => generateIndicatorBlock(block_node, 'bb_statement', 'bb'),
             bba              : (block_node) => generateIndicatorBlock(block_node, 'bba_statement', 'bba'),
@@ -270,26 +285,6 @@ export default class BlockConversion {
             },
             tradeOptions,
         };
-
-        // Convert legacy symbol blocks
-        // e.g. <block type="r_100">
-        const { active_symbols } = ApiHelpers.instance.active_symbols;
-
-        active_symbols.forEach(active_symbol => {
-            const symbol_name = active_symbol.symbol.toLowerCase();
-
-            if (!conversions[symbol_name]) {
-                conversions[symbol_name] = (block_node) => conversions.tradeOptions(block_node, true);
-            }
-        });
-
-        // Convert legacy trade type blocks
-        // e.g. <block type="risefall">
-        const { opposites } = config;
-
-        Object.keys(opposites).forEach(opposites_name => {
-            conversions[opposites_name] = (block_node) => conversions.tradeOptions(block_node);
-        });
 
         return conversions;
     }
@@ -396,6 +391,16 @@ export default class BlockConversion {
             return xml;
         }
 
+        const has_illegal_block = this.getIllegalBlocks().some(illegal_block_type =>
+            !!xml.querySelector(`block[type=${illegal_block_type}]`)
+        );
+
+        if (has_illegal_block) {
+            ScratchStore.instance.root_store.run_panel.showIncompatibleStrategyDialog();
+            Blockly.Events.enable();
+            return Blockly.Xml.textToDom('<xml />');
+        }
+
         const variable_nodes = [];
         const block_nodes    = [];
 
@@ -499,8 +504,9 @@ export default class BlockConversion {
     }
 
     convertBlockNode(el_block, parent_block = null) {
+        const conversions  = this.getConversions();
         const block_type   = el_block.getAttribute('type');
-        const is_old_block = Object.keys(this.conversions).includes(block_type);
+        const is_old_block = Object.keys(conversions).includes(block_type);
         let block          = null;
 
         const is_collapsed   = el_block.getAttribute('collapsed') && el_block.getAttribute('collapsed') === 'true';
@@ -524,7 +530,7 @@ export default class BlockConversion {
         };
 
         if (is_old_block) {
-            const conversion_obj = this.conversions[block_type](el_block);
+            const conversion_obj = conversions[block_type](el_block);
 
             // block is a value block that needs to be reattached. TODO?
             if (conversion_obj.block_to_attach) {
@@ -627,6 +633,15 @@ export default class BlockConversion {
                         });
                     }
                     break;
+                }
+                case ('comment'): {
+                    const is_minimised = el_block_child.getAttribute('pinned') !== 'true';
+                    const comment_text = el_block_child.innerText;
+                    
+                    block.setCommentText(comment_text);
+                    block.comment.iconXY_ = { x: 0, y: 0 };
+                    block.comment.setVisible(true);
+                    block.comment.setMinimized(is_minimised);
                 }
                 default:
                     break;

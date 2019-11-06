@@ -36,6 +36,9 @@ export default class BaseStore {
     logoutDisposer = null;
     logout_listener = null;
 
+    clientInitDisposer = null;
+    client_init_listener = null;
+
     @observable partial_fetch_time = 0;
 
     /**
@@ -336,6 +339,33 @@ export default class BaseStore {
     }
 
     @action.bound
+    onClientInit(listener) {
+        this.clientInitDisposer = when(
+            () => this.root_store.client.initialized_broadcast,
+            async () => {
+                try {
+                    const result = this.client_init_listener();
+                    if (result && result.then && typeof result.then === 'function') {
+                        result.then(() => {
+                            this.root_store.client.setInitialized(false);
+                            this.onClientInit(this.client_init_listener);
+                        });
+                    } else {
+                        throw new Error('Logout listeners are required to return a promise.');
+                    }
+                } catch (error) {
+                    // there is no listener currently active. so we can just ignore the error raised from treating
+                    // a null object as a function. Although, in development mode, we throw a console error.
+                    if (!isProduction()) {
+                        console.error(error); // eslint-disable-line
+                    }
+                }
+            },
+        );
+        this.client_init_listener = listener;
+    }
+
+    @action.bound
     disposeSwitchAccount() {
         if (typeof this.switchAccountDisposer === 'function') {
             this.switchAccountDisposer();
@@ -352,9 +382,18 @@ export default class BaseStore {
     }
 
     @action.bound
+    disposeClientInit() {
+        if (typeof this.clientInitDisposer === 'function') {
+            this.clientInitDisposer();
+        }
+        this.client_init_listener = null;
+    }
+
+    @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
         this.disposeLogout();
+        this.disposeClientInit();
     }
 
     @action.bound

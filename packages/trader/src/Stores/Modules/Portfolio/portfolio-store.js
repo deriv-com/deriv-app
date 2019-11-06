@@ -266,8 +266,15 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
+    logoutListener() {
+        this.clearTable();
+        return Promise.resolve();
+    }
+
+    @action.bound
     onMount() {
-        this.onSwitchAccount(this.accountSwitcherListener.bind(null));
+        this.onSwitchAccount(this.accountSwitcherListener);
+        this.onLogout(this.logoutListener);
         if (this.positions.length === 0) {
             // TODO: Optimise the way is_logged_in changes are detected for "logging in" and "already logged on" states
             if (this.root_store.client.is_logged_in) {
@@ -285,6 +292,7 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
+        this.disposeLogout();
         // keep data and connections for portfolio drawer on desktop
         if (this.root_store.ui.is_mobile) {
             // this.clearTable();

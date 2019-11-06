@@ -446,7 +446,7 @@ export default class TradeStore extends BaseStore {
         [].forEach.bind(el_purchase_value, (el) => {
             el.classList.add('trade-container__price-info--fade');
         })();
-    }
+    };
 
     /**
      * Updates the store with new values
@@ -698,6 +698,12 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    clientInitListener() {
+        this.initAccountCurrency(this.root_store.client.currency);
+        return Promise.resolve();
+    }
+
+    @action.bound
     resetErrorServices() {
         this.root_store.ui.toggleServicesErrorModal(false);
     }
@@ -706,6 +712,7 @@ export default class TradeStore extends BaseStore {
     onMount() {
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onLogout(this.logoutListener);
+        this.onClientInit(this.clientInitListener);
         this.setChartStatus(true);
         runInAction(async() => {
             this.is_trade_component_mounted = true;
@@ -748,6 +755,7 @@ export default class TradeStore extends BaseStore {
     onUnmount() {
         this.disposeSwitchAccount();
         this.disposeLogout();
+        this.disposeClientInit();
         this.is_trade_component_mounted = false;
         // TODO: Find a more elegant solution to unmount contract-trade-store
         this.root_store.modules.contract_trade.onUnmount();

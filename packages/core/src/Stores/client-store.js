@@ -5,8 +5,7 @@ import {
     observable,
     runInAction,
     when,
-    reaction,
-}                                    from 'mobx';
+    reaction }                       from 'mobx';
 import CurrencyUtils                 from 'deriv-shared/utils/currency';
 import ObjectUtils                   from 'deriv-shared/utils/object';
 import {
@@ -19,7 +18,7 @@ import { localize }                  from 'App/i18n';
 import {
     LocalStore,
     State }                          from '_common/storage';
-import BinarySocketGeneral           from 'Services/socket-general';
+import BinarySocketGeneral          from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore                     from './base-store';
 import { getClientAccountType }      from './Helpers/client';
@@ -34,6 +33,7 @@ export default class ClientStore extends BaseStore {
     @observable accounts                       = {};
     @observable switched                       = '';
     @observable switch_broadcast               = false;
+    @observable initialized_broadcast          = false;
     @observable currencies_list                = {};
     @observable residence_list                 = [];
     @observable states_list                    = [];
@@ -470,8 +470,7 @@ export default class ClientStore extends BaseStore {
                 this.selectCurrency(currency);
                 this.root_store.ui.removeNotificationMessage({ key: 'currency' });
                 this.root_store.ui.removeNotificationByKey({ key: 'currency' });
-                // Refresh trade-store currency and proposal before requesting new proposal upon login
-                // await this.root_store.modules.trade.initAccountCurrency(currency);
+                await this.init();
                 resolve(response);
             } else {
                 reject(response.error.message);
@@ -617,13 +616,6 @@ export default class ClientStore extends BaseStore {
             }
         );
 
-        // TODO: set all currency references to be used only from client-store,
-        // removing the need for reinitializing below
-        if (client && !client.is_virtual) {
-            if (this.currency && (this.currency.length > 0)) {
-                // this.root_store.modules.trade.initAccountCurrency(this.currency);
-            }
-        }
         this.selectCurrency('');
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
@@ -640,6 +632,7 @@ export default class ClientStore extends BaseStore {
         this.responseWebsiteStatus(await WS.storage.websiteStatus());
 
         this.registerReactions();
+        this.setInitialized(true);
     }
 
     @action.bound
@@ -749,7 +742,6 @@ export default class ClientStore extends BaseStore {
                 return;
             }
 
-            // this.root_store.modules.portfolio.clearTable();
             // Send a toast message to let the user know we can't switch his account.
             this.root_store.ui.addNotificationMessage({
                 message: localize('Switching to default account.'),
@@ -762,7 +754,6 @@ export default class ClientStore extends BaseStore {
             return;
         }
 
-        // this.root_store.modules.trade.proposal_info = {};
         sessionStorage.setItem('active_tab', '1');
         // set local storage
         this.root_store.gtm.setLoginFlag();
@@ -826,6 +817,11 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setAccountStatus(status) {
         this.account_status = status;
+    }
+
+    @action.bound
+    setInitialized(is_initialized) {
+        this.initialized_broadcast = is_initialized;
     }
 
     @action.bound
@@ -1014,9 +1010,6 @@ export default class ClientStore extends BaseStore {
             curr1 : currency,
         };
         await this.init(new_user_login);
-
-        // Refresh trade-store currency and proposal before requesting new proposal upon login
-        // this.root_store.modules.trade.initAccountCurrency(currency);
     }
 
     @action.bound

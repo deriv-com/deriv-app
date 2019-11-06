@@ -34,23 +34,27 @@ export const readFiles = (files) => {
         const promise = new Promise((resolve) => {
             fr.onload = () => {
                 const file_obj    = {
-                    filename      : f.file.name,
+                    filename      : isImageType(f.type) ? f.file.name : f.name,
                     buffer        : fr.result,
                     documentType  : 'proofaddress',
                     documentFormat: getFormatFromMIME(f),
-                    file_size     : f.file.size,
+                    file_size     : isImageType(f.type) ? f.file.size : f.size,
                 };
                 resolve(file_obj);
             };
 
             fr.onerror = () => {
                 resolve({
-                    message: localize('Unable to read file [_1]', f.file.name),
-                    class  : f.class,
+                    message: localize('Unable to read file [_1]', isImageType(f.type) ? f.file.name : f.name),
                 });
             };
-            // Reading file.
-            fr.readAsArrayBuffer(f.file);
+
+            if (isImageType(f.type)) {
+                fr.readAsArrayBuffer(f.file);
+            } else {
+                fr.readAsArrayBuffer(f);
+            }
+
         });
 
         promises.push(promise);

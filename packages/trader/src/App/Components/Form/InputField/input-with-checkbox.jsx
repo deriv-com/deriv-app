@@ -9,6 +9,7 @@ const InputWithCheckbox = ({
     classNameInput,
     className,
     currency,
+    error_messages,
     is_single_currency,
     is_negative_disabled = true,
     label,
@@ -31,6 +32,7 @@ const InputWithCheckbox = ({
             classNameInlinePrefix={classNameInlinePrefix}
             classNameInput={classNameInput}
             currency={currency}
+            error_messages={error_messages}
             is_disabled={disabled ? 'disabled' : undefined}
             fractional_digits={CurrencyUtils.getDecimalPlaces(currency)}
             id={`dt_${name}_input`}

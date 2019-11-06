@@ -7,7 +7,7 @@ import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbo
 import { localize }      from 'App/i18n';
 import { connect }       from 'Stores/connect';
 
-class PositionsDrawerDialog extends React.PureComponent {
+class PositionsDrawerDialog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -44,6 +44,7 @@ class PositionsDrawerDialog extends React.PureComponent {
             has_update_take_profit,
             update_take_profit,
             update_stop_loss,
+            validation_errors,
         } = this.props;
 
         const dialog = (
@@ -71,6 +72,7 @@ class PositionsDrawerDialog extends React.PureComponent {
                             name='update_take_profit'
                             label={localize('Take profit')}
                             onChange={onChange}
+                            error_messages={validation_errors.update_take_profit}
                         />
                     </div>
                     <div className='positions-drawer-dialog__input'>
@@ -79,6 +81,7 @@ class PositionsDrawerDialog extends React.PureComponent {
                             name='update_stop_loss'
                             label={localize('Stop loss')}
                             onChange={onChange}
+                            error_messages={validation_errors.update_stop_loss}
                         />
                     </div>
                     <div className='positions-drawer-dialog__button'>
@@ -86,7 +89,7 @@ class PositionsDrawerDialog extends React.PureComponent {
                             text={localize('Apply')}
                             onClick={onClick}
                             primary
-                            is_disabled={!((has_update_stop_loss && update_stop_loss < 0)
+                            is_disabled={!((has_update_stop_loss && update_stop_loss > 0)
                                 || (has_update_take_profit && update_take_profit > 0))
                             }
                         />
@@ -120,6 +123,7 @@ PositionsDrawerDialog.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
+    validation_errors: PropTypes.object,
 };
 
 export default connect(
@@ -129,5 +133,6 @@ export default connect(
         has_update_take_profit: modules.trade.has_update_take_profit,
         update_stop_loss      : modules.trade.update_stop_loss,
         update_take_profit    : modules.trade.update_take_profit,
+        validation_errors     : modules.trade.validation_errors,
     })
 )(PositionsDrawerDialog);

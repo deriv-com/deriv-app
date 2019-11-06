@@ -6,6 +6,7 @@ import LimitOrderInput from './limit-order-input.jsx';
 
 const StopLoss = ({
     currency,
+    has_stop_loss,
     is_single_currency,
     onChange,
     stop_loss,
@@ -14,6 +15,7 @@ const StopLoss = ({
     return (
         <LimitOrderInput
             currency={currency}
+            error_messages={has_stop_loss ? validation_errors.stop_loss : undefined}
             is_single_currency={is_single_currency}
             label={localize('Stop loss')}
             name='stop_loss'
@@ -27,6 +29,7 @@ const StopLoss = ({
 
 StopLoss.propTypes = {
     currency          : PropTypes.string,
+    has_stop_loss     : PropTypes.bool,
     is_single_currency: PropTypes.bool,
     onChange          : PropTypes.func,
     stop_loss         : PropTypes.oneOfType([
@@ -37,8 +40,9 @@ StopLoss.propTypes = {
 };
 
 export default connect(({ modules, client }) => ({
-    currency          : modules.trade.currency,
     is_single_currency: client.is_single_currency,
+    currency          : modules.trade.currency,
+    has_stop_loss     : modules.trade.has_stop_loss,
     onChange          : modules.trade.onChange,
     stop_loss         : modules.trade.stop_loss,
     validation_errors : modules.trade.validation_errors,

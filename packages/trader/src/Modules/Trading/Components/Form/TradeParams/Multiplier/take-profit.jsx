@@ -6,6 +6,7 @@ import LimitOrderInput from './limit-order-input.jsx';
 
 const TakeProfit = ({
     currency,
+    has_take_profit,
     is_single_currency,
     onChange,
     take_profit,
@@ -14,6 +15,7 @@ const TakeProfit = ({
     return (
         <LimitOrderInput
             currency={currency}
+            error_messages={has_take_profit ? validation_errors.take_profit : undefined}
             is_single_currency={is_single_currency}
             label={localize('Take profit')}
             name='take_profit'
@@ -27,6 +29,7 @@ const TakeProfit = ({
 
 TakeProfit.propTypes = {
     currency          : PropTypes.string,
+    has_take_profit   : PropTypes.bool,
     is_single_currency: PropTypes.bool,
     onChange          : PropTypes.func,
     take_profit       : PropTypes.oneOfType([
@@ -37,8 +40,9 @@ TakeProfit.propTypes = {
 };
 
 export default connect(({ modules, client }) => ({
-    currency          : modules.trade.currency,
     is_single_currency: client.is_single_currency,
+    currency          : modules.trade.currency,
+    has_take_profit   : modules.trade.has_take_profit,
     onChange          : modules.trade.onChange,
     take_profit       : modules.trade.take_profit,
     validation_errors : modules.trade.validation_errors,

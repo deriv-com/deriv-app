@@ -206,10 +206,21 @@ export default class PortfolioStore extends BaseStore {
             update_take_profit,
         } = this.root_store.modules.trade;
 
-        const limit_order = {
-            take_profit: has_update_take_profit ? update_take_profit : undefined,
-            stop_loss  : has_update_stop_loss ? update_stop_loss : undefined,
-        };
+        const has_limit_order = update_take_profit > 0 || update_stop_loss > 0;
+
+        if (!has_limit_order) {
+            return;
+        }
+
+        const limit_order = {};
+
+        if (update_take_profit > 0 && has_update_take_profit) {
+            limit_order.take_profit = +update_take_profit;
+        }
+
+        if (update_stop_loss > 0 && has_update_stop_loss) {
+            limit_order.stop_loss = -update_stop_loss;
+        }
 
         WS.contractUpdate(contract_id, limit_order);
     }

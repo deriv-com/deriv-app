@@ -6,11 +6,11 @@ import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbo
 
 const LimitOrderInput = ({
     currency,
+    error_messages,
     is_single_currency,
     label,
     name,
     onChange,
-    validation_errors,
     value,
 }) => {
     return (
@@ -20,13 +20,13 @@ const LimitOrderInput = ({
                 classNameInlinePrefix='trade-container__currency'
                 classNameInput='trade-container__input'
                 currency={currency}
+                error_messages={error_messages}
                 is_single_currency={is_single_currency}
-                is_negative_disabled={name === 'take_profit'}
+                is_negative_disabled={true}
                 label={label}
                 name={name}
                 onChange={onChange}
                 tooltip_label={localize('Close the deal when my loss reaches this amount.')}
-                validation_errors={validation_errors}
                 value={value}
             />
         </Fieldset>

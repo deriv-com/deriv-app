@@ -8,6 +8,7 @@ import {
     MAX_TABLET_WIDTH }       from 'Constants/ui';
 import ObjectUtils           from 'deriv-shared/utils/object';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
+import { LocalStore }        from '_common/storage';
 import {
     clientNotifications,
     excluded_notifications } from './Helpers/client-notifications';
@@ -360,6 +361,17 @@ export default class UIStore extends BaseStore {
             if (!excluded_notifications.includes(notification.key)) {
                 this.updateNotifications(this.notification_messages);
             }
+            // Remove notification messages if it was already closed by user and exists in LocalStore
+            const active_loginid = LocalStore.get('active_loginid');
+            const messages       = LocalStore.getObject('notification_messages');
+            if (active_loginid && !ObjectUtils.isEmptyObject(messages)) {
+                const current_message     = { key: notification.key, loginid: active_loginid };
+                const is_existing_message = Object.keys(messages).some(
+                    k => ObjectUtils.isEqualObject(messages[k], current_message));
+                if (is_existing_message) {
+                    this.removeNotificationMessage({ key: notification.key });
+                }
+            }
         }
     }
 
@@ -367,6 +379,20 @@ export default class UIStore extends BaseStore {
     removeNotificationMessage({ key }) {
         this.notification_messages = this.notification_messages
             .filter(n => n.key !== key);
+        // Add notification messages to LocalStore when user closes, check for redundancy
+        const active_loginid = LocalStore.get('active_loginid');
+        if (!excluded_notifications.includes(key) && active_loginid) {
+            const current_message = { loginid: active_loginid, key };
+            let messages = [];
+            if (!ObjectUtils.isEmptyObject(LocalStore.getObject('notification_messages'))) {
+                messages = LocalStore.getObject('notification_messages');
+                const is_existing_message = Object.keys(messages).some(
+                    k => ObjectUtils.isEqualObject(messages[k], current_message));
+                if (is_existing_message) return;
+            }
+            messages.push(current_message);
+            LocalStore.setObject('notification_messages', messages);
+        }
     }
 
     @action.bound

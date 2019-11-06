@@ -156,7 +156,7 @@ export const clientNotifications = (ui = {}) => {
             message: (
                 <Localize
                     i18n_default_text='Please accept our <0>updated Terms and Conditions</0> to proceed.'
-                    components={[ <a key={0} className='link' rel='noopener' target='_blank' href='https://www.deriv.com/terms-and-conditions/' /> ]}
+                    components={[ <a key={0} className='link' rel='noopener' target='_blank' href='https://www.deriv.com/terms-and-conditions/#general' /> ]}
                 />
             ),
             type: 'warning',

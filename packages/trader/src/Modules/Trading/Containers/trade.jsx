@@ -186,9 +186,12 @@ class ChartTradeClass extends React.Component {
             main_barrier,
             should_refresh,
             resetRefresh,
+            extra_barriers = [],
+            is_multiplier
         } = this.props;
 
-        const barriers = main_barrier ? [main_barrier] : [];
+        const barriers =  main_barrier ? [main_barrier,...extra_barriers] : extra_barriers;
+
         // smartcharts only way to refresh active-symbols is to reset the connection.
         const is_socket_opened = this.props.is_socket_opened && !should_refresh;
 
@@ -223,7 +226,7 @@ class ChartTradeClass extends React.Component {
                 onExportLayout={this.props.exportLayout}
                 shouldFetchTradingTimes={!this.props.end_epoch}
             >
-                <ChartMarkers />
+                { !is_multiplier && <ChartMarkers /> }
             </SmartChart>
         );
     }
@@ -233,6 +236,7 @@ const ChartTrade = connect(
     ({ modules, ui, common }) => ({
         is_mobile        : ui.is_mobile,
         is_socket_opened : common.is_socket_opened,
+        is_multiplier    : modules.trade.is_multiplier,
         updateChartType  : modules.contract_trade.updateChartType,
         updateGranularity: modules.contract_trade.updateGranularity,
         granularity      : modules.contract_trade.granularity,
@@ -250,6 +254,7 @@ const ChartTrade = connect(
             is_ended         : modules.contract_trade.last_contract.is_ended,
         },
         main_barrier     : modules.trade.main_barrier_flattened,
+        extra_barriers   : modules.trade.barriers_flattened,
         show_digits_stats: modules.trade.show_digits_stats,
         contract_type    : modules.trade.contract_type,
         symbol           : modules.trade.symbol,

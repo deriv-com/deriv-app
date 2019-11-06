@@ -117,6 +117,22 @@ export default class PortfolioStore extends BaseStore {
         contract_trade.updateProposal(this.deepClone(response));
     }
 
+    updateTradeStore(portfolio_position) {
+        const trade = this.root_store.modules.trade;
+        if (trade.is_multiplier && trade.hovered_position_id === portfolio_position.id && trade.main_barrier){
+            trade.main_barrier.onBarrierChange({
+                high: Math.max(
+                    portfolio_position.contract_info.current_spot,
+                    portfolio_position.contract_info.entry_spot
+                ),
+                low: Math.min(
+                    portfolio_position.contract_info.current_spot,
+                    portfolio_position.contract_info.entry_spot
+                ),
+            });
+        }
+    }
+
     @action.bound
     proposalOpenContractHandler(response) {
         if ('error' in response) {
@@ -167,6 +183,8 @@ export default class PortfolioStore extends BaseStore {
         } else {
             portfolio_position.status = null;
         }
+
+        this.updateTradeStore(portfolio_position);
     }
 
     @action.bound

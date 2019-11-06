@@ -21,6 +21,7 @@ const LimitOrderInput = ({
                 classNameInput='trade-container__input'
                 currency={currency}
                 is_single_currency={is_single_currency}
+                is_negative_disabled={name === 'take_profit'}
                 label={label}
                 name={name}
                 onChange={onChange}

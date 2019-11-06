@@ -45,6 +45,10 @@ Blockly.Blocks.loader = {
                     this.setDisabled(true);
                 }
             });
+
+            if (!this.disabled) {
+                this.loadBlocksFromCurrentUrl();
+            }
         } else if (event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === this.id) {
             if (event.newValue && event.oldValue !== event.newValue) {
                 if (event.newValue === this.current_url) {

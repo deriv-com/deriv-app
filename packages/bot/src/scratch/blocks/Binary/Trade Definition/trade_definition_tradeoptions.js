@@ -59,13 +59,16 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         }
 
         const trade_definition_block = this.workspace.getAllBlocks(true).find(block => block.type === 'trade_definition');
-
         if (!trade_definition_block) {
             return;
         }
 
-        const market_block                = trade_definition_block.getChildByType('trade_definition_market');
-        const trade_type_block            = trade_definition_block.getChildByType('trade_definition_tradetype');
+        const market_block     = trade_definition_block.getChildByType('trade_definition_market');
+        const trade_type_block = trade_definition_block.getChildByType('trade_definition_tradetype');
+        if (!market_block || !trade_type_block) {
+            return;
+        }
+
         this.selected_symbol              = market_block.getFieldValue('SYMBOL_LIST');
         this.selected_trade_type_category = trade_type_block.getFieldValue('TRADETYPECAT_LIST');
         this.selected_trade_type          = trade_type_block.getFieldValue('TRADETYPE_LIST');

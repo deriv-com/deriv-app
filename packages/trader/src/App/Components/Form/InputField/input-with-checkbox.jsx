@@ -10,6 +10,7 @@ const InputWithCheckbox = ({
     className,
     currency,
     is_single_currency,
+    is_negative_disabled = true,
     label,
     name,
     onChange,
@@ -38,7 +39,7 @@ const InputWithCheckbox = ({
             is_float
             is_hj_whitelisted
             is_incrementable
-            is_negative_disabled={name === 'take_profit'}
+            is_negative_disabled={is_negative_disabled}
             max_length={10}
             name={name}
             onChange={onChange}
@@ -74,12 +75,14 @@ const InputWithCheckbox = ({
 };
 
 InputWithCheckbox.propTypes = {
-    currency          : PropTypes.string,
-    is_single_currency: PropTypes.bool,
-    name              : PropTypes.string,
-    onChange          : PropTypes.func,
-    tooltip_label     : PropTypes.string,
-    value             : PropTypes.oneOfType([
+    currency            : PropTypes.string,
+    is_negative_disabled: PropTypes.bool,
+    is_single_currency  : PropTypes.bool,
+    max_value           : PropTypes.number,
+    name                : PropTypes.string,
+    onChange            : PropTypes.func,
+    tooltip_label       : PropTypes.string,
+    value               : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),

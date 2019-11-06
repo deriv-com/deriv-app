@@ -424,7 +424,7 @@
 /** @define account-transfer */
 .account-transfer {
     &__notes {
-        color: var(--text-less-prominent);
+        color: var(--text-general);
         margin-top: calc(3.2rem + 1.7rem); // + height of hint/error
         font-size: 1.2rem;
         line-height: 1.5;

@@ -118,7 +118,7 @@ class PaymentAgentTransferForm extends React.Component {
                                             error={ touched.amount && errors.amount }
                                             required
                                             leading_icon={
-                                                <span className={classNames('cashier__amount-symbol', 'symbols', `symbols--${(this.props.currency || '').toLowerCase()}`)} />
+                                                <span className={classNames('symbols', `symbols--${(this.props.currency || '').toLowerCase()}`)} />
                                             }
                                             autoComplete='off'
                                             maxLength='30'

@@ -162,7 +162,7 @@ class AccountTransferForm extends React.Component {
                                                         required
                                                         leading_icon={
                                                             this.props.selected_from.currency ?
-                                                                <span className={classNames('cashier__amount-symbol', 'symbols', `symbols--${this.props.selected_from.currency.toLowerCase()}`)} />
+                                                                <span className={classNames('symbols', `symbols--${this.props.selected_from.currency.toLowerCase()}`)} />
                                                                 : undefined
                                                         }
                                                         autoComplete='off'

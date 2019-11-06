@@ -99,7 +99,11 @@ class PersonalDetailsForm extends React.Component {
         request.date_of_birth             = toMoment(request.date_of_birth).format('YYYY-MM-DD');
         request.citizen                   = request.citizen ? getLocation(this.props.residence_list, request.citizen, 'value') : '';
         request.place_of_birth            = request.place_of_birth ? getLocation(this.props.residence_list, request.place_of_birth, 'value') : '';
-        request.address_state             = request.address_state ? getLocation(this.props.states_list, request.address_state, 'value') : '';
+
+        if (request.address_state) {
+            request.address_state = this.props.states_list.length ?
+                getLocation(this.props.states_list, request.address_state, 'value') : request.address_state;
+        }
 
         return request;
     };
@@ -123,7 +127,7 @@ class PersonalDetailsForm extends React.Component {
             'address_postcode',
         ];
         validateValues(val => val, required_fields, localize('This field is required'));
-        const only_alphabet_fields = ['first_name', 'last_name'];
+        const only_alphabet_fields = ['first_name', 'last_name', 'address_state'];
         validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
 
         const { residence_list } = this.props;
@@ -173,10 +177,16 @@ class PersonalDetailsForm extends React.Component {
             errors.address_line_2 = address_validation_message;
         }
 
-        const validation_letter_symbol_message = localize('Only letters, space, hyphen, period, and apostrophe are allowed.');
-
         if (values.address_city && !validLetterSymbol(values.address_city)) {
-            errors.address_city = validation_letter_symbol_message;
+            errors.address_city = localize('Only letters, space, hyphen, period, and apostrophe are allowed.');
+        }
+
+        const state_is_input_element = values.address_state && !this.props.states_list.length;
+        if (state_is_input_element) {
+            const max_state_length = 35;
+            if (!validLength(values.address_state, { min: 0, max: max_state_length })) {
+                errors.address_state = localize('You should enter 0-35 characters.');
+            }
         }
 
         if (values.address_postcode && !validPostCode(values.address_postcode)) {
@@ -472,25 +482,38 @@ class PersonalDetailsForm extends React.Component {
                                                 />
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
-                                                <Field name='address_state'>
-                                                    {({ field }) => (
-                                                        <Autocomplete
-                                                            { ...field }
+                                                {
+                                                    this.props.states_list.length ?
+                                                        <Field name='address_state'>
+                                                            {({ field }) => (
+                                                                <Autocomplete
+                                                                    { ...field }
+                                                                    data-lpignore='true'
+                                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                                    type='text'
+                                                                    label={localize('State/Province (optional)')}
+                                                                    error={
+                                                                        touched.address_state && errors.address_state
+                                                                    }
+                                                                    list_items={this.props.states_list}
+                                                                    onItemSelection={
+                                                                        ({ value, text }) => setFieldValue('address_state', value ? text : '', true)
+                                                                    }
+                                                                />
+                                                            )}
+                                                        </Field> :
+                                                        <Input
                                                             data-lpignore='true'
-                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                            autoComplete='off' // prevent chrome autocomplete
                                                             type='text'
+                                                            name='address_state'
                                                             label={localize('State/Province (optional)')}
-                                                            error={
-                                                                touched.address_state && errors.address_state
-                                                            }
-                                                            list_items={this.props.states_list}
-                                                            onItemSelection={
-                                                                ({ value, text }) => setFieldValue('address_state', value ? text : '', true)
-                                                            }
-                                                            disabled={!this.props.states_list.length}
+                                                            value={values.address_state}
+                                                            error={touched.address_state && errors.address_state}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
                                                         />
-                                                    )}
-                                                </Field>
+                                                }
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <Input

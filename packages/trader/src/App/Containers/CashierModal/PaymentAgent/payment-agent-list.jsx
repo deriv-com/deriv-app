@@ -52,14 +52,14 @@ class PaymentAgentList extends React.Component {
                                     />
                                 </div>
                             </div>
-                            <h2 className='cashier__header payment-agent__available-header'><Localize i18n_default_text='Available Payment Agents' /></h2>
-                            <div className='payment-agent__available-line' />
+                            <h2 className='cashier__header payment-agent__list-header'><Localize i18n_default_text='Payment agents' /></h2>
+                            <div className='payment-agent__list-line' />
                             {this.props.is_loading ?
                                 <Loading className='payment-agent__loader' />
                                 :
                                 <React.Fragment>
                                     {this.props.supported_banks.length > 1 &&
-                                    <div className='payment-agent__available-selector'>
+                                    <div className='payment-agent__list-selector'>
                                         <Dropdown
                                             id='payment_methods'
                                             className='payment-agent__drop-down payment-agent__filter'

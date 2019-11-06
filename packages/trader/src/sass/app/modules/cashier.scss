@@ -304,7 +304,7 @@
             margin: auto;
         }
     }
-    &__available {
+    &__list {
         &-header {
             margin-top: 32px;
             font-size: 1.4rem;
@@ -319,8 +319,8 @@
         &-line {
             border-bottom: 1px solid var(--general-section-1);
             position: relative;
-            width: 68%;
-            margin-left: 32%;
+            width: 80%;
+            margin-left: 20%;
             top: -25px;
         }
     }

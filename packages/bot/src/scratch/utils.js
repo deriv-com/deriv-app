@@ -116,6 +116,9 @@ export const load = (block_string, drop_event) => {
         } else {
             loadWorkspace(xml);
         }
+
+        // Dispatch resize event for comments.
+        window.dispatchEvent(new Event('resize'));
         journal.onLogSuccess(translate('Blocks are loaded successfully'));
     } catch (e) {
         return showInvalidStrategyError();

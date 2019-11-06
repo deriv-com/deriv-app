@@ -487,6 +487,7 @@ class PersonalDetailsForm extends React.Component {
                                                             onItemSelection={
                                                                 ({ value, text }) => setFieldValue('address_state', value ? text : '', true)
                                                             }
+                                                            disabled={!this.props.states_list.length}
                                                         />
                                                     )}
                                                 </Field>

@@ -135,9 +135,13 @@ export default class CashierStore extends BaseStore {
             this.setPaymentAgentList().then(this.filterPaymentAgentList);
         }
 
-        this.checkIsPaymentAgent();
+        if (!this.config.payment_agent_transfer.is_payment_agent) {
+            this.checkIsPaymentAgent();
+        }
 
-        this.sortAccountsTransfer();
+        if (!this.config.account_transfer.accounts_list.length) {
+            this.sortAccountsTransfer();
+        }
     }
 
     @action.bound

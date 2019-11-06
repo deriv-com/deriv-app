@@ -180,6 +180,23 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
+    onClickContractUpdate(contract_id) {
+        const {
+            has_update_stop_loss,
+            has_update_take_profit,
+            update_stop_loss,
+            update_take_profit,
+        } = this.root_store.modules.trade;
+
+        const limit_order = {
+            take_profit: has_update_take_profit ? update_take_profit : undefined,
+            stop_loss  : has_update_stop_loss ? update_stop_loss : undefined,
+        };
+
+        WS.contractUpdate(contract_id, limit_order);
+    }
+
+    @action.bound
     handleSell(response) {
         if (response.error) {
             // If unable to sell due to error, give error via pop up if not in contract mode

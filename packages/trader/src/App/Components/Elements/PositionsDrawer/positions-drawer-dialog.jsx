@@ -40,6 +40,8 @@ class PositionsDrawerDialog extends React.PureComponent {
             onChange,
             onClick,
             top,
+            has_update_stop_loss,
+            has_update_take_profit,
             update_take_profit,
             update_stop_loss,
         } = this.props;
@@ -84,6 +86,9 @@ class PositionsDrawerDialog extends React.PureComponent {
                             text={localize('Apply')}
                             onClick={onClick}
                             primary
+                            is_disabled={!((has_update_stop_loss && update_stop_loss < 0)
+                                || (has_update_take_profit && update_take_profit > 0))
+                            }
                         />
                     </div>
                 </div>
@@ -119,8 +124,10 @@ PositionsDrawerDialog.propTypes = {
 
 export default connect(
     ({ modules }) => ({
-        onChange          : modules.trade.onChange,
-        update_stop_loss  : modules.trade.update_stop_loss,
-        update_take_profit: modules.trade.update_take_profit,
+        onChange              : modules.trade.onChange,
+        has_update_stop_loss  : modules.trade.has_update_stop_loss,
+        has_update_take_profit: modules.trade.has_update_take_profit,
+        update_stop_loss      : modules.trade.update_stop_loss,
+        update_take_profit    : modules.trade.update_take_profit,
     })
 )(PositionsDrawerDialog);

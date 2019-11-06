@@ -31,6 +31,7 @@ const PositionsDrawerCard = ({
     is_unsupported,
     is_valid_to_sell,
     profit_loss,
+    onClickContractUpdate,
     onClickSell,
     onClickRemove,
     result,
@@ -284,7 +285,7 @@ const PositionsDrawerCard = ({
                             onClick={() => onClickSell(id)}
                             primary
                         />
-                        <TogglePositionsDrawerDialog onClick={() => onClickSell(id)} />
+                        <TogglePositionsDrawerDialog onClick={() => onClickContractUpdate(id)} />
                     </div>
                     :
                     <div className='positions-drawer-card__sell-button'>

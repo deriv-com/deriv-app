@@ -30,6 +30,7 @@ class PositionsDrawer extends React.Component {
             is_dark_theme,
             is_empty,
             is_positions_drawer_on,
+            onClickContractUpdate,
             onClickSell,
             onClickRemove,
             toggleDrawer,
@@ -56,11 +57,9 @@ class PositionsDrawer extends React.Component {
                         >
                             <PositionsDrawerCard
                                 is_dark_theme={is_dark_theme}
+                                onClickContractUpdate={onClickContractUpdate}
                                 onClickSell={onClickSell}
                                 onClickRemove={onClickRemove}
-                                // onChange={onChange}
-                                // update_take_profit={update_take_profit}
-                                // update_stop_loss={update_stop_loss}
                                 key={portfolio_position.id}
                                 currency={currency}
                                 toggleUnsupportedContractModal={toggleUnsupportedContractModal}
@@ -126,6 +125,7 @@ PositionsDrawer.propTypes = {
     is_empty              : PropTypes.bool,
     is_loading            : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
+    onClickContractUpdate : PropTypes.func,
     onClickRemove         : PropTypes.func,
     onClickSell           : PropTypes.func,
     onMount               : PropTypes.func,
@@ -140,6 +140,7 @@ export default connect(
         error                         : modules.portfolio.error,
         is_empty                      : modules.portfolio.is_empty,
         is_loading                    : modules.portfolio.is_loading,
+        onClickContractUpdate         : modules.portfolio.onClickContractUpdate,
         onClickSell                   : modules.portfolio.onClickSell,
         onClickRemove                 : modules.portfolio.removePositionById,
         onMount                       : modules.portfolio.onMount,

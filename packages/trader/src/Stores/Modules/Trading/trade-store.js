@@ -116,12 +116,14 @@ export default class TradeStore extends BaseStore {
     @observable multiplier_range_list = [];
     @observable stop_loss;
     @observable take_profit;
-    @observable has_stop_loss;
-    @observable has_take_profit;
+    @observable has_stop_loss = false;
+    @observable has_take_profit = false;
+
+    // Multiplier contract update params
     @observable update_stop_loss;
     @observable update_take_profit;
-    @observable has_update_stop_loss;
-    @observable has_update_take_profit;
+    @observable has_update_stop_loss = false;
+    @observable has_update_take_profit = false;
 
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
@@ -319,7 +321,9 @@ export default class TradeStore extends BaseStore {
         }
 
         this.validateAllProperties();
-        this.processNewValuesAsync({ [name]: value }, true);
+
+        const should_forget_first = !(name === 'has_update_take_profit' || name === 'has_update_stop_loss' || name === 'update_take_profit' || name === 'update_stop_loss');
+        this.processNewValuesAsync({ [name]: value }, true, {}, should_forget_first);
     }
 
     @action.bound

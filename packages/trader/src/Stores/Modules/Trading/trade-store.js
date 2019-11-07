@@ -359,7 +359,27 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    onHoverPositionDrawerCard(is_over, position){
+    updateEntrySpotBarrier(is_over, contract_info) {
+        const key = 'ENTRY_SPOT_BARRIER';
+        if (is_over) {
+            let entrySpotBarrier  = this.getBarrier(key);
+
+            if (!entrySpotBarrier){
+                entrySpotBarrier = new ChartBarrierStore(
+                    contract_info.entry_spot
+                );
+                entrySpotBarrier.draggable = false;
+                entrySpotBarrier.key = key;
+                entrySpotBarrier.hidePriceLabel = true;
+                this.barriers.push(entrySpotBarrier);
+            }
+
+            entrySpotBarrier.color = contract_info.profit_loss < 0 ? BARRIER_COLORS.RED : BARRIER_COLORS.GREEN;
+        }
+    }
+
+    @action.bound
+    toggleLimitOrders(is_over, position) {
         if (!this.is_multiplier) {
             return;
         }
@@ -373,11 +393,10 @@ export default class TradeStore extends BaseStore {
             contract_type: contract_info.contract_type,
         } : undefined);
 
-        this.hovered_position_id = is_over ? position.id : null;
-
         if (this.main_barrier) {
             this.main_barrier.hidePriceLines = true;
             this.main_barrier.updateBarrierShade(is_over, contract_info.contract_type);
+            this.main_barrier.shadeColor = contract_info.profit < 0 ? BARRIER_COLORS.RED : BARRIER_COLORS.G;
         }
     }
 
@@ -388,7 +407,7 @@ export default class TradeStore extends BaseStore {
     }
 
     @computed
-    get barriers_flattened(){
+    get barriers_flattened() {
         return this.barriers && toJS(this.barriers);
     }
 
@@ -408,43 +427,48 @@ export default class TradeStore extends BaseStore {
         } else { this.main_barrier = null; }
     }
 
-    getLimitOrderBarrier = (key) => {
+    getBarrier = (key) => {
         for (let i = 0; this.barriers && i < this.barriers.length; i++){
             const barrier = this.barriers[i];
-            if (barrier.titleTag && barrier.titleTag.key === key) {
+            if (barrier.key === key) {
                 return barrier;
             }
         }
         return null;
     }
 
-    setBarriersForLimitOrder = (proposal) => {
+    setBarriersForLimitOrder = (contract_info) => {
         const barriers = this.barriers;
 
-        if (this.is_multiplier && proposal && proposal.limit_order) {
-            Object.keys(proposal.limit_order).forEach((key)=>{
-                const obj_limit_order = proposal.limit_order[key];
+        if (this.is_multiplier && contract_info && contract_info.limit_order) {
+            Object.keys(contract_info.limit_order).forEach((key)=>{
+                const obj_limit_order = contract_info.limit_order[key];
 
-                let barrier  = this.getLimitOrderBarrier(key);
+                let barrier  = this.getBarrier(key);
 
                 if (barrier) {
-                    barrier.onBarrierChange({
+                    barrier.onChange({
                         high: obj_limit_order.value,
                     });
                 } else {
+                    const obj_barrier = {
+                        key,
+                        titleTag: {
+                            currency: this.currency,
+                            label   : `${obj_limit_order.display_name}: `,
+                            amount  : obj_limit_order.order_amount,
+                        },
+                        color             : key === 'take_profit' ? BARRIER_COLORS.GREEN : BARRIER_COLORS.RED,
+                        draggable         : false,
+                        lineStyle         : key === 'stop_out' ? BARRIER_LINE_STYLES.DOTTED : BARRIER_LINE_STYLES.SOLID,
+                        hideOffscreenLines: true,
+                        hidePriceLabel    : true,
+                    };
                     barrier = new ChartBarrierStore(
                         obj_limit_order.value
                     );
-                    barrier.titleTag = {
-                        key,
-                        label : `${obj_limit_order.display_name}: `,
-                        amount: CurrencyUtils.formatMoney(this.currency, obj_limit_order.order_amount, true),
-                    };
-                    barrier.color = key === 'take_profit' ? BARRIER_COLORS.GREEN : BARRIER_COLORS.RED;
-                    barrier.currency = this.currency;
-                    barrier.draggable = false;
-                    barrier.lineStyle = key === 'stop_out' ? BARRIER_LINE_STYLES.DOTTED : BARRIER_LINE_STYLES.SOLID;
-                    barrier.hideOffscreenLines = true;
+
+                    Object.assign(barrier, obj_barrier);
                     barriers.push(barrier);
                 }
             });

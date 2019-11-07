@@ -20,6 +20,7 @@ import {
     isUserSold,
     isValidToSell }                from '../Contract/Helpers/logic';
 import BaseStore                   from '../../base-store';
+import { BARRIER_COLORS }          from '../SmartChart/Constants/barriers';
 
 export default class PortfolioStore extends BaseStore {
     @observable positions  = [];
@@ -119,17 +120,25 @@ export default class PortfolioStore extends BaseStore {
 
     updateTradeStore(portfolio_position) {
         const trade = this.root_store.modules.trade;
-        if (trade.is_multiplier && trade.hovered_position_id === portfolio_position.id && trade.main_barrier){
-            trade.main_barrier.onBarrierChange({
+        const contract_info = portfolio_position.contract_info;
+        if (trade.is_multiplier &&
+            trade.main_barrier &&
+            this.hovered_position_id === portfolio_position.id){
+
+            trade.main_barrier.shadeColor = contract_info.profit < 0 ? BARRIER_COLORS.RED : BARRIER_COLORS.GREEN;
+
+            trade.main_barrier.onChange({
                 high: Math.max(
-                    portfolio_position.contract_info.current_spot,
-                    portfolio_position.contract_info.entry_spot
+                    contract_info.current_spot,
+                    contract_info.entry_spot
                 ),
                 low: Math.min(
-                    portfolio_position.contract_info.current_spot,
-                    portfolio_position.contract_info.entry_spot
+                    contract_info.current_spot,
+                    contract_info.entry_spot
                 ),
             });
+
+            trade.updateEntrySpotBarrier(true, portfolio_position);
         }
     }
 
@@ -184,7 +193,9 @@ export default class PortfolioStore extends BaseStore {
             portfolio_position.status = null;
         }
 
-        this.updateTradeStore(portfolio_position);
+        if (!isEnded(portfolio_position.contract_info)) {
+            this.updateTradeStore(portfolio_position);
+        }
     }
 
     @action.bound
@@ -195,6 +206,9 @@ export default class PortfolioStore extends BaseStore {
         if (contract_id && bid_price) {
             WS.sell(contract_id, bid_price).then(this.handleSell);
         }
+
+        const trade = this.root_store.modules.trade;
+        trade.toggleLimitOrders(false, this.positions[i]);
     }
 
     @action.bound
@@ -305,6 +319,18 @@ export default class PortfolioStore extends BaseStore {
         return new Promise(async (resolve) => {
             return resolve(this.initializePortfolio());
         });
+    }
+
+    @action.bound
+    onHoverPosition(is_over, position){
+        if (isEnded(position.contract_info)){
+            return;
+        }
+        const trade = this.root_store.modules.trade;
+        this.hovered_position_id = is_over ? position.id : null;
+
+        trade.toggleLimitOrders(is_over, position);
+        trade.updateEntrySpotBarrier(is_over, position);
     }
 
     @action.bound

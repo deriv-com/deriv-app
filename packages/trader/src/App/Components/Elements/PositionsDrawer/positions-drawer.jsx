@@ -35,7 +35,7 @@ class PositionsDrawer extends React.Component {
             onClickRemove,
             toggleDrawer,
             toggleUnsupportedContractModal,
-            onHoverPositionDrawerCard,
+            onHoverPosition,
         } = this.props;
 
         // Show only 5 most recent open contracts
@@ -62,10 +62,10 @@ class PositionsDrawer extends React.Component {
                                 onClickSell={onClickSell}
                                 onClickRemove={onClickRemove}
                                 onMouseEnter={() => {
-                                    onHoverPositionDrawerCard(true, portfolio_position);
+                                    onHoverPosition(true, portfolio_position);
                                 }}
                                 onMouseLeave={() => {
-                                    onHoverPositionDrawerCard(false, portfolio_position);
+                                    onHoverPosition(false, portfolio_position);
                                 }}
                                 key={portfolio_position.id}
                                 currency={currency}
@@ -135,6 +135,7 @@ PositionsDrawer.propTypes = {
     onClickContractUpdate : PropTypes.func,
     onClickRemove         : PropTypes.func,
     onClickSell           : PropTypes.func,
+    onHoverPosition       : PropTypes.func,
     onMount               : PropTypes.func,
     onUnmount             : PropTypes.func,
     toggleDrawer          : PropTypes.func,
@@ -150,9 +151,9 @@ export default connect(
         onClickContractUpdate         : modules.portfolio.onClickContractUpdate,
         onClickSell                   : modules.portfolio.onClickSell,
         onClickRemove                 : modules.portfolio.removePositionById,
+        onHoverPosition               : modules.portfolio.onHoverPosition,
         onMount                       : modules.portfolio.onMount,
         onUnmount                     : modules.portfolio.onUnmount,
-        onHoverPositionDrawerCard     : modules.trade.onHoverPositionDrawerCard,
         is_dark_theme                 : ui.is_dark_mode_on,
         is_positions_drawer_on        : ui.is_positions_drawer_on,
         toggleDrawer                  : ui.togglePositionsDrawer,

@@ -13,6 +13,7 @@ export class ChartBarrierStore {
     @observable color;
     @observable lineStyle;
     @observable shade;
+    @observable shadeColor;
 
     @observable high;
     @observable low;
@@ -22,8 +23,8 @@ export class ChartBarrierStore {
 
     @observable hidePriceLines;
     @observable titleTag;
-    @observable currency;
     @observable hideOffscreenLines;
+    @observable hidePriceLabel;
 
     onChartBarrierChange;
 

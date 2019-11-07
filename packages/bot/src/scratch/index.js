@@ -4,7 +4,6 @@ import Interpreter                    from '../services/tradeEngine/utils/interp
 import ScratchStore                   from '../stores/scratch-store';
 import { observer as globalObserver } from '../utils/observer';
 import config                         from '../constants';
-import { translate } from '../utils/tools';
 
 export const scratchWorkspaceInit = async () => {
     try {
@@ -82,21 +81,6 @@ export const runBot = (limitations = {}) => {
             block.setDisabled(true);
         }
     });
-
-    const blocks_in_workspace = Blockly.derivWorkspace.getAllBlocks();
-    const has_tradeoptions = Object.keys(blocks_in_workspace)
-        .some(key => blocks_in_workspace[key].type === 'trade_definition_tradeoptions');
-
-    const { mandatoryMainBlocks } = config;
-    const has_mandatory_blocks = mandatoryMainBlocks
-        .every(block_type => top_blocks.some(top_block => top_block.type === block_type));
-
-    if (!has_mandatory_blocks || !has_tradeoptions) {
-        globalObserver.emit('Error',
-            new Error(translate('One or more mandatory blocks are missing from your workspace.' +
-        'Please add the required block(s) and then try again.')));
-        return;
-    }
     
     try {
         const code = `

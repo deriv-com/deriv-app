@@ -9,6 +9,7 @@ import {
     error_types,
     unrecoverable_errors,
 }                          from '../constants/messages';
+import config              from '../constants';
 import {
     runBot,
     stopBot,
@@ -57,6 +58,7 @@ export default class RunPanelStore {
     @action.bound
     onRunButtonClick = () => {
         const { core : { client }, contract_card } = this.root_store;
+        this.registerBotListeners();
 
         if (!client.is_logged_in) {
             this.showLoginDialog();
@@ -68,10 +70,25 @@ export default class RunPanelStore {
             return;
         }
 
-        this.registerBotListeners();
+        const top_blocks = Blockly.derivWorkspace.getTopBlocks();
+        const blocks_in_workspace = Blockly.derivWorkspace.getAllBlocks();
+        const has_tradeoptions = Object.keys(blocks_in_workspace)
+            .some(key => blocks_in_workspace[key].type === 'trade_definition_tradeoptions');
+
+        const { mandatoryMainBlocks } = config;
+        const has_mandatory_blocks = mandatoryMainBlocks
+            .every(block_type => top_blocks.some(top_block => top_block.type === block_type));
+
+        if (!has_mandatory_blocks || !has_tradeoptions) {
+            observer.emit('Error',
+                new Error(translate('One or more mandatory blocks are missing from your workspace.' +
+            'Please add the required block(s) and then try again.')));
+            return;
+        }
+
         this.is_running = true;
         this.is_drawer_open = true;
-        this.root_store.contract_card.clear();
+        contract_card.clear();
         this.setContractStage(contract_stages.STARTING);
 
         runBot();

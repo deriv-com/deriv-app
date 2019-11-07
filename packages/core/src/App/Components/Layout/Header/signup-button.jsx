@@ -9,7 +9,7 @@ const SignupButton = ({ className }) => (
         className={className}
         has_effect
         text={localize('Sign up')}
-        onClick={() => { window.open('https://deriv.com'); }}
+        onClick={() => { window.open('https://deriv.com?action=signup'); }}
         primary
     />
 );

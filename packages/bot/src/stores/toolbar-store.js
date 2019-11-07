@@ -28,6 +28,14 @@ export default class ToolbarStore {
         // eslint-disable-next-line no-underscore-dangle
         const toolbox = Blockly.derivWorkspace.toolbox_;
         this.is_toolbox_open = !this.is_toolbox_open;
+
+        // Scroll workspace so toolbox doesn't overlap
+        const ws_metrics       = Blockly.derivWorkspace.getMetrics();
+        const current_scroll_x = ws_metrics.viewLeft - ws_metrics.contentLeft;
+        const current_scroll_y = ws_metrics.viewTop - ws_metrics.contentTop;
+        const new_scroll_x     = current_scroll_x + (!this.is_toolbox_open ? toolbox.HtmlDiv.clientWidth : -toolbox.HtmlDiv.clientWidth);
+
+        Blockly.derivWorkspace.scrollbar.set(new_scroll_x, current_scroll_y);
         toolbox.toggle();
     }
 

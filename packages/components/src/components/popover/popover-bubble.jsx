@@ -28,11 +28,12 @@ class PopoverBubble extends React.PureComponent {
 
         switch (alignment) {
             case 'top': return {
-                left: this.isBubbleOutOfBoundary(target_rectangle.left, 280)
-                    ? window.innerWidth - 280
+                left: this.isBubbleOutOfBoundary(target_rectangle.left, 200)
+                    ? window.innerWidth - 200
                     : (target_rectangle.width / 2) + target_rectangle.left,
                 bottom     : (window.innerHeight - target_rectangle.top) + margin,
                 marginRight: 10,
+                transform  : this.isBubbleOutOfBoundary(target_rectangle.left, 200) ? '' : 'translateX(-50%)',
             };
             case 'bottom': return {
                 left     : (target_rectangle.width / 2) + target_rectangle.left,
@@ -94,7 +95,7 @@ class PopoverBubble extends React.PureComponent {
                         <span className='dc-popover__bubble__text'>
                             { message }
                         </span>
-                        <span style={{ left: ((target_rectangle.width / 2) + target_rectangle.left) - (window.innerWidth - 280) }} className='dc-popover__bubble__arrow' />
+                        <span style={{ left: this.isBubbleOutOfBoundary(target_rectangle.left, 200) ? ((target_rectangle.width / 2) + target_rectangle.left) - (window.innerWidth - 200) : '' }} className='dc-popover__bubble__arrow' />
                     </span>
                 </FadeIn>
                 }

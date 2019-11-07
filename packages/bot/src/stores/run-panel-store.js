@@ -4,12 +4,12 @@ import {
     reaction,
     computed,
 }                          from 'mobx';
+import config              from '../constants';
 import { contract_stages } from '../constants/contract-stage';
 import {
     error_types,
     unrecoverable_errors,
 }                          from '../constants/messages';
-import config              from '../constants';
 import {
     runBot,
     stopBot,
@@ -57,7 +57,9 @@ export default class RunPanelStore {
 
     @action.bound
     onRunButtonClick = () => {
-        const { core : { client }, contract_card } = this.root_store;
+        const { core , contract_card } = this.root_store;
+        const { client } = core;
+
         this.registerBotListeners();
 
         if (!client.is_logged_in) {
@@ -70,16 +72,14 @@ export default class RunPanelStore {
             return;
         }
 
-        const top_blocks = Blockly.derivWorkspace.getTopBlocks();
         const blocks_in_workspace = Blockly.derivWorkspace.getAllBlocks();
-        const has_tradeoptions = Object.keys(blocks_in_workspace)
-            .some(key => blocks_in_workspace[key].type === 'trade_definition_tradeoptions');
-
         const { mandatoryMainBlocks } = config;
-        const has_mandatory_blocks = mandatoryMainBlocks
-            .every(block_type => top_blocks.some(top_block => top_block.type === block_type));
+        const required_block_types    = ['trade_definition_tradeoptions', ...mandatoryMainBlocks];
+        const all_block_types         = blocks_in_workspace.map(block => block.type);
+        const has_all_required_blocks = required_block_types.every(required_block_type =>
+            all_block_types.includes(required_block_type));
 
-        if (!has_mandatory_blocks || !has_tradeoptions) {
+        if (!has_all_required_blocks) {
             this.showErrorMessage(
                 new Error(translate('One or more mandatory blocks are missing from your workspace.' +
                 'Please add the required block(s) and then try again.'))
@@ -280,7 +280,7 @@ export default class RunPanelStore {
             this.error_type = error_types.RECOVERABLE_ERRORS;
         }
         
-        this.ShowErrorMessage(data);
+        this.showErrorMessage(data);
     }
 
     showErrorMessage(data) {

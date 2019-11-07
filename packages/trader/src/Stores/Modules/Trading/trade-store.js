@@ -422,11 +422,14 @@ export default class TradeStore extends BaseStore {
                 } else if (response.error) {
                     // using javascript to disable purchase-buttons manually to compensate for mobx lag
                     this.disablePurchaseButtons();
-                    this.root_store.common.services_error = {
-                        type: response.msg_type,
-                        ...response.error,
-                    };
-                    this.root_store.ui.toggleServicesErrorModal(true);
+                    // invalidToken error will handle in socket-general.js
+                    if (response.error.code !== 'InvalidToken') {
+                        this.root_store.common.services_error = {
+                            type: response.msg_type,
+                            ...response.error,
+                        };
+                        this.root_store.ui.toggleServicesErrorModal(true);
+                    }
                 }
                 WS.forgetAll('proposal');
                 this.purchase_info = response;

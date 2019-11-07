@@ -183,7 +183,13 @@ const PositionsDrawerCard = ({
                         </span>
                         <span className='positions-drawer-card__payout-value'>
                             {contract_info.limit_order && contract_info.limit_order.stop_loss ?
-                                <Money amount={contract_info.limit_order.stop_loss.order_amount} currency={currency} />
+                                <React.Fragment>
+                                    <strong>-</strong>
+                                    <Money
+                                        amount={contract_info.limit_order.stop_loss.order_amount}
+                                        currency={currency}
+                                    />
+                                </React.Fragment>
                                 :
                                 <strong>-</strong>
                             }

@@ -9,6 +9,7 @@ const InputWithCheckbox = ({
     classNameInput,
     className,
     currency,
+    defaultChecked,
     error_messages,
     is_single_currency,
     is_negative_disabled = true,
@@ -18,7 +19,7 @@ const InputWithCheckbox = ({
     tooltip_label,
     value,
 }) => {
-    const [disabled, setDisabled] = useState(true);
+    const [disabled, setDisabled] = useState(!defaultChecked);
 
     const changeValue = (e) => {
         const { checked } = e.target;
@@ -78,6 +79,7 @@ const InputWithCheckbox = ({
 
 InputWithCheckbox.propTypes = {
     currency            : PropTypes.string,
+    defaultChecked      : PropTypes.bool,
     is_negative_disabled: PropTypes.bool,
     is_single_currency  : PropTypes.bool,
     max_value           : PropTypes.number,

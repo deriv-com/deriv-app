@@ -299,7 +299,10 @@ const PositionsDrawerCard = ({
                             onClick={() => onClickSell(id)}
                             primary
                         />
-                        <TogglePositionsDrawerDialog onClick={() => onClickContractUpdate(id)} />
+                        <TogglePositionsDrawerDialog
+                            limit_order={contract_info.limit_order}
+                            onClick={() => onClickContractUpdate(id)}
+                        />
                     </div>
                     :
                     <div className='positions-drawer-card__sell-button'>

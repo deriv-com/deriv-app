@@ -10,12 +10,42 @@ import { connect }       from 'Stores/connect';
 class PositionsDrawerDialog extends React.Component {
     constructor(props) {
         super(props);
+
+        // set stop_loss and take_profit contract update initial values from contract_info, if any
+        const {
+            limit_order: {
+                stop_loss: {
+                    order_amount: stop_loss_order_amount,
+                } = {},
+                take_profit: {
+                    order_amount: take_profit_order_amount,
+                } = {},
+            } = {},
+        } = this.props;
+
         this.state = {
-            is_visible: false,
-            top       : 0,
-            left      : 0,
+            is_visible : false,
+            top        : 0,
+            left       : 0,
+            stop_loss  : Math.abs(stop_loss_order_amount),
+            take_profit: take_profit_order_amount,
         };
+
         this.ref = React.createRef();
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.update_take_profit !== undefined) {
+            state.take_profit = props.update_take_profit;
+        }
+        if (props.update_stop_loss !== undefined) {
+            state.stop_loss = Math.abs(props.update_stop_loss);
+        }
+
+        state.is_stop_loss_checked   = props.has_update_stop_loss;
+        state.is_take_profit_checked = props.has_update_take_profit;
+
+        return state;
     }
 
     componentDidMount() {
@@ -40,12 +70,12 @@ class PositionsDrawerDialog extends React.Component {
             onChange,
             onClick,
             top,
-            has_update_stop_loss,
-            has_update_take_profit,
-            update_take_profit,
-            update_stop_loss,
             validation_errors,
         } = this.props;
+
+        const { is_stop_loss_checked, is_take_profit_checked, stop_loss, take_profit } = this.state;
+
+        const is_disabled = !(is_stop_loss_checked || is_take_profit_checked);
 
         const dialog = (
             <CSSTransition
@@ -68,7 +98,8 @@ class PositionsDrawerDialog extends React.Component {
                 >
                     <div className='positions-drawer-dialog__input'>
                         <InputWithCheckbox
-                            value={update_take_profit}
+                            defaultChecked={is_take_profit_checked}
+                            value={take_profit}
                             name='update_take_profit'
                             label={localize('Take profit')}
                             onChange={onChange}
@@ -77,7 +108,8 @@ class PositionsDrawerDialog extends React.Component {
                     </div>
                     <div className='positions-drawer-dialog__input'>
                         <InputWithCheckbox
-                            value={update_stop_loss}
+                            defaultChecked={is_stop_loss_checked}
+                            value={stop_loss}
                             name='update_stop_loss'
                             label={localize('Stop loss')}
                             onChange={onChange}
@@ -89,15 +121,13 @@ class PositionsDrawerDialog extends React.Component {
                             text={localize('Apply')}
                             onClick={onClick}
                             primary
-                            is_disabled={!((has_update_stop_loss && update_stop_loss > 0)
-                                || (has_update_take_profit && update_take_profit > 0))
-                            }
+                            is_disabled={is_disabled}
                         />
                     </div>
                 </div>
             </CSSTransition>
         );
-    
+
         return (
             ReactDOM.createPortal(
                 dialog, // use portal to render dialog above ThemedScrollbars container
@@ -108,6 +138,7 @@ class PositionsDrawerDialog extends React.Component {
 }
 
 PositionsDrawerDialog.propTypes = {
+    contract_info   : PropTypes.object,
     is_visible      : PropTypes.bool,
     left            : PropTypes.number,
     onChange        : PropTypes.func,

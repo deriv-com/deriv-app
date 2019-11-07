@@ -1,7 +1,8 @@
 import PropTypes        from 'prop-types';
 import React            from 'react';
+import Lazy             from 'App/Containers/Lazy';
+import Routes           from 'App/Containers/Routes/routes.jsx';
 import { MobxProvider } from 'Stores/connect';
-import Routes           from './Containers/Routes/routes.jsx';
 // eslint-disable-next-line import/extensions
 import initStore        from './init-store.js';
 import './i18n';
@@ -19,7 +20,14 @@ class App extends React.Component {
     render() {
         return (
             <MobxProvider store={ this.root_store }>
-                <Routes />
+                <React.Fragment>
+                    <Routes />
+                    <Lazy
+                        ctor={ () => import(/* webpackChunkName: "modals", webpackPrefetch: true */'./Containers/Modals') }
+                        should_load
+                        has_progress={ false }
+                    />
+                </React.Fragment>
             </MobxProvider>
         );
     }

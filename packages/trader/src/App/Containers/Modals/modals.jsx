@@ -5,7 +5,6 @@ import UnsupportedContractModal from 'App/Components/Elements/Modals/Unsupported
 import MarketUnavailableModal   from 'App/Components/Elements/Modals/MarketUnavailableModal';
 import DenialOfServiceModal     from 'App/Components/Elements/Modals/DenialOfServiceModal';
 import ServicesErrorModal       from 'App/Components/Elements/Modals/ServicesErrorModal';
-import MT5ServerErrorDialog     from 'Modules/MT5/Containers/mt5-server-error-dialog.jsx';
 import 'Sass/app/modules/modals.scss';
 
 const Modals = ({
@@ -75,12 +74,12 @@ const Modals = ({
                 onCancel={marketUnavailableOnCancel}
                 is_visible={is_market_unavailable_visible}
             />
+
             <ServicesErrorModal
                 onConfirm={servicesErrorModalOnConfirm}
                 services_error={services_error}
                 is_visible={is_services_error_visible}
             />
-            <MT5ServerErrorDialog />
         </React.Fragment>
     );
 };

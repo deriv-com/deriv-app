@@ -19,6 +19,11 @@ import 'Sass/app.scss';
 // Check if device is touch capable
 const isTouchDevice = 'ontouchstart' in document.documentElement;
 
+const shouldLoadModals = () => {
+    const url_params = new URLSearchParams(window.location.search);
+    return ['reset_password', 'signup'].includes(url_params.get('action'));
+};
+
 const App = ({ root_store }) => {
     const base = window.location.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(window.location.pathname);
@@ -48,9 +53,9 @@ const App = ({ root_store }) => {
                             </ErrorBoundary>
                             <Footer />
                             <Lazy
-                                ctor={() => import(/* webpackChunkName: "modals", webpackPrefetch: true */'./Containers/Modals')}
-                                should_load={true}
-                                has_progress={false}
+                                ctor={ () => import(/* webpackChunkName: "modals", webpackPrefetch: true */'./Containers/Modals') }
+                                should_load={ shouldLoadModals() }
+                                has_progress={ false }
                             />
                         </React.Fragment>
                 }

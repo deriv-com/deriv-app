@@ -80,9 +80,10 @@ export default class RunPanelStore {
             .every(block_type => top_blocks.some(top_block => top_block.type === block_type));
 
         if (!has_mandatory_blocks || !has_tradeoptions) {
-            observer.emit('Error',
+            this.showErrorMessage(
                 new Error(translate('One or more mandatory blocks are missing from your workspace.' +
-            'Please add the required block(s) and then try again.')));
+                'Please add the required block(s) and then try again.'))
+            );
             return;
         }
 
@@ -203,8 +204,6 @@ export default class RunPanelStore {
         observer.register('bot.contract', contract_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
         observer.register('ui.log.success', journal.onLogSuccess);
-        observer.register('ui.log.error', journal.onError);
-        observer.register('Error', journal.onError);
         observer.register('ui.log.error', this.onError);
         observer.register('Error', this.onError);
         observer.register('Notify', journal.onNotify);
@@ -280,6 +279,14 @@ export default class RunPanelStore {
         } else {
             this.error_type = error_types.RECOVERABLE_ERRORS;
         }
+        
+        this.ShowErrorMessage(data);
+    }
+
+    showErrorMessage(data) {
+        const { journal } = this.root_store;
+
+        journal.onError(data);
         this.setActiveTabIndex(2);
     }
 

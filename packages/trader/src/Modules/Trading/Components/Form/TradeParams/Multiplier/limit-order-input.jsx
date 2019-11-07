@@ -35,11 +35,11 @@ const LimitOrderInput = ({
 
 LimitOrderInput.propTypes = {
     currency          : PropTypes.string,
+    error_messages    : PropTypes.array,
     is_single_currency: PropTypes.bool,
     label             : PropTypes.string,
     name              : PropTypes.string,
     onChange          : PropTypes.func,
-    validation_errors : PropTypes.object,
     value             : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,

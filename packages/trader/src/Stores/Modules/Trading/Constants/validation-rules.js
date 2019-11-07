@@ -76,19 +76,9 @@ const getValidationRules = () => ({
             ['req', { condition: store => store.stop_loss, message: localize('Enter stop loss') }],
         ],
     },
-    update_stop_loss: {
-        rules: [
-            ['req', { condition: store => store.update_stop_loss, message: localize('Enter stop loss') }],
-        ],
-    },
     take_profit: {
         rules: [
             ['req', { condition: store => store.take_profit, message: localize('Enter take profit') }],
-        ],
-    },
-    update_take_profit: {
-        rules: [
-            ['req', { condition: store => store.update_take_profit, message: localize('Enter take profit') }],
         ],
     },
 });

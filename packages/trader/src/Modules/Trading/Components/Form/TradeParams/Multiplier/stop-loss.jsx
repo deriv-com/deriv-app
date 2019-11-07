@@ -21,7 +21,6 @@ const StopLoss = ({
             name='stop_loss'
             onChange={onChange}
             tooltip_label={localize('Close the deal when my loss reaches this amount.')}
-            validation_errors={validation_errors}
             value={stop_loss}
         />
     );

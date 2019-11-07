@@ -6,29 +6,46 @@ import {
 import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services';
 import ObjectUtils                 from 'deriv-shared/utils/object';
+import getValidationRules          from './Constants/validation-rules';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractSold }            from './Helpers/portfolio-notifications';
 import {
     getCurrentTick,
     getDurationPeriod,
     getDurationTime,
-    getDurationUnitText }          from './Helpers/details';
+    getDurationUnitText,
+    getLimitOrder }                from './Helpers/details';
 import {
     getDisplayStatus,
     getEndTime,
     isEnded,
     isUserSold,
     isValidToSell }                from '../Contract/Helpers/logic';
+import {
+    isMultiplierContract }         from '../Contract/Helpers/multiplier';
 import BaseStore                   from '../../base-store';
 import { BARRIER_COLORS }          from '../SmartChart/Constants/barriers';
 
+const store_name = 'portfolio';
 export default class PortfolioStore extends BaseStore {
     @observable positions  = [];
     @observable is_loading = false;
     @observable error      = '';
     getPositionById        = createTransformer((id) => this.positions.find((position) => +position.id === +id));
 
+    // Observables for multiplier contract_update input validations
+    @observable contract_update_stop_loss;
+    @observable contract_update_take_profit;
+
     subscribers = {};
+
+    constructor({ root_store }) {
+        super({
+            root_store,
+            store_name,
+            validation_rules: getValidationRules(),
+        });
+    }
 
     @action.bound
     initializePortfolio = async () => {
@@ -175,6 +192,16 @@ export default class PortfolioStore extends BaseStore {
         portfolio_position.profit_loss      = profit_loss;
         portfolio_position.is_valid_to_sell = isValidToSell(proposal);
 
+        if (isMultiplierContract(proposal.contract_type) && !portfolio_position.has_limit_order) {
+            const { stop_loss, take_profit }   = getLimitOrder(proposal);
+            // convert stop_loss, take_profit value to string for validation to work
+            portfolio_position.stop_loss       = stop_loss ? Math.abs(stop_loss).toString() : '';
+            portfolio_position.take_profit     = take_profit ? take_profit.toString() : '';
+            portfolio_position.has_stop_loss   = !!stop_loss;
+            portfolio_position.has_take_profit = !!take_profit;
+            portfolio_position.has_limit_order = true;
+        }
+
         // store contract proposal details that do not require modifiers
         portfolio_position.contract_info    = proposal;
 
@@ -213,14 +240,16 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     onClickContractUpdate(contract_id) {
-        const {
-            has_update_stop_loss,
-            has_update_take_profit,
-            update_stop_loss,
-            update_take_profit,
-        } = this.root_store.modules.trade;
+        const i = this.getPositionIndexById(contract_id);
 
-        const has_limit_order = update_take_profit > 0 || update_stop_loss > 0;
+        const {
+            has_stop_loss,
+            has_take_profit,
+            stop_loss,
+            take_profit,
+        } = this.positions[i];
+
+        const has_limit_order = take_profit > 0 || stop_loss > 0;
 
         if (!has_limit_order) {
             return;
@@ -228,15 +257,37 @@ export default class PortfolioStore extends BaseStore {
 
         const limit_order = {};
 
-        if (update_take_profit > 0 && has_update_take_profit) {
-            limit_order.take_profit = +update_take_profit;
+        if (take_profit > 0 && has_take_profit) {
+            limit_order.take_profit = +take_profit; // send positive take_profit to API
         }
 
-        if (update_stop_loss > 0 && has_update_stop_loss) {
-            limit_order.stop_loss = -update_stop_loss;
+        if (stop_loss > 0 && has_stop_loss) {
+            limit_order.stop_loss = -stop_loss; // send negative stop_loss to API
         }
 
         WS.contractUpdate(contract_id, limit_order);
+    }
+
+    @action.bound
+    onChangeContractUpdate(contract_id, { stop_loss, take_profit, has_stop_loss, has_take_profit } = {}) {
+        const i = this.getPositionIndexById(contract_id);
+
+        if (stop_loss !== undefined) {
+            this.positions[i].stop_loss = stop_loss;
+            this.contract_update_stop_loss = stop_loss;
+        }
+        if (take_profit !== undefined) {
+            this.positions[i].take_profit = take_profit;
+            this.contract_update_take_profit = take_profit;
+        }
+        if (has_stop_loss !== undefined) {
+            this.positions[i].has_stop_loss = has_stop_loss;
+            if (!has_stop_loss) this.validation_errors.contract_update_stop_loss = [];
+        }
+        if (has_take_profit !== undefined) {
+            this.positions[i].has_take_profit = has_take_profit;
+            if (!has_take_profit) this.validation_errors.contract_update_take_profit = [];
+        }
     }
 
     @action.bound

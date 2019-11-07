@@ -1,21 +1,21 @@
-import classNames              from 'classnames';
-import PropTypes               from 'prop-types';
-import React                   from 'react';
-import { CSSTransition }       from 'react-transition-group';
-import { NavLink }             from 'react-router-dom';
+import classNames                  from 'classnames';
+import PropTypes                   from 'prop-types';
+import React                       from 'react';
+import { CSSTransition }           from 'react-transition-group';
+import { NavLink }                 from 'react-router-dom';
 import {
     Button,
     Money,
-    UnderlyingIcon }           from 'deriv-components';
-import CurrencyUtils           from 'deriv-shared/utils/currency';
-import Shortcode               from 'Modules/Reports/Helpers/shortcode';
-import { localize }            from 'App/i18n';
-import Icon                    from 'Assets/icon.jsx';
-import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
-import ContractTypeCell        from './contract-type-cell.jsx';
-import { isMultiplier }        from './helpers';
-import ProgressSlider          from './ProgressSlider';
-import ResultOverlay           from './result-overlay.jsx';
+    UnderlyingIcon }               from 'deriv-components';
+import CurrencyUtils               from 'deriv-shared/utils/currency';
+import Shortcode                   from 'Modules/Reports/Helpers/shortcode';
+import { localize }                from 'App/i18n';
+import Icon                        from 'Assets/icon.jsx';
+import { PositionsCardLoader }     from 'App/Components/Elements/ContentLoader';
+import { isMultiplierContract }    from 'Stores/Modules/Contract/Helpers/multiplier';
+import ContractTypeCell            from './contract-type-cell.jsx';
+import ProgressSlider              from './ProgressSlider';
+import ResultOverlay               from './result-overlay.jsx';
 import TogglePositionsDrawerDialog from './toggle-positions-drawer-dialog.jsx';
 
 const PositionsDrawerCard = ({
@@ -24,6 +24,8 @@ const PositionsDrawerCard = ({
     currency,
     current_tick,
     indicative,
+    has_stop_loss,
+    has_take_profit,
     id,
     is_dark_theme,
     is_loading,
@@ -31,16 +33,20 @@ const PositionsDrawerCard = ({
     is_unsupported,
     is_valid_to_sell,
     profit_loss,
+    onChangeContractUpdate,
     onClickContractUpdate,
     onClickSell,
     onClickRemove,
     result,
     sell_price,
     status,
+    stop_loss,
+    take_profit,
     toggleUnsupportedContractModal,
     type,
     onMouseEnter,
     onMouseLeave,
+    validation_errors,
 }) => {
     const loader_el = (
         <div className='positions-drawer-card__content-loader'>
@@ -52,7 +58,7 @@ const PositionsDrawerCard = ({
     );
 
     const fallback_result = (profit_loss < 0) ? 'lost' : 'won';
-    const is_multiplier   = isMultiplier(contract_info.contract_type);
+    const is_multiplier   = isMultiplierContract(contract_info.contract_type);
 
     const contract_el = (
         <React.Fragment>
@@ -300,8 +306,15 @@ const PositionsDrawerCard = ({
                             primary
                         />
                         <TogglePositionsDrawerDialog
-                            limit_order={contract_info.limit_order}
-                            onClick={() => onClickContractUpdate(id)}
+                            currency={currency}
+                            contract_id={id}
+                            has_stop_loss={has_stop_loss}
+                            has_take_profit={has_take_profit}
+                            stop_loss={stop_loss}
+                            take_profit={take_profit}
+                            onClickContractUpdate={onClickContractUpdate}
+                            onChangeContractUpdate={onChangeContractUpdate}
+                            validation_errors={validation_errors}
                         />
                     </div>
                     :
@@ -333,6 +346,8 @@ PositionsDrawerCard.propTypes = {
     duration                      : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     duration_unit                 : PropTypes.string,
     exit_spot                     : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    has_stop_loss                 : PropTypes.bool,
+    has_take_profit               : PropTypes.bool,
     id                            : PropTypes.number,
     indicative                    : PropTypes.number,
     is_dark_theme                 : PropTypes.bool,
@@ -340,14 +355,19 @@ PositionsDrawerCard.propTypes = {
     is_sell_requested             : PropTypes.bool,
     is_unsupported                : PropTypes.bool,
     is_valid_to_sell              : PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
+    onChangeContractUpdate        : PropTypes.func,
+    onClickContractUpdate         : PropTypes.func,
     onClickRemove                 : PropTypes.func,
     onClickSell                   : PropTypes.func,
     profit_loss                   : PropTypes.number,
     result                        : PropTypes.string,
     sell_time                     : PropTypes.number,
     status                        : PropTypes.string,
+    stop_loss                     : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    take_profit                   : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     toggleUnsupportedContractModal: PropTypes.func,
     type                          : PropTypes.string,
+    validation_errors             : PropTypes.object,
 };
 
 export default PositionsDrawerCard;

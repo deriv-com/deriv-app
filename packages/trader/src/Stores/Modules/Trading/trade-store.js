@@ -121,12 +121,6 @@ export default class TradeStore extends BaseStore {
     @observable has_stop_loss = false;
     @observable has_take_profit = false;
 
-    // Multiplier contract update params
-    @observable update_stop_loss;
-    @observable update_take_profit;
-    @observable has_update_stop_loss = false;
-    @observable has_update_take_profit = false;
-
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
 

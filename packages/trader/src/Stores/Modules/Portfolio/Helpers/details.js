@@ -86,3 +86,21 @@ export const getDurationTime = (contract_info) => (
         :
         getDurationUnitValue(getDurationPeriod(contract_info))
 );
+
+export const getLimitOrder = (proposal) => {
+    const {
+        limit_order: {
+            stop_loss: {
+                order_amount: stop_loss_order_amount,
+            } = {},
+            take_profit: {
+                order_amount: take_profit_order_amount,
+            } = {},
+        },
+    } = proposal;
+
+    return {
+        stop_loss  : stop_loss_order_amount,
+        take_profit: take_profit_order_amount,
+    };
+};

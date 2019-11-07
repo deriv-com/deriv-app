@@ -1,4 +1,7 @@
 import PropTypes             from 'prop-types';
+import {
+    PropTypes as MobxPropTypes,
+}                            from 'mobx-react';
 import React, { useState }   from 'react';
 import { Checkbox, Popover } from 'deriv-components';
 import CurrencyUtils         from 'deriv-shared/utils/currency';
@@ -12,7 +15,7 @@ const InputWithCheckbox = ({
     defaultChecked,
     error_messages,
     is_single_currency,
-    is_negative_disabled = true,
+    is_negative_disabled,
     label,
     name,
     onChange,
@@ -78,15 +81,20 @@ const InputWithCheckbox = ({
 };
 
 InputWithCheckbox.propTypes = {
-    currency            : PropTypes.string,
-    defaultChecked      : PropTypes.bool,
-    is_negative_disabled: PropTypes.bool,
-    is_single_currency  : PropTypes.bool,
-    max_value           : PropTypes.number,
-    name                : PropTypes.string,
-    onChange            : PropTypes.func,
-    tooltip_label       : PropTypes.string,
-    value               : PropTypes.oneOfType([
+    className            : PropTypes.string,
+    classNameInlinePrefix: PropTypes.string,
+    classNameInput       : PropTypes.string,
+    classNamePrefix      : PropTypes.string,
+    currency             : PropTypes.string,
+    defaultChecked       : PropTypes.bool,
+    error_messages       : MobxPropTypes.arrayOrObservableArray,
+    is_negative_disabled : PropTypes.bool,
+    is_single_currency   : PropTypes.bool,
+    label                : PropTypes.string,
+    name                 : PropTypes.string,
+    onChange             : PropTypes.func,
+    tooltip_label        : PropTypes.string,
+    value                : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),

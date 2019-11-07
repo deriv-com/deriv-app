@@ -21,7 +21,6 @@ const TakeProfit = ({
             name='take_profit'
             onChange={onChange}
             tooltip_label={localize('Close the deal when my loss reaches this amount.')}
-            validation_errors={validation_errors}
             value={take_profit}
         />
     );

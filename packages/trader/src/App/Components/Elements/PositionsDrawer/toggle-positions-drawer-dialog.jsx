@@ -1,6 +1,8 @@
 import React                 from 'react';
+import PropTypes             from 'prop-types';
 import Icon                  from 'Assets/icon.jsx';
 import PositionsDrawerDialog from './positions-drawer-dialog.jsx';
+import ContractUpdateForm    from './contract-update-form.jsx';
 
 class TogglePositionsDrawerDialog extends React.PureComponent {
     constructor(props) {
@@ -38,15 +40,37 @@ class TogglePositionsDrawerDialog extends React.PureComponent {
                 <PositionsDrawerDialog
                     is_visible={this.state.is_visible}
                     left={this.state.left}
-                    limit_order={this.props.limit_order}
-                    onClick={this.props.onClick}
                     top={this.state.top}
                     toggle_ref={this.ref}
                     toggleDialog={this.toggleDialog}
-                />
+                >
+                    <ContractUpdateForm
+                        currency={this.props.currency}
+                        contract_id={this.props.contract_id}
+                        has_stop_loss={this.props.has_stop_loss}
+                        has_take_profit={this.props.has_take_profit}
+                        stop_loss={this.props.stop_loss}
+                        take_profit={this.props.take_profit}
+                        onChangeContractUpdate={this.props.onChangeContractUpdate}
+                        onClickContractUpdate={this.props.onClickContractUpdate}
+                        validation_errors={this.props.validation_errors}
+                    />
+                </PositionsDrawerDialog>
             </React.Fragment>
         );
     }
 }
+
+PropTypes.TogglePositionsDrawerDialog = {
+    currency              : PropTypes.string,
+    contract_id           : PropTypes.string,
+    has_stop_loss         : PropTypes.bool,
+    has_take_profit       : PropTypes.bool,
+    stop_loss             : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    take_profit           : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    onChangeContractUpdate: PropTypes.func,
+    onClickContractUpdate : PropTypes.func,
+    validation_errors     : PropTypes.object,
+};
 
 export default TogglePositionsDrawerDialog;

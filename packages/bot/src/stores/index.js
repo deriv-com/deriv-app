@@ -22,7 +22,7 @@ export default class RootStore {
         this.summary        = new SummaryStore(this);
         this.transactions   = new TransactionsStore(this);
         this.toolbar        = new ToolbarStore(this);
-        this.quick_strategy = new QuickStrategyStore();
+        this.quick_strategy = new QuickStrategyStore(this);
         this.run_panel      = new RunPanelStore(this);
 
         // Create a singleton class to share rootStore with scratch

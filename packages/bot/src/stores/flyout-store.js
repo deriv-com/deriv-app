@@ -4,10 +4,10 @@ import config                   from '../constants';
 import { translate }            from '../utils/lang/i18n';
 
 export default class FlyoutStore {
-    block_listeners = [];
+    block_listeners  = [];
     block_workspaces = [];
     flyout_min_width = 500;
-    options = {
+    options          = {
         css   : false,
         media : `${__webpack_public_path__}media/`, // eslint-disable-line
         move  : { scrollbars: false, drag: true, wheel: false },
@@ -210,6 +210,34 @@ export default class FlyoutStore {
 
         this.block_nodes = block_node;
         this.is_help_content = true;
+    }
+
+    /**
+     * Close the flyout on click outside itself or parent toolbox.
+     */
+    @action.bound
+    clickOutsideFlyoutCallback(event) {
+        if (!this.is_visible || !Blockly.derivWorkspace) {
+            return;
+        }
+
+        const toolbox         = Blockly.derivWorkspace.toolbox_; // eslint-disable-line
+        const is_flyout_click = event.path.some(el => el.classList && el.classList.contains('flyout'));
+        const isToolboxClick  = () => toolbox.HtmlDiv.contains(event.target);
+
+        if (!is_flyout_click && !isToolboxClick()) {
+            toolbox.clearSelection();
+        }
+    }
+
+    @action.bound
+    onMount() {
+        window.addEventListener('click', this.clickOutsideFlyoutCallback);
+    }
+
+    @action.bound
+    onUnmount() {
+        window.removeEventListener('click', this.clickOutsideFlyoutCallback);
     }
 
     // eslint-disable-next-line

@@ -27,14 +27,6 @@ export const scratchWorkspaceInit = async () => {
         Blockly.derivWorkspace.blocksXmlStr = main_xml;
         Blockly.derivWorkspace.toolboxXmlStr = toolbox_xml;
 
-        // Ensure flyout closes on click in workspace.
-        const el_blockly_svg = document.querySelector('.blocklySvg');
-        document.addEventListener('click', (event) => {
-            if (el_blockly_svg.contains(event.target)) {
-                Blockly.derivWorkspace.toolbox_.clearSelection(); // eslint-disable-line
-            }
-        });
-        
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), workspace);
         Blockly.derivWorkspace.clearUndo();
         
@@ -44,8 +36,6 @@ export const scratchWorkspaceInit = async () => {
             el_scratch_div.style.width  = `${el_app_contents.offsetWidth}px`;
             el_scratch_div.style.height = `${el_app_contents.offsetHeight - toolbar_height}px`;
             Blockly.svgResize(workspace);
-            // eslint-disable-next-line no-underscore-dangle
-            workspace.toolbox_.flyout_.position();
         };
 
         window.addEventListener('resize', onWorkspaceResize);

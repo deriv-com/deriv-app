@@ -28,6 +28,7 @@ export default class QuickStrategyStore {
 
     @action.bound
     toggleStrategyModal() {
+        this.root_store.flyout.setVisibility(false);
         this.is_strategy_modal_open = !this.is_strategy_modal_open;
     }
 

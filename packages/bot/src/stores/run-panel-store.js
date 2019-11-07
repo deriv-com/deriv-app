@@ -60,8 +60,6 @@ export default class RunPanelStore {
         const { core , contract_card } = this.root_store;
         const { client } = core;
 
-        this.registerBotListeners();
-
         if (!client.is_logged_in) {
             this.showLoginDialog();
             return;
@@ -71,6 +69,8 @@ export default class RunPanelStore {
             this.showRealAccountDialog();
             return;
         }
+
+        this.registerBotListeners();
 
         const blocks_in_workspace = Blockly.derivWorkspace.getAllBlocks();
         const { mandatoryMainBlocks } = config;

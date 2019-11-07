@@ -39,6 +39,9 @@ export default class BaseStore {
     clientInitDisposer = null;
     client_init_listener = null;
 
+    networkStatusChangeDisposer = null;
+    network_status_change_listener = null;
+
     @observable partial_fetch_time = 0;
 
     /**
@@ -366,6 +369,26 @@ export default class BaseStore {
     }
 
     @action.bound
+    onNetworkStatusChange(listener) {
+        this.networkStatusChangeDisposer = reaction(
+            () => this.root_store.common.is_network_online,
+            (is_online) => {
+                try {
+                    this.network_status_change_listener(is_online);
+                } catch (error) {
+                    // there is no listener currently active. so we can just ignore the error raised from treating
+                    // a null object as a function. Although, in development mode, we throw a console error.
+                    if (!isProduction()) {
+                        console.error(error); // eslint-disable-line
+                    }
+                }
+            },
+        );
+
+        this.network_status_change_listener = listener;
+    }
+
+    @action.bound
     disposeSwitchAccount() {
         if (typeof this.switchAccountDisposer === 'function') {
             this.switchAccountDisposer();
@@ -390,10 +413,19 @@ export default class BaseStore {
     }
 
     @action.bound
+    disposeNetworkStatusChange() {
+        if (typeof this.networkStatusChangeDisposer === 'function') {
+            this.networkStatusChangeDisposer();
+        }
+        this.network_status_change_listener = null;
+    }
+
+    @action.bound
     onUnmount() {
         this.disposeSwitchAccount();
         this.disposeLogout();
         this.disposeClientInit();
+        this.disposeNetworkStatusChange();
     }
 
     @action.bound

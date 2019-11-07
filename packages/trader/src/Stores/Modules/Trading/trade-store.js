@@ -739,6 +739,12 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    networkStatusChangeListener(is_online) {
+        this.setTradeStatus(is_online);
+        return Promise.resolve();
+    }
+
+    @action.bound
     resetErrorServices() {
         this.root_store.ui.toggleServicesErrorModal(false);
     }
@@ -748,6 +754,7 @@ export default class TradeStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onLogout(this.logoutListener);
         this.onClientInit(this.clientInitListener);
+        this.onNetworkStatusChange(this.networkStatusChangeListener);
         this.setChartStatus(true);
         runInAction(async() => {
             this.is_trade_component_mounted = true;
@@ -791,6 +798,7 @@ export default class TradeStore extends BaseStore {
         this.disposeSwitchAccount();
         this.disposeLogout();
         this.disposeClientInit();
+        this.disposeNetworkStatusChange();
         this.is_trade_component_mounted = false;
         // TODO: Find a more elegant solution to unmount contract-trade-store
         this.root_store.modules.contract_trade.onUnmount();

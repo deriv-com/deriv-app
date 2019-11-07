@@ -359,7 +359,7 @@ export default class TradeStore extends BaseStore {
             this.main_barrier = main_barrier;
             // this.main_barrier.updateBarrierShade(true, contract_type);
         } else { this.main_barrier = null; }
-    }
+    };
 
     @action.bound
     onPurchase(proposal_id, price, type) {
@@ -723,6 +723,13 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    preSwitchAccountListener() {
+        this.clearContracts();
+
+        return Promise.resolve();
+    }
+
+    @action.bound
     logoutListener() {
         this.should_refresh_active_symbols = true;
         this.clearContracts();
@@ -751,6 +758,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onMount() {
+        this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onLogout(this.logoutListener);
         this.onClientInit(this.clientInitListener);
@@ -795,6 +803,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onUnmount() {
+        this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
         this.disposeLogout();
         this.disposeClientInit();

@@ -185,7 +185,7 @@ export default class PortfolioStore extends BaseStore {
             // If unable to sell due to error, give error via pop up if not in contract mode
             const i = this.getPositionIndexById(response.echo_req.sell);
             this.positions[i].is_sell_requested = false;
-            
+
             // invalidToken error will handle in socket-general.js
             if (response.error.code !== 'InvalidToken') {
                 this.root_store.common.services_error = {
@@ -266,6 +266,13 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
+    preSwitchAccountListener () {
+        this.clearTable();
+
+        return Promise.resolve();
+    }
+
+    @action.bound
     logoutListener() {
         this.clearTable();
         return Promise.resolve();
@@ -273,6 +280,7 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     onMount() {
+        this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onLogout(this.logoutListener);
         if (this.positions.length === 0) {
@@ -291,6 +299,7 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     onUnmount() {
+        this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
         this.disposeLogout();
         // keep data and connections for portfolio drawer on desktop

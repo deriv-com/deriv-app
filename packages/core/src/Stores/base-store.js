@@ -30,6 +30,9 @@ export default class BaseStore {
     @observable
     validation_rules = {};
 
+    preSwitchAccountDisposer = null;
+    pre_switch_account_listener = null;
+
     switchAccountDisposer = null;
     switch_account_listener = null;
 
@@ -315,6 +318,33 @@ export default class BaseStore {
     }
 
     @action.bound
+    onPreSwitchAccount(listener) {
+        this.preSwitchAccountDisposer = when(
+            () => this.root_store.client.pre_switch_broadcast,
+            async () => {
+                try {
+                    const result = this.pre_switch_account_listener();
+                    if (result && result.then && typeof result.then === 'function') {
+                        result.then(() => {
+                            this.root_store.client.setPreSwitchAccount(false);
+                            this.onPreSwitchAccount(this.pre_switch_account_listener);
+                        });
+                    } else {
+                        throw new Error('Switching account listeners are required to return a promise.');
+                    }
+                } catch (error) {
+                    // there is no listener currently active. so we can just ignore the error raised from treating
+                    // a null object as a function. Although, in development mode, we throw a console error.
+                    if (!isProduction()) {
+                        console.error(error); // eslint-disable-line
+                    }
+                }
+            },
+        );
+        this.pre_switch_account_listener = listener;
+    }
+
+    @action.bound
     onLogout(listener) {
         this.logoutDisposer = when(
             () => this.root_store.client.has_logged_out,
@@ -389,6 +419,14 @@ export default class BaseStore {
     }
 
     @action.bound
+    disposePreSwitchAccount() {
+        if (typeof this.preSwitchAccountDisposer === 'function') {
+            this.preSwitchAccountDisposer();
+        }
+        this.pre_switch_account_listener = null;
+    }
+
+    @action.bound
     disposeSwitchAccount() {
         if (typeof this.switchAccountDisposer === 'function') {
             this.switchAccountDisposer();
@@ -422,6 +460,7 @@ export default class BaseStore {
 
     @action.bound
     onUnmount() {
+        this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
         this.disposeLogout();
         this.disposeClientInit();

@@ -205,13 +205,7 @@ class AccountSwitcher extends React.Component {
     async doSwitch(loginid) {
         this.props.toggle();
         if (this.props.account_loginid === loginid) return;
-        // await this.props.clearPositions();
-        // await this.props.clearContracts();
         await this.props.switchAccount(loginid);
-
-        /* if (this.props.has_error) {
-            this.props.clearError();
-        } */
     }
 
     get can_manage_currency () {
@@ -403,11 +397,7 @@ AccountSwitcher.propTypes = {
     account_list          : PropTypes.array,
     account_loginid       : PropTypes.string,
     accounts              : PropTypes.object,
-    // clearContracts        : PropTypes.func,
-    // clearError            : PropTypes.func,
-    // clearPositions        : PropTypes.func,
     display               : PropTypes.string,
-    // has_error             : PropTypes.bool,
     has_fiat              : PropTypes.bool,
     has_mt5_login         : PropTypes.bool,
     hideDialog            : PropTypes.func,
@@ -427,7 +417,7 @@ AccountSwitcher.propTypes = {
 };
 
 const account_switcher = withRouter(connect(
-    ({ client, ui/* , modules */ }) => ({
+    ({ client, ui }) => ({
         account_loginid       : client.loginid,
         accounts              : client.accounts,
         has_fiat              : client.has_fiat,
@@ -445,10 +435,6 @@ const account_switcher = withRouter(connect(
         switchAccount         : client.switchAccount,
         logoutClient          : client.logout,
         updateMt5LoginList    : client.updateMt5LoginList,
-        // clearError            : modules.contract_trade.clearError,
-        // has_error             : modules.contract_trade.has_error,
-        // clearPositions        : modules.portfolio.clearTable,
-        // clearContracts        : modules.trade.clearContracts,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup : ui.openRealAccountSignup,
         toggleAccountsDialog  : ui.toggleAccountsDialog,

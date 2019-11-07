@@ -31,6 +31,7 @@ export default class ClientStore extends BaseStore {
     @observable upgrade_info;
     @observable email;
     @observable accounts                       = {};
+    @observable pre_switch_broadcast           = false;
     @observable switched                       = '';
     @observable switch_broadcast               = false;
     @observable initialized_broadcast          = false;
@@ -539,6 +540,7 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     async switchAccount(loginid) {
+        this.setPreSwitchAccount(true);
         this.root_store.ui.removeNotifications();
         this.root_store.ui.removeAllNotificationMessages();
         this.setSwitched(loginid);
@@ -715,6 +717,11 @@ export default class ClientStore extends BaseStore {
             icon : account_type.toLowerCase(), // TODO: display the icon
             title: account_type.toLowerCase() === 'virtual' ? localize('DEMO') : account_type,
         };
+    }
+
+    @action.bound
+    setPreSwitchAccount(is_pre_switch) {
+        this.pre_switch_broadcast = is_pre_switch;
     }
 
     @action.bound
@@ -952,7 +959,7 @@ export default class ClientStore extends BaseStore {
 
             runInAction(() => {
                 const account_list = (authorize_response.authorize || {}).account_list;
-                this.upgradeable_landing_companies = authorize_response.upgradeable_landing_companies
+                this.upgradeable_landing_companies = authorize_response.upgradeable_landing_companies;
                 if (account_list && ObjectUtils.isEmptyObject(this.accounts)) {
                     this.storeClientAccounts(obj_params, account_list);
                 }

@@ -28,7 +28,7 @@
             width: 100%;
             display: flex;
             justify-content: space-between;
-            margin: 14px 0;
+            margin: 16px 0;
 
             > * {
                 justify-content: center;
@@ -73,5 +73,10 @@
         padding: 3px;
         margin: 2px;
         background-color: var(--general-section-1);
+    }
+    &__duration {
+        &-dropdown {
+            width: 194px !important;
+        }
     }
 }

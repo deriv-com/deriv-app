@@ -76,20 +76,20 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         ];
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
-            this.updateBarrierInputs(true, event.group);
+            this.updateBarrierInputs(event.group);
             this.enforceSingleBarrierType('BARRIERTYPE_LIST', true);
-            this.updateDurationInput(true, event.group);
+            this.updateDurationInput(event.group);
             this.updatePredictionInput();
         } else if (this.selected_symbol && event.type === Blockly.Events.BLOCK_CHANGE) {
             if (event.name === 'DURATIONTYPE_LIST') {
                 // Update barrier suggested values when changing duration unit.
-                this.updateBarrierInputs(true, event.group);
+                this.updateBarrierInputs(event.group);
                 this.enforceSingleBarrierType('BARRIERTYPE_LIST', true);
                 // Update duration minimum amount when changing duration unit.
-                this.updateDurationInput(false, event.group);
+                this.updateDurationInput(event.group);
             } else if (event.name === 'BARRIERTYPE_LIST' || event.name === 'SECONDBARRIERTYPE_LIST') {
                 // Update barrier suggested values when changing barrier type.
-                this.updateBarrierInputs(false, event.group);
+                this.updateBarrierInputs(event.group);
                 this.enforceSingleBarrierType(event.name, false);
             } else if (
                 event.name === 'SYMBOL_LIST' ||
@@ -99,7 +99,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 // Update durations, barriers, and prediction when changing the trade type.
                 this.updateBarrierInputs(true);
                 this.enforceSingleBarrierType('BARRIERTYPE_LIST', true);
-                this.updateDurationInput(true, event.group);
+                this.updateDurationInput(event.group);
                 this.updatePredictionInput();
             }
         }
@@ -159,8 +159,9 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
         Blockly.Events.enable();
     },
-    updateDurationInput(should_use_default_unit, event_group) {
-        const { contracts_for } = ApiHelpers.instance;
+    updateDurationInput(event_group) {
+        const should_use_default_unit    = event_group !== 'load';
+        const { contracts_for }          = ApiHelpers.instance;
 
         contracts_for.getDurations(this.selected_symbol, this.selected_trade_type).then(durations => {
             const duration_field_dropdown = this.getField('DURATIONTYPE_LIST');

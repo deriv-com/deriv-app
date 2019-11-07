@@ -6,7 +6,7 @@
     <variable type="" id="[w@pzvBAlteju[8,x#hD" islocal="false" iscloud="false">dalembert:tradeAgain</variable>
     <variable type="" id="ZGpA`4foih2T_0.]xE66" islocal="false" iscloud="false">dalembert:expectedProfit</variable>
     <variable type="" id="o((rBg*rL/qm;RU%PM7_" islocal="false" iscloud="false">dalembert:size</variable>
-    <variable type="" id="-PgUuax5KQf1zn42iCd~" islocal="false" iscloud="false">dalembert:amount</variable>
+    <variable type="" id="-PgUuax5KQf1zn42iCd~" islocal="false" iscloud="false">dalembert:initialStake</variable>
     <variable type="" id="R2yOKK{FmV|TULnU8.,[" islocal="false" iscloud="false">dalembert:profitUnits</variable>
     <variable type="" id="%o8CQE,uNdg`rmRL:-ca" islocal="false" iscloud="false">dalembert:maximumLoss</variable>
     <variable type="" id="%E[W9r:QZ/2?Y?7zpL(z" islocal="false" iscloud="false">won</variable>
@@ -23,8 +23,8 @@
         <field name="SYMBOL_LIST">WLDAUD</field>
         <next>
           <block type="trade_definition_tradetype" id="1JDTS0%^EFc?!72k#Zzm" deletable="false" movable="false">
-            <field name="TRADETYPECAT_LIST">callput</field>
-            <field name="TRADETYPE_LIST">callput</field>
+            <field name="TRADE_TYPE_CAT_LIST">callput</field>
+            <field name="TRADE_TYPE_LIST">callput</field>
             <next>
               <block type="trade_definition_contracttype" id="y_:V!ihNraBJT1oV/z4H" deletable="false" movable="false">
                 <field name="TYPE_LIST">both</field>
@@ -60,9 +60,9 @@
     <statement name="SUBMARKET">
       <block type="trade_definition_tradeoptions" id="m$azlE5x%ef8fEy,u;,,">
         <mutation has_first_barrier="false" has_second_barrier="false" has_prediction="false"></mutation>
-        <field name="DURATIONTYPE_LIST">t</field>
+        <field name="DURATION_TYPE_LIST">t</field>
         <field name="CURRENCY_LIST">USD</field>
-        <value name="DURATION">
+        <value name="DURATION" strategy_value="duration">
           <shadow type="math_number" id="nxkA?4sZ^WGvnm2_$(^~">
             <field name="NUM">5</field>
           </shadow>
@@ -183,7 +183,7 @@
                     <field name="OP">EQ</field>
                     <value name="A">
                       <block type="variables_get" id="V/uwxoFd6yyopbz{[#Uh">
-                        <field name="VAR" id="-PgUuax5KQf1zn42iCd~" variabletype="">dalembert:amount</field>
+                        <field name="VAR" id="-PgUuax5KQf1zn42iCd~" variabletype="">dalembert:initialStake</field>
                       </block>
                     </value>
                     <value name="B">
@@ -193,7 +193,7 @@
                 </value>
                 <statement name="DO0">
                   <block type="variables_set" id="mq}/@a{Qc-KeTxmcqFjU">
-                    <field name="VAR" id="-PgUuax5KQf1zn42iCd~" variabletype="">dalembert:amount</field>
+                    <field name="VAR" id="-PgUuax5KQf1zn42iCd~" variabletype="">dalembert:initialStake</field>
                     <value name="VALUE" strategy_value="stake">
                       <block type="text_prompt_ext" id="g@u0I0vK4IkO_rsxxo8R">
                         <field name="TYPE">NUMBER</field>
@@ -309,7 +309,7 @@
             <field name="NUM">1</field>
           </shadow>
           <block type="variables_get" id="T4[Q(H?!GZT.5qxN/Wsz">
-            <field name="VAR" id="-PgUuax5KQf1zn42iCd~" variabletype="">dalembert:amount</field>
+            <field name="VAR" id="-PgUuax5KQf1zn42iCd~" variabletype="">dalembert:initialStake</field>
           </block>
         </value>
       </block>

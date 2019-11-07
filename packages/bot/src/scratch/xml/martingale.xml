@@ -6,7 +6,7 @@
     <variable type="" id="6G^6o^Ic@rjF|sHv*m.6" islocal="false" iscloud="false">martingale:tradeAgain</variable>
     <variable type="" id="*p5|Lkk9Q^ZuPBQ-48g2" islocal="false" iscloud="false">martingale:expectedProfit</variable>
     <variable type="" id="ipD5?_dQ1Zkvf%v|[?DQ" islocal="false" iscloud="false">martingale:size</variable>
-    <variable type="" id="[$B]vBH,~wrN`PUt5m/f" islocal="false" iscloud="false">martingale:amount</variable>
+    <variable type="" id="[$B]vBH,~wrN`PUt5m/f" islocal="false" iscloud="false">martingale:initialStake</variable>
     <variable type="" id="a1BTYNHC?_yR4sfvNJ7N" islocal="false" iscloud="false">martingale:maximumLoss</variable>
     <variable type="" id="_(;)ob:l.sc|#L7kv7Z6" islocal="false" iscloud="false">won</variable>
     <variable type="" id="p#@Pr/Y.sKueWX#oRSPl" islocal="false" iscloud="false">total profit</variable>
@@ -22,8 +22,8 @@
         <field name="SYMBOL_LIST">WLDAUD</field>
         <next>
           <block type="trade_definition_tradetype" id="4BIa?F@i2*Mlrd:{G,SF" deletable="false" movable="false">
-            <field name="TRADETYPECAT_LIST">callput</field>
-            <field name="TRADETYPE_LIST">callput</field>
+            <field name="TRADE_TYPE_CAT_LIST">callput</field>
+            <field name="TRADE_TYPE_LIST">callput</field>
             <next>
               <block type="trade_definition_contracttype" id="kujUv]]-mtF@Na3q/.(g" deletable="false" movable="false">
                 <field name="TYPE_LIST">both</field>
@@ -59,9 +59,9 @@
     <statement name="SUBMARKET">
       <block type="trade_definition_tradeoptions" id="8=uN{72G(CSbw2LN=h?0">
         <mutation has_first_barrier="false" has_second_barrier="false" has_prediction="false"></mutation>
-        <field name="DURATIONTYPE_LIST">t</field>
+        <field name="DURATION_TYPE_LIST">m</field>
         <field name="CURRENCY_LIST">USD</field>
-        <value name="DURATION">
+        <value name="DURATION" strategy_value="duration">
           <shadow type="math_number" id="U0Z*M,J@5n%2!YcjTbSU">
             <field name="NUM">5</field>
           </shadow>
@@ -182,7 +182,7 @@
                     <field name="OP">EQ</field>
                     <value name="A">
                       <block type="variables_get" id="{:C[v0vezVot0F{#8z#C">
-                        <field name="VAR" id="[$B]vBH,~wrN`PUt5m/f" variabletype="">martingale:amount</field>
+                        <field name="VAR" id="[$B]vBH,~wrN`PUt5m/f" variabletype="">martingale:initialStake</field>
                       </block>
                     </value>
                     <value name="B">
@@ -192,7 +192,7 @@
                 </value>
                 <statement name="DO0">
                   <block type="variables_set" id="BEp45H17VcN)bNjaC13X">
-                    <field name="VAR" id="[$B]vBH,~wrN`PUt5m/f" variabletype="">martingale:amount</field>
+                    <field name="VAR" id="[$B]vBH,~wrN`PUt5m/f" variabletype="">martingale:initialStake</field>
                     <value name="VALUE" strategy_value="stake">
                       <block type="text_prompt_ext" id="eDI}~Q?gz;|Mee%Eio6[">
                         <field name="TYPE">NUMBER</field>
@@ -281,7 +281,7 @@
             <field name="NUM">1</field>
           </shadow>
           <block type="variables_get" id="w$Dd.MXXRvJmyJuC~XUu">
-            <field name="VAR" id="[$B]vBH,~wrN`PUt5m/f" variabletype="">martingale:amount</field>
+            <field name="VAR" id="[$B]vBH,~wrN`PUt5m/f" variabletype="">martingale:initialStake</field>
           </block>
         </value>
       </block>

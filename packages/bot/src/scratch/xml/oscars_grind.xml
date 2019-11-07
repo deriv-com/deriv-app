@@ -6,7 +6,7 @@
     <variable type="" id="B]-9VFrM)n:-K5Y;qoag" islocal="false" iscloud="false">oscarsGrind:tradeAgain</variable>
     <variable type="" id="+lQ]WrF1Y3Wvit?DOdgu" islocal="false" iscloud="false">oscarsGrind:expectedProfit</variable>
     <variable type="" id="V0OvvcA:RnlA|:N~#`d." islocal="false" iscloud="false">oscarsGrind:size</variable>
-    <variable type="" id="AsrkUSs=QxLDd%5XEYj/" islocal="false" iscloud="false">oscarsGrind:amount</variable>
+    <variable type="" id="AsrkUSs=QxLDd%5XEYj/" islocal="false" iscloud="false">oscarsGrind:initialStake</variable>
     <variable type="" id="~CU8[xGLOd;e[Y%Hr57I" islocal="false" iscloud="false">oscarsGrind:profitUnits</variable>
     <variable type="" id="x`,%}bI1vC`O(k3uhVR_" islocal="false" iscloud="false">oscarsGrind:maximumLoss</variable>
     <variable type="" id="1yytTC@,d]OVGl$z=-Dp" islocal="false" iscloud="false">won</variable>
@@ -23,8 +23,8 @@
         <field name="SYMBOL_LIST">WLDAUD</field>
         <next>
           <block type="trade_definition_tradetype" id="U;l%?]:_]T6^CHBs5rd5" deletable="false" movable="false">
-            <field name="TRADETYPECAT_LIST">callput</field>
-            <field name="TRADETYPE_LIST">callput</field>
+            <field name="TRADE_TYPE_CAT_LIST">callput</field>
+            <field name="TRADE_TYPE_LIST">callput</field>
             <next>
               <block type="trade_definition_contracttype" id="ylkrZy.qZGsh(vr]U4GE" deletable="false" movable="false">
                 <field name="TYPE_LIST">both</field>
@@ -60,9 +60,9 @@
     <statement name="SUBMARKET">
       <block type="trade_definition_tradeoptions" id="ZpUp_-/i=,1arU4#Y^)f">
         <mutation has_first_barrier="false" has_second_barrier="false" has_prediction="false"></mutation>
-        <field name="DURATIONTYPE_LIST">t</field>
+        <field name="DURATION_TYPE_LIST">t</field>
         <field name="CURRENCY_LIST">USD</field>
-        <value name="DURATION">
+        <value name="DURATION" strategy_value="duration">
           <shadow type="math_number" id="H`aNGd#ZP6[RMNz-a,}1">
             <field name="NUM">5</field>
           </shadow>
@@ -183,7 +183,7 @@
                     <field name="OP">EQ</field>
                     <value name="A">
                       <block type="variables_get" id="=WE-EmUekSE)yD=oQ_nC">
-                        <field name="VAR" id="AsrkUSs=QxLDd%5XEYj/" variabletype="">oscarsGrind:amount</field>
+                        <field name="VAR" id="AsrkUSs=QxLDd%5XEYj/" variabletype="">oscarsGrind:initialStake</field>
                       </block>
                     </value>
                     <value name="B">
@@ -193,7 +193,7 @@
                 </value>
                 <statement name="DO0">
                   <block type="variables_set" id="K$RfuYH6fHK~K1@fM4FQ">
-                    <field name="VAR" id="AsrkUSs=QxLDd%5XEYj/" variabletype="">oscarsGrind:amount</field>
+                    <field name="VAR" id="AsrkUSs=QxLDd%5XEYj/" variabletype="">oscarsGrind:initialStake</field>
                     <value name="VALUE" strategy_value="stake">
                       <block type="text_prompt_ext" id="A]252OG(/WDV@*nn4PX$">
                         <field name="TYPE">NUMBER</field>
@@ -309,7 +309,7 @@
             <field name="NUM">1</field>
           </shadow>
           <block type="variables_get" id="ia@8pNS_b9f:sUA!V/4I">
-            <field name="VAR" id="AsrkUSs=QxLDd%5XEYj/" variabletype="">oscarsGrind:amount</field>
+            <field name="VAR" id="AsrkUSs=QxLDd%5XEYj/" variabletype="">oscarsGrind:initialStake</field>
           </block>
         </value>
       </block>

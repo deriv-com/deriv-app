@@ -23,16 +23,22 @@ module.exports = async ({ config, mode }) => {
         ],
     });
 
-    config.module.rules.push({
-        test: /\.stories\.js?$/,
-        loaders: [
-            {
-                loader: require.resolve('@storybook/addon-storysource/loader'),
-                options: { parser: 'javascript' },
-            },
-        ],
-        enforce: 'pre',
-    });
+    // config.module.rules.push({
+    //     test: /\.scss$/,
+    //     use: ['style-loader', 'css-loader', 'sass-loader'],
+    //     include: path.resolve(__dirname, '../src/components/**/'),
+    // });
+
+    // config.module.rules.push({
+    //     test: /\.stories\.js?$/,
+    //     loaders: [
+    //         {
+    //             loader: require.resolve('@storybook/source-loader'),
+    //             options: { parser: 'javascript' },
+    //         },
+    //     ],
+    //     enforce: 'pre',
+    // });
 
     config.module.rules.push({
         resolve: {

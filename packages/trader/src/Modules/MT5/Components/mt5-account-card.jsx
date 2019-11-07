@@ -92,8 +92,8 @@ const MT5AccountCard = ({
                 <div className='mt5-account-card__manage'>
                     <Button
                         onClick={onClickFund}
-                        className='btn--secondary--default'
                         type='button'
+                        secondary
                     >
                         {type.category === 'real' &&
                         <Localize i18n_default_text='Fund transfer' />
@@ -104,8 +104,8 @@ const MT5AccountCard = ({
                     </Button>
                     <Button
                         onClick={ () => { onPasswordManager(existing_data.login, title); } }
-                        className='btn--secondary--default'
                         type='button'
+                        secondary
                     >
                         <Localize i18n_default_text='Password' />
                     </Button>
@@ -137,6 +137,7 @@ const MT5AccountCard = ({
                     className='mt5-account-card__account-selection mt5-account-card__account-selection--primary'
                     onClick={() => { onSelectAccount(type); }}
                     type='button'
+                    primary
                 >
                     <Localize i18n_default_text='Create account' />
                 </Button>

@@ -57,9 +57,10 @@ class SendEmailTemplate extends React.Component {
                     <h1 className='send-email-template__title'>{localize('We\'ve sent you an email')}</h1>
                     <p className='send-email-template__subtitle'>{this.props.subtitle}</p>
                     <Button
-                        className='btn--secondary send-email-template__btn'
+                        className='send-email-template__btn'
                         onClick={this.onClickEmailNotReceived}
                         text={localize('Didn\'t receive the email?')}
+                        tertiary
                     />
                 </div>
                 {
@@ -70,11 +71,12 @@ class SendEmailTemplate extends React.Component {
                         </div>
                         <div className='send-email-template__cta'>
                             <Button
-                                className='btn--primary--default send-email-template__cta-btn'
+                                className='send-email-template__cta-btn'
                                 is_disabled={is_resend_btn_disabled}
                                 has_effect
                                 text={resend_email_btn_text}
                                 onClick={this.onClickResendEmail}
+                                primary
                             />
                         </div>
                     </>

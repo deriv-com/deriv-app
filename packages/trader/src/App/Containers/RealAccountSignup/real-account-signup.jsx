@@ -16,7 +16,7 @@ import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
 const ErrorModal = ({ message }) => (
-    <React.Fragment>
+    <div className='account-wizard--error'>
         <IconDuplicate />
         <h1><Localize i18n_default_text='Whoops!' /></h1>
         <p>
@@ -25,18 +25,17 @@ const ErrorModal = ({ message }) => (
         <a
             href='https://www.deriv.com/help-centre/'
             type='button'
-            className='btn btn--primary--default'
+            className='btn btn--primary btn__medium'
             target='_blank'
             rel='noopener noreferrer'
         >
-            {/* TODO: the fontsize is incorrectly overriden somewhere, find the overriding class and remove it */}
-            <span className='btn__text' style={{ fontSize: '1.4rem' }}>
+            <span className='btn__text'>
                 <Localize
                     i18n_default_text='Go To Help Centre'
                 />
             </span>
         </a>
-    </React.Fragment>
+    </div>
 );
 
 const LoadingModal = () => <Loading is_fullscreen={false} />;
@@ -99,6 +98,13 @@ class RealAccountSignup extends Component {
                 },
             ],
         };
+    }
+
+    get modal_height() {
+        const { currency, has_real_account } = this.props;
+        if (!currency)                    return '688px'; // Set currency modal
+        if (has_real_account && currency) return '702px'; // Add or manage account modal
+        return '740px'; // Account wizard modal
     }
 
     get labels () {
@@ -193,17 +199,9 @@ class RealAccountSignup extends Component {
     };
 
     render() {
-        const {
-            available_crypto_currencies,
-            can_change_fiat_currency,
-            has_real_account,
-            is_real_acc_signup_on,
-        } = this.props;
-
-        const title  = this.labels[this.active_modal_index];
-        const Body   = this.state.modal_content[this.active_modal_index].value;
-        // We need to pass height since we add Scrollbars to modal content
-        const height = (available_crypto_currencies.length !== 0 && can_change_fiat_currency) || !has_real_account ? '648px' : '355px';
+        const { is_real_acc_signup_on } = this.props;
+        const title = this.labels[this.active_modal_index];
+        const Body  = this.state.modal_content[this.active_modal_index].value;
 
         return (
             <Modal
@@ -216,8 +214,8 @@ class RealAccountSignup extends Component {
                 has_close_icon={this.active_modal_index < 2 || this.active_modal_index === 5}
                 title={title}
                 toggleModal={this.closeModal}
-                height={height}
-                width='900px'
+                height={this.modal_height}
+                width='904px'
             >
                 <Body />
             </Modal>

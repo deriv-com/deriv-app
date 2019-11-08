@@ -13,6 +13,7 @@ import './gesture';
 import './icon';
 import './procedures';
 import './toolbox';
+import './trashcan';
 import './variable_map';
 import './variables';
 import './workspace_audio';

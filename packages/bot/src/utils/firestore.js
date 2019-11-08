@@ -5,7 +5,7 @@ import { message_types } from '../constants/messages';
 
 const firestore = (() => {
 
-    let db, users, runs, doc_id, server_time;
+    let db, users, doc_id, server_time;
 
     const init = (root_store) => {
         try {
@@ -23,28 +23,27 @@ const firestore = (() => {
 
             db = firebase.firestore();
             users = db.collection('Users');
-            runs = users.doc(client.loginid).collection('Runs');
 
             reaction(
                 () => run_panel.is_running,
                 () => run_panel.is_running ?
                     onRunBot(client.loginid) :
-                    onStopBot()
+                    onStopBot(client.loginid)
             );
 
             reaction(
                 () => s.summary.number_of_runs,
-                () => onSummaryChanged(s.summary)
+                () => onSummaryChanged(client.loginid, s.summary)
             );
 
             reaction(
                 () => transactions.contracts,
-                () => onTransactionClosed(transactions.contracts)
+                () => onTransactionClosed(client.loginid,transactions.contracts)
             );
 
             reaction(
                 () => journal.messages,
-                () => onErrorHappened(journal.messages)
+                () => onErrorHappened(client.loginid, journal.messages)
             );
         } catch (error) {
             console.warn('Error initializing firestore ', error); // eslint-disable-line no-console
@@ -55,7 +54,7 @@ const firestore = (() => {
         try {
             const start_time = server_time.unix();
             const strategy = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.derivWorkspace));
-            runs.add({
+            users.doc(login_id).collection('Runs').add({
                 start_time,
                 account_id: login_id,
                 xml       : strategy,
@@ -72,9 +71,9 @@ const firestore = (() => {
         }
     };
 
-    const onStopBot = () => {
+    const onStopBot = (login_id) => {
         try {
-            runs.doc(doc_id).update({
+            users.doc(login_id).collection('Runs').doc(doc_id).update({
                 end_time: server_time.unix(),
             });
         } catch (error) {
@@ -82,10 +81,10 @@ const firestore = (() => {
         }
     };
 
-    const onSummaryChanged = (summary) => {
+    const onSummaryChanged = (login_id, summary) => {
         try {
             if (summary) {
-                runs.doc(doc_id).collection('Summaries').add({
+                users.doc(login_id).collection('Runs').doc(doc_id).collection('Summaries').add({
                     lost_contracts: summary.lost_contracts,
                     number_of_runs: summary.number_of_runs,
                     total_profit  : summary.total_profit,
@@ -100,11 +99,11 @@ const firestore = (() => {
         }
     };
 
-    const onTransactionClosed = (contracts) => {
+    const onTransactionClosed = (login_id,contracts) => {
         try {
             const contract = contracts.length > 0 && contracts[0];
             if (contract && contract.is_completed) {
-                runs.doc(doc_id).collection('Transactions').add({
+                users.doc(login_id).collection('Runs').doc(doc_id).collection('Transactions').add({
                     buy_price    : contract.buy_price,
                     contract_type: contract.contract_type,
                     currency     : contract.currency,
@@ -120,11 +119,11 @@ const firestore = (() => {
         }
     };
 
-    const onErrorHappened = (messages) => {
+    const onErrorHappened = (login_id,messages) => {
         try {
             const message = messages.length > 0 && messages[0];
             if (message && message.message_type === message_types.ERROR) {
-                runs.doc(doc_id).collection('Errors').add({
+                users.doc(login_id).collection('Runs').doc(doc_id).collection('Errors').add({
                     date      : message.date,
                     time      : message.time,
                     message   : message.message,

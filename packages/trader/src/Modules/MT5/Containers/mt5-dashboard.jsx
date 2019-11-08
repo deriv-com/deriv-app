@@ -36,6 +36,11 @@ class MT5Dashboard extends React.Component {
 
     componentDidMount() {
         this.updateActiveIndex();
+        this.props.onMount();
+    }
+
+    componentWillUnmount() {
+        this.props.onUnmount();
     }
 
     componentDidUpdate() {
@@ -186,4 +191,6 @@ export default withRouter(connect(({ client, modules, ui }) => ({
     toggleCompareAccounts      : modules.mt5.toggleCompareAccountsModal,
     closeMt5AndOpenCashier     : modules.mt5.closeMt5AndOpenCashier,
     openTopUpModal             : ui.openTopUpModal,
+    onMount                    : modules.mt5.onMount,
+    onUnmount                  : modules.mt5.onUnmount,
 }))(MT5Dashboard));

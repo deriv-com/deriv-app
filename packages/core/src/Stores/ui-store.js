@@ -70,7 +70,8 @@ export default class UIStore extends BaseStore {
     @observable is_route_modal_on = false;
 
     // real account signup
-    @observable is_real_acc_signup_on = false;
+    @observable is_real_acc_signup_on         = false;
+    @observable has_real_account_signup_ended = false;
 
     // position states
     @observable show_positions_toggle = true;
@@ -277,7 +278,10 @@ export default class UIStore extends BaseStore {
     @action.bound
     closeRealAccountSignup() {
         this.is_real_acc_signup_on = false;
-        setTimeout(this.resetRealAccountSignupParams, 300);
+        setTimeout(() => {
+            this.resetRealAccountSignupParams();
+            this.setRealAccountSignupEnd(true);
+        }, 300);
     }
 
     @action.bound
@@ -424,6 +428,11 @@ export default class UIStore extends BaseStore {
             ...this.real_account_signup,
             ...params,
         };
+    }
+
+    @action.bound
+    setRealAccountSignupEnd(has_ended) {
+        this.has_real_account_signup_ended = has_ended;
     }
 
     @action.bound

@@ -45,6 +45,9 @@ export default class BaseStore {
     networkStatusChangeDisposer = null;
     network_status_change_listener = null;
 
+    realAccountSignupEndedDisposer = null;
+    real_account_signup_ended_listener = null;
+
     @observable partial_fetch_time = 0;
 
     /**
@@ -330,7 +333,7 @@ export default class BaseStore {
                             this.onPreSwitchAccount(this.pre_switch_account_listener);
                         });
                     } else {
-                        throw new Error('Switching account listeners are required to return a promise.');
+                        throw new Error('Pre-switch account listeners are required to return a promise.');
                     }
                 } catch (error) {
                     // there is no listener currently active. so we can just ignore the error raised from treating
@@ -384,7 +387,7 @@ export default class BaseStore {
                             this.onClientInit(this.client_init_listener);
                         });
                     } else {
-                        throw new Error('Logout listeners are required to return a promise.');
+                        throw new Error('Client init listeners are required to return a promise.');
                     }
                 } catch (error) {
                     // there is no listener currently active. so we can just ignore the error raised from treating
@@ -416,6 +419,34 @@ export default class BaseStore {
         );
 
         this.network_status_change_listener = listener;
+    }
+
+    @action.bound
+    onRealAccountSignupEnd(listener) {
+        this.realAccountSignupEndedDisposer = reaction(
+            () => this.root_store.ui.has_real_account_signup_ended,
+            () => {
+                try {
+                    const result = this.real_account_signup_ended_listener();
+                    if (result && result.then && typeof result.then === 'function') {
+                        result.then(() => {
+                            this.root_store.ui.setRealAccountSignupEnd(false);
+                            this.onRealAccountSignupEnd(this.real_account_signup_ended_listener);
+                        });
+                    } else {
+                        throw new Error('Real account signup listeners are required to return a promise.');
+                    }
+                } catch (error) {
+                    // there is no listener currently active. so we can just ignore the error raised from treating
+                    // a null object as a function. Although, in development mode, we throw a console error.
+                    if (!isProduction()) {
+                        console.error(error); // eslint-disable-line
+                    }
+                }
+            },
+        );
+
+        this.real_account_signup_ended_listener = listener;
     }
 
     @action.bound
@@ -459,12 +490,21 @@ export default class BaseStore {
     }
 
     @action.bound
+    disposeRealAccountSignupEnd() {
+        if (typeof this.realAccountSignupEndedDisposer === 'function') {
+            this.realAccountSignupEndedDisposer();
+        }
+        this.real_account_signup_ended_listener = null;
+    }
+
+    @action.bound
     onUnmount() {
         this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
         this.disposeLogout();
         this.disposeClientInit();
         this.disposeNetworkStatusChange();
+        this.disposeRealAccountSignupEnd();
     }
 
     @action.bound

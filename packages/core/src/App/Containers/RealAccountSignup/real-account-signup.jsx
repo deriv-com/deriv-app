@@ -148,13 +148,6 @@ class RealAccountSignup extends Component {
 
     closeModalWithHooks = () => {
         this.closeModal();
-        setTimeout(() => {
-            const post_signup = JSON.parse(sessionStorage.getItem('post_real_account_signup'));
-            if (post_signup && post_signup.category && post_signup.type) {
-                sessionStorage.removeItem('post_real_account_signup');
-                // this.props.enableMt5PasswordModal();
-            }
-        }, 400);
     };
 
     showLoadingModal = () => {
@@ -231,7 +224,6 @@ export default connect(({ ui, client/* , modules */ }) => ({
     is_real_acc_signup_on      : ui.is_real_acc_signup_on,
     closeRealAccountSignup     : ui.closeRealAccountSignup,
     closeSignupAndOpenCashier  : ui.closeSignupAndOpenCashier,
-    // enableMt5PasswordModal     : modules.mt5.enableMt5PasswordModal,
     setParams                  : ui.setRealAccountSignupParams,
     state_value                : ui.real_account_signup,
 }))(RealAccountSignup);

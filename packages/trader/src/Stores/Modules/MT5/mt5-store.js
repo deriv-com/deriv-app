@@ -61,6 +61,25 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
+    onMount() {
+        this.onRealAccountSignupEnd(this.realAccountSignupEndListener);
+    }
+
+    @action.bound
+    onUnmount() {
+        this.disposeRealAccountSignupEnd();
+    }
+
+    @action.bound
+    realAccountSignupEndListener() {
+        const post_signup = JSON.parse(sessionStorage.getItem('post_real_account_signup'));
+        if (post_signup && post_signup.category && post_signup.type) {
+            sessionStorage.removeItem('post_real_account_signup');
+            this.enableMt5PasswordModal();
+        }
+    }
+
+    @action.bound
     clearMt5Error() {
         this.error_message                 = '';
         this.has_mt5_error                 = false;

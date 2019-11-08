@@ -46,10 +46,10 @@ const ModalContent = () => {
             icon : 'IconLanguage',
             label: localize('Language'),
             value: LanguageSettingContainer,
-        }, {
-            icon : 'IconCharts',
-            label: localize('Charts'),
-            value: ChartSettingContainer,
+        // }, {
+        //     icon : 'IconCharts',
+        //     label: localize('Charts'),
+        //     value: ChartSettingContainer,
             // uncomment below lines to bring back purchase lock and purchase confirmation}
             // }, {
             //     icon : IconPurchase,

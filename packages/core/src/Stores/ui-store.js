@@ -2,16 +2,17 @@ import {
     action,
     autorun,
     computed,
-    observable }             from 'mobx';
+    observable }              from 'mobx';
+import ObjectUtils             from 'deriv-shared/utils/object';
 import {
     MAX_MOBILE_WIDTH,
-    MAX_TABLET_WIDTH }       from 'Constants/ui';
-import ObjectUtils           from 'deriv-shared/utils/object';
-import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
+    MAX_TABLET_WIDTH }        from 'Constants/ui';
+import { sortNotifications }   from 'App/Components/Elements/NotificationMessage';
+import { isBot }               from 'Utils/PlatformSwitcher';
 import {
     clientNotifications,
     excluded_notifications } from './Helpers/client-notifications';
-import BaseStore             from './base-store';
+import BaseStore               from './base-store';
 
 const store_name = 'ui_store';
 
@@ -94,7 +95,7 @@ export default class UIStore extends BaseStore {
 
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
-    constructor() {
+    constructor(root_store) {
         const local_storage_properties = [
             'advanced_duration_unit',
             'is_advanced_duration',
@@ -116,19 +117,20 @@ export default class UIStore extends BaseStore {
             // 'is_purchase_lock_on',
         ];
 
-        super({ local_storage_properties, store_name });
+        super({ root_store, local_storage_properties, store_name });
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
-            // TODO: Re-enable dark theme when Bot is ready
-            document.body.classList.remove('theme--dark');
-            document.body.classList.add('theme--light');
-            // if (this.is_dark_mode_on) {
-            //     document.body.classList.remove('theme--light');
-            //     document.body.classList.add('theme--dark');
-            // } else {
-            //     document.body.classList.remove('theme--dark');
-            //     document.body.classList.add('theme--light');
-            // }
+            // TODO: [disable-dark-bot] Delete this condition when Bot is ready
+            if (isBot()) {
+                document.body.classList.remove('theme--dark');
+                document.body.classList.add('theme--light');
+            } else if (this.is_dark_mode_on) {
+                document.body.classList.remove('theme--light');
+                document.body.classList.add('theme--dark');
+            } else {
+                document.body.classList.remove('theme--dark');
+                document.body.classList.add('theme--light');
+            }
         });
     }
 
@@ -239,8 +241,13 @@ export default class UIStore extends BaseStore {
     // }
 
     @action.bound
-    toggleDarkMode() {
-        this.is_dark_mode_on = !this.is_dark_mode_on;
+    setDarkMode(is_dark_mode_on) {
+        if (this.is_dark_mode_on !== is_dark_mode_on) {
+            this.is_dark_mode_on = is_dark_mode_on;
+            // This GTM call is here instead of the GTM store due to frequency of use
+            this.root_store.gtm.pushDataLayer({ event: 'switch theme' });
+        }
+
         return this.is_dark_mode_on;
     }
 

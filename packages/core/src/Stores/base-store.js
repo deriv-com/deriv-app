@@ -45,6 +45,9 @@ export default class BaseStore {
     networkStatusChangeDisposer = null;
     network_status_change_listener = null;
 
+    themeChangeDisposer = null;
+    theme_change_listener = null;
+
     realAccountSignupEndedDisposer = null;
     real_account_signup_ended_listener = null;
 
@@ -422,6 +425,26 @@ export default class BaseStore {
     }
 
     @action.bound
+    onThemeChange(listener) {
+        this.themeChangeDisposer = reaction(
+            () => this.root_store.ui.is_dark_mode_on,
+            (is_dark_mode_on) => {
+                try {
+                    this.theme_change_listener(is_dark_mode_on);
+                } catch (error) {
+                    // there is no listener currently active. so we can just ignore the error raised from treating
+                    // a null object as a function. Although, in development mode, we throw a console error.
+                    if (!isProduction()) {
+                        console.error(error); // eslint-disable-line
+                    }
+                }
+            },
+        );
+
+        this.theme_change_listener = listener;
+    }
+
+    @action.bound
     onRealAccountSignupEnd(listener) {
         this.realAccountSignupEndedDisposer = reaction(
             () => this.root_store.ui.has_real_account_signup_ended,
@@ -490,6 +513,14 @@ export default class BaseStore {
     }
 
     @action.bound
+    disposeThemeChange() {
+        if (typeof this.themeChangeDisposer === 'function') {
+            this.themeChangeDisposer();
+        }
+        this.theme_change_listener = null;
+    }
+
+    @action.bound
     disposeRealAccountSignupEnd() {
         if (typeof this.realAccountSignupEndedDisposer === 'function') {
             this.realAccountSignupEndedDisposer();
@@ -504,6 +535,7 @@ export default class BaseStore {
         this.disposeLogout();
         this.disposeClientInit();
         this.disposeNetworkStatusChange();
+        this.disposeThemeChange();
         this.disposeRealAccountSignupEnd();
     }
 

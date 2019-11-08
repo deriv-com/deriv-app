@@ -73,6 +73,7 @@ class ProofOfIdentityContainer extends React.Component {
     };
 
     componentDidMount() {
+        // TODO: Find a better solution for handling no-op instead of using is_mounted flags
         this.is_mounted = true;
         WS.authorized.getAccountStatus().then(response => {
             const { get_account_status } = response;

@@ -1,7 +1,9 @@
 import './balance';
-import './total_profit';
-import './total_runs';
+import './barrier_offset';
+import './block_holder';
+import './loader';
 import './notify';
 import './notify_telegram';
-import './loader';
-import './block_holder';
+import './total_profit';
+import './total_runs';
+import './useless_block';

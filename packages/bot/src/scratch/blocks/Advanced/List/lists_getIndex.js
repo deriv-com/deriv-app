@@ -31,7 +31,7 @@ Blockly.Blocks.lists_getIndex = {
             Blockly.Colours.Base.colourTertiary
         );
         this.setOutput(true, null);
-
+        this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
         this.updateAt(true);
     },
     meta(){

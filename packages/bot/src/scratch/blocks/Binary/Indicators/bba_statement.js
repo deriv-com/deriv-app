@@ -3,6 +3,8 @@ import config          from '../../../../constants';
 import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.bba_statement = {
+    protected_statements : ['STATEMENT'],
+    required_child_blocks: ['input_list', 'period', 'std_dev_multiplier_up', 'std_dev_multiplier_down'],
     init() {
         this.jsonInit(this.definition());
     },
@@ -47,8 +49,7 @@ Blockly.Blocks.bba_statement = {
             'description' : translate('Similar to BB. This block gives you a choice of returning the values of either the lower band, higher band, or the SMA line in the middle.'),
         };
     },
-    onchange           : Blockly.Blocks.bb_statement.onchange,
-    requiredParamBlocks: ['input_list', 'period', 'std_dev_multiplier_up', 'std_dev_multiplier_down'],
+    onchange: Blockly.Blocks.bb_statement.onchange,
 };
 
 Blockly.JavaScript.bba_statement = block => {

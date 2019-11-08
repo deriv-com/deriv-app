@@ -3,6 +3,8 @@ import config          from '../../../../constants';
 import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.bb_statement = {
+    protected_statements : ['STATEMENT'],
+    required_child_blocks: ['input_list', 'period', 'std_dev_multiplier_up', 'std_dev_multiplier_down'],
     init() {
         this.jsonInit(this.definition());
     },
@@ -55,7 +57,7 @@ Blockly.Blocks.bb_statement = {
         if (event.type === Blockly.Events.END_DRAG) {
             const blocksInStatement = this.getBlocksInStatement('STATEMENT');
             blocksInStatement.forEach(block => {
-                if (!this.requiredParamBlocks.includes(block.type)) {
+                if (!this.required_child_blocks.includes(block.type)) {
                     Blockly.Events.disable();
                     block.unplug(false);
                     Blockly.Events.enable();
@@ -63,7 +65,6 @@ Blockly.Blocks.bb_statement = {
             });
         }
     },
-    requiredParamBlocks: ['input_list', 'period', 'std_dev_multiplier_up', 'std_dev_multiplier_down'],
 };
 
 Blockly.JavaScript.bb_statement = block => {

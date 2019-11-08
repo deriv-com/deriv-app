@@ -74,12 +74,12 @@ class Flyout extends React.PureComponent {
                                         </div>
                                     );
                                 case Blockly.Xml.NODE_BUTTON: {
-                                    const callback_key = node.getAttribute('callbackKey');
-                                    const callback = Blockly.derivWorkspace.getButtonCallback(callback_key) || (() => { });
+                                    const cb_key = node.getAttribute('callbackKey');
+                                    const callback = Blockly.derivWorkspace.getButtonCallback(cb_key) || (() => {});
     
                                     return (
                                         <button
-                                            key={`${callback_key}${index}`}
+                                            key={`${cb_key}${index}`}
                                             className={
                                                 classNames(
                                                     'flyout__button',

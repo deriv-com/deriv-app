@@ -154,7 +154,7 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean 
         
         let position_x = cursor_x +
                             fat_neighbour_block.getHeightWidth().width +
-                            Blockly.BlockSvg.MIN_BLOCK_X * 3;
+                            Blockly.BlockSvg.MIN_BLOCK_X;
         if (!is_import) {
           position_x += fat_neighbour_block.getRelativeToSurfaceXY().x;
         }

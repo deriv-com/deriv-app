@@ -1,21 +1,24 @@
 import {
     observable,
-    action }          from 'mobx';
-import { observer }   from '../utils/observer';
+    action,
+} from 'mobx';
+import { observer } from '../utils/observer';
 
 export default class SummaryStore {
-    @observable currency        = '';
-    @observable lost_contracts  = 0;
-    @observable number_of_runs  = 0;
-    @observable total_profit    = 0;
-    @observable total_payout    = 0;
-    @observable total_stake     = 0;
-    @observable won_contracts   = 0;
-    
+    @observable currency = '';
+    @observable summary = {
+        lost_contracts: 0,
+        number_of_runs: 0,
+        total_profit  : 0,
+        total_payout  : 0,
+        total_stake   : 0,
+        won_contracts : 0,
+    };
+
     constructor(root_store) {
-        this.root_store        = root_store;
-        const { client }       = this.root_store.core;
-        this.currency          = client.currency;
+        this.root_store = root_store;
+        const { client } = this.root_store.core;
+        this.currency = client.currency;
     }
 
     @action.bound
@@ -24,30 +27,30 @@ export default class SummaryStore {
             // TODO: Constants (coming from trade engine) for case labels below.
             case ('contract.purchase_received'): {
                 const { buy } = contract_status;
-                this.total_stake += buy.buy_price;
+                this.summary.total_stake += buy.buy_price;
                 break;
             }
             case ('contract.sold'): {
-                const { contract }   = contract_status;
-                this.total_profit   += contract.profit;
-                this.number_of_runs += 1;
+                const { contract } = contract_status;
+                this.summary.total_profit += contract.profit;
+                this.summary.number_of_runs += 1;
 
                 switch (contract.status) {
                     case ('won'): {
-                        this.won_contracts += 1;
-                        this.total_payout  += contract.payout;
+                        this.summary.won_contracts += 1;
+                        this.summary.total_payout += contract.payout;
                         break;
                     }
                     case ('lost'): {
-                        this.lost_contracts += 1;
+                        this.summary.lost_contracts += 1;
                         break;
                     }
                     case ('sold'): {
                         if (contract.profit > 0) {
-                            this.won_contracts += 1;
-                            this.total_payout  += contract.profit;
+                            this.summary.won_contracts += 1;
+                            this.summary.total_payout += contract.profit;
                         } else {
-                            this.lost_contracts += 1;
+                            this.summary.lost_contracts += 1;
                         }
                         break;
                     }
@@ -63,12 +66,14 @@ export default class SummaryStore {
 
     @action.bound
     clear() {
-        this.lost_contracts = 0;
-        this.number_of_runs = 0;
-        this.total_profit   = 0;
-        this.total_payout   = 0;
-        this.total_stake    = 0;
-        this.won_contracts  = 0;
+        this.summary = {
+            lost_contracts: 0,
+            number_of_runs: 0,
+            total_profit  : 0,
+            total_payout  : 0,
+            total_stake   : 0,
+            won_contracts : 0,
+        };
         observer.emit('summary.clear');
     }
 }

@@ -3,6 +3,8 @@ import config          from '../../../../constants';
 import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.macda_statement = {
+    protected_statements : ['STATEMENT'],
+    required_child_blocks: ['input_list', 'fast_ema_period', 'slow_ema_period', 'signal_ema_period'],
     init() {
         this.jsonInit(this.definition());
     },
@@ -48,8 +50,7 @@ Blockly.Blocks.macda_statement = {
         };
     },
     
-    onchange           : Blockly.Blocks.bb_statement.onchange,
-    requiredParamBlocks: ['input_list', 'fast_ema_period', 'slow_ema_period', 'signal_ema_period'],
+    onchange: Blockly.Blocks.bb_statement.onchange,
 };
 
 Blockly.JavaScript.macda_statement = block => {

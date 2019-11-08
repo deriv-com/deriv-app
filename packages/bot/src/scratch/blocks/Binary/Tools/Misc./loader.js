@@ -1,19 +1,12 @@
-import { loadRemote }                 from '../../../../utils';
+import { loadBlocksFromRemote }       from '../../../../utils';
 import { translate }                  from '../../../../../utils/lang/i18n';
 import { observer as globalObserver } from '../../../../../utils/observer';
 
 Blockly.Blocks.loader = {
     init() {
-        this.loadedByMe = [];
-        this.loadedVariables = [];
-        this.currentUrl = '';
-
+        this.blocks_added_by_me     = [];
+        this.current_url            = '';
         this.jsonInit(this.definition());
-
-        const urlField = this.getField('URL');
-        
-        // eslint-disable-next-line no-underscore-dangle
-        urlField.onFinishEditing_ = newValue => this.onFinishEditingUrl(newValue);
     },
     definition(){
         return {
@@ -38,53 +31,64 @@ Blockly.Blocks.loader = {
             'description' : translate('This block allows you to load blocks from a URL. E.g. if you have blocks stored on a remote server and it’s accessible over the internet then you can dynamically load these blocks during bot run time.'),
         };
     },
-    onFinishEditingUrl(newValue) {
-        if (this.currentUrl === newValue) {
+    onchange(event) {
+        if (!this.workspace || this.isInFlyout) {
             return;
         }
 
-        if (this.disabled) {
-            const hasKnownUrl = this.workspace
-                .getAllBlocks()
-                .some(block => block.type === 'loader' && block.id !== this.id && block.currentUrl === this.currentUrl);
-            if (hasKnownUrl) {
-                this.setDisabled(false);
+        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+            this.current_url    = this.getFieldValue('URL');
+            const loader_blocks = this.workspace.getAllBlocks().filter(block => block.type === 'loader');
+
+            loader_blocks.forEach(loader_block => {
+                if (loader_block.id !== this.id && loader_block.current_url === this.current_url) {
+                    this.setDisabled(true);
+                }
+            });
+
+            if (!this.disabled) {
+                this.loadBlocksFromCurrentUrl();
+            }
+        } else if (event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === this.id) {
+            if (event.newValue && event.oldValue !== event.newValue) {
+                if (event.newValue === this.current_url) {
+                    this.setDisabled(false);
+                } else if (this.isValidUrl(event.newValue) && !this.isKnownUrl(event.newValue)) {
+                    this.setDisabled(false);
+                    this.loadBlocksFromCurrentUrl();
+                } else {
+                    this.setDisabled(true);
+                }
             }
         }
-
+    },
+    loadBlocksFromCurrentUrl() {
+        this.current_url = this.getFieldValue('URL');
         const { recordUndo } = Blockly.Events;
         Blockly.Events.recordUndo = false;
 
-        loadRemote(this)
-            .then(() => {
-                Blockly.Events.recordUndo = recordUndo;
-                globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
-            })
-            .catch(errorMsg => {
-                Blockly.Events.recordUndo = recordUndo;
-                globalObserver.emit('ui.log.error', errorMsg);
-            });
+        // Remove blocks previously loaded by this block.
+        Blockly.Events.disable();
+        this.blocks_added_by_me.forEach(block => block.dispose());
+        Blockly.Events.enable();
 
-        this.currentUrl = this.getFieldValue('URL');
+        loadBlocksFromRemote(this).then(() => {
+            Blockly.Events.recordUndo = recordUndo;
+            globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
+        }).catch(error_msg => {
+            Blockly.Events.recordUndo = recordUndo;
+            globalObserver.emit('ui.log.error', error_msg);
+            this.setDisabled(true);
+        });
     },
-    onchange(event) {
-        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
-            this.currentUrl = this.getFieldValue('URL');
-            this.workspace.getAllBlocks().forEach(block => {
-                if (block.type === 'loader' && block.id !== this.id) {
-                    if (block.currentUrl === this.currentUrl) {
-                        this.setDisabled(true);
-                    }
-                }
-            });
-        }
+    isKnownUrl(url) {
+        const loader_blocks = this.workspace.getAllBlocks().filter(block => block.type === 'loader');
+        return loader_blocks.some(block => block.id !== this.id && block.current_url === url);
+    },
+    isValidUrl(url) {
+        const url_pattern = /[^/]*\.[a-zA-Z]{3}$/;
+        return String(url).match(url_pattern);
     },
 };
 
-Blockly.JavaScript.loader = block => {
-    if (block.loadedVariables.length) {
-        // eslint-disable-next-line no-underscore-dangle
-        return `var ${block.loadedVariables.map(v => Blockly.JavaScript.variableDB_.safeName_(v)).toString()}`;
-    }
-    return '';
-};
+Blockly.JavaScript.loader = () => {};

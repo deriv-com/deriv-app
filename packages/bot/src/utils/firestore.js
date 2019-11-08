@@ -12,9 +12,9 @@ const firestore = (() => {
             // Initialize Cloud Firestore through Firebase
             if (!firebase.apps.length) {
                 firebase.initializeApp({
-                    apiKey: 'AIzaSyBNPbVQw1mmUSQHclaR4jKmBpTuDGQuFH4',
-                    authDomain: 'localhost.binary.sx',
-                    projectId: 'deriv-app'
+                    apiKey: 'AIzaSyA7A_acKTF7Vf2l_n8gxx2SUVT-rBxhPVQ',
+                    // authDomain: 'localhost.binary.sx',
+                    projectId: 'derivbot-248506'
                 });
             }
 

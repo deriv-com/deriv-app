@@ -7,8 +7,9 @@ import Toolbar                  from './components/toolbar.jsx';
 import RunPanel                 from './components/run-panel.jsx';
 import Workspace                from './components/workspace.jsx';
 import QuickStrategy            from './components/quick-strategy.jsx';
-import firestore                from './utils/firestore';
 import { scratchWorkspaceInit } from './scratch';
+import firestore                from './utils/firestore';
+
 import './assets/sass/app.scss';
 
 class App extends React.Component {

@@ -1,11 +1,11 @@
-import  firebase          from 'firebase';
-import  'firebase/firestore';
-import { reaction }       from 'mobx';
-import { message_types }  from '../constants/messages';
+import firebase from 'firebase';
+import 'firebase/firestore';
+import { reaction } from 'mobx';
+import { message_types } from '../constants/messages';
 
 const firestore = (() => {
 
-    var db, users, runs, doc_id, server_time;
+    let db, users, runs, doc_id, server_time;
 
     const init = (root_store) => {
         try {
@@ -44,11 +44,11 @@ const firestore = (() => {
 
             reaction(
                 () => journal.messages,
-                () => onErrorHappend(journal.messages)
+                () => onErrorHappened(journal.messages)
             )
         }
         catch (error) {
-            console.error("Error initializing firestore ", error);
+            console.warn("Error initializing firestore ", error);
         }
     }
 
@@ -61,16 +61,16 @@ const firestore = (() => {
                 account_id: login_id,
                 xml: strategy,
             })
-                .then(function (docRef) {
+                .then((docRef) => {
                     doc_id = docRef.id;
                 })
-                .catch(function (error) {
-                    console.error("Error adding document to firestore ", error);
+                .catch((error) => {
+                    console.warn("Error adding document to firestore ", error);
                     doc_id = Math.floor(1000 + Math.random() * 9000)
                 });
         }
         catch (error) {
-            console.error("Error adding document to firestore when bot runs ", error);
+            console.warn("Error adding document to firestore when bot runs ", error);
         }
     }
 
@@ -81,7 +81,7 @@ const firestore = (() => {
             });
         }
         catch (error) {
-            console.error("Error adding document to firestore when bot stops ", error);
+            console.warn("Error adding document to firestore when bot stops ", error);
         }
     }
 
@@ -100,7 +100,7 @@ const firestore = (() => {
             }
         }
         catch (error) {
-            console.error("Error adding document to firestore when summary changes ", error);
+            console.warn("Error adding document to firestore when summary changes ", error);
         }
     }
 
@@ -108,7 +108,7 @@ const firestore = (() => {
     const onTransactionClosed = (contracts) => {
         try {
             const contract = contracts.length > 0 && contracts[0];
-            if (contract.is_completed) {
+            if (contract && contract.is_completed) {
                 runs.doc(doc_id).collection('Transactions').add({
                     buy_price: contract.buy_price,
                     contract_type: contract.contract_type,
@@ -122,25 +122,25 @@ const firestore = (() => {
             }
         }
         catch (error) {
-            console.error("Error adding document to firestore when transaction closes", error);
+            console.warn("Error adding document to firestore when transaction closes", error);
         }
     }
 
 
-    const onErrorHappend = (messages) => {
+    const onErrorHappened = (messages) => {
         try {
-            const item = messages.length > 0 && messages[0];
-            if (item.message_type === message_types.ERROR) {
+            const message = messages.length > 0 && messages[0];
+            if (message && message.message_type === message_types.ERROR) {
                 runs.doc(doc_id).collection('Errors').add({
-                    date: item.date,
-                    time: item.time,
-                    message: item.message,
+                    date: message.date,
+                    time: message.time,
+                    message: message.message,
                     time_stamp: server_time.unix()
                 });
             }
         }
         catch (error) {
-            console.error("Error adding document to firestore when error happens in bot ", error);
+            console.warn("Error adding document to firestore when error happens in bot ", error);
         }
     }
 

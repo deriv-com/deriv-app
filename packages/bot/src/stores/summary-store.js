@@ -1,8 +1,8 @@
 import {
     observable,
     action,
-} from 'mobx';
-import { observer } from '../utils/observer';
+}                    from 'mobx';
+import { observer }  from '../utils/observer';
 
 export default class SummaryStore {
     @observable currency = '';

@@ -75,7 +75,6 @@ export const config = {
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
-        { type: TEXT },
     ],
     last_digit: [
         { type: TEXT },
@@ -83,6 +82,11 @@ export const config = {
     ], read_ohlc: [
         { type: TEXT },
         { type: BLOCK },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
+        { type: TEXT },
         { type: TEXT },
         { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/in_candle_list_read.png` }, // eslint-disable-line
     ], read_ohlc_obj: [
@@ -294,6 +298,7 @@ export const config = {
     contract_check_result: [
         { type: TEXT },
         { type: BLOCK },
+        { type: TEXT },
         { type: TEXT },
         { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/check_result.png` }, // eslint-disable-line
     ], sell_price: [

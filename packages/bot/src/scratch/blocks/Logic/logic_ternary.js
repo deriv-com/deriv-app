@@ -33,14 +33,14 @@ Blockly.Blocks.logic_ternary = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Tests if a given value is True or false and returns respective item'),
+            tooltip        : translate('This block tests if a given value is true or false and returns “True” or “False” accordingly.'),
             category       : Blockly.Categories.Logic,
         };
     },
     meta(){
         return {
             'display_name': translate('Test value'),
-            'description' : translate('This block tests if a given value is true or false and returns “True” or “False” accordingly'),
+            'description' : translate('This block tests if a given value is true or false and returns “True” or “False” accordingly.'),
         };
     },
 };

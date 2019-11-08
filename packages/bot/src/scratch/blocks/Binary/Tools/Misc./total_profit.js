@@ -6,7 +6,7 @@ Blockly.Blocks.total_profit = {
     },
     definition() {
         return {
-            message0       : translate('Total profit/Loss'),
+            message0       : translate('Total profit/loss'),
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,

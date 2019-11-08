@@ -4,7 +4,7 @@ import { translate }    from '../../../../utils/lang/i18n';
 Blockly.Blocks.procedures_defreturn = {
     init() {
         this.arguments = [];
-        this.argumentVarModels = [];
+        this.argument_var_models = [];
 
         this.jsonInit(this.definition());
 

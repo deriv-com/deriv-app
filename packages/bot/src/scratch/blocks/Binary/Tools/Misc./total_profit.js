@@ -4,7 +4,7 @@ Blockly.Blocks.total_profit = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0       : translate('Total Profit/Loss'),
             output         : 'Number',
@@ -16,11 +16,27 @@ Blockly.Blocks.total_profit = {
             category       : Blockly.Categories.Miscellaneous,
         };
     },
-    meta(){
+    meta() {
         return {
             'display_name': translate('Total Profit'),
             'description' : translate('This block returns the total profit/loss since counters has been reset. You can reset counters by presising "Clear stats" on in the Transaction Stats panel or by refreshing a page in your browser.'),
         };
+    },
+    onchange(event) {
+        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+            return;
+        }
+
+        if (
+            event.type === Blockly.Events.END_DRAG ||
+            event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)
+        ) {
+            const input_statement = this.getRootInputTargetBlock();
+
+            if (input_statement === 'INITIALIZATION') {
+                this.unplug(true);
+            }
+        }
     },
 };
 
@@ -46,6 +62,7 @@ Blockly.Blocks.total_profit_string = {
             'description' : translate('Total Profit String Description'),
         };
     },
+    onchange: Blockly.Blocks.total_profit.onchange,
 };
 
 Blockly.JavaScript.total_profit = () => ['Bot.getTotalProfit(false)', Blockly.JavaScript.ORDER_ATOMIC];

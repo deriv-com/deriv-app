@@ -4,7 +4,6 @@ import { reaction }       from 'mobx';
 import { message_types }  from '../constants/messages';
 
 const firestore = (() => {
-
     var db, users, runs, doc_id, server_time;
 
     const init = (root_store) => {

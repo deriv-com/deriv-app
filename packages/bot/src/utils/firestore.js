@@ -125,7 +125,6 @@ const firestore = (() => {
         }
     }
 
-
     const onErrorHappend = (messages) => {
         try {
             const item = messages.length > 0 && messages[0];

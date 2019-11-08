@@ -53,7 +53,7 @@ const App = ({ root_store }) => {
                             </ErrorBoundary>
                             <Footer />
                             <Lazy
-                                ctor={ () => import(/* webpackChunkName: "modals", webpackPrefetch: true */'./Containers/Modals') }
+                                ctor={ () => import(/* webpackChunkName: "app-modals", webpackPrefetch: true */'./Containers/Modals') }
                                 should_load={ shouldLoadModals() }
                                 has_progress={ false }
                             />

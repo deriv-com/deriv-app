@@ -1,10 +1,9 @@
 import React from 'react';
-import 'Sass/app/modules/modals.scss';
 
 const AccountSignupModal = React.lazy(() => import(/* webpackChunkName: "account-signup-modal" */'../AccountSignupModal'));
 const ResetPasswordModal = React.lazy(() => import(/* webpackChunkName: "reset-password-modal" */'../ResetPasswordModal'));
 
-const Modals = () => {
+const AppModals = () => {
     return (
         <React.Fragment>
             <AccountSignupModal />
@@ -13,4 +12,4 @@ const Modals = () => {
     );
 };
 
-export default Modals;
+export default AppModals;

@@ -23,7 +23,7 @@ class App extends React.Component {
                 <React.Fragment>
                     <Routes />
                     <Lazy
-                        ctor={ () => import(/* webpackChunkName: "modals", webpackPrefetch: true */'./Containers/Modals') }
+                        ctor={ () => import(/* webpackChunkName: "trade-modals", webpackPrefetch: true */'./Containers/Modals') }
                         should_load
                         has_progress={ false }
                     />

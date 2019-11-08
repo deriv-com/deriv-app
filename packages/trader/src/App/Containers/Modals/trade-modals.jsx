@@ -5,9 +5,8 @@ import UnsupportedContractModal from 'App/Components/Elements/Modals/Unsupported
 import MarketUnavailableModal   from 'App/Components/Elements/Modals/MarketUnavailableModal';
 import DenialOfServiceModal     from 'App/Components/Elements/Modals/DenialOfServiceModal';
 import ServicesErrorModal       from 'App/Components/Elements/Modals/ServicesErrorModal';
-import 'Sass/app/modules/modals.scss';
 
-const Modals = ({
+const TradeModals = ({
     clearPurchaseInfo,
     is_denial_of_service_modal_visible,
     is_unsupported_contract_modal_visible,
@@ -100,4 +99,4 @@ export default connect(({ ui, client, modules, common }) => ({
     toggleServicesErrorModal             : ui.toggleServicesErrorModal,
     toggleUnsupportedContractModal       : ui.toggleUnsupportedContractModal,
     virtual_account_loginid              : client.virtual_account_loginid,
-}))(Modals);
+}))(TradeModals);

@@ -171,6 +171,16 @@ export default class RunPanelStore {
             message: translate('This will clear all data in the summary, transactions, and journal panels. All counters will be reset to zero.'),
         };
     }
+
+    @action.bound
+    showIncompatibleStrategyDialog() {
+        this.onOkButtonClick     = this.onCloseDialog;
+        this.onCancelButtonClick = undefined;
+        this.dialog_options = {
+            title  : translate('Import error'),
+            message: translate('This strategy is currently not compatible with DBot.'),
+        };
+    }
     // #endregion
 
     // #region Bot listenets

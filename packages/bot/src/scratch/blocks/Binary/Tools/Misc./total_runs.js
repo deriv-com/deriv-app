@@ -22,6 +22,7 @@ Blockly.Blocks.total_runs = {
             'description' : translate('This block gives you the total number of times your bot has run. You can reset this by clicking “Clear stats” on the Transaction Stats window, or by refreshing this page in your browser.'),
         };
     },
+    onchange: Blockly.Blocks.total_profit.onchange,
 };
 
 Blockly.JavaScript.total_runs = () => ['Bot.getTotalRuns()', Blockly.JavaScript.ORDER_ATOMIC];

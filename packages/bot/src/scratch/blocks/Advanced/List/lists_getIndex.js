@@ -32,7 +32,7 @@ Blockly.Blocks.lists_getIndex = {
         );
         this.setTooltip('This block gives you the value of a specific item in a list, given the position of the item. It can also remove the item from the list.');
         this.setOutput(true, null);
-
+        this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
         this.updateAt(true);
     },
     meta(){

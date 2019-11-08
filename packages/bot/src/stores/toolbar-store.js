@@ -33,7 +33,11 @@ export default class ToolbarStore {
         const ws_metrics       = Blockly.derivWorkspace.getMetrics();
         const current_scroll_x = ws_metrics.viewLeft - ws_metrics.contentLeft;
         const current_scroll_y = ws_metrics.viewTop - ws_metrics.contentTop;
-        const new_scroll_x     = current_scroll_x + (!this.is_toolbox_open ? toolbox.HtmlDiv.clientWidth : -toolbox.HtmlDiv.clientWidth);
+        const new_scroll_x     = current_scroll_x + (
+            !this.is_toolbox_open ?
+                toolbox.HtmlDiv.clientWidth :
+                -toolbox.HtmlDiv.clientWidth
+        );
 
         Blockly.derivWorkspace.scrollbar.set(new_scroll_x, current_scroll_y);
         toolbox.toggle();

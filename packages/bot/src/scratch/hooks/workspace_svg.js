@@ -3,6 +3,21 @@ import config from '../../constants';
 /* eslint-disable */
 
 /**
+ * Handle a mouse-down on SVG drawing surface.
+ * @param {!Event} e Mouse down event.
+ * @private
+ */
+Blockly.WorkspaceSvg.prototype.onMouseDown_ = function(e) {
+  // Bubble mousedown event up for some Core elements to react correctly.
+  Blockly.derivWorkspace.cachedParentSvg_.dispatchEvent(new e.constructor(e.type, e));
+
+  const gesture = this.getGesture(e);
+  if (gesture) {
+      gesture.handleWsStart(e, this);
+  }
+};
+
+/**
  * Scroll the workspace to center on the given block.
  * @param {?string} id ID of block center on.
  * @public

@@ -3,7 +3,7 @@ import { translate }         from '../../../../utils/lang/i18n';
 Blockly.Blocks.procedures_callnoreturn = {
     init() {
         this.arguments = [];
-        this.argumentVarModels = [];
+        this.argument_var_models = [];
         this.previousDisabledState = false;
 
         this.jsonInit(this.definition());
@@ -70,15 +70,7 @@ Blockly.Blocks.procedures_callnoreturn = {
             // paste) and there is no matching definition.  In this case, create
             // an empty definition block with the correct signature.
             const name = this.getProcedureCall();
-            let def = this.getProcedureDefinition(name);
-
-            // Set data of `this` block to 'procedure definition'-block `id` so we can keep track of their relation.
-            if (!def) {
-                this.unplug();
-                this.dispose();
-            }
-
-            this.data = def.id;
+            let def    = Blockly.Procedures.getDefinition(name, this.workspace);
 
             if (
                 def &&
@@ -87,44 +79,51 @@ Blockly.Blocks.procedures_callnoreturn = {
                 // The signatures don't match.
                 def = null;
             }
-            if (!def) {
-                Blockly.Events.setGroup(event.group);
-                /**
-                 * Create matching definition block.
-                 * <xml>
-                 *   <block type="procedures_defreturn" x="10" y="20">
-                 *     <mutation name="test">
-                 *       <arg name="x"></arg>
-                 *     </mutation>
-                 *     <field name="NAME">test</field>
-                 *   </block>
-                 * </xml>
-                 */
-                const xml = document.createElement('xml');
-                const block = document.createElement('block');
-                block.setAttribute('type', this.defType);
 
-                const xy = this.getRelativeToSurfaceXY();
-                const x = xy.x + Blockly.SNAP_RADIUS * (this.RTL ? -1 : 1);
-                const y = xy.y + Blockly.SNAP_RADIUS * 2;
-
-                block.setAttribute('x', x);
-                block.setAttribute('y', y);
-
-                const mutation = this.mutationToDom();
-
-                block.appendChild(mutation);
-
-                const field = document.createElement('field');
-                field.setAttribute('name', 'NAME');
-                field.appendChild(document.createTextNode(this.getProcedureCall()));
-
-                block.appendChild(field);
-                xml.appendChild(block);
-
-                Blockly.Xml.domToWorkspace(xml, this.workspace);
-                Blockly.Events.setGroup(false);
+            if (def) {
+                this.data = def.id;
+                return;
             }
+
+            Blockly.Events.setGroup(event.group);
+            /**
+             * Create matching definition block.
+             * <xml>
+             *   <block type="procedures_defreturn" x="10" y="20">
+             *     <mutation name="test">
+             *       <arg name="x"></arg>
+             *     </mutation>
+             *     <field name="NAME">test</field>
+             *   </block>
+             * </xml>
+             */
+            const xml = document.createElement('xml');
+            const block = document.createElement('block');
+            block.setAttribute('type', this.defType);
+
+            const xy = this.getRelativeToSurfaceXY();
+            const x = xy.x + Blockly.SNAP_RADIUS * (this.RTL ? -1 : 1);
+            const y = xy.y + Blockly.SNAP_RADIUS * 2;
+
+            block.setAttribute('x', x);
+            block.setAttribute('y', y);
+
+            const mutation = this.mutationToDom();
+
+            block.appendChild(mutation);
+
+            const field = document.createElement('field');
+            field.setAttribute('name', 'NAME');
+            field.appendChild(document.createTextNode(this.getProcedureCall()));
+
+            block.appendChild(field);
+            xml.appendChild(block);
+
+            Blockly.Xml.domToWorkspace(xml, this.workspace);
+            Blockly.Events.setGroup(false);
+
+            const procedure_definition = Blockly.Procedures.getDefinition(name, this.workspace);
+            this.data = procedure_definition.id;
         } else if (event.type === Blockly.Events.BLOCK_DELETE) {
             // Look for the case where a procedure definition has been deleted,
             // leaving this block (a procedure call) orphaned.  In this case, delete
@@ -213,7 +212,7 @@ Blockly.Blocks.procedures_callnoreturn = {
         this.arguments = [].concat(paramNames);
 
         // And rebuild the argument model list.
-        this.argumentVarModels = this.arguments.map(argumentName =>
+        this.argument_var_models = this.arguments.map(argumentName =>
             Blockly.Variables.getOrCreateVariablePackage(this.workspace, null, argumentName, '')
         );
 
@@ -310,7 +309,7 @@ Blockly.Blocks.procedures_callnoreturn = {
      * @this Blockly.Block
      */
     getVarModels() {
-        return this.argumentVarModels;
+        return this.argument_var_models;
     },
     /**
      * Add menu option to find the definition block for this call.
@@ -318,12 +317,6 @@ Blockly.Blocks.procedures_callnoreturn = {
      * @this Blockly.Block
      */
     customContextMenu(options) {
-        if (!this.workspace.isMovable()) {
-            // If we center on the block and the workspace isn't movable we could
-            // loose blocks at the edges of the workspace.
-            return;
-        }
-
         const name = this.getProcedureCall();
         const { workspace } = this;
 

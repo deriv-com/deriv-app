@@ -23,6 +23,9 @@ export default class UIStore extends BaseStore {
     @observable is_positions_drawer_on      = false;
     @observable is_reports_visible          = false;
 
+    // Extensions
+    @observable footer_extension = undefined;
+
     @observable is_cashier_modal_on     = false;
     @observable is_dark_mode_on         = false;
     @observable is_settings_modal_on    = false;
@@ -132,6 +135,11 @@ export default class UIStore extends BaseStore {
                 document.body.classList.add('theme--light');
             }
         });
+    }
+
+    @action.bound
+    populateFooterExtensions(component) {
+        this.footer_extension = component;
     }
 
     @action.bound

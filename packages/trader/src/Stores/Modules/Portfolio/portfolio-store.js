@@ -361,6 +361,11 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @computed
+    get active_positions_count() {
+        return this.active_positions.length || 0;
+    }
+
+    @computed
     get is_empty() {
         return !this.is_loading && this.all_positions.length === 0;
     }

@@ -13,7 +13,7 @@ import {
     LocalStore,
     State }             from '_common/storage';
 import { urlFor }       from '_common/url';
-import Localize         from '../../App/Components/Elements/localize.jsx';
+import Localize         from 'App/Components/Elements/localize.jsx';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
@@ -59,7 +59,7 @@ export const clientNotifications = (ui = {}) => {
                         <BinaryLink
                             key={0}
                             className='link'
-                            href={routes.proof_of_identity}
+                            to={routes.proof_of_identity}
                         />,
                     ]}
                 />
@@ -94,7 +94,7 @@ export const clientNotifications = (ui = {}) => {
                         <BinaryLink
                             key={0}
                             className='link'
-                            href={routes.proof_of_identity}
+                            to={routes.proof_of_identity}
                         />,
                     ]}
                 />
@@ -144,7 +144,7 @@ export const clientNotifications = (ui = {}) => {
                         <BinaryLink
                             key={0}
                             className='link'
-                            href={routes.financial_assessment}
+                            to={routes.financial_assessment}
                         />,
                     ]}
                 />
@@ -161,7 +161,7 @@ export const clientNotifications = (ui = {}) => {
                         <BinaryLink
                             key={0}
                             className='link'
-                            href={routes.personal_details}
+                            to={routes.personal_details}
                         />,
                     ]}
                 />
@@ -189,7 +189,7 @@ export const clientNotifications = (ui = {}) => {
                         <BinaryLink
                             key={0}
                             className='link'
-                            href={routes.personal_details}
+                            to={routes.personal_details}
                         />,
                     ]}
                 />
@@ -234,7 +234,7 @@ export const clientNotifications = (ui = {}) => {
                         <BinaryLink
                             key={0}
                             className='link'
-                            href={routes.proof_of_identity}
+                            to={routes.proof_of_identity}
                         />,
                     ]}
                 />
@@ -251,7 +251,7 @@ export const clientNotifications = (ui = {}) => {
                         <BinaryLink
                             key={0}
                             className='link'
-                            href={routes.proof_of_address}
+                            to={routes.proof_of_address}
                         />,
                     ]}
                 />
@@ -268,7 +268,7 @@ export const clientNotifications = (ui = {}) => {
                         <BinaryLink
                             key={0}
                             className='link'
-                            href={routes.proof_of_address}
+                            to={routes.proof_of_address}
                         />,
                     ]}
                 />
@@ -295,7 +295,7 @@ export const clientNotifications = (ui = {}) => {
                         <BinaryLink
                             key={0}
                             className='link'
-                            href={routes.proof_of_identity}
+                            to={routes.proof_of_identity}
                         />,
                     ]}
                 />

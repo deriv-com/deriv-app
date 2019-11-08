@@ -15,7 +15,7 @@
                 <field name="TYPE_LIST"></field>
                 <next>
                   <block type="trade_definition_candleinterval" deletable="false" movable="false">
-                    <field name="CANDLEINTERVAL_LIST"></field>
+                    <field name="CANDLEINTERVAL_LIST">60</field>
                     <next>
                       <block type="trade_definition_restartbuysell" deletable="false" movable="false">
                         <value name="TIME_MACHINE_ENABLED">

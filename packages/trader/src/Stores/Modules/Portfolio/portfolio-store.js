@@ -142,6 +142,7 @@ export default class PortfolioStore extends BaseStore {
             trade.main_barrier &&
             this.hovered_position_id === portfolio_position.id){
 
+            trade.updatePurchaseBarrier(true, portfolio_position);
             trade.main_barrier.shadeColor = contract_info.profit < 0 ? BARRIER_COLORS.RED : BARRIER_COLORS.GREEN;
 
             trade.main_barrier.onChange({
@@ -154,8 +155,6 @@ export default class PortfolioStore extends BaseStore {
                     contract_info.entry_spot
                 ),
             });
-
-            trade.updateEntrySpotBarrier(true, portfolio_position);
         }
     }
 
@@ -381,7 +380,7 @@ export default class PortfolioStore extends BaseStore {
         this.hovered_position_id = is_over ? position.id : null;
 
         trade.toggleLimitOrders(is_over, position);
-        trade.updateEntrySpotBarrier(is_over, position);
+        trade.updatePurchaseBarrier(is_over, position);
     }
 
     @action.bound

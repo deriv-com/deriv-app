@@ -353,8 +353,8 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    updateEntrySpotBarrier(is_over, contract_info) {
-        const key = 'ENTRY_SPOT_BARRIER';
+    updatePurchaseBarrier(is_over, contract_info) {
+        const key = 'PURCHASE_PRICE_BARRIER';
         if (is_over) {
             let entrySpotBarrier  = this.getBarrier(key);
 

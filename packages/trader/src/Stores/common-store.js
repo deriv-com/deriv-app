@@ -60,10 +60,10 @@ export default class CommonStore extends BaseStore {
         const ui_store    = this.root_store.ui;
         const trade_store = this.root_store.modules.trade;
         if (!is_online) {
-            ui_store.addNotification(clientNotifications().you_are_offline);
+            ui_store.addNotificationMessage(clientNotifications().you_are_offline);
             trade_store.setTradeStatus(false);
         } else {
-            ui_store.removeNotification(clientNotifications().you_are_offline);
+            ui_store.removeNotificationMessage(clientNotifications().you_are_offline);
             trade_store.setTradeStatus(true);
         }
     }

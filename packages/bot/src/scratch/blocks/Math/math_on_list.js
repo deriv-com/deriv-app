@@ -10,7 +10,7 @@ Blockly.Blocks.math_on_list = {
             args0   : [
                 {
                     type   : 'field_dropdown',
-                    name   : 'OPERATION',
+                    name   : 'OP',
                     options: [
                         [translate('sum'), 'SUM'],
                         [translate('min'), 'MIN'],
@@ -46,7 +46,7 @@ Blockly.Blocks.math_on_list = {
 
 /* eslint-disable no-underscore-dangle */
 Blockly.JavaScript.math_on_list = block => {
-    const operation = block.getFieldValue('OPERATION');
+    const operation = block.getFieldValue('OP');
 
     let code,
         list;

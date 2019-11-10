@@ -1,51 +1,27 @@
-import filesaver                         from 'file-saver';
-import { oppositesToDropdownOptions }    from './utils';
-import config                            from '../constants';
-import { translate }                     from '../utils/lang/i18n';
-
-let purchase_choices = [[translate('Click to select'), '']];
+import filesaver     from 'file-saver';
+import config        from '../constants';
+import { translate } from '../utils/lang/i18n';
 
 export const saveAs = ({ data, filename, type }) => {
     const blob = new Blob([data], { type });
     filesaver.saveAs(blob, filename);
 };
 
-export const getPurchaseChoices = () => purchase_choices;
+export const getContractTypeOptions = (contract_type, trade_type) => {
+    const trade_types = config.opposites[trade_type.toUpperCase()];
 
-const getPurchaseDropdownOptions = (contract_type, opposite_name) => {
-    const { [opposite_name]: trade_types } = config.opposites;
-    let temp_purchase_choices = [];
-
-    if (trade_types) {
-        temp_purchase_choices.push(...trade_types.filter(trade_type => {
-            return contract_type === 'both' || contract_type === Object.keys(trade_type)[0];
-        }));
+    if (!trade_types) {
+        return config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
     }
 
-    if (temp_purchase_choices.length === 0) {
-        temp_purchase_choices = trade_types;
+    const contract_options = trade_types.map(type => Object.entries(type)[0].reverse());
+
+    // When user selected a specific contract, only return the contract type they selected.
+    if (contract_type !== 'both') {
+        return contract_options.filter(option => option[1] === contract_type);
     }
 
-    return oppositesToDropdownOptions(temp_purchase_choices);
-};
-
-export const updatePurchaseChoices = (contract_type, event_group, opposite_name) => {
-    Blockly.Events.disable();
-
-    purchase_choices = getPurchaseDropdownOptions(contract_type, opposite_name);
-
-    const purchase_blocks = Blockly.derivWorkspace.getAllBlocks().filter(block => {
-        return ['purchase', 'payout', 'ask_price'].includes(block.type);
-    });
-
-    purchase_blocks.forEach(purchase_block => {
-        const purchase_list_field = purchase_block.getField('PURCHASE_LIST');
-        const selected_value = purchase_list_field.getValue();
-
-        purchase_list_field.updateOptions(purchase_choices, event_group, selected_value, false);
-    });
-
-    Blockly.Events.enable();
+    return contract_options;
 };
 
 export const expectValue = (block, field) => {

@@ -23,6 +23,7 @@ const Purchase = ({
     setPurchaseState,
     trade_types,
     validation_errors,
+    gtmStore,
 }) => {
     const is_high_low = /high_low/.test(contract_type.toLowerCase());
     const isLoading = info => {
@@ -83,7 +84,7 @@ const Purchase = ({
         components.length === 2 &&
         !components[0].props.is_disabled &&
         !components[1].props.is_disabled) {
-        measurePerformance();
+        measurePerformance(gtmStore);
     }
     return components;
 };
@@ -91,8 +92,9 @@ const Purchase = ({
 Purchase.propTypes = {
     basis                     : PropTypes.string,
     currency                  : PropTypes.string,
-    is_client_allowed_to_visit: PropTypes.bool,
+    gtmStore                  : PropTypes.object,
     // is_purchase_confirm_on    : PropTypes.bool,
+    is_client_allowed_to_visit: PropTypes.bool,
     is_purchase_locked        : PropTypes.bool,
     is_trade_enabled          : PropTypes.bool,
     onClickPurchase           : PropTypes.func,
@@ -100,14 +102,14 @@ Purchase.propTypes = {
     proposal_info             : PropTypes.object,
     purchase_info             : PropTypes.object,
     purchased_states_arr      : PropTypes.array,
-    setPurchaseState          : PropTypes.func,
     // togglePurchaseLock        : PropTypes.func,
+    setPurchaseState          : PropTypes.func,
     trade_types               : PropTypes.object,
     validation_errors         : PropTypes.object,
 };
 
 export default connect(
-    ({ client, modules, ui }) => ({
+    ({ client, modules, ui, gtm }) => ({
         currency                  : client.currency,
         is_client_allowed_to_visit: client.is_client_allowed_to_visit,
         basis                     : modules.trade.basis,
@@ -121,6 +123,7 @@ export default connect(
         validation_errors         : modules.trade.validation_errors,
         purchased_states_arr      : ui.purchase_states,
         setPurchaseState          : ui.setPurchaseState,
+        gtmStore                  : gtm,
         // is_purchase_confirm_on    : ui.is_purchase_confirm_on,
         // is_purchase_locked        : ui.is_purchase_lock_on,
         // togglePurchaseLock        : ui.togglePurchaseLock,

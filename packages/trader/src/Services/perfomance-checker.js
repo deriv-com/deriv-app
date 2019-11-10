@@ -8,7 +8,7 @@ const performanceMetrics = {
     tradeEngineReady: 'trade-engine-ready',
 };
 
-function measurePerformance () {
+function measurePerformance (gtmStore) {
     try {
         // start --- smartChartLoaded
         performance.measure(
@@ -37,10 +37,11 @@ function measurePerformance () {
         const differences = performance.getEntriesByType('measure');
         
         for (let i = 0; i < differences.length; i++) {
-            dataLayer.push({
-                'event' : differences[i].name,
-                duration: differences[i].duration,
-            });
+            // dataLayer.push({
+            //     'event' : differences[i].name,
+            //     duration: differences[i].duration,
+            // });
+            gtmStore.pushLoadPerformance(differences[i].name,  differences[i].duration);
         }
     } catch (error) {
         // eslint-disable-next-line no-console

@@ -17,7 +17,6 @@ import {
     isDigitTradeType      }           from 'Modules/Trading/Helpers/digits';
 import ServerTime                     from '_common/base/server_time';
 import Shortcode                      from 'Modules/Reports/Helpers/shortcode';
-import { measurePerformance }         from 'Services/perfomance-checker';
 import { processPurchase }            from './Actions/purchase';
 import * as Symbol                    from './Actions/symbol';
 import getValidationRules             from './Constants/validation-rules';
@@ -366,6 +365,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onPurchase(proposal_id, price, type) {
         if (!this.is_purchase_enabled) return;
+        performance.mark('purchase-start');
         if (proposal_id) {
             this.is_purchase_enabled = false;
             const is_tick_contract = this.duration_unit === 't';
@@ -418,6 +418,7 @@ export default class TradeStore extends BaseStore {
                         this.proposal_requests = {};
                         this.debouncedProposal();
                         this.root_store.gtm.pushPurchaseData(contract_data);
+                        performance.mark('purchase-end');
                         return;
                     }
                 } else if (response.error) {
@@ -606,8 +607,6 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onProposalResponse(response) {
-        // eslint-disable-next-line no-console
-        console.log('onProposalResponse');
         const contract_type           = response.echo_req.contract_type;
         const prev_proposal_info      = ObjectUtils.getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = ObjectUtils.getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
@@ -629,9 +628,7 @@ export default class TradeStore extends BaseStore {
         }
 
         this.is_purchase_enabled = true;
-        performance.mark('set_proposal_info');
-        console.log('set_proposal_info');
-        measurePerformance('set_proposal_info');
+        performance.mark('purchase-enabled');
     }
 
     @action.bound
@@ -702,7 +699,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onMount() {
-        performance.mark('trade_engine_start');
+        performance.mark('trade-engine-start');
         this.onSwitchAccount(this.accountSwitcherListener);
         this.setChartStatus(true);
         runInAction(async() => {
@@ -710,10 +707,8 @@ export default class TradeStore extends BaseStore {
             this.refresh();
             await this.prepareTradeStore();
             this.debouncedProposal();
-            performance.mark('trade_engine_ready');
             // eslint-disable-next-line no-console
-            console.log('calculate trade engine');
-            measurePerformance('trade_engine_ready','trade_engine_start');
+            performance.mark('trade-engine-ready');
         });
     }
 

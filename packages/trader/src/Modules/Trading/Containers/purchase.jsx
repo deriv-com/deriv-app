@@ -4,6 +4,7 @@ import ObjectUtils                 from 'deriv-shared/utils/object';
 import PurchaseFieldset            from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { connect }                 from 'Stores/connect';
+import { measurePerformance } from '../../../Services/perfomance-checker';
 
 const Purchase = ({
     basis,
@@ -77,6 +78,13 @@ const Purchase = ({
         }
     });
 
+    if (components &&
+        components.length &&
+        components.length === 2 &&
+        !components[0].props.is_disabled &&
+        !components[1].props.is_disabled) {
+        measurePerformance();
+    }
     return components;
 };
 

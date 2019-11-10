@@ -198,8 +198,6 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     resetPurchaseStates() {
-        // eslint-disable-next-line no-console
-        console.log('resetPurchaseStates');
         this.purchase_states = [ false, false ];
     }
 

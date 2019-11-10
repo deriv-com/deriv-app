@@ -180,6 +180,10 @@ class ChartTradeClass extends React.Component {
         <ChartBottomWidgets digits={digits} tick={tick} />
     );
 
+    componentDidMount() {
+        performance.mark('smart-chart-loaded')
+    }
+
     render() {
         const {
             show_digits_stats,

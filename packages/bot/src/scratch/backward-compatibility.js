@@ -516,18 +516,10 @@ export default class BlockConversion {
         const is_disabled    = el_block.getAttribute('disabled') && el_block.getAttribute('disabled') === 'true';
 
         const setBlockAttributes = (b) => {
-            if (is_collapsed) {
-                b.setCollapsed(true);
-            }
-            if (is_immovable) {
-                b.setMovable(false);
-            }
-            if (is_undeletable) {
-                b.setDeletable(false);
-            }
-            if (is_disabled) {
-                b.setDisabled(true);
-            }
+            b.setCollapsed(is_collapsed);
+            b.setMovable(!is_immovable);
+            b.setDeletable(!is_undeletable);
+            b.setDisabled(is_disabled);
         };
 
         if (is_old_block) {
@@ -638,11 +630,10 @@ export default class BlockConversion {
                 case ('comment'): {
                     const is_minimised = el_block_child.getAttribute('pinned') !== 'true';
                     const comment_text = el_block_child.innerText;
-                    
-                    block.setCommentText(comment_text);
+
+                    block.comment = new Blockly.ScratchBlockComment(block, comment_text, null, 0, 0, is_minimised);
                     block.comment.iconXY_ = { x: 0, y: 0 };
-                    block.comment.setVisible(true);
-                    block.comment.setMinimized(is_minimised);
+                    block.comment.setVisible(true); // Scratch comments are always visible.
                     break;
                 }
                 default:

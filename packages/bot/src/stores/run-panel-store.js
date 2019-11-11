@@ -3,21 +3,21 @@ import {
     action,
     reaction,
     computed,
-}                          from 'mobx';
-import config              from '../constants';
-import { contract_stages } from '../constants/contract-stage';
+}                               from 'mobx';
+import { contract_stages }      from '../constants/contract-stage';
 import {
     error_types,
     unrecoverable_errors,
-}                          from '../constants/messages';
+}                               from '../constants/messages';
 import {
     runBot,
     stopBot,
     terminateBot,
-}                          from '../scratch';
-import { isEnded }         from '../utils/contract';
-import { translate }       from '../utils/lang/i18n';
-import { observer }        from '../utils/observer';
+}                               from '../scratch';
+import { isEnded }              from '../utils/contract';
+import { translate }            from '../utils/lang/i18n';
+import { observer }             from '../utils/observer';
+import { hasAllRequiredBlocks } from '../utils/scratchHelper';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -72,16 +72,9 @@ export default class RunPanelStore {
 
         this.registerBotListeners();
 
-        const blocks_in_workspace = Blockly.derivWorkspace.getAllBlocks();
-        const { mandatoryMainBlocks } = config;
-        const required_block_types    = ['trade_definition_tradeoptions', ...mandatoryMainBlocks];
-        const all_block_types         = blocks_in_workspace.map(block => block.type);
-        const has_all_required_blocks = required_block_types.every(required_block_type =>
-            all_block_types.includes(required_block_type));
-
-        if (!has_all_required_blocks) {
+        if (!hasAllRequiredBlocks()) {
             this.showErrorMessage(
-                new Error(translate('One or more mandatory blocks are missing from your workspace.' +
+                new Error(translate('One or more mandatory blocks are missing from your workspace. ' +
                 'Please add the required block(s) and then try again.'))
             );
             return;

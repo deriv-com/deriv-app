@@ -177,8 +177,8 @@ export default class RunPanelStore {
         this.onOkButtonClick     = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
-            title  : translate('Import error'),
-            message: translate('This strategy is currently not compatible with DBot.'),
+            title  : localize('Import error'),
+            message: localize('This strategy is currently not compatible with DBot.'),
         };
     }
     // #endregion

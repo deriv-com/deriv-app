@@ -1,8 +1,8 @@
+import { localize }    from 'deriv-translations/lib/i18n';
 import BlockConversion from './backward-compatibility';
 import { saveAs }      from './shared';
 import config          from '../constants';
 import ScratchStore    from '../stores/scratch-store';
-import { translate }   from '../utils/lang/i18n';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 
@@ -64,7 +64,7 @@ export const load = (block_string, drop_event) => {
     const { journal, run_panel } = ScratchStore.instance.root_store;
 
     const showInvalidStrategyError = () => {
-        const error_message = translate('XML file contains unsupported elements. Please check or modify file.');
+        const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
         
         journal.onError(error_message);
         run_panel.setActiveTabIndex(2);
@@ -119,7 +119,7 @@ export const load = (block_string, drop_event) => {
 
         // Dispatch resize event for comments.
         window.dispatchEvent(new Event('resize'));
-        journal.onLogSuccess(translate('Blocks are loaded successfully'));
+        journal.onLogSuccess(localize('Blocks are loaded successfully'));
     } catch (e) {
         return showInvalidStrategyError();
     }
@@ -161,14 +161,14 @@ const loadBlocksFromHeader = (xml_string, block) => {
         try {
             xml = Blockly.Xml.textToDom(xml_string);
         } catch (error) {
-            return reject(translate('Unrecognized file format'));
+            return reject(localize('Unrecognized file format'));
         }
 
         try {
             const is_collection = xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true';
 
             if (!is_collection) {
-                reject(translate('Remote blocks to load must be a collection.'));
+                reject(localize('Remote blocks to load must be a collection.'));
             }
 
             const { recordUndo } = Blockly.Events;
@@ -184,7 +184,7 @@ const loadBlocksFromHeader = (xml_string, block) => {
                 reject();
             });
         } catch (e) {
-            reject(translate('Unable to load the block file.'));
+            reject(localize('Unable to load the block file.'));
         }
     });
 };
@@ -202,7 +202,7 @@ export const loadBlocksFromRemote = (block) => {
         const has_possible_missing_index_xml = url.slice(-1)[0] === '/';
 
         if (!url.match(url_pattern) && !has_possible_missing_index_xml) {
-            return reject(translate('Target must be an XML file'));
+            return reject(localize('Target must be an XML file'));
         }
 
         if (has_possible_missing_index_xml) {
@@ -211,10 +211,10 @@ export const loadBlocksFromRemote = (block) => {
 
         if (block.isKnownUrl(url)) {
             block.setDisabled(true);
-            return reject(translate('This URL is already loaded'));
+            return reject(localize('This URL is already loaded'));
         }
 
-        const onFetchError = () => reject(translate('An error occured while trying to load the URL'));
+        const onFetchError = () => reject(localize('An error occured while trying to load the URL'));
 
         fetch(url).then(response => {
             if (response.ok) {

@@ -67,26 +67,14 @@ Blockly.Blocks.loader = {
         const { recordUndo } = Blockly.Events;
         Blockly.Events.recordUndo = false;
 
-<<<<<<< HEAD
-        loadRemote(this)
-            .then(() => {
-                Blockly.Events.recordUndo = recordUndo;
-                globalObserver.emit('ui.log.success', localize('Blocks are loaded successfully'));
-            })
-            .catch(errorMsg => {
-                Blockly.Events.recordUndo = recordUndo;
-                globalObserver.emit('ui.log.error', errorMsg);
-            });
-=======
         // Remove blocks previously loaded by this block.
         Blockly.Events.disable();
         this.blocks_added_by_me.forEach(block => block.dispose());
         Blockly.Events.enable();
->>>>>>> 20fd5696d7d284d7d6fe372c5a89101a59bdcfd5
 
         loadBlocksFromRemote(this).then(() => {
             Blockly.Events.recordUndo = recordUndo;
-            globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
+            globalObserver.emit('ui.log.success', localize('Blocks are loaded successfully'));
         }).catch(error_msg => {
             Blockly.Events.recordUndo = recordUndo;
             globalObserver.emit('ui.log.error', error_msg);

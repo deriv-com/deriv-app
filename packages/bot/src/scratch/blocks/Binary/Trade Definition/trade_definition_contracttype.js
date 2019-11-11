@@ -38,22 +38,10 @@ Blockly.Blocks.trade_definition_contracttype = {
                 const trade_types = getContractTypeOptions('both', trade_type);
                 
                 if (trade_types.length > 1) {
-                    contract_type_options.push([translate('Both'), 'both']);
+                    contract_type_options.push([localize('Both'), 'both']);
                 }
 
-<<<<<<< HEAD
-        if (trade_type && trade_type !== 'na') {
-            const { opposites } = config;
-            contract_types      = [
-                [localize('Both'), 'both'],
-                ...opposites[trade_type.toUpperCase()].map(type => Object.entries(type)[0].reverse()),
-            ];
-        } else {
-            contract_types = config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
-        }
-=======
                 contract_type_options.push(...trade_types);
->>>>>>> 20fd5696d7d284d7d6fe372c5a89101a59bdcfd5
 
                 if (contract_type_options.length === 0) {
                     contract_type_options.push(...config.NOT_AVAILABLE_DROPDOWN_OPTIONS);

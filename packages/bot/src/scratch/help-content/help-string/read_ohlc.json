@@ -1,6 +1,11 @@
 {
     "text": [
-        "This block returns specified candle value for the selected time interval.",
-        "In the below example an open price is extracted from the most recent candle into the variable \"op\"."
+        "This block gives you the specified candle value for a selected time interval. You can choose which value you want:",
+        "- Open: the opening price",
+        "- High: the highest price",
+        "- Low: the lowest price",
+        "- Close: the closing price",
+        "- Open time: the opening time stamp",
+        "In the example below, the opening price is selected, which is then assigned to a variable called “op”."
     ]
 }

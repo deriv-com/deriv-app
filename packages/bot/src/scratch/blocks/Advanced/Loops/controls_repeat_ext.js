@@ -33,7 +33,7 @@ Blockly.Blocks.controls_repeat_ext = {
     meta(){
         return {
             'display_name': translate('Repeat (2)'),
-            'description' : translate('This block repeats inside instructions specified number of times determined by a given variable.'),
+            'description' : translate('This block is similar to the block above, except that the number of times it repeats is determined by a given variable.'),
         };
     },
 };

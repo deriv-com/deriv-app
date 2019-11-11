@@ -17,7 +17,7 @@ import {
 import { isEnded }              from '../utils/contract';
 import { translate }            from '../utils/lang/i18n';
 import { observer }             from '../utils/observer';
-import { hasAllRequiredBlocks } from '../utils/scratchHelper';
+import { hasAllRequiredBlocks } from '../scratch/utils/scratchHelper';
 
 export default class RunPanelStore {
     constructor(root_store) {

@@ -25,14 +25,14 @@ Blockly.Blocks.timeout = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Run the blocks inside every n seconds'),
+            tooltip          : translate('Run the blocks inside after a given number of seconds'),
             category         : Blockly.Categories.Time,
         };
     },
     meta(){
         return {
-            'display_name': translate('Run after a timeout'),
-            'description' : translate('This block runs postpones execution of embedded instructions for X number of seconds. Actually, bot pauses execution of any other instructions until this block’s instructions are done.'),
+            'display_name': translate('Delayed run'),
+            'description' : translate('This block delays execution for a given number of seconds. You can place any blocks within this block. The execution of other blocks in your strategy will be paused until the instructions in this block are carried out.'),
         };
     },
     onchange(event) {

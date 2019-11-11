@@ -10,7 +10,7 @@ Blockly.Blocks.math_on_list = {
             args0   : [
                 {
                     type   : 'field_dropdown',
-                    name   : 'OPERATION',
+                    name   : 'OP',
                     options: [
                         [translate('sum'), 'SUM'],
                         [translate('min'), 'MIN'],
@@ -32,21 +32,21 @@ Blockly.Blocks.math_on_list = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Agregate functions'),
+            tooltip        : translate('Aggregate operations'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Agregate functions'),
-            'description' : translate('This block performs the following operations on s given list: Sum, Minimum, Maximum, Average, Median, Modes, Standard deviation, Random item'),
+            'display_name': translate('Aggregate operations'),
+            'description' : translate('This block performs the following operations on a given list: sum, minimum, maximum, average, median, modes, standard deviation, random item.'),
         };
     },
 };
 
 /* eslint-disable no-underscore-dangle */
 Blockly.JavaScript.math_on_list = block => {
-    const operation = block.getFieldValue('OPERATION');
+    const operation = block.getFieldValue('OP');
 
     let code,
         list;

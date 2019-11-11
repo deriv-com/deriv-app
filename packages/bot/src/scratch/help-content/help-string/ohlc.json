@@ -1,7 +1,6 @@
 {
     "text": [
-        "This block returns the list of candles. Each candle has 4 properties: high, low, open, close, and open time.",
-        "Example:",
-        "In this example open prices are extracted from the candle list into the variable \"cl\" with the help of another block."
+        "This block gives you a list of candles within a selected time interval.",
+        "In this example, this block is used with another block to get the open prices from a list of candles. The open prices are then assigned to the variable called “cl”."
     ]
 }

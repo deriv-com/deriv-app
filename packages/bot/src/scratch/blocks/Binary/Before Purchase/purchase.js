@@ -1,5 +1,5 @@
-import { getPurchaseChoices, updatePurchaseChoices } from '../../../shared';
-import { translate }                                 from '../../../../utils/lang/i18n';
+import { getContractTypeOptions } from '../../../shared';
+import { translate }              from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.purchase = {
     init() {
@@ -8,14 +8,14 @@ Blockly.Blocks.purchase = {
         // Ensure one of this type per statement-stack
         this.setNextStatement(false);
     },
-    definition(){
+    definition() {
         return {
             message0: translate('Purchase %1'),
             args0   : [
                 {
                     type   : 'field_dropdown',
                     name   : 'PURCHASE_LIST',
-                    options: getPurchaseChoices,
+                    options: [['', '']],
                 },
             ],
             previousStatement: null,
@@ -26,7 +26,7 @@ Blockly.Blocks.purchase = {
             category         : Blockly.Categories.Before_Purchase,
         };
     },
-    meta(){
+    meta() {
         return {
             'display_name': translate('Purchase'),
             'description' : translate('Use this block to purchase the specific contract you want. You may add multiple Purchase blocks together with conditional blocks to define your purchase conditions. This block can only be used within the Purchase conditions block.'),
@@ -37,33 +37,53 @@ Blockly.Blocks.purchase = {
             return;
         }
 
-        if (this.isDescendantOf('before_purchase')) {
-            if (this.disabled) {
-                this.setDisabled(false);
+        this.enforceLimitations();
+
+        if (event.type === Blockly.Events.BLOCK_CHANGE) {
+            if (event.name === 'TYPE_LIST' || event.name === 'TRADETYPE_LIST') {
+                this.populatePurchaseList(event);
             }
-        } else if (!this.disabled) {
-            this.setDisabled(true);
+        } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.id) {
+            const purchase_type_list = this.getField('PURCHASE_LIST');
+            const purchase_options   = purchase_type_list.menuGenerator_; // eslint-disable-line
+
+            if (purchase_options[0][0] === '') {
+                this.populatePurchaseList(event);
+            }
+        }
+    },
+    populatePurchaseList(event) {
+        const trade_definition_block = this.workspace.getAllBlocks(true).find(block =>
+            block.type === 'trade_definition'
+        );
+
+        if (!trade_definition_block) {
+            return;
         }
 
-        if (
-            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
-            (event.type === Blockly.Events.BLOCK_CHANGE)
-        ) {
-            const trade_definition_block = this.workspace.getAllBlocks(true).find(block => block.type === 'trade_definition');
+        const trade_type_block      = trade_definition_block.getChildByType('trade_definition_tradetype');
+        const trade_type            = trade_type_block.getFieldValue('TRADETYPE_LIST');
+        const contract_type_block   = trade_definition_block.getChildByType('trade_definition_contracttype');
+        const contract_type         = contract_type_block.getFieldValue('TYPE_LIST');
+        const purchase_type_list    = this.getField('PURCHASE_LIST');
+        const purchase_type         = purchase_type_list.getValue();
+        const contract_type_options = getContractTypeOptions(contract_type, trade_type);
 
-            if (!trade_definition_block) {
-                return;
-            }
+        purchase_type_list.updateOptions(contract_type_options, {
+            default_value: purchase_type,
+            event_group  : event.group,
+        });
+    },
+    enforceLimitations() {
+        const top_parent = this.getTopParent();
 
-            const trade_type_block    = trade_definition_block.getChildByType('trade_definition_tradetype');
-            const contract_type_block = trade_definition_block.getChildByType('trade_definition_contracttype');
-
-            const trade_type    = trade_type_block.getFieldValue('TRADETYPE_LIST');
-            const opposite_name = trade_type.toUpperCase();
-            const contract_type = contract_type_block.getFieldValue('TYPE_LIST');
-
-            if (opposite_name && opposite_name !== 'NA' && trade_type && contract_type) {
-                updatePurchaseChoices(contract_type, event.group, opposite_name);
+        if (top_parent) {
+            if (this.isDescendantOf('before_purchase')) {
+                if (this.disabled) {
+                    this.setDisabled(false);
+                }
+            } else if (!this.disabled) {
+                this.setDisabled(true);
             }
         }
     },

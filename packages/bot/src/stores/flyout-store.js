@@ -82,6 +82,10 @@ export default class FlyoutStore {
      * @memberof FlyoutStore
      */
     @action.bound setVisibility(is_visible) {
+        if (this.is_visible === is_visible) {
+            return;
+        }
+
         this.is_visible = is_visible;
 
         if (!is_visible) {

@@ -25,17 +25,10 @@ const LanguageSettingContainer = () => (
     />
 );
 
-const ChartSettingContainer = () => (
-    <Lazy
-        ctor={() => import(/* webpackChunkName: "settings-chart", webpackPrefetch: true */'App/Containers/SettingsModal/settings-chart.jsx')}
-    />
-);
-
-ChartSettingContainer.displayName    = 'ChartSettingContainer';
 LanguageSettingContainer.displayName = 'LanguageSettingContainer';
 ThemeSetting.displayName             = 'ThemeSettingContainer';
 
-const ModalContent = () => {
+const ModalContent = ({ settings_extension }) => {
     const content = [
         {
             icon : 'IconTheme',
@@ -46,17 +39,10 @@ const ModalContent = () => {
             icon : 'IconLanguage',
             label: localize('Language'),
             value: LanguageSettingContainer,
-        // }, {
-        //     icon : 'IconCharts',
-        //     label: localize('Charts'),
-        //     value: ChartSettingContainer,
-            // uncomment below lines to bring back purchase lock and purchase confirmation}
-            // }, {
-            //     icon : IconPurchase,
-            //     label: localize('Purchase'),
-            //     value: PurchaseSettings,
         },
+        ...(settings_extension || []),
     ];
+
     return (
         <VerticalTab
             alignment='center'
@@ -72,6 +58,7 @@ const ToggleSettings = ({
     is_settings_visible,
     disableApp,
     toggleSettings,
+    settings_extension,
 }) => {
     const toggle_settings_class = classNames('ic-settings', 'footer__link', {
         'ic-settings--active': is_settings_visible,
@@ -97,7 +84,7 @@ const ToggleSettings = ({
                     height='616px'
                     width='736px'
                 >
-                    <ModalContent />
+                    <ModalContent settings_extension={settings_extension} />
                 </Modal>
             </React.Suspense>
         </React.Fragment>

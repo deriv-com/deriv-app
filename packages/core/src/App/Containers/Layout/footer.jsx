@@ -17,6 +17,7 @@ const Footer = ({
     is_settings_modal_on,
     disableApp,
     toggleSettingsModal,
+    settings_extension,
 }) => (
     <footer className={classNames('footer', {
         'footer--is-disabled': (is_app_disabled || is_route_modal_on),
@@ -35,6 +36,7 @@ const Footer = ({
                 toggleSettings={toggleSettingsModal}
                 disableApp={disableApp}
                 enableApp={enableApp}
+                settings_extension={settings_extension}
             />
             <ToggleFullScreen />
         </div>
@@ -56,6 +58,7 @@ export default withRouter(connect(
     ({ client, ui }) => ({
         enableApp             : ui.enableApp,
         footer_extension      : ui.footer_extension,
+        settings_extension    : ui.settings_extension,
         is_app_disabled       : ui.is_app_disabled,
         is_route_modal_on     : ui.is_route_modal_on,
         is_logged_in          : client.is_logged_in,

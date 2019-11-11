@@ -24,7 +24,8 @@ export default class UIStore extends BaseStore {
     @observable is_reports_visible          = false;
 
     // Extensions
-    @observable footer_extension = undefined;
+    @observable footer_extension   = undefined;
+    @observable settings_extension = undefined;
 
     @observable is_cashier_modal_on     = false;
     @observable is_dark_mode_on         = false;
@@ -140,6 +141,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     populateFooterExtensions(component) {
         this.footer_extension = component;
+    }
+
+    @action.bound
+    populateSettingsExtensions(menu_items) {
+        this.settings_extension = menu_items;
     }
 
     @action.bound

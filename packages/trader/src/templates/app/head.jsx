@@ -1,11 +1,10 @@
-import React               from 'react';
-import GoogleOptimizer     from './includes/google/google_optimizer.jsx';
-import GTMScript           from './includes/google/gtm_script.jsx';
-import PerformanceObserver from './includes/performance/performance_observer.jsx';
-import URLHandler          from './includes/url_handler.jsx';
-import Title               from '../_common/components/title.jsx';
-import Favicons            from '../_common/includes/favicons.jsx';
-import AntiClickjack       from '../_common/includes/anti_clickjack.jsx';
+import React           from 'react';
+import GoogleOptimizer from './includes/google/google_optimizer.jsx';
+import GTMScript       from './includes/google/gtm_script.jsx';
+import URLHandler      from './includes/url_handler.jsx';
+import Title           from '../_common/components/title.jsx';
+import Favicons        from '../_common/includes/favicons.jsx';
+import AntiClickjack   from '../_common/includes/anti_clickjack.jsx';
 
 const Head = () => (
     <head>
@@ -15,7 +14,6 @@ const Head = () => (
         {/* <noscript>{ localize('Your browser does not support JavaScript!') }</noscript> */}
         {/* TODO: i18n_issue - these should be localized after the app has moved to mount on index.html */}
         <noscript>Your browser does not support JavaScript!</noscript>
-        <PerformanceObserver />
         <GoogleOptimizer />
         <GTMScript />
         <AntiClickjack />

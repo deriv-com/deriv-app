@@ -11,6 +11,7 @@ import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import { localize }      from 'App/i18n';
 import Icon              from 'Assets/icon.jsx';
 import { connect }       from 'Stores/connect';
+import PerformanceObserver from '../../../templates/app/includes/performance/performance_observer.jsx';
 
 const Header = ({
     active_cashier_tab,
@@ -59,6 +60,7 @@ const Header = ({
             'header--is-disabled': (is_app_disabled || is_route_modal_on),
         })}
         >
+            <PerformanceObserver />
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
                     <PlatformSwitcher platform_config={platform_config} />

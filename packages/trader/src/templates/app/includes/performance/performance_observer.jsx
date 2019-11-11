@@ -2,11 +2,15 @@
 import PropTypes                   from 'prop-types';
 import { connect }                 from 'Stores/connect';
 
-const Performance = (gtmStore) => {
-    // GTM-NF7884S
+const Performance = ({
+    gtmStore,
+}) => {    // GTM-NF7884S
     // GTM-M596458 dummy
-    console.log('MEASURING');
+    // eslint-disable-next-line no-console
+    console.log('PerformanceObserver 1');
     const observer = new PerformanceObserver(function(list) {
+        // eslint-disable-next-line no-console
+        console.log('PerformanceObserver 2');
         const perfEntries = list.getEntries();
         for (let i = 0; i < perfEntries.length; i++) {
             const time = Math.round(perfEntries[i].startTime + perfEntries[i].duration);
@@ -21,6 +25,7 @@ const Performance = (gtmStore) => {
     });
     // register observer for paint timing notifications
     observer.observe({ entryTypes: ['paint'] });
+    return null;
 };
 
 Performance.propTypes = {

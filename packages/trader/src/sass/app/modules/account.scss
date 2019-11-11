@@ -5,6 +5,7 @@
 
     .vertical-tab {
         height: calc(100vh - 83px);
+        max-width: calc(100vw - 32px);
 
         &__tab {
             min-width: 240px;
@@ -211,6 +212,7 @@
     .account-management__text-container {
         margin-top: 10px;
         max-width: 467px;
+        margin-bottom: 2em;
     }
     .account-management-flex-wrapper {
         display: flex;

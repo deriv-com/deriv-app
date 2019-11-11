@@ -1,4 +1,4 @@
-import { Button }           from 'deriv-components';
+import { Button, Popover }  from 'deriv-components';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
 import { localize }         from 'App/i18n';
@@ -7,6 +7,7 @@ import Icon                 from 'Assets/icon.jsx';
 import routes               from 'Constants/routes';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
+import ToggleNotifications  from './toggle-notifications.jsx';
 import ToggleCashier        from './toggle-cashier.jsx';
 import 'Sass/app/_common/components/account-switcher.scss';
 import { BinaryLink }       from '../../Routes';
@@ -23,11 +24,13 @@ export class AccountActions extends Component {
             nextProps.currency !== this.props.currency ||
             nextProps.is_acc_switcher_on !== this.props.is_acc_switcher_on ||
             nextProps.is_cashier_modal_on !== this.props.is_cashier_modal_on ||
+            nextProps.is_notifications_visible !== this.props.is_notifications_visible ||
             nextProps.is_payment_agent_visible !== this.props.is_payment_agent_visible ||
             nextProps.is_payment_agent_transfer_visible !== this.props.is_payment_agent_transfer_visible ||
             nextProps.is_logged_in !== this.props.is_logged_in ||
             nextProps.is_virtual !== this.props.is_virtual ||
-            nextProps.loginid !== this.props.loginid
+            nextProps.loginid !== this.props.loginid ||
+            nextProps.notifications_count !== this.props.notifications_count
         );
     }
 
@@ -40,20 +43,35 @@ export class AccountActions extends Component {
             is_acc_switcher_on,
             is_cashier_modal_on,
             is_logged_in,
+            is_notifications_visible,
             is_payment_agent_visible,
             is_payment_agent_transfer_visible,
             is_virtual,
+            notifications_count,
             openRealAccountSignup,
             setCashierActiveTab,
             toggleAccountsDialog,
+            toggleNotifications,
             toggleCashierModal,
         } = this.props;
         if (is_logged_in) {
             return (
                 <React.Fragment>
-                    <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
-                        <Icon icon='IconUser' />
-                    </BinaryLink>
+                    <ToggleNotifications
+                        count={notifications_count}
+                        is_visible={is_notifications_visible}
+                        toggleDialog={toggleNotifications}
+                        tooltip_message={localize('View Notifications')}
+                    />
+                    <Popover
+                        classNameBubble='account-settings-toggle__tooltip'
+                        alignment='bottom'
+                        message={localize('Manage Account Settings')}
+                    >
+                        <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
+                            <Icon icon='IconUser' />
+                        </BinaryLink>
+                    </Popover>
                     <React.Suspense fallback={<div />}>
                         <AccountInfo
                             balance={typeof balance === 'undefined' ? balance : CurrencyUtils.formatMoney(currency, balance, true)}
@@ -107,11 +125,14 @@ AccountActions.propTypes = {
     is_acc_switcher_on               : PropTypes.any,
     is_cashier_modal_on              : PropTypes.any,
     is_logged_in                     : PropTypes.any,
+    is_notifications_visible         : PropTypes.any,
     is_payment_agent_transfer_visible: PropTypes.any,
     is_payment_agent_visible         : PropTypes.any,
     is_virtual                       : PropTypes.any,
+    notifications_count              : PropTypes.any,
     openRealAccountSignup            : PropTypes.func,
     setCashierActiveTab              : PropTypes.func,
     toggleAccountsDialog             : PropTypes.any,
     toggleCashierModal               : PropTypes.any,
+    toggleNotifications              : PropTypes.any,
 };

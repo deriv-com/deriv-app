@@ -119,6 +119,17 @@ const BinarySocketGeneral = (() => {
             case 'DisabledClient':
                 common_store.setError(true, { message: response.error.message });
                 break;
+            case 'InvalidToken':
+                requestLogout().then(() => {
+                    client_store.backgroundCleanUp();
+                    common_store.setError(true, {
+                        header             : response.error.message,
+                        message            : localize('Please Log in'),
+                        should_show_refresh: false,
+                        redirect_label     : localize('Log in'),
+                        redirectOnClick    : Login.redirectToLogin,
+                    });
+                });
             // no default
         }
     };

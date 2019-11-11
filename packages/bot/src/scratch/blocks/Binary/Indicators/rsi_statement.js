@@ -2,6 +2,8 @@ import { expectValue } from '../../../shared';
 import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.rsi_statement = {
+    protected_statements : ['STATEMENT'],
+    required_child_blocks: ['input_list', 'period'],
     init() {
         this.jsonInit(this.definition());
     },
@@ -41,8 +43,7 @@ Blockly.Blocks.rsi_statement = {
             'description' : translate('RSI is a technical analysis tool that helps you identify the market trend. It will give you a value from 0 to 100. An RSI value of 70 and above means that the asset is overbought and the current trend may reverse, while a value of 30 and below means that the asset is oversold.'),
         };
     },
-    onchange           : Blockly.Blocks.bb_statement.onchange,
-    requiredParamBlocks: ['input_list', 'period'],
+    onchange: Blockly.Blocks.bb_statement.onchange,
 };
 
 Blockly.JavaScript.rsi_statement = block => {

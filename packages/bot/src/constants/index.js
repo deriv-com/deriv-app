@@ -188,6 +188,7 @@ const config = {
         [translate('1 day'), '86400'],
     ],
     mainBlocks                             : ['trade_definition', 'before_purchase', 'during_purchase', 'after_purchase'],
+    procedureDefinitionBlocks              : ['procedures_defnoreturn', 'procedures_defreturn'],
     TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING: {
         callput: ['callput', 'higherlower'],
         asian  : ['asians'],

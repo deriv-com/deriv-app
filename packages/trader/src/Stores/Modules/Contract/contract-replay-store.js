@@ -6,7 +6,7 @@ import BinarySocket           from '_common/base/socket_base';
 import { WS }                 from 'Services';
 import { localize }           from 'App/i18n';
 import ContractStore          from './contract-store';
-import { contractSold }       from '../Portfolio/Helpers/portfolio-notifcations';
+import { contractSold }       from '../Portfolio/Helpers/portfolio-notifications';
 import BaseStore              from '../../base-store';
 
 export default class ContractReplayStore extends BaseStore {
@@ -175,7 +175,9 @@ export default class ContractReplayStore extends BaseStore {
                 sell_price    : response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
-            this.root_store.ui.addNotification(contractSold(this.root_store.client.currency, response.sell.sold_for));
+            this.root_store.ui.addNotificationMessage(
+                contractSold(this.root_store.client.currency, response.sell.sold_for)
+            );
         }
     }
 

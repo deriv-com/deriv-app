@@ -77,6 +77,12 @@
 
 /** @define acc-switcher; weak */
 .acc-switcher {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin: 0 0.8rem;
+    height: 4rem;
+
     &__wrapper {
         border-radius: $BORDER_RADIUS;
         position: absolute;
@@ -84,7 +90,7 @@
         box-shadow: 0 8px 16px 0 var(--shadow-menu);
         right: 0;
         top: calc(100% + 4px);
-        width: 246px;
+        width: 278px;
         background-color: var(--general-main-2);
 
         &--enter-done {
@@ -94,6 +100,11 @@
         &--enter, &--exit {
             opacity: 0;
             transform: translate3d(0, -20px, 0);
+        }
+        .acc-switcher__button {
+            max-width: calc(100% - 1.6rem);
+            margin: 0.2rem 0.8rem 0.8rem;
+            height: 4rem;
         }
     }
     &__new-account {
@@ -123,13 +134,14 @@
             background-color: rgba(255, 68, 79, 0.08) !important;
         }
         .btn__text {
+            font-weight: normal;
             color: var(--brand-red-coral);
         }
         .btn {
             align-items: center;
             background-color: transparent;
             display: flex;
-            margin: 0 0 0.8em;
+            margin: 0;
             padding: 0 0 0 0.8rem;
             height: 4rem;
             justify-content: left;
@@ -140,18 +152,16 @@
         display: flex;
         flex-flow: column nowrap;
         height: 100%;
-        padding: 1.6em 0.8em;
         background: var(--general-main-2);
 
         &-title {
-            @include typeface(--paragraph-left-bold-black);
-            padding-bottom: 0.8em;
-            margin-left: 0.8rem;
+            @include typeface(--title-left-bold-black);
             display: block;
             color: var(--text-prominent);
+            flex: 1;
         }
-        &-group {
-            margin-bottom: 0.8rem;
+        &-wrapper {
+            padding: 0.4em 0.8em 0.8em;
         }
     }
     &__accounts {
@@ -171,6 +181,7 @@
             .acc-switcher__id {
                 color: var(--text-general);
                 width: 100%;
+                line-height: 1.43;
             }
             &--selected {
                 background: var(--state-active);
@@ -202,6 +213,7 @@
         padding: 0.8em;
         position: relative;
         background: var(--general-main-2);
+        text-decoration: none;
 
         .acc-switcher__id {
             @include typeface(--paragraph-left-normal-black);
@@ -229,6 +241,10 @@
                 }
             }
         }
+        &--demo-text {
+            padding-top: 0.3em;
+            padding-bottom: 0.3em;
+        }
     }
     &__logout {
         align-items: center;
@@ -236,16 +252,14 @@
         cursor: pointer;
         display: flex;
         justify-content: flex-end;
-        margin-top: 1.6em;
+        padding: 1.6em 1.3em;
 
         &-text {
             @include typeface(--paragraph-left-normal-black, none);
             color: var(--text-prominent);
         }
         &-icon {
-            height: auto;
             margin-left: 8px;
-            width: 1.6em;
             @extend %inline-icon;
         }
     }
@@ -260,15 +274,32 @@
     &__separator {
         height: 4px;
         background-color: var(--general-section-2);
-        width: calc(100% + 1.6rem);
-        margin-left: -0.8rem;
     }
     &__total {
         font-size: 1.4rem;
-        margin: 1.6rem 0.8rem;
+        height: 4rem;
+        margin: 0.4rem 1.6rem;
+        align-items: center;
         font-weight: bold;
         display: flex;
         color: var(--text-prominent);
+
+        &-icon {
+            margin: 0 0.4rem;
+
+            .color1-fill {
+                fill: var(--text-prominent) !important;
+            }
+        }
+    }
+    &__demo-text {
+        font-size: 1rem;
+        color: var(--text-less-prominent);
+        line-height: 1.4;
+    }
+    &__loader {
+        margin: 1rem auto !important;
+        font-size: 0.8rem;
     }
 }
 

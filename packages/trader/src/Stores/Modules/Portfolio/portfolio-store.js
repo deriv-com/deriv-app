@@ -7,7 +7,7 @@ import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services';
 import ObjectUtils                 from 'deriv-shared/utils/object';
 import { formatPortfolioPosition } from './Helpers/format-response';
-import { contractSold }            from './Helpers/portfolio-notifcations';
+import { contractSold }            from './Helpers/portfolio-notifications';
 import {
     getCurrentTick,
     getDurationPeriod,
@@ -185,11 +185,15 @@ export default class PortfolioStore extends BaseStore {
             // If unable to sell due to error, give error via pop up if not in contract mode
             const i = this.getPositionIndexById(response.echo_req.sell);
             this.positions[i].is_sell_requested = false;
-            this.root_store.common.services_error = {
-                type: response.msg_type,
-                ...response.error,
-            };
-            this.root_store.ui.toggleServicesErrorModal(true);
+            
+            // invalidToken error will handle in socket-general.js
+            if (response.error.code !== 'InvalidToken') {
+                this.root_store.common.services_error = {
+                    type: response.msg_type,
+                    ...response.error,
+                };
+                this.root_store.ui.toggleServicesErrorModal(true);
+            }
         } else if (!response.error && response.sell) {
             const i = this.getPositionIndexById(response.sell.contract_id);
             this.positions[i].is_sell_requested = false;
@@ -198,7 +202,9 @@ export default class PortfolioStore extends BaseStore {
                 sell_price    : response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
-            this.root_store.ui.addNotification(contractSold(this.root_store.client.currency, response.sell.sold_for));
+            this.root_store.ui.addNotificationMessage(
+                contractSold(this.root_store.client.currency, response.sell.sold_for)
+            );
         }
     }
 

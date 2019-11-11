@@ -61,8 +61,8 @@ Blockly.JavaScript.logic_compare = block => {
         ? Blockly.JavaScript.ORDER_EQUALITY
         : Blockly.JavaScript.ORDER_RELATIONAL;
 
-    const argument0 = Blockly.JavaScript.valueToCode(block, 'A', order);
-    const argument1 = Blockly.JavaScript.valueToCode(block, 'B', order);
+    const argument0 = Blockly.JavaScript.valueToCode(block, 'A', order) || 'false';
+    const argument1 = Blockly.JavaScript.valueToCode(block, 'B', order) || 'false';
 
     const code = `${argument0} ${operator} ${argument1}`;
     return [code, order];

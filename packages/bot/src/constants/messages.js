@@ -7,6 +7,7 @@ export const unrecoverable_errors = [
     'NotDefaultCurrency',
     'PleaseAuthenticate',
     'FinancialAssessmentRequired',
+    'PositiveNumberExpected',
 ];
 
 export const message_types = Object.freeze({

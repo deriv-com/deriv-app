@@ -21,8 +21,8 @@ Blockly.Blocks.slow_ema_period = {
         this.setMovable(false);
         this.setDeletable(false);
     },
-    onchange      : Blockly.Blocks.input_list.onchange,
-    allowedParents: ['macda_statement'],
+    onchange       : Blockly.Blocks.input_list.onchange,
+    allowed_parents: ['macda_statement'],
 };
 
 Blockly.JavaScript.slow_ema_period = () => {};

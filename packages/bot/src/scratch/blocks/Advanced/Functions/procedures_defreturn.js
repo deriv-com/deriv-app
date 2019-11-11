@@ -4,7 +4,7 @@ import { plusIconDark } from '../../images';
 Blockly.Blocks.procedures_defreturn = {
     init() {
         this.arguments = [];
-        this.argumentVarModels = [];
+        this.argument_var_models = [];
 
         this.jsonInit(this.definition());
 

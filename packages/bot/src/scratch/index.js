@@ -23,6 +23,9 @@ export const scratchWorkspaceInit = async () => {
             zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
         });
 
+        Blockly.JavaScript.init(workspace);
+        Blockly.JavaScript.variableDB_.setVariableMap(workspace.getVariableMap()); // eslint-disable-line
+
         Blockly.derivWorkspace = workspace;
         Blockly.derivWorkspace.blocksXmlStr = main_xml;
         Blockly.derivWorkspace.toolboxXmlStr = toolbox_xml;

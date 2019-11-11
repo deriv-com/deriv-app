@@ -2,6 +2,7 @@ import { localize }     from 'deriv-translations/lib/i18n';
 import { plusIconDark } from '../images';
 
 Blockly.Blocks.text_join = {
+    protected_statements: ['STACK'],
     init() {
         this.jsonInit(this.definition());
 

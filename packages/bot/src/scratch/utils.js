@@ -1,6 +1,8 @@
-import { saveAs } from './shared';
-import config     from '../constants';
-import ApiHelpers from '../services/api/api-helpers';
+import BlockConversion from './backward-compatibility';
+import { saveAs }      from './shared';
+import config          from '../constants';
+import ScratchStore    from '../stores/scratch-store';
+import { translate }   from '../utils/lang/i18n';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 
@@ -12,14 +14,16 @@ export const oppositesToDropdownOptions = opposite_name => {
 };
 
 export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
-    const { clientX = 0, clientY = 0 } = drop_event || {};
-    const toolbar_height = 76;
-    const blockly_metrics = Blockly.derivWorkspace.getMetrics();
+    const {
+        clientX = 0,
+        clientY = 0 }        = drop_event || {};
+    const toolbar_height     = 76;
+    const blockly_metrics    = Blockly.derivWorkspace.getMetrics();
     const scale_cancellation = 1 / Blockly.derivWorkspace.scale;
-    const blockly_left = blockly_metrics.absoluteLeft - blockly_metrics.viewLeft;
-    const blockly_top = document.body.offsetHeight - blockly_metrics.viewHeight - blockly_metrics.viewTop;
-    const cursor_x = clientX ? (clientX - blockly_left) * scale_cancellation : 0;
-    const cursor_y = clientY ? (clientY - blockly_top - toolbar_height) * scale_cancellation : 0;
+    const blockly_left       = blockly_metrics.absoluteLeft - blockly_metrics.viewLeft;
+    const blockly_top        = document.body.offsetHeight - blockly_metrics.viewHeight - blockly_metrics.viewTop;
+    const cursor_x           = clientX ? (clientX - blockly_left) * scale_cancellation : 0;
+    const cursor_y           = clientY ? (clientY - blockly_top - toolbar_height) * scale_cancellation : 0;
     
     Blockly.derivWorkspace.cleanUp(cursor_x, cursor_y, blocks_to_clean);
 };
@@ -48,118 +52,63 @@ export const setBlockTextColor = block => {
     Blockly.Events.recordUndo = true;
 };
 
-const getCollapsedProcedures = () =>
-    Blockly.derivWorkspace
-        .getTopBlocks()
-        // eslint-disable-next-line no-underscore-dangle
-        .filter(block => !isMainBlock(block.type) && block.collapsed_ && block.type.indexOf('procedures_def') === 0);
-
-export const fixCollapsedBlocks = () =>
-    getCollapsedProcedures().forEach(block => {
-        block.setCollapsed(false);
-        block.setCollapsed(true);
-    });
-
 export const save = (filename = 'deriv-bot', collection = false, xmlDom) => {
+    xmlDom.setAttribute('is_dbot', 'true');
     xmlDom.setAttribute('collection', collection ? 'true' : 'false');
+    
     const data = Blockly.Xml.domToPrettyText(xmlDom);
     saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
 };
 
-const isProcedure = blockType => ['procedures_defreturn', 'procedures_defnoreturn'].indexOf(blockType) >= 0;
+export const load = (block_string, drop_event) => {
+    const { journal, run_panel } = ScratchStore.instance.root_store;
 
-// dummy event to recover deleted blocks loaded by loader
-class DeleteStray extends Blockly.Events.Abstract {
-    constructor(block) {
-        super(block);
-        this.run(true);
-    }
+    const showInvalidStrategyError = () => {
+        const error_message = translate('XML file contains unsupported elements. Please check or modify file.');
+        
+        journal.onError(error_message);
+        run_panel.setActiveTabIndex(2);
+    };
 
-    run(redo) {
-        const { recordUndo } = Blockly.Events;
-        Blockly.Events.recordUndo = false;
-        const sourceBlock = Blockly.derivWorkspace.getBlockById(this.blockId);
-        if (!sourceBlock) {
-            return;
-        }
-        if (redo) {
-            sourceBlock.setFieldValue(`${sourceBlock.getFieldValue('NAME')} (deleted)`, 'NAME');
-            sourceBlock.setDisabled(true);
-        } else {
-            sourceBlock.setFieldValue(sourceBlock.getFieldValue('NAME').replace(' (deleted)', ''), 'NAME');
-            sourceBlock.setDisabled(false);
-        }
-        Blockly.Events.recordUndo = recordUndo;
-    }
-}
-DeleteStray.prototype.type = 'deletestray';
-
-export const deleteBlocksLoadedBy = (id, event_group = true) => {
-    Blockly.Events.setGroup(event_group);
-    Blockly.derivWorkspace.getTopBlocks().forEach(block => {
-        if (block.loaderId === id) {
-            if (isProcedure(block.type)) {
-                if (block.getFieldValue('NAME').indexOf('deleted') < 0) {
-                    Blockly.Events.fire(new DeleteStray(block));
-                }
-            } else {
-                block.dispose();
-            }
-        }
-    });
-    Blockly.Events.setGroup(false);
-};
-
-export const addDomAsBlock = block_xml => {
-    if (block_xml.tagName === 'variables') {
-        return Blockly.Xml.domToVariables(block_xml, Blockly.derivWorkspace);
-    }
-    const blockType = block_xml.getAttribute('type');
-    if (isMainBlock(blockType)) {
-        Blockly.derivWorkspace
-            .getTopBlocks()
-            .filter(b => b.type === blockType)
-            .forEach(b => b.dispose());
-    }
-    return Blockly.Xml.domToBlock(block_xml, Blockly.derivWorkspace);
-};
-
-export const load = (block_string = '', drop_event) => {
+    // Check if XML can be parsed correctly.
     try {
         const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
 
         if (xmlDoc.getElementsByTagName('parsererror').length) {
-            throw new Error();
+            return showInvalidStrategyError();
         }
     } catch (e) {
-        // TODO
-        console.error(e);  // eslint-disable-line
+        return showInvalidStrategyError();
     }
 
     let xml;
+
+    // Check if XML can be parsed into a strategy.
     try {
         xml = Blockly.Xml.textToDom(block_string);
-        xml = updateRenamedMarkets(xml);
     } catch (e) {
-        // TODO
-        console.error(e);  // eslint-disable-line
+        return showInvalidStrategyError();
     }
 
+    const blockConversion = new BlockConversion();
+    xml = blockConversion.convertStrategy(xml);
+    
     const blockly_xml = xml.querySelectorAll('block');
 
+    // Check if there are any blocks in this strategy.
     if (!blockly_xml.length) {
-        // TODO
-        console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
+        return showInvalidStrategyError();
     }
 
-    blockly_xml.forEach(block => {
+    // Check if all block types in XML are allowed.
+    const has_invalid_blocks = Array.from(blockly_xml).some(block => {
         const block_type = block.getAttribute('type');
-
-        if (!Object.keys(Blockly.Blocks).includes(block_type)) {
-            // TODO
-            console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
-        }
+        return !Object.keys(Blockly.Blocks).includes(block_type);
     });
+
+    if (has_invalid_blocks) {
+        return showInvalidStrategyError();
+    }
 
     try {
         if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
@@ -167,31 +116,30 @@ export const load = (block_string = '', drop_event) => {
         } else {
             loadWorkspace(xml);
         }
+
+        // Dispatch resize event for comments.
+        window.dispatchEvent(new Event('resize'));
+        journal.onLogSuccess(translate('Blocks are loaded successfully'));
     } catch (e) {
-        console.error(e); // eslint-disable-line
-        // TODO
-        console.error('XML file contains unsupported elements. Please check or modify file.');  // eslint-disable-line
+        return showInvalidStrategyError();
     }
+
+    return true;
 };
 
 const loadBlocks = (xml, drop_event) => {
-    const workspace = Blockly.derivWorkspace;
-    const variables = xml.getElementsByTagName('variables');
-    if (variables.length) {
-        Blockly.Xml.domToVariables(variables[0], workspace);
-    }
     Blockly.Events.setGroup('load');
-    const addedBlocks =
-        Array.from(xml.children)
-            .map(block => addDomAsBlock(block))
-            .filter(b => b);
+
+    const workspace    = Blockly.derivWorkspace;
+    const block_ids    = Blockly.Xml.domToWorkspace(xml, workspace);
+    const added_blocks = block_ids.map(block_id => workspace.getBlockById(block_id));
+
     if (drop_event && Object.keys(drop_event).length !== 0) {
-        cleanUpOnLoad(addedBlocks, drop_event);
+        cleanUpOnLoad(added_blocks, drop_event);
     } else {
         workspace.cleanUp();
     }
 
-    fixCollapsedBlocks();
     Blockly.Events.setGroup(false);
 };
 
@@ -202,31 +150,137 @@ const loadWorkspace = (xml) => {
     workspace.clear();
 
     Blockly.Xml.domToWorkspace(xml, workspace);
-    fixCollapsedBlocks();
     Blockly.Events.setGroup(false);
 };
 
-// TODO: Refactor this into backward compatibility.
-const updateRenamedMarkets = (xml) => {
-    const el_market_list = xml.querySelector('field[name="MARKET_LIST"]');
-    
-    if (el_market_list) {
-        const { active_symbols } = ApiHelpers.instance;
-        const market_value       = el_market_list.innerText;
-        const renamed_fields     = { volidx: 'synthetic_index' };
-        const market_options     = Object.keys(active_symbols.processed_symbols).reduce(
-            (initial_value, current_value) => {
-                if (!initial_value.includes(current_value)) {
-                    initial_value.push(current_value);
-                }
-                return initial_value;
-            }, []
-        );
+const loadBlocksFromHeader = (xml_string, block) => {
+    // eslint-disable-next-line consistent-return
+    return new Promise((resolve, reject) => {
+        let xml;
 
-        if (market_options.includes(renamed_fields[market_value])) {
-            el_market_list.innerText = renamed_fields[market_value];
+        try {
+            xml = Blockly.Xml.textToDom(xml_string);
+        } catch (error) {
+            return reject(translate('Unrecognized file format'));
         }
-    }
+
+        try {
+            const is_collection = xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true';
+
+            if (!is_collection) {
+                reject(translate('Remote blocks to load must be a collection.'));
+            }
+
+            const { recordUndo } = Blockly.Events;
+
+            Blockly.Events.recordUndo = false;
+
+            addLoaderBlocksFirst(xml).then(() => {
+                Array.from(xml.children).forEach(el_block => addDomAsBlock(el_block, block));
+                Blockly.Events.recordUndo = recordUndo;
+                resolve();
+            }).catch(() => {
+                Blockly.Events.recordUndo = recordUndo;
+                reject();
+            });
+        } catch (e) {
+            reject(translate('Unable to load the block file.'));
+        }
+    });
+};
+
+export const loadBlocksFromRemote = (block) => {
+    // eslint-disable-next-line consistent-return
+    return new Promise((resolve, reject) => {
+        let url = block.getFieldValue('URL');
+
+        if (url.indexOf('http') === -1) {
+            url = `http://${url}`;
+        }
+
+        const url_pattern                    = /[^/]*\.[a-zA-Z]{3}$/;
+        const has_possible_missing_index_xml = url.slice(-1)[0] === '/';
+
+        if (!url.match(url_pattern) && !has_possible_missing_index_xml) {
+            return reject(translate('Target must be an XML file'));
+        }
+
+        if (has_possible_missing_index_xml) {
+            url += 'index.xml';
+        }
+
+        if (block.isKnownUrl(url)) {
+            block.setDisabled(true);
+            return reject(translate('This URL is already loaded'));
+        }
+
+        const onFetchError = () => reject(translate('An error occured while trying to load the URL'));
+
+        fetch(url).then(response => {
+            if (response.ok) {
+                response.text().then(xml_string => {
+                    loadBlocksFromHeader(xml_string, block)
+                        .then(() => resolve(block))
+                        .catch(onFetchError);
+                });
+            } else {
+                onFetchError();
+            }
+        }).catch(onFetchError);
+    });
+};
+
+export const addLoaderBlocksFirst = (xml) => {
+    return new Promise((resolve, reject) => {
+        const promises     = [];
+
+        Array.from(xml.children).forEach(el_block => {
+            const block_type = el_block.getAttribute('type');
     
-    return xml;
+            if (block_type === 'loader') {
+                el_block.remove();
+                const loader = Blockly.Xml.domToBlock(el_block, Blockly.derivWorkspace);
+                promises.push(loadBlocksFromRemote(loader)); // eslint-disable-line no-use-before-define
+            }
+        });
+
+        if (promises.length) {
+            Promise.all(promises).then(resolve, reject);
+        } else {
+            resolve([]);
+        }
+    });
+};
+
+export const addDomAsBlock = (el_block, parent_block = null) => {
+    if (el_block.tagName.toLowerCase() === 'variables') {
+        return Blockly.Xml.domToVariables(el_block, Blockly.derivWorkspace);
+    }
+
+    const block_type       = el_block.getAttribute('type');
+    const block_conversion = new BlockConversion();
+    const block_xml        = Blockly.Xml.blockToDom(block_conversion.convertBlockNode(el_block));
+
+    // Fix legacy Blockly `varid` attribute.
+    Array.from(block_xml.getElementsByTagName('arg')).forEach(el => {
+        if (el.hasAttribute('varid')) {
+            el.setAttribute('varId', el.getAttribute('varid'));
+        }
+    });
+
+    if (config.mainBlocks.includes(block_type)) {
+        Blockly.derivWorkspace.getTopBlocks().forEach(top_block => {
+            if (top_block.type === block_type) {
+                top_block.dispose();
+            }
+        });
+    }
+
+    const block = Blockly.Xml.domToBlock(block_xml, Blockly.derivWorkspace);
+
+    if (parent_block) {
+        parent_block.blocks_added_by_me.push(block);
+    }
+
+    return block;
 };

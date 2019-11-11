@@ -91,44 +91,69 @@ Blockly.JavaScript.lists_getSublist = block => {
         at2,
         code;
 
-    if (list.match(/^\w+$/)) {
+    if (where1 === 'FIRST' && where2 === 'LAST') {
+        code = `${list}.slice(0)`;
+    } else if (list.match(/^\w+$/) || (where1 !== 'FROM_END' && where2 === 'FROM_START')) {
         if (where1 === 'FROM_START') {
             at1 = Blockly.JavaScript.getAdjusted(block, 'AT1');
         } else if (where1 === 'FROM_END') {
             at1 = Blockly.JavaScript.getAdjusted(block, 'AT1', 1, false, Blockly.JavaScript.ORDER_SUBTRACTION);
             at1 = `${list}.length - ${at1}`;
+        } else if (where1 === 'FIRST') {
+            at1 = '0';
         }
+
         if (where2 === 'FROM_START') {
             at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 1);
         } else if (where2 === 'FROM_END') {
             at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 0, false, Blockly.JavaScript.ORDER_SUBTRACTION);
             at2 = `${list}.length - ${at2}`;
+        } else if (where2 === 'LAST') {
+            at2 = `${list}.length`;
         }
 
         code = `${list}.slice(${at1}, ${at2})`;
     } else {
         at1 = Blockly.JavaScript.getAdjusted(block, 'AT1');
         at2 = Blockly.JavaScript.getAdjusted(block, 'AT2');
-        const wherePascalCase = {
+        const where_pascal_case = {
             FROM_START: 'FromStart',
             FROM_END  : 'FromEnd',
+            FIRST     : 'First',
+            LAST      : 'Last',
         };
-        const getIndex = (listName, where, at) => (where === 'FROM_END' ? `${listName}.length - 1 - ${at}` : at);
+
+        const getIndex = (list_name, where, opt_at) => {
+            if (where === 'FIRST') {
+                return '0';
+            } else if (where === 'FROM_END') {
+                return `${list_name}.length - 1 - ${opt_at}`;
+            } else if (where === 'LAST') {
+                return `${list_name}.length - 1`;
+            }
+            return `${opt_at}`;
+        };
+
+        const has_at1  = (where1 === 'FROM_END' || where1 === 'FROM_START');
+        const has_at2  = (where2 === 'FROM_END' || where2 === 'FROM_START');
 
         // eslint-disable-next-line no-underscore-dangle
-        const functionName = Blockly.JavaScript.provideFunction_(
-            `subsequence${wherePascalCase[where1]}${wherePascalCase[where2]}`,
+        const function_name = Blockly.JavaScript.provideFunction_(
+            `subsequence${where_pascal_case[where1]}${where_pascal_case[where2]}`,
             [
                 // eslint-disable-next-line no-underscore-dangle
-                `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(sequence, at1, at2) {
-                var start = ${getIndex('sequence', where1, 'at1')};
-                var end = ${getIndex('sequence', where2, 'at2')};
-                return sequence.slice(start, end);
-            }`,
+                `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(
+                    sequence${has_at1 ? ', at1' : ''}${has_at2 ? ', at2' : ''}
+                ) {
+                    var start = ${getIndex('sequence', where1, 'at1')};
+                    var end = ${getIndex('sequence', where2, 'at2')} + 1;
+
+                    return sequence.slice(start, end);
+                }`,
             ]
         );
 
-        code = `${functionName}(${list}, ${at1}, ${at2})`;
+        code = `${function_name}(${list}${has_at1 ? `, ${at1}` : ''}${has_at2 ? `, ${at2}` : ''})`;
     }
 
     return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];

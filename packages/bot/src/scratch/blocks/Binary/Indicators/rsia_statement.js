@@ -2,10 +2,12 @@ import { localize }    from 'deriv-translations/lib/i18n';
 import { expectValue } from '../../../shared';
 
 Blockly.Blocks.rsia_statement = {
+    protected_statements : ['STATEMENT'],
+    required_child_blocks: ['input_list', 'period'],
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('set %1 to Relative Strength Index Array %2'),
             message1: '%1',
@@ -35,14 +37,13 @@ Blockly.Blocks.rsia_statement = {
             category         : Blockly.Categories.Indicators,
         };
     },
-    meta(){
+    meta() {
         return {
             'display_name': localize('Relative Strength Index Array (RSIA)'),
             'description' : localize('Similar to RSI, this block gives you a list of values for each entry in the input list.'),
         };
     },
-    onchange           : Blockly.Blocks.bb_statement.onchange,
-    requiredParamBlocks: ['input_list', 'period'],
+    onchange: Blockly.Blocks.bb_statement.onchange,
 };
 
 Blockly.JavaScript.rsia_statement = block => {

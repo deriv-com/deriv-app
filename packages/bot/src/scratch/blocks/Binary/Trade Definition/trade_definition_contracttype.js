@@ -1,5 +1,6 @@
-import { localize } from 'deriv-translations/lib/i18n';
-import config       from '../../../../constants';
+import { localize }               from 'deriv-translations/lib/i18n';
+import config                     from '../../../../constants';
+import { getContractTypeOptions } from '../../../shared';
 
 Blockly.Blocks.trade_definition_contracttype = {
     init() {
@@ -28,23 +29,19 @@ Blockly.Blocks.trade_definition_contracttype = {
 
         this.enforceLimitations();
 
-        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
-            this.updateContractTypes(event.group);
-        } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
-            if (event.name === 'TRADETYPE_LIST' && !['', 'na'].includes(event.newValue)) {
-                this.updateContractTypes(event.group);
-            }
-        }
-    },
-    updateContractTypes(event_group) {
-        const top_parent_block    = this.getTopParent();
-        const trade_type_block    = top_parent_block.getChildByType('trade_definition_tradetype');
-        const trade_type          = trade_type_block.getFieldValue('TRADETYPE_LIST');
-        const contract_type_field = this.getField('TYPE_LIST');
-        const contract_type       = contract_type_field.getValue();
+        if (Blockly.Events.BLOCK_CHANGE) {
+            if (event.name === 'TRADETYPE_LIST') {
+                const trade_type            = event.newValue;
+                const contract_type_list    = this.getField('TYPE_LIST');
+                const contract_type_options = [];
 
-        let contract_types;
+                const trade_types = getContractTypeOptions('both', trade_type);
+                
+                if (trade_types.length > 1) {
+                    contract_type_options.push([translate('Both'), 'both']);
+                }
 
+<<<<<<< HEAD
         if (trade_type && trade_type !== 'na') {
             const { opposites } = config;
             contract_types      = [
@@ -54,8 +51,17 @@ Blockly.Blocks.trade_definition_contracttype = {
         } else {
             contract_types = config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
         }
+=======
+                contract_type_options.push(...trade_types);
+>>>>>>> 20fd5696d7d284d7d6fe372c5a89101a59bdcfd5
 
-        contract_type_field.updateOptions(contract_types, event_group, contract_type);
+                if (contract_type_options.length === 0) {
+                    contract_type_options.push(...config.NOT_AVAILABLE_DROPDOWN_OPTIONS);
+                }
+
+                contract_type_list.updateOptions(contract_type_options, { event_group: event.group });
+            }
+        }
     },
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
 };

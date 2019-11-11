@@ -123,6 +123,7 @@ class QuickStrategy extends React.PureComponent {
                         <Tabs
                             active_index={active_index}
                             onClickTabItem={setActiveTabIndex}
+                            top
                         >
                             {
                                 Object.keys(strategies).map(key => {

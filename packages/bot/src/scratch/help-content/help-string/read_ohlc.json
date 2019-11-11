@@ -6,6 +6,6 @@
         "- Low: the lowest price",
         "- Close: the closing price",
         "- Open time: the opening time stamp",
-        "In the example below, the opening price is selected, which is then assigned to a variable called “op”.”"
+        "In the example below, the opening price is selected, which is then assigned to a variable called “op”."
     ]
 }

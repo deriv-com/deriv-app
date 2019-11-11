@@ -11,10 +11,6 @@
                     event: perfEntries[i].name,
                     duration: time
                 })
-                console.group('Metric');
-                console.log(`performance metric name: ${perfEntries[i].name}`);
-                console.log(`performance metric value: ${time} ms`);
-                console.groupEnd();
             }
         });
         // register observer for paint timing notifications

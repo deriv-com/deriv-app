@@ -217,13 +217,5 @@ export default class GTMStore extends BaseStore {
             ...this.common_variables,
             ...data,
         });
-        // eslint-disable-next-line no-console
-        console.group('Metric');
-        // eslint-disable-next-line no-console
-        console.log(`performance metric name: ${performanceMetric}`);
-        // eslint-disable-next-line no-console
-        console.log(`performance metric value: ${duration} ms`);
-        // eslint-disable-next-line no-console
-        console.groupEnd();
     }
 }

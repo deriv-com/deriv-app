@@ -830,6 +830,12 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     cleanUp() {
+        this.backgroundCleanUp();
+        this.root_store.modules.trade.resetErrorServices();
+    }
+
+    @action.bound
+    backgroundCleanUp() {
         this.root_store.gtm.pushDataLayer({ event: 'log_out' });
         this.loginid      = null;
         this.upgrade_info = undefined;
@@ -839,7 +845,6 @@ export default class ClientStore extends BaseStore {
         });
         this.root_store.modules.trade.should_refresh_active_symbols = true;
         this.root_store.modules.trade.clearContracts();
-        this.root_store.modules.trade.resetErrorServices();
         this.root_store.ui.removeAllNotificationMessages();
         this.root_store.modules.trade.refresh();
         this.root_store.modules.trade.debouncedProposal();

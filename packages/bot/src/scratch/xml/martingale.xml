@@ -1,4 +1,4 @@
-<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="false" is_dbot="true">
   <variables>
     <variable type="" id="x]b3MHpbtR?cJQDP@,eG" islocal="false" iscloud="false">martingale:resultIsWin</variable>
     <variable type="" id="[M$5RsD`g|8-P;C+mbf4" islocal="false" iscloud="false">martingale:profit</variable>

@@ -3,7 +3,7 @@ import config         from '../../constants';
 
 export default class ActiveSymbols {
     constructor(root_store, trading_times) {
-        this.active_symbols      = {};
+        this.active_symbols      = [];
         this.disabled_markets    = [];
         this.disabled_symbols    = ['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK']; // These are only forward-starting.
         this.disabled_submarkets = ['energy']; // These are only forward-starting.

@@ -33,9 +33,8 @@ i18n
     .init(i18n_config);
 
 const localize = (string, values) => {
-    if (!string) return;
-
-    i18n.t(crc32(string), { defaultValue: string, ...values })
+    if (!string) return '';
+    return i18n.t(crc32(string), { defaultValue: string, ...values })
 };
 
 export default { i18n, localize };

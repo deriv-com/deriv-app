@@ -1,10 +1,11 @@
-import classNames      from 'classnames';
-import PropTypes       from 'prop-types';
-import React           from 'react';
-import PopoverBubble   from './popover-bubble.jsx';
-import IconInfoOutline from '../icon-info-outline.jsx';
-import IconQuestion    from '../icon-question.jsx';
-import IconRedDot      from '../icon-red-dot.jsx';
+import classNames        from 'classnames';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import { CSSTransition } from 'react-transition-group';
+import PopoverBubble     from './popover-bubble.jsx';
+import IconInfoOutline   from '../icon-info-outline.jsx';
+import IconQuestion      from '../icon-question.jsx';
+import IconRedDot        from '../icon-red-dot.jsx';
 
 class Popover extends React.PureComponent {
     constructor (props) {
@@ -71,18 +72,26 @@ class Popover extends React.PureComponent {
                     {children}
                 </div>
 
-                <PopoverBubble
-                    alignment={alignment}
-                    className={classNameBubble}
-                    has_error={has_error}
-                    icon={!disable_message_icon && icon}
-                    id={`${id}_bubble`}
-                    is_open={this.state.is_open}
-                    target_rectangle={this.state.target_rectangle}
-                    margin={margin}
-                    message={message}
-                    portal_container={this.props.portal_container}
-                />
+                <CSSTransition
+                    mountOnEnter
+                    in={this.state.is_open}
+                    classNames='dc-popover__bubble'
+                    timeout={250}
+                    unmountOnExit
+                >
+                    <PopoverBubble
+                        alignment={alignment}
+                        className={classNameBubble}
+                        has_error={has_error}
+                        icon={!disable_message_icon && icon}
+                        id={`${id}_bubble`}
+                        is_open={this.state.is_open}
+                        target_rectangle={this.state.target_rectangle}
+                        margin={margin}
+                        message={message}
+                        portal_container={this.props.portal_container}
+                    />
+                </CSSTransition>
             </div>
         );
     }

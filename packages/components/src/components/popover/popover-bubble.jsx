@@ -2,23 +2,7 @@ import classNames           from 'classnames';
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import ReactDOM             from 'react-dom';
-import posed, { PoseGroup } from 'react-pose';
 import IconInfoBlue         from '../icon-info-blue.jsx';
-
-const FadeIn = posed.span({
-    enter: {
-        opacity   : 1,
-        transition: {
-            duration: 150,
-        },
-    },
-    exit: {
-        opacity   : 0,
-        transition: {
-            duration: 150,
-        },
-    },
-});
 
 class PopoverBubble extends React.PureComponent {
     isBubbleOutOfBoundary = (position, width) => window.innerWidth < (position + width);
@@ -64,7 +48,6 @@ class PopoverBubble extends React.PureComponent {
             has_error,
             icon,
             id,
-            is_open,
             message,
             target_rectangle,
             portal_container,
@@ -72,38 +55,28 @@ class PopoverBubble extends React.PureComponent {
 
         if (!target_rectangle) return null;
 
-        const popover_bubble = (
-            <PoseGroup>
-                { is_open &&
-                <FadeIn key='fade_in' initialPose='exit' style={{ position: 'fixed', zIndex: 999 }}>
-                    <span
-                        style={ this.calculateBubblePosition()}
-                        data-popover-pos={alignment}
-                        className={classNames(
-                            className,
-                            'dc-popover__bubble',
-                            { 'dc-popover__bubble--error': has_error },
-                        )}
-                        id={id}
-                    >
-                        { icon === 'info' &&
-                            <i className='dc-popover__bubble__icon'>
-                                <IconInfoBlue />
-                            </i>
-                        }
-
-                        <span className='dc-popover__bubble__text'>
-                            { message }
-                        </span>
-                        <span style={{ left: this.isBubbleOutOfBoundary(target_rectangle.left, 200) ? ((target_rectangle.width / 2) + target_rectangle.left) - (window.innerWidth - 200) : '' }} className='dc-popover__bubble__arrow' />
-                    </span>
-                </FadeIn>
-                }
-            </PoseGroup>
-        );
-
         return ReactDOM.createPortal(
-            popover_bubble,
+            <span
+                style={ this.calculateBubblePosition()}
+                data-popover-pos={alignment}
+                className={classNames(
+                    className,
+                    'dc-popover__bubble',
+                    { 'dc-popover__bubble--error': has_error },
+                )}
+                id={id || ''}
+            >
+                { icon === 'info' &&
+                    <i className='dc-popover__bubble__icon'>
+                        <IconInfoBlue />
+                    </i>
+                }
+
+                <span className='dc-popover__bubble__text'>
+                    { message }
+                </span>
+                <span style={{ left: this.isBubbleOutOfBoundary(target_rectangle.left, 200) ? ((target_rectangle.width / 2) + target_rectangle.left) - (window.innerWidth - 200) : '' }} className='dc-popover__bubble__arrow' />
+            </span>,
             document.getElementById(portal_container)
         );
     }

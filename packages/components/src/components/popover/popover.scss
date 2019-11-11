@@ -35,7 +35,13 @@
         flex-direction: row;
         background: var(--general-active);
         color: var(--text-prominent);
+        opacity: 0;
+        transition: opacity 0.25s ease;
+        z-index: 999;
 
+        &-enter-done {
+            opacity: 1;
+        }
         &__icon {
             flex-grow: 1;
             margin-right: 0.7em;

@@ -1,7 +1,8 @@
 {
     "text": [
-        "This block checks the result of the last deal. In case if the parameter is Win, it returns ‘True’ if the last trade was profitable, otherwise it returns an empty string. In case if the parameter is Loss, it returns ‘True’ if the last trade was unsuccessful, otherwise it returns an empty string.",
-        "This block can be used only within the “Restart trading conditions” block.",
+        "You can check the result of the last trade with this block. It can only be placed within the “Restart trading conditions” root block.",
+        "If “Win” is selected, it will return “True” if your last trade was successful. Otherwise, it will return an empty string.", 
+        "If “Loss” is selected, it will return “True” if your last trade was unsuccessful. Otherwise, it will return an empty string.",
         "Example:"
     ]
 } 

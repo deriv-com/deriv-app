@@ -4,7 +4,7 @@ import ObjectUtils                 from 'deriv-shared/utils/object';
 import PurchaseFieldset            from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { connect }                 from 'Stores/connect';
-import { measurePerformance } from '../../../Services/perfomance-checker';
+import { measurePerformance }      from '../../../Services/perfomance-checker';
 
 const Purchase = ({
     basis,

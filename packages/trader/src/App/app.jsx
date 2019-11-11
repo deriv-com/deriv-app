@@ -12,7 +12,6 @@ import Routes                      from './Containers/Routes/routes.jsx';
 import './i18n';
 // eslint-disable-next-line import/extensions
 import initStore                   from './app.js';
-import PerformanceObserver from '../templates/app/includes/performance/performance_observer.jsx';
 
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
@@ -24,7 +23,6 @@ const App = ({ root_store }) => {
     const base = l.pathname.split('/')[1];
     return (
         <Router basename={/^\/br_|bot/.test(l.pathname) ? `/${base}` : null}>
-            <PerformanceObserver />
             <MobxProvider store={root_store}>
                 {
                     root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice) ?

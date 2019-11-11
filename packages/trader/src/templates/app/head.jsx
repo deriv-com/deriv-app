@@ -14,6 +14,7 @@ const Head = () => (
         {/* <noscript>{ localize('Your browser does not support JavaScript!') }</noscript> */}
         {/* TODO: i18n_issue - these should be localized after the app has moved to mount on index.html */}
         <noscript>Your browser does not support JavaScript!</noscript>
+        
         <GoogleOptimizer />
         <GTMScript />
         <AntiClickjack />

@@ -56,7 +56,7 @@ Blockly.Blocks.procedures_defreturn = {
     meta(){
         return {
             'display_name': translate('Function that returns a value'),
-            'description' : translate('This block executes nested instructions (bloks) and can return a value which is typically the result of nested instructions execution.'),
+            'description' : translate('This block is similar to the one above, except that this returns a value. The returned value can be assigned to a variable of your choice.'),
         };
     },
     onAddClick   : Blockly.Blocks.procedures_defnoreturn.onAddClick,

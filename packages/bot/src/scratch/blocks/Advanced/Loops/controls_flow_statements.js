@@ -22,14 +22,14 @@ Blockly.Blocks.controls_flow_statements = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Allows to exit the loop or jump to the next iteration'),
+            tooltip          : translate('This block is used to either terminate or continue a loop, and can be placed anywhere within a loop block.'),
             category         : Blockly.Categories.Loop,
         };
     },
     meta(){
         return {
             'display_name': translate('Break out/continue'),
-            'description' : translate('This block is used to terminate or continue a loop, and can be placed anywhere within a loop block. Clicking on “break out” gives you two options: break out (terminates the loop), or continue with next iteration.'),
+            'description' : translate('This block is used to either terminate or continue a loop, and can be placed anywhere within a loop block.'),
         };
     },
 };

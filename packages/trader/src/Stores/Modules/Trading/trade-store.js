@@ -807,14 +807,14 @@ export default class TradeStore extends BaseStore {
             }));
         }
         if (req.active_symbols) {
-            return BinarySocket.wait('active_symbols');
+            return this.should_refresh_active_symbols ?
+                WS.activeSymbols('brief') : BinarySocket.wait('active_symbols');
         }
         return WS.storage.send(req);
     };
 
     @action.bound
     resetRefresh() {
-        WS.activeSymbols(); // reset active symbols
         this.should_refresh_active_symbols = false;
     }
 }

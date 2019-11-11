@@ -951,6 +951,8 @@ export default class ClientStore extends BaseStore {
                 if (account_list && ObjectUtils.isEmptyObject(this.accounts)) {
                     this.storeClientAccounts(obj_params, account_list);
                 }
+                // always refresh active symbols when logging into a new client account
+                this.root_store.modules.trade.should_refresh_active_symbols = true;
             });
             return authorize_response;
         }

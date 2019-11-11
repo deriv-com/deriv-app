@@ -28,8 +28,6 @@ const interceptAcrossBot = (route_to, action) => {
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
 const Trader = lazy(() => {
-    // TODO: Delete this console statement if you see this
-    console.log('Trader loaded'); // eslint-disable-line no-console
     const el_head = document.querySelector('head');
     const el_main_css = document.createElement('link');
     el_main_css.href = '/css/trader.main.css';
@@ -48,8 +46,6 @@ const TraderInterceptor = (props) => (
 );
 
 const Bot = lazy(() => {
-    // TODO: Delete this console statement if you see this
-    console.log('Bot loaded'); // eslint-disable-line no-console
     const el_head = document.querySelector('head');
     const el_scratch_js = document.createElement('script');
     el_scratch_js.src = './js/bot/scratch.min.js';

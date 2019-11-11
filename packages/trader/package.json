@@ -6,17 +6,17 @@
   "scripts": {
     "start": "npm run test && sudo webpack-dev-server --config \"./build/webpack.config.js\"",
     "serve": "echo \"Serving...\" && webpack --progress --watch --config \"./build/webpack.config.js\"",
-    "build": "f () { webpack --config \"./build/webpack.config.js\" --env.base $1;}; f",
+    "build": "npm run test && webpack --config \"./build/webpack.config.js\"",
     "build:travis": "echo \"No build:travis specified\"",
     "test": "npm run test:stylelint && npm run test:eslint",
     "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
     "test:stylelint": "stylelint \"./src/sass/**/*.s?(a|c)ss\"",
     "test:mocha": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage --webpack-config \"./build/webpack.config-test.js\" \"src/**/__tests__/*.js\" --webpack-env.mocha_only --require ignore-styles",
-    "deploy": "npm run build && gh-pages -d dist --remove=\"js\"",
-    "deploy:clean": "npm run build && gh-pages -d dist",
-    "deploy:folder": "f () { npm run build -- $1 && gh-pages -d dist -e $1 ;}; f",
-    "deploy:staging": "./scripts/release-staging.sh",
-    "deploy:production": "./scripts/release-prod.sh"
+    "deploy": "echo \"No deploy specified\"",
+    "deploy:clean": "echo \"No deploy:clean specified\"",
+    "deploy:folder": "echo \"No deploy:folder specified\"",
+    "deploy:staging": "echo \"No deploy:staging specified\"",
+    "deploy:production": "echo \"No deploy:production specified\""
   },
   "repository": {
     "type": "git",

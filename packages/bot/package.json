@@ -13,9 +13,9 @@
     ]
   },
   "scripts": {
-    "start": "rimraf dist && npm run test && webpack --mode=development --progress --watch",
-    "serve": "rimraf dist && webpack --mode=development --progress --watch",
-    "build": "rimraf dist && webpack --mode=production --optimize-minimize --progress",
+    "start": "npm run test && webpack --mode=development --progress --watch",
+    "serve": "echo \"Serving...\" && webpack --progress --watch",
+    "build": "npm run test && webpack --optimize-minimize --progress",
     "build:travis": "echo \"No build:travis specified\"",
     "test": "npm run test:eslint && npm run test:mocha",
     "test:mocha": "jest -w 1 --coverage",
@@ -48,6 +48,7 @@
     "binary-utils": "^4.23.0",
     "blockly": "github:google/blockly#339a653",
     "chai": "^4.2.0",
+    "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.0.3",
     "cross-env": "^5.2.0",
     "css-hot-loader": "^1.4.4",

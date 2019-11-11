@@ -1,5 +1,6 @@
+const { CleanWebpackPlugin }    = require('clean-webpack-plugin');
 const CopyWebpackPlugin         = require('copy-webpack-plugin');
-const MiniCssExtractPlugin      = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin      = require('mini-css-extract-plugin');
 const path                      = require('path');
 const StyleLintPlugin           = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
@@ -27,6 +28,7 @@ module.exports = {
         publicPath: '/dist/',
         disableHostCheck: true,
     },
+    mode: is_release ? 'production' : 'development',
     devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
     target: 'web',
     module: {
@@ -91,6 +93,7 @@ module.exports = {
         ],
     },
     plugins: [
+        new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({ filename: 'bot.main.css' }),
         new StyleLintPlugin({ fix: true }),
         new CopyWebpackPlugin([

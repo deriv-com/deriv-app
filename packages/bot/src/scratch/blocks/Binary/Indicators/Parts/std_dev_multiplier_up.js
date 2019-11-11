@@ -21,8 +21,8 @@ Blockly.Blocks.std_dev_multiplier_up = {
         this.setMovable(false);
         this.setDeletable(false);
     },
-    onchange      : Blockly.Blocks.input_list.onchange,
-    allowedParents: ['bb_statement', 'bba_statement'],
+    onchange       : Blockly.Blocks.input_list.onchange,
+    allowed_parents: ['bb_statement', 'bba_statement'],
 };
 
 Blockly.JavaScript.std_dev_multiplier_up = () => {};

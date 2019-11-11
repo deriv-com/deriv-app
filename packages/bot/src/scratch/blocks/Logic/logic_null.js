@@ -12,14 +12,14 @@ Blockly.Blocks.logic_null = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Returns the "null" value'),
+            tooltip        : localize('This block assigns a null value to an item or statement.'),
             category       : Blockly.Categories.Logic,
         };
     },
     meta(){
         return {
             'display_name': localize('Null'),
-            'description' : localize('This is used to assign a null value to an item or statement.'),
+            'description' : localize('This block assigns a null value to an item or statement.'),
         };
     },
 };

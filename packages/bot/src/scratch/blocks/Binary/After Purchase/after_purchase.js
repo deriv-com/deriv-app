@@ -43,7 +43,7 @@ Blockly.Blocks.after_purchase = {
     meta(){
         return {
             'display_name': localize('Restart trading conditions'),
-            'description' : localize('Here is where you can decide to continue trading.'),
+            'description' : localize('Here is where you can decide if your bot should continue trading.'),
         };
     },
     onchange(event) {

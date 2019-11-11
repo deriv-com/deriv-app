@@ -24,14 +24,14 @@ Blockly.Blocks.math_random_int = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Random integer value'),
+            tooltip        : localize('This block gives you a random number from within a set range'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
             'display_name': localize('Random integer'),
-            'description' : localize('Returns a random number from a set range.'),
+            'description' : localize('This block gives you a random number from within a set range.'),
         };
     },
 };

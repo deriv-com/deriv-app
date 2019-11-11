@@ -41,7 +41,7 @@ Blockly.Blocks.logic_compare = {
     meta(){
         return {
             'display_name': localize('Compare'),
-            'description' : localize('This block is to compare the values, and is used to build a conditional structures.'),
+            'description' : localize('This block compares two values and is used to build a conditional structure.'),
         };
     },
 };

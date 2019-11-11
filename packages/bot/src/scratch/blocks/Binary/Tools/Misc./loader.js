@@ -28,7 +28,7 @@ Blockly.Blocks.loader = {
     meta(){
         return {
             'display_name': localize('Loads from URL'),
-            'description' : localize('This block allows you to load blocks from a URL. E.g. if you have blocks stored on a remote server and it’s accessible over the internet then you can dynamically load these blocks during bot run time.'),
+            'description' : localize('This block allows you to load blocks from a URL if you have them stored on a remote server, and they will be loaded only when your bot runs.'),
         };
     },
     onchange(event) {

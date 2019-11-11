@@ -29,14 +29,14 @@ Blockly.Blocks.math_arithmetic = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Arithmetic operations'),
+            tooltip        : localize('This block performs arithmetic operations between two numbers.'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
             'display_name': localize('Arithmetical operations'),
-            'description' : localize('Performs arithmetical operations between two numbers'),
+            'description' : localize('This block performs arithmetic operations between two numbers.'),
         };
     },
 };

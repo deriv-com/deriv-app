@@ -34,8 +34,8 @@ Blockly.Blocks.procedures_ifreturn = {
     },
     meta(){
         return {
-            'display_name': localize('Premature return'),
-            'description' : localize('This block is used within a function block, this block returns a value when a specific condition is true.'),
+            'display_name': localize('Conditional return'),
+            'description' : localize('This block returns a value when a condition is true. Use this block within either of the function blocks above.'),
         };
     },
     /**

@@ -36,7 +36,7 @@ Blockly.Blocks.controls_repeat = {
     meta(){
         return  {
             'display_name': localize('Repeat (1)'),
-            'description' : localize('This block repeats inside instructions specified number of times.'),
+            'description' : localize('This block repeats the instructions contained within for a specific number of times.'),
         };
     },
 };

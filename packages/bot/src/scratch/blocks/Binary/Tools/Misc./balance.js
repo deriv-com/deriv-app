@@ -35,14 +35,14 @@ Blockly.Blocks.balance = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('This block returns current account balance'),
+            tooltip        : localize('This block returns account balance'),
             category       : Blockly.Categories.Miscellaneous,
         };
     },
     meta(){
         return {
-            'display_name': localize('Balance'),
-            'description' : localize('This block returns current account balance.'),
+            'display_name': localize('Account balance'),
+            'description' : localize('This block gives you the balance of your account either as a number or a string of text.'),
         };
     },
 };

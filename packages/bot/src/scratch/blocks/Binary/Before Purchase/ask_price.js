@@ -19,14 +19,14 @@ Blockly.Blocks.ask_price = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('This block returns purchase price for the selected trade type.'),
+            tooltip        : localize('This block returns the purchase price for the selected trade type.'),
             category       : Blockly.Categories.Before_Purchase,
         };
     },
     meta(){
         return {
-            'display_name': localize('Purchase Price'),
-            'description' : localize('This block returns purchase price for the selected trade type. This block can be used only in the "Purchase conditions" root blocks.'),
+            'display_name': localize('Purchase price'),
+            'description' : localize('This block returns the purchase price for the selected trade type. This block can be used only in the "Purchase conditions" root block.'),
         };
     },
     onchange            : Blockly.Blocks.purchase.onchange,

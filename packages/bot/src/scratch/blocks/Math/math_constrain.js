@@ -29,14 +29,14 @@ Blockly.Blocks.math_constrain = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Constraints a given number to be within a set range'),
+            tooltip        : localize('This block constrains a given number so that it is within a set range.'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
             'display_name': localize('Constrain within a range'),
-            'description' : localize('Constraints a given number to be within a set range.'),
+            'description' : localize('This block constrains a given number so that it is within a set range.'),
         };
     },
 };

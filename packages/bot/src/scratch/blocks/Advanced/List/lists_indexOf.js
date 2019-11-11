@@ -27,14 +27,14 @@ Blockly.Blocks.lists_indexOf = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Finds the position of an item in a given list'),
+            tooltip        : localize('This block gives you the position of an item in a given list.'),
             category       : Blockly.Categories.List,
         };
     },
     meta(){
         return {
             'display_name': localize('List item position'),
-            'description' : localize('Finds the position of an item in a given list.'),
+            'description' : localize('This block gives you the position of an item in a given list.'),
         };
     },
 };

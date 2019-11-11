@@ -42,8 +42,8 @@ Blockly.Blocks.procedures_defnoreturn = {
     },
     meta() {
         return {
-            'display_name': localize('Function with no return value'),
-            'description' : localize('This block executes nested instructions (bloks). It doesn\'t return any value'),
+            'display_name': localize('Function'),
+            'description' : localize('This block creates a function, which is a group of instructions that can be executed at any time. Place other blocks in here to perform any kind of action that you need in your strategy. When all the instructions in a function have been carried out, your bot will continue with the remaining blocks in your strategy. Click the “do something” field to give it a name of your choice. Click the plus icon to send a value (as a named variable) to your function.'),
         };
     },
     /**

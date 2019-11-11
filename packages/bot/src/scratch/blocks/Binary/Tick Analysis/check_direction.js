@@ -27,7 +27,7 @@ Blockly.Blocks.check_direction = {
     meta(){
         return {
             'display_name': localize('Market direction'),
-            'description' : localize('This block returns “True” in case if market price goes in the selected direction since the last tick. '),
+            'description' : localize('This block is used to determine if the market price moves in the selected direction or not. It gives you a value of “True” or “False”.'),
         };
     },
 };

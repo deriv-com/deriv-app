@@ -24,14 +24,14 @@ Blockly.Blocks.read_ohlc_obj = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Read the selected candle value'),
+            tooltip        : localize('This block gives you the selected candle value.'),
             category       : Blockly.Categories.Candle,
         };
     },
     meta(){
         return {
             'display_name': localize('Read candle value (2)'),
-            'description' : localize('This block reads selected value from a candle. '),
+            'description' : localize('This block gives you the selected candle value.'),
         };
     },
 };

@@ -31,14 +31,14 @@ Blockly.Blocks.controls_whileUntil = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : localize('Repeats inside blocks and stops only when the condition is met'),
+            tooltip          : localize('This block repeats instructions as long as a given condition is true'),
             category         : Blockly.Categories.Loop,
         };
     },
     meta(){
         return {
             'display_name': localize('Repeat While/Until'),
-            'description' : localize('Repeats inside blocks and stops only when the condition is met.'),
+            'description' : localize('This block repeats instructions as long as a given condition is true.'),
         };
     },
 };

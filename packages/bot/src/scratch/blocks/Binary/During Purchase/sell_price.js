@@ -19,7 +19,7 @@ Blockly.Blocks.sell_price = {
     meta(){
         return {
             'display_name': localize('Profit/loss from selling'),
-            'description' : localize('In case if you want to sell active contract, that block returns potential profit or loss amount.'),
+            'description' : localize('This block gives you the potential profit or loss if you decide to sell your contract.'),
         };
     },
     onchange(event) {

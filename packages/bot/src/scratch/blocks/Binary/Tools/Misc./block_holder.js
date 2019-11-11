@@ -29,7 +29,7 @@ Blockly.Blocks.block_holder = {
     meta() {
         return {
             'display_name': localize('Ignore'),
-            'description' : localize('In case if you want to temporarily exclude some blocks from your scenario, you can simply put them inside of this block. They won’t be executed.'),
+            'description' : localize('Use this block if you want some instructions to be ignored when your bot runs. Instructions within this block won’t be executed.'),
         };
     },
     onchange() {

@@ -26,14 +26,14 @@ Blockly.Blocks.math_constant = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Mathematical Constants'),
+            tooltip        : localize('This block gives you the selected constant values.'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': localize('Mathematical Constants'),
-            'description' : localize('Returns the constant values according to selection.'),
+            'display_name': localize('Mathematical constants'),
+            'description' : localize('This block gives you the selected constant values.'),
         };
     },
 };

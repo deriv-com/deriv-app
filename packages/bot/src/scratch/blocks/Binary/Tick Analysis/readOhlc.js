@@ -40,7 +40,7 @@ Blockly.Blocks.read_ohlc = {
     meta(){
         return {
             'display_name': localize('Read candle value (1)'),
-            'description' : localize('This block returns specified candle value for the selected time interval.'),
+            'description' : localize('This block gives you the specified candle value for a selected time interval.'),
         };
     },
 };

@@ -38,14 +38,14 @@ Blockly.Blocks.math_number_property = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            toolip         : localize('Math Number Tooltip'),
+            toolip         : localize('This block tests a given number according to the selection'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
             'display_name': localize('Test a number'),
-            'description' : localize('Tests whether a given number is any of the following: Even, Odd, Prime, Whole, Positive, Negative, Divisible according to selection. Returns a boolean value (true or false).'),
+            'description' : localize('This block tests a given number according to the selection and it returns a value of “True” or “False”. Available options: Even, Odd, Prime, Whole, Positive, Negative, Divisible'),
         };
     },
     domToMutation(xmlElement) {

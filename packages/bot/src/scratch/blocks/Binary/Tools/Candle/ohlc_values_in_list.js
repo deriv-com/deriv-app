@@ -31,7 +31,7 @@ Blockly.Blocks.ohlc_values_in_list = {
     meta(){
         return {
             'display_name': localize('Create a list of candle values (2)'),
-            'description' : localize('This block extracts selected type of values from a given candle list'),
+            'description' : localize('This block gives you the selected candle value from a list of candles.'),
         };
     },
 };

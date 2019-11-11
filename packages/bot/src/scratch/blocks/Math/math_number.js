@@ -29,7 +29,7 @@ Blockly.Blocks.math_number = {
     meta(){
         return {
             'display_name': localize('Number block'),
-            'description' : localize('Enter integer or fractional number into this block. Please use `.` as a decimal separator for fractional numbers.'),
+            'description' : localize('Enter an integer or fractional number into this block. Please use `.` as a decimal separator for fractional numbers.'),
         };
     },
     numberValidator(input) {

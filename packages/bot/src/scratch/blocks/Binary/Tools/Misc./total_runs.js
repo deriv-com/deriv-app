@@ -6,7 +6,7 @@ Blockly.Blocks.total_runs = {
     },
     definition(){
         return {
-            message0       : localize('Number of Runs'),
+            message0       : localize('Number of runs'),
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,
@@ -18,8 +18,8 @@ Blockly.Blocks.total_runs = {
     },
     meta(){
         return {
-            'display_name': localize('Number of Runs'),
-            'description' : localize('This block returns the number of runsd since counters has been reset. You can reset counters by presising "Clear stats" on in the Transaction Stats panel or by refreshing a page in your browser.'),
+            'display_name': localize('Number of runs'),
+            'description' : localize('This block gives you the total number of times your bot has run. You can reset this by clicking “Clear stats” on the Transaction Stats window, or by refreshing this page in your browser.'),
         };
     },
     onchange: Blockly.Blocks.total_profit.onchange,

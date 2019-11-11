@@ -18,14 +18,14 @@ Blockly.Blocks.lists_length = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Returns the total number of items in a given list'),
+            tooltip        : localize('This block gives you the total number of items in a given list.'),
             category       : Blockly.Categories.List,
         };
     },
     meta(){
         return {
             'display_name': localize('List Length'),
-            'description' : localize('Returns the total number of items in a given list.'),
+            'description' : localize('This block gives you the total number of items in a given list.'),
         };
     },
 };

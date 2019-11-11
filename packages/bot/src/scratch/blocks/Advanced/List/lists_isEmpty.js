@@ -26,7 +26,7 @@ Blockly.Blocks.lists_isEmpty = {
     meta(){
         return {
             'display_name': localize('Is list empty?'),
-            'description' : localize('Checks if a given list is empty. Returns a Boolean value (True or False).'),
+            'description' : localize('This block checks if a given list is empty. It returns “True” if the list is empty, “False” if otherwise.'),
         };
     },
 };

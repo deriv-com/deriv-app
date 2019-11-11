@@ -28,14 +28,14 @@ Blockly.Blocks.get_ohlc = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Reads Nth recent candle from a given candle list'),
+            tooltip        : localize('This block gives you a specific candle from within the selected time interval.'),
             category       : Blockly.Categories.Tick_Analysis,
         };
     },
     meta(){
         return {
             'display_name': localize('Get candle'),
-            'description' : localize('This block returns specified candle for the selected time interval.'),
+            'description' : localize('This block gives you a specific candle from within the selected time interval.'),
         };
     },
 };

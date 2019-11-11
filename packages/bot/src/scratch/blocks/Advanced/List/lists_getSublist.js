@@ -25,14 +25,14 @@ Blockly.Blocks.lists_getSublist = {
         );
         this.setOutput(true, null);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-
+        this.setTooltip(localize('This block creates a list of items from an existing list, using specific item positions.'));
         this.updateAt(1, true);
         this.updateAt(2, true);
     },
     meta() {
         return {
             'display_name': localize('Get sub-list'),
-            'description' : localize('This block extracts a sub-list from a given list using specified items positions.'),
+            'description' : localize('This block creates a list of items from an existing list, using specific item positions.'),
             'category'    : Blockly.Categories.List,
         };
     },

@@ -12,7 +12,6 @@ import Routes                      from './Containers/Routes/routes.jsx';
 import './i18n';
 // eslint-disable-next-line import/extensions
 import initStore                   from './app.js';
-
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 // Check if device is touch capable

@@ -707,7 +707,6 @@ export default class TradeStore extends BaseStore {
             this.refresh();
             await this.prepareTradeStore();
             this.debouncedProposal();
-            // eslint-disable-next-line no-console
             performance.mark('trade-engine-ready');
         });
     }

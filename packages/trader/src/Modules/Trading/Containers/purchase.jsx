@@ -84,6 +84,7 @@ const Purchase = ({
         components.length === 2 &&
         !components[0].props.is_disabled &&
         !components[1].props.is_disabled) {
+        // the moment that both purchase buttons are enabled
         measurePerformance(gtmStore);
     }
     return components;
@@ -93,8 +94,8 @@ Purchase.propTypes = {
     basis                     : PropTypes.string,
     currency                  : PropTypes.string,
     gtmStore                  : PropTypes.object,
-    // is_purchase_confirm_on    : PropTypes.bool,
     is_client_allowed_to_visit: PropTypes.bool,
+    // is_purchase_confirm_on    : PropTypes.bool,
     is_purchase_locked        : PropTypes.bool,
     is_trade_enabled          : PropTypes.bool,
     onClickPurchase           : PropTypes.func,
@@ -102,8 +103,8 @@ Purchase.propTypes = {
     proposal_info             : PropTypes.object,
     purchase_info             : PropTypes.object,
     purchased_states_arr      : PropTypes.array,
-    // togglePurchaseLock        : PropTypes.func,
     setPurchaseState          : PropTypes.func,
+    // togglePurchaseLock        : PropTypes.func,
     trade_types               : PropTypes.object,
     validation_errors         : PropTypes.object,
 };

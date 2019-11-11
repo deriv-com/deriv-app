@@ -89,7 +89,6 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
     const flyout_content = [];
     const workspace = Blockly.derivWorkspace;
     const search_term = search.trim().toUpperCase();
-    const search_regex = new RegExp(`\\b${search_term}\\b`);
     const all_variables = workspace.getVariablesOfType('');
     const all_procedures = Blockly.Procedures.allProcedures(workspace);
     const { flyout } = ScratchStore.instance;
@@ -140,30 +139,19 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         const block_type_terms = block_type.toUpperCase().split('_');
         const block_name_terms = block_name.toUpperCase().split(' ');
         const definition_key_to_search = /^((message)|(tooltip)|(category))/;
+        const search_regex = new RegExp(`^${search_term}`);
 
         switch (priority) {
             case 'exact_block_name': {
-                if (block_name.toUpperCase() === search_term ||
-                block_type.toUpperCase() === search_term) {
+                if (search_regex.test(block_name.toUpperCase()) ||
+                search_regex.test(block_type.toUpperCase())) {
                     pushIfNotExists(flyout_content, block_content);
                 }
                 break;
             }
             case 'block_term': {
-                if (block_type_terms.some(term => term === search_term) ||
-                block_name_terms.some(term => term === search_term)) {
-                    pushIfNotExists(flyout_content, block_content);
-                }
-                break;
-            }
-            case 'block_name': {
-                if (block_type_terms.some(term => search_regex.test(term) || term.includes(search_term)) ||
-                block_name_terms.some(term => search_regex.test(term) || term.includes(search_term))) {
-                    pushIfNotExists(flyout_content, block_content);
-                }
-        
-                if (block_type.toUpperCase().includes(search_term)
-                || block_name.toUpperCase().includes(search_term)) {
+                if (block_type_terms.some(term => search_regex.test(term)) ||
+                block_name_terms.some(term => search_regex.test(term))) {
                     pushIfNotExists(flyout_content, block_content);
                 }
                 break;
@@ -174,12 +162,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
                     const definition = block_definitions[key];
 
                     if (definition_key_to_search.test(key) &&
-                    (search_regex.test(definition.toUpperCase()) ||
-                        (
-                            search_term.length > 3
-                            && definition.toUpperCase().includes(search_term)
-                        )
-                    )) {
+                        search_regex.test(definition.toUpperCase())) {
                         return true;
                     }
 
@@ -220,7 +203,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         }
     };
 
-    const priority_order = ['exact_block_name', 'block_term', 'block_name', 'block_definitions', 'block_meta'];
+    const priority_order = ['exact_block_name', 'block_term', 'block_definitions', 'block_meta'];
 
     priority_order.forEach(priority => {
         block_contents.forEach(block_content => {

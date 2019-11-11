@@ -1,8 +1,9 @@
 import {
     observable,
     action,
-} from 'mobx';
-import { translate } from '../utils/lang/i18n';
+}                          from 'mobx';
+import { translate }       from '../utils/lang/i18n';
+import { scrollWorkspace } from '../scratch/utils';
 
 export default class ToolbarStore {
     constructor(root_store) {
@@ -25,21 +26,11 @@ export default class ToolbarStore {
 
     @action.bound
     onToolboxToggle() {
-        // eslint-disable-next-line no-underscore-dangle
-        const toolbox = Blockly.derivWorkspace.toolbox_;
+        const toolbox        = Blockly.derivWorkspace.toolbox_; // eslint-disable-line
+        const toolbox_width  = toolbox.HtmlDiv.clientWidth;
         this.is_toolbox_open = !this.is_toolbox_open;
 
-        // Scroll workspace so toolbox doesn't overlap
-        const ws_metrics       = Blockly.derivWorkspace.getMetrics();
-        const current_scroll_x = ws_metrics.viewLeft - ws_metrics.contentLeft;
-        const current_scroll_y = ws_metrics.viewTop - ws_metrics.contentTop;
-        const new_scroll_x     = current_scroll_x + (
-            !this.is_toolbox_open ?
-                toolbox.HtmlDiv.clientWidth :
-                -toolbox.HtmlDiv.clientWidth
-        );
-
-        Blockly.derivWorkspace.scrollbar.set(new_scroll_x, current_scroll_y);
+        scrollWorkspace(Blockly.derivWorkspace, toolbox_width, true, !this.is_toolbox_open);
         toolbox.toggle();
     }
 

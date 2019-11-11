@@ -14,6 +14,7 @@ import {
     stopBot,
     terminateBot,
 }                          from '../scratch';
+import { scrollWorkspace } from '../scratch/utils';
 import { isEnded }         from '../utils/contract';
 import { translate }       from '../utils/lang/i18n';
 import { observer }        from '../utils/observer';
@@ -24,12 +25,12 @@ export default class RunPanelStore {
         this.registerCoreReactions();
     }
 
-    @observable active_index = 0;
-    @observable contract_stage = contract_stages.NOT_RUNNING;
-    @observable dialog_options = {};
+    @observable active_index      = 0;
+    @observable contract_stage    = contract_stages.NOT_RUNNING;
+    @observable dialog_options    = {};
     @observable has_open_contract = false;
-    @observable is_running = false;
-    @observable is_drawer_open = false;
+    @observable is_running        = false;
+    @observable is_drawer_open    = false;
 
     // when error happens, if it is unrecoverable_errors we reset run-panel
     // we activate run-button and clear trade info and set the ContractStage to NOT_RUNNING
@@ -120,6 +121,11 @@ export default class RunPanelStore {
     @action.bound
     toggleDrawer(is_open) {
         this.is_drawer_open = is_open;
+        const el_run_panel  = document.querySelector('.run-panel');
+
+        if (el_run_panel) {
+            scrollWorkspace(Blockly.derivWorkspace, el_run_panel.offsetWidth, true, is_open);
+        }
     }
 
     @action.bound

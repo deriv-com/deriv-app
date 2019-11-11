@@ -27,7 +27,7 @@ Blockly.Blocks.contract_check_result = {
     meta(){
         return {
             'display_name': translate('Last trade result'),
-            'description' : translate('This block checks the result of the last trade.'),
+            'description' : translate('You can check the result of the last trade with this block.'),
         };
     },
     onchange(event) {

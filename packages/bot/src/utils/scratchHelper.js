@@ -1,4 +1,4 @@
-import config from "../constants";
+import config from '../constants';
 
 export const hasAllRequiredBlocks = () => {
     const blocks_in_workspace = Blockly.derivWorkspace.getAllBlocks();
@@ -9,4 +9,4 @@ export const hasAllRequiredBlocks = () => {
         all_block_types.includes(required_block_type));
 
     return has_all_required_blocks;
-}
+};

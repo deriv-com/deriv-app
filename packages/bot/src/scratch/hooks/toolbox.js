@@ -170,8 +170,11 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
                         let has_dropdown_and_in_search = false;
                         // eslint-disable-next-line consistent-return
                         definition.forEach(def => {
+                            const definition_strings = JSON.stringify(def).toUpperCase();
+                            console.log(definition_strings);
+
                             if (def.type === 'field_dropdown' &&
-                            search_regex.test(JSON.stringify(def).toUpperCase())) {
+                            definition_strings.includes(search_term)) {
                                 has_dropdown_and_in_search = true;
                             }
                         });
@@ -190,7 +193,11 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
                 // block_meta matched
                 const matched_meta = Object.keys(block_meta)
                     .filter(key => key !== 'display_name')
-                    .find(key => search_regex.test(block_meta[key].toUpperCase()));
+                    .find(key => {
+                        const block_meta_strings = block_meta[key].toUpperCase().replace(/[^\w\s]/gi, '').split(' ');
+
+                        return block_meta_strings.some(meta_string => search_regex.test(meta_string));
+                    });
 
                 if (matched_meta && matched_meta.length) {
                     pushIfNotExists(flyout_content, block_content);

@@ -8,8 +8,13 @@ const performanceMetrics = {
     tradeEngineReady: 'trade-engine-ready',
 };
 
+let is_data_sent = false;
+
 function measurePerformance (gtmStore) {
     try {
+        if (is_data_sent) {
+            return;
+        }
         // start --- smartChartLoaded
         performance.measure(
             performanceMetrics.smartChartLoaded,
@@ -37,12 +42,9 @@ function measurePerformance (gtmStore) {
         const differences = performance.getEntriesByType('measure');
         
         for (let i = 0; i < differences.length; i++) {
-            // dataLayer.push({
-            //     'event' : differences[i].name,
-            //     duration: differences[i].duration,
-            // });
             gtmStore.pushLoadPerformance(differences[i].name,  differences[i].duration);
         }
+        is_data_sent = true;
     } catch (error) {
         // eslint-disable-next-line no-console
         console.warn(error);

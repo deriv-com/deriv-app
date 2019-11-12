@@ -28,7 +28,6 @@
     &__info-wrapper {
         position: absolute;
         width: 290px;
-        height: 544px;
         right: calc(100% + 10px);
         top: -66px;
         z-index: 2;
@@ -55,10 +54,15 @@
         overflow: hidden;
 
         /* postcss-bem-linter: ignore */
-        p {
+        p, ul li {
             @include typeface(--paragraph-left-normal-black, none);
             @include toEm(margin-bottom, 8px, 1.4em);
             color: var(--text-general);
+        }
+        /* postcss-bem-linter: ignore */
+        ul {
+            margin-left: 1.6rem;
+            list-style: disc;
         }
     }
     &__gif {

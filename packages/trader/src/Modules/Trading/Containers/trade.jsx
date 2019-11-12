@@ -1,5 +1,4 @@
 import React                 from 'react';
-import { Money }             from 'deriv-components';
 import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
 import { connect }           from 'Stores/connect';
 import PositionsDrawer       from 'App/Components/Elements/PositionsDrawer';

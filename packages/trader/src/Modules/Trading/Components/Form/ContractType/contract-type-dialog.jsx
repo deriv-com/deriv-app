@@ -1,3 +1,4 @@
+import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
@@ -5,6 +6,7 @@ import MobileDialog      from '../../Elements/mobile-dialog.jsx';
 
 const ContractTypeDialog = ({
     children,
+    columns,
     is_mobile,
     open,
     onClose,
@@ -32,7 +34,10 @@ const ContractTypeDialog = ({
             unmountOnExit
         >
             <div className='contracts-type-dialog'>
-                <div className='contracts-type-dialog__list-wrapper'>
+                <div className={classNames('contracts-type-dialog__list-wrapper', {
+                    'contracts-type-dialog__list-wrapper--2-col': columns === 2,
+                })}
+                >
                     {children}
                 </div>
             </div>

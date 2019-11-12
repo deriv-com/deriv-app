@@ -131,12 +131,36 @@ class ContractTypeWidget extends React.PureComponent {
         return itemList;
     };
 
+    groupBinaryAndNonBinaryOptions = (contract_types) => {
+        let binary_opts_list     = {};
+        let non_binary_opts_list = {};
+
+        Object.keys(contract_types).map(type => {
+            if (type === 'Multiplier') {
+                non_binary_opts_list[type] = contract_types[type];
+            } else {
+                binary_opts_list[type] = contract_types[type];
+            }
+        });
+
+        if (!Object.keys(non_binary_opts_list).length) return [binary_opts_list];
+
+        return [
+            non_binary_opts_list,
+            binary_opts_list
+        ];
+    };
+
     render() {
         const { is_dark_theme, is_equal, is_mobile, list, name, value } = this.props;
         const { is_dialog_open, is_info_dialog_open, item }             = this.state;
         const item_list        = this.getItemList();
         const item_index       = this.getItemIndex(item, item_list);
         const item_list_length = item_list ? item_list.length : 0;
+
+        const grouped_list = this.groupBinaryAndNonBinaryOptions(list);
+        const [non_binary_opts_list, binary_opts_list]  = grouped_list;
+
         return (
             <div
                 id='dt_contract_dropdown'
@@ -170,15 +194,41 @@ class ContractTypeWidget extends React.PureComponent {
                     is_mobile={is_mobile}
                     onClose={this.handleVisibility}
                     open={is_dialog_open}
+                    columns={grouped_list.length}
                 >
-                    <ContractTypeList
-                        handleInfoClick={this.handleInfoClick}
-                        handleSelect={this.handleSelect}
-                        is_equal={is_equal}
-                        list={list}
-                        name={name}
-                        value={value}
-                    />
+                    {grouped_list.length === 2 ?
+                        <React.Fragment>
+                            <div>
+                                <ContractTypeList
+                                    handleInfoClick={this.handleInfoClick}
+                                    handleSelect={this.handleSelect}
+                                    is_equal={is_equal}
+                                    list={non_binary_opts_list}
+                                    name={name}
+                                    value={value}
+                                />
+                            </div>
+                            <div>
+                                <ContractTypeList
+                                    handleInfoClick={this.handleInfoClick}
+                                    handleSelect={this.handleSelect}
+                                    is_equal={is_equal}
+                                    list={binary_opts_list}
+                                    name={name}
+                                    value={value}
+                                />
+                            </div>
+                        </React.Fragment>
+                        :
+                        <ContractTypeList
+                            handleInfoClick={this.handleInfoClick}
+                            handleSelect={this.handleSelect}
+                            is_equal={is_equal}
+                            list={list}
+                            name={name}
+                            value={value}
+                        />
+                    }
                 </ContractTypeDialog>
                 <TradeTypeInfoDialog
                     is_mobile={is_mobile}

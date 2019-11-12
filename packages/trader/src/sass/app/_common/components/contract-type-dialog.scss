@@ -21,6 +21,15 @@
         border-radius: 4px;
         background: var(--general-main-2);
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
+
+        &--2-col {
+            width: 580px;
+            grid-template-columns: 1fr 1fr;
+
+            > :first-child {
+                border-right: 4px solid var(--general-section-2);
+            }
+        }
     }
     &--enter, &--exit {
         transform: translate3d(20%, 0, 0);

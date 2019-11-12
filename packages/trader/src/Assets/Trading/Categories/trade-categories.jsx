@@ -94,6 +94,15 @@ const TradeCategories = ({ category }) => {
                     </React.Fragment>
                 );
                 break;
+            case 'mult':
+                TradeTypeTemplate = (
+                    <React.Fragment>
+                        <p>{ localize('If you select "Up", you will earn a profit by closing your position when the market price is higher than the entry spot.') }</p>
+                        <p>{ localize('If you select "Down", you will earn a profit by closing your position when the market price is lower than the entry spot.') }</p>
+                        <p>{ localize('Your profit is the percentage change in market price times the multiplier of your choice. ') }</p>
+                    </React.Fragment>
+                );
+                break;
             default:
                 TradeTypeTemplate = (
                     <p>{ localize('Description not found.') }</p>

@@ -171,7 +171,6 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
                         // eslint-disable-next-line consistent-return
                         definition.forEach(def => {
                             const definition_strings = JSON.stringify(def).toUpperCase();
-                            console.log(definition_strings);
 
                             if (def.type === 'field_dropdown' &&
                             definition_strings.includes(search_term)) {

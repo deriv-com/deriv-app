@@ -34,7 +34,9 @@ import {
     createProposalRequests,
     getProposalErrorField,
     getProposalInfo }                 from './Helpers/proposal';
-import { isBarrierSupported }         from '../SmartChart/Helpers/barriers';
+import {
+    isBarrierSupported,
+    isLimitOrderBarrierSupported }    from '../SmartChart/Helpers/barriers';
 import { ChartBarrierStore }          from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS,
     BARRIER_LINE_STYLES }             from '../SmartChart/Constants/barriers';
@@ -349,12 +351,12 @@ export default class TradeStore extends BaseStore {
             this.main_barrier.updateBarrierShade(is_over, contract_type);
         }
         this.hovered_contract_type = is_over ? contract_type : null;
-        this.setBarriersForLimitOrder(is_over ? this.proposal_info[contract_type] : null);
+        this.setBarriersForLimitOrder(is_over, this.proposal_info[contract_type]);
     }
 
     @action.bound
-    updatePurchaseBarrier(is_over, contract_info) {
-        const key = 'PURCHASE_PRICE_BARRIER';
+    setPurchaseSpotBarrier(is_over, contract_info) {
+        const key = 'PURCHASE_SPOT_BARRIER';
         if (is_over) {
             let entrySpotBarrier  = this.getBarrier(key);
 
@@ -364,11 +366,11 @@ export default class TradeStore extends BaseStore {
                 );
                 entrySpotBarrier.draggable = false;
                 entrySpotBarrier.key = key;
-                entrySpotBarrier.hidePriceLabel = true;
+                entrySpotBarrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
                 this.barriers.push(entrySpotBarrier);
             }
-
-            entrySpotBarrier.color = contract_info.profit_loss < 0 ? BARRIER_COLORS.RED : BARRIER_COLORS.GREEN;
+        } else {
+            this.removeBarrier(key);
         }
     }
 
@@ -379,19 +381,14 @@ export default class TradeStore extends BaseStore {
         }
         const contract_info = position.contract_info;
 
-        this.setBarriersForLimitOrder(is_over ? contract_info : null);
+        this.setBarriersForLimitOrder(is_over, contract_info);
+        this.setPurchaseSpotBarrier(is_over, contract_info);
+    }
 
-        this.setMainBarrier(is_over ? {
-            high_barrier : Math.max(contract_info.current_spot, contract_info.entry_spot),
-            low_barrier  : Math.min(contract_info.current_spot, contract_info.entry_spot),
-            contract_type: contract_info.contract_type,
-        } : undefined);
-
-        if (this.main_barrier) {
-            this.main_barrier.hidePriceLines = true;
-            this.main_barrier.updateBarrierShade(is_over, contract_info.contract_type);
-            this.main_barrier.shadeColor = contract_info.profit < 0 ? BARRIER_COLORS.RED : BARRIER_COLORS.G;
-        }
+    @action.bound
+    clearLimitOrderBarriers() {
+        this.hovered_contract_type = null;
+        this.setBarriersForLimitOrder(false);
     }
 
     @computed
@@ -431,10 +428,18 @@ export default class TradeStore extends BaseStore {
         return null;
     }
 
-    setBarriersForLimitOrder = (contract_info) => {
-        const barriers = this.barriers;
+    removeBarrier = (key) => {
+        for (let i = 0; this.barriers && i < this.barriers.length; i++){
+            const barrier = this.barriers[i];
+            if (barrier.key === key) {
+                this.barriers.splice(i,1);
+            }
+        }
+    }
 
-        if (this.is_multiplier && contract_info && contract_info.limit_order) {
+    setBarriersForLimitOrder = (is_over, contract_info = {}) => {
+
+        if (is_over && isLimitOrderBarrierSupported(this.contract_type, contract_info)) {
             Object.keys(contract_info.limit_order).forEach((key)=>{
                 const obj_limit_order = contract_info.limit_order[key];
 
@@ -448,26 +453,24 @@ export default class TradeStore extends BaseStore {
                     const obj_barrier = {
                         key,
                         titleTag: {
-                            currency: this.currency,
-                            label   : `${obj_limit_order.display_name}: `,
-                            amount  : obj_limit_order.order_amount,
+                            label: `${obj_limit_order.display_name} `,
                         },
-                        color             : key === 'take_profit' ? BARRIER_COLORS.GREEN : BARRIER_COLORS.RED,
+                        color             : key === 'take_profit' ? BARRIER_COLORS.GREEN : BARRIER_COLORS.ORANGE,
                         draggable         : false,
                         lineStyle         : key === 'stop_out' ? BARRIER_LINE_STYLES.DOTTED : BARRIER_LINE_STYLES.SOLID,
                         hideOffscreenLines: true,
-                        hidePriceLabel    : true,
                     };
                     barrier = new ChartBarrierStore(
                         obj_limit_order.value
                     );
 
                     Object.assign(barrier, obj_barrier);
-                    barriers.push(barrier);
+                    this.barriers.push(barrier);
                 }
             });
         } else {
-            this.barriers = [];
+            const limit_orders = ['take_profit', 'stop_loss', 'stop_out'];
+            limit_orders.forEach((l) => this.removeBarrier(l));
         }
     };
 
@@ -526,6 +529,7 @@ export default class TradeStore extends BaseStore {
                         this.proposal_requests = {};
                         this.debouncedProposal();
                         this.root_store.gtm.pushPurchaseData(contract_data);
+                        this.clearLimitOrderBarriers();
                         return;
                     }
                 } else if (response.error) {
@@ -721,7 +725,7 @@ export default class TradeStore extends BaseStore {
         };
 
         if (this.hovered_contract_type === contract_type) {
-            this.setBarriersForLimitOrder(this.proposal_info[this.hovered_contract_type]);
+            this.setBarriersForLimitOrder(true, this.proposal_info[this.hovered_contract_type]);
         }
 
         if (!this.is_multiplier){

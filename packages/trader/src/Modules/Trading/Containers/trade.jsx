@@ -124,11 +124,10 @@ const ChartBottomWidgets = connect(
 )(BottomDigits);
 
 const BarrierTitle = ({
-    label, currency, amount
+    label
 }) =>  (
     <>
         <span className="label">{label}</span>
-        <Money has_sign amount={amount} currency={currency} />
     </>
 );
 
@@ -153,6 +152,7 @@ const Markers = ({
     is_dark_theme,
     granularity,
     currency,
+    show_barrier,
 }) => (
     markers_array.map(marker => {
         const Marker = AllMarkers[marker.type];
@@ -162,6 +162,7 @@ const Markers = ({
                 is_dark_theme={is_dark_theme}
                 granularity={granularity}
                 currency={currency}
+                show_barrier={show_barrier}
                 {...marker}
             />
         );
@@ -201,7 +202,6 @@ class ChartTradeClass extends React.Component {
             should_refresh,
             resetRefresh,
             extra_barriers = [],
-            is_multiplier
         } = this.props;
 
         const barriers =  main_barrier ? [main_barrier,...extra_barriers] : extra_barriers;
@@ -241,7 +241,7 @@ class ChartTradeClass extends React.Component {
                 onExportLayout={this.props.exportLayout}
                 shouldFetchTradingTimes={!this.props.end_epoch}
             >
-                { !is_multiplier && <ChartMarkers /> }
+                <ChartMarkers />
             </SmartChart>
         );
     }

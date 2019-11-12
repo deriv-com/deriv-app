@@ -24,7 +24,6 @@ import {
 import {
     isMultiplierContract }         from '../Contract/Helpers/multiplier';
 import BaseStore                   from '../../base-store';
-import { BARRIER_COLORS }          from '../SmartChart/Constants/barriers';
 
 const store_name = 'portfolio';
 export default class PortfolioStore extends BaseStore {
@@ -137,25 +136,7 @@ export default class PortfolioStore extends BaseStore {
 
     updateTradeStore(portfolio_position) {
         const trade = this.root_store.modules.trade;
-        const contract_info = portfolio_position.contract_info;
-        if (trade.is_multiplier &&
-            trade.main_barrier &&
-            this.hovered_position_id === portfolio_position.id){
-
-            trade.updatePurchaseBarrier(true, portfolio_position);
-            trade.main_barrier.shadeColor = contract_info.profit < 0 ? BARRIER_COLORS.RED : BARRIER_COLORS.GREEN;
-
-            trade.main_barrier.onChange({
-                high: Math.max(
-                    contract_info.current_spot,
-                    contract_info.entry_spot
-                ),
-                low: Math.min(
-                    contract_info.current_spot,
-                    contract_info.entry_spot
-                ),
-            });
-        }
+        trade.toggleLimitOrders(false, portfolio_position);
     }
 
     @action.bound
@@ -218,10 +199,6 @@ export default class PortfolioStore extends BaseStore {
         } else {
             portfolio_position.status = null;
         }
-
-        if (!isEnded(portfolio_position.contract_info)) {
-            this.updateTradeStore(portfolio_position);
-        }
     }
 
     @action.bound
@@ -232,9 +209,6 @@ export default class PortfolioStore extends BaseStore {
         if (contract_id && bid_price) {
             WS.sell(contract_id, bid_price).then(this.handleSell);
         }
-
-        const trade = this.root_store.modules.trade;
-        trade.toggleLimitOrders(false, this.positions[i]);
     }
 
     @action.bound
@@ -348,6 +322,8 @@ export default class PortfolioStore extends BaseStore {
                 this.subscribers[contract_response.contract_id].unsubscribe();
                 delete this.subscribers[contract_response.contract_id];
             });
+
+            this.updateTradeStore(this.positions[i]);
         }
     };
 
@@ -380,7 +356,7 @@ export default class PortfolioStore extends BaseStore {
         this.hovered_position_id = is_over ? position.id : null;
 
         trade.toggleLimitOrders(is_over, position);
-        trade.updatePurchaseBarrier(is_over, position);
+        trade.setPurchaseSpotBarrier(is_over, position);
     }
 
     @action.bound

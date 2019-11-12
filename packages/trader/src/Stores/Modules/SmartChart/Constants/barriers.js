@@ -24,6 +24,7 @@ export const DEFAULT_SHADES = {
 export const BARRIER_COLORS = {
     GREEN    : '#4bb4b3',
     RED      : '#ec3f3f',
+    ORANGE   : '#ff6444',
     GRAY     : '#999999',
     DARK_GRAY: '#6E6E6E',
 };

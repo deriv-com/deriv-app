@@ -1,6 +1,8 @@
 import { toJS }            from 'mobx';
 import ObjectUtils         from 'deriv-shared/utils/object';
 import { CONTRACT_SHADES } from '../Constants/barriers';
+import {
+    isMultiplierContract } from '../../Contract/Helpers/multiplier';
 
 export const isBarrierSupported = (contract_type) => contract_type in CONTRACT_SHADES;
 
@@ -18,3 +20,6 @@ export const barriersObjectToArray = (barriers, reference_array) => {
 
     return reference_array;
 };
+
+export const isLimitOrderBarrierSupported = (contract_type, contract_info) =>
+    isMultiplierContract(contract_type) && contract_info.limit_order;

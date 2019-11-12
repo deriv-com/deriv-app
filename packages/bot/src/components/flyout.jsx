@@ -43,7 +43,7 @@ const Flyout = ({
                             'flyout__search-header-text',
                             'flyout__search-header-results',
                         )}
-                        >{`${total_result} ${translate('results')}`}
+                        >{`${total_result} ${total_result > 1 ? translate('results') : translate('result')}`}
                         </span>
                     </div>
                 )

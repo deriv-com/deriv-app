@@ -41,7 +41,7 @@ class RangeSlider extends React.PureComponent {
 
     getRangeSliderTrackWidth = (value, is_hover) => {
         const width = (value - this.props.min_value) * (10 / (this.props.max_value - this.props.min_value));
-        return `${(width * 2) + (is_hover ? 0.8 : 1.4)}em`;
+        return `${(width * 1.8) + (is_hover ? 0.8 : 1.4)}rem`;
     };
 
     resetOnHover = () => {

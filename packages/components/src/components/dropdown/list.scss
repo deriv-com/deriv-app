@@ -12,8 +12,8 @@
         width: unset;
 
         .dc-list__item-text, .dc-list__item-symbol {
-            padding-left: 2.286em;
-            padding-right: 2.286em;
+            padding-left: 2.286rem;
+            padding-right: 2.286rem;
             overflow: hidden;
             white-space: nowrap;
             text-align: center;
@@ -42,11 +42,11 @@
             pointer-events: none;
             vertical-align: middle;
             padding: 0.6rem 0;
-            padding-left: 1.6em;
+            padding-left: 1.6rem;
         }
         &-text--left {
             justify-content: flex-start;
-            padding-left: 1em;
+            padding-left: 1rem;
         }
         &:not(&--disabled):hover {
             background-color: var(--state-hover);
@@ -100,7 +100,7 @@
 
                 /* postcss-bem-linter: ignore */
                 & > div:nth-child(1) {
-                    padding-bottom: 11.5em !important;
+                    padding-bottom: 11.5rem !important;
                 }
             }
         }

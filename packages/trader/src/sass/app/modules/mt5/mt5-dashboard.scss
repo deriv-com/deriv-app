@@ -28,7 +28,7 @@
         &--heading {
             @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
-            line-height: 1.5rem;
+            line-height: 2.4rem;
         }
         &--paragraph {
             @include typeface(--paragraph-left-normal-black, none);
@@ -57,7 +57,7 @@
         &--heading {
             @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
-            line-height: 1.5rem;
+            line-height: 2rem;
         }
         &--button {
             height: 4rem;
@@ -127,7 +127,7 @@
         &--heading {
             @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
-            line-height: 1.5rem;
+            line-height: 2rem;
             margin-left: 1.3rem;
             margin-bottom: 1.5rem;
         }
@@ -178,7 +178,7 @@
     .mt5-compare-account--hint {
         color: var(--text-less-prominent);
         font-size: 12px;
-        line-height: 1.5rem;
+        line-height: 2rem;
         width: 100%;
         padding: 1.6rem 6.4rem 2.4rem 6.4rem;
     }
@@ -208,16 +208,17 @@
     &--heading {
         @include typeface(--title-left-bold-black, none);
         color: var(--text-prominent);
-        line-height: 1.5rem;
+        line-height: 2.4rem;
     }
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);
-        line-height: 1.45rem;
+        line-height: 2rem;
     }
     &--balance {
         @include typeface(--paragraph-left-bold-black);
         color: var(--text-profit-success);
+        line-height: 2rem;
     }
     &__type {
         padding: 1.6rem 1.6rem 0;
@@ -229,7 +230,7 @@
             margin-left: 1.6rem;
 
             .mt5-account-card--heading {
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.8rem;
             }
             .mt5-account-card--paragraph {
                 width: 13rem;

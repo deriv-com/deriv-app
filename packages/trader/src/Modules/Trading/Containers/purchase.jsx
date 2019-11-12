@@ -4,12 +4,13 @@ import ObjectUtils                 from 'deriv-shared/utils/object';
 import PurchaseFieldset            from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { connect }                 from 'Stores/connect';
-import { measurePerformance }      from '../../../Services/perfomance-checker';
+import { measurePerformance }      from 'Services/perfomance-checker';
 
 const Purchase = ({
     basis,
     contract_type,
     currency,
+    gtmStore,
     is_client_allowed_to_visit,
     // is_purchase_confirm_on,
     purchased_states_arr,
@@ -23,7 +24,6 @@ const Purchase = ({
     setPurchaseState,
     trade_types,
     validation_errors,
-    gtmStore,
 }) => {
     const is_high_low = /high_low/.test(contract_type.toLowerCase());
     const isLoading = info => {
@@ -80,7 +80,6 @@ const Purchase = ({
     });
 
     if (components &&
-        components.length &&
         components.length === 2 &&
         !components[0].props.is_disabled &&
         !components[1].props.is_disabled) {
@@ -115,6 +114,7 @@ export default connect(
         is_client_allowed_to_visit: client.is_client_allowed_to_visit,
         basis                     : modules.trade.basis,
         contract_type             : modules.trade.contract_type,
+        gtmStore                  : gtm,
         is_trade_enabled          : modules.trade.is_trade_enabled,
         onClickPurchase           : modules.trade.onPurchase,
         onHoverPurchase           : modules.trade.onHoverPurchase,
@@ -124,7 +124,6 @@ export default connect(
         validation_errors         : modules.trade.validation_errors,
         purchased_states_arr      : ui.purchase_states,
         setPurchaseState          : ui.setPurchaseState,
-        gtmStore                  : gtm,
         // is_purchase_confirm_on    : ui.is_purchase_confirm_on,
         // is_purchase_locked        : ui.is_purchase_lock_on,
         // togglePurchaseLock        : ui.togglePurchaseLock,

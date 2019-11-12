@@ -365,6 +365,8 @@
         &-wrapper {
             display: flex;
             margin-bottom: 2rem;
+            // width is set to limit the selection area of the radio label
+            width: fit-content;
         }
         &-circle {
             border: 2px solid var(--text-general);

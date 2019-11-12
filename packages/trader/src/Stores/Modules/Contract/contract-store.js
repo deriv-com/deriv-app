@@ -13,6 +13,8 @@ import {
     getDisplayStatus,
     getEndTime,
     isEnded }                 from './Helpers/logic';
+import {
+    isMultiplierContract }    from './Helpers/multiplier';
 
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
@@ -147,6 +149,7 @@ function calculate_marker(contract_info) {
     } = contract_info;
     const ticks_epoch_array = tick_stream ? tick_stream.map(t => t.epoch) : [];
     const is_digit_contract = isDigitContract(contract_type);
+    const show_barrier = !isMultiplierContract(contract_type);
 
     // window.ci = toJS(contract_info);
 
@@ -209,6 +212,7 @@ function calculate_marker(contract_info) {
             key          : `${contract_id}-date_start`,
             epoch_array,
             price_array,
+            show_barrier,
         };
     }
     return null;

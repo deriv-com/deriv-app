@@ -340,6 +340,7 @@ const NonTickContract = RawMarkerMaker(({
         status,
         profit,
     },
+    show_barrier = true,
 }) => {
     /** @type {CanvasRenderingContext2D} */
     const ctx = context;
@@ -387,7 +388,7 @@ const NonTickContract = RawMarkerMaker(({
         ctx.stroke();
     }
     // barrier line
-    if ((barrier && entry) && (
+    if (show_barrier && (barrier && entry) && (
         start.visible
         || expiry.visible
         || Math.sign(start.left) !== Math.sign(expiry.left)

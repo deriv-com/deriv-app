@@ -12,12 +12,13 @@
             width: 100%;
             height: 100%;
             line-height: 1.43;
+
+            .inline-icon .color1-fill {
+                fill: var(--text-general);
+            }
         }
         &--align-left {
             text-align: left;
-        }
-        .inline-icon .color1-fill {
-            fill: var(--text-general);
         }
     }
     &__loader {

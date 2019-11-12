@@ -27,6 +27,8 @@ import {
     getEndTime,
     isUserSold,
     isValidToSell       }      from 'Stores/Modules/Contract/Helpers/logic';
+import {
+    isMultiplierContract }     from 'Stores/Modules/Contract/Helpers/multiplier';
 import ContractCardBody        from './contract-card-body.jsx';
 import ContractCardFooter      from './contract-card-footer.jsx';
 import ContractCardHeader      from './contract-card-header.jsx';
@@ -66,6 +68,7 @@ class ContractDrawer extends Component {
                 current_tick : getCurrentTick(contract_info);
             return current_tick;
         };
+        const is_multiplier = isMultiplierContract(contract_info.contract_type);
 
         return (
             <React.Fragment>
@@ -110,6 +113,7 @@ class ContractDrawer extends Component {
                             pl_value={+profit}
                             payout={getIndicativePrice(contract_info)}
                             currency={currency}
+                            is_multiplier={is_multiplier}
                             is_sold={!!(is_sold)}
                             status={this.props.status}
                         />
@@ -118,7 +122,7 @@ class ContractDrawer extends Component {
                         <div className='contract-card__footer-wrapper'>
                             <div className='purchase-price-container'>
                                 <span className='purchase-price__label'>
-                                    {localize('Purchase price:')}
+                                    {is_multiplier ? localize('Stake amount:') : localize('Purchase price:')}
                                 </span>
                                 <span id='dt_purchase_price_label' className='purchase-price__value' >
                                     <Money
@@ -127,17 +131,38 @@ class ContractDrawer extends Component {
                                     />
                                 </span>
                             </div>
-                            <div className='potential-payout-container'>
-                                <span className='potential-payout__label'>
-                                    {localize('Potential payout:')}
-                                </span>
-                                <span id='dt_potential_payout_label' className='potential-payout-price__value' >
-                                    <Money
-                                        currency={currency}
-                                        amount={payout}
-                                    />
-                                </span>
-                            </div>
+                            {is_multiplier ?
+                                <div className='potential-payout-container'>
+                                    <span className='potential-payout__label'>
+                                        {localize('Stop loss:')}
+                                    </span>
+                                    <span id='dt_potential_payout_label' className='potential-payout-price__value' >
+                                        {contract_info.limit_order && contract_info.limit_order.stop_loss ?
+                                            <React.Fragment>
+                                                <strong>-</strong>
+                                                <Money
+                                                    amount={contract_info.limit_order.stop_loss.order_amount}
+                                                    currency={currency}
+                                                />
+                                            </React.Fragment>
+                                            :
+                                            <strong>-</strong>
+                                        }
+                                    </span>
+                                </div>
+                                :
+                                <div className='potential-payout-container'>
+                                    <span className='potential-payout__label'>
+                                        {localize('Potential payout:')}
+                                    </span>
+                                    <span id='dt_potential_payout_label' className='potential-payout-price__value' >
+                                        <Money
+                                            currency={currency}
+                                            amount={payout}
+                                        />
+                                    </span>
+                                </div>
+                            }
                         </div>
                         <CSSTransition
                             in={!!(isValidToSell(contract_info))}

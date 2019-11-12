@@ -1,6 +1,8 @@
 import PropTypes            from 'prop-types';
 import React                from 'react';
-import { ThemedScrollbars } from 'deriv-components';
+import {
+    Money,
+    ThemedScrollbars }      from 'deriv-components';
 import { localize }         from 'App/i18n';
 import IconExitWon          from 'Assets/SvgComponents/contract_details/ic-exittime-won.svg';
 import IconExitLoss         from 'Assets/SvgComponents/contract_details/ic-exittime-loss.svg';
@@ -11,12 +13,16 @@ import {
     getBarrierLabel,
     getBarrierValue,
     isDigitType }           from 'App/Components/Elements/PositionsDrawer/helpers';
+import {
+    isMultiplierContract,
+    getCommission }         from 'Stores/Modules/Contract/Helpers/multiplier';
 import { getThemedIcon }    from './Helpers/icons';
 import ContractAuditItem    from './contract-audit-item.jsx';
 
 class ContractAudit extends React.PureComponent {
     render() {
         const {
+            commission = 0.012, // TODO: replace with value from API
             contract_end_time,
             contract_info,
             duration,
@@ -28,6 +34,7 @@ class ContractAudit extends React.PureComponent {
         if (!has_result) return null;
         const is_profit    = (contract_info.profit >= 0);
         const IconExitTime = (is_profit) ? <IconExitWon /> : <IconExitLoss />;
+        const is_multiplier = isMultiplierContract(contract_info.contract_type);
         return (
             <div className='contract-audit__wrapper'>
                 <ThemedScrollbars
@@ -42,27 +49,47 @@ class ContractAudit extends React.PureComponent {
                             value2={localize('{{sell_value}} (Sell)', { sell_value: contract_info.transaction_ids.sell })}
                         />
                     </div>
-                    <div id='dt_duration_label' className='contract-audit__grid'>
-                        <ContractAuditItem
-                            icon={getThemedIcon('duration', is_dark_theme)}
-                            label={localize('Duration')}
-                            value={(contract_info.tick_count > 0) ?
-                                `${contract_info.tick_count} ${(contract_info.tick_count < 2) ? localize('tick') : localize('ticks')}`
-                                :
-                                `${duration} ${duration_unit}`}
-                        />
-                    </div>
-                    <div id='dt_bt_label' className='contract-audit__grid'>
-                        <ContractAuditItem
-                            icon={
-                                isDigitType(contract_info.contract_type)
-                                    ? getThemedIcon('target', is_dark_theme)
-                                    : getThemedIcon('barrier', is_dark_theme)
-                            }
-                            label={getBarrierLabel(contract_info)}
-                            value={getBarrierValue(contract_info) || ' - '}
-                        />
-                    </div>
+                    {is_multiplier ?
+                        <div id='dt_commission_label' className='contract-audit__grid'>
+                            <ContractAuditItem
+                                icon={getThemedIcon('commission', is_dark_theme)}
+                                label={localize('Commission')}
+                                value={<Money
+                                    amount={getCommission({
+                                        commission,
+                                        amount    : contract_info.buy_price,
+                                        multiplier: contract_info.multiplier,
+                                    })}
+                                    currency={contract_info.currency}
+                                />
+                                }
+                            />
+                        </div>
+                        :
+                        <React.Fragment>
+                            <div id='dt_duration_label' className='contract-audit__grid'>
+                                <ContractAuditItem
+                                    icon={getThemedIcon('duration', is_dark_theme)}
+                                    label={localize('Duration')}
+                                    value={(contract_info.tick_count > 0) ?
+                                        `${contract_info.tick_count} ${(contract_info.tick_count < 2) ? localize('tick') : localize('ticks')}`
+                                        :
+                                        `${duration} ${duration_unit}`}
+                                />
+                            </div>
+                            <div id='dt_bt_label' className='contract-audit__grid'>
+                                <ContractAuditItem
+                                    icon={
+                                        isDigitType(contract_info.contract_type)
+                                            ? getThemedIcon('target', is_dark_theme)
+                                            : getThemedIcon('barrier', is_dark_theme)
+                                    }
+                                    label={getBarrierLabel(contract_info)}
+                                    value={getBarrierValue(contract_info) || ' - '}
+                                />
+                            </div>
+                        </React.Fragment>
+                    }
                     <div id='dt_start_time_label' className='contract-audit__grid'>
                         <ContractAuditItem
                             icon={getThemedIcon('start_time', is_dark_theme)}

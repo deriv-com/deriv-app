@@ -8,6 +8,7 @@ import Icon                 from 'Assets/icon.jsx';
 
 const ProfitLossCardContent = ({
     currency,
+    is_multiplier,
     is_sold,
     pl_value,
     payout,
@@ -43,7 +44,13 @@ const ProfitLossCardContent = ({
         </div>
         <div className='pl-card__item-payout'>
             <div className='pl-card__item__header'>
-                { is_sold ? <Localize i18n_default_text='Payout:' /> : <Localize i18n_default_text='Indicative price:' /> }
+                {is_multiplier ?
+                    <Localize i18n_default_text='Take profit:' />
+                    :
+                    <React.Fragment>
+                        { is_sold ? <Localize i18n_default_text='Payout:' /> : <Localize i18n_default_text='Indicative price:' /> }
+                    </React.Fragment>
+                }
             </div>
             <div id='dt_payout_label' className='pl-card__item__body'>
                 <Money currency={currency} amount={payout} />
@@ -64,10 +71,11 @@ const ProfitLossCardContent = ({
 );
 
 ProfitLossCardContent.propTypes = {
-    currency: PropTypes.string,
-    is_sold : PropTypes.bool,
-    payout  : PropTypes.number,
-    pl_value: PropTypes.number,
-    status  : PropTypes.string,
+    currency     : PropTypes.string,
+    is_multiplier: PropTypes.bool,
+    is_sold      : PropTypes.bool,
+    payout       : PropTypes.number,
+    pl_value     : PropTypes.number,
+    status       : PropTypes.string,
 };
 export default ProfitLossCardContent;

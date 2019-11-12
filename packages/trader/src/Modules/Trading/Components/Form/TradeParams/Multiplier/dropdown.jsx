@@ -4,6 +4,7 @@ import PropTypes                      from 'prop-types';
 import React                          from 'react';
 import Localize                       from 'App/Components/Elements/localize.jsx';
 import { connect }                    from 'Stores/connect';
+import { getCommission }              from 'Stores/Modules/Contract/Helpers/multiplier';
 
 const MultiplierDropdown = ({
     amount,
@@ -39,7 +40,7 @@ const MultiplierDropdown = ({
                     i18n_default_text='Commission: <0/>'
                     components={[<Money
                         key={0}
-                        amount={(commission * amount * multiplier) / 100}
+                        amount={getCommission({ commission, amount, multiplier })}
                         currency={currency}
                     />]}
                 />

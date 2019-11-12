@@ -14,10 +14,15 @@ import IconIdLight        from 'Assets/SvgComponents/contract_details/light/ic-i
 import IconStartLight     from 'Assets/SvgComponents/contract_details/light/ic-starttime.svg';
 import IconTargetLight    from 'Assets/SvgComponents/contract_details/light/ic-target.svg';
 
+import IconCommissionLight from 'Assets/SvgComponents/contract_details/light/ic-commission.svg';
+
 export const getThemedIcon = (type, is_dark_theme) => {
     let IconType;
     if (type) {
         switch (type) {
+            case 'commission':
+                IconType = <IconCommissionLight />; // TODO: add dark theme icon
+                break;
             case 'id':
                 IconType = is_dark_theme ? <IconIdDark /> : <IconIdLight />;
                 break;

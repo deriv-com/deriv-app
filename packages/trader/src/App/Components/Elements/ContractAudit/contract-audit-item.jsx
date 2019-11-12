@@ -37,6 +37,7 @@ ContractAuditItem.propTypes = {
     value: PropTypes.PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
+        PropTypes.node,
     ]),
     value2: PropTypes.PropTypes.oneOfType([
         PropTypes.number,

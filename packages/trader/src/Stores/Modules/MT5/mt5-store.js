@@ -77,6 +77,7 @@ export default class MT5Store extends BaseStore {
             sessionStorage.removeItem('post_real_account_signup');
             this.enableMt5PasswordModal();
         }
+        return Promise.resolve();
     }
 
     @action.bound

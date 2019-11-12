@@ -446,7 +446,7 @@ export default class BaseStore {
 
     @action.bound
     onRealAccountSignupEnd(listener) {
-        this.realAccountSignupEndedDisposer = reaction(
+        this.realAccountSignupEndedDisposer = when(
             () => this.root_store.ui.has_real_account_signup_ended,
             () => {
                 try {

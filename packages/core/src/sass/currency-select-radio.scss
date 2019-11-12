@@ -17,7 +17,7 @@
         flex-direction: column;
         height: 128px;
         justify-content: space-around;
-        margin: 0.5em 2em 0;
+        margin: 0.5rem 2rem 0;
         width: 128px;
 
         &:hover:not(&--selected) {
@@ -44,7 +44,7 @@
         svg {
             height: 48px;
             width: 48px;
-            margin-bottom: 1em;
+            margin-bottom: 1rem;
         }
         p {
             text-align: center;

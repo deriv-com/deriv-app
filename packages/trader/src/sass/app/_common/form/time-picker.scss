@@ -1,10 +1,10 @@
 /** @define time-picker */
 .time-picker {
     position: relative;
-    margin-top: 0.8em;
+    margin-top: 0.8rem;
 
     &--padding {
-        padding: 1.6em;
+        padding: 1.6rem;
     }
     &__icon {
         @extend .absolute-center-v;

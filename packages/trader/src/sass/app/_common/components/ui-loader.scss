@@ -4,7 +4,7 @@
     position: absolute;
     z-index: 3;
     top: 0;
-    left: 0.2em;
+    left: 0.2rem;
     right: 0;
     bottom: 0;
     width: calc(100% - 4px);
@@ -20,7 +20,7 @@
         &-spinner {
             position: relative;
             margin: 0 auto;
-            width: 4.2em;
+            width: 4.2rem;
 
             &:before {
                 content: '';

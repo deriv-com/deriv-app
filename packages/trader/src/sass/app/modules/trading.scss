@@ -47,8 +47,8 @@
 
     &__fieldset {
         border-radius: $BORDER_RADIUS;
-        padding: 0.8em;
-        margin-bottom: 0.4em;
+        padding: 0.8rem;
+        margin-bottom: 0.4rem;
         background-color: var(--general-section-1);
         border-color: var(--general-section-1);
         color: var(--text-general);
@@ -94,8 +94,8 @@
 
         &-info {
             @include typeface(--small-left-light-black, none);
-            @include toEm(padding, 5px 5px 5px 8px, 1.2em);
-            @include toEm(margin-bottom, 10px, 1.2em);
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
             color: var(--text-general);
             background-color: rgba($color-red, 0.16);
             display: block;
@@ -119,7 +119,7 @@
         color: var(--text-general);
 
         &--symbol {
-            font-size: 1.4em;
+            font-size: 1.4rem;
             line-height: 1.5;
         }
         &:before {
@@ -160,12 +160,12 @@
                 }
             }
             &-value {
-                font-size: 1.4em;
+                font-size: 1.4rem;
                 font-weight: 700;
                 text-transform: capitalize;
                 text-align: left;
                 line-height: 1.25;
-                margin-left: 0.1em;
+                margin-left: 0.1rem;
                 color: var(--text-prominent);
                 opacity: 1;
                 transition: 0.3s;
@@ -237,10 +237,10 @@
         // display: inline-block causes input cursor to seemingly appears duplicated
         display: grid;
         grid-template-columns: 1fr 3fr;
-        grid-gap: 0.2em;
+        grid-gap: 0.2rem;
 
         &-dropdown {
-            margin-top: 0.8em;
+            margin-top: 0.8rem;
             min-width: unset;
 
             /* postcss-bem-linter: ignore */
@@ -253,7 +253,7 @@
 
             /* postcss-bem-linter: ignore */
             .symbols {
-                font-size: 1.4em;
+                font-size: 1.4rem;
             }
         }
     }
@@ -366,6 +366,6 @@
 .duration-container {
     /* postcss-bem-linter: ignore */
     .dropdown-container {
-        margin-top: 0.8em;
+        margin-top: 0.8rem;
     }
 }

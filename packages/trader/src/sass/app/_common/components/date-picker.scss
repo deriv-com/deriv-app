@@ -7,7 +7,7 @@
 
     &__input-field {
         border-radius: $BORDER_RADIUS;
-        margin-top: 0.8em;
+        margin-top: 0.8rem;
     }
     &__input {
         background: var(--fill-normal);
@@ -43,11 +43,11 @@
     // TODO: update datepicker UI in mobile
     // &__native-overlay {
     //     background: $COLOR_WHITE;
-    //     height: 3.2em;
+    //     height: 3.2rem;
     //     cursor: pointer;
     //     border: 1px solid $COLOR_LIGHT_BLACK_4;
     //     border-radius: $BORDER_RADIUS;
-    //     font-size: 1.4em;
+    //     font-size: 1.4rem;
     //     box-sizing: border-box;
     //     font-weight: 300;
     //     transition: border 0.25s;
@@ -64,8 +64,8 @@
     //     &__arrowhead {
     //         display: block;
     //         position: absolute;
-    //         top: 0.8em;
-    //         right: 0.6em;
+    //         top: 0.8rem;
+    //         right: 0.6rem;
     //     }
     // }
     // // TODO: style native date picker

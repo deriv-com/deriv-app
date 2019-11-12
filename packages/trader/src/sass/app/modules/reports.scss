@@ -2,7 +2,7 @@
 @import '../_common/components/composite-calendar';
 @import '../_common/components/data-table';
 
-$side-padding: 1.2em;
+$side-padding: 1.2rem;
 
 /** @define reports; weak */
 .reports {
@@ -73,7 +73,7 @@ $side-padding: 1.2em;
             background-color: var(--general-section-1);
 
             &-text {
-                padding: 1.12em;
+                padding: 1.12rem;
             }
         }
         .date {
@@ -109,7 +109,7 @@ $side-padding: 1.2em;
                 margin: 0 auto;
                 max-width: 450px;
                 display: grid;
-                grid-template-columns: 1fr 3em 1fr;
+                grid-template-columns: 1fr 3rem 1fr;
                 text-align: center;
 
                 .datepicker__input-field {
@@ -133,8 +133,8 @@ $side-padding: 1.2em;
 /** @define statement-card */
 .statement-card {
     &__header {
-        font-size: 1em;
-        padding: 0.5em;
+        font-size: 1rem;
+        padding: 0.5rem;
         border-bottom: 1px solid var(--general-section-1);
         display: flex;
         justify-content: space-between;
@@ -145,11 +145,11 @@ $side-padding: 1.2em;
         text-decoration: none;
     }
     &__body {
-        padding: 0.5em;
-        font-size: 1.2em;
+        padding: 0.5rem;
+        font-size: 1.2rem;
     }
     &__desc {
-        margin-bottom: 0.7em;
+        margin-bottom: 0.7rem;
     }
     &__row {
         display: grid;
@@ -169,11 +169,11 @@ $side-padding: 1.2em;
     }
     &__icon {
         display: inline-block;
-        height: 1.6em;
-        width: 1.6em;
-        background-size: 1.6em 1.6em;
+        height: 1.6rem;
+        width: 1.6rem;
+        background-size: 1.6rem 1.6rem;
         vertical-align: middle;
-        margin-right: 0.5em;
+        margin-right: 0.5rem;
     }
 }
 
@@ -186,12 +186,12 @@ $side-padding: 1.2em;
     align-items: center;
 
     &__icon {
-        height: 6.4em;
-        width: 6.4em;
-        margin-bottom: 1.4em;
+        height: 6.4rem;
+        width: 6.4rem;
+        margin-bottom: 1.4rem;
     }
     &__text {
-        font-size: 1.4em;
+        font-size: 1.4rem;
     }
 }
 
@@ -340,7 +340,7 @@ $side-padding: 1.2em;
         @include colorIcon(var(--text-disabled));
     }
     &__text {
-        font-size: em(14px);
+        font-size: 1.4rem;
         text-align: center;
         line-height: 20px;
         color: var(--text-disabled);

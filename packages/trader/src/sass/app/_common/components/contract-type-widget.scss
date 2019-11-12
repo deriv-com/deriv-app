@@ -14,7 +14,7 @@
         align-items: center;
         justify-content: flex-start;
         flex-direction: row;
-        padding: 1.6em;
+        padding: 1.6rem;
 
         /* postcss-bem-linter: ignore */
         span[name=contract_type] {
@@ -22,7 +22,7 @@
             color: var(--text-prominent);
             font-weight: bold;
             vertical-align: middle;
-            padding-left: 0.4em;
+            padding-left: 0.4rem;
         }
         &:hover, &:focus {
             border-color: var(--border-hover);
@@ -46,7 +46,7 @@
         position: absolute;
         pointer-events: none;
         top: 37%;
-        left: 0.6em;
+        left: 0.6rem;
         line-height: 1;
         transition: transform 0.25s ease;
         transform: rotate(90deg);
@@ -58,11 +58,11 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding-left: 1.2em;
+        padding-left: 1.2rem;
 
         /* postcss-bem-linter: ignore */
         .category-wrapper {
-            margin: 0 0.2em;
+            margin: 0 0.2rem;
             background-color: var(--general-section-1);
 
             /* postcss-bem-linter: ignore */

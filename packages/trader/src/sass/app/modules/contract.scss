@@ -1,10 +1,10 @@
-$CONTRACT_INFO_BOX_PADDING: 1.6em;
+$CONTRACT_INFO_BOX_PADDING: 1.6rem;
 
 .info-box-container {
     position: absolute;
     z-index: 10;
-    top: 1em;
-    right: 1em;
+    top: 1rem;
+    right: 1rem;
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -28,8 +28,8 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
 
             &-icon {
                 @extend %inline-icon;
-                margin-right: 1.6em;
-                padding: 0.4em;
+                margin-right: 1.6rem;
+                padding: 0.4rem;
             }
             &-text {
                 @include typeface(--paragraph-left-normal-black, unset);
@@ -53,9 +53,9 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
             align-items: center;
 
             svg {
-                width: 2.4em;
-                height: 2.4em;
-                margin-right: 1em;
+                width: 2.4rem;
+                height: 2.4rem;
+                margin-right: 1rem;
 
                 .color1-fill {
                     fill: var(--status-success);
@@ -64,12 +64,12 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
             .pl-value {
                 color: var(--text-profit-success);
                 font-weight: bold;
-                font-size: 1.6em;
-                line-height: 1.5em;
+                font-size: 1.6rem;
+                line-height: 1.5rem;
 
                 .percentage {
                     display: inline-block;
-                    margin-left: 0.7em;
+                    margin-left: 0.7rem;
                 }
             }
             &.lost {
@@ -81,19 +81,19 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                 }
             }
             .sell-info {
-                margin-right: 2em;
+                margin-right: 2rem;
                 text-align: center;
-                line-height: 1.2em;
+                line-height: 1.2rem;
             }
         }
         .general {
             display: flex;
             align-items: center;
-            line-height: 1.4em;
+            line-height: 1.4rem;
 
             .values {
-                margin-left: 1em;
-                margin-right: 2em;
+                margin-left: 1rem;
+                margin-right: 2rem;
                 text-align: right;
                 font-weight: bold;
 
@@ -115,8 +115,8 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
 
                 .tooltip {
                     position: absolute;
-                    bottom: 0.5em;
-                    right: 0.5em;
+                    bottom: 0.5rem;
+                    right: 0.5rem;
                     line-height: 0;
 
                     &:before {
@@ -128,16 +128,16 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
         }
     }
     .message {
-        margin-top: 0.5em;
+        margin-top: 0.5rem;
         border: 1px solid var(--brand-red-coral);
         border-radius: $BORDER_RADIUS;
-        padding: 1em;
+        padding: 1rem;
         background-color: transparentize($color-black, 0.84);
         display: flex;
         align-items: center;
 
         .message-icon {
-            margin-right: 1em;
+            margin-right: 1rem;
         }
         .message-text {
             flex-grow: 1;

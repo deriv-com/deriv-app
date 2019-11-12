@@ -1,12 +1,12 @@
 /** @define contract-audit; */
 .contract-audit {
     &__wrapper {
-        margin-top: 1em;
+        margin-top: 1rem;
         border-radius: $BORDER_RADIUS;
         padding: 2px 4px;
         opacity: 1;
-        height: calc(100vh - 32.6em);
-        max-height: calc(100vh - 32.6em);
+        height: calc(100vh - 32.6rem);
+        max-height: calc(100vh - 32.6rem);
         overflow: hidden;
         background-color: var(--general-main-1);
         color: var(--text-prominent);
@@ -30,7 +30,7 @@
         margin: 0 4px;
     }
     &__label {
-        font-size: 1em;
+        font-size: 1rem;
         white-space: nowrap;
         max-width: 90px;
         color: var(--text-general);
@@ -42,7 +42,7 @@
     &__value, &__value2 {
         padding-top: 2px;
         line-height: 1.5;
-        font-size: 1.2em;
+        font-size: 1.2rem;
         font-weight: bold;
         color: var(--text-prominent);
     }

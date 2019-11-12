@@ -71,9 +71,12 @@ const Button = ({
             {is_submit_success &&
                 <IconCheckmark />
             }
-            <span className={classNames('btn__text', classNameSpan)}>
-                {!text && children}
-            </span>
+            {!text && children && (
+                <span className={classNames('btn__text', classNameSpan)}>
+                    {children}
+                </span>
+            )}
+
         </button>
     );
     const wrapper = (<div className={wrapperClassName}>{button}</div>);

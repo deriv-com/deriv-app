@@ -47,7 +47,7 @@
     &__description {
         @include typeface(--paragraph-center-normal-black);
         text-transform: none;
-        margin: 2em 0;
+        margin: 2rem 0;
         color: var(--text-general);
     }
     .address-state__fieldset {

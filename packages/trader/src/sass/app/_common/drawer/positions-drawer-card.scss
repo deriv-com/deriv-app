@@ -52,8 +52,8 @@
         }
     }
     &__wrapper {
-        padding: 0.8em;
-        margin: 0 1em;
+        padding: 0.8rem;
+        margin: 0 1rem;
         max-width: 218px;
         border-radius: $BORDER_RADIUS;
         transition: transform 0.25s ease, opacity 0.25s linear;
@@ -137,7 +137,7 @@
             color: var(--text-general);
         }
         &-value {
-            font-size: 1.2em;
+            font-size: 1.2rem;
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -153,7 +153,7 @@
         margin-left: 4px;
     }
     &__type {
-        font-size: 1.2em;
+        font-size: 1.2rem;
         display: flex;
         justify-content: flex-start;
         font-weight: bold;
@@ -170,11 +170,11 @@
     }
     &__symbol {
         margin-left: 0.5rem;
-        font-size: 1em;
+        font-size: 1rem;
         line-height: 1.5;
     }
     &__indicative {
-        font-size: 1.2em;
+        font-size: 1.2rem;
         font-weight: bold;
         display: flex;
         justify-content: flex-start;
@@ -183,7 +183,7 @@
         color: var(--text-general);
 
         &-label {
-            font-size: 1em;
+            font-size: 1rem;
             font-weight: normal;
             margin-bottom: 4px;
             white-space: nowrap;
@@ -205,11 +205,11 @@
         }
     }
     &__remaining-time {
-        font-size: 1em;
+        font-size: 1rem;
         color: var(--text-general);
     }
     &__profit-loss {
-        font-size: 1.2em;
+        font-size: 1.2rem;
         text-align: center;
         display: flex;
         justify-content: flex-start;
@@ -217,7 +217,7 @@
         font-weight: bold;
 
         &-label {
-            font-size: 1em;
+            font-size: 1rem;
             margin-bottom: 4px;
             font-weight: normal;
             white-space: nowrap;
@@ -249,7 +249,7 @@
         justify-content: flex-start;
         align-items: center;
         font-weight: bold;
-        font-size: 1.2em;
+        font-size: 1.2rem;
     }
     &__sell-button {
         display: flex;
@@ -280,7 +280,7 @@
 
     &__type-wrapper {
         margin: 0;
-        padding: 0.5em 0.3em;
+        padding: 0.5rem 0.3rem;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -292,7 +292,7 @@
         }
     }
     &__type-label {
-        width: 3.8em;
+        width: 3.8rem;
         line-height: 1.5;
         text-align: left;
     }

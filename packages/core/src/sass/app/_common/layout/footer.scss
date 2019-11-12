@@ -2,7 +2,7 @@
 .footer {
     position: fixed;
     bottom: 0;
-    padding: 0 1em;
+    padding: 0 1rem;
     width: 100%;
     height: $FOOTER_HEIGHT;
     box-sizing: border-box;
@@ -47,7 +47,7 @@
         }
     }
     &__link {
-        padding: 0 0.8em;
+        padding: 0 0.8rem;
         text-decoration: none;
         height: 100%;
         display: inline-flex;
@@ -63,8 +63,8 @@
         }
     }
     &__icon {
-        width: 1.6em;
-        height: 1.6em;
+        width: 1.6rem;
+        height: 1.6rem;
         @extend %inline-icon;
     }
     @media (max-width: 768px) {
@@ -77,16 +77,16 @@
     position: relative;
 
     &__icon {
-        margin-bottom: 0.5em;
+        margin-bottom: 0.5rem;
     }
     &:before {
         content: '';
-        width: 0.2em;
-        height: 0.2em;
+        width: 0.2rem;
+        height: 0.2rem;
         border-radius: 50%;
         position: absolute;
-        margin-top: 1em;
-        right: 1.5em;
+        margin-top: 1rem;
+        right: 1.5rem;
         display: block;
         transition: transform 0.25s ease;
         transform: translate3d(0, 0, 0);
@@ -106,7 +106,7 @@
         content: attr(data-count);
         width: 14px;
         height: 14px;
-        font-size: 1em;
+        font-size: 1rem;
         border-radius: 50%;
         position: absolute;
         display: flex;
@@ -131,19 +131,19 @@
 /** @define network-status */
 .network-status {
     &__wrapper {
-        height: 1.4em;
+        height: 1.4rem;
         position: relative;
     }
     &__tooltip {
         left: unset;
-        margin-left: 2em;
+        margin-left: 2rem;
         text-decoration-line: none;
     }
     &__circle {
         background: var(--general-section-1);
-        width: 1em;
-        height: 1em;
-        margin: 0.2em 1.6em;
+        width: 1rem;
+        height: 1rem;
+        margin: 0.2rem 1.6rem;
         border-radius: 50%;
 
         &--online {
@@ -163,8 +163,8 @@
 .server-time {
     display: inline-flex;
     align-self: center;
-    margin-right: 1em;
-    padding: 0 1em;
+    margin-right: 1rem;
+    padding: 0 1rem;
     @include typeface(--small-left-normal-black);
     color: var(--text-general);
 }
@@ -177,7 +177,7 @@
 
         &:after {
             content: '';
-            height: 0.2em;
+            height: 0.2rem;
             width: 100%;
             position: absolute;
             top: 0;

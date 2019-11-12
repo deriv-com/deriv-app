@@ -13,20 +13,20 @@
     }
     .dc-modal-header__title {
         text-transform: none;
-        border-top-left-radius: 1em;
+        border-top-left-radius: 1rem;
     }
     &--error {
         & > svg {
             width: 128px;
             height: 128px;
             align-self: center;
-            margin: 2em 0 0;
+            margin: 2rem 0 0;
         }
         h1 {
             @include typeface(--title-center-bold-black);
             text-transform: none;
             color: var(--text-general);
-            margin: 2em 0 1em;
+            margin: 2rem 0 1rem;
         }
         p {
             @include typeface(--paragraph-center-normal-black);
@@ -41,7 +41,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 12em;
+            width: 12rem;
             align-self: center;
         }
     }
@@ -81,7 +81,7 @@
         flex-grow: 1;
         justify-content: space-evenly;
         width: 100%;
-        padding: 0 2em 2em;
+        padding: 0 2rem 2rem;
     }
     &__body {
         align-items: center;
@@ -93,7 +93,7 @@
     }
     &__set-currency {
         p {
-            margin-top: 1em;
+            margin-top: 1rem;
             @include typeface(--paragraph-center-normal-black);
             text-transform: initial;
             color: var(--text-prominent);
@@ -108,11 +108,11 @@
         align-items: center;
         justify-content: flex-end;
         align-self: flex-end;
-        margin-top: 2em;
+        margin-top: 2rem;
         width: 100%;
 
         .btn:not(:last-child) {
-            margin: 0 1em;
+            margin: 0 1rem;
         }
         .btn:last-child {
             margin: 0;
@@ -127,7 +127,7 @@
             width: 100%;
 
             & .btn {
-                min-width: 9em;
+                min-width: 9rem;
             }
         }
         &--error {

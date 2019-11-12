@@ -11,7 +11,7 @@
         @include typeface(--paragraph-center-bold-black);
         color: var(--text-prominent);
         text-transform: none;
-        margin-bottom: 3em;
+        margin-bottom: 3rem;
     }
     form {
         flex-grow: 1;
@@ -19,13 +19,13 @@
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        padding: 2em;
+        padding: 2rem;
     }
     &__description {
         @include typeface(--small-center-normal-black);
         color: var(--text-prominent);
         text-transform: none;
-        margin-top: 1em;
+        margin-top: 1rem;
     }
     &__body {
         flex-grow: 1;
@@ -38,14 +38,14 @@
         display: none;
     }
     .success-change {
-        margin-top: 3em;
+        margin-top: 3rem;
     }
     & .dc-password-meter__container {
         flex-grow: 0;
         width: 300px;
     }
     & .mt5-password-field {
-        margin-bottom: 1em;
+        margin-bottom: 1rem;
         width: 80%;
     }
 }
@@ -59,7 +59,7 @@
     &__body {
         display: flex;
         flex-direction: column;
-        padding: 5em 3em 3em;
+        padding: 5rem 3rem 3rem;
         flex-grow: 1;
         justify-content: space-around;
         align-items: center;
@@ -106,7 +106,7 @@
         }
     }
     .success-change {
-        margin-top: 2em;
+        margin-top: 2rem;
 
         &__body-area {
             display: flex;
@@ -130,8 +130,8 @@
         @include typeface(--small-center-bold-black);
         color: var(--text-prominent);
         text-transform: none;
-        margin-top: 2em;
-        padding: 0 1.6em;
+        margin-top: 2rem;
+        padding: 0 1.6rem;
     }
     &__description {
         p {
@@ -162,8 +162,8 @@
         margin-left: -200px;
         background-color: var(--general-main-1);
         color: var(--text-prominent);
-        padding: 0.5em;
-        border-radius: 0.3em;
+        padding: 0.5rem;
+        border-radius: 0.3rem;
         position: absolute;
         z-index: 1;
 

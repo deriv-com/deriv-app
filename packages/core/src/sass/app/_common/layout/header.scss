@@ -36,15 +36,15 @@
     }
     &__navbar-icons {
         cursor: pointer;
-        padding: 0.8em 1.6em;
+        padding: 0.8rem 1.6rem;
         align-self: center;
         height: 100%;
 
         &--notify-toggle {
             order: 2;
             order: 2;
-            padding: 0.5em 1em;
-            width: 2em;
+            padding: 0.5rem 1rem;
+            width: 2rem;
         }
     }
     &__menu-left {
@@ -75,7 +75,7 @@
     }
     &__menu-link {
         height: 100%;
-        padding: 0 1.6em;
+        padding: 0 1.6rem;
         text-decoration: none;
         position: relative;
         display: inline-flex;
@@ -86,15 +86,15 @@
 
         &-text {
             @include typeface(--title-left-normal-black);
-            padding: 0.5em 0;
+            padding: 0.5rem 0;
             position: relative;
             color: var(--text-general);
             @include colorIcon(var(--text-general), none, var(--text-general));
 
             &:before {
                 position: absolute;
-                top: 1.4em;
-                left: 1.2em;
+                top: 1.4rem;
+                left: 1.2rem;
             }
             &:after {
                 display: block;

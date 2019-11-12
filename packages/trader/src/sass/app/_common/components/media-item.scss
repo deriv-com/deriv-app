@@ -9,7 +9,7 @@
     }
     &__icon {
         height: 120px;
-        @include toEm(margin-right, 16px);
+        margin-right: 1.6rem;
         border-radius: $BORDER_RADIUS;
         min-width: 160px;
 

@@ -18,7 +18,7 @@
             color: var(--brand-red-coral);
             font-size: 10px;
             font-weight: bold;
-            line-height: 1.4em;
+            line-height: 1.4rem;
             position: absolute;
             top: 50%;
             transform: translateY(-65%);
@@ -28,7 +28,7 @@
         @include typeface(--small-center-normal-active, none);
         cursor: help;
         position: fixed;
-        padding: 0.7em;
+        padding: 0.7rem;
         max-width: 280px;
         border-radius: 4px;
         display: flex;
@@ -38,7 +38,7 @@
 
         &__icon {
             flex-grow: 1;
-            margin-right: 0.7em;
+            margin-right: 0.7rem;
             padding-top: 3px;
         }
         &__text {
@@ -52,10 +52,10 @@
             border-color: transparent;
         }
         &[data-popover-pos=top], &[data-popover-pos=bottom] {
-            margin: 1em 0;
+            margin: 1rem 0;
         }
         &[data-popover-pos=left], &[data-popover-pos=right] {
-            margin: 0 1em;
+            margin: 0 1rem;
         }
         &[data-popover-pos=left] &__arrow {
             left: 100%;

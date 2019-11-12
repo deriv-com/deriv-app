@@ -12,14 +12,14 @@
     &__container {
         display: flex;
         flex-direction: column;
-        padding-left: 0.5em;
+        padding-left: 0.5rem;
         height: 100%;
     }
     &__header {
         border-bottom: 1px solid var(--general-section-1);
         line-height: 40px;
         font-weight: 700;
-        font-size: 1.6em;
+        font-size: 1.6rem;
     }
     &__content {
         flex-grow: 1;
@@ -28,7 +28,7 @@
         border-top: 1px solid var(--general-section-1);
         line-height: 40px;
         font-weight: 700;
-        font-size: 1.6em;
+        font-size: 1.6rem;
         align-items: center;
     }
     &__toggle {

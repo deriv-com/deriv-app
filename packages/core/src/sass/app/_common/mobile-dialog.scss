@@ -1,7 +1,7 @@
 $animation-duration: 0.2s;
 
-$header-height: 3.2em;
-$shadow-cover-height: 3.6em;
+$header-height: 3.2rem;
+$shadow-cover-height: 3.6rem;
 
 $header-index: 4;
 $shadow-cover-index: 3;
@@ -39,7 +39,7 @@ $content-index: 1;
         box-sizing: border-box;
         position: relative;
         padding-top: $shadow-cover-height;
-        padding-bottom: 7em; // ios bottom bar fix
+        padding-bottom: 7rem; // ios bottom bar fix
         z-index: $content-index;
         background: $color-white;
         transform: scale(0);
@@ -54,7 +54,7 @@ $content-index: 1;
         width: 100%;
         position: fixed;
         top: 0;
-        padding: 1em;
+        padding: 1rem;
         height: $header-height;
         z-index: $header-index;
         background: $color-white;
@@ -79,30 +79,30 @@ $content-index: 1;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     &__title {
-        font-size: 1.3em;
+        font-size: 1.3rem;
         font-weight: 600;
         color: var(--text-prominent);
         margin: 0;
     }
     &__close-btn-icon {
-        width: 2.4em;
-        height: 2.4em;
+        width: 2.4rem;
+        height: 2.4rem;
     }
     fieldset {
         border: none;
-        margin-right: 0.5em;
-        margin-left: 0.5em;
+        margin-right: 0.5rem;
+        margin-left: 0.5rem;
     }
     &__trade-type-info-modal {
-        padding: 1.6em;
+        padding: 1.6rem;
 
         .info-header {
             display: flex;
-            padding: 0.8em;
+            padding: 0.8rem;
 
             .title {
-                margin-left: 1.5em;
-                font-size: 1.4em;
+                margin-left: 1.5rem;
+                font-size: 1.4rem;
                 color: var(--text-prominent);
             }
             span {
@@ -110,19 +110,19 @@ $content-index: 1;
             }
         }
         .info-gif {
-            padding: 0.8em;
+            padding: 0.8rem;
             width: 90%;
-            width: calc(100% - 1.6em);
+            width: calc(100% - 1.6rem);
             height: fit-content;
             background-color: $color-white;
             border-radius: 4px;
             margin: 0 auto;
         }
         .info-content {
-            padding: 0.8em;
+            padding: 0.8rem;
             margin: 0 auto;
-            font-size: 1.4em;
-            line-height: 2em;
+            font-size: 1.4rem;
+            line-height: 2rem;
             color: var(--text-prominent);
         }
         .info-choose {
@@ -130,14 +130,14 @@ $content-index: 1;
                 background: var(--button-primary-default);
                 color: $color-white;
                 font-weight: bold;
-                margin: 1.6em 0;
+                margin: 1.6rem 0;
                 width: 100%;
             }
         }
         .info-navigation {
             display: flex;
             align-self: flex-end;
-            margin-top: 1.6em;
+            margin-top: 1.6rem;
 
             &__list {
                 display: inline-block;
@@ -145,11 +145,11 @@ $content-index: 1;
                 margin: 0 auto;
 
                 .circle-button {
-                    width: 1em;
-                    height: 1em;
+                    width: 1rem;
+                    height: 1rem;
                     border-radius: 50%;
                     display: inline-block;
-                    margin: 0 0.5em;
+                    margin: 0 0.5rem;
                     background-color: var(--text-general);
                     cursor: pointer;
 

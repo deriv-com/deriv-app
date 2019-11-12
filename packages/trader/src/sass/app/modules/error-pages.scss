@@ -9,7 +9,7 @@
     &__box {
         background: var(--general-main-1);
         border: var(--general-main-1);
-        padding: 5em;
+        padding: 5rem;
         text-align: center;
         display: flex;
         flex-flow: column nowrap;
@@ -31,7 +31,7 @@
     }
     &__message {
         @include typeface(--paragraph-center-normal-black, none);
-        @include toEm(margin, 16px 0px, 14px);
+        margin: 1.6rem 0;
         color: var(--text-prominent);
         line-height: 1.45;
         max-width: 400px;

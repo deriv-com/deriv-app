@@ -1,7 +1,7 @@
 // TODO: Combine whatever selector / rule that's still needed from this and merge into positions_drawer
 /** @define portfolio; weak */
 .portfolio {
-    padding: 1.5em 1.2em;
+    padding: 1.5rem 1.2rem;
     height: 100%;
 
     &--card-view {
@@ -11,7 +11,7 @@
         height: 100%;
     }
     &__row {
-        grid-template-columns: 6.5em 7em 1fr 6em 9em 6em 5em;
+        grid-template-columns: 6.5rem 7rem 1fr 6rem 9rem 6rem 5rem;
     }
     /* postcss-bem-linter: ignore */
     .payout, .indicative, .purchase, .remaining_time {
@@ -28,10 +28,10 @@
         text-align: center;
 
         .type-wrapper {
-            width: 2em;
-            height: 2em;
-            padding: 0.5em;
-            margin-bottom: 0.3em;
+            width: 2rem;
+            height: 2rem;
+            padding: 0.5rem;
+            margin-bottom: 0.3rem;
             border-radius: 100%;
             display: flex;
             justify-content: center;
@@ -59,7 +59,7 @@
             color: var(--text-general);
         }
         &__no-resale-msg {
-            font-size: 1em;
+            font-size: 1rem;
             font-weight: 400;
         }
     }
@@ -81,12 +81,12 @@
     }
     &__icon {
         @extend %inline-icon.disabled;
-        height: 4.8em;
-        width: 4.8em;
-        margin-bottom: 1.6em;
+        height: 4.8rem;
+        width: 4.8rem;
+        margin-bottom: 1.6rem;
     }
     &__text {
-        font-size: 1.4em;
+        font-size: 1.4rem;
         color: var(--text-disabled);
     }
 }
@@ -96,8 +96,8 @@
 /** @define portfolio-card */
 .portfolio-card {
     &__header {
-        font-size: 1em;
-        padding: 0.5em;
+        font-size: 1rem;
+        padding: 0.5rem;
         border-bottom: 1px solid var(--general-section-1);
         display: flex;
         justify-content: space-between;
@@ -108,11 +108,11 @@
         text-decoration: none;
     }
     &__body {
-        padding: 0.5em;
-        font-size: 1.2em;
+        padding: 0.5rem;
+        font-size: 1.2rem;
     }
     &__desc {
-        margin-bottom: 0.7em;
+        margin-bottom: 0.7rem;
     }
     &__row {
         display: grid;
@@ -125,11 +125,11 @@
     &__cell:before {
         content: '';
         display: inline-block;
-        height: 1.6em;
-        width: 1.6em;
-        background-size: 1.6em 1.6em;
+        height: 1.6rem;
+        width: 1.6rem;
+        background-size: 1.6rem 1.6rem;
         vertical-align: middle;
-        margin-right: 0.5em;
+        margin-right: 0.5rem;
     }
     &__purchase:before {
         background-image: url('~Images/app/portfolio/ic_purchase_light.svg');

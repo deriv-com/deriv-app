@@ -1,12 +1,12 @@
 /** @define contract-type-list; */
 .contract-type-list {
-    padding: 1.6em 1.6em 0em;
+    padding: 1.6rem 1.6rem 0rem;
     border-bottom: 4px solid var(--general-section-2);
 
     &__label {
         @include typeface(--paragraph-left-bold-black);
         color: var(--text-prominent);
-        margin-bottom: 0.6em;
+        margin-bottom: 0.6rem;
     }
     &:last-child {
         border-bottom: none;
@@ -23,9 +23,9 @@
     display: inline-flex;
     flex-direction: row;
     align-items: center;
-    padding: 0.8em;
+    padding: 0.8rem;
     box-sizing: border-box;
-    margin-bottom: 0.1em;
+    margin-bottom: 0.1rem;
     transition: transform 0.3s opacity 0.3s;
     color: var(--text-general);
     border-radius: 4px;
@@ -40,7 +40,7 @@
     &__title {
         @include typeface(--paragraph-left-normal-black);
         color: var(--text-general);
-        padding-left: 0.4em;
+        padding-left: 0.4rem;
     }
     &__icon {
         display: none;
@@ -101,11 +101,11 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        margin-right: 0.7em;
+        margin-right: 0.7rem;
 
         /* postcss-bem-linter: ignore */
         .category-wrapper {
-            margin: 0 0.2em;
+            margin: 0 0.2rem;
             background-color: var(--general-section-1);
 
             svg {

@@ -8,7 +8,7 @@
     flex-direction: row;
     height: 100%;
     justify-content: center;
-    padding: 0 1.6em 0 1.7em;
+    padding: 0 1.6rem 0 1.7rem;
 
     &__container {
         align-items: center;
@@ -38,7 +38,7 @@
     }
     &__balance {
         @include typeface(--title-center-bold-green, default);
-        padding: 0.5em;
+        padding: 0.8rem;
         color: var(--text-profit-success);
         pointer-events: none;
     }
@@ -67,10 +67,10 @@
         }
     }
     &__button {
-        margin: 0 1.6em 0 0 !important;
+        margin: 0 1.6rem 0 0 !important;
 
         &:not(:last-child) {
-            margin-right: 1em;
+            margin-right: 1rem;
         }
     }
 }
@@ -113,8 +113,8 @@
 
         &-link {
             background-color: transparent;
-            margin: 0 0 0.8em;
-            padding: 0 0 0 0.8em;
+            margin: 0 0 0.8rem;
+            padding: 0 0 0 0.8rem;
             display: flex;
             text-decoration: none;
             width: 100%;
@@ -161,7 +161,7 @@
             flex: 1;
         }
         &-wrapper {
-            padding: 0.4em 0.8em 0.8em;
+            padding: 0.4rem 0.8rem 0.8rem;
         }
     }
     &__accounts {
@@ -210,7 +210,7 @@
         align-items: center;
         justify-content: space-between;
         cursor: pointer;
-        padding: 0.8em;
+        padding: 0.8rem;
         position: relative;
         background: var(--general-main-2);
         text-decoration: none;
@@ -222,7 +222,7 @@
             color: var(--text-prominent);
 
             &-icon {
-                @include toEm(margin-right, 8px, 1em);
+                margin-right: 0.8rem;
             }
         }
         &:hover:not(.acc-switcher__account--selected) {
@@ -242,8 +242,8 @@
             }
         }
         &--demo-text {
-            padding-top: 0.3em;
-            padding-bottom: 0.3em;
+            padding-top: 0.3rem;
+            padding-bottom: 0.3rem;
         }
     }
     &__logout {
@@ -252,7 +252,7 @@
         cursor: pointer;
         display: flex;
         justify-content: flex-end;
-        padding: 1.6em 1.3em;
+        padding: 1.6rem 1.3rem;
 
         &-text {
             @include typeface(--paragraph-left-normal-black, none);

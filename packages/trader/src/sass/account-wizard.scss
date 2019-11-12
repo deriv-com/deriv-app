@@ -13,7 +13,7 @@
     }
     .dc-modal-header__title {
         text-transform: none;
-        border-top-left-radius: 1em;
+        border-top-left-radius: 1rem;
     }
     &--error {
         .account-wizard--error {
@@ -28,7 +28,7 @@
             width: 128px;
             height: 128px;
             align-self: center;
-            margin: 2em 0 0;
+            margin: 2rem 0 0;
         }
         h1 {
             @include typeface(--title-center-bold-black);
@@ -50,7 +50,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 12em;
+            width: 12rem;
             align-self: center;
         }
     }
@@ -112,11 +112,11 @@
         align-items: center;
         justify-content: flex-end;
         align-self: flex-end;
-        padding-top: 2.4em;
+        padding-top: 2.4rem;
         width: 100%;
 
         .btn:not(:last-child) {
-            margin: 0 1em;
+            margin: 0 1rem;
         }
         .btn:last-child {
             margin: 0;
@@ -125,7 +125,7 @@
             bottom: 0;
             position: absolute;
             left: 0;
-            padding: 2.4em;
+            padding: 2.4rem;
             border-top: 1px solid var(--general-section-1);
         }
         &--center {
@@ -133,7 +133,7 @@
             width: 100%;
 
             & .btn {
-                min-width: 9em;
+                min-width: 9rem;
             }
         }
         &--error {

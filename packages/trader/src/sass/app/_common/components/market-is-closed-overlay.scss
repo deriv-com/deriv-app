@@ -19,6 +19,6 @@
         text-transform: none;
     }
     &__button {
-        @include toEm('height', 40px);
+        height: 4rem;
     }
 }

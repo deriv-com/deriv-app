@@ -9,7 +9,7 @@ $header-height: 52px;
     color: var(--text-general);
 
     &__cell {
-        padding: 0.75em;
+        padding: 0.75rem;
         display: flex;
         align-items: center;
 
@@ -23,7 +23,7 @@ $header-height: 52px;
     &__row {
         display: grid;
         grid-auto-rows: max-content; // safari fix
-        padding: 0 1.6em;
+        padding: 0 1.6rem;
         box-sizing: border-box;
         text-decoration: none;
         position: relative;

@@ -1,6 +1,6 @@
 /** @define trade-type-info-dialog; */
 .trade-type-info-dialog {
-    right: 0.4em;
+    right: 0.4rem;
     width: 100%;
     pointer-events: none;
     position: absolute;
@@ -33,14 +33,14 @@
         top: -66px;
         z-index: 2;
         border-radius: 4px;
-        padding: 1.6em 1.6em 1em;
+        padding: 1.6rem 1.6rem 1rem;
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
         display: flex;
         flex-direction: column;
         background: var(--general-main-2);
     }
     &__choose-button {
-        margin: 1.6em 0;
+        margin: 1.6rem 0;
         width: 100%;
 
         /* postcss-bem-linter: ignore */
@@ -50,14 +50,14 @@
 
     }
     &__content {
-        margin-top: 1.5em;
+        margin-top: 1.5rem;
         height: 260px;
         overflow: hidden;
 
         /* postcss-bem-linter: ignore */
         p {
             @include typeface(--paragraph-left-normal-black, none);
-            @include toEm(margin-bottom, 8px, 1.4em);
+            margin-bottom: 0.8rem;
             color: var(--text-general);
         }
     }
@@ -81,12 +81,12 @@
     &__header {
         display: flex;
         align-items: center;
-        margin-bottom: 0.8em;
+        margin-bottom: 0.8rem;
 
         /* postcss-bem-linter: ignore */
         .title {
             @include typeface(--paragraph-left-bold-black);
-            @include toEm(margin-left, 8px, 1.4em);
+            margin-left: 0.8rem;
             color: var(--text-prominent);
             cursor: default;
         }
@@ -127,11 +127,11 @@
         position: relative;
     }
     &__circle-button {
-        width: 0.8em;
-        height: 0.8em;
+        width: 0.8rem;
+        height: 0.8rem;
         border-radius: 50%;
         display: inline-block;
-        margin: 0 0.4em;
+        margin: 0 0.4rem;
         cursor: pointer;
         background-color: var(--text-disabled);
 

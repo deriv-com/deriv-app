@@ -5,15 +5,15 @@
     position: relative;
 
     &__input-field {
-        margin-top: 0.6em;
+        margin-top: 0.6rem;
     }
     &__label {
         @include typeface(--paragraph-left-normal-black, none);
-        @include toEm(padding, 0 8px, 1.2em);
+        padding: 0 0.8rem;
         color: var(--text-general);
         cursor: pointer;
     }
     &__tooltip {
-        margin-top: 1em;
+        margin-top: 1rem;
     }
 }

@@ -9,7 +9,7 @@
     bottom: 80px !important;
 
     .bottom-widgets {
-        left: -3.5em;
+        left: -3.5rem;
     }
 }
 
@@ -18,7 +18,7 @@
     display: flex;
     align-items: center;
     position: relative;
-    margin: 0 2.5em 0 1em;
+    margin: 0 2.5rem 0 1rem;
 
     &__container {
         position: relative;
@@ -31,7 +31,7 @@
     }
     &__digit {
         pointer-events: none;
-        margin: 0 0.6em;
+        margin: 0 0.6rem;
         text-align: center;
         position: relative;
         transition: transform 0.25s linear;
@@ -41,7 +41,7 @@
             transform: scale(1.2);
 
             .digits__digit-spot {
-                font-size: 0.9em;
+                font-size: 0.9rem;
             }
         }
         &--win {
@@ -77,17 +77,17 @@
         &-display-percentage {
             top: 20px;
             position: absolute;
-            font-size: 0.65em;
+            font-size: 0.65rem;
             font-weight: 400;
             color: var(--text-general);
         }
         &-value {
             @include typeface(--paragraph-center-bold-black);
-            @include toEm(width, 40px, 1em);
-            @include toEm(height, 40px, 1em);
+            height: 4rem;
+            width: 4rem;
             background-color: var(--general-main-1);
             color: var(--text-prominent);
-            margin-bottom: 0.5em;
+            margin-bottom: 0.5rem;
             border-radius: 50%;
             display: flex;
             justify-content: center;

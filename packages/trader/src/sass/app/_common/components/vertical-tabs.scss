@@ -28,7 +28,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         // height: 600px;
 
         .vertical-tab__content {
-            @include toEm(padding, 24px);
+            padding: 2.4rem;
         }
     }
     &__action-bar {
@@ -120,7 +120,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         background-color: var(--general-main-1);
 
         &.vertical-tab:not(.vertical-tab--full-screen) {
-            @include toEm(padding, 24px);
+            padding: 2.4rem;
             height: 100%;
         }
     }

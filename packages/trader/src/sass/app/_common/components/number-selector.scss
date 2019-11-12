@@ -1,10 +1,10 @@
 /** @define number-selector */
 .number-selector {
-    margin-top: 1.2em;
+    margin-top: 1.2rem;
     text-align: center;
 
     &__row:first-child {
-        margin-bottom: 0.8em;
+        margin-bottom: 0.8rem;
     }
     &__selection {
         width: calc(20% - 4px);

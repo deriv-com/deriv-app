@@ -138,8 +138,8 @@
 
                 &:after {
                     content: '';
-                    width: 1em;
-                    height: 1em;
+                    width: 1rem;
+                    height: 1rem;
                     position: absolute;
                     display: block;
                     top: 0;
@@ -175,7 +175,7 @@
     &__caption {
         padding-top: 8px;
         line-height: 1.5;
-        font-size: 1.4em;
+        font-size: 1.4rem;
         text-align: center;
 
         &-title {

@@ -1,4 +1,4 @@
-$header-height: 3.6em;
+$header-height: 3.6rem;
 
 // Trade page animation performance fix #perfmatters
 .trade-container + .positions-drawer {
@@ -50,7 +50,7 @@ $header-height: 3.6em;
         display: flex;
         flex-direction: row;
         align-items: center;
-        padding: 0 1em;
+        padding: 0 1rem;
 
         &:after {
             content: '';
@@ -65,7 +65,7 @@ $header-height: 3.6em;
     }
     &__body {
         height: calc(100% - #{$header-height * 2.7});
-        padding: 0.8em 0 0;
+        padding: 0.8rem 0 0;
         box-sizing: border-box;
         overflow: hidden;
         align-self: center;
@@ -73,7 +73,7 @@ $header-height: 3.6em;
     }
     &__footer {
         position: relative;
-        height: 6em;
+        height: 6rem;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -93,18 +93,18 @@ $header-height: 3.6em;
             height: 40px;
 
             .btn__text {
-                font-size: 1.4em;
+                font-size: 1.4rem;
                 font-weight: bold;
             }
         }
     }
     &__title {
-        font-size: 1.4em;
+        font-size: 1.4rem;
         font-weight: bold;
         color: var(--text-prominent);
     }
     &__icon-main {
-        margin-right: 0.8em;
+        margin-right: 0.8rem;
     }
     &__icon-close {
         display: inline-block;
@@ -113,8 +113,8 @@ $header-height: 3.6em;
 
         svg {
             @extend %inline-icon;
-            height: 1.6em;
-            width: 1.6em;
+            height: 1.6rem;
+            width: 1.6rem;
         }
     }
 }

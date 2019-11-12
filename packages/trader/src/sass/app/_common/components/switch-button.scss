@@ -42,7 +42,7 @@
 /** @define toggle-chart-layout */
 .toggle-chart-layout {
     border-radius: 4px;
-    padding: 0.2em;
+    padding: 0.2rem;
     transition: all 0.4s ease;
     outline: 0;
     display: block;
@@ -50,7 +50,7 @@
     height: 18px;
     position: relative;
     cursor: pointer;
-    margin-right: 0.4em;
+    margin-right: 0.4rem;
     border: 1px solid var(--text-general);
 
     &:after {

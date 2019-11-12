@@ -4,12 +4,12 @@
 .mobile-widget {
     border: 1px solid var(--border-normal);
     border-radius: 4px;
-    padding: 1em 0.5em;
+    padding: 1rem 0.5rem;
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: auto;
     grid-template-areas: 'a b' 'c d';
-    font-size: 0.7em;
+    font-size: 0.7rem;
 
     &:hover, &:focus, &:active {
         cursor: pointer;
@@ -22,7 +22,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 0.5em;
+    padding: 0.5rem;
     white-space: pre-line;
 
     &__amount {
@@ -35,10 +35,10 @@
         grid-area: d;
     }
     &__currency:before {
-        margin-right: 0.1em;
+        margin-right: 0.1rem;
         position: static;
         display: inline;
-        font-size: 1em;
+        font-size: 1rem;
     }
     &__basis {
         font-weight: bold;

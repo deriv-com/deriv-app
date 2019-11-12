@@ -69,7 +69,7 @@
 /** @define trade-container; weak */
 .trade-container {
     position: relative;
-    padding: 0.8em 1.2em 0;
+    padding: 0.8rem 1.6rem 0;
     display: flex;
     min-height: calc(100vh - 83px);
     transition: transform 0.25s ease;
@@ -208,7 +208,7 @@
         z-index: 0;
 
         div.ciq-chart {
-            height: calc(100% - 5em);
+            height: calc(100% - 5rem);
             box-shadow: none;
 
             div.cq-last-digits {
@@ -240,7 +240,7 @@
         }
         div.cq-chart-control-left {
             .cq-top-ui-widgets {
-                width: calc(100% - 9em);
+                width: calc(100% - 9rem);
             }
         }
     }
@@ -253,7 +253,7 @@
             transition: transform 0.25s ease;
         }
         .cq-top-ui-widgets {
-            left: 9em;
+            left: 9rem;
 
             .info-box {
                 transform: translate3d(0, 0, 0);
@@ -293,26 +293,26 @@
                 position: fixed;
                 height: 100%;
                 width: 100%;
-                top: 4.7em;
-                left: -0.1em;
+                top: 4.7rem;
+                left: -0.1rem;
             }
             .cq-categorical-display {
                 .ic-icon.icon-close-menu {
                     svg {
-                        width: 2.4em;
-                        height: 2.4em;
+                        width: 2.4rem;
+                        height: 2.4rem;
                     }
                 }
                 .cq-lookup-filters.scroll-down {
                     max-height: unset;
                 }
                 .scrollbar-container.cq-scroll-panel {
-                    left: -0.1em;
+                    left: -0.1rem;
                 }
             }
         }
         .smartcharts-mobile .cq-modal-dropdown .cq-menu-overlay .cq-menu-dropdown {
-            bottom: 4.8em;
+            bottom: 4.8rem;
         }
     }
 }
@@ -321,7 +321,7 @@
 .sidebar {
     &__container {
         position: relative;
-        margin-left: 1.6em;
+        margin-left: 1.6rem;
         width: $SIDEBAR_WIDTH;
         margin-top: 8px;
         z-index: 1;
@@ -372,11 +372,11 @@
         transform: none;
     }
     &--enter {
-        transform: translate3d(calc(100% + 1.6em), 0, 0);
+        transform: translate3d(calc(100% + 1.6rem), 0, 0);
         opacity: 0;
     }
     &--exit {
-        transform: translate3d(calc(100% + 1.6em), 0, 0);
+        transform: translate3d(calc(100% + 1.6rem), 0, 0);
         opacity: 0;
         pointer-events: none;
     }
@@ -418,8 +418,8 @@
 }
 
 @mixin contract_type_icon_wrapper {
-    width: 2.4em;
-    height: 2.4em;
+    width: 2.4rem;
+    height: 2.4rem;
     border-radius: 3px;
     display: flex;
     align-items: center;
@@ -474,7 +474,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: calc(100vh - 9em); // TODO: replace with 100vh - header height - footer height
+        height: calc(100vh - 9rem); // TODO: replace with 100vh - header height - footer height
     }
     &__message {
         @include interpolate(font-size, 320px, 1440px, 14px, 20px);

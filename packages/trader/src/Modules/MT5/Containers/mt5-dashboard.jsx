@@ -68,8 +68,8 @@ class MT5Dashboard extends React.Component {
             active_index    : prev_state.active_index,
             password_manager: {
                 is_visible      : !prev_state.password_manager.is_visible,
-                selected_login  : login || '',
-                selected_account: title || '',
+                selected_login  : typeof login === 'string' ? login : '',
+                selected_account: typeof title === 'string' ? title : '',
             },
         }));
     };

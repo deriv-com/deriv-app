@@ -254,3 +254,43 @@ stores are instantiated in the createStore module to avoid stores becoming singl
 The `Utils` directory contains all javascript files that are used on other parts
 of the project to help and simplify some routine processes 
 (e.g. Date - to handle date formatting and conversion).
+
+## Element Sizing
+Types of sizing elements and when to use it.
+
+`px`
+You will use px when your element size will stay the same across devices. meaning that you can't acquire responsiveness unless you change the px of the element
+
+example of usage:
+
+```scss
+    .have-border {
+        border: 1px solid var(--border-normal);
+    }
+
+    .your-separator {
+        height: 1px;
+        background: var(--text-active);
+    }
+```
+
+`rem`
+rem will always follow the root element font-size, initially `1rem == 16px -> font-size: 100%`. However, we change our root font-size to 62.5%
+so `1rem == 10px -> font-size: 62.5%`. Therefore, to size an element, we can just divide by 10 from the original designed pixel `10px == 1rem`
+
+* Why are we using rem then? isn't it the same as px?.
+-> Because now we are in full control of responsiveness. in global style we can just once setup font-size for each breakpoints we want to use.
+root will be 62.5% which is 10px, then for big desktop we want to increase it `1rem == 12px`. then font-size will be 75.5%. These setup will only done once in the root element. and we can just use rem everywhere with a thought in mind `1rem == 10px`.
+
+example of usage:
+
+```scss
+    .your-button {
+        padding: 1rem 1.6rem;
+    }
+
+    .your-card-box {
+        margin: 2.4rem;
+        padding: 1.6rem;
+    }
+```

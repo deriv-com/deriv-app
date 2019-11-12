@@ -126,14 +126,14 @@
 /** @define chart-marker-line */
 .chart-marker-line {
     height: 94.5%;
-    margin-bottom: 0.8em;
+    margin-bottom: 0.8rem;
     z-index: 0 !important;
     bottom: -100%;
     transition: none;
 
     &__wrapper {
         border-left-width: 2px;
-        padding-left: 0.5em;
+        padding-left: 0.5rem;
         height: 100%;
         border-color: var(--text-less-prominent);
     }

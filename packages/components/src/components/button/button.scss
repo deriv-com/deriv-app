@@ -127,10 +127,10 @@
     &__effect:focus:not(:active):after {
         content: '';
         position: absolute;
-        top: -0.1em;
-        left: -0.1em;
-        bottom: -0.1em;
-        right: -0.1em;
+        top: -0.1rem;
+        left: -0.1rem;
+        bottom: -0.1rem;
+        right: -0.1rem;
         border-radius: inherit;
         border: 0 solid var(--brand-secondary);
         opacity: 0.4;
@@ -162,10 +162,10 @@
 @keyframes buttonEffect {
     to {
         opacity: 0;
-        top: -0.6em;
-        left: -0.6em;
-        bottom: -0.6em;
-        right: -0.6em;
+        top: -0.6rem;
+        left: -0.6rem;
+        bottom: -0.6rem;
+        right: -0.6rem;
         border-width: 6px;
     }
 }

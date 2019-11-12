@@ -40,9 +40,13 @@
     </style>
     <script type="text/javascript">
         var ui_store = localStorage.getItem('ui_store');
+        var l = window.location;
+        var is_bot = /^\/bot/.test(l.pathname) || (/^\/(br_)/.test(l.pathname) && l.pathname.split('/')[2] === 'bot');
+        var is_mt5 = /^\/mt5/.test(l.pathname) || (/^\/(br_)/.test(l.pathname) && l.pathname.split('/')[2] === 'mt5');
+
         if (ui_store && (ui_store.length > 0)) {
             var is_dark_theme = false;
-            if (/^\/bot/.test(location.pathname)) { // TODO: [disable-dark-bot] Re-enable dark theme when Bot is ready
+            if (is_bot) { // TODO: [disable-dark-bot] Re-enable dark theme when Bot is ready
                 is_dark_theme = false;
             } else {
                 is_dark_theme = JSON.parse(ui_store).is_dark_mode_on || false;
@@ -58,9 +62,6 @@
                 document.documentElement.style.setProperty('--text-prominent', '#ffffff');
             }
         }
-
-        var is_bot = /^\/bot/.test(window.location.pathname);
-        var is_mt5 = /^\/mt5/.test(window.location.pathname);
 
         if (is_bot) {
             document.documentElement.style.setProperty('--app-shell-platform-logo', 'url(\'/public/images/app/header/dbot-logo.svg\')');

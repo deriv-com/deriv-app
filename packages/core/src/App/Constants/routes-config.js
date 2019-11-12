@@ -4,6 +4,7 @@ import { Redirect }                   from 'App/Containers/Redirect';
 import { localize }                   from 'App/i18n';
 import { routes }                     from 'Constants';
 import { isBot }                      from 'Utils/PlatformSwitcher';
+import { getUrlBase }                 from '_common/url';
 
 export const interceptAcrossBot = (route_to, action) => {
     const is_routing_to_bot = route_to.pathname.startsWith(routes.bot);
@@ -16,7 +17,8 @@ export const interceptAcrossBot = (route_to, action) => {
             (isBot() && !is_routing_to_bot)
         )
     ) {
-        window.location.href = route_to.pathname;
+        window.location.href = getUrlBase(route_to.pathname); // If url base exists, use pathname with base
+
         return false;
     }
 
@@ -40,7 +42,7 @@ const Trader = lazy(() => {
 const Bot = lazy(() => {
     const el_head = document.querySelector('head');
     const el_scratch_js = document.createElement('script');
-    el_scratch_js.src = './js/bot/scratch.min.js';
+    el_scratch_js.src = '/js/bot/scratch.min.js';
     el_head.appendChild(el_scratch_js);
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "bot" */ 'deriv-bot');

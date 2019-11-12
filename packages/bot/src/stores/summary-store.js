@@ -4,18 +4,15 @@ import {
 import { observer }   from '../utils/observer';
 
 export default class SummaryStore {
-    @observable currency        = '';
-    @observable lost_contracts  = 0;
-    @observable number_of_runs  = 0;
-    @observable total_profit    = 0;
-    @observable total_payout    = 0;
-    @observable total_stake     = 0;
-    @observable won_contracts   = 0;
+    @observable lost_contracts = 0;
+    @observable number_of_runs = 0;
+    @observable total_profit   = 0;
+    @observable total_payout   = 0;
+    @observable total_stake    = 0;
+    @observable won_contracts  = 0;
     
     constructor(root_store) {
-        this.root_store        = root_store;
-        const { client }       = this.root_store.core;
-        this.currency          = client.currency;
+        this.root_store = root_store;
     }
 
     @action.bound

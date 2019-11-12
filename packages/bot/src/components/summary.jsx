@@ -76,9 +76,9 @@ Summary.propTypes = {
     won_contracts : PropTypes.number,
 };
 
-export default connect(({ summary }) => ({
+export default connect(({ core, summary }) => ({
     contract      : summary.contract,
-    currency      : summary.currency,
+    currency      : core.client.currency,
     lost_contracts: summary.lost_contracts,
     number_of_runs: summary.number_of_runs,
     total_payout  : summary.total_payout,

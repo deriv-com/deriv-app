@@ -293,7 +293,7 @@ $side-padding: 1.2em;
         grid-template-columns: 0.8fr  1.2fr 1fr        1fr            1fr               1fr              1fr;
         width: 100%;
     }
-    .buy_price, .payout, .indicative, .profit {
+    .buy_price, .payout, .indicative, .profit, .id {
         justify-content: flex-end;
     }
     .type {

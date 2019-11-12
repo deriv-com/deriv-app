@@ -5,6 +5,7 @@ import Icon                 from 'Assets/icon.jsx';
 import { localize }         from 'App/i18n';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
 import { getProfitOrLoss }  from 'Modules/Reports/Helpers/profit-loss';
+import { isMultiplierContract }    from 'Stores/Modules/Contract/Helpers/multiplier';
 import IndicativeCell       from '../Components/indicative-cell.jsx';
 import MarketSymbolIconRow  from '../Components/market-symbol-icon-row.jsx';
 import ProfitLossCell       from '../Components/profit_loss_cell.jsx';
@@ -177,9 +178,12 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
     }, {
         title            : localize('Remaining time'),
         col_index        : 'id',
-        renderCellContent: ({ cell_value }) => (
-            <ProgressSliderStream id={cell_value} />
-        ),
+        renderCellContent: ({ cell_value, row_obj }) => {
+            if (isMultiplierContract(row_obj.type)) return <span>-</span>;
+            return (
+                <ProgressSliderStream id={cell_value} />
+            );
+        },
     },
 ];
 /* eslint-enable react/display-name, react/prop-types */

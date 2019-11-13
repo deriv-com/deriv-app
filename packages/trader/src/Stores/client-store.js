@@ -481,7 +481,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     createCryptoAccount(crr) {
         const { date_of_birth, first_name, last_name, salutation } = this.account_settings;
-        const residence = this.accounts[this.loginid].residence;
+        const residence = this.residence;
 
         return new Promise(async (resolve, reject) => {
             const response = await WS.newAccountReal({
@@ -499,6 +499,11 @@ export default class ClientStore extends BaseStore {
                 reject(response.error.message);
             }
         });
+    }
+
+    @computed
+    get residence() {
+        return this.accounts[this.loginid].residence;
     }
 
     @computed
@@ -628,7 +633,7 @@ export default class ClientStore extends BaseStore {
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
             WS.authorized.storage.mt5LoginList().then(this.responseMt5LoginList);
-            WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)
+            WS.authorized.storage.landingCompany(this.residence)
                 .then(this.responseLandingCompany);
             this.responseStatement(
                 await BinarySocket.send({
@@ -966,7 +971,7 @@ export default class ClientStore extends BaseStore {
         }
         if (action === 'signup') {
             // TODO: add await if error handling needs to happen before AccountSignup is initialised
-            this.fetchResidenceList(); // Prefetch for use in account signup process
+            this.fetchResidenceList();
         }
     }
 
@@ -1012,11 +1017,18 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     fetchResidenceList() {
-        WS.residenceList().then(response => {
-            runInAction(() => {
-                this.residence_list = response.residence_list || [];
-            });
-        });
+        return new Promise((resolve) => {
+            WS.storage.residenceList()
+                .then(response => {
+                    this.setResidenceList(response);
+                    resolve(response);
+                })
+        })
+    }
+
+    @action.bound
+    setResidenceList(residence_list_response) {
+        this.residence_list = residence_list_response.residence_list || [];
     }
 
     @action.bound

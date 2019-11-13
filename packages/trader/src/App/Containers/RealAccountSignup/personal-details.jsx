@@ -3,6 +3,7 @@ import {
     Input,
     ThemedScrollbars }      from 'deriv-components';
 import { Formik, Field }    from 'formik';
+import PropTypes            from 'prop-types';
 import React, { Component } from 'react';
 import { CSSTransition }    from 'react-transition-group';
 import { localize }         from 'App/i18n';
@@ -268,7 +269,7 @@ class PersonalDetails extends Component {
                 v => !!v,
                 v => v.length >= 2,
                 v => v.length <= 50,
-                v =>  /^[\p{L}\s'.-]{2,50}$/gu.exec(v) !== null,
+                v => /^[\p{L}\s'.-]{2,50}$/gu.exec(v) !== null,
             ],
             date_of_birth: [
                 v => !!v,
@@ -276,7 +277,8 @@ class PersonalDetails extends Component {
             ],
             phone: [
                 v => !!v,
-                v => /^\+?((-|\s)*[0-9]){8,35}$/.exec(v) !== null,
+                v => /^\+((-|\s)*[0-9]){8,35}$/.exec(v) !== null,
+                v => this.props.residence_list.some(item => v.startsWith(`+${item.phone_idd}`)),
             ],
         };
 
@@ -297,6 +299,7 @@ class PersonalDetails extends Component {
         const alt_messages = [
             '{{field_name}} is required',
             '{{field_name}} is not in a proper format.',
+            'Country code is wrong.',
         ];
 
         const errors    = {};
@@ -329,5 +332,9 @@ class PersonalDetails extends Component {
         return errors;
     };
 }
+
+PersonalDetails.propTypes = {
+    residence_list: PropTypes.array,
+};
 
 export default PersonalDetails;

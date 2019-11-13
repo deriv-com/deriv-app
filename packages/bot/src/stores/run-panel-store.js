@@ -3,20 +3,21 @@ import {
     action,
     reaction,
     computed,
-}                          from 'mobx';
-import { contract_stages } from '../constants/contract-stage';
+}                               from 'mobx';
+import { contract_stages }      from '../constants/contract-stage';
 import {
     error_types,
     unrecoverable_errors,
-}                          from '../constants/messages';
+}                               from '../constants/messages';
 import {
     runBot,
     stopBot,
     terminateBot,
-}                          from '../scratch';
-import { isEnded }         from '../utils/contract';
-import { translate }       from '../utils/lang/i18n';
-import { observer }        from '../utils/observer';
+}                               from '../scratch';
+import { isEnded }              from '../utils/contract';
+import { translate }            from '../utils/lang/i18n';
+import { observer }             from '../utils/observer';
+import { hasAllRequiredBlocks } from '../scratch/utils/scratchHelper';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -56,7 +57,8 @@ export default class RunPanelStore {
 
     @action.bound
     onRunButtonClick = () => {
-        const { client } = this.root_store.core;
+        const { core , contract_card } = this.root_store;
+        const { client } = core;
 
         if (!client.is_logged_in) {
             this.showLoginDialog();
@@ -69,9 +71,18 @@ export default class RunPanelStore {
         }
 
         this.registerBotListeners();
+
+        if (!hasAllRequiredBlocks()) {
+            this.showErrorMessage(
+                new Error(translate('One or more mandatory blocks are missing from your workspace. ' +
+                'Please add the required block(s) and then try again.'))
+            );
+            return;
+        }
+
         this.is_running = true;
         this.is_drawer_open = true;
-        this.root_store.contract_card.clear();
+        contract_card.clear();
         this.setContractStage(contract_stages.STARTING);
 
         runBot();
@@ -196,8 +207,6 @@ export default class RunPanelStore {
         observer.register('bot.contract', contract_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
         observer.register('ui.log.success', journal.onLogSuccess);
-        observer.register('ui.log.error', journal.onError);
-        observer.register('Error', journal.onError);
         observer.register('ui.log.error', this.onError);
         observer.register('Error', this.onError);
         observer.register('Notify', journal.onNotify);
@@ -273,6 +282,14 @@ export default class RunPanelStore {
         } else {
             this.error_type = error_types.RECOVERABLE_ERRORS;
         }
+        
+        this.showErrorMessage(data);
+    }
+
+    showErrorMessage(data) {
+        const { journal } = this.root_store;
+
+        journal.onError(data);
         this.setActiveTabIndex(2);
     }
 

@@ -188,6 +188,7 @@ const config = {
         [translate('1 day'), '86400'],
     ],
     mainBlocks                             : ['trade_definition', 'before_purchase', 'during_purchase', 'after_purchase'],
+    mandatoryMainBlocks                    : ['trade_definition', 'before_purchase'],
     procedureDefinitionBlocks              : ['procedures_defnoreturn', 'procedures_defreturn'],
     TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING: {
         callput: ['callput', 'higherlower'],
@@ -243,7 +244,7 @@ const config = {
     macdFields                      : [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
     gd                              : {
         cid: '828416594271-b4bhia944ecegn3j327oeb4l8o803bts.apps.googleusercontent.com',
-        aid: 'binarybot-237009',
+        aid: 'derivbot-248506',
         api: 'AIzaSyA52MX2l8p75-w7nvab7fU6Lk6KwLqnyEI',
     },
     help: {

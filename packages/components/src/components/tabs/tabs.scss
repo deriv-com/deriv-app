@@ -11,7 +11,7 @@
 
     &__list {
         width: 100%;
-        line-height: 40px;
+        line-height: 35px;
         display: flex;
         justify-content: center;
 
@@ -20,6 +20,9 @@
         }
         &--bottom {
             order: 1;
+        }
+        &--fit-content {
+            width: fit-content;
         }
     }
     &__item {
@@ -30,16 +33,16 @@
         width: var(--tab-width);
         color: var(--text-general);
 
+        &--top {
+            border-bottom: 1px solid var(--general-section-1);
+        }
+        &--bottom {
+            border-top: 1px solid var(--general-section-1);
+        }
         &:not(.dc-tabs__active) {
             cursor: pointer;
             color: var(--text-general);
 
-            &--top {
-                border-bottom: 1px solid var(--general-section-1);
-            }
-            &--bottom {
-                border-top: 1px solid var(--general-section-1);
-            }
         }
 
     }
@@ -57,10 +60,13 @@
         transition: all ease-in-out 0.3s;
 
         &--top {
-            top: 39px;
+            top: 33px;
         }
         &--bottom {
-            bottom: 39px;
+            bottom: 33px;
+        }
+        &--fit-content {
+            width: 120px;
         }
     }
 }

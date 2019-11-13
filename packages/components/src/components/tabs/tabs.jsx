@@ -28,7 +28,8 @@ class Tabs extends Component {
         const { children,
             className,
             top,
-            bottom }     = this.props;
+            bottom,
+            fit_content }       = this.props;
         const { active_index } = this.state;
         const tab_width        = (100 / children.length).toFixed(2);
 
@@ -39,20 +40,21 @@ class Tabs extends Component {
             >
                 <ul className={
                     classNames('dc-tabs__list' , {
-                        'dc-tabs__list--top'   : top,
-                        'dc-tabs__list--bottom': bottom,
+                        'dc-tabs__list--top'         : top,
+                        'dc-tabs__list--bottom'      : bottom,
+                        'dc-tabs__list--fit-content' : fit_content,
                     })}
                 >
                     {children.map((child, index) => {
                         const { label } = child.props;
-
+                        
                         return (
                             <Tab
                                 is_active={index === active_index}
                                 key={label}
                                 label={label}
-                                top
-                                bottom
+                                top = {top}
+                                bottom = {bottom}
                                 onClick={() => this.onTabItemClick(index)}
                             />
                         );
@@ -61,6 +63,7 @@ class Tabs extends Component {
                         classNames('dc-tabs__active-line' , {
                             'dc-tabs__active-line--top'   : top,
                             'dc-tabs__active-line--bottom': bottom,
+                            'dc-tabs__active-line--fit-content'  : fit_content,
                         })}
                     />
                 </ul>

@@ -8,6 +8,12 @@ import '../assets/sass/scratch/workspace.scss';
 import '../assets/sass/scratch/toolbox.scss';
 
 class MainContent extends React.Component {
+    componentDidMount(){
+        if (this.props.active_index === 0) {
+            this.props.componentDidUpdate();
+        }
+    }
+
     componentDidUpdate(prevProps) {
         if (this.props.active_index !== prevProps.active_index) {
             this.props.componentDidUpdate();
@@ -22,6 +28,7 @@ class MainContent extends React.Component {
                 active_index={active_index}
                 onTabItemClick={onTabItemClick}
                 bottom
+                fit_content
             >
                 <div label={translate('Workspace')}>
                     <div id='scratch_div'>

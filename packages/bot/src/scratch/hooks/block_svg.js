@@ -119,7 +119,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
  * @param {boolean} highlighted True if highlighted for error.
  */
 Blockly.BlockSvg.prototype.setErrorHighlighted = function(should_be_error_highlighted) {
-    const highlight_class = 'block--highlighted';
+    const highlight_class = 'block--error-highlighted';
 
     if (should_be_error_highlighted) {
         // Below function does its own checks to check if class already exists.

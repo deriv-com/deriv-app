@@ -2,22 +2,16 @@ import {
     observable,
     action,
     reaction,
-    computed,
-}                               from 'mobx';
+    computed }                  from 'mobx';
 import { contract_stages }      from '../constants/contract-stage';
 import {
     error_types,
-    unrecoverable_errors,
-}                               from '../constants/messages';
-import {
-    runBot,
-    stopBot,
-    terminateBot,
-}                               from '../scratch';
+    unrecoverable_errors }      from '../constants/messages';
+import DBot                     from '../scratch';
+import { hasAllRequiredBlocks } from '../scratch/utils';
 import { isEnded }              from '../utils/contract';
 import { translate }            from '../utils/lang/i18n';
 import { observer }             from '../utils/observer';
-import { hasAllRequiredBlocks } from '../scratch/utils/scratchHelper';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -72,7 +66,7 @@ export default class RunPanelStore {
 
         this.registerBotListeners();
 
-        if (!hasAllRequiredBlocks()) {
+        if (!hasAllRequiredBlocks(Blockly.derivWorkspace)) {
             this.showErrorMessage(
                 new Error(translate('One or more mandatory blocks are missing from your workspace. ' +
                 'Please add the required block(s) and then try again.'))
@@ -85,12 +79,12 @@ export default class RunPanelStore {
         contract_card.clear();
         this.setContractStage(contract_stages.STARTING);
 
-        runBot();
+        DBot.runBot();
     }
 
     @action.bound
     onStopButtonClick() {
-        stopBot();
+        DBot.stopBot();
 
         this.is_running = false;
 
@@ -286,14 +280,14 @@ export default class RunPanelStore {
         this.showErrorMessage(data);
     }
 
+    @action.bound
     showErrorMessage(data) {
         const { journal } = this.root_store;
-
         journal.onError(data);
         this.setActiveTabIndex(2);
     }
 
-    unregisterBotListeners =() => {
+    unregisterBotListeners = () => {
         observer.unregisterAll('bot.running');
         observer.unregisterAll('bot.stop');
         observer.unregisterAll('bot.trade_again');
@@ -314,7 +308,7 @@ export default class RunPanelStore {
             // TODO: Handle more gracefully, e.g. ask user for confirmation instead
             // of killing and clearing everything instantly.
             // Core need to change to pass beforeswitch account event
-            terminateBot();
+            DBot.terminateBot();
             this.unregisterBotListeners();
             this.clearStat();
         };

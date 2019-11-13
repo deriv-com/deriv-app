@@ -53,34 +53,45 @@ Keep all common variables in the [constants.scss](https://github.com/binary-com/
 **[Flexibility:](#units-flexibility)** If flexibility is needed, for example for font-size, use units such as `rem`, `vh`, `vw`, `fr`, and only use `px` if it's supposed to be a fixed value.
 
 
-#### When to use `em` and `px`?
-- `em` is typically used in padding and margin to maintain the vertical rhythm. If a user resizes the text, the `em` unit will be scaled proportionately. `em` size is always relative to the font-size of the element.
-```scss
-// For example: `span` with font-size of 14px and padding of 8px.
-// The padding in `em` should be `14px/8px * 1em ~ 0.571em`.
-span {
-    font-size: 1.4em;
-    padding: 0.571em;
-}
-```
-- `px` is used to define a fixed value such as for `box-shadow`, `border-radius` and `border-width`.
+### Element Sizing
+Types of sizing elements and when to use it.
 
-#### Converts `px` to `em` values
-1. Since the base font-size is set to be `10px = 1rem`, convert `px` to `em` by dividing the `px` value by 10.
+`px`
+You will use px when your element size will stay the same across devices. meaning that you can't acquire responsiveness unless you change the px of the element
+
+example of usage:
+
 ```scss
-.balloon {
-    padding: 1.6em; // 16px;
-}
+    .have-border {
+        border: 1px solid var(--border-normal);
+    }
+
+    .your-separator {
+        height: 1px;
+        background: var(--text-active);
+    }
 ```
-2. Or use the `@toEm($property, $px-to-be-converted, $font-size)` mixin. This is particularly helpful when you want to convert the padding/margin `px` values of an element that also has a `font-size`.
+
+`rem`
+rem will always follow the root element font-size, initially `1rem == 16px -> font-size: 100%`. However, we change our root font-size to 62.5%
+so `1rem == 10px -> font-size: 62.5%`. Therefore, to size an element, we can just divide by 10 from the original designed pixel `10px == 1rem`
+
+* Why are we using rem then? isn't it the same as px?.
+-> Because now we are in full control of responsiveness. in global style we can just once setup font-size for each breakpoints we want to use.
+root will be 62.5% which is 10px, then for big desktop we want to increase it `1rem == 12px`. then font-size will be 75.5%. These setup will only done once in the root element. and we can just use rem everywhere with a thought in mind `1rem == 10px`.
+
+example of usage:
+
 ```scss
-// Converts padding 10px into `em` value
-p {
-    font-size: 1.4em;
-    @include toEm(padding, 10px, 1.4em); // font-size in em
-}
+    .your-button {
+        padding: 1rem 1.6rem;
+    }
+
+    .your-card-box {
+        margin: 2.4rem;
+        padding: 1.6rem;
+    }
 ```
-3. Or any online converter tool.
 
 ---
 

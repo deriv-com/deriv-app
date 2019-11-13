@@ -261,7 +261,7 @@ export default class TradeStore extends BaseStore {
         await BinarySocket.wait('authorize');
         await WS.contractsFor(this.symbol).then(r => {
             if (r.error && r.error.code === 'InvalidSymbol') {
-                this.getFirstOpenSymbol(this.active_symbols);
+                this.resetRefresh(true);
             }
         });
         await this.setActiveSymbols();

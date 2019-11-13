@@ -10,7 +10,7 @@ import { get as getLanguage } from '_common/language';
 const AppContents = ({
     // addNotificationBar,
     children,
-    client_email,
+    client_account_settings,
     client_loginid,
     is_app_disabled,
     is_logged_in,
@@ -19,13 +19,37 @@ const AppContents = ({
     // setPWAPromptEvent,
 }) => {
     if (is_logged_in) {
-        // eslint-disable-next-line no-console
-        console.log(window.location.pathname);
+        const {
+            address_city,
+            address_postcode,
+            address_state,
+            citizen,
+            email,
+            first_name,
+            last_name,
+            phone,
+            place_of_birth,
+            residence,
+            tax_identification_number,
+            tax_residence,
+        } = client_account_settings;
+
         window.analytics.identify(client_loginid, {
-            email   : client_email,
+            address_city,
+            address_postcode,
+            address_state,
+            citizen,
+            email,
             language: getLanguage(),
+            name    : `${first_name} ${last_name}`,
+            phone,
+            place_of_birth,
+            residence,
+            tax_identification_number,
+            tax_residence,
         });
         window.analytics.page();
+
         // TODO: uncomment these after the issues with showing the prompt too often and in the app are fixed
         // window.addEventListener('beforeinstallprompt', e => {
         //     console.log('Going to show the installation prompt'); // eslint-disable-line no-console
@@ -62,28 +86,28 @@ const AppContents = ({
 };
 
 AppContents.propTypes = {
-    addNotificationBar    : PropTypes.func,
-    children              : PropTypes.any,
-    client_email          : PropTypes.string,
-    client_loginid        : PropTypes.String,
-    is_app_disabled       : PropTypes.bool,
-    is_logged_in          : PropTypes.bool,
-    is_positions_drawer_on: PropTypes.bool,
-    is_route_modal_on     : PropTypes.bool,
-    pwa_prompt_event      : PropTypes.object,
-    setPWAPromptEvent     : PropTypes.func,
+    addNotificationBar     : PropTypes.func,
+    children               : PropTypes.any,
+    client_account_settings: PropTypes.object,
+    client_loginid         : PropTypes.String,
+    is_app_disabled        : PropTypes.bool,
+    is_logged_in           : PropTypes.bool,
+    is_positions_drawer_on : PropTypes.bool,
+    is_route_modal_on      : PropTypes.bool,
+    pwa_prompt_event       : PropTypes.object,
+    setPWAPromptEvent      : PropTypes.func,
 };
 
 export default withRouter(connect(
     ({ client, ui }) => ({
-        client_email          : client.email,
-        client_loginid        : client.loginid,
-        is_logged_in          : client.is_logged_in,
+        client_account_settings: client.account_settings,
+        client_loginid         : client.loginid,
+        is_logged_in           : client.is_logged_in,
         // addNotificationBar    : ui.addNotificationBar,
-        is_app_disabled       : ui.is_app_disabled,
-        is_positions_drawer_on: ui.is_positions_drawer_on,
-        is_route_modal_on     : ui.is_route_modal_on,
-        pwa_prompt_event      : ui.pwa_prompt_event,
+        is_app_disabled        : ui.is_app_disabled,
+        is_positions_drawer_on : ui.is_positions_drawer_on,
+        is_route_modal_on      : ui.is_route_modal_on,
+        pwa_prompt_event       : ui.pwa_prompt_event,
         // setPWAPromptEvent     : ui.setPWAPromptEvent,
     })
 )(AppContents));

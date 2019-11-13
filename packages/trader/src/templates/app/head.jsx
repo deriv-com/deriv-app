@@ -5,6 +5,7 @@ import URLHandler      from './includes/url_handler.jsx';
 import Title           from '../_common/components/title.jsx';
 import Favicons        from '../_common/includes/favicons.jsx';
 import AntiClickjack   from '../_common/includes/anti_clickjack.jsx';
+import Segment         from '../_common/includes/segment.jsx';
 
 const Head = () => (
     <head>
@@ -15,6 +16,7 @@ const Head = () => (
         {/* TODO: i18n_issue - these should be localized after the app has moved to mount on index.html */}
         <noscript>Your browser does not support JavaScript!</noscript>
 
+        <Segment />
         <GoogleOptimizer />
         <GTMScript />
         <AntiClickjack />

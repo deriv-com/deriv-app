@@ -4,7 +4,7 @@ import { translate }         from '../../../../utils/lang/i18n';
 Blockly.Blocks.procedures_defnoreturn = {
     init() {
         this.arguments = [];
-        this.argumentVarModels = [];
+        this.argument_var_models = [];
 
         this.jsonInit(this.definition());
 
@@ -42,8 +42,8 @@ Blockly.Blocks.procedures_defnoreturn = {
     },
     meta() {
         return {
-            'display_name': translate('Function with no return value'),
-            'description' : translate('This block executes nested instructions (bloks). It doesn\'t return any value'),
+            'display_name': translate('Function'),
+            'description' : translate('This block creates a function, which is a group of instructions that can be executed at any time. Place other blocks in here to perform any kind of action that you need in your strategy. When all the instructions in a function have been carried out, your bot will continue with the remaining blocks in your strategy. Click the “do something” field to give it a name of your choice. Click the plus icon to send a value (as a named variable) to your function.'),
         };
     },
     /**
@@ -84,7 +84,7 @@ Blockly.Blocks.procedures_defnoreturn = {
                     const variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, null, paramName, '');
                     if (variable) {
                         this.arguments.push(paramName);
-                        this.argumentVarModels.push(variable);
+                        this.argument_var_models.push(variable);
 
                         const paramField = this.getField('PARAMS');
                         paramField.setText(`${translate('with: ')} ${this.arguments.join(', ')}`);
@@ -155,7 +155,7 @@ Blockly.Blocks.procedures_defnoreturn = {
             container.setAttribute('name', this.getFieldValue('NAME'));
         }
 
-        this.argumentVarModels.forEach((arg, i) => {
+        this.argument_var_models.forEach((arg, i) => {
             const parameter = document.createElement('arg');
 
             parameter.setAttribute('name', arg.name);
@@ -180,22 +180,22 @@ Blockly.Blocks.procedures_defnoreturn = {
      * @this Blockly.Block
      */
     domToMutation(xmlElement) {
-        this.arguments = [];
-        this.argumentVarModels = [];
+        this.arguments           = [];
+        this.argument_var_models = [];
 
         xmlElement.childNodes.forEach(childNode => {
             if (childNode.nodeName.toLowerCase() === 'arg') {
-                const varName = childNode.getAttribute('name');
-                this.arguments.push(varName);
+                const var_name = childNode.getAttribute('name');
+                const var_id   = childNode.getAttribute('varid') || childNode.getAttribute('varId');
+                const variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, var_id, var_name, '');
 
-                const varId = childNode.getAttribute('varid') || childNode.getAttribute('varId');
-                const variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, varId, varName, '');
+                this.arguments.push(var_name);
 
                 if (variable !== null) {
-                    this.argumentVarModels.push(variable);
+                    this.argument_var_models.push(variable);
                 } else {
                     // eslint-disable-next-line no-console
-                    console.log(`Failed to create a variable with name ${varName}, ignoring.`);
+                    console.log(`Failed to create a variable with name ${var_name}, ignoring.`);
                 }
             }
         });
@@ -240,7 +240,7 @@ Blockly.Blocks.procedures_defnoreturn = {
      * @this Blockly.Block
      */
     getVarModels() {
-        return this.argumentVarModels;
+        return this.argument_var_models;
     },
     /**
      * Add custom menu options to this block's context menu.
@@ -273,7 +273,7 @@ Blockly.Blocks.procedures_defnoreturn = {
 
         // Add options to create getters for each parameter.
         if (!this.isCollapsed()) {
-            this.argumentVarModels.forEach(argumentVarModel => {
+            this.argument_var_models.forEach(argumentVarModel => {
                 const getOption = { enabled: true };
 
                 getOption.text = translate('Create "get %1"').replace('%1', argumentVarModel.name);

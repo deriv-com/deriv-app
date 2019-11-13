@@ -1,4 +1,4 @@
-<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="false" is_dbot="true">
   <variables>
     <variable type="" id="O!nu[t{pavCUx.Zf[n63" islocal="false" iscloud="false">oscarsGrind:resultIsWin</variable>
     <variable type="" id="1@e2~}K[2)6@n$|llW$s" islocal="false" iscloud="false">oscarsGrind:profit</variable>
@@ -23,8 +23,8 @@
         <field name="SYMBOL_LIST">WLDAUD</field>
         <next>
           <block type="trade_definition_tradetype" id="U;l%?]:_]T6^CHBs5rd5" deletable="false" movable="false">
-            <field name="TRADE_TYPE_CAT_LIST">callput</field>
-            <field name="TRADE_TYPE_LIST">callput</field>
+            <field name="TRADETYPECAT_LIST">callput</field>
+            <field name="TRADETYPE_LIST">callput</field>
             <next>
               <block type="trade_definition_contracttype" id="ylkrZy.qZGsh(vr]U4GE" deletable="false" movable="false">
                 <field name="TYPE_LIST">both</field>
@@ -60,7 +60,7 @@
     <statement name="SUBMARKET">
       <block type="trade_definition_tradeoptions" id="ZpUp_-/i=,1arU4#Y^)f">
         <mutation has_first_barrier="false" has_second_barrier="false" has_prediction="false"></mutation>
-        <field name="DURATION_TYPE_LIST">t</field>
+        <field name="DURATIONTYPE_LIST">t</field>
         <field name="CURRENCY_LIST">USD</field>
         <value name="DURATION" strategy_value="duration">
           <shadow type="math_number" id="H`aNGd#ZP6[RMNz-a,}1">

@@ -33,14 +33,14 @@ Blockly.Blocks.logic_ternary = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Tests if a given value is True or false and returns respective item'),
+            tooltip        : translate('This block tests if a given value is true or false and returns “True” or “False” accordingly.'),
             category       : Blockly.Categories.Logic,
         };
     },
     meta(){
         return {
             'display_name': translate('Test value'),
-            'description' : translate('Tests if a given value is True or false and returns respective item.'),
+            'description' : translate('This block tests if a given value is true or false and returns “True” or “False” accordingly.'),
         };
     },
 };
@@ -50,6 +50,6 @@ Blockly.JavaScript.logic_ternary = block => {
     const valueThen = Blockly.JavaScript.valueToCode(block, 'THEN', Blockly.JavaScript.ORDER_CONDITIONAL) || 'null';
     const valueElse = Blockly.JavaScript.valueToCode(block, 'ELSE', Blockly.JavaScript.ORDER_CONDITIONAL) || 'null';
 
-    const code = `${valueIf} ? ${valueThen} : ${valueElse}`;
+    const code = `(${valueIf} ? ${valueThen} : ${valueElse})`;
     return [code, Blockly.JavaScript.ORDER_CONDITIONAL];
 };

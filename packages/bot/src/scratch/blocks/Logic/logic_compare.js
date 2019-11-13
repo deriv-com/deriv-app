@@ -41,7 +41,7 @@ Blockly.Blocks.logic_compare = {
     meta(){
         return {
             'display_name': translate('Compare'),
-            'description' : translate('This block is to compare the values, and is used to build a conditional structures.'),
+            'description' : translate('This block compares two values and is used to build a conditional structure.'),
         };
     },
 };
@@ -61,8 +61,8 @@ Blockly.JavaScript.logic_compare = block => {
         ? Blockly.JavaScript.ORDER_EQUALITY
         : Blockly.JavaScript.ORDER_RELATIONAL;
 
-    const argument0 = Blockly.JavaScript.valueToCode(block, 'A', order);
-    const argument1 = Blockly.JavaScript.valueToCode(block, 'B', order);
+    const argument0 = Blockly.JavaScript.valueToCode(block, 'A', order) || 'false';
+    const argument1 = Blockly.JavaScript.valueToCode(block, 'B', order) || 'false';
 
     const code = `${argument0} ${operator} ${argument1}`;
     return [code, order];

@@ -1,4 +1,4 @@
-<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+<xml xmlns="http://www.w3.org/1999/xhtml" collection="false" is_dbot="true">
   <variables>
     <variable type="" id="x]b3MHpbtR?cJQDP@,eG" islocal="false" iscloud="false">martingale:resultIsWin</variable>
     <variable type="" id="[M$5RsD`g|8-P;C+mbf4" islocal="false" iscloud="false">martingale:profit</variable>
@@ -22,8 +22,8 @@
         <field name="SYMBOL_LIST">WLDAUD</field>
         <next>
           <block type="trade_definition_tradetype" id="4BIa?F@i2*Mlrd:{G,SF" deletable="false" movable="false">
-            <field name="TRADE_TYPE_CAT_LIST">callput</field>
-            <field name="TRADE_TYPE_LIST">callput</field>
+            <field name="TRADETYPECAT_LIST">callput</field>
+            <field name="TRADETYPE_LIST">callput</field>
             <next>
               <block type="trade_definition_contracttype" id="kujUv]]-mtF@Na3q/.(g" deletable="false" movable="false">
                 <field name="TYPE_LIST">both</field>
@@ -59,7 +59,7 @@
     <statement name="SUBMARKET">
       <block type="trade_definition_tradeoptions" id="8=uN{72G(CSbw2LN=h?0">
         <mutation has_first_barrier="false" has_second_barrier="false" has_prediction="false"></mutation>
-        <field name="DURATION_TYPE_LIST">m</field>
+        <field name="DURATIONTYPE_LIST">m</field>
         <field name="CURRENCY_LIST">USD</field>
         <value name="DURATION" strategy_value="duration">
           <shadow type="math_number" id="U0Z*M,J@5n%2!YcjTbSU">

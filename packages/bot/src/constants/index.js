@@ -188,6 +188,8 @@ const config = {
         [translate('1 day'), '86400'],
     ],
     mainBlocks                             : ['trade_definition', 'before_purchase', 'during_purchase', 'after_purchase'],
+    mandatoryMainBlocks                    : ['trade_definition', 'before_purchase'],
+    procedureDefinitionBlocks              : ['procedures_defnoreturn', 'procedures_defreturn'],
     TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING: {
         callput: ['callput', 'higherlower'],
         asian  : ['asians'],
@@ -269,7 +271,7 @@ const config = {
         oscars_grind: {
             index      : 2,
             label      : 'Oscar\'s Grind',
-            description: translate('The Oscar\'s Grind Strategy is a low-risk positive progression strategy that first appeared in 1965. By using this strategy, you will increase the size of your contract after each successful trade, and decrease the size of your contract after each unsuccessful trade.'),
+            description: translate('The Oscar\'s Grind Strategy is a low-risk positive progression strategy that first appeared in 1965. By using this strategy, you will increase the size of your contract after each successful trade, the size of your contract will increase after successful trades, and remain unchanged after unsuccessful trades.'),
         },
     },
 };

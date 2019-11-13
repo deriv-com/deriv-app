@@ -2,8 +2,6 @@ import { translate } from '../../../../../utils/lang/i18n';
 
 Blockly.Blocks.input_list = {
     init() {
-        this.requiredParentId = '';
-
         this.jsonInit({
             message0: translate('Input List %1'),
             args0   : [
@@ -28,27 +26,43 @@ Blockly.Blocks.input_list = {
             return;
         }
 
-        const surroundParent = this.getSurroundParent();
-        if (event.type === Blockly.Events.END_DRAG) {
-            if (!this.requiredParentId && this.allowedParents.includes(surroundParent.type)) {
-                this.requiredParentId = surroundParent.id;
-            } else if (!surroundParent || surroundParent.id !== this.requiredParentId) {
-                Blockly.Events.disable();
-                this.unplug(false);
+        const setParentId = () => {
+            const surround_parent = this.getSurroundParent();
+            if (surround_parent && !this.required_parent_id && this.allowed_parents.includes(surround_parent.type)) {
+                this.required_parent_id = surround_parent.id;
+            }
+        };
 
-                const parentBlock = this.workspace.getAllBlocks().find(block => block.id === this.requiredParentId);
+        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+            setParentId();
+        } else if (event.type === Blockly.Events.END_DRAG) {
+            setParentId();
 
-                if (parentBlock) {
-                    const parentConnection = parentBlock.getLastConnectionInStatement('STATEMENT');
-                    parentConnection.connect(this.previousConnection);
+            const surround_parent   = this.getSurroundParent();
+            const has_no_parent     = !surround_parent;
+            const is_illegal_parent = surround_parent.id !== this.required_parent_id;
+
+            if (has_no_parent || is_illegal_parent) {
+                const { recordUndo }      = Blockly.Events;
+                Blockly.Events.recordUndo = false;
+
+                this.unplug(true);
+
+                // Attempt to re-connect this child to its original parent.
+                const parent_block = this.workspace.getAllBlocks().find(block => block.id === this.required_parent_id);
+
+                if (parent_block) {
+                    const parent_connection = parent_block.getLastConnectionInStatement('STATEMENT');
+                    parent_connection.connect(this.previousConnection);
                 } else {
                     this.dispose();
                 }
-                Blockly.Events.enable();
+
+                Blockly.Events.recordUndo = recordUndo;
             }
         }
     },
-    allowedParents: [
+    allowed_parents: [
         'bb_statement',
         'bba_statement',
         'ema_statement',

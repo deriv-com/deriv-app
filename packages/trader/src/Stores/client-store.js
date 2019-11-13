@@ -15,7 +15,7 @@ import {
 import ClientBase                    from '_common/base/client_base';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
-import { get as getLanguage }           from '_common/language';
+import { get as getLanguage }        from '_common/language';
 import { localize }                  from 'App/i18n';
 import {
     LocalStore,
@@ -29,9 +29,9 @@ import { toMoment }                  from '../Utils/Date';
 
 const storage_key = 'client.accounts';
 export default class ClientStore extends BaseStore {
-    @observable loginid                        = '';
+    @observable loginid;
     @observable upgrade_info;
-    @observable email                          = '';
+    @observable email;
     @observable accounts                       = {};
     @observable switched                       = '';
     @observable switch_broadcast               = false;
@@ -618,7 +618,6 @@ export default class ClientStore extends BaseStore {
                 utm_source,
             });
         });
-
     }
 
     /**

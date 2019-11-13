@@ -41,7 +41,7 @@ class AccountWizard extends React.Component {
                         date_of_birth: '',
                         phone        : '',
                     },
-                    passthrough: ['residence_list']
+                    passthrough: ['residence_list'],
                 },
                 {
                     header: {
@@ -175,7 +175,7 @@ class AccountWizard extends React.Component {
                 .then((response) => {
                     setSubmitting(false);
                     this.props.onSuccessAddCurrency(
-                        response.echo_req.set_account_currency.toLowerCase(),
+                        response.echo_req.set_account_currency.toLowerCase()
                     );
                 })
                 .catch(error_message => {
@@ -188,7 +188,7 @@ class AccountWizard extends React.Component {
                 .then((response) => {
                     setSubmitting(false);
                     this.props.onSuccessAddCurrency(
-                        response.new_account_real.currency.toLowerCase(),
+                        response.new_account_real.currency.toLowerCase()
                     );
                 })
                 .catch(error_message => {

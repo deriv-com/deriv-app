@@ -1,92 +1,135 @@
 import                                    './blocks';
 import                                    './hooks';
+import config                         from '../constants';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import ScratchStore                   from '../stores/scratch-store';
+import { translate }                  from '../utils/lang/i18n';
 import { observer as globalObserver } from '../utils/observer';
-import config                         from '../constants';
 
-export const scratchWorkspaceInit = async () => {
-    try {
-        const el_scratch_div = document.getElementById('scratch_div');
-        const el_app_contents = document.getElementById('app_contents');
+class DBot {
+    constructor() {
+        this.interpreter = null;
+        this.workspace   = null;
+    }
 
-        // eslint-disable-next-line
-        const toolbox_xml = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(response => response.text());
-        // eslint-disable-next-line
-        const main_xml = await fetch(`${__webpack_public_path__}xml/main.xml`).then(response => response.text());
+    /**
+     * Initialises the workspace and mounts it to a container element (app_contents).
+     */
+    async initWorkspace() {
+        try {
+            const el_scratch_div  = document.getElementById('scratch_div');
+            const el_app_contents = document.getElementById('app_contents');
+            const toolbox_xml     = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(r => r.text()); // eslint-disable-line
+            const main_xml        = await fetch(`${__webpack_public_path__}xml/main.xml`).then(r => r.text()); // eslint-disable-line
+            this.workspace        = Blockly.inject(el_scratch_div, {
+                grid    : { spacing: 40, length: 11, colour: '#f3f3f3' },
+                media   : `${__webpack_public_path__}media/`, // eslint-disable-line
+                toolbox : toolbox_xml,
+                trashcan: true,
+                zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
+            });
 
-        const workspace = Blockly.inject(el_scratch_div, {
-            grid    : { spacing: 40, length: 11, colour: '#f3f3f3' },
-            media   : `${__webpack_public_path__}media/`, // eslint-disable-line
-            toolbox : toolbox_xml,
-            trashcan: true,
-            zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
-        });
+            this.workspace.blocksXmlStr  = main_xml;
+            this.workspace.toolboxXmlStr = toolbox_xml;
+            Blockly.derivWorkspace       = this.workspace;
 
-        Blockly.JavaScript.init(workspace);
-        Blockly.JavaScript.variableDB_.setVariableMap(workspace.getVariableMap()); // eslint-disable-line
+            this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
+    
+            // Initialise JavaScript (this will in turn initialise the variable map).
+            Blockly.JavaScript.init(this.workspace);
+            Blockly.JavaScript.variableDB_.setVariableMap(this.workspace.getVariableMap()); // eslint-disable-line
 
-        Blockly.derivWorkspace = workspace;
-        Blockly.derivWorkspace.blocksXmlStr = main_xml;
-        Blockly.derivWorkspace.toolboxXmlStr = toolbox_xml;
+            // Push main.xml to workspace and reset the undo stack.
+            Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), this.workspace);
+            this.workspace.clearUndo();
 
-        // Ensure flyout closes on click in workspace.
-        const el_blockly_svg = document.querySelector('.blocklySvg');
-        document.addEventListener('click', (event) => {
-            if (el_blockly_svg.contains(event.target)) {
-                Blockly.derivWorkspace.toolbox_.clearSelection(); // eslint-disable-line
+            const drop_zone    = document.body;
+            const { saveload } = ScratchStore.instance;
+    
+            window.addEventListener('resize', () => this.onWorkspaceResize(el_app_contents, el_scratch_div));
+            document.addEventListener('click', this.onClickOutsideFlyout.bind(this));
+            drop_zone.addEventListener('dragover', DBot.handleDragOver);
+            drop_zone.addEventListener('drop', saveload.handleFileChange);
+            window.dispatchEvent(new Event('resize'));
+    
+            // disable overflow
+            el_scratch_div.parentNode.style.overflow = 'hidden';
+        } catch (error) {
+            // TODO: Handle error.
+            throw error;
+        }
+    }
+
+    /**
+     * Executed before running the bot, can stop the bot from running if false is returned.
+     * @returns {Boolean} Indicates whether to run the bot or not.
+     */
+    beforeRunBot() {
+        let should_run_bot = true;
+
+        // Disable blocks outside of any main or independent blocks.
+        const top_blocks = this.workspace.getTopBlocks();
+        top_blocks.forEach(block => {
+            if (!block.isMainBlock() && !block.isIndependentBlock()) {
+                block.setDisabled(true);
             }
         });
-        
-        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), workspace);
-        Blockly.derivWorkspace.clearUndo();
-        
-        const onWorkspaceResize = () => {
-            const toolbar_height = 56;
 
-            el_scratch_div.style.width  = `${el_app_contents.offsetWidth}px`;
-            el_scratch_div.style.height = `${el_app_contents.offsetHeight - toolbar_height}px`;
-            Blockly.svgResize(workspace);
-            // eslint-disable-next-line no-underscore-dangle
-            workspace.toolbox_.flyout_.position();
-        };
+        // Check if there are any blocks highlighted for errors. Do this after disabling
+        // stray blocks, we don't care about blocks that we're not going to execute.
+        const all_blocks  = this.workspace.getAllBlocks(true);
+        const error_block = all_blocks.find(block => block.is_error_highlighted && !block.disabled);
 
-        window.addEventListener('resize', onWorkspaceResize);
-        onWorkspaceResize();
+        if (error_block) {
+            const { run_panel } = ScratchStore.instance.root_store;
+            const message       = translate('Some of your block inputs are missing values, please check and update them.');
+            
+            this.workspace.centerOnBlock(error_block.id);
+            run_panel.showErrorMessage(message);
 
-        const handleDragOver = e => {
-            e.stopPropagation();
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
-        };
-
-        const drop_zone = document.body;
-        const { saveload } = ScratchStore.instance;
-
-        drop_zone.addEventListener('dragover', handleDragOver, false);
-        drop_zone.addEventListener('drop', e => saveload.handleFileChange(e), false);
-
-        // disable overflow
-        el_scratch_div.parentNode.style.overflow = 'hidden';
-    } catch (error) {
-        // TODO: Handle error.
-        throw error;
-    }
-};
-
-let interpreter = null;
-
-export const runBot = (limitations = {}) => {
-    // Disable blocks outside of any main or independent blocks.
-    const top_blocks = Blockly.derivWorkspace.getTopBlocks();
-    top_blocks.forEach(block => {
-        if (!block.isMainBlock() && !block.isIndependentBlock()) {
-            block.setDisabled(true);
+            should_run_bot = false;
         }
-    });
-    
-    try {
-        const code = `
+
+        return should_run_bot;
+    }
+
+    /**
+     * Does a sanity check (beforeRunBot) before attempting to generate the
+     * JavaScript code that's fed to the interpreter.
+     */
+    runBot() {
+        const should_run_bot = this.beforeRunBot();
+        
+        if (!should_run_bot) {
+            const { run_panel } = ScratchStore.instance.root_store;
+            run_panel.onStopButtonClick();
+            return;
+        }
+
+        try {
+            const code = this.generateCode();
+
+            if (this.interpreter !== null) {
+                this.stopBot();
+            }
+
+            this.interpreter = new Interpreter();
+            this.interpreter.run(code);
+        } catch (error) {
+            globalObserver.emit('Error', error);
+
+            if (this.interpreter) {
+                this.stopBot();
+            }
+        }
+    }
+
+    /**
+     * Generates the code that is passed to the interpreter.
+     * @param {Object} limitations Optional limitations (legacy argument)
+     */
+    generateCode(limitations = {}) {
+        return `
             var BinaryBotPrivateInit;
             var BinaryBotPrivateStart;
             var BinaryBotPrivateBeforePurchase; 
@@ -109,7 +152,7 @@ export const runBot = (limitations = {}) => {
                 }
             }
             var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
-            ${Blockly.JavaScript.workspaceToCode(Blockly.derivWorkspace)}
+            ${Blockly.JavaScript.workspaceToCode(this.workspace)}
             BinaryBotPrivateRun(BinaryBotPrivateInit);
             while (true) {
                 BinaryBotPrivateTickAnalysis();
@@ -126,37 +169,138 @@ export const runBot = (limitations = {}) => {
                 if (!BinaryBotPrivateRun(BinaryBotPrivateAfterPurchase)) {
                     break;
                 }
-            }
-            `;
-        if (code) {
-            if (interpreter !== null) {
-                interpreter.stop(true);
-                interpreter = null;
-            }
+            }`;
+    }
 
-            interpreter = new Interpreter();
-            interpreter.run(code).catch(error => {
-                globalObserver.emit('Error', error);
-                interpreter.stop();
-            });
-        }
-    } catch (error) {
-        globalObserver.emit('Error', error);
-        if (interpreter) {
-            interpreter.stop();
+    /**
+     * Instructs the interpreter to stop the bot. If there is an active trade
+     * that trade will be completed first to reflect correct contract status in UI.
+     */
+    stopBot() {
+        if (this.interpreter) {
+            this.interpreter.stop();
         }
     }
-};
 
-export const stopBot = () => {
-    if (interpreter) {
-        interpreter.stop();
+    /**
+     * Immediately instructs the interpreter to terminate the WS connection and bot.
+     */
+    terminateBot() {
+        if (this.interpreter) {
+            this.interpreter.terminateSession();
+            this.interpreter = null;
+        }
     }
-};
 
-export const terminateBot = () => {
-    if (interpreter) {
-        interpreter.terminateSession();
-        interpreter = null;
+    /**
+     * Checks all blocks in the workspace to see if they need to be highlighted
+     * in case one of their inputs is not populated, returns an empty value, or doesn't
+     * pass the custom validator.
+     * Note: The value passed to the custom validator is always a string value
+     * @param {Blockly.Event} event Workspace event
+     */
+    valueInputLimitationsListener(event) {
+        if (!this.workspace || this.workspace.isDragging()) {
+            return;
+        }
+
+        const isEndDragEvent     = () => event.type === Blockly.Events.END_DRAG;
+        const isCreateEvent      = (b) => event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(b.id);
+        const isUiClickEvent     = (b) => event.type === Blockly.Events.UI && event.blockId === b.id && event.element === 'click';
+        const isChangeEvent      = (b) => event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === b.id;
+        const isChangeInMyInputs = (b) => {
+            if (event.type === Blockly.Events.BLOCK_CHANGE) {
+                return b.inputList.some(input => {
+                    if (input.connection) {
+                        const target_block = input.connection.targetBlock();
+                        return target_block && event.blockId === target_block.id;
+                    }
+                    return false;
+                });
+            }
+            return false;
+        };
+        
+        this.workspace.getAllBlocks(true).forEach(block => {
+            if (
+                isEndDragEvent() ||
+                isChangeEvent(block) ||
+                isChangeInMyInputs(block) ||
+                isCreateEvent(block) ||
+                isUiClickEvent(block)
+            ) {
+                // No required inputs, ignore this block.
+                if (!block.getRequiredInputs) {
+                    return;
+                }
+
+                // Unhighlight disabled blocks.
+                if (block.disabled) {
+                    if (block.is_error_highlighted) {
+                        block.setErrorHighlighted(false);
+                    }
+                    return;
+                }
+
+                const required_inputs_object = block.getRequiredInputs();
+                const required_input_names   = Object.keys(required_inputs_object);
+                const should_highlight       = required_input_names.some(input_name => {
+                    const input = block.getInput(input_name);
+
+                    if (!input) {
+                        // eslint-disable-next-line no-console
+                        console.warn('Detected a non-existent required input.', {
+                            input_name,
+                            type: block.type,
+                        });
+                    } else if (input.connection) {
+                        const order            = Blockly.JavaScript.ORDER_ATOMIC;
+                        const value            = Blockly.JavaScript.valueToCode(block, input_name, order);
+                        const inputValidatorFn = required_inputs_object[input_name];
+
+                        // If a custom validator was supplied, use this to determine whether
+                        // the block should be highlighted.
+                        if (typeof inputValidatorFn === 'function') {
+                            return !!inputValidatorFn(value);
+                        }
+
+                        // If there's no custom validator, only check if input was populated and
+                        // doesn't return an empty value.
+                        return !value;
+                    }
+
+                    return true;
+                });
+
+                block.setErrorHighlighted(should_highlight);
+            }
+        });
     }
-};
+
+    onWorkspaceResize(el_app_contents, el_scratch_div) {
+        const toolbar_height        = 56;
+        el_scratch_div.style.width  = `${el_app_contents.offsetWidth}px`;
+        el_scratch_div.style.height = `${el_app_contents.offsetHeight - toolbar_height}px`;
+
+        Blockly.svgResize(this.workspace);
+    }
+
+    // TODO: This logic is cloned from other PR. Remove later.
+    onClickOutsideFlyout(event) {
+        const toolbox         = this.workspace.toolbox_; // eslint-disable-line
+        const is_flyout_click = event.path.some(el => el.classList && el.classList.contains('flyout'));
+        const isToolboxClick  = () => toolbox.HtmlDiv.contains(event.target);
+
+        if (!is_flyout_click && !isToolboxClick()) {
+            toolbox.clearSelection();
+        }
+    }
+
+    static handleDragOver(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
+    }
+}
+
+export default new DBot();

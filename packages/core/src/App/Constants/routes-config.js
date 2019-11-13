@@ -52,12 +52,18 @@ const Bot = lazy(() => {
 const initRoutesConfig = () => ([
     { path: routes.index,     component: RouterRedirect, title: '',                                     to: routes.root },
     { path: routes.bot,       component: Bot,            title: localize('Bot') },
-    { path: routes.root,      component: Trader,         title: localize('Trader'),              exact: true },
-    { path: routes.mt5,       component: Trader,         title: localize('MT5'),                 is_authenticated: true },
-    { path: routes.reports,   component: Trader,         title: localize('Reports'),             is_authenticated: true },
-    { path: routes.account,   component: Trader,         title: localize('Accounts management'), is_authenticated: true },
-    { path: routes.contract,  component: Trader,         title: localize('Contract Details'),    is_authenticated: true },
-    { path: routes.error404,  component: Trader,         title: localize('Error 404') },
+    {
+        path     : routes.root,
+        component: Trader,
+        title    : localize('Trader'),
+        routes   : [
+            { path: routes.mt5,      component: Trader, title: localize('MT5'),                 is_authenticated: true },
+            { path: routes.reports,  component: Trader, title: localize('Reports'),             is_authenticated: true },
+            { path: routes.account,  component: Trader, title: localize('Accounts management'), is_authenticated: true },
+            { path: routes.contract, component: Trader, title: localize('Contract Details'),    is_authenticated: true },
+            { path: routes.error404, component: Trader, title: localize('Error 404') },
+        ],
+    },
     { path: routes.redirect,  component: Redirect,       title: localize('Redirect') },
 ]);
 

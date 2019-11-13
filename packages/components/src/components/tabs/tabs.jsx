@@ -1,4 +1,4 @@
-import className            from 'classnames';
+import classNames           from 'classnames';
 import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
 import Tab                  from './tab.jsx';
@@ -10,11 +10,11 @@ class Tabs extends Component {
         this.state = { active_index: props.active_index || 0 };
     }
 
-    onClickTabItem = index => {
+    onTabItemClick = index => {
         this.setState({ active_index: index });
 
-        if (typeof this.props.onClickTabItem === 'function') {
-            this.props.onClickTabItem(index);
+        if (typeof this.props.onTabItemClick === 'function') {
+            this.props.onTabItemClick(index);
         }
     };
 
@@ -25,14 +25,20 @@ class Tabs extends Component {
     }
 
     render() {
-        const { children, top, bottom }     = this.props;
+        const { children,
+            className,
+            top,
+            bottom }     = this.props;
         const { active_index } = this.state;
         const tab_width        = (100 / children.length).toFixed(2);
 
         return (
-            <div className='dc-tabs' style={{ '--tab-width': `${tab_width}%` }}>
+            <div
+                className={`dc-tabs dc-tabs--${className}`}
+                style={{ '--tab-width': `${tab_width}%` }}
+            >
                 <ul className={
-                    className('dc-tabs__list' , {
+                    classNames('dc-tabs__list' , {
                         'dc-tabs__list--top'   : top,
                         'dc-tabs__list--bottom': bottom,
                     })}
@@ -47,12 +53,12 @@ class Tabs extends Component {
                                 label={label}
                                 top
                                 bottom
-                                onClick={() => this.onClickTabItem(index)}
+                                onClick={() => this.onTabItemClick(index)}
                             />
                         );
                     })}
                     <span className={
-                        className('dc-tabs__active-line' , {
+                        classNames('dc-tabs__active-line' , {
                             'dc-tabs__active-line--top'   : top,
                             'dc-tabs__active-line--bottom': bottom,
                         })}

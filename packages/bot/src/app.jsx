@@ -1,13 +1,13 @@
 import { Provider }             from 'mobx-react';
 import React                    from 'react';
-import                               './public-path'; // Leave this here!
-import ApiHelpers               from './services/api/api-helpers';
-import RootStore                from './stores';
+import                          './public-path'; // Leave this here! OK boss!
+import MainContent              from './components/main-content.jsx';
 import Toolbar                  from './components/toolbar.jsx';
 import RunPanel                 from './components/run-panel.jsx';
-import Workspace                from './components/workspace.jsx';
 import QuickStrategy            from './components/quick-strategy.jsx';
-import { scratchWorkspaceInit } from './scratch';
+import ApiHelpers               from './services/api/api-helpers';
+import RootStore                from './stores';
+
 import './assets/sass/app.scss';
 
 class App extends React.Component {
@@ -18,29 +18,25 @@ class App extends React.Component {
         ApiHelpers.setInstance(this.rootStore);
     }
 
+    componentDidMount() {
+        ApiHelpers.instance.registerOnAccountSwitch();
+    }
+
+    componentWillUnmount() {
+        ApiHelpers.instance.disposeOnAccountSwitch();
+    }
+
     render() {
         return (
             <Provider {...this.rootStore}>
                 <React.Fragment>
                     <Toolbar />
-                    <Workspace />
+                    <MainContent />
                     <RunPanel />
                     <QuickStrategy />
                 </React.Fragment>
             </Provider>
         );
-    }
-
-    componentDidMount() {
-        scratchWorkspaceInit();
-        ApiHelpers.instance.registerOnAccountSwitch();
-    }
-
-    componentWillUnmount() {
-        if (Blockly.derivWorkspace) {
-            Blockly.derivWorkspace.dispose();
-        }
-        ApiHelpers.instance.disposeOnAccountSwitch();
     }
 }
 export default App;

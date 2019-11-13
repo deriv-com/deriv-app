@@ -122,7 +122,7 @@ class QuickStrategy extends React.PureComponent {
                     <div className='quick-strategy__tabs'>
                         <Tabs
                             active_index={active_index}
-                            onClickTabItem={setActiveTabIndex}
+                            onTabItemClick={setActiveTabIndex}
                             top
                         >
                             {

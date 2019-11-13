@@ -9,6 +9,7 @@ import SummaryStore       from './summary-store';
 import ToolbarStore       from './toolbar-store';
 import TransactionsStore  from './transactions-store';
 import QuickStrategyStore from './quick-strategy-store';
+import MainContentStore from './main-content-store';
 
 export default class RootStore {
     constructor(core, ws) {
@@ -24,6 +25,7 @@ export default class RootStore {
         this.toolbar        = new ToolbarStore(this);
         this.quick_strategy = new QuickStrategyStore();
         this.run_panel      = new RunPanelStore(this);
+        this.mainContent    = new MainContentStore(this);
 
         // Create a singleton class to share rootStore with scratch
         ScratchStore.setInstance(this);

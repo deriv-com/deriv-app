@@ -11,6 +11,7 @@ const AppContents = ({
     // addNotificationBar,
     children,
     client_account_settings,
+    client_currency,
     client_loginid,
     is_app_disabled,
     is_logged_in,
@@ -39,6 +40,7 @@ const AppContents = ({
             address_postcode,
             address_state,
             citizen,
+            currency: client_currency,
             email,
             language: getLanguage(),
             name    : `${first_name} ${last_name}`,
@@ -89,7 +91,8 @@ AppContents.propTypes = {
     addNotificationBar     : PropTypes.func,
     children               : PropTypes.any,
     client_account_settings: PropTypes.object,
-    client_loginid         : PropTypes.String,
+    client_currency        : PropTypes.string,
+    client_loginid         : PropTypes.string,
     is_app_disabled        : PropTypes.bool,
     is_logged_in           : PropTypes.bool,
     is_positions_drawer_on : PropTypes.bool,
@@ -101,6 +104,7 @@ AppContents.propTypes = {
 export default withRouter(connect(
     ({ client, ui }) => ({
         client_account_settings: client.account_settings,
+        client_currency        : client.currency,
         client_loginid         : client.loginid,
         is_logged_in           : client.is_logged_in,
         // addNotificationBar    : ui.addNotificationBar,

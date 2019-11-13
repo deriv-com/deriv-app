@@ -1,15 +1,14 @@
 import { Provider }             from 'mobx-react';
 import React                    from 'react';
 import                               './public-path'; // Leave this here!
+import DBot                     from './scratch';
 import ApiHelpers               from './services/api/api-helpers';
 import RootStore                from './stores';
 import Toolbar                  from './components/toolbar.jsx';
 import RunPanel                 from './components/run-panel.jsx';
 import Workspace                from './components/workspace.jsx';
 import QuickStrategy            from './components/quick-strategy.jsx';
-import { scratchWorkspaceInit } from './scratch';
 import firestore                from './utils/firestore';
-
 import './assets/sass/app.scss';
 
 class App extends React.Component {
@@ -35,7 +34,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        scratchWorkspaceInit();
+        DBot.initWorkspace();
         ApiHelpers.instance.registerOnAccountSwitch();
     }
 

@@ -242,7 +242,7 @@ const config = {
     macdFields                      : [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
     gd                              : {
         cid: '828416594271-b4bhia944ecegn3j327oeb4l8o803bts.apps.googleusercontent.com',
-        aid: 'binarybot-237009',
+        aid: 'derivbot-248506',
         api: 'AIzaSyA52MX2l8p75-w7nvab7fU6Lk6KwLqnyEI',
     },
     help: {

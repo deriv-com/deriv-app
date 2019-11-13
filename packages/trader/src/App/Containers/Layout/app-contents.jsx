@@ -12,6 +12,7 @@ const AppContents = ({
     children,
     client_account_settings,
     client_currency,
+    client_device_data,
     client_loginid,
     is_app_disabled,
     is_logged_in,
@@ -35,21 +36,40 @@ const AppContents = ({
             tax_residence,
         } = client_account_settings;
 
+        const {
+            affiliate_token,
+            date_first_contact,
+            gclid_url,
+            signup_device,
+            utm_campaign,
+            utm_medium,
+            utm_source,
+        } = client_device_data;
+
+        // First data appraoch
         window.analytics.identify(client_loginid, {
             address_city,
             address_postcode,
             address_state,
+            affiliate_token,
             citizen,
             currency: client_currency,
+            date_first_contact,
             email,
-            language: getLanguage(),
+            gclid_url,
+            language: getLanguage().toLowerCase(),
             name    : `${first_name} ${last_name}`,
             phone,
             place_of_birth,
             residence,
+            signup_device,
             tax_identification_number,
             tax_residence,
+            utm_campaign,
+            utm_medium,
+            utm_source,
         });
+
         window.analytics.page();
 
         // TODO: uncomment these after the issues with showing the prompt too often and in the app are fixed
@@ -92,6 +112,7 @@ AppContents.propTypes = {
     children               : PropTypes.any,
     client_account_settings: PropTypes.object,
     client_currency        : PropTypes.string,
+    client_device_data     : PropTypes.object,
     client_loginid         : PropTypes.string,
     is_app_disabled        : PropTypes.bool,
     is_logged_in           : PropTypes.bool,
@@ -105,6 +126,7 @@ export default withRouter(connect(
     ({ client, ui }) => ({
         client_account_settings: client.account_settings,
         client_currency        : client.currency,
+        client_device_data     : client.device_data,
         client_loginid         : client.loginid,
         is_logged_in           : client.is_logged_in,
         // addNotificationBar    : ui.addNotificationBar,

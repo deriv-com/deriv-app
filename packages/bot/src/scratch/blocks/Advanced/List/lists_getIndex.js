@@ -30,6 +30,7 @@ Blockly.Blocks.lists_getIndex = {
             Blockly.Colours.Base.colourSecondary,
             Blockly.Colours.Base.colourTertiary
         );
+        this.setTooltip('This block gives you the value of a specific item in a list, given the position of the item. It can also remove the item from the list.');
         this.setOutput(true, null);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
         this.updateAt(true);
@@ -37,7 +38,7 @@ Blockly.Blocks.lists_getIndex = {
     meta(){
         return {
             'display_name': translate('Get list item'),
-            'description' : translate('This block extracts an item at given position from the list. It also can optionaly remove extracted item.'),
+            'description' : translate('This block gives you the value of a specific item in a list, given the position of the item. It can also remove the item from the list.'),
             'category'    : Blockly.Categories.List,
         };
     },

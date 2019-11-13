@@ -33,14 +33,14 @@ Blockly.Blocks.lists_create_with = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Create List'),
+            tooltip          : translate('This block creates a list with strings and numbers.'),
             category         : Blockly.Categories.List,
         };
     },
     meta(){
         return {
             'display_name': translate('Create list'),
-            'description' : translate('This block creates list with provided strings and/or numbers.'),
+            'description' : translate('This block creates a list with strings and numbers.'),
         };
     },
     onIconClick() {

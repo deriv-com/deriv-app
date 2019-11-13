@@ -40,9 +40,9 @@ class Tabs extends Component {
             >
                 <ul className={
                     classNames('dc-tabs__list' , {
-                        'dc-tabs__list--top'         : top,
-                        'dc-tabs__list--bottom'      : bottom,
-                        'dc-tabs__list--fit-content' : fit_content,
+                        'dc-tabs__list--top'        : top,
+                        'dc-tabs__list--bottom'     : bottom,
+                        'dc-tabs__list--fit-content': fit_content,
                     })}
                 >
                     {children.map((child, index) => {
@@ -61,9 +61,9 @@ class Tabs extends Component {
                     })}
                     <span className={
                         classNames('dc-tabs__active-line' , {
-                            'dc-tabs__active-line--top'   : top,
-                            'dc-tabs__active-line--bottom': bottom,
-                            'dc-tabs__active-line--fit-content'  : fit_content,
+                            'dc-tabs__active-line--top'        : top,
+                            'dc-tabs__active-line--bottom'     : bottom,
+                            'dc-tabs__active-line--fit-content': fit_content,
                         })}
                     />
                 </ul>

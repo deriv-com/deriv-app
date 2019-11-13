@@ -27,7 +27,7 @@ export default class RootStore {
         this.run_panel      = new RunPanelStore(this);
         this.mainContent    = new MainContentStore(this);
 
-        // Create a singleton class to share rootStore with scratch
+        // Create a singleton class to share root_store with scratch
         ScratchStore.setInstance(this);
     }
 }

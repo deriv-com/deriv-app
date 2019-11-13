@@ -41,14 +41,14 @@ Blockly.Blocks.controls_for = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Repeats inside blocks until counter reaches target value.'),
+            tooltip          : translate('This block uses the variable “i” to control the iterations. With each iteration, the value of “i” is determined by the items in a given list.'),
             category         : Blockly.Categories.Loop,
         };
     },
     meta(){
         return {
             'display_name': translate('Iterate (1)'),
-            'description' : translate('This block uses the variable "i" to control the number of iterations. “From” is the starting value, “to” is the end value, while “by” is the step by which the value of "i" is increased.'),
+            'description' : translate('This block uses the variable “i” to control the iterations. With each iteration, the value of “i” is determined by the items in a given list.'),
         };
     },
 };

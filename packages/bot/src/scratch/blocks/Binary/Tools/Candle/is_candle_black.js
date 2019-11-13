@@ -27,8 +27,8 @@ Blockly.Blocks.is_candle_black = {
     },
     meta(){
         return {
-            'display_name': translate('Is Candle Black?'),
-            'description' : translate('This block returns “True” in case the last candle was black. You can place this block anywhere except for the first root block (Trade Parameters).'),
+            'display_name': translate('Is candle black?'),
+            'description' : translate('This block returns “True” if the last candle is black. It can be placed anywhere on the canvas except within the Trade parameters root block.'),
         };
     },
 };

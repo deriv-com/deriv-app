@@ -21,6 +21,7 @@ import { processPurchase }            from './Actions/purchase';
 import * as Symbol                    from './Actions/symbol';
 import getValidationRules             from './Constants/validation-rules';
 import {
+    getFirstOpenSymbol,
     pickDefaultSymbol,
     showUnavailableLocationError,
     isMarketClosed,
@@ -259,9 +260,9 @@ export default class TradeStore extends BaseStore {
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
         await BinarySocket.wait('authorize');
-        await WS.contractsFor(this.symbol).then(r => {
+        await WS.contractsFor(this.symbol).then(async(r) => {
             if (r.error && r.error.code === 'InvalidSymbol') {
-                this.resetRefresh(true);
+                await this.getFirstOpenSymbol();
             }
         });
         await this.setActiveSymbols();

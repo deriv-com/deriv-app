@@ -45,15 +45,8 @@ class TogglePositionsDrawerDialog extends React.PureComponent {
                     toggleDialog={this.toggleDialog}
                 >
                     <ContractUpdateForm
-                        currency={this.props.currency}
                         contract_id={this.props.contract_id}
-                        has_stop_loss={this.props.has_stop_loss}
-                        has_take_profit={this.props.has_take_profit}
-                        stop_loss={this.props.stop_loss}
-                        take_profit={this.props.take_profit}
-                        onChangeContractUpdate={this.props.onChangeContractUpdate}
-                        onClickContractUpdate={this.props.onClickContractUpdate}
-                        validation_errors={this.props.validation_errors}
+                        toggleDialog={this.toggleDialog}
                     />
                 </PositionsDrawerDialog>
             </React.Fragment>

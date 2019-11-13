@@ -33,6 +33,7 @@ import ContractCardBody        from './contract-card-body.jsx';
 import ContractCardFooter      from './contract-card-footer.jsx';
 import ContractCardHeader      from './contract-card-header.jsx';
 import ContractCard            from './contract-card.jsx';
+import TogglePositionsDrawerDialog from '../PositionsDrawer/toggle-positions-drawer-dialog.jsx';
 
 class ContractDrawer extends Component {
     state = {
@@ -69,7 +70,6 @@ class ContractDrawer extends Component {
             return current_tick;
         };
         const is_multiplier = isMultiplierContract(contract_info.contract_type);
-
         return (
             <React.Fragment>
                 <ContractCard
@@ -97,16 +97,20 @@ class ContractDrawer extends Component {
                             </div>
                         </div>
                     </ContractCardHeader>
-                    {is_sold ?
-                        <div className='progress-slider--completed' />
-                        :
-                        <ProgressSlider
-                            is_loading={false}
-                            start_time={contract_info.purchase_time}
-                            expiry_time={contract_info.date_expiry}
-                            current_tick={getTick()}
-                            ticks_count={contract_info.tick_count}
-                        />
+                    {!is_multiplier && // don't render ProgressSlider for Multiplier
+                        <React.Fragment>
+                            {is_sold ?
+                                <div className='progress-slider--completed' />
+                                :
+                                <ProgressSlider
+                                    is_loading={false}
+                                    start_time={contract_info.purchase_time}
+                                    expiry_time={contract_info.date_expiry}
+                                    current_tick={getTick()}
+                                    ticks_count={contract_info.tick_count}
+                                />
+                            }
+                        </React.Fragment>
                     }
                     <ContractCardBody>
                         <ProfitLossCardContent
@@ -116,6 +120,7 @@ class ContractDrawer extends Component {
                             is_multiplier={is_multiplier}
                             is_sold={!!(is_sold)}
                             status={this.props.status}
+                            take_profit={contract_info.limit_order && contract_info.limit_order.take_profit}
                         />
                     </ContractCardBody>
                     <ContractCardFooter>
@@ -174,20 +179,35 @@ class ContractDrawer extends Component {
                             }}
                             unmountOnExit
                         >
-                            <div
-                                className='contract-card__sell-button'
-                            >
-                                <Button
-                                    className={classNames(
-                                        'btn--sell', {
-                                            'btn--loading': is_sell_requested,
-                                        })}
-                                    is_disabled={!(isValidToSell(contract_info)) || is_sell_requested}
-                                    text={localize('Sell contract')}
-                                    onClick={() => onClickSell(contract_info.contract_id)}
-                                    secondary
-                                />
-                            </div>
+                            {is_multiplier ?
+                                <div className='contract-card__sell-button'>
+                                    <Button
+                                        id={`dt_drawer_card_${contract_info.contract_id}_button`}
+                                        className={classNames(
+                                            'btn--sell', {
+                                                'btn--loading': is_sell_requested,
+                                            })}
+                                        is_disabled={!(isValidToSell(contract_info)) || is_sell_requested}
+                                        text={localize('Close')}
+                                        onClick={() => onClickSell(contract_info.contract_id)}
+                                        primary
+                                    />
+                                    <TogglePositionsDrawerDialog is_contract_replay />
+                                </div>
+                                :
+                                <div className='contract-card__sell-button'>
+                                    <Button
+                                        className={classNames(
+                                            'btn--sell', {
+                                                'btn--loading': is_sell_requested,
+                                            })}
+                                        is_disabled={!(isValidToSell(contract_info)) || is_sell_requested}
+                                        text={localize('Sell contract')}
+                                        onClick={() => onClickSell(contract_info.contract_id)}
+                                        secondary
+                                    />
+                                </div>
+                            }
                         </CSSTransition>
                     </ContractCardFooter>
                 </ContractCard>

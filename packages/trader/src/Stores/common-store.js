@@ -104,4 +104,9 @@ export default class CommonStore extends BaseStore {
     setWithdrawURL(withdraw_url) {
         this.withdraw_url = withdraw_url;
     }
+
+    @action.bound
+    setServicesError(error) {
+        this.services_error = error;
+    }
 }

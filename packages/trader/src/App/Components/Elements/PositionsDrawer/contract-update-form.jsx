@@ -3,18 +3,25 @@ import PropTypes         from 'prop-types';
 import { Button }        from 'deriv-components';
 import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
 import { localize }      from 'App/i18n';
+import { connect }       from 'Stores/connect';
 
 const ContractUpdateForm = ({
     contract_id,
-    currency,
-    has_stop_loss,
-    has_take_profit,
-    onClickContractUpdate,
-    onChangeContractUpdate,
-    stop_loss,
-    take_profit,
-    validation_errors,
+    getContractUpdateFromContractReplay,
+    getContractUpdateFromPositions,
+    toggleDialog,
+    validation_errors = {},
 }) => {
+    const {
+        currency,
+        has_stop_loss,
+        has_take_profit,
+        onClickContractUpdate,
+        onChangeContractUpdate,
+        stop_loss,
+        take_profit,
+    } = contract_id ? getContractUpdateFromPositions(contract_id) : getContractUpdateFromContractReplay;
+
     const onChange = (e) => {
         const { name, value } = e.target;
         
@@ -32,9 +39,14 @@ const ContractUpdateForm = ({
             limit_order.has_stop_loss = value;
         }
 
-        onChangeContractUpdate(contract_id, limit_order);
+        onChangeContractUpdate(limit_order, contract_id);
     };
-    
+
+    const onClick = () => {
+        onClickContractUpdate(contract_id);
+        toggleDialog();
+    };
+
     const is_disabled = !((has_stop_loss && stop_loss > 0) || (has_take_profit && take_profit > 0));
 
     const {
@@ -75,7 +87,7 @@ const ContractUpdateForm = ({
             <div className='positions-drawer-dialog__button'>
                 <Button
                     text={localize('Apply')}
-                    onClick={() => onClickContractUpdate(contract_id)}
+                    onClick={onClick}
                     primary
                     is_disabled={is_disabled}
                 />
@@ -96,4 +108,12 @@ ContractUpdateForm.PropTypes = {
     validation_errors     : PropTypes.object,
 };
 
-export default ContractUpdateForm;
+// export default ContractUpdateForm;
+
+export default connect(
+    ({ modules }) => ({
+        getContractUpdateFromContractReplay: modules.contract_replay.contract_store.getContractUpdateFromContractReplay,
+        getContractUpdateFromPositions     : modules.portfolio.getContractUpdateFromPositions,
+        validation_errors                  : modules.trade.validation_errors,
+    })
+)(ContractUpdateForm);

@@ -1,20 +1,19 @@
 import {
     action,
     computed,
+    extendObservable,
     observable,
     reaction }                     from 'mobx';
 import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services';
 import ObjectUtils                 from 'deriv-shared/utils/object';
-import getValidationRules          from './Constants/validation-rules';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractSold }            from './Helpers/portfolio-notifications';
 import {
     getCurrentTick,
     getDurationPeriod,
     getDurationTime,
-    getDurationUnitText,
-    getLimitOrder }                from './Helpers/details';
+    getDurationUnitText }          from './Helpers/details';
 import {
     getDisplayStatus,
     getEndTime,
@@ -22,29 +21,20 @@ import {
     isUserSold,
     isValidToSell }                from '../Contract/Helpers/logic';
 import {
-    isMultiplierContract }         from '../Contract/Helpers/multiplier';
+    getMultiplierLimitOrder,
+    getMultiplierContractUpdate,
+    isMultiplierContract,
+    setMultiplierContractUpdate }  from '../Contract/Helpers/multiplier';
+
 import BaseStore                   from '../../base-store';
 
-const store_name = 'portfolio';
 export default class PortfolioStore extends BaseStore {
     @observable positions  = [];
     @observable is_loading = false;
     @observable error      = '';
     getPositionById        = createTransformer((id) => this.positions.find((position) => +position.id === +id));
 
-    // Observables for multiplier contract_update input validations
-    @observable contract_update_stop_loss;
-    @observable contract_update_take_profit;
-
     subscribers = {};
-
-    constructor({ root_store }) {
-        super({
-            root_store,
-            store_name,
-            validation_rules: getValidationRules(),
-        });
-    }
 
     @action.bound
     initializePortfolio = async () => {
@@ -173,12 +163,13 @@ export default class PortfolioStore extends BaseStore {
         portfolio_position.is_valid_to_sell = isValidToSell(proposal);
 
         if (isMultiplierContract(proposal.contract_type) && !portfolio_position.has_limit_order) {
-            const { stop_loss, take_profit }   = getLimitOrder(proposal);
-            // convert stop_loss, take_profit value to string for validation to work
-            portfolio_position.stop_loss       = stop_loss ? Math.abs(stop_loss).toString() : '';
-            portfolio_position.take_profit     = take_profit ? take_profit.toString() : '';
-            portfolio_position.has_stop_loss   = !!stop_loss;
-            portfolio_position.has_take_profit = !!take_profit;
+            portfolio_position.contract_update = {};
+            extendObservable(
+                portfolio_position.contract_update,
+                getMultiplierContractUpdate(this.root_store.modules.trade, proposal)
+            );
+            portfolio_position.contract_update.onChangeContractUpdate = this.onChangeContractUpdate;
+            portfolio_position.contract_update.onClickContractUpdate  = this.onClickContractUpdate;
             portfolio_position.has_limit_order = true;
         }
 
@@ -212,55 +203,28 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
-    onClickContractUpdate(contract_id) {
+    onChangeContractUpdate(contract_update, contract_id) {
         const i = this.getPositionIndexById(contract_id);
-
-        const {
-            has_stop_loss,
-            has_take_profit,
-            stop_loss,
-            take_profit,
-        } = this.positions[i];
-
-        const has_limit_order = take_profit > 0 || stop_loss > 0;
-
-        if (!has_limit_order) {
-            return;
-        }
-
-        const limit_order = {};
-
-        if (take_profit > 0 && has_take_profit) {
-            limit_order.take_profit = +take_profit; // send positive take_profit to API
-        }
-
-        if (stop_loss > 0 && has_stop_loss) {
-            limit_order.stop_loss = -stop_loss; // send negative stop_loss to API
-        }
-
-        WS.contractUpdate(contract_id, limit_order);
+        setMultiplierContractUpdate(this.root_store.modules.trade, this.positions[i].contract_update, contract_update);
     }
 
     @action.bound
-    onChangeContractUpdate(contract_id, { stop_loss, take_profit, has_stop_loss, has_take_profit } = {}) {
+    onClickContractUpdate(contract_id) {
         const i = this.getPositionIndexById(contract_id);
 
-        if (stop_loss !== undefined) {
-            this.positions[i].stop_loss = stop_loss;
-            this.contract_update_stop_loss = stop_loss;
-        }
-        if (take_profit !== undefined) {
-            this.positions[i].take_profit = take_profit;
-            this.contract_update_take_profit = take_profit;
-        }
-        if (has_stop_loss !== undefined) {
-            this.positions[i].has_stop_loss = has_stop_loss;
-            if (!has_stop_loss) this.validation_errors.contract_update_stop_loss = [];
-        }
-        if (has_take_profit !== undefined) {
-            this.positions[i].has_take_profit = has_take_profit;
-            if (!has_take_profit) this.validation_errors.contract_update_take_profit = [];
-        }
+        const limit_order = getMultiplierLimitOrder(this.positions[i].contract_update);
+
+        if (!limit_order) return;
+
+        WS.contractUpdate(contract_id, limit_order).then(response => {
+            if (response.error) {
+                this.root_store.common.setServicesError({
+                    type: response.msg_type,
+                    ...response.error,
+                });
+                this.root_store.ui.toggleServicesErrorModal(true);
+            }
+        });
     }
 
     @action.bound
@@ -387,6 +351,12 @@ export default class PortfolioStore extends BaseStore {
 
     getPositionIndexById(contract_id) {
         return this.positions.findIndex(pos => +pos.id === +contract_id);
+    }
+
+    @action.bound
+    getContractUpdateFromPositions(contract_id) {
+        const i = this.getPositionIndexById(contract_id);
+        return this.positions[i].contract_update;
     }
 
     @computed

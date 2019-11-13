@@ -10,6 +10,7 @@ const ProfitLossCardContent = ({
     currency,
     is_multiplier,
     is_sold,
+    take_profit,
     pl_value,
     payout,
     status,
@@ -42,31 +43,40 @@ const ProfitLossCardContent = ({
                 </div>
             </div>
         </div>
-        <div className='pl-card__item-payout'>
-            <div className='pl-card__item__header'>
-                {is_multiplier ?
+        {is_multiplier ?
+            <div className='pl-card__item-payout'>
+                <div className='pl-card__item__header'>
                     <Localize i18n_default_text='Take profit:' />
-                    :
-                    <React.Fragment>
-                        { is_sold ? <Localize i18n_default_text='Payout:' /> : <Localize i18n_default_text='Indicative price:' /> }
-                    </React.Fragment>
-                }
-            </div>
-            <div id='dt_payout_label' className='pl-card__item__body'>
-                <Money currency={currency} amount={payout} />
-                <div className={classNames(
-                    'pl-card__indicative--movement', {
-                        'pl-card__indicative--movement-complete': is_sold,
-                    },
-                )}
-                >
-                    <Icon
-                        icon='IconPriceMove'
-                        type={(!is_sold) ? status : null}
-                    />
+                </div>
+                <div id='dt_payout_label' className='pl-card__item__body'>
+                    {take_profit  ?
+                        <Money amount={take_profit.order_amount} currency={currency} />
+                        :
+                        <strong>-</strong>
+                    }
                 </div>
             </div>
-        </div>
+            :
+            <div className='pl-card__item-payout'>
+                <div className='pl-card__item__header'>
+                    { is_sold ? <Localize i18n_default_text='Payout:' /> : <Localize i18n_default_text='Indicative price:' /> }
+                </div>
+                <div id='dt_payout_label' className='pl-card__item__body'>
+                    <Money currency={currency} amount={payout} />
+                    <div className={classNames(
+                        'pl-card__indicative--movement', {
+                            'pl-card__indicative--movement-complete': is_sold,
+                        },
+                    )}
+                    >
+                        <Icon
+                            icon='IconPriceMove'
+                            type={(!is_sold) ? status : null}
+                        />
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 );
 

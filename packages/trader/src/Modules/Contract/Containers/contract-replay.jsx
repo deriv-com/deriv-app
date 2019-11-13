@@ -149,7 +149,7 @@ ContractReplay.propTypes = {
 export default withRouter(connect(
     ({ modules, ui }) => {
         const contract_replay = modules.contract_replay;
-        const contract_store = contract_replay.contract_store;
+        const contract_store  = contract_replay.contract_store;
         return ({
             contract_info    : contract_store.contract_info,
             digits_info      : contract_store.digits_info,

@@ -10,14 +10,15 @@ class PositionsDrawerDialog extends React.Component {
     }
 
     componentDidMount() {
-        document.addEventListener('mousedown', this.handleClickOutside);
+        document.addEventListener('mousedown', this.handleClickOutside, true);
     }
 
     componentWillUnmount() {
-        document.removeEventListener('mousedown', this.handleClickOutside);
+        document.removeEventListener('mousedown', this.handleClickOutside, true);
     }
 
     handleClickOutside = (event) => {
+        event.stopPropagation();
         if (this.ref && this.ref.current && !this.ref.current.contains(event.target) &&
             !this.props.toggle_ref.current.contains(event.target) && this.props.is_visible) {
             this.props.toggleDialog();

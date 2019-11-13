@@ -1,9 +1,11 @@
 import {
     action,
+    computed,
     extendObservable,
     observable,
     toJS,
 } from 'mobx';
+import { WS }                 from 'Services';
 import { createChartMarkers } from './Helpers/chart-markers';
 import {
     getDigitInfo,
@@ -14,7 +16,10 @@ import {
     getEndTime,
     isEnded }                 from './Helpers/logic';
 import {
-    isMultiplierContract }    from './Helpers/multiplier';
+    getMultiplierLimitOrder,
+    getMultiplierContractUpdate,
+    isMultiplierContract,
+    setMultiplierContractUpdate } from './Helpers/multiplier';
 
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
@@ -42,6 +47,9 @@ export default class ContractStore {
     @observable contract_info   = observable.object({});
     @observable is_static_chart = false;
     @observable end_time = null;
+
+    // Multiplier contract update config
+    @observable contract_update = observable.object({});
 
     // ---- chart props
     @observable margin;
@@ -81,6 +89,44 @@ export default class ContractStore {
                 getDigitInfo(this.digits_info, this.contract_info)
             );
         }
+
+        this.is_multiplier_contract =  isMultiplierContract(this.contract_info.contract_type);
+        if (this.is_multiplier_contract && !this.contract_update.has_limit_order) {
+            extendObservable(
+                this.contract_update,
+                getMultiplierContractUpdate(this.root_store.modules.trade, this.contract_info)
+            );
+            this.contract_update.onChangeContractUpdate = this.onChangeContractUpdate;
+            this.contract_update.onClickContractUpdate  = this.onClickContractUpdate;
+            this.contract_update.has_limit_order = true;
+        }
+    }
+
+    @action.bound
+    onChangeContractUpdate(contract_update) {
+        setMultiplierContractUpdate(this.root_store.modules.trade, this.contract_update, contract_update);
+    }
+
+    @action.bound
+    onClickContractUpdate() {
+        const limit_order = getMultiplierLimitOrder(this.contract_update);
+
+        if (!limit_order) return;
+
+        WS.contractUpdate(this.contract_id, limit_order).then(response => {
+            if (response.error) {
+                this.root_store.common.setServicesError({
+                    type: response.msg_type,
+                    ...response.error,
+                });
+                this.root_store.ui.toggleServicesErrorModal(true);
+            }
+        });
+    }
+
+    @computed
+    get getContractUpdateFromContractReplay() {
+        return this.contract_update;
     }
 
     updateBarriersArray(contract_info, is_dark_mode) {

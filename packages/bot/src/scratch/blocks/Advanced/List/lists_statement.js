@@ -49,7 +49,7 @@ Blockly.Blocks.lists_statement = {
         }
 
         if (event.type === Blockly.Events.END_DRAG) {
-            const { recordUndo }  = Blockly.Events.recordUndo;
+            const { recordUndo }  = Blockly.Events;
             const surround_parent = this.getSurroundParent();
 
             if (!surround_parent) {

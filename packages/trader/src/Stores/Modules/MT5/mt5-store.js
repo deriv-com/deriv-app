@@ -145,12 +145,11 @@ export default class MT5Store extends BaseStore {
 
     @action.bound
     getName() {
+        const { first_name } = (this.root_store.client.account_settings && this.root_store.client.account_settings);
         const title = this.mt5_companies[this.account_type.category][this.account_type.type].title;
 
-        return [
-            this.root_store.client.account_settings.first_name,
-            title,
-        ].join(' ');
+        // First name is not set when user has no real account
+        return first_name ? [ first_name, title ].join(' ') : title;
     }
 
     @action.bound

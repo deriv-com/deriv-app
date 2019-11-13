@@ -136,6 +136,7 @@ const BinarySocketGeneral = (() => {
     };
 
     const authorizeAccount = (response) => {
+        console.log('authorize account happens how many times ya');
         client_store.responseAuthorize(response);
         WS.forgetAll('balance').then(() => {
             // the first has to be without subscribe to quickly update current account's balance

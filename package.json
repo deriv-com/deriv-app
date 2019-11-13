@@ -12,7 +12,7 @@
     "build": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run build ${@:2} ;}; f",
     "build:travis": "lerna exec --scope deriv-shared --scope deriv-components -- npm run build:travis",
     "build:local": "lerna exec --scope deriv-trader --scope deriv-bot --parallel -- npm run build",
-    "test": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test ;}; f",
+    "test": "f () { lerna exec --scope deriv-${1:-'*'} --parallel -- npm run test ;}; f",
     "test:eslint": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test:eslint ;}; f",
     "test:stylelint": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test:stylelint ;}; f",
     "test:mocha": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test:mocha ;}; f",

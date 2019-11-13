@@ -266,6 +266,7 @@ export default class TradeStore extends BaseStore {
                     await this.resetRefresh();
                     await this.setActiveSymbols();
                     await pickDefaultSymbol();
+                    runInAction(() => this.should_refresh_active_symbols = true);
                 }
             });
             await this.setDefaultSymbol();

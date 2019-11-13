@@ -1009,7 +1009,8 @@ export default class ClientStore extends BaseStore {
         await this.init(new_user_login);
 
         // Refresh trade-store currency and proposal before requesting new proposal upon login
-        this.root_store.modules.trade.initAccountCurrency(currency);
+        await this.root_store.modules.trade.initAccountCurrency(currency);
+        await this.root_store.modules.trade.prepareTradeStore();
     }
 
     @action.bound

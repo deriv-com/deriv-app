@@ -572,6 +572,7 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     async init(login_new_user) {
+        this.root_store.ui.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
@@ -639,11 +640,23 @@ export default class ClientStore extends BaseStore {
         this.responseWebsiteStatus(await WS.storage.websiteStatus());
 
         this.registerReactions();
+        this.root_store.ui.setIsLoggingIn(false);
     }
 
     @action.bound
     responseWebsiteStatus(response) {
         this.website_status = response.website_status;
+        if (this.website_status.message && this.website_status.message.length) {
+            this.root_store.ui.addNotificationMessage({
+                key                  : 'maintenance',
+                header               : localize('Site is being updated'),
+                message              : localize(this.website_status.message),
+                type                 : 'warning',
+                should_hide_close_btn: true,
+            });
+        } else {
+            this.root_store.ui.removeNotificationMessage({ key: 'maintenance' });
+        }
     }
 
     @action.bound

@@ -206,6 +206,7 @@ class AccountSwitcher extends React.Component {
     async doSwitch(loginid) {
         this.props.toggle();
         if (this.props.account_loginid === loginid) return;
+        this.props.setAccountLoader(true);
         await this.props.clearPositions();
         await this.props.clearContracts();
         await this.props.switchAccount(loginid);
@@ -422,6 +423,7 @@ AccountSwitcher.propTypes = {
     is_visible            : PropTypes.bool,
     mt5_login_list        : PropTypes.array,
     obj_total_balance     : PropTypes.object,
+    setAccountLoader      : PropTypes.func,
     toggle                : PropTypes.func,
     toggleAccountsDialog  : PropTypes.func,
     togglePositionsDrawer : PropTypes.func,
@@ -455,6 +457,7 @@ const account_switcher = withRouter(connect(
         openRealAccountSignup : ui.openRealAccountSignup,
         toggleAccountsDialog  : ui.toggleAccountsDialog,
         togglePositionsDrawer : ui.togglePositionsDrawer,
+        setAccountLoader      : ui.setIsLoggingIn,
     }),
 )(AccountSwitcher));
 

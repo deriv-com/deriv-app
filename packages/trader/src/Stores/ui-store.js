@@ -91,6 +91,8 @@ export default class UIStore extends BaseStore {
         error_message     : '',
     };
 
+    @observable is_logging_in = false;
+
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
     constructor() {
@@ -233,6 +235,11 @@ export default class UIStore extends BaseStore {
     // togglePurchaseConfirmation() {
     //     this.is_purchase_confirm_on = !this.is_purchase_confirm_on;
     // }
+
+    @action.bound
+    setIsLoggingIn(bool) {
+        this.is_logging_in = bool;
+    }
 
     @action.bound
     toggleDarkMode() {

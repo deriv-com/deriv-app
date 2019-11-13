@@ -1,16 +1,17 @@
-import classNames        from 'classnames';
-import PropTypes         from 'prop-types';
-import React             from 'react';
+import classNames                         from 'classnames';
+import PropTypes                          from 'prop-types';
+import React                              from 'react';
 import {
     AccountActions,
     MenuLinks,
-    PlatformSwitcher }   from 'App/Components/Layout/Header';
-import platform_config   from 'App/Constants/platform-config';
-import Lazy              from 'App/Containers/Lazy';
-import RealAccountSignup from 'App/Containers/RealAccountSignup';
-import { localize }      from 'App/i18n';
-import Icon              from 'Assets/icon.jsx';
-import { connect }       from 'Stores/connect';
+    PlatformSwitcher }                    from 'App/Components/Layout/Header';
+import { AccountsInfo as AccountsLoader } from 'App/Components/Elements/ContentLoader';
+import platform_config                    from 'App/Constants/platform-config';
+import Lazy                               from 'App/Containers/Lazy';
+import RealAccountSignup                  from 'App/Containers/RealAccountSignup';
+import { localize }                       from 'App/i18n';
+import Icon                               from 'Assets/icon.jsx';
+import { connect }                        from 'Stores/connect';
 
 const Header = ({
     active_cashier_tab,
@@ -23,6 +24,7 @@ const Header = ({
     is_cashier_modal_on,
     is_app_disabled,
     is_logged_in,
+    is_logging_in,
     is_mobile,
     is_notifications_visible,
     is_payment_agent_visible,
@@ -73,6 +75,11 @@ const Header = ({
                     />
                 </div>
                 <div className='header__menu-right'>
+                    { is_logging_in &&
+                        <div className='acc-info__preloader'>
+                            <AccountsLoader is_logged_in={is_logged_in} speed={3} />
+                        </div>
+                    }
                     <div className='acc-info__container'>
                         <AccountActions
                             active_cashier_tab={active_cashier_tab}
@@ -117,6 +124,7 @@ Header.propTypes = {
     is_cashier_modal_on              : PropTypes.bool,
     is_dark_mode                     : PropTypes.bool,
     is_logged_in                     : PropTypes.bool,
+    is_logging_in                    : PropTypes.bool,
     is_mobile                        : PropTypes.bool,
     is_notifications_visible         : PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
@@ -145,6 +153,7 @@ export default connect(
         is_dark_mode            : ui.is_dark_mode_on,
         is_app_disabled         : ui.is_app_disabled,
         is_loading              : ui.is_loading,
+        is_logging_in           : ui.is_logging_in,
         notifications_count     : ui.notifications.length,
         is_notifications_visible: ui.is_notifications_visible,
         is_payment_agent_visible: !!(modules.cashier.config.payment_agent.filtered_list.length

@@ -56,7 +56,7 @@ const firestore = (() => {
             users.doc(login_id).collection('Runs').add({
                 start_time,
                 account_id: login_id,
-                xml: strategy,
+                xml       : strategy,
             })
                 .then((docRef) => {
                     doc_id = docRef.id;
@@ -86,11 +86,11 @@ const firestore = (() => {
                 users.doc(login_id).collection('Runs').doc(doc_id).collection('Summaries').add({
                     lost_contracts: summary.lost_contracts,
                     number_of_runs: summary.number_of_runs,
-                    total_profit: summary.total_profit,
-                    total_payout: summary.total_payout,
-                    total_stake: summary.total_stake,
-                    won_contracts: summary.won_contracts,
-                    time_stamp: server_time.unix(),
+                    total_profit  : summary.total_profit,
+                    total_payout  : summary.total_payout,
+                    total_stake   : summary.total_stake,
+                    won_contracts : summary.won_contracts,
+                    time_stamp    : server_time.unix(),
                 });
             }
         } catch (error) {
@@ -103,14 +103,14 @@ const firestore = (() => {
             const contract = contracts.length > 0 && contracts[0];
             if (contract && contract.is_completed) {
                 users.doc(login_id).collection('Runs').doc(doc_id).collection('Transactions').add({
-                    buy_price: contract.buy_price,
+                    buy_price    : contract.buy_price,
                     contract_type: contract.contract_type,
-                    currency: contract.currency,
-                    refrence_id: contract.refrence_id,
-                    entry_spot: contract.entry_spot,
-                    exit_spot: contract.exit_spot,
-                    profit: contract.profit,
-                    time_stamp: server_time.unix(),
+                    currency     : contract.currency,
+                    refrence_id  : contract.refrence_id,
+                    entry_spot   : contract.entry_spot,
+                    exit_spot    : contract.exit_spot,
+                    profit       : contract.profit,
+                    time_stamp   : server_time.unix(),
                 });
             }
         } catch (error) {
@@ -123,9 +123,9 @@ const firestore = (() => {
             const message = messages.length > 0 && messages[0];
             if (message && message.message_type === message_types.ERROR) {
                 users.doc(login_id).collection('Runs').doc(doc_id).collection('Errors').add({
-                    date: message.date,
-                    time: message.time,
-                    message: message.message,
+                    date      : message.date,
+                    time      : message.time,
+                    message   : message.message,
                     time_stamp: server_time.unix(),
                 });
             }

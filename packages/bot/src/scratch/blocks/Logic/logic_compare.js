@@ -44,6 +44,12 @@ Blockly.Blocks.logic_compare = {
             'description' : translate('This block compares two values and is used to build a conditional structure.'),
         };
     },
+    getRequiredInputs() {
+        return {
+            A: null,
+            B: null,
+        };
+    },
 };
 
 Blockly.JavaScript.logic_compare = block => {

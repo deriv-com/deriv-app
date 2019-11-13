@@ -48,6 +48,11 @@ Blockly.Blocks.text_prompt_ext = {
             'description' : translate('This block creates a dialog box that uses a customised message to prompt for an input. The input can be either a string of text or a number.'),
         };
     },
+    getRequiredInputs() {
+        return {
+            TEXT: null,
+        };
+    },
 };
 
 Blockly.JavaScript.text_prompt_ext = block => {

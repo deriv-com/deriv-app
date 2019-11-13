@@ -37,6 +37,11 @@ Blockly.Blocks.text_changeCase = {
             'description' : translate('Changes the capitalisation of a string of text to Upper case, Lower case, Title case.'),
         };
     },
+    getRequiredInputs() {
+        return {
+            TEXT: null,
+        };
+    },
 };
 
 Blockly.JavaScript.text_changeCase = block => {

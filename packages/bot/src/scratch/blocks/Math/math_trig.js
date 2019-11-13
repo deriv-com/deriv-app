@@ -41,6 +41,11 @@ Blockly.Blocks.math_trig = {
             'description' : translate('This block performs trigonometric functions.'),
         };
     },
+    getRequiredInputs() {
+        return {
+            NUM: null,
+        };
+    },
 };
 
 Blockly.JavaScript.math_trig = Blockly.JavaScript.math_single;

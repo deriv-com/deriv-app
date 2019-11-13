@@ -34,6 +34,12 @@ Blockly.Blocks.math_random_int = {
             'description' : translate('This block gives you a random number from within a set range.'),
         };
     },
+    getRequiredInputs() {
+        return {
+            FROM: null,
+            TO  : null,
+        };
+    },
 };
 
 Blockly.JavaScript.math_random_int = block => {

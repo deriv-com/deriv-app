@@ -32,6 +32,12 @@ Blockly.Blocks.lists_repeat = {
             'description' : translate('Creates a list with a given item repeated for a specific number of times.'),
         };
     },
+    getRequiredInputs() {
+        return {
+            ITEM: null,
+            NUM : null,
+        };
+    },
 };
 
 Blockly.JavaScript.lists_repeat = block => {

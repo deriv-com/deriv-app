@@ -38,6 +38,11 @@ Blockly.Blocks.lists_sort = {
             'description' : translate('Sorts the items in a given list, by their numeric or alphabetical value, in either ascending or descending order.'),
         };
     },
+    getRequiredInputs() {
+        return {
+            LIST: null,
+        };
+    },
 };
 
 Blockly.JavaScript.lists_sort = block => {

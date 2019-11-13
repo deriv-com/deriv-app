@@ -37,6 +37,12 @@ Blockly.Blocks.logic_operation = {
             'description' : translate('This block performs the "AND" or the "OR" logic operation.'),
         };
     },
+    getRequiredInputs() {
+        return {
+            A: null,
+            B: null,
+        };
+    },
 };
 
 Blockly.JavaScript.logic_operation = block => {

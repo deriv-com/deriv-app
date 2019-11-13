@@ -319,6 +319,12 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         
         return container;
     },
+    getRequiredInputs() {
+        return {
+            AMOUNT  : null,
+            DURATION: null,
+        };
+    },
 };
 
 Blockly.Blocks.trade_definition_tradeoptions_payout = Blockly.Blocks.trade_definition_tradeoptions;

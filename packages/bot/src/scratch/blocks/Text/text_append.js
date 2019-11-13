@@ -33,6 +33,11 @@ Blockly.Blocks.text_append = {
             'description' : translate('Appends a given text to a variable.'),
         };
     },
+    getRequiredInputs() {
+        return {
+            TEXT: null,
+        };
+    },
 };
 
 Blockly.JavaScript.text_append = block => {

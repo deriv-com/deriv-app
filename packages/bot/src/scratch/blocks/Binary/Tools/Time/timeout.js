@@ -57,6 +57,11 @@ Blockly.Blocks.timeout = {
             }
         }
     },
+    getRequiredInputs() {
+        return {
+            SECONDS: null,
+        };
+    },
 };
 
 Blockly.JavaScript.timeout = block => {

@@ -41,6 +41,11 @@ Blockly.Blocks.math_single = {
             'description' : translate('This block performs the selected operations to a given number.'),
         };
     },
+    getRequiredInputs() {
+        return {
+            NUM: null,
+        };
+    },
 };
 
 Blockly.JavaScript.math_single = block => {

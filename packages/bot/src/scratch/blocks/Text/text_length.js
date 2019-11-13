@@ -28,6 +28,11 @@ Blockly.Blocks.text_length = {
             'description' : translate('Returns the number of characters of a given string of text, including numbers, spaces, punctuation marks, and symbols.'),
         };
     },
+    getRequiredInputs() {
+        return {
+            VALUE: null,
+        };
+    },
 };
 
 Blockly.JavaScript.text_length = block => {

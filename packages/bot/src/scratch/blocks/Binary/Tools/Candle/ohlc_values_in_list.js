@@ -34,6 +34,11 @@ Blockly.Blocks.ohlc_values_in_list = {
             'description' : translate('This block gives you the selected candle value from a list of candles.'),
         };
     },
+    getRequiredInputs() {
+        return {
+            OHLCLIST: null,
+        };
+    },
 };
 
 Blockly.JavaScript.ohlc_values_in_list = block => {

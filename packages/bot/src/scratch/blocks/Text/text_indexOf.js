@@ -11,7 +11,6 @@ Blockly.Blocks.text_indexOf = {
                 {
                     type: 'input_value',
                     name: 'VALUE',
-                    // check: 'String', Rendering looks off when check is enabled.
                 },
                 {
                     type   : 'field_dropdown',
@@ -21,7 +20,6 @@ Blockly.Blocks.text_indexOf = {
                 {
                     type: 'input_value',
                     name: 'FIND',
-                    // check: 'String',
                 },
             ],
             output         : 'String',
@@ -37,6 +35,12 @@ Blockly.Blocks.text_indexOf = {
         return {
             'display_name': translate('Search for string'),
             'description' : translate('Searches through a string of text for a specific occurrence of a given character or word, and returns the position.'),
+        };
+    },
+    getRequiredInputs() {
+        return {
+            VALUE: null,
+            FIND : null,
         };
     },
 };

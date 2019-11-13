@@ -648,11 +648,10 @@ export default class ClientStore extends BaseStore {
         this.website_status = response.website_status;
         if (this.website_status.message && this.website_status.message.length) {
             this.root_store.ui.addNotificationMessage({
-                key                  : 'maintenance',
-                header               : localize('Site is being updated'),
-                message              : localize(this.website_status.message),
-                type                 : 'warning',
-                should_hide_close_btn: true,
+                key    : 'maintenance',
+                header : localize('Site is being updated'),
+                message: localize(this.website_status.message),
+                type   : 'warning',
             });
         } else {
             this.root_store.ui.removeNotificationMessage({ key: 'maintenance' });

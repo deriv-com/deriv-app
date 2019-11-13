@@ -15,6 +15,7 @@ import {
 import ClientBase                    from '_common/base/client_base';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
+import { get as getLanguage }           from '_common/language';
 import { localize }                  from 'App/i18n';
 import {
     LocalStore,
@@ -568,53 +569,56 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setUserSegment() {
-        const {
-            address_city,
-            address_postcode,
-            address_state,
-            citizen,
-            email,
-            first_name,
-            last_name,
-            phone,
-            place_of_birth,
-            residence,
-            tax_identification_number,
-            tax_residence,
-        } = this.account_settings;
-
-        const {
-            affiliate_token,
-            date_first_contact,
-            gclid_url,
-            signup_device,
-            utm_campaign,
-            utm_medium,
-            utm_source,
-        } = this.device_data;
-
-        window.analytics.identify(this.loginid, {
-            address_city,
-            address_postcode,
-            address_state,
-            affiliate_token,
-            citizen,
-            currency: client_currency,
-            date_first_contact,
-            email,
-            gclid_url,
-            language: getLanguage().toLowerCase(),
-            name    : `${first_name} ${last_name}`,
-            phone,
-            place_of_birth,
-            residence,
-            signup_device,
-            tax_identification_number,
-            tax_residence,
-            utm_campaign,
-            utm_medium,
-            utm_source,
+        BinarySocket.wait('get_settings').then(() => {
+            const {
+                address_city,
+                address_postcode,
+                address_state,
+                citizen,
+                email,
+                first_name,
+                last_name,
+                phone,
+                place_of_birth,
+                residence,
+                tax_identification_number,
+                tax_residence,
+            } = this.account_settings;
+    
+            const {
+                affiliate_token,
+                date_first_contact,
+                gclid_url,
+                signup_device,
+                utm_campaign,
+                utm_medium,
+                utm_source,
+            } = this.device_data;
+    
+            window.analytics.identify(this.loginid, {
+                address_city,
+                address_postcode,
+                address_state,
+                affiliate_token,
+                citizen,
+                currency: this.selected_currency,
+                date_first_contact,
+                email,
+                gclid_url,
+                language: getLanguage().toLowerCase(),
+                name    : `${first_name} ${last_name}`,
+                phone,
+                place_of_birth,
+                residence,
+                signup_device,
+                tax_identification_number,
+                tax_residence,
+                utm_campaign,
+                utm_medium,
+                utm_source,
+            });
         });
+
     }
 
     /**

@@ -173,6 +173,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
                             const definition_strings = JSON.stringify(def).toUpperCase();
 
                             if (def.type === 'field_dropdown' &&
+                            search_term > 2 &&
                             definition_strings.includes(search_term)) {
                                 has_dropdown_and_in_search = true;
                             }

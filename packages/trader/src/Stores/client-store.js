@@ -28,9 +28,9 @@ import { toMoment }                  from '../Utils/Date';
 
 const storage_key = 'client.accounts';
 export default class ClientStore extends BaseStore {
-    @observable loginid;
+    @observable loginid                        = '';
     @observable upgrade_info;
-    @observable email;
+    @observable email                          = '';
     @observable accounts                       = {};
     @observable switched                       = '';
     @observable switch_broadcast               = false;

@@ -2,9 +2,6 @@ import { translate } from '../../utils/lang/i18n';
 
 /* eslint-disable func-names, no-underscore-dangle */
 
-// deriv-bot: Blockly value, Scratch resets this to 0, req for correct spacing in flyout.
-Blockly.BlockSvg.TAB_WIDTH = 8;
-
 /**
  * Set whether the block is disabled or not.
  * @param {boolean} disabled True if disabled.
@@ -115,4 +112,21 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
         Blockly.ContextMenu.show(e, menuOptions, this.RTL);
         Blockly.ContextMenu.currentBlock = this;
     }
+};
+
+/**
+ * Set whether the block is error highlighted or not.
+ * @param {boolean} highlighted True if highlighted for error.
+ */
+Blockly.BlockSvg.prototype.setErrorHighlighted = function(should_be_error_highlighted) {
+    const highlight_class = 'block--highlighted';
+
+    if (should_be_error_highlighted) {
+        // Below function does its own checks to check if class already exists.
+        Blockly.utils.addClass(this.svgGroup_, highlight_class);
+    } else {
+        Blockly.utils.removeClass(this.svgGroup_, highlight_class);
+    }
+
+    this.is_error_highlighted = should_be_error_highlighted;
 };

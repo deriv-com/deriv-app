@@ -15,7 +15,7 @@ Blockly.Blocks.lists_isEmpty = {
                 },
             ],
             output         : 'Boolean',
-            outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
+            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,

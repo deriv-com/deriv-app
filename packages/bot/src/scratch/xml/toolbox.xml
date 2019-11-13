@@ -344,11 +344,11 @@
     <!-- Utility -->
     <category id="utility" name="Utility" description="Math, text, logic, lists, etc." iconURI="ic-arrow">
 
-        <category name="Custom functions" id="custom_functions" description="Helps to make strategy clear" dynamic="PROCEDURE"></category>
+        <category name="Custom functions" id="custom_functions" description="Create your own functions" dynamic="PROCEDURE"></category>
 
-        <category name="Variables" id="variables" description="Store values during run time" dynamic="VARIABLE"></category>
+        <category name="Variables" id="variables" description="Create and name memory locations to store values" dynamic="VARIABLE"></category>
 
-        <category name="Notifications" id="notifications" description="Run time messages">
+        <category name="Notifications" id="notifications" description="Create notification messages">
             <block type="text_print">
                 <value name="TEXT">
                     <shadow type="text">
@@ -391,7 +391,7 @@
             </block>
         </category>
 
-        <category name="Time" id="time" description="Arithmetical operations">
+        <category name="Time" id="time" description="Time-based blocks">
             <block type="epoch" />
             <block type="timeout" />
             <block type="totimestamp">
@@ -615,7 +615,7 @@
             </block>
         </category>
 
-        <category name="Logic" id="logic" description="Comparison operations">
+        <category name="Logic" id="logic" description="Logic comparison blocks">
             <block type="controls_if"/>
             <block type="logic_compare" />
             <block type="logic_operation" />
@@ -625,7 +625,7 @@
             <block type="logic_ternary" />
         </category>
 
-        <category name="Lists" id="lists" description="Handling lists of text/numeric values">
+        <category name="Lists" id="lists" description="List-related blocks">
             <block type="lists_create_with">
                 <field name="VARIABLE" variabletype="">list</field>
                 <statement name="STACK">
@@ -661,7 +661,7 @@
             <block type="lists_sort"></block>
         </category>
 
-        <category name="Loops" id="loops" description="Repeat instructions until condition is met">
+        <category name="Loops" id="loops" description="Create repetitive instructions">
             <block type="controls_repeat"></block>
             <block type="controls_repeat_ext"></block>
             <block type="controls_whileUntil"></block>
@@ -670,7 +670,7 @@
             <block type="controls_flow_statements"></block>
         </category>
 
-        <category name="Misc." id="misc" description="Misc.">
+        <category name="Miscellaneous" id="misc" description="Miscellaneous blocks">
             <block type="loader"></block>
             <block type="block_holder"></block>
         </category>

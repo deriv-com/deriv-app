@@ -2,6 +2,11 @@
  * Array making up the CSS content for Blockly.
  */
 Blockly.Css.CONTENT = [
+    '.block--error-highlighted > .blocklyPath {',
+    'stroke: var(--status-danger);',
+    'stroke-width: 3px;',
+    '}',
+    
     '.blocklySvg {',
     'outline: none;',
     'overflow: hidden;',  /* IE overflows by default. */

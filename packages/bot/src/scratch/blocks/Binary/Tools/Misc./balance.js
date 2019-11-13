@@ -31,17 +31,18 @@ Blockly.Blocks.balance = {
                 },
             ],
             output         : null,
+            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('This block returns current account balance'),
+            tooltip        : translate('This block returns account balance'),
             category       : Blockly.Categories.Miscellaneous,
         };
     },
     meta(){
         return {
-            'display_name': translate('Balance'),
-            'description' : translate('This block returns current account balance.'),
+            'display_name': translate('Account balance'),
+            'description' : translate('This block gives you the balance of your account either as a number or a string of text.'),
         };
     },
 };

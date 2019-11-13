@@ -2,6 +2,8 @@ import { expectValue } from '../../../shared';
 import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.smaa_statement = {
+    protected_statements : ['STATEMENT'],
+    required_child_blocks: ['input_list', 'period'],
     init() {
         this.jsonInit(this.definition());
     },

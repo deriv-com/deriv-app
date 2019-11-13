@@ -1,11 +1,11 @@
 {
     "text": [
-        "Performs the following operations between two numbers.",
+        "This block performs arithmetic operations between two numbers.",
         "Available operations:",
         "- Addition",
         "- Subtraction",
         "- Multiplication",
         "- Division",
-        "- Raises the first number to the power of the second number"
+        "- Raise the first number to the power of the second number"
     ]
 }

@@ -35,7 +35,7 @@ Blockly.Blocks.math_change = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Adds a number to a variable'),
+            tooltip          : translate('This block adds the given number to the selected variable'),
             category         : Blockly.Categories.Mathematical,
         };
     },
@@ -47,7 +47,7 @@ Blockly.Blocks.math_change = {
     meta() {
         return {
             'display_name': translate('Change variable'),
-            'description' : translate('Adds a given number to the selected variable.'),
+            'description' : translate('This block adds the given number to the selected variable.'),
         };
     },
 };
@@ -57,11 +57,7 @@ Blockly.JavaScript.math_change = block => {
     // eslint-disable-next-line no-underscore-dangle
     const argument0 = Blockly.JavaScript.variableDB_.getName(variable, Blockly.Variables.NAME_TYPE);
     const argument1 = Blockly.JavaScript.valueToCode(block, 'DELTA', Blockly.JavaScript.ORDER_ADDITION) || '0';
+    const code      = `${argument0} = (typeof ${argument0} === 'number' ? ${argument0} : 0) + ${argument1};`;
 
-    const code = `
-    if (typeof ${argument0} != 'number') {
-        ${argument0} = 0;
-    };
-    ${argument0} += ${argument1};\n`;
     return code;
 };

@@ -122,7 +122,7 @@ const BinarySocketGeneral = (() => {
                 common_store.setError(true, { message: response.error.message });
                 break;
             case 'InvalidToken':
-                client_store().then(() => {
+                client_store.logout().then(() => {
                     common_store.setError(true, {
                         header             : response.error.message,
                         message            : localize('Please Log in'),

@@ -291,7 +291,7 @@ export const saveWorkspace = () => {
 };
 
 export const getPreviousWorkspace = () => {
-    if(localStorage.getItem('workspace')) {
+    if (localStorage.getItem('workspace')) {
         return localStorage.getItem('workspace');
     }
     

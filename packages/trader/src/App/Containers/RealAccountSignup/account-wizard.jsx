@@ -282,5 +282,6 @@ export default connect(({ client }) => ({
     has_currency      : !!client.currency,
     setAccountCurrency: client.setAccountCurrency,
     residence         : client.residence,
+    residence_list    : client.residence_list,
     fetchResidenceList: client.fetchResidenceList,
 }))(AccountWizard);

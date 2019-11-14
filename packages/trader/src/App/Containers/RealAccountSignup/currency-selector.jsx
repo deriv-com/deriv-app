@@ -128,6 +128,7 @@ class CurrencySelector extends React.Component {
                 initialValues={{
                     currency: this.props.value.currency,
                 }}
+                enableReinitialize={true}
                 onSubmit={(values, actions) => {
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}

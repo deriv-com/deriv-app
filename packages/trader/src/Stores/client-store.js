@@ -440,14 +440,14 @@ export default class ClientStore extends BaseStore {
     @action.bound
     realAccountSignup(form_values) {
         return new Promise(async (resolve, reject) => {
-            form_values.residence = this.accounts[this.loginid].residence;
+            form_values.residence = this.residence;
             form_values.salutation = 'Mr'; // TODO remove this once the api for salutation is optional.
             const response = await WS.newAccountReal(form_values);
             if (!response.error) {
                 await this.accountRealReaction(response);
                 resolve(response);
             } else {
-                reject(response.error.message);
+                reject(response.error);
             }
         });
     }

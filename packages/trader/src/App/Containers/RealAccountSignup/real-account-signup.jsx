@@ -1,42 +1,58 @@
-import classNames            from 'classnames';
+import classNames           from 'classnames';
 import {
     Modal,
-    Loading }                from 'deriv-components';
-import React, { Component }  from 'react';
-import { localize }          from 'App/i18n';
-import Localize              from 'App/Components/Elements/localize.jsx';
-import Icon                  from 'Assets/icon.jsx';
-import IconDuplicate         from 'Assets/Signup/icon-duplicate.jsx';
-import { connect }           from 'Stores/connect';
-import AccountWizard         from './account-wizard.jsx';
-import AddOrManageAccounts   from './add-or-manage-accounts.jsx';
-import FinishedSetCurrency   from './finished-set-currency.jsx';
+    Loading }               from 'deriv-components';
+import React, { Component } from 'react';
+import Button               from 'deriv-components/src/components/button';
+import { localize }         from 'App/i18n';
+import Localize             from 'App/Components/Elements/localize.jsx';
+import Icon                 from 'Assets/icon.jsx';
+import IconDuplicate        from 'Assets/Signup/icon-duplicate.jsx';
+import { connect }          from 'Stores/connect';
+import AccountWizard        from './account-wizard.jsx';
+import AddOrManageAccounts  from './add-or-manage-accounts.jsx';
+import FinishedSetCurrency  from './finished-set-currency.jsx';
 import SuccessDialog         from '../Modals/success-dialog.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
-const ErrorModal = ({ message }) => (
-    <div className='account-wizard--error'>
-        <IconDuplicate />
-        <h1><Localize i18n_default_text='Whoops!' /></h1>
-        <p>
-            {localize(message)}
-        </p>
-        <a
-            href='https://www.deriv.com/help-centre/'
-            type='button'
-            className='btn btn--primary btn__medium'
-            target='_blank'
-            rel='noopener noreferrer'
-        >
-            <span className='btn__text'>
+const ErrorModal = ({ message, code, openPersonalDetails }) => {
+    return (
+        <div className='account-wizard--error'>
+            <IconDuplicate />
+            <h1><Localize i18n_default_text='Whoops!' /></h1>
+            <p>
+                {localize(message)}
+            </p>
+            {code !== 'InvalidPhone' &&
+            <a
+                href='https://www.deriv.com/help-centre/'
+                type='button'
+                className='btn btn--primary btn__medium'
+                target='_blank'
+                rel='noopener noreferrer'
+            >
+
+                <span className='btn__text'>
+                    <Localize
+                        i18n_default_text='Go To Help Centre'
+                    />
+                </span>
+            </a>
+            }
+            {code === 'InvalidPhone' &&
+            <Button
+                primary
+                onClick={openPersonalDetails}
+            >
                 <Localize
-                    i18n_default_text='Go To Help Centre'
+                    i18n_default_text='Try again using a different number'
                 />
-            </span>
-        </a>
-    </div>
-);
+            </Button>
+            }
+        </div>
+    );
+};
 
 const LoadingModal = () => <Loading is_fullscreen={false} />;
 
@@ -93,7 +109,11 @@ class RealAccountSignup extends Component {
                 },
                 {
                     value: () => (
-                        <ErrorModal message={this.props.state_value.error_message} />
+                        <ErrorModal
+                            message={this.props.state_value.error_message}
+                            code={this.props.state_value.error_code }
+                            openPersonalDetails={this.openPersonalDetails}
+                        />
                     ),
                 },
             ],
@@ -163,10 +183,11 @@ class RealAccountSignup extends Component {
         });
     };
 
-    showErrorModal = (message) => {
+    showErrorModal = (error) => {
         this.props.setParams({
             active_modal_index: 5,
-            error_message     : message,
+            error_message     : error.message,
+            error_code        : error.code,
         });
     };
 
@@ -176,6 +197,12 @@ class RealAccountSignup extends Component {
         }
         this.props.closeRealAccountSignup();
     };
+
+    openPersonalDetails = () => {
+        this.props.setParams({
+            active_modal_index: 0,
+        });
+    }
 
     get active_modal_index() {
         const ACCOUNT_WIZARD = 1;

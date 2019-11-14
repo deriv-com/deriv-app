@@ -89,6 +89,7 @@ export default class UIStore extends BaseStore {
         current_currency  : '',
         success_message   : '',
         error_message     : '',
+        error_code        : '',
     };
 
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
@@ -431,6 +432,7 @@ export default class UIStore extends BaseStore {
             current_currency  : '',
             success_message   : '',
             error_message     : '',
+            error_code        : '',
         };
     }
 }

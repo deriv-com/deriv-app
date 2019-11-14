@@ -73,11 +73,32 @@ class AccountWizard extends React.Component {
     }
 
     componentDidMount() {
-        const items = { ...this.state.items };
+        this.fetchFromStorage();
+        const items = this.state.items.slice(0);
         this.getCountryCode().then(phone_idd => {
             items[1].form_value.phone = phone_idd;
             this.setState(items);
         });
+    }
+
+    fetchFromStorage = () => {
+        const stored_items = localStorage.getItem('real-account-signup-wizard');
+        try {
+            const items  = JSON.parse(stored_items);
+            const cloned = this.state.items.slice(0);
+            items.forEach((item, index) => {
+                if (typeof item === 'object') {
+                    cloned[index].form_value = item;
+                }
+            });
+            this.setState({
+                items: cloned,
+            });
+            localStorage.removeItem('real-account-signup-wizard');
+        } catch (e) {
+            // eslint-disable-next-line no-console
+            console.warn(e);
+        }
     }
 
     get form_values() {
@@ -137,7 +158,24 @@ class AccountWizard extends React.Component {
         });
     };
 
-    submitForm = () => this.props.realAccountSignup(this.form_values);
+    cacheFormValues = () => {
+        localStorage.setItem(
+            'real-account-signup-wizard',
+            JSON.stringify(
+                this.state.items.map(item => {
+                    if (typeof item.form_value === 'object') {
+                        return item.form_value;
+                    }
+                    return false;
+                }),
+            ),
+        );
+    };
+
+    submitForm = () => {
+        this.cacheFormValues();
+        return this.props.realAccountSignup(this.form_values);
+    };
 
     setAccountCurrency = () => this.props.setAccountCurrency(this.form_values.currency);
 
@@ -165,7 +203,7 @@ class AccountWizard extends React.Component {
             return props;
         }
         return {};
-    }
+    };
 
     createRealAccount(setSubmitting) {
         if (this.props.has_real_account
@@ -175,7 +213,7 @@ class AccountWizard extends React.Component {
                 .then((response) => {
                     setSubmitting(false);
                     this.props.onSuccessAddCurrency(
-                        response.echo_req.set_account_currency.toLowerCase()
+                        response.echo_req.set_account_currency.toLowerCase(),
                     );
                 })
                 .catch(error_message => {
@@ -188,11 +226,11 @@ class AccountWizard extends React.Component {
                 .then((response) => {
                     setSubmitting(false);
                     this.props.onSuccessAddCurrency(
-                        response.new_account_real.currency.toLowerCase()
+                        response.new_account_real.currency.toLowerCase(),
                     );
                 })
-                .catch(error_message => {
-                    this.props.onError(error_message);
+                .catch(error => {
+                    this.props.onError(error);
                 });
         }
     }
@@ -213,7 +251,7 @@ class AccountWizard extends React.Component {
     render() {
         if (!this.state.finished) {
             const BodyComponent = this.getCurrent('body');
-            const passthrough = this.getPropsForChild();
+            const passthrough   = this.getPropsForChild();
             return (
                 <div className='account-wizard'>
                     {!this.props.has_real_account &&

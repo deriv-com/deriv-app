@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.lists_isEmpty = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.lists_isEmpty = {
     },
     definition(){
         return {
-            message0: translate('list %1 is empty'),
+            message0: localize('list %1 is empty'),
             args0   : [
                 {
                     type : 'input_value',
@@ -19,14 +19,14 @@ Blockly.Blocks.lists_isEmpty = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Checks if a given list is empty'),
+            tooltip        : localize('Checks if a given list is empty'),
             category       : Blockly.Categories.List,
         };
     },
     meta(){
         return {
-            'display_name': translate('Is list empty?'),
-            'description' : translate('This block checks if a given list is empty. It returns “True” if the list is empty, “False” if otherwise.'),
+            'display_name': localize('Is list empty?'),
+            'description' : localize('This block checks if a given list is empty. It returns “True” if the list is empty, “False” if otherwise.'),
         };
     },
 };

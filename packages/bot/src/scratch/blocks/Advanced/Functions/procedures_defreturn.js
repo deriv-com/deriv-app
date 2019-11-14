@@ -1,5 +1,5 @@
+import { localize }     from 'deriv-translations/lib/i18n';
 import { plusIconDark } from '../../images';
-import { translate }    from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.procedures_defreturn = {
     init() {
@@ -21,7 +21,7 @@ Blockly.Blocks.procedures_defreturn = {
     },
     definition(){
         return {
-            message0: translate('function %1 %2 %3'),
+            message0: localize('function %1 %2 %3'),
             message1: 'return %1',
             args0   : [
                 {
@@ -49,14 +49,14 @@ Blockly.Blocks.procedures_defreturn = {
             colour         : Blockly.Colours.Special2.colour,
             colourSecondary: Blockly.Colours.Special2.colourSecondary,
             colourTertiary : Blockly.Colours.Special2.colourTertiary,
-            tooltip        : translate('Function that returns a value'),
+            tooltip        : localize('Function that returns a value'),
             category       : Blockly.Categories.Functions,
         };
     },
     meta(){
         return {
-            'display_name': translate('Function that returns a value'),
-            'description' : translate('This block is similar to the one above, except that this returns a value. The returned value can be assigned to a variable of your choice.'),
+            'display_name': localize('Function that returns a value'),
+            'description' : localize('This block is similar to the one above, except that this returns a value. The returned value can be assigned to a variable of your choice.'),
         };
     },
     onAddClick   : Blockly.Blocks.procedures_defnoreturn.onAddClick,

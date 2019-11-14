@@ -5,8 +5,8 @@ import {
     Dropdown,
     Input,
     Modal,
-    Tabs,
     UnderlyingIcon,
+    Tabs,
 }                       from 'deriv-components';
 import {
     Formik,
@@ -83,9 +83,9 @@ class QuickStrategy extends React.PureComponent {
         }                             = this.props;
         const { strategies }          = config;
         const asset_dropdown_options = {};
-        
+
         Object.assign(asset_dropdown_options, market_dropdown);
-        
+
         if (asset_dropdown_options) {
             Object.keys(asset_dropdown_options).forEach(key => {
                 const submarket = asset_dropdown_options[key];

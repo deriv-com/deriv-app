@@ -477,8 +477,9 @@
     }
 }
 
-/** @define payment-agent-transfer */
-.payment-agent-transfer {
+/** @define payment-agent-transfer; weak */
+div.payment-agent-transfer {
+    // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
     &__header {
         margin-bottom: 2.8rem;
     }

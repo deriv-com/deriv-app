@@ -31,7 +31,12 @@ export const scratchWorkspaceInit = async () => {
             zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
         });
 
-        const onWorkspaceChange = () => {
+        const onWorkspaceChange = event => {
+            const event_to_exclude = ['dragOutside'];
+            if (event_to_exclude.includes(event.type)) {
+                return;
+            }
+
             const { save_status } = config;
             toolbar.setSaveStatus(save_status.SAVING);
 

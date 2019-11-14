@@ -276,8 +276,8 @@ const config = {
     },
     save_status: {
         EMPTY : { index: 0, message: translate('') },
-        SAVING: { index: 1, message: translate('Saving') },
-        SAVED : { index: 2, message: translate('Saved') },
+        SAVING: { index: 1, message: translate('Saving draft') },
+        SAVED : { index: 2, message: translate('Draft Saved') },
     },
 };
 

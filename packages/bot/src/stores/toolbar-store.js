@@ -4,6 +4,7 @@ import {
 }                               from 'mobx';
 import { translate }            from '../utils/lang/i18n';
 import { delayCallbackByMs }    from '../utils/tools';
+import config                   from '../constants';
 
 export default class ToolbarStore {
     constructor(root_store) {
@@ -14,7 +15,7 @@ export default class ToolbarStore {
     @observable is_toolbox_open = false;
     @observable is_search_loading = false;
     @observable file_name = translate('Untitled Bot');
-    @observable save_status = { index: 0, message: translate('') };
+    @observable save_status = config.save_status.EMPTY;
 
     @action.bound
     onRunClick() {

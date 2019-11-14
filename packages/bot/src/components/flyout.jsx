@@ -101,7 +101,8 @@ class Flyout extends React.PureComponent {
                                             }
                                             case Blockly.Xml.NODE_BUTTON: {
                                                 const callback_key = node.getAttribute('callbackKey');
-                                                const callback = Blockly.derivWorkspace.getButtonCallback(callback_key) || (() => { });
+                                                const button_cb    = Blockly.derivWorkspace.getButtonCallback(callback_key);
+                                                const callback     = button_cb || (() => { });
 
                                                 return (
                                                     <button
@@ -120,9 +121,10 @@ class Flyout extends React.PureComponent {
                                                             // Workaround for not having a flyout workspace.
                                                             // eslint-disable-next-line no-underscore-dangle
                                                             flyout_button.targetWorkspace_ = Blockly.derivWorkspace;
-                                                            // eslint-disable-next-line no-underscore-dangle
-                                                            flyout_button.getTargetWorkspace =
-                                                    () => flyout_button.targetWorkspace_;
+                                                            flyout_button.getTargetWorkspace = () => {
+                                                                // eslint-disable-next-line no-underscore-dangle
+                                                                return flyout_button.targetWorkspace_;
+                                                            };
 
                                                             callback(flyout_button);
                                                         }}

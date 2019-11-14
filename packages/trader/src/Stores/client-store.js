@@ -445,6 +445,7 @@ export default class ClientStore extends BaseStore {
             const response = await WS.newAccountReal(form_values);
             if (!response.error) {
                 await this.accountRealReaction(response);
+                localStorage.removeItem('real_account_signup_wizard');
                 resolve(response);
             } else {
                 reject(response.error);

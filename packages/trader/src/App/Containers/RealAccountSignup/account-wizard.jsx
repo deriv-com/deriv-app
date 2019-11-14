@@ -82,7 +82,7 @@ class AccountWizard extends React.Component {
     }
 
     fetchFromStorage = () => {
-        const stored_items = localStorage.getItem('real-account-signup-wizard');
+        const stored_items = localStorage.getItem('real_account_signup_wizard');
         try {
             const items  = JSON.parse(stored_items);
             const cloned = this.state.items.slice(0);
@@ -93,8 +93,9 @@ class AccountWizard extends React.Component {
             });
             this.setState({
                 items: cloned,
+                step : 1, // Send the user back to personal details.
             });
-            localStorage.removeItem('real-account-signup-wizard');
+            localStorage.removeItem('real_account_signup_wizard');
         } catch (e) {
             // eslint-disable-next-line no-console
             console.warn(e);
@@ -160,7 +161,7 @@ class AccountWizard extends React.Component {
 
     cacheFormValues = () => {
         localStorage.setItem(
-            'real-account-signup-wizard',
+            'real_account_signup_wizard',
             JSON.stringify(
                 this.state.items.map(item => {
                     if (typeof item.form_value === 'object') {

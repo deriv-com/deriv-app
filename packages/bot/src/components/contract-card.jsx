@@ -4,8 +4,8 @@ import {
     UnderlyingIcon }         from 'deriv-components';
 import React                 from 'react';
 import PropTypes             from 'prop-types';
-import CurrencyUtils         from 'deriv-shared/utils/currency';
 import { localize }          from 'deriv-translations/lib/i18n';
+import CurrencyUtils         from 'deriv-shared/utils/currency';
 import ContractCardLoader    from './contract-card-loading.jsx';
 import ContractResultOverlay from './contract-result-overlay.jsx';
 import {

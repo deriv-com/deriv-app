@@ -148,13 +148,31 @@ export default class FlyoutStore {
         this.flyout_width = Math.max(this.flyout_min_width, longest_block_width + 65);
     }
 
+    /**
+     * Close the flyout on click outside itself or parent toolbox.
+     */
+    @action.bound
+    onClickOutsideFlyout(event) {
+        if (!this.is_visible || !Blockly.derivWorkspace) {
+            return;
+        }
+
+        const toolbox         = Blockly.derivWorkspace.toolbox_; // eslint-disable-line
+        const is_flyout_click = event.path.some(el => el.classList && el.classList.contains('flyout'));
+        const isToolboxClick  = () => toolbox.HtmlDiv.contains(event.target);
+
+        if (!is_flyout_click && !isToolboxClick()) {
+            toolbox.clearSelection();
+        }
+    }
+
     @action.bound
     onMount() {
-        window.addEventListener('click', this.clickOutsideFlyoutCallback);
+        window.addEventListener('click', this.onClickOutsideFlyout);
     }
 
     @action.bound
     onUnmount() {
-        window.removeEventListener('click', this.clickOutsideFlyoutCallback);
+        window.removeEventListener('click', this.onClickOutsideFlyout);
     }
 }

@@ -29,7 +29,7 @@ Blockly.Blocks.lists_isEmpty = {
             'description' : translate('This block checks if a given list is empty. It returns “True” if the list is empty, “False” if otherwise.'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             VALUE: null,
         };

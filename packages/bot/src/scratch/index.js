@@ -230,7 +230,7 @@ class DBot {
                 isUiClickEvent(block)
             ) {
                 // No required inputs, ignore this block.
-                if (!block.getRequiredInputs) {
+                if (!block.getRequiredValueInputs) {
                     return;
                 }
 
@@ -242,7 +242,7 @@ class DBot {
                     return;
                 }
 
-                const required_inputs_object = block.getRequiredInputs();
+                const required_inputs_object = block.getRequiredValueInputs();
                 const required_input_names   = Object.keys(required_inputs_object);
                 const should_highlight       = required_input_names.some(input_name => {
                     const input = block.getInput(input_name);

@@ -39,7 +39,7 @@ Blockly.Blocks.math_constrain = {
             'description' : translate('This block constrains a given number so that it is within a set range.'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             VALUE: null,
             LOW  : null,

@@ -35,7 +35,7 @@ Blockly.Blocks.todatetime = {
             'description' : translate('This block converts the number of seconds since the Unix Epoch (1 January 1970) into a string of text representing the date and time.'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             TIMESTAMP: null,
         };

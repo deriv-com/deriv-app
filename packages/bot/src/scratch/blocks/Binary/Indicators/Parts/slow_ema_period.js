@@ -23,7 +23,7 @@ Blockly.Blocks.slow_ema_period = {
     },
     onchange       : Blockly.Blocks.input_list.onchange,
     allowed_parents: ['macda_statement'],
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             SLOW_EMA_PERIOD: null,
         };

@@ -33,7 +33,7 @@ Blockly.Blocks.period = {
         'sma_statement',
         'smaa_statement',
     ],
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             PERIOD: null,
         };

@@ -57,7 +57,7 @@ Blockly.Blocks.timeout = {
             }
         }
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             SECONDS: null,
         };

@@ -38,7 +38,7 @@ Blockly.Blocks.get_ohlc = {
             'description' : translate('This block gives you a specific candle from within the selected time interval.'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             CANDLEINDEX: null,
         };

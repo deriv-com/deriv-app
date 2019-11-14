@@ -28,7 +28,7 @@ Blockly.Blocks.lists_length = {
             'description' : translate('This block gives you the total number of items in a given list.'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             VALUE: null,
         };

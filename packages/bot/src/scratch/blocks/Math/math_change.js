@@ -50,7 +50,7 @@ Blockly.Blocks.math_change = {
             'description' : translate('This block adds the given number to the selected variable.'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             DELTA: null,
         };

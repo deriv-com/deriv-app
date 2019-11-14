@@ -80,7 +80,7 @@ Blockly.Blocks.lists_statement = {
             }
         }
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             VALUE: null,
         };

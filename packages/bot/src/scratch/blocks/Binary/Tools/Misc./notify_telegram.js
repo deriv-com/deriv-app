@@ -39,7 +39,7 @@ Blockly.Blocks.notify_telegram = {
             'description' : translate('This block sends a message to a Telegram channel.'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             TELEGRAM_ACCESS_TOKEN: null,
             TELEGRAM_CHAT_ID     : null,

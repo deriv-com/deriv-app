@@ -23,7 +23,7 @@ Blockly.Blocks.std_dev_multiplier_up = {
     },
     onchange       : Blockly.Blocks.input_list.onchange,
     allowed_parents: ['bb_statement', 'bba_statement'],
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             UPMULTIPLIER: null,
         };

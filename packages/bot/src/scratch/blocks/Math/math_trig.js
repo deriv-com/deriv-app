@@ -41,7 +41,7 @@ Blockly.Blocks.math_trig = {
             'description' : translate('This block performs trigonometric functions.'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             NUM: null,
         };

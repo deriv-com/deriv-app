@@ -29,7 +29,7 @@ Blockly.Blocks.text_isEmpty = {
             'description' : translate('Tests whether a string of text is empty. Returns a boolean value (true or false).'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             VALUE: null,
         };

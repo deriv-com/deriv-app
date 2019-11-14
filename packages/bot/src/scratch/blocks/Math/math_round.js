@@ -39,7 +39,7 @@ Blockly.Blocks.math_round = {
             'description' : translate('This block rounds a given number according to the selection: round, round up, round down.'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             NUM: null,
         };

@@ -36,7 +36,7 @@ Blockly.Blocks.controls_repeat_ext = {
             'description' : translate('This block is similar to the block above, except that the number of times it repeats is determined by a given variable.'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             TIMES: null,
         };

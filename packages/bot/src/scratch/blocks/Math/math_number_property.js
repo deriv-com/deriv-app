@@ -71,7 +71,7 @@ Blockly.Blocks.math_number_property = {
             this.removeInput('DIVISOR');
         }
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             NUMBER_TO_CHECK: null,
         };

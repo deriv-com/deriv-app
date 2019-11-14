@@ -34,7 +34,7 @@ Blockly.Blocks.totimestamp = {
             'description' : translate('This block converts a string of text that represents the date and time into seconds since the Unix Epoch (1 January 1970). The time and time zone offset are optional. Example: 2019-01-01 21:03:45 GMT+0800 will be converted to 1546347825.'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             DATETIME: null,
         };

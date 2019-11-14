@@ -74,7 +74,7 @@ Blockly.Blocks.input_list = {
         'sma_statement',
         'smaa_statement',
     ],
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             INPUT_LIST: null,
         };

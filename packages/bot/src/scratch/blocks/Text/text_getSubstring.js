@@ -103,7 +103,7 @@ Blockly.Blocks.text_getSubstring = {
         this.initSvg();
         this.render(false);
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             STRING: null,
         };

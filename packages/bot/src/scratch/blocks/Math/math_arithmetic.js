@@ -39,7 +39,7 @@ Blockly.Blocks.math_arithmetic = {
             'description' : translate('This block performs arithmetic operations between two numbers.'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             A: null,
             B: null,

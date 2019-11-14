@@ -37,7 +37,7 @@ Blockly.Blocks.text_trim = {
             'description' : translate('Trims the spaces within a given string or text.'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             TEXT: null,
         };

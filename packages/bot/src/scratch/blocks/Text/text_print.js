@@ -28,7 +28,7 @@ Blockly.Blocks.text_print = {
             'description' : translate('This block displays a dialog window with a given message.'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             TEXT: null,
         };

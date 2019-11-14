@@ -37,7 +37,7 @@ Blockly.Blocks.text_indexOf = {
             'description' : translate('Searches through a string of text for a specific occurrence of a given character or word, and returns the position.'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             VALUE: null,
             FIND : null,

@@ -71,7 +71,7 @@ Blockly.Blocks.text_charAt = {
         this.initSvg();
         this.render(false);
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             VALUE: null,
         };

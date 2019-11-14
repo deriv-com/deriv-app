@@ -211,7 +211,7 @@ Blockly.Blocks.controls_if = {
             this.elseIfCount--;
         });
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         const required_inputs = {};
         this.inputList
             .filter(input => /^IF[0-9]*?$/.test(input.name))

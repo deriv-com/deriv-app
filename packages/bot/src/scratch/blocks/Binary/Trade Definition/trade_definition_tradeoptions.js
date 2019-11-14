@@ -319,7 +319,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         
         return container;
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             AMOUNT  : null,
             DURATION: null,

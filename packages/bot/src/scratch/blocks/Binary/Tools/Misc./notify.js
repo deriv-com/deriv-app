@@ -40,7 +40,7 @@ Blockly.Blocks.notify = {
             'description' : translate('This block displays a message. You can specify the color of the message and choose from 6 different sound options.'),
         };
     },
-    getRequiredInputs() {
+    getRequiredValueInputs() {
         return {
             MESSAGE: null,
         };

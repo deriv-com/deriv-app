@@ -1,8 +1,8 @@
 import React                from 'react';
 import ReactDOM             from 'react-dom';
+import { localize }         from 'deriv-translations/lib/i18n';
 import ScratchStore         from '../../stores/scratch-store';
 import { Arrow1Icon }       from '../../components/Icons.jsx';
-import { translate }        from '../../utils/lang/i18n';
 
 /* eslint-disable func-names, no-underscore-dangle */
 
@@ -31,7 +31,7 @@ Blockly.Toolbox.prototype.init = function () {
     const el_toolbox_header = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__header');
     const el_toolbox_title = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__title');
 
-    el_toolbox_title.textContent = translate('Blocks Menu');
+    el_toolbox_title.textContent = localize('Blocks Menu');
     el_toolbox_header.appendChild(el_toolbox_title);
     this.HtmlDiv.appendChild(el_toolbox_header);
 
@@ -78,7 +78,7 @@ Blockly.Toolbox.prototype.populate_ = function (newTree) {
     
     const { quick_strategy } = ScratchStore.instance;
     const quick_strat_btn = document.createElement('BUTTON');
-    quick_strat_btn.innerHTML = translate('Quick Strategy');
+    quick_strat_btn.innerHTML = localize('Quick Strategy');
     quick_strat_btn.className = 'toolbox__button btn effect btn--primary btn__medium';
     quick_strat_btn.onclick = quick_strategy.toggleStrategyModal;
 

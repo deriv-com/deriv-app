@@ -2,7 +2,7 @@ import {
     observable,
     action,
 }                               from 'mobx';
-import { translate }            from '../utils/lang/i18n';
+import { localize }             from 'deriv-translations/lib/i18n';
 import { delayCallbackByMs }    from '../utils/tools';
 import config                   from '../constants';
 
@@ -14,7 +14,7 @@ export default class ToolbarStore {
     @observable is_dialog_open = false;
     @observable is_toolbox_open = false;
     @observable is_search_loading = false;
-    @observable file_name = translate('Untitled Bot');
+    @observable file_name = localize('Untitled Bot');
     @observable save_status = config.save_status.EMPTY;
 
     @action.bound
@@ -89,7 +89,7 @@ export default class ToolbarStore {
         workspace.clear();
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.blocksXmlStr), workspace);
         Blockly.Events.setGroup(false);
-        this.file_name = translate('Untitled Bot');
+        this.file_name = localize('Untitled Bot');
         this.is_dialog_open = false;
     }
 

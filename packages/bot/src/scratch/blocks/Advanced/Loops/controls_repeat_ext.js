@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.controls_repeat_ext = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.controls_repeat_ext = {
     },
     definition(){
         return {
-            message0: translate('repeat %1 times'),
+            message0: localize('repeat %1 times'),
             args0   : [
                 {
                     type : 'input_value',
@@ -14,7 +14,7 @@ Blockly.Blocks.controls_repeat_ext = {
                     check: 'Number',
                 },
             ],
-            message1: translate('do %1'),
+            message1: localize('do %1'),
             args1   : [
                 {
                     type: 'input_statement',
@@ -26,14 +26,14 @@ Blockly.Blocks.controls_repeat_ext = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Repeats inside instructions specified number of times'),
+            tooltip          : localize('Repeats inside instructions specified number of times'),
             category         : Blockly.Categories.Loop,
         };
     },
     meta(){
         return {
-            'display_name': translate('Repeat (2)'),
-            'description' : translate('This block is similar to the block above, except that the number of times it repeats is determined by a given variable.'),
+            'display_name': localize('Repeat (2)'),
+            'description' : localize('This block is similar to the block above, except that the number of times it repeats is determined by a given variable.'),
         };
     },
 };

@@ -13,6 +13,7 @@ import PropTypes            from 'prop-types';
 import React                from 'react';
 import Dialog               from './dialog.jsx';
 import {
+    CheckIcon,
     ToolbarCloseIcon,
     ToolbarNewFileIcon,
     ToolbarOpenIcon,
@@ -115,6 +116,24 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
                 }
             }
         </Formik>
+    </div>
+);
+
+const saveStatusIcon = index => {
+    switch (index) {
+        case 1:
+            return <div className='loader toolbar__draft-icon' />;
+        case 2:
+            return <CheckIcon className='toolbar__draft-icon' />;
+        default:
+            return <></>;
+    }
+};
+
+const SaveStatus = ({ status : { message, index } }) => (
+    <div className='toolbar__draft-status'>
+        <span className='toolbar__draft-message'>{message}</span>
+        {saveStatusIcon(index)}
     </div>
 );
 
@@ -230,6 +249,7 @@ const Toolbar = ({
     onToolboxToggle,
     onUndoClick,
     onZoomInOutClick,
+    save_status,
     toggleSaveLoadModal,
 }) => (
     <div className='toolbar'>
@@ -272,6 +292,9 @@ const Toolbar = ({
                 onUndoClick={onUndoClick}
                 onZoomInOutClick={onZoomInOutClick}
                 toggleSaveLoadModal={toggleSaveLoadModal}
+            />
+            <SaveStatus
+                status={save_status}
             />
         </div>
         <div className='toolbar__section'>
@@ -321,6 +344,7 @@ Toolbar.propTypes = {
     onToolboxToggle        : PropTypes.func,
     onUndoClick            : PropTypes.func,
     onZoomInOutClick       : PropTypes.func,
+    save_status            : PropTypes.any,
     toggleSaveLoadModal    : PropTypes.func,
 };
 
@@ -347,5 +371,6 @@ export default connect(({ run_panel, saveload, toolbar }) => ({
     onToolboxToggle        : toolbar.onToolboxToggle,
     onUndoClick            : toolbar.onUndoClick,
     onZoomInOutClick       : toolbar.onZoomInOutClick,
+    save_status            : toolbar.save_status,
     toggleSaveLoadModal    : saveload.toggleSaveLoadModal,
 }))(Toolbar);

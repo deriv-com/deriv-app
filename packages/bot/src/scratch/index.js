@@ -1,14 +1,17 @@
 import                                    './blocks';
 import                                    './hooks';
+import { saveWorkspace }              from './utils';
+import config                         from '../constants';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import ScratchStore                   from '../stores/scratch-store';
 import { observer as globalObserver } from '../utils/observer';
-import config                         from '../constants';
+import { delayCallbackByMs }          from '../utils/tools';
 
 export const scratchWorkspaceInit = async () => {
     try {
         const el_scratch_div = document.getElementById('scratch_div');
         const el_app_contents = document.getElementById('app_contents');
+        const { saveload, toolbar } = ScratchStore.instance;
 
         // eslint-disable-next-line
         const toolbox_xml = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(response => response.text());
@@ -22,6 +25,18 @@ export const scratchWorkspaceInit = async () => {
             trashcan: true,
             zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
         });
+
+        const onWorkspaceChange = () => {
+            const { save_status } = config;
+            toolbar.setSaveStatus(save_status.SAVING);
+
+            delayCallbackByMs(saveWorkspace, 1000).then(timer => {
+                clearTimeout(timer);
+                toolbar.setSaveStatus(save_status.SAVED);
+            });
+        };
+
+        workspace.addChangeListener(onWorkspaceChange);
 
         Blockly.JavaScript.init(workspace);
         Blockly.JavaScript.variableDB_.setVariableMap(workspace.getVariableMap()); // eslint-disable-line
@@ -59,7 +74,6 @@ export const scratchWorkspaceInit = async () => {
         };
 
         const drop_zone = document.body;
-        const { saveload } = ScratchStore.instance;
 
         drop_zone.addEventListener('dragover', handleDragOver, false);
         drop_zone.addEventListener('drop', e => saveload.handleFileChange(e), false);

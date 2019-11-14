@@ -14,6 +14,7 @@ export default class ToolbarStore {
     @observable is_toolbox_open = false;
     @observable is_search_loading = false;
     @observable file_name = translate('Untitled Bot');
+    @observable save_status = { index: 0, message: translate('') };
 
     @action.bound
     onRunClick() {
@@ -89,6 +90,11 @@ export default class ToolbarStore {
         Blockly.Events.setGroup(false);
         this.file_name = translate('Untitled Bot');
         this.is_dialog_open = false;
+    }
+
+    @action.bound
+    setSaveStatus = status => {
+        this.save_status = status;
     }
 
     @action.bound

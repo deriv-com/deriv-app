@@ -284,3 +284,8 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
 
     return block;
 };
+
+export const saveWorkspace = () => {
+    const workspace_dom = Blockly.Xml.workspaceToDom(Blockly.derivWorkspace);
+    localStorage.setItem('workspace', Blockly.Xml.domToText(workspace_dom));
+}

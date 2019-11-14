@@ -87,6 +87,20 @@
     &__animation {
         width: 354px;
     }
+    &__draft {
+        &-status {
+            display: flex;
+        }
+        &-message {
+            font-weight: 700;
+            font-size: 14px;
+            padding: 5px;
+            align-self: center;
+        }
+        &-icon {
+            align-self: center;
+        }
+    }
 }
 
 .loader {

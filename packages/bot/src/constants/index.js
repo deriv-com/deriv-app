@@ -274,6 +274,11 @@ const config = {
             description: translate('The Oscar\'s Grind Strategy is a low-risk positive progression strategy that first appeared in 1965. By using this strategy, you will increase the size of your contract after each successful trade, the size of your contract will increase after successful trades, and remain unchanged after unsuccessful trades.'),
         },
     },
+    save_status: {
+        EMPTY : { index: 0, message: translate('') },
+        SAVING: { index: 1, message: translate('Saving') },
+        SAVED : { index: 2, message: translate('Saved') },
+    },
 };
 
 export default config;

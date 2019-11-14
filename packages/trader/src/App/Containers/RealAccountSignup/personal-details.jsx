@@ -277,7 +277,7 @@ class PersonalDetails extends Component {
             ],
             phone: [
                 v => !!v,
-                v => /^\+((-|\s)*[0-9]){8,35}$/.exec(v) !== null,
+                v => /^\+(?:[0-9] ?){6,14}[0-9]$/.exec(v) !== null,
                 v => this.props.residence_list.some(item => v.startsWith(`+${item.phone_idd}`)),
             ],
         };

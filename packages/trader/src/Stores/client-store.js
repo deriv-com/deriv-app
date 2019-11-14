@@ -326,6 +326,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_mt5_allowed() {
+        if (!this.landing_companies) return false;
         return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
     }
 
@@ -637,7 +638,11 @@ export default class ClientStore extends BaseStore {
             );
         }
         this.responseWebsiteStatus(await WS.storage.websiteStatus());
-
+        const account_settings = (await WS.authorized.storage.getSettings()).get_settings;
+        if (account_settings && !account_settings.residence) {
+            await this.fetchResidenceList();
+            this.root_store.ui.toggleSetResidenceModal(true);
+        }
         this.registerReactions();
     }
 
@@ -973,6 +978,29 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setDeviceData(device_data) {
         this.device_data = device_data;
+    }
+
+    @action.bound
+    onSetResidence({ residence }, cb) {
+        if (!residence) return;
+        WS.setSettings({ residence: residence }).then(async response => {
+            if (response.error) {
+                cb(response.error.message);
+            } else {
+                await this.setResidence(residence);
+                await WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)
+                    .then(this.responseLandingCompany);
+                await WS.authorized.storage.getSettings().then(async response => {
+                    if (response.error) {
+                        cb(response.error.message);
+                        return;
+                    }
+                    await this.setAccountSettings(response.get_settings);
+                    await this.refreshNotifications();
+                });
+                cb();
+            }
+        });
     }
 
     @action.bound

@@ -34,6 +34,7 @@ export default class UIStore extends BaseStore {
     @observable is_services_error_visible             = false;
     @observable is_unsupported_contract_modal_visible = false;
     @observable is_account_signup_modal_visible       = false;
+    @observable is_set_residence_modal_visible        = false;
     @observable is_reset_password_modal_visible       = false;
     // @observable is_purchase_lock_on       = false;
 
@@ -388,6 +389,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleUnsupportedContractModal(state_change = !this.is_unsupported_contract_modal_visible) {
         this.is_unsupported_contract_modal_visible = state_change;
+    }
+
+    @action.bound
+    toggleSetResidenceModal(state_change = !this.is_set_residence_modal_visible) {
+        this.is_set_residence_modal_visible = state_change;
     }
 
     @action.bound

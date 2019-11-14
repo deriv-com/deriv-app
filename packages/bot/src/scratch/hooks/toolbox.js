@@ -1,8 +1,8 @@
-import React          from 'react';
-import ReactDOM       from 'react-dom';
-import { localize }   from 'deriv-translations/lib/i18n';
-import ScratchStore   from '../../stores/scratch-store';
-import { Arrow1Icon } from '../../components/Icons.jsx';
+import React                from 'react';
+import ReactDOM             from 'react-dom';
+import { localize }         from 'deriv-translations/lib/i18n';
+import ScratchStore         from '../../stores/scratch-store';
+import { Arrow1Icon }       from '../../components/Icons.jsx';
 
 /* eslint-disable func-names, no-underscore-dangle */
 
@@ -55,6 +55,11 @@ Blockly.Toolbox.prototype.init = function () {
     this.createFlyout_();
     this.categoryMenu_ = new Blockly.Toolbox.CategoryMenu(this, this.HtmlDiv);
     this.populate_(workspace.options.languageTree);
+    this.categoryMenu_.allCategories_ = [];
+    this.categoryMenu_.categories_.forEach(category => {
+        const clone_category = { ...category };
+        this.categoryMenu_.allCategories_.push(clone_category);
+    });
     this.position();
     this.toggle();
 };
@@ -83,22 +88,29 @@ Blockly.Toolbox.prototype.populate_ = function (newTree) {
 Blockly.Toolbox.prototype.showSearch = function (search) {
     const flyout_content = [];
     const workspace = Blockly.derivWorkspace;
-    const search_term = search.toUpperCase();
+    const search_term = search.replace(/\s+/g,' ').trim().toUpperCase();
     const all_variables = workspace.getVariablesOfType('');
     const all_procedures = Blockly.Procedures.allProcedures(workspace);
     const { flyout } = ScratchStore.instance;
 
     flyout.setVisibility(false);
 
-    if (search_term.length <= 1) {
+    // avoid general term which the result will return most of the blocks
+    const general_term = ['THE', 'OF', 'YOU', 'IS', 'THIS', 'THEN'];
+
+    if (search_term.length === 0) {
+        return;
+    } else if (search_term.length <= 1 || general_term.includes(search_term)) {
+        flyout.setIsSearchFlyout(true);
+        flyout.setContents(flyout_content, search);
         return;
     }
 
-    const { derivWorkspace: { toolbox_: { categoryMenu_: { categories_ } } } } = Blockly;
-    const block_contents = categories_
+    const { categoryMenu_: { allCategories_ } } = this;
+    const block_contents = allCategories_
         .filter(category => !category.has_child_category_)
         .map(category => {
-            let contents = category.getContents();
+            let contents = category.contents_.length ? category.contents_ : category.dynamic_;
 
             if (typeof contents === 'string') {
                 const fnToApply = Blockly.derivWorkspace.getToolboxCategoryCallback(contents);
@@ -110,60 +122,105 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         })
         .flat();
 
-    block_contents.forEach(block_content => {
-        const block_type = block_content.getAttribute('type');
-        const block = Blockly.Blocks[block_type];
-        const block_meta = block.meta instanceof Function && block.meta();
-        const block_definitions = block.definition instanceof Function && block.definition();
-
-        if (!block_meta) {
-            return;
+    const pushIfNotExists = (array, element_to_push) => {
+        if (!array.some(element => element === element_to_push)) {
+            array.push(element_to_push);
         }
+    };
 
-        // block_name matched
-        if (block_type.toUpperCase().includes(search_term)) {
-            flyout_content.unshift(block_content);
-            return;
-        }
+    const pushBlockWithPriority = ({
+        block_type,
+        block_meta,
+        block_definitions,
+        block_content,
+        priority,
+    }) => {
+        const block_name = block_meta.display_name;
+        const block_type_terms = block_type.toUpperCase().split('_');
+        const block_name_terms = block_name.toUpperCase().split(' ');
+        const definition_key_to_search = /^((message)|(tooltip)|(category))/;
+        const search_regex = new RegExp(`^${search_term}`);
 
-        // block_meta matched
-        const matched_meta = Object.keys(block_meta)
-            .find(key => block_meta[key].toUpperCase().includes(search_term));
-        if (matched_meta && matched_meta.length) {
-            flyout_content.push(block_content);
-            return;
-        }
-
-        // block_definition matched
-        const definition_key_to_search = /^((message)|(tooltip))/;
-        // eslint-disable-next-line consistent-return
-        const matched_definition = Object.keys(block_definitions).filter(key => {
-            const definition = block_definitions[key];
-
-            if (definition_key_to_search.test(key) &&
-                definition.toUpperCase().includes(search_term)) {
-                return true;
+        switch (priority) {
+            case 'exact_block_name': {
+                if (search_regex.test(block_name.toUpperCase()) ||
+                search_regex.test(block_type.toUpperCase())) {
+                    pushIfNotExists(flyout_content, block_content);
+                }
+                break;
             }
-
-            if (definition instanceof Array) {
-                let has_dropdown_and_in_search = false;
+            case 'block_term': {
+                if (block_type_terms.some(term => search_regex.test(term)) ||
+                block_name_terms.some(term => search_regex.test(term))) {
+                    pushIfNotExists(flyout_content, block_content);
+                }
+                break;
+            }
+            case 'block_definitions': {
                 // eslint-disable-next-line consistent-return
-                definition.forEach(def => {
-                    if (def.type === 'field_dropdown' &&
-                        JSON.stringify(def).toUpperCase().includes(search_term)) {
-                        has_dropdown_and_in_search = true;
+                const matched_definition = Object.keys(block_definitions).filter(key => {
+                    const definition = block_definitions[key];
+
+                    if (definition_key_to_search.test(key) &&
+                        search_regex.test(definition.toUpperCase())) {
+                        return true;
                     }
+
+                    if (definition instanceof Array) {
+                        let has_dropdown_and_in_search = false;
+                        // eslint-disable-next-line consistent-return
+                        definition.forEach(def => {
+                            const definition_strings = JSON.stringify(def).toUpperCase();
+
+                            if (def.type === 'field_dropdown' &&
+                            search_term > 2 &&
+                            definition_strings.includes(search_term)) {
+                                has_dropdown_and_in_search = true;
+                            }
+                        });
+
+                        return has_dropdown_and_in_search;
+                    }
+                    return false;
                 });
 
-                return has_dropdown_and_in_search;
+                if (matched_definition && matched_definition.length) {
+                    pushIfNotExists(flyout_content, block_content);
+                }
+                break;
             }
+            case 'block_meta': {
+                // block_meta matched
+                const matched_meta = Object.keys(block_meta)
+                    .filter(key => key !== 'display_name')
+                    .find(key => {
+                        const block_meta_strings = block_meta[key].toUpperCase().replace(/[^\w\s]/gi, '').split(' ');
 
-            return false;
-        });
-        if (matched_definition && matched_definition.length) {
-            flyout_content.push(block_content);
+                        return block_meta_strings.some(meta_string => search_regex.test(meta_string));
+                    });
 
+                if (matched_meta && matched_meta.length) {
+                    pushIfNotExists(flyout_content, block_content);
+                    
+                }
+                break;
+            }
+            default:
+                break;
         }
+    };
+
+    const priority_order = ['exact_block_name', 'block_term', 'block_definitions', 'block_meta'];
+
+    priority_order.forEach(priority => {
+        block_contents.forEach(block_content => {
+            const block_type = block_content.getAttribute('type');
+            const block = Blockly.Blocks[block_type];
+            const block_meta = block.meta instanceof Function && block.meta();
+            const block_definitions = block.definition instanceof Function && block.definition();
+
+            pushBlockWithPriority({ block_type, block_meta, block_definitions, block_content, priority });
+        });
     });
 
     // block_variable_name matched
@@ -175,7 +232,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         return flyout_content.indexOf(variable_block) === -1;
     });
     if (unique_var_blocks && unique_var_blocks.length) {
-        flyout_content.push(...unique_var_blocks);
+        flyout_content.unshift(...unique_var_blocks);
     }
 
     // block_procedure_name matched
@@ -186,7 +243,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         const procedure = procedures_callnoreturn[key];
 
         if (procedure[0].toUpperCase().includes(search_term)) {
-            searched_procedures['0'].push(procedure);
+            searched_procedures['0'].unshift(procedure);
         }
     });
 
@@ -194,7 +251,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         const procedure = procedures_callreturn[key];
 
         if (procedure[0].toUpperCase().includes(search_term)) {
-            searched_procedures['1'].push(procedure);
+            searched_procedures['1'].unshift(procedure);
         }
     });
 
@@ -204,12 +261,11 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         return flyout_content.indexOf(procedure_block) === -1;
     });
     if (unique_proce_blocks.length) {
-        flyout_content.push(...unique_proce_blocks);
-
+        flyout_content.unshift(...unique_proce_blocks);
     }
 
     flyout.setIsSearchFlyout(true);
-    flyout.setContents(flyout_content, true);
+    flyout.setContents(flyout_content, search);
 };
 
 /**

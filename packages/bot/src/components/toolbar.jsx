@@ -34,7 +34,13 @@ import TradeAnimation       from './trade-animation.jsx';
 import { connect }          from '../stores/connect';
 import                           '../assets/sass/scratch/toolbar.scss';
 
-const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
+const SearchBox = ({
+    is_search_loading,
+    onSearch,
+    onSearchClear,
+    onSearchBlur,
+    onSearchKeyUp,
+}) => (
     <div className='toolbar__form'>
         <Formik
             initialValues={{ search: '' }}
@@ -51,15 +57,18 @@ const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
                                     type='text'
                                     name='search'
                                     placeholder={localize('Search block...')}
-                                    onKeyUp={submitForm}
+                                    onKeyUp={() => onSearchKeyUp(submitForm)}
                                     onFocus={submitForm}
                                     onBlur={onSearchBlur}
                                     trailing_icon={
                                         search ?
-                                            <ToolbarCloseIcon
-                                                className='toolbar__btn--icon'
-                                                onClick={() => onSearchClear(setFieldValue)}
-                                            />
+                                            (is_search_loading ?
+                                                <div className='loader' /> :
+                                                <ToolbarCloseIcon
+                                                    className='toolbar__btn--icon'
+                                                    onClick={() => onSearchClear(setFieldValue)}
+                                                />
+                                            )
                                             : <ToolbarSearchIcon />
                                     }
                                 />
@@ -203,6 +212,7 @@ const Toolbar = ({
     file_name,
     is_dialog_open,
     is_drawer_open,
+    is_search_loading,
     is_stop_button_disabled,
     is_stop_button_visible,
     onBotNameTyped,
@@ -214,6 +224,7 @@ const Toolbar = ({
     onSearch,
     onSearchBlur,
     onSearchClear,
+    onSearchKeyUp,
     onSortClick,
     onStopClick,
     onToolboxToggle,
@@ -240,9 +251,11 @@ const Toolbar = ({
                 </Button>
             </Popover>
             <SearchBox
+                is_search_loading={is_search_loading}
                 onSearch={onSearch}
                 onSearchClear={onSearchClear}
                 onSearchBlur={onSearchBlur}
+                onSearchKeyUp={onSearchKeyUp}
             />
             <BotNameBox
                 file_name={file_name}
@@ -289,6 +302,7 @@ Toolbar.propTypes = {
     file_name              : PropTypes.string,
     is_dialog_open         : PropTypes.bool,
     is_drawer_open         : PropTypes.bool,
+    is_search_loading      : PropTypes.bool,
     is_stop_button_disabled: PropTypes.bool,
     is_stop_button_visible : PropTypes.bool,
     onBotNameTyped         : PropTypes.func,
@@ -301,6 +315,7 @@ Toolbar.propTypes = {
     onSearch               : PropTypes.func,
     onSearchBlur           : PropTypes.func,
     onSearchClear          : PropTypes.func,
+    onSearchKeyUp          : PropTypes.func,
     onSortClick            : PropTypes.func,
     onStopClick            : PropTypes.func,
     onToolboxToggle        : PropTypes.func,
@@ -313,6 +328,7 @@ export default connect(({ run_panel, saveload, toolbar }) => ({
     file_name              : toolbar.file_name,
     is_dialog_open         : toolbar.is_dialog_open,
     is_drawer_open         : run_panel.is_drawer_open,
+    is_search_loading      : toolbar.is_search_loading,
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
     is_stop_button_visible : run_panel.is_stop_button_visible,
     onBotNameTyped         : toolbar.onBotNameTyped,
@@ -325,6 +341,7 @@ export default connect(({ run_panel, saveload, toolbar }) => ({
     onSearch               : toolbar.onSearch,
     onSearchBlur           : toolbar.onSearchBlur,
     onSearchClear          : toolbar.onSearchClear,
+    onSearchKeyUp          : toolbar.onSearchKeyUp,
     onSortClick            : toolbar.onSortClick,
     onStopClick            : toolbar.onStopClick,
     onToolboxToggle        : toolbar.onToolboxToggle,

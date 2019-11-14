@@ -100,6 +100,7 @@
     "deriv-components": "^1.0.0",
     "deriv-shared": "^1.0.0",
     "deriv-translations": "^1.0.0",
+    "firebase": "7.2.3",
     "formik": "^1.5.8",
     "gh-pages": "^2.0.1",
     "mobx": "^5.9.4",

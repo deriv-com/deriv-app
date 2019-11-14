@@ -76,13 +76,13 @@ Summary.propTypes = {
     won_contracts : PropTypes.number,
 };
 
-export default connect(({ summary }) => ({
-    contract      : summary.contract,
-    currency      : summary.currency,
-    lost_contracts: summary.lost_contracts,
-    number_of_runs: summary.number_of_runs,
-    total_payout  : summary.total_payout,
-    total_profit  : summary.total_profit,
-    total_stake   : summary.total_stake,
-    won_contracts : summary.won_contracts,
+export default connect(({ summary : s }) => ({
+    contract      : s.summary.contract,
+    currency      : s.summary.currency,
+    lost_contracts: s.summary.lost_contracts,
+    number_of_runs: s.summary.number_of_runs,
+    total_payout  : s.summary.total_payout,
+    total_profit  : s.summary.total_profit,
+    total_stake   : s.summary.total_stake,
+    won_contracts : s.summary.won_contracts,
 }))(Summary);

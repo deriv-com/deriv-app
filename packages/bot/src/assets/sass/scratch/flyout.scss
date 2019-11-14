@@ -1,3 +1,12 @@
+@keyframes animate-fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 .flyout {
     $flyout        : &;
     $default-margin: 15px;
@@ -10,7 +19,6 @@
     max-height: calc(100% - 40px);
     z-index: 1;
     border-radius: 10px;
-    padding: 25px;
     font-size: 2em;
     margin-left: $default-margin;
     margin-top: 20px;
@@ -18,52 +26,43 @@
     min-width: 400px;
 
     &__item:hover {
-        .flyout__button-add-hide {
-            display: block;
+        .flyout__button-add--hide {
+            display: flex !important;
+            animation: animate-fade-in 0.3s;
         }
     }
     &__content {
         overflow: auto;
-    }
-    &__search {
-        left: 0;
+        padding: 5px 25px;
+        height: calc(100% - 56px);
     }
     &__block-workspace {
         margin-bottom: $default-margin;
     }
     &__button {
-        border: none;
-        border-radius: $BORDER_RADIUS;
-        padding: $button-padding;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: bold;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: 1.43;
-        letter-spacing: normal;
-        text-align: center;
-
         &-new {
             width: 100%;
             font-size: 100%;
             box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_2;
-            margin-bottom: $default-margin;
+            margin: $default-margin 0;
+            background-color: var(--general-main-1);
         }
         &-add {
-            background-color: $COLOR_CORAL_RED;
             color: var(--general-main-1);
 
-            &-hide {
-                display: none;
+            &--hide {
+                display: none !important;
             }
         }
         &-back {
-            padding-bottom: 0;
+            padding: 0 15px;
             align-self: center;
             background-color: transparent;
             color: $COLOR_BLACK;
 
+            svg {
+                vertical-align: middle;
+            }
             &:focus {
                 outline: none;
             }
@@ -73,6 +72,7 @@
             margin-left: 1em;
             color: $COLOR_LIGHT_BLACK_1;
             background-color: var(--general-section-1);
+            display: flex;
 
             &:focus {
                 outline: none;
@@ -98,8 +98,7 @@
         }
         &-buttons {
             margin-left: auto;
-            display: flex;
-            justify-content: flex-end;
+            align-self: center;
         }
         &-info {
             cursor: pointer;
@@ -129,7 +128,7 @@
         height: 100%;
 
         &-header {
-            padding: 0.5em 1em;
+            padding: 15px;
             display: flex;
             background-color: var(--general-section-1);
         }
@@ -137,7 +136,7 @@
             padding: 1.5em;
             font-size: 0.8em;
             overflow-y: auto;
-            height: calc(100vh - 290px);
+            height: calc(100vh - 295px);
 
             #{$flyout}__item {
                 margin-bottom: 0.8em;
@@ -145,13 +144,47 @@
         }
         &-title {
             align-self: center;
-            font-size: 20px;
+            font-size: 16px;
             font-weight: bold;
         }
         &-footer {
-            text-align: right;
+            display: flex;
+            justify-content: flex-end;
             padding: 0.5em 0.8em;
             border-top: solid 0.1em var(--general-section-1);
+        }
+    }
+    &__search {
+        left: 0;
+        padding: 0;
+
+        &-header {
+            padding: 20px;
+            background-color: var(--general-disabled);
+            display: flex;
+            justify-content: space-between;
+
+            &-text {
+                font-size: 16px;
+                font-weight: bold;
+                align-self: center;
+            }
+            &-results {
+                color: $COLOR_GREEN_5;
+            }
+        }
+        &-empty {
+            padding: 25px 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        #{$flyout}__help-content {
+            height: calc(100% - 60px);
+        }
+    }
+    &__normal {
+        &-content {
+            height: 100%;
         }
     }
 }

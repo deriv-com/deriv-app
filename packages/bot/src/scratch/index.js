@@ -1,5 +1,6 @@
 import                                    './blocks';
 import                                    './hooks';
+import { hasAllRequiredBlocks }       from './utils';
 import config                         from '../constants';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import ScratchStore                   from '../stores/scratch-store';
@@ -37,6 +38,7 @@ class DBot {
             this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
             this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
             this.addBeforeRunFunction(this.checkForErroredBlocks.bind(this));
+            this.addBeforeRunFunction(this.checkForRequiredBlocks.bind(this));
     
             // Initialise JavaScript (this will in turn initialise the variable map).
             Blockly.JavaScript.init(this.workspace);
@@ -199,6 +201,24 @@ class DBot {
             
             this.workspace.centerOnBlock(error_block.id);
             run_panel.showErrorMessage(message);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks whether the workspace contains all required blocks before running the strategy.
+     */
+    checkForRequiredBlocks() {
+        if (!hasAllRequiredBlocks(this.workspace)) {
+            const { run_panel } = ScratchStore.instance.root_store;
+
+            run_panel.showErrorMessage(
+                new Error(translate('One or more mandatory blocks are missing from your workspace. ' +
+                'Please add the required block(s) and then try again.'))
+            );
 
             return false;
         }

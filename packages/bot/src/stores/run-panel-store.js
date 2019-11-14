@@ -8,7 +8,6 @@ import {
     error_types,
     unrecoverable_errors }      from '../constants/messages';
 import DBot                     from '../scratch';
-import { hasAllRequiredBlocks } from '../scratch/utils';
 import { isEnded }              from '../utils/contract';
 import { translate }            from '../utils/lang/i18n';
 import { observer }             from '../utils/observer';
@@ -65,14 +64,6 @@ export default class RunPanelStore {
         }
 
         this.registerBotListeners();
-
-        if (!hasAllRequiredBlocks(Blockly.derivWorkspace)) {
-            this.showErrorMessage(
-                new Error(translate('One or more mandatory blocks are missing from your workspace. ' +
-                'Please add the required block(s) and then try again.'))
-            );
-            return;
-        }
 
         this.is_running = true;
         this.is_drawer_open = true;

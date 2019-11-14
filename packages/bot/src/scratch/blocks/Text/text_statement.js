@@ -44,7 +44,6 @@ Blockly.Blocks.text_statement = {
         this.dispose();
     },
     onchange            : Blockly.Blocks.lists_statement.onchange,
-    required_inputs     : ['TEXT'],
     required_parent_type: 'text_join',
 };
 

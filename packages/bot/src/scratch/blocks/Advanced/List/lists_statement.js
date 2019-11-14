@@ -80,11 +80,6 @@ Blockly.Blocks.lists_statement = {
             }
         }
     },
-    getRequiredValueInputs() {
-        return {
-            VALUE: null,
-        };
-    },
     required_parent_type: 'lists_create_with',
 };
 

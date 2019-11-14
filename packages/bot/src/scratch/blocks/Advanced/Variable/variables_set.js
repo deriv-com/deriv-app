@@ -34,11 +34,6 @@ Blockly.Blocks.variables_set = {
             'description' : translate('Assigns a given value to a variable'),
         };
     },
-    getRequiredValueInputs() {
-        return {
-            VALUE: null,
-        };
-    },
 };
 
 Blockly.JavaScript.variables_set = block => {

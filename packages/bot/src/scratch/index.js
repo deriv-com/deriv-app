@@ -1,6 +1,6 @@
 import                                    './blocks';
 import                                    './hooks';
-import { saveWorkspace }              from './utils';
+import { saveWorkspace, getPreviousWorkspace }              from './utils';
 import config                         from '../constants';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import ScratchStore                   from '../stores/scratch-store';
@@ -16,7 +16,12 @@ export const scratchWorkspaceInit = async () => {
         // eslint-disable-next-line
         const toolbox_xml = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(response => response.text());
         // eslint-disable-next-line
-        const main_xml = await fetch(`${__webpack_public_path__}xml/main.xml`).then(response => response.text());
+        let main_xml = await fetch(`${__webpack_public_path__}xml/main.xml`).then(response => response.text());
+        
+        const previous_workspace = getPreviousWorkspace();
+        if (previous_workspace) {
+            main_xml = previous_workspace;
+        }
 
         const workspace = Blockly.inject(el_scratch_div, {
             grid    : { spacing: 40, length: 11, colour: '#f3f3f3' },

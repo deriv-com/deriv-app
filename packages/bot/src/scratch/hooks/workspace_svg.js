@@ -106,11 +106,6 @@ Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
     this.centerOnBlock(block.id, false);
 }
 
-Blockly.WorkspaceSvg.prototype.reshowFlyout = function () {
-    const toolbox = this.toolbox_;
-    toolbox.refreshCategory();
-}
-
 /**
  * Clean up the workspace by ordering all the blocks in a column. For deriv-bot
  * root-blocks are sorted in columns first, then all other blocks are positioned below 

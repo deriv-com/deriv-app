@@ -1,5 +1,5 @@
 /* eslint-disable func-names, no-underscore-dangle */
-import { translate } from '../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 /**
  * Construct the blocks required by the flyout for the procedure category.
@@ -20,7 +20,7 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
         // TEMP
         const nameField = document.createElement('field');
         nameField.setAttribute('name', 'NAME');
-        nameField.appendChild(document.createTextNode(translate('do something')));
+        nameField.appendChild(document.createTextNode(localize('do something')));
 
         block.appendChild(nameField);
         xmlList.push(block);
@@ -36,7 +36,7 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
 
         const nameField = document.createElement('field');
         nameField.setAttribute('name', 'NAME');
-        nameField.appendChild(document.createTextNode(translate('do something')));
+        nameField.appendChild(document.createTextNode(localize('do something')));
 
         block.appendChild(nameField);
         xmlList.push(block);

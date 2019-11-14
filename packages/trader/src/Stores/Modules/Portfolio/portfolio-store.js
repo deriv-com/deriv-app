@@ -190,6 +190,10 @@ export default class PortfolioStore extends BaseStore {
         } else {
             portfolio_position.status = null;
         }
+
+        if (isEnded(portfolio_position.contract_info) && this.hovered_position_id  === portfolio_position.id) {
+            this.updateTradeStore(false, portfolio_position);
+        }
     }
 
     @action.bound
@@ -286,10 +290,6 @@ export default class PortfolioStore extends BaseStore {
                 this.subscribers[contract_response.contract_id].unsubscribe();
                 delete this.subscribers[contract_response.contract_id];
             });
-
-            if (this.hovered_position_id  === this.positions[i].id) {
-                this.updateTradeStore(false, this.positions[i]);
-            }
         }
     };
 

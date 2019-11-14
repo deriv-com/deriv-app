@@ -323,7 +323,7 @@ export default class TradeStore extends BaseStore {
 
         this.validateAllProperties();
 
-        const should_forget_first = !(name === 'has_update_take_profit' || name === 'has_update_stop_loss' || name === 'update_take_profit' || name === 'update_stop_loss');
+        const should_forget_first = !(name === 'has_take_profit' || name === 'has_stop_loss' || name === 'update_take_profit' || name === 'update_stop_loss');
         this.processNewValuesAsync({ [name]: value }, true, {}, should_forget_first);
     }
 
@@ -452,10 +452,16 @@ export default class TradeStore extends BaseStore {
                 } else {
                     const obj_barrier = {
                         key,
-                        title             : `${obj_limit_order.display_name}`,
-                        color             : key === LIMIT_ORDER_TYPES.TAKE_PROFIT ? BARRIER_COLORS.GREEN : BARRIER_COLORS.ORANGE,
-                        draggable         : false,
-                        lineStyle         : key === LIMIT_ORDER_TYPES.STOP_OUT ? BARRIER_LINE_STYLES.DOTTED : BARRIER_LINE_STYLES.SOLID,
+                        title: `${obj_limit_order.display_name}`,
+                        color: key === LIMIT_ORDER_TYPES.TAKE_PROFIT ?
+                            BARRIER_COLORS.GREEN
+                            :
+                            BARRIER_COLORS.ORANGE,
+                        draggable: false,
+                        lineStyle: key === LIMIT_ORDER_TYPES.STOP_OUT ?
+                            BARRIER_LINE_STYLES.DOTTED
+                            :
+                            BARRIER_LINE_STYLES.SOLID,
                         hideOffscreenLines: true,
                     };
                     barrier = new ChartBarrierStore(

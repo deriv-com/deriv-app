@@ -147,4 +147,14 @@ export default class FlyoutStore {
 
         this.flyout_width = Math.max(this.flyout_min_width, longest_block_width + 65);
     }
+
+    @action.bound
+    onMount() {
+        window.addEventListener('click', this.clickOutsideFlyoutCallback);
+    }
+
+    @action.bound
+    onUnmount() {
+        window.removeEventListener('click', this.clickOutsideFlyoutCallback);
+    }
 }

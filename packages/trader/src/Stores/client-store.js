@@ -636,13 +636,13 @@ export default class ClientStore extends BaseStore {
                     statement: 1,
                 }),
             );
+            const account_settings = (await WS.authorized.storage.getSettings()).get_settings;
+            if (account_settings && !account_settings.residence) {
+                await this.fetchResidenceList();
+                this.root_store.ui.toggleSetResidenceModal(true);
+            }
         }
         this.responseWebsiteStatus(await WS.storage.websiteStatus());
-        const account_settings = (await WS.authorized.storage.getSettings()).get_settings;
-        if (account_settings && !account_settings.residence) {
-            await this.fetchResidenceList();
-            this.root_store.ui.toggleSetResidenceModal(true);
-        }
         this.registerReactions();
     }
 

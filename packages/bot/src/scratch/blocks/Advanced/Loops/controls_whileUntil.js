@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.controls_whileUntil = {
     init() {
@@ -6,12 +6,12 @@ Blockly.Blocks.controls_whileUntil = {
     },
     definition(){
         return {
-            message0: translate('repeat %1 %2'),
+            message0: localize('repeat %1 %2'),
             args0   : [
                 {
                     type   : 'field_dropdown',
                     name   : 'MODE',
-                    options: [[translate('while'), 'WHILE'], [translate('until'), 'UNTIL']],
+                    options: [[localize('while'), 'WHILE'], [localize('until'), 'UNTIL']],
                 },
                 {
                     type : 'input_value',
@@ -19,7 +19,7 @@ Blockly.Blocks.controls_whileUntil = {
                     check: 'Boolean',
                 },
             ],
-            message1: translate('do %1'),
+            message1: localize('do %1'),
             args1   : [
                 {
                     type: 'input_statement',
@@ -31,14 +31,14 @@ Blockly.Blocks.controls_whileUntil = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('This block repeats instructions as long as a given condition is true'),
+            tooltip          : localize('This block repeats instructions as long as a given condition is true'),
             category         : Blockly.Categories.Loop,
         };
     },
     meta(){
         return {
-            'display_name': translate('Repeat While/Until'),
-            'description' : translate('This block repeats instructions as long as a given condition is true.'),
+            'display_name': localize('Repeat While/Until'),
+            'description' : localize('This block repeats instructions as long as a given condition is true.'),
         };
     },
 };
@@ -64,7 +64,7 @@ Blockly.JavaScript.controls_whileUntil = block => {
 
         while (${argument0}) {
             if (${currentLoopVar} > ${maxLoopVar}) {
-                throw new Error("${translate('Infinite loop detected')}");
+                throw new Error("${localize('Infinite loop detected')}");
             } else {
                 ${currentLoopVar}++;
             }

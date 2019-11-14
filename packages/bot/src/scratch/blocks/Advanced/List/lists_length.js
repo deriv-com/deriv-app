@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.lists_length = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.lists_length = {
     },
     definition(){
         return {
-            message0: translate('length of %1'),
+            message0: localize('length of %1'),
             args0   : [
                 {
                     type: 'input_value',
@@ -18,14 +18,14 @@ Blockly.Blocks.lists_length = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('This block gives you the total number of items in a given list.'),
+            tooltip        : localize('This block gives you the total number of items in a given list.'),
             category       : Blockly.Categories.List,
         };
     },
     meta(){
         return {
-            'display_name': translate('List Length'),
-            'description' : translate('This block gives you the total number of items in a given list.'),
+            'display_name': localize('List Length'),
+            'description' : localize('This block gives you the total number of items in a given list.'),
         };
     },
 };

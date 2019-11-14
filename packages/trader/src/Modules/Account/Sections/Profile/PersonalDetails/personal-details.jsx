@@ -156,8 +156,8 @@ class PersonalDetailsForm extends React.Component {
             const max_phone_number = 35;
             const phone_trim =  values.phone.replace(/\D/g,'');
 
-            if (!validPhone(values.phone.trim())) {
-                errors.phone = localize('Only numbers, hyphens, and spaces are allowed.');
+            if (!validPhone(values.phone)) {
+                errors.phone = localize('Please enter a valid phone number, including the country code (e.g. +15417541234)');
             }  else if (!validLength(phone_trim, { min: min_phone_number, max: max_phone_number })) {
                 errors.phone = localize('You should enter 8-35 characters.');
             }

@@ -971,7 +971,7 @@ export default class ClientStore extends BaseStore {
         }
         if (action === 'signup') {
             // TODO: add await if error handling needs to happen before AccountSignup is initialised
-            this.fetchResidenceList();  // Prefetch for use in account signup process
+            this.fetchResidenceList(); // Prefetch for use in account signup process
         }
     }
 

@@ -264,9 +264,16 @@ class AccountWizard extends React.Component {
 }
 
 AccountWizard.propTypes = {
+    fetchResidenceList  : PropTypes.func,
+    has_currency        : PropTypes.bool,
+    has_real_account    : PropTypes.bool,
     onError             : PropTypes.func,
     onLoading           : PropTypes.func,
     onSuccessAddCurrency: PropTypes.func,
+    realAccountSignup   : PropTypes.func,
+    residence           : PropTypes.string,
+    residence_list      : PropTypes.array,
+    setAccountCurrency  : PropTypes.func,
 };
 
 export default connect(({ client }) => ({
@@ -275,6 +282,5 @@ export default connect(({ client }) => ({
     has_currency      : !!client.currency,
     setAccountCurrency: client.setAccountCurrency,
     residence         : client.residence,
-    residence_list    : client.residence_list,
     fetchResidenceList: client.fetchResidenceList,
 }))(AccountWizard);

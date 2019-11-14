@@ -3,6 +3,7 @@ import PropTypes      from 'prop-types';
 import React          from 'react';
 import ReactDOM       from 'react-dom';
 import { BinaryLink } from 'App/Components/Routes';
+import routes         from 'Constants/routes';
 import Icon           from 'Assets/icon.jsx';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 
@@ -35,6 +36,8 @@ class PlatformDropdown extends React.PureComponent {
                     {platform_config.map((platform, idx) => (
                         <BinaryLink
                             to={platform.link_to}
+                            // This is here because in routes-config it needs to have children, but not in menu
+                            exact={ platform.link_to === routes.trade }
                             key={idx}
                             onClick={closeDrawer}
                             className={classNames(

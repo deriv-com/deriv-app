@@ -59,7 +59,7 @@ const Flyout = ({
                         {
                             is_empty ?
                                 <div className='flyout__search-empty'>
-                                    <h2>{translate('No results found')}</h2>
+                                    <h2>{localize('No results found')}</h2>
                                 </div> :
                                 flyout_content.map((node, index) => {
                                     const tag_name = node.tagName.toUpperCase();

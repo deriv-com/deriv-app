@@ -1,6 +1,5 @@
 import { localize } from 'deriv-translations/lib/i18n';
 import config       from '../../../../constants';
-import config       from '../../../../constants';
 
 Blockly.Blocks.bb_statement = {
     protected_statements : ['STATEMENT'],

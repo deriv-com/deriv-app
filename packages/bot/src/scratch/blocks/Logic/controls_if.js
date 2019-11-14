@@ -120,16 +120,16 @@ Blockly.Blocks.controls_if = {
                 // There is no else if, so just add an else-statement.
                 const remove_input_icon = this.getRemoveInputIcon(input_number, true);
 
-                this.appendDummyInput('ELSE_LABEL').appendField(translate('else'));
+                this.appendDummyInput('ELSE_LABEL').appendField(localize('else'));
                 this.appendDummyInput('DELETE_ELSE').appendField(remove_input_icon);
                 this.appendStatementInput('ELSE');
 
                 this.elseCount++;
             } else {
                 // We already have an else statement so add an else-if statement.
-                this.appendDummyInput(`IF_LABEL${input_number}`).appendField(translate('else if'));
+                this.appendDummyInput(`IF_LABEL${input_number}`).appendField(localize('else if'));
                 this.appendValueInput(`IF${input_number}`).setCheck('Boolean');
-                this.appendDummyInput(`THEN_LABEL${input_number}`).appendField(translate('then'));
+                this.appendDummyInput(`THEN_LABEL${input_number}`).appendField(localize('then'));
                 this.appendDummyInput(`DELETE_ICON${input_number}`).appendField(
                     this.getRemoveInputIcon(input_number, false)
                 );

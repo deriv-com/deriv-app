@@ -124,9 +124,9 @@ export default class PortfolioStore extends BaseStore {
         contract_trade.updateProposal(this.deepClone(response));
     }
 
-    updateTradeStore(portfolio_position) {
+    updateTradeStore(is_over, portfolio_position) {
         const trade = this.root_store.modules.trade;
-        trade.toggleLimitOrders(false, portfolio_position);
+        trade.toggleLimitOrderBarriers(is_over, portfolio_position);
     }
 
     @action.bound
@@ -287,7 +287,9 @@ export default class PortfolioStore extends BaseStore {
                 delete this.subscribers[contract_response.contract_id];
             });
 
-            this.updateTradeStore(this.positions[i]);
+            if (this.hovered_position_id  === this.positions[i].id) {
+                this.updateTradeStore(false, this.positions[i]);
+            }
         }
     };
 
@@ -313,14 +315,9 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     onHoverPosition(is_over, position){
-        if (isEnded(position.contract_info)){
-            return;
-        }
-        const trade = this.root_store.modules.trade;
+        if (isEnded(position.contract_info) || !isMultiplierContract(position.type)) { return; }
         this.hovered_position_id = is_over ? position.id : null;
-
-        trade.toggleLimitOrders(is_over, position);
-        trade.setPurchaseSpotBarrier(is_over, position);
+        this.updateTradeStore(is_over, position);
     }
 
     @action.bound

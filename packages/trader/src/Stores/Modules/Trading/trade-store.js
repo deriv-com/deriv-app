@@ -34,6 +34,7 @@ import {
     createProposalRequests,
     getProposalErrorField,
     getProposalInfo }                 from './Helpers/proposal';
+import { LIMIT_ORDER_TYPES }          from '../Contract/Helpers/multiplier';
 import {
     isBarrierSupported,
     isLimitOrderBarrierSupported }    from '../SmartChart/Helpers/barriers';
@@ -377,10 +378,7 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    toggleLimitOrders(is_over, position) {
-        if (!this.is_multiplier) {
-            return;
-        }
+    toggleLimitOrderBarriers(is_over, position) {
         const contract_info = position.contract_info;
 
         this.setBarriersForLimitOrder(is_over, contract_info);
@@ -455,9 +453,9 @@ export default class TradeStore extends BaseStore {
                     const obj_barrier = {
                         key,
                         title             : `${obj_limit_order.display_name}`,
-                        color             : key === 'take_profit' ? BARRIER_COLORS.GREEN : BARRIER_COLORS.ORANGE,
+                        color             : key === LIMIT_ORDER_TYPES.TAKE_PROFIT ? BARRIER_COLORS.GREEN : BARRIER_COLORS.ORANGE,
                         draggable         : false,
-                        lineStyle         : key === 'stop_out' ? BARRIER_LINE_STYLES.DOTTED : BARRIER_LINE_STYLES.SOLID,
+                        lineStyle         : key === LIMIT_ORDER_TYPES.STOP_OUT ? BARRIER_LINE_STYLES.DOTTED : BARRIER_LINE_STYLES.SOLID,
                         hideOffscreenLines: true,
                     };
                     barrier = new ChartBarrierStore(
@@ -469,7 +467,7 @@ export default class TradeStore extends BaseStore {
                 }
             });
         } else {
-            const limit_orders = ['take_profit', 'stop_loss', 'stop_out'];
+            const limit_orders = Object.values(LIMIT_ORDER_TYPES);
             limit_orders.forEach((l) => this.removeBarrier(l));
         }
     };

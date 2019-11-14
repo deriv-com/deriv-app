@@ -16,6 +16,9 @@ const AppContents = ({
     // setPWAPromptEvent,
 }) => {
     if (is_logged_in) {
+        // Segment page view trigger
+        window.analytics.page();
+
         // TODO: uncomment these after the issues with showing the prompt too often and in the app are fixed
         // window.addEventListener('beforeinstallprompt', e => {
         //     console.log('Going to show the installation prompt'); // eslint-disable-line no-console

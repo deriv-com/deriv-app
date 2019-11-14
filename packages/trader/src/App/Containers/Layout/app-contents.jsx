@@ -1,6 +1,6 @@
 import classNames           from 'classnames';
 import PropTypes            from 'prop-types';
-import React from 'react';
+import React                from 'react';
 import { withRouter }       from 'react-router';
 import { ThemedScrollbars } from 'deriv-components';
 import { connect }          from 'Stores/connect';
@@ -68,11 +68,11 @@ AppContents.propTypes = {
 export default withRouter(connect(
     ({ client, ui }) => ({
         is_logged_in          : client.is_logged_in,
-        // addNotificationBar   : ui.addNotificationBar,
+        // addNotificationBar    : ui.addNotificationBar,
         is_app_disabled       : ui.is_app_disabled,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         is_route_modal_on     : ui.is_route_modal_on,
         pwa_prompt_event      : ui.pwa_prompt_event,
-        // setPWAPromptEvent    : ui.setPWAPromptEvent,
+        // setPWAPromptEvent     : ui.setPWAPromptEvent,
     })
 )(AppContents));

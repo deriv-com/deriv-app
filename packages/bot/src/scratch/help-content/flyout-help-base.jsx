@@ -1,6 +1,7 @@
 import { Button }       from 'deriv-components';
 import React            from 'react';
 import PropTypes        from 'prop-types';
+import { localize }     from 'deriv-translations/lib/i18n';
 import FlyoutVideo      from './help-components/flyout-video.jsx';
 import FlyoutText       from './help-components/flyout-text.jsx';
 import FlyoutImage      from './help-components/flyout-img.jsx';
@@ -9,7 +10,6 @@ import FlyoutBlock      from '../../components/flyout-block.jsx';
 import constant         from '../../constants';
 import { Arrow2Icon }   from '../../components/Icons.jsx';
 import { connect }      from '../../stores/connect';
-import { translate }    from '../../utils/tools';
 
 const HelpBase = ({
     block_node,
@@ -36,7 +36,7 @@ const HelpBase = ({
                         has_effect
                         onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}
                         primary
-                        text={translate('Add')}
+                        text={localize('Add')}
                         type='button'
                     />
                 </div>
@@ -84,14 +84,14 @@ const HelpBase = ({
                             className='flyout__button-previous'
                             has_effect
                             onClick={() => onSequenceClick(false)}
-                            text={translate('Previous')}
+                            text={localize('Previous')}
                             type='button'
                         />
                         <Button
                             className='flyout__button-next'
                             has_effect
                             onClick={() => onSequenceClick(false)}
-                            text={translate('Next')}
+                            text={localize('Next')}
                             type='button'
                         />
                     </div>

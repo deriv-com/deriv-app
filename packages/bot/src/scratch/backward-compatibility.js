@@ -1,7 +1,7 @@
+import { localize }  from 'deriv-translations/lib/i18n';
 import config        from '../constants';
-import { translate } from '../utils/lang/i18n';
 import ApiHelpers    from '../services/api/api-helpers';
-import ScratchStore from '../stores/scratch-store';
+import ScratchStore  from '../stores/scratch-store';
 
 /* eslint-disable no-underscore-dangle */
 export default class BlockConversion {
@@ -205,14 +205,14 @@ export default class BlockConversion {
             bba              : (block_node) => generateIndicatorBlock(block_node, 'bba_statement', 'bba'),
             ema              : (block_node) => generateIndicatorBlock(block_node, 'ema_statement', 'ema'),
             emaa             : (block_node) => generateIndicatorBlock(block_node, 'emaa_statement', 'emaa'),
-            lists_create_with: (block_node) => generateGrowingListBlock(block_node, 'lists_create_with', translate('list'), 'VALUE'),
+            lists_create_with: (block_node) => generateGrowingListBlock(block_node, 'lists_create_with', localize('list'), 'VALUE'),
             macda            : (block_node) => generateIndicatorBlock(block_node, 'macda_statement', 'macda'),
             market           : (block_node) => tradeOptions(block_node),
             rsi              : (block_node) => generateIndicatorBlock(block_node, 'rsi_statement', 'rsi'),
             rsia             : (block_node) => generateIndicatorBlock(block_node, 'rsia_statement', 'rsia'),
             sma              : (block_node) => generateIndicatorBlock(block_node, 'sma_statement', 'sma'),
             smaa             : (block_node) => generateIndicatorBlock(block_node, 'smaa_statement', 'smaa'),
-            text_join        : (block_node) => generateGrowingListBlock(block_node, 'text_join', translate('text'), 'TEXT'),
+            text_join        : (block_node) => generateGrowingListBlock(block_node, 'text_join', localize('text'), 'TEXT'),
             trade            : (block_node) => {
                 const block        = this.workspace.newBlock('trade_definition');
                 const block_fields = {

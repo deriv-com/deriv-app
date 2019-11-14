@@ -1,4 +1,4 @@
-import { translate }         from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.sell_price = {
     init() {
@@ -6,20 +6,20 @@ Blockly.Blocks.sell_price = {
     },
     definition(){
         return {
-            message0       : translate('Sell profit/loss'),
+            message0       : localize('Sell profit/loss'),
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Returns the profit/loss form selling at market price'),
+            tooltip        : localize('Returns the profit/loss form selling at market price'),
             category       : Blockly.Categories.During_Purchase,
         };
     },
     meta(){
         return {
-            'display_name': translate('Profit/loss from selling'),
-            'description' : translate('This block gives you the potential profit or loss if you decide to sell your contract.'),
+            'display_name': localize('Profit/loss from selling'),
+            'description' : localize('This block gives you the potential profit or loss if you decide to sell your contract.'),
         };
     },
     onchange(event) {

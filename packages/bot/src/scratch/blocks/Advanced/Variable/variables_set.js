@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.variables_set = {
     init() {
@@ -7,12 +7,12 @@ Blockly.Blocks.variables_set = {
     definition(){
         return {
             type    : 'field_variable',
-            message0: translate('set %1 to %2'),
+            message0: localize('set %1 to %2'),
             args0   : [
                 {
                     type    : 'field_variable',
                     name    : 'VAR',
-                    variable: translate('item'),
+                    variable: localize('item'),
                 },
                 {
                     type: 'input_value',
@@ -24,14 +24,14 @@ Blockly.Blocks.variables_set = {
             colourTertiary   : Blockly.Colours.Special2.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Sets variable value'),
+            tooltip          : localize('Sets variable value'),
             category         : Blockly.Categories.Variables,
         };
     },
     meta(){
         return {
-            'display_name': translate('Set variable'),
-            'description' : translate('Assigns a given value to a variable'),
+            'display_name': localize('Set variable'),
+            'description' : localize('Assigns a given value to a variable'),
         };
     },
 };

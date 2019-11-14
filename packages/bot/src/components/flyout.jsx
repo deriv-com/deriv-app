@@ -1,11 +1,11 @@
 import classNames           from 'classnames';
 import React                from 'react';
 import PropTypes            from 'prop-types';
+import { localize }          from 'deriv-translations/lib/i18n';
 import FlyoutBlockGroup     from './flyout-block-group.jsx';
 import HelpBase             from '../scratch/help-content/flyout-help-base.jsx';
 import { config }           from '../scratch/help-content/help-content.config';
 import { connect }          from '../stores/connect';
-import { translate }        from '../utils/lang/i18n';
 import                           '../assets/sass/scratch/flyout.scss';
 
 const Flyout = ({
@@ -37,13 +37,13 @@ const Flyout = ({
                 is_search_flyout && !is_help_content && (
                     <div className='flyout__search-header'>
                         <span className='flyout__search-header-text'>
-                            {translate(`Results for "${search_term}"`)}
+                            {localize(`Results for "${search_term}"`)}
                         </span>
                         <span className={classNames(
                             'flyout__search-header-text',
                             'flyout__search-header-results',
                         )}
-                        >{`${total_result} ${total_result > 1 ? translate('results') : translate('result')}`}
+                        >{`${total_result} ${total_result > 1 ? localize('results') : localize('result')}`}
                         </span>
                     </div>
                 )
@@ -59,7 +59,7 @@ const Flyout = ({
                         {
                             is_empty ?
                                 <div className='flyout__search-empty'>
-                                    <h2>{translate('No results found')}</h2>
+                                    <h2>{localize('No results found')}</h2>
                                 </div> :
                                 flyout_content.map((node, index) => {
                                     const tag_name = node.tagName.toUpperCase();

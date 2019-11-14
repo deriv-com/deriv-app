@@ -1,19 +1,19 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.lists_getSublist = {
     init() {
         this.WHERE_OPTIONS_1 = [
-            [translate('get sub-list from #'), 'FROM_START'],
-            [translate('get sub-list from # from end'), 'FROM_END'],
-            [translate('get sub-list from first'), 'FIRST'],
+            [localize('get sub-list from #'), 'FROM_START'],
+            [localize('get sub-list from # from end'), 'FROM_END'],
+            [localize('get sub-list from first'), 'FIRST'],
         ];
         this.WHERE_OPTIONS_2 = [
-            [translate('#'), 'FROM_START'],
-            [translate('# from end'), 'FROM_END'],
-            [translate('last'), 'LAST'],
+            [localize('#'), 'FROM_START'],
+            [localize('# from end'), 'FROM_END'],
+            [localize('last'), 'LAST'],
         ];
 
-        this.appendValueInput('LIST').appendField(translate('in list'));
+        this.appendValueInput('LIST').appendField(localize('in list'));
         this.appendDummyInput('AT1');
         this.appendDummyInput('AT2');
 
@@ -25,14 +25,14 @@ Blockly.Blocks.lists_getSublist = {
         );
         this.setOutput(true, null);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-        this.setTooltip(translate('This block creates a list of items from an existing list, using specific item positions.'));
+        this.setTooltip(localize('This block creates a list of items from an existing list, using specific item positions.'));
         this.updateAt(1, true);
         this.updateAt(2, true);
     },
     meta() {
         return {
-            'display_name': translate('Get sub-list'),
-            'description' : translate('This block creates a list of items from an existing list, using specific item positions.'),
+            'display_name': localize('Get sub-list'),
+            'description' : localize('This block creates a list of items from an existing list, using specific item positions.'),
             'category'    : Blockly.Categories.List,
         };
     },

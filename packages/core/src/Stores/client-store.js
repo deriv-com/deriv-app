@@ -140,7 +140,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get upgradeable_currencies () {
-        if (!this.legal_allowed_currencies) return [];
+        if (!this.legal_allowed_currencies || !this.website_status.currencies_config) return [];
         return this.legal_allowed_currencies.map(currency => (
             {
                 value: currency,

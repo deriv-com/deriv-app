@@ -28,6 +28,10 @@ class Checkbox extends React.PureComponent {
         this.props.onChange(e);
     };
 
+    setChecked = (checked) => {
+        this.setState({ checked });
+    }
+
     render() {
         const {
             className,

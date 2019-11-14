@@ -41,6 +41,7 @@ class InputField extends React.Component {
             name,
             onChange,
             onClick,
+            onClickInputWrapper,
             placeholder,
             prefix,
             required,
@@ -228,6 +229,7 @@ class InputField extends React.Component {
                 }
                 <div
                     className={classNames('input-field', className)}
+                    onClick={onClickInputWrapper}
                 >
                     {this.props.icon &&
                     <Icon onClick={onClick} />
@@ -276,6 +278,7 @@ InputField.propTypes = {
     name                    : PropTypes.string,
     onChange                : PropTypes.func,
     onClick                 : PropTypes.func,
+    onClickInputWrapper     : PropTypes.func,
     placeholder             : PropTypes.string,
     prefix                  : PropTypes.string,
     required                : PropTypes.bool,

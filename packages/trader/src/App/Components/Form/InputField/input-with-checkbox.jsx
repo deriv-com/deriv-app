@@ -2,7 +2,10 @@ import PropTypes             from 'prop-types';
 import {
     PropTypes as MobxPropTypes,
 }                            from 'mobx-react';
-import React, { useState }   from 'react';
+import React, {
+    useRef,
+    useState,
+}                            from 'react';
 import { Checkbox, Popover } from 'deriv-components';
 import CurrencyUtils         from 'deriv-shared/utils/currency';
 import InputField            from './input-field.jsx';
@@ -22,12 +25,27 @@ const InputWithCheckbox = ({
     tooltip_label,
     value,
 }) => {
+    const checkboxRef = useRef();
     const [disabled, setDisabled] = useState(!defaultChecked);
+
+    const checkboxName = `has_${name}`;
 
     const changeValue = (e) => {
         const { checked } = e.target;
         setDisabled(!checked);
         onChange({ target: { name: e.target.name, value: checked } });
+    };
+
+    const enableInputOnClick = (e) => {
+        if (disabled) {
+            setDisabled(false);
+            onChange({ target: { name: checkboxName, value: true } });
+
+            checkboxRef.current.setChecked(true);
+
+            const input = e.target.querySelector('input.input-wrapper__input');
+            setTimeout(() => input.focus());
+        }
     };
 
     const input =
@@ -49,6 +67,7 @@ const InputWithCheckbox = ({
             max_length={10}
             name={name}
             onChange={onChange}
+            onClickInputWrapper={enableInputOnClick}
             type='tel'
             value={value}
         />;
@@ -58,10 +77,10 @@ const InputWithCheckbox = ({
             <div className='input-wrapper--inline'>
                 <Checkbox
                     className={`${name}-checkbox__input`}
+                    ref={checkboxRef}
                     id={`dt_${name}-checkbox_input`}
                     onChange={changeValue}
-                    defaultChecked={!disabled}
-                    name={`has_${name}`}
+                    name={checkboxName}
                     label={label}
                     classNameLabel={`${name}-checkbox__label`}
                 />

@@ -983,7 +983,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     onSetResidence({ residence }, cb) {
         if (!residence) return;
-        WS.setSettings({ residence: residence }).then(async response => {
+        WS.setSettings({ residence }).then(async response => {
             if (response.error) {
                 cb(response.error.message);
             } else {

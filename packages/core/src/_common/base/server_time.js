@@ -11,8 +11,7 @@ const ServerTime = (() => {
         update_time_interval,
         onTimeUpdated;
 
-    const init = (fncTimeUpdated, fncSetTimePromise) => {
-        fncSetTimePromise(pending);
+    const init = (fncTimeUpdated) => {
 
         if (!clock_started) {
             onTimeUpdated = fncTimeUpdated;
@@ -52,7 +51,7 @@ const ServerTime = (() => {
             }
         };
         updateTime();
-        pending.resolve(server_time);
+        pending.resolve();
         update_time_interval = setInterval(updateTime, 1000);
     };
 

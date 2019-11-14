@@ -7,7 +7,7 @@ import ServerTime           from '_common/base/server_time';
 configure({ enforceActions: 'observed' });
 
 const initStore = (core_store, websocket, client_base) => {
-    ServerTime.init(core_store.common.time_promise, core_store.common.server_time);
+    ServerTime.init(core_store.common);
     setWebsocket(websocket);
     setClientBase(client_base);
     const root_store = new RootStore(core_store);

@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.text_prompt_ext = {
     init() {
@@ -21,12 +21,12 @@ Blockly.Blocks.text_prompt_ext = {
     },
     definition(){
         return {
-            message0: translate('prompt for %1 with message %2'),
+            message0: localize('prompt for %1 with message %2'),
             args0   : [
                 {
                     type   : 'field_dropdown',
                     name   : 'TYPE',
-                    options: [[translate('string'), 'TEXT'], [translate('number'), 'NUMBER']],
+                    options: [[localize('string'), 'TEXT'], [localize('number'), 'NUMBER']],
                 },
                 {
                     type: 'input_value',
@@ -38,14 +38,14 @@ Blockly.Blocks.text_prompt_ext = {
             colour         : Blockly.Colours.Special3.colour,
             colourSecondary: Blockly.Colours.Special3.colourSecondary,
             colourTertiary : Blockly.Colours.Special3.colourTertiary,
-            tooltip        : translate('Request an input'),
+            tooltip        : localize('Request an input'),
             category       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Request an input'),
-            'description' : translate('This block creates a dialog box that uses a customised message to prompt for an input. The input can be either a string of text or a number.'),
+            'display_name': localize('Request an input'),
+            'description' : localize('This block creates a dialog box that uses a customised message to prompt for an input. The input can be either a string of text or a number.'),
         };
     },
     getRequiredValueInputs() {

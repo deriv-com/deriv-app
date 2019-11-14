@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.lists_indexOf = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.lists_indexOf = {
     },
     definition(){
         return {
-            message0: translate('in list %1 find %2 occurence of item %3'),
+            message0: localize('in list %1 find %2 occurence of item %3'),
             args0   : [
                 {
                     type: 'input_value',
@@ -15,7 +15,7 @@ Blockly.Blocks.lists_indexOf = {
                 {
                     type   : 'field_dropdown',
                     name   : 'END',
-                    options: [[translate('first'), 'FIRST'], [translate('last'), 'LAST']],
+                    options: [[localize('first'), 'FIRST'], [localize('last'), 'LAST']],
                 },
                 {
                     type: 'input_value',
@@ -27,14 +27,14 @@ Blockly.Blocks.lists_indexOf = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('This block gives you the position of an item in a given list.'),
+            tooltip        : localize('This block gives you the position of an item in a given list.'),
             category       : Blockly.Categories.List,
         };
     },
     meta(){
         return {
-            'display_name': translate('List item position'),
-            'description' : translate('This block gives you the position of an item in a given list.'),
+            'display_name': localize('List item position'),
+            'description' : localize('This block gives you the position of an item in a given list.'),
         };
     },
     getRequiredValueInputs() {

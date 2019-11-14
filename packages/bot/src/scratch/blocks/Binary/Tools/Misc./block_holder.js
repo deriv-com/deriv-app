@@ -1,6 +1,6 @@
 // import ScratchStore          from '../../../../../stores/scratch-store';
+import { localize }          from 'deriv-translations/lib/i18n';
 import { setBlockTextColor } from '../../../../utils';
-import { translate }         from '../../../../../utils/lang/i18n';
 
 Blockly.Blocks.block_holder = {
     init() {
@@ -8,7 +8,7 @@ Blockly.Blocks.block_holder = {
     },
     definition() {
         return {
-            message0: translate('Ignore %1 %2'),
+            message0: localize('Ignore %1 %2'),
             args0   : [
                 {
                     type: 'input_dummy',
@@ -22,14 +22,14 @@ Blockly.Blocks.block_holder = {
             colour         : Blockly.Colours.RootBlock.colour,
             colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
             colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
-            tooltip        : translate('Put your blocks in here to prevent them from being removed'),
+            tooltip        : localize('Put your blocks in here to prevent them from being removed'),
             category       : Blockly.Categories.Miscellaneous,
         };
     },
     meta() {
         return {
-            'display_name': translate('Ignore'),
-            'description' : translate('Use this block if you want some instructions to be ignored when your bot runs. Instructions within this block won’t be executed.'),
+            'display_name': localize('Ignore'),
+            'description' : localize('Use this block if you want some instructions to be ignored when your bot runs. Instructions within this block won’t be executed.'),
         };
     },
     onchange(/* event */) {

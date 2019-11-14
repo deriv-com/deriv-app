@@ -1,5 +1,5 @@
-import config        from '../../../../../constants';
-import { translate } from '../../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
+import config       from '../../../../../constants';
 
 Blockly.Blocks.ohlc_values_in_list = {
     init() {
@@ -7,7 +7,7 @@ Blockly.Blocks.ohlc_values_in_list = {
     },
     definition(){
         return {
-            message0: translate('Make a list of %1 values from candles list %2'),
+            message0: localize('Make a list of %1 values from candles list %2'),
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -24,14 +24,14 @@ Blockly.Blocks.ohlc_values_in_list = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Returns a list of specific values from a given candle list'),
+            tooltip        : localize('Returns a list of specific values from a given candle list'),
             category       : Blockly.Categories.Candle,
         };
     },
     meta(){
         return {
-            'display_name': translate('Create a list of candle values (2)'),
-            'description' : translate('This block gives you the selected candle value from a list of candles.'),
+            'display_name': localize('Create a list of candle values (2)'),
+            'description' : localize('This block gives you the selected candle value from a list of candles.'),
         };
     },
     getRequiredValueInputs() {

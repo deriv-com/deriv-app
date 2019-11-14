@@ -1,9 +1,9 @@
-import { translate } from '../../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.input_list = {
     init() {
         this.jsonInit({
-            message0: translate('Input List %1'),
+            message0: localize('Input List %1'),
             args0   : [
                 {
                     type : 'input_value',

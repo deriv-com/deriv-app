@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.text_print = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.text_print = {
     },
     definition(){
         return {
-            message0: translate('print %1'),
+            message0: localize('print %1'),
             args0   : [
                 {
                     type: 'input_value',
@@ -18,14 +18,14 @@ Blockly.Blocks.text_print = {
             colourTertiary   : Blockly.Colours.Special3.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Displays a dialog window with a message'),
+            tooltip          : localize('Displays a dialog window with a message'),
             category         : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Print'),
-            'description' : translate('This block displays a dialog window with a given message.'),
+            'display_name': localize('Print'),
+            'description' : localize('This block displays a dialog window with a given message.'),
         };
     },
     getRequiredValueInputs() {

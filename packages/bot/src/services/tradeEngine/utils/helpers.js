@@ -1,7 +1,7 @@
+import { localize }   from 'deriv-translations/lib/i18n';
 import { notify }     from './broadcast';
 import config         from '../../../constants';
 import { getUTCTime } from '../../../utils/tools';
-import { translate }  from '../../../utils/lang/i18n';
 
 export const noop = () => {};
 
@@ -79,7 +79,7 @@ export const registerStream = (observer, name, cb) => {
 const maxRetries = 12;
 
 const notifyRetry = (msg, error, delay) =>
-    notify('warn', `${msg}: ${error.error.msg_type}, ${translate('retrying in')} ${delay}s`);
+    notify('warn', `${msg}: ${error.error.msg_type}, ${localize('retrying in')} ${delay}s`);
 
 const getBackoffDelay = (error, delayIndex) => {
     const offset = 0.5; // 500ms
@@ -94,13 +94,13 @@ const getBackoffDelay = (error, delayIndex) => {
     const exponentialIncrease = 2 ** delayIndex + offset;
 
     if (errorCode === 'RateLimit' || delayIndex < maxExpTries) {
-        notifyRetry(translate('Rate limit reached for'), error, exponentialIncrease);
+        notifyRetry(localize('Rate limit reached for'), error, exponentialIncrease);
         return exponentialIncrease * 1000;
     }
 
     const linearIncrease = exponentialIncrease + (maxExpTries - delayIndex + 1);
 
-    notifyRetry(translate('Request failed for'), error, linearIncrease);
+    notifyRetry(localize('Request failed for'), error, linearIncrease);
     return linearIncrease * 1000;
 };
 
@@ -171,7 +171,7 @@ export const showDialog = options =>
         options.text.forEach(text => $dialog.append(`<p style="margin: 0.7em;">${text}</p>`));
         const defaultButtons = [
             {
-                text : translate('No'),
+                text : localize('No'),
                 class: 'button-secondary',
                 click() {
                     $(this).dialog('close');
@@ -180,7 +180,7 @@ export const showDialog = options =>
                 },
             },
             {
-                text : translate('Yes'),
+                text : localize('Yes'),
                 class: 'button-primary',
                 click() {
                     $(this).dialog('close');

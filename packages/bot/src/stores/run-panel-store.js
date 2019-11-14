@@ -2,15 +2,15 @@ import {
     observable,
     action,
     reaction,
-    computed }                  from 'mobx';
-import { contract_stages }      from '../constants/contract-stage';
+    computed }             from 'mobx';
+import { localize }        from 'deriv-translations/lib/i18n' ;
+import { contract_stages } from '../constants/contract-stage';
 import {
     error_types,
-    unrecoverable_errors }      from '../constants/messages';
-import DBot                     from '../scratch';
-import { isEnded }              from '../utils/contract';
-import { translate }            from '../utils/lang/i18n';
-import { observer }             from '../utils/observer';
+    unrecoverable_errors } from '../constants/messages';
+import DBot                from '../scratch';
+import { isEnded }         from '../utils/contract';
+import { observer }        from '../utils/observer';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -140,8 +140,8 @@ export default class RunPanelStore {
         this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
-            title  : translate('Please log in'),
-            message: translate('You need to log in to run the bot.'),
+            title  : localize('Please log in'),
+            message: localize('You need to log in to run the bot.'),
         };
     }
 
@@ -150,8 +150,8 @@ export default class RunPanelStore {
         this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
-            title  : translate('DBot isn\'t quite ready for real accounts'),
-            message: translate('Please switch to your demo account to run your DBot.'),
+            title  : localize('DBot isn\'t quite ready for real accounts'),
+            message: localize('Please switch to your demo account to run your DBot.'),
         };
     }
 
@@ -163,8 +163,8 @@ export default class RunPanelStore {
         };
         this.onCancelButtonClick = this.onCloseDialog;
         this.dialog_options = {
-            title  : translate('Are you sure?'),
-            message: translate('This will clear all data in the summary, transactions, and journal panels. All counters will be reset to zero.'),
+            title  : localize('Are you sure?'),
+            message: localize('This will clear all data in the summary, transactions, and journal panels. All counters will be reset to zero.'),
         };
     }
 
@@ -173,8 +173,8 @@ export default class RunPanelStore {
         this.onOkButtonClick     = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
-            title  : translate('Import error'),
-            message: translate('This strategy is currently not compatible with DBot.'),
+            title  : localize('Import error'),
+            message: localize('This strategy is currently not compatible with DBot.'),
         };
     }
     // #endregion
@@ -310,7 +310,7 @@ export default class RunPanelStore {
                     () => client.loginid,
                     (loginid) => {
                         if (loginid) {
-                            this.root_store.journal.pushMessage(translate('You have switched accounts.'));
+                            this.root_store.journal.pushMessage(localize('You have switched accounts.'));
                         }
                         terminateAndClear();
                         this.root_store.summary.currency = client.currency;

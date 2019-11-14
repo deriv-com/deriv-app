@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.text_trim = {
     init() {
@@ -6,15 +6,15 @@ Blockly.Blocks.text_trim = {
     },
     definition(){
         return {
-            message0: translate('trim spaces from %1 of %2'),
+            message0: localize('trim spaces from %1 of %2'),
             args0   : [
                 {
                     type   : 'field_dropdown',
                     name   : 'MODE',
                     options: [
-                        [translate('both sides'), 'BOTH'],
-                        [translate('left side'), 'LEFT'],
-                        [translate('right side'), 'RIGHT'],
+                        [localize('both sides'), 'BOTH'],
+                        [localize('left side'), 'LEFT'],
+                        [localize('right side'), 'RIGHT'],
                     ],
                 },
                 {
@@ -27,14 +27,14 @@ Blockly.Blocks.text_trim = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Trims spaces'),
+            tooltip        : localize('Trims spaces'),
             category       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Trim spaces'),
-            'description' : translate('Trims the spaces within a given string or text.'),
+            'display_name': localize('Trim spaces'),
+            'description' : localize('Trims the spaces within a given string or text.'),
         };
     },
     getRequiredValueInputs() {

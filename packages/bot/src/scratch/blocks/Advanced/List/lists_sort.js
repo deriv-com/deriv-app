@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.lists_sort = {
     init() {
@@ -6,17 +6,17 @@ Blockly.Blocks.lists_sort = {
     },
     definition(){
         return {
-            message0: translate('sort %1 %2 %3'),
+            message0: localize('sort %1 %2 %3'),
             args0   : [
                 {
                     type   : 'field_dropdown',
                     name   : 'TYPE',
-                    options: [[translate('numeric'), 'NUMERIC'], [translate('alphabetic'), 'TEXT']],
+                    options: [[localize('numeric'), 'NUMERIC'], [localize('alphabetic'), 'TEXT']],
                 },
                 {
                     type   : 'field_dropdown',
                     name   : 'DIRECTION',
-                    options: [[translate('ascending'), '1'], [translate('descending'), '-1']],
+                    options: [[localize('ascending'), '1'], [localize('descending'), '-1']],
                 },
                 {
                     type: 'input_value',
@@ -28,14 +28,14 @@ Blockly.Blocks.lists_sort = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Sorts the items in a given list'),
+            tooltip        : localize('Sorts the items in a given list'),
             category       : Blockly.Categories.List,
         };
     },
     meta(){
         return {
-            'display_name': translate('Sort list'),
-            'description' : translate('Sorts the items in a given list, by their numeric or alphabetical value, in either ascending or descending order.'),
+            'display_name': localize('Sort list'),
+            'description' : localize('Sorts the items in a given list, by their numeric or alphabetical value, in either ascending or descending order.'),
         };
     },
     getRequiredValueInputs() {

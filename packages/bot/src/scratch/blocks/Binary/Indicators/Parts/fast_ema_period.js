@@ -1,9 +1,9 @@
-import { translate } from '../../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.fast_ema_period = {
     init() {
         this.jsonInit({
-            message0: translate('Fast EMA Period %1'),
+            message0: localize('Fast EMA Period %1'),
             args0   : [
                 {
                     type : 'input_value',

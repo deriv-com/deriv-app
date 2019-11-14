@@ -1,4 +1,4 @@
-import { translate }   from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.rsia_statement = {
     protected_statements : ['STATEMENT'],
@@ -8,7 +8,7 @@ Blockly.Blocks.rsia_statement = {
     },
     definition() {
         return {
-            message0: translate('set %1 to Relative Strength Index Array %2'),
+            message0: localize('set %1 to Relative Strength Index Array %2'),
             message1: '%1',
             args0   : [
                 {
@@ -30,7 +30,7 @@ Blockly.Blocks.rsia_statement = {
             colour           : Blockly.Colours.Base.colour,
             colourSecondary  : Blockly.Colours.Base.colourSecondary,
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
-            tooltip          : translate('Calculates Relative Strength Index (RSI) list from a list of values with a period'),
+            tooltip          : localize('Calculates Relative Strength Index (RSI) list from a list of values with a period'),
             previousStatement: null,
             nextStatement    : null,
             category         : Blockly.Categories.Indicators,
@@ -38,8 +38,8 @@ Blockly.Blocks.rsia_statement = {
     },
     meta() {
         return {
-            'display_name': translate('Relative Strength Index Array (RSIA)'),
-            'description' : translate('Similar to RSI, this block gives you a list of values for each entry in the input list.'),
+            'display_name': localize('Relative Strength Index Array (RSIA)'),
+            'description' : localize('Similar to RSI, this block gives you a list of values for each entry in the input list.'),
         };
     },
     onchange: Blockly.Blocks.bb_statement.onchange,

@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize }  from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.math_constrain = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.math_constrain = {
     },
     definition(){
         return {
-            message0: translate('constrain %1 low %2 high %3'),
+            message0: localize('constrain %1 low %2 high %3'),
             args0   : [
                 {
                     type : 'input_value',
@@ -29,14 +29,14 @@ Blockly.Blocks.math_constrain = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('This block constrains a given number so that it is within a set range.'),
+            tooltip        : localize('This block constrains a given number so that it is within a set range.'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Constrain within a range'),
-            'description' : translate('This block constrains a given number so that it is within a set range.'),
+            'display_name': localize('Constrain within a range'),
+            'description' : localize('This block constrains a given number so that it is within a set range.'),
         };
     },
     getRequiredValueInputs() {

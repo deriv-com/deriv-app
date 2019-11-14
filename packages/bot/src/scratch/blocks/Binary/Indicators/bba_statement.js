@@ -1,5 +1,6 @@
-import config        from '../../../../constants';
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
+import config       from '../../../../constants';
+import config       from '../../../../constants';
 
 Blockly.Blocks.bba_statement = {
     protected_statements : ['STATEMENT'],
@@ -9,7 +10,7 @@ Blockly.Blocks.bba_statement = {
     },
     definition(){
         return {
-            message0: translate('set %1 to Bollinger Bands Array %2 %3'),
+            message0: localize('set %1 to Bollinger Bands Array %2 %3'),
             message1: '%1',
             args0   : [
                 {
@@ -36,7 +37,7 @@ Blockly.Blocks.bba_statement = {
             colour           : Blockly.Colours.Base.colour,
             colourSecondary  : Blockly.Colours.Base.colourSecondary,
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
-            tooltip          : translate('Calculates Bollinger Bands (BB) list from a list with a period'),
+            tooltip          : localize('Calculates Bollinger Bands (BB) list from a list with a period'),
             previousStatement: null,
             nextStatement    : null,
             category         : Blockly.Categories.Indicators,
@@ -44,8 +45,8 @@ Blockly.Blocks.bba_statement = {
     },
     meta(){
         return {
-            'display_name': translate('Bollinger Bands Array (BBA)'),
-            'description' : translate('Similar to BB. This block gives you a choice of returning the values of either the lower band, higher band, or the SMA line in the middle.'),
+            'display_name': localize('Bollinger Bands Array (BBA)'),
+            'description' : localize('Similar to BB. This block gives you a choice of returning the values of either the lower band, higher band, or the SMA line in the middle.'),
         };
     },
     onchange: Blockly.Blocks.bb_statement.onchange,

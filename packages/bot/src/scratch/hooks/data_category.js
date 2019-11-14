@@ -1,4 +1,4 @@
-import { translate } from '../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 /* eslint-disable func-names, no-underscore-dangle */
 
@@ -80,7 +80,7 @@ Blockly.DataCategory.search = function(variableModelList){
 Blockly.DataCategory.addCreateButton = function(xmlList, workspace) {
     const buttonXml = goog.dom.createDom('button');
     // Set default msg, callbackKey, and callback values for type 'VARIABLE'
-    const msg = translate('Create variable');
+    const msg = localize('Create variable');
     const callbackKey = 'CREATE_VARIABLE';
     const callback = function(button) {
         const buttonWorkspace = button.getTargetWorkspace();

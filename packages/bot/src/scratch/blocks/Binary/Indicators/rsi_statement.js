@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.rsi_statement = {
     protected_statements : ['STATEMENT'],
@@ -8,7 +8,7 @@ Blockly.Blocks.rsi_statement = {
     },
     definition(){
         return {
-            message0: translate('set %1 to Relative Strength Index %2'),
+            message0: localize('set %1 to Relative Strength Index %2'),
             message1: '%1',
             args0   : [
                 {
@@ -30,7 +30,7 @@ Blockly.Blocks.rsi_statement = {
             colour           : Blockly.Colours.Base.colour,
             colourSecondary  : Blockly.Colours.Base.colourSecondary,
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
-            tooltip          : translate('Relative Strength Index (RSI) from a list with a period'),
+            tooltip          : localize('Relative Strength Index (RSI) from a list with a period'),
             previousStatement: null,
             nextStatement    : null,
             category         : Blockly.Categories.Indicators,
@@ -38,8 +38,8 @@ Blockly.Blocks.rsi_statement = {
     },
     meta(){
         return {
-            'display_name': translate('Relative Strength Index (RSI)'),
-            'description' : translate('RSI is a technical analysis tool that helps you identify the market trend. It will give you a value from 0 to 100. An RSI value of 70 and above means that the asset is overbought and the current trend may reverse, while a value of 30 and below means that the asset is oversold.'),
+            'display_name': localize('Relative Strength Index (RSI)'),
+            'description' : localize('RSI is a technical analysis tool that helps you identify the market trend. It will give you a value from 0 to 100. An RSI value of 70 and above means that the asset is overbought and the current trend may reverse, while a value of 30 and below means that the asset is oversold.'),
         };
     },
     onchange: Blockly.Blocks.bb_statement.onchange,

@@ -2,8 +2,8 @@
 import { Button }           from 'deriv-components';
 import React                from 'react';
 import { PropTypes }        from 'prop-types';
+import { localize }         from 'deriv-translations/lib/i18n';
 import FlyoutBlock          from './flyout-block.jsx';
-import { translate }        from '../utils/tools';
 
 const FlyoutBlockGroup = ({
     onInfoClick,
@@ -23,7 +23,7 @@ const FlyoutBlockGroup = ({
                         has_effect
                         onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}
                         primary
-                        text={translate('Add')}
+                        text={localize('Add')}
                         type='button'
                     />
                 </div>
@@ -35,7 +35,7 @@ const FlyoutBlockGroup = ({
                     <a
                         className='flyout__item-info'
                         onClick={onInfoClick}
-                    >{translate('Learn more')}
+                    >{localize('Learn more')}
                     </a>
                 }
             </div>

@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.controls_forEach = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.controls_forEach = {
     },
     definition(){
         return {
-            message0: translate('for each item %1 in list %2'),
+            message0: localize('for each item %1 in list %2'),
             args0   : [
                 {
                     type    : 'field_variable',
@@ -19,7 +19,7 @@ Blockly.Blocks.controls_forEach = {
                     check: 'Array',
                 },
             ],
-            message1: translate('do %1'),
+            message1: localize('do %1'),
             args1   : [
                 {
                     type: 'input_statement',
@@ -31,14 +31,14 @@ Blockly.Blocks.controls_forEach = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Iterates through a given list'),
+            tooltip          : localize('Iterates through a given list'),
             category         : Blockly.Categories.Loop,
         };
     },
     meta(){
         return {
-            'display_name': translate('Iterate (2)'),
-            'description' : translate('This block uses the variable "i" to control the iterations. With each iteration, the value of "i" is determined by the items in a given list.'),
+            'display_name': localize('Iterate (2)'),
+            'description' : localize('This block uses the variable "i" to control the iterations. With each iteration, the value of "i" is determined by the items in a given list.'),
         };
     },
     getRequiredValueInputs() {

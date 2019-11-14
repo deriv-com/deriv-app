@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.logic_compare = {
     init() {
@@ -34,14 +34,14 @@ Blockly.Blocks.logic_compare = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Compares two values'),
+            tooltip        : localize('Compares two values'),
             category       : Blockly.Categories.Logic,
         };
     },
     meta(){
         return {
-            'display_name': translate('Compare'),
-            'description' : translate('This block compares two values and is used to build a conditional structure.'),
+            'display_name': localize('Compare'),
+            'description' : localize('This block compares two values and is used to build a conditional structure.'),
         };
     },
     getRequiredValueInputs() {

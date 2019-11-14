@@ -8,8 +8,9 @@ import { observer as globalObserver } from '../utils/observer';
 
 class DBot {
     constructor() {
-        this.interpreter = null;
-        this.workspace   = null;
+        this.interpreter      = null;
+        this.workspace        = null;
+        this.before_run_funcs = [];
     }
 
     /**
@@ -34,6 +35,8 @@ class DBot {
             Blockly.derivWorkspace       = this.workspace;
 
             this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
+            this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
+            this.addBeforeRunFunction(this.checkForErroredBlocks.bind(this));
     
             // Initialise JavaScript (this will in turn initialise the variable map).
             Blockly.JavaScript.init(this.workspace);
@@ -61,44 +64,20 @@ class DBot {
     }
 
     /**
-     * Executed before running the bot, can stop the bot from running if false is returned.
-     * @returns {Boolean} Indicates whether to run the bot or not.
+     * Allows you to add a function that needs to be executed before running the bot. Each
+     * function needs to return true in order for the bot to run.
+     * @param {Function} func Function to execute which returns true/false.
      */
-    beforeRunBot() {
-        let should_run_bot = true;
-
-        // Disable blocks outside of any main or independent blocks.
-        const top_blocks = this.workspace.getTopBlocks();
-        top_blocks.forEach(block => {
-            if (!block.isMainBlock() && !block.isIndependentBlock()) {
-                block.setDisabled(true);
-            }
-        });
-
-        // Check if there are any blocks highlighted for errors. Do this after disabling
-        // stray blocks, we don't care about blocks that we're not going to execute.
-        const all_blocks  = this.workspace.getAllBlocks(true);
-        const error_block = all_blocks.find(block => block.is_error_highlighted && !block.disabled);
-
-        if (error_block) {
-            const { run_panel } = ScratchStore.instance.root_store;
-            const message       = translate('Some of your block inputs are missing values, please check and update them.');
-            
-            this.workspace.centerOnBlock(error_block.id);
-            run_panel.showErrorMessage(message);
-
-            should_run_bot = false;
-        }
-
-        return should_run_bot;
+    addBeforeRunFunction(func) {
+        this.before_run_funcs.push(func);
     }
 
     /**
-     * Does a sanity check (beforeRunBot) before attempting to generate the
+     * Runs the bot. Does a sanity check before attempting to generate the
      * JavaScript code that's fed to the interpreter.
      */
     runBot() {
-        const should_run_bot = this.beforeRunBot();
+        const should_run_bot = this.before_run_funcs.every(func => func());
         
         if (!should_run_bot) {
             const { run_panel } = ScratchStore.instance.root_store;
@@ -190,6 +169,41 @@ class DBot {
             this.interpreter.terminateSession();
             this.interpreter = null;
         }
+    }
+
+    /**
+     * Disable blocks outside of any main or independent blocks.
+     */
+    disableStrayBlocks() {
+        const top_blocks = this.workspace.getTopBlocks();
+
+        top_blocks.forEach(block => {
+            if (!block.isMainBlock() && !block.isIndependentBlock()) {
+                block.setDisabled(true);
+            }
+        });
+
+        return true;
+    }
+
+    /**
+     * Check if there are any blocks highlighted for errors.
+     */
+    checkForErroredBlocks() {
+        const all_blocks  = this.workspace.getAllBlocks(true);
+        const error_block = all_blocks.find(block => block.is_error_highlighted && !block.disabled);
+
+        if (error_block) {
+            const { run_panel } = ScratchStore.instance.root_store;
+            const message       = translate('Some of your block inputs are missing values, please check and update them.');
+            
+            this.workspace.centerOnBlock(error_block.id);
+            run_panel.showErrorMessage(message);
+
+            return false;
+        }
+
+        return true;
     }
 
     /**

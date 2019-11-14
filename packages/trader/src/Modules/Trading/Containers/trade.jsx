@@ -122,14 +122,6 @@ const ChartBottomWidgets = connect(
     })
 )(BottomDigits);
 
-const BarrierTitle = ({
-    label
-}) =>  (
-    <>
-        <span className="label">{label}</span>
-    </>
-);
-
 // ---- InfoBox for chart
 const LazyTopWidgets = ({ onSymbolChange }) => (
     <TopWidgets
@@ -190,10 +182,6 @@ class ChartTradeClass extends React.Component {
         <ChartBottomWidgets digits={digits} tick={tick} />
     );
 
-    barrierTitle = ({...props}) => (
-        <BarrierTitle {...props} />
-    );
-
     render() {
         const {
             show_digits_stats,
@@ -218,7 +206,6 @@ class ChartTradeClass extends React.Component {
         return (
             <SmartChart
                 barriers={barriers}
-                barrierTitle = { this.barrierTitle }
                 bottomWidgets={ show_digits_stats ? this.bottomWidgets : null}
                 showLastDigitStats={show_digits_stats}
                 chartControlsWidgets={this.chartControlsWidgets}

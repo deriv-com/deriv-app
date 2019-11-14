@@ -454,9 +454,7 @@ export default class TradeStore extends BaseStore {
                 } else {
                     const obj_barrier = {
                         key,
-                        titleTag: {
-                            label: `${obj_limit_order.display_name} `,
-                        },
+                        title             : `${obj_limit_order.display_name}`,
                         color             : key === 'take_profit' ? BARRIER_COLORS.GREEN : BARRIER_COLORS.ORANGE,
                         draggable         : false,
                         lineStyle         : key === 'stop_out' ? BARRIER_LINE_STYLES.DOTTED : BARRIER_LINE_STYLES.SOLID,

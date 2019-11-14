@@ -22,9 +22,8 @@ export class ChartBarrierStore {
     @observable draggable;
 
     @observable hidePriceLines;
-    @observable titleTag;
+    @observable title;
     @observable hideOffscreenLines;
-    @observable hidePriceLabel;
 
     onChartBarrierChange;
 

@@ -43,14 +43,14 @@ class DBot {
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), this.workspace);
             this.workspace.clearUndo();
 
-            const drop_zone    = document.body;
             const { saveload } = ScratchStore.instance;
     
             window.addEventListener('resize', () => this.onWorkspaceResize(el_app_contents, el_scratch_div));
-            document.addEventListener('click', this.onClickOutsideFlyout.bind(this));
-            drop_zone.addEventListener('dragover', DBot.handleDragOver);
-            drop_zone.addEventListener('drop', saveload.handleFileChange);
             window.dispatchEvent(new Event('resize'));
+
+            document.addEventListener('click', this.onClickOutsideFlyout.bind(this));
+            document.addEventListener('dragover', DBot.handleDragOver);
+            document.addEventListener('drop', saveload.handleFileChange);
     
             // disable overflow
             el_scratch_div.parentNode.style.overflow = 'hidden';

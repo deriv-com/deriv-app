@@ -272,9 +272,9 @@ const config = {
         },
     },
     save_status: {
-        EMPTY : { index: 0, message: translate('') },
-        SAVING: { index: 1, message: translate('Saving draft') },
-        SAVED : { index: 2, message: translate('Draft Saved') },
+        EMPTY : { index: 0, message: localize('') },
+        SAVING: { index: 1, message: localize('Saving draft') },
+        SAVED : { index: 2, message: localize('Draft Saved') },
     },
 };
 

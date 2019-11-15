@@ -1,5 +1,5 @@
+import { localize }  from 'deriv-translations/lib/i18n';
 import config        from '../../../../../constants';
-import { translate } from '../../../../../utils/lang/i18n';
 
 // This block is a remnant of a very old Binary Bot version.
 // needs to be here for backward compatibility.
@@ -17,7 +17,7 @@ Blockly.Blocks.barrier_offset = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Adds a sign to a number to create a barrier offset. (deprecated)'),
+            tooltip        : localize('Adds a sign to a number to create a barrier offset. (deprecated)'),
             category       : Blockly.Categories.Miscellaneous,
         });
     },

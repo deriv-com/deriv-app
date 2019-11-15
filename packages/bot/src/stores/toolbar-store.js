@@ -1,8 +1,9 @@
 import {
     observable,
     action,
-} from 'mobx';
-import { translate } from '../utils/lang/i18n';
+}                               from 'mobx';
+import { localize }             from 'deriv-translations/lib/i18n';
+import { delayCallbackByMs }    from '../utils/tools';
 
 export default class ToolbarStore {
     constructor(root_store) {
@@ -11,7 +12,8 @@ export default class ToolbarStore {
 
     @observable is_dialog_open = false;
     @observable is_toolbox_open = false;
-    @observable file_name = translate('Untitled Bot');
+    @observable is_search_loading = false;
+    @observable file_name = localize('Untitled Bot');
 
     @action.bound
     onRunClick() {
@@ -29,6 +31,15 @@ export default class ToolbarStore {
         const toolbox = Blockly.derivWorkspace.toolbox_;
         this.is_toolbox_open = !this.is_toolbox_open;
         toolbox.toggle();
+    }
+
+    @action.bound
+    onSearchKeyUp(submitForm) {
+        this.is_search_loading = true;
+        delayCallbackByMs(submitForm, 1000).then(action(timer => {
+            clearTimeout(timer);
+            this.is_search_loading = false;
+        }));
     }
 
     @action.bound
@@ -76,7 +87,7 @@ export default class ToolbarStore {
         workspace.clear();
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.blocksXmlStr), workspace);
         Blockly.Events.setGroup(false);
-        this.file_name = translate('Untitled Bot');
+        this.file_name = localize('Untitled Bot');
         this.is_dialog_open = false;
     }
 

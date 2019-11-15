@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 
 function connectMainStore(mapperFunction) {
     // Combine both stores and props, with props taking precedence
-    const mapStoresAndProps = (rootStore, props /* , context */) => ({
-        ...mapperFunction(rootStore),
+    const mapStoresAndProps = (root_store, props /* , context */) => ({
+        ...mapperFunction(root_store),
         ...props,
     });
 
@@ -16,8 +16,8 @@ function connectCustomStore(mapperFunction, CustomStore) {
         class StoredComponent extends Component {
             constructor(props) {
                 super(props);
-                const { rootStore } = this.props;
-                this.store = new CustomStore(rootStore);
+                const { root_store } = this.props;
+                this.store = new CustomStore(root_store);
                 const mapStoresAndProps = (_rootStore, nextProps) => ({
                     ...mapperFunction(this.store),
                     ...nextProps,
@@ -52,7 +52,7 @@ function connectCustomStore(mapperFunction, CustomStore) {
             || 'Unknown';
         StoredComponent.displayName = `unbox-${wrappedDisplayName}`;
 
-        return inject(rootStore => ({ rootStore }))(StoredComponent);
+        return inject(root_store => ({ root_store }))(StoredComponent);
     };
 }
 

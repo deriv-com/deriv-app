@@ -32,7 +32,7 @@ class TermsOfUse extends React.Component {
                         <ThemedScrollbars
                             autohide
                             style={{
-                                height: '100%',
+                                height: 'calc(100% - 50px)',
                             }}
                         >
                             <div className='terms-of-use'>
@@ -100,6 +100,7 @@ class TermsOfUse extends React.Component {
                             </div>
                         </ThemedScrollbars>
                         <FormSubmitButton
+                            is_absolute
                             is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
                             label={localize('Add account')}
                             has_cancel={true}

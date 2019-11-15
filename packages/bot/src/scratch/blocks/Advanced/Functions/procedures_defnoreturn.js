@@ -1,5 +1,5 @@
-import { plusIconLight }     from '../../images';
-import { translate }         from '../../../../utils/lang/i18n';
+import { localize }      from 'deriv-translations/lib/i18n';
+import { plusIconLight } from '../../images';
 
 Blockly.Blocks.procedures_defnoreturn = {
     init() {
@@ -20,7 +20,7 @@ Blockly.Blocks.procedures_defnoreturn = {
     },
     definition() {
         return {
-            message0: translate('function %1 %2'),
+            message0: localize('function %1 %2'),
             args0   : [
                 {
                     type: 'field_input',
@@ -36,14 +36,14 @@ Blockly.Blocks.procedures_defnoreturn = {
             colour         : Blockly.Colours.Special2.colour,
             colourSecondary: Blockly.Colours.Special2.colourSecondary,
             colourTertiary : Blockly.Colours.Special2.colourTertiary,
-            tooltip        : translate('Function with no return value'),
+            tooltip        : localize('Function with no return value'),
             category       : Blockly.Categories.Functions,
         };
     },
     meta() {
         return {
-            'display_name': translate('Function with no return value'),
-            'description' : translate('This block executes nested instructions (bloks). It doesn\'t return any value'),
+            'display_name': localize('Function'),
+            'description' : localize('This block creates a function, which is a group of instructions that can be executed at any time. Place other blocks in here to perform any kind of action that you need in your strategy. When all the instructions in a function have been carried out, your bot will continue with the remaining blocks in your strategy. Click the “do something” field to give it a name of your choice. Click the plus icon to send a value (as a named variable) to your function.'),
         };
     },
     /**
@@ -78,7 +78,7 @@ Blockly.Blocks.procedures_defnoreturn = {
         
         // Wrap in setTimeout so block doesn't stick to mouse (Blockly.Events.END_DRAG event isn't blocked).
         setTimeout(() => {
-            const promptMessage = translate('Specify a parameter name:');
+            const promptMessage = localize('Specify a parameter name:');
             Blockly.prompt(promptMessage, '', paramName => {
                 if (paramName) {
                     const variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, null, paramName, '');
@@ -87,7 +87,7 @@ Blockly.Blocks.procedures_defnoreturn = {
                         this.argument_var_models.push(variable);
 
                         const paramField = this.getField('PARAMS');
-                        paramField.setText(`${translate('with: ')} ${this.arguments.join(', ')}`);
+                        paramField.setText(`${localize('with: ')} ${this.arguments.join(', ')}`);
 
                         this.getProcedureCallers().forEach(block => {
                             block.setProcedureParameters(this.arguments);
@@ -129,7 +129,7 @@ Blockly.Blocks.procedures_defnoreturn = {
         let paramString = '';
 
         if (this.arguments.length) {
-            paramString = `${translate('with:')} ${this.arguments.join(', ')}`;
+            paramString = `${localize('with:')} ${this.arguments.join(', ')}`;
         }
 
         // The params field is deterministic based on the mutation,
@@ -254,7 +254,7 @@ Blockly.Blocks.procedures_defnoreturn = {
         // Add option to create caller.
         const option = { enabled: true };
         const name = this.getFieldValue('NAME');
-        option.text = translate('Create "%1"').replace('%1', name);
+        option.text = localize('Create "%1"').replace('%1', name);
 
         const xmlMutation = document.createElement('mutation');
         xmlMutation.setAttribute('name', name);
@@ -276,7 +276,7 @@ Blockly.Blocks.procedures_defnoreturn = {
             this.argument_var_models.forEach(argumentVarModel => {
                 const getOption = { enabled: true };
 
-                getOption.text = translate('Create "get %1"').replace('%1', argumentVarModel.name);
+                getOption.text = localize('Create "get %1"').replace('%1', argumentVarModel.name);
 
                 const xmlField = Blockly.Variables.generateVariableFieldDom(argumentVarModel);
                 const xmlOptionBlock = document.createElement('block');

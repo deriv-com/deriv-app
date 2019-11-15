@@ -1,5 +1,5 @@
-import { translate } from './lang/i18n';
-import config        from '../constants';
+import { localize } from 'deriv-translations/lib/i18n';
+import config       from '../constants';
 
 // TODO: use-shared-functions - These functions are duplicates of trader ones, export and use these instead.
 export const isEnded = (contract) => (contract.status !== 'open' || !!contract.is_expired || !!contract.is_settleable);
@@ -7,7 +7,7 @@ export const getFinalPrice = (contract) => +(contract.sell_price || contract.bid
 export const getIndicativePrice = (contract) => getFinalPrice(contract) || null;
 export const getContractTypeName = (contract) => {
     const { opposites } = config;
-    let name = translate('Unknown');
+    let name = localize('Unknown');
 
     Object.keys(opposites).forEach(opposites_name => {
         const contract_type_objs = opposites[opposites_name];

@@ -1,5 +1,4 @@
 const website_name        = require('App/Constants/app-config').website_name;
-const Client              = require('./client_base');
 const getElementById      = require('../common_functions').getElementById;
 const getLanguage         = require('../language').get;
 const isMobile            = require('../os_detect').isMobile;
@@ -10,8 +9,8 @@ const domain_app_ids      = require('../../config').domain_app_ids;
 const getAppId            = require('../../config').getAppId;
 
 const Login = (() => {
-    const redirectToLogin = () => {
-        if (!Client.isLoggedIn() && !isLoginPages() && isStorageSupported(sessionStorage)) {
+    const redirectToLogin = (is_logged_in) => { // TODO: [add-client-action] - integrate this into Client store
+        if (!is_logged_in && !isLoginPages() && isStorageSupported(sessionStorage)) {
             sessionStorage.setItem('redirect_url', window.location.href);
             window.location.href = loginUrl();
         }
@@ -20,7 +19,7 @@ const Login = (() => {
     const redirectToSignUp = () => {
         window.open('https://deriv.com');
     };
-    
+
     const loginUrl = () => {
         const server_url         = localStorage.getItem('config.server_url');
         const language           = getLanguage();

@@ -2,9 +2,9 @@ import classnames           from 'classnames';
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import { ThemedScrollbars } from 'deriv-components';
+import { localize }         from 'deriv-translations/lib/i18n';
 import { message_types }    from '../constants/messages';
 import { connect }          from '../stores/connect';
-import { translate }        from '../utils/tools';
 import '../assets/sass/journal.scss';
 
 const DateItem = ({
@@ -101,8 +101,8 @@ const Journal = ({
             <table className='journal__table'>
                 <thead className='journal__table--header'>
                     <tr>
-                        <th className='journal__table--th'>{translate('Date')}</th>
-                        <th className='journal__table--th'>{translate('Message')}</th>
+                        <th className='journal__table--th'>{localize('Date')}</th>
+                        <th className='journal__table--th'>{localize('Message')}</th>
                     </tr>
                 </thead>
                 <tbody className='journal__table--body'>

@@ -1,4 +1,4 @@
-import { WS }            from 'Services';
+import { WS }            from 'Services/ws-methods';
 import {
     buildCurrenciesList,
     getDefaultCurrency } from '../Helpers/currency';

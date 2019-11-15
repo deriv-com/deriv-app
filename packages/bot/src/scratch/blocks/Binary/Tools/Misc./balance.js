@@ -1,5 +1,5 @@
-import config        from '../../../../../constants';
-import { translate } from '../../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
+import config       from '../../../../../constants';
 
 Blockly.Blocks.balance = {
     init() {
@@ -18,7 +18,7 @@ Blockly.Blocks.balance = {
     },
     definition(){
         return {
-            message0: translate('Balance: %1'),
+            message0: localize('Balance: %1'),
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -31,14 +31,14 @@ Blockly.Blocks.balance = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('This block returns account balance'),
+            tooltip        : localize('This block returns account balance'),
             category       : Blockly.Categories.Miscellaneous,
         };
     },
     meta(){
         return {
-            'display_name': translate('Account balance'),
-            'description' : translate('This block gives you the balance of your account either as a number or a string of text.'),
+            'display_name': localize('Account balance'),
+            'description' : localize('This block gives you the balance of your account either as a number or a string of text.'),
         };
     },
 };

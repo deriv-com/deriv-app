@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.text_changeCase = {
     init() {
@@ -6,15 +6,15 @@ Blockly.Blocks.text_changeCase = {
     },
     definition(){
         return {
-            message0: translate('to %1 %2'),
+            message0: localize('to %1 %2'),
             args0   : [
                 {
                     type   : 'field_dropdown',
                     name   : 'CASE',
                     options: [
-                        [translate('UPPER CASE'), 'UPPERCASE'],
-                        [translate('lower case'), 'LOWERCASE'],
-                        [translate('Title Case'), 'TITLECASE'],
+                        [localize('UPPER CASE'), 'UPPERCASE'],
+                        [localize('lower case'), 'LOWERCASE'],
+                        [localize('Title Case'), 'TITLECASE'],
                     ],
                 },
                 {
@@ -27,14 +27,14 @@ Blockly.Blocks.text_changeCase = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Changes text case accordingly'),
+            tooltip        : localize('Changes text case accordingly'),
             category       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Change text case'),
-            'description' : translate('Changes the capitalisation of a string of text to Upper case, Lower case, Title case.'),
+            'display_name': localize('Change text case'),
+            'description' : localize('Changes the capitalisation of a string of text to Upper case, Lower case, Title case.'),
         };
     },
 };

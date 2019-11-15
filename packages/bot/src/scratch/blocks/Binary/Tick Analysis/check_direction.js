@@ -1,5 +1,5 @@
-import config        from '../../../../constants';
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
+import config       from '../../../../constants';
 
 Blockly.Blocks.check_direction = {
     init() {
@@ -7,7 +7,7 @@ Blockly.Blocks.check_direction = {
     },
     definition(){
         return {
-            message0: translate('Direction is %1'),
+            message0: localize('Direction is %1'),
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -20,14 +20,14 @@ Blockly.Blocks.check_direction = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('True if the market direction matches the selection'),
+            tooltip        : localize('True if the market direction matches the selection'),
             category       : Blockly.Categories.Tick_Analysis,
         };
     },
     meta(){
         return {
-            'display_name': translate('Market direction'),
-            'description' : translate('This block is used to determine if the market price moves in the selected direction or not. It gives you a value of “True” or “False”.'),
+            'display_name': localize('Market direction'),
+            'description' : localize('This block is used to determine if the market price moves in the selected direction or not. It gives you a value of “True” or “False”.'),
         };
     },
 };

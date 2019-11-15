@@ -477,7 +477,8 @@
     }
 }
 
-/** @define payment-agent-transfer; weak */
+/* stylelint-disable plugin/selector-bem-pattern */
+/** @define payment-agent-transfer */
 div.payment-agent-transfer {
     // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
     &__header {
@@ -499,6 +500,7 @@ div.payment-agent-transfer {
         margin-right: 2.4rem;
     }
 }
+/* stylelint-enable plugin/selector-bem-pattern */
 
 /** @define dc-modal-header; */
 .dc-modal-header {

@@ -47,8 +47,6 @@ export const scratchWorkspaceInit = async () => {
             el_scratch_div.style.width  = `${el_app_contents.offsetWidth}px`;
             el_scratch_div.style.height = `${el_app_contents.offsetHeight - toolbar_height - tab_height}px`;
             Blockly.svgResize(workspace);
-            // eslint-disable-next-line no-underscore-dangle
-            workspace.toolbox_.flyout_.position();
         };
 
         window.addEventListener('resize', onWorkspaceResize);

@@ -5,6 +5,7 @@ import {
     ThemedScrollbars } from 'deriv-components';
 import { PropTypes }   from 'prop-types';
 import React           from 'react';
+import { localize }    from 'deriv-translations/lib/i18n';
 import {
     BuyPriceIcon,
     ExitSpotIcon,
@@ -14,7 +15,6 @@ import {
     CompletedIcon }    from './Icons.jsx';
 import IconTradeType   from './icon-trade-types.jsx';
 import { connect }     from '../stores/connect';
-import { translate }   from '../utils/tools';
 import                      '../assets/sass/transactions.scss';
 
 const Transaction = ({ contract }) => {
@@ -37,7 +37,7 @@ const Transaction = ({ contract }) => {
                                 <Popover
                                     className='transactions__inline transactions__middle'
                                     alignment='left'
-                                    message={translate('Refrence ID')}
+                                    message={localize('Reference ID')}
                                 >
                                     <RefrenceIdIcon className='transactions__middle' />
                                 </Popover>
@@ -49,7 +49,7 @@ const Transaction = ({ contract }) => {
                                 <Popover
                                     className='transactions__inline transactions__middle'
                                     alignment='left'
-                                    message={translate('Buy price')}
+                                    message={localize('Buy price')}
                                 >
                                     <BuyPriceIcon className='transactions__middle' />
                                 </Popover>
@@ -66,7 +66,7 @@ const Transaction = ({ contract }) => {
                             <Popover
                                 className='transactions__inline transactions__middle'
                                 alignment='left'
-                                message={translate('Entry spot')}
+                                message={localize('Entry spot')}
                             >
                                 <EntrySpotIcon className='transactions__middle' />
                             </Popover>
@@ -78,7 +78,7 @@ const Transaction = ({ contract }) => {
                             <Popover
                                 className='transactions__inline transactions__middle'
                                 alignment='left'
-                                message={translate('Exit spot')}
+                                message={localize('Exit spot')}
                             >
                                 <ExitSpotIcon className='transactions__middle' />
                             </Popover>
@@ -113,14 +113,14 @@ const Transaction = ({ contract }) => {
                                 <Popover
                                     className='transactions__inline transactions__middle'
                                     alignment='left'
-                                    message={translate('Completed')}
+                                    message={localize('Completed')}
                                 >
                                     <CompletedIcon className='transactions__middle' />
                                 </Popover> :
                                 <Popover
                                     className='transactions__inline transactions__middle'
                                     alignment='left'
-                                    message={translate('Pending')}
+                                    message={localize('Pending')}
                                 >
                                     <PendingIcon className='transactions__middle' />
                                 </Popover>}
@@ -137,9 +137,9 @@ const Transactions = ({
     return (
         <div className='transactions'>
             <div className='transactions__header'>
-                <span className='transactions__header--col'>{translate('Trade information')}</span>
-                <span className='transactions__header--col'>{translate('Entry/Exit spot')}</span>
-                <span className='transactions__header--col'>{translate('Profit/Loss')}</span>
+                <span className='transactions__header--col'>{localize('Trade information')}</span>
+                <span className='transactions__header--col'>{localize('Entry/Exit spot')}</span>
+                <span className='transactions__header--col'>{localize('Profit/Loss')}</span>
             </div>
             <div className='transactions__content'>
                 <ThemedScrollbars

@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 // https://github.com/google/blockly/blob/master/generators/javascript/math.js
 Blockly.Blocks.math_round = {
@@ -29,14 +29,14 @@ Blockly.Blocks.math_round = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Rounds a given number to an integer'),
+            tooltip        : localize('Rounds a given number to an integer'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Rounding operation'),
-            'description' : translate('This block rounds a given number according to the selection: round, round up, round down.'),
+            'display_name': localize('Rounding operation'),
+            'description' : localize('This block rounds a given number according to the selection: round, round up, round down.'),
         };
     },
 };

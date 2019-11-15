@@ -1,5 +1,6 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize }          from 'deriv-translations/lib/i18n';
 import { setBlockTextColor } from '../../../utils';
+
 // import ScratchStore          from '../../../../stores/scratch-store';
 
 Blockly.Blocks.tick_analysis = {
@@ -8,7 +9,7 @@ Blockly.Blocks.tick_analysis = {
     },
     definition(){
         return {
-            message0: translate('The content of this block is called on every tick %1 %2'),
+            message0: localize('The content of this block is called on every tick %1 %2'),
             args0   : [
                 {
                     type: 'input_dummy',
@@ -22,14 +23,14 @@ Blockly.Blocks.tick_analysis = {
             colour         : Blockly.Colours.RootBlock.colour,
             colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
             colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
-            tooltip        : translate('You can use this block to analyze the ticks, regardless of your trades'),
+            tooltip        : localize('You can use this block to analyze the ticks, regardless of your trades'),
             category       : Blockly.Categories.Tick_Analysis,
         };
     },
     meta(){
         return {
-            'display_name': translate('Run on every tick'),
-            'description' : translate('The content of this block is called on every tick. Place this block outside of any root block.'),
+            'display_name': localize('Run on every tick'),
+            'description' : localize('The content of this block is called on every tick. Place this block outside of any root block.'),
         };
     },
     onchange() {

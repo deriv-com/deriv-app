@@ -1,5 +1,5 @@
+import { localize }               from 'deriv-translations/lib/i18n';
 import { getContractTypeOptions } from '../../../shared';
-import { translate }              from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.purchase = {
     init() {
@@ -10,7 +10,7 @@ Blockly.Blocks.purchase = {
     },
     definition() {
         return {
-            message0: translate('Purchase %1'),
+            message0: localize('Purchase %1'),
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -22,14 +22,14 @@ Blockly.Blocks.purchase = {
             colour           : Blockly.Colours.Special1.colour,
             colourSecondary  : Blockly.Colours.Special1.colourSecondary,
             colourTertiary   : Blockly.Colours.Special1.colourTertiary,
-            tooltip          : translate('This block purchases contract of a specified type.'),
+            tooltip          : localize('This block purchases contract of a specified type.'),
             category         : Blockly.Categories.Before_Purchase,
         };
     },
     meta() {
         return {
-            'display_name': translate('Purchase'),
-            'description' : translate('Use this block to purchase the specific contract you want. You may add multiple Purchase blocks together with conditional blocks to define your purchase conditions. This block can only be used within the Purchase conditions block.'),
+            'display_name': localize('Purchase'),
+            'description' : localize('Use this block to purchase the specific contract you want. You may add multiple Purchase blocks together with conditional blocks to define your purchase conditions. This block can only be used within the Purchase conditions block.'),
         };
     },
     onchange(event) {

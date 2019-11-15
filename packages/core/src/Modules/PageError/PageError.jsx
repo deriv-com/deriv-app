@@ -37,7 +37,6 @@ const PageError = ({
                 className='page-error__btn'
                 to={redirect_url}
                 onClick={buttonOnClick}
-                primary
             >
                 <span className='page-error__btn-text btn__text'>
                     {redirect_label}

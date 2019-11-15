@@ -1,6 +1,6 @@
 // import PropTypes        from 'prop-types';
 import React              from 'react';
-import { WS }             from 'Services';
+import { WS }             from 'Services/ws-methods';
 import { connect }        from 'Stores/connect';
 import ChangePasswordForm from './change-password-form.jsx';
 import ForgotYourPassword from './forgot-your-password.jsx';

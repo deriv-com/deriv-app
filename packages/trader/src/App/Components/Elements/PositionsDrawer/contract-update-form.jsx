@@ -47,7 +47,7 @@ const ContractUpdateForm = ({
         toggleDialog();
     };
 
-    const is_disabled = !((has_stop_loss && stop_loss > 0) || (has_take_profit && take_profit > 0));
+    const is_disabled = !(stop_loss > 0 || take_profit > 0);
 
     const {
         contract_update_stop_loss  : stop_loss_error_messages,

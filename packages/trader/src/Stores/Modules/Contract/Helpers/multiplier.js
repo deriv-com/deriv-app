@@ -69,12 +69,14 @@ export const getMultiplierLimitOrder = (contract_update) => {
 
     const limit_order = {};
 
-    if (take_profit > 0 && has_take_profit) {
-        limit_order.take_profit = +take_profit; // send positive take_profit to API
+    if (take_profit > 0) {
+        // send positive take_profit to update or null cancel
+        limit_order.take_profit = has_take_profit ? +take_profit : null;
     }
 
-    if (stop_loss > 0 && has_stop_loss) {
-        limit_order.stop_loss = -stop_loss; // send negative stop_loss to API
+    if (stop_loss > 0) {
+        // send negative stop_loss to update or null to cancel
+        limit_order.stop_loss = has_stop_loss ? -stop_loss : null;
     }
 
     return limit_order;

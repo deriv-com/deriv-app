@@ -6,21 +6,22 @@
     "lerna": "^3.15.0"
   },
   "scripts": {
-    "bootstrap": "f () { npm ci && lerna bootstrap --scope deriv-${1:-'*'} && npm run build:travis && lerna link ;}; f",
+    "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --scope deriv-${1:-'*'} && lerna link && npm run build:travis ;}; f",
     "start": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run start ;}; f",
     "serve": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run serve ;}; f",
     "build": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run build ${@:2} ;}; f",
-    "build:travis": "lerna exec -- npm run build:travis",
-    "test": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test ;}; f",
+    "build:travis": "lerna exec --scope deriv-shared --scope deriv-components --scope deriv-translations -- npm run build:travis",
+    "build:local": "lerna exec --scope deriv-trader --scope deriv-bot --parallel -- npm run build",
+    "test": "f () { lerna exec --scope deriv-${1:-'*'} --parallel -- npm run test ;}; f",
     "test:eslint": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test:eslint ;}; f",
     "test:stylelint": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test:stylelint ;}; f",
     "test:mocha": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test:mocha ;}; f",
     "translate": "f () { lerna exec --scope deriv-translations -- npm run translate ;}; f",
-    "deploy": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy ;}; f",
-    "deploy:clean": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy:clean ${@:2} ;}; f",
-    "deploy:folder": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy:folder ${@:2} ;}; f",
-    "deploy:staging": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy:staging ;}; f",
-    "deploy:production": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run deploy:production ;}; f"
+    "deploy": "f () { npm run build:local && lerna exec --scope deriv-core -- npm run deploy ${@:1} ;}; f",
+    "deploy:clean": "f () { npm run build:local && lerna exec --scope deriv-core -- npm run deploy:clean ${@:1} ;}; f",
+    "deploy:folder": "f () { npm run build:local && lerna exec --scope deriv-core -- npm run deploy:folder ${@:1} ;}; f",
+    "deploy:staging": "lerna exec --scope deriv-core -- npm run deploy:staging",
+    "deploy:production": "lerna exec --scope deriv-core -- npm run deploy:production"
   },
   "husky": {
     "hooks": {

@@ -1,0 +1,65 @@
+/** @define side-menu */
+.side-menu {
+    overflow: hidden;
+
+    &__heading {
+        padding: 20px 16px;
+    }
+    &__main-header-layout {
+        height: 100%;
+        min-width: 270px;
+    }
+    &__sub-header-layout {
+        padding-top: 56px;
+        height: 100%;
+        border-left: 2px solid var(--general-main-1);
+    }
+    &__title {
+        font-size: var(--text-size-s);
+        font-weight: bold;
+        margin: 0 0.8rem;
+        color: var(--text-prominent);
+    }
+    &__header {
+        &--active {
+            background-color: var(--general-main-1);
+
+            &:hover {
+                background-color: var(--general-main-1) !important;
+            }
+            /* postcss-bem-linter: ignore */
+            div {
+                font-weight: bold;
+            }
+        }
+        &--disabled {
+            opacity: 0.32;
+            pointer-events: none;
+        }
+    }
+    &__icon {
+        transform: rotate(360deg);
+        margin-left: auto;
+        @extend %inline-icon;
+        font-weight: bold;
+    }
+}
+
+/* postcss-bem-linter: ignore */
+.vertical-tab__tab .vertical-tab__header {
+    /* postcss-bem-linter: ignore */
+    .vertical-tab__header__link {
+        margin-left: 4px;
+    }
+    &--active {
+        /* postcss-bem-linter: ignore */
+        .vertical-tab__header__link {
+            margin-left: 0;
+        }
+    }
+    /* postcss-bem-linter: ignore */
+    &--disabled {
+        opacity: 0.32;
+        pointer-events: none;
+    }
+}

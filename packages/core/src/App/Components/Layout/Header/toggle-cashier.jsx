@@ -7,11 +7,11 @@ import VerticalTab       from 'App/Components/Elements/VerticalTabs';
 import WalletInformation from 'Modules/Reports/Containers/wallet-information.jsx';
 import UILoader          from '../../Elements/ui-loader.jsx';
 
-const Deposit              = () => import('App/Containers/CashierModal/deposit.jsx');
-const Withdrawal           = () => import('App/Containers/CashierModal/withdrawal.jsx');
-const PaymentAgent         = () => import('App/Containers/CashierModal/payment-agent.jsx');
-const AccountTransfer      = () => import('App/Containers/CashierModal/account-transfer.jsx');
-const PaymentAgentTransfer = () => import('App/Containers/CashierModal/payment-agent-transfer.jsx');
+const Deposit              = () => import(/* webpackChunkName: "cashier-deposit" */ 'App/Containers/CashierModal/deposit.jsx');
+const Withdrawal           = () => import(/* webpackChunkName: "cashier-withdrawal" */ 'App/Containers/CashierModal/withdrawal.jsx');
+const PaymentAgent         = () => import(/* webpackChunkName: "cashier-pa" */ 'App/Containers/CashierModal/payment-agent.jsx');
+const AccountTransfer      = () => import(/* webpackChunkName: "cashier-account-transfer" */ 'App/Containers/CashierModal/account-transfer.jsx');
+const PaymentAgentTransfer = () => import(/* webpackChunkName: "cashier-pa-transfer" */ 'App/Containers/CashierModal/payment-agent-transfer.jsx');
 
 const modal_content = [
     {
@@ -141,7 +141,7 @@ class ToggleCashier extends React.Component {
                         is_open={is_cashier_visible}
                         title={localize('Cashier')}
                         toggleModal={toggleCashier}
-                        height='616px'
+                        height='664px'
                         width='904px'
                     >
                         <ModalContent

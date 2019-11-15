@@ -30,7 +30,7 @@ class PaymentAgentTransfer extends React.Component {
             // for others show them at the bottom of the form next to submit button
             return <Error error={this.props.error} />;
         }
-        if (this.props.has_no_balance) {
+        if (!+this.props.balance) {
             return <NoBalance />;
         }
         return (
@@ -46,9 +46,9 @@ class PaymentAgentTransfer extends React.Component {
 }
 
 PaymentAgentTransfer.propTypes = {
+    balance               : PropTypes.string,
     container             : PropTypes.string,
     error                 : PropTypes.object,
-    has_no_balance        : PropTypes.bool,
     is_loading            : PropTypes.bool,
     is_transfer_successful: PropTypes.bool,
     is_virtual            : PropTypes.bool,
@@ -59,10 +59,10 @@ PaymentAgentTransfer.propTypes = {
 
 export default connect(
     ({ client, modules }) => ({
+        balance               : client.balance,
         is_virtual            : client.is_virtual,
         container             : modules.cashier.config.payment_agent_transfer.container,
         error                 : modules.cashier.config.payment_agent_transfer.error,
-        has_no_balance        : modules.cashier.has_no_balance,
         is_loading            : modules.cashier.is_loading,
         is_transfer_successful: modules.cashier.config.payment_agent_transfer.is_transfer_successful,
         onMount               : modules.cashier.onMountPaymentAgentTransfer,

@@ -25,6 +25,7 @@ const ErrorComponent = ({
             className='cashier-error__button'
             to={button_link}
             onClick={onClickButton}
+            primary
         >
             <span className='btn__text'>{button_text}</span>
         </ButtonLink>

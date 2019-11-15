@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "name": "deriv-bot",
   "description": "Visual automation for deriv.app",
-  "main": "dist/bot.js",
+  "main": "dist/bot.main.js",
   "jest": {
     "setupFilesAfterEnv": [
       "<rootDir>/.jest"
@@ -13,12 +13,12 @@
     ]
   },
   "scripts": {
-    "start": "rimraf dist && npm run test && webpack --mode=development --progress --watch",
-    "serve": "rimraf dist && webpack --mode=development --progress --watch",
-    "build": "rimraf dist && npm run test && webpack --mode=production --optimize-minimize --progress",
+    "start": "npm run test && webpack --mode=development --progress --watch",
+    "serve": "echo \"Serving...\" && webpack --progress --watch",
+    "build": "webpack --optimize-minimize --progress",
     "build:travis": "echo \"No build:travis specified\"",
     "test": "npm run test:eslint && npm run test:mocha",
-    "test:mocha": "jest -w 1 --coverage",
+    "test:mocha": "jest --w=4 --coverage",
     "test:eslint": "eslint ./src",
     "test:stylelint": "stylelint \"./src/**/*.s?(a|c)ss\"",
     "deploy": "echo \"No deploy specified\"",
@@ -48,6 +48,7 @@
     "binary-utils": "^4.23.0",
     "blockly": "github:google/blockly#339a653",
     "chai": "^4.2.0",
+    "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.0.3",
     "cross-env": "^5.2.0",
     "css-hot-loader": "^1.4.4",
@@ -71,8 +72,6 @@
     "mini-css-extract-plugin": "^0.7.0",
     "node-sass": "^4.12.0",
     "prop-types": "^15.7.2",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
     "redux": "^4.0.1",
     "redux-thunk": "^2.2.0",
     "sass-loader": "^7.1.0",
@@ -86,6 +85,7 @@
     "svgo-loader": "^2.2.0",
     "trackjs": "^2.10.2",
     "webpack": "^4.34.0",
+    "webpack-bundle-analyzer": "^3.6.0",
     "webpack-cli": "^3.3.4",
     "webpack-dev-server": "^3.7.1",
     "webpack-merge-and-include-globally": "^2.1.16"
@@ -105,9 +105,9 @@
     "gh-pages": "^2.0.1",
     "mobx": "^5.9.4",
     "mobx-react": "^5.4.4",
-    "react": "^16.8.6",
+    "react": "~16.8.6",
     "react-content-loader": "^4.2.2",
-    "react-dom": "^16.8.6",
+    "react-dom": "~16.8.6",
     "react-render-html": "^0.6.0",
     "react-transition-group": "^4.0.1"
   }

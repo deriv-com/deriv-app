@@ -356,6 +356,12 @@ export default class PortfolioStore extends BaseStore {
         return this.positions[i].contract_update;
     }
 
+    @action.bound
+    getContractFromPositions(contract_id) {
+        const i = this.getPositionIndexById(contract_id);
+        return this.positions[i];
+    }
+
     @computed
     get totals() {
         let indicative = 0;

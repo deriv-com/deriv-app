@@ -116,3 +116,15 @@ export const LIMIT_ORDER_TYPES = {
     STOP_LOSS  : 'stop_loss',
     STOP_OUT   : 'stop_out',
 };
+
+export const getProfitLossFromStore = (modules_store) => {
+    const { contract_replay, portfolio } = modules_store;
+    const contract_id = portfolio.hovered_position_id;
+    let profit;
+    if (contract_id) {
+        profit = portfolio.getContractFromPositions(contract_id).contract_info.profit;
+    } else {
+        profit = contract_replay.contract_store.contract_info.profit;
+    }
+    return profit;
+};

@@ -354,14 +354,14 @@ export default class TradeStore extends BaseStore {
             this.main_barrier.updateBarrierShade(is_over, contract_type);
         }
         this.hovered_contract_type = is_over ? contract_type : null;
-        this.setBarriersForLimitOrder(is_over, this.proposal_info[contract_type]);
+        this.setBarriersForLimitOrder(this.barriers, is_over, this.proposal_info[contract_type]);
     }
 
     @action.bound
     setPurchaseSpotBarrier(is_over, contract_info) {
         const key = 'PURCHASE_SPOT_BARRIER';
         if (is_over) {
-            let entrySpotBarrier  = this.getBarrier(key);
+            let entrySpotBarrier  = this.barriers.find((b)=>b.key === key);
 
             if (!entrySpotBarrier){
                 entrySpotBarrier = new ChartBarrierStore(
@@ -381,14 +381,14 @@ export default class TradeStore extends BaseStore {
     toggleLimitOrderBarriers(is_over, position) {
         const contract_info = position.contract_info;
 
-        this.setBarriersForLimitOrder(is_over, contract_info);
+        this.setBarriersForLimitOrder(this.barriers, is_over, contract_info);
         this.setPurchaseSpotBarrier(is_over, contract_info);
     }
 
     @action.bound
     clearLimitOrderBarriers() {
         this.hovered_contract_type = null;
-        this.setBarriersForLimitOrder(false);
+        this.setBarriersForLimitOrder(this.barriers,false);
     }
 
     @computed
@@ -418,16 +418,6 @@ export default class TradeStore extends BaseStore {
         } else { this.main_barrier = null; }
     }
 
-    getBarrier = (key) => {
-        for (let i = 0; this.barriers && i < this.barriers.length; i++){
-            const barrier = this.barriers[i];
-            if (barrier.key === key) {
-                return barrier;
-            }
-        }
-        return null;
-    }
-
     removeBarrier = (key) => {
         for (let i = 0; this.barriers && i < this.barriers.length; i++){
             const barrier = this.barriers[i];
@@ -437,13 +427,13 @@ export default class TradeStore extends BaseStore {
         }
     }
 
-    setBarriersForLimitOrder = (is_over, contract_info = {}) => {
+    setBarriersForLimitOrder = (barriers, is_over, contract_info = {}) => {
 
         if (is_over && isLimitOrderBarrierSupported(this.contract_type, contract_info)) {
             Object.keys(contract_info.limit_order).forEach((key)=>{
                 const obj_limit_order = contract_info.limit_order[key];
 
-                let barrier  = this.getBarrier(key);
+                let barrier  = barriers.find((b)=>b.key === key);
 
                 if (barrier) {
                     barrier.onChange({
@@ -469,7 +459,7 @@ export default class TradeStore extends BaseStore {
                     );
 
                     Object.assign(barrier, obj_barrier);
-                    this.barriers.push(barrier);
+                    barriers.push(barrier);
                 }
             });
         } else {
@@ -729,7 +719,7 @@ export default class TradeStore extends BaseStore {
         };
 
         if (this.hovered_contract_type === contract_type) {
-            this.setBarriersForLimitOrder(true, this.proposal_info[this.hovered_contract_type]);
+            this.setBarriersForLimitOrder(this.barriers, true, this.proposal_info[this.hovered_contract_type]);
         }
 
         if (!this.is_multiplier){

@@ -169,6 +169,7 @@ export default class ContractStore {
                 main_barrier.updateBarrierShade(true, contract_type);
                 result = [ main_barrier ];
             }
+            this.root_store.modules.trade.setBarriersForLimitOrder(result, true, contract_info);
         }
         return result;
     }

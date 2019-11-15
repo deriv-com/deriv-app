@@ -6,7 +6,6 @@ import {
     DrawerToggle }       from 'App/Components/Elements/Drawer';
 import Icon              from 'Assets/icon.jsx';
 import routes            from 'Constants/routes';
-import { requestLogout } from 'Services';
 import { connect }       from 'Stores/connect';
 
 const MenuDrawer = ({
@@ -16,6 +15,7 @@ const MenuDrawer = ({
     is_positions_drawer_on,
     // is_purchase_confirmed,
     // is_purchase_locked,
+    logoutClient,
     toggleDarkMode,
     togglePositionsDrawer,
     // togglePurchaseLock,
@@ -69,7 +69,7 @@ const MenuDrawer = ({
                     if (is_positions_drawer_on) {
                         togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
                     }
-                    requestLogout();
+                    logoutClient();
                 }}
             />
         </div>
@@ -84,6 +84,7 @@ MenuDrawer.propTypes = {
     is_positions_drawer_on: PropTypes.bool,
     // is_purchase_confirmed     : PropTypes.bool,
     // is_purchase_locked        : PropTypes.bool,
+    logoutClient          : PropTypes.func,
     toggleDarkMode        : PropTypes.func,
     togglePositionsDrawer : PropTypes.func,
     // togglePurchaseConfirmation: PropTypes.func,
@@ -93,6 +94,7 @@ MenuDrawer.propTypes = {
 export default connect(
     ({ client, ui }) => ({
         is_logged_in          : client.is_logged_in,
+        logoutClient          : client.logout,
         is_dark_mode          : ui.is_dark_mode_on,
         is_mobile             : ui.is_mobile,
         is_positions_drawer_on: ui.is_positions_drawer_on,

@@ -39,6 +39,7 @@ const Head = () => (
         <meta property='og:type' content='website' />
         <meta property='og:image' content={it.url_for('images/common/og_image.gif')} />
         <meta name='google' content='notranslate' />
+        <meta name='referrer' content='origin' />
 
         { it.css_files.map((css_file, inx) => (
             <link key={inx} rel='preload' as='style' href={css_file} />

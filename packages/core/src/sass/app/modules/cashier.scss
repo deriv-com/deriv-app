@@ -159,12 +159,11 @@
             margin: 10.7rem 0 1.6rem;
         }
         &-button {
-            height: 4rem;
             margin: 3.2rem auto;
         }
     }
     &__account-switch-icon {
-        background-image: url('~Images/app/cashier/account_switcher.jpg');
+        background-image: url('~Images/app/cashier/account_switcher.png');
         width: 400px;
         height: 360px;
         background-repeat: no-repeat;
@@ -225,11 +224,6 @@
     }
     &__verify-button {
         margin: 3.2rem auto;
-        height: 4rem;
-
-        &-text {
-            font-size: 1.4rem;
-        }
     }
     &__icon {
         margin-top: 8rem;
@@ -483,8 +477,10 @@
     }
 }
 
+/* stylelint-disable plugin/selector-bem-pattern */
 /** @define payment-agent-transfer */
-.payment-agent-transfer {
+div.payment-agent-transfer {
+    // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
     &__header {
         margin-bottom: 2.8rem;
     }
@@ -504,6 +500,7 @@
         margin-right: 2.4rem;
     }
 }
+/* stylelint-enable plugin/selector-bem-pattern */
 
 /** @define dc-modal-header; */
 .dc-modal-header {

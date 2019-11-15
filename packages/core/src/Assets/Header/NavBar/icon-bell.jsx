@@ -3,10 +3,10 @@ import PropTypes  from 'prop-types';
 import React      from 'react';
 
 const IconBell = ({ className }) => (
-    <svg className={classNames('inline-icon', className)} viewBox='0 0 16 16'>
-        <g className='color1-stroke' fill='none' fillRule='evenodd' stroke='#2A3052'>
-            <path d='M12.8 11.6l-.3-.2V7a4.5 4.5 0 1 0-9 0v4.4l-.3.2a1 1 0 0 0 .3 1.9h9a1 1 0 0 0 .3-2z' />
-            <path d='M7 2.5h2v-1a1 1 0 1 0-2 0v1zm-.5 11v.5a1.5 1.5 0 0 0 3 0v-.5h-3z' />
+    <svg className={classNames('inline-icon', className)} viewBox='0 0 24 24'>
+        <g fill='none' fillRule='nonzero'>
+            <path className='color1-fill'  fill='#000' fillOpacity='.8' d='M11 20c0 .552.5 1 1 1s1-.448 1-1h1c0 1.095-.937 2-2 2s-2-.905-2-2z' />
+            <path className='color1-stroke' stroke='#000' strokeOpacity='.8' d='M19.936 18.644L18.5 17.207V11a6.493 6.493 0 0 0-5.106-6.341L13 4.573V3c0-.554-.446-1-1-1s-1 .446-1 1v1.573l-.394.086A6.493 6.493 0 0 0 5.5 11v6.207l-1.436 1.437c-.317.316-.096.856.346.856h15.17c.445 0 .67-.542.356-.856z' />
         </g>
     </svg>
 );

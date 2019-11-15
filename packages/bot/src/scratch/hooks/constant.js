@@ -1,26 +1,26 @@
-import { translate } from '../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 /**
  * ENUM for categories.
  * @const
  */
 Blockly.Categories = {
-    'Trade_Definition': translate('trade_parameters'),
-    'Before_Purchase' : translate('purchase_conditions'),
-    'During_Purchase' : translate('sell_conditions'),
-    'After_Purchase'  : translate('trade_results'),
-    'Mathematical'    : translate('math'),
-    'Logic'           : translate('logic'),
-    'Text'            : translate('text'),
-    'Variables'       : translate('variables'),
-    'Functions'       : translate('custom_functions'),
-    'List'            : translate('lists'),
-    'Indicators'      : translate('indicators'),
-    'Time'            : translate('time'),
-    'Tick_Analysis'   : translate('technical_analysis'),
-    'Candle'          : translate('candle'),
-    'Miscellaneous'   : translate('miscellaneous'),
-    'Loop'            : translate('loops'),
+    'Trade_Definition': localize('trade_parameters'),
+    'Before_Purchase' : localize('purchase_conditions'),
+    'During_Purchase' : localize('sell_conditions'),
+    'After_Purchase'  : localize('trade_results'),
+    'Mathematical'    : localize('math'),
+    'Logic'           : localize('logic'),
+    'Text'            : localize('text'),
+    'Variables'       : localize('variables'),
+    'Functions'       : localize('custom_functions'),
+    'List'            : localize('lists'),
+    'Indicators'      : localize('indicators'),
+    'Time'            : localize('time'),
+    'Tick_Analysis'   : localize('technical_analysis'),
+    'Candle'          : localize('candle'),
+    'Miscellaneous'   : localize('miscellaneous'),
+    'Loop'            : localize('loops'),
 };
 /**
  * Number of pixels the mouse must move before a drag starts.

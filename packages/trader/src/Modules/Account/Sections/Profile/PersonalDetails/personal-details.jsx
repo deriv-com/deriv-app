@@ -7,10 +7,9 @@ import {
     Checkbox,
     Button,
     Input }                                    from 'deriv-components';
-import BinarySocket                            from '_common/base/socket_base';
 import { DateOfBirth }                         from 'App/Containers/RealAccountSignup/personal-details.jsx';
 import { localize }                            from 'App/i18n';
-import { WS }                                  from 'Services';
+import { WS }                                  from 'Services/ws-methods';
 import { connect }                             from 'Stores/connect';
 import {
     validAddress,
@@ -601,7 +600,7 @@ class PersonalDetailsForm extends React.Component {
             });
         }
 
-        BinarySocket.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
+        WS.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
             const { getChangeableFields, is_virtual, account_settings } = this.props;
 
             const hidden_settings = [

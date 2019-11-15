@@ -4,11 +4,11 @@
     <variable type="" id="1@e2~}K[2)6@n$|llW$s" islocal="false" iscloud="false">oscarsGrind:profit</variable>
     <variable type="" id="l6`t`DbnHr`2hOJ2RunJ" islocal="false" iscloud="false">oscarsGrind:totalProfit</variable>
     <variable type="" id="B]-9VFrM)n:-K5Y;qoag" islocal="false" iscloud="false">oscarsGrind:tradeAgain</variable>
-    <variable type="" id="+lQ]WrF1Y3Wvit?DOdgu" islocal="false" iscloud="false">oscarsGrind:expectedProfit</variable>
+    <variable type="" id="+lQ]WrF1Y3Wvit?DOdgu" islocal="false" iscloud="false">oscarsGrind:profitThreshold</variable>
     <variable type="" id="V0OvvcA:RnlA|:N~#`d." islocal="false" iscloud="false">oscarsGrind:size</variable>
     <variable type="" id="AsrkUSs=QxLDd%5XEYj/" islocal="false" iscloud="false">oscarsGrind:initialStake</variable>
-    <variable type="" id="~CU8[xGLOd;e[Y%Hr57I" islocal="false" iscloud="false">oscarsGrind:profitUnits</variable>
-    <variable type="" id="x`,%}bI1vC`O(k3uhVR_" islocal="false" iscloud="false">oscarsGrind:maximumLoss</variable>
+    <variable type="" id="~CU8[xGLOd;e[Y%Hr57I" islocal="false" iscloud="false">oscarsGrind:units</variable>
+    <variable type="" id="x`,%}bI1vC`O(k3uhVR_" islocal="false" iscloud="false">oscarsGrind:LossThreshold</variable>
     <variable type="" id="1yytTC@,d]OVGl$z=-Dp" islocal="false" iscloud="false">won</variable>
     <variable type="" id="|Su9-n.h%KH8Xc(%ZuYq" islocal="false" iscloud="false">lost</variable>
     <variable type="" id="pm-XgQDxAND9pT6BnG%_" islocal="false" iscloud="false">total profit</variable>
@@ -123,7 +123,7 @@
             <field name="OP">EQ</field>
             <value name="A">
               <block type="variables_get" id="A%NC;X:+eNLIAsdl}}.d">
-                <field name="VAR" id="+lQ]WrF1Y3Wvit?DOdgu" variabletype="">oscarsGrind:expectedProfit</field>
+                <field name="VAR" id="+lQ]WrF1Y3Wvit?DOdgu" variabletype="">oscarsGrind:profitThreshold</field>
               </block>
             </value>
             <value name="B">
@@ -133,7 +133,7 @@
         </value>
         <statement name="DO0">
           <block type="variables_set" id="za68V.=r];6v1ZVCl9V3">
-            <field name="VAR" id="+lQ]WrF1Y3Wvit?DOdgu" variabletype="">oscarsGrind:expectedProfit</field>
+            <field name="VAR" id="+lQ]WrF1Y3Wvit?DOdgu" variabletype="">oscarsGrind:profitThreshold</field>
             <value name="VALUE" strategy_value="profit">
               <block type="text_prompt_ext" id="H;ibW~XT_XPz=_FC6:%_">
                 <field name="TYPE">NUMBER</field>
@@ -153,7 +153,7 @@
                 <field name="OP">EQ</field>
                 <value name="A">
                   <block type="variables_get" id="Pif^mZ;*-L3hC)wC!|t8">
-                    <field name="VAR" id="x`,%}bI1vC`O(k3uhVR_" variabletype="">oscarsGrind:maximumLoss</field>
+                    <field name="VAR" id="x`,%}bI1vC`O(k3uhVR_" variabletype="">oscarsGrind:LossThreshold</field>
                   </block>
                 </value>
                 <value name="B">
@@ -163,7 +163,7 @@
             </value>
             <statement name="DO0">
               <block type="variables_set" id="}nd^[K,g#_9_{ZbuY?}I">
-                <field name="VAR" id="x`,%}bI1vC`O(k3uhVR_" variabletype="">oscarsGrind:maximumLoss</field>
+                <field name="VAR" id="x`,%}bI1vC`O(k3uhVR_" variabletype="">oscarsGrind:LossThreshold</field>
                 <value name="VALUE" strategy_value="loss">
                   <block type="text_prompt_ext" id="^d2yt,KS8$q@?kx4AK9)">
                     <field name="TYPE">NUMBER</field>
@@ -238,7 +238,7 @@
                             <field name="OP">EQ</field>
                             <value name="A">
                               <block type="variables_get" id="+(YZeX,IU*Ql,kkF=Ypd">
-                                <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:profitUnits</field>
+                                <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:units</field>
                               </block>
                             </value>
                             <value name="B">
@@ -248,7 +248,7 @@
                         </value>
                         <statement name="DO0">
                           <block type="variables_set" id="MJ[9tY-n2r.NbytTFK.L">
-                            <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:profitUnits</field>
+                            <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:units</field>
                             <value name="VALUE" strategy_value="size">
                               <shadow type="math_number" id="(o6lVcwiVXStriK+0/Tq">
                                 <field name="NUM">0</field>
@@ -383,7 +383,7 @@
                         </value>
                         <value name="B">
                           <block type="variables_get" id="lq}Nx%U^8u,?EzRVU7lu">
-                            <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:profitUnits</field>
+                            <field name="VAR" id="~CU8[xGLOd;e[Y%Hr57I" variabletype="">oscarsGrind:units</field>
                           </block>
                         </value>
                       </block>
@@ -674,7 +674,7 @@
                                         </value>
                                         <value name="B">
                                           <block type="variables_get" id="-q^Rf;$(x/~nU^yGX#rL">
-                                            <field name="VAR" id="+lQ]WrF1Y3Wvit?DOdgu" variabletype="">oscarsGrind:expectedProfit</field>
+                                            <field name="VAR" id="+lQ]WrF1Y3Wvit?DOdgu" variabletype="">oscarsGrind:profitThreshold</field>
                                           </block>
                                         </value>
                                       </block>
@@ -698,7 +698,7 @@
                                                     <field name="NUM">9</field>
                                                   </shadow>
                                                   <block type="variables_get" id="K:qJcp(z_NHoNQ/L1sgP">
-                                                    <field name="VAR" id="x`,%}bI1vC`O(k3uhVR_" variabletype="">oscarsGrind:maximumLoss</field>
+                                                    <field name="VAR" id="x`,%}bI1vC`O(k3uhVR_" variabletype="">oscarsGrind:LossThreshold</field>
                                                   </block>
                                                 </value>
                                               </block>

@@ -4,11 +4,11 @@
     <variable type="" id="8-FGM6FF)6Y!:[]L7ZW0" islocal="false" iscloud="false">dalembert:profit</variable>
     <variable type="" id="weOIq50C[S,Wr;`!|gYR" islocal="false" iscloud="false">dalembert:totalProfit</variable>
     <variable type="" id="[w@pzvBAlteju[8,x#hD" islocal="false" iscloud="false">dalembert:tradeAgain</variable>
-    <variable type="" id="ZGpA`4foih2T_0.]xE66" islocal="false" iscloud="false">dalembert:expectedProfit</variable>
+    <variable type="" id="ZGpA`4foih2T_0.]xE66" islocal="false" iscloud="false">dalembert:profitThreshold</variable>
     <variable type="" id="o((rBg*rL/qm;RU%PM7_" islocal="false" iscloud="false">dalembert:size</variable>
     <variable type="" id="-PgUuax5KQf1zn42iCd~" islocal="false" iscloud="false">dalembert:initialStake</variable>
-    <variable type="" id="R2yOKK{FmV|TULnU8.,[" islocal="false" iscloud="false">dalembert:profitUnits</variable>
-    <variable type="" id="%o8CQE,uNdg`rmRL:-ca" islocal="false" iscloud="false">dalembert:maximumLoss</variable>
+    <variable type="" id="R2yOKK{FmV|TULnU8.,[" islocal="false" iscloud="false">dalembert:units</variable>
+    <variable type="" id="%o8CQE,uNdg`rmRL:-ca" islocal="false" iscloud="false">dalembert:LossThreshold</variable>
     <variable type="" id="%E[W9r:QZ/2?Y?7zpL(z" islocal="false" iscloud="false">won</variable>
     <variable type="" id="MMgdM5q/OL:^wIms8obu" islocal="false" iscloud="false">lost</variable>
     <variable type="" id="y)Al0290GkJ5zCJq;pfo" islocal="false" iscloud="false">total profit</variable>
@@ -123,7 +123,7 @@
             <field name="OP">EQ</field>
             <value name="A">
               <block type="variables_get" id="myak3L(HNC4,k/r7D)?7">
-                <field name="VAR" id="ZGpA`4foih2T_0.]xE66" variabletype="">dalembert:expectedProfit</field>
+                <field name="VAR" id="ZGpA`4foih2T_0.]xE66" variabletype="">dalembert:profitThreshold</field>
               </block>
             </value>
             <value name="B">
@@ -133,7 +133,7 @@
         </value>
         <statement name="DO0">
           <block type="variables_set" id="Y=Z$E2zJKQ`l[H,_C|w@">
-            <field name="VAR" id="ZGpA`4foih2T_0.]xE66" variabletype="">dalembert:expectedProfit</field>
+            <field name="VAR" id="ZGpA`4foih2T_0.]xE66" variabletype="">dalembert:profitThreshold</field>
             <value name="VALUE" strategy_value="profit">
               <block type="text_prompt_ext" id="{#mjw]aEOed`FE9C0G^j">
                 <field name="TYPE">NUMBER</field>
@@ -153,7 +153,7 @@
                 <field name="OP">EQ</field>
                 <value name="A">
                   <block type="variables_get" id="f/YuBp3,UsEyXDl6TB3q">
-                    <field name="VAR" id="%o8CQE,uNdg`rmRL:-ca" variabletype="">dalembert:maximumLoss</field>
+                    <field name="VAR" id="%o8CQE,uNdg`rmRL:-ca" variabletype="">dalembert:LossThreshold</field>
                   </block>
                 </value>
                 <value name="B">
@@ -163,7 +163,7 @@
             </value>
             <statement name="DO0">
               <block type="variables_set" id="?VovWY,aXgs.y1djI*-g">
-                <field name="VAR" id="%o8CQE,uNdg`rmRL:-ca" variabletype="">dalembert:maximumLoss</field>
+                <field name="VAR" id="%o8CQE,uNdg`rmRL:-ca" variabletype="">dalembert:LossThreshold</field>
                 <value name="VALUE" strategy_value="loss">
                   <block type="text_prompt_ext" id=";+1mWtzrw=-S]mR4Rav+">
                     <field name="TYPE">NUMBER</field>
@@ -238,7 +238,7 @@
                             <field name="OP">EQ</field>
                             <value name="A">
                               <block type="variables_get" id="HvCUoxdI=AzH5LbkQ}3a">
-                                <field name="VAR" id="R2yOKK{FmV|TULnU8.,[" variabletype="">dalembert:profitUnits</field>
+                                <field name="VAR" id="R2yOKK{FmV|TULnU8.,[" variabletype="">dalembert:units</field>
                               </block>
                             </value>
                             <value name="B">
@@ -248,7 +248,7 @@
                         </value>
                         <statement name="DO0">
                           <block type="variables_set" id="5zYkm?%M%dhWa.SDk_?Q">
-                            <field name="VAR" id="R2yOKK{FmV|TULnU8.,[" variabletype="">dalembert:profitUnits</field>
+                            <field name="VAR" id="R2yOKK{FmV|TULnU8.,[" variabletype="">dalembert:units</field>
                             <value name="VALUE" strategy_value="size">
                               <shadow type="math_number" id="FU3;}.nT{+$wT#*Dn^k7">
                                 <field name="NUM">0</field>
@@ -341,7 +341,7 @@
                 </value>
                 <value name="B">
                   <block type="variables_get" id="HvCUoxdI=AzH5LbkQ}3a">
-                    <field name="VAR" id="R2yOKK{FmV|TULnU8.,[" variabletype="">dalembert:profitUnits</field>
+                    <field name="VAR" id="R2yOKK{FmV|TULnU8.,[" variabletype="">dalembert:units</field>
                   </block>
                 </value>
               </block>
@@ -362,7 +362,7 @@
                     </value>
                     <value name="B">
                       <block type="variables_get" id="HvCUoxdI=AzH5LbkQ}3a">
-                        <field name="VAR" id="R2yOKK{FmV|TULnU8.,[" variabletype="">dalembert:profitUnits</field>
+                        <field name="VAR" id="R2yOKK{FmV|TULnU8.,[" variabletype="">dalembert:units</field>
                       </block>
                     </value>
                   </block>
@@ -398,7 +398,7 @@
                 </value>
                 <value name="B">
                   <block type="variables_get" id="HvCUoxdI=AzH5LbkQ}3a">
-                    <field name="VAR" id="R2yOKK{FmV|TULnU8.,[" variabletype="">dalembert:profitUnits</field>
+                    <field name="VAR" id="R2yOKK{FmV|TULnU8.,[" variabletype="">dalembert:units</field>
                   </block>
                 </value>
               </block>
@@ -631,7 +631,7 @@
                                         </value>
                                         <value name="B">
                                           <block type="variables_get" id="{}m6MN)qLd:$#:OxiAWJ">
-                                            <field name="VAR" id="ZGpA`4foih2T_0.]xE66" variabletype="">dalembert:expectedProfit</field>
+                                            <field name="VAR" id="ZGpA`4foih2T_0.]xE66" variabletype="">dalembert:profitThreshold</field>
                                           </block>
                                         </value>
                                       </block>
@@ -655,7 +655,7 @@
                                                     <field name="NUM">9</field>
                                                   </shadow>
                                                   <block type="variables_get" id=")O~FX{%sJo`UREf7KzcC">
-                                                    <field name="VAR" id="%o8CQE,uNdg`rmRL:-ca" variabletype="">dalembert:maximumLoss</field>
+                                                    <field name="VAR" id="%o8CQE,uNdg`rmRL:-ca" variabletype="">dalembert:LossThreshold</field>
                                                   </block>
                                                 </value>
                                               </block>

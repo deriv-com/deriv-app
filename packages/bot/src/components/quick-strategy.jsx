@@ -36,6 +36,31 @@ const TradetypeOption = ({ type }) => (
     </div>
 );
 
+const getSizeDesc = index => {
+    switch (index) {
+        case 0:
+            return 'The multiplier amount used to increase your stake if you’re losing a trade.';
+        case 1:
+            return 'The amount that you may add to your stake if you’re losing a trade.';
+        case 2:
+            return 'The amount that you may add to your stake after each successful trade.';
+        default:
+            return '';
+    }
+};
+
+const getSizeText = index => {
+    switch (index) {
+        case 0:
+            return 'Size';
+        case 1:
+        case 2:
+            return 'Units';
+        default:
+            return '';
+    }
+};
+
 const QuickStrategy = ({
     active_index,
     createStrategy,
@@ -52,22 +77,6 @@ const QuickStrategy = ({
     validateQuickStrategy,
 }) => {
     const { strategies }          = config;
-    let size_string               = '';
-
-    switch (active_index){
-        case 0: {
-            size_string = 'Size';
-            break;
-        }
-        case 1:
-        case 2: {
-            size_string = 'Profit Unit';
-            break;
-        }
-        default:
-            break;
-    }
-        
     const asset_dropdown_options  = {};
 
     Object.assign(asset_dropdown_options, market_dropdown);
@@ -194,7 +203,7 @@ const QuickStrategy = ({
                                                     trailing_icon={
                                                         <Popover
                                                             alignment='bottom'
-                                                            message={translate('Test long text extra long text super extra long text')}
+                                                            message={translate('The trade length of your purchased contract.')}
                                                         >
                                                             <InfoOutlineIcon />
                                                         </Popover>
@@ -216,7 +225,7 @@ const QuickStrategy = ({
                                                     trailing_icon={
                                                         <Popover
                                                             alignment='bottom'
-                                                            message={translate('Test long text extra long text super extra long text')}
+                                                            message={translate('The amount that you pay to enter a trade.')}
                                                         >
                                                             <InfoOutlineIcon />
                                                         </Popover>
@@ -231,12 +240,12 @@ const QuickStrategy = ({
                                                     className='quick-strategy__input'
                                                     type='text'
                                                     error={touched.loss && errors.loss}
-                                                    label={translate('Maximum loss')}
+                                                    label={translate('Loss Threshold')}
                                                     placeholder='5000'
                                                     trailing_icon={
                                                         <Popover
                                                             alignment='bottom'
-                                                            message={translate('Test long text extra long text super extra long text')}
+                                                            message={translate('The bot will stop trading if your total loss exceeds this amount.')}
                                                         >
                                                             <InfoOutlineIcon />
                                                         </Popover>
@@ -253,12 +262,12 @@ const QuickStrategy = ({
                                                     className='quick-strategy__input'
                                                     type='text'
                                                     error={touched.size && errors.size}
-                                                    label={translate(size_string)}
+                                                    label={translate(getSizeText(active_index))}
                                                     placeholder='2'
                                                     trailing_icon={
                                                         <Popover
                                                             alignment='bottom'
-                                                            message={translate('Test long text extra long text super extra long text')}
+                                                            message={translate(getSizeDesc(active_index))}
                                                         >
                                                             <InfoOutlineIcon />
                                                         </Popover>
@@ -273,12 +282,12 @@ const QuickStrategy = ({
                                                     className='quick-strategy__input'
                                                     type='text'
                                                     error={touched.profit && errors.profit}
-                                                    label={translate('Maximum profit')}
+                                                    label={translate('Profit Threshold')}
                                                     placeholder='5000'
                                                     trailing_icon={
                                                         <Popover
                                                             alignment='bottom'
-                                                            message={translate('Test long text extra long text super extra long text')}
+                                                            message={translate('The bot will stop trading if your total profit exceeds this amount.')}
                                                         >
                                                             <InfoOutlineIcon />
                                                         </Popover>
@@ -309,7 +318,7 @@ const QuickStrategy = ({
 QuickStrategy.propTypes = {
     active_index             : proptypes.number,
     createStrategy           : proptypes.func,
-    duration_dropdown        : proptypes.object,
+    duration_dropdown        : proptypes.array,
     initial_values           : proptypes.object,
     is_strategy_modal_open   : proptypes.bool,
     market_dropdown          : proptypes.object,

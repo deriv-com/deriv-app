@@ -28,7 +28,7 @@ export default class QuickStrategyStore {
     @observable active_index           = 0;
     @observable market_dropdown        = {};
     @observable trade_type_dropdown    = {};
-    @observable duration_dropdown      = {};
+    @observable duration_dropdown      = [];
 
     @action.bound
     toggleStrategyModal() {
@@ -177,7 +177,7 @@ export default class QuickStrategyStore {
     async updateTradetypeDropdown(setFieldValue, symbol = this.initial_values.symbol) {
         const { contracts_for }  = ApiHelper.instance;
         const trade_type_options = await contracts_for.getGroupedTradeTypes(symbol);
-        const first_trade_type_option = trade_type_options[Object.keys(trade_type_options)[0]].value;
+        const first_trade_type_option = trade_type_options[Object.keys(trade_type_options)[0]][0].value;
 
         runInAction(() => this.trade_type_dropdown = trade_type_options);
 

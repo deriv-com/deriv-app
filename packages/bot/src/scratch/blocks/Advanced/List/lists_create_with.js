@@ -1,5 +1,5 @@
+import { localize }     from 'deriv-translations/lib/i18n';
 import { plusIconDark } from '../../images';
-import { translate }    from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.lists_create_with = {
     protected_statements: ['STACK'],
@@ -13,13 +13,13 @@ Blockly.Blocks.lists_create_with = {
     },
     definition(){
         return {
-            message0: translate('set %1 to create list with'),
+            message0: localize('set %1 to create list with'),
             message1: '%1',
             args0   : [
                 {
                     type    : 'field_variable',
                     name    : 'VARIABLE',
-                    variable: translate('list'),
+                    variable: localize('list'),
                 },
             ],
             args1: [
@@ -33,14 +33,14 @@ Blockly.Blocks.lists_create_with = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Create List'),
+            tooltip          : localize('This block creates a list with strings and numbers.'),
             category         : Blockly.Categories.List,
         };
     },
     meta(){
         return {
-            'display_name': translate('Create list'),
-            'description' : translate('This block creates list with provided strings and/or numbers.'),
+            'display_name': localize('Create list'),
+            'description' : localize('This block creates a list with strings and numbers.'),
         };
     },
     onIconClick() {

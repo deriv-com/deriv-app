@@ -1,4 +1,4 @@
-import { Popover }         from 'deriv-components';
+import { PopoverWrapper }         from 'deriv-components';
 import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
@@ -118,7 +118,7 @@ const getDays = ({
                 onMouseLeave={onMouseLeave}
             >
                 {((has_events || is_closes_early) && !is_other_month && !is_before_min_or_after_max_date) &&
-                    <Popover
+                    <PopoverWrapper
                         alignment='top'
                         classNameTarget='calendar__cell-tooltip'
                         classNameTargetIcon='calendar__cell-tooltip-icon'

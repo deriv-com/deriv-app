@@ -1,4 +1,4 @@
-import PopOver from './popover.jsx';
-import                    './popover.scss';
+import PopoverWrapper from './popover-wrapper.jsx';
+import                     './popover-wrapper.scss';
 
-export default PopOver;
+export default PopoverWrapper;

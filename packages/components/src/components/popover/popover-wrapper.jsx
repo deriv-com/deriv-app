@@ -1,0 +1,111 @@
+import classNames        from 'classnames';
+import React             from 'react';
+import Popover, { ArrowContainer } from 'react-tiny-popover';
+import IconInfoOutline   from '../icon-info-outline.jsx';
+import IconQuestion      from '../icon-question.jsx';
+import IconRedDot        from '../icon-red-dot.jsx';
+import IconInfoBlue      from '../icon-info-blue.jsx';
+
+class PopoverWrapper extends React.PureComponent {
+    constructor (props) {
+        super(props);
+        this.state            = {
+            is_open         : false,
+            target_rectangle: null,
+        };
+        this.target_reference = React.createRef();
+    }
+
+    componentDidMount () {
+        this.setState({
+            is_open         : this.props.has_error,
+            target_rectangle: this.target_reference.current.getBoundingClientRect(),
+        });
+    }
+
+    toggleOpen = () => {
+        this.setState({
+            is_open         : Boolean(this.props.message),
+            target_rectangle: this.target_reference.current.getBoundingClientRect(),
+        });
+    };
+
+    toggleClose = () => this.setState({ is_open: false });
+
+    render () {
+        const {
+            alignment,
+            children,
+            className,
+            classNameBubble,
+            classNameTarget,
+            classNameTargetIcon,
+            counter,
+            disable_target_icon,
+            disable_message_icon,
+            has_error,
+            icon,
+            id,
+            // margin,
+            message,
+        } = this.props;
+
+        const icon_class_name = classNames(classNameTargetIcon, icon);
+        return (
+            <Popover
+                isOpen={this.state.is_open}
+                position={alignment}
+                id={id}
+                containerClassName={classNames(
+                    classNameBubble,
+                    'dc-popover__bubble',
+                    { 'dc-popover__bubble--error': has_error },
+                )}
+                content={({ position, targetRect, popoverRect }) => (
+                    <ArrowContainer // if you'd like an arrow, you can import the ArrowContainer!
+                        position={position}
+                        targetRect={targetRect}
+                        popoverRect={popoverRect}
+                        arrowSize={5}
+                        arrowStyle={{ top: '100%' }}
+                    >
+                        { !disable_message_icon || icon === 'info' &&
+                            <i className='dc-popover__bubble__icon'>
+                                <IconInfoBlue />
+                            </i>
+                        }
+                        <span className='dc-popover__bubble__text'>
+                            { message }
+                        </span>
+                    </ArrowContainer>
+                )}
+            >
+                <div
+                    className={classNames('dc-popover', className)}
+                    id={id}
+                    onMouseEnter={this.toggleOpen}
+                    onMouseLeave={this.toggleClose}
+                >
+                    <div className={classNames(classNameTarget, 'dc-popover__target')} ref={this.target_reference}>
+                        {!disable_target_icon &&
+                        <i className={message ? 'dc-popover__target__icon' : 'dc-popover__target__icon--disabled'}>
+                            {(icon === 'info')     && <IconInfoOutline className={icon_class_name} />}
+                            {(icon === 'question') && <IconQuestion className={icon_class_name} />}
+                            {(icon === 'dot')      && <IconRedDot className={icon_class_name} />}
+                            {(icon === 'counter')  && <span className={icon_class_name}>{ counter }</span>}
+                        </i>
+                        }
+
+                        {children}
+                    </div>
+                </div>
+            </Popover>
+        );
+    }
+}
+
+PopoverWrapper.defaultProps = {
+    portal_container: 'deriv_app',
+};
+
+export default PopoverWrapper;

@@ -1,7 +1,7 @@
 import className       from 'classnames';
 import {
     Money,
-    Popover,
+    PopoverWrapper,
     ThemedScrollbars } from 'deriv-components';
 import { PropTypes }   from 'prop-types';
 import React           from 'react';
@@ -23,7 +23,7 @@ const Transaction = ({ contract }) => {
             <tbody>
                 <tr className='transactions__row'>
                     <td className='transactions__middle transactions__col'>
-                        <Popover
+                        <PopoverWrapper
                             className='transactions__inline transactions__top'
                             alignment='left'
                             message={contract.contract_type}
@@ -31,28 +31,28 @@ const Transaction = ({ contract }) => {
                             <IconTradeType
                                 trade_type={contract.contract_type}
                             />
-                        </Popover>
+                        </PopoverWrapper>
                         <div className='transactions__inline transactions__middle'>
                             <div className='transactions__margin-bottom'>
-                                <Popover
+                                <PopoverWrapper
                                     className='transactions__inline transactions__middle'
                                     alignment='left'
                                     message={translate('Refrence ID')}
                                 >
                                     <RefrenceIdIcon className='transactions__middle' />
-                                </Popover>
+                                </PopoverWrapper>
                                 <div className='transactions__inline transactions__middle'>
                                     {contract.refrence_id}
                                 </div>
                             </div>
                             <div>
-                                <Popover
+                                <PopoverWrapper
                                     className='transactions__inline transactions__middle'
                                     alignment='left'
                                     message={translate('Buy price')}
                                 >
                                     <BuyPriceIcon className='transactions__middle' />
-                                </Popover>
+                                </PopoverWrapper>
 
                                 <Money
                                     amount={contract.buy_price}
@@ -63,25 +63,25 @@ const Transaction = ({ contract }) => {
                     </td>
                     <td className='transactions__middle transactions__col'>
                         <div className='transactions__margin-bottom'>
-                            <Popover
+                            <PopoverWrapper
                                 className='transactions__inline transactions__middle'
                                 alignment='left'
                                 message={translate('Entry spot')}
                             >
                                 <EntrySpotIcon className='transactions__middle' />
-                            </Popover>
+                            </PopoverWrapper>
                             <div className='transactions__inline transactions__middle'>
                                 {contract.entry_spot}
                             </div>
                         </div>
                         <div>
-                            <Popover
+                            <PopoverWrapper
                                 className='transactions__inline transactions__middle'
                                 alignment='left'
                                 message={translate('Exit spot')}
                             >
                                 <ExitSpotIcon className='transactions__middle' />
-                            </Popover>
+                            </PopoverWrapper>
                             <div className='transactions__inline transactions__middle'>
                                 {contract.exit_spot}
                             </div>
@@ -110,20 +110,20 @@ const Transaction = ({ contract }) => {
                     <td className='transactions__col'>
                         {
                             contract.is_completed ?
-                                <Popover
+                                <PopoverWrapper
                                     className='transactions__inline transactions__middle'
                                     alignment='left'
                                     message={translate('Completed')}
                                 >
                                     <CompletedIcon className='transactions__middle' />
-                                </Popover> :
-                                <Popover
+                                </PopoverWrapper> :
+                                <PopoverWrapper
                                     className='transactions__inline transactions__middle'
                                     alignment='left'
                                     message={translate('Pending')}
                                 >
                                     <PendingIcon className='transactions__middle' />
-                                </Popover>}
+                                </PopoverWrapper>}
                     </td>
                 </tr>
             </tbody>

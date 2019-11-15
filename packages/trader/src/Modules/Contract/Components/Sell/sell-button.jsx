@@ -1,6 +1,6 @@
 import {
     Button,
-    Popover }       from 'deriv-components';
+    PopoverWrapper }       from 'deriv-components';
 import { observer } from 'mobx-react';
 import PropTypes    from 'prop-types';
 import React        from 'react';
@@ -18,7 +18,7 @@ const SellButton = ({
 
     return (
         <React.Fragment>
-            <Popover alignment='left' icon='question' message={sell_message} />
+            <PopoverWrapper alignment='left' icon='question' message={sell_message} />
             <Button
                 is_disabled={!is_valid_to_sell || is_sell_requested}
                 text={localize('Sell')}

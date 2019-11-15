@@ -1,5 +1,5 @@
 import classNames            from 'classnames';
-import { Money, Popover }    from 'deriv-components';
+import { Money, PopoverWrapper }    from 'deriv-components';
 import PropTypes             from 'prop-types';
 import React                 from 'react';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
@@ -57,7 +57,7 @@ const ContractInfo = ({
                     }
                 </div>
             </div>
-            <Popover
+            <PopoverWrapper
                 alignment='left'
                 icon='info'
                 id={`dt_purchase_${type.toLowerCase()}_info`}

@@ -3,7 +3,7 @@ import PropTypes         from 'prop-types';
 import React             from 'react';
 import {
     Money,
-    Popover }            from 'deriv-components';
+    PopoverWrapper }            from 'deriv-components';
 import CurrencyUtils     from 'deriv-shared/utils/currency';
 import { localize }      from 'App/i18n';
 import { urlFor }        from '_common/url';
@@ -93,7 +93,7 @@ class AccountSwitcher extends React.Component {
                     <div className='acc-switcher__accounts'>
                         {
                             this.props.account_list.map((account) => (
-                                <Popover
+                                <PopoverWrapper
                                     alignment='left'
                                     message={account.loginid}
                                     key={account.loginid}
@@ -144,7 +144,7 @@ class AccountSwitcher extends React.Component {
                                             }
                                         </span>
                                     </div>
-                                </Popover>
+                                </PopoverWrapper>
                             ))
                         }
                     </div>

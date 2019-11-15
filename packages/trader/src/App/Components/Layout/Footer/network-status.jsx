@@ -1,5 +1,5 @@
 import classNames   from 'classnames';
-import { Popover }  from 'deriv-components';
+import { PopoverWrapper }  from 'deriv-components';
 import PropTypes    from 'prop-types';
 import React        from 'react';
 import { localize } from 'App/i18n';
@@ -7,7 +7,7 @@ import { connect }  from 'Stores/connect';
 
 const NetworkStatus = ({ status }) => (
     <div className='network-status__wrapper'>
-        <Popover
+        <PopoverWrapper
             classNameBubble='network-status__tooltip'
             alignment='top'
             message={localize('Network status: {{status}}', { status: (status.tooltip || localize('Connecting to server')) })}
@@ -19,7 +19,7 @@ const NetworkStatus = ({ status }) => (
                     'network-status__circle--blinker': (status.class === 'blinker'),
                 })}
             />
-        </Popover>
+        </PopoverWrapper>
     </div>
 );
 

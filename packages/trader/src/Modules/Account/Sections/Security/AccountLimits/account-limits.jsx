@@ -1,7 +1,7 @@
 // import PropTypes      from 'prop-types';
 import classNames        from 'classnames';
 import React             from 'react';
-import { Popover }       from 'deriv-components';
+import { PopoverWrapper }       from 'deriv-components';
 import CurrencyUtils     from 'deriv-shared/utils/currency';
 import { connect }       from 'Stores/connect';
 import { localize }      from 'App/i18n';
@@ -112,7 +112,7 @@ class AccountLimits extends React.Component {
                             <Row>
                                 <Td is_flex>
                                     {localize('Maximum number of open positions')}
-                                    <Popover
+                                    <PopoverWrapper
                                         alignment='top'
                                         classNameTargetIcon='account-limit-popover'
                                         classNameTarget='account-limit-popover-target'
@@ -125,7 +125,7 @@ class AccountLimits extends React.Component {
                             <Row>
                                 <Td is_flex>
                                     {localize('Maximum account cash balance')}
-                                    <Popover
+                                    <PopoverWrapper
                                         alignment='top'
                                         classNameTargetIcon='account-limit-popover'
                                         classNameTarget='account-limit-popover-target'
@@ -138,7 +138,7 @@ class AccountLimits extends React.Component {
                             <Row>
                                 <Td is_flex>
                                     {localize('Maximum aggregate payouts on open positions')}
-                                    <Popover
+                                    <PopoverWrapper
                                         alignment='top'
                                         classNameTargetIcon='account-limit-popover'
                                         classNameTarget='account-limit-popover-target'
@@ -158,7 +158,7 @@ class AccountLimits extends React.Component {
                             <Row>
                                 <TableHeader is_flex>
                                     {localize('Trading limits - Maximum daily turnover')}
-                                    <Popover
+                                    <PopoverWrapper
                                         alignment='top'
                                         classNameTargetIcon='account-limit-popover'
                                         classNameTarget='account-limit-popover-target'

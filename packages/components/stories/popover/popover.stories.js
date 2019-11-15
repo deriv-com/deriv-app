@@ -1,10 +1,10 @@
 import React         from 'react';
 import { storiesOf } from '@storybook/react';
 import Theme         from '../shared/theme';
-import Popover       from '../../src/components/popover/popover';
+import PopoverWrapper       from '../../src/components/popover/popover';
 
 const portal_container = 'root';
-storiesOf('Popover', module)
+storiesOf('PopoverWrapper', module)
     .add(
         'Basic usage',
         () => (
@@ -16,7 +16,7 @@ storiesOf('Popover', module)
                 alignItems    : 'center',
             }}
             >
-                <Popover
+                <PopoverWrapper
                     classNameBubble='network-status__tooltip'
                     alignment='bottom'
                     message='Network status: Connecting to server'
@@ -26,7 +26,7 @@ storiesOf('Popover', module)
                     <p>
                         Hover me
                     </p>
-                </Popover>
+                </PopoverWrapper>
             </div>
         )
     );

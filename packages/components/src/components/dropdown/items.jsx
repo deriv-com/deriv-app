@@ -1,7 +1,7 @@
 import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
-import Popover             from 'Components/popover';
+import PopoverWrapper             from 'Components/popover';
 
 const Items = ({
     className,
@@ -29,7 +29,7 @@ const Items = ({
             key={idx}
         >
             {!!has_symbol && item.has_tooltip &&
-                <Popover
+                <PopoverWrapper
                     alignment='left'
                     message={item.text}
                 >
@@ -40,7 +40,7 @@ const Items = ({
                             symbol_type_class_name
                         )}
                     />
-                </Popover>
+                </PopoverWrapper>
             }
 
             {!!has_symbol && !item.has_tooltip &&

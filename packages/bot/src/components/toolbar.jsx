@@ -2,7 +2,7 @@ import classNames           from 'classnames';
 import {
     Button,
     Input,
-    Popover,
+    PopoverWrapper,
 }                           from 'deriv-components';
 import {
     Field,
@@ -122,19 +122,19 @@ const ButtonGroup = ({
     toggleSaveLoadModal,
 }) => (
     <div className='toolbar__group toolbar__group-btn'>
-        <Popover
+        <PopoverWrapper
             alignment='bottom'
             message={translate('Import')}
         >
             <ToolbarOpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
-        </Popover>
-        <Popover
+        </PopoverWrapper>
+        <PopoverWrapper
             alignment='bottom'
             message={translate('Reset')}
         >
             <ToolbarNewFileIcon className='toolbar__icon' onClick={onResetClick} />
-        </Popover>
-        <Popover
+        </PopoverWrapper>
+        <PopoverWrapper
             alignment='bottom'
             message={translate('Save')}
         >
@@ -142,23 +142,23 @@ const ButtonGroup = ({
                 className='toolbar__icon'
                 onClick={() => toggleSaveLoadModal(true)}
             />
-        </Popover>
+        </PopoverWrapper>
         <div className='vertical-divider' />
-        <Popover
+        <PopoverWrapper
             alignment='bottom'
             message={translate('Undo')}
         >
             <ToolbarUndoIcon className='toolbar__icon' onClick={onUndoClick} />️
-        </Popover>
-        <Popover
+        </PopoverWrapper>
+        <PopoverWrapper
             alignment='bottom'
             message={translate('Redo')}
         >
             <ToolbarRedoIcon className='toolbar__icon' onClick={onRedoClick} />
-        </Popover>
+        </PopoverWrapper>
         <div className='vertical-divider' />
         {is_stop_button_visible ?
-            <Popover
+            <PopoverWrapper
                 alignment='bottom'
                 message={translate('Stop')}
             >
@@ -169,33 +169,33 @@ const ButtonGroup = ({
                         { 'toolbar__icon--disabled': is_stop_button_disabled })}
                     onClick={onStopClick}
                 />
-            </Popover>
+            </PopoverWrapper>
             :
-            <Popover
+            <PopoverWrapper
                 alignment='bottom'
                 message={translate('Run')}
             >
                 <ToolbarRunIcon className='toolbar__icon' onClick={onRunClick} />
-            </Popover>
+            </PopoverWrapper>
         }
-        <Popover
+        <PopoverWrapper
             alignment='bottom'
             message={translate('Sort')}
         >
             <ToolbarReaarangeIcon className='toolbar__icon' onClick={onSortClick} />
-        </Popover>
-        <Popover
+        </PopoverWrapper>
+        <PopoverWrapper
             alignment='bottom'
             message={translate('Zoom in')}
         >
             <ToolbarZoomInIcon className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
-        </Popover>
-        <Popover
+        </PopoverWrapper>
+        <PopoverWrapper
             alignment='bottom'
             message={translate('Zoom out')}
         >
             <ToolbarZoomOutIcon className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
-        </Popover>
+        </PopoverWrapper>
     </div>
 );
 
@@ -223,7 +223,7 @@ const Toolbar = ({
 }) => (
     <div className='toolbar'>
         <div className='toolbar__section'>
-            <Popover
+            <PopoverWrapper
                 alignment='bottom'
                 classNameBubble='toolbar__bubble'
                 message={translate('Click here to start building your DBot.')}
@@ -238,7 +238,7 @@ const Toolbar = ({
                 >
                     {translate('Get started')}
                 </Button>
-            </Popover>
+            </PopoverWrapper>
             <SearchBox
                 onSearch={onSearch}
                 onSearchClear={onSearchClear}

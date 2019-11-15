@@ -1,4 +1,4 @@
-import { Popover, Checkbox }    from 'deriv-components';
+import { PopoverWrapper, Checkbox }    from 'deriv-components';
 import React                    from 'react';
 import PropTypes                from 'prop-types';
 import { localize }             from 'App/i18n';
@@ -41,7 +41,7 @@ const AllowEquals = ({
                     label={localize('Allow equals')}
                     classNameLabel='allow-equals__label'
                 />
-                <Popover
+                <PopoverWrapper
                     alignment='left'
                     classNameTarget='allow-equals__tooltip'
                     icon='info'

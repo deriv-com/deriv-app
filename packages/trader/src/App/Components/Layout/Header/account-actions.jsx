@@ -1,4 +1,4 @@
-import { Button, Popover }  from 'deriv-components';
+import { Button, PopoverWrapper }  from 'deriv-components';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
 import { localize }         from 'App/i18n';
@@ -63,7 +63,7 @@ export class AccountActions extends Component {
                         toggleDialog={toggleNotifications}
                         tooltip_message={localize('View Notifications')}
                     />
-                    <Popover
+                    <PopoverWrapper
                         classNameBubble='account-settings-toggle__tooltip'
                         alignment='bottom'
                         message={localize('Manage Account Settings')}
@@ -71,7 +71,7 @@ export class AccountActions extends Component {
                         <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
                             <Icon icon='IconUser' />
                         </BinaryLink>
-                    </Popover>
+                    </PopoverWrapper>
                     <React.Suspense fallback={<div />}>
                         <AccountInfo
                             balance={typeof balance === 'undefined' ? balance : CurrencyUtils.formatMoney(currency, balance, true)}

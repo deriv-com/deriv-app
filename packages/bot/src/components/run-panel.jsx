@@ -1,6 +1,6 @@
 import { Button,
     Drawer,
-    Popover,
+    PopoverWrapper,
     Tabs }                                    from 'deriv-components';
 import PropTypes                              from 'prop-types';
 import React                                  from 'react';
@@ -79,7 +79,7 @@ const drawerFooter = ({
                             green
                         />
                 }
-                <Popover
+                <PopoverWrapper
                     className='run-panel__info'
                     classNameBubble='run-panel__info--bubble'
                     alignment='top'
@@ -90,7 +90,7 @@ const drawerFooter = ({
                      the statement page for details of all completed transactions.`)}
                 >
                     <InfoOutlineIcon className='run-panel__icon-info' />
-                </Popover>
+                </PopoverWrapper>
             </div>
             {is_dialog_open &&
                 <Dialog

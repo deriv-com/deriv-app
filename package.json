@@ -25,5 +25,8 @@
     "hooks": {
       "post-merge": "bash ./hooks/post-merge.sh"
     }
+  },
+  "dependencies": {
+    "react-tiny-popover": "^3.4.5"
   }
 }

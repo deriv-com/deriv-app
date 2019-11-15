@@ -1,5 +1,5 @@
 import classNames     from 'classnames';
-import { Popover }    from 'deriv-components';
+import { PopoverWrapper }    from 'deriv-components';
 import React          from 'react';
 import PropTypes      from 'prop-types';
 // import { localize }   from 'App/i18n';
@@ -99,13 +99,13 @@ class PurchaseFieldset extends React.PureComponent {
                     >
                         <div className='btn-purchase__box-shadow' />
                         {(is_proposal_error) ?
-                            <Popover
+                            <PopoverWrapper
                                 alignment='left'
                                 classNameBubble='purchase-container__popover-bubble'
                                 message={info.message}
                             >
                                 { purchase_button }
-                            </Popover>
+                            </PopoverWrapper>
                             :
                             purchase_button
                         }

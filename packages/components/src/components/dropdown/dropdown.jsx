@@ -115,6 +115,12 @@ class Dropdown extends React.Component {
         );
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.value !== this.props.value) {
+            this.updateSelected(this.props.value);
+        }
+    }
+
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
     }

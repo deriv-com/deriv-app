@@ -5,19 +5,19 @@ import {
     Dropdown,
     Input,
     Modal,
-    Tabs,
     UnderlyingIcon,
     Popover,
+    Tabs,
 }                           from 'deriv-components';
 import {
     Formik,
     Form,
     Field,
 }                           from 'formik';
+import { localize }         from 'deriv-translations/lib/i18n';
 import IconTradeType        from './icon-trade-types.jsx';
 import { InfoOutlineIcon }  from './Icons.jsx';
 import { connect }          from '../stores/connect';
-import { translate }        from '../utils/lang/i18n';
 import config               from '../constants/index';
 import '../assets/sass/quick-strategy.scss';
 
@@ -112,7 +112,7 @@ const QuickStrategy = ({
 
     return (
         <Modal
-            title={translate('Quick strategy')}
+            title={localize('Quick strategy')}
             className='modal--strategy'
             is_open={is_strategy_modal_open}
             toggleModal={toggleStrategyModal}
@@ -160,7 +160,7 @@ const QuickStrategy = ({
                                 <Form>
                                     <div className='quick-strategy__form-row'>
                                         <Dropdown
-                                            placeholder={translate('Assets')}
+                                            placeholder={localize('Assets')}
                                             is_align_text_left
                                             list={asset_dropdown_options}
                                             name='symbol'
@@ -170,7 +170,7 @@ const QuickStrategy = ({
                                     </div>
                                     <div className='quick-strategy__form-row'>
                                         <Dropdown
-                                            placeholder={translate('Trade type')}
+                                            placeholder={localize('Trade type')}
                                             is_align_text_left
                                             list={trade_type_dropdown_options}
                                             name='trade_type'
@@ -183,7 +183,7 @@ const QuickStrategy = ({
                                     <div className='quick-strategy__form-row'>
                                         <Dropdown
                                             className='quick-strategy__duration-dropdown'
-                                            placeholder={translate('Duration Type')}
+                                            placeholder={localize('Duration Type')}
                                             is_align_text_left
                                             list={duration_dropdown_options}
                                             name='duration_type'
@@ -199,11 +199,11 @@ const QuickStrategy = ({
                                                     className='quick-strategy__input'
                                                     type='text'
                                                     error={touched.duration && errors.duration}
-                                                    label={translate('Duration')}
+                                                    label={localize('Duration')}
                                                     trailing_icon={
                                                         <Popover
                                                             alignment='bottom'
-                                                            message={translate('The trade length of your purchased contract.')}
+                                                            message={localize('The trade length of your purchased contract.')}
                                                         >
                                                             <InfoOutlineIcon />
                                                         </Popover>
@@ -220,12 +220,12 @@ const QuickStrategy = ({
                                                     className='quick-strategy__input'
                                                     type='text'
                                                     error={touched.stake && errors.stake}
-                                                    label={translate('Initial stake')}
+                                                    label={localize('Initial stake')}
                                                     placeholder='10'
                                                     trailing_icon={
                                                         <Popover
                                                             alignment='bottom'
-                                                            message={translate('The amount that you pay to enter a trade.')}
+                                                            message={localize('The amount that you pay to enter a trade.')}
                                                         >
                                                             <InfoOutlineIcon />
                                                         </Popover>
@@ -240,12 +240,12 @@ const QuickStrategy = ({
                                                     className='quick-strategy__input'
                                                     type='text'
                                                     error={touched.loss && errors.loss}
-                                                    label={translate('Loss Threshold')}
+                                                    label={localize('Loss Threshold')}
                                                     placeholder='5000'
                                                     trailing_icon={
                                                         <Popover
                                                             alignment='bottom'
-                                                            message={translate('The bot will stop trading if your total loss exceeds this amount.')}
+                                                            message={localize('The bot will stop trading if your total loss exceeds this amount.')}
                                                         >
                                                             <InfoOutlineIcon />
                                                         </Popover>
@@ -262,12 +262,12 @@ const QuickStrategy = ({
                                                     className='quick-strategy__input'
                                                     type='text'
                                                     error={touched.size && errors.size}
-                                                    label={translate(getSizeText(active_index))}
+                                                    label={localize(getSizeText(active_index))}
                                                     placeholder='2'
                                                     trailing_icon={
                                                         <Popover
                                                             alignment='bottom'
-                                                            message={translate(getSizeDesc(active_index))}
+                                                            message={localize(getSizeDesc(active_index))}
                                                         >
                                                             <InfoOutlineIcon />
                                                         </Popover>
@@ -282,12 +282,12 @@ const QuickStrategy = ({
                                                     className='quick-strategy__input'
                                                     type='text'
                                                     error={touched.profit && errors.profit}
-                                                    label={translate('Profit Threshold')}
+                                                    label={localize('Profit Threshold')}
                                                     placeholder='5000'
                                                     trailing_icon={
                                                         <Popover
                                                             alignment='bottom'
-                                                            message={translate('The bot will stop trading if your total profit exceeds this amount.')}
+                                                            message={localize('The bot will stop trading if your total profit exceeds this amount.')}
                                                         >
                                                             <InfoOutlineIcon />
                                                         </Popover>
@@ -300,7 +300,7 @@ const QuickStrategy = ({
                                         <Button
                                             type='submit'
                                             className='quick-strategy__button--create'
-                                            text={translate('Create')}
+                                            text={localize('Create')}
                                             is_disabled={!isValid || isSubmitting}
                                             primary
                                         />

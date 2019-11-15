@@ -1,4 +1,4 @@
-import { WS } from 'Services';
+import { WS } from 'Services/ws-methods';
 
 /* This action does not modify state directlly.
  * The payload will be the callback that get's called for each tick

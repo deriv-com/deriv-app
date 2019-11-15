@@ -19,9 +19,16 @@ export default class ContractTradeStore extends BaseStore {
     @observable granularity = +LocalStore.get('contract_trade.granularity') || 0;
     @observable chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
 
+    constructor({ root_store }) {
+        super({ root_store });
+
+        this.onSwitchAccount(this.accountSwitchListener);
+    }
+
     // -------------------
     // ----- Actions -----
     // -------------------
+
     @action.bound
     updateChartType(type) {
         LocalStore.set('contract_trade.chart_type', type);
@@ -78,7 +85,7 @@ export default class ContractTradeStore extends BaseStore {
                 }
                 return trade_type_is_supported;
             });
-    }
+    };
 
     @computed
     get markers_array() {
@@ -125,6 +132,15 @@ export default class ContractTradeStore extends BaseStore {
     @action.bound
     removeContract({ contract_id }) {
         this.contracts = this.contracts.filter(c => c.contract_id !== contract_id);
+    }
+
+    @action.bound
+    accountSwitchListener() {
+        if (this.has_error) {
+            this.clearError();
+        }
+
+        return Promise.resolve();
     }
 
     @action.bound

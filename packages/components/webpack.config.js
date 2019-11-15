@@ -3,6 +3,7 @@ const SpriteLoaderPlugin   = require('svg-sprite-loader/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path                 = require('path');
 const shared_utils         = require('deriv-shared/utils/index.js');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const is_serve   = process.env.BUILD_MODE === 'serve';
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
@@ -120,17 +121,22 @@ module.exports = {
         new MiniCssExtractPlugin({ filename: '[name].css' }),
         new StyleLintPlugin({ fix: true }),
         new SpriteLoaderPlugin(),
+        // ...(!is_release ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
     ],
-    externals: {
-        'formik'                    : 'formik',
-        'classnames'                : 'classnames',
-        '@contentpass/zxcvbn'       : '@contentpass/zxcvbn',
-        'react'                     : 'react',
-        'react-dom'                 : 'react-dom',
-        'react-pose'                : 'react-pose',
-        'babel-polyfill'            : 'babel-polyfill',
-        'prop-types'                : 'prop-types',
-        'react-transition-group'    : 'react-transition-group',
-        'tt-react-custom-scrollbars': 'tt-react-custom-scrollbars',
-    },
+    externals: [
+        {
+            'formik'                    : 'formik',
+            'classnames'                : 'classnames',
+            '@contentpass/zxcvbn'       : '@contentpass/zxcvbn',
+            'react-pose'                : 'react-pose',
+            'babel-polyfill'            : 'babel-polyfill',
+            'prop-types'                : 'prop-types',
+            'react-transition-group'    : 'react-transition-group',
+            'tt-react-custom-scrollbars': 'tt-react-custom-scrollbars',
+            'react'                     : 'react',
+            'react-dom'                 : 'react-dom',
+            'deriv-shared'              : 'deriv-shared',
+        },
+        /^deriv-shared\/.+$/,
+    ],
 };

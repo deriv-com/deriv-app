@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.procedures_callreturn = {
     init() {
@@ -22,16 +22,17 @@ Blockly.Blocks.procedures_callreturn = {
                 },
             ],
             output         : null,
+            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Special2.colour,
             colourSecondary: Blockly.Colours.Special2.colourSecondary,
             colourTertiary : Blockly.Colours.Special2.colourTertiary,
-            tooltip        : translate('Custom function'),
+            tooltip        : localize('Custom function'),
             category       : Blockly.Categories.Functions,
         };
     },
     meta(){
         return {
-            'display_name': translate('Custom function'),
+            'display_name': localize('Custom function'),
             'description' : '',
         };
     },

@@ -17,7 +17,7 @@
         flex-direction: column;
         height: 128px;
         justify-content: space-around;
-        margin: 0.5em 2em 0;
+        margin: 1.6rem 2rem 0;
         width: 128px;
 
         &:hover:not(&--selected) {
@@ -25,7 +25,14 @@
             border: 1px solid var(--border-hover);
         }
         &--current {
-            opacity: 0.5;
+            pointer-events: none;
+
+            svg {
+                opacity: 0.08;
+            }
+            .label {
+                color: var(--text-disabled);
+            }
         }
         &--selected {
             border: 2px solid var(--border-active);
@@ -59,15 +66,12 @@
 
 .currency-hr {
     height: 2px;
-    margin: 1rem 0 0;
+    margin: 1.6rem 0 0;
     width: 100%;
     border-top: 1px solid var(--general-section-2);
 }
 
 .currency-selector {
-    display: flex;
-    flex-direction: column;
-
     &__radio-group {
         display: flex;
         flex-direction: column;

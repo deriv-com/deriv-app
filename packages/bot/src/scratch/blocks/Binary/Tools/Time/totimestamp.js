@@ -1,4 +1,4 @@
-import { translate } from '../../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.totimestamp = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.totimestamp = {
     },
     definition() {
         return {
-            message0: `${translate('To timestamp %1')}%2`,
+            message0: `${localize('To timestamp %1')}%2`,
             args0   : [
                 {
                     type: 'input_value',
@@ -22,7 +22,7 @@ Blockly.Blocks.totimestamp = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate(
+            tooltip        : localize(
                 'Converts a string representing a date/time string into seconds since Epoch. Example: 2019-01-01 21:03:45 GMT+0800 will be converted to 1546347825. Time and time zone offset are optional.'
             ),
             category: Blockly.Categories.Time,
@@ -30,15 +30,15 @@ Blockly.Blocks.totimestamp = {
     },
     meta(){
         return {
-            'display_name': translate('Convetr to timestamp'),
-            'description' : translate('Converts a string representing a date/time string into seconds since Epoch. Example: 2019-01-01 21:03:45 GMT+0800 will be converted to 1546347825. Time and time zone offset are optional.'),
+            'display_name': localize('Convert to timestamp'),
+            'description' : localize('This block converts a string of text that represents the date and time into seconds since the Unix Epoch (1 January 1970). The time and time zone offset are optional. Example: 2019-01-01 21:03:45 GMT+0800 will be converted to 1546347825.'),
         };
     },
 };
 
 Blockly.JavaScript.totimestamp = block => {
     const datetime_string = Blockly.JavaScript.valueToCode(block, 'DATETIME', Blockly.JavaScript.ORDER_ATOMIC);
-    const invalid_datetime = `${translate('Invalid date/time')}:`;
+    const invalid_datetime = `${localize('Invalid date/time')}:`;
 
     // eslint-disable-next-line no-underscore-dangle
     const function_name = Blockly.JavaScript.provideFunction_('dateTimeStringToTimestamp', [

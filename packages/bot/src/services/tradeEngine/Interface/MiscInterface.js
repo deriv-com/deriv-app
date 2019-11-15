@@ -1,6 +1,6 @@
+import { localize }                   from 'deriv-translations/lib/i18n';
 import { notify }                     from '../utils/broadcast';
 import { observer as globalObserver } from '../../../utils/observer';
-import { translate }                  from '../../../utils/lang/i18n';
 
 export default Interface =>
     class extends Interface {
@@ -9,7 +9,7 @@ export default Interface =>
                 notify        : args => globalObserver.emit('Notify', args),
                 notifyTelegram: (access_token, chat_id, text) => {
                     const url = `https://api.telegram.org/bot${access_token}/sendMessage`;
-                    const onError = () => notify('warn', translate('The Telegram notification could not be sent'));
+                    const onError = () => notify('warn', localize('The Telegram notification could not be sent'));
 
                     fetch(url, {
                         method : 'POST',

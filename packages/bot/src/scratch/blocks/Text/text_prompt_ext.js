@@ -3,8 +3,6 @@ import { translate } from '../../../utils/lang/i18n';
 Blockly.Blocks.text_prompt_ext = {
     init() {
         this.jsonInit(this.definition());
-        this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-
         const typeField = this.getField('TYPE');
         typeField.setValidator(value => {
             if (value === 'TEXT') {
@@ -32,6 +30,7 @@ Blockly.Blocks.text_prompt_ext = {
                 },
             ],
             output         : 'String',
+            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Special3.colour,
             colourSecondary: Blockly.Colours.Special3.colourSecondary,
             colourTertiary : Blockly.Colours.Special3.colourTertiary,

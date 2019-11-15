@@ -4,8 +4,6 @@ import { translate } from '../../../../../utils/lang/i18n';
 Blockly.Blocks.balance = {
     init() {
         this.jsonInit(this.definition());
-        this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
-
         const balanceTypeField = this.getField('BALANCE_TYPE');
         balanceTypeField.setValidator(value => {
             if (value === 'STR') {

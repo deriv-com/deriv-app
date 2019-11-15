@@ -1,46 +1,43 @@
-import { translate }        from '../utils/lang/i18n';
-import { load as loadLang } from '../utils/lang/lang';
-
-loadLang();
+import { localize } from 'deriv-translations/lib/i18n';
 
 const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH', 'UST'];
 
 const config = {
     lists: {
         PAYOUTTYPE: [
-            // [translate('Payout'), 'payout'],
-            [translate('Stake'), 'stake'],
+            // [localize('Payout'), 'payout'],
+            [localize('Stake'), 'stake'],
         ],
         CRYPTO_CURRENCIES,
         DETAILS: [
-            [translate('deal reference id'), '1'],
-            [translate('purchase price'), '2'],
-            [translate('payout'), '3'],
-            [translate('profit'), '4'],
-            [translate('contract type'), '5'],
-            [translate('entry spot time'), '6'],
-            [translate('entry spot price'), '7'],
-            [translate('exit spot time'), '8'],
-            [translate('exit spot price'), '9'],
-            [translate('barrier'), '10'],
-            [translate('result'), '11'],
+            [localize('deal reference id'), '1'],
+            [localize('purchase price'), '2'],
+            [localize('payout'), '3'],
+            [localize('profit'), '4'],
+            [localize('contract type'), '5'],
+            [localize('entry spot time'), '6'],
+            [localize('entry spot price'), '7'],
+            [localize('exit spot time'), '8'],
+            [localize('exit spot price'), '9'],
+            [localize('barrier'), '10'],
+            [localize('result'), '11'],
         ],
-        CHECK_RESULT     : [[translate('Win'), 'win'], [translate('Loss'), 'loss']],
-        CHECK_DIRECTION  : [[translate('Rise'), 'rise'], [translate('Fall'), 'fall'], [translate('No Change'), '']],
-        BALANCE_TYPE     : [[translate('string'), 'STR'], [translate('number'), 'NUM']],
+        CHECK_RESULT     : [[localize('Win'), 'win'], [localize('Loss'), 'loss']],
+        CHECK_DIRECTION  : [[localize('Rise'), 'rise'], [localize('Fall'), 'fall'], [localize('No Change'), '']],
+        BALANCE_TYPE     : [[localize('string'), 'STR'], [localize('number'), 'NUM']],
         NOTIFICATION_TYPE: [
-            [translate('green'), 'success'],
-            [translate('blue'), 'info'],
-            [translate('yellow'), 'warn'],
-            [translate('red'), 'error'],
+            [localize('green'), 'success'],
+            [localize('blue'), 'info'],
+            [localize('yellow'), 'warn'],
+            [localize('red'), 'error'],
         ],
         NOTIFICATION_SOUND: [
-            [translate('Silent'), 'silent'],
-            [translate('Announcement'), 'announcement'],
-            [translate('Earned money'), 'earned-money'],
-            [translate('Job done'), 'job-done'],
-            [translate('Error'), 'error'],
-            [translate('Severe error'), 'severe-error'],
+            [localize('Silent'), 'silent'],
+            [localize('Announcement'), 'announcement'],
+            [localize('Earned money'), 'earned-money'],
+            [localize('Job done'), 'job-done'],
+            [localize('Error'), 'error'],
+            [localize('Severe error'), 'severe-error'],
         ],
         CURRENCY: [
             ['USD', 'USD'],
@@ -53,141 +50,142 @@ const config = {
     opposites: {
         CALLPUT: [
             {
-                CALL: translate('Rise'),
+                CALL: localize('Rise'),
             },
             {
-                PUT: translate('Fall'),
+                PUT: localize('Fall'),
             },
         ],
         CALLPUTEQUAL: [
             {
-                CALLE: translate('Rise Equals'),
+                CALLE: localize('Rise Equals'),
             },
             {
-                PUTE: translate('Fall Equals'),
+                PUTE: localize('Fall Equals'),
             },
         ],
         HIGHERLOWER: [
             {
-                CALL: translate('Higher'),
+                CALL: localize('Higher'),
             },
             {
-                PUT: translate('Lower'),
+                PUT: localize('Lower'),
             },
         ],
         TOUCHNOTOUCH: [
             {
-                ONETOUCH: translate('Touch'),
+                ONETOUCH: localize('Touch'),
             },
             {
-                NOTOUCH: translate('No Touch'),
+                NOTOUCH: localize('No Touch'),
             },
         ],
         ENDSINOUT: [
             {
-                EXPIRYRANGE: translate('Ends Between'),
+                EXPIRYRANGE: localize('Ends Between'),
             },
             {
-                EXPIRYMISS: translate('Ends Outside'),
+                EXPIRYMISS: localize('Ends Outside'),
             },
         ],
         STAYSINOUT: [
             {
-                RANGE: translate('Stays Between'),
+                RANGE: localize('Stays Between'),
             },
             {
-                UPORDOWN: translate('Goes Outside'),
+                UPORDOWN: localize('Goes Outside'),
             },
         ],
         ASIANS: [
             {
-                ASIANU: translate('Asian Up'),
+                ASIANU: localize('Asian Up'),
             },
             {
-                ASIAND: translate('Asian Down'),
+                ASIAND: localize('Asian Down'),
             },
         ],
         MATCHESDIFFERS: [
             {
-                DIGITMATCH: translate('Matches'),
+                DIGITMATCH: localize('Matches'),
             },
             {
-                DIGITDIFF: translate('Differs'),
+                DIGITDIFF: localize('Differs'),
             },
         ],
         EVENODD: [
             {
-                DIGITEVEN: translate('Even'),
+                DIGITEVEN: localize('Even'),
             },
             {
-                DIGITODD: translate('Odd'),
+                DIGITODD: localize('Odd'),
             },
         ],
         OVERUNDER: [
             {
-                DIGITOVER: translate('Over'),
+                DIGITOVER: localize('Over'),
             },
             {
-                DIGITUNDER: translate('Under'),
+                DIGITUNDER: localize('Under'),
             },
         ],
         HIGHLOWTICKS: [
             {
-                TICKHIGH: translate('High Tick'),
+                TICKHIGH: localize('High Tick'),
             },
             {
-                TICKLOW: translate('Low Tick'),
+                TICKLOW: localize('Low Tick'),
             },
         ],
         RESET: [
             {
-                RESETCALL: translate('Reset Call'),
+                RESETCALL: localize('Reset Call'),
             },
             {
-                RESETPUT: translate('Reset Put'),
+                RESETPUT: localize('Reset Put'),
             },
         ],
         RUNS: [
             {
-                RUNHIGH: translate('Only Ups'),
+                RUNHIGH: localize('Only Ups'),
             },
             {
-                RUNLOW: translate('Only Downs'),
+                RUNLOW: localize('Only Downs'),
             },
         ],
         CALLPUTSPREAD: [
             {
-                CALLSPREAD: translate('Call Spread'),
+                CALLSPREAD: localize('Call Spread'),
             },
             {
-                PUTSPREAD: translate('Put Spread'),
+                PUTSPREAD: localize('Put Spread'),
             },
         ],
     },
     BARRIER_TYPES: [['Offset\u00A0+', '+'], ['Offset\u00A0-', '-']],
     ohlcFields   : [
-        [translate('Open'), 'open'],
-        [translate('High'), 'high'],
-        [translate('Low'), 'low'],
-        [translate('Close'), 'close'],
-        [translate('Open Time'), 'epoch'],
+        [localize('Open'), 'open'],
+        [localize('High'), 'high'],
+        [localize('Low'), 'low'],
+        [localize('Close'), 'close'],
+        [localize('Open Time'), 'epoch'],
     ],
     candleIntervals: [
-        [translate('Default'), 'default'],
-        [translate('1 minute'), '60'],
-        [translate('2 minutes'), '120'],
-        [translate('3 minutes'), '180'],
-        [translate('5 minutes'), '300'],
-        [translate('10 minutes'), '600'],
-        [translate('15 minutes'), '900'],
-        [translate('30 minutes'), '1800'],
-        [translate('1 hour'), '3600'],
-        [translate('2 hours'), '7200'],
-        [translate('4 hours'), '14400'],
-        [translate('8 hours'), '28800'],
-        [translate('1 day'), '86400'],
+        [localize('Default'), 'default'],
+        [localize('1 minute'), '60'],
+        [localize('2 minutes'), '120'],
+        [localize('3 minutes'), '180'],
+        [localize('5 minutes'), '300'],
+        [localize('10 minutes'), '600'],
+        [localize('15 minutes'), '900'],
+        [localize('30 minutes'), '1800'],
+        [localize('1 hour'), '3600'],
+        [localize('2 hours'), '7200'],
+        [localize('4 hours'), '14400'],
+        [localize('8 hours'), '28800'],
+        [localize('1 day'), '86400'],
     ],
     mainBlocks                             : ['trade_definition', 'before_purchase', 'during_purchase', 'after_purchase'],
+    mandatoryMainBlocks                    : ['trade_definition', 'before_purchase'],
     procedureDefinitionBlocks              : ['procedures_defnoreturn', 'procedures_defreturn'],
     TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING: {
         callput: ['callput', 'higherlower'],
@@ -206,15 +204,15 @@ const config = {
         runs         : ['runs'],
     },
     TRADE_TYPE_CATEGORY_NAMES: {
-        callput      : translate('Up/Down'),
-        touchnotouch : translate('Touch/No Touch'),
-        inout        : translate('In/Out'),
-        asian        : translate('Asians'),
-        digits       : translate('Digits'),
-        reset        : translate('Reset Call/Reset Put'),
-        callputspread: translate('Call Spread/Put Spread'),
-        highlowticks : translate('High/Low Ticks'),
-        runs         : translate('Only Ups/Only Downs'),
+        callput      : localize('Up/Down'),
+        touchnotouch : localize('Touch/No Touch'),
+        inout        : localize('In/Out'),
+        asian        : localize('Asians'),
+        digits       : localize('Digits'),
+        reset        : localize('Reset Call/Reset Put'),
+        callputspread: localize('Call Spread/Put Spread'),
+        highlowticks : localize('High/Low Ticks'),
+        runs         : localize('Only Ups/Only Downs'),
     },
     BARRIER_CATEGORIES: {
         euro_atm     : ['callput', 'callputequal'],
@@ -226,24 +224,24 @@ const config = {
         lookback     : ['lookback'],
     },
     DEFAULT_DURATION_DROPDOWN_OPTIONS: [
-        [translate('Ticks'), 't'],
-        [translate('Seconds'), 's'],
-        [translate('Minutes'), 'm'],
-        [translate('Hours'), 'h'],
-        [translate('Days'), 'd'],
+        [localize('Ticks'), 't'],
+        [localize('Seconds'), 's'],
+        [localize('Minutes'), 'm'],
+        [localize('Hours'), 'h'],
+        [localize('Days'), 'd'],
     ],
-    BARRIER_LABELS                  : [translate('High barrier'), translate('Low barrier')],
-    ABSOLUTE_BARRIER_DROPDOWN_OPTION: [[translate('Absolute'), 'absolute']],
-    NOT_AVAILABLE_DROPDOWN_OPTIONS  : [[translate('Not available'), 'na']],
-    NOT_AVAILABLE_DURATIONS         : [{ display: translate('Not available'), unit: 'na', min: 0 }],
+    BARRIER_LABELS                  : [localize('High barrier'), localize('Low barrier')],
+    ABSOLUTE_BARRIER_DROPDOWN_OPTION: [[localize('Absolute'), 'absolute']],
+    NOT_AVAILABLE_DROPDOWN_OPTIONS  : [[localize('Not available'), 'na']],
+    NOT_AVAILABLE_DURATIONS         : [{ display: localize('Not available'), unit: 'na', min: 0 }],
     BARRIER_TRADE_TYPES             : ['higherlower', 'touchnotouch', 'endsinout', 'staysinout', 'callputspread'],
     DIGIT_CATEGORIES                : ['digits', 'highlowticks'],
     INDEPEDENT_BLOCKS               : ['block_holder', 'tick_analysis', 'loader', 'procedures_defreturn', 'procedures_defnoreturn'],
-    bbResult                        : [[translate('upper'), '1'], [translate('middle'), '0'], [translate('lower'), '2']],
-    macdFields                      : [[translate('Histogram'), '0'], [translate('MACD'), '1'], [translate('Signal'), '2']],
+    bbResult                        : [[localize('upper'), '1'], [localize('middle'), '0'], [localize('lower'), '2']],
+    macdFields                      : [[localize('Histogram'), '0'], [localize('MACD'), '1'], [localize('Signal'), '2']],
     gd                              : {
         cid: '828416594271-b4bhia944ecegn3j327oeb4l8o803bts.apps.googleusercontent.com',
-        aid: 'binarybot-237009',
+        aid: 'derivbot-248506',
         api: 'AIzaSyA52MX2l8p75-w7nvab7fU6Lk6KwLqnyEI',
     },
     help: {
@@ -260,17 +258,17 @@ const config = {
         martingale: {
             index      : 0,
             label      : 'Martingale',
-            description: translate('The Martingale Strategy is a classic trading technique that has been used for more than a hundred years, popularised by the French mathematician Paul Pierre Levy in the 18th century.'),
+            description: localize('The Martingale Strategy is a classic trading technique that has been used for more than a hundred years, popularised by the French mathematician Paul Pierre Levy in the 18th century.'),
         },
         dalembert: {
             index      : 1,
             label      : 'D\'Alembert',
-            description: translate('The concept of the D’Alembert Strategy is said to be similar to the Martingale Strategy where you will increase your contract size after a loss. With the D’Alembert Strategy, you will also decrease your contract size after a successful trade.'),
+            description: localize('The concept of the D’Alembert Strategy is said to be similar to the Martingale Strategy where you will increase your contract size after a loss. With the D’Alembert Strategy, you will also decrease your contract size after a successful trade.'),
         },
         oscars_grind: {
             index      : 2,
             label      : 'Oscar\'s Grind',
-            description: translate('The Oscar\'s Grind Strategy is a low-risk positive progression strategy that first appeared in 1965. By using this strategy, you will increase the size of your contract after each successful trade, the size of your contract will increase after successful trades, and remain unchanged after unsuccessful trades.'),
+            description: localize('The Oscar\'s Grind Strategy is a low-risk positive progression strategy that first appeared in 1965. By using this strategy, you will increase the size of your contract after each successful trade, the size of your contract will increase after successful trades, and remain unchanged after unsuccessful trades.'),
         },
     },
 };

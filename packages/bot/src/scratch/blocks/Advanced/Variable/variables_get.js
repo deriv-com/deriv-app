@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.variables_get = {
     init() {
@@ -12,7 +12,7 @@ Blockly.Blocks.variables_get = {
                 {
                     type    : 'field_variable',
                     name    : 'VAR',
-                    variable: translate('item'),
+                    variable: localize('item'),
                 },
             ],
             output         : null,
@@ -20,14 +20,14 @@ Blockly.Blocks.variables_get = {
             colour         : Blockly.Colours.Special2.colour,
             colourSecondary: Blockly.Colours.Special2.colourSecondary,
             colourTertiary : Blockly.Colours.Special2.colourTertiary,
-            tooltip        : translate('Gets variable value'),
+            tooltip        : localize('Gets variable value'),
             category       : Blockly.Categories.Variables,
         };
     },
     meta(){
         return {
-            'display_name': translate('User-defined variable'),
-            'description' : translate(''),
+            'display_name': localize('User-defined variable'),
+            'description' : localize(''),
         };
     },
 };

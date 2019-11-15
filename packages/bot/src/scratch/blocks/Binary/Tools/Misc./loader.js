@@ -1,5 +1,5 @@
+import { localize }                   from 'deriv-translations/lib/i18n';
 import { loadBlocksFromRemote }       from '../../../../utils';
-import { translate }                  from '../../../../../utils/lang/i18n';
 import { observer as globalObserver } from '../../../../../utils/observer';
 
 Blockly.Blocks.loader = {
@@ -10,7 +10,7 @@ Blockly.Blocks.loader = {
     },
     definition(){
         return {
-            message0: translate('Load block from URL: %1'),
+            message0: localize('Load block from URL: %1'),
             args0   : [
                 {
                     type: 'field_input',
@@ -21,14 +21,14 @@ Blockly.Blocks.loader = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Loads blocks from URL'),
+            tooltip        : localize('Loads blocks from URL'),
             category       : Blockly.Categories.Miscellaneous,
         };
     },
     meta(){
         return {
-            'display_name': translate('Loads from URL'),
-            'description' : translate('This block allows you to load blocks from a URL if you have them stored on a remote server, and they will be loaded only when your bot runs.'),
+            'display_name': localize('Loads from URL'),
+            'description' : localize('This block allows you to load blocks from a URL if you have them stored on a remote server, and they will be loaded only when your bot runs.'),
         };
     },
     onchange(event) {
@@ -74,7 +74,7 @@ Blockly.Blocks.loader = {
 
         loadBlocksFromRemote(this).then(() => {
             Blockly.Events.recordUndo = recordUndo;
-            globalObserver.emit('ui.log.success', translate('Blocks are loaded successfully'));
+            globalObserver.emit('ui.log.success', localize('Blocks are loaded successfully'));
         }).catch(error_msg => {
             Blockly.Events.recordUndo = recordUndo;
             globalObserver.emit('ui.log.error', error_msg);

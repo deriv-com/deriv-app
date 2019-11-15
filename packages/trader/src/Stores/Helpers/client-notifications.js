@@ -1,11 +1,7 @@
 import React            from 'react';
 import { formatDate }   from 'Utils/Date';
 import ObjectUtils      from 'deriv-shared/utils/object';
-import {
-    getRiskAssessment,
-    isAccountOfType,
-    shouldAcceptTnc,
-    shouldCompleteTax } from '_common/base/client_base';
+import { ClientBase }  from '_common/base/client_base';
 import { BinaryLink }   from 'App/Components/Routes';
 import { localize }     from 'App/i18n';
 import routes           from 'Constants/routes';
@@ -13,7 +9,7 @@ import {
     LocalStore,
     State }             from '_common/storage';
 import { urlFor }       from '_common/url';
-import Localize         from '../../App/Components/Elements/localize.jsx';
+import Localize         from 'App/Components/Elements/localize.jsx';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
@@ -329,7 +325,7 @@ const hasMissingRequiredField = (account_settings, client) => {
     }
 
     function getRequiredFields() {
-        if (!isAccountOfType('financial')) return [];
+        if (!ClientBase.isAccountOfType('financial')) return [];
         const { residence } = client;
 
         const required_settings_fields = [
@@ -386,7 +382,7 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
 
     const is_mf_retail         = client.landing_company_shortcode === 'maltainvest' && !professional;
     const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
-    const has_risk_assessment  = getRiskAssessment(account_status);
+    const has_risk_assessment  = ClientBase.getRiskAssessment(account_status);
     const needs_poa            = needs_verification.length &&
         needs_verification.includes('document') &&
         !needs_verification.includes('identity') &&
@@ -409,7 +405,7 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
         addNotificationMessage(clientNotifications().financial_limit);
     }
     if (has_risk_assessment)               addNotificationMessage(clientNotifications().risk);
-    if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
+    if (ClientBase.shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
     if (needs_authentication || prompt_client_to_authenticate) {
         addNotificationMessage(clientNotifications().authenticate);
     }
@@ -438,7 +434,7 @@ export const handleClientNotifications = (
 
     const { has_risk_assessment } = checkAccountStatus(account_status, client, addNotificationMessage, loginid);
 
-    if (shouldAcceptTnc(account_settings)) addNotificationMessage(clientNotifications(ui).tnc);
+    if (ClientBase.shouldAcceptTnc(account_settings)) addNotificationMessage(clientNotifications(ui).tnc);
 
     const has_missing_required_field = hasMissingRequiredField(account_settings, client);
     if (has_missing_required_field) {

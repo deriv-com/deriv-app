@@ -82,9 +82,6 @@
         &:active, &:focus {
             box-shadow: none !important;
         }
-        &::-moz-range-track {
-            background: var(--state-active);
-        }
         &::-ms-tooltip {
             display: none;
         }
@@ -131,6 +128,9 @@
             &--marked-hover {
                 background: var(--state-hover);
                 border-color: var(--state-hover);
+            }
+            &--marked:hover:not(&--active) {
+                border-color: var(--state-active) !important;
             }
             &--active {
                 visibility: hidden;

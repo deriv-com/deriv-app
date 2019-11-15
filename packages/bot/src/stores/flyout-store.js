@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { observable, action }   from 'mobx';
 import config                   from '../constants';
-import { translate }            from '../utils/lang/i18n';
 
 export default class FlyoutStore {
     block_listeners = [];
@@ -16,11 +15,12 @@ export default class FlyoutStore {
     };
 
     @observable is_help_content = false;
-    @observable block_nodes = [];
     @observable flyout_content = [];
     @observable flyout_width = this.flyout_min_width;
     @observable is_visible = false;
     @observable is_search_flyout = false;
+    @observable is_loading = false;
+    @observable search_term = '';
 
     constructor(root_store) {
         this.root_store = root_store;
@@ -33,37 +33,19 @@ export default class FlyoutStore {
      * @param {Element[]} xml_list list of XML nodes
      * @memberof FlyoutStore
      */
-    @action.bound setContents(xml_list) {
-        let processed_xml = xml_list;
+    @action.bound setContents(xml_list, search_term = '') {
+        const text_limit = 20;
+        const processed_xml = xml_list;
         this.block_listeners.forEach(listener => Blockly.unbindEvent_(listener));
         this.block_workspaces.forEach(workspace => workspace.dispose());
         this.block_listeners = [];
         this.block_workspaces = [];
         this.is_help_content = false;
+        this.search_term = search_term.length > text_limit ? `${search_term.substring(0, text_limit)}...` : search_term;
 
-        if (this.is_search_flyout) {
-            const has_result = xml_list.length;
+        // const xml_list_group = this.groupBy(xml_list);
 
-            processed_xml = [];
-
-            if (!has_result) {
-                const label = document.createElement('label');
-                label.setAttribute('text', translate('No Blocks Found'));
-
-                processed_xml.push(label);
-            } else {
-                const label = document.createElement('label');
-                label.setAttribute('text', translate('Result(s)'));
-
-                processed_xml.push(label);
-            }
-
-            processed_xml = processed_xml.concat(xml_list);
-        }
-
-        const xml_list_group = this.groupBy(processed_xml);
-
-        this.flyout_content = observable(xml_list_group);
+        this.flyout_content = observable(xml_list);
         this.setFlyoutWidth(processed_xml);
         this.setVisibility(true);
 
@@ -160,76 +142,5 @@ export default class FlyoutStore {
         });
 
         this.flyout_width = Math.max(this.flyout_min_width, longest_block_width + 65);
-    }
-
-    @action.bound async onSequenceClick(block_name, should_go_next) {
-        const toolbox = Blockly.derivWorkspace.toolbox_;
-        const selected_category = toolbox.getSelectedItem();
-        const xml_list = toolbox.getCategoryContents(selected_category);
-        const xml_list_group = this.groupBy(xml_list, true);
-        const current_block = xml_list.find(xml => xml.getAttribute('type') === block_name);
-
-        let current_block_index;
-
-        Object.keys(xml_list_group).forEach((key, index) => {
-            if (current_block.getAttribute('type') === key) {
-                current_block_index = index;
-            }
-        });
-
-        const getNextBlock = async (xml, current_index, direction) => {
-            const next_index = current_index + (direction ? 1 : -1);
-            const block_type = Object.keys(xml).find((key, index) => next_index === index);
-            // eslint-disable-next-line consistent-return
-            if (!block_type) return;
-            try {
-                await import(/* webpackChunkName: `[request]` */ `../scratch/help-content/help-string/${block_type}.json`);
-                // eslint-disable-next-line consistent-return
-                return block_type;
-            } catch (e) {
-                // eslint-disable-next-line consistent-return
-                return getNextBlock(xml,next_index,direction);
-            }
-        };
-
-        const block_type = await getNextBlock(xml_list_group,current_block_index,should_go_next);
-        if (block_type) {
-            const target_blocks = xml_list_group[block_type];
-            this.showHelpContent(target_blocks);
-        }
-    }
-
-    @action.bound showHelpContent(block_node) {
-        Object.keys(block_node).forEach(key => {
-            const node = block_node[key];
-            const block_hw = Blockly.Block.getDimensions(node);
-
-            node.setAttribute('width', block_hw.width * this.options.zoom.startScale);
-            node.setAttribute('height', block_hw.height * this.options.zoom.startScale);
-        });
-
-        this.block_nodes = block_node;
-        this.is_help_content = true;
-    }
-
-    // eslint-disable-next-line
-    groupBy(nodes, should_include_block_only = false) {
-        return nodes.reduce(function (block_group, node) {
-            const type = node.getAttribute('type');
-
-            if (should_include_block_only && type === null) {
-                return block_group;
-            }
-
-            if (!block_group[type]){
-                block_group[type] = [];
-            }
-
-            if (!should_include_block_only || (should_include_block_only && type !== null)) {
-                block_group[type].push(node);
-            }
-
-            return block_group;
-        }, {});
     }
 }

@@ -5,6 +5,7 @@ import {
 import React                 from 'react';
 import PropTypes             from 'prop-types';
 import CurrencyUtils         from 'deriv-shared/utils/currency';
+import { localize }          from 'deriv-translations/lib/i18n';
 import ContractCardLoader    from './contract-card-loading.jsx';
 import ContractResultOverlay from './contract-result-overlay.jsx';
 import {
@@ -16,7 +17,6 @@ import {
     getIndicativePrice,
     isEnded,
     getContractTypeName }    from '../utils/contract';
-import { translate }         from '../utils/lang/i18n';
 import                            '../assets/sass/contract-card.scss';
 
 const ContractCard = ({
@@ -65,10 +65,10 @@ const ContractCard = ({
                 <div className='db-contract-card__stats'>
                     <div className='db-contract-card__grid'>
                         <div className='db-contract-card__profit-loss db-contract-card__profit-loss-label'>
-                            { isEnded(contract) ? translate('Profit/Loss:') : translate('Potential profit/loss:') }
+                            { isEnded(contract) ? localize('Profit/Loss:') : localize('Potential profit/loss:') }
                         </div>
                         <div className='db-contract-card__indicative-price db-contract-card__indicative-price-label'>
-                            { isEnded(contract) ? translate('Payout:') : translate('Indicative price:') }
+                            { isEnded(contract) ? localize('Payout:') : localize('Indicative price:') }
                         </div>
                         <div className={classNames(
                             'db-contract-card__profit-loss',
@@ -101,10 +101,10 @@ const ContractCard = ({
                     </div>
                     <div className='db-contract-card__grid'>
                         <div className='db-contract-card__purchase-price db-contract-card__purchase-price-label'>
-                            { translate('Purchase price:') }
+                            { localize('Purchase price:') }
                         </div>
                         <div className='db-contract-card__potential-payout db-contract-card__potential-payout-label'>
-                            { translate('Potential payout:') }
+                            { localize('Potential payout:') }
                         </div>
                         <div className='db-contract-card__purchase-price db-contract-card__purchase-price-amount'>
                             <Money amount={contract.buy_price} currency={contract.currency} />
@@ -121,7 +121,7 @@ const ContractCard = ({
             }
             { !is_contract_loading && !contract &&
             <React.Fragment>
-                { translate('Build a bot from the start menu then hit the run button to run the bot.') }
+                { localize('Build a bot from the start menu then hit the run button to run the bot.') }
             </React.Fragment>}
         </div>
     );

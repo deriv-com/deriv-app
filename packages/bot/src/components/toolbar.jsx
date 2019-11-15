@@ -11,6 +11,7 @@ import {
 }                           from 'formik';
 import PropTypes            from 'prop-types';
 import React                from 'react';
+import { localize }         from 'deriv-translations/lib/i18n';
 import Dialog               from './dialog.jsx';
 import {
     ToolbarCloseIcon,
@@ -31,10 +32,15 @@ import {
 import SaveLoadModal        from './saveload-modal.jsx';
 import TradeAnimation       from './trade-animation.jsx';
 import { connect }          from '../stores/connect';
-import { translate }        from '../utils/tools';
 import                           '../assets/sass/scratch/toolbar.scss';
 
-const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
+const SearchBox = ({
+    is_search_loading,
+    onSearch,
+    onSearchClear,
+    onSearchBlur,
+    onSearchKeyUp,
+}) => (
     <div className='toolbar__form'>
         <Formik
             initialValues={{ search: '' }}
@@ -50,16 +56,19 @@ const SearchBox = ({ onSearch, onSearchClear, onSearchBlur }) => (
                                     className='toolbar__form-field'
                                     type='text'
                                     name='search'
-                                    placeholder={translate('Search block...')}
-                                    onKeyUp={submitForm}
+                                    placeholder={localize('Search block...')}
+                                    onKeyUp={() => onSearchKeyUp(submitForm)}
                                     onFocus={submitForm}
                                     onBlur={onSearchBlur}
                                     trailing_icon={
                                         search ?
-                                            <ToolbarCloseIcon
-                                                className='toolbar__btn--icon'
-                                                onClick={() => onSearchClear(setFieldValue)}
-                                            />
+                                            (is_search_loading ?
+                                                <div className='loader' /> :
+                                                <ToolbarCloseIcon
+                                                    className='toolbar__btn--icon'
+                                                    onClick={() => onSearchClear(setFieldValue)}
+                                                />
+                                            )
                                             : <ToolbarSearchIcon />
                                     }
                                 />
@@ -93,8 +102,8 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
                                             setFieldValue('botname', value, false);
                                             submitForm();
                                         }}
-                                        label={translate('Bot name')}
-                                        placeholder={translate('Untitled Bot')}
+                                        label={localize('Bot name')}
+                                        placeholder={localize('Untitled Bot')}
                                         trailing_icon={
                                             <ToolbarRenameIcon />
                                         }
@@ -124,19 +133,19 @@ const ButtonGroup = ({
     <div className='toolbar__group toolbar__group-btn'>
         <Popover
             alignment='bottom'
-            message={translate('Import')}
+            message={localize('Import')}
         >
             <ToolbarOpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
         </Popover>
         <Popover
             alignment='bottom'
-            message={translate('Reset')}
+            message={localize('Reset')}
         >
             <ToolbarNewFileIcon className='toolbar__icon' onClick={onResetClick} />
         </Popover>
         <Popover
             alignment='bottom'
-            message={translate('Save')}
+            message={localize('Save')}
         >
             <ToolbarSaveIcon
                 className='toolbar__icon'
@@ -146,13 +155,13 @@ const ButtonGroup = ({
         <div className='vertical-divider' />
         <Popover
             alignment='bottom'
-            message={translate('Undo')}
+            message={localize('Undo')}
         >
             <ToolbarUndoIcon className='toolbar__icon' onClick={onUndoClick} />️
         </Popover>
         <Popover
             alignment='bottom'
-            message={translate('Redo')}
+            message={localize('Redo')}
         >
             <ToolbarRedoIcon className='toolbar__icon' onClick={onRedoClick} />
         </Popover>
@@ -160,7 +169,7 @@ const ButtonGroup = ({
         {is_stop_button_visible ?
             <Popover
                 alignment='bottom'
-                message={translate('Stop')}
+                message={localize('Stop')}
             >
                 <ToolbarStopIcon
                     className={classNames(
@@ -173,26 +182,26 @@ const ButtonGroup = ({
             :
             <Popover
                 alignment='bottom'
-                message={translate('Run')}
+                message={localize('Run')}
             >
                 <ToolbarRunIcon className='toolbar__icon' onClick={onRunClick} />
             </Popover>
         }
         <Popover
             alignment='bottom'
-            message={translate('Sort')}
+            message={localize('Sort')}
         >
             <ToolbarReaarangeIcon className='toolbar__icon' onClick={onSortClick} />
         </Popover>
         <Popover
             alignment='bottom'
-            message={translate('Zoom in')}
+            message={localize('Zoom in')}
         >
             <ToolbarZoomInIcon className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
         </Popover>
         <Popover
             alignment='bottom'
-            message={translate('Zoom out')}
+            message={localize('Zoom out')}
         >
             <ToolbarZoomOutIcon className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
         </Popover>
@@ -203,6 +212,7 @@ const Toolbar = ({
     file_name,
     is_dialog_open,
     is_drawer_open,
+    is_search_loading,
     is_stop_button_disabled,
     is_stop_button_visible,
     onBotNameTyped,
@@ -214,6 +224,7 @@ const Toolbar = ({
     onSearch,
     onSearchBlur,
     onSearchClear,
+    onSearchKeyUp,
     onSortClick,
     onStopClick,
     onToolboxToggle,
@@ -226,7 +237,7 @@ const Toolbar = ({
             <Popover
                 alignment='bottom'
                 classNameBubble='toolbar__bubble'
-                message={translate('Click here to start building your DBot.')}
+                message={localize('Click here to start building your DBot.')}
             >
                 <Button
                     id='start'
@@ -236,13 +247,15 @@ const Toolbar = ({
                     icon={<ToolbarStartIcon />}
                     green
                 >
-                    {translate('Get started')}
+                    {localize('Get started')}
                 </Button>
             </Popover>
             <SearchBox
+                is_search_loading={is_search_loading}
                 onSearch={onSearch}
                 onSearchClear={onSearchClear}
                 onSearchBlur={onSearchBlur}
+                onSearchKeyUp={onSearchKeyUp}
             />
             <BotNameBox
                 file_name={file_name}
@@ -274,12 +287,12 @@ const Toolbar = ({
         <SaveLoadModal />
         {is_dialog_open &&
         <Dialog
-            title={translate('Are you sure?')}
+            title={localize('Are you sure?')}
             is_open={is_dialog_open}
             onOkButtonClick={onOkButtonClick}
             onCancelButtonClick={onCancelButtonClick}
         >
-            {translate('Any unsaved changes will be lost.')}
+            {localize('Any unsaved changes will be lost.')}
         </Dialog>
         }
     </div>
@@ -289,6 +302,7 @@ Toolbar.propTypes = {
     file_name              : PropTypes.string,
     is_dialog_open         : PropTypes.bool,
     is_drawer_open         : PropTypes.bool,
+    is_search_loading      : PropTypes.bool,
     is_stop_button_disabled: PropTypes.bool,
     is_stop_button_visible : PropTypes.bool,
     onBotNameTyped         : PropTypes.func,
@@ -301,6 +315,7 @@ Toolbar.propTypes = {
     onSearch               : PropTypes.func,
     onSearchBlur           : PropTypes.func,
     onSearchClear          : PropTypes.func,
+    onSearchKeyUp          : PropTypes.func,
     onSortClick            : PropTypes.func,
     onStopClick            : PropTypes.func,
     onToolboxToggle        : PropTypes.func,
@@ -313,6 +328,7 @@ export default connect(({ run_panel, saveload, toolbar }) => ({
     file_name              : toolbar.file_name,
     is_dialog_open         : toolbar.is_dialog_open,
     is_drawer_open         : run_panel.is_drawer_open,
+    is_search_loading      : toolbar.is_search_loading,
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
     is_stop_button_visible : run_panel.is_stop_button_visible,
     onBotNameTyped         : toolbar.onBotNameTyped,
@@ -325,6 +341,7 @@ export default connect(({ run_panel, saveload, toolbar }) => ({
     onSearch               : toolbar.onSearch,
     onSearchBlur           : toolbar.onSearchBlur,
     onSearchClear          : toolbar.onSearchClear,
+    onSearchKeyUp          : toolbar.onSearchKeyUp,
     onSortClick            : toolbar.onSortClick,
     onStopClick            : toolbar.onStopClick,
     onToolboxToggle        : toolbar.onToolboxToggle,

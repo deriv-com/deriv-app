@@ -30,8 +30,6 @@ class PaymentAgentReceipt extends React.Component {
                 <ThemedScrollbars
                     autoHide
                     autoHeightMax={550}
-                    renderTrackHorizontal={props => <div {...props} className='track-horizontal' style={{ display: 'none' }} />}
-                    renderThumbHorizontal={props => <div {...props} className='thumb-horizontal' style={{ display: 'none' }} />}
                 >
                     <div className='cashier__success'>
                         <h2 className='cashier__header'>

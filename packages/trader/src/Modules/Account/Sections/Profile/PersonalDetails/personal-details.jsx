@@ -55,7 +55,7 @@ const InputGroup = ({ children, className }) => (
 );
 
 class PersonalDetailsForm extends React.Component {
-    state = { is_loading: true, show_form: true }
+    state = { is_loading: true, is_state_loading: false, show_form: true }
 
     onSubmit = (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
@@ -98,7 +98,11 @@ class PersonalDetailsForm extends React.Component {
         request.date_of_birth             = toMoment(request.date_of_birth).format('YYYY-MM-DD');
         request.citizen                   = request.citizen ? getLocation(this.props.residence_list, request.citizen, 'value') : '';
         request.place_of_birth            = request.place_of_birth ? getLocation(this.props.residence_list, request.place_of_birth, 'value') : '';
-        request.address_state             = request.address_state ? getLocation(this.props.states_list, request.address_state, 'value') : '';
+
+        if (request.address_state) {
+            request.address_state = this.props.states_list.length ?
+                getLocation(this.props.states_list, request.address_state, 'value') : request.address_state;
+        }
 
         return request;
     };
@@ -122,7 +126,7 @@ class PersonalDetailsForm extends React.Component {
             'address_postcode',
         ];
         validateValues(val => val, required_fields, localize('This field is required'));
-        const only_alphabet_fields = ['first_name', 'last_name'];
+        const only_alphabet_fields = ['first_name', 'last_name', 'address_state'];
         validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
 
         const { residence_list } = this.props;
@@ -172,10 +176,16 @@ class PersonalDetailsForm extends React.Component {
             errors.address_line_2 = address_validation_message;
         }
 
-        const validation_letter_symbol_message = localize('Only letters, space, hyphen, period, and apostrophe are allowed.');
-
         if (values.address_city && !validLetterSymbol(values.address_city)) {
-            errors.address_city = validation_letter_symbol_message;
+            errors.address_city = localize('Only letters, space, hyphen, period, and apostrophe are allowed.');
+        }
+
+        const state_is_input_element = values.address_state && !this.props.states_list.length;
+        if (state_is_input_element) {
+            const max_state_length = 35;
+            if (!validLength(values.address_state, { min: 0, max: max_state_length })) {
+                errors.address_state = localize('You should enter 0-35 characters.');
+            }
         }
 
         if (values.address_postcode && !validPostCode(values.address_postcode)) {
@@ -196,22 +206,28 @@ class PersonalDetailsForm extends React.Component {
             form_initial_values: { ...form_initial_values },
             api_error,
             is_loading,
+            is_state_loading,
             is_btn_loading,
             is_submit_success,
             show_form,
         } = this.state;
 
-        const { is_fully_authenticated, residence_list, has_residence, states_list } = this.props;
+        const { is_fully_authenticated, residence_list, states_list } = this.props;
 
         if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
-        const should_wait_for_residence_states = (!residence_list.length || (has_residence && !states_list.length));
-        if (is_loading || should_wait_for_residence_states) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading || is_state_loading || !residence_list.length) {
+            return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        }
 
         form_initial_values.citizen = form_initial_values.citizen ? getLocation(residence_list, form_initial_values.citizen, 'text') : '';
         // form_initial_values.tax_residence = form_initial_values.tax_residence ? getLocation(residence_list, tax_residence, 'text') : '';
         form_initial_values.place_of_birth = form_initial_values.place_of_birth ? getLocation(residence_list, form_initial_values.place_of_birth, 'text') : '';
-        form_initial_values.address_state = form_initial_values.address_state ? getLocation(this.props.states_list, form_initial_values.address_state, 'text') : '';
+        if (form_initial_values.address_state) {
+            form_initial_values.address_state = states_list.length ? getLocation(states_list, form_initial_values.address_state, 'text') : form_initial_values.address_state;
+        } else {
+            form_initial_values.address_state = '';
+        }
 
         // if (!form_initial_values.tax_identification_number) form_initial_values tax_identification_number = '';
         return (
@@ -469,24 +485,38 @@ class PersonalDetailsForm extends React.Component {
                                                 />
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
-                                                <Field name='address_state'>
-                                                    {({ field }) => (
-                                                        <Autocomplete
-                                                            { ...field }
+                                                {
+                                                    this.props.states_list.length ?
+                                                        <Field name='address_state'>
+                                                            {({ field }) => (
+                                                                <Autocomplete
+                                                                    { ...field }
+                                                                    data-lpignore='true'
+                                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                                    type='text'
+                                                                    label={localize('State/Province (optional)')}
+                                                                    error={
+                                                                        touched.address_state && errors.address_state
+                                                                    }
+                                                                    list_items={this.props.states_list}
+                                                                    onItemSelection={
+                                                                        ({ value, text }) => setFieldValue('address_state', value ? text : '', true)
+                                                                    }
+                                                                />
+                                                            )}
+                                                        </Field> :
+                                                        <Input
                                                             data-lpignore='true'
-                                                            autoComplete='new-password' // prevent chrome autocomplete
+                                                            autoComplete='off' // prevent chrome autocomplete
                                                             type='text'
+                                                            name='address_state'
                                                             label={localize('State/Province (optional)')}
-                                                            error={
-                                                                touched.address_state && errors.address_state
-                                                            }
-                                                            list_items={this.props.states_list}
-                                                            onItemSelection={
-                                                                ({ value, text }) => setFieldValue('address_state', value ? text : '', true)
-                                                            }
+                                                            value={values.address_state}
+                                                            error={touched.address_state && errors.address_state}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
                                                         />
-                                                    )}
-                                                </Field>
+                                                }
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <Input
@@ -562,7 +592,13 @@ class PersonalDetailsForm extends React.Component {
         const { fetchResidenceList, fetchStatesList, has_residence } = this.props;
 
         fetchResidenceList();
-        if (has_residence) fetchStatesList();
+        if (has_residence) {
+            this.setState({ is_state_loading: true }, () => {
+                fetchStatesList().then(() => {
+                    this.setState({ is_state_loading: false });
+                });
+            });
+        }
 
         WS.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
             const { getChangeableFields, is_virtual, account_settings } = this.props;

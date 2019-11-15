@@ -4,15 +4,11 @@ import config       from '../../../../../constants';
 Blockly.Blocks.balance = {
     init() {
         this.jsonInit(this.definition());
-
-        // Change shape based on selected type
         const balanceTypeField = this.getField('BALANCE_TYPE');
         balanceTypeField.setValidator(value => {
             if (value === 'STR') {
-                this.setOutputShape(Blockly.OUTPUT_SHAPE_SQUARE);
                 this.setOutput(true, 'String');
             } else if (value === 'NUM') {
-                this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
                 this.setOutput(true, 'Number');
             }
             this.initSvg();

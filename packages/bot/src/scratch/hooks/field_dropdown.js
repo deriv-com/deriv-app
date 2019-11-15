@@ -52,3 +52,65 @@ Blockly.FieldDropdown.prototype.updateOptions = function(dropdown_options, optio
         Blockly.Events.fire(event);
     }
 };
+
+/**
+ * This function is hooked to change backgound color and change dropdown lists shape from rounded corner box to oval shape,
+ * e.g. for market list, trade type, etc.
+ *      'rx': Blockly.BlockSvg.CORNER_RADIUS * 4,
+ *      'ry': Blockly.BlockSvg.CORNER_RADIUS * 4,
+ */
+Blockly.FieldDropdown.prototype.init = function() {
+    if (this.fieldGroup_) {
+        // Dropdown has already been initialized once.
+        return;
+    }
+    // Add dropdown arrow: "option ▾" (LTR) or "▾ אופציה" (RTL)
+    // Positioned on render, after text size is calculated.
+    /** @type {Number} */
+    this.arrowSize_ = 12;
+    /** @type {Number} */
+    this.arrowX_ = 0;
+    /** @type {Number} */
+    this.arrowY_ = 11;
+    this.arrow_ = Blockly.utils.createSvgElement('image', {
+        'height': `${this.arrowSize_  }px`,
+        'width' : `${this.arrowSize_  }px`,
+    });
+    this.arrow_.setAttributeNS('http://www.w3.org/1999/xlink',
+        'xlink:href', `${Blockly.mainWorkspace.options.pathToMedia  }dropdown-arrow.svg`);
+    this.className_ += ' blocklyDropdownText';
+  
+    Blockly.FieldDropdown.superClass_.init.call(this);
+    // If not in a shadow block, draw a box.
+    if (!this.sourceBlock_.isShadow()) {
+        this.box_ = Blockly.utils.createSvgElement('rect', {
+            'rx'          : Blockly.BlockSvg.CORNER_RADIUS * 4,
+            'ry'          : Blockly.BlockSvg.CORNER_RADIUS * 4,
+            'x'           : 0,
+            'y'           : 0,
+            'width'       : this.size_.width,
+            'height'      : this.size_.height,
+            'stroke'      : this.sourceBlock_.getColourTertiary(),
+            'fill'        : this.sourceBlock_.getColourTertiary(),
+            'fill-opacity': 1,
+        }, null);
+        this.fieldGroup_.insertBefore(this.box_, this.textElement_);
+    }
+    // Force a reset of the text to add the arrow.
+    const text = this.text_;
+    this.text_ = null;
+    this.setText(text);
+};
+
+/**
+ * This one is hooked to prevent the dropddown field background color from changing on item select
+ */
+Blockly.FieldDropdown.prototype.onHide = function() {
+    this.dropDownOpen_ = false;
+    // Update colour to look selected.
+    if (!this.disableColourChange_ && this.sourceBlock_) {
+        if (this.sourceBlock_.isShadow()) {
+            this.sourceBlock_.clearShadowColour();
+        }
+    }
+};

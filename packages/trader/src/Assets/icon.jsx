@@ -12,7 +12,6 @@ class Icon extends React.PureComponent {
             IconAPIError    : React.lazy(() => import(/* webpackChunkName: "icon-apierror" */ './AccountManagement/icon-error.jsx')),
 
             // Common
-            IconAccountTransfer   : React.lazy(() => import(/* webpackChunkName: "icon-accounttransfer" */ './Common/icon-account-transfer.jsx')),
             IconArrowBold         : React.lazy(() => import(/* webpackChunkName: "icon-arrowbold" */ './Common/icon-arrow-bold.jsx')),
             IconArrow             : React.lazy(() => import(/* webpackChunkName: "icon-arrow" */ './Common/icon-arrow.jsx')),
             IconBack              : React.lazy(() => import(/* webpackChunkName: "icon-back" */ './Common/icon-back.jsx')),
@@ -42,7 +41,6 @@ class Icon extends React.PureComponent {
             IconMinus             : React.lazy(() => import(/* webpackChunkName: "icon-minus" */ './Common/icon-minus.jsx')),
             IconPasswordHide      : React.lazy(() => import(/* webpackChunkName: "icon-passwordhide" */ './Common/icon-password-hide.jsx')),
             IconPasswordShow      : React.lazy(() => import(/* webpackChunkName: "icon-passwordshow" */ './Common/icon-password-show.jsx')),
-            IconPaymentAgent      : React.lazy(() => import(/* webpackChunkName: "icon-paymentagent" */ './Common/icon-payment-agent.jsx')),
             IconPlus              : React.lazy(() => import(/* webpackChunkName: "icon-plus" */ './Common/icon-plus.jsx')),
             IconQuestion          : React.lazy(() => import(/* webpackChunkName: "icon-question" */ './Common/icon-question.jsx')),
             IconRedDot            : React.lazy(() => import(/* webpackChunkName: "icon-reddot" */ './Common/icon-red-dot.jsx')),

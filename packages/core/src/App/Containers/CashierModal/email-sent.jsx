@@ -29,6 +29,7 @@ class EmailSent extends React.Component {
                                 text={this.props.resend_timeout < 60 ? localize('Resend email in {{seconds}}s', { seconds: this.props.resend_timeout }) : localize('Resend email')}
                                 onClick={this.props.resendVerificationEmail}
                                 primary
+                                large
                             />
                         </React.Fragment>
                         :

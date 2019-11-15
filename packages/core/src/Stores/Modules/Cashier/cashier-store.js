@@ -12,7 +12,7 @@ import {
     getMT5AccountType,
     getMT5AccountDisplay } from '../../Helpers/client';
 
-const bank_default_option = [{ text: localize('Any'), value: 0 }];
+const bank_default_option = [{ text: localize('All payment agents'), value: 0 }];
 
 class Config {
     container          = '';
@@ -128,6 +128,20 @@ export default class CashierStore extends BaseStore {
     async onMountCommon() {
         await BinarySocket.wait('authorize');
         this.resetValuesIfNeeded();
+
+        // we need to see if client's country has PA
+        // if yes, we can show the PA tab in cashier
+        if (!this.config.payment_agent.list.length) {
+            this.setPaymentAgentList().then(this.filterPaymentAgentList);
+        }
+
+        if (!this.config.payment_agent_transfer.is_payment_agent) {
+            this.checkIsPaymentAgent();
+        }
+
+        if (!this.config.account_transfer.accounts_list.length) {
+            this.sortAccountsTransfer();
+        }
     }
 
     @action.bound
@@ -154,16 +168,6 @@ export default class CashierStore extends BaseStore {
             // if no verification code, we should request again
             return;
         }
-
-        // we need to see if client's country has PA
-        // if yes, we can show the PA tab in cashier
-        if (!this.config.payment_agent.list.length) {
-            this.setPaymentAgentList().then(this.filterPaymentAgentList);
-        }
-
-        this.checkIsPaymentAgent();
-
-        this.sortAccountsTransfer();
 
         const response_cashier = await WS.cashier(this.active_container, verification_code);
 
@@ -427,7 +431,7 @@ export default class CashierStore extends BaseStore {
             }
         });
 
-        // sort supported banks alphabetically by value, the option 'any' with value '' should be on top
+        // sort supported banks alphabetically by value, the option 'All payment agents' with value 0 should be on top
         this.config.payment_agent.supported_banks.replace(
             this.config.payment_agent.supported_banks.slice().sort(function(a, b){
                 if (a.value < b.value) { return -1; }
@@ -689,13 +693,23 @@ export default class CashierStore extends BaseStore {
                 ...(account.mt5_group && { mt_icon: getMT5AccountType(account.mt5_group) }),
             };
             if (idx === 0) {
-                this.config.account_transfer.selected_from = obj_values;
+                this.setSelectedFrom(obj_values);
             } else if (idx === 1) {
-                this.config.account_transfer.selected_to = obj_values;
+                this.setSelectedTo(obj_values);
             }
             arr_accounts.push(obj_values);
         });
         this.setAccounts(arr_accounts);
+    }
+
+    @action.bound
+    setSelectedFrom(obj_values) {
+        this.config.account_transfer.selected_from = obj_values;
+    }
+
+    @action.bound
+    setSelectedTo(obj_values) {
+        this.config.account_transfer.selected_to = obj_values;
     }
 
     @action.bound

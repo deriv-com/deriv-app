@@ -14,3 +14,10 @@ Blockly.Trashcan.prototype.MARGIN_BOTTOM_ = trashcan_margin + core_footer_height
  * @private
  */
 Blockly.Trashcan.prototype.MARGIN_SIDE_ = trashcan_margin; // eslint-disable-line
+
+/**
+ * Inspect the contents of the trash.
+ * deriv-bot: Noop for us, restore original functionality when trashcan can be inspected.
+ */
+Blockly.Trashcan.prototype.click = function() {};
+  

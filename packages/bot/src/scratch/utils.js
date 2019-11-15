@@ -297,5 +297,6 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
         scroll_y += (is_chronological ? scroll_amount : -scroll_amount);
     }
 
-    Blockly.derivWorkspace.scrollbar.set(scroll_x, scroll_y);
+    workspace.scrollbar.set(scroll_x, scroll_y);
 };
+

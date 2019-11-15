@@ -27,11 +27,17 @@ export default class ToolbarStore {
 
     @action.bound
     onToolboxToggle() {
-        const toolbox        = Blockly.derivWorkspace.toolbox_; // eslint-disable-line
-        const toolbox_width  = toolbox.HtmlDiv.clientWidth;
-        this.is_toolbox_open = !this.is_toolbox_open;
+        const workspace           = Blockly.derivWorkspace;
+        const toolbox             = workspace.toolbox_; // eslint-disable-line
+        const toolbox_width       = toolbox.HtmlDiv.clientWidth;
+        this.is_toolbox_open      = !this.is_toolbox_open;
 
-        scrollWorkspace(Blockly.derivWorkspace, toolbox_width, true, !this.is_toolbox_open);
+        if (this.is_toolbox_open && workspace.scrollX < toolbox_width) {
+            // Scroll workspace when toolbox would overlap blocks.
+            const scroll_distance = toolbox_width - workspace.scrollX;
+            scrollWorkspace(Blockly.derivWorkspace, scroll_distance, true, !this.is_toolbox_open);
+        }
+
         toolbox.toggle();
     }
 

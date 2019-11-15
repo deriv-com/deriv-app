@@ -38,7 +38,7 @@ Blockly.Blocks.text_charAt = {
                 },
             ],
             output         : 'String',
-            outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
+            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,

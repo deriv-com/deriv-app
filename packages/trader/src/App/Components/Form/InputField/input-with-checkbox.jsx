@@ -83,6 +83,7 @@ const InputWithCheckbox = ({
                     name={checkboxName}
                     label={label}
                     classNameLabel={`${name}-checkbox__label`}
+                    defaultChecked={defaultChecked}
                 />
                 {tooltip_label &&
                     <Popover

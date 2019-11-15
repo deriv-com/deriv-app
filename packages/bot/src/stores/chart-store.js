@@ -1,0 +1,82 @@
+
+import { action,
+    computed,
+    observable }  from 'mobx';
+
+const g_subscribers_map = {};
+let WS, server_time;
+
+export default class ChartStore {
+    constructor(root_store) {
+        this.root_store = root_store;
+        WS = root_store.ws;
+        server_time = root_store.core.common.server_time;
+    }
+    
+    @observable symbol;
+    @observable is_chart_loading;
+    @observable main_barrier  = null;
+    @observable chart_type;
+    @observable granularity;
+    
+    @computed
+    get is_contract_ended(){
+        const { transactions } = this.root_store;
+        console.log(transactions.contracts); // eslint-disable-line no-console
+
+        return transactions.contracts.lenght > 0 && transactions.contracts[0].is_ended;
+    }
+
+    @action.bound
+    updateGranularity(granularity) {
+        this.granularity = granularity;
+    }
+
+    @action.bound
+    updateChartType(chart_type) {
+        this.chart_type = chart_type;
+    }
+
+    @action.bound
+    setChartStatus(status) {
+        this.is_chart_loading = status;
+    }
+
+    // #region WS
+    wsSubscribe = (req, callback) => {
+        if (req.subscribe === 1) {
+            const key = JSON.stringify(req);
+            const subscriber = WS.subscribeTicksHistory(req, callback);
+            g_subscribers_map[key] = subscriber;
+        }
+    };
+
+    wsForget = (req) => {
+        const key = JSON.stringify(req);
+        if (g_subscribers_map[key]) {
+            g_subscribers_map[key].unsubscribe();
+            delete g_subscribers_map[key];
+        }
+    }
+
+    wsForgetStream = (stream_id) => {
+        WS.forgetStream(stream_id);
+    }
+
+    wsSendRequest = (req) => {
+        if (req.time) {
+            // TODO revert this after core is merged
+            // return server_time.timePromise.then(() => ({
+            //     msg_type: 'time',
+            //     time    : server_time.get().unix(),
+            // }));
+            return server_time.unix();
+        }
+        if (req.active_symbols) {
+            return WS.activeSymbols();
+        }
+        return WS.storage.send(req);
+    };
+    // #endregion
+}
+

@@ -1,6 +1,7 @@
 import { Tabs } from 'deriv-components';
 import React from 'react';
 import Flyout from './flyout.jsx';
+import Chart from './chart/chart.jsx';
 import { connect } from '../stores/connect';
 import { translate } from '../utils/lang/i18n';
 import '../assets/sass/main-content.scss';
@@ -36,14 +37,14 @@ class MainContent extends React.Component {
                     </div>
                 </div>
                 <div label={translate('Chart')} >
-                    <p>Chart goes here!</p>
+                    <Chart />
                 </div>
             </Tabs>);
     }
 }
-export default connect(({ mainContent }) => ({
-    active_index      : mainContent.active_index,
-    componentDidUpdate: mainContent.componentDidUpdate,
-    onTabItemClick    : mainContent.onTabItemClick,
+export default connect(({ main_content }) => ({
+    active_index      : main_content.active_index,
+    componentDidUpdate: main_content.componentDidUpdate,
+    onTabItemClick    : main_content.onTabItemClick,
 }))(MainContent);
 

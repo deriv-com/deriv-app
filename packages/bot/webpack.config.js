@@ -97,6 +97,8 @@ module.exports = {
             { from: './src/scratch/xml', to: 'xml' },
             { from: './node_modules/scratch-blocks/media', to: 'media' },
             { from: './src/assets/images', to: 'media' },
+            { from: 'node_modules/smartcharts-beta/dist/*.smartcharts.*', to: 'js/smartcharts/', flatten: true },
+
         ]),
         new SpriteLoaderPlugin(),
         new MergeIntoSingleFilePlugin({

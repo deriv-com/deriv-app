@@ -1,3 +1,4 @@
+import ChartStore         from './chart-store';
 import ContractCardStore  from './contract-card-store';
 import FlyoutStore        from './flyout-store';
 import GoogleDriveStore   from './google-drive-store';
@@ -9,12 +10,14 @@ import SummaryStore       from './summary-store';
 import ToolbarStore       from './toolbar-store';
 import TransactionsStore  from './transactions-store';
 import QuickStrategyStore from './quick-strategy-store';
-import MainContentStore from './main-content-store';
+import MainContentStore   from './main-content-store';
 
 export default class RootStore {
     constructor(core, ws) {
-        this.core  = core;
-        this.ws    = ws;
+        this.core           = core;
+        this.ui             = core.ui;
+        this.common         = core.common;
+        this.ws             = ws;
         this.contract_card  = new ContractCardStore(this);
         this.flyout         = new FlyoutStore(this);
         this.google_drive   = new GoogleDriveStore(this);
@@ -25,7 +28,8 @@ export default class RootStore {
         this.toolbar        = new ToolbarStore(this);
         this.quick_strategy = new QuickStrategyStore();
         this.run_panel      = new RunPanelStore(this);
-        this.mainContent    = new MainContentStore(this);
+        this.chart_store    = new ChartStore(this);
+        this.main_content   = new MainContentStore(this);
 
         // Create a singleton class to share root_store with scratch
         ScratchStore.setInstance(this);

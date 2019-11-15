@@ -21,9 +21,7 @@ function refreshOnUpdate() {
 export default function register() { // Register the service worker
     if (/* process.env.NODE_ENV === 'production' && */ 'serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            let path_name = window.location.pathname;
-            path_name     = /index\.html/g.test(path_name) ? window.location.pathname.replace('index.html', '') : '';
-            const sw_url  = `${path_name}service-worker.js`;
+            const sw_url = `${window.location.origin}/service-worker.js`;
             navigator.serviceWorker
                 .register(sw_url)
                 .then(registration => {

@@ -9,7 +9,7 @@ export default class FlyoutHelpStore {
     constructor(root_store) {
         this.root_store = root_store;
     }
-    
+
     options = {
         css   : false,
         media : `${__webpack_public_path__}media/`, // eslint-disable-line
@@ -30,7 +30,7 @@ export default class FlyoutHelpStore {
         const block_hw = Blockly.Block.getDimensions(block_node);
         const block_type = block_node.getAttribute('type');
         const title = Blockly.Blocks[block_type].meta().display_name;
-        const help_string  = await import(`../scratch/help-content/help-string/${block_type}.json`);
+        const help_string  = await import(/* webpackChunkName: `[request]` */ `../scratch/help-content/help-string/${block_type}.json`);
         const start_scale = config.workspaces.flyoutWorkspacesStartScale;
 
         block_node.setAttribute('width', block_hw.width * start_scale);
@@ -80,7 +80,7 @@ export default class FlyoutHelpStore {
             // eslint-disable-next-line consistent-return
             if (!block_type) return;
             try {
-                await import(`../scratch/help-content/help-string/${block_type}.json`);
+                await import(/* webpackChunkName: `[request]` */ `../scratch/help-content/help-string/${block_type}.json`);
                 // eslint-disable-next-line consistent-return
                 return block_type;
             } catch (e) {
@@ -112,7 +112,7 @@ export default class FlyoutHelpStore {
             if (!should_include_block_only || (should_include_block_only && type !== null)) {
                 block_group[type].push(node);
             }
-            
+
             return block_group;
         }, {});
     }

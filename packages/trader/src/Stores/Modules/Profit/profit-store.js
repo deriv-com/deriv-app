@@ -4,7 +4,7 @@ import {
     computed,
     observable,
 }                                        from 'mobx';
-import { WS }                            from 'Services';
+import { WS }                            from 'Services/ws-methods';
 import { toMoment }                      from 'Utils/Date';
 import getDateBoundaries                 from './Helpers/format-request';
 import { formatProfitTableTransactions } from './Helpers/format-response';
@@ -115,7 +115,7 @@ export default class ProfitTableStore extends BaseStore {
         );
         this.client_loginid = this.root_store.client.loginid;
         this.onSwitchAccount(this.accountSwitcherListener);
-        await this.waitFor('authorize');
+        await WS.wait('authorize');
         this.fetchNextBatch(true);
     }
 

@@ -5,7 +5,7 @@ import {
     observable,
     toJS,
 } from 'mobx';
-import { WS }                 from 'Services';
+import { WS }                 from 'Services/ws-methods';
 import { createChartMarkers } from './Helpers/chart-markers';
 import {
     getDigitInfo,

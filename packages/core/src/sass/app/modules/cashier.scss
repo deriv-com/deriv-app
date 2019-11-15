@@ -12,12 +12,13 @@
             width: 100%;
             height: 100%;
             line-height: 1.43;
+
+            .inline-icon .color1-fill {
+                fill: var(--text-general);
+            }
         }
         &--align-left {
             text-align: left;
-        }
-        .inline-icon .color1-fill {
-            fill: var(--text-general);
         }
     }
     &__loader {
@@ -39,7 +40,6 @@
         &-submit {
             display: flex;
             justify-content: flex-end;
-            box-shadow: inset 0 1px 0 0 rgba(224, 224, 224, 0.5);
             width: calc(100% + 4.8rem);
             margin-left: -2.4rem;
             position: absolute;
@@ -62,17 +62,23 @@
             }
         }
         &-submit-button {
-            height: 4rem;
             margin: 1.6rem 2.4rem 2.4rem;
         }
     }
-    &__input-long {
+    &__input {
         display: inline-block !important;
         margin-bottom: 0 !important;
+
+        &--short {
+            width: 29rem;
+        }
+        &--long {
+            width: 100%;
+        }
     }
     &__drop-down {
         display: inline-block;
-        min-width: 20rem;
+        min-width: 20.3rem;
         min-height: 4rem;
         margin: 0 0 16px;
         line-height: 1.43;
@@ -80,6 +86,7 @@
         &-display {
             justify-content: left;
             min-height: 4rem;
+            min-width: 20.3rem;
             height: auto;
 
             &-span {
@@ -147,12 +154,15 @@
         min-width: 24rem;
     }
     &__success {
+        text-align: center;
         background-color: var(--general-section-1);
-        padding: 2.4rem 3.4rem;
-        margin: 0 4.9rem;
+        padding: 2.4rem;
+        width: 50.4rem;
+        margin: 0 auto 3.2rem;
     }
-    &__amount-symbol {
-        top: 0.9rem;
+    &__done-button {
+        width: 15.6rem;
+        margin-left: -1.6rem;
     }
     &__no-balance {
         &-icon {
@@ -200,7 +210,6 @@
         }
         &__button {
             margin: 3.2rem auto 1.6rem;
-            height: 4rem;
         }
         &__footer {
             font-size: 1.2rem;
@@ -276,38 +285,60 @@
 /** @define payment-agent */
 .payment-agent {
     &__instructions {
-        margin-top: 24px;
+        margin-top: 2.4rem;
         display: flex;
 
         &-section {
+            border: 1px solid var(--border-normal);
             flex: 1;
+            padding: 1.6rem;
 
             .payment-agent__header {
                 margin-bottom: 8px;
+                text-align: center;
             }
             &:not(:first-child) {
                 margin-left: 24px;
+                margin-left: 1.6rem;
             }
         }
+        &-button {
+            margin: auto;
+        }
     }
-    &__button {
-        margin: 0;
-        height: 40px;
-    }
-    &__available {
+    &__list {
         &-header {
             margin-top: 32px;
+            font-size: 1.4rem;
+            line-height: 1.43;
         }
         &-selector {
-            margin-bottom: 16px;
+            margin-bottom: 8px;
             display: flex;
+            justify-content: flex-end;
+            margin-right: 1px;
+        }
+        &-line {
+            border-bottom: 1px solid var(--general-section-1);
+            position: relative;
+            width: 80%;
+            margin-left: 20%;
+            top: -25px;
         }
     }
     &__drop-down {
         margin-left: 8px;
-        min-width: 20rem;
         width: auto;
         margin-bottom: 0;
+    }
+    &__filter {
+        min-width: 22.8rem;
+        margin-top: 0;
+
+        &-display {
+            min-height: 3.2rem;
+            min-width: 22.8rem;
+        }
     }
     &__accordion-content {
         &-line {
@@ -320,26 +351,23 @@
     }
     &__disclaimer {
         background-color: var(--general-section-1);
-        margin-top: 24px;
-        padding: 8px 16px;
+        margin-top: 2.4rem;
+        padding: 1.6rem;
         font-size: 1.2rem;
-        line-height: 1.42;
+        line-height: 1.5;
     }
     &__radio {
         display: none;
 
         &-group {
             display: block;
+            margin-bottom: 3.9rem;
         }
         &-wrapper {
             display: flex;
-
-            &:not(:last-child) {
-                margin-bottom: 1.6rem;
-            }
-            &:last-child {
-                margin-bottom: 2.7rem;
-            }
+            margin-bottom: 2rem;
+            // width is set to limit the selection area of the radio label
+            width: fit-content;
         }
         &-circle {
             border: 2px solid var(--text-general);
@@ -358,40 +386,20 @@
             }
         }
     }
-    &__receipt {
-        text-align: center;
-    }
-    &__transferred {
-        &-contact {
-            margin-top: 16px;
-            margin-bottom: 8px;
+    &__transferred-contact {
+        margin-top: 1.6rem;
+        margin-bottom: 0.8rem;
+
+        &-wrapper {
+            margin: 3.2rem;
         }
     }
     &__contact {
         text-decoration: none;
         color: var(--brand-red-coral);
     }
-    &__separator {
-        border-bottom: var(--general-section-2);
-        margin-top: 32px;
-        margin-bottom: 16px;
-        // cover the whole container instead of within the container's padding
-        width: calc(100% + 2.4rem + 2.4rem);
-        margin-left: -2.4rem;
-    }
     &__explanation {
-        margin-top: -8px;
-        margin-bottom: 24px;
-    }
-    &__buttons {
-        justify-content: flex-end;
-        display: flex;
-    }
-    &__statement-button, &__done-button {
-        margin: 0;
-    }
-    &__done-button {
-        margin-left: 8.5px;
+        margin-top: -0.8rem;
     }
     &__input {
         width: 12.6rem !important;
@@ -417,7 +425,7 @@
 /** @define account-transfer */
 .account-transfer {
     &__notes {
-        color: var(--text-less-prominent);
+        color: var(--text-general);
         margin-top: calc(3.2rem + 1.7rem); // + height of hint/error
         font-size: 1.2rem;
         line-height: 1.5;
@@ -472,7 +480,6 @@
         }
     }
     &__button-done {
-        height: 4rem;
         margin: 3.2rem auto 0;
     }
 }
@@ -487,17 +494,11 @@ div.payment-agent-transfer {
     &__input {
         width: 29.6rem;
         display: inline-flex;
+        margin-bottom: 3.1rem;
 
         &:not(:first-child) {
             margin-left: 2.4rem;
         }
-    }
-    &__buttons {
-        margin-left: -10.7rem;
-        align-items: center;
-    }
-    &__done-button {
-        margin-right: 2.4rem;
     }
 }
 /* stylelint-enable plugin/selector-bem-pattern */

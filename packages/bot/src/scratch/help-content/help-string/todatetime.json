@@ -2,6 +2,6 @@
     "text": [
         "This block converts the number of seconds since the Unix Epoch to a date and time format such as 2019-08-01 00:00:00.",
         "Example:",
-        "In this example, your bot will print date and time to Journal."
+        "In this example, the date and time will be displayed in a green notification box."
     ]
 }

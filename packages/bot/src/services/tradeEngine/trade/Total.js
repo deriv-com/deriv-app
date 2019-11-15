@@ -1,7 +1,7 @@
+import { localize }                   from 'deriv-translations/lib/i18n';
 import { info, notify }               from '../utils/broadcast';
 import { roundBalance }               from '../utils/helpers';
-import createError                from '../../../utils/error';
-import { translate }                  from '../../../utils/lang/i18n';
+import createError                    from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
 
 const skeleton = {
@@ -73,9 +73,9 @@ export default Engine =>
             });
 
             if (win) {
-                notify('success', `${translate('Profit amount')}: ${profit}`);
+                notify('success', `${localize('Profit amount')}: ${profit}`);
             } else {
-                notify('warn', `${translate('Loss amount')}: ${profit}`);
+                notify('warn', `${localize('Loss amount')}: ${profit}`);
             }
         }
 
@@ -112,10 +112,10 @@ export default Engine =>
 
             if (maxLoss && maxTrades) {
                 if (this.sessionRuns >= maxTrades) {
-                    throw createError('CustomLimitsReached', translate('Maximum number of trades reached'));
+                    throw createError('CustomLimitsReached', localize('Maximum number of trades reached'));
                 }
                 if (this.sessionProfit <= -maxLoss) {
-                    throw createError('CustomLimitsReached', translate('Maximum loss amount reached'));
+                    throw createError('CustomLimitsReached', localize('Maximum loss amount reached'));
                 }
             }
         }

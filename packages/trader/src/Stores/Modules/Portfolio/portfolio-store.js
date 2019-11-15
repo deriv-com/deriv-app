@@ -5,7 +5,7 @@ import {
     observable,
     reaction }                     from 'mobx';
 import { createTransformer }       from 'mobx-utils';
-import { WS }                      from 'Services';
+import { WS }                      from 'Services/ws-methods';
 import ObjectUtils                 from 'deriv-shared/utils/object';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractSold }            from './Helpers/portfolio-notifications';
@@ -39,7 +39,7 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     initializePortfolio = async () => {
         this.is_loading = true;
-        await this.waitFor('authorize');
+        await WS.wait('authorize');
         WS.portfolio().then(this.portfolioHandler);
         WS.subscribeProposalOpenContract(null, this.proposalOpenContractHandler);
         WS.subscribeTransaction(this.transactionHandler);
@@ -237,11 +237,15 @@ export default class PortfolioStore extends BaseStore {
             // If unable to sell due to error, give error via pop up if not in contract mode
             const i = this.getPositionIndexById(response.echo_req.sell);
             this.positions[i].is_sell_requested = false;
-            this.root_store.common.services_error = {
-                type: response.msg_type,
-                ...response.error,
-            };
-            this.root_store.ui.toggleServicesErrorModal(true);
+
+            // invalidToken error will handle in socket-general.js
+            if (response.error.code !== 'InvalidToken') {
+                this.root_store.common.services_error = {
+                    type: response.msg_type,
+                    ...response.error,
+                };
+                this.root_store.ui.toggleServicesErrorModal(true);
+            }
         } else if (!response.error && response.sell) {
             const i = this.getPositionIndexById(response.sell.contract_id);
             this.positions[i].is_sell_requested = false;
@@ -319,10 +323,24 @@ export default class PortfolioStore extends BaseStore {
         this.hovered_position_id = is_over ? position.id : null;
         this.updateTradeStore(is_over, position);
     }
+    
+    preSwitchAccountListener () {
+        this.clearTable();
+
+        return Promise.resolve();
+    }
+
+    @action.bound
+    logoutListener() {
+        this.clearTable();
+        return Promise.resolve();
+    }
 
     @action.bound
     onMount() {
-        this.onSwitchAccount(this.accountSwitcherListener.bind(null));
+        this.onPreSwitchAccount(this.preSwitchAccountListener);
+        this.onSwitchAccount(this.accountSwitcherListener);
+        this.onLogout(this.logoutListener);
         if (this.positions.length === 0) {
             // TODO: Optimise the way is_logged_in changes are detected for "logging in" and "already logged on" states
             if (this.root_store.client.is_logged_in) {
@@ -339,7 +357,9 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     onUnmount() {
+        this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
+        this.disposeLogout();
         // keep data and connections for portfolio drawer on desktop
         if (this.root_store.ui.is_mobile) {
             // this.clearTable();
@@ -408,6 +428,11 @@ export default class PortfolioStore extends BaseStore {
     @computed
     get is_active_empty() {
         return !this.is_loading && this.active_positions.length === 0;
+    }
+
+    @computed
+    get active_positions_count() {
+        return this.active_positions.length || 0;
     }
 
     @computed

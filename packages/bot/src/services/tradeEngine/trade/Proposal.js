@@ -1,6 +1,6 @@
+import { localize }                                    from 'deriv-translations/lib/i18n';
 import { proposalsReady, clearProposals }              from './state/actions';
 import { tradeOptionToProposal, doUntilDone, getUUID } from '../utils/helpers';
-import { translate }                                   from '../../../utils/lang/i18n';
 
 export default Engine =>
     class Proposal extends Engine {
@@ -17,7 +17,7 @@ export default Engine =>
             let toBuy;
 
             if (!this.data.has('proposals')) {
-                throw Error(translate('Proposals are not ready'));
+                throw Error(localize('Proposals are not ready'));
             }
 
             this.data.get('proposals').forEach(proposal => {
@@ -31,7 +31,7 @@ export default Engine =>
             });
 
             if (!toBuy) {
-                throw Error(translate('Selected proposal does not exist'));
+                throw Error(localize('Selected proposal does not exist'));
             }
 
             return {
@@ -115,15 +115,18 @@ export default Engine =>
             return Promise.all(
                 proposals.map(proposal => {
                     const { uuid: id } = proposal;
-                    const removeProposal = uuid => {
-                        this.data = this.data.deleteIn(['forgetProposals', uuid]);
+                    const removeProposal = () => {
+                        this.data = this.data.deleteIn(['forgetProposals', id]);
                     };
 
+                    this.data = this.data.setIn(['forgetProposals', id], true);
+
                     if (proposal.error) {
-                        removeProposal(id);
+                        removeProposal();
                         return Promise.resolve();
                     }
-                    return doUntilDone(() => this.api.unsubscribeByID(proposal.id)).then(() => removeProposal(id));
+
+                    return doUntilDone(() => this.api.unsubscribeByID(proposal.id)).then(() => removeProposal());
                 })
             );
         }

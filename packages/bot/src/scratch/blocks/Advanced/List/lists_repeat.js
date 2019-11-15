@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.lists_repeat = {
     init() {
@@ -6,13 +6,8 @@ Blockly.Blocks.lists_repeat = {
     },
     definition(){
         return {
-            message0: translate('set %1 to item %2 repeated %3 times'),
+            message0: localize('create list with item %1 repeated %2 times'),
             args0   : [
-                {
-                    type    : 'field_variable',
-                    name    : 'VARIABLE',
-                    variable: translate('list'),
-                },
                 {
                     type: 'input_value',
                     name: 'ITEM',
@@ -22,31 +17,26 @@ Blockly.Blocks.lists_repeat = {
                     name: 'NUM',
                 },
             ],
-            colour           : Blockly.Colours.Base.colour,
-            colourSecondary  : Blockly.Colours.Base.colourSecondary,
-            colourTertiary   : Blockly.Colours.Base.colourTertiary,
-            previousStatement: null,
-            nextStatement    : null,
-            tooltip          : translate('Creates a list by repeating a given item'),
-            category         : Blockly.Categories.List,
+            output         : null,
+            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
+            colour         : Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary : Blockly.Colours.Base.colourTertiary,
+            tooltip        : localize('Creates a list by repeating a given item'),
+            category       : Blockly.Categories.List,
         };
     },
     meta(){
         return {
-            'display_name': translate('Repeat an item'),
-            'description' : translate('Creates a list with a given item repeated for a specific number of times.'),
+            'display_name': localize('Repeat an item'),
+            'description' : localize('Creates a list with a given item repeated for a specific number of times.'),
         };
     },
 };
 
 Blockly.JavaScript.lists_repeat = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const varName = Blockly.JavaScript.variableDB_.getName(
-        block.getFieldValue('VARIABLE'),
-        Blockly.Variables.NAME_TYPE
-    );
-    // eslint-disable-next-line no-underscore-dangle
-    const functionName = Blockly.JavaScript.provideFunction_('listsRepeat', [
+    const function_name = Blockly.JavaScript.provideFunction_('listsRepeat', [
         // eslint-disable-next-line no-underscore-dangle
         `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(value, n) {
             var array = [];
@@ -57,9 +47,9 @@ Blockly.JavaScript.lists_repeat = block => {
         }`,
     ]);
 
-    const element = Blockly.JavaScript.valueToCode(block, 'ITEM', Blockly.JavaScript.ORDER_COMMA) || 'null';
-    const repeatCount = Blockly.JavaScript.valueToCode(block, 'NUM', Blockly.JavaScript.ORDER_COMMA) || '0';
+    const element      = Blockly.JavaScript.valueToCode(block, 'ITEM', Blockly.JavaScript.ORDER_COMMA) || 'null';
+    const repeat_count = Blockly.JavaScript.valueToCode(block, 'NUM', Blockly.JavaScript.ORDER_COMMA) || '0';
+    const code         = `${function_name}(${element}, ${repeat_count})`;
 
-    const code = `${varName} = ${functionName}(${element}, ${repeatCount});\n`;
-    return code;
+    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };

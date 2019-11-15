@@ -1,9 +1,9 @@
-import { translate } from '../../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.std_dev_multiplier_up = {
     init() {
         this.jsonInit({
-            message0: translate('Standard Deviation Up Multiplier %1'),
+            message0: localize('Standard Deviation Up Multiplier %1'),
             args0   : [
                 {
                     type : 'input_value',
@@ -21,8 +21,8 @@ Blockly.Blocks.std_dev_multiplier_up = {
         this.setMovable(false);
         this.setDeletable(false);
     },
-    onchange      : Blockly.Blocks.input_list.onchange,
-    allowedParents: ['bb_statement', 'bba_statement'],
+    onchange       : Blockly.Blocks.input_list.onchange,
+    allowed_parents: ['bb_statement', 'bba_statement'],
 };
 
 Blockly.JavaScript.std_dev_multiplier_up = () => {};

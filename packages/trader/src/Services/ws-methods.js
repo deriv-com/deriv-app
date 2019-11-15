@@ -1,6 +1,4 @@
-import BinarySocket              from '_common/base/socket_base';
-import { trackJSNetworkMonitor } from './trackjs';
+// eslint-disable-next-line import/no-mutable-exports
+export let WS;
 
-const WS = BinarySocket;
-
-export default trackJSNetworkMonitor(WS);
+export const setWebsocket = (websocket) => { WS = websocket; };

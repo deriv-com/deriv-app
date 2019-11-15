@@ -1,5 +1,6 @@
 .dc-tabs {
     position: relative;
+    height: 100%;
     //TODO send the tab count from outside
     @for $i from 1 through 5 {
         .dc-tabs__item:nth-child(#{$i}).dc-tabs__active ~ .dc-tabs__active-line {
@@ -40,5 +41,9 @@
         height: 2px;
         background: var(--brand-red-coral);
         transition: all ease-in-out 0.3s;
+    }
+    &__content {
+        height: 100%;
+        overflow: auto;
     }
 }

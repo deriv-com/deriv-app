@@ -30,6 +30,8 @@
         font-weight: 700;
         font-size: 1.6em;
         align-items: center;
+        background-color: white;
+        z-index: 1;
     }
     &__toggle {
         position: absolute;

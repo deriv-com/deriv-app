@@ -5,6 +5,11 @@
 * React i18next configuration and translation components
 >
 
+# Requirements:
+* Crowdin CLI: download here: https://support.crowdin.com/cli-tool/#installation
+* remote `origin` should be your fork
+* remote `upstream` should be the source repository (e.g. `git@github.com:binary-com/deriv-app.git`)
+
 
 ## Extracting translations
 ### Setup: add the crowdin API key to your ~/.bash_profile

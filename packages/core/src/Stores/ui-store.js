@@ -2,22 +2,30 @@ import {
     action,
     autorun,
     computed,
-    observable }             from 'mobx';
+    observable }              from 'mobx';
+import ObjectUtils             from 'deriv-shared/utils/object';
 import {
     MAX_MOBILE_WIDTH,
-    MAX_TABLET_WIDTH }       from 'Constants/ui';
-import ObjectUtils           from 'deriv-shared/utils/object';
-import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
-import BaseStore             from './base-store';
+    MAX_TABLET_WIDTH }        from 'Constants/ui';
+import { sortNotifications }   from 'App/Components/Elements/NotificationMessage';
+import { isBot }               from 'Utils/PlatformSwitcher';
+import {
+    clientNotifications,
+    excluded_notifications } from './Helpers/client-notifications';
+import BaseStore               from './base-store';
 
 const store_name = 'ui_store';
 
 export default class UIStore extends BaseStore {
-    @observable is_main_drawer_on           = false;
-    @observable is_notifications_drawer_on  = false;
-    @observable is_positions_drawer_on      = false;
     @observable is_account_settings_visible = false;
+    @observable is_main_drawer_on           = false;
+    @observable is_notifications_visible    = false;
+    @observable is_positions_drawer_on      = false;
     @observable is_reports_visible          = false;
+
+    // Extensions
+    @observable footer_extension   = undefined;
+    @observable settings_extension = undefined;
 
     @observable is_cashier_modal_on     = false;
     @observable is_dark_mode_on         = false;
@@ -37,16 +45,17 @@ export default class UIStore extends BaseStore {
     // SmartCharts Controls
     // TODO: enable asset information
     // @observable is_chart_asset_info_visible = true;
-    @observable is_chart_countdown_visible  = false;
-    @observable is_chart_layout_default     = true;
+    @observable is_chart_countdown_visible = false;
+    @observable is_chart_layout_default    = true;
 
     // PWA event and config
     @observable pwa_prompt_event = null;
 
     @observable screen_width = window.innerWidth;
 
+    @observable notifications         = [];
     @observable notification_messages = [];
-    @observable push_notifications = [];
+    @observable push_notifications    = [];
 
     @observable is_advanced_duration   = false;
     @observable advanced_duration_unit = 't';
@@ -66,7 +75,8 @@ export default class UIStore extends BaseStore {
     @observable is_route_modal_on = false;
 
     // real account signup
-    @observable is_real_acc_signup_on = false;
+    @observable is_real_acc_signup_on         = false;
+    @observable has_real_account_signup_ended = false;
 
     // position states
     @observable show_positions_toggle = true;
@@ -78,9 +88,18 @@ export default class UIStore extends BaseStore {
     @observable is_top_up_virtual_open = false;
     @observable is_top_up_virtual_success = false;
 
+    // Real account signup
+    @observable real_account_signup = {
+        active_modal_index: -1,
+        previous_currency : '',
+        current_currency  : '',
+        success_message   : '',
+        error_message     : '',
+    };
+
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
-    constructor() {
+    constructor(root_store) {
         const local_storage_properties = [
             'advanced_duration_unit',
             'is_advanced_duration',
@@ -102,20 +121,31 @@ export default class UIStore extends BaseStore {
             // 'is_purchase_lock_on',
         ];
 
-        super({ local_storage_properties, store_name });
+        super({ root_store, local_storage_properties, store_name });
         window.addEventListener('resize', this.handleResize);
         autorun(() => {
-            // TODO: Re-enable dark theme when Bot is ready
-            document.body.classList.remove('theme--dark');
-            document.body.classList.add('theme--light');
-            // if (this.is_dark_mode_on) {
-            //     document.body.classList.remove('theme--light');
-            //     document.body.classList.add('theme--dark');
-            // } else {
-            //     document.body.classList.remove('theme--dark');
-            //     document.body.classList.add('theme--light');
-            // }
+            // TODO: [disable-dark-bot] Delete this condition when Bot is ready
+            if (isBot()) {
+                document.body.classList.remove('theme--dark');
+                document.body.classList.add('theme--light');
+            } else if (this.is_dark_mode_on) {
+                document.body.classList.remove('theme--light');
+                document.body.classList.add('theme--dark');
+            } else {
+                document.body.classList.remove('theme--dark');
+                document.body.classList.add('theme--light');
+            }
         });
+    }
+
+    @action.bound
+    populateFooterExtensions(component) {
+        this.footer_extension = component;
+    }
+
+    @action.bound
+    populateSettingsExtensions(menu_items) {
+        this.settings_extension = menu_items;
     }
 
     @action.bound
@@ -225,8 +255,13 @@ export default class UIStore extends BaseStore {
     // }
 
     @action.bound
-    toggleDarkMode() {
-        this.is_dark_mode_on = !this.is_dark_mode_on;
+    setDarkMode(is_dark_mode_on) {
+        if (this.is_dark_mode_on !== is_dark_mode_on) {
+            this.is_dark_mode_on = is_dark_mode_on;
+            // This GTM call is here instead of the GTM store due to frequency of use
+            this.root_store.gtm.pushDataLayer({ event: 'switch theme' });
+        }
+
         return this.is_dark_mode_on;
     }
 
@@ -264,6 +299,10 @@ export default class UIStore extends BaseStore {
     @action.bound
     closeRealAccountSignup() {
         this.is_real_acc_signup_on = false;
+        setTimeout(() => {
+            this.resetRealAccountSignupParams();
+            this.setRealAccountSignupEnd(true);
+        }, 300);
     }
 
     @action.bound
@@ -278,6 +317,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     togglePositionsDrawer() { // toggle Positions Drawer
         this.is_positions_drawer_on = !this.is_positions_drawer_on;
+    }
+
+    @action.bound
+    toggleNotificationsModal() {
+        this.is_notifications_visible = !this.is_notifications_visible;
     }
 
     @action.bound
@@ -296,19 +340,13 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    showMainDrawer() { // show main Drawer
+    showMainDrawer() {
         this.is_main_drawer_on = true;
     }
 
     @action.bound
-    showNotificationsDrawer() { // show nofitications Drawer
-        this.is_notifications_drawer_on = true;
-    }
-
-    @action.bound
-    hideDrawers() { // hide both menu drawers
+    hideDrawers() {
         this.is_main_drawer_on = false;
-        this.is_notifications_drawer_on = false;
     }
 
     @action.bound
@@ -322,20 +360,45 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    addNotification(notification) {
+    updateNotifications(notifications_array) {
+        this.notifications =
+            notifications_array.filter((message) => !excluded_notifications.includes(message.key));
+    }
+
+    @action.bound
+    removeNotifications() {
+        this.notifications = [];
+    }
+
+    @action.bound
+    removeNotificationByKey({ key }) {
+        this.notifications = this.notifications
+            .filter(n => n.key !== key);
+    }
+
+    @action.bound
+    addNotificationMessageByKey(key) {
+        if (key) this.addNotificationMessage(clientNotifications()[key]);
+    }
+
+    @action.bound
+    addNotificationMessage(notification) {
         if (!this.notification_messages.find(item => item.header === notification.header)) {
             this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
+            if (!excluded_notifications.includes(notification.key)) {
+                this.updateNotifications(this.notification_messages);
+            }
         }
     }
 
     @action.bound
-    removeNotification({ key }) {
+    removeNotificationMessage({ key }) {
         this.notification_messages = this.notification_messages
             .filter(n => n.key !== key);
     }
 
     @action.bound
-    removeAllNotifications() {
+    removeAllNotificationMessages() {
         this.notification_messages = [];
     }
 
@@ -378,5 +441,29 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleResetPasswordModal(state_change = !this.is_reset_password_modal_visible) {
         this.is_reset_password_modal_visible = state_change;
+    }
+
+    @action.bound
+    setRealAccountSignupParams(params) {
+        this.real_account_signup = {
+            ...this.real_account_signup,
+            ...params,
+        };
+    }
+
+    @action.bound
+    setRealAccountSignupEnd(has_ended) {
+        this.has_real_account_signup_ended = has_ended;
+    }
+
+    @action.bound
+    resetRealAccountSignupParams() {
+        this.real_account_signup = {
+            active_modal_index: -1,
+            previous_currency : '',
+            current_currency  : '',
+            success_message   : '',
+            error_message     : '',
+        };
     }
 }

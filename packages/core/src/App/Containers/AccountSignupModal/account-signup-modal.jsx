@@ -1,8 +1,8 @@
 import classNames        from 'classnames';
 import {
-    PasswordInput,
     Button,
-    Dialog }             from 'deriv-components';
+    Dialog,
+    PasswordInput }      from 'deriv-components';
 import {
     Field,
     Formik,

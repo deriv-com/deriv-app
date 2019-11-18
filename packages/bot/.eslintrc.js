@@ -16,6 +16,7 @@ module.exports = {
       goog: false,
       google: false,
       gapi: false,
+      __webpack_public_path__: false,
   },
   rules: {
       camelcase                           : 0,

@@ -1,4 +1,3 @@
-/* eslint-disable func-names, no-underscore-dangle */
 /**
  * Render the icon.
  * @param {number} cursorX Horizontal offset at which to position the icon.

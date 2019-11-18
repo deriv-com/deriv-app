@@ -86,7 +86,6 @@ export const Icon = svgItem => (props) => {
 
     return (
         <svg width={width} height={height} className={classNames('icon', className)} onClick={onClick}>
-            { /* eslint-disable-next-line */ }
             <use xlinkHref={`${__webpack_public_path__}bot-sprite.svg#${svgItem.id}`} />
         </svg>
     );
@@ -94,7 +93,7 @@ export const Icon = svgItem => (props) => {
 
 export const preloadSprite = () => {
     const sprite = new Image();
-    sprite.src = `${__webpack_public_path__}bot-sprite.svg`; // eslint-disable-line
+    sprite.src = `${__webpack_public_path__}bot-sprite.svg`;
 };
 
 // General

@@ -1,5 +1,3 @@
-/* eslint-disable func-names, no-underscore-dangle */
-
 // Deriv-bot: Set the minimum width of a statement block to be wider than default.
 Blockly.BlockSvg.MIN_BLOCK_X_WITH_STATEMENT = 100 * Blockly.BlockSvg.GRID_UNIT;
 

@@ -578,7 +578,9 @@ export default class ClientStore extends BaseStore {
             const {
                 user_id,
                 email,
-                account_list
+                first_name,
+                last_name,
+                account_list,
             } = this.account_settings;
     
             const {

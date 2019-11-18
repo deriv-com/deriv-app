@@ -2,7 +2,11 @@ import React            from 'react';
 import { WS }           from 'Services';
 import { formatDate }   from 'Utils/Date';
 import ObjectUtils      from 'deriv-shared/utils/object';
-import { ClientBase }  from '_common/base/client_base';
+import {
+    getRiskAssessment,
+    isAccountOfType,
+    shouldAcceptTnc,
+    shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink }   from 'App/Components/Routes';
 import { localize }     from 'App/i18n';
 import routes           from 'Constants/routes';
@@ -272,7 +276,7 @@ const hasMissingRequiredField = (account_settings, client) => {
     }
 
     function getRequiredFields() {
-        if (!ClientBase.isAccountOfType('financial')) return [];
+        if (!isAccountOfType('financial')) return [];
         const { residence } = client;
 
         const required_settings_fields = [
@@ -329,7 +333,7 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
 
     const is_mf_retail         = client.landing_company_shortcode === 'maltainvest' && !professional;
     const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
-    const has_risk_assessment  = ClientBase.getRiskAssessment(account_status);
+    const has_risk_assessment  = getRiskAssessment(account_status);
     const needs_poa            = needs_verification.length &&
         needs_verification.includes('document') &&
         !needs_verification.includes('identity') &&
@@ -352,7 +356,7 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
         addNotificationMessage(clientNotifications().financial_limit);
     }
     if (has_risk_assessment)               addNotificationMessage(clientNotifications().risk);
-    if (ClientBase.shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
+    if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
     if (needs_authentication || prompt_client_to_authenticate) {
         addNotificationMessage(clientNotifications().authenticate);
     }
@@ -381,7 +385,7 @@ export const handleClientNotifications = (
 
     const { has_risk_assessment } = checkAccountStatus(account_status, client, addNotificationMessage, loginid);
 
-    if (ClientBase.shouldAcceptTnc(account_settings)) addNotificationMessage(clientNotifications(ui).tnc);
+    if (shouldAcceptTnc(account_settings)) addNotificationMessage(clientNotifications(ui).tnc);
 
     const has_missing_required_field = hasMissingRequiredField(account_settings, client);
     if (has_missing_required_field) {

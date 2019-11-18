@@ -60,7 +60,7 @@
             color: var(--text-prominent);
         }
         &-list-title {
-            @include typeface(--small-center-bold-black, capitalize);
+            @include typeface(--small-center-bold-black);
             color: var(--text-prominent);
         }
         &-list-item {

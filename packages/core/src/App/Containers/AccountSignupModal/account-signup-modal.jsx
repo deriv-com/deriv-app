@@ -1,6 +1,5 @@
 import classNames        from 'classnames';
 import {
-    Autocomplete,
     PasswordInput,
     Button,
     Dialog }             from 'deriv-components';
@@ -15,7 +14,8 @@ import { localize }      from 'App/i18n';
 import { connect }       from 'Stores/connect';
 import { validPassword } from 'Utils/Validator/declarative-validation-rules';
 import { website_name }  from 'App/Constants/app-config';
-import 'Sass/app/modules/account-signup.scss';
+import ResidenceForm     from '../SetResidenceModal/set-residence-form.jsx';
+import                        'Sass/app/modules/account-signup.scss';
 
 const signupInitialValues = { password: '', residence: '' };
 
@@ -76,7 +76,6 @@ class AccountSignup extends React.Component {
             const modded_values = { ...values, residence: residence_list[index_of_selection].value };
             onSignup(modded_values, this.onSignupComplete);
         };
-
         return (
             <div className='account-signup'>
                 <Formik
@@ -89,40 +88,23 @@ class AccountSignup extends React.Component {
                             <React.Fragment>
                                 {
                                     !this.state.has_valid_residence ?
-                                        <div className='account-signup__residence-selection'>
-                                            <p className='account-signup__heading'>
-                                                <Localize i18n_default_text='Thanks for verifying your email' />
-                                            </p>
-                                            <p className='account-signup__text'>
-                                                <Localize i18n_default_text='Where do you live?' />
-                                            </p>
-                                            <Field name='residence'>
-                                                {({ field }) => (
-                                                    <Autocomplete
-                                                        { ...field }
-                                                        autoComplete='off'
-                                                        className='account-signup__residence-field'
-                                                        dropdown_offset='3.2rem'
-                                                        type='text'
-                                                        label={ localize('Choose country') }
-                                                        error={ touched.residence && errors.residence }
-                                                        required
-                                                        list_items={ residence_list }
-                                                        onItemSelection={
-                                                            (item) => setFieldValue('residence', item.text, true)
-                                                        }
-                                                    />
-                                                )}
-                                            </Field>
+                                        <ResidenceForm
+                                            header_text={localize('Thanks for verifying your email')}
+                                            class_prefix='account-signup'
+                                            errors={errors}
+                                            touched={touched}
+                                            setFieldValue={setFieldValue}
+                                            residence_list={residence_list}
+                                        >
                                             <Button
                                                 className={classNames('account-signup__btn', { 'account-signup__btn--disabled': !values.residence || errors.residence })}
                                                 type='button'
                                                 is_disabled={ !values.residence || !!errors.residence }
                                                 onClick={this.onResidenceSelection}
-                                                text={localize('Next')}
                                                 primary
+                                                text={localize('Next')}
                                             />
-                                        </div>
+                                        </ResidenceForm>
                                         :
                                         <div className='account-signup__password-selection'>
                                             <p className='account-signup__heading'>
@@ -182,7 +164,8 @@ const AccountSignupModal = ({
             is_visible={is_visible}
             disableApp={disableApp}
             enableApp={enableApp}
-            is_loading={is_loading}
+            is_loading={is_loading || !residence_list.length}
+            is_content_centered
         >
             <AccountSignup
                 onSignup={onSignup}

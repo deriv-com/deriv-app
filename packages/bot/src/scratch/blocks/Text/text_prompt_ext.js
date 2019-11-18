@@ -3,15 +3,11 @@ import { localize } from 'deriv-translations/lib/i18n';
 Blockly.Blocks.text_prompt_ext = {
     init() {
         this.jsonInit(this.definition());
-
-        // Change shape based on selected type
         const typeField = this.getField('TYPE');
         typeField.setValidator(value => {
             if (value === 'TEXT') {
-                this.setOutputShape(Blockly.OUTPUT_SHAPE_SQUARE);
                 this.setOutput(true, 'String');
             } else if (value === 'NUMBER') {
-                this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
                 this.setOutput(true, 'Number');
             }
             this.initSvg();
@@ -34,7 +30,7 @@ Blockly.Blocks.text_prompt_ext = {
                 },
             ],
             output         : 'String',
-            outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
+            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Special3.colour,
             colourSecondary: Blockly.Colours.Special3.colourSecondary,
             colourTertiary : Blockly.Colours.Special3.colourTertiary,

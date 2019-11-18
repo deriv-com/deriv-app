@@ -1,7 +1,5 @@
 import { localize } from 'deriv-translations/lib/i18n';
 
-/* eslint-disable func-names, no-underscore-dangle */
-
 /**
  * Construct the blocks required by the flyout for the variable category.
  * @param {!Blockly.Workspace} workspace The workspace containing variables.

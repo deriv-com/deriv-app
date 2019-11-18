@@ -1,4 +1,3 @@
-/* eslint-disable func-names, no-underscore-dangle */
 /** *
  * Updates a Blockly.FieldDropdown with the passed dropdown_options. Available options:
  * - default_value       : After updating, attempt to set this value as the selected option

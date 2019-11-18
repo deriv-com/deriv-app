@@ -36,35 +36,12 @@ const TradetypeOption = ({ type }) => (
     </div>
 );
 
-const getSizeDesc = index => {
-    switch (index) {
-        case 0:
-            return 'The multiplier amount used to increase your stake if you’re losing a trade.';
-        case 1:
-            return 'The amount that you may add to your stake if you’re losing a trade.';
-        case 2:
-            return 'The amount that you may add to your stake after each successful trade.';
-        default:
-            return '';
-    }
-};
-
-const getSizeText = index => {
-    switch (index) {
-        case 0:
-            return 'Size';
-        case 1:
-        case 2:
-            return 'Units';
-        default:
-            return '';
-    }
-};
-
 const QuickStrategy = ({
     active_index,
     createStrategy,
     duration_dropdown,
+    getSizeDesc,
+    getSizeText,
     initial_values,
     is_strategy_modal_open,
     market_dropdown,
@@ -262,12 +239,12 @@ const QuickStrategy = ({
                                                     className='quick-strategy__input'
                                                     type='text'
                                                     error={touched.size && errors.size}
-                                                    label={localize(getSizeText(active_index))}
+                                                    label={getSizeText(active_index)}
                                                     placeholder='2'
                                                     trailing_icon={
                                                         <Popover
                                                             alignment='bottom'
-                                                            message={localize(getSizeDesc(active_index))}
+                                                            message={getSizeDesc(active_index)}
                                                         >
                                                             <InfoOutlineIcon />
                                                         </Popover>
@@ -319,13 +296,14 @@ QuickStrategy.propTypes = {
     active_index             : proptypes.number,
     createStrategy           : proptypes.func,
     duration_dropdown        : proptypes.array,
+    getSizeDesc              : proptypes.func,
+    getSizeText              : proptypes.func,
     initial_values           : proptypes.object,
     is_strategy_modal_open   : proptypes.bool,
     market_dropdown          : proptypes.object,
     onChangeDurationDropdown : proptypes.func,
     onChangeMarketDropdown   : proptypes.func,
     onChangeTradeTypeDropdown: proptypes.func,
-    onMount                  : proptypes.func,
     setActiveTabIndex        : proptypes.func,
     toggleStrategyModal      : proptypes.func,
     trade_type_dropdown      : proptypes.object,
@@ -336,13 +314,14 @@ export default connect(({ quick_strategy }) => ({
     active_index             : quick_strategy.active_index,
     createStrategy           : quick_strategy.createStrategy,
     duration_dropdown        : quick_strategy.duration_dropdown,
+    getSizeDesc              : quick_strategy.getSizeDesc,
+    getSizeText              : quick_strategy.getSizeText,
     is_strategy_modal_open   : quick_strategy.is_strategy_modal_open,
     initial_values           : quick_strategy.initial_values,
     market_dropdown          : quick_strategy.market_dropdown,
     onChangeDurationDropdown : quick_strategy.onChangeDurationDropdown,
     onChangeMarketDropdown   : quick_strategy.onChangeMarketDropdown,
     onChangeTradeTypeDropdown: quick_strategy.onChangeTradeTypeDropdown,
-    onMount                  : quick_strategy.onMount,
     setActiveTabIndex        : quick_strategy.setActiveTabIndex,
     toggleStrategyModal      : quick_strategy.toggleStrategyModal,
     trade_type_dropdown      : quick_strategy.trade_type_dropdown,

@@ -245,6 +245,7 @@ export default class ContractsFor {
         const contracts_for_category = await this.getContractsByTradeType(symbol, trade_type);
         const durations = [];
         const getDurationIndex = input => DEFAULT_DURATION_DROPDOWN_OPTIONS.findIndex(d => d[1] === input.replace(/\d+/g, ''));
+        // convert 'duration' to 'unit_to_convert' e.g : convertDuration('10h', 's') will return 10*60*60s
         const convertDuration = (duration, unit_to_convert) => {
             const duration_value = duration.replace(/\D/g, '');
             const duration_index = getDurationIndex(duration);
@@ -259,8 +260,6 @@ export default class ContractsFor {
                 .forEach(default_duration => {
                     switch (default_duration[1]){
                         case 'm':
-                            converted_duration *= 60;
-                            break;
                         case 'h':
                             converted_duration *= 60;
                             break;

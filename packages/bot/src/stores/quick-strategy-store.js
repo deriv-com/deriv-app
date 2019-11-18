@@ -1,12 +1,13 @@
+
 import {
     observable,
     action,
     runInAction,
 }                    from 'mobx';
-import ApiHelper     from '../services/api/api-helpers';
+import { localize }  from 'deriv-translations/lib/i18n';
 import config        from '../constants/index';
 import { load }      from '../scratch/utils';
-import { translate } from '../utils/lang/i18n';
+import ApiHelpers     from '../services/api/api-helpers';
 
 export default class QuickStrategyStore {
     constructor(root_store) {
@@ -35,7 +36,7 @@ export default class QuickStrategyStore {
         this.is_strategy_modal_open = !this.is_strategy_modal_open;
 
         if (this.is_strategy_modal_open) {
-            this.onMount();
+            this.onModalOpen();
         }
     }
 
@@ -46,7 +47,7 @@ export default class QuickStrategyStore {
 
     @action.bound
     async createStrategy(values) {
-        const { contracts_for } = ApiHelper.instance;
+        const { contracts_for } = ApiHelpers.instance;
         const {
             symbol,
             trade_type,
@@ -59,7 +60,7 @@ export default class QuickStrategyStore {
         }                       = values;
         const market            = await contracts_for.getMarketBySymbol(symbol);
         const submarket         = await contracts_for.getSubmarketBySymbol(symbol);
-        const trade_type_cat      = await contracts_for.getTradeTypeCategoryByTradeType(trade_type);
+        const trade_type_cat    = await contracts_for.getTradeTypeCategoryByTradeType(trade_type);
         const { strategies }    = config;
         const strategy_name     = Object.keys(strategies).filter(key => strategies[key].index === this.active_index)[0];
         // eslint-disable-next-line
@@ -110,6 +111,31 @@ export default class QuickStrategyStore {
         this.toggleStrategyModal();
     }
 
+    getSizeDesc = index => {
+        switch (index) {
+            case 0:
+                return localize('The multiplier amount used to increase your stake if you’re losing a trade.');
+            case 1:
+                return localize('The amount that you may add to your stake if you’re losing a trade.');
+            case 2:
+                return localize('The amount that you may add to your stake after each successful trade.');
+            default:
+                return '';
+        }
+    };
+
+    getSizeText = index => {
+        switch (index) {
+            case 0:
+                return localize('Size');
+            case 1:
+            case 2:
+                return localize('Units');
+            default:
+                return '';
+        }
+    };
+
     validateQuickStrategy = values => {
         const errors = {};
         const number_field = ['duration', 'stake', 'size', 'profit', 'loss'];
@@ -119,38 +145,38 @@ export default class QuickStrategyStore {
     
             if (number_field.includes(key)){
                 if (isNaN(value)) {
-                    errors[key] = translate('Must be a number');
+                    errors[key] = localize('Must be a number');
                 }
     
                 if (value <= 0){
-                    errors[key] = translate('Must be a number higher than 0');
+                    errors[key] = localize('Must be a number higher than 0');
                 }
     
                 if (/^0+(?=\d)/.test(value)) {
-                    errors[key] = translate('Invalid number format');
+                    errors[key] = localize('Invalid number format');
                 }
             }
     
             if (value === '') {
-                errors[key] = translate('Field cannot be empty');
+                errors[key] = localize('Field cannot be empty');
             }
         });
 
         const { min, max } = this.duration_dropdown.filter(duration => duration.unit === values.duration_type)[0];
         if (values.duration < min) {
-            errors.duration = `${translate('Minimum duration :')} ${min}`;
+            errors.duration = `${localize('Minimum duration:')} ${min}`;
         }
 
         if (values.duration > max) {
-            errors.duration = `${translate('Maximum duration :')} ${max}`;
+            errors.duration = `${localize('Maximum duration:')} ${max}`;
         }
     
         return errors;
     };
 
     @action.bound
-    async onMount() {
-        const { active_symbols } = ApiHelper.instance;
+    async onModalOpen() {
+        const { active_symbols } = ApiHelpers.instance;
         const market_options     = await active_symbols.getAssetOptions();
 
         await this.updateTradetypeDropdown();
@@ -174,8 +200,8 @@ export default class QuickStrategyStore {
     }
 
     @action.bound
-    async updateTradetypeDropdown(setFieldValue, symbol = this.initial_values.symbol) {
-        const { contracts_for }  = ApiHelper.instance;
+    async updateTradetypeDropdown(setFieldValue = null, symbol = this.initial_values.symbol) {
+        const { contracts_for }  = ApiHelpers.instance;
         const trade_type_options = await contracts_for.getGroupedTradeTypes(symbol);
         const first_trade_type_option = trade_type_options[Object.keys(trade_type_options)[0]][0].value;
 
@@ -198,11 +224,11 @@ export default class QuickStrategyStore {
 
     @action.bound
     async updateDurationDropdown(
-        setFieldValue,
+        setFieldValue = null,
         symbol = this.initial_values.symbol,
         trade_type = this.initial_values.trade_type
     ) {
-        const { contracts_for } = ApiHelper.instance;
+        const { contracts_for } = ApiHelpers.instance;
         const durations = await contracts_for.getDurations(symbol, trade_type);
         const first_duration_option = durations[Object.keys(durations)[0]].unit;
 
@@ -225,7 +251,7 @@ export default class QuickStrategyStore {
 
     @action.bound
     async updateDurationValue(
-        setFieldValue,
+        setFieldValue = null,
         duration_type = this.initial_values.duration_type
     ) {
         const min_duration = this.duration_dropdown.filter(duration => duration.unit === duration_type)[0].min;

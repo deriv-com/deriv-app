@@ -41,6 +41,7 @@ class TogglePositionsDrawerDialog extends React.PureComponent {
                     is_visible={this.state.is_visible}
                     left={this.state.left}
                     top={this.state.top}
+                    toggle_ref={this.ref}
                     toggleDialog={this.toggleDialog}
                 >
                     <ContractUpdateForm

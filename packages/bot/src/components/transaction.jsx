@@ -20,7 +20,7 @@ const Transaction = ({ contract }) => {
         <div className='transactions__item'>
             <div className='transactions__cell transactions__trade-type'>
                 <Popover
-                    className='transactions__icon transactions__top'
+                    className='transactions__icon'
                     alignment='left'
                     message={getContractTypeName(contract)}
                 >

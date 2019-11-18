@@ -1015,7 +1015,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     onSetResidence({ residence }, cb) {
         if (!residence) return;
-        WS.setSettings({ residence: residence }).then(async response => {
+        WS.setSettings(residence).then(async response => {
             if (response.error) {
                 cb(response.error.message);
             } else {
@@ -1023,8 +1023,7 @@ export default class ClientStore extends BaseStore {
                 await WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)
                     .then(this.responseLandingCompany);
                 await WS.authorized.storage.getSettings().then(async response => {
-                    await this.setAccountSettings(response.get_settings);
-                    this.refreshNotifications();
+                    this.setAccountSettings(response.get_settings);
                 });
                 cb();
             }

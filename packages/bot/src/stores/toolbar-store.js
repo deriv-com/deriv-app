@@ -27,18 +27,21 @@ export default class ToolbarStore {
 
     @action.bound
     onToolboxToggle() {
-        const workspace           = Blockly.derivWorkspace;
-        const toolbox             = workspace.toolbox_; // eslint-disable-line
-        const toolbox_width       = toolbox.HtmlDiv.clientWidth;
-        this.is_toolbox_open      = !this.is_toolbox_open;
-
-        if (this.is_toolbox_open && workspace.scrollX < toolbox_width) {
-            // Scroll workspace when toolbox would overlap blocks.
-            const scroll_distance = toolbox_width - workspace.scrollX;
-            scrollWorkspace(Blockly.derivWorkspace, scroll_distance, true, !this.is_toolbox_open);
-        }
+        const workspace      = Blockly.derivWorkspace;
+        const toolbox        = workspace.toolbox_; // eslint-disable-line
+        this.is_toolbox_open = !this.is_toolbox_open;
 
         toolbox.toggle();
+
+        if (this.is_toolbox_open) {
+            const toolbox_width     = toolbox.HtmlDiv.clientWidth;
+            const block_canvas_rect = workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
+            
+            if (block_canvas_rect.left < toolbox_width) {
+                const scroll_distance = toolbox_width - block_canvas_rect.left + toolbox.width;
+                scrollWorkspace(workspace, scroll_distance, true, false);
+            }
+        }
     }
 
     @action.bound

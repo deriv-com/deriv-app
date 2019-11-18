@@ -238,9 +238,13 @@ class ContractDrawer extends Component {
 
     render() {
         if (!this.props.contract_info) return null;
+
+        // For non-binary contract, the status is always null, so we check for is_expired in contract_info
+        const fallback_result = this.props.contract_info.is_expired;
+
         const body_content = (
             <React.Fragment>
-                {(this.props.contract_info.status) ?
+                {(this.props.contract_info.status || fallback_result) ?
                     this.getBodyContent()
                     :
                     <div className='contract-card'>

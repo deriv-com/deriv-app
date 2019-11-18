@@ -96,15 +96,15 @@ const ContractUpdateForm = ({
     );
 };
 
-ContractUpdateForm.PropTypes = {
+ContractUpdateForm.propTypes = {
+    contract_id           : PropTypes.number,
     currency              : PropTypes.string,
-    contract_id           : PropTypes.string,
     has_stop_loss         : PropTypes.bool,
     has_take_profit       : PropTypes.bool,
-    stop_loss             : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    take_profit           : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     onChangeContractUpdate: PropTypes.func,
     onClickContractUpdate : PropTypes.func,
+    stop_loss             : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    take_profit           : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     validation_errors     : PropTypes.object,
 };
 

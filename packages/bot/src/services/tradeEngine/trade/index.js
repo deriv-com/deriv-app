@@ -1,6 +1,7 @@
 import { Map }                               from 'immutable';
 import { createStore, applyMiddleware }      from 'redux';
 import thunk                                 from 'redux-thunk';
+import { localize }                          from 'deriv-translations/lib/i18n';
 import Balance                               from './Balance';
 import OpenContract                          from './OpenContract';
 import Proposal                              from './Proposal';
@@ -14,7 +15,6 @@ import Total                                 from './Total';
 import { doUntilDone }                       from '../utils/helpers';
 import { expectInitArg, expectTradeOptions } from '../utils/sanitize';
 import createError                           from '../../../utils/error';
-import { translate }                         from '../../../utils/lang/i18n';
 import { durationToSecond }                  from '../../../utils/tools';
 import { observer as globalObserver }        from '../../../utils/observer';
 
@@ -90,7 +90,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
     start(tradeOptions) {
         if (!this.options) {
-            throw createError('NotInitialized', translate('Bot.init is not called'));
+            throw createError('NotInitialized', localize('Bot.init is not called'));
         }
 
         globalObserver.emit('bot.running');

@@ -1,16 +1,16 @@
 import {
     observable,
     action,
-}                           from 'mobx';
-import config               from '../constants';
-import { getLanguage }      from '../utils/lang/lang';
-import { translate }        from '../utils/lang/i18n';
-import { importExternal }   from '../utils/tools';
+}                         from 'mobx';
+import { localize }       from 'deriv-translations/lib/i18n';
+import config             from '../constants';
+import { getLanguage }    from '../utils/lang/lang';
+import { importExternal } from '../utils/tools';
 
 export default class GoogleDriveStore {
     constructor(root_store) {
         this.root_store = root_store;
-        this.bot_folder_name = `Binary Bot - ${translate('Strategies')}`;
+        this.bot_folder_name = `Binary Bot - ${localize('Strategies')}`;
         this.google_auth = null;
         this.setKey();
         
@@ -96,13 +96,13 @@ export default class GoogleDriveStore {
     async saveFile(options) {
         await this.signIn();
         await this.checkFolderExists();
-        await this.createSaveFilePicker('application/vnd.google-apps.folder', translate('Select a folder'), options);
+        await this.createSaveFilePicker('application/vnd.google-apps.folder', localize('Select a folder'), options);
     }
 
     @action.bound
     async loadFile() {
         await this.signIn();
-        const xml_doc = await this.createLoadFilePicker(['text/xml', 'application/xml'], translate('Select a Deriv Bot Strategy'));
+        const xml_doc = await this.createLoadFilePicker(['text/xml', 'application/xml'], localize('Select a Deriv Bot Strategy'));
 
         return xml_doc;
     }
@@ -203,7 +203,7 @@ export default class GoogleDriveStore {
         const picker = new google.picker.PickerBuilder();
         picker
             .setOrigin(`${window.location.protocol}//${window.location.host}`)
-            .setTitle(translate(title))
+            .setTitle(localize(title))
             .setLocale(this.getPickerLanguage())
             .setAppId(this.app_id)
             .setOAuthToken(gapi.auth.getToken().access_token)

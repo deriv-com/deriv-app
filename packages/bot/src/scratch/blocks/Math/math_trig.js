@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.math_trig = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.math_trig = {
     },
     definition(){
         return {
-            message0: translate('%1 %2'),
+            message0: localize('%1 %2'),
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -31,14 +31,14 @@ Blockly.Blocks.math_trig = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Trigonometric functions'),
+            tooltip        : localize('Trigonometric functions'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Trigonometric functions'),
-            'description' : translate('This block performs trigonometric functions.'),
+            'display_name': localize('Trigonometric functions'),
+            'description' : localize('This block performs trigonometric functions.'),
         };
     },
 };

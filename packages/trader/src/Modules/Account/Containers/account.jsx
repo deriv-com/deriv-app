@@ -8,10 +8,10 @@ import { FadeWrapper }   from 'App/Components/Animations';
 import { localize }      from 'App/i18n';
 import AppRoutes         from 'Constants/routes';
 import { connect }       from 'Stores/connect';
-import BinarySocket      from '_common/base/socket_base';
+import { WS }            from 'Services/ws-methods';
 import { flatten }       from '../Helpers/flatten';
 import AccountLimitInfo  from '../Sections/Security/AccountLimits/account-limits-info.jsx';
-import 'Sass/app/modules/account.scss';
+import                        'Sass/app/modules/account.scss';
 
 const DemoMessage = lazy(() => import(/* webpackChunkName: 'demo_message' */ 'Modules/Account/Sections/ErrorMessages/DemoMessage'));
 
@@ -39,7 +39,7 @@ class Account extends React.Component {
     };
 
     componentDidMount() {
-        BinarySocket.wait('authorize', 'get_account_status').then(() => {
+        WS.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
                 const { authentication } = this.props.account_status;
                 const is_high_risk_client = this.props.is_high_risk;

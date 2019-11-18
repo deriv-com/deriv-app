@@ -10,6 +10,25 @@
     justify-content: center;
     padding: 0 1.6em 0 1.7em;
 
+    &__preloader {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 350px;
+        height: 46px;
+        z-index: 2;
+        background: var(--general-main-1);
+
+        &:before {
+            content: '';
+            position: absolute;
+            left: -90px;
+            width: 90px;
+            height: 46px;
+            top: 0;
+            background: var(--general-main-1);
+        }
+    }
     &__container {
         align-items: center;
         -webkit-box-align: center;

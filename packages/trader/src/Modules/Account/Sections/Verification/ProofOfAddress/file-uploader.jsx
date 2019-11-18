@@ -2,7 +2,7 @@ import DocumentUploader from '@binary-com/binary-document-uploader';
 import classNames       from 'classnames';
 import React            from 'react';
 import { FileDropzone } from 'deriv-components';
-import BinarySocket     from '_common/base/socket_base';
+import { WS }           from 'Services/ws-methods';
 import { localize }     from 'App/i18n';
 import IconCloudUpload  from 'Assets/AccountManagement/ProofOfAddress/icon-cloud-uploading.svg';
 import IconRemoveFile   from 'Assets/AccountManagement/icon-remove-file.svg';
@@ -74,7 +74,7 @@ class FileUploader extends React.PureComponent {
         if (!!file_error_message || (document_file.length < 1)) return 0;
 
         // File uploader instance connected to binary_socket
-        const uploader = new DocumentUploader({ connection: BinarySocket.getSocket() });
+        const uploader = new DocumentUploader({ connection: WS.getSocket() });
 
         let is_any_file_error = false;
 

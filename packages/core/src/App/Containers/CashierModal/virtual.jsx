@@ -38,6 +38,7 @@ class Virtual extends React.Component {
                                 text={localize('Create my real account')}
                                 onClick={this.onClickSignup}
                                 primary
+                                large
                             />
                         </React.Fragment>
                     }
@@ -55,7 +56,7 @@ Virtual.propTypes = {
 
 export default connect(
     ({ client, ui }) => ({
-        has_real_account     : client.has_real_account,
+        has_real_account     : client.has_any_real_account,
         openRealAccountSignup: ui.openRealAccountSignup,
         toggleCashierModal   : ui.toggleCashierModal,
     })

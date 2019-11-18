@@ -3,7 +3,7 @@ import {
     computed,
     observable,
     runInAction }         from 'mobx';
-import { WS }             from 'Services';
+import { WS }             from 'Services/ws-methods';
 import BaseStore          from 'Stores/base-store';
 import {
     getMt5GroupConfig,
@@ -58,6 +58,26 @@ export default class MT5Store extends BaseStore {
     // eslint-disable-next-line class-methods-use-this
     get mt5_companies() {
         return getMtCompanies();
+    }
+
+    @action.bound
+    onMount() {
+        this.onRealAccountSignupEnd(this.realAccountSignupEndListener);
+    }
+
+    @action.bound
+    onUnmount() {
+        this.disposeRealAccountSignupEnd();
+    }
+
+    @action.bound
+    realAccountSignupEndListener() {
+        const post_signup = JSON.parse(sessionStorage.getItem('post_real_account_signup'));
+        if (post_signup && post_signup.category && post_signup.type) {
+            sessionStorage.removeItem('post_real_account_signup');
+            this.enableMt5PasswordModal();
+        }
+        return Promise.resolve();
     }
 
     @action.bound
@@ -125,12 +145,11 @@ export default class MT5Store extends BaseStore {
 
     @action.bound
     getName() {
+        const { first_name } = (this.root_store.client.account_settings && this.root_store.client.account_settings);
         const title = this.mt5_companies[this.account_type.category][this.account_type.type].title;
 
-        return [
-            this.root_store.client.account_settings.first_name,
-            title,
-        ].join(' ');
+        // First name is not set when user has no real account
+        return first_name ? [ first_name, title ].join(' ') : title;
     }
 
     @action.bound

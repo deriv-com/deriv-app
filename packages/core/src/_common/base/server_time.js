@@ -12,6 +12,7 @@ const ServerTime = (() => {
         onTimeUpdated;
 
     const init = (fncTimeUpdated) => {
+
         if (!clock_started) {
             onTimeUpdated = fncTimeUpdated;
             requestTime();

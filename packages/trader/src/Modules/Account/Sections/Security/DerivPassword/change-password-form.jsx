@@ -6,12 +6,10 @@ import {
     PasswordInput,
     PasswordMeter }           from 'deriv-components';
 import { withRouter }         from 'react-router-dom';
-import { connect }            from 'Stores/connect';
-import {
-    WS,
-    requestLogout }           from 'Services';
 import { localize }           from 'App/i18n';
 import AppRoutes              from 'Constants/routes';
+import { WS }                 from 'Services/ws-methods';
+import { connect }            from 'Stores/connect';
 import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
 import {
     FormSubHeader,
@@ -23,16 +21,15 @@ class ChangePasswordForm extends React.Component {
     state = {
         is_loading  : false,
         new_pw_input: '',
-    }
+    };
 
     updateNewPassword = (string) => {
         this.setState({ new_pw_input: string });
-    }
+    };
 
     handlePasswordChange = () => {
-        this.props.cleanUp();
         this.props.history.push(AppRoutes.trade);
-    }
+    };
 
     onSubmit = (values, { setSubmitting, setStatus })  => {
         setStatus({ msg: '' });
@@ -43,11 +40,11 @@ class ChangePasswordForm extends React.Component {
                 setStatus({ msg: data.error.message });
             } else {
                 this.setState({ is_submit_success: true });
-                requestLogout().then(this.handlePasswordChange);
+                this.props.logout().then(this.handlePasswordChange);
             }
             setSubmitting(false);
         });
-    }
+    };
 
     validateFields = values => {
         this.setState({ is_submit_success: false });
@@ -172,6 +169,6 @@ class ChangePasswordForm extends React.Component {
 // ChangePasswordForm.propTypes = {};
 export default connect(
     ({ client }) => ({
-        cleanUp: client.cleanUp,
+        logout: client.logout,
     })
 )(withRouter(ChangePasswordForm));

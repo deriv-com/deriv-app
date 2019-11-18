@@ -1,9 +1,9 @@
 import classNames        from 'classnames';
 import {
     Autocomplete,
-    PasswordInput,
     Button,
-    Dialog }             from 'deriv-components';
+    Dialog,
+    PasswordInput }      from 'deriv-components';
 import {
     Field,
     Formik,
@@ -14,7 +14,7 @@ import Localize          from 'App/Components/Elements/localize.jsx';
 import { localize }      from 'App/i18n';
 import { connect }       from 'Stores/connect';
 import { validPassword } from 'Utils/Validator/declarative-validation-rules';
-import { website_name }  from 'App/Constants/app-config';
+import { website_name } from 'App/Constants/app-config';
 import 'Sass/app/modules/account-signup.scss';
 
 const signupInitialValues = { password: '', residence: '' };
@@ -109,7 +109,7 @@ class AccountSignup extends React.Component {
                                                         required
                                                         list_items={ residence_list }
                                                         onItemSelection={
-                                                            (item) => setFieldValue('residence', item.text, true)
+                                                            ({ value, text }) => setFieldValue('residence', value ? text : '', true)
                                                         }
                                                     />
                                                 )}
@@ -119,8 +119,8 @@ class AccountSignup extends React.Component {
                                                 type='button'
                                                 is_disabled={ !values.residence || !!errors.residence }
                                                 onClick={this.onResidenceSelection}
-                                                text={localize('Next')}
                                                 primary
+                                                text={localize('Next')}
                                             />
                                         </div>
                                         :
@@ -182,7 +182,8 @@ const AccountSignupModal = ({
             is_visible={is_visible}
             disableApp={disableApp}
             enableApp={enableApp}
-            is_loading={is_loading}
+            is_loading={is_loading || !residence_list.length}
+            is_content_centered
         >
             <AccountSignup
                 onSignup={onSignup}

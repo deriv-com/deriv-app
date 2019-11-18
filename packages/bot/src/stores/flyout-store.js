@@ -132,7 +132,7 @@ export default class FlyoutStore {
 
         xmlList.forEach((node) => {
             const tag_name = node.tagName.toUpperCase();
-            
+
             if (tag_name === Blockly.Xml.NODE_BLOCK) {
                 const block_hw = Blockly.Block.getDimensions(node);
 

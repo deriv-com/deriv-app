@@ -10,11 +10,11 @@ class PositionsDrawerDialog extends React.Component {
     }
 
     componentDidMount() {
-        document.addEventListener('mousedown', this.handleClickOutside.bind(true), true);
+        document.addEventListener('mousedown', this.handleClickOutside, true);
     }
 
     componentWillUnmount() {
-        document.removeEventListener('mousedown', this.handleClickOutside.bind(true), true);
+        document.removeEventListener('mousedown', this.handleClickOutside, true);
     }
 
     handleClickOutside = (event) => {

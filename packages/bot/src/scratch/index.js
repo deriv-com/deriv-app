@@ -1,10 +1,10 @@
+import { localize }                   from 'deriv-translations/lib/i18n';
 import                                    './blocks';
 import                                    './hooks';
 import { hasAllRequiredBlocks }       from './utils';
 import config                         from '../constants';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import ScratchStore                   from '../stores/scratch-store';
-import { translate }                  from '../utils/lang/i18n';
 import { observer as globalObserver } from '../utils/observer';
 
 class DBot {
@@ -197,7 +197,7 @@ class DBot {
 
         if (error_block) {
             const { run_panel } = ScratchStore.instance.root_store;
-            const message       = translate('Some of your block inputs are missing values, please check and update them.');
+            const message       = localize('The block(s) highlighted in red are missing input values. Please update them and click "Run bot".');
             
             this.workspace.centerOnBlock(error_block.id);
             run_panel.showErrorMessage(message);
@@ -216,7 +216,7 @@ class DBot {
             const { run_panel } = ScratchStore.instance.root_store;
 
             run_panel.showErrorMessage(
-                new Error(translate('One or more mandatory blocks are missing from your workspace. ' +
+                new Error(localize('One or more mandatory blocks are missing from your workspace. ' +
                 'Please add the required block(s) and then try again.'))
             );
 

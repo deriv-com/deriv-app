@@ -10,18 +10,20 @@ class PositionsDrawerDialog extends React.Component {
     }
 
     componentDidMount() {
-        document.addEventListener('mousedown', this.handleClickOutside, true);
+        document.addEventListener('mousedown', this.handleClickOutside.bind(true), true);
     }
 
     componentWillUnmount() {
-        document.removeEventListener('mousedown', this.handleClickOutside, true);
+        document.removeEventListener('mousedown', this.handleClickOutside.bind(true), true);
     }
 
     handleClickOutside = (event) => {
-        event.stopPropagation();
-        if (this.ref && this.ref.current && !this.ref.current.contains(event.target) &&
-            !this.props.toggle_ref.current.contains(event.target) && this.props.is_visible) {
-            this.props.toggleDialog();
+        if (this.ref && this.ref.current && this.props.is_visible) {
+            if (this.ref.current.contains(event.target)) {
+                event.stopPropagation();
+            } else {
+                this.props.toggleDialog();
+            }
         }
     }
 
@@ -74,7 +76,6 @@ PositionsDrawerDialog.propTypes = {
     ]),
     is_visible  : PropTypes.bool,
     left        : PropTypes.number,
-    toggle_ref  : PropTypes.object,
     toggleDialog: PropTypes.func,
     top         : PropTypes.number,
 };

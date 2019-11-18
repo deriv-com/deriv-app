@@ -10,6 +10,8 @@ import {
     getDigitInfo,
     isDigitContract }         from './Helpers/digits';
 import {
+    setLimitOrderBarriers }   from './Helpers/limit-orders';
+import {
     getChartConfig,
     getDisplayStatus,
     getEndTime,
@@ -139,18 +141,21 @@ export default class ContractStore {
                 );
                 main_barrier.updateBarrierColor(is_dark_mode);
             }
+            if (contract_info.contract_id === this.contract_id) {
+                setLimitOrderBarriers(this.barriers_array, true, contract_type, contract_info);
+            }
         }
     }
 
     createBarriersArray = (contract_info, is_dark_mode) => {
-        let result = [];
+        let barriers = [];
         if (contract_info) {
-            const { contract_type, barrier, high_barrier, low_barrier } = contract_info;
+            const { contract_type, barrier, entry_spot, high_barrier, low_barrier } = contract_info;
 
-            if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
+            if (isBarrierSupported(contract_type) && (barrier || high_barrier || entry_spot)) {
                 // create barrier only when it's available in response
                 const main_barrier = new ChartBarrierStore(
-                    barrier || high_barrier,
+                    barrier || high_barrier || entry_spot,
                     low_barrier,
                     null,
                     {   color        : is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
@@ -160,11 +165,11 @@ export default class ContractStore {
                 );
 
                 main_barrier.updateBarrierShade(true, contract_type);
-                result = [ main_barrier ];
+                barriers = [ main_barrier ];
             }
-            this.root_store.modules.trade.setBarriersForLimitOrder(result, true, contract_info);
+            setLimitOrderBarriers(barriers, true, contract_type, contract_info);
         }
-        return result;
+        return barriers;
     }
 }
 

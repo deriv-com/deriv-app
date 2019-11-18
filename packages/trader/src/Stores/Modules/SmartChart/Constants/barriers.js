@@ -11,8 +11,8 @@ export const CONTRACT_SHADES = {
     NOTOUCH    : 'NONE_SINGLE', // no shade
     ASIANU     : 'ABOVE',
     ASIAND     : 'BELOW',
-    MULTUP     : 'BETWEEN',
-    MULTDOWN   : 'BETWEEN',
+    MULTUP     : 'ABOVE',
+    MULTDOWN   : 'BELOW',
 };
 
 // Default non-shade according to number of barriers

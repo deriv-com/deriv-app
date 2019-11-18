@@ -106,9 +106,3 @@ export const setMultiplierContractUpdate = (store, contract_update, new_contract
         }
     }
 };
-
-export const LIMIT_ORDER_TYPES = {
-    TAKE_PROFIT: 'take_profit',
-    STOP_LOSS  : 'stop_loss',
-    STOP_OUT   : 'stop_out',
-};

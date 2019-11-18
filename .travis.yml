@@ -8,10 +8,8 @@ notifications:
   email: false
 before_install:
   - npm i -g npm@6.9.0
-  - npm install -g lerna
-install: lerna bootstrap
+install: npm run bootstrap
 script:
   - npm ls yargs
   - npm ls yargs-parser
-  - npm run build:travis
   - npm run test

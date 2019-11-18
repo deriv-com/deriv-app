@@ -5,6 +5,7 @@ import {
     toJS }                        from 'mobx';
 import { LocalStore }             from '_common/storage';
 import ContractStore              from './contract-store';
+import getValidationRules         from './Constants/validation-rules';
 import { isEnded }                from './Helpers/logic';
 import { isMultiplierContract }   from './Helpers/multiplier';
 import BaseStore                  from '../../base-store';
@@ -21,8 +22,14 @@ export default class ContractTradeStore extends BaseStore {
     @observable granularity = +LocalStore.get('contract_trade.granularity') || 0;
     @observable chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
 
+    @observable contract_update_stop_loss;
+    @observable contract_update_take_profit;
+
     constructor({ root_store }) {
-        super({ root_store });
+        super({
+            root_store,
+            validation_rules: getValidationRules(),
+        });
 
         this.onSwitchAccount(this.accountSwitchListener);
     }

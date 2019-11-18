@@ -124,7 +124,7 @@ export const getEndTime = (contract_info) => {
 
 export const getProfitLossFromStore = (modules_store) => {
     const { contract_replay, portfolio } = modules_store;
-    const contract_id   = portfolio.hovered_position_id;
+    const contract_id   = portfolio.active_positions_drawer_dialog_id;
     const contract_info = contract_replay.getContractById(contract_id).contract_info;
     return contract_info.profit;
 };

@@ -32,6 +32,8 @@ export default class PortfolioStore extends BaseStore {
 
     subscribers = {};
 
+    @observable active_positions_drawer_dialog_id = null;
+
     @action.bound
     initializePortfolio = async () => {
         this.is_loading = true;

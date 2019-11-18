@@ -99,21 +99,17 @@ const ContractUpdateForm = ({
 };
 
 ContractUpdateForm.propTypes = {
-    contract_id           : PropTypes.number,
-    currency              : PropTypes.string,
-    has_stop_loss         : PropTypes.bool,
-    has_take_profit       : PropTypes.bool,
-    onChangeContractUpdate: PropTypes.func,
-    onClickContractUpdate : PropTypes.func,
-    stop_loss             : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    take_profit           : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    validation_errors     : PropTypes.object,
+    contract_id          : PropTypes.number,
+    getContractById      : PropTypes.func,
+    isValidContractUpdate: PropTypes.func,
+    toggleDialog         : PropTypes.func,
+    validation_errors    : PropTypes.object,
 };
 
 export default connect(
     ({ modules }) => ({
         getContractById      : modules.contract_replay.getContractById,
         isValidContractUpdate: modules.contract_replay.isValidContractUpdate,
-        validation_errors    : modules.trade.validation_errors,
+        validation_errors    : modules.contract_trade.validation_errors,
     })
 )(ContractUpdateForm);

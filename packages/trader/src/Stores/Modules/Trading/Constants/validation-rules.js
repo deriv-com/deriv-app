@@ -1,7 +1,5 @@
-import { localize }               from 'App/i18n';
-import { isSessionAvailable }     from 'Stores/Modules/Trading/Helpers/start-date';
-import { getProfitLossFromStore } from 'Stores/Modules/Contract/Helpers/logic';
-
+import { localize }           from 'App/i18n';
+import { isSessionAvailable } from 'Stores/Modules/Trading/Helpers/start-date';
 import {
     isHourValid,
     isMinuteValid,
@@ -81,24 +79,6 @@ const getValidationRules = () => ({
     take_profit: {
         rules: [
             ['req', { condition: store => store.take_profit, message: localize('Enter take profit') }],
-        ],
-    },
-    contract_update_stop_loss: {
-        rules: [
-            ['req', { condition: store => store.contract_update_stop_loss, message: localize('Enter stop loss') }],
-            ['custom' , { func: (value, options, store) => {
-                const profit = getProfitLossFromStore(store.root_store.modules);
-                return !(profit < 0 && -value > profit);
-            }, message: localize('Stop loss must be lower than current stop loss.') }],
-        ],
-    },
-    contract_update_take_profit: {
-        rules: [
-            ['req', { condition: store => store.contract_update_take_profit, message: localize('Enter take profit') }],
-            ['custom' , { func: (value, options, store) => {
-                const profit = getProfitLossFromStore(store.root_store.modules);
-                return !(profit > 0 && +value < profit);
-            }, message: localize('Take profit must be higher than current take profit.') }],
         ],
     },
 });

@@ -102,7 +102,7 @@ export default class ContractStore {
 
     @action.bound
     onChangeContractUpdate(contract_update) {
-        setMultiplierContractUpdate(this.root_store.modules.trade, this.contract_update, contract_update);
+        setMultiplierContractUpdate(this.root_store.modules.contract_trade, this.contract_update, contract_update);
     }
 
     @action.bound

@@ -195,6 +195,7 @@ export default class ContractReplayStore extends BaseStore {
 
     @action.bound
     getContractById(contract_id) {
+        this.root_store.modules.portfolio.active_positions_drawer_dialog_id = contract_id;
         return (
             // get contract from contracts array in contract_trade store
             this.root_store.modules.contract_trade.getContractById(contract_id || this.contract_id)

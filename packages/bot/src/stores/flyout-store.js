@@ -8,7 +8,7 @@ export default class FlyoutStore {
     flyout_min_width = 500;
     options          = {
         css   : false,
-        media : `${__webpack_public_path__}media/`, // eslint-disable-line
+        media : `${__webpack_public_path__}media/`,
         move  : { scrollbars: false, drag: true, wheel: false },
         zoom  : { startScale: config.workspaces.flyoutWorkspacesStartScale },
         sounds: false,

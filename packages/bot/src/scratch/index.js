@@ -10,14 +10,12 @@ export const scratchWorkspaceInit = async () => {
         const el_scratch_div = document.getElementById('scratch_div');
         const el_app_contents = document.getElementById('app_contents');
 
-        // eslint-disable-next-line
         const toolbox_xml = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(response => response.text());
-        // eslint-disable-next-line
         const main_xml = await fetch(`${__webpack_public_path__}xml/main.xml`).then(response => response.text());
 
         const workspace = Blockly.inject(el_scratch_div, {
             grid    : { spacing: 40, length: 11, colour: '#f3f3f3' },
-            media   : `${__webpack_public_path__}media/`, // eslint-disable-line
+            media   : `${__webpack_public_path__}media/`,
             toolbox : toolbox_xml,
             trashcan: true,
             zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },

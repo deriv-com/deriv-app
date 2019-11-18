@@ -4,8 +4,6 @@ import { localize }         from 'deriv-translations/lib/i18n';
 import ScratchStore         from '../../stores/scratch-store';
 import { Arrow1Icon }       from '../../components/Icons.jsx';
 
-/* eslint-disable func-names, no-underscore-dangle */
-
 /**
  * Width of the toolbox, which changes only in vertical layout.
  * This is the sum of the width of the flyout (250) and some extra padding (25).

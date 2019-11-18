@@ -53,7 +53,6 @@ export default class QuickStrategyStore {
         const tradetypecat      = await contracts_for.getTradeTypeCategoryByTradeType(tradetype);
         const { strategies }    = config;
         const strategy_name     = Object.keys(strategies).filter(key => strategies[key].index === this.active_index)[0];
-        // eslint-disable-next-line
         const strategy_xml      = await fetch(`${__webpack_public_path__}xml/${strategy_name}.xml`).then(response => response.text());
         const strategy_dom      = Blockly.Xml.textToDom(strategy_xml);
 

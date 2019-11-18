@@ -1,7 +1,5 @@
 import { localize } from 'deriv-translations/lib/i18n';
 
-/* eslint-disable no-underscore-dangle */
-
 /**
  * Make a context menu option for cleaning up blocks on the workspace, by
  * aligning them vertically.

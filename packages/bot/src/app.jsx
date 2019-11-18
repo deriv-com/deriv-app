@@ -1,5 +1,7 @@
 import { Provider }             from 'mobx-react';
 import React                    from 'react';
+// TODO:  move to core once it's ready
+import 'deriv-translations/lib/i18n';
 import                               './public-path'; // Leave this here!
 import ApiHelpers               from './services/api/api-helpers';
 import RootStore                from './stores';

@@ -1,5 +1,5 @@
-import config        from '../../../../constants';
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
+import config       from '../../../../constants';
 
 Blockly.Blocks.read_details = {
     init() {
@@ -7,7 +7,7 @@ Blockly.Blocks.read_details = {
     },
     definition(){
         return {
-            message0: translate('Contract Details: %1'),
+            message0: localize('Contract Details: %1'),
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -20,14 +20,14 @@ Blockly.Blocks.read_details = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Reads a selected property from contract details list'),
+            tooltip        : localize('Reads a selected property from contract details list'),
             category       : Blockly.Categories.After_Purchase,
         };
     },
     meta(){
         return {
-            'display_name': translate('Contract details'),
-            'description' : translate('This block gives you information about your last contract.'),
+            'display_name': localize('Contract details'),
+            'description' : localize('This block gives you information about your last contract.'),
 
         };
     },

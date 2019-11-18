@@ -6,7 +6,6 @@ import {
     toJS,
     when }              from 'mobx';
 import ObjectUtils      from 'deriv-shared/utils/object';
-import BinarySocket     from '_common/base/socket_base';
 import Validator        from 'Utils/Validator';
 import { isProduction } from '../config';
 
@@ -31,8 +30,26 @@ export default class BaseStore {
     @observable
     validation_rules = {};
 
+    preSwitchAccountDisposer = null;
+    pre_switch_account_listener = null;
+
     switchAccountDisposer = null;
     switch_account_listener = null;
+
+    logoutDisposer = null;
+    logout_listener = null;
+
+    clientInitDisposer = null;
+    client_init_listener = null;
+
+    networkStatusChangeDisposer = null;
+    network_status_change_listener = null;
+
+    themeChangeDisposer = null;
+    theme_change_listener = null;
+
+    realAccountSignupEndedDisposer = null;
+    real_account_signup_ended_listener = null;
 
     @observable partial_fetch_time = 0;
 
@@ -307,6 +324,163 @@ export default class BaseStore {
     }
 
     @action.bound
+    onPreSwitchAccount(listener) {
+        this.preSwitchAccountDisposer = when(
+            () => this.root_store.client.pre_switch_broadcast,
+            async () => {
+                try {
+                    const result = this.pre_switch_account_listener();
+                    if (result && result.then && typeof result.then === 'function') {
+                        result.then(() => {
+                            this.root_store.client.setPreSwitchAccount(false);
+                            this.onPreSwitchAccount(this.pre_switch_account_listener);
+                        });
+                    } else {
+                        throw new Error('Pre-switch account listeners are required to return a promise.');
+                    }
+                } catch (error) {
+                    // there is no listener currently active. so we can just ignore the error raised from treating
+                    // a null object as a function. Although, in development mode, we throw a console error.
+                    if (!isProduction()) {
+                        console.error(error); // eslint-disable-line
+                    }
+                }
+            },
+        );
+        this.pre_switch_account_listener = listener;
+    }
+
+    @action.bound
+    onLogout(listener) {
+        this.logoutDisposer = when(
+            () => this.root_store.client.has_logged_out,
+            async () => {
+                try {
+                    const result = this.logout_listener();
+                    if (result && result.then && typeof result.then === 'function') {
+                        result.then(() => {
+                            this.root_store.client.setLogout(false);
+                            this.onLogout(this.logout_listener);
+                        });
+                    } else {
+                        throw new Error('Logout listeners are required to return a promise.');
+                    }
+                } catch (error) {
+                    // there is no listener currently active. so we can just ignore the error raised from treating
+                    // a null object as a function. Although, in development mode, we throw a console error.
+                    if (!isProduction()) {
+                        console.error(error); // eslint-disable-line
+                    }
+                }
+            },
+        );
+        this.logout_listener = listener;
+    }
+
+    @action.bound
+    onClientInit(listener) {
+        this.clientInitDisposer = when(
+            () => this.root_store.client.initialized_broadcast,
+            async () => {
+                try {
+                    const result = this.client_init_listener();
+                    if (result && result.then && typeof result.then === 'function') {
+                        result.then(() => {
+                            this.root_store.client.setInitialized(false);
+                            this.onClientInit(this.client_init_listener);
+                        });
+                    } else {
+                        throw new Error('Client init listeners are required to return a promise.');
+                    }
+                } catch (error) {
+                    // there is no listener currently active. so we can just ignore the error raised from treating
+                    // a null object as a function. Although, in development mode, we throw a console error.
+                    if (!isProduction()) {
+                        console.error(error); // eslint-disable-line
+                    }
+                }
+            },
+        );
+        this.client_init_listener = listener;
+    }
+
+    @action.bound
+    onNetworkStatusChange(listener) {
+        this.networkStatusChangeDisposer = reaction(
+            () => this.root_store.common.is_network_online,
+            (is_online) => {
+                try {
+                    this.network_status_change_listener(is_online);
+                } catch (error) {
+                    // there is no listener currently active. so we can just ignore the error raised from treating
+                    // a null object as a function. Although, in development mode, we throw a console error.
+                    if (!isProduction()) {
+                        console.error(error); // eslint-disable-line
+                    }
+                }
+            },
+        );
+
+        this.network_status_change_listener = listener;
+    }
+
+    @action.bound
+    onThemeChange(listener) {
+        this.themeChangeDisposer = reaction(
+            () => this.root_store.ui.is_dark_mode_on,
+            (is_dark_mode_on) => {
+                try {
+                    this.theme_change_listener(is_dark_mode_on);
+                } catch (error) {
+                    // there is no listener currently active. so we can just ignore the error raised from treating
+                    // a null object as a function. Although, in development mode, we throw a console error.
+                    if (!isProduction()) {
+                        console.error(error); // eslint-disable-line
+                    }
+                }
+            },
+        );
+
+        this.theme_change_listener = listener;
+    }
+
+    @action.bound
+    onRealAccountSignupEnd(listener) {
+        this.realAccountSignupEndedDisposer = when(
+            () => this.root_store.ui.has_real_account_signup_ended,
+            () => {
+                try {
+                    const result = this.real_account_signup_ended_listener();
+                    if (result && result.then && typeof result.then === 'function') {
+                        result.then(() => {
+                            this.root_store.ui.setRealAccountSignupEnd(false);
+                            this.onRealAccountSignupEnd(this.real_account_signup_ended_listener);
+                        });
+                    } else {
+                        throw new Error('Real account signup listeners are required to return a promise.');
+                    }
+                } catch (error) {
+                    // there is no listener currently active. so we can just ignore the error raised from treating
+                    // a null object as a function. Although, in development mode, we throw a console error.
+                    if (!isProduction()) {
+                        console.error(error); // eslint-disable-line
+                    }
+                }
+            },
+        );
+
+        this.real_account_signup_ended_listener = listener;
+    }
+
+    @action.bound
+    disposePreSwitchAccount() {
+        if (typeof this.preSwitchAccountDisposer === 'function') {
+            this.preSwitchAccountDisposer();
+        }
+        this.pre_switch_account_listener = null;
+    }
+
+    @action.bound
     disposeSwitchAccount() {
         if (typeof this.switchAccountDisposer === 'function') {
             this.switchAccountDisposer();
@@ -315,8 +489,54 @@ export default class BaseStore {
     }
 
     @action.bound
+    disposeLogout() {
+        if (typeof this.logoutDisposer === 'function') {
+            this.logoutDisposer();
+        }
+        this.logout_listener = null;
+    }
+
+    @action.bound
+    disposeClientInit() {
+        if (typeof this.clientInitDisposer === 'function') {
+            this.clientInitDisposer();
+        }
+        this.client_init_listener = null;
+    }
+
+    @action.bound
+    disposeNetworkStatusChange() {
+        if (typeof this.networkStatusChangeDisposer === 'function') {
+            this.networkStatusChangeDisposer();
+        }
+        this.network_status_change_listener = null;
+    }
+
+    @action.bound
+    disposeThemeChange() {
+        if (typeof this.themeChangeDisposer === 'function') {
+            this.themeChangeDisposer();
+        }
+        this.theme_change_listener = null;
+    }
+
+    @action.bound
+    disposeRealAccountSignupEnd() {
+        if (typeof this.realAccountSignupEndedDisposer === 'function') {
+            this.realAccountSignupEndedDisposer();
+        }
+        this.real_account_signup_ended_listener = null;
+    }
+
+    @action.bound
     onUnmount() {
+        this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
+        this.disposeLogout();
+        this.disposeClientInit();
+        this.disposeNetworkStatusChange();
+        this.disposeThemeChange();
+        this.disposeRealAccountSignupEnd();
     }
 
     @action.bound
@@ -327,8 +547,4 @@ export default class BaseStore {
             this.partial_fetch_time = false;
         }
     }
-
-    waitFor = async (...prerequisites) => {
-        await BinarySocket.wait(...prerequisites);
-    };
 }

@@ -5,17 +5,17 @@ import {
     Dropdown,
     Input,
     Modal,
-    Tabs,
     UnderlyingIcon,
+    Tabs,
 }                       from 'deriv-components';
 import {
     Formik,
     Form,
     Field,
 }                       from 'formik';
+import { localize }     from 'deriv-translations/lib/i18n';
 import IconTradeType    from './icon-trade-types.jsx';
 import { connect }      from '../stores/connect';
-import { translate }    from '../utils/lang/i18n';
 import config           from '../constants/index';
 import '../assets/sass/quick-strategy.scss';
 
@@ -43,20 +43,20 @@ const validateQuickStrategy = values => {
 
         if (number_field.includes(key)){
             if (isNaN(value)) {
-                errors[key] = translate('Must be a number');
+                errors[key] = localize('Must be a number');
             }
 
             if (value <= 0){
-                errors[key] = translate('Must be a number higher than 0');
+                errors[key] = localize('Must be a number higher than 0');
             }
 
             if (/^0+(?=\d)/.test(value)) {
-                errors[key] = translate('Invalid number format');
+                errors[key] = localize('Invalid number format');
             }
         }
 
         if (value === '') {
-            errors[key] = translate('Field cannot be empty');
+            errors[key] = localize('Field cannot be empty');
         }
     });
 
@@ -83,9 +83,9 @@ class QuickStrategy extends React.PureComponent {
         }                             = this.props;
         const { strategies }          = config;
         const asset_dropdown_options = {};
-        
+
         Object.assign(asset_dropdown_options, market_dropdown);
-        
+
         if (asset_dropdown_options) {
             Object.keys(asset_dropdown_options).forEach(key => {
                 const submarket = asset_dropdown_options[key];
@@ -112,7 +112,7 @@ class QuickStrategy extends React.PureComponent {
 
         return (
             <Modal
-                title={translate('Quick strategy')}
+                title={localize('Quick strategy')}
                 className='modal--strategy'
                 is_open={is_strategy_modal_open}
                 toggleModal={toggleStrategyModal}
@@ -159,7 +159,7 @@ class QuickStrategy extends React.PureComponent {
                                     <Form>
                                         <div className='quick-strategy__form-row'>
                                             <Dropdown
-                                                placeholder={translate('Assets')}
+                                                placeholder={localize('Assets')}
                                                 is_align_text_left
                                                 list={asset_dropdown_options}
                                                 name='symbol'
@@ -169,7 +169,7 @@ class QuickStrategy extends React.PureComponent {
                                         </div>
                                         <div className='quick-strategy__form-row'>
                                             <Dropdown
-                                                placeholder={translate('Trade type')}
+                                                placeholder={localize('Trade type')}
                                                 is_align_text_left
                                                 list={trade_type_dropdown_options}
                                                 name='tradetype'
@@ -185,7 +185,7 @@ class QuickStrategy extends React.PureComponent {
                                                         className='quick-strategy__input'
                                                         type='text'
                                                         error={touched.stake && errors.stake}
-                                                        label={translate('Initial stake')}
+                                                        label={localize('Initial stake')}
                                                     />
                                                 )}
                                             </Field>
@@ -196,7 +196,7 @@ class QuickStrategy extends React.PureComponent {
                                                         className='quick-strategy__input'
                                                         type='text'
                                                         error={touched.loss && errors.loss}
-                                                        label={translate('Maximum loss')}
+                                                        label={localize('Maximum loss')}
                                                     />
                                                 )}
                                             </Field>
@@ -209,7 +209,7 @@ class QuickStrategy extends React.PureComponent {
                                                         className='quick-strategy__input'
                                                         type='text'
                                                         error={touched.size && errors.size}
-                                                        label={translate('Size')}
+                                                        label={localize('Size')}
                                                     />
                                                 )}
                                             </Field>
@@ -220,7 +220,7 @@ class QuickStrategy extends React.PureComponent {
                                                         className='quick-strategy__input'
                                                         type='text'
                                                         error={touched.profit && errors.profit}
-                                                        label={translate('Maximum profit')}
+                                                        label={localize('Maximum profit')}
                                                     />
                                                 )}
                                             </Field>
@@ -229,7 +229,7 @@ class QuickStrategy extends React.PureComponent {
                                             <Button
                                                 type='submit'
                                                 className='quick-strategy__button--create'
-                                                text={translate('Create')}
+                                                text={localize('Create')}
                                                 is_disabled={!isValid || isSubmitting}
                                                 primary
                                             />

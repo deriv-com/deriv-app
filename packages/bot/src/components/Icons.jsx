@@ -78,6 +78,7 @@ import contract_id              from '../assets/icons/ic-id.svg';
 import contract_pending         from '../assets/icons/contract-pending.svg';
 import contract_completed       from '../assets/icons/contract-completed.svg';
 import contract_buy_price       from '../assets/icons/buy-price.svg';
+import contract_start_time      from '../assets/icons/ic-starttime.svg';
 
 /* eslint-disable react/display-name */
 export const Icon = svgItem => (props) => {
@@ -170,7 +171,8 @@ export const ToolbarDriveIcon        = Icon(toolbar_drive);
 // transactions
 export const EntrySpotIcon           = Icon(contract_entry_spot);
 export const ExitSpotIcon            = Icon(contract_exit_spot);
-export const RefrenceIdIcon          = Icon(contract_id);
+export const ReferenceIdIcon         = Icon(contract_id);
 export const PendingIcon             = Icon(contract_pending);
 export const BuyPriceIcon            = Icon(contract_buy_price);
 export const CompletedIcon           = Icon(contract_completed);
+export const StartTimeIcon           = Icon(contract_start_time);

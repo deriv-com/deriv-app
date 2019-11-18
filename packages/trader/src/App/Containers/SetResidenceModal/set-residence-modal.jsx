@@ -13,7 +13,8 @@ import { website_name } from 'App/Constants/app-config';
 import ResidenceForm    from './set-residence-form.jsx';
 import                       'Sass/app/modules/set-residence.scss';
 
-const residenceInitialValues = { residence: '' };
+// TODO: Move some of these functions to helpers since some of them are shared with AccountSignUpModal
+const isResidenceText = (item, values) => item.text.toLowerCase() === values.residence.toLowerCase();
 
 const validateResidence = (values, residence_list) => {
     const errors = {};
@@ -21,9 +22,7 @@ const validateResidence = (values, residence_list) => {
     if (!values.residence) {
         errors.residence = true;
     } else {
-        const index_of_selection = residence_list.findIndex(item => (
-            item.text.toLowerCase() === values.residence.toLowerCase()
-        ));
+        const index_of_selection = residence_list.findIndex((item) => isResidenceText(item, values));
 
         if (index_of_selection === -1 || residence_list[index_of_selection].disabled === 'DISABLED') {
             errors.residence = localize('Unfortunately, {{website_name}} is not available in your country.', { website_name });
@@ -44,24 +43,22 @@ class SetResidence extends React.Component {
         this.props.enableApp();
     };
 
-    render() {
+    onSubmit(values) {
         const { onSetResidence, residence_list } = this.props;
+        const index_of_selection = residence_list.findIndex((item) => isResidenceText(item, values));
 
-        const validateResidencePassthrough = (values) => validateResidence(values, residence_list);
-        const onSetResidencePassthrough = (values) => {
-            const index_of_selection = residence_list.findIndex(item => (
-                item.text.toLowerCase() === values.residence.toLowerCase()
-            ));
+        const modded_values = { ...values, residence: residence_list[index_of_selection].value };
+        onSetResidence(modded_values, this.onSetResidenceComplete);
+    }
 
-            const modded_values = { ...values, residence: residence_list[index_of_selection].value };
-            onSetResidence(modded_values, this.onSetResidenceComplete);
-        };
+    render() {
+        const { residence_list } = this.props;
         return (
             <div className='set-residence'>
                 <Formik
-                    initialValues={ residenceInitialValues }
-                    validate={ validateResidencePassthrough }
-                    onSubmit={ onSetResidencePassthrough }
+                    initialValues={{ residence: '' }}
+                    validate={ (values) => validateResidence(values, residence_list) }
+                    onSubmit={ this.onSubmit}
                 >
                     {({ isSubmitting, errors, values, setFieldValue, touched }) => (
                         <Form>

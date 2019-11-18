@@ -43,6 +43,7 @@ class PaymentAgentList extends React.Component {
                                 <div className='payment-agent__instructions-section'>
                                     <h2 className='cashier__header payment-agent__header'><Localize i18n_default_text='Withdrawal' /></h2>
                                     <Button
+                                        className='payment-agent__instructions-button'
                                         has_effect
                                         text={localize('Request withdrawal form')}
                                         onClick={this.props.sendVerificationEmail}
@@ -51,17 +52,18 @@ class PaymentAgentList extends React.Component {
                                     />
                                 </div>
                             </div>
-                            <h2 className='cashier__header payment-agent__available-header'><Localize i18n_default_text='Available Payment Agents' /></h2>
+                            <h2 className='cashier__header payment-agent__list-header'><Localize i18n_default_text='Payment agents' /></h2>
+                            <div className='payment-agent__list-line' />
                             {this.props.is_loading ?
                                 <Loading className='payment-agent__loader' />
                                 :
                                 <React.Fragment>
-                                    <div className='payment-agent__available-selector'>
-                                        <p className='cashier__paragraph'><Localize i18n_default_text='Deposit/withdrawal method' /></p>
+                                    {this.props.supported_banks.length > 1 &&
+                                    <div className='payment-agent__list-selector'>
                                         <Dropdown
                                             id='payment_methods'
-                                            className='cashier__drop-down payment-agent__drop-down'
-                                            classNameDisplay='cashier__drop-down-display'
+                                            className='payment-agent__drop-down payment-agent__filter'
+                                            classNameDisplay='cashier__drop-down-display payment-agent__filter-display'
                                             classNameDisplaySpan='cashier__drop-down-display-span'
                                             classNameItems='cashier__drop-down-items'
                                             list={this.props.supported_banks}
@@ -70,6 +72,7 @@ class PaymentAgentList extends React.Component {
                                             onChange={this.props.onChangePaymentMethod}
                                         />
                                     </div>
+                                    }
                                     <Accordion
                                         className='payment-agent__accordion'
                                         list={this.props.payment_agent_list.map((payment_agent) => ({

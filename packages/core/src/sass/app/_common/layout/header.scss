@@ -60,6 +60,7 @@
         order: 1;
         display: inline-flex;
         height: #{$HEADER_HEIGHT - 1px};
+        position: relative;
     }
     &__menu-toggle {
         align-self: center;

@@ -23,7 +23,8 @@
     }
 }
 
-.radio-group {
+// TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
+div.radio-group {
     &__saveload-type {
         display: flex;
         justify-content: center;

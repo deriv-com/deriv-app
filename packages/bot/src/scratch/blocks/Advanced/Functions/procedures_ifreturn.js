@@ -1,4 +1,4 @@
-import { translate }         from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 /**
  * Block for conditionally returning a value from a procedure.
@@ -12,7 +12,7 @@ Blockly.Blocks.procedures_ifreturn = {
     },
     definition(){
         return {
-            message0: translate('if %1 return %2'),
+            message0: localize('if %1 return %2'),
             args0   : [
                 {
                     type: 'input_value',
@@ -28,14 +28,14 @@ Blockly.Blocks.procedures_ifreturn = {
             colourTertiary   : Blockly.Colours.Special2.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Prematurely returns a value within a function'),
+            tooltip          : localize('Prematurely returns a value within a function'),
             category         : Blockly.Categories.Functions,
         };
     },
     meta(){
         return {
-            'display_name': translate('Conditional return'),
-            'description' : translate('This block returns a value when a condition is true. Use this block within either of the function blocks above.'),
+            'display_name': localize('Conditional return'),
+            'description' : localize('This block returns a value when a condition is true. Use this block within either of the function blocks above.'),
         };
     },
     /**
@@ -59,7 +59,7 @@ Blockly.Blocks.procedures_ifreturn = {
 
         if (!this.hasReturnValue) {
             this.removeInput('VALUE');
-            this.appendDummyInput('VALUE').appendField(translate('return'));
+            this.appendDummyInput('VALUE').appendField(localize('return'));
             this.initSvg();
             this.render();
         }
@@ -96,12 +96,12 @@ Blockly.Blocks.procedures_ifreturn = {
             // If needed, toggle whether this block has a return value.
             if (block.type === 'procedures_defnoreturn' && this.hasReturnValue) {
                 this.removeInput('VALUE');
-                this.appendDummyInput('VALUE').appendField(translate('return'));
+                this.appendDummyInput('VALUE').appendField(localize('return'));
                 rerender();
                 this.hasReturnValue = false;
             } else if (block.type === 'procedures_defreturn' && !this.hasReturnValue) {
                 this.removeInput('VALUE');
-                this.appendValueInput('VALUE').appendField(translate('return'));
+                this.appendValueInput('VALUE').appendField(localize('return'));
                 rerender();
                 this.hasReturnValue = true;
             }

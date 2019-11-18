@@ -1,27 +1,27 @@
 const path                        = require('path');
 const stylelintFormatter          = require('stylelint-formatter-pretty');
 const { IS_RELEASE }              = require('./constants');
-const { transformContentUrlBase } = require('./helpers');
+// const { transformContentUrlBase } = require('./helpers');
 
 const copyConfig = (base) => ([
     { from: path.resolve(__dirname, '../node_modules/smartcharts-beta/dist/*.smartcharts.*'), to: 'js/smartcharts/', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/smartcharts-beta/dist/smartcharts.css*'), to: 'css/', flatten: true },
-    { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file' },
-    { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },
-    { from: path.resolve(__dirname, '../src/root_files/robots.txt'), to: 'robots.txt', toType: 'file' },
-    { from: path.resolve(__dirname, '../src/root_files/sitemap.xml'), to: 'sitemap.xml', toType: 'file' },
+    // { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file' },
+    // { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },
+    // { from: path.resolve(__dirname, '../src/root_files/robots.txt'), to: 'robots.txt', toType: 'file' },
+    // { from: path.resolve(__dirname, '../src/root_files/sitemap.xml'), to: 'sitemap.xml', toType: 'file' },
     { from: path.resolve(__dirname, '../src/public/images/favicons/favicon.ico'), to: 'favicon.ico', toType: 'file' },
     { from: path.resolve(__dirname, '../src/public/images/favicons/**') },
     { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
     // { from: path.resolve(__dirname, '../src/_common/lib/pushwooshSDK/**'), flatten: true },
-    {
-        from: path.resolve(__dirname, '../src/templates/app/manifest.json'),
-        to: 'manifest.json',
-        toType: 'file',
-        transform(content, path) {
-            return transformContentUrlBase(content, path, base);
-        }
-    },
+    // {
+    //     from: path.resolve(__dirname, '../src/templates/app/manifest.json'),
+    //     to: 'manifest.json',
+    //     toType: 'file',
+    //     transform(content, path) {
+    //         return transformContentUrlBase(content, path, base);
+    //     }
+    // },
 ]);
 
 const generateSWConfig = () => ({
@@ -80,7 +80,7 @@ const htmlInjectConfig = () => ({
     append: false
 });
 
-const cssConfig = () => ({ filename: 'css/app.css', chunkFilename: 'css/[id].css' });
+const cssConfig = () => ({ filename: 'css/trader.main.css', chunkFilename: 'css/trader.[name].[contenthash].css' });
 
 const stylelintConfig = () => ({
     configFile: path.resolve(__dirname, '../.stylelintrc.js'),

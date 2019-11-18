@@ -12,7 +12,7 @@ export default class FlyoutHelpStore {
 
     options = {
         css   : false,
-        media : `${__webpack_public_path__}media/`, // eslint-disable-line
+        media : `${__webpack_public_path__}media/`,
         move  : { scrollbars: false, drag: true, wheel: false },
         zoom  : { startScale: config.workspaces.flyoutWorkspacesStartScale },
         sounds: false,
@@ -46,7 +46,8 @@ export default class FlyoutHelpStore {
 
     @action.bound
     onBackClick() {
-        const toolbox = Blockly.derivWorkspace.toolbox_; // eslint-disable-line
+        // eslint-disable-next-line no-underscore-dangle
+        const toolbox = Blockly.derivWorkspace.toolbox_;
         const { toolbar, flyout } = this.root_store;
 
         if (flyout.is_search_flyout){
@@ -60,7 +61,8 @@ export default class FlyoutHelpStore {
 
     @action.bound
     async onSequenceClick(should_go_next) {
-        const toolbox = Blockly.derivWorkspace.toolbox_; // eslint-disable-line
+        // eslint-disable-next-line no-underscore-dangle
+        const toolbox = Blockly.derivWorkspace.toolbox_;
         const selected_category = toolbox.getSelectedItem();
         const xml_list = toolbox.getCategoryContents(selected_category);
         const xml_list_group = this.groupBy(xml_list, true);

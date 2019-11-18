@@ -319,17 +319,6 @@ class DBot {
         Blockly.svgResize(this.workspace);
     }
 
-    // TODO: This logic is cloned from other PR. Remove later.
-    onClickOutsideFlyout(event) {
-        const toolbox         = this.workspace.toolbox_; // eslint-disable-line
-        const is_flyout_click = event.path.some(el => el.classList && el.classList.contains('flyout'));
-        const isToolboxClick  = () => toolbox.HtmlDiv.contains(event.target);
-
-        if (!is_flyout_click && !isToolboxClick()) {
-            toolbox.clearSelection();
-        }
-    }
-
     static handleDragOver(event) {
         event.stopPropagation();
         event.preventDefault();

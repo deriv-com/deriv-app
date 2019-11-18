@@ -294,3 +294,18 @@ export const hasAllRequiredBlocks = (workspace) => {
 
     return has_all_required_blocks;
 };
+export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chronological) => {
+    const ws_metrics = workspace.getMetrics();
+
+    let scroll_x = ws_metrics.viewLeft - ws_metrics.contentLeft;
+    let scroll_y = ws_metrics.viewTop - ws_metrics.contentTop;
+
+    if (is_horizontal) {
+        scroll_x += (is_chronological ? scroll_amount : -scroll_amount);
+    } else {
+        scroll_y += (is_chronological ? scroll_amount : -scroll_amount);
+    }
+
+    workspace.scrollbar.set(scroll_x, scroll_y);
+};
+

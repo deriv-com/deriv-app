@@ -362,7 +362,7 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     };
 };
 
-export const excluded_notifications = ['you_are_offline', 'password_changed', 'switch_to_tick_chart', 'contract_sold'];
+export const excluded_notifications = ['you_are_offline', 'password_changed', 'maintenance', 'switch_to_tick_chart', 'contract_sold'];
 
 export const handleClientNotifications = (
     client,

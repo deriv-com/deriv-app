@@ -137,7 +137,7 @@
  * Usage example:
    @include typeface(--paragraph-bold-black, uppercase, center);
  */
-@mixin typeface($var, $tt: capitalize) {
+@mixin typeface($var, $tt: none) {
     $typeface_config: map-get($map: $TYPEFACES_LIST, $key: $var);
 
     $size  : nth($typeface_config, 1); // font-size

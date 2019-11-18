@@ -104,7 +104,7 @@ export default class RunPanelStore {
         } else {
             // when user click stop button before bot start running
             this.setContractStage(contract_stages.NOT_RUNNING);
-            this.unregisterBotListeners();
+            RunPanelStore.unregisterBotListeners();
         }
     }
 
@@ -228,11 +228,11 @@ export default class RunPanelStore {
             this.setContractStage(contract_stages.NOT_RUNNING);
             this.error_type = undefined;
             this.is_running = false;
-            this.unregisterBotListeners();
+            RunPanelStore.unregisterBotListeners();
         } else if (this.has_open_contract) {
             // When bot was running and it closes now
             this.setContractStage(contract_stages.CONTRACT_CLOSED);
-            this.unregisterBotListeners();
+            RunPanelStore.unregisterBotListeners();
         }
         this.has_open_contract = false;
     }
@@ -293,7 +293,7 @@ export default class RunPanelStore {
         this.setActiveTabIndex(2);
     }
 
-    unregisterBotListeners =() => {
+    static unregisterBotListeners() {
         observer.unregisterAll('bot.running');
         observer.unregisterAll('bot.stop');
         observer.unregisterAll('bot.trade_again');
@@ -315,7 +315,7 @@ export default class RunPanelStore {
             // of killing and clearing everything instantly.
             // Core need to change to pass beforeswitch account event
             terminateBot();
-            this.unregisterBotListeners();
+            RunPanelStore.unregisterBotListeners();
             this.clearStat();
         };
 
@@ -372,8 +372,9 @@ export default class RunPanelStore {
         this.contract_stage = value;
     }
 
+    @action.bound
     onUnmount() {
-        this.unregisterBotListeners();
+        RunPanelStore.unregisterBotListeners();
         this.disposeIsSocketOpenedListener();
     }
 }

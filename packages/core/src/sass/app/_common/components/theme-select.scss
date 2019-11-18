@@ -49,6 +49,10 @@
             &--active {
                 border-color: var(--border-active);
             }
+            &--disabled {
+                opacity: 0.16 !important; // TODO: [disable-dark-bot] Delete this when Bot is ready
+                cursor: not-allowed !important;
+            }
         }
     }
 }

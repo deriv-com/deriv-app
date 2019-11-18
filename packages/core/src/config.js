@@ -1,4 +1,5 @@
 // const Cookies = require('js-cookie');
+const isBot = require('Utils/PlatformSwitcher/platform-switcher').isBot;
 
 /*
  * Configuration values needed in js codes
@@ -39,14 +40,13 @@ const getAppId = () => {
         app_id = user_app_id;
     } else if (/staging\.deriv\.app/i.test(window.location.hostname)) {
         window.localStorage.removeItem('config.default_app_id');
-        // TODO: This is currently bot specific.
-        app_id = 19112; // it's being used in endpoint chrome extension - please do not remove
+        app_id = isBot() ? 19112 : 16303; // it's being used in endpoint chrome extension - please do not remove
     } else if (/localhost/i.test(window.location.hostname)) {
         app_id = 17044;
     } else {
         window.localStorage.removeItem('config.default_app_id');
         const current_domain = getCurrentProductionDomain();
-        app_id = domain_app_ids[current_domain] || 19111; // TODO: This is currently bot specific.
+        app_id = domain_app_ids[current_domain] || (isBot() ? 19111 : 16929);
     }
     return app_id;
 };

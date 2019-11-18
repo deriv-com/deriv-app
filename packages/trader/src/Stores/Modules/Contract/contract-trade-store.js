@@ -127,7 +127,23 @@ export default class ContractTradeStore extends BaseStore {
         limit_order = {},
     }) {
         const contract_exists = this.contracts.filter(c => c.contract_id === contract_id).length;
-        if (contract_exists) { return; /* do nothing */ }
+        if (contract_exists) {
+            // buy response doesn't have limit_order info so here we update contract limit_order
+            // on the first poc response right after buy response, if any
+            const has_limit_order = Object.keys(limit_order).length;
+            if (has_limit_order) {
+                const contract = this.contracts.filter(c => c.contract_id === contract_id)[0];
+                contract.populateConfig({
+                    date_start: start_time,
+                    barrier,
+                    contract_type,
+                    longcode,
+                    underlying,
+                    limit_order,
+                }, true);
+            }
+            return;
+        }
 
         const contract = new ContractStore(this.root_store, { contract_id });
         contract.populateConfig({
@@ -138,6 +154,7 @@ export default class ContractTradeStore extends BaseStore {
             underlying,
             limit_order,
         });
+
         this.contracts.push(contract);
 
         if (is_tick_contract && this.granularity !== 0) {

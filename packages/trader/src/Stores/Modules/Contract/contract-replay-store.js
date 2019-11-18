@@ -191,4 +191,15 @@ export default class ContractReplayStore extends BaseStore {
         this.error_message = '';
         this.has_error     = false;
     }
+
+    @action.bound
+    getContractById(contract_id) {
+        return (
+            // get contract from contracts array in contract_trade store
+            this.root_store.modules.contract_trade.getContractById(contract_id || this.contract_id)
+            // or get contract from contract_replay contract store when
+            // user is on the contract details page
+            || this.root_store.modules.contract_replay.contract_store
+        );
+    }
 }

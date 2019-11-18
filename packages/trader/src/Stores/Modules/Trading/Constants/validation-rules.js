@@ -1,6 +1,6 @@
 import { localize }               from 'App/i18n';
 import { isSessionAvailable }     from 'Stores/Modules/Trading/Helpers/start-date';
-import { getProfitLossFromStore } from 'Stores/Modules/Contract/Helpers/multiplier';
+import { getProfitLossFromStore } from 'Stores/Modules/Contract/Helpers/logic';
 
 import {
     isHourValid,

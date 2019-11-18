@@ -1,6 +1,5 @@
 import {
     action,
-    computed,
     extendObservable,
     observable,
     toJS,
@@ -92,10 +91,7 @@ export default class ContractStore {
 
         this.is_multiplier_contract =  isMultiplierContract(this.contract_info.contract_type);
         if (this.is_multiplier_contract && !this.contract_update.has_limit_order) {
-            extendObservable(
-                this.contract_update,
-                getMultiplierContractUpdate(this.root_store.modules.trade, this.contract_info)
-            );
+            this.contract_update = getMultiplierContractUpdate(this.root_store.modules.trade, this.contract_info);
             this.contract_update.onChangeContractUpdate = this.onChangeContractUpdate;
             this.contract_update.onClickContractUpdate  = this.onClickContractUpdate;
             this.contract_update.has_limit_order = true;
@@ -120,13 +116,10 @@ export default class ContractStore {
                     ...response.error,
                 });
                 this.root_store.ui.toggleServicesErrorModal(true);
+            } else {
+                this.contract_update.has_limit_order = false;
             }
         });
-    }
-
-    @computed
-    get getContractUpdateFromContractReplay() {
-        return this.contract_update;
     }
 
     updateBarriersArray(contract_info, is_dark_mode) {

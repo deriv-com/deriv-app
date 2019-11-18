@@ -1,7 +1,6 @@
 import {
     action,
     computed,
-    extendObservable,
     observable,
     reaction }                     from 'mobx';
 import { createTransformer }       from 'mobx-utils';
@@ -21,10 +20,7 @@ import {
     isUserSold,
     isValidToSell }                from '../Contract/Helpers/logic';
 import {
-    getMultiplierLimitOrder,
-    getMultiplierContractUpdate,
-    isMultiplierContract,
-    setMultiplierContractUpdate }  from '../Contract/Helpers/multiplier';
+    isMultiplierContract }         from '../Contract/Helpers/multiplier';
 
 import BaseStore                   from '../../base-store';
 
@@ -162,17 +158,6 @@ export default class PortfolioStore extends BaseStore {
         portfolio_position.profit_loss      = profit_loss;
         portfolio_position.is_valid_to_sell = isValidToSell(proposal);
 
-        if (isMultiplierContract(proposal.contract_type) && !portfolio_position.has_limit_order) {
-            portfolio_position.contract_update = {};
-            extendObservable(
-                portfolio_position.contract_update,
-                getMultiplierContractUpdate(this.root_store.modules.trade, proposal)
-            );
-            portfolio_position.contract_update.onChangeContractUpdate = this.onChangeContractUpdate;
-            portfolio_position.contract_update.onClickContractUpdate  = this.onClickContractUpdate;
-            portfolio_position.has_limit_order = true;
-        }
-
         // store contract proposal details that do not require modifiers
         portfolio_position.contract_info    = proposal;
 
@@ -204,31 +189,6 @@ export default class PortfolioStore extends BaseStore {
         if (contract_id && bid_price) {
             WS.sell(contract_id, bid_price).then(this.handleSell);
         }
-    }
-
-    @action.bound
-    onChangeContractUpdate(contract_update, contract_id) {
-        const i = this.getPositionIndexById(contract_id);
-        setMultiplierContractUpdate(this.root_store.modules.trade, this.positions[i].contract_update, contract_update);
-    }
-
-    @action.bound
-    onClickContractUpdate(contract_id) {
-        const i = this.getPositionIndexById(contract_id);
-
-        const limit_order = getMultiplierLimitOrder(this.positions[i].contract_update);
-
-        if (!limit_order) return;
-
-        WS.contractUpdate(contract_id, limit_order).then(response => {
-            if (response.error) {
-                this.root_store.common.setServicesError({
-                    type: response.msg_type,
-                    ...response.error,
-                });
-                this.root_store.ui.toggleServicesErrorModal(true);
-            }
-        });
     }
 
     @action.bound
@@ -368,18 +328,6 @@ export default class PortfolioStore extends BaseStore {
 
     getPositionIndexById(contract_id) {
         return this.positions.findIndex(pos => +pos.id === +contract_id);
-    }
-
-    @action.bound
-    getContractUpdateFromPositions(contract_id) {
-        const i = this.getPositionIndexById(contract_id);
-        return this.positions[i].contract_update;
-    }
-
-    @action.bound
-    getContractFromPositions(contract_id) {
-        const i = this.getPositionIndexById(contract_id);
-        return this.positions[i];
     }
 
     @computed

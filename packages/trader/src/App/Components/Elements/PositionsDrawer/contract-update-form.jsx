@@ -7,8 +7,7 @@ import { connect }       from 'Stores/connect';
 
 const ContractUpdateForm = ({
     contract_id,
-    getContractUpdateFromContractReplay,
-    getContractUpdateFromPositions,
+    getContractById,
     toggleDialog,
     validation_errors = {},
 }) => {
@@ -20,7 +19,7 @@ const ContractUpdateForm = ({
         onChangeContractUpdate,
         stop_loss,
         take_profit,
-    } = contract_id ? getContractUpdateFromPositions(contract_id) : getContractUpdateFromContractReplay;
+    } = getContractById(contract_id).contract_update;
 
     const onChange = (e) => {
         const { name, value } = e.target;
@@ -108,12 +107,9 @@ ContractUpdateForm.propTypes = {
     validation_errors     : PropTypes.object,
 };
 
-// export default ContractUpdateForm;
-
 export default connect(
     ({ modules }) => ({
-        getContractUpdateFromContractReplay: modules.contract_replay.contract_store.getContractUpdateFromContractReplay,
-        getContractUpdateFromPositions     : modules.portfolio.getContractUpdateFromPositions,
-        validation_errors                  : modules.trade.validation_errors,
+        getContractById  : modules.contract_replay.getContractById,
+        validation_errors: modules.trade.validation_errors,
     })
 )(ContractUpdateForm);

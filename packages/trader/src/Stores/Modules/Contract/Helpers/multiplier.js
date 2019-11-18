@@ -34,12 +34,6 @@ export const getOrderAmount = (contract_info) => {
 export const getMultiplierContractUpdate = (store, contract_info) => {
     const { stop_loss, take_profit } = getOrderAmount(contract_info);
 
-    if (store.validation_errors) {
-        // positions drawer and contract replay shares the same contract_update input validation
-        // so we have to clear it when switching between positions drawer and contract replay
-        store.validation_errors.contract_update_stop_loss = [];
-        store.validation_errors.contract_update_take_profit = [];
-    }
     return {
         // convert stop_loss, take_profit value to string for validation to work
         stop_loss      : stop_loss ? Math.abs(stop_loss).toString() : '',
@@ -117,16 +111,4 @@ export const LIMIT_ORDER_TYPES = {
     TAKE_PROFIT: 'take_profit',
     STOP_LOSS  : 'stop_loss',
     STOP_OUT   : 'stop_out',
-};
-
-export const getProfitLossFromStore = (modules_store) => {
-    const { contract_replay, portfolio } = modules_store;
-    const contract_id = portfolio.hovered_position_id;
-    let profit;
-    if (contract_id) {
-        profit = portfolio.getContractFromPositions(contract_id).contract_info.profit;
-    } else {
-        profit = contract_replay.contract_store.contract_info.profit;
-    }
-    return profit;
 };

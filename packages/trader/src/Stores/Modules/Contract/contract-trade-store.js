@@ -117,6 +117,7 @@ export default class ContractTradeStore extends BaseStore {
         longcode,
         underlying,
         is_tick_contract,
+        limit_order = {},
     }) {
         const contract_exists = this.contracts.filter(c => c.contract_id === contract_id).length;
         if (contract_exists) { return; /* do nothing */ }
@@ -128,6 +129,7 @@ export default class ContractTradeStore extends BaseStore {
             contract_type,
             longcode,
             underlying,
+            limit_order,
         });
         this.contracts.push(contract);
 
@@ -193,5 +195,10 @@ export default class ContractTradeStore extends BaseStore {
     clearError() {
         this.error_message = '';
         this.has_error = false;
+    }
+
+    @action.bound
+    getContractById(contract_id) {
+        return this.contracts.filter(contract => contract.contract_id === contract_id)[0];
     }
 }

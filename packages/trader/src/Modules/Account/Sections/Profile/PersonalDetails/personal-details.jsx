@@ -163,7 +163,7 @@ class PersonalDetailsForm extends React.Component {
             if (!validPhone(values.phone)) {
                 errors.phone = localize('Please enter a valid phone number, including the country code (e.g. +15417541234)');
             } else if (!validCountryCode(this.props.residence_list, values.phone)) {
-                errors.phone = localize('Country code is wrong.');
+                errors.phone = localize('Please enter a valid phone number, including the country code (e.g +15417541234).');
             }  else if (!validLength(phone_trim, { min: min_phone_number, max: max_phone_number })) {
                 errors.phone = localize('You should enter 8-35 characters.');
             }

@@ -3,17 +3,21 @@ import {
     Input,
     ThemedScrollbars }      from 'deriv-components';
 import { Formik, Field }    from 'formik';
-import React                from 'react';
+import PropTypes            from 'prop-types';
+import React, { Component } from 'react';
 import { CSSTransition }    from 'react-transition-group';
 import { localize }         from 'App/i18n';
 import Localize             from 'App/Components/Elements/localize.jsx';
 import IconDatepicker       from 'Assets/Signup/icon-datepicker.jsx';
 import { toMoment }         from 'Utils/Date';
+import {
+    validPhone,
+    validCountryCode }      from 'Utils/Validator/declarative-validation-rules';
 import FormSubmitButton     from './form-submit-button.jsx';
 import DatePickerCalendar   from './date-picker-calendar.jsx';
 import 'Sass/details-form.scss';
 
-export class DateOfBirth extends React.Component {
+export class DateOfBirth extends Component {
     state = {
         should_show_calendar: false,
         max_date            : toMoment().subtract(18, 'years'),
@@ -150,7 +154,7 @@ const InputField = (props) => {
     );
 };
 
-class PersonalDetails extends React.Component {
+class PersonalDetails extends Component {
     constructor(props) {
         super(props);
         this.form = React.createRef();
@@ -276,7 +280,8 @@ class PersonalDetails extends React.Component {
             ],
             phone: [
                 v => !!v,
-                v => /^\+?((-|\s)*[0-9]){8,35}$/.exec(v) !== null,
+                v => validPhone(v),
+                v => validCountryCode(this.props.residence_list, v),
             ],
         };
 
@@ -297,6 +302,7 @@ class PersonalDetails extends React.Component {
         const alt_messages = [
             '{{field_name}} is required',
             '{{field_name}} is not in a proper format.',
+            'Please enter a valid phone number, including the country code (e.g +15417541234).',
         ];
 
         const errors    = {};
@@ -329,5 +335,9 @@ class PersonalDetails extends React.Component {
         return errors;
     };
 }
+
+PersonalDetails.propTypes = {
+    residence_list: PropTypes.array,
+};
 
 export default PersonalDetails;

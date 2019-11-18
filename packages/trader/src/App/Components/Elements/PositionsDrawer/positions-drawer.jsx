@@ -27,7 +27,6 @@ class PositionsDrawer extends React.Component {
             all_positions,
             error,
             currency,
-            is_dark_theme,
             is_empty,
             is_positions_drawer_on,
             onClickSell,
@@ -55,7 +54,6 @@ class PositionsDrawer extends React.Component {
                             unmountOnExit
                         >
                             <PositionsDrawerCard
-                                is_dark_theme={is_dark_theme}
                                 onClickSell={onClickSell}
                                 onClickRemove={onClickRemove}
                                 key={portfolio_position.id}
@@ -119,7 +117,6 @@ PositionsDrawer.propTypes = {
     children              : PropTypes.any,
     currency              : PropTypes.string,
     error                 : PropTypes.string,
-    is_dark_theme         : PropTypes.bool,
     is_empty              : PropTypes.bool,
     is_loading            : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
@@ -141,7 +138,6 @@ export default connect(
         onClickRemove                 : modules.portfolio.removePositionById,
         onMount                       : modules.portfolio.onMount,
         onUnmount                     : modules.portfolio.onUnmount,
-        is_dark_theme                 : ui.is_dark_mode_on,
         is_positions_drawer_on        : ui.is_positions_drawer_on,
         toggleDrawer                  : ui.togglePositionsDrawer,
         toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,

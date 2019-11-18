@@ -26,6 +26,7 @@ const ErrorComponent = ({
             to={button_link}
             onClick={onClickButton}
             primary
+            large
         >
             <span className='btn__text'>{button_text}</span>
         </ButtonLink>
@@ -36,6 +37,7 @@ const ErrorComponent = ({
                 onClick={onClickButton}
                 text={button_text}
                 primary
+                large
             />
         }
         {footer && <h2 className='cashier-error__footer'>{footer}</h2>}

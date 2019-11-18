@@ -48,16 +48,6 @@
 /* postcss-bem-linter: ignore */
 .vertical-tab__tab .vertical-tab__header {
     /* postcss-bem-linter: ignore */
-    .vertical-tab__header__link {
-        margin-left: 4px;
-    }
-    &--active {
-        /* postcss-bem-linter: ignore */
-        .vertical-tab__header__link {
-            margin-left: 0;
-        }
-    }
-    /* postcss-bem-linter: ignore */
     &--disabled {
         opacity: 0.32;
         pointer-events: none;

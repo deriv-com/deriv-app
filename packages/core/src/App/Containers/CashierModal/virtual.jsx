@@ -38,6 +38,7 @@ class Virtual extends React.Component {
                                 text={localize('Create my real account')}
                                 onClick={this.onClickSignup}
                                 primary
+                                large
                             />
                         </React.Fragment>
                     }

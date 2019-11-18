@@ -18,3 +18,4 @@ import './variables';
 import './workspace_audio';
 import './workspace_svg';
 import './xml';
+import './field_textinput';

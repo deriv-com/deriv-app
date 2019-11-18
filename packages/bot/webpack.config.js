@@ -1,20 +1,21 @@
+const { CleanWebpackPlugin }    = require('clean-webpack-plugin');
 const CopyWebpackPlugin         = require('copy-webpack-plugin');
-const MiniCssExtractPlugin      = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin      = require('mini-css-extract-plugin');
 const path                      = require('path');
 const StyleLintPlugin           = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
 const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
+// const BundleAnalyzerPlugin      = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 const output = {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bot.js',
-    chunkFilename: '[name]-[chunkhash:6].bot.js',
+    filename: 'bot.main.js',
+    chunkFilename: 'bot.[name].[contenthash].js',
     libraryExport: 'default',
     library: 'deriv-bot',
     libraryTarget: 'umd',
-    hashDigestLength: 6,
 };
 
 module.exports = {
@@ -27,6 +28,7 @@ module.exports = {
         publicPath: '/dist/',
         disableHostCheck: true,
     },
+    mode: is_release ? 'production' : 'development',
     devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
     target: 'web',
     module: {
@@ -91,7 +93,8 @@ module.exports = {
         ],
     },
     plugins: [
-        new MiniCssExtractPlugin({ filename: 'bot.css' }),
+        new CleanWebpackPlugin(),
+        new MiniCssExtractPlugin({ filename: 'bot.main.css' }),
         new StyleLintPlugin({ fix: true }),
         new CopyWebpackPlugin([
             { from: './src/scratch/xml', to: 'xml' },
@@ -111,15 +114,22 @@ module.exports = {
                 'scratch.min.js': (code) => {
                     const uglifyjs = require('uglify-js');
                     return uglifyjs.minify(code).code;
-                }
-            }
-        })
+                },
+            },
+        }),
+        // ...(!is_release ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
     ],
-    externals: {
-        '@babel/polyfill' : '@babel/polyfill',
-        'classnames'      : 'classnames',
-        'deriv-components': 'deriv-components',
-        'deriv-shared'    : 'deriv-shared',
-        'formik'          : 'formik',
-    },
+    externals: [
+        {
+            'react'           : 'react',
+            'react-dom'       : 'react-dom',
+            '@babel/polyfill' : '@babel/polyfill',
+            'classnames'      : 'classnames',
+            'deriv-components': 'deriv-components',
+            'deriv-shared'    : 'deriv-shared',
+            'formik'          : 'formik',
+        },
+        /^deriv-shared\/.+$/,
+        /^deriv-components\/.+$/,
+    ],
 };

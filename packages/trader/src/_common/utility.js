@@ -1,5 +1,3 @@
-require('./lib/polyfills/element.matches');
-
 const template = (string, content) => {
     let to_replace = content;
     if (content && !Array.isArray(content)) {

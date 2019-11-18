@@ -1,11 +1,8 @@
 import React            from 'react';
+import { WS }           from 'Services/ws-methods';
 import { formatDate }   from 'Utils/Date';
 import ObjectUtils      from 'deriv-shared/utils/object';
-import {
-    getRiskAssessment,
-    isAccountOfType,
-    shouldAcceptTnc,
-    shouldCompleteTax } from '_common/base/client_base';
+import { ClientBase }  from '_common/base/client_base';
 import { BinaryLink }   from 'App/Components/Routes';
 import { localize }     from 'App/i18n';
 import routes           from 'Constants/routes';
@@ -13,33 +10,28 @@ import {
     LocalStore,
     State }             from '_common/storage';
 import { urlFor }       from '_common/url';
-import Localize         from '../../App/Components/Elements/localize.jsx';
+import Localize         from 'App/Components/Elements/localize.jsx';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
 export const clientNotifications = (ui = {}) => {
     return {
         currency: {
+            action: {
+                text   : localize('Set currency'),
+                onClick: () => {
+                    ui.toggleNotificationsModal();
+                    ui.openRealAccountSignup();
+                },
+            },
             key    : 'currency',
-            header : localize('Set Currency'),
-            message: (
-                <Localize
-                    i18n_default_text='Please set the <0>currency</0> of your account to enable trading.'
-                    components={[
-                        <a
-                            key={0}
-                            type='button'
-                            className='link'
-                            onClick={ui.openRealAccountSignup}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'danger',
+            header : localize('Set account currency'),
+            message: localize('Please set the currency of your account to enable trading.'),
+            type   : 'danger',
         },
         self_exclusion: (excluded_until) => ({
             key    : 'self_exclusion',
-            header : localize('Self-exclusion Detected'),
+            header : localize('Self-exclusion detected'),
             message: (
                 <Localize
                     i18n_default_text='You have opted to be excluded from Binary.com until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
@@ -50,43 +42,36 @@ export const clientNotifications = (ui = {}) => {
             type: 'danger',
         }),
         authenticate: {
+            action: {
+                route: routes.proof_of_identity,
+                text : localize('Authenticate'),
+            },
             key    : 'authenticate',
-            header : localize('Account Authentication'),
-            message: (
-                <Localize
-                    i18n_default_text='<0>Authenticate your account</0> now to take full advantage of all payment methods available.'
-                    components={[
-                        <BinaryLink
-                            key={0}
-                            className='link'
-                            to={routes.proof_of_identity}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'info',
+            header : localize('Account authentication'),
+            message: localize('Authenticate your account now to take full advantage of all payment methods available.'),
+            type   : 'info',
         },
         cashier_locked: {
             key    : 'cashier_locked',
-            header : localize('Cashier Disabled'),
+            header : localize('Cashier disabled'),
             message: localize('Deposits and withdrawals have been disabled on your account. Please check your email for more details.'),
             type   : 'warning',
         },
         withdrawal_locked: {
             key    : 'withdrawal_locked',
-            header : localize('Withdrawal Disabled'),
+            header : localize('Withdrawal disabled'),
             message: localize('Withdrawals have been disabled on your account. Please check your email for more details.'),
             type   : 'warning',
         },
         mt5_withdrawal_locked: {
             key    : 'mt5_withdrawal_locked',
-            header : localize('MT5 Withdrawal Disabled'),
+            header : localize('MT5 withdrawal disabled'),
             message: localize('MT5 withdrawals have been disabled on your account. Please check your email for more details.'),
             type   : 'warning',
         },
         document_needs_action: {
             key    : 'document_needs_action',
-            header : localize('Authentication Failed'),
+            header : localize('Authentication failed'),
             message: (
                 <Localize
                     i18n_default_text='<0>Your Proof of Identity or Proof of Address</0> did not meet our requirements. Please check your email for further instructions.'
@@ -103,7 +88,7 @@ export const clientNotifications = (ui = {}) => {
         },
         unwelcome: {
             key    : 'unwelcome',
-            header : localize('Trading and Deposits Disabled'),
+            header : localize('Trading and deposits disabled'),
             message: (
                 <Localize
                     i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
@@ -114,7 +99,7 @@ export const clientNotifications = (ui = {}) => {
         },
         mf_retail: {
             key    : 'mf_retail',
-            header : localize('Binary Options Trading Disabled'),
+            header : localize('Binary options trading disabled'),
             message: (
                 <Localize
                     i18n_default_text='Binary Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
@@ -125,7 +110,7 @@ export const clientNotifications = (ui = {}) => {
         },
         financial_limit: {
             key    : 'financial_limit',
-            header : localize('Remove Deposit Limits'),
+            header : localize('Remove deposit limits'),
             message: (
                 <Localize
                     i18n_default_text='Please set your <0>30-day turnover limit</0> to remove deposit limits.'
@@ -135,66 +120,52 @@ export const clientNotifications = (ui = {}) => {
             type: 'warning',
         },
         risk: {
+            action: {
+                text : localize('Complete form'),
+                route: routes.financial_assessment,
+            },
             key    : 'risk',
-            header : localize('Withdrawal and Trading Limits'),
+            header : localize('Withdrawal and trading limits'),
+            message: localize('Please complete the Financial Assessment form to lift your withdrawal and trading limits.'),
+            type   : 'warning',
+        },
+        tax: {
+            action: {
+                route: routes.personal_details,
+                text : localize('Complete details'),
+            },
+            key    : 'tax',
+            header : localize('Complete your personal details'),
+            message: localize('Please complete your Personal Details before you proceed.'),
+            type   : 'danger',
+        },
+        tnc: {
+            action: {
+                onClick: async () => {
+                    await WS.tncApproval();
+                    WS.getSettings();
+                },
+                text: localize('I accept'),
+            },
+            key    : 'tnc',
+            header : localize('Terms & conditions updated'),
             message: (
                 <Localize
-                    i18n_default_text='Please complete the <0>Financial Assessment form</0> to lift your withdrawal and trading limits.'
-                    components={[
-                        <BinaryLink
-                            key={0}
-                            className='link'
-                            to={routes.financial_assessment}
-                        />,
-                    ]}
+                    i18n_default_text='Please accept our <0>updated Terms and Conditions</0> to proceed.'
+                    components={[ <a key={0} className='link' rel='noopener' target='_blank' href='https://www.deriv.com/terms-and-conditions/' /> ]}
                 />
             ),
             type: 'warning',
         },
-        tax: {
-            key    : 'tax',
-            header : localize('Complete your personal details'),
-            message: (
-                <Localize
-                    i18n_default_text='Please complete your <0>Personal Details</0> before you proceed.'
-                    components={[
-                        <BinaryLink
-                            key={0}
-                            className='link'
-                            to={routes.personal_details}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'danger',
-        },
-        tnc: {
-            key    : 'tnc',
-            header : localize('Terms & Conditions Updated'),
-            message: (
-                <Localize
-                    i18n_default_text='Please <0>accept the updated Terms and Conditions</0> to enable deposit and trading.'
-                    components={[ <a key={0} className='link' target='_blank' href={urlFor('user/tnc_approvalws', undefined, undefined, true)} /> ]}
-                />
-            ),
-            type: 'danger',
-        },
         required_fields: {
+            action: {
+                route: routes.personal_details,
+                text : localize('Complete details'),
+            },
             key    : 'required_fields',
             header : localize('Complete your personal details'),
-            message: (
-                <Localize
-                    i18n_default_text='Please complete your <0>Personal Details</0> before you proceed.'
-                    components={[
-                        <BinaryLink
-                            key={0}
-                            className='link'
-                            to={routes.personal_details}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'danger',
+            message: localize('Please complete your Personal Details before you proceed.'),
+            type   : 'danger',
         },
         switch_to_tick_chart: {
             key    : 'switch_to_tick_chart',
@@ -225,55 +196,34 @@ export const clientNotifications = (ui = {}) => {
             type: 'info',
         },
         needs_poi: {
+            action: {
+                route: routes.proof_of_identity,
+                text : localize('Verify identity'),
+            },
             key    : 'needs_poi',
             header : localize('Proof of identity required'),
-            message: (
-                <Localize
-                    i18n_default_text='Please <0>submit</0> your proof of identity.'
-                    components={[
-                        <BinaryLink
-                            key={0}
-                            className='link'
-                            to={routes.proof_of_identity}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'warning',
+            message: localize('Please submit your proof of identity.'),
+            type   : 'warning',
         },
         needs_poa: {
+            action: {
+                route: routes.proof_of_address,
+                text : localize('Verify address'),
+            },
             key    : 'needs_poa',
             header : localize('Proof of address required'),
-            message: (
-                <Localize
-                    i18n_default_text='Please <0>submit</0> your proof of address.'
-                    components={[
-                        <BinaryLink
-                            key={0}
-                            className='link'
-                            to={routes.proof_of_address}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'warning',
+            message: localize('Please submit your proof of address.'),
+            type   : 'warning',
         },
         poa_expired: {
+            action: {
+                route: routes.proof_of_address,
+                text : localize('Proof of address'),
+            },
             key    : 'poa_expired',
             header : localize('Document expired'),
-            message: (
-                <Localize
-                    i18n_default_text='Your documents for proof of address is expired. Please <0>submit</0> again.'
-                    components={[
-                        <BinaryLink
-                            key={0}
-                            className='link'
-                            to={routes.proof_of_address}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'danger',
+            message: localize('Your documents for proof of address is expired. Please submit again.'),
+            type   : 'danger',
         },
         poa_rejected: {
             key    : 'poa_rejected',
@@ -286,21 +236,14 @@ export const clientNotifications = (ui = {}) => {
             type: 'danger',
         },
         poi_expired: {
+            action: {
+                route: routes.proof_of_identity,
+                text : localize('Proof of identity'),
+            },
             key    : 'poi_expired',
             header : localize('Proof of identity expired'),
-            message: (
-                <Localize
-                    i18n_default_text='Your proof of identity document has expired. Please <0>submit</0> a new one.'
-                    components={[
-                        <BinaryLink
-                            key={0}
-                            className='link'
-                            to={routes.proof_of_identity}
-                        />,
-                    ]}
-                />
-            ),
-            type: 'danger',
+            message: localize('Your proof of identity document has expired. Please submit a new one.'),
+            type   : 'danger',
         },
     };
 };
@@ -329,7 +272,7 @@ const hasMissingRequiredField = (account_settings, client) => {
     }
 
     function getRequiredFields() {
-        if (!isAccountOfType('financial')) return [];
+        if (!ClientBase.isAccountOfType('financial')) return [];
         const { residence } = client;
 
         const required_settings_fields = [
@@ -386,15 +329,15 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
 
     const is_mf_retail         = client.landing_company_shortcode === 'maltainvest' && !professional;
     const needs_authentication = needs_verification.length && document.status === 'none' && identity.status === 'none';
-    const has_risk_assessment  = getRiskAssessment(account_status);
+    const has_risk_assessment  = ClientBase.getRiskAssessment(account_status);
     const needs_poa            = needs_verification.length &&
         needs_verification.includes('document') &&
         !needs_verification.includes('identity') &&
-        document.status !== 'rejected';
+        document.status !== 'rejected' && document.status !== 'expired';
     const needs_poi            = needs_verification.length &&
         needs_verification.includes('identity') &&
         !needs_verification.includes('document') &&
-        identity.status !== 'rejected';
+        identity.status !== 'rejected' && identity.status !== 'expired';
 
     if (needs_poa)             addNotificationMessage(clientNotifications().needs_poa);
     if (needs_poi)             addNotificationMessage(clientNotifications().needs_poi);
@@ -409,7 +352,7 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
         addNotificationMessage(clientNotifications().financial_limit);
     }
     if (has_risk_assessment)               addNotificationMessage(clientNotifications().risk);
-    if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
+    if (ClientBase.shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
     if (needs_authentication || prompt_client_to_authenticate) {
         addNotificationMessage(clientNotifications().authenticate);
     }
@@ -438,7 +381,7 @@ export const handleClientNotifications = (
 
     const { has_risk_assessment } = checkAccountStatus(account_status, client, addNotificationMessage, loginid);
 
-    if (shouldAcceptTnc(account_settings)) addNotificationMessage(clientNotifications(ui).tnc);
+    if (ClientBase.shouldAcceptTnc(account_settings)) addNotificationMessage(clientNotifications(ui).tnc);
 
     const has_missing_required_field = hasMissingRequiredField(account_settings, client);
     if (has_missing_required_field) {

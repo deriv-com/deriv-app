@@ -8,7 +8,7 @@ Blockly.Blocks.check_sell = {
         return {
             message0       : localize('Sell is available'),
             output         : 'Boolean',
-            outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
+            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,

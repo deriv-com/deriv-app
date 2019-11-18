@@ -5,6 +5,7 @@ import ObjectUtils            from 'deriv-shared/utils/object';
 import { WS }                 from 'Services/ws-methods';
 import { localize }           from 'App/i18n';
 import ContractStore          from './contract-store';
+import { getOrderAmount }     from './Helpers/multiplier';
 import { contractSold }       from '../Portfolio/Helpers/portfolio-notifications';
 import BaseStore              from '../../base-store';
 
@@ -201,5 +202,32 @@ export default class ContractReplayStore extends BaseStore {
             // user is on the contract details page
             || this.root_store.modules.contract_replay.contract_store
         );
+    }
+
+    @action.bound
+    isValidContractUpdate(contract_id) {
+        const contract = this.getContractById(contract_id);
+
+        const { contract_info, contract_update } = contract;
+
+        const {
+            has_stop_loss,
+            has_take_profit,
+            stop_loss,
+            take_profit,
+        } = contract_update;
+
+        const {
+            stop_loss  : contract_stop_loss,
+            take_profit: contract_take_profit,
+        } = getOrderAmount(contract_info);
+
+        if ((has_take_profit && take_profit > 0) || (has_stop_loss && stop_loss > 0)) {
+            return true;
+        } else if (contract_take_profit === undefined || contract_stop_loss === undefined) {
+            return false; // don't allow contract_update if initial take_profit or stop_loss is undefined
+        }
+
+        return !!(take_profit || stop_loss);
     }
 }

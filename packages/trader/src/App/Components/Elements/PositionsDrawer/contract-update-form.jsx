@@ -8,6 +8,7 @@ import { connect }       from 'Stores/connect';
 const ContractUpdateForm = ({
     contract_id,
     getContractById,
+    isValidContractUpdate,
     toggleDialog,
     validation_errors = {},
 }) => {
@@ -46,12 +47,14 @@ const ContractUpdateForm = ({
         toggleDialog();
     };
 
-    const is_disabled = !(stop_loss > 0 || take_profit > 0);
-
     const {
         contract_update_stop_loss  : stop_loss_error_messages,
         contract_update_take_profit: take_profit_error_messages,
     } = validation_errors;
+
+    const has_error = ((has_stop_loss && stop_loss_error_messages && stop_loss_error_messages.length)
+        || (has_take_profit && take_profit_error_messages && take_profit_error_messages.length)
+    );
 
     return (
         <React.Fragment>
@@ -88,7 +91,7 @@ const ContractUpdateForm = ({
                     text={localize('Apply')}
                     onClick={onClick}
                     primary
-                    is_disabled={is_disabled}
+                    is_disabled={has_error || !isValidContractUpdate(contract_id)}
                 />
             </div>
         </React.Fragment>
@@ -109,7 +112,8 @@ ContractUpdateForm.propTypes = {
 
 export default connect(
     ({ modules }) => ({
-        getContractById  : modules.contract_replay.getContractById,
-        validation_errors: modules.trade.validation_errors,
+        getContractById      : modules.contract_replay.getContractById,
+        isValidContractUpdate: modules.contract_replay.isValidContractUpdate,
+        validation_errors    : modules.trade.validation_errors,
     })
 )(ContractUpdateForm);

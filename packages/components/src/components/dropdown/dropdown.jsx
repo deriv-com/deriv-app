@@ -15,11 +15,11 @@ import Items             from './items.jsx';
 import NativeSelect      from './native-select.jsx';
 import DisplayText       from './display-text.jsx';
 
-class Dropdown extends React.PureComponent {
+class Dropdown extends React.Component {
     list_ref = React.createRef();
 
     state = {
-        curr_index     : getItemFromValue(this.props.list, this.props.value).number,
+        curr_index     : 0,
         is_list_visible: false,
         list_height    : 0,
         list_width     : 0,
@@ -105,6 +105,7 @@ class Dropdown extends React.PureComponent {
     }
 
     componentDidMount() {
+        this.updateSelected(this.props.value);
         document.addEventListener(
             'mousedown',
             this.handleClickOutside,
@@ -112,6 +113,12 @@ class Dropdown extends React.PureComponent {
                 passive: true,
             },
         );
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.value !== this.props.value) {
+            this.updateSelected(this.props.value);
+        }
     }
 
     componentWillUnmount() {
@@ -122,9 +129,14 @@ class Dropdown extends React.PureComponent {
         if (item.value !== this.props.value) {
             this.props.onChange(
                 { target: { name: this.props.name, value: item.value } });
+            this.updateSelected(item.value);
         }
         this.handleVisibility();
     };
+
+    updateSelected(value) {
+        this.setState({ curr_index: getItemFromValue(this.props.list, value).number });
+    }
 
     setWrapperRef = (node) => this.wrapper_ref = node;
 

@@ -1,4 +1,3 @@
-import CashierStore        from './Cashier/cashier-store';
 import ContractReplayStore from './Contract/contract-replay-store';
 import ContractTradeStore  from './Contract/contract-trade-store';
 import MT5Store            from './MT5/mt5-store';
@@ -8,8 +7,8 @@ import StatementStore      from './Statement/statement-store';
 import TradeStore          from './Trading/trade-store';
 
 export default class ModulesStore {
-    constructor(root_store) {
-        this.cashier         = new CashierStore({ root_store });
+    constructor(root_store, core_store) {
+        this.cashier         = core_store.modules.cashier;
         this.contract_replay = new ContractReplayStore({ root_store });
         this.contract_trade  = new ContractTradeStore({ root_store });
         this.mt5             = new MT5Store({ root_store });

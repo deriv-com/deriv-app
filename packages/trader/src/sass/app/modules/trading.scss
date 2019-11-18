@@ -162,7 +162,6 @@
             &-value {
                 font-size: 1.4em;
                 font-weight: 700;
-                text-transform: capitalize;
                 text-align: left;
                 line-height: 1.25;
                 margin-left: 0.1em;
@@ -343,7 +342,6 @@
     //    &-header {
     //        margin: 2px 8px 8px;
     //        padding: 0;
-    //        text-transform: capitalize;
     //        @include themify($themes) {
     //            color: themed('text_color');
     //        }

@@ -133,7 +133,6 @@
         }
         &--hint {
             @include typeface(--xsmall-left-normal-black, none);
-            color: var(--text-less-prominent);
             margin-left: 7.05em;
         }
     }

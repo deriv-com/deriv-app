@@ -1,16 +1,16 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.text_getSubstring = {
     init() {
         this.WHERE_OPTIONS_1 = [
-            [translate('letter\u00A0#'), 'FROM_START'],
-            [translate('letter\u00A0#\u00A0from end'), 'FROM_END'],
-            [translate('first'), 'FIRST'],
+            [localize('letter\u00A0#'), 'FROM_START'],
+            [localize('letter\u00A0#\u00A0from end'), 'FROM_END'],
+            [localize('first'), 'FIRST'],
         ];
         this.WHERE_OPTIONS_2 = [
-            [translate('letter\u00A0#'), 'FROM_START'],
-            [translate('letter\u00A0#\u00A0from end'), 'FROM_END'],
-            [translate('last'), 'LAST'],
+            [localize('letter\u00A0#'), 'FROM_START'],
+            [localize('letter\u00A0#\u00A0from end'), 'FROM_END'],
+            [localize('last'), 'LAST'],
         ];
 
         this.jsonInit(this.definition());
@@ -20,7 +20,7 @@ Blockly.Blocks.text_getSubstring = {
     },
     definition(){
         return {
-            message0: translate('in text %1 get substring from %2 %3 to %4 %5'),
+            message0: localize('in text %1 get substring from %2 %3 to %4 %5'),
             args0   : [
                 {
                     type: 'input_value',
@@ -46,18 +46,18 @@ Blockly.Blocks.text_getSubstring = {
                 },
             ],
             output         : 'String',
-            outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
+            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Returns a specific portion of a given string of text.'),
+            tooltip        : localize('Returns a specific portion of a given string of text.'),
             category       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Get substring'),
-            'description' : translate('Returns a specific portion of a given string of text.'),
+            'display_name': localize('Get substring'),
+            'description' : localize('Returns a specific portion of a given string of text.'),
         };
     },
     mutationToDom() {
@@ -77,21 +77,39 @@ Blockly.Blocks.text_getSubstring = {
         this.updateAt(1, isAt1);
         this.updateAt(2, isAt2);
     },
-    updateAt(n, isAt) {
-        this.removeInput(`AT${n}`, true);
-        if (isAt) {
-            this.appendValueInput(`AT${n}`).setCheck('Number');
-        } else {
+    updateAt(n, is_at) {
+        const input = this.getInput(`AT${n}`);
+        let old_label_text;
+
+        // Keep track of initial FieldLabel, we'll restore this when
+        // input types were changed.
+        if (input) {
+            input.fieldRow.some(field => {
+                if (field instanceof Blockly.FieldLabel) {
+                    old_label_text = field.text_; // eslint-disable-line no-underscore-dangle
+                }
+            });
+            this.removeInput(`AT${n}`);
+        }
+
+        const new_input = is_at ?
+            this.appendValueInput(`AT${n}`).setCheck('Number') :
             this.appendDummyInput(`AT${n}`);
+        
+        if (old_label_text) {
+            new_input.insertFieldAt(0, new Blockly.FieldLabel(old_label_text));
         }
 
         const menu = new Blockly.FieldDropdown(this[`WHERE_OPTIONS_${n}`], value => {
-            const newAt = ['FROM_START', 'FROM_END'].includes(value);
-            if (newAt !== isAt) {
-                this.updateAt(n, newAt);
+            const new_at = ['FROM_START', 'FROM_END'].includes(value);
+
+            if (new_at !== is_at) {
+                this.updateAt(n, new_at);
                 this.setFieldValue(value, `WHERE${n}`);
+
                 return null;
             }
+            
             return undefined;
         });
 

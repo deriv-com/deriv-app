@@ -5,7 +5,6 @@ import {
 import { observer }  from '../utils/observer';
 
 export default class SummaryStore {
-    @observable currency = '';
     @observable summary = {
         lost_contracts: 0,
         number_of_runs: 0,
@@ -17,8 +16,6 @@ export default class SummaryStore {
 
     constructor(root_store) {
         this.root_store = root_store;
-        const { client } = this.root_store.core;
-        this.currency = client.currency;
     }
 
     @action.bound

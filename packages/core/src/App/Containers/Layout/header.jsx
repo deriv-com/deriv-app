@@ -147,6 +147,7 @@ export default connect(
         can_upgrade_to          : client.can_upgrade_to,
         currency                : client.currency,
         is_logged_in            : client.is_logged_in,
+        is_logging_in           : client.is_logging_in,
         is_virtual              : client.is_virtual,
         enableApp               : ui.enableApp,
         is_acc_switcher_on      : ui.is_accounts_switcher_on,
@@ -154,7 +155,6 @@ export default connect(
         is_dark_mode            : ui.is_dark_mode_on,
         is_app_disabled         : ui.is_app_disabled,
         is_loading              : ui.is_loading,
-        is_logging_in           : ui.is_logging_in,
         notifications_count     : ui.notifications.length,
         is_notifications_visible: ui.is_notifications_visible,
         is_payment_agent_visible: !!(modules.cashier.config.payment_agent.filtered_list.length

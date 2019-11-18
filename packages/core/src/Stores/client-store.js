@@ -45,6 +45,7 @@ export default class ClientStore extends BaseStore {
     @observable account_settings               = {};
     @observable account_status                 = {};
     @observable device_data                    = {};
+    @observable is_logging_in                  = false;
     @observable has_logged_out                 = false;
     @observable landing_companies              = {
         financial_company: {},
@@ -542,7 +543,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     async switchAccount(loginid) {
         this.setPreSwitchAccount(true);
-        this.root_store.ui.setIsLoggingIn(true);
+        this.setIsLoggingIn(true);
         this.root_store.ui.removeNotifications();
         this.root_store.ui.removeAllNotificationMessages();
         this.setSwitched(loginid);
@@ -576,7 +577,7 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     async init(login_new_user) {
-        this.root_store.ui.setIsLoggingIn(true);
+        this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
@@ -637,7 +638,7 @@ export default class ClientStore extends BaseStore {
         this.responseWebsiteStatus(await WS.storage.websiteStatus());
 
         this.registerReactions();
-        this.root_store.ui.setIsLoggingIn(false);
+        this.setIsLoggingIn(false);
         this.setInitialized(true);
     }
 
@@ -731,6 +732,11 @@ export default class ClientStore extends BaseStore {
             icon : account_type.toLowerCase(), // TODO: display the icon
             title: account_type.toLowerCase() === 'virtual' ? localize('DEMO') : account_type,
         };
+    }
+
+    @action.bound
+    setIsLoggingIn(bool) {
+        this.is_logging_in = bool;
     }
 
     @action.bound

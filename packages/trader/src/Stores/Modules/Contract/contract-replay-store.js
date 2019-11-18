@@ -5,7 +5,9 @@ import ObjectUtils            from 'deriv-shared/utils/object';
 import { WS }                 from 'Services/ws-methods';
 import { localize }           from 'App/i18n';
 import ContractStore          from './contract-store';
-import { getOrderAmount }     from './Helpers/multiplier';
+import {
+    getMultiplierContractUpdate,
+    getOrderAmount }          from './Helpers/multiplier';
 import { contractSold }       from '../Portfolio/Helpers/portfolio-notifications';
 import BaseStore              from '../../base-store';
 
@@ -230,5 +232,11 @@ export default class ContractReplayStore extends BaseStore {
         }
 
         return !!(take_profit || stop_loss);
+    }
+
+    @action.bound
+    resetContractUpdate(contract_id) {
+        const contract = this.getContractById(contract_id);
+        contract.contract_update = getMultiplierContractUpdate(this.root_store.modules.trade, contract.contract_info);
     }
 }

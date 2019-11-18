@@ -576,18 +576,9 @@ export default class ClientStore extends BaseStore {
     setUserSegment() {
         BinarySocket.wait('get_settings').then(() => {
             const {
-                address_city,
-                address_postcode,
-                address_state,
-                citizen,
+                user_id,
                 email,
-                first_name,
-                last_name,
-                phone,
-                place_of_birth,
-                residence,
-                tax_identification_number,
-                tax_residence,
+                account_list
             } = this.account_settings;
     
             const {
@@ -595,32 +586,26 @@ export default class ClientStore extends BaseStore {
                 date_first_contact,
                 gclid_url,
                 signup_device,
-                utm_campaign,
-                utm_medium,
-                utm_source,
             } = this.device_data;
+            const login_ids = account_list.map(account => account.loginid);
+            const currencies = account_list.map(account => account.currency.toLowerCase());
+            const name = `${first_name} ${last_name}`;
+            const selected_language = getLanguage().toLowerCase();
+            const selected_loginid = this.loginid;
+            const selected_currency = this.selected_currency;
     
-            window.analytics.identify(this.loginid, {
-                address_city,
-                address_postcode,
-                address_state,
-                affiliate_token,
-                citizen,
-                currency: this.selected_currency,
-                date_first_contact,
+            window.analytics.identify(user_id, {
+                name,
                 email,
+                selected_loginid,
+                selected_currency,
+                selected_language,
+                login_ids,
+                currencies,
+                affiliate_token,
+                date_first_contact,
                 gclid_url,
-                language: getLanguage().toLowerCase(),
-                name    : `${first_name} ${last_name}`,
-                phone,
-                place_of_birth,
-                residence,
                 signup_device,
-                tax_identification_number,
-                tax_residence,
-                utm_campaign,
-                utm_medium,
-                utm_source,
             });
         });
     }

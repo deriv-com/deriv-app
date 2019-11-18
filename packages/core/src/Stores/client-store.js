@@ -1025,6 +1025,7 @@ export default class ClientStore extends BaseStore {
                 await WS.authorized.storage.getSettings().then(async response => {
                     this.setAccountSettings(response.get_settings);
                 });
+                this.upgrade_info = this.getBasicUpgradeInfo();
                 cb();
             }
         });

@@ -1,15 +1,11 @@
-import ClientStore  from './client-store';
-import CommonStore  from './common-store';
-import GTMStore     from './gtm-store';
 import ModulesStore from './Modules';
-import UIStore      from './ui-store';
 
 export default class RootStore {
-    constructor() {
-        this.client  = new ClientStore(this);
-        this.common  = new CommonStore(this);
-        this.modules = new ModulesStore(this);
-        this.ui      = new UIStore();
-        this.gtm     = new GTMStore(this);
+    constructor(core_store) {
+        this.client  = core_store.client;
+        this.common  = core_store.common;
+        this.modules = new ModulesStore(this, core_store);
+        this.ui      = core_store.ui;
+        this.gtm     = core_store.gtm;
     }
 }

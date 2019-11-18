@@ -35,14 +35,14 @@
 
         &-text, &-symbol {
             @include typeface(--paragraph-left-normal-black);
+            line-height: 1.43;
             color: var(--text-general);
             display: flex;
             width: 100%;
             justify-content: center;
             pointer-events: none;
             vertical-align: middle;
-            padding: 0.6rem 0;
-            padding-left: 1.6em;
+            padding: 0.6rem 1.6rem;
         }
         &-text--left {
             justify-content: flex-start;
@@ -54,6 +54,7 @@
         }
         &--selected .dc-list__item-text, &--selected .dc-list__item-symbol, &--selected .dc-list__item-tooltip {
             @include typeface(--paragraph-left-bold-active);
+            line-height: 1.43;
             color: var(--text-prominent);
             background: var(--state-active);
         }

@@ -43,22 +43,19 @@ class SetResidence extends React.Component {
         this.props.enableApp();
     };
 
-    onSubmit(values) {
-        const { onSetResidence, residence_list } = this.props;
-        const index_of_selection = residence_list.findIndex((item) => isResidenceText(item, values));
-
-        const modded_values = { ...values, residence: residence_list[index_of_selection].value };
-        onSetResidence(modded_values, this.onSetResidenceComplete);
-    }
-
     render() {
-        const { residence_list } = this.props;
+        const { onSetResidence, residence_list } = this.props;
+        const onSetResidencePassthrough = (values) => {
+            const index_of_selection = residence_list.findIndex((item) => isResidenceText(item, values));
+            const modded_values = { ...values, residence: residence_list[index_of_selection].value };
+            onSetResidence(modded_values, this.onSetResidenceComplete);
+        };
         return (
             <div className='set-residence'>
                 <Formik
-                    initialValues={{ residence: '' }}
+                    initialValues={ { residence: '' } }
                     validate={ (values) => validateResidence(values, residence_list) }
-                    onSubmit={ this.onSubmit}
+                    onSubmit={ onSetResidencePassthrough }
                 >
                     {({ isSubmitting, errors, values, setFieldValue, touched }) => (
                         <Form>

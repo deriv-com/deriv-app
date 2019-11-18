@@ -225,13 +225,10 @@ export default class ContractReplayStore extends BaseStore {
             take_profit: contract_take_profit,
         } = getOrderAmount(contract_info);
 
-        if ((has_take_profit && take_profit > 0) || (has_stop_loss && stop_loss > 0)) {
-            return true;
-        } else if (contract_take_profit === undefined || contract_stop_loss === undefined) {
-            return false; // don't allow contract_update if initial take_profit or stop_loss is undefined
-        }
+        const is_take_profit_valid = (has_take_profit ? take_profit > 0 : contract_take_profit !== undefined);
+        const is_stop_loss_valid   = (has_stop_loss ? stop_loss > 0 : contract_stop_loss !== undefined);
 
-        return !!(take_profit || stop_loss);
+        return !!(is_take_profit_valid || is_stop_loss_valid);
     }
 
     @action.bound

@@ -1,16 +1,16 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.text_getSubstring = {
     init() {
         this.WHERE_OPTIONS_1 = [
-            [translate('letter\u00A0#'), 'FROM_START'],
-            [translate('letter\u00A0#\u00A0from end'), 'FROM_END'],
-            [translate('first'), 'FIRST'],
+            [localize('letter\u00A0#'), 'FROM_START'],
+            [localize('letter\u00A0#\u00A0from end'), 'FROM_END'],
+            [localize('first'), 'FIRST'],
         ];
         this.WHERE_OPTIONS_2 = [
-            [translate('letter\u00A0#'), 'FROM_START'],
-            [translate('letter\u00A0#\u00A0from end'), 'FROM_END'],
-            [translate('last'), 'LAST'],
+            [localize('letter\u00A0#'), 'FROM_START'],
+            [localize('letter\u00A0#\u00A0from end'), 'FROM_END'],
+            [localize('last'), 'LAST'],
         ];
 
         this.jsonInit(this.definition());
@@ -20,7 +20,7 @@ Blockly.Blocks.text_getSubstring = {
     },
     definition(){
         return {
-            message0: translate('in text %1 get substring from %2 %3 to %4 %5'),
+            message0: localize('in text %1 get substring from %2 %3 to %4 %5'),
             args0   : [
                 {
                     type: 'input_value',
@@ -46,18 +46,18 @@ Blockly.Blocks.text_getSubstring = {
                 },
             ],
             output         : 'String',
-            outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
+            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Returns a specific portion of a given string of text.'),
+            tooltip        : localize('Returns a specific portion of a given string of text.'),
             category       : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Get substring'),
-            'description' : translate('Returns a specific portion of a given string of text.'),
+            'display_name': localize('Get substring'),
+            'description' : localize('Returns a specific portion of a given string of text.'),
         };
     },
     mutationToDom() {

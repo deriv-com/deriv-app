@@ -24,6 +24,7 @@ class NoBalance extends React.Component {
                     text={localize('Deposit now')}
                     onClick={this.onClickDeposit}
                     primary
+                    large
                 />
             </div>
         );

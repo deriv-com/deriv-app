@@ -134,9 +134,29 @@
     }
     /** @define notifications-item; weak */
     &-item {
-        padding: 8px;
-        margin-left: 32px;
+        padding: 0.8rem;
+        margin-left: 3.2rem;
+        margin-right: 0.8rem;
+        position: relative;
 
+        &:after {
+            position: absolute;
+            content: '';
+            bottom: 0;
+            left: -3.2rem;
+            width: calc(100% + 4rem);
+            height: 1px;
+            background: var(--border-disabled);
+        }
+        &__cta-button {
+            margin: 8px 0 0 auto;
+            height: 24px !important;
+            width: 106px;
+
+            .btn__text {
+                font-size: 1.2rem;
+            }
+        }
         &__title {
             font-size: 1.4rem;
             font-weight: bold;

@@ -10,8 +10,7 @@ import {
 import CurrencyUtils                  from 'deriv-shared/utils/currency';
 import ObjectUtils                    from 'deriv-shared/utils/object';
 import { localize }                   from 'App/i18n';
-import { WS }                         from 'Services';
-import BinarySocket                   from '_common/base/socket_base';
+import { WS }                         from 'Services/ws-methods';
 import {
     isDigitContractType,
     isDigitTradeType      }           from 'Modules/Trading/Helpers/digits';
@@ -120,7 +119,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     init = async () => {
         // To be sure that the website_status response has been received before processing trading page.
-        await BinarySocket.wait('authorize', 'website_status');
+        await WS.wait('authorize', 'website_status');
         WS.storage.activeSymbols('brief').then(({ active_symbols }) => {
             runInAction(() => {
                 this.active_symbols = active_symbols;
@@ -220,7 +219,7 @@ export default class TradeStore extends BaseStore {
     async setActiveSymbols() {
         const { active_symbols, error } = this.should_refresh_active_symbols ?
             // if SmartCharts has requested active_symbols, we wait for the response
-            await BinarySocket.wait('active_symbols')
+            await WS.wait('active_symbols')
             : // else requests new active_symbols
             await WS.activeSymbols();
 
@@ -258,7 +257,7 @@ export default class TradeStore extends BaseStore {
         this.currency         = this.root_store.client.currency;
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
-        await BinarySocket.wait('authorize');
+        await WS.wait('authorize');
         await this.setActiveSymbols();
         runInAction(async() => {
             await WS.contractsFor(this.symbol).then(async(r) => {
@@ -368,7 +367,7 @@ export default class TradeStore extends BaseStore {
             this.main_barrier = main_barrier;
             // this.main_barrier.updateBarrierShade(true, contract_type);
         } else { this.main_barrier = null; }
-    }
+    };
 
     @action.bound
     onPurchase(proposal_id, price, type) {
@@ -424,7 +423,7 @@ export default class TradeStore extends BaseStore {
                         this.purchase_info = response;
                         this.proposal_requests = {};
                         this.debouncedProposal();
-                        this.root_store.gtm.pushPurchaseData(contract_data);
+                        this.pushPurchaseDataToGtm(contract_data);
                         return;
                     }
                 } else if (response.error) {
@@ -455,7 +454,7 @@ export default class TradeStore extends BaseStore {
         [].forEach.bind(el_purchase_value, (el) => {
             el.classList.add('trade-container__price-info--fade');
         })();
-    }
+    };
 
     /**
      * Updates the store with new values
@@ -574,6 +573,41 @@ export default class TradeStore extends BaseStore {
     @computed
     get show_digits_stats() {
         return isDigitTradeType(this.contract_type);
+    }
+
+    @action.bound
+    pushPurchaseDataToGtm(contract_data) {
+        const data = {
+            event   : 'buy_contract',
+            bom_ui  : 'new',
+            contract: {
+                amount       : contract_data.amount,
+                barrier1     : contract_data.barrier,
+                barrier2     : contract_data.barrier2,
+                basis        : contract_data.basis,
+                buy_price    : contract_data.buy_price,
+                contract_type: contract_data.contract_type,
+                currency     : contract_data.currency,
+                date_expiry  : contract_data.date_expiry,
+                date_start   : contract_data.date_start,
+                duration     : contract_data.duration,
+                duration_unit: contract_data.duration_unit,
+                payout       : contract_data.payout,
+                symbol       : contract_data.symbol,
+            },
+            settings: {
+                theme           : this.root_store.ui.is_dark_mode_on ? 'dark' : 'light',
+                positions_drawer: this.root_store.ui.is_positions_drawer_on ? 'open' : 'closed',
+                purchase_confirm: this.root_store.ui.is_purchase_confirm_on ? 'enabled' : 'disabled',
+                chart           : {
+                    toolbar_position: this.root_store.ui.is_chart_layout_default ? 'bottom' : 'left',
+                    chart_asset_info: this.root_store.ui.is_chart_asset_info_visible ? 'visible' : 'hidden',
+                    chart_type      : this.root_store.modules.contract_trade.chart_type,
+                    granularity     : this.root_store.modules.contract_trade.granularity,
+                },
+            },
+        };
+        this.root_store.gtm.pushDataLayer(data);
     }
 
     @action.bound
@@ -697,14 +731,53 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    preSwitchAccountListener() {
+        this.clearContracts();
+
+        return Promise.resolve();
+    }
+
+    @action.bound
+    logoutListener() {
+        this.should_refresh_active_symbols = true;
+        this.clearContracts();
+        this.refresh();
+        this.debouncedProposal();
+        this.resetErrorServices();
+        return Promise.resolve();
+    }
+
+    @action.bound
+    clientInitListener() {
+        this.should_refresh_active_symbols = true;
+        this.initAccountCurrency(this.root_store.client.currency);
+        this.prepareTradeStore();
+        return Promise.resolve();
+    }
+
+    @action.bound
+    networkStatusChangeListener(is_online) {
+        this.setTradeStatus(is_online);
+    }
+
+    @action.bound
+    themeChangeListener(is_dark_mode_on) {
+        this.updateBarrierColor(is_dark_mode_on);
+    }
+
+    @action.bound
     resetErrorServices() {
         this.root_store.ui.toggleServicesErrorModal(false);
-
     }
 
     @action.bound
     onMount() {
+        this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
+        this.onLogout(this.logoutListener);
+        this.onClientInit(this.clientInitListener);
+        this.onNetworkStatusChange(this.networkStatusChangeListener);
+        this.onThemeChange(this.themeChangeListener);
         this.setChartStatus(true);
         runInAction(async() => {
             this.is_trade_component_mounted = true;
@@ -745,7 +818,12 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onUnmount() {
+        this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
+        this.disposeLogout();
+        this.disposeClientInit();
+        this.disposeNetworkStatusChange();
+        this.disposeThemeChange();
         this.is_trade_component_mounted = false;
         // TODO: Find a more elegant solution to unmount contract-trade-store
         this.root_store.modules.contract_trade.onUnmount();
@@ -796,22 +874,22 @@ export default class TradeStore extends BaseStore {
             delete g_subscribers_map[key];
         }
         // WS.forget('ticks_history', callback, match);
-    }
+    };
 
     wsForgetStream = (stream_id) => {
         WS.forgetStream(stream_id);
-    }
+    };
 
     wsSendRequest = (req) => {
         if (req.time) {
-            return ServerTime.timePromise.then(() => ({
+            return ServerTime.timePromise().then((server_time) => ({
                 msg_type: 'time',
-                time    : ServerTime.get().unix(),
+                time    : server_time.unix(),
             }));
         }
         if (req.active_symbols) {
             return this.should_refresh_active_symbols ?
-                WS.activeSymbols('brief') : BinarySocket.wait('active_symbols');
+                WS.activeSymbols('brief') : WS.wait('active_symbols');
         }
         return WS.storage.send(req);
     };

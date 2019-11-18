@@ -112,9 +112,11 @@ export default class PortfolioStore extends BaseStore {
         const contract_trade = this.root_store.modules.contract_trade;
         const has_poc = !ObjectUtils.isEmptyObject(response.proposal_open_contract);
         const has_error = !!response.error;
-        if (!has_poc && !has_error) { return; }
-        contract_trade.addContract(this.deepClone(response.proposal_open_contract));
-        contract_trade.updateProposal(this.deepClone(response));
+        if (!has_poc && !has_error) return;
+        if (has_poc) {
+            contract_trade.addContract(this.deepClone(response.proposal_open_contract));
+            contract_trade.updateProposal(this.deepClone(response));
+        }
     }
 
     @action.bound

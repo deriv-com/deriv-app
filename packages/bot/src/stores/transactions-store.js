@@ -1,4 +1,5 @@
 import { action, observable } from 'mobx';
+import { formatDate }         from 'deriv-shared/utils/date';
 import { isEnded }            from '../utils/contract';
 
 export default class TransactionsStore {
@@ -13,17 +14,20 @@ export default class TransactionsStore {
     @action.bound
     pushTransaction(data) {
         const is_completed  = isEnded(data);
+
         const contract = {
             buy_price    : data.buy_price,
             contract_type: data.contract_type,
             currency     : data.currency,
-            refrence_id  : data.transaction_ids.buy,
+            date_start   : formatDate(data.date_start, 'YYYY-M-D HH:mm:ss [GMT]'),
+            reference_id : data.transaction_ids.buy,
             entry_spot   : data.entry_tick_display_value,
             exit_spot    : data.exit_tick_display_value,
             profit       : is_completed && data.profit,
+            shortcode    : data.shortcode,
             is_completed,
         };
-        if (this.contracts.some(e => e.refrence_id === data.transaction_ids.buy)) {
+        if (this.contracts.some(e => e.reference_id === data.transaction_ids.buy)) {
             this.contracts.shift();
         }
         this.contracts.unshift(contract);

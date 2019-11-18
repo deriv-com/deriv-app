@@ -52,7 +52,7 @@ const getFavoriteOpenSymbol = (active_symbols) => {
     return undefined;
 };
 
-export const getFirstOpenSymbol = (active_symbols) => {
+const getFirstOpenSymbol = (active_symbols) => {
     const first_open_symbol = active_symbols
         .filter(symbol_info => /major_pairs|random_index/.test(symbol_info.submarket))
         .find(isSymbolOpen);

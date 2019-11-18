@@ -1,4 +1,3 @@
-/* eslint-disable func-names, no-underscore-dangle */
 import config from '../../constants';
 
 Blockly.Block.prototype.getDisplayName = function() {
@@ -89,7 +88,6 @@ Blockly.Block.prototype.getTopParent = function() {
 };
 
 Blockly.Block.getDimensions = function(block_node) {
-    // eslint-disable-next-line
     const options = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
     const fragment = document.createDocumentFragment();
     const el_injection_div = document.createElement('div');

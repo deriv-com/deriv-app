@@ -9,6 +9,7 @@ import ErrorMessage          from '../../ErrorMessages/LoadErrorMessage';
 import Loading               from '../../../../../templates/app/components/loading.jsx';
 
 class ProofOfIdentityContainer extends React.Component {
+    is_mounted = false;
     state = {
         is_loading        : true,
         api_error         : false,
@@ -72,6 +73,8 @@ class ProofOfIdentityContainer extends React.Component {
     };
 
     componentDidMount() {
+        // TODO: Find a better solution for handling no-op instead of using is_mounted flags
+        this.is_mounted = true;
         WS.authorized.getAccountStatus().then(response => {
             const { get_account_status } = response;
             this.getOnfidoServiceToken().then(onfido_service_token => {
@@ -81,10 +84,16 @@ class ProofOfIdentityContainer extends React.Component {
                 const { onfido_unsupported }           = this.state;
                 const status                           = getIdentityStatus(identity, onfido_unsupported);
                 const unwelcome                        = get_account_status.status.some(account_status => account_status === 'unwelcome');
-                this.setState({ is_loading: false, has_poa, needs_poa, status, onfido_service_token, unwelcome });
+                if (this.is_mounted) {
+                    this.setState({ is_loading: false, has_poa, needs_poa, status, onfido_service_token, unwelcome });
+                    this.props.refreshNotifications();
+                }
             });
-            this.props.refreshNotifications();
         });
+    }
+
+    componentWillUnmount() {
+        this.is_mounted = false;
     }
 
     render() {

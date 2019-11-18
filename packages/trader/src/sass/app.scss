@@ -15,7 +15,7 @@
 
 // Layout
 @import 'app/_common/layout/layouts';
-@import 'app/_common/layout/header';
+// @import 'app/_common/layout/header'; Moved to core
 @import 'app/_common/layout/footer';
 @import 'app/_common/layout/multistep';
 @import 'app/_common/layout/send-email-template';
@@ -67,7 +67,8 @@
 
 // Modules
 @import 'app/modules/reset-password';
-@import 'app/modules/cashier';
+// moved to core
+//@import 'app/modules/cashier';
 @import 'app/modules/contract';
 @import 'app/modules/contract/bottom-widgets';
 @import 'app/modules/error-pages';

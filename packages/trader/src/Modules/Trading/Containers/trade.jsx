@@ -182,26 +182,19 @@ class ChartTradeClass extends React.Component {
         <ChartBottomWidgets digits={digits} tick={tick} />
     );
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.should_refresh) this.props.resetRefresh();
+    }
+
     render() {
         const {
             show_digits_stats,
             main_barrier,
             should_refresh,
-            resetRefresh,
             extra_barriers = [],
         } = this.props;
 
         const barriers =  main_barrier ? [main_barrier,...extra_barriers] : extra_barriers;
-
-        // smartcharts only way to refresh active-symbols is to reset the connection.
-        const is_socket_opened = this.props.is_socket_opened && !should_refresh;
-
-        if (should_refresh) {
-            setImmediate(() => resetRefresh());
-            // TODO: fix this in smartcharts, it should be possible to update
-            // active-symbols without re-rendering the entire chart.
-            return null;
-        }
 
         return (
             <SmartChart
@@ -221,11 +214,12 @@ class ChartTradeClass extends React.Component {
                 settings={this.props.settings}
                 symbol={this.props.symbol}
                 topWidgets={ChartTopWidgets}
-                isConnectionOpened={is_socket_opened}
+                isConnectionOpened={this.props.is_socket_opened}
                 clearChart={false}
                 importedLayout={this.props.chart_layout}
                 onExportLayout={this.props.exportLayout}
                 shouldFetchTradingTimes={!this.props.end_epoch}
+                refreshActiveSymbols={should_refresh}
             >
                 <ChartMarkers />
             </SmartChart>

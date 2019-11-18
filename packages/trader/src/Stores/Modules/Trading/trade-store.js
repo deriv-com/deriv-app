@@ -271,6 +271,14 @@ export default class TradeStore extends BaseStore {
         await WS.wait('authorize');
         await this.setActiveSymbols();
         runInAction(async() => {
+            await WS.contractsFor(this.symbol).then(async(r) => {
+                if (r.error && r.error.code === 'InvalidSymbol') {
+                    await this.resetRefresh();
+                    await this.setActiveSymbols();
+                    await pickDefaultSymbol();
+                    runInAction(() => this.should_refresh_active_symbols = true);
+                }
+            });
             await this.setDefaultSymbol();
             await this.setContractTypes();
             await this.processNewValuesAsync({
@@ -793,7 +801,9 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     clientInitListener() {
+        this.should_refresh_active_symbols = true;
         this.initAccountCurrency(this.root_store.client.currency);
+        this.prepareTradeStore();
         return Promise.resolve();
     }
 
@@ -930,14 +940,14 @@ export default class TradeStore extends BaseStore {
             }));
         }
         if (req.active_symbols) {
-            return WS.wait('active_symbols');
+            return this.should_refresh_active_symbols ?
+                WS.activeSymbols('brief') : WS.wait('active_symbols');
         }
         return WS.storage.send(req);
     };
 
     @action.bound
     resetRefresh() {
-        WS.activeSymbols(); // reset active symbols
         this.should_refresh_active_symbols = false;
     }
 

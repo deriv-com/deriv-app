@@ -63,6 +63,7 @@ class AccountTransferReceipt extends React.Component {
                     text={localize('Done')}
                     onClick={this.props.resetAccountTransfer}
                     primary
+                    large
                 />
             </div>
         );

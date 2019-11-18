@@ -27,7 +27,6 @@ class PositionsDrawer extends React.Component {
             all_positions,
             error,
             currency,
-            is_dark_theme,
             is_empty,
             is_positions_drawer_on,
             onClickSell,
@@ -35,7 +34,6 @@ class PositionsDrawer extends React.Component {
             toggleDrawer,
             toggleUnsupportedContractModal,
             onHoverPosition,
-            validation_errors,
         } = this.props;
 
         // Show only 5 most recent open contracts
@@ -57,7 +55,6 @@ class PositionsDrawer extends React.Component {
                             unmountOnExit
                         >
                             <PositionsDrawerCard
-                                is_dark_theme={is_dark_theme}
                                 onClickSell={onClickSell}
                                 onClickRemove={onClickRemove}
                                 onMouseEnter={() => {
@@ -70,7 +67,6 @@ class PositionsDrawer extends React.Component {
                                 currency={currency}
                                 toggleUnsupportedContractModal={toggleUnsupportedContractModal}
                                 {...portfolio_position}
-                                validation_errors={validation_errors}
                             />
                         </CSSTransition>
                     ))}
@@ -128,7 +124,6 @@ PositionsDrawer.propTypes = {
     children              : PropTypes.any,
     currency              : PropTypes.string,
     error                 : PropTypes.string,
-    is_dark_theme         : PropTypes.bool,
     is_empty              : PropTypes.bool,
     is_loading            : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
@@ -140,7 +135,6 @@ PositionsDrawer.propTypes = {
     onMount               : PropTypes.func,
     onUnmount             : PropTypes.func,
     toggleDrawer          : PropTypes.func,
-    validation_errors     : PropTypes.object,
 };
 
 export default connect(
@@ -155,8 +149,6 @@ export default connect(
         onHoverPosition               : modules.portfolio.onHoverPosition,
         onMount                       : modules.portfolio.onMount,
         onUnmount                     : modules.portfolio.onUnmount,
-        validation_errors             : modules.portfolio.validation_errors,
-        is_dark_theme                 : ui.is_dark_mode_on,
         is_positions_drawer_on        : ui.is_positions_drawer_on,
         toggleDrawer                  : ui.togglePositionsDrawer,
         toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,

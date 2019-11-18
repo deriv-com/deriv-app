@@ -751,7 +751,6 @@ export default class TradeStore extends BaseStore {
     clientInitListener() {
         this.should_refresh_active_symbols = true;
         this.initAccountCurrency(this.root_store.client.currency);
-        this.prepareTradeStore();
         return Promise.resolve();
     }
 

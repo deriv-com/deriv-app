@@ -236,6 +236,9 @@ const PositionsDrawerCard = ({
             onMouseLeave={() => {
                 onMouseLeave(false, contract_info);
             }}
+            onClick={() => {
+                onMouseLeave(false, contract_info);
+            }}
         >
             <ResultOverlay
                 contract_id={id}

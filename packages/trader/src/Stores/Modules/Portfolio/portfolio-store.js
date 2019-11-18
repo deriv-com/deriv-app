@@ -123,6 +123,7 @@ export default class PortfolioStore extends BaseStore {
     updateTradeStore(is_over, portfolio_position) {
         const trade = this.root_store.modules.trade;
         trade.toggleLimitOrderBarriers(is_over, portfolio_position);
+        trade.setPurchaseSpotBarrier(is_over, portfolio_position);
     }
 
     @action.bound

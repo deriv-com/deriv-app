@@ -354,10 +354,10 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    setPurchaseSpotBarrier(is_over, contract_info) {
+    setPurchaseSpotBarrier(is_over, position) {
         if (this.is_multiplier && is_over) {
             const entrySpotBarrier = new ChartBarrierStore(
-                contract_info.entry_spot
+                position.contract_info.entry_spot
             );
             entrySpotBarrier.draggable = false;
             entrySpotBarrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
@@ -370,9 +370,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     toggleLimitOrderBarriers(is_over, position) {
         const contract_info = position.contract_info;
-
         setLimitOrderBarriers(this.barriers, is_over, this.contract_type, contract_info);
-        this.setPurchaseSpotBarrier(is_over, contract_info);
     }
 
     @action.bound

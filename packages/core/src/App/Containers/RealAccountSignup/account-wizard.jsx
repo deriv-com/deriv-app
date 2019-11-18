@@ -196,7 +196,7 @@ class AccountWizard extends React.Component {
                     }
                     {this.props.has_real_account &&
                     <div className='account-wizard__set-currency'>
-                        {this.props.has_currency &&
+                        {!this.props.has_currency &&
                         <p>
                             <Localize
                                 i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.'
@@ -242,7 +242,7 @@ AccountWizard.propTypes = {
 
 export default connect(({ client }) => ({
     realAccountSignup : client.realAccountSignup,
-    has_real_account  : client.has_real_account,
+    has_real_account  : client.has_active_real_account,
     has_currency      : !!client.currency,
     setAccountCurrency: client.setAccountCurrency,
 }))(AccountWizard);

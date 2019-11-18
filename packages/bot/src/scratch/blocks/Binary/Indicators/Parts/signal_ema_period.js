@@ -1,9 +1,9 @@
-import { translate } from '../../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.signal_ema_period = {
     init() {
         this.jsonInit({
-            message0: translate('Signal EMA Period %1'),
+            message0: localize('Signal EMA Period %1'),
             args0   : [
                 {
                     type : 'input_value',
@@ -21,8 +21,8 @@ Blockly.Blocks.signal_ema_period = {
         this.setMovable(false);
         this.setDeletable(false);
     },
-    onchange      : Blockly.Blocks.input_list.onchange,
-    allowedParents: ['macda_statement'],
+    onchange       : Blockly.Blocks.input_list.onchange,
+    allowed_parents: ['macda_statement'],
 };
 
 Blockly.JavaScript.signal_ema_period = () => {};

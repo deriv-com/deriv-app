@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.controls_flow_statements = {
     init() {
@@ -6,14 +6,14 @@ Blockly.Blocks.controls_flow_statements = {
     },
     definition(){
         return {
-            message0: translate('%1 of loop'),
+            message0: localize('%1 of loop'),
             args0   : [
                 {
                     type   : 'field_dropdown',
                     name   : 'FLOW',
                     options: [
-                        [translate('break out'), 'BREAK'],
-                        [translate('continue with next iteration'), 'CONTINUE'],
+                        [localize('break out'), 'BREAK'],
+                        [localize('continue with next iteration'), 'CONTINUE'],
                     ],
                 },
             ],
@@ -22,14 +22,14 @@ Blockly.Blocks.controls_flow_statements = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Allows to exit the loop or jump to the next iteration'),
+            tooltip          : localize('This block is used to either terminate or continue a loop, and can be placed anywhere within a loop block.'),
             category         : Blockly.Categories.Loop,
         };
     },
     meta(){
         return {
-            'display_name': translate('Break out/continue'),
-            'description' : translate('This block is used to terminate or continue a loop, and can be placed anywhere within a loop block. Clicking on “break out” gives you two options: break out (terminates the loop), or continue with next iteration.'),
+            'display_name': localize('Break out/continue'),
+            'description' : localize('This block is used to either terminate or continue a loop, and can be placed anywhere within a loop block.'),
         };
     },
 };

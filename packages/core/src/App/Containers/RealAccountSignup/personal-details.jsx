@@ -86,7 +86,7 @@ export class DateOfBirth extends React.Component {
                                 'datepicker--active-label': !!value,
                             })}
                             onBlur={handleBlur}
-                            value={value ? toMoment(value).format('YYYY-MM-DD') : ''}
+                            value={value ? toMoment(value).format('DD-MM-YYYY') : ''}
                             readOnly
                         />
                         <IconDatepicker className='icon-datepicker' />
@@ -205,9 +205,9 @@ class PersonalDetails extends React.Component {
                                 </p>
                                 <div className='details-form__elements-container'>
                                     <ThemedScrollbars
-                                        autohide
+                                        autoHide
                                         style={{
-                                            height: '100%',
+                                            height: 'calc(100% - 16px)',
                                         }}
                                     >
                                         <div className='details-form__elements' style={{ paddingBottom: this.state.paddingBottom }}>
@@ -224,7 +224,7 @@ class PersonalDetails extends React.Component {
                                             <DateOfBirth
                                                 name='date_of_birth'
                                                 label={localize('Date of birth*')}
-                                                placeholder={localize('1999-07-01')}
+                                                placeholder={localize('01-07-1999')}
                                                 onFocus={this.onFocus}
                                             />
                                             <InputField
@@ -237,6 +237,7 @@ class PersonalDetails extends React.Component {
                                 </div>
                             </div>
                             <FormSubmitButton
+                                is_absolute
                                 cancel_label={localize('Previous')}
                                 has_cancel
                                 is_disabled={

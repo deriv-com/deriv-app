@@ -1,9 +1,9 @@
-import { translate } from '../../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.period = {
     init() {
         this.jsonInit({
-            message0: translate('Period %1'),
+            message0: localize('Period %1'),
             args0   : [
                 {
                     type : 'input_value',
@@ -21,8 +21,8 @@ Blockly.Blocks.period = {
         this.setMovable(false);
         this.setDeletable(false);
     },
-    onchange      : Blockly.Blocks.input_list.onchange,
-    allowedParents: [
+    onchange       : Blockly.Blocks.input_list.onchange,
+    allowed_parents: [
         'bb_statement',
         'bba_statement',
         'ema_statement',

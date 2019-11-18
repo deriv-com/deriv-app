@@ -27,8 +27,10 @@ export const scratchWorkspaceInit = async () => {
         });
 
         const onWorkspaceChange = event => {
-            const event_to_exclude = ['dragOutside'];
-            if (event_to_exclude.includes(event.type)) {
+            const is_drag_outside = event.type === 'dragOutside';
+            const is_click = event.type === 'ui' && event.element;
+            
+            if (is_drag_outside || is_click) {
                 return;
             }
 

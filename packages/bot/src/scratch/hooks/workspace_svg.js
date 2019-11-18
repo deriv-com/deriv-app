@@ -103,6 +103,7 @@ Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
     // Trigger a create event.
     Blockly.Events.fire(new Blockly.Events.Create(block));
 
+    block.select();
     this.centerOnBlock(block.id, false);
 }
 

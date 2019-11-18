@@ -1,17 +1,35 @@
-import React from 'react';
+import React       from 'react';
+import { connect } from 'Stores/connect';
 
 const AccountSignupModal = React.lazy(() => import(/* webpackChunkName: "account-signup-modal" */'../AccountSignupModal'));
 const ResetPasswordModal = React.lazy(() => import(/* webpackChunkName: "reset-password-modal" */'../ResetPasswordModal'));
 const SetResidenceModal  = React.lazy(() => import(/* webpackChunkName: "set-residence-modal"  */'../SetResidenceModal'));
 
-const AppModals = () => {
-    return (
-        <React.Fragment>
-            <AccountSignupModal />
-            <ResetPasswordModal />
-            <SetResidenceModal />
-        </React.Fragment>
-    );
+const AppModals = ({ is_set_residence_modal_visible }) => {
+    const url_params = new URLSearchParams(window.location.search);
+    let ComponentToLoad = null;
+
+    switch (url_params.get('action')) {
+        case 'reset_password':
+            ComponentToLoad = <ResetPasswordModal />;
+            break;
+        case 'signup':
+            ComponentToLoad = <AccountSignupModal />;
+            break;
+        default:
+            if (is_set_residence_modal_visible) {
+                ComponentToLoad = <SetResidenceModal />;
+            }
+            break;
+    }
+
+    return ComponentToLoad ? (
+        <React.Suspense fallback={ <div /> }>
+            {ComponentToLoad}
+        </React.Suspense>
+    ) : null;
 };
 
-export default AppModals;
+export default connect(({ ui }) => ({
+    is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
+}))(AppModals);

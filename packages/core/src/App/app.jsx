@@ -10,6 +10,7 @@ import ErrorBoundary                from './Components/Elements/Errors/error-bou
 import AppContents                  from './Containers/Layout/app-contents.jsx';
 import Footer                       from './Containers/Layout/footer.jsx';
 import Header                       from './Containers/Layout/header.jsx';
+import AppModals                    from './Containers/Modals';
 import Lazy                         from './Containers/Lazy';
 import Routes                       from './Containers/Routes/routes.jsx';
 import { interceptAcrossBot }       from './Constants/routes-config';
@@ -20,11 +21,6 @@ import initStore                   from './app.js';
 import 'Sass/app.scss';
 // Check if device is touch capable
 const isTouchDevice = 'ontouchstart' in document.documentElement;
-
-const shouldLoadModals = () => {
-    const url_params = new URLSearchParams(window.location.search);
-    return ['reset_password', 'signup'].includes(url_params.get('action'));
-};
 
 const App = ({ root_store }) => {
     const base = window.location.pathname.split('/')[1];
@@ -55,11 +51,7 @@ const App = ({ root_store }) => {
                                 </AppContents>
                             </ErrorBoundary>
                             <Footer />
-                            <Lazy
-                                ctor={ () => import(/* webpackChunkName: "app-modals", webpackPrefetch: true */'./Containers/Modals') }
-                                should_load={ shouldLoadModals() }
-                                has_progress={ false }
-                            />
+                            <AppModals />
                         </React.Fragment>
                 }
             </MobxProvider>

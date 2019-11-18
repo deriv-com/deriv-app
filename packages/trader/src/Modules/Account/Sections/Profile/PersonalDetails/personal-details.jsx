@@ -18,6 +18,7 @@ import {
     validTaxID,
     validPhone,
     validLetterSymbol,
+    validCountryCode,
     validLength }                              from 'Utils/Validator/declarative-validation-rules';
 import { toMoment }                            from 'Utils/Date';
 // import { account_opening_reason_list }         from './constants';
@@ -158,6 +159,8 @@ class PersonalDetailsForm extends React.Component {
 
             if (!validPhone(values.phone)) {
                 errors.phone = localize('Please enter a valid phone number, including the country code (e.g. +15417541234)');
+            } else if (!validCountryCode(this.props.residence_list, values.phone)) {
+                errors.phone = localize('Country code is wrong.');
             }  else if (!validLength(phone_trim, { min: min_phone_number, max: max_phone_number })) {
                 errors.phone = localize('You should enter 8-35 characters.');
             }
@@ -519,9 +522,11 @@ class PersonalDetailsForm extends React.Component {
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
+                                    {!(isSubmitting || (status && status.msg)) &&
                                     <div className='account-form__footer-note'>
                                         { localize('Please make sure your information is correct or it may affect your trading experience.') }
                                     </div>
+                                    }
                                     <Button
                                         className={classNames('account-form__footer-btn', {
                                             'btn--primary--green': is_submit_success,

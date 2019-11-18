@@ -23,6 +23,7 @@ const validGeneral             = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.t
 export const validAddress      = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
 export const validPostCode     = value => /^[a-zA-Z\d-\s]*$/.test(value);
 export const validPhone        = value =>  /^\+(?:[0-9] ?){6,14}[0-9]$/.test(value);
+export const validCountryCode  = (list, value) => list.some(item => value.startsWith(`+${item.phone_idd}`));
 const validRegular             = (value, options) => options.regex.test(value);
 const validEmailToken          = value => value.trim().length === 8;
 export const validTaxID        = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);

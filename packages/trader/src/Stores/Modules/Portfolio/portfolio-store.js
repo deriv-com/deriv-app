@@ -279,7 +279,10 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     onHoverPosition(is_over, position){
-        if (isEnded(position.contract_info) || !isMultiplierContract(position.type)) { return; }
+        const { symbol: underlying } = this.root_store.modules.trade;
+        if (position.contract_info.underlying !== underlying || isEnded(position.contract_info)
+            || !isMultiplierContract(position.type)) { return; }
+
         this.hovered_position_id = is_over ? position.id : null;
         this.updateTradeStore(is_over, position);
     }

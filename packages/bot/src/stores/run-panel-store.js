@@ -328,7 +328,6 @@ export default class RunPanelStore {
                             this.root_store.journal.pushMessage(localize('You have switched accounts.'));
                         }
                         terminateAndClear();
-                        this.root_store.summary.currency = client.currency;
                     },
                 );
 

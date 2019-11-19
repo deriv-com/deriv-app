@@ -33,6 +33,7 @@ export default class QuickStrategyStore {
 
     @action.bound
     toggleStrategyModal() {
+        this.root_store.flyout.setVisibility(false);
         this.is_strategy_modal_open = !this.is_strategy_modal_open;
 
         if (this.is_strategy_modal_open) {
@@ -63,7 +64,6 @@ export default class QuickStrategyStore {
         const trade_type_cat    = await contracts_for.getTradeTypeCategoryByTradeType(trade_type);
         const { strategies }    = config;
         const strategy_name     = Object.keys(strategies).filter(key => strategies[key].index === this.active_index)[0];
-        // eslint-disable-next-line
         const strategy_xml      = await fetch(`${__webpack_public_path__}xml/${strategy_name}.xml`).then(response => response.text());
         const strategy_dom      = Blockly.Xml.textToDom(strategy_xml);
 

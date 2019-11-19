@@ -7,7 +7,7 @@ const getUrlBase = (path = '') => {
 };
 
 export function setBotPublicPath(path) {
-    __webpack_public_path__ = path; // eslint-disable-line
+    __webpack_public_path__ = path; // eslint-disable-line no-global-assign
 }
 
 setBotPublicPath(getUrlBase('/js/bot/'));

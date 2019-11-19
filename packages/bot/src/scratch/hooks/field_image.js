@@ -1,4 +1,3 @@
-/* eslint-disable func-names, no-underscore-dangle */
 /**
  * Class for an image on a block.
  * deriv-bot: Blockly implementation vs. Scratch for click handlers

@@ -295,8 +295,10 @@ export default class TradeStore extends BaseStore {
     onChange(e) {
         const { name, value } = e.target;
 
-        // save trade_chart_symbol upon user change
         if (name === 'symbol' && value) {
+            // set trade params skeleton and chart loader to true until processNewValuesAsync resolves
+            this.setChartStatus(true);
+            this.is_trade_enabled = false;
             // this.root_store.modules.contract_trade.contracts = [];
             // TODO: Clear the contracts in contract-trade-store
         }
@@ -718,7 +720,6 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     accountSwitcherListener() {
-        this.clearContracts();
         this.resetErrorServices();
         return this.processNewValuesAsync(
             { currency: this.root_store.client.currency },
@@ -733,7 +734,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     preSwitchAccountListener() {
         this.clearContracts();
-
+        this.is_trade_enabled = false;
         return Promise.resolve();
     }
 

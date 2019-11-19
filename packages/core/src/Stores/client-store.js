@@ -579,28 +579,15 @@ export default class ClientStore extends BaseStore {
             date_first_contact,
             gclid_url,
         } = this.device_data;
-        const filtered_currencies = Object.keys(this.accounts).map(loginid => ({[loginid]: this.accounts[loginid].currency}));
-        const currencies = filtered_currencies.reduce((result, item) => {
-            const key = Object.keys(item)[0];
-            result[key] = item[key];
-            return result;
-          }, {});
         const selected_language = getLanguage().toLowerCase();
-        const selected_loginid = this.loginid;
-        const selected_currency = this.accounts[this.loginid].currency;
         const device = this.root_store.ui.is_mobile ? 'mobile' : 'desktop';
-        const email = this.accounts[this.loginid].email;
 
         window.analytics.identify(this.user_id, {
-            selected_loginid,
-            selected_currency,
             selected_language,
-            currencies,
             affiliate_token,
             date_first_contact,
             gclid_url,
             device,
-            email,
         });
     }
 

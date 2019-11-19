@@ -574,41 +574,28 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setUserSegment() {
-        BinarySocket.wait('get_settings').then(() => {
-            const {
-                user_id,
-                email,
-                first_name,
-                last_name,
-                account_list,
-            } = this.account_settings;
-    
-            const {
-                affiliate_token,
-                date_first_contact,
-                gclid_url,
-                signup_device,
-            } = this.device_data;
-            const login_ids = account_list.map(account => account.loginid);
-            const currencies = account_list.map(account => account.currency.toLowerCase());
-            const name = `${first_name} ${last_name}`;
-            const selected_language = getLanguage().toLowerCase();
-            const selected_loginid = this.loginid;
-            const selected_currency = this.selected_currency;
-    
-            window.analytics.identify(user_id, {
-                name,
-                email,
-                selected_loginid,
-                selected_currency,
-                selected_language,
-                login_ids,
-                currencies,
-                affiliate_token,
-                date_first_contact,
-                gclid_url,
-                signup_device,
-            });
+        const {
+            affiliate_token,
+            date_first_contact,
+            gclid_url,
+        } = this.device_data;
+        const currencies = Object.keys(this.accounts).map(loginid => this.accounts[loginid].currency);
+        const selected_language = getLanguage().toLowerCase();
+        const selected_loginid = this.loginid;
+        const selected_currency = this.accounts[this.loginid].currency;
+        const device = this.root_store.ui.is_mobile ? 'mobile' : 'desktop';
+        const email = this.accounts[this.loginid].email;
+
+        window.analytics.identify(this.user_id, {
+            selected_loginid,
+            selected_currency,
+            selected_language,
+            currencies,
+            affiliate_token,
+            date_first_contact,
+            gclid_url,
+            device,
+            email,
         });
     }
 

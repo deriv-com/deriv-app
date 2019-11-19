@@ -1,6 +1,7 @@
-import moment      from 'moment';
-import ObjectUtils from 'deriv-shared/utils/object';
-import ServerTime  from '_common/base/server_time';
+import moment                  from 'moment';
+import ObjectUtils             from 'deriv-shared/utils/object';
+import ServerTime              from '_common/base/server_time';
+import { getLimitOrderAmount } from './limit-orders';
 
 export const getChartConfig = (contract_info) => {
     if (ObjectUtils.isEmptyObject(contract_info)) return null;
@@ -126,5 +127,22 @@ export const getProfitLossFromStore = (modules_store) => {
     const { contract_replay, portfolio } = modules_store;
     const contract_id   = portfolio.active_positions_drawer_dialog_id;
     const contract_info = contract_replay.getContractById(contract_id).contract_info;
+
     return contract_info.profit;
+};
+
+/**
+ * Set contract_update initial values
+ * @param {object} contract_info - proposal_open_contract response
+ */
+export const getContractUpdate = (contract_info) => {
+    const { stop_loss, take_profit } = getLimitOrderAmount(contract_info);
+
+    return {
+        // convert stop_loss, take_profit value to string for validation to work
+        stop_loss      : stop_loss ? Math.abs(stop_loss).toString() : '',
+        take_profit    : take_profit ? take_profit.toString() : '',
+        has_stop_loss  : !!stop_loss,
+        has_take_profit: !!take_profit,
+    };
 };

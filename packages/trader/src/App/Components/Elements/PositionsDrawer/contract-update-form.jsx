@@ -38,7 +38,9 @@ class ContractUpdateForm extends React.Component {
                 limit_order.has_stop_loss = value;
             }
 
-            onChangeContractUpdate(limit_order, this.props.contract_id);
+            if (onChangeContractUpdate) {
+                onChangeContractUpdate(limit_order, this.props.contract_id);
+            }
         };
 
         const onClick = () => {

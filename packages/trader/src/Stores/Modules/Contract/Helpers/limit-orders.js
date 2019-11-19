@@ -61,3 +61,58 @@ export const setLimitOrderBarriers = (barriers, is_over, contract_type, contract
         limit_orders.forEach((l) => removeBarrier(barriers, l));
     }
 };
+
+/**
+ * Get stop_loss & take_profit order amount from contract_info
+ * @param {object} contract_info - proposal_open_contract response
+ */
+export const getLimitOrderAmount = (contract_info) => {
+    const {
+        limit_order: {
+            stop_loss: {
+                order_amount: stop_loss_order_amount,
+            } = {},
+            take_profit: {
+                order_amount: take_profit_order_amount,
+            } = {},
+        } = {},
+    } = contract_info;
+
+    return {
+        stop_loss  : stop_loss_order_amount,
+        take_profit: take_profit_order_amount,
+    };
+};
+
+/**
+ * Get limit_order for contract_update API
+ * @param {object} contract_update - contract_update input & checkbox values
+ */
+export const getLimitOrder = (contract_update) => {
+    const {
+        has_stop_loss,
+        has_take_profit,
+        stop_loss,
+        take_profit,
+    } = contract_update;
+
+    const has_limit_order = take_profit > 0 || stop_loss > 0;
+
+    if (!has_limit_order) {
+        return null;
+    }
+
+    const limit_order = {};
+
+    if (take_profit > 0) {
+        // send positive take_profit to update or null cancel
+        limit_order.take_profit = has_take_profit ? +take_profit : null;
+    }
+
+    if (stop_loss > 0) {
+        // send negative stop_loss to update or null to cancel
+        limit_order.stop_loss = has_stop_loss ? -stop_loss : null;
+    }
+
+    return limit_order;
+};

@@ -10,17 +10,16 @@ import {
     getDigitInfo,
     isDigitContract }         from './Helpers/digits';
 import {
+    getLimitOrder,
     setLimitOrderBarriers }   from './Helpers/limit-orders';
 import {
     getChartConfig,
+    getContractUpdate,
     getDisplayStatus,
     getEndTime,
     isEnded }                 from './Helpers/logic';
 import {
-    getMultiplierLimitOrder,
-    getMultiplierContractUpdate,
-    isMultiplierContract,
-    setMultiplierContractUpdate } from './Helpers/multiplier';
+    isMultiplierContract }    from './Helpers/multiplier';
 
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
@@ -91,23 +90,50 @@ export default class ContractStore {
             );
         }
 
-        this.is_multiplier_contract =  isMultiplierContract(this.contract_info.contract_type);
-        if (this.is_multiplier_contract && !this.contract_update.has_limit_order && has_limit_order) {
-            this.contract_update = getMultiplierContractUpdate(this.root_store.modules.trade, this.contract_info);
+        this.is_multiplier_contract = isMultiplierContract(this.contract_info.contract_type);
+        if (this.is_multiplier_contract && !this.contract_update.has_contract_update && has_limit_order) {
+            this.contract_update = getContractUpdate(this.contract_info);
             this.contract_update.onChangeContractUpdate = this.onChangeContractUpdate;
             this.contract_update.onClickContractUpdate  = this.onClickContractUpdate;
-            this.contract_update.has_limit_order = true;
+            this.contract_update.has_contract_update = true;
         }
     }
 
     @action.bound
     onChangeContractUpdate(contract_update) {
-        setMultiplierContractUpdate(this.root_store.modules.contract_trade, this.contract_update, contract_update);
+        const contract_trade_store = this.root_store.modules.contract_trade;
+        const {
+            stop_loss,
+            take_profit,
+            has_stop_loss,
+            has_take_profit,
+        } = contract_update;
+
+        if (stop_loss !== undefined) {
+            this.contract_update.stop_loss = stop_loss;
+            contract_trade_store.contract_update_stop_loss = stop_loss;
+        }
+        if (take_profit !== undefined) {
+            this.contract_update.take_profit = take_profit;
+            contract_trade_store.contract_update_take_profit = take_profit;
+        }
+        if (has_stop_loss !== undefined) {
+            this.contract_update.has_stop_loss = has_stop_loss;
+            if (!has_stop_loss) {
+                contract_trade_store.validation_errors.contract_update_stop_loss = [];
+            }
+        }
+        if (has_take_profit !== undefined) {
+            this.contract_update.has_take_profit = has_take_profit;
+            if (!has_take_profit) {
+                contract_trade_store.validation_errors.contract_update_take_profit = [];
+            }
+        }
     }
 
     @action.bound
     onClickContractUpdate() {
-        const limit_order = getMultiplierLimitOrder(this.contract_update);
+        const limit_order = getLimitOrder(this.contract_update);
 
         if (!limit_order) return;
 

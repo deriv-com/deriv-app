@@ -1,15 +1,14 @@
 import {
     action,
-    observable }              from 'mobx';
-import ObjectUtils            from 'deriv-shared/utils/object';
-import { WS }                 from 'Services/ws-methods';
-import { localize }           from 'App/i18n';
-import ContractStore          from './contract-store';
-import {
-    getMultiplierContractUpdate,
-    getOrderAmount }          from './Helpers/multiplier';
-import { contractSold }       from '../Portfolio/Helpers/portfolio-notifications';
-import BaseStore              from '../../base-store';
+    observable }               from 'mobx';
+import ObjectUtils             from 'deriv-shared/utils/object';
+import { WS }                  from 'Services/ws-methods';
+import { localize }            from 'App/i18n';
+import ContractStore           from './contract-store';
+import { getLimitOrderAmount } from './Helpers/limit-orders';
+import { getContractUpdate }   from './Helpers/logic';
+import { contractSold }        from '../Portfolio/Helpers/portfolio-notifications';
+import BaseStore               from '../../base-store';
 
 export default class ContractReplayStore extends BaseStore {
     @observable is_chart_ready = false;
@@ -223,7 +222,7 @@ export default class ContractReplayStore extends BaseStore {
         const {
             stop_loss  : contract_stop_loss,
             take_profit: contract_take_profit,
-        } = getOrderAmount(contract_info);
+        } = getLimitOrderAmount(contract_info);
 
         const is_take_profit_valid = (has_take_profit ? take_profit > 0 : contract_take_profit !== undefined);
         const is_stop_loss_valid   = (has_stop_loss ? stop_loss > 0 : contract_stop_loss !== undefined);
@@ -234,6 +233,6 @@ export default class ContractReplayStore extends BaseStore {
     @action.bound
     resetContractUpdate(contract_id) {
         const contract = this.getContractById(contract_id);
-        contract.contract_update = getMultiplierContractUpdate(this.root_store.modules.trade, contract.contract_info);
+        contract.contract_update = getContractUpdate(contract.contract_info);
     }
 }

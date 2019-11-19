@@ -1,7 +1,6 @@
-import React         from 'react';
-import { storiesOf } from '@storybook/react';
-import Theme         from '../shared/theme';
-import PopoverWrapper       from '../../src/components/popover/popover';
+import React          from 'react';
+import { storiesOf }  from '@storybook/react';
+import PopoverWrapper from '../../src/components/popover/popover';
 
 const portal_container = 'root';
 storiesOf('PopoverWrapper', module)

@@ -1,9 +1,9 @@
-import classNames   from 'classnames';
-import { PopoverWrapper }  from 'deriv-components';
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import { localize } from 'App/i18n';
-import { connect }  from 'Stores/connect';
+import classNames         from 'classnames';
+import { PopoverWrapper } from 'deriv-components';
+import PropTypes          from 'prop-types';
+import React              from 'react';
+import { localize }       from 'App/i18n';
+import { connect }        from 'Stores/connect';
 
 const NetworkStatus = ({ status }) => (
     <div className='network-status__wrapper'>

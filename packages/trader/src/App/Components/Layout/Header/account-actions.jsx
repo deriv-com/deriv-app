@@ -1,16 +1,16 @@
 import { Button, PopoverWrapper }  from 'deriv-components';
-import * as PropTypes       from 'prop-types';
-import React, { Component } from 'react';
-import { localize }         from 'App/i18n';
-import CurrencyUtils        from 'deriv-shared/utils/currency';
-import Icon                 from 'Assets/icon.jsx';
-import routes               from 'Constants/routes';
-import { LoginButton }      from './login-button.jsx';
-import { SignupButton }     from './signup-button.jsx';
-import ToggleNotifications  from './toggle-notifications.jsx';
-import ToggleCashier        from './toggle-cashier.jsx';
-import 'Sass/app/_common/components/account-switcher.scss';
-import { BinaryLink }       from '../../Routes';
+import * as PropTypes              from 'prop-types';
+import React, { Component }        from 'react';
+import { localize }                from 'App/i18n';
+import CurrencyUtils               from 'deriv-shared/utils/currency';
+import Icon                        from 'Assets/icon.jsx';
+import routes                      from 'Constants/routes';
+import { LoginButton }             from './login-button.jsx';
+import { SignupButton }            from './signup-button.jsx';
+import ToggleNotifications         from './toggle-notifications.jsx';
+import ToggleCashier               from './toggle-cashier.jsx';
+import { BinaryLink }              from '../../Routes';
+import                                  'Sass/app/_common/components/account-switcher.scss';
 
 const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx'));
 

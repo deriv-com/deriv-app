@@ -1,7 +1,7 @@
 import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
-import PopoverWrapper             from 'Components/popover';
+import PopoverWrapper      from 'Components/popover';
 
 const Items = ({
     className,

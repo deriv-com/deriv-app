@@ -1,6 +1,6 @@
 import classNames          from 'classnames';
 import React               from 'react';
-import { PopoverWrapper }         from 'deriv-components';
+import { PopoverWrapper }  from 'deriv-components';
 import NotificationsDialog from 'App/Containers/NotificationsDialog';
 import Icon                from 'Assets/icon.jsx';
 import                          'Sass/app/modules/notifications-dialog.scss';

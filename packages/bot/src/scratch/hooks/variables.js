@@ -1,4 +1,3 @@
-/* eslint-disable func-names */
 /**
  * Find all user-created variables that are in use in the workspace.
  * For use by generators.

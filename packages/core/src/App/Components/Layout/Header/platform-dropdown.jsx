@@ -3,8 +3,8 @@ import PropTypes      from 'prop-types';
 import React          from 'react';
 import ReactDOM       from 'react-dom';
 import { BinaryLink } from 'App/Components/Routes';
+import routes         from 'Constants/routes';
 import Icon           from 'Assets/icon.jsx';
-import { isBot }      from 'Utils/PlatformSwitcher';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 
 class PlatformDropdown extends React.PureComponent {
@@ -29,7 +29,6 @@ class PlatformDropdown extends React.PureComponent {
             platform_config,
             closeDrawer,
         } = this.props;
-        const is_bot = isBot();
 
         const platform_dropdown = (
             <div className='platform_dropdown'>
@@ -37,12 +36,12 @@ class PlatformDropdown extends React.PureComponent {
                     {platform_config.map((platform, idx) => (
                         <BinaryLink
                             to={platform.link_to}
-                            href={platform.href}
+                            // This is here because in routes-config it needs to have children, but not in menu
+                            exact={ platform.link_to === routes.trade }
                             key={idx}
                             onClick={closeDrawer}
                             className={classNames(
                                 'platform_dropdown__list__platform',
-                                { 'active': is_bot && platform.href === '/bot' }
                             )}
                         >
                             <div className='platform_dropdown__list__platform__background' />

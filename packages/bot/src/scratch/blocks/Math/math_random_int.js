@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.math_random_int = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.math_random_int = {
     },
     definition(){
         return {
-            message0: translate('random integer from %1 to %2'),
+            message0: localize('random integer from %1 to %2'),
             args0   : [
                 {
                     type : 'input_value',
@@ -24,14 +24,14 @@ Blockly.Blocks.math_random_int = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('This block gives you a random number from within a set range'),
+            tooltip        : localize('This block gives you a random number from within a set range'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Random integer'),
-            'description' : translate('This block gives you a random number from within a set range.'),
+            'display_name': localize('Random integer'),
+            'description' : localize('This block gives you a random number from within a set range.'),
         };
     },
 };

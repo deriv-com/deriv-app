@@ -1,4 +1,3 @@
-/* eslint-disable func-names, no-underscore-dangle */
 /**
  * Render the icon.
  * @param {number} cursorX Horizontal offset at which to position the icon.
@@ -21,7 +20,7 @@ Blockly.Icon.prototype.renderIcon = function(cursorX) {
         newCursorX -= width;
     }
 
-    this.iconGroup_.setAttribute('transform', `translate(${newCursorX},${TOP_MARGIN})`);
+    this.iconGroup_.setAttribute('transform', `localize(${newCursorX},${TOP_MARGIN})`);
     this.computeIconLocation();
 
     if (this.block_.RTL) {

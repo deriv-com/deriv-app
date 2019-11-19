@@ -10,14 +10,12 @@ export const scratchWorkspaceInit = async () => {
         const el_scratch_div = document.getElementById('scratch_div');
         const el_app_contents = document.getElementById('app_contents');
 
-        // eslint-disable-next-line
         const toolbox_xml = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(response => response.text());
-        // eslint-disable-next-line
         const main_xml = await fetch(`${__webpack_public_path__}xml/main.xml`).then(response => response.text());
 
         const workspace = Blockly.inject(el_scratch_div, {
             grid    : { spacing: 40, length: 11, colour: '#f3f3f3' },
-            media   : `${__webpack_public_path__}media/`, // eslint-disable-line
+            media   : `${__webpack_public_path__}media/`,
             toolbox : toolbox_xml,
             trashcan: true,
             zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
@@ -30,14 +28,6 @@ export const scratchWorkspaceInit = async () => {
         Blockly.derivWorkspace.blocksXmlStr = main_xml;
         Blockly.derivWorkspace.toolboxXmlStr = toolbox_xml;
 
-        // Ensure flyout closes on click in workspace.
-        const el_blockly_svg = document.querySelector('.blocklySvg');
-        document.addEventListener('click', (event) => {
-            if (el_blockly_svg.contains(event.target)) {
-                Blockly.derivWorkspace.toolbox_.clearSelection(); // eslint-disable-line
-            }
-        });
-        
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), workspace);
         Blockly.derivWorkspace.clearUndo();
         
@@ -47,8 +37,6 @@ export const scratchWorkspaceInit = async () => {
             el_scratch_div.style.width  = `${el_app_contents.offsetWidth}px`;
             el_scratch_div.style.height = `${el_app_contents.offsetHeight - toolbar_height}px`;
             Blockly.svgResize(workspace);
-            // eslint-disable-next-line no-underscore-dangle
-            workspace.toolbox_.flyout_.position();
         };
 
         window.addEventListener('resize', onWorkspaceResize);

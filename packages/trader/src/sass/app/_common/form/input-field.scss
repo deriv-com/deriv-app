@@ -73,7 +73,7 @@
 
 /** @define input */
 .input {
-    @include typeface(--paragraph-center-normal-black, capitalize);
+    @include typeface(--paragraph-center-normal-black);
     list-style: none;
     position: relative;
     display: inline-block;

@@ -117,8 +117,8 @@
                 }
             }
             .drawer__notifications {
-                @include typeface(--title-left-normal-black, capitalize);
-                padding: 1.6rem;
+                @include typeface(--title-left-normal-black);
+                @include toEm(padding, 0 1.6rem, 1.6rem);
                 color: var(--text-general);
 
                 &-header {
@@ -150,8 +150,8 @@
                     }
                 }
                 &-header {
-                    @include typeface(--paragraph-center-normal-black, capitalize);
-                    padding: 0 1.6rem;
+                    @include typeface(--paragraph-center-normal-black);
+                    @include toEm(padding, 0 1.6rem, 1.6rem);
                     color: var(--text-general);
                     margin: 0;
                 }

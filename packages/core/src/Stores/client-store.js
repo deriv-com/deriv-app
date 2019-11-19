@@ -585,7 +585,6 @@ export default class ClientStore extends BaseStore {
             result[key] = item[key];
             return result;
           }, {});
-        console.log(currencies)
         const selected_language = getLanguage().toLowerCase();
         const selected_loginid = this.loginid;
         const selected_currency = this.accounts[this.loginid].currency;

@@ -25,6 +25,7 @@ const isTouchDevice = 'ontouchstart' in document.documentElement;
 const App = ({ root_store }) => {
     const base = window.location.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(window.location.pathname);
+    const url_params = new URLSearchParams(window.location.search);
 
     return (
         <Router basename={ has_base ? `/${base}` : null}>
@@ -51,7 +52,7 @@ const App = ({ root_store }) => {
                                 </AppContents>
                             </ErrorBoundary>
                             <Footer />
-                            <AppModals />
+                            <AppModals url_action_param={ url_params.get('action') } />
                         </React.Fragment>
                 }
             </MobxProvider>

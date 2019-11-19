@@ -5,11 +5,9 @@ const AccountSignupModal = React.lazy(() => import(/* webpackChunkName: "account
 const ResetPasswordModal = React.lazy(() => import(/* webpackChunkName: "reset-password-modal" */'../ResetPasswordModal'));
 const SetResidenceModal  = React.lazy(() => import(/* webpackChunkName: "set-residence-modal"  */'../SetResidenceModal'));
 
-const AppModals = ({ is_set_residence_modal_visible }) => {
-    const url_params = new URLSearchParams(window.location.search);
+const AppModals = ({ is_set_residence_modal_visible, url_action_param }) => {
     let ComponentToLoad = null;
-
-    switch (url_params.get('action')) {
+    switch (url_action_param) {
         case 'reset_password':
             ComponentToLoad = <ResetPasswordModal />;
             break;

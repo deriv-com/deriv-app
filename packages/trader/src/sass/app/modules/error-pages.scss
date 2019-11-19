@@ -25,7 +25,7 @@
         }
     }
     &__header {
-        @include typeface(--heading-center-bold-black, none);
+        @include typeface(--title-center-bold-black, none);
         color: var(--text-prominent);
         line-height: 44px;
     }

@@ -89,6 +89,9 @@
     @else if $size == 1.2rem {
         line-height: map-get($map: $LINEHEIGHTS, $key: 'small');
     }
+    @else if $size == 1rem {
+        line-height: map-get($map: $LINEHEIGHTS, $key: 'small');
+    }
     @else {
         line-height: unset;
     }

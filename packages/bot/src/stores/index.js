@@ -1,15 +1,16 @@
-import ContractCardStore  from './contract-card-store';
-import FlyoutStore        from './flyout-store';
-import FlyoutHelpStore    from './flyout-help-store';
-import GoogleDriveStore   from './google-drive-store';
-import JournalStore       from './journal-store';
-import RunPanelStore      from './run-panel-store';
-import SaveLoadModalStore from './saveload-modal-store';
-import ScratchStore       from './scratch-store';
-import SummaryStore       from './summary-store';
-import ToolbarStore       from './toolbar-store';
-import TransactionsStore  from './transactions-store';
-import QuickStrategyStore from './quick-strategy-store';
+import ContractCardStore        from './contract-card-store';
+import FlyoutStore              from './flyout-store';
+import FlyoutHelpStore          from './flyout-help-store';
+import GoogleDriveStore         from './google-drive-store';
+import JournalStore             from './journal-store';
+import RunPanelStore            from './run-panel-store';
+import SaveLoadModalStore       from './saveload-modal-store';
+import SaveWorkspaceModalStore  from './save-workspace-modal-store';
+import ScratchStore             from './scratch-store';
+import SummaryStore             from './summary-store';
+import ToolbarStore             from './toolbar-store';
+import TransactionsStore        from './transactions-store';
+import QuickStrategyStore       from './quick-strategy-store';
 
 export default class RootStore {
     constructor(core, ws) {
@@ -21,6 +22,7 @@ export default class RootStore {
         this.google_drive   = new GoogleDriveStore(this);
         this.journal        = new JournalStore(this);
         this.saveload       = new SaveLoadModalStore(this);
+        this.save_workspace = new SaveWorkspaceModalStore(this);
         this.summary        = new SummaryStore(this);
         this.transactions   = new TransactionsStore(this);
         this.toolbar        = new ToolbarStore(this);

@@ -7,6 +7,7 @@ import ApiHelpers               from './services/api/api-helpers';
 import RootStore                from './stores';
 import Toolbar                  from './components/toolbar.jsx';
 import RunPanel                 from './components/run-panel.jsx';
+import SaveWorkspaceModal       from './components/save-workspace-modal.jsx';
 import Workspace                from './components/workspace.jsx';
 import QuickStrategy            from './components/quick-strategy.jsx';
 import { scratchWorkspaceInit } from './scratch';
@@ -30,6 +31,7 @@ class App extends React.Component {
                     <Toolbar />
                     <Workspace />
                     <RunPanel />
+                    <SaveWorkspaceModal />
                     <QuickStrategy />
                 </React.Fragment>
             </Provider>

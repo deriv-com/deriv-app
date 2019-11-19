@@ -1,6 +1,10 @@
 import                                    './blocks';
 import                                    './hooks';
-import { saveWorkspace, getPreviousWorkspace }              from './utils';
+import {
+    saveSessionWorkspace,
+    getSessionWorkspace,
+    getLocalWorkspace,
+    saveLocalWorkspace }            from './utils';
 import config                         from '../constants';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import ScratchStore                   from '../stores/scratch-store';
@@ -11,7 +15,12 @@ export const scratchWorkspaceInit = async () => {
     try {
         const el_scratch_div = document.getElementById('scratch_div');
         const el_app_contents = document.getElementById('app_contents');
-        const { saveload, toolbar } = ScratchStore.instance;
+        const { saveload, toolbar, save_workspace } = ScratchStore.instance;
+
+        // id to identify if it is still in the same tab
+        if (!sessionStorage.getItem('tabID')) {
+            sessionStorage.setItem('tabID', Blockly.utils.genUid());
+        }
 
         // eslint-disable-next-line
         const toolbox_xml = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(response => response.text());
@@ -28,22 +37,29 @@ export const scratchWorkspaceInit = async () => {
 
         const onWorkspaceChange = event => {
             const is_drag_outside = event.type === 'dragOutside';
-            const is_click = event.type === 'ui' && event.element;
             
-            if (is_drag_outside || is_click) {
+            if (is_drag_outside) {
                 return;
             }
 
             const { save_status } = config;
             toolbar.setSaveStatus(save_status.SAVING);
 
-            delayCallbackByMs(saveWorkspace, 1000).then(timer => {
+            delayCallbackByMs(saveSessionWorkspace, 1000).then(timer => {
                 clearTimeout(timer);
+                saveload.is_saved = false;
                 toolbar.setSaveStatus(save_status.SAVED);
             });
         };
 
         workspace.addChangeListener(onWorkspaceChange);
+
+        window.addEventListener('beforeunload', () => {
+            if (!saveload.is_saved) {
+                saveLocalWorkspace();
+            }
+            window.removeEventListener('beforeunload');
+        });
 
         Blockly.JavaScript.init(workspace);
         Blockly.JavaScript.variableDB_.setVariableMap(workspace.getVariableMap()); // eslint-disable-line
@@ -60,9 +76,14 @@ export const scratchWorkspaceInit = async () => {
             }
         });
         
-        const previous_workspace = getPreviousWorkspace();
-        if (previous_workspace) {
-            main_xml = previous_workspace;
+        const session_workspace = getSessionWorkspace();
+        const local_workspace = getLocalWorkspace();
+
+        if (session_workspace) {
+            main_xml = session_workspace;
+        } else if (local_workspace && local_workspace.length) {
+            save_workspace.setWorkspaceList(local_workspace);
+            save_workspace.toggleSaveWorkpsaceModal();
         }
 
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), workspace);

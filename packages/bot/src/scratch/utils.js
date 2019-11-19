@@ -285,15 +285,63 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
     return block;
 };
 
-export const saveWorkspace = () => {
+export const saveSessionWorkspace = () => {
     const workspace_dom = Blockly.Xml.workspaceToDom(Blockly.derivWorkspace);
-    localStorage.setItem('workspace', Blockly.Xml.domToText(workspace_dom));
+    const strategy = Blockly.Xml.domToText(workspace_dom);
+    
+    sessionStorage.setItem('workspace', strategy);
+}
+
+export const saveLocalWorkspace = () => {
+    const workspace_dom = Blockly.Xml.workspaceToDom(Blockly.derivWorkspace);
+    const workspace_list = JSON.parse(localStorage.getItem('workspace')) || [];
+    const tab_id = sessionStorage.getItem('tabID');
+    const exists_workspace_index = workspace_list.findIndex(workspace => workspace.id === tab_id);
+    const strategy = Blockly.Xml.domToText(workspace_dom);
+    const { toolbar } = ScratchStore.instance;
+
+    if(exists_workspace_index >= 0) {
+        workspace_list[exists_workspace_index].strategy = strategy;
+    } else {
+        workspace_list.push({
+            id : tab_id,
+            name: toolbar.file_name,
+            strategy,
+            timestamp: Date.now(),
+        });
+    }
+    
+    localStorage.setItem('workspace', JSON.stringify(workspace_list));
 };
 
-export const getPreviousWorkspace = () => {
-    if (localStorage.getItem('workspace')) {
-        return localStorage.getItem('workspace');
+export const removeLocalWorkspace = () => {
+    const workspace_list = JSON.parse(localStorage.getItem('workspace')) || [];
+    const tab_id = sessionStorage.getItem('tabID');
+    const workspace_to_remove = workspace_list.findIndex(workspace => workspace.id === tab_id);
+
+    if(workspace_to_remove >= 0) {
+        workspace_list.splice(workspace_to_remove, 1);
+    }
+
+    localStorage.setItem('workspace', JSON.stringify(workspace_list));
+}
+
+export const getSessionWorkspace = () => {
+    const session_workspace = sessionStorage.getItem('workspace');
+
+    if (session_workspace) {
+        return session_workspace;
     }
     
     return null;
 };
+
+export const getLocalWorkspace = () => {
+    const local_workspace = localStorage.getItem('workspace');
+
+    if (local_workspace) {
+        return JSON.parse(local_workspace);
+    }
+
+    return null;
+}

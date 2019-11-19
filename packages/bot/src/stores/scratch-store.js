@@ -2,10 +2,11 @@ class ScratchStore {
     static singleton = null;
 
     constructor(root_store) {
-        this.root_store = root_store;
-        this.flyout     = root_store.flyout;
-        this.toolbar    = root_store.toolbar;
-        this.saveload   = root_store.saveload;
+        this.root_store     = root_store;
+        this.flyout         = root_store.flyout;
+        this.toolbar        = root_store.toolbar;
+        this.saveload       = root_store.saveload;
+        this.save_workspace = root_store.save_workspace;
         this.quick_strategy = root_store.quick_strategy;
     }
 

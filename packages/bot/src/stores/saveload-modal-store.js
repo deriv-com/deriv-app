@@ -1,15 +1,19 @@
-import filesaver                        from 'file-saver';
+import filesaver               from 'file-saver';
 import {
     observable,
     action,
-}                                       from 'mobx';
-import { load }                         from '../scratch/utils';
+}                              from 'mobx';
+import {
+    load,
+    removeLocalWorkspace,
+}                              from '../scratch/utils';
 
 export default class SaveLoadModalStore {
 
     @observable is_saveload_modal_open = false;
     @observable is_save_modal = true;
     @observable button_status = 0; // 0 - none, 1 - loading, 2 - completed
+    is_saved = true;
 
     constructor(root_store) {
         this.root_store = root_store;
@@ -50,6 +54,9 @@ export default class SaveLoadModalStore {
 
             this.setButtonStatus(2);
         }
+
+        this.is_saved = true;
+        removeLocalWorkspace();
         this.toggleSaveLoadModal();
     }
 

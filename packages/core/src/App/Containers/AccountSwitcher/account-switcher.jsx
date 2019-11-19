@@ -366,7 +366,7 @@ class AccountSwitcher extends React.Component {
                         }
                     >
                         <Icon icon='IconInfoOutline' className='acc-switcher__total-icon' />
-                    </PopovPopoverWrapperer>
+                    </PopoverWrapper>
                     <span className='acc-switcher__balance'>
                         <Money
                             currency={this.props.obj_total_balance.currency}

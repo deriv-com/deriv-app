@@ -167,7 +167,7 @@ class MT5Dashboard extends React.Component {
                     </div>
                     <p className='mt5-dashboard__download-center--hint'>
                         <Localize
-                            i18n_default_text='The MT5 platform does not support Windows XP, Windows 2003 and Windows Vista.'
+                            i18n_default_text='The DMT5 platform is not supported by macOS Catalina, Windows XP, Windows 2003, and Windows Vista.'
                         />
                     </p>
                 </div>

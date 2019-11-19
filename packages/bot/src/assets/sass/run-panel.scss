@@ -1,7 +1,8 @@
 /**
 * @define -panel
 **/
-.run-panel {
+// TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
+div.run-panel {
     height: calc(100% - 56px);
     top: 56px;
     z-index: 9;

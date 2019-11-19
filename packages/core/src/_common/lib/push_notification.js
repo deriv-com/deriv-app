@@ -1,6 +1,6 @@
 const Pushwoosh           = require('web-push-notifications').Pushwoosh;
 const Client              = require('../base/client_base');
-const getLanguage         = require('../language').get;
+const { getLanguage }     = require('deriv-translations/lib/i18n');
 const urlForCurrentDomain = require('../url').urlForCurrentDomain;
 const isProduction        = require('../../config').isProduction;
 

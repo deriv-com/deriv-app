@@ -1,5 +1,5 @@
 const urlForLanguage             = require('./language').urlFor;
-const getLanguage                = require('./language').get;
+const { getLanguage }            = require('deriv-translations/lib/i18n');
 const getCurrentProductionDomain = require('../config').getCurrentProductionDomain;
 require('url-polyfill');
 
@@ -37,7 +37,7 @@ const Url = (() => {
     const normalizePath = path => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_/])/g, '') : '');
 
     const urlFor = (path, pars, language, should_change_to_legacy = false) => {
-        const lang = (language || getLanguage()).toLowerCase();
+        const lang = (language || getLanguage() || 'EN').toLowerCase();
         let domain = `https://${window.location.hostname}/`;
         if (should_change_to_legacy) {
             if (/localhost|binary\.sx/.test(domain)) {

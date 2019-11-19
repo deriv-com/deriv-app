@@ -1,6 +1,7 @@
-import { get, getAll, urlFor } from '_common/language';
+import { getAll, urlFor } from '_common/language';
+import { getLanguage } from 'deriv-translations/lib/i18n';
 
-export const currentLanguage = get();
+export const currentLanguage = getLanguage();
 
 export const getAllowedLanguages = () => {
     const exclude_languages = [

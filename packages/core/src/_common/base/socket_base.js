@@ -5,7 +5,7 @@ const ClientBase       = require('./client_base');
 const SocketCache      = require('./socket_cache');
 const APIMiddleware    = require('./api_middleware');
 const { State }        = require('../storage');
-const getLanguage      = require('../language').get;
+const { getLanguage }  = require('deriv-translations/lib/i18n');
 const getAppId         = require('../../config').getAppId;
 const getSocketURL     = require('../../config').getSocketURL;
 

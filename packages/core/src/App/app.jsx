@@ -2,7 +2,9 @@ import PropTypes                    from 'prop-types';
 import React                        from 'react';
 import ReactDOM                     from 'react-dom';
 import { Prompt }                   from 'react-router';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router }  from 'react-router-dom';
+import                              'deriv-translations/lib/i18n';
+import { loadIncontextTranslation } from 'deriv-translations/lib/i18n';
 import Client                       from '_common/base/client_base';
 import WS                           from 'Services/ws-methods';
 import { MobxProvider }             from 'Stores/connect';
@@ -29,7 +31,10 @@ const shouldLoadModals = () => {
 const App = ({ root_store }) => {
     const base = window.location.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(window.location.pathname);
-
+    const is_staging = process.env.NODE_ENV === 'staging';
+    if (is_staging) {
+        loadIncontextTranslation();
+    }
     return (
         <Router basename={ has_base ? `/${base}` : null}>
             <MobxProvider store={root_store}>

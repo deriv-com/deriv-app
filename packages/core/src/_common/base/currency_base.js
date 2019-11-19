@@ -1,4 +1,4 @@
-const getLanguage      = require('../language').get;
+const { getLanguage }  = require('deriv-translations/lib/i18n');
 const localize         = require('../../App/i18n').localize;
 const getPropertyValue = require('../utility').getPropertyValue;
 

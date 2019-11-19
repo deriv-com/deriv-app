@@ -579,7 +579,13 @@ export default class ClientStore extends BaseStore {
             date_first_contact,
             gclid_url,
         } = this.device_data;
-        const currencies = Object.keys(this.accounts).map(loginid => this.accounts[loginid].currency);
+        const filtered_currencies = Object.keys(this.accounts).map(loginid => ({[loginid]: this.accounts[loginid].currency}));
+        const currencies = filtered_currencies.reduce((result, item) => {
+            const key = Object.keys(item)[0];
+            result[key] = item[key];
+            return result;
+          }, {});
+        console.log(currencies)
         const selected_language = getLanguage().toLowerCase();
         const selected_loginid = this.loginid;
         const selected_currency = this.accounts[this.loginid].currency;

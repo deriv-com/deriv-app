@@ -156,6 +156,10 @@
     }
     &--completed {
         border: 1px solid var(--general-main-1);
+
+        &:hover {
+            border: 1px solid var(--border-disabled);
+        }
     }
     &--hidden {
         visibility: hidden;

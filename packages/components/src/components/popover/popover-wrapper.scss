@@ -27,7 +27,7 @@
     &__bubble {
         @include typeface(--small-center-normal-active, none);
         cursor: help;
-        position: fixed;
+        position: relative;
         padding: 0.7em;
         max-width: 280px;
         border-radius: 4px;
@@ -35,13 +35,8 @@
         flex-direction: row;
         background: var(--general-active);
         color: var(--text-prominent);
-        opacity: 0;
-        transition: opacity 0.25s ease;
         z-index: 999;
 
-        &-enter-done {
-            opacity: 1;
-        }
         &__icon {
             flex-grow: 1;
             margin-right: 0.7em;
@@ -50,18 +45,6 @@
         &__text {
             flex-grow: 2;
             text-align: left;
-        }
-        &__arrow {
-            position: absolute;
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent;
-        }
-        &[data-popover-pos=top], &[data-popover-pos=bottom] {
-            margin: 1em 0;
-        }
-        &[data-popover-pos=left], &[data-popover-pos=right] {
-            margin: 0 1em;
         }
         &--error {
             background-color: var(--status-danger);

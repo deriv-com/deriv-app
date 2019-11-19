@@ -1,10 +1,10 @@
-import classNames        from 'classnames';
-import React             from 'react';
+import classNames                  from 'classnames';
+import React                       from 'react';
 import Popover, { ArrowContainer } from 'react-tiny-popover';
-import IconInfoOutline   from '../icon-info-outline.jsx';
-import IconQuestion      from '../icon-question.jsx';
-import IconRedDot        from '../icon-red-dot.jsx';
-import IconInfoBlue      from '../icon-info-blue.jsx';
+import IconInfoOutline             from '../icon-info-outline.jsx';
+import IconQuestion                from '../icon-question.jsx';
+import IconRedDot                  from '../icon-red-dot.jsx';
+import IconInfoBlue                from '../icon-info-blue.jsx';
 
 class PopoverWrapper extends React.PureComponent {
     constructor (props) {
@@ -46,7 +46,7 @@ class PopoverWrapper extends React.PureComponent {
             has_error,
             icon,
             id,
-            // margin,
+            margin = 0,
             message,
         } = this.props;
 
@@ -55,28 +55,35 @@ class PopoverWrapper extends React.PureComponent {
             <Popover
                 isOpen={this.state.is_open}
                 position={alignment}
-                id={id}
-                containerClassName={classNames(
-                    classNameBubble,
-                    'dc-popover__bubble',
-                    { 'dc-popover__bubble--error': has_error },
-                )}
+                transitionDuration={0.25}
+                padding={margin + 10}
+                containerClassName='dc-popover'
+                containerStyle={{ zIndex: 999 }}
                 content={({ position, targetRect, popoverRect }) => (
-                    <ArrowContainer // if you'd like an arrow, you can import the ArrowContainer!
+                    <ArrowContainer
                         position={position}
                         targetRect={targetRect}
                         popoverRect={popoverRect}
+                        arrowColor={'var(--general-active)'}
                         arrowSize={5}
-                        arrowStyle={{ top: '100%' }}
                     >
-                        { !disable_message_icon || icon === 'info' &&
-                            <i className='dc-popover__bubble__icon'>
-                                <IconInfoBlue />
-                            </i>
-                        }
-                        <span className='dc-popover__bubble__text'>
-                            { message }
-                        </span>
+                        <div
+                            id={id}
+                            className={classNames(
+                                classNameBubble,
+                                'dc-popover__bubble',
+                                { 'dc-popover__bubble--error': has_error },
+                            )}
+                        >
+                            { !disable_message_icon && icon === 'info' &&
+                                <i className='dc-popover__bubble__icon'>
+                                    <IconInfoBlue />
+                                </i>
+                            }
+                            <span className='dc-popover__bubble__text'>
+                                { message }
+                            </span>
+                        </div>
                     </ArrowContainer>
                 )}
             >

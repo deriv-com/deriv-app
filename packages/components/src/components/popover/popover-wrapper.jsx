@@ -9,26 +9,14 @@ import IconInfoBlue                from '../icon-info-blue.jsx';
 class PopoverWrapper extends React.PureComponent {
     constructor (props) {
         super(props);
-        this.state            = {
-            is_open         : false,
-            target_rectangle: null,
-        };
-        this.target_reference = React.createRef();
+        this.state = { is_open: false };
     }
 
     componentDidMount () {
-        this.setState({
-            is_open         : this.props.has_error,
-            target_rectangle: this.target_reference.current.getBoundingClientRect(),
-        });
+        this.setState({ is_open: this.props.has_error });
     }
 
-    toggleOpen = () => {
-        this.setState({
-            is_open         : Boolean(this.props.message),
-            target_rectangle: this.target_reference.current.getBoundingClientRect(),
-        });
-    };
+    toggleOpen = () => this.setState({ is_open: Boolean(this.props.message) });
 
     toggleClose = () => this.setState({ is_open: false });
 
@@ -93,7 +81,7 @@ class PopoverWrapper extends React.PureComponent {
                     onMouseEnter={this.toggleOpen}
                     onMouseLeave={this.toggleClose}
                 >
-                    <div className={classNames(classNameTarget, 'dc-popover__target')} ref={this.target_reference}>
+                    <div className={classNames(classNameTarget, 'dc-popover__target')}>
                         {!disable_target_icon &&
                         <i className={message ? 'dc-popover__target__icon' : 'dc-popover__target__icon--disabled'}>
                             {(icon === 'info')     && <IconInfoOutline className={icon_class_name} />}

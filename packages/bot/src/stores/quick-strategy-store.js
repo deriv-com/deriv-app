@@ -146,13 +146,9 @@ export default class QuickStrategyStore {
             if (number_field.includes(key)){
                 if (isNaN(value)) {
                     errors[key] = localize('Must be a number');
-                }
-    
-                if (value <= 0){
+                } else if (value <= 0){
                     errors[key] = localize('Must be a number higher than 0');
-                }
-    
-                if (/^0+(?=\d)/.test(value)) {
+                } else if (/^0+(?=\d)/.test(value)) {
                     errors[key] = localize('Invalid number format');
                 }
             }
@@ -165,9 +161,7 @@ export default class QuickStrategyStore {
         const { min, max } = this.duration_dropdown.filter(duration => duration.unit === values.duration_type)[0];
         if (values.duration < min) {
             errors.duration = `${localize('Minimum duration:')} ${min}`;
-        }
-
-        if (values.duration > max) {
+        } else if (values.duration > max) {
             errors.duration = `${localize('Maximum duration:')} ${max}`;
         }
     

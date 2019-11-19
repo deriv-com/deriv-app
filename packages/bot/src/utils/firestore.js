@@ -26,13 +26,20 @@ const firestore = (() => {
             reaction(
                 () => run_panel.is_running,
                 () => run_panel.is_running ?
-                    onRunBot(client.loginid) :
+                    onRunBot(client.loginid, s.summary) :
                     onStopBot(client.loginid)
             );
 
+
             reaction(
-                () => s.summary.number_of_runs,
-                () => onSummaryChanged(client.loginid, s.summary)
+                () => run_panel.has_open_contract,
+                () => {
+                    // send the summary when contract closes and bot is stopped
+                    if (!run_panel.is_running &&
+                        !run_panel.has_open_contract) {
+                        onSummaryChanged(client.loginid, s.summary)
+                    }
+                }
             );
 
             reaction(
@@ -49,7 +56,7 @@ const firestore = (() => {
         }
     };
 
-    const onRunBot = (login_id) => {
+    const onRunBot = (login_id, summary) => {
         try {
             const start_time = server_time.unix();
             const strategy = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.derivWorkspace));
@@ -60,6 +67,7 @@ const firestore = (() => {
             })
                 .then((docRef) => {
                     doc_id = docRef.id;
+                    onSummaryChanged(login_id, summary);
                 })
                 .catch((error) => {
                     console.warn('Error adding document to firestore ', error); // eslint-disable-line no-console

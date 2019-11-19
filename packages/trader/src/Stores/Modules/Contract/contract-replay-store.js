@@ -234,5 +234,7 @@ export default class ContractReplayStore extends BaseStore {
     resetContractUpdate(contract_id) {
         const contract = this.getContractById(contract_id);
         contract.contract_update = getContractUpdate(contract.contract_info);
+        this.root_store.modules.contract_trade.validation_errors.contract_update_stop_loss = [];
+        this.root_store.modules.contract_trade.validation_errors.contract_update_take_profit = [];
     }
 }

@@ -129,11 +129,7 @@
         height: 100%;
 
         &-header {
-<<<<<<< HEAD
             padding: 0.5rem 1rem;
-=======
-            padding: 15px;
->>>>>>> 45a8f42710706ba8d1be810d84877489c0b4ede6
             display: flex;
             background-color: var(--general-section-1);
         }
@@ -153,16 +149,10 @@
             font-weight: bold;
         }
         &-footer {
-<<<<<<< HEAD
-            text-align: right;
-            padding: 0.5rem 0.8rem;
-            border-top: solid 0.1rem var(--general-section-1);
-=======
             display: flex;
             justify-content: flex-end;
-            padding: 0.5em 0.8em;
-            border-top: solid 0.1em var(--general-section-1);
->>>>>>> 45a8f42710706ba8d1be810d84877489c0b4ede6
+            padding: 0.5rem 0.8rem;
+            border-top: solid 0.1rem var(--general-section-1);
         }
     }
     &__search {

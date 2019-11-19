@@ -574,20 +574,10 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setUserSegment() {
-        const {
-            affiliate_token,
-            date_first_contact,
-            gclid_url,
-        } = this.device_data;
         const selected_language = getLanguage().toLowerCase();
-        const device = this.root_store.ui.is_mobile ? 'mobile' : 'desktop';
 
         window.analytics.identify(this.user_id, {
             selected_language,
-            affiliate_token,
-            date_first_contact,
-            gclid_url,
-            device,
         });
     }
 

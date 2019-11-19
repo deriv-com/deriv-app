@@ -90,7 +90,7 @@
                 left: 8px;
 
                 &.dc-dropdown__display-placeholder--is-title {
-                    transform: translate(0rem, -1.7rem) scale(0.75);
+                    transform: translate(0, -1.7rem) scale(0.75);
                     padding: 0 4px;
 
                     .dc-dropdown__display-placeholder-text {
@@ -166,7 +166,7 @@
             top: -0.1rem;
 
             &--enter, &--exit {
-                transform: scale(1, 1) translate3d(2rem, 0, 0px);
+                transform: scale(1, 1) translate3d(2rem, 0, 0);
                 opacity: 0;
 
             }

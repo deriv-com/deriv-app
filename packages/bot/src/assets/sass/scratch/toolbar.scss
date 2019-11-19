@@ -21,7 +21,7 @@
         }
         &--start {
             height: 40px !important;
-            margin-right: 0px !important;
+            margin-right: 0 !important;
         }
     }
     //TODO remove this after popover bug fixes
@@ -60,7 +60,7 @@
         height: 40px;
 
         &-btn {
-            padding: 0px 12px;
+            padding: 0 12px;
             height: 40px;
 
             > * {

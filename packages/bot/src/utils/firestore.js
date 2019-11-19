@@ -30,14 +30,13 @@ const firestore = (() => {
                     onStopBot(client.loginid)
             );
 
-
             reaction(
                 () => run_panel.has_open_contract,
                 () => {
                     // send the summary when contract closes and bot is stopped
                     if (!run_panel.is_running &&
                         !run_panel.has_open_contract) {
-                        onSummaryChanged(client.loginid, s.summary)
+                        onSummaryChanged(client.loginid, s.summary);
                     }
                 }
             );

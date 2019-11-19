@@ -577,7 +577,7 @@ export default class ClientStore extends BaseStore {
         const selected_language = getLanguage().toLowerCase();
 
         window.analytics.identify(this.user_id, {
-            selected_language,
+            language: selected_language,
         });
     }
 

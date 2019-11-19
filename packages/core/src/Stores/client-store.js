@@ -1025,7 +1025,11 @@ export default class ClientStore extends BaseStore {
                 await WS.authorized.storage.getSettings().then(async response => {
                     this.setAccountSettings(response.get_settings);
                 });
-                runInAction(() => this.upgrade_info = this.getBasicUpgradeInfo());
+                runInAction(async() => {
+                    await BinarySocket.authorize(this.getToken()).then(() => {
+                        runInAction(() => this.upgrade_info = this.getBasicUpgradeInfo());
+                    })
+                });
                 cb();
             }
         });

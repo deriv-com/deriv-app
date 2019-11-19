@@ -45,14 +45,13 @@ class PopoverWrapper extends React.PureComponent {
                 position={alignment}
                 transitionDuration={0.25}
                 padding={margin + 10}
-                containerClassName='dc-popover'
                 containerStyle={{ zIndex: 999 }}
                 content={({ position, targetRect, popoverRect }) => (
                     <ArrowContainer
                         position={position}
                         targetRect={targetRect}
                         popoverRect={popoverRect}
-                        arrowColor={'var(--general-active)'}
+                        arrowColor={has_error ? 'var(--status-danger)' : 'var(--general-active)'}
                         arrowSize={5}
                     >
                         <div

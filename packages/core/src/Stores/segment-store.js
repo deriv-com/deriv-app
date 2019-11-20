@@ -8,8 +8,12 @@ import BaseStore                from './base-store';
 import { getAppId }             from '../config';
 
 export default class SegmentStore extends BaseStore {
-    // only available on production
+    // only available on production (bot and deriv)
     is_applicable = /^(16929|19111)$/.test(getAppId());
+
+    constructor(root_store) {
+        super({ root_store });
+    }
 
     /**
      * Contains event traits that will be passed to segment

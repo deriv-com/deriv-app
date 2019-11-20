@@ -590,6 +590,7 @@ export default class ClientStore extends BaseStore {
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
                 this.root_store.segment.identifyEvent();
+                this.root_store.segment.pageView();
             } else { // So it will send an authorize with the accepted token, to be handled by socket-general
                 await BinarySocket.authorize(client.token);
             }

@@ -15,6 +15,7 @@ const TakeProfit = ({
     return (
         <LimitOrderInput
             currency={currency}
+            defaultChecked={has_take_profit}
             error_messages={has_take_profit ? validation_errors.take_profit : undefined}
             is_single_currency={is_single_currency}
             label={localize('Take profit')}

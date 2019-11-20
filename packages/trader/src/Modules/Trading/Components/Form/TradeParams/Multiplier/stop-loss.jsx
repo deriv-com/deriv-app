@@ -15,6 +15,7 @@ const StopLoss = ({
     return (
         <LimitOrderInput
             currency={currency}
+            defaultChecked={has_stop_loss}
             error_messages={has_stop_loss ? validation_errors.stop_loss : undefined}
             is_single_currency={is_single_currency}
             label={localize('Stop loss')}

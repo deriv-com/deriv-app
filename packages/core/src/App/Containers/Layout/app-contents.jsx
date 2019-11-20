@@ -12,11 +12,11 @@ const AppContents = ({
     is_app_disabled,
     is_positions_drawer_on,
     is_route_modal_on,
-    pageView
+    pageView,
     // setPWAPromptEvent,
 }) => {
     // Segment page view trigger
-    pageView()
+    pageView();
 
     // if (is_logged_in) {
     // Segment page view trigger

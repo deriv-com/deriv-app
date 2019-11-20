@@ -1,4 +1,5 @@
-const path = require('path');
+const path       = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 // Export a function. Accept the base config as the only param.
 module.exports = async ({ config, mode }) => {
@@ -50,6 +51,17 @@ module.exports = async ({ config, mode }) => {
         },
     });
 
+    config.plugins.push(
+        new CopyPlugin([
+            { from: path.resolve(__dirname, '../lib/icon/sprite/account.svg'),    to: 'account.svg',     toType: 'file' },
+            { from: path.resolve(__dirname, '../lib/icon/sprite/common.svg'),     to: 'common.svg',     toType: 'file' },
+            { from: path.resolve(__dirname, '../lib/icon/sprite/currency.svg'),   to: 'currency.svg',   toType: 'file' },
+            { from: path.resolve(__dirname, '../lib/icon/sprite/flag.svg'),       to: 'flag.svg',       toType: 'file' },
+            { from: path.resolve(__dirname, '../lib/icon/sprite/mt5.svg'),        to: 'mt5.svg',        toType: 'file' },
+            { from: path.resolve(__dirname, '../lib/icon/sprite/tradetype.svg'),  to: 'tradetype.svg',  toType: 'file' },
+            { from: path.resolve(__dirname, '../lib/icon/sprite/underlying.svg'), to: 'underlying.svg', toType: 'file' },
+		])
+    )
     // Return the altered config
     return config;
 };

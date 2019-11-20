@@ -77,7 +77,7 @@ $header-height: 4em;
     color: var(--text-prominent);
 
     .progress-slider, .progress-slider--completed {
-        margin: 0;
+        margin: 0.8rem 0 0;
         border-bottom: 1px solid var(--general-section-1);
     }
     &:before {
@@ -178,13 +178,17 @@ $header-height: 4em;
     &__header {
         display: flex;
         justify-content: space-evenly;
+        flex-direction: column;
         margin: 0.5em 0.2em;
     }
     &__body {
         border-radius: $BORDER_RADIUS;
         width: 100%;
-        padding: 8px 12px 0;
+        padding: 4px 12px 0;
         color: var(--text-prominent);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 0.4rem;
     }
     &__footer {
         margin-bottom: 0.5em;
@@ -217,6 +221,50 @@ $header-height: 4em;
         }
         .btn--sell {
             height: 32px;
+        }
+    }
+    &__item {
+        &__header {
+            margin-bottom: 0.4rem;
+            line-height: 1.5;
+        }
+        &__body {
+            @include typeface(--small-left-bold-black);
+            display: flex;
+            align-items: center;
+            align-self: flex-start;
+            color: var(--text-prominent);
+
+            &--is-crypto {
+                margin-left: -6px;
+            }
+        }
+        &__body--loss {
+            color: var(--text-loss-danger) !important;
+
+            &:before {
+                content: '-';
+            }
+        }
+        &__body--profit {
+            color: var(--text-profit-success) !important;
+
+            &:before {
+                content: '+';
+            }
+        }
+    }
+    &__indicative--movement {
+        margin-left: 2px;
+        width: 16px;
+        height: 16px;
+
+        &-complete, &-complete:after {
+            display: none;
+        }
+        &:after {
+            content: '';
+            width: 16px;
         }
     }
     .contract-audit {

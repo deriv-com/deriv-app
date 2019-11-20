@@ -12,6 +12,7 @@ import Shortcode                   from 'Modules/Reports/Helpers/shortcode';
 import { localize }                from 'App/i18n';
 import Icon                        from 'Assets/icon.jsx';
 import { PositionsCardLoader }     from 'App/Components/Elements/ContentLoader';
+import { getLimitOrderAmount }     from 'Stores/Modules/Contract/Helpers/limit-orders';
 import { isMultiplierContract }    from 'Stores/Modules/Contract/Helpers/multiplier';
 import ContractTypeCell            from './contract-type-cell.jsx';
 import ProgressSlider              from './ProgressSlider';
@@ -48,6 +49,8 @@ const PositionsDrawerCard = ({
 
     const fallback_result = (profit_loss < 0) ? 'lost' : 'won';
     const is_multiplier   = isMultiplierContract(contract_info.contract_type);
+
+    const { take_profit, stop_loss } = getLimitOrderAmount(contract_info);
 
     const contract_el = (
         <React.Fragment>
@@ -135,8 +138,8 @@ const PositionsDrawerCard = ({
                 </div>
                 {is_multiplier ?
                     <div className='positions-drawer-card__take-profit'>
-                        {contract_info.limit_order && contract_info.limit_order.take_profit  ?
-                            <Money amount={contract_info.limit_order.take_profit.order_amount} currency={currency} />
+                        {take_profit  ?
+                            <Money amount={take_profit} currency={currency} />
                             :
                             <strong>-</strong>
                         }
@@ -177,11 +180,11 @@ const PositionsDrawerCard = ({
                             {localize('Stop loss:')}
                         </span>
                         <span className='positions-drawer-card__payout-value'>
-                            {contract_info.limit_order && contract_info.limit_order.stop_loss ?
+                            {stop_loss ?
                                 <React.Fragment>
                                     <strong>-</strong>
                                     <Money
-                                        amount={contract_info.limit_order.stop_loss.order_amount}
+                                        amount={stop_loss}
                                         currency={currency}
                                     />
                                 </React.Fragment>

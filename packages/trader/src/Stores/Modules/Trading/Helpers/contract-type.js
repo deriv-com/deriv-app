@@ -309,13 +309,15 @@ const ContractType = (() => {
     };
 
     const getExpiryType = (duration_units_list, expiry_type) => {
-        if (!expiry_type || (duration_units_list && duration_units_list.length === 1 && duration_units_list[0].value === 't')) {
-            return { expiry_type: 'duration' };
-        }
-        if (duration_units_list && duration_units_list.length === 0) {
-            return {
-                expiry_type: null,
-            };
+        if (duration_units_list) {
+            if ((!expiry_type && duration_units_list.length > 0) || (duration_units_list.length === 1 && duration_units_list[0].value === 't')) {
+                return { expiry_type: 'duration' };
+            }
+            if (duration_units_list.length === 0) {
+                return {
+                    expiry_type: null,
+                };
+            }
         }
 
         return { expiry_type };

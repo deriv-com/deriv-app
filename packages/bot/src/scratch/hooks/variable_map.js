@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 Blockly.VariableMap.prototype.createVariable = function(name, opt_type, opt_id, opt_is_local, opt_is_cloud) {
     let variable = this.getVariable(name, opt_type);
 

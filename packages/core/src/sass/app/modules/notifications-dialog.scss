@@ -1,0 +1,190 @@
+.notifications {
+    /** @define notifications-toggle; weak */
+    &-toggle {
+        position: relative;
+        margin-right: 24px;
+
+        &__icon {
+            width: 26px;
+            height: 26px;
+            pointer-events: none;
+
+            &-wrapper {
+                cursor: pointer;
+
+                &--active {
+                    cursor: default;
+                }
+            }
+            .color1-fill {
+                fill: var(--text-general);
+            }
+            .color1-stroke {
+                stroke: var(--text-general);
+            }
+        }
+        &__step {
+            position: absolute;
+            left: 1rem;
+            top: -2px;
+            pointer-events: none;
+
+            &-count {
+                background: $color-red-1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 3px 5px;
+                border-radius: 1rem;
+                color: $color-white;
+                font-size: 1rem;
+                font-weight: bold;
+            }
+        }
+        &--active {
+            .dc-popover {
+                pointer-events: none;
+            }
+        }
+        &:hover {
+            .notifications-toggle__icon {
+                @extend %inline-icon.active;
+            }
+        }
+    }
+    /** @define notifications-dialog; weak */
+    &-dialog {
+        position: absolute;
+        top: 48px;
+        left: calc(-50% - 10rem);
+        width: 264px;
+        height: 525px;
+        background: var(--general-main-2);
+        border-radius: $BORDER_RADIUS;
+        box-shadow: 0 4px 8px 2px var(--shadow-menu);
+        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
+
+        &__header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--border-normal);
+
+            &-text {
+                font-weight: bold;
+                font-size: 1.6rem;
+                margin: 1rem 0;
+                color: var(--text-prominent);
+            }
+        }
+        &__content {
+            padding: 8px 0;
+            height: calc(100% - 37px);
+            border-radius: $BORDER_RADIUS;
+
+            &--empty {
+                display: flex;
+                height: 100%;
+                max-height: 400px;
+            }
+        }
+        &--enter-done {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+        &--enter, &--exit {
+            opacity: 0;
+            transform: translate3d(0, -20px, 0);
+        }
+    }
+    /** @define notifications-empty; weak */
+    &-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &__container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        &__icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 8px;
+
+            .color1-fill {
+                fill: var(--text-less-prominent);
+            }
+        }
+        &__header {
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: center;
+            color: var(--text-less-prominent);
+            padding: 8px;
+        }
+        &__message {
+            line-height: 1.5;
+            font-size: 1.2rem;
+            text-align: center;
+            color: var(--text-less-prominent);
+        }
+    }
+    /** @define notifications-item; weak */
+    &-item {
+        padding: 0.8rem;
+        margin-left: 3.2rem;
+        margin-right: 0.8rem;
+        position: relative;
+
+        &:after {
+            position: absolute;
+            content: '';
+            bottom: 0;
+            left: -3.2rem;
+            width: calc(100% + 4rem);
+            height: 1px;
+            background: var(--border-disabled);
+        }
+        &__cta-button {
+            margin: 8px 0 0 auto;
+            height: 24px !important;
+            width: 106px;
+
+            .btn__text {
+                font-size: 1.2rem;
+            }
+        }
+        &__title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: var(--text-prominent);
+            position: relative;
+            line-height: 1.5;
+
+            &-icon {
+                position: absolute;
+                left: -26px;
+                top: 2px;
+                height: 16px;
+                width: 16px;
+                pointer-events: none;
+            }
+        }
+        &__message {
+            font-size: 1.2rem;
+            color: var(--text-prominent);
+            line-height: 1.5;
+            padding-right: 8px;
+
+            a {
+                text-decoration: none;
+                font-weight: bold;
+                color: var(--text-prominent);
+            }
+        }
+    }
+}

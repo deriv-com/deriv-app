@@ -1,6 +1,7 @@
+import { localize }          from 'deriv-translations/lib/i18n';
 import { finishSign }        from '../../images';
 import { setBlockTextColor } from '../../../utils';
-import { translate }         from '../../../../utils/lang/i18n';
+
 // import ScratchStore          from '../../../../stores/scratch-store';
 
 Blockly.Blocks.after_purchase = {
@@ -9,7 +10,7 @@ Blockly.Blocks.after_purchase = {
     },
     definition(){
         return {
-            message0: translate('%1 4. Restart trading conditions %2'),
+            message0: localize('%1 4. Restart trading conditions %2'),
             message1: '%1',
             args0   : [
                 {
@@ -33,7 +34,7 @@ Blockly.Blocks.after_purchase = {
             colour         : Blockly.Colours.RootBlock.colour,
             colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
             colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
-            tooltip        : translate(
+            tooltip        : localize(
                 'Get the last trade information and result, then trade again.'
             ),
             category: Blockly.Categories.After_Purchase,
@@ -41,8 +42,8 @@ Blockly.Blocks.after_purchase = {
     },
     meta(){
         return {
-            'display_name': translate('Restart trading conditions'),
-            'description' : translate('Here is where you can decide to continue trading.'),
+            'display_name': localize('Restart trading conditions'),
+            'description' : localize('Here is where you can decide if your bot should continue trading.'),
         };
     },
     onchange(event) {

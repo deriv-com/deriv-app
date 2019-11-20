@@ -1,7 +1,7 @@
+import { localize }  from 'deriv-translations/lib/i18n';
 import config        from '../constants';
-import { translate } from '../utils/lang/i18n';
 import ApiHelpers    from '../services/api/api-helpers';
-import ScratchStore from '../stores/scratch-store';
+import ScratchStore  from '../stores/scratch-store';
 
 /* eslint-disable no-underscore-dangle */
 export default class BlockConversion {
@@ -205,14 +205,14 @@ export default class BlockConversion {
             bba              : (block_node) => generateIndicatorBlock(block_node, 'bba_statement', 'bba'),
             ema              : (block_node) => generateIndicatorBlock(block_node, 'ema_statement', 'ema'),
             emaa             : (block_node) => generateIndicatorBlock(block_node, 'emaa_statement', 'emaa'),
-            lists_create_with: (block_node) => generateGrowingListBlock(block_node, 'lists_create_with', translate('list'), 'VALUE'),
+            lists_create_with: (block_node) => generateGrowingListBlock(block_node, 'lists_create_with', localize('list'), 'VALUE'),
             macda            : (block_node) => generateIndicatorBlock(block_node, 'macda_statement', 'macda'),
             market           : (block_node) => tradeOptions(block_node),
             rsi              : (block_node) => generateIndicatorBlock(block_node, 'rsi_statement', 'rsi'),
             rsia             : (block_node) => generateIndicatorBlock(block_node, 'rsia_statement', 'rsia'),
             sma              : (block_node) => generateIndicatorBlock(block_node, 'sma_statement', 'sma'),
             smaa             : (block_node) => generateIndicatorBlock(block_node, 'smaa_statement', 'smaa'),
-            text_join        : (block_node) => generateGrowingListBlock(block_node, 'text_join', translate('text'), 'TEXT'),
+            text_join        : (block_node) => generateGrowingListBlock(block_node, 'text_join', localize('text'), 'TEXT'),
             trade            : (block_node) => {
                 const block        = this.workspace.newBlock('trade_definition');
                 const block_fields = {
@@ -292,7 +292,7 @@ export default class BlockConversion {
 
     // eslint-disable-next-line class-methods-use-this
     createWorkspace() {
-        const options          = new Blockly.Options({ media: `${__webpack_public_path__}media/` }); // eslint-disable-line
+        const options          = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
         const fragment         = document.createDocumentFragment();
         const el_injection_div = document.createElement('div');
 
@@ -516,18 +516,10 @@ export default class BlockConversion {
         const is_disabled    = el_block.getAttribute('disabled') && el_block.getAttribute('disabled') === 'true';
 
         const setBlockAttributes = (b) => {
-            if (is_collapsed) {
-                b.setCollapsed(true);
-            }
-            if (is_immovable) {
-                b.setMovable(false);
-            }
-            if (is_undeletable) {
-                b.setDeletable(false);
-            }
-            if (is_disabled) {
-                b.setDisabled(true);
-            }
+            b.setCollapsed(is_collapsed);
+            b.setMovable(!is_immovable);
+            b.setDeletable(!is_undeletable);
+            b.setDisabled(is_disabled);
         };
 
         if (is_old_block) {
@@ -638,11 +630,10 @@ export default class BlockConversion {
                 case ('comment'): {
                     const is_minimised = el_block_child.getAttribute('pinned') !== 'true';
                     const comment_text = el_block_child.innerText;
-                    
-                    block.setCommentText(comment_text);
+
+                    block.comment = new Blockly.ScratchBlockComment(block, comment_text, null, 0, 0, is_minimised);
                     block.comment.iconXY_ = { x: 0, y: 0 };
-                    block.comment.setVisible(true);
-                    block.comment.setMinimized(is_minimised);
+                    block.comment.setVisible(true); // Scratch comments are always visible.
                     break;
                 }
                 default:

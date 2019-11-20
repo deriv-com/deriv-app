@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/tools';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.logic_null = {
     init() {
@@ -12,14 +12,14 @@ Blockly.Blocks.logic_null = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Returns the "null" value'),
+            tooltip        : localize('This block assigns a null value to an item or statement.'),
             category       : Blockly.Categories.Logic,
         };
     },
     meta(){
         return {
-            'display_name': translate('Null'),
-            'description' : translate('This is used to assign a null value to an item or statement.'),
+            'display_name': localize('Null'),
+            'description' : localize('This block assigns a null value to an item or statement.'),
         };
     },
 };

@@ -60,8 +60,8 @@ module.exports = function (env, argv) {
             }
         },
         output      : {
-            filename  : 'js/[name].[hash].js',
-            publicPath: base
+            filename  : 'js/core.[name].[contenthash].js',
+            publicPath: base,
         },
         plugins     : plugins(base, false),
     };

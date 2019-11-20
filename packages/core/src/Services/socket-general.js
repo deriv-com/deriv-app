@@ -5,7 +5,6 @@ import ServerTime        from '_common/base/server_time';
 import BinarySocket      from '_common/base/socket_base';
 import { State }         from '_common/storage';
 import { localize }      from 'App/i18n';
-import { requestLogout } from './logout';
 import WS                from './ws-methods';
 
 let client_store,
@@ -23,7 +22,7 @@ const BinarySocketGeneral = (() => {
         if (is_ready) {
             if (!Login.isLoginPages()) {
                 if (!client_store.is_valid_login) {
-                    requestLogout();
+                    client_store.logout();
                     return;
                 }
                 WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
@@ -44,13 +43,13 @@ const BinarySocketGeneral = (() => {
                         sessionStorage.removeItem('active_tab');
                         // Dialog.alert({ id: 'authorize_error_alert', message: response.error.message });
                     }
-                    requestLogout();
+                    client_store.logout();
                 } else if (!Login.isLoginPages() && !/authorize/.test(State.get('skip_response'))) {
                     // is_populating_account_list is a check to avoid logout on the first logged-in session
                     // In any other case, if the response loginid does not match the store's loginid, user must be logged out
                     if (response.authorize.loginid !== client_store.loginid &&
                         !client_store.is_populating_account_list) {
-                        requestLogout();
+                        client_store.logout();
                     } else if (response.authorize.loginid === client_store.loginid) {
                         // All other cases continue with the loginid and authorize the profile
                         authorizeAccount(response);
@@ -119,6 +118,16 @@ const BinarySocketGeneral = (() => {
             case 'DisabledClient':
                 common_store.setError(true, { message: response.error.message });
                 break;
+            case 'InvalidToken':
+                client_store.logout().then(() => {
+                    common_store.setError(true, {
+                        header             : response.error.message,
+                        message            : localize('Please Log in'),
+                        should_show_refresh: false,
+                        redirect_label     : localize('Log in'),
+                        redirectOnClick    : Login.redirectToLogin,
+                    });
+                });
             // no default
         }
     };

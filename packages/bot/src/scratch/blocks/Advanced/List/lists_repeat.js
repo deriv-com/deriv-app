@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.lists_repeat = {
     init() {
@@ -6,7 +6,7 @@ Blockly.Blocks.lists_repeat = {
     },
     definition(){
         return {
-            message0: translate('create list with item %1 repeated %2 times'),
+            message0: localize('create list with item %1 repeated %2 times'),
             args0   : [
                 {
                     type: 'input_value',
@@ -22,14 +22,14 @@ Blockly.Blocks.lists_repeat = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Creates a list by repeating a given item'),
+            tooltip        : localize('Creates a list by repeating a given item'),
             category       : Blockly.Categories.List,
         };
     },
     meta(){
         return {
-            'display_name': translate('Repeat an item'),
-            'description' : translate('Creates a list with a given item repeated for a specific number of times.'),
+            'display_name': localize('Repeat an item'),
+            'description' : localize('Creates a list with a given item repeated for a specific number of times.'),
         };
     },
 };

@@ -1,15 +1,19 @@
-import PropTypes                   from 'prop-types';
-import React                       from 'react';
-import ReactDOM                    from 'react-dom';
+import PropTypes                    from 'prop-types';
+import React                        from 'react';
+import ReactDOM                     from 'react-dom';
+import { Prompt }                   from 'react-router';
 import { BrowserRouter as Router } from 'react-router-dom';
-import WS                          from 'Services/ws-methods';
-import { MobxProvider }            from 'Stores/connect';
-import ErrorBoundary               from './Components/Elements/Errors/error-boundary.jsx';
-import AppContents                 from './Containers/Layout/app-contents.jsx';
-import Footer                      from './Containers/Layout/footer.jsx';
-import Header                      from './Containers/Layout/header.jsx';
-import Lazy                        from './Containers/Lazy';
-import Routes                      from './Containers/Routes/routes.jsx';
+import Client                       from '_common/base/client_base';
+import WS                           from 'Services/ws-methods';
+import { MobxProvider }             from 'Stores/connect';
+import ErrorBoundary                from './Components/Elements/Errors/error-boundary.jsx';
+import AppContents                  from './Containers/Layout/app-contents.jsx';
+import Footer                       from './Containers/Layout/footer.jsx';
+import Header                       from './Containers/Layout/header.jsx';
+import AppModals                    from './Containers/Modals';
+import Lazy                         from './Containers/Lazy';
+import Routes                       from './Containers/Routes/routes.jsx';
+import { interceptAcrossBot }       from './Constants/routes-config';
 import './i18n';
 // eslint-disable-next-line import/extensions
 import initStore                   from './app.js';
@@ -19,10 +23,12 @@ import 'Sass/app.scss';
 const isTouchDevice = 'ontouchstart' in document.documentElement;
 
 const App = ({ root_store }) => {
-    const l = window.location;
-    const base = l.pathname.split('/')[1];
+    const base = window.location.pathname.split('/')[1];
+    const has_base = /^\/(br_)/.test(window.location.pathname);
+    const url_params = new URLSearchParams(window.location.search);
+
     return (
-        <Router basename={/^\/(br_|bot)/.test(l.pathname) ? `/${base}` : null}>
+        <Router basename={ has_base ? `/${base}` : null}>
             <MobxProvider store={root_store}>
                 {
                     root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice) ?
@@ -35,7 +41,9 @@ const App = ({ root_store }) => {
                             <Header />
                             <ErrorBoundary>
                                 <AppContents>
-                                    <Routes passthrough={{ root_store, WS }} />
+                                    {/* TODO: [trader-remove-client-base] */}
+                                    <Routes passthrough={{ root_store, WS, client_base: Client }} />
+                                    <Prompt when={ true } message={ interceptAcrossBot } />
                                     <Lazy
                                         ctor={() => import(/* webpackChunkName: "push-notification" */'./Containers/push-notification.jsx')}
                                         should_load={!root_store.ui.is_loading}
@@ -44,11 +52,7 @@ const App = ({ root_store }) => {
                                 </AppContents>
                             </ErrorBoundary>
                             <Footer />
-                            <Lazy
-                                ctor={() => import(/* webpackChunkName: "modals", webpackPrefetch: true */'./Containers/Modals')}
-                                should_load={true}
-                                has_progress={false}
-                            />
+                            <AppModals url_action_param={ url_params.get('action') } />
                         </React.Fragment>
                 }
             </MobxProvider>

@@ -1,9 +1,21 @@
-import { translate } from '../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
+import ScratchStore from '../../stores/scratch-store';
 
 /* eslint-disable func-names, no-underscore-dangle */
 
 // deriv-bot: Blockly value, Scratch resets this to 0, req for correct spacing in flyout.
 Blockly.BlockSvg.TAB_WIDTH = 8;
+
+/**
+ * Select this block.  Highlight it visually.
+ */
+Blockly.BlockSvg.prototype.addSelect = function() {
+    if (!this.isInFlyout) {
+        const { flyout } = ScratchStore.instance;
+        flyout.setVisibility(false);
+        Blockly.utils.addClass(/** @type {!Element} */ (this.svgGroup_), 'blocklySelected');
+    }
+};
 
 /**
  * Set whether the block is disabled or not.
@@ -71,14 +83,14 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
     if (this.workspace.options.collapse) {
         if (this.collapsed_) {
             const expandOption = { enabled: true };
-            expandOption.text = translate('Expand Block');
+            expandOption.text = localize('Expand Block');
             expandOption.callback = function() {
                 block.setCollapsed(false);
             };
             menuOptions.push(expandOption);
         } else {
             const collapseOption = { enabled: true };
-            collapseOption.text = translate('Collapse Block');
+            collapseOption.text = localize('Collapse Block');
             collapseOption.callback = function() {
                 block.setCollapsed(true);
             };
@@ -89,7 +101,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
     // Option to disable/enable block.
     if (this.workspace.options.disable) {
         const disableOption = {
-            text   : this.disabled ? translate('Enable Block') : translate('Disable Block'),
+            text   : this.disabled ? localize('Enable Block') : localize('Disable Block'),
             enabled: !this.getInheritedDisabled(),
             callback() {
                 const group = Blockly.Events.getGroup();

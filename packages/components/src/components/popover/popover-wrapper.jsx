@@ -44,7 +44,7 @@ class PopoverWrapper extends React.PureComponent {
                 isOpen={this.state.is_open}
                 position={alignment}
                 transitionDuration={0.25}
-                padding={margin + 10}
+                padding={margin + 8}
                 containerStyle={{ zIndex: 999 }}
                 content={({ position, targetRect, popoverRect }) => (
                     <ArrowContainer

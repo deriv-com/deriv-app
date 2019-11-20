@@ -8,9 +8,6 @@ import {
 import ObjectUtils      from 'deriv-shared/utils/object';
 import Validator        from 'Utils/Validator';
 import { isProduction } from '../config';
-import { createBrowserHistory } from 'history'
-
-const history = createBrowserHistory()
 
 /**
  * BaseStore class is the base class for all defined stores in the application. It handles some stuff such as:

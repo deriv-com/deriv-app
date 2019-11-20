@@ -138,7 +138,6 @@ const ContractType = (() => {
             contract_type,
             basis,
             duration_unit,
-            duration_units_list,
             expiry_type,
             multiplier,
             start_date,

@@ -3,11 +3,15 @@ import PropTypes  from 'prop-types';
 import classNames from 'classnames';
 
 const Text = ({
+    as: Tag,
+    bold,
     children,
     className,
     color,
-    bold,
-    size,
+    large,
+    medium,
+    small,
+    xsmall,
 }) => {
     const classes = classNames('text', {
         'text__bold'          : bold,
@@ -20,21 +24,30 @@ const Text = ({
         'text__white'         : color === 'white',
         'text__green'         : color === 'green',
         'text__red'           : color === 'red',
-        'text__xs'            : size === 'xs',
-        'text__s'             : size === 's',
-        'text__m'             : size === 'm',
-        'text__l'             : size === 'l',
+        'text__m'             : !large && !medium && !small && !xsmall ? true : medium,
+        'text__xs'            : xsmall,
+        'text__s'             : small,
+        'text__l'             : large,
     }, className);
 
-    return (<p classNames={classes}>{children}</p>);
+    return (<Tag className={classes}>{children}</Tag>);
 };
 
 Text.propTypes = {
     as       : PropTypes.string,
+    bold     : PropTypes.bool,
     children : PropTypes.node,
     className: PropTypes.string,
     color    : PropTypes.string,
-    weight   : PropTypes.string,
+    large    : PropTypes.bool,
+    medium   : PropTypes.bool,
+    small    : PropTypes.bool,
+    xsmall   : PropTypes.bool,
 };
 
-export default Header;
+Text.defaultProps = {
+    as   : 'p',
+    color: 'general',
+};
+
+export default Text;

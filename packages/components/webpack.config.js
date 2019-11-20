@@ -30,6 +30,7 @@ module.exports = {
         popover            : path.resolve(__dirname, 'src', 'components/popover/index.js'),
         'radio-group'      : path.resolve(__dirname, 'src', 'components/radio-group/index.js'),
         tabs               : path.resolve(__dirname, 'src', 'components/tabs/index.js'),
+        text               : path.resolve(__dirname, 'src', 'components/text/index.js'),
         'themed-scrollbars': path.resolve(__dirname, 'src', 'components/themed-scrollbars/index.js'),
         'underlying-icon'  : path.resolve(__dirname, 'src', 'components/underlying-icon/index.js'),
     },

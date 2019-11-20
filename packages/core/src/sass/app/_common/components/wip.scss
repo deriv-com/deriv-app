@@ -16,7 +16,7 @@
         padding: 0 1.6rem;
     }
     &__header {
-        @include typeface(--large-center-bold-black, none);
+        @include typeface(--title-center-bold-black, none);
         margin: 0.8rem 0 0.4rem;
         color: var(--text-prominent);
     }

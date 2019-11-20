@@ -1,0 +1,30 @@
+$colors: primary, accent, prominent, general, disabled, colored-background, profit-success, loss-danger;
+$lh: (
+    'm' : 2rem,
+    'l' : 2.4rem,
+    's' : 1.8rem,
+    'xs': 1.4rem,
+);
+/** @define text */
+.text {
+    letter-spacing: 0;
+    text-transform: none;
+    @each $color in $colors {
+        /* postcss-bem-linter: ignore */
+        &__#{$color} {
+            color: var(--text-#{$color});
+        }
+    }
+
+    @each $name, $size in $lh {
+        /* postcss-bem-linter: ignore */
+        &__#{$name} {
+            font-size: var(--text-size-#{$name});
+            line-height: $size;
+        }
+    }
+
+    &__bold {
+        font-weight: bold;
+    }
+}

@@ -41,10 +41,7 @@
         border-bottom: 1px solid var(--general-section-1);
 
         &__title {
-            @include typeface(--title-left-bold-black);
-            color: var(--text-prominent);
-            line-height: 24px;
-            padding: 16px;
+            padding: 1.6rem;
         }
         &__section {
             flex-grow: 1;

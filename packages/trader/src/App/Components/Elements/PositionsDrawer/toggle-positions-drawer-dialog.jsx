@@ -12,13 +12,26 @@ class TogglePositionsDrawerDialog extends React.PureComponent {
             top       : 0,
             left      : 0,
         };
-        this.ref = React.createRef();
+        this.toggle_ref = React.createRef();
+        this.dialog_ref = React.createRef();
     }
 
     toggleDialog = () => {
         this.setState(state => ({ is_visible: !state.is_visible }), () => {
-            if (this.state.is_visible && this.ref && this.ref.current) {
-                const { top, left } = this.ref.current.getBoundingClientRect();
+            if (this.state.is_visible && this.toggle_ref && this.toggle_ref.current
+                && this.dialog_ref && this.dialog_ref.current) {
+                const iconBound = this.toggle_ref.current.getBoundingClientRect();
+                const { ref: portalRef } = this.dialog_ref.current;
+                const targetBound = portalRef.current.getBoundingClientRect();
+                const bodyBound = document.body.getBoundingClientRect();
+
+                let { top } = iconBound;
+                const { left } = iconBound;
+
+                if (iconBound.top + targetBound.height > bodyBound.height) {
+                    top -= targetBound.height - iconBound.height;
+                }
+
                 this.setState({
                     top,
                     left,
@@ -31,17 +44,18 @@ class TogglePositionsDrawerDialog extends React.PureComponent {
         return (
             <React.Fragment>
                 <div
-                    ref={this.ref}
+                    ref={this.toggle_ref}
                     className='positions-drawer-dialog-toggle'
                     onClick={this.toggleDialog}
                 >
                     <Icon icon='IconSettings' />
                 </div>
                 <PositionsDrawerDialog
+                    ref={this.dialog_ref}
                     is_visible={this.state.is_visible}
                     left={this.state.left}
                     top={this.state.top}
-                    toggle_ref={this.ref}
+                    toggle_ref={this.toggle_ref}
                     toggleDialog={this.toggleDialog}
                 >
                     <ContractUpdateForm

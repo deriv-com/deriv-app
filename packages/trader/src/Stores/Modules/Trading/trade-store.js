@@ -34,9 +34,11 @@ import {
     getProposalErrorField,
     getProposalInfo }                 from './Helpers/proposal';
 import { setLimitOrderBarriers }      from '../Contract/Helpers/limit-orders';
-import { isBarrierSupported }         from '../SmartChart/Helpers/barriers';
 import { ChartBarrierStore }          from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS }             from '../SmartChart/Constants/barriers';
+import {
+    isBarrierSupported,
+    removeBarrier }                   from '../SmartChart/Helpers/barriers';
 import BaseStore                      from '../../base-store';
 
 const store_name = 'trade_store';
@@ -356,33 +358,54 @@ export default class TradeStore extends BaseStore {
             this.main_barrier.updateBarrierShade(is_over, contract_type);
         }
         this.hovered_contract_type = is_over ? contract_type : null;
-        setLimitOrderBarriers(this.barriers, is_over, this.contract_type, this.proposal_info[contract_type]);
+        setLimitOrderBarriers({
+            barriers             : this.barriers,
+            is_over,
+            contract_type        : this.contract_type,
+            contract_info        : this.proposal_info[contract_type],
+            hide_stop_out_barrier: true,
+        });
     }
 
     @action.bound
     setPurchaseSpotBarrier(is_over, position) {
-        if (this.is_multiplier && is_over) {
-            const entrySpotBarrier = new ChartBarrierStore(
+        const key = 'PURCHASE_SPOT_BARRIER';
+        if (is_over) {
+            const purchaseSpotBarrier = new ChartBarrierStore(
                 position.contract_info.entry_spot
             );
-            entrySpotBarrier.draggable = false;
-            entrySpotBarrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
-            this.main_barrier = entrySpotBarrier;
+            purchaseSpotBarrier.key = key;
+            purchaseSpotBarrier.draggable = false;
+            purchaseSpotBarrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
+            this.barriers.push(purchaseSpotBarrier);
         } else {
-            this.main_barrier = null;
+            removeBarrier(this.barriers, key);
         }
     }
 
     @action.bound
     toggleLimitOrderBarriers(is_over, position) {
         const contract_info = position.contract_info;
-        setLimitOrderBarriers(this.barriers, is_over, this.contract_type, contract_info);
+        const { barriers, contract_type } = this;
+        setLimitOrderBarriers({
+            barriers,
+            contract_info,
+            contract_type,
+            is_over,
+            hide_stop_out_barrier: true,
+        });
     }
 
     @action.bound
     clearLimitOrderBarriers() {
         this.hovered_contract_type = null;
-        setLimitOrderBarriers(this.barriers, false, this.contract_type);
+        const { barriers, contract_type } = this;
+        setLimitOrderBarriers({
+            barriers,
+            contract_type,
+            is_over              : false,
+            hide_stop_out_barrier: true,
+        });
     }
 
     @computed
@@ -397,7 +420,7 @@ export default class TradeStore extends BaseStore {
     }
 
     setMainBarrier = (proposal_info) => {
-        if (!proposal_info || this.is_multiplier) { return ; }
+        if (!proposal_info) { return ; }
         const { contract_type, barrier, high_barrier, low_barrier } = proposal_info;
 
         if (isBarrierSupported(contract_type)) {
@@ -706,8 +729,13 @@ export default class TradeStore extends BaseStore {
         this.setMainBarrier(response.echo_req);
 
         if (this.hovered_contract_type === contract_type) {
-            setLimitOrderBarriers(this.barriers, true,
-                contract_type, this.proposal_info[this.hovered_contract_type]);
+            setLimitOrderBarriers({
+                barriers             : this.barriers,
+                contract_info        : this.proposal_info[this.hovered_contract_type],
+                contract_type,
+                is_over              : true,
+                hide_stop_out_barrier: true,
+            });
         }
 
         if (response.error) {

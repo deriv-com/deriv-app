@@ -328,7 +328,7 @@ const NonTickContract = RawMarkerMaker(({
     ctx: context,
     points: [start, expiry, entry, exit],
     is_last_contract,
-    prices: [barrier, entry_tick_top, exit_tick_top], // TODO: support two barrier contracts
+    prices, // TODO: support two barrier contracts
     is_dark_theme,
     granularity,
     currency,
@@ -340,10 +340,13 @@ const NonTickContract = RawMarkerMaker(({
         status,
         profit,
     },
-    show_barrier = true,
+    config = {},
 }) => {
     /** @type {CanvasRenderingContext2D} */
     const ctx = context;
+    
+    // eslint-disable-next-line prefer-const
+    let [barrier, entry_tick_top, exit_tick_top] = prices;
 
     // the y value reported for candles is not accurate
     if (granularity !== 0) {
@@ -351,20 +354,20 @@ const NonTickContract = RawMarkerMaker(({
         if (exit) { exit.top = exit_tick_top; }
     }
 
-    const color = get_color({ status, profit, is_dark_theme });
+    const color = config.color || get_color({ status, profit, is_dark_theme });
 
     ctx.save();
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
 
-    const draw_start_line = is_last_contract && start.visible && !is_sold;
-    const show_profit = is_last_contract && !is_sold && profit && start.visible && barrier;
+    const draw_start_line = is_last_contract && start.visible && !is_sold && !config.hide_start_line;
+    const show_profit = is_last_contract && !is_sold && profit && start.visible && barrier && !config.hide_profit;
     const scale = calc_scale(start.zoom);
     const opacity = is_sold ? calc_opacity(start.left, expiry.left) : '';
 
     const canvas_height = (ctx.canvas.height / window.devicePixelRatio);
     if (barrier) {
-        barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
+        prices[0] = barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
     }
 
     if (draw_start_line) {
@@ -388,7 +391,7 @@ const NonTickContract = RawMarkerMaker(({
         ctx.stroke();
     }
     // barrier line
-    if (show_barrier && (barrier && entry) && (
+    if ((barrier && entry) && (
         start.visible
         || expiry.visible
         || Math.sign(start.left) !== Math.sign(expiry.left)
@@ -401,7 +404,7 @@ const NonTickContract = RawMarkerMaker(({
         ctx.stroke();
 
         ctx.beginPath();
-        ctx.setLineDash([]);
+        ctx.setLineDash(config.barrier_dashed ? [2,2] : []);
         ctx.moveTo(entry.left, barrier);
         ctx.lineTo(expiry.left, barrier);
         ctx.stroke();
@@ -435,9 +438,10 @@ const NonTickContract = RawMarkerMaker(({
     });
 
     // start-time marker
-    if (start.visible && barrier) {
+    const start_time_marker_top = prices[config.start_time_marker_top_index || 0];
+    if (start.visible && start_time_marker_top) {
         draw_path(ctx, {
-            top : barrier - 9 * scale,
+            top : start_time_marker_top - 9 * scale,
             left: start.left - 1 * scale,
             zoom: start.zoom,
             icon: ICONS.START.with_color(color + opacity),

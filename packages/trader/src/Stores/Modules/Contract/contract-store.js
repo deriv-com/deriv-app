@@ -168,7 +168,12 @@ export default class ContractStore {
                 main_barrier.updateBarrierColor(is_dark_mode);
             }
             if (contract_info.contract_id === this.contract_id) {
-                setLimitOrderBarriers(this.barriers_array, true, contract_type, contract_info);
+                setLimitOrderBarriers({
+                    barriers: this.barriers_array,
+                    contract_info,
+                    contract_type,
+                    is_over : true,
+                });
             }
         }
     }
@@ -193,7 +198,12 @@ export default class ContractStore {
                 main_barrier.updateBarrierShade(true, contract_type);
                 barriers = [ main_barrier ];
             }
-            setLimitOrderBarriers(barriers, true, contract_type, contract_info);
+            setLimitOrderBarriers({
+                barriers,
+                contract_info,
+                contract_type,
+                is_over: true,
+            });
         }
         return barriers;
     }
@@ -217,10 +227,10 @@ function calculate_marker(contract_info) {
         barrier,
         high_barrier,
         low_barrier,
+        limit_order,
     } = contract_info;
     const ticks_epoch_array = tick_stream ? tick_stream.map(t => t.epoch) : [];
     const is_digit_contract = isDigitContract(contract_type);
-    const show_barrier = !isMultiplierContract(contract_type);
 
     // window.ci = toJS(contract_info);
 
@@ -231,6 +241,8 @@ function calculate_marker(contract_info) {
         price_array = [+barrier];
     } else if (+barrier_count === 2 && high_barrier && low_barrier) {
         price_array = [+low_barrier, +high_barrier];
+    } else if (limit_order && limit_order.stop_out){
+        price_array = [+limit_order.stop_out.value];
     }
 
     if (entry_tick) { price_array.push(entry_tick); }
@@ -283,8 +295,23 @@ function calculate_marker(contract_info) {
             key          : `${contract_id}-date_start`,
             epoch_array,
             price_array,
-            show_barrier,
+            config       : getConfig(contract_info),
         };
     }
     return null;
+}
+
+function getConfig(contract_info) {
+    const { contract_type } = contract_info;
+    if (isMultiplierContract(contract_type)) {
+        return {
+            barrier_dashed             : true,
+            color                      : BARRIER_COLORS.ORANGE,
+            hide_profit                : true,
+            hide_start_line            : true,
+            start_time_marker_top_index: 1,
+        };
+    }
+
+    return { };
 }

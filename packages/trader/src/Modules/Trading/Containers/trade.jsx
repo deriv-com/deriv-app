@@ -143,7 +143,7 @@ const Markers = ({
     is_dark_theme,
     granularity,
     currency,
-    show_barrier,
+    config,
 }) => (
     markers_array.map(marker => {
         const Marker = AllMarkers[marker.type];
@@ -153,7 +153,7 @@ const Markers = ({
                 is_dark_theme={is_dark_theme}
                 granularity={granularity}
                 currency={currency}
-                show_barrier={show_barrier}
+                config={config}
                 {...marker}
             />
         );

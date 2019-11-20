@@ -138,7 +138,6 @@ const ContractType = (() => {
             contract_type,
             basis,
             duration_unit,
-            duration_units_list,
             expiry_type,
             multiplier,
             start_date,
@@ -156,7 +155,7 @@ const ContractType = (() => {
         const obj_duration_units_min_max = getDurationMinMax(contract_type, obj_start_type.contract_start_type);
 
         const obj_multiplier_range_list  = getMultiplierRange(contract_type, multiplier);
-        const obj_expiry_type            = getExpiryType(duration_units_list,expiry_type);
+        const obj_expiry_type            = getExpiryType(obj_duration_units_list, expiry_type);
 
         return {
             ...form_components,
@@ -309,14 +308,15 @@ const ContractType = (() => {
     };
 
     const getExpiryType = (duration_units_list, expiry_type) => {
-        if (duration_units_list && duration_units_list.length === 1 && duration_units_list[0].value === 't') {
-            return { expiry_type: 'duration' };
-        }
-
-        if (duration_units_list && duration_units_list.length === 0){
-            return {
-                expiry_type: null,
-            };
+        if (duration_units_list) {
+            if ((!expiry_type && duration_units_list.length > 0) || (duration_units_list.length === 1 && duration_units_list[0].value === 't')) {
+                return { expiry_type: 'duration' };
+            }
+            if (duration_units_list.length === 0) {
+                return {
+                    expiry_type: null,
+                };
+            }
         }
 
         return { expiry_type };
@@ -431,7 +431,7 @@ const ContractType = (() => {
         };
     };
 
-    const getMultiplierRange = (contract_type, multiplier) =>{
+    const getMultiplierRange = (contract_type, multiplier) => {
         const arr_multiplier = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'multiplier_range']) || [];
         
         return {

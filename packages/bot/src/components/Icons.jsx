@@ -42,35 +42,6 @@ import contract_loss           from '../assets/icons/ic-loss.svg';
 import contract_profit         from '../assets/icons/ic-profit.svg';
 import contract_plunkown       from '../assets/icons/ic-unknown.svg';
 
-// Trade Types
-import trade_type_asiand       from '../assets/icons/trade-types/asiand.svg';
-import trade_type_asianu       from '../assets/icons/trade-types/asianu.svg';
-import trade_type_call         from '../assets/icons/trade-types/call.svg';
-import trade_type_call_barrier from '../assets/icons/trade-types/call_barrier.svg';
-import trade_type_callspread   from '../assets/icons/trade-types/callspread.svg';
-import trade_type_digitdiff    from '../assets/icons/trade-types/digitdiff.svg';
-import trade_type_digiteven    from '../assets/icons/trade-types/digiteven.svg';
-import trade_type_digitmatch   from '../assets/icons/trade-types/digitmatch.svg';
-import trade_type_digitodd     from '../assets/icons/trade-types/digitodd.svg';
-import trade_type_digitover    from '../assets/icons/trade-types/digitover.svg';
-import trade_type_digitunder   from '../assets/icons/trade-types/digitunder.svg';
-import trade_type_expirymiss   from '../assets/icons/trade-types/expirymiss.svg';
-import trade_type_expiryrange  from '../assets/icons/trade-types/expiryrange.svg';
-import trade_type_notouch      from '../assets/icons/trade-types/notouch.svg';
-import trade_type_onetouch     from '../assets/icons/trade-types/onetouch.svg';
-import trade_type_put          from '../assets/icons/trade-types/put.svg';
-import trade_type_put_barrier  from '../assets/icons/trade-types/put_barrier.svg';
-import trade_type_putspread    from '../assets/icons/trade-types/putspread.svg';
-import trade_type_range        from '../assets/icons/trade-types/range.svg';
-import trade_type_resetcall    from '../assets/icons/trade-types/resetcall.svg';
-import trade_type_resetput     from '../assets/icons/trade-types/resetput.svg';
-import trade_type_runhigh      from '../assets/icons/trade-types/runhigh.svg';
-import trade_type_runlow       from '../assets/icons/trade-types/runlow.svg';
-import trade_type_tickhigh     from '../assets/icons/trade-types/tickhigh.svg';
-import trade_type_ticklow      from '../assets/icons/trade-types/ticklow.svg';
-import trade_type_unknown      from '../assets/icons/trade-types/unknown.svg';
-import trade_type_upordown     from '../assets/icons/trade-types/upordown.svg';
-
 // Transactions
 import contract_entry_spot      from '../assets/icons/ic-entryspot.svg';
 import contract_exit_spot       from '../assets/icons/ic-exitspot.svg';
@@ -118,35 +89,6 @@ export const Arrow2Icon            = Icon(toolbox_arrow2);
 export const ProfitMovementIcon    = Icon(contract_profit);
 export const LossMovementIcon      = Icon(contract_loss);
 export const UnknownMovementIcon   = Icon(contract_plunkown);
-
-// Trade Type
-export const TradeTypeAsianDown    = Icon(trade_type_asiand);
-export const TradeTypeAsianUp      = Icon(trade_type_asianu);
-export const TradeTypeCall         = Icon(trade_type_call);
-export const TradeTypeCallBarrier  = Icon(trade_type_call_barrier);
-export const TradeTypeCallSpread   = Icon(trade_type_callspread);
-export const TradeTypeDigitDiff    = Icon(trade_type_digitdiff);
-export const TradeTypeDigitEven    = Icon(trade_type_digiteven);
-export const TradeTypeDigitMatch   = Icon(trade_type_digitmatch);
-export const TradeTypeDigitOdd     = Icon(trade_type_digitodd);
-export const TradeTypeDigitOver    = Icon(trade_type_digitover);
-export const TradeTypeDigitUnder   = Icon(trade_type_digitunder);
-export const TradeTypeExpiryMiss   = Icon(trade_type_expirymiss);
-export const TradeTypeExpiryRange  = Icon(trade_type_expiryrange);
-export const TradeTypeNoTouch      = Icon(trade_type_notouch);
-export const TradeTypeOneTouch     = Icon(trade_type_onetouch);
-export const TradeTypePut          = Icon(trade_type_put);
-export const TradeTypePutBarrier   = Icon(trade_type_put_barrier);
-export const TradeTypePutSpread    = Icon(trade_type_putspread);
-export const TradeTypeRange        = Icon(trade_type_range);
-export const TradeTypeResetCall    = Icon(trade_type_resetcall);
-export const TradeTypeResetPut     = Icon(trade_type_resetput);
-export const TradeTypeRunHigh      = Icon(trade_type_runhigh);
-export const TradeTypeRunLow       = Icon(trade_type_runlow);
-export const TradeTypeTickHigh     = Icon(trade_type_tickhigh);
-export const TradeTypeTickLow      = Icon(trade_type_ticklow);
-export const TradeTypeUnknown      = Icon(trade_type_unknown);
-export const TradeTypeUpOrDown     = Icon(trade_type_upordown);
 
 // Toolbar
 export const ToolbarStartIcon        = Icon(toolbar_start);

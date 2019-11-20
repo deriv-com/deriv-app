@@ -130,6 +130,7 @@ module.exports = {
             'deriv-components': 'deriv-components',
             'deriv-shared'    : 'deriv-shared',
             'formik'          : 'formik',
+            'smartcharts-beta': 'smartcharts-beta',
         },
         /^deriv-shared\/.+$/,
         /^deriv-components\/.+$/,

@@ -2,6 +2,7 @@ import {
     action,
     observable,
 } from 'mobx';
+import { tabs_title } from '../constants/bot-contents';
 import { scratchWorkspaceInit } from '../scratch/index';
 
 export default class MainContentStore {
@@ -9,16 +10,11 @@ export default class MainContentStore {
         this.root_store = root_store;
     }
 
-    @observable active_index = 0;
+    @observable active_tab = tabs_title.WORKSPACE;
 
     @action.bound
-    onTabItemClick(index) {
-        this.active_index = index;
-    }
-
-    @action.bound
-    componentDidUpdate(){
-        if (this.active_index === 0) {
+    componentDidUpdate() {
+        if (this.active_tab === tabs_title.WORKSPACE) {
             scratchWorkspaceInit();
         } else if (Blockly.derivWorkspace) {
             Blockly.derivWorkspace.dispose();

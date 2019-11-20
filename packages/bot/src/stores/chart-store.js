@@ -2,15 +2,15 @@
 import { action,
     computed,
     observable }  from 'mobx';
+import ServerTime from '../services/api/server_time';
 
 const g_subscribers_map = {};
-let WS, server_time;
+let WS;
 
 export default class ChartStore {
     constructor(root_store) {
         this.root_store = root_store;
         WS = root_store.ws;
-        server_time = root_store.core.common.server_time;
     }
     
     @observable symbol;
@@ -65,12 +65,13 @@ export default class ChartStore {
 
     wsSendRequest = (req) => {
         if (req.time) {
-            // TODO revert this after core is merged
-            // return server_time.timePromise.then(() => ({
-            //     msg_type: 'time',
-            //     time    : server_time.get().unix(),
-            // }));
-            return server_time.unix();
+            return ServerTime.timePromise().then(() => {
+                console.log('HERER'); // eslint-disable-line no-console
+                return ({
+                    msg_type: 'time',
+                    time    : ServerTime.get().unix(),
+                });
+            });
         }
         if (req.active_symbols) {
             return WS.activeSymbols();

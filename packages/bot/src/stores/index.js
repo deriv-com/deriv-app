@@ -12,26 +12,28 @@ import ToolbarStore       from './toolbar-store';
 import TransactionsStore  from './transactions-store';
 import QuickStrategyStore from './quick-strategy-store';
 import MainContentStore   from './main-content-store';
+import FooterExtension    from './footer-extension-store';
 
 export default class RootStore {
     constructor(core, ws) {
-        this.core           = core;
-        this.ui             = core.ui;
-        this.common         = core.common;
-        this.ws             = ws;
-        this.contract_card  = new ContractCardStore(this);
-        this.flyout         = new FlyoutStore(this);
-        this.flyout_help    = new FlyoutHelpStore(this);
-        this.google_drive   = new GoogleDriveStore(this);
-        this.journal        = new JournalStore(this);
-        this.saveload       = new SaveLoadModalStore(this);
-        this.summary        = new SummaryStore(this);
-        this.transactions   = new TransactionsStore(this);
-        this.toolbar        = new ToolbarStore(this);
-        this.quick_strategy = new QuickStrategyStore();
-        this.run_panel      = new RunPanelStore(this);
-        this.chart_store    = new ChartStore(this);
-        this.main_content   = new MainContentStore(this);
+        this.core             = core;
+        this.ui               = core.ui;
+        this.common           = core.common;
+        this.ws               = ws;
+        this.contract_card    = new ContractCardStore(this);
+        this.flyout           = new FlyoutStore(this);
+        this.flyout_help      = new FlyoutHelpStore(this);
+        this.google_drive     = new GoogleDriveStore(this);
+        this.journal          = new JournalStore(this);
+        this.saveload         = new SaveLoadModalStore(this);
+        this.summary          = new SummaryStore(this);
+        this.transactions     = new TransactionsStore(this);
+        this.toolbar          = new ToolbarStore(this);
+        this.quick_strategy   = new QuickStrategyStore();
+        this.run_panel        = new RunPanelStore(this);
+        this.chart_store      = new ChartStore(this);
+        this.main_content     = new MainContentStore(this);
+        this.footer_extention = new FooterExtension(this);
 
         // Create a singleton class to share root_store with scratch
         ScratchStore.setInstance(this);

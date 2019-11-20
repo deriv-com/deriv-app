@@ -1,50 +1,57 @@
-import { Tabs } from 'deriv-components';
 import React from 'react';
 import Flyout from './flyout.jsx';
 import Chart from './chart/chart.jsx';
+import { tabs_title } from '../constants/bot-contents';
 import { connect } from '../stores/connect';
-import { translate } from '../utils/lang/i18n';
 import '../assets/sass/main-content.scss';
 import '../assets/sass/scratch/workspace.scss';
 import '../assets/sass/scratch/toolbox.scss';
 
 class MainContent extends React.Component {
-    componentDidMount(){
-        if (this.props.active_index === 0) {
+    componentDidMount() {
+        if (this.props.active_tab === tabs_title.WORKSPACE) {
             this.props.componentDidUpdate();
         }
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.active_index !== prevProps.active_index) {
+        if (this.props.active_tab !== prevProps.active_tab) {
             this.props.componentDidUpdate();
         }
     }
 
     render() {
-        const { active_index, onTabItemClick } = this.props;
-        return (
-            <Tabs
-                className='bot_workspace'
-                active_index={active_index}
-                onTabItemClick={onTabItemClick}
-                bottom
-                fit_content
-            >
-                <div label={translate('Workspace')}>
+        const { active_tab, is_run_panel_open } = this.props;
+        switch (active_tab) {
+            case (tabs_title.WORKSPACE):
+            default:
+                return (
                     <div id='scratch_div'>
                         <Flyout />
                     </div>
-                </div>
-                <div label={translate('Chart')} >
-                    <Chart />
-                </div>
-            </Tabs>);
+                );
+            case (tabs_title.CHART): {
+                const run_panel_width = is_run_panel_open ? getComputedStyle(document.documentElement).getPropertyValue('--run-panel-width') : 0;
+                const width = window.innerWidth - run_panel_width;
+                return (
+                    <div
+                        className='bot__chart-container'
+                        style={{
+                            width,
+                            height: 'calc(100vh - 140px)',
+                        }}
+                    >
+                        <Chart />
+                    </div>
+                );
+            }
+
+        }
     }
 }
-export default connect(({ main_content }) => ({
-    active_index      : main_content.active_index,
+export default connect(({ main_content, run_panel }) => ({
+    active_tab        : main_content.active_tab,
     componentDidUpdate: main_content.componentDidUpdate,
-    onTabItemClick    : main_content.onTabItemClick,
+    is_run_panel_open : run_panel.is_drawer_open,
 }))(MainContent);
 

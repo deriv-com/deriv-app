@@ -3,13 +3,15 @@ import React                    from 'react';
 // TODO:  move to core once it's ready
 import 'deriv-translations/lib/i18n';
 import                          './public-path'; // Leave this here! OK boss!
+import FooterExtension          from './components/footer-extension.jsx';
 import MainContent              from './components/main-content.jsx';
 import Toolbar                  from './components/toolbar.jsx';
 import RunPanel                 from './components/run-panel.jsx';
 import QuickStrategy            from './components/quick-strategy.jsx';
 import ApiHelpers               from './services/api/api-helpers';
+import ServerTime               from './services/api/server_time';
 import RootStore                from './stores';
-import firestore                from './utils/firestore';
+import Firestore                from './utils/firestore';
 
 import './assets/sass/app.scss';
 
@@ -19,7 +21,8 @@ class App extends React.Component {
         const { passthrough: { WS, root_store } } = props;
         this.root_store = new RootStore(root_store, WS);
         ApiHelpers.setInstance(this.root_store);
-        firestore.init(this.root_store);
+        Firestore.init(this.root_store);
+        ServerTime.init(root_store.common);
     }
 
     componentDidMount() {
@@ -33,12 +36,13 @@ class App extends React.Component {
     render() {
         return (
             <Provider {...this.root_store}>
-                <React.Fragment>
+                <>
                     <Toolbar />
                     <MainContent />
                     <RunPanel />
                     <QuickStrategy />
-                </React.Fragment>
+                    <FooterExtension />
+                </>
             </Provider>
         );
     }

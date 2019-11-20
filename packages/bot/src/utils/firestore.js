@@ -3,7 +3,7 @@ import                   'firebase/firestore';
 import { reaction }      from 'mobx';
 import { message_types } from '../constants/messages';
 
-const firestore = (() => {
+const Firestore = (() => {
 
     let db, users, doc_id, server_time;
 
@@ -139,4 +139,4 @@ const firestore = (() => {
     };
 })();
 
-export default firestore;
+export default Firestore;

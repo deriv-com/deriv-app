@@ -4,7 +4,7 @@ import NotificationMessages from './notification-messages.jsx';
 import                           '../assets/sass/scratch/workspace.scss';
 import                           '../assets/sass/scratch/toolbox.scss';
 
-const Workspace = () =>  (
+const Workspace = () => (
     <React.Fragment>
         {/* <div id='scratch_area' /> */}
         <div id='scratch_div'>

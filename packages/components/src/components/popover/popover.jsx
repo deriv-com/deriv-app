@@ -1,14 +1,11 @@
-import classNames           from 'classnames';
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import {
-    default as TinyPopover, // eslint-disable-line import/no-named-default
-    ArrowContainer,
-}                           from 'react-tiny-popover';
-import IconInfoOutline      from '../icon-info-outline.jsx';
-import IconQuestion         from '../icon-question.jsx';
-import IconRedDot           from '../icon-red-dot.jsx';
-import IconInfoBlue         from '../icon-info-blue.jsx';
+import classNames                      from 'classnames';
+import PropTypes                       from 'prop-types';
+import React                           from 'react';
+import TinyPopover, { ArrowContainer } from 'react-tiny-popover';
+import IconInfoOutline                 from '../icon-info-outline.jsx';
+import IconQuestion                    from '../icon-question.jsx';
+import IconRedDot                      from '../icon-red-dot.jsx';
+import IconInfoBlue                    from '../icon-info-blue.jsx';
 
 class Popover extends React.PureComponent {
     constructor (props) {

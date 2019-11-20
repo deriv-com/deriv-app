@@ -10,7 +10,7 @@ import { SignupButton }           from './signup-button.jsx';
 import ToggleNotifications        from './toggle-notifications.jsx';
 import ToggleCashier              from './toggle-cashier.jsx';
 import { BinaryLink }             from '../../Routes';
-import                                 'Sass/app/_common/components/account-switcher.scss';
+import                           'Sass/app/_common/components/account-switcher.scss';
 
 const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx'));
 
@@ -61,12 +61,12 @@ export class AccountActions extends Component {
                         count={notifications_count}
                         is_visible={is_notifications_visible}
                         toggleDialog={toggleNotifications}
-                        tooltip_message={localize('View Notifications')}
+                        tooltip_message={localize('View notifications')}
                     />
                     <PopoverWrapper
                         classNameBubble='account-settings-toggle__tooltip'
                         alignment='bottom'
-                        message={localize('Manage Account Settings')}
+                        message={localize('Manage account settings')}
                     >
                         <BinaryLink
                             className='account-settings-toggle'

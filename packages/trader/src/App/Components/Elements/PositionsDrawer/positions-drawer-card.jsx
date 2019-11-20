@@ -23,7 +23,6 @@ const PositionsDrawerCard = ({
     current_tick,
     indicative,
     id,
-    is_dark_theme,
     is_loading,
     is_sell_requested,
     is_unsupported,
@@ -39,10 +38,7 @@ const PositionsDrawerCard = ({
 }) => {
     const loader_el = (
         <div className='positions-drawer-card__content-loader'>
-            <PositionsCardLoader
-                is_dark_theme={is_dark_theme}
-                speed={2}
-            />
+            <PositionsCardLoader speed={2} />
         </div>
     );
     const fallback_result = (profit_loss < 0) ? 'lost' : 'won';
@@ -241,7 +237,6 @@ PositionsDrawerCard.propTypes = {
     exit_spot                     : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     id                            : PropTypes.number,
     indicative                    : PropTypes.number,
-    is_dark_theme                 : PropTypes.bool,
     is_loading                    : PropTypes.bool,
     is_sell_requested             : PropTypes.bool,
     is_unsupported                : PropTypes.bool,

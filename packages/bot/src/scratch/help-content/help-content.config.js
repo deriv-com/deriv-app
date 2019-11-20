@@ -8,7 +8,7 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/if-return.png` }, // eslint-disable-line
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/if-return.png` },
     ],
     //= ================= Math ==================
     math_arithmetic: [
@@ -35,7 +35,7 @@ export const config = {
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, width: '60%', url: `${__webpack_public_path__}media/constrain.png` }, // eslint-disable-line
+        { type: IMAGE, width: '60%', url: `${__webpack_public_path__}media/constrain.png` },
     ],
     // math_number: [
     //     { type: VIDEO, url: 'https://www.youtube.com/embed/Bb0HnaYNUx4' },
@@ -88,13 +88,13 @@ export const config = {
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/in_candle_list_read.png` }, // eslint-disable-line
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/in_candle_list_read.png` },
     ], read_ohlc_obj: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/read_candle_value.png` }, // eslint-disable-line
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/read_candle_value.png` },
     ], check_direction: [
         { type: TEXT },
         { type: BLOCK },
@@ -105,18 +105,18 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/get_candle.png` }, // eslint-disable-line
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/get_candle.png` },
         { type: TEXT },
     ], ohlc: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/candle_list_1.png` }, // eslint-disable-line
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/candle_list_1.png` },
     ], ohlc_values: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, url: `${__webpack_public_path__}media/candle_list.png` }, // eslint-disable-line
+        { type: IMAGE, url: `${__webpack_public_path__}media/candle_list.png` },
     ], is_candle_black: [
         { type: TEXT },
         { type: BLOCK },
@@ -127,16 +127,16 @@ export const config = {
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/is_candle_black.jpeg` }, // eslint-disable-line
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/is_candle_black.jpeg` },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/is_candle_black_1.jpeg` }, // eslint-disable-line
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/is_candle_black_1.jpeg` },
         { type: TEXT },
     ], ohlc_values_in_list: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/candle_list_1.png` }, // eslint-disable-line
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/candle_list_1.png` },
     ],
     //= ================= Variables ==================
     variables_gets: [
@@ -169,20 +169,20 @@ export const config = {
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/epoch.png` }, // eslint-disable-line
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/epoch.png` },
     ],
     todatetime: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/todatetime.png` }, // eslint-disable-line
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/todatetime.png` },
         { type: TEXT },
     ],
     totimestamp: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/totimestamp.png` }, // eslint-disable-line
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/totimestamp.png` },
         { type: TEXT },
     ],
     // =============== Notifications blocks ============
@@ -198,7 +198,7 @@ export const config = {
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, url: `${__webpack_public_path__}media/notify_telegram.png` }, // eslint-disable-line
+        { type: IMAGE, url: `${__webpack_public_path__}media/notify_telegram.png` },
     ],
     // =============== Misc blocks ============
     balance: [
@@ -215,30 +215,30 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '60%', url: `${__webpack_public_path__}media/sma_formula.png` }, // eslint-disable-line
+        { type: IMAGE, width: '60%', url: `${__webpack_public_path__}media/sma_formula.png` },
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_chart_1.png` }, // eslint-disable-line
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_chart_1.png` },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_chart_2.png` }, // eslint-disable-line
-        { type: TEXT },
-        { type: TEXT },
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_chart_2.png` },
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_block_example.png` }, // eslint-disable-line
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sma_block_example_1.png` }, // eslint-disable-line
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_block_example.png` },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_array.png` }, // eslint-disable-line
+        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sma_block_example_1.png` },
+        { type: TEXT },
+        { type: TEXT },
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_array.png` },
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_array_explanation.jpeg` }, // eslint-disable-line
+        { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_array_explanation.jpeg` },
 
     ],
     // =============== Root blocks ============
@@ -275,13 +275,13 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sell_available.png` }, // eslint-disable-line
+        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sell_available.png` },
     ],
     sell_at_market: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sell_available.png` }, // eslint-disable-line
+        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sell_available.png` },
     ],
     after_purchase: [
         { type: TEXT },
@@ -292,7 +292,7 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/trade_again.png` }, // eslint-disable-line
+        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/trade_again.png` },
     ],
     // =============== Contract ============
     contract_check_result: [
@@ -300,28 +300,28 @@ export const config = {
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/check_result.png` }, // eslint-disable-line
+        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/check_result.png` },
     ], sell_price: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sell_pl.png` }, // eslint-disable-line
+        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sell_pl.png` },
     ],
     // =============== Logic ============
     controls_if: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/controls_if.png` }, // eslint-disable-line
+        { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/controls_if.png` },
         { type: TEXT },
-        { type: IMAGE, width: '40%', url: `${__webpack_public_path__}media/compare_logic.png` }, // eslint-disable-line
+        { type: IMAGE, width: '40%', url: `${__webpack_public_path__}media/compare_logic.png` },
     ],
     logic_operation: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, width: '40%', url: `${__webpack_public_path__}media/logic.png` }, // eslint-disable-line
+        { type: IMAGE, width: '40%', url: `${__webpack_public_path__}media/logic.png` },
     ],
     // =============== Logic ============
     controls_whileUntil: [
@@ -329,15 +329,15 @@ export const config = {
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/repeat_while.png` }, // eslint-disable-line
+        { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/repeat_while.png` },
         { type: TEXT },
-        { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/repeat_until.png` }, // eslint-disable-line
+        { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/repeat_until.png` },
     ],
     controls_for: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/controls_for.png` }, // eslint-disable-line
+        { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/controls_for.png` },
         { type: TEXT },
         { type: TEXT },
     ],
@@ -345,7 +345,7 @@ export const config = {
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
-        { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/controls_forEach.png` }, // eslint-disable-line
+        { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/controls_forEach.png` },
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
@@ -355,9 +355,9 @@ export const config = {
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
-        { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/break_out.png` }, // eslint-disable-line
+        { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/break_out.png` },
         { type: TEXT },
-        { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/continue.png` }, // eslint-disable-line
+        { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/continue.png` },
     ],
 };
 

@@ -2,7 +2,7 @@ import React        from 'react';
 import { localize } from 'App/i18n';
 import Localize     from '../../../../App/Components/Elements/localize.jsx';
 
-export const switchToTickChart = () => ({
+export const switch_to_tick_chart = {
     key    : 'switch_to_tick_chart',
     header : localize('This chart display is not ideal for tick contracts'),
     message: (
@@ -11,4 +11,4 @@ export const switchToTickChart = () => ({
         />
     ),
     type: 'info',
-});
+};

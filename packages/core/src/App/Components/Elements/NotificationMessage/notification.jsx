@@ -58,9 +58,10 @@ const Notification = ({
                             </BinaryLink>
                             :
                             <Button
-                                className={classNames('btn--secondary', 'notification__cta-button')}
+                                className='notification__cta-button'
                                 onClick={data.action.onClick}
                                 text={data.action.text}
+                                secondary
                             />
                         }
                     </React.Fragment>

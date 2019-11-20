@@ -147,7 +147,7 @@ const shadowed_text = ({ ctx, is_dark_theme, text, left, top, scale }) => {
         ctx.shadowColor = is_dark_theme ? 'rgba(16,19,31,1)' : 'rgba(255,255,255,1)';
         ctx.shadowBlur = 12;
     }
-    for (let i = 0; i < 5; ++i) {
+     for (let i = 0; i < (is_firefox ? 1 : 5); ++i) {
         ctx.fillText(
             text,
             left,

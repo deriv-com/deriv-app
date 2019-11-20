@@ -53,7 +53,7 @@ module.exports = async ({ config, mode }) => {
 
     config.plugins.push(
         new CopyPlugin([
-            { from: path.resolve(__dirname, '../lib/icon/sprite/account.svg'),    to: 'account.svg',     toType: 'file' },
+            { from: path.resolve(__dirname, '../lib/icon/sprite/account.svg'),    to: 'account.svg',    toType: 'file' },
             { from: path.resolve(__dirname, '../lib/icon/sprite/common.svg'),     to: 'common.svg',     toType: 'file' },
             { from: path.resolve(__dirname, '../lib/icon/sprite/currency.svg'),   to: 'currency.svg',   toType: 'file' },
             { from: path.resolve(__dirname, '../lib/icon/sprite/flag.svg'),       to: 'flag.svg',       toType: 'file' },

@@ -3,9 +3,9 @@ import React            from 'react';
 import {
     Button,
     Dropdown,
+    Icon,
     Input,
     Modal,
-    UnderlyingIcon,
     Tabs,
 }                       from 'deriv-components';
 import {
@@ -21,7 +21,7 @@ import '../assets/sass/quick-strategy.scss';
 
 const MarketOption = ({ symbol }) => (
     <div key={symbol.value} className='quick-strategy__option'>
-        <UnderlyingIcon market={symbol.value} />
+        <Icon icon={`IcUnderlying${symbol.value}`} width={32} height={24} />
         <span className='quick-strategy__symbol'>{symbol.name}</span>
     </div>
 );

@@ -1,4 +1,5 @@
 import classNames                  from 'classnames';
+import PropTypes                   from 'prop-types';
 import React                       from 'react';
 import Popover, { ArrowContainer } from 'react-tiny-popover';
 import IconInfoOutline             from '../icon-info-outline.jsx';
@@ -29,12 +30,12 @@ class PopoverWrapper extends React.PureComponent {
             classNameTarget,
             classNameTargetIcon,
             counter,
-            disable_target_icon,
             disable_message_icon,
+            disable_target_icon,
             has_error,
             icon,
             id,
-            margin = 0,
+            margin,
             message,
         } = this.props;
 
@@ -100,6 +101,24 @@ class PopoverWrapper extends React.PureComponent {
 
 PopoverWrapper.defaultProps = {
     portal_container: 'deriv_app',
+    margin          : 0,
+};
+
+PopoverWrapper.propTypes = {
+    alignment           : PropTypes.string,
+    children            : PropTypes.element,
+    className           : PropTypes.string,
+    classNameBubble     : PropTypes.string,
+    classNameTarget     : PropTypes.string,
+    classNameTargetIcon : PropTypes.string,
+    counter             : PropTypes.number,
+    disable_message_icon: PropTypes.bool,
+    disable_target_icon : PropTypes.bool,
+    has_error           : PropTypes.bool,
+    icon                : PropTypes.string,
+    id                  : PropTypes.string,
+    margin              : PropTypes.number,
+    message             : PropTypes.string,
 };
 
 export default PopoverWrapper;

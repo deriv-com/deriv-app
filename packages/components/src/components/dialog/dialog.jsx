@@ -43,7 +43,9 @@ class Dialog extends React.Component {
             title,
         } = this.props;
 
-        const content_classes = classNames('dc-dialog__content', is_content_centered && 'dc-dialog__content--centered');
+        const content_classes = classNames('dc-dialog__content', {
+            'dc-dialog__content--centered': is_content_centered,
+        });
 
         return (
             <React.Fragment>
@@ -61,7 +63,7 @@ class Dialog extends React.Component {
                 >
                     <div className='dc-dialog__wrapper'>
                         <div className='dc-dialog__dialog'>
-                            { title &&
+                            { !!title &&
                             <h1 className='dc-dialog__header'>{ title }</h1>
                             }
                             { typeof children === 'string' ?
@@ -70,7 +72,7 @@ class Dialog extends React.Component {
                                 <div className={ content_classes }>{ children }</div>
                             }
                             <div className='dc-dialog__footer'>
-                                { onCancel &&
+                                { !!onCancel &&
                                 <Button
                                     className='dc-dialog__button'
                                     has_effect
@@ -79,7 +81,7 @@ class Dialog extends React.Component {
                                     tertiary
                                 />
                                 }
-                                { confirm_button_text &&
+                                { !!confirm_button_text &&
                                 <Button
                                     className='dc-dialog__button'
                                     has_effect

@@ -4,7 +4,7 @@ import React              from 'react';
 import { withRouter }     from 'react-router';
 import {
     Money,
-    PopoverWrapper,
+    Popover,
     ThemedScrollbars }    from 'deriv-components';
 import CurrencyUtils      from 'deriv-shared/utils/currency';
 import { localize }       from 'App/i18n';
@@ -57,7 +57,7 @@ const AccountList = ({
     onClickAccount,
     selected_loginid,
 }) => (
-    <PopoverWrapper alignment='left' message={loginid}>
+    <Popover alignment='left' message={loginid}>
         <div
             id={`dt_${loginid}`}
             className={classNames('acc-switcher__account', {
@@ -97,7 +97,7 @@ const AccountList = ({
                 }
             </span>
         </div>
-    </PopoverWrapper>
+    </Popover>
 );
 
 const CurrencyDisplay = ({
@@ -358,7 +358,7 @@ class AccountSwitcher extends React.Component {
                     <span>
                         <Localize i18n_default_text='Total assets' />
                     </span>
-                    <PopoverWrapper
+                    <Popover
                         alignment='bottom'
                         message={this.props.has_mt5_login
                             ? localize('Total assets in your Deriv and DMT5 accounts (excluding demo accounts).')
@@ -366,7 +366,7 @@ class AccountSwitcher extends React.Component {
                         }
                     >
                         <Icon icon='IconInfoOutline' className='acc-switcher__total-icon' />
-                    </PopoverWrapper>
+                    </Popover>
                     <span className='acc-switcher__balance'>
                         <Money
                             currency={this.props.obj_total_balance.currency}

@@ -1,6 +1,6 @@
 import classNames          from 'classnames';
 import React               from 'react';
-import { PopoverWrapper }  from 'deriv-components';
+import { Popover }         from 'deriv-components';
 import NotificationsDialog from 'App/Containers/NotificationsDialog';
 import Icon                from 'Assets/icon.jsx';
 import                          'Sass/app/modules/notifications-dialog.scss';
@@ -10,7 +10,7 @@ const ToggleNotificationsDrawer = ({ count, is_visible, toggleDialog, tooltip_me
         'notifications-toggle--active': is_visible,
     })}
     >
-        <PopoverWrapper
+        <Popover
             classNameBubble='notifications-toggle__tooltip'
             alignment='bottom'
             message={tooltip_message}
@@ -33,7 +33,7 @@ const ToggleNotificationsDrawer = ({ count, is_visible, toggleDialog, tooltip_me
                 </div>
                 }
             </div>
-        </PopoverWrapper>
+        </Popover>
         <NotificationsDialog
             is_visible={is_visible}
             toggleDialog={toggleDialog}

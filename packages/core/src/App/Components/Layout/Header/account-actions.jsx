@@ -1,16 +1,16 @@
-import { Button, PopoverWrapper } from 'deriv-components';
-import * as PropTypes             from 'prop-types';
-import React, { Component }       from 'react';
-import { localize }               from 'App/i18n';
-import CurrencyUtils              from 'deriv-shared/utils/currency';
-import Icon                       from 'Assets/icon.jsx';
-import routes                     from 'Constants/routes';
-import { LoginButton }            from './login-button.jsx';
-import { SignupButton }           from './signup-button.jsx';
-import ToggleNotifications        from './toggle-notifications.jsx';
-import ToggleCashier              from './toggle-cashier.jsx';
-import { BinaryLink }             from '../../Routes';
-import                           'Sass/app/_common/components/account-switcher.scss';
+import { Button, Popover }  from 'deriv-components';
+import * as PropTypes       from 'prop-types';
+import React, { Component } from 'react';
+import { localize }         from 'App/i18n';
+import CurrencyUtils        from 'deriv-shared/utils/currency';
+import Icon                 from 'Assets/icon.jsx';
+import routes               from 'Constants/routes';
+import { LoginButton }      from './login-button.jsx';
+import { SignupButton }     from './signup-button.jsx';
+import ToggleNotifications  from './toggle-notifications.jsx';
+import ToggleCashier        from './toggle-cashier.jsx';
+import { BinaryLink }       from '../../Routes';
+import                      'Sass/app/_common/components/account-switcher.scss';
 
 const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx'));
 
@@ -63,7 +63,7 @@ export class AccountActions extends Component {
                         toggleDialog={toggleNotifications}
                         tooltip_message={localize('View notifications')}
                     />
-                    <PopoverWrapper
+                    <Popover
                         classNameBubble='account-settings-toggle__tooltip'
                         alignment='bottom'
                         message={localize('Manage account settings')}
@@ -74,7 +74,7 @@ export class AccountActions extends Component {
                         >
                             <Icon icon='IconUser' />
                         </BinaryLink>
-                    </PopoverWrapper>
+                    </Popover>
                     <React.Suspense fallback={<div />}>
                         <AccountInfo
                             balance={typeof balance === 'undefined' ? balance : CurrencyUtils.formatMoney(currency, balance, true)}

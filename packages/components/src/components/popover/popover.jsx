@@ -1,13 +1,16 @@
-import classNames                  from 'classnames';
-import PropTypes                   from 'prop-types';
-import React                       from 'react';
-import Popover, { ArrowContainer } from 'react-tiny-popover';
-import IconInfoOutline             from '../icon-info-outline.jsx';
-import IconQuestion                from '../icon-question.jsx';
-import IconRedDot                  from '../icon-red-dot.jsx';
-import IconInfoBlue                from '../icon-info-blue.jsx';
+import classNames           from 'classnames';
+import PropTypes            from 'prop-types';
+import React                from 'react';
+import {
+    default as TinyPopover, // eslint-disable-line import/no-named-default
+    ArrowContainer,
+}                           from 'react-tiny-popover';
+import IconInfoOutline      from '../icon-info-outline.jsx';
+import IconQuestion         from '../icon-question.jsx';
+import IconRedDot           from '../icon-red-dot.jsx';
+import IconInfoBlue         from '../icon-info-blue.jsx';
 
-class PopoverWrapper extends React.PureComponent {
+class Popover extends React.PureComponent {
     constructor (props) {
         super(props);
         this.state = { is_open: false };
@@ -41,7 +44,7 @@ class PopoverWrapper extends React.PureComponent {
 
         const icon_class_name = classNames(classNameTargetIcon, icon);
         return (
-            <Popover
+            <TinyPopover
                 isOpen={this.state.is_open}
                 position={alignment}
                 transitionDuration={0.25}
@@ -94,17 +97,17 @@ class PopoverWrapper extends React.PureComponent {
                         {children}
                     </div>
                 </div>
-            </Popover>
+            </TinyPopover>
         );
     }
 }
 
-PopoverWrapper.defaultProps = {
+Popover.defaultProps = {
     portal_container: 'deriv_app',
     margin          : 0,
 };
 
-PopoverWrapper.propTypes = {
+Popover.propTypes = {
     alignment           : PropTypes.string,
     children            : PropTypes.node,
     className           : PropTypes.string,
@@ -122,4 +125,4 @@ PopoverWrapper.propTypes = {
     portal_container    : PropTypes.string,
 };
 
-export default PopoverWrapper;
+export default Popover;

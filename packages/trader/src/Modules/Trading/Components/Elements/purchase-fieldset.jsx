@@ -1,13 +1,13 @@
-import classNames         from 'classnames';
-import { PopoverWrapper } from 'deriv-components';
-import React              from 'react';
-import PropTypes          from 'prop-types';
-// import { localize }    from 'App/i18n';
-// import { PopConfirm }  from 'App/Components/Elements/PopConfirm';
-import Fieldset           from 'App/Components/Form/fieldset.jsx';
-import ContractInfo       from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
-// import PurchaseLock    from 'Modules/Trading/Components/Form/Purchase/PurchaseLock';
-import PurchaseButton     from 'Modules/Trading/Components/Elements/purchase-button.jsx';
+import classNames        from 'classnames';
+import { Popover }       from 'deriv-components';
+import React             from 'react';
+import PropTypes         from 'prop-types';
+// import { localize }   from 'App/i18n';
+// import { PopConfirm } from 'App/Components/Elements/PopConfirm';
+import Fieldset          from 'App/Components/Form/fieldset.jsx';
+import ContractInfo      from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
+// import PurchaseLock   from 'Modules/Trading/Components/Form/Purchase/PurchaseLock';
+import PurchaseButton    from 'Modules/Trading/Components/Elements/purchase-button.jsx';
 
 class PurchaseFieldset extends React.PureComponent {
     state = { should_fade: false };
@@ -99,13 +99,13 @@ class PurchaseFieldset extends React.PureComponent {
                     >
                         <div className='btn-purchase__box-shadow' />
                         {(is_proposal_error) ?
-                            <PopoverWrapper
+                            <Popover
                                 alignment='left'
                                 classNameBubble='purchase-container__popover-bubble'
                                 message={info.message}
                             >
                                 { purchase_button }
-                            </PopoverWrapper>
+                            </Popover>
                             :
                             purchase_button
                         }

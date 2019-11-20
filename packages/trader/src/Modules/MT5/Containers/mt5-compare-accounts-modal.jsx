@@ -1,10 +1,10 @@
-import { Button, PopoverWrapper, Modal } from 'deriv-components';
-import React                             from 'react';
-import DataTable                         from 'App/Components/Elements/DataTable';
-import Localize                          from 'App/Components/Elements/localize.jsx';
-import UILoader                          from 'App/Components/Elements/ui-loader.jsx';
-import { localize }                      from 'App/i18n';
-import { connect }                       from 'Stores/connect';
+import { Button, Popover, Modal } from 'deriv-components';
+import React                      from 'react';
+import DataTable                  from 'App/Components/Elements/DataTable';
+import Localize                   from 'App/Components/Elements/localize.jsx';
+import UILoader                   from 'App/Components/Elements/ui-loader.jsx';
+import { localize }               from 'App/i18n';
+import { connect }                from 'Stores/connect';
 
 const compareAccountsColumns = [
     {
@@ -27,7 +27,7 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
     return tooltip ? (
         <React.Fragment>
             <p className='mt5-attribute-describer'>{name}</p>
-            <PopoverWrapper
+            <Popover
                 alignment='right'
                 icon='counter'
                 counter={counter}

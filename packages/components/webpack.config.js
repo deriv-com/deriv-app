@@ -27,7 +27,7 @@ module.exports = {
         money              : path.resolve(__dirname, 'src', 'components/money/index.js'),
         'password-input'   : path.resolve(__dirname, 'src', 'components/password-input/index.js'),
         'password-meter'   : path.resolve(__dirname, 'src', 'components/password-meter/index.js'),
-        'popover-wrapper'  : path.resolve(__dirname, 'src', 'components/popover/index.js'),
+        popover            : path.resolve(__dirname, 'src', 'components/popover/index.js'),
         'radio-group'      : path.resolve(__dirname, 'src', 'components/radio-group/index.js'),
         tabs               : path.resolve(__dirname, 'src', 'components/tabs/index.js'),
         'themed-scrollbars': path.resolve(__dirname, 'src', 'components/themed-scrollbars/index.js'),

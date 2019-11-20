@@ -1,18 +1,18 @@
-import classNames           from 'classnames';
+import classNames         from 'classnames';
 import {
     Button,
     Input,
-    PopoverWrapper,
-}                           from 'deriv-components';
+    Popover,
+}                         from 'deriv-components';
 import {
     Field,
     Formik,
     Form,
-}                           from 'formik';
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import { localize }         from 'deriv-translations/lib/i18n';
-import Dialog               from './dialog.jsx';
+}                         from 'formik';
+import PropTypes          from 'prop-types';
+import React              from 'react';
+import { localize }       from 'deriv-translations/lib/i18n';
+import Dialog             from './dialog.jsx';
 import {
     ToolbarCloseIcon,
     ToolbarNewFileIcon,
@@ -28,11 +28,11 @@ import {
     ToolbarUndoIcon,
     ToolbarZoomInIcon,
     ToolbarZoomOutIcon,
-}                           from './Icons.jsx';
-import SaveLoadModal        from './saveload-modal.jsx';
-import TradeAnimation       from './trade-animation.jsx';
-import { connect }          from '../stores/connect';
-import                           '../assets/sass/scratch/toolbar.scss';
+}                          from './Icons.jsx';
+import SaveLoadModal       from './saveload-modal.jsx';
+import TradeAnimation      from './trade-animation.jsx';
+import { connect }         from '../stores/connect';
+import                          '../assets/sass/scratch/toolbar.scss';
 
 const SearchBox = ({
     is_search_loading,
@@ -131,19 +131,19 @@ const ButtonGroup = ({
     toggleSaveLoadModal,
 }) => (
     <div className='toolbar__group toolbar__group-btn'>
-        <PopoverWrapper
+        <Popover
             alignment='bottom'
             message={localize('Import')}
         >
             <ToolbarOpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
-        </PopoverWrapper>
-        <PopoverWrapper
+        </Popover>
+        <Popover
             alignment='bottom'
             message={localize('Reset')}
         >
             <ToolbarNewFileIcon className='toolbar__icon' onClick={onResetClick} />
-        </PopoverWrapper>
-        <PopoverWrapper
+        </Popover>
+        <Popover
             alignment='bottom'
             message={localize('Save')}
         >
@@ -151,23 +151,23 @@ const ButtonGroup = ({
                 className='toolbar__icon'
                 onClick={() => toggleSaveLoadModal(true)}
             />
-        </PopoverWrapper>
+        </Popover>
         <div className='vertical-divider' />
-        <PopoverWrapper
+        <Popover
             alignment='bottom'
             message={localize('Undo')}
         >
             <ToolbarUndoIcon className='toolbar__icon' onClick={onUndoClick} />️
-        </PopoverWrapper>
-        <PopoverWrapper
+        </Popover>
+        <Popover
             alignment='bottom'
             message={localize('Redo')}
         >
             <ToolbarRedoIcon className='toolbar__icon' onClick={onRedoClick} />
-        </PopoverWrapper>
+        </Popover>
         <div className='vertical-divider' />
         {is_stop_button_visible ?
-            <PopoverWrapper
+            <Popover
                 alignment='bottom'
                 message={localize('Stop')}
             >
@@ -178,33 +178,33 @@ const ButtonGroup = ({
                         { 'toolbar__icon--disabled': is_stop_button_disabled })}
                     onClick={onStopClick}
                 />
-            </PopoverWrapper>
+            </Popover>
             :
-            <PopoverWrapper
+            <Popover
                 alignment='bottom'
                 message={localize('Run')}
             >
                 <ToolbarRunIcon className='toolbar__icon' onClick={onRunClick} />
-            </PopoverWrapper>
+            </Popover>
         }
-        <PopoverWrapper
+        <Popover
             alignment='bottom'
             message={localize('Sort')}
         >
             <ToolbarReaarangeIcon className='toolbar__icon' onClick={onSortClick} />
-        </PopoverWrapper>
-        <PopoverWrapper
+        </Popover>
+        <Popover
             alignment='bottom'
             message={localize('Zoom in')}
         >
             <ToolbarZoomInIcon className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
-        </PopoverWrapper>
-        <PopoverWrapper
+        </Popover>
+        <Popover
             alignment='bottom'
             message={localize('Zoom out')}
         >
             <ToolbarZoomOutIcon className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
-        </PopoverWrapper>
+        </Popover>
     </div>
 );
 
@@ -234,7 +234,7 @@ const Toolbar = ({
 }) => (
     <div className='toolbar'>
         <div className='toolbar__section'>
-            <PopoverWrapper
+            <Popover
                 alignment='bottom'
                 classNameBubble='toolbar__bubble'
                 message={localize('Click here to start building your DBot.')}
@@ -249,7 +249,7 @@ const Toolbar = ({
                 >
                     {localize('Get started')}
                 </Button>
-            </PopoverWrapper>
+            </Popover>
             <SearchBox
                 is_search_loading={is_search_loading}
                 onSearch={onSearch}

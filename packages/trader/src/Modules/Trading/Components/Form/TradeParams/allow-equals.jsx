@@ -1,11 +1,11 @@
-import { PopoverWrapper, Checkbox } from 'deriv-components';
-import React                        from 'react';
-import PropTypes                    from 'prop-types';
-import { localize }                 from 'App/i18n';
+import { Popover, Checkbox }    from 'deriv-components';
+import React                    from 'react';
+import PropTypes                from 'prop-types';
+import { localize }             from 'App/i18n';
 import {
     hasCallPutEqual,
     hasDurationForCallPutEqual,
-    isRiseFallEqual }               from 'Stores/Modules/Trading/Helpers/allow-equals';
+    isRiseFallEqual }           from 'Stores/Modules/Trading/Helpers/allow-equals';
 
 const AllowEquals = ({
     contract_start_type,
@@ -41,7 +41,7 @@ const AllowEquals = ({
                     label={localize('Allow equals')}
                     classNameLabel='allow-equals__label'
                 />
-                <PopoverWrapper
+                <Popover
                     alignment='left'
                     classNameTarget='allow-equals__tooltip'
                     icon='info'

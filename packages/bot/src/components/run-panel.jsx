@@ -1,6 +1,6 @@
 import { Button,
     Drawer,
-    PopoverWrapper,
+    Popover,
     Tabs }                                    from 'deriv-components';
 import PropTypes                              from 'prop-types';
 import React                                  from 'react';
@@ -12,7 +12,7 @@ import Summary                                from './summary.jsx';
 import TradeAnimation                         from './trade-animation.jsx';
 import Transactions                           from './transactions.jsx';
 import { connect }                            from '../stores/connect';
-import '../assets/sass/run-panel.scss';
+import                                             '../assets/sass/run-panel.scss';
 
 const drawerContent = ({
     active_index,
@@ -79,7 +79,7 @@ const drawerFooter = ({
                             green
                         />
                 }
-                <PopoverWrapper
+                <Popover
                     className='run-panel__info'
                     classNameBubble='run-panel__info--bubble'
                     alignment='top'
@@ -90,7 +90,7 @@ const drawerFooter = ({
                      the statement page for details of all completed transactions.`)}
                 >
                     <InfoOutlineIcon className='run-panel__icon-info' />
-                </PopoverWrapper>
+                </Popover>
             </div>
             {is_dialog_open &&
                 <Dialog

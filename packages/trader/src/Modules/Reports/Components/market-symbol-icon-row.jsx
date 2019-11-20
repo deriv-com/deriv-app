@@ -1,5 +1,5 @@
 import {
-    PopoverWrapper,
+    Popover,
     UnderlyingIcon }   from 'deriv-components';
 import PropTypes       from 'prop-types';
 import React           from 'react';
@@ -17,7 +17,7 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
         return (
             <div className='market-symbol-icon'>
                 <div className='market-symbol-icon-name'>
-                    <PopoverWrapper
+                    <Popover
                         classNameTarget='market-symbol-icon__popover'
                         classNameBubble='market-symbol-icon__popover-bubble'
                         alignment='top'
@@ -25,12 +25,12 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                         disable_target_icon
                     >
                         <UnderlyingIcon market={info_from_shortcode.underlying} />
-                    </PopoverWrapper>
+                    </Popover>
                     {show_description && payload.display_name}
                 </div>
 
                 <div className='market-symbol-icon-category'>
-                    <PopoverWrapper
+                    <Popover
                         classNameTarget='category-type-icon__popover'
                         classNameBubble='category-type-icon__popover-bubble'
                         alignment='top'
@@ -43,7 +43,7 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                                 ? `${info_from_shortcode.category.toLowerCase()}_barrier`
                                 : info_from_shortcode.category.toLowerCase()}
                         />
-                    </PopoverWrapper>
+                    </Popover>
                     {show_description && info_from_shortcode.category}
                 </div>
             </div>

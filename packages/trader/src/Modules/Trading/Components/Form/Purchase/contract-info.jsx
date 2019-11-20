@@ -1,10 +1,10 @@
-import classNames                from 'classnames';
-import { Money, PopoverWrapper } from 'deriv-components';
-import PropTypes                 from 'prop-types';
-import React                     from 'react';
-import { getLocalizedBasis }     from 'Stores/Modules/Trading/Constants/contract';
-import { localize }              from 'App/i18n';
-import Icon                      from 'Assets/icon.jsx';
+import classNames            from 'classnames';
+import { Money, Popover }    from 'deriv-components';
+import PropTypes             from 'prop-types';
+import React                 from 'react';
+import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
+import { localize }          from 'App/i18n';
+import Icon                  from 'Assets/icon.jsx';
 
 const ContractInfo = ({
     basis,
@@ -57,7 +57,7 @@ const ContractInfo = ({
                     }
                 </div>
             </div>
-            <PopoverWrapper
+            <Popover
                 alignment='left'
                 icon='info'
                 id={`dt_purchase_${type.toLowerCase()}_info`}

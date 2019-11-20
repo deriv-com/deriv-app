@@ -10,17 +10,6 @@ import { getAppId }             from '../config';
 export default class SegmentStore extends BaseStore {
     // only available on production
     is_applicable = /^(16929|19111)$/.test(getAppId());
-    language = getLanguage().toLowerCase();
-
-    /**
-     * Contains binary user id
-     *
-     * @returns {object}
-     */
-    @computed
-    get userId() {
-        return this.root_store.client.user_id;
-    }
 
     /**
      * Contains event traits that will be passed to segment
@@ -30,7 +19,8 @@ export default class SegmentStore extends BaseStore {
     @computed
     get common_traits() {
         return {
-            language: this.language,
+            user_id : this.root_store.client.user_id,
+            language: getLanguage().toLowerCase(),
         };
     }
 
@@ -43,8 +33,8 @@ export default class SegmentStore extends BaseStore {
     async identifyEvent(data) {
         if (this.is_applicable && !isLoginPages()) {
             BinarySocket.wait('authorize').then(() => {
-                window.analytics.identify(this.userId, {
-                    ...this.common_traits,
+                window.analytics.identify(this.common_traits.user_id, {
+                    language: this.common_traits.language,
                     ...data,
                 });
             });

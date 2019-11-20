@@ -106,7 +106,7 @@ PopoverWrapper.defaultProps = {
 
 PopoverWrapper.propTypes = {
     alignment           : PropTypes.string,
-    children            : PropTypes.element,
+    children            : PropTypes.node,
     className           : PropTypes.string,
     classNameBubble     : PropTypes.string,
     classNameTarget     : PropTypes.string,
@@ -119,6 +119,7 @@ PopoverWrapper.propTypes = {
     id                  : PropTypes.string,
     margin              : PropTypes.number,
     message             : PropTypes.string,
+    portal_container    : PropTypes.string,
 };
 
 export default PopoverWrapper;

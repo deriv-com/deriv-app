@@ -19,3 +19,12 @@ export const barriersObjectToArray = (barriers, reference_array) => {
     return reference_array;
 };
 
+export const removeBarrier = (barriers, key) => {
+    for (let i = 0; barriers && i < barriers.length; i++){
+        const barrier = barriers[i];
+        if (barrier.key === key) {
+            barriers.splice(i,1);
+        }
+    }
+};
+

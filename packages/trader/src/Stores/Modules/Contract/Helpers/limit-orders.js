@@ -2,6 +2,7 @@ import { isMultiplierContract }       from './multiplier';
 import { BARRIER_COLORS,
     BARRIER_LINE_STYLES }             from '../../SmartChart/Constants/barriers';
 import { ChartBarrierStore }          from '../../SmartChart/chart-barrier-store';
+import { removeBarrier }              from '../../SmartChart/Helpers/barriers';
 
 export const LIMIT_ORDER_TYPES = {
     TAKE_PROFIT: 'take_profit',
@@ -9,19 +10,16 @@ export const LIMIT_ORDER_TYPES = {
     STOP_OUT   : 'stop_out',
 };
 
-const removeBarrier = (barriers, key) => {
-    for (let i = 0; barriers && i < barriers.length; i++){
-        const barrier = barriers[i];
-        if (barrier.key === key) {
-            barriers.splice(i,1);
-        }
-    }
-};
-
 const isLimitOrderBarrierSupported = (contract_type, contract_info) =>
     isMultiplierContract(contract_type) && contract_info.limit_order;
 
-export const setLimitOrderBarriers = (barriers, is_over, contract_type, contract_info = {}) => {
+export const setLimitOrderBarriers = ({
+    barriers,
+    contract_type,
+    contract_info = {},
+    hide_stop_out_barrier = false,
+    is_over,
+}) => {
 
     if (is_over && isLimitOrderBarrierSupported(contract_type, contract_info)) {
         Object.keys(contract_info.limit_order).forEach((key)=>{
@@ -46,7 +44,8 @@ export const setLimitOrderBarriers = (barriers, is_over, contract_type, contract
                         BARRIER_LINE_STYLES.DOTTED
                         :
                         BARRIER_LINE_STYLES.SOLID,
-                    hideOffscreenLines: true,
+                    hideBarrierLine  : hide_stop_out_barrier && key === LIMIT_ORDER_TYPES.STOP_OUT,
+                    hideOffscreenLine: true,
                 };
                 barrier = new ChartBarrierStore(
                     obj_limit_order.value

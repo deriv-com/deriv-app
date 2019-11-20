@@ -14,7 +14,6 @@ import {
 import ClientBase                    from '_common/base/client_base';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
-import { get as getLanguage }        from '_common/language';
 import { localize }                  from 'App/i18n';
 import {
     LocalStore,
@@ -572,15 +571,6 @@ export default class ClientStore extends BaseStore {
         this.setHasMissingRequiredField(has_missing_required_field);
     }
 
-    @action.bound
-    setUserSegment() {
-        const selected_language = getLanguage().toLowerCase();
-
-        window.analytics.identify(this.user_id, {
-            language: selected_language,
-        });
-    }
-
     /**
      * We initially fetch things from local storage, and then do everything inside the store.
      * This will probably be the only place we are fetching data from Client_base.
@@ -599,7 +589,7 @@ export default class ClientStore extends BaseStore {
             // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
-                this.setUserSegment();
+                this.root_store.segment.identifyEvent();
             } else { // So it will send an authorize with the accepted token, to be handled by socket-general
                 await BinarySocket.authorize(client.token);
             }

@@ -133,9 +133,9 @@ const BinarySocketGeneral = (() => {
     };
 
     const init = (store) => {
-        client_store = store.client;
-        common_store = store.common;
-        gtm_store    = store.gtm;
+        client_store  = store.client;
+        common_store  = store.common;
+        gtm_store     = store.gtm;
 
         return {
             onDisconnect,

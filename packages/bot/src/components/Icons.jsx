@@ -2,8 +2,6 @@ import React                   from 'react';
 import classNames              from 'classnames';
 
 // General
-import general_check           from '../assets/icons/ic-check.svg';
-import general_cross           from '../assets/icons/ic-cross.svg';
 import general_logo            from '../assets/icons/ic-logo.svg';
 import general_trade_active    from '../assets/icons/ic-trade-active.svg';
 import general_info_blue       from '../assets/icons/icon-info-blue.svg';
@@ -37,19 +35,6 @@ import toolbox_stage4          from '../assets/icons/ic-stage-4.svg';
 import toolbox_arrow1          from '../assets/icons/ic-arrow-1.svg';
 import toolbox_arrow2          from '../assets/icons/ic-arrow-2.svg';
 
-// Contract
-import contract_loss           from '../assets/icons/ic-loss.svg';
-import contract_profit         from '../assets/icons/ic-profit.svg';
-import contract_plunkown       from '../assets/icons/ic-unknown.svg';
-
-// Transactions
-import contract_entry_spot      from '../assets/icons/ic-entryspot.svg';
-import contract_exit_spot       from '../assets/icons/ic-exitspot.svg';
-import contract_id              from '../assets/icons/ic-id.svg';
-import contract_pending         from '../assets/icons/contract-pending.svg';
-import contract_completed       from '../assets/icons/contract-completed.svg';
-import contract_buy_price       from '../assets/icons/buy-price.svg';
-
 /* eslint-disable react/display-name */
 export const Icon = svgItem => (props) => {
     const { className, onClick } = props;
@@ -72,8 +57,6 @@ export const LogoIcon              = Icon(general_logo);
 export const TradeActive           = Icon(general_trade_active);
 export const BlueInfoIcon          = Icon(general_info_blue);
 export const InfoOutlineIcon       = Icon(general_info_outline);
-export const CheckIcon             = Icon(general_check);
-export const CrossIcon             = Icon(general_cross);
 export const RunIcon               = Icon(general_run_icon);
 export const StopIcon              = Icon(general_stop_icon);
 
@@ -84,11 +67,6 @@ export const Stage3Icon            = Icon(toolbox_stage3);
 export const Stage4Icon            = Icon(toolbox_stage4);
 export const Arrow1Icon            = Icon(toolbox_arrow1);
 export const Arrow2Icon            = Icon(toolbox_arrow2);
-
-// Contract
-export const ProfitMovementIcon    = Icon(contract_profit);
-export const LossMovementIcon      = Icon(contract_loss);
-export const UnknownMovementIcon   = Icon(contract_plunkown);
 
 // Toolbar
 export const ToolbarStartIcon        = Icon(toolbar_start);
@@ -108,10 +86,3 @@ export const ToolbarZoomOutIcon      = Icon(toolbar_zoomOut);
 export const ToolbarLocalIcon        = Icon(toolbar_local);
 export const ToolbarDriveIcon        = Icon(toolbar_drive);
 
-// transactions
-export const EntrySpotIcon           = Icon(contract_entry_spot);
-export const ExitSpotIcon            = Icon(contract_exit_spot);
-export const RefrenceIdIcon          = Icon(contract_id);
-export const PendingIcon             = Icon(contract_pending);
-export const BuyPriceIcon            = Icon(contract_buy_price);
-export const CompletedIcon           = Icon(contract_completed);

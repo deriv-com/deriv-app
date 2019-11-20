@@ -55,14 +55,17 @@ const Icon = ({
             className={classNames('dc-icon', className, {
                 'dc-icon--active'   : active,
                 'dc-icon--disabled' : disabled,
-                'dc-icon--green'    : green,
-                'dc-icon--red'      : red,
+                'dc-icon--green'    : green || icon === 'IcProfit',
+                'dc-icon--red'      : red || icon === 'IcLoss',
                 'dc-icon--secondary': secondary,
-                'dc-icon--color'    : color,
+                'dc-icon--color'    : typeof color === 'boolean',
             })}
             height={height || size}
             width={width || size}
             onClick={onClick}
+            style={{
+                '--fill-color1': color,
+            }}
         >
             <use xlinkHref={`${(`/${spriteFileName}.svg`)}#${icon_filename}`} />
         </svg>
@@ -72,10 +75,13 @@ const Icon = ({
 Icon.propTypes = {
     active   : PropTypes.bool,
     className: PropTypes.string,
-    color    : PropTypes.bool,
-    disabled : PropTypes.bool,
-    green    : PropTypes.bool,
-    height   : PropTypes.oneOfType([
+    color    : PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.string,
+    ]),
+    disabled: PropTypes.bool,
+    green   : PropTypes.bool,
+    height  : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),

@@ -1,18 +1,12 @@
 import className       from 'classnames';
 import {
+    Icon,
     Money,
     Popover,
     ThemedScrollbars } from 'deriv-components';
 import { PropTypes }   from 'prop-types';
 import React           from 'react';
 import { localize }    from 'deriv-translations/lib/i18n';
-import {
-    BuyPriceIcon,
-    ExitSpotIcon,
-    EntrySpotIcon,
-    PendingIcon,
-    RefrenceIdIcon,
-    CompletedIcon }    from './Icons.jsx';
 import IconTradeType   from './icon-trade-types.jsx';
 import { connect }     from '../stores/connect';
 import                      '../assets/sass/transactions.scss';
@@ -39,7 +33,7 @@ const Transaction = ({ contract }) => {
                                     alignment='left'
                                     message={localize('Reference ID')}
                                 >
-                                    <RefrenceIdIcon className='transactions__middle' />
+                                    <Icon icon='IcContractId' className='transactions__middle' />
                                 </Popover>
                                 <div className='transactions__inline transactions__middle'>
                                     {contract.refrence_id}
@@ -51,7 +45,7 @@ const Transaction = ({ contract }) => {
                                     alignment='left'
                                     message={localize('Buy price')}
                                 >
-                                    <BuyPriceIcon className='transactions__middle' />
+                                    <Icon icon='IcContractBuyPrice' className='transactions__middle' />
                                 </Popover>
 
                                 <Money
@@ -68,7 +62,7 @@ const Transaction = ({ contract }) => {
                                 alignment='left'
                                 message={localize('Entry spot')}
                             >
-                                <EntrySpotIcon className='transactions__middle' />
+                                <Icon icon='IcContractEntrySpot' className='transactions__middle' />
                             </Popover>
                             <div className='transactions__inline transactions__middle'>
                                 {contract.entry_spot}
@@ -80,7 +74,7 @@ const Transaction = ({ contract }) => {
                                 alignment='left'
                                 message={localize('Exit spot')}
                             >
-                                <ExitSpotIcon className='transactions__middle' />
+                                <Icon icon='IcContractExitSpot' className='transactions__middle' />
                             </Popover>
                             <div className='transactions__inline transactions__middle'>
                                 {contract.exit_spot}
@@ -115,14 +109,14 @@ const Transaction = ({ contract }) => {
                                     alignment='left'
                                     message={localize('Completed')}
                                 >
-                                    <CompletedIcon className='transactions__middle' />
+                                    <Icon icon='IcCheckmarkOutline' className='transactions__middle' green />
                                 </Popover> :
                                 <Popover
                                     className='transactions__inline transactions__middle'
                                     alignment='left'
                                     message={localize('Pending')}
                                 >
-                                    <PendingIcon className='transactions__middle' />
+                                    <Icon icon='IcClock' className='transactions__middle' secondary />
                                 </Popover>}
                     </td>
                 </tr>

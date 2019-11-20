@@ -123,7 +123,6 @@ class Icon extends React.PureComponent {
             TradeCategories   : React.lazy(() => import(/* webpackChunkName: "icon-trade-categories" */ './Trading/Categories/trade-categories.jsx')),
             IconTradeType     : React.lazy(() => import(/* webpackChunkName: "icon-trade-type" */ './Trading/Types/icon-trade-types.jsx')),
             IconLock          : React.lazy(() => import(/* webpackChunkName: "icon-lock" */ './Trading/icon-lock.jsx')),
-            IconPriceMove     : React.lazy(() => import(/* webpackChunkName: "icon-price-move" */ './Trading/icon-price-move.jsx')),
         };
     }
 

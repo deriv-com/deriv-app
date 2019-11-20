@@ -8,9 +8,6 @@ import CurrencyUtils         from 'deriv-shared/utils/currency';
 import { localize }          from 'deriv-translations/lib/i18n';
 import ContractCardLoader    from './contract-card-loading.jsx';
 import ContractResultOverlay from './contract-result-overlay.jsx';
-import {
-    ProfitMovementIcon,
-    LossMovementIcon }       from './Icons.jsx';
 import IconTradeType         from './icon-trade-types.jsx';
 import { connect }           from '../stores/connect';
 import {
@@ -80,8 +77,8 @@ const ContractCard = ({
                         >
                             <Money amount={Math.abs(contract.profit)} currency={contract.currency} />
                             <div className='db-contract-card__indicative-movement'>
-                                { profit_movement === 'profit' && <ProfitMovementIcon /> ||
-                                      profit_movement === 'loss' && <LossMovementIcon /> ||
+                                { profit_movement === 'profit' && <Icon icon='IcProfit' /> ||
+                                      profit_movement === 'loss' && <Icon icon='IcLoss' /> ||
                                       <React.Fragment /> }
                             </div>
                         </div>
@@ -92,8 +89,8 @@ const ContractCard = ({
                                 currency={contract.currency}
                             />
                             <div className='db-contract-card__indicative-movement'>
-                                { indicative_movement === 'profit' && <ProfitMovementIcon /> ||
-                                      indicative_movement === 'loss' && <LossMovementIcon /> ||
+                                { indicative_movement === 'profit' && <Icon icon='IcProfit' /> ||
+                                      indicative_movement === 'loss' && <Icon icon='IcLoss' /> ||
                                       <React.Fragment /> }
                             </div>
                         </div>

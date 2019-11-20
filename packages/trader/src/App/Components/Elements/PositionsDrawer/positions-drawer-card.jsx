@@ -105,10 +105,8 @@ const PositionsDrawerCard = ({
                         },
                     )}
                     >
-                        <Icon
-                            icon='IconPriceMove'
-                            type={(status !== 'complete') ? status : null}
-                        />
+                        {status === 'profit' && <Icon icon='IcProfit' />}
+                        {status === 'loss'   && <Icon icon='IcLoss' />}
                     </div>
                 </div>
                 <div className='positions-drawer-card__indicative'>
@@ -119,10 +117,8 @@ const PositionsDrawerCard = ({
                         },
                     )}
                     >
-                        <Icon
-                            icon='IconPriceMove'
-                            type={(status !== 'complete') ? status : null}
-                        />
+                        {status === 'profit' && <Icon icon='IcProfit' />}
+                        {status === 'loss'   && <Icon icon='IcLoss' />}
                     </div>
                 </div>
             </div>

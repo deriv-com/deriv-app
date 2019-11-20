@@ -1,7 +1,6 @@
 import classNames           from 'classnames';
-import { Label, Money }     from 'deriv-components';
+import { Icon, Label, Money } from 'deriv-components';
 import React                from 'react';
-import Icon                 from 'Assets/icon.jsx';
 import { localize }         from 'App/i18n';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
 import { getProfitOrLoss }  from 'Modules/Reports/Helpers/profit-loss';
@@ -163,7 +162,11 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
                 >
                     <Money amount={Math.abs(profit)} currency={currency} />
                     <div className='open-positions__profit-loss--movement'>
-                        <Icon icon='IconPriceMove' type={profit > 0 ? 'profit' : 'loss'} />
+                        {profit > 0 ?
+                            <Icon icon='IcProfit' />
+                            :
+                            <Icon icon='IcLoss' />
+                        }
                     </div>
                 </div>
             );

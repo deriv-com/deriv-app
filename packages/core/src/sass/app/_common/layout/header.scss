@@ -16,6 +16,7 @@
         opacity: 0;
         pointer-events: none;
         top: -1px;
+        z-index: 2;
         left: 0;
         width: 100%;
         height: calc(100% + 2px);
@@ -60,6 +61,7 @@
         order: 1;
         display: inline-flex;
         height: #{$HEADER_HEIGHT - 1px};
+        position: relative;
     }
     &__menu-toggle {
         align-self: center;

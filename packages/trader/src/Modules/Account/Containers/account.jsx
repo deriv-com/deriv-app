@@ -11,7 +11,7 @@ import { connect }       from 'Stores/connect';
 import { WS }            from 'Services/ws-methods';
 import { flatten }       from '../Helpers/flatten';
 import AccountLimitInfo  from '../Sections/Security/AccountLimits/account-limits-info.jsx';
-import 'Sass/app/modules/account.scss';
+import                        'Sass/app/modules/account.scss';
 
 const DemoMessage = lazy(() => import(/* webpackChunkName: 'demo_message' */ 'Modules/Account/Sections/ErrorMessages/DemoMessage'));
 
@@ -25,7 +25,8 @@ class Account extends React.Component {
     state = {
         is_high_risk_client: false,
         is_loading         : true,
-    };
+        needs_verification : false,
+    }
 
     setWrapperRef = (node) => {
         this.wrapper_ref = node;
@@ -40,8 +41,10 @@ class Account extends React.Component {
     componentDidMount() {
         WS.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
+                const { authentication } = this.props.account_status;
                 const is_high_risk_client = this.props.is_high_risk;
-                this.setState({ is_high_risk_client, is_loading: false });
+                const needs_verification = authentication.needs_verification.includes('identity') || authentication.needs_verification.includes('document');
+                this.setState({ is_high_risk_client, is_loading: false, needs_verification });
             }
         });
         this.props.enableRouteMode();
@@ -56,7 +59,7 @@ class Account extends React.Component {
     }
 
     render () {
-        const { is_high_risk_client, is_loading } = this.state;
+        const { is_high_risk_client, is_loading, needs_verification } = this.state;
 
         const subroutes      = flatten(this.props.routes.map(i => i.subroutes));
         let selected_content = subroutes.filter(route => route.path === this.props.location.pathname)[0];
@@ -64,12 +67,12 @@ class Account extends React.Component {
             selected_content = subroutes[0];
             this.props.history.push(AppRoutes.personal_details);
         }
-        if (!is_loading && !is_high_risk_client && /proof-of-identity|proof-of-address|financial-assessment/.test(selected_content.path)) return <Redirect to='/' />;
+        if (!is_loading && !needs_verification && !is_high_risk_client && /proof-of-identity|proof-of-address|financial-assessment/.test(selected_content.path)) return <Redirect to='/' />;
 
         // TODO: modify account route to support disabled
         this.props.routes.forEach((menu_item) => {
             if (menu_item.title === 'Verification') {
-                menu_item.is_hidden = !is_high_risk_client;
+                menu_item.is_hidden = !needs_verification;
             }
             if (menu_item.title === 'Profile') {
                 menu_item.subroutes.forEach(route => {

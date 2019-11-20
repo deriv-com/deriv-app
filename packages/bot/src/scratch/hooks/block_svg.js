@@ -1,9 +1,21 @@
 import { localize } from 'deriv-translations/lib/i18n';
+import ScratchStore from '../../stores/scratch-store';
 
 /* eslint-disable func-names, no-underscore-dangle */
 
 // deriv-bot: Blockly value, Scratch resets this to 0, req for correct spacing in flyout.
 Blockly.BlockSvg.TAB_WIDTH = 8;
+
+/**
+ * Select this block.  Highlight it visually.
+ */
+Blockly.BlockSvg.prototype.addSelect = function() {
+    if (!this.isInFlyout) {
+        const { flyout } = ScratchStore.instance;
+        flyout.setVisibility(false);
+        Blockly.utils.addClass(/** @type {!Element} */ (this.svgGroup_), 'blocklySelected');
+    }
+};
 
 /**
  * Set whether the block is disabled or not.

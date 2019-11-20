@@ -1,4 +1,3 @@
-/* eslint-disable func-names, no-underscore-dangle */
 import { localize } from 'deriv-translations/lib/i18n';
 
 /**

@@ -17,7 +17,7 @@ const Login = (() => {
     };
 
     const redirectToSignUp = () => {
-        window.open('https://deriv.com');
+        window.open('https://deriv.com?action=signup');
     };
 
     const loginUrl = () => {

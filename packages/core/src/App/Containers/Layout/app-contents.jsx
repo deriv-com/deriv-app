@@ -19,8 +19,6 @@ const AppContents = ({
     pageView();
 
     // if (is_logged_in) {
-    // Segment page view trigger
-    // pageView()
     // TODO: uncomment these after the issues with showing the prompt too often and in the app are fixed
     // window.addEventListener('beforeinstallprompt', e => {
     //     console.log('Going to show the installation prompt'); // eslint-disable-line no-console
@@ -69,6 +67,7 @@ AppContents.propTypes = {
 
 export default withRouter(connect(
     ({ ui, segment }) => ({
+        // is_logged_in          : client.is_logged_in,
         // addNotificationBar    : ui.addNotificationBar,
         is_app_disabled       : ui.is_app_disabled,
         is_positions_drawer_on: ui.is_positions_drawer_on,

@@ -9,12 +9,8 @@ import { getAppId }             from '../config';
 
 export default class SegmentStore extends BaseStore {
     // only available on production
-    is_applicable = /^(16929)$/.test(getAppId());
-    language = getLanguage().toLowerCase()
-
-    constructor(root_store) {
-        super({ root_store });
-    }
+    is_applicable = /^(16929|19111)$/.test(getAppId());
+    language = getLanguage().toLowerCase();
 
     /**
      * Contains binary user id

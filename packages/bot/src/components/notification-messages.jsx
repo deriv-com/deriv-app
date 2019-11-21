@@ -12,8 +12,8 @@ const NotificationMessages = ({
     <React.Fragment>
         {
             (notifications_length > 0) &&
-            <div className={classNames('notificationsContainer', {
-                'notificationsContainer--is-panel-open': is_drawer_open,
+            <div className={classNames('notifications-container', {
+                'notifications-container--is-panel-open': is_drawer_open,
             })}
             >
                 <Notifications />

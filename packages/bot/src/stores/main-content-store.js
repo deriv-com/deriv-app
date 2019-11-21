@@ -12,23 +12,35 @@ export default class MainContentStore {
         this.root_store = root_store;
         window.addEventListener('resize', this.setCharContainerSize);
         reaction(
-            () => this.root_store.run_panel.is_drawer_open,
+            () => [this.root_store.run_panel.is_drawer_open, this.active_tab],
             () => this.setCharContainerSize());
     }
 
     @observable active_tab = tabs_title.WORKSPACE;
-    @observable width = window.innerWidth;
+    @observable chart_width = window.innerWidth;
 
     @action.bound
     setCharContainerSize() {
-        const run_panel_width = getRunPanelWidth(this.root_store.run_panel.is_drawer_open);
-        this.width = window.innerWidth - run_panel_width;
+        if (this.active_tab === tabs_title.CHART) {
+            const run_panel_width = getRunPanelWidth(this.root_store.run_panel.is_drawer_open);
+            this.chart_width = window.innerWidth - run_panel_width;
+        }
         // resize workspace ?!
         // onWorkspaceResize();
     }
 
     @action.bound
+    componentDidMount() {
+        this.initScratch();
+    }
+
+    @action.bound
     componentDidUpdate() {
+        this.initScratch();
+    }
+
+    @action.bound
+    initScratch() {
         if (this.active_tab === tabs_title.WORKSPACE) {
             scratchWorkspaceInit();
         } else if (Blockly.derivWorkspace) {

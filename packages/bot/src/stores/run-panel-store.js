@@ -17,7 +17,7 @@ import {
 }                               from '../scratch';
 import { isEnded }              from '../utils/contract';
 import { observer }             from '../utils/observer';
-import { hasAllRequiredBlocks } from '../scratch/utils/scratchHelper';
+import { hasAllRequiredBlocks } from '../scratch/utils/scratch-helper';
 
 export default class RunPanelStore {
     constructor(root_store) {

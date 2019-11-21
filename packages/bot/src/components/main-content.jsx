@@ -21,7 +21,7 @@ class MainContent extends React.Component {
     }
 
     render() {
-        const { active_tab, is_run_panel_open } = this.props;
+        const { active_tab, width } = this.props;
         switch (active_tab) {
             case (tabs_title.WORKSPACE):
             default:
@@ -31,10 +31,7 @@ class MainContent extends React.Component {
                     </div>
                 );
             case (tabs_title.CHART): {
-                const run_panel_width = is_run_panel_open ?
-                    getComputedStyle(document.documentElement).getPropertyValue('--run-panel-width')
-                    : 0;
-                const width = window.innerWidth - run_panel_width;
+              
                 return (
                     <div
                         className='bot__chart-container'
@@ -51,9 +48,9 @@ class MainContent extends React.Component {
         }
     }
 }
-export default connect(({ main_content, run_panel }) => ({
+export default connect(({ main_content }) => ({
     active_tab        : main_content.active_tab,
     componentDidUpdate: main_content.componentDidUpdate,
-    is_run_panel_open : run_panel.is_drawer_open,
+    width             : main_content.width,
 }))(MainContent);
 

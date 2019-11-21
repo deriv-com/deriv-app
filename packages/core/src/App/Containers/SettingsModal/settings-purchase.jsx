@@ -1,13 +1,13 @@
 // import { Checkbox }                  from 'deriv-components';
 // import PropTypes                     from 'prop-types';
 // import React                         from 'react';
-// import { localize } from  'deriv-translations/lib/i18n';
+// import { localize } from 'deriv-translations/lib/i18n';
 // import MediaItem, {
 //     MediaDescription,
 //     MediaHeading,
 //     MediaIcon,
 // }                                    from 'App/Components/Elements/Media';
-// import Localize                      from 'App/Components/Elements/localize.jsx';
+// import Localize from 'deriv-translations/lib/localize';
 // import ConfirmationDisabledLightIcon from 'Assets/SvgComponents/settings/confirmation-disabled.svg';
 // import ConfirmationEnabledLightIcon  from 'Assets/SvgComponents/settings/confirmation-enabled.svg';
 // import ConfirmationDisabledDarkIcon  from 'Assets/SvgComponents/settings/dark/confirmation-disabled.svg';

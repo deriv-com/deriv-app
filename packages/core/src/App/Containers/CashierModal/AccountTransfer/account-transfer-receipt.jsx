@@ -3,8 +3,8 @@ import PropTypes      from 'prop-types';
 import React          from 'react';
 import { withRouter } from 'react-router';
 import { Button }     from 'deriv-components';
-import Localize       from 'App/Components/Elements/localize.jsx';
-import { localize }   from  'deriv-translations/lib/i18n';
+import Localize       from 'deriv-translations/lib/localize';
+import { localize }   from 'deriv-translations/lib/i18n';
 import Icon           from 'Assets/icon.jsx';
 import { connect }    from 'Stores/connect';
 

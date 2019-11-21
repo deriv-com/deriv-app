@@ -2,8 +2,8 @@ import { Field, Formik }    from 'formik';
 import PropTypes            from 'prop-types';
 import React, { Component } from 'react';
 import { connect }          from 'Stores/connect';
-import Localize             from 'App/Components/Elements/localize.jsx';
-import { localize }         from  'deriv-translations/lib/i18n';
+import Localize             from 'deriv-translations/lib/localize';
+import { localize }         from 'deriv-translations/lib/i18n';
 import {
     Hr,
     RadioButtonGroup,

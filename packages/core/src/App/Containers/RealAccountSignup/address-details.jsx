@@ -5,8 +5,8 @@ import {
 import { Formik, Field }    from 'formik';
 import React, { Component } from 'react';
 import { connect }          from 'Stores/connect';
-import { localize }         from  'deriv-translations/lib/i18n';
-import Localize             from 'App/Components/Elements/localize.jsx';
+import { localize }         from 'deriv-translations/lib/i18n';
+import Localize             from 'deriv-translations/lib/localize';
 import FormSubmitButton     from './form-submit-button.jsx';
 
 const InputField = (props) => {

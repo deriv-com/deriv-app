@@ -1,6 +1,6 @@
 import React         from 'react';
-import Localize      from 'App/Components/Elements/localize.jsx';
-import { localize }  from  'deriv-translations/lib/i18n';
+import Localize      from 'deriv-translations/lib/localize';
+import { localize }  from 'deriv-translations/lib/i18n';
 import Icon          from 'Assets/icon.jsx';
 import Button        from 'deriv-components/src/components/button';
 

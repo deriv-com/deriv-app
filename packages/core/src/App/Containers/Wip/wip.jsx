@@ -2,7 +2,7 @@ import { Button }   from 'deriv-components';
 import React        from 'react';
 import BinarySocket from '_common/base/socket_base';
 import { urlFor }   from '_common/url';
-import Localize     from 'App/Components/Elements/localize.jsx';
+import Localize     from 'deriv-translations/lib/localize';
 import { localize } from 'deriv-translations/lib/i18n';
 
 import Icon         from 'Assets/icon.jsx';

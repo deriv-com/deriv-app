@@ -8,13 +8,13 @@ import {
     shouldAcceptTnc,
     shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink }   from 'App/Components/Routes';
-import { localize }     from  'deriv-translations/lib/i18n';
+import { localize }     from 'deriv-translations/lib/i18n';
 import routes           from 'Constants/routes';
 import {
     LocalStore,
     State }             from '_common/storage';
 import { urlFor }       from '_common/url';
-import Localize         from 'App/Components/Elements/localize.jsx';
+import Localize         from 'deriv-translations/lib/localize';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */

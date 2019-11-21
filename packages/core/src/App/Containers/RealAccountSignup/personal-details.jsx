@@ -5,8 +5,8 @@ import {
 import { Formik, Field }    from 'formik';
 import React                from 'react';
 import { CSSTransition }    from 'react-transition-group';
-import { localize }         from  'deriv-translations/lib/i18n';
-import Localize             from 'App/Components/Elements/localize.jsx';
+import { localize }         from 'deriv-translations/lib/i18n';
+import Localize             from 'deriv-translations/lib/localize';
 import IconDatepicker       from 'Assets/Signup/icon-datepicker.jsx';
 import { toMoment }         from 'Utils/Date';
 import FormSubmitButton     from './form-submit-button.jsx';

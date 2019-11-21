@@ -3,7 +3,7 @@ import React                        from 'react';
 import ReactDOM                     from 'react-dom';
 import { Prompt }                   from 'react-router';
 import { BrowserRouter as Router }  from 'react-router-dom';
-import                              'deriv-translations/lib/i18n';
+import                             'deriv-translations/lib/i18n';
 import { loadIncontextTranslation } from 'deriv-translations/lib/i18n';
 import Client                       from '_common/base/client_base';
 import WS                           from 'Services/ws-methods';
@@ -16,7 +16,6 @@ import AppModals                    from './Containers/Modals';
 import Lazy                         from './Containers/Lazy';
 import Routes                       from './Containers/Routes/routes.jsx';
 import { interceptAcrossBot }       from './Constants/routes-config';
-import './i18n';
 // eslint-disable-next-line import/extensions
 import initStore                   from './app.js';
 // eslint-disable-next-line import/no-unresolved

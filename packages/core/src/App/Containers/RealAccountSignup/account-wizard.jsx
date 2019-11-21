@@ -1,8 +1,8 @@
 import PropTypes        from 'prop-types';
 import fromEntries      from 'object.fromentries';
 import React            from 'react';
-import Localize         from 'App/Components/Elements/localize.jsx';
-import { localize }     from  'deriv-translations/lib/i18n';
+import Localize         from 'deriv-translations/lib/localize';
+import { localize }     from 'deriv-translations/lib/i18n';
 import { connect }      from 'Stores/connect';
 import { toMoment }     from 'Utils/Date';
 import AddressDetails   from './address-details.jsx';

@@ -7,12 +7,12 @@ import {
     Popover,
     ThemedScrollbars }    from 'deriv-components';
 import CurrencyUtils      from 'deriv-shared/utils/currency';
-import { localize }       from  'deriv-translations/lib/i18n';
+import { localize }       from 'deriv-translations/lib/i18n';
 import { urlFor }         from '_common/url';
 import UpgradeButton      from 'App/Containers/RealAccountSignup/upgrade-button.jsx';
 import Icon               from 'Assets/icon.jsx';
 import { connect }        from 'Stores/connect';
-import Localize           from 'App/Components/Elements/localize.jsx';
+import Localize           from 'deriv-translations/lib/localize';
 import routes             from 'Constants/routes';
 import {
     getMT5AccountDisplay,

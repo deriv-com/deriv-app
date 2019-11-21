@@ -1,8 +1,9 @@
 import React              from 'react';
 import classNames         from 'classnames';
 import PropTypes          from 'prop-types';
-import { CSSTransition } from 'react-transition-group';
+import { CSSTransition }  from 'react-transition-group';
 import Button             from '../button/button.jsx';
+import Text               from '../text';
 
 class Dialog extends React.Component {
     componentDidMount() {
@@ -64,12 +65,12 @@ class Dialog extends React.Component {
                     <div className='dc-dialog__wrapper'>
                         <div className='dc-dialog__dialog'>
                             { !!title &&
-                            <h1 className='dc-dialog__header'>{ title }</h1>
+                            <Text as='h1' className='dc-dialog__header' bold large>{ title }</Text>
                             }
                             { typeof children === 'string' ?
-                                <p className={ content_classes }>{ children }</p>
+                                <Text className={ content_classes }>{ children }</Text>
                                 :
-                                <div className={ content_classes }>{ children }</div>
+                                <Text as='div' className={ content_classes }>{ children }</Text>
                             }
                             <div className='dc-dialog__footer'>
                                 { !!onCancel &&

@@ -4,7 +4,6 @@ import React             from 'react';
 import ReactDOM          from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Text              from 'Components/text';
-import                   '../text/text.scss';
 // import Icon              from 'Assets/icon.jsx';
 
 // TODO: use-from-shared - Use this icon from icons' shared package

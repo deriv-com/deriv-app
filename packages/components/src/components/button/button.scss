@@ -23,7 +23,6 @@
     text-transform: none !important;
 
     &__text, &__icon {
-        @include typeface(--paragraph-center-bold-black, unset);
         color: var(--text-general);
         display: flex;
     }

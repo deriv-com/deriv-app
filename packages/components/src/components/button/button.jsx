@@ -2,6 +2,7 @@ import classNames    from 'classnames';
 import PropTypes     from 'prop-types';
 import React         from 'react';
 import ButtonLoading from './button_loading.jsx';
+import Text          from '../text/text.jsx';
 
 // TODO: use-from-shared - Use this icon from icons' shared package
 const IconCheckmark = () => (
@@ -61,9 +62,9 @@ const Button = ({
                 </div>
             }
             {text && !(is_loading || is_submit_success) &&
-                <span className={classNames('btn__text', classNameSpan)}>
+                <Text as='span' className={classNames('btn__text', classNameSpan)} bold>
                     { text[0].toUpperCase() + text.substr(1) }
-                </span>
+                </Text>
             }
             {is_loading &&
                 <ButtonLoading />
@@ -72,9 +73,9 @@ const Button = ({
                 <IconCheckmark />
             }
             {!text && children && (
-                <span className={classNames('btn__text', classNameSpan)}>
+                <Text as='span' className={classNames('btn__text', classNameSpan)} bold>
                     {children}
-                </span>
+                </Text>
             )}
 
         </button>

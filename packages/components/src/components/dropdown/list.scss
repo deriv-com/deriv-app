@@ -11,7 +11,7 @@
     &--left {
         width: unset;
 
-        .dc-list__item-text, .dc-list__item-symbol {
+        .dc-list__item-text {
             padding-left: 2.286rem;
             padding-right: 2.286rem;
             overflow: hidden;
@@ -33,10 +33,7 @@
         width: 100%;
         cursor: pointer;
 
-        &-text, &-symbol {
-            @include typeface(--paragraph-left-normal-black);
-            line-height: 1.43;
-            color: var(--text-general);
+        &-text {
             display: flex;
             width: 100%;
             justify-content: center;
@@ -52,10 +49,8 @@
             background-color: var(--state-hover);
             color: var(--text-general);
         }
-        &--selected .dc-list__item-text, &--selected .dc-list__item-symbol, &--selected .dc-list__item-tooltip {
+        &--selected .dc-list__item-text, &--selected .dc-list__item-symbol {
             @include typeface(--paragraph-left-bold-active);
-            line-height: 1.43;
-            color: var(--text-prominent);
             background: var(--state-active);
         }
         &--highlighted:not(&--disabled) {
@@ -68,15 +63,12 @@
             cursor: default;
         }
         &-symbol {
-            @include typeface(--paragraph-left-normal-black);
+            @include typeface(--paragraph-center-normal-black);
             width: 100%;
             padding: 0.6rem 0;
             margin: 0;
-            text-align: center;
             justify-content: center;
             display: flex;
-            color: var(--text-general);
-
         }
     }
     &__separator {

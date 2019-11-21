@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React      from 'react';
 import PropTypes  from 'prop-types';
+import Text       from '../text';
 
 const Loading = ({ className, id, is_fullscreen = true, is_slow_loading, status, theme }) => {
     const theme_class = theme ? `barspinner-${theme}` : 'barspinner-light';
@@ -21,7 +22,7 @@ const Loading = ({ className, id, is_fullscreen = true, is_slow_loading, status,
                 ))}
             </div>
             { is_slow_loading && status.map((text, inx) => (
-                <h3 className='initial-loader__text' key={inx}>{text}</h3>
+                <Text as='h3' key={inx}>{text}</Text>
             ))
             }
         </div>

@@ -25,7 +25,6 @@
         }
     }
     &__bubble {
-        @include typeface(--small-center-normal-active, none);
         cursor: help;
         position: fixed;
         padding: 0.7rem;
@@ -34,7 +33,6 @@
         display: flex;
         flex-direction: row;
         background: var(--general-active);
-        color: var(--text-prominent);
 
         &__icon {
             flex-grow: 1;

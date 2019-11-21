@@ -4,6 +4,7 @@ import React                from 'react';
 import ReactDOM             from 'react-dom';
 import posed, { PoseGroup } from 'react-pose';
 import IconInfoBlue         from '../icon-info-blue.jsx';
+import Text                 from '../text'
 
 const FadeIn = posed.span({
     enter: {
@@ -71,7 +72,8 @@ class PopoverBubble extends React.PureComponent {
             <PoseGroup>
                 { is_open &&
                 <FadeIn key='fade_in' initialPose='exit' style={{ position: 'fixed', zIndex: 999 }}>
-                    <span
+                    <Text
+                        as='span'
                         style={ target_rectangle ? this.calculatePosition() : {}}
                         data-popover-pos={alignment}
                         className={classNames(
@@ -80,18 +82,19 @@ class PopoverBubble extends React.PureComponent {
                             { 'dc-popover__bubble--error': has_error },
                         )}
                         id={id}
+                        color='prominent'
+                        small
                     >
                         { icon === 'info' &&
                             <i className='dc-popover__bubble__icon'>
                                 <IconInfoBlue />
                             </i>
                         }
-
-                        <span className='dc-popover__bubble__text'>
+                        <Text className='dc-popover__bubble__text' small>
                             { message }
-                        </span>
+                        </Text>
                         <span className='dc-popover__bubble__arrow' />
-                    </span>
+                    </Text>
                 </FadeIn>
                 }
             </PoseGroup>

@@ -1,6 +1,7 @@
 import classNames                       from 'classnames';
 import PropTypes                        from 'prop-types';
 import React                            from 'react';
+import Text                             from 'Components/text';
 import { getDisplayText, listPropType } from './dropdown';
 
 const DisplayText = ({
@@ -26,13 +27,13 @@ const DisplayText = ({
                     value={value}
                 />
                 :
-                <span
+                <Text
                     className={classNames('dc-dropdown__display-text', className)}
                     name={name}
                     value={value}
                 >
                     {getDisplayText(list, value)}
-                </span>
+                </Text>
             }
             {placeholder &&
                 <div

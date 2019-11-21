@@ -2,6 +2,7 @@ import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
 import Popover             from 'Components/popover';
+import Text                from 'Components/text';
 
 const Items = ({
     className,
@@ -36,7 +37,7 @@ const Items = ({
                     <span
                         className={classNames(
                             'symbols',
-                            'dc-list__item-symbol',
+                            'dc-list__item-text',
                             symbol_type_class_name
                         )}
                     />
@@ -54,13 +55,13 @@ const Items = ({
             }
 
             {!has_symbol &&
-                <span className={classNames('dc-list__item-text',
+                <Text className={classNames('dc-list__item-text',
                     { 'dc-list__item-text--left': is_align_text_left },
                     className,
                 )}
                 >
                     {item.text}
-                </span>
+                </Text>
             }
         </div>
     );

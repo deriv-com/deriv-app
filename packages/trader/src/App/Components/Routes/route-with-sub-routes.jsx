@@ -37,7 +37,6 @@ const RouteWithSubRoutes = route => {
             );
         }
 
-        Language.setCookie();
         const title = route.title ? `${route.title} | ` : '';
         document.title = `${ title }${ default_title }`;
         WS.wait('website_status').then(() => {

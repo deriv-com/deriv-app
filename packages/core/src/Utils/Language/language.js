@@ -1,5 +1,5 @@
-import { getAll, urlFor } from '_common/language';
-import { getLanguage } from 'deriv-translations/lib/i18n';
+import { urlFor }                       from '_common/language';
+import { getLanguage, getAllLanguages } from 'deriv-translations/lib/i18n';
 
 export const currentLanguage = getLanguage();
 
@@ -8,10 +8,10 @@ export const getAllowedLanguages = () => {
         'ACH',
     ];
     // TODO Change language_list to const when design is ready.
-    let language_list = Object.keys(getAll())
+    let language_list = Object.keys(getAllLanguages())
         .filter(key => !(exclude_languages.includes(key)))
         .reduce((obj, key) => {
-            obj[key] = getAll()[key];
+            obj[key] = getAllLanguages()[key];
             return obj;
         }, {});
 

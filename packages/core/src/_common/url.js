@@ -37,7 +37,7 @@ const Url = (() => {
     const normalizePath = path => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_/])/g, '') : '');
 
     const urlFor = (path, pars, language, should_change_to_legacy = false) => {
-        const lang = (language || getLanguage() || 'EN').toLowerCase();
+        const lang = (language || getLanguage()).toLowerCase();
         let domain = `https://${window.location.hostname}/`;
         if (should_change_to_legacy) {
             if (/localhost|binary\.sx/.test(domain)) {
@@ -48,6 +48,7 @@ const Url = (() => {
         }
         const new_url = `${domain}${(normalizePath(path) || 'home')}.html${(pars ? `?${pars}` : '')}`;
         // replace old lang with new lang
+        console.log('urlFOR');
         return urlForLanguage(lang, new_url);
     };
 

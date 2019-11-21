@@ -8,6 +8,21 @@ import en                   from '../translations/en.json';
 
 const LANGUAGE_KEY = 'i18n_language';
 const DEFAULT_LANGUAGE = 'EN';
+const ALL_LANGUAGES = {
+    ACH  : 'Translations',
+    EN   : 'English',
+    ES   : 'Español',
+    FR   : 'Français',
+    ID   : 'Indonesia',
+    IT   : 'Italiano',
+    PL   : 'Polish',
+    PT   : 'Português',
+    RU   : 'Русский',
+    TH   : 'Thai',
+    VI   : 'Tiếng Việt',
+    ZH_CN: '简体中文',
+    ZH_TW: '繁體中文',
+};
 
 const getInitialLanguage = () => {
     const has_url_search_language = window.location.search && window.location.search.includes('lang=')
@@ -19,22 +34,21 @@ const getInitialLanguage = () => {
             .find(query => query.includes('lang='))
             .split('=')[1]
             .toUpperCase()
-        // TODO: if query lang is one of languages then
-        return query_lang
-        // else DEFAULT_LANGUAGE
+        if (hasLanguage(query_lang)) {
+            return query_lang
+        }
     }
 
     if (local_storage_language) {
-        // TODO: check if language is one of languages
-        return local_storage_language;
-        // else DEFAULT_LANGUAGE
+        if (hasLanguage(local_storage_language)) {
+            return local_storage_language;
+        }
     }
 
     return DEFAULT_LANGUAGE;
 };
 
 const initial_language = getInitialLanguage();
-
 const i18n_config = {
     resources: {
         EN: { translation: { ...en } },
@@ -54,30 +68,23 @@ i18n
     .init(i18n_config);
 
 const changeLanguage = (lang, cb) => {
-    // if language exists then
-    i18n.changeLanguage(lang, () => {
-        localStorage.setItem(LANGUAGE_KEY, lang);
-        cb();
-    })
+    if (hasLanguage(lang)) {
+        i18n.changeLanguage(lang, () => {
+            localStorage.setItem(LANGUAGE_KEY, lang);
+            cb();
+        })
+    }
 }
 
-const getLanguage = () => {
-    console.log(process.env.NODE_ENV);
-    console.log('getLanguage');
-    console.log(i18n);
-    console.log(i18n.language);
-    console.log(i18n.languages);
-}
+const getLanguage = () => i18n.language;
 
 const localize = (string, values) => {
     if (!string) return '';
     return i18n.t(crc32(string), { defaultValue: string, ...values })
 };
 
-// todo move to Translations
 const loadIncontextTranslation = () => {
-    // TODO: getLanguage
-    const is_ach = false;
+    const is_ach = i18n.language === 'ACH';
     if (is_ach) {
         const jipt = document.createElement('script')
         jipt.type = 'text/javascript'
@@ -91,4 +98,12 @@ const loadIncontextTranslation = () => {
     }
 }
 
-export default { i18n, localize, changeLanguage, getLanguage, loadIncontextTranslation };
+const getAllLanguages = () => ({ ...ALL_LANGUAGES });
+
+const hasLanguage = lang => {
+    if (!lang) return false;
+    return Object.keys(ALL_LANGUAGES).includes(lang.toUpperCase())
+}
+
+
+export default { i18n, localize, changeLanguage, getLanguage, getAllLanguages, loadIncontextTranslation };

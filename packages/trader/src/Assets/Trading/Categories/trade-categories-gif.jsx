@@ -7,6 +7,7 @@ import ImageHigherLowerDark  from 'Assets/SvgComponents/trade_explanations/img-h
 import ImageHigherLowerLight from 'Assets/SvgComponents/trade_explanations/img-higher-lower-light.svg';
 import ImageMatchesDark      from 'Assets/SvgComponents/trade_explanations/img-matches-differs-dark.svg';
 import ImageMatchesLight     from 'Assets/SvgComponents/trade_explanations/img-matches-differs-light.svg';
+import ImageMultiplierLight  from 'Assets/SvgComponents/trade_explanations/img-multiplier-light.svg';
 import ImageOverUnderDark    from 'Assets/SvgComponents/trade_explanations/img-over-under-dark.svg';
 import ImageOverUnderLight   from 'Assets/SvgComponents/trade_explanations/img-over-under-light.svg';
 import ImageRiseFallDark     from 'Assets/SvgComponents/trade_explanations/img-rise-fall-dark.svg';
@@ -60,6 +61,12 @@ const TradeCategoriesGIF = ({ category, className, is_dark_theme }) => {
                     (<ImageTouchDark className={themed_classes} />)
                     :
                     (<ImageTouchLight className={themed_classes} />);
+                break;
+            case 'mult':
+                TradeTypeGIF = is_dark_theme ?
+                    (<ImageMultiplierLight className={themed_classes} />)
+                    :
+                    (<ImageMultiplierLight className={themed_classes} />);
                 break;
             default:
                 TradeTypeGIF = null;

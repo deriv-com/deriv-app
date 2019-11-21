@@ -25,12 +25,12 @@ export default class RunPanelStore {
         this.registerCoreReactions();
     }
 
-    @observable active_index = 0;
-    @observable contract_stage = contract_stages.NOT_RUNNING;
-    @observable dialog_options = {};
+    @observable active_index      = 0;
+    @observable contract_stage    = contract_stages.NOT_RUNNING;
+    @observable dialog_options    = {};
     @observable has_open_contract = false;
-    @observable is_running = false;
-    @observable is_drawer_open = true;
+    @observable is_running        = false;
+    @observable is_drawer_open    = true;
 
     // when error happens, if it is unrecoverable_errors we reset run-panel
     // we activate run-button and clear trade info and set the ContractStage to NOT_RUNNING

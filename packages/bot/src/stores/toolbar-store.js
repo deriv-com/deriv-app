@@ -1,9 +1,9 @@
 import {
     observable,
-    action,
-}                               from 'mobx';
-import { localize }             from 'deriv-translations/lib/i18n';
-import { delayCallbackByMs }    from '../utils/tools';
+    action }                 from 'mobx';
+import { localize }          from 'deriv-translations/lib/i18n';
+import { scrollWorkspace }   from '../scratch/utils';
+import { delayCallbackByMs } from '../utils/tools';
 
 export default class ToolbarStore {
     constructor(root_store) {
@@ -27,10 +27,21 @@ export default class ToolbarStore {
 
     @action.bound
     onToolboxToggle() {
-        // eslint-disable-next-line no-underscore-dangle
-        const toolbox = Blockly.derivWorkspace.toolbox_;
+        const workspace      = Blockly.derivWorkspace;
+        const toolbox        = workspace.toolbox_; // eslint-disable-line
         this.is_toolbox_open = !this.is_toolbox_open;
+
         toolbox.toggle();
+
+        if (this.is_toolbox_open) {
+            const toolbox_width     = toolbox.HtmlDiv.clientWidth;
+            const block_canvas_rect = workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
+            
+            if (block_canvas_rect.left < toolbox_width) {
+                const scroll_distance = toolbox_width - block_canvas_rect.left + toolbox.width;
+                scrollWorkspace(workspace, scroll_distance, true, false);
+            }
+        }
     }
 
     @action.bound

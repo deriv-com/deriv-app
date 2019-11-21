@@ -260,6 +260,14 @@ export default class TradeStore extends BaseStore {
         await WS.wait('authorize');
         await this.setActiveSymbols();
         runInAction(async() => {
+            await WS.contractsFor(this.symbol).then(async(r) => {
+                if (r.error && r.error.code === 'InvalidSymbol') {
+                    await this.resetRefresh();
+                    await this.setActiveSymbols();
+                    await pickDefaultSymbol();
+                    runInAction(() => this.should_refresh_active_symbols = true);
+                }
+            });
             await this.setDefaultSymbol();
             await this.setContractTypes();
             await this.processNewValuesAsync({
@@ -287,8 +295,10 @@ export default class TradeStore extends BaseStore {
     onChange(e) {
         const { name, value } = e.target;
 
-        // save trade_chart_symbol upon user change
         if (name === 'symbol' && value) {
+            // set trade params skeleton and chart loader to true until processNewValuesAsync resolves
+            this.setChartStatus(true);
+            this.is_trade_enabled = false;
             // this.root_store.modules.contract_trade.contracts = [];
             // TODO: Clear the contracts in contract-trade-store
         }
@@ -710,7 +720,6 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     accountSwitcherListener() {
-        this.clearContracts();
         this.resetErrorServices();
         return this.processNewValuesAsync(
             { currency: this.root_store.client.currency },
@@ -725,7 +734,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     preSwitchAccountListener() {
         this.clearContracts();
-
+        this.is_trade_enabled = false;
         return Promise.resolve();
     }
 
@@ -741,6 +750,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     clientInitListener() {
+        this.should_refresh_active_symbols = true;
         this.initAccountCurrency(this.root_store.client.currency);
         return Promise.resolve();
     }
@@ -878,14 +888,14 @@ export default class TradeStore extends BaseStore {
             }));
         }
         if (req.active_symbols) {
-            return WS.wait('active_symbols');
+            return this.should_refresh_active_symbols ?
+                WS.activeSymbols('brief') : WS.wait('active_symbols');
         }
         return WS.storage.send(req);
     };
 
     @action.bound
     resetRefresh() {
-        WS.activeSymbols(); // reset active symbols
         this.should_refresh_active_symbols = false;
     }
 }

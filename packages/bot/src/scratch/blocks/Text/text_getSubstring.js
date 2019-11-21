@@ -77,21 +77,39 @@ Blockly.Blocks.text_getSubstring = {
         this.updateAt(1, isAt1);
         this.updateAt(2, isAt2);
     },
-    updateAt(n, isAt) {
-        this.removeInput(`AT${n}`, true);
-        if (isAt) {
-            this.appendValueInput(`AT${n}`).setCheck('Number');
-        } else {
+    updateAt(n, is_at) {
+        const input = this.getInput(`AT${n}`);
+        let old_label_text;
+
+        // Keep track of initial FieldLabel, we'll restore this when
+        // input types were changed.
+        if (input) {
+            input.fieldRow.some(field => {
+                if (field instanceof Blockly.FieldLabel) {
+                    old_label_text = field.text_; // eslint-disable-line no-underscore-dangle
+                }
+            });
+            this.removeInput(`AT${n}`);
+        }
+
+        const new_input = is_at ?
+            this.appendValueInput(`AT${n}`).setCheck('Number') :
             this.appendDummyInput(`AT${n}`);
+        
+        if (old_label_text) {
+            new_input.insertFieldAt(0, new Blockly.FieldLabel(old_label_text));
         }
 
         const menu = new Blockly.FieldDropdown(this[`WHERE_OPTIONS_${n}`], value => {
-            const newAt = ['FROM_START', 'FROM_END'].includes(value);
-            if (newAt !== isAt) {
-                this.updateAt(n, newAt);
+            const new_at = ['FROM_START', 'FROM_END'].includes(value);
+
+            if (new_at !== is_at) {
+                this.updateAt(n, new_at);
                 this.setFieldValue(value, `WHERE${n}`);
+
                 return null;
             }
+            
             return undefined;
         });
 

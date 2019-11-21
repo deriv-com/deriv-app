@@ -7,7 +7,7 @@ import CurrencyUtils from 'deriv-shared/utils/currency';
 import { RawMarker } from 'Modules/SmartChart';
 import * as ICONS    from './icons';
 
-const is_firefox = (navigator.userAgent.search('Firefox')) > 0;
+const is_firefox = (navigator.userAgent.search('Firefox') > 0);
 
 const RawMarkerMaker = (draw_callback) => {
     const Marker = ({ epoch_array, price_array, ...rest }) => (

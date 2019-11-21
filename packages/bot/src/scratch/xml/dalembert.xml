@@ -8,7 +8,7 @@
     <variable type="" id="o((rBg*rL/qm;RU%PM7_" islocal="false" iscloud="false">dalembert:size</variable>
     <variable type="" id="-PgUuax5KQf1zn42iCd~" islocal="false" iscloud="false">dalembert:initialStake</variable>
     <variable type="" id="R2yOKK{FmV|TULnU8.,[" islocal="false" iscloud="false">dalembert:units</variable>
-    <variable type="" id="%o8CQE,uNdg`rmRL:-ca" islocal="false" iscloud="false">dalembert:LossThreshold</variable>
+    <variable type="" id="%o8CQE,uNdg`rmRL:-ca" islocal="false" iscloud="false">dalembert:lossThreshold</variable>
     <variable type="" id="%E[W9r:QZ/2?Y?7zpL(z" islocal="false" iscloud="false">won</variable>
     <variable type="" id="MMgdM5q/OL:^wIms8obu" islocal="false" iscloud="false">lost</variable>
     <variable type="" id="y)Al0290GkJ5zCJq;pfo" islocal="false" iscloud="false">total profit</variable>
@@ -153,7 +153,7 @@
                 <field name="OP">EQ</field>
                 <value name="A">
                   <block type="variables_get" id="f/YuBp3,UsEyXDl6TB3q">
-                    <field name="VAR" id="%o8CQE,uNdg`rmRL:-ca" variabletype="">dalembert:LossThreshold</field>
+                    <field name="VAR" id="%o8CQE,uNdg`rmRL:-ca" variabletype="">dalembert:lossThreshold</field>
                   </block>
                 </value>
                 <value name="B">
@@ -163,7 +163,7 @@
             </value>
             <statement name="DO0">
               <block type="variables_set" id="?VovWY,aXgs.y1djI*-g">
-                <field name="VAR" id="%o8CQE,uNdg`rmRL:-ca" variabletype="">dalembert:LossThreshold</field>
+                <field name="VAR" id="%o8CQE,uNdg`rmRL:-ca" variabletype="">dalembert:lossThreshold</field>
                 <value name="VALUE" strategy_value="loss">
                   <block type="text_prompt_ext" id=";+1mWtzrw=-S]mR4Rav+">
                     <field name="TYPE">NUMBER</field>
@@ -655,7 +655,7 @@
                                                     <field name="NUM">9</field>
                                                   </shadow>
                                                   <block type="variables_get" id=")O~FX{%sJo`UREf7KzcC">
-                                                    <field name="VAR" id="%o8CQE,uNdg`rmRL:-ca" variabletype="">dalembert:LossThreshold</field>
+                                                    <field name="VAR" id="%o8CQE,uNdg`rmRL:-ca" variabletype="">dalembert:lossThreshold</field>
                                                   </block>
                                                 </value>
                                               </block>

@@ -160,7 +160,7 @@ const QuickStrategy = ({
                                     <div className='quick-strategy__form-row'>
                                         <Dropdown
                                             className='quick-strategy__duration-dropdown'
-                                            placeholder={localize('Duration Type')}
+                                            placeholder={localize('Duration type')}
                                             is_align_text_left
                                             list={duration_dropdown_options}
                                             name='duration_type'

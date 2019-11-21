@@ -1,6 +1,6 @@
 import PropTypes               from 'prop-types';
 import React                   from 'react';
-// import Payment                 from 'deriv-p2p';
+import P2P                     from 'deriv-p2p';
 import Lazy                    from 'App/Containers/Lazy';
 import Routes                  from 'App/Containers/Routes/routes.jsx';
 import TradeFooterExtensions   from 'App/Containers/trade-footer-extensions.jsx';
@@ -23,7 +23,7 @@ class App extends React.Component {
         return (
             <MobxProvider store={ this.root_store }>
                 <React.Fragment>
-                    {/* <Payment /> */}
+                    <P2P />
                     <Routes />
                     <Lazy
                         ctor={ () => import(/* webpackChunkName: "trade-modals", webpackPrefetch: true */'./Containers/Modals') }

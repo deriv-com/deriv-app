@@ -171,16 +171,6 @@ export const clientNotifications = (ui = {}) => {
             message: localize('Please complete your Personal Details before you proceed.'),
             type   : 'danger',
         },
-        switch_to_tick_chart: {
-            key    : 'switch_to_tick_chart',
-            header : localize('This chart display is not ideal for tick contracts'),
-            message: (
-                <Localize
-                    i18n_default_text='Please change the chart duration to tick for a better trading experience.'
-                />
-            ),
-            type: 'info',
-        },
         you_are_offline: {
             key    : 'you_are_offline',
             header : localize('You are offline'),

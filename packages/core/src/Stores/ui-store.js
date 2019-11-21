@@ -24,8 +24,9 @@ export default class UIStore extends BaseStore {
     @observable is_reports_visible          = false;
 
     // Extensions
-    @observable footer_extension   = undefined;
-    @observable settings_extension = undefined;
+    @observable footer_extension         = undefined;
+    @observable settings_extension       = undefined;
+    @observable notification_messages_ui = undefined;
 
     @observable is_cashier_modal_on     = false;
     @observable is_dark_mode_on         = false;
@@ -137,6 +138,11 @@ export default class UIStore extends BaseStore {
                 document.body.classList.add('theme--light');
             }
         });
+    }
+
+    @action.bound
+    init(notification_messages) {
+        this.notification_messages_ui = notification_messages;
     }
 
     @action.bound

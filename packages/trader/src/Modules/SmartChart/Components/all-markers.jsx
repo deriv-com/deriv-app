@@ -147,6 +147,7 @@ const shadowed_text = ({ ctx, is_dark_theme, text, left, top, scale }) => {
         ctx.shadowColor = is_dark_theme ? 'rgba(16,19,31,1)' : 'rgba(255,255,255,1)';
         ctx.shadowBlur = 12;
     }
+    // fillText once in firefox due to disabling of text shadows, for default cases where its enabled, set to 5 (to add blur intensity)
     for (let i = 0; i < (is_firefox ? 1 : 5); ++i) {
         ctx.fillText(
             text,

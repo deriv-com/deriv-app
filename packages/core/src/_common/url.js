@@ -48,7 +48,6 @@ const Url = (() => {
         }
         const new_url = `${domain}${(normalizePath(path) || 'home')}.html${(pars ? `?${pars}` : '')}`;
         // replace old lang with new lang
-        console.log('urlFOR');
         return urlForLanguage(lang, new_url);
     };
 

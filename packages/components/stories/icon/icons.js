@@ -193,7 +193,7 @@ export const icons =
         'IcMt5DevicePhone',
         'IcMt5DeviceTablet',
         'IcMt5Standard',
-        'IcMt5Synthetic'
+        'IcMt5SyntheticIndices'
     ],
     'tradetype': [
         'IcTradetypeAsiand',

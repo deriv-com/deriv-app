@@ -1,6 +1,7 @@
 import classNames         from 'classnames';
 import PropTypes          from 'prop-types';
 import React              from 'react';
+import { Icon }           from 'deriv-components';
 import {
     AccountActions,
     MenuLinks,
@@ -9,7 +10,6 @@ import platform_config    from 'App/Constants/platform-config';
 import Lazy               from 'App/Containers/Lazy';
 import RealAccountSignup  from 'App/Containers/RealAccountSignup';
 import { localize }       from 'App/i18n';
-import Icon               from 'Assets/icon.jsx';
 import routes             from 'Constants/routes';
 import { connect }        from 'Stores/connect';
 import AccountsInfoLoader from 'App/Components/Layout/Header/Components/Preloader';
@@ -43,14 +43,14 @@ const Header = ({
     const header_links = [
         {
             id        : 'dt_reports_tab',
-            icon      : <Icon icon='IconReports' className='header__icon' />,
+            icon      : <Icon icon='IcReports' className='header__icon' />,
             text      : localize('Reports'),
             link_to   : routes.reports,
             login_only: true,
         },
         {
             id        : 'dt_cashier_tab',
-            icon      : <Icon icon='IconCashier' className='header__icon' />,
+            icon      : <Icon icon='IcCashier' className='header__icon' />,
             text      : localize('Cashier'),
             onClick   : toggleCashierModal,
             login_only: true,

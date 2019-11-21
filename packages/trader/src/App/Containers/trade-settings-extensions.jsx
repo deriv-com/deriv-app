@@ -25,7 +25,7 @@ class TradeSettingsExtensions extends React.Component {
 
         const menu_items = [
             {
-                icon : 'IconCharts',
+                icon : 'IcChart',
                 label: localize('Charts'),
                 value: ChartSettingContainer,
                 // uncomment below lines to bring back purchase lock and purchase confirmation}

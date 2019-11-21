@@ -178,7 +178,7 @@ import './mt5/ic-mt5-device-laptop.svg';
 import './mt5/ic-mt5-device-phone.svg';
 import './mt5/ic-mt5-device-tablet.svg';
 import './mt5/ic-mt5-standard.svg';
-import './mt5/ic-mt5-synthetic.svg';
+import './mt5/ic-mt5-synthetic-indices.svg';
 import './tradetype/ic-tradetype-asiand.svg';
 import './tradetype/ic-tradetype-asianu.svg';
 import './tradetype/ic-tradetype-call-barrier.svg';

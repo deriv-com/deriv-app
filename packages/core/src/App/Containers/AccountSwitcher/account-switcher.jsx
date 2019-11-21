@@ -3,6 +3,7 @@ import PropTypes          from 'prop-types';
 import React              from 'react';
 import { withRouter }     from 'react-router';
 import {
+    Icon,
     Money,
     Popover,
     ThemedScrollbars }    from 'deriv-components';
@@ -10,13 +11,12 @@ import CurrencyUtils      from 'deriv-shared/utils/currency';
 import { localize }       from 'App/i18n';
 import { urlFor }         from '_common/url';
 import UpgradeButton      from 'App/Containers/RealAccountSignup/upgrade-button.jsx';
-import Icon               from 'Assets/icon.jsx';
 import { connect }        from 'Stores/connect';
 import Localize           from 'App/Components/Elements/localize.jsx';
 import routes             from 'Constants/routes';
 import {
     getMT5AccountDisplay,
-    getMT5AccountType }   from 'Stores/Helpers/client';
+}                         from 'Stores/Helpers/client';
 import Loading            from '../../../templates/_common/components/loading.jsx';
 
 const AccountWrapper = ({
@@ -33,7 +33,7 @@ const AccountWrapper = ({
             <span className='acc-switcher__list-title'>
                 {header}
             </span>
-            <Icon icon='IconArrow' className='acc-info__select-arrow' />
+            <Icon icon='IcChevronDown' className='acc-info__select-arrow' />
         </div>
         {is_visible &&
             <React.Fragment>
@@ -69,13 +69,13 @@ const AccountList = ({
         >
             <span className={'acc-switcher__id'}>
                 <Icon
-                    icon='IconAccountsCurrency'
-                    className={`acc-switcher__id-icon acc-switcher__id-icon--${currency_icon}`}
-                    type={currency_icon}
+                    icon={currency_icon}
+                    className={`acc-switcher__id-icon`}
+                    size={24}
                 />
                 <span>
                     {display_type === 'currency'
-                        ? <CurrencyDisplay is_virtual={is_virtual} currency={currency_icon} />
+                        ? <CurrencyDisplay is_virtual={is_virtual} currency={currency} />
                         : <AccountDisplay is_virtual={has_demo_text} account_type={account_type} />
                     }
                 </span>
@@ -135,7 +135,7 @@ const ButtonAddAccount = ({
 }) => (
     <UpgradeButton
         onClick={onClick}
-        icon={<Icon icon='IconAdd' />}
+        icon={<Icon icon='IcAddCircle' red size={24} />}
     >
         {text}
     </UpgradeButton>
@@ -290,7 +290,7 @@ class AccountSwitcher extends React.Component {
                                             key={account.loginid}
                                             balance={this.props.accounts[account.loginid].balance}
                                             currency={this.props.accounts[account.loginid].currency}
-                                            currency_icon={account.icon}
+                                            currency_icon={`IcCurrency-${account.icon}`}
                                             display_type={'currency'}
                                             has_balance={'balance' in this.props.accounts[account.loginid]}
                                             is_disabled={account.is_disabled}
@@ -330,7 +330,7 @@ class AccountSwitcher extends React.Component {
                                                             account_type={account.group}
                                                             balance={account.balance}
                                                             currency={account.currency}
-                                                            currency_icon={getMT5AccountType(account.group).replace(/^demo/, 'real')}
+                                                            currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
                                                             has_balance={'balance' in account}
                                                             has_demo_text={/^demo/.test(account.group)}
                                                             loginid={account.login}
@@ -365,7 +365,7 @@ class AccountSwitcher extends React.Component {
                             : localize('Total assets in your Deriv accounts (excluding demo accounts).')
                         }
                     >
-                        <Icon icon='IconInfoOutline' className='acc-switcher__total-icon' />
+                        <Icon icon='IcInfoOutline' className='acc-switcher__total-icon' />
                     </Popover>
                     <span className='acc-switcher__balance'>
                         <Money
@@ -386,7 +386,7 @@ class AccountSwitcher extends React.Component {
 
                 <div id='dt_logout_button' className='acc-switcher__logout' onClick={this.handleLogout}>
                     <span className='acc-switcher__logout-text'>{localize('Log out')}</span>
-                    <Icon icon='IconLogout' className='acc-switcher__logout-icon drawer__icon' />
+                    <Icon icon='IcLogout' className='acc-switcher__logout-icon drawer__icon' />
                 </div>
             </div>
         );

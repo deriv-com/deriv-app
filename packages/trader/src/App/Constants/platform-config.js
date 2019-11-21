@@ -6,19 +6,19 @@ const key = isBot() ? 'href' : 'link_to';
 
 const platform_config = [
     {
-        icon       : 'IconDeriv',
+        icon       : 'IcBrandDtrader',
         title      : localize('DTrader'),
         description: localize('Start trading now with a powerful, yet easy-to-use platform.'),
         [key]      : routes.trade,
     },
     {
-        icon       : 'IconDBot',
+        icon       : 'IcBrandDbot',
         title      : localize('DBot'),
         description: localize('Automate your trading ideas without coding.'),
         href       : '/bot',
     },
     {
-        icon       : 'IconMT5',
+        icon       : 'IcBrandDmt5',
         title      : localize('DMT5'),
         description: localize('Trade with the platform of choice for professionals.'),
         [key]      : routes.mt5,

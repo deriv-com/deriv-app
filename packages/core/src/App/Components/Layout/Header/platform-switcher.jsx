@@ -4,7 +4,7 @@ import React                from 'react';
 import { withRouter }       from 'react-router-dom';
 import { CSSTransition }    from 'react-transition-group';
 import { localize }         from 'App/i18n';
-import Icon                 from 'Assets/icon.jsx';
+import { Icon }             from 'deriv-components';
 import { isBot, isMT5 }     from 'Utils/PlatformSwitcher';
 import { PlatformDropdown } from './platform-dropdown.jsx';
 import 'Sass/app/_common/components/platform-switcher.scss';
@@ -29,13 +29,14 @@ class PlatformSwitcher extends React.PureComponent {
             >
                 <Icon
                     className='platform_switcher__icon'
-                    icon={ (isBot() ? 'IconDBot' : (isMT5() ? 'IconMT5' : 'IconDeriv')) }
+                    icon={ (isBot() ? 'IcBrandDbot' : (isMT5() ? 'IcBrandDmt5' : 'IcBrandDtrader')) }
+                    size={32}
                 />
                 <h1 className='platform_switcher__header'>
                     { (isBot() ? 'DBot' : (isMT5() ? 'DMT5' : 'DTrader')) }
                 </h1>
                 <p className='platform_switcher__label'>{localize('BETA')}</p>
-                <Icon className='platform_switcher__arrow' icon='IconArrowBold' />
+                <Icon className='platform_switcher__arrow' icon='IcChevronDownBold' />
             </div>
             <CSSTransition
                 mountOnEnter

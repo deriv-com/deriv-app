@@ -31,14 +31,16 @@ class MainContent extends React.Component {
                     </div>
                 );
             case (tabs_title.CHART): {
-                const run_panel_width = is_run_panel_open ? getComputedStyle(document.documentElement).getPropertyValue('--run-panel-width') : 0;
+                const run_panel_width = is_run_panel_open ?
+                    getComputedStyle(document.documentElement).getPropertyValue('--run-panel-width')
+                    : 0;
                 const width = window.innerWidth - run_panel_width;
                 return (
                     <div
                         className='bot__chart-container'
                         style={{
                             width,
-                            height: 'calc(100vh - 140px)',
+                            height: 'calc(100vh - (var(--header-footer-height) * 1px))',
                         }}
                     >
                         <Chart />

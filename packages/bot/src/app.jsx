@@ -36,13 +36,13 @@ class App extends React.Component {
     render() {
         return (
             <Provider {...this.root_store}>
-                <>
+                <div className='bot'>
                     <Toolbar />
                     <MainContent />
                     <RunPanel />
                     <QuickStrategy />
                     <FooterExtension />
-                </>
+                </div>
             </Provider>
         );
     }

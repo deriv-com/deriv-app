@@ -3,7 +3,7 @@
 **/
 // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
 div.run-panel {
-    height: calc(100% - 140px);
+    height: calc(100% - (var(--header-footer-height) * 1px));
     top: 104px;
     z-index: 9;
 

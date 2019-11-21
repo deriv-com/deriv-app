@@ -17,6 +17,7 @@ class FooterExtension extends React.Component {
         const footer_items = (
             <div className='footer_extensions'>
                 <span
+                    key={tabs_title.WORKSPACE}
                     className={classNames('footer_extensions__button',
                         { 'footer_extensions__button--active': active_tab === tabs_title.WORKSPACE })}
                     onClick={() => setActiveTab(tabs_title.WORKSPACE)}
@@ -24,6 +25,7 @@ class FooterExtension extends React.Component {
                     {localize(tabs_title.WORKSPACE)}
                 </span>
                 <span
+                    key={tabs_title.CHART}
                     className={classNames('footer_extensions__button',
                         { 'footer_extensions__button--active': active_tab === tabs_title.CHART })}
                     onClick={() => setActiveTab(tabs_title.CHART)}

@@ -6,9 +6,8 @@
         font-weight: 700;
         padding: 8px;
 
-        &:hover,
         &--active {
-            border-top: 1px solid var(--brand-red-coral);
+            border-top: 2px solid var(--brand-red-coral);
         }
     }
 }

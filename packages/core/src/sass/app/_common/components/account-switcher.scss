@@ -33,6 +33,7 @@
         align-items: center;
         -webkit-box-align: center;
         display: flex;
+        margin-right: 1.2rem;
     }
     &__wrapper {
         align-items: center;
@@ -86,10 +87,8 @@
         }
     }
     &__button {
-        margin: 0 1.6rem 0 0 !important;
-
         &:not(:last-child) {
-            margin-right: 1rem;
+            margin-right: 0.8rem;
         }
     }
 }

@@ -1,4 +1,5 @@
 $colors: primary, accent, prominent, general, disabled, colored-background, profit-success, loss-danger;
+$aligns: left, center, right;
 $lh: (
     'm' : 2rem,
     'l' : 2.4rem,
@@ -15,7 +16,12 @@ $lh: (
             color: var(--text-#{$color});
         }
     }
-
+    @each $align in $aligns {
+        /* postcss-bem-linter: ignore */
+        &__#{$align} {
+            color: $align;
+        }
+    }
     @each $name, $size in $lh {
         /* postcss-bem-linter: ignore */
         &__#{$name} {

@@ -12,6 +12,7 @@ const Text = ({
     medium,
     small,
     xsmall,
+    align,
 }) => {
     const classes = classNames('text', {
         'text__bold'          : bold,
@@ -24,6 +25,9 @@ const Text = ({
         'text__white'         : color === 'white',
         'text__green'         : color === 'green',
         'text__red'           : color === 'red',
+        'text_left'           : align === 'left',
+        'text_center'         : align === 'center',
+        'text_right'          : align === 'right',
         'text__m'             : !large && !medium && !small && !xsmall ? true : medium,
         'text__xs'            : xsmall,
         'text__s'             : small,
@@ -34,6 +38,7 @@ const Text = ({
 };
 
 Text.propTypes = {
+    align    : PropTypes.string,
     as       : PropTypes.string,
     bold     : PropTypes.bool,
     children : PropTypes.node,

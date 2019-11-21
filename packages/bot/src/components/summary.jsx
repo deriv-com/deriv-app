@@ -1,18 +1,18 @@
-import classNames    from 'classnames';
-import { Money }     from 'deriv-components';
-import PropTypes     from 'prop-types';
-import React         from 'react';
-import { localize }  from 'deriv-translations/lib/i18n';
-import ContractCard  from './contract-card.jsx';
-import { connect }   from '../stores/connect';
+import classNames      from 'classnames';
+import { Money, Text } from 'deriv-components';
+import PropTypes       from 'prop-types';
+import React           from 'react';
+import { localize }    from 'deriv-translations/lib/i18n';
+import ContractCard    from './contract-card.jsx';
+import { connect }     from '../stores/connect';
 import                    '../assets/sass/summary.scss';
 
 const SummaryTile = (props) => (
     <div className={'summary__tile'}>
-        <div className='summary__tile-title'>{props.title}</div>
-        <div className={classNames('summary__tile-content', props.contentClassName)}>
+        <Text className='summary__tile-title' as='h6' bold small>{props.title}</Text>
+        <Text className={classNames('summary__tile-content', props.contentClassName)} small>
             { props.content }
-        </div>
+        </Text>
     </div>
 );
 

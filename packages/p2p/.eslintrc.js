@@ -40,6 +40,7 @@ module.exports = {
     extends: [
         'airbnb-base',
         "binary",
+        'plugin:react/recommended'
     ],
     parserOptions: {
         ecmaVersion : 6,

@@ -1,10 +1,12 @@
 import React from 'react';
+import styled from 'styled-components';
+import '../styles/app.scss';
 
-class Payment extends React.Component {
-    state = { greet: 'hi' }
-    render() {
-        return <div>{this.state.greet}</div>;
-    }
-}
- 
-export default Payment;
+const StyledDiv = styled.div`
+    background: var(--general-section-1);
+    color: var(--text-general);
+`;
+
+const App = () => <StyledDiv>Hello p2p</StyledDiv>;
+
+export default App;

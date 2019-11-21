@@ -1,14 +1,14 @@
 {
-  "name": "p2p",
-  "version": "1.0.0",
+  "name": "deriv-p2p",
+  "version": "1.0.1",
   "description": "p2p cashier",
   "main": "index.js",
   "scripts": {
     "test": "echo \"No test specified\"",
-    "build": "rimraf lib && webpack --mode=production --optimize-minimize --progress",
-    "build:travis": "rimraf lib && webpack --mode=production --optimize-minimize",
-    "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
-    "start": "rimraf lib && npm run test && webpack --mode=production --progress --watch",
+    "build": "rimraf index.js && webpack --mode=production --optimize-minimize --progress",
+    "build:travis": "rimraf index.js && webpack --mode=production --optimize-minimize",
+    "serve": "rimraf index.js && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
+    "start": "rimraf index.js && npm run test && webpack --mode=production --progress --watch",
     "translate": "sh ./scripts/update-translations.sh",
     "deploy": "echo \"No deploy specified\"",
     "deploy:clean": "echo \"No deploy:clean specified\"",
@@ -22,7 +22,8 @@
     "@babel/polyfill": "^7.4.4",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "styled-components": "^4.4.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",
@@ -37,8 +38,13 @@
     "babel-eslint": "^10.0.2",
     "babel-jest": "^24.8.0",
     "babel-loader": "^8.0.6",
+    "babel-plugin-styled-components": "^1.10.6",
     "copy-webpack-plugin": "^5.0.4",
     "cross-env": "^5.2.0",
+    "css-hot-loader": "^1.4.4",
+    "css-loader": "^3.1.0",
+    "deriv-components": "^1.0.0",
+    "deriv-shared": "^1.0.0",
     "eslint": "^6.0.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-binary": "^1.0.2",
@@ -49,10 +55,14 @@
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.2",
+    "mini-css-extract-plugin": "^0.8.0",
+    "node-sass": "^4.12.0",
+    "prettier": "^1.19.1",
     "react": "^16.8.6",
+    "sass-loader": "^7.1.0",
+    "sass-resources-loader": "^2.0.1",
+    "style-loader": "^0.23.1",
     "webpack": "^4.34.0",
-    "webpack-cli": "^3.3.4",
-    "deriv-components": "^1.0.0",
-    "deriv-shared": "^1.0.0"
+    "webpack-cli": "^3.3.4"
   }
 }

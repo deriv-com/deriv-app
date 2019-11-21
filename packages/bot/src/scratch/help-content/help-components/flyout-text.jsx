@@ -1,12 +1,12 @@
-import React            from 'react';
-import { PropTypes }    from 'prop-types';
-import { translate }    from '../../../utils/lang/i18n';
+import React         from 'react';
+import { PropTypes } from 'prop-types';
+import { localize }  from 'deriv-translations/lib/i18n';
 
 const FlyoutText = props => {
     const { text } = props;
 
     return (
-        <p className='flyout__item'>{translate(text)}</p>
+        <p className='flyout__item'>{localize(text)}</p>
     );
 };
 

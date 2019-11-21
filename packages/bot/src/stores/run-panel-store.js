@@ -3,20 +3,21 @@ import {
     action,
     reaction,
     computed,
-}                          from 'mobx';
-import { contract_stages } from '../constants/contract-stage';
+}                               from 'mobx';
+import { localize }             from 'deriv-translations/lib/i18n';
+import { contract_stages }      from '../constants/contract-stage';
 import {
     error_types,
     unrecoverable_errors,
-}                          from '../constants/messages';
+}                               from '../constants/messages';
 import {
     runBot,
     stopBot,
     terminateBot,
-}                          from '../scratch';
-import { isEnded }         from '../utils/contract';
-import { translate }       from '../utils/lang/i18n';
-import { observer }        from '../utils/observer';
+}                               from '../scratch';
+import { isEnded }              from '../utils/contract';
+import { observer }             from '../utils/observer';
+import { hasAllRequiredBlocks } from '../scratch/utils/scratchHelper';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -24,12 +25,12 @@ export default class RunPanelStore {
         this.registerCoreReactions();
     }
 
-    @observable active_index = 0;
-    @observable contract_stage = contract_stages.NOT_RUNNING;
-    @observable dialog_options = {};
+    @observable active_index      = 0;
+    @observable contract_stage    = contract_stages.NOT_RUNNING;
+    @observable dialog_options    = {};
     @observable has_open_contract = false;
-    @observable is_running = false;
-    @observable is_drawer_open = true;
+    @observable is_running        = false;
+    @observable is_drawer_open    = true;
 
     // when error happens, if it is unrecoverable_errors we reset run-panel
     // we activate run-button and clear trade info and set the ContractStage to NOT_RUNNING
@@ -56,7 +57,8 @@ export default class RunPanelStore {
 
     @action.bound
     onRunButtonClick = () => {
-        const { client } = this.root_store.core;
+        const { core , contract_card } = this.root_store;
+        const { client } = core;
 
         if (!client.is_logged_in) {
             this.showLoginDialog();
@@ -69,9 +71,18 @@ export default class RunPanelStore {
         }
 
         this.registerBotListeners();
+
+        if (!hasAllRequiredBlocks()) {
+            this.showErrorMessage(
+                new Error(localize('One or more mandatory blocks are missing from your workspace. ' +
+                'Please add the required block(s) and then try again.'))
+            );
+            return;
+        }
+
         this.is_running = true;
         this.is_drawer_open = true;
-        this.root_store.contract_card.clear();
+        contract_card.clear();
         this.setContractStage(contract_stages.STARTING);
 
         runBot();
@@ -93,7 +104,7 @@ export default class RunPanelStore {
         } else {
             // when user click stop button before bot start running
             this.setContractStage(contract_stages.NOT_RUNNING);
-            this.unregisterBotListeners();
+            RunPanelStore.unregisterBotListeners();
         }
     }
 
@@ -144,8 +155,8 @@ export default class RunPanelStore {
         this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
-            title  : translate('Please log in'),
-            message: translate('You need to log in to run the bot.'),
+            title  : localize('Please log in'),
+            message: localize('You need to log in to run the bot.'),
         };
     }
 
@@ -154,8 +165,8 @@ export default class RunPanelStore {
         this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
-            title  : translate('DBot isn\'t quite ready for real accounts'),
-            message: translate('Please switch to your demo account to run your DBot.'),
+            title  : localize('DBot isn\'t quite ready for real accounts'),
+            message: localize('Please switch to your demo account to run your DBot.'),
         };
     }
 
@@ -167,8 +178,18 @@ export default class RunPanelStore {
         };
         this.onCancelButtonClick = this.onCloseDialog;
         this.dialog_options = {
-            title  : translate('Are you sure?'),
-            message: translate('This will clear all data in the summary, transactions, and journal panels. All counters will be reset to zero.'),
+            title  : localize('Are you sure?'),
+            message: localize('This will clear all data in the summary, transactions, and journal panels. All counters will be reset to zero.'),
+        };
+    }
+
+    @action.bound
+    showIncompatibleStrategyDialog() {
+        this.onOkButtonClick     = this.onCloseDialog;
+        this.onCancelButtonClick = undefined;
+        this.dialog_options = {
+            title  : localize('Import error'),
+            message: localize('This strategy is currently not compatible with DBot.'),
         };
     }
     // #endregion
@@ -186,8 +207,6 @@ export default class RunPanelStore {
         observer.register('bot.contract', contract_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
         observer.register('ui.log.success', journal.onLogSuccess);
-        observer.register('ui.log.error', journal.onError);
-        observer.register('Error', journal.onError);
         observer.register('ui.log.error', this.onError);
         observer.register('Error', this.onError);
         observer.register('Notify', journal.onNotify);
@@ -209,11 +228,11 @@ export default class RunPanelStore {
             this.setContractStage(contract_stages.NOT_RUNNING);
             this.error_type = undefined;
             this.is_running = false;
-            this.unregisterBotListeners();
+            RunPanelStore.unregisterBotListeners();
         } else if (this.has_open_contract) {
             // When bot was running and it closes now
             this.setContractStage(contract_stages.CONTRACT_CLOSED);
-            this.unregisterBotListeners();
+            RunPanelStore.unregisterBotListeners();
         }
         this.has_open_contract = false;
     }
@@ -263,10 +282,18 @@ export default class RunPanelStore {
         } else {
             this.error_type = error_types.RECOVERABLE_ERRORS;
         }
+        
+        this.showErrorMessage(data);
+    }
+
+    showErrorMessage(data) {
+        const { journal } = this.root_store;
+
+        journal.onError(data);
         this.setActiveTabIndex(2);
     }
 
-    unregisterBotListeners =() => {
+    static unregisterBotListeners() {
         observer.unregisterAll('bot.running');
         observer.unregisterAll('bot.stop');
         observer.unregisterAll('bot.trade_again');
@@ -288,7 +315,7 @@ export default class RunPanelStore {
             // of killing and clearing everything instantly.
             // Core need to change to pass beforeswitch account event
             terminateBot();
-            this.unregisterBotListeners();
+            RunPanelStore.unregisterBotListeners();
             this.clearStat();
         };
 
@@ -298,7 +325,7 @@ export default class RunPanelStore {
                     () => client.loginid,
                     (loginid) => {
                         if (loginid) {
-                            this.root_store.journal.pushMessage(translate('You have switched accounts.'));
+                            this.root_store.journal.pushMessage(localize('You have switched accounts.'));
                         }
                         terminateAndClear();
                         this.root_store.summary.currency = client.currency;
@@ -345,8 +372,9 @@ export default class RunPanelStore {
         this.contract_stage = value;
     }
 
+    @action.bound
     onUnmount() {
-        this.unregisterBotListeners();
+        RunPanelStore.unregisterBotListeners();
         this.disposeIsSocketOpenedListener();
     }
 }

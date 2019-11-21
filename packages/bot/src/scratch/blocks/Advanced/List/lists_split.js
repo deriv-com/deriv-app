@@ -1,9 +1,9 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.lists_split = {
     init() {
         const dropdown = new Blockly.FieldDropdown(
-            [[translate('make list from text'), 'SPLIT'], [translate('make text from list'), 'JOIN']],
+            [[localize('make list from text'), 'SPLIT'], [localize('make text from list'), 'JOIN']],
             newMode => this.updateType(newMode)
         );
 
@@ -13,7 +13,7 @@ Blockly.Blocks.lists_split = {
         this.appendValueInput('DELIM')
             .setCheck('String')
             .appendField('', 'SPACE1')
-            .appendField(translate('with delimiter'), 'DELIM_LABEL');
+            .appendField(localize('with delimiter'), 'DELIM_LABEL');
         this.appendDummyInput().appendField('', 'SPACE2');
 
         this.setOutput(true, 'Array');
@@ -25,11 +25,12 @@ Blockly.Blocks.lists_split = {
             Blockly.Colours.Base.colourSecondary,
             Blockly.Colours.Base.colourTertiary
         );
+        this.setTooltip(localize('This block creates a list from a given string of text, splitting it with the given delimiter. It can also join items in a list into a string of text.'));
     },
     meta(){
         return {
-            'display_name': translate('Create list from text'),
-            'description' : translate('Creates a list from a given text by splitting it by a given delimiter. This block can also to join items in a given list in a string of text, separated by a given delimiter.'),
+            'display_name': localize('Create list from text'),
+            'description' : localize('This block creates a list from a given string of text, splitting it with the given delimiter. It can also join items in a list into a string of text.'),
             'category'    : Blockly.Categories.List,
         };
     },

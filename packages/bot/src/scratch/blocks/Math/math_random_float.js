@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
 
 Blockly.Blocks.math_random_float = {
     init() {
@@ -6,20 +6,20 @@ Blockly.Blocks.math_random_float = {
     },
     definition(){
         return {
-            message0       : translate('random fraction'),
+            message0       : localize('random fraction'),
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Random fraction number'),
+            tooltip        : localize('This block gives you a random fraction between 0.0 to 1.0'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Random fraction number'),
-            'description' : translate('Returns a random fraction from 0.0 to 1.0'),
+            'display_name': localize('Random fraction number'),
+            'description' : localize('This block gives you a random fraction between 0.0 to 1.0.'),
         };
     },
 };

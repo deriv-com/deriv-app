@@ -15,6 +15,7 @@ import IconInstallationMac       from 'Assets/SvgComponents/mt5/download-center/
 import IconInstallationWeb       from 'Assets/SvgComponents/mt5/download-center/icon-installation-web.svg';
 import IconInstallationWindows   from 'Assets/SvgComponents/mt5/download-center/icon-installation-windows.svg';
 import MT5PasswordModal          from 'Modules/MT5/Containers/mt5-password-modal.jsx';
+import MT5ServerErrorDialog      from 'Modules/MT5/Containers/mt5-server-error-dialog.jsx';
 import Mt5TopUpDemoModal         from 'Modules/MT5/Containers/mt5-top-up-demo-modal.jsx';
 import { connect }               from 'Stores/connect';
 import CompareAccountsModal      from './mt5-compare-accounts-modal.jsx';
@@ -35,6 +36,11 @@ class MT5Dashboard extends React.Component {
 
     componentDidMount() {
         this.updateActiveIndex();
+        this.props.onMount();
+    }
+
+    componentWillUnmount() {
+        this.props.onUnmount();
     }
 
     componentDidUpdate() {
@@ -62,8 +68,8 @@ class MT5Dashboard extends React.Component {
             active_index    : prev_state.active_index,
             password_manager: {
                 is_visible      : !prev_state.password_manager.is_visible,
-                selected_login  : login || '',
-                selected_account: title || '',
+                selected_login  : typeof login === 'string' ? login : '',
+                selected_account: typeof title === 'string' ? title : '',
             },
         }));
     };
@@ -75,10 +81,12 @@ class MT5Dashboard extends React.Component {
             is_loading,
             has_mt5_account,
             has_real_account,
+            NotificationMessages,
         } = this.props;
 
         return (
             <div className='mt5-dashboard'>
+                <NotificationMessages />
                 { !has_mt5_account &&
                     <div className='mt5-dashboard__welcome-message'>
                         <h1 className='mt5-dashboard__welcome-message--heading'>
@@ -161,12 +169,13 @@ class MT5Dashboard extends React.Component {
                     </div>
                     <p className='mt5-dashboard__download-center--hint'>
                         <Localize
-                            i18n_default_text='The MT5 platform does not support Windows XP, Windows 2003 and Windows Vista.'
+                            i18n_default_text='The DMT5 platform is not supported by macOS Catalina, Windows XP, Windows 2003, and Windows Vista.'
                         />
                     </p>
                 </div>
                 <Mt5TopUpDemoModal />
                 <MT5PasswordModal />
+                <MT5ServerErrorDialog />
             </div>
         );
     }
@@ -184,4 +193,7 @@ export default withRouter(connect(({ client, modules, ui }) => ({
     toggleCompareAccounts      : modules.mt5.toggleCompareAccountsModal,
     closeMt5AndOpenCashier     : modules.mt5.closeMt5AndOpenCashier,
     openTopUpModal             : ui.openTopUpModal,
+    NotificationMessages       : ui.notification_messages_ui,
+    onMount                    : modules.mt5.onMount,
+    onUnmount                  : modules.mt5.onUnmount,
 }))(MT5Dashboard));

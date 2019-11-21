@@ -1,14 +1,16 @@
+import { localize }    from 'deriv-translations/lib/i18n';
 import { expectValue } from '../../../shared';
 import config          from '../../../../constants';
-import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.bb_statement = {
+    protected_statements : ['STATEMENT'],
+    required_child_blocks: ['input_list', 'period', 'std_dev_multiplier_up', 'std_dev_multiplier_down'],
     init() {
         this.jsonInit(this.definition());
     },
     definition(){
         return {
-            message0: translate('set %1 to Bollinger Bands %2 %3'),
+            message0: localize('set %1 to Bollinger Bands %2 %3'),
             message1: '%1',
             args0   : [
                 {
@@ -35,7 +37,7 @@ Blockly.Blocks.bb_statement = {
             colour           : Blockly.Colours.Base.colour,
             colourSecondary  : Blockly.Colours.Base.colourSecondary,
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
-            tooltip          : translate('Calculates Bollinger Bands (BB) from a list with a period'),
+            tooltip          : localize('Calculates Bollinger Bands (BB) from a list with a period'),
             previousStatement: null,
             nextStatement    : null,
             category         : Blockly.Categories.Indicators,
@@ -43,8 +45,8 @@ Blockly.Blocks.bb_statement = {
     },
     meta(){
         return {
-            'display_name': translate('Bollinger Bands (BB)'),
-            'description' : translate('BB is a technical analysis indicator that’s commonly used by traders. The idea behind BB is that the market price stays within the upper and lower bands for 95% of the time. The bands are the standard deviations of the market price, while the line in the middle is a simple moving average line. If the price reaches either the upper or lower band, there’s a possibility of a trend reversal.'),
+            'display_name': localize('Bollinger Bands (BB)'),
+            'description' : localize('BB is a technical analysis indicator that’s commonly used by traders. The idea behind BB is that the market price stays within the upper and lower bands for 95% of the time. The bands are the standard deviations of the market price, while the line in the middle is a simple moving average line. If the price reaches either the upper or lower band, there’s a possibility of a trend reversal.'),
         };
     },
     onchange(event) {
@@ -55,7 +57,7 @@ Blockly.Blocks.bb_statement = {
         if (event.type === Blockly.Events.END_DRAG) {
             const blocksInStatement = this.getBlocksInStatement('STATEMENT');
             blocksInStatement.forEach(block => {
-                if (!this.requiredParamBlocks.includes(block.type)) {
+                if (!this.required_child_blocks.includes(block.type)) {
                     Blockly.Events.disable();
                     block.unplug(false);
                     Blockly.Events.enable();
@@ -63,7 +65,6 @@ Blockly.Blocks.bb_statement = {
             });
         }
     },
-    requiredParamBlocks: ['input_list', 'period', 'std_dev_multiplier_up', 'std_dev_multiplier_down'],
 };
 
 Blockly.JavaScript.bb_statement = block => {

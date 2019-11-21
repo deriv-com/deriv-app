@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 /**
  * Update this gesture to record whether a block is being dragged from the
  * flyout. This function should be called on a mouse/touch move event the first time the

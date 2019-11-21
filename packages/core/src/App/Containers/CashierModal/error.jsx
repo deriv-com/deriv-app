@@ -3,7 +3,8 @@ import React        from 'react';
 import { Button }   from 'deriv-components';
 import Localize     from 'App/Components/Elements/localize.jsx';
 import ButtonLink   from 'App/Components/Routes/button-link.jsx';
-import { localize } from 'App/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
+
 import Icon         from 'Assets/icon.jsx';
 import { WS }       from 'Services';
 import { connect }  from 'Stores/connect';

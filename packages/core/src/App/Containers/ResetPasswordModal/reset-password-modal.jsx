@@ -10,7 +10,7 @@ import {
     PasswordInput,
     PasswordMeter }          from 'deriv-components';
 import Localize              from 'App/Components/Elements/localize.jsx';
-import { localize }          from 'App/i18n';
+import { localize }          from  'deriv-translations/lib/i18n';
 import { connect }           from 'Stores/connect';
 import { validPassword }     from 'Utils/Validator/declarative-validation-rules';
 import { redirectToLogin }   from '_common/base/login';

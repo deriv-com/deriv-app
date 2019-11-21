@@ -6,7 +6,7 @@ import {
     Button,
     ThemedScrollbars }     from 'deriv-components';
 import Localize            from 'App/Components/Elements/localize.jsx';
-import { localize }        from 'App/i18n';
+import { localize }        from  'deriv-translations/lib/i18n';
 import Icon                from 'Assets/icon.jsx';
 import routes              from 'Constants/routes';
 import { connect }         from 'Stores/connect';

@@ -1,5 +1,6 @@
 import { action }   from 'mobx';
-import { localize } from 'App/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
+
 
 let common_store;
 

@@ -12,7 +12,7 @@ import {
     Form }                  from 'formik';
 import CurrencyUtils        from 'deriv-shared/utils/currency';
 import Localize             from 'App/Components/Elements/localize.jsx';
-import { localize }         from 'App/i18n';
+import { localize }         from  'deriv-translations/lib/i18n';
 import { connect }          from 'Stores/connect';
 import {
     validNumber,

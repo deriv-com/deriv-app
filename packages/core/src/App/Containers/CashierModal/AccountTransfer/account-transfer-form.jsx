@@ -13,7 +13,7 @@ import {
 import CurrencyUtils          from 'deriv-shared/utils/currency';
 import Localize               from 'App/Components/Elements/localize.jsx';
 import { website_name }       from 'App/Constants/app-config';
-import { localize }           from 'App/i18n';
+import { localize }           from  'deriv-translations/lib/i18n';
 import Icon                   from 'Assets/icon.jsx';
 import { connect }            from 'Stores/connect';
 import {

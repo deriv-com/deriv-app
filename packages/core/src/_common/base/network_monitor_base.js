@@ -1,5 +1,5 @@
-const BinarySocket = require('./socket_base');
-const localize     = require('../../App/i18n').localize;
+const BinarySocket  = require('./socket_base');
+const { localize }  = require('deriv-translations/lib/i18n');
 
 /*
  * Monitors the network status and initialises the WebSocket connection

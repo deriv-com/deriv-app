@@ -3,7 +3,7 @@ import { Field, Formik }    from 'formik';
 import React                from 'react';
 import Localize             from 'App/Components/Elements/localize.jsx';
 import CheckboxField        from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
-import { localize }         from 'App/i18n';
+import { localize }         from  'deriv-translations/lib/i18n';
 import { Hr }               from './currency-selector.jsx';
 import FormSubmitButton     from './form-submit-button.jsx';
 import 'Sass/terms-of-use.scss';

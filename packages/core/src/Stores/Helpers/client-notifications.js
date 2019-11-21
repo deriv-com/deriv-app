@@ -8,7 +8,7 @@ import {
     shouldAcceptTnc,
     shouldCompleteTax } from '_common/base/client_base';
 import { BinaryLink }   from 'App/Components/Routes';
-import { localize }     from 'App/i18n';
+import { localize }     from  'deriv-translations/lib/i18n';
 import routes           from 'Constants/routes';
 import {
     LocalStore,

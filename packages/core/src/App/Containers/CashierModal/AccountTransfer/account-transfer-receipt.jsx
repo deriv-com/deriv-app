@@ -4,7 +4,7 @@ import React          from 'react';
 import { withRouter } from 'react-router';
 import { Button }     from 'deriv-components';
 import Localize       from 'App/Components/Elements/localize.jsx';
-import { localize }   from 'App/i18n';
+import { localize }   from  'deriv-translations/lib/i18n';
 import Icon           from 'Assets/icon.jsx';
 import { connect }    from 'Stores/connect';
 

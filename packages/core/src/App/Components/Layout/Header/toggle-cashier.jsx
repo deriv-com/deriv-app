@@ -1,7 +1,7 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { Button, Modal } from 'deriv-components';
-import { localize }      from 'App/i18n';
+import { localize }      from  'deriv-translations/lib/i18n';
 import Lazy              from 'App/Containers/Lazy';
 import VerticalTab       from 'App/Components/Elements/VerticalTabs';
 import WalletInformation from 'Modules/Reports/Containers/wallet-information.jsx';

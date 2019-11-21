@@ -32,6 +32,4 @@ i18n
     .use(initReactI18next) // passes i18n down to react-i18next
     .init(i18n_config);
 
-export const localize = (string, values) => i18n.t(crc32(string), { defaultValue: string, ...values });
-
 export default i18n;

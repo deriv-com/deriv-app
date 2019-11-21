@@ -3,7 +3,8 @@ import classNames   from 'classnames';
 import { Button }   from 'deriv-components';
 import React        from 'react';
 import Localize     from 'App/Components/Elements/localize.jsx';
-import { localize } from 'App/i18n';
+import { localize } from 'deriv-translations/lib/i18n';
+
 import Icon         from 'Assets/icon.jsx';
 
 const SuccessDialog = ({

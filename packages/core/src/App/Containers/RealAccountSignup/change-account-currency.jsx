@@ -3,7 +3,7 @@ import PropTypes            from 'prop-types';
 import React, { Component } from 'react';
 import { connect }          from 'Stores/connect';
 import Localize             from 'App/Components/Elements/localize.jsx';
-import { localize }         from 'App/i18n';
+import { localize }         from  'deriv-translations/lib/i18n';
 import {
     RadioButtonGroup,
     RadioButton,

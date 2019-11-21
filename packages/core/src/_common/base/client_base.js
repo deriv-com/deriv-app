@@ -1,7 +1,7 @@
 const CurrencyUtils = require('deriv-shared/utils/currency');
 const ObjectUtils   = require('deriv-shared/utils/object');
 const SocketCache   = require('./socket_cache');
-const localize      = require('../../App/i18n').localize;
+const { localize }  = require('deriv-translations/lib/i18n');
 const LocalStore    = require('../storage').LocalStore;
 const State         = require('../storage').State;
 

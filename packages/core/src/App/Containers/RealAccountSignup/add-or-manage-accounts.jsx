@@ -3,7 +3,7 @@ import PropTypes             from 'prop-types';
 import React                 from 'react';
 import { ThemedScrollbars }  from 'deriv-components';
 import Localize              from 'App/Components/Elements/localize.jsx';
-import { localize }          from 'App/i18n';
+import { localize }          from  'deriv-translations/lib/i18n';
 import { connect }           from 'Stores/connect';
 import AddCryptoCurrency     from './add-crypto-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';

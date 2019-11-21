@@ -10,7 +10,7 @@ import {
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import Localize          from 'App/Components/Elements/localize.jsx';
-import { localize }      from 'App/i18n';
+import { localize }      from  'deriv-translations/lib/i18n';
 import { connect }       from 'Stores/connect';
 import { validPassword } from 'Utils/Validator/declarative-validation-rules';
 import { website_name }  from 'App/Constants/app-config';

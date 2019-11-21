@@ -7,7 +7,7 @@ import {
     Popover,
     ThemedScrollbars }    from 'deriv-components';
 import CurrencyUtils      from 'deriv-shared/utils/currency';
-import { localize }       from 'App/i18n';
+import { localize }       from  'deriv-translations/lib/i18n';
 import { urlFor }         from '_common/url';
 import UpgradeButton      from 'App/Containers/RealAccountSignup/upgrade-button.jsx';
 import Icon               from 'Assets/icon.jsx';

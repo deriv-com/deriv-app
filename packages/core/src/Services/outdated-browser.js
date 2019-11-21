@@ -1,7 +1,6 @@
 import { action }   from 'mobx';
 import { localize } from 'deriv-translations/lib/i18n';
 
-
 let common_store;
 
 const OutdatedBrowser = (() => {

@@ -1,6 +1,5 @@
 import { localize } from 'deriv-translations/lib/i18n';
 
-
 export const getMarketNamesMap = () => ({
     FRXAUDCAD : localize('AUD/CAD'),
     FRXAUDCHF : localize('AUD/CHF'),

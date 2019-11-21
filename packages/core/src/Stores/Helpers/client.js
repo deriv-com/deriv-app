@@ -1,6 +1,5 @@
 import { localize } from 'deriv-translations/lib/i18n';
 
-
 // TODO: [move-to-shared] - Remove the implementation in ClientBase and add this to shared utils
 export const getClientAccountType = (loginid) => {
     let account_type;

@@ -5,7 +5,7 @@ const Language = (() => {
         url.replace(new RegExp(`/${getLanguage()}/`, 'i'), `/${(lang || 'EN').trim().toLowerCase()}/`);
 
     return {
-        urlFor   : urlForLanguage,
+        urlFor: urlForLanguage,
     };
 })();
 

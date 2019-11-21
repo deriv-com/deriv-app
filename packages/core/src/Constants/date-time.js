@@ -1,6 +1,5 @@
 import { localize } from 'deriv-translations/lib/i18n';
 
-
 export const month_headers = {
     Jan: localize('Jan'),
     Feb: localize('Feb'),

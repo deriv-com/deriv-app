@@ -4,7 +4,6 @@ import React        from 'react';
 import { Button }   from 'deriv-components';
 import { localize } from 'deriv-translations/lib/i18n';
 
-
 const UpgradeButton = ({ className, onClick }) => (
     <Button
         id='acc-balance-btn'

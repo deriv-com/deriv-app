@@ -8,7 +8,7 @@ import en                   from '../translations/en.json';
 
 const LANGUAGE_KEY = 'i18n_language';
 const DEFAULT_LANGUAGE = 'EN';
-const ALL_LANGUAGES = {
+const ALL_LANGUAGES = Object.freeze({
     ACH  : 'Translations',
     EN   : 'English',
     ES   : 'Español',
@@ -22,7 +22,7 @@ const ALL_LANGUAGES = {
     VI   : 'Tiếng Việt',
     ZH_CN: '简体中文',
     ZH_TW: '繁體中文',
-};
+});
 
 const getInitialLanguage = () => {
     const has_url_search_language = window.location.search && window.location.search.includes('lang=')
@@ -35,6 +35,7 @@ const getInitialLanguage = () => {
             .split('=')[1]
             .toUpperCase()
         if (hasLanguage(query_lang)) {
+            localStorage.setItem(LANGUAGE_KEY, lang);
             return query_lang
         }
     }
@@ -98,12 +99,11 @@ const loadIncontextTranslation = () => {
     }
 }
 
-const getAllLanguages = () => ({ ...ALL_LANGUAGES });
+const getAllLanguages = () => ALL_LANGUAGES;
 
 const hasLanguage = lang => {
     if (!lang) return false;
     return Object.keys(ALL_LANGUAGES).includes(lang.toUpperCase())
 }
-
 
 export default { i18n, localize, changeLanguage, getLanguage, getAllLanguages, loadIncontextTranslation };

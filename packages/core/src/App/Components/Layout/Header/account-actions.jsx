@@ -10,7 +10,7 @@ import { SignupButton }     from './signup-button.jsx';
 import ToggleNotifications  from './toggle-notifications.jsx';
 import ToggleCashier        from './toggle-cashier.jsx';
 import { BinaryLink }       from '../../Routes';
-import                      'Sass/app/_common/components/account-switcher.scss';
+import                           'Sass/app/_common/components/account-switcher.scss';
 
 const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx'));
 

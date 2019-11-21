@@ -37,11 +37,14 @@ export const scratchWorkspaceInit = async () => {
 
         const onWorkspaceChange = event => {
             const is_drag_outside = event.type === 'dragOutside';
+            const is_undo_move = event.recordUndo === true;
             
-            if (is_drag_outside) {
+            if (is_drag_outside ||
+                !is_undo_move) {
                 return;
             }
 
+            console.log(event);
             const { save_status } = config;
             toolbar.setSaveStatus(save_status.SAVING);
 

@@ -1,0 +1,55 @@
+.modal {
+    &--save-workspace {
+        &-list {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            max-height: 300px;
+            overflow: auto;
+        }
+        &-item {
+            display: flex;
+            flex-direction: column;
+            flex: 1 0 25%;
+            margin: 5px 15px;
+            max-width: 25%;
+            height: 100px;
+            text-align: center;
+            border-radius: $BORDER_RADIUS;
+            border: solid 1px var(--border-normal);
+            cursor: pointer;
+            padding: 10px;
+        }
+        &-item:hover {
+            border: solid 2px var(--border-active);
+        }
+        &-item--active {
+            border: solid 2px var(--border-active);
+        }
+        &-name {
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        &-remove {
+            align-self: flex-end;
+        }
+        &-btn {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    }
+    &__content {
+        padding: 25px;
+    }
+}
+
+#preview_workspace {
+    margin: 0 auto;
+    border-radius: $BORDER_RADIUS;
+    border: solid 1px var(--border-normal);
+    height: 200px;
+    width: 100%;
+}

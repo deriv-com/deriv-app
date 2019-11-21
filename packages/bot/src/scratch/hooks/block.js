@@ -142,3 +142,13 @@ Blockly.Block.isDynamic = function(block_type) {
     return /^((procedures_)|(variables_)|(math_change$))/.test(block_type);
 };
 
+/**
+ * Change the field value for a block (e.g. 'CHOOSE' or 'REMOVE').
+ * @param {string} newValue Value to be the new field.
+ * @param {string} name The name of the field.
+ */
+Blockly.Block.prototype.setFieldValue = function(new_value, name, options = {}) {
+    const field = this.getField(name);
+    goog.asserts.assertObject(field, 'Field "%s" not found.', name);
+    field.setValue(new_value, options);
+};

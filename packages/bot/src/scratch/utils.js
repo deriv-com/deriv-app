@@ -314,9 +314,9 @@ export const saveLocalWorkspace = () => {
     localStorage.setItem('workspace', JSON.stringify(workspace_list));
 };
 
-export const removeLocalWorkspace = () => {
+export const removeLocalWorkspace = (id = null) => {
     const workspace_list = JSON.parse(localStorage.getItem('workspace')) || [];
-    const tab_id = sessionStorage.getItem('tabID');
+    const tab_id = id || sessionStorage.getItem('tabID');
     const workspace_to_remove = workspace_list.findIndex(workspace => workspace.id === tab_id);
 
     if(workspace_to_remove >= 0) {

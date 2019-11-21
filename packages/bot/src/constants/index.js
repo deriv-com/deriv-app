@@ -253,6 +253,7 @@ const config = {
     workspaces: {
         flyoutWorkspacesStartScale: 0.7,
         mainWorkspaceStartScale   : 0.9,
+        miniWorkspaceStartScale   : 0.3,
     },
     strategies: {
         martingale: {

@@ -42,7 +42,12 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
         value: price || '',
     };
 
+    const commission = proposal.commission;
+    const cost_of_deal_cancellation = proposal.cost_of_deal_cancellation;
+
     return {
+        commission,
+        cost_of_deal_cancellation,
         id               : proposal.id || '',
         has_error        : !!response.error,
         has_error_details: !!getProposalErrorField(response),
@@ -73,6 +78,7 @@ export const createProposalRequests = (store) => {
 
 const setProposalMultiplier = (store, obj_multiplier)=>{
     obj_multiplier.multiplier = store.multiplier;
+    obj_multiplier.deal_cancellation = store.cancel_deal;
 
     const has_limit_order = store.take_profit > 0 || store.stop_loss > 0;
 

@@ -53,6 +53,10 @@
         border-color: var(--general-section-1);
         color: var(--text-general);
 
+        /* postcss-bem-linter: ignore */
+        > div:first-child {
+            margin-top: 0;
+        }
         &-header {
             height: 1.5rem;
             position: relative;
@@ -69,6 +73,15 @@
             &--disabled {
                 opacity: 0.32;
             }
+        }
+        &-tooltip-text, &-text {
+            margin-top: 0.8rem;
+            font-size: 1.2rem;
+            text-align: right;
+        }
+        &-tooltip-text {
+            border-bottom: 1px dotted var(--text-general);
+            text-decoration: none;
         }
     }
     &__input {
@@ -274,12 +287,6 @@
             .dc-dropdown__display-text, .dc-list__item-text {
                 text-transform: unset;
             }
-        }
-        &-tooltip-text {
-            margin-top: 0.8rem;
-            border-bottom: 1px dotted var(--text-general);
-            text-decoration: none;
-            width: fit-content;
         }
         /* postcss-bem-linter: ignore */
         .dc-popover {

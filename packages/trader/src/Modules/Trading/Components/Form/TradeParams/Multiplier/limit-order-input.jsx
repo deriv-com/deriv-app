@@ -15,7 +15,7 @@ const LimitOrderInput = ({
     value,
 }) => {
     return (
-        <Fieldset className='trade-container__fieldset center-text'>
+        <Fieldset className='trade-container__fieldset'>
             <InputWithCheckbox
                 className='trade-container__amount'
                 classNameInlinePrefix='trade-container__currency'

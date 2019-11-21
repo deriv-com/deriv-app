@@ -3,8 +3,8 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
 import Localize                       from 'App/Components/Elements/localize.jsx';
+import { localize }                   from 'App/i18n';
 import { connect }                    from 'Stores/connect';
-import { getCommission }              from 'Stores/Modules/Contract/Helpers/multiplier';
 
 const MultiplierDropdown = ({
     amount,
@@ -35,15 +35,8 @@ const MultiplierDropdown = ({
                 components={[<span className='bold' key={0} />, <Money key={1} amount={amount} currency={currency} />]}
             />}
         >
-            <p className='trade-container__multiplier-tooltip-text'>
-                <Localize
-                    i18n_default_text='Commission: <0/>'
-                    components={[<Money
-                        key={0}
-                        amount={getCommission({ commission, amount, multiplier })}
-                        currency={currency}
-                    />]}
-                />
+            <p className='trade-container__fieldset-tooltip-text'>
+                {localize('Commission: {{commission}}%', { commission })}
             </p>
         </Popover>
     </div>
@@ -66,7 +59,7 @@ MultiplierDropdown.propTypes = {
 
 export default connect(({ modules }) => ({
     amount               : modules.trade.amount,
-    commission           : 0.012, // replace with value from API
+    commission           : modules.trade.commission,
     currency             : modules.trade.currency,
     multiplier           : modules.trade.multiplier,
     multiplier_range_list: modules.trade.multiplier_range_list,

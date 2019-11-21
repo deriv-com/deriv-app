@@ -121,6 +121,9 @@ export default class TradeStore extends BaseStore {
     @observable take_profit;
     @observable has_stop_loss = false;
     @observable has_take_profit = false;
+    @observable cancel_deal = 0;
+    @observable commission = 0;
+    @observable cost_of_deal_cancellation = 0;
 
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
@@ -727,6 +730,12 @@ export default class TradeStore extends BaseStore {
             ...this.proposal_info,
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
         };
+
+        if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
+            const { commission, cost_of_deal_cancellation } = this.proposal_info.MULTUP;
+            this.commission = commission;
+            this.cost_of_deal_cancellation = cost_of_deal_cancellation;
+        }
 
         this.setMainBarrier(response.echo_req);
 

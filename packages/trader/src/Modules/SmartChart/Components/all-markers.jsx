@@ -7,6 +7,8 @@ import CurrencyUtils from 'deriv-shared/utils/currency';
 import { RawMarker } from 'Modules/SmartChart';
 import * as ICONS    from './icons';
 
+const is_firefox = (navigator.userAgent.search('Firefox') > 0);
+
 const RawMarkerMaker = (draw_callback) => {
     const Marker = ({ epoch_array, price_array, ...rest }) => (
         <RawMarker
@@ -141,9 +143,12 @@ const shadowed_text = ({ ctx, is_dark_theme, text, left, top, scale }) => {
     ctx.textAlign = 'center';
     const size = Math.floor(scale * 12);
     ctx.font = `bold ${size}px BinarySymbols, Roboto`;
-    ctx.shadowColor = is_dark_theme ? 'rgba(16,19,31,1)' : 'rgba(255,255,255,1)';
-    ctx.shadowBlur = 12;
-    for (let i = 0; i < 5; ++i) {
+    if (!is_firefox) {
+        ctx.shadowColor = is_dark_theme ? 'rgba(16,19,31,1)' : 'rgba(255,255,255,1)';
+        ctx.shadowBlur = 12;
+    }
+    // fillText once in firefox due to disabling of text shadows, for default cases where its enabled, set to 5 (to add blur intensity)
+    for (let i = 0; i < (is_firefox ? 1 : 5); ++i) {
         ctx.fillText(
             text,
             left,

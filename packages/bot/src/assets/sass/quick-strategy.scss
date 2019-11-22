@@ -4,10 +4,7 @@
     &__container {
         &_#{$strategy-modal} {
             .modal__content {
-                padding: 24px 24px 0;
-            }
-            .modal__footer {
-                padding: 0 24px 24px;
+                padding: 15px 24px;
             }
         }
     }
@@ -17,11 +14,15 @@
     $quick-strategy: &;
 
     &__description {
-        margin-top: 24px;
+        margin-top: 15px;
         font-size: 14px;
         font-weight: normal;
         line-height: 1.43;
         color: var(--text-general);
+    }
+    &__tab-content {
+        height: calc(100vh - 320px);
+        overflow: auto;
     }
     &__form {
         &-row {

@@ -2,9 +2,18 @@
 import { str as crc32 }     from 'crc-32';
 import i18n                 from 'i18next';
 import { initReactI18next } from 'react-i18next';
+// TODO: lazy load these: with i18n.addResourceBundle
+import ach                  from '../translations/ach.json';
 import en                   from '../translations/en.json';
-// TODO: import the rest of the language json files when they are ready
-// import fr                   from '../translations/fr.json';
+import fr                   from '../translations/fr.json';
+import id                   from '../translations/id.json';
+import it                   from '../translations/it.json';
+import pl                   from '../translations/pl.json';
+import pt                   from '../translations/pt.json';
+import ru                   from '../translations/ru.json';
+import vi                   from '../translations/ru.json';
+import zh_cn                from '../translations/zh_cn.json';
+import zh_tw                from '../translations/zh_tw.json';
 
 const LANGUAGE_KEY     = 'i18n_language';
 const DEFAULT_LANGUAGE = 'EN';
@@ -59,8 +68,17 @@ const getInitialLanguage = () => {
 const initial_language = getInitialLanguage();
 const i18n_config = {
     resources: {
-        EN: { translation: { ...en } },
-        // FR: { translation: { ...fr } },
+        ACH  : { translation: {...ach } },
+        EN   : { translation: { ...en } },
+        FR   : { translation: { ...fr } },
+        ID   : { translation: { ...id } },
+        IT   : { translation: { ...it } },
+        PL   : { translation: { ...pl } },
+        PT   : { translation: { ...pt } },
+        RU   : { translation: { ...ru } },
+        VI   : { translation: { ...vi } },
+        ZH_CN: { translation: { ...zh_cn } },
+        ZH_TW: { translation: { ...zh_tw } },
     },
     react: {
         hashTransKey(defaultValue) {

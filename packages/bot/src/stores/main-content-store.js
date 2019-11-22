@@ -2,17 +2,21 @@ import {
     action,
     observable,
     reaction,
-} from 'mobx';
-import { tabs_title } from '../constants/bot-contents';
-import { scratchWorkspaceInit } from '../scratch/index';
-import { getRunPanelWidth } from '../utils/window-size';
+}                                  from 'mobx';
+import { tabs_title }              from '../constants/bot-contents';
+import { onWorkspaceResize }       from '../scratch/utils/scratch-helper';
+import { scratchWorkspaceInit }    from '../scratch/index';
+import { getRunPanelWidth }        from '../utils/window-size';
 
 export default class MainContentStore {
     constructor(root_store) {
         this.root_store = root_store;
+        const { run_panel } = this.root_store;
+
         window.addEventListener('resize', this.setCharContainerSize);
+
         reaction(
-            () => [this.root_store.run_panel.is_drawer_open, this.active_tab],
+            () => [run_panel.is_drawer_open, this.active_tab],
             () => this.setCharContainerSize());
     }
 
@@ -26,7 +30,23 @@ export default class MainContentStore {
             this.chart_width = window.innerWidth - run_panel_width;
         }
         // resize workspace ?!
-        // onWorkspaceResize();
+        if (this.active_tab === tabs_title.WORKSPACE) {
+            onWorkspaceResize();
+        }
+    }
+
+    @action.bound
+    setActiveTab(tab) {
+        this.active_tab = tab;
+    }
+
+    @action.bound
+    initScratch() {
+        if (this.active_tab === tabs_title.WORKSPACE) {
+            scratchWorkspaceInit();
+        } else if (Blockly.derivWorkspace) {
+            Blockly.derivWorkspace.dispose();
+        }
     }
 
     @action.bound
@@ -37,14 +57,5 @@ export default class MainContentStore {
     @action.bound
     componentDidUpdate() {
         this.initScratch();
-    }
-
-    @action.bound
-    initScratch() {
-        if (this.active_tab === tabs_title.WORKSPACE) {
-            scratchWorkspaceInit();
-        } else if (Blockly.derivWorkspace) {
-            Blockly.derivWorkspace.dispose();
-        }
     }
 }

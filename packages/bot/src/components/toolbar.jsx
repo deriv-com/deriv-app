@@ -1,4 +1,3 @@
-import classNames           from 'classnames';
 import {
     Button,
     Input,
@@ -14,17 +13,17 @@ import React                from 'react';
 import { localize }         from 'deriv-translations/lib/i18n';
 import Dialog               from './dialog.jsx';
 import {
+    StopIcon,
+    RunIcon,
     ToolbarCloseIcon,
     ToolbarNewFileIcon,
     ToolbarOpenIcon,
     ToolbarReaarangeIcon,
     ToolbarRedoIcon,
     ToolbarRenameIcon,
-    ToolbarRunIcon,
     ToolbarSaveIcon,
     ToolbarSearchIcon,
     ToolbarStartIcon,
-    ToolbarStopIcon,
     ToolbarUndoIcon,
     ToolbarZoomInIcon,
     ToolbarZoomOutIcon,
@@ -61,15 +60,16 @@ const SearchBox = ({
                                     onFocus={submitForm}
                                     onBlur={onSearchBlur}
                                     trailing_icon={
-                                        search ?
+                                        (search &&
                                             (is_search_loading ?
-                                                <div className='loader' /> :
+                                                <div className='loader' />
+                                                :
                                                 <ToolbarCloseIcon
                                                     className='toolbar__btn--icon'
                                                     onClick={() => onSearchClear(setFieldValue)}
                                                 />
-                                            )
-                                            : <ToolbarSearchIcon />
+                                            )) ||
+                                        (!search && <ToolbarSearchIcon />)
                                     }
                                 />
                             )}
@@ -118,16 +118,42 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
     </div>
 );
 
-const ButtonGroup = ({
+const GeneralGroup = ({
     is_stop_button_disabled,
     is_stop_button_visible,
+    onRunButtonClick,
+    onStopButtonClick,
+}) => (
+    <div>
+        {
+            (is_stop_button_visible) ?
+                <Button
+                    className='toolbar__btn'
+                    is_disabled={is_stop_button_disabled}
+                    text={localize('Stop bot')}
+                    icon={<StopIcon className='run-panel__button--icon' />}
+                    onClick={onStopButtonClick}
+                    has_effect
+                    primary
+                /> :
+                <Button
+                    className='toolbar__btn'
+                    text={localize('Run bot')}
+                    icon={<RunIcon className='run-panel__button--icon' />}
+                    onClick={onRunButtonClick}
+                    has_effect
+                    green
+                />
+        }
+    </div>
+);
+
+const WorkspaceGroup = ({
     onResetClick,
     onUndoClick,
     onRedoClick,
-    onRunClick,
     onSortClick,
     onZoomInOutClick,
-    onStopClick,
     toggleSaveLoadModal,
 }) => (
     <div className='toolbar__group toolbar__group-btn'>
@@ -165,28 +191,6 @@ const ButtonGroup = ({
         >
             <ToolbarRedoIcon className='toolbar__icon' onClick={onRedoClick} />
         </Popover>
-        <div className='vertical-divider' />
-        {is_stop_button_visible ?
-            <Popover
-                alignment='bottom'
-                message={localize('Stop')}
-            >
-                <ToolbarStopIcon
-                    className={classNames(
-                        'toolbar__icon',
-                        'toolbar__icon--stop',
-                        { 'toolbar__icon--disabled': is_stop_button_disabled })}
-                    onClick={onStopClick}
-                />
-            </Popover>
-            :
-            <Popover
-                alignment='bottom'
-                message={localize('Run')}
-            >
-                <ToolbarRunIcon className='toolbar__icon' onClick={onRunClick} />
-            </Popover>
-        }
         <Popover
             alignment='bottom'
             message={localize('Sort')}
@@ -220,13 +224,13 @@ const Toolbar = ({
     onCancelButtonClick,
     onRedoClick,
     onResetClick,
-    onRunClick,
+    onRunButtonClick,
     onSearch,
     onSearchBlur,
     onSearchClear,
     onSearchKeyUp,
     onSortClick,
-    onStopClick,
+    onStopButtonClick,
     onToolboxToggle,
     onUndoClick,
     onZoomInOutClick,
@@ -241,7 +245,7 @@ const Toolbar = ({
             >
                 <Button
                     id='start'
-                    className='toolbar__btn--icon toolbar__btn--start'
+                    className='toolbar__btn'
                     has_effect
                     onClick={onToolboxToggle}
                     icon={<ToolbarStartIcon />}
@@ -261,29 +265,31 @@ const Toolbar = ({
                 file_name={file_name}
                 onBotNameTyped={onBotNameTyped}
             />
-            <ButtonGroup
-                is_stop_button_disabled={is_stop_button_disabled}
-                is_stop_button_visible={is_stop_button_visible}
+            <WorkspaceGroup
                 onRedoClick={onRedoClick}
                 onResetClick={onResetClick}
-                onRunClick={onRunClick}
                 onSortClick={onSortClick}
-                onStopClick={onStopClick}
                 onUndoClick={onUndoClick}
                 onZoomInOutClick={onZoomInOutClick}
                 toggleSaveLoadModal={toggleSaveLoadModal}
             />
+            { !is_drawer_open &&
+            <GeneralGroup
+                is_stop_button_disabled={is_stop_button_disabled}
+                is_stop_button_visible={is_stop_button_visible}
+                onRunButtonClick={onRunButtonClick}
+                onStopButtonClick={onStopButtonClick}
+            />
+            }
         </div>
+        { !is_drawer_open &&
         <div className='toolbar__section'>
             <TradeAnimation
-                className={classNames(
-                    'toolbar__animation',
-                    { 'animation--hidden': is_drawer_open }
-                )}
+                className='toolbar__animation'
                 should_show_overlay={true}
             />
-
         </div>
+        }
         <SaveLoadModal />
         {is_dialog_open &&
         <Dialog
@@ -311,13 +317,13 @@ Toolbar.propTypes = {
     onOkButtonClick        : PropTypes.func,
     onRedoClick            : PropTypes.func,
     onResetClick           : PropTypes.func,
-    onRunClick             : PropTypes.func,
+    onRunButtonClick       : PropTypes.func,
     onSearch               : PropTypes.func,
     onSearchBlur           : PropTypes.func,
     onSearchClear          : PropTypes.func,
     onSearchKeyUp          : PropTypes.func,
     onSortClick            : PropTypes.func,
-    onStopClick            : PropTypes.func,
+    onStopButtonClick      : PropTypes.func,
     onToolboxToggle        : PropTypes.func,
     onUndoClick            : PropTypes.func,
     onZoomInOutClick       : PropTypes.func,
@@ -337,13 +343,13 @@ export default connect(({ run_panel, saveload, toolbar }) => ({
     onOkButtonClick        : toolbar.onResetOkButtonClick,
     onRedoClick            : toolbar.onRedoClick,
     onResetClick           : toolbar.onResetClick,
-    onRunClick             : toolbar.onRunClick,
+    onRunButtonClick       : run_panel.onRunButtonClick,
     onSearch               : toolbar.onSearch,
     onSearchBlur           : toolbar.onSearchBlur,
     onSearchClear          : toolbar.onSearchClear,
     onSearchKeyUp          : toolbar.onSearchKeyUp,
     onSortClick            : toolbar.onSortClick,
-    onStopClick            : toolbar.onStopClick,
+    onStopButtonClick      : run_panel.onStopButtonClick,
     onToolboxToggle        : toolbar.onToolboxToggle,
     onUndoClick            : toolbar.onUndoClick,
     onZoomInOutClick       : toolbar.onZoomInOutClick,

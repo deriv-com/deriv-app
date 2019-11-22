@@ -2,6 +2,7 @@ import {
     observable,
     action }                 from 'mobx';
 import { localize }          from 'deriv-translations/lib/i18n';
+import { tabs_title }        from '../constants/bot-contents';
 import { scrollWorkspace }   from '../scratch/utils';
 import { delayCallbackByMs } from '../utils/tools';
 
@@ -16,30 +17,26 @@ export default class ToolbarStore {
     @observable file_name = localize('Untitled Bot');
 
     @action.bound
-    onRunClick() {
-        this.root_store.run_panel.onRunButtonClick();
-    }
-
-    @action.bound
-    onStopClick() {
-        this.root_store.run_panel.onStopButtonClick();
-    }
-
-    @action.bound
     onToolboxToggle() {
-        const workspace      = Blockly.derivWorkspace;
-        const toolbox        = workspace.toolbox_; // eslint-disable-line
-        this.is_toolbox_open = !this.is_toolbox_open;
+        const workspace        = Blockly.derivWorkspace;
+        const toolbox          = workspace.toolbox_; // eslint-disable-line
+        const { main_content } = this.root_store;
 
-        toolbox.toggle();
+        if (main_content.active_tab !== tabs_title.WORKSPACE) {
+            main_content.setActiveTab(tabs_title.WORKSPACE);
+        }
 
-        if (this.is_toolbox_open) {
-            const toolbox_width     = toolbox.HtmlDiv.clientWidth;
-            const block_canvas_rect = workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
+        if (toolbox) {
+            this.is_toolbox_open   = !this.is_toolbox_open;
+            toolbox.toggle();
+            if (this.is_toolbox_open) {
+                const toolbox_width     = toolbox.HtmlDiv.clientWidth;
+                const block_canvas_rect = workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
             
-            if (block_canvas_rect.left < toolbox_width) {
-                const scroll_distance = toolbox_width - block_canvas_rect.left + toolbox.width;
-                scrollWorkspace(workspace, scroll_distance, true, false);
+                if (block_canvas_rect.left < toolbox_width) {
+                    const scroll_distance = toolbox_width - block_canvas_rect.left + toolbox.width;
+                    scrollWorkspace(workspace, scroll_distance, true, false);
+                }
             }
         }
     }

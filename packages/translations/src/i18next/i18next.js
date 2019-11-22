@@ -5,7 +5,7 @@ import { initReactI18next } from 'react-i18next';
 // TODO: lazy load these: with i18n.addResourceBundle
 import ach                  from '../translations/ach.json';
 import en                   from '../translations/en.json';
-import es                   from '../translations/en.json';
+import es                   from '../translations/es.json';
 import fr                   from '../translations/fr.json';
 import id                   from '../translations/id.json';
 import it                   from '../translations/it.json';
@@ -15,7 +15,6 @@ import ru                   from '../translations/ru.json';
 import vi                   from '../translations/ru.json';
 import zh_cn                from '../translations/zh_cn.json';
 import zh_tw                from '../translations/zh_tw.json';
-
 const LANGUAGE_KEY     = 'i18n_language';
 const DEFAULT_LANGUAGE = 'EN';
 const ALL_LANGUAGES    = Object.freeze({
@@ -69,18 +68,18 @@ const getInitialLanguage = () => {
 const initial_language = getInitialLanguage();
 const i18n_config = {
     resources: {
-        ACH  : { translation: {...ach } },
-        EN   : { translation: { ...en } },
-        ES   : { translation: { ...es } },
-        FR   : { translation: { ...fr } },
-        ID   : { translation: { ...id } },
-        IT   : { translation: { ...it } },
-        PL   : { translation: { ...pl } },
-        PT   : { translation: { ...pt } },
-        RU   : { translation: { ...ru } },
-        VI   : { translation: { ...vi } },
-        ZH_CN: { translation: { ...zh_cn } },
-        ZH_TW: { translation: { ...zh_tw } },
+        ACH  : { translations: {...ach } },
+        EN   : { translations: { ...en } },
+        ES   : { translations: { ...es } },
+        FR   : { translations: { ...fr } },
+        ID   : { translations: { ...id } },
+        IT   : { translations: { ...it } },
+        PL   : { translations: { ...pl } },
+        PT   : { translations: { ...pt } },
+        RU   : { translations: { ...ru } },
+        VI   : { translations: { ...vi } },
+        ZH_CN: { translations: { ...zh_cn } },
+        ZH_TW: { translations: { ...zh_tw } },
     },
     react: {
         hashTransKey(defaultValue) {
@@ -89,6 +88,8 @@ const i18n_config = {
     },
     lng: initial_language,
     fallbackLng: 'EN',
+    ns: ['translations'],
+    defaultNS: 'translations',
 };
 
 i18n
@@ -125,5 +126,4 @@ const loadIncontextTranslation = () => {
         document.head.appendChild(jipt)
     }
 }
-
 export default { i18n, localize, changeLanguage, getLanguage, getAllLanguages, loadIncontextTranslation };

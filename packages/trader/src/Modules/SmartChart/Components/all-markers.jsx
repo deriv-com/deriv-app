@@ -404,7 +404,7 @@ const NonTickContract = RawMarkerMaker(({
         ctx.stroke();
 
         ctx.beginPath();
-        ctx.setLineDash(config.barrier_dashed ? [2,2] : []);
+        ctx.setLineDash(config.is_barrier_dashed ? [2,2] : []);
         ctx.moveTo(entry.left, barrier);
         ctx.lineTo(expiry.left, barrier);
         ctx.stroke();

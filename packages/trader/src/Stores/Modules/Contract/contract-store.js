@@ -198,12 +198,6 @@ export default class ContractStore {
                 main_barrier.updateBarrierShade(true, contract_type);
                 barriers = [ main_barrier ];
             }
-            setLimitOrderBarriers({
-                barriers,
-                contract_info,
-                contract_type,
-                is_over: true,
-            });
         }
         return barriers;
     }
@@ -305,10 +299,10 @@ function getConfig(contract_info) {
     const { contract_type } = contract_info;
     if (isMultiplierContract(contract_type)) {
         return {
-            barrier_dashed             : true,
             color                      : BARRIER_COLORS.ORANGE,
             hide_profit                : true,
             hide_start_line            : true,
+            is_barrier_dashed          : true,
             start_time_marker_top_index: 1,
         };
     }

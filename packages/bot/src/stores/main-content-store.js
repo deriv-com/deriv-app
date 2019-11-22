@@ -25,13 +25,16 @@ export default class MainContentStore {
 
     @action.bound
     setCharContainerSize() {
-        if (this.active_tab === tabs_title.CHART) {
-            const run_panel_width = getRunPanelWidth(this.root_store.run_panel.is_drawer_open);
-            this.chart_width = window.innerWidth - run_panel_width;
-        }
-        // resize workspace ?!
-        if (this.active_tab === tabs_title.WORKSPACE) {
-            onWorkspaceResize();
+        switch (this.active_tab) {
+            case (tabs_title.CHART): {
+                const run_panel_width = getRunPanelWidth(this.root_store.run_panel.is_drawer_open);
+                this.chart_width = window.innerWidth - run_panel_width;
+                break;
+            }
+            case (tabs_title.WORKSPACE) :
+            default: {
+                onWorkspaceResize();
+            }
         }
     }
 

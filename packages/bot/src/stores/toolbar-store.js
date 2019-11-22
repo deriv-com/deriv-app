@@ -24,9 +24,7 @@ export default class ToolbarStore {
 
         if (main_content.active_tab !== tabs_title.WORKSPACE) {
             main_content.setActiveTab(tabs_title.WORKSPACE);
-        }
-
-        if (toolbox) {
+        } else if (toolbox) {
             this.is_toolbox_open   = !this.is_toolbox_open;
             toolbox.toggle();
             if (this.is_toolbox_open) {

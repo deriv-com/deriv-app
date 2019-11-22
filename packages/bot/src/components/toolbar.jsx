@@ -2,16 +2,16 @@ import {
     Button,
     Input,
     Popover,
-}                           from 'deriv-components';
+}                    from 'deriv-components';
 import {
     Field,
     Formik,
     Form,
-}                           from 'formik';
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import { localize }         from 'deriv-translations/lib/i18n';
-import Dialog               from './dialog.jsx';
+}                    from 'formik';
+import PropTypes     from 'prop-types';
+import React         from 'react';
+import { localize }  from 'deriv-translations/lib/i18n';
+import Dialog        from './dialog.jsx';
 import {
     StopIcon,
     RunIcon,
@@ -27,11 +27,12 @@ import {
     ToolbarUndoIcon,
     ToolbarZoomInIcon,
     ToolbarZoomOutIcon,
-}                           from './Icons.jsx';
-import SaveLoadModal        from './saveload-modal.jsx';
-import TradeAnimation       from './trade-animation.jsx';
-import { connect }          from '../stores/connect';
-import                           '../assets/sass/scratch/toolbar.scss';
+} from './Icons.jsx';
+import SaveLoadModal  from './saveload-modal.jsx';
+import TradeAnimation from './trade-animation.jsx';
+import { tabs_title } from '../constants/bot-contents';
+import { connect }    from '../stores/connect';
+import '../assets/sass/scratch/toolbar.scss';
 
 const SearchBox = ({
     is_search_loading,
@@ -61,15 +62,15 @@ const SearchBox = ({
                                     onBlur={onSearchBlur}
                                     trailing_icon={
                                         (search &&
-                                            (is_search_loading ?
-                                                <div className='loader' />
-                                                :
-                                                <ToolbarCloseIcon
-                                                    className='toolbar__btn--icon'
-                                                    onClick={() => onSearchClear(setFieldValue)}
-                                                />
-                                            )) ||
-                                        (!search && <ToolbarSearchIcon />)
+                                                (is_search_loading ?
+                                                    <div className='loader' />
+                                                    :
+                                                    <ToolbarCloseIcon
+                                                        className='toolbar__btn--icon'
+                                                        onClick={() => onSearchClear(setFieldValue)}
+                                                    />
+                                                )) ||
+                                            (!search && <ToolbarSearchIcon />)
                                     }
                                 />
                             )}
@@ -115,36 +116,6 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
                 }
             }
         </Formik>
-    </div>
-);
-
-const GeneralGroup = ({
-    is_stop_button_disabled,
-    is_stop_button_visible,
-    onRunButtonClick,
-    onStopButtonClick,
-}) => (
-    <div>
-        {
-            (is_stop_button_visible) ?
-                <Button
-                    className='toolbar__btn'
-                    is_disabled={is_stop_button_disabled}
-                    text={localize('Stop bot')}
-                    icon={<StopIcon className='run-panel__button--icon' />}
-                    onClick={onStopButtonClick}
-                    has_effect
-                    primary
-                /> :
-                <Button
-                    className='toolbar__btn'
-                    text={localize('Run bot')}
-                    icon={<RunIcon className='run-panel__button--icon' />}
-                    onClick={onRunButtonClick}
-                    has_effect
-                    green
-                />
-        }
     </div>
 );
 
@@ -213,6 +184,7 @@ const WorkspaceGroup = ({
 );
 
 const Toolbar = ({
+    active_tab,
     file_name,
     is_dialog_open,
     is_drawer_open,
@@ -254,6 +226,7 @@ const Toolbar = ({
                     {localize('Get started')}
                 </Button>
             </Popover>
+            {active_tab === tabs_title.WORKSPACE &&
             <SearchBox
                 is_search_loading={is_search_loading}
                 onSearch={onSearch}
@@ -261,10 +234,12 @@ const Toolbar = ({
                 onSearchBlur={onSearchBlur}
                 onSearchKeyUp={onSearchKeyUp}
             />
+            }
             <BotNameBox
                 file_name={file_name}
                 onBotNameTyped={onBotNameTyped}
             />
+            {active_tab === tabs_title.WORKSPACE &&
             <WorkspaceGroup
                 onRedoClick={onRedoClick}
                 onResetClick={onResetClick}
@@ -273,17 +248,30 @@ const Toolbar = ({
                 onZoomInOutClick={onZoomInOutClick}
                 toggleSaveLoadModal={toggleSaveLoadModal}
             />
-            { !is_drawer_open &&
-            <GeneralGroup
-                is_stop_button_disabled={is_stop_button_disabled}
-                is_stop_button_visible={is_stop_button_visible}
-                onRunButtonClick={onRunButtonClick}
-                onStopButtonClick={onStopButtonClick}
-            />
             }
         </div>
-        { !is_drawer_open &&
+        {!is_drawer_open &&
         <div className='toolbar__section'>
+            {
+                (is_stop_button_visible) ?
+                    <Button
+                        className='toolbar__btn'
+                        is_disabled={is_stop_button_disabled}
+                        text={localize('Stop bot')}
+                        icon={<StopIcon className='run-panel__button--icon' />}
+                        onClick={onStopButtonClick}
+                        has_effect
+                        primary
+                    /> :
+                    <Button
+                        className='toolbar__btn'
+                        text={localize('Run bot')}
+                        icon={<RunIcon className='run-panel__button--icon' />}
+                        onClick={onRunButtonClick}
+                        has_effect
+                        green
+                    />
+            }
             <TradeAnimation
                 className='toolbar__animation'
                 should_show_overlay={true}
@@ -305,6 +293,7 @@ const Toolbar = ({
 );
 
 Toolbar.propTypes = {
+    active_tab             : PropTypes.string,
     file_name              : PropTypes.string,
     is_dialog_open         : PropTypes.bool,
     is_drawer_open         : PropTypes.bool,
@@ -330,7 +319,8 @@ Toolbar.propTypes = {
     toggleSaveLoadModal    : PropTypes.func,
 };
 
-export default connect(({ run_panel, saveload, toolbar }) => ({
+export default connect(({ main_content, run_panel, saveload, toolbar }) => ({
+    active_tab             : main_content.active_tab,
     file_name              : toolbar.file_name,
     is_dialog_open         : toolbar.is_dialog_open,
     is_drawer_open         : run_panel.is_drawer_open,

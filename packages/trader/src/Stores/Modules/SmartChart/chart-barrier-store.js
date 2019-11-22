@@ -25,6 +25,7 @@ export class ChartBarrierStore {
     @observable hideBarrierLine;
     @observable hideOffscreenLine;
     @observable title;
+    @observable arrowDirection;
 
     onChartBarrierChange;
 

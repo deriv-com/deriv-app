@@ -366,9 +366,8 @@ export default class TradeStore extends BaseStore {
         setLimitOrderBarriers({
             barriers             : this.barriers,
             is_over,
-            contract_type        : this.contract_type,
+            contract_type,
             contract_info        : this.proposal_info[contract_type],
-            hide_stop_out_barrier: true,
         });
     }
 
@@ -381,6 +380,7 @@ export default class TradeStore extends BaseStore {
             );
             purchaseSpotBarrier.key = key;
             purchaseSpotBarrier.draggable = false;
+            purchaseSpotBarrier.isSingleBarrier = true;
             purchaseSpotBarrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
             this.barriers.push(purchaseSpotBarrier);
         } else {
@@ -391,11 +391,11 @@ export default class TradeStore extends BaseStore {
     @action.bound
     toggleLimitOrderBarriers(is_over, position) {
         const contract_info = position.contract_info;
-        const { barriers, contract_type } = this;
+        const { barriers } = this;
         setLimitOrderBarriers({
             barriers,
             contract_info,
-            contract_type,
+            contract_type        : contract_info.contract_type,
             is_over,
             hide_stop_out_barrier: true,
         });
@@ -404,12 +404,10 @@ export default class TradeStore extends BaseStore {
     @action.bound
     clearLimitOrderBarriers() {
         this.hovered_contract_type = null;
-        const { barriers, contract_type } = this;
+        const { barriers } = this;
         setLimitOrderBarriers({
             barriers,
-            contract_type,
-            is_over              : false,
-            hide_stop_out_barrier: true,
+            is_over: false,
         });
     }
 

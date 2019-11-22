@@ -90,8 +90,16 @@ export const isStarted = (contract_info) => (
     !contract_info.is_forward_starting || contract_info.current_spot_time > contract_info.date_start
 );
 
+export const isUserCancelled = (contract_info) => (
+    contract_info.status === 'cancelled'
+);
+
 export const isUserSold = (contract_info) => (
     contract_info.status === 'sold'
+);
+
+export const isValidToCancel = (contract_info) => (
+    !!contract_info.deal_cancellation
 );
 
 export const isValidToSell = (contract_info) => (
@@ -111,7 +119,7 @@ export const getEndTime = (contract_info) => {
 
     const is_finished = is_expired && (status !== 'open');
 
-    if (!is_finished && !isUserSold(contract_info)) return undefined;
+    if (!is_finished && !isUserSold(contract_info) && !isUserCancelled(contract_info)) return undefined;
 
     if (isUserSold(contract_info)) {
         return (sell_time > date_expiry) ?

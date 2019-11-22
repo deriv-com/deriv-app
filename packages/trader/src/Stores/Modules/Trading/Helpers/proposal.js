@@ -43,11 +43,11 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     };
 
     const commission = proposal.commission;
-    const cost_of_deal_cancellation = proposal.cost_of_deal_cancellation;
+    const deal_cancellation = proposal.deal_cancellation;
 
     return {
         commission,
-        cost_of_deal_cancellation,
+        deal_cancellation,
         id               : proposal.id || '',
         has_error        : !!response.error,
         has_error_details: !!getProposalErrorField(response),

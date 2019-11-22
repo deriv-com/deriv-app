@@ -12,13 +12,11 @@ import { isMultiplierContract }    from 'Stores/Modules/Contract/Helpers/multipl
 const ContractDetailsCardFooter = ({
     contract_info,
     is_sell_requested,
-    is_valid_to_cancel = true, // TODO: get is_valid_to_cancel from API
     onClickCancel,
     onClickSell,
 }) => {
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
-
-    const expiry_time = contract_info.date_expiry; // TODO: replace with deal cancelation expiry_time
+    const is_valid_to_cancel = contract_info.deal_cancellation;
 
     return (
         <CSSTransition
@@ -56,7 +54,7 @@ const ContractDetailsCardFooter = ({
                         >
                             {localize('Cancel')}
                             <RemainingTime
-                                end_time={expiry_time}
+                                end_time={contract_info.deal_cancellation.date_expiry}
                                 format='mm:ss'
                             />
                         </Button>

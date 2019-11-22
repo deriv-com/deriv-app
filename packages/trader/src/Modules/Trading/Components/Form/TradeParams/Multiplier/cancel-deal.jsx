@@ -11,14 +11,18 @@ import { connect }  from 'Stores/connect';
 
 const CancelDeal = ({
     cancel_deal,
-    cost_of_deal_cancellation,
+    deal_cancellation_price,
     currency,
-    onChange,
+    onChangeMultiple,
 }) => {
     const changeValue = (e) => {
         e.persist();
-        const { name, checked } = e.target;
-        onChange({ target: { name, value: Number(checked) } });
+        const new_val = Number(e.target.checked);
+        onChangeMultiple({
+            cancel_deal: new_val,
+            // set deal_cancellation_price to 0 only if Cancel Deal is un-checked
+            ...(!new_val ? { deal_cancellation_price: 0 } : {}),
+        });
     };
 
     return (
@@ -44,7 +48,7 @@ const CancelDeal = ({
                     i18n_default_text='Price: <0/>'
                     components={[<Money
                         key={0}
-                        amount={cost_of_deal_cancellation}
+                        amount={deal_cancellation_price}
                         currency={currency}
                     />]}
                 />
@@ -54,15 +58,15 @@ const CancelDeal = ({
 };
 
 CancelDeal.propTypes = {
-    cancel_deal              : PropTypes.number,
-    cost_of_deal_cancellation: PropTypes.number,
-    currency                 : PropTypes.string,
-    onChange                 : PropTypes.func,
+    cancel_deal            : PropTypes.number,
+    currency               : PropTypes.string,
+    deal_cancellation_price: PropTypes.number,
+    onChangeMultiple       : PropTypes.func,
 };
 
 export default connect(({ modules }) => ({
-    cancel_deal              : modules.trade.cancel_deal,
-    currency                 : modules.trade.currency,
-    cost_of_deal_cancellation: modules.trade.cost_of_deal_cancellation,
-    onChange                 : modules.trade.onChange,
+    cancel_deal            : modules.trade.cancel_deal,
+    currency               : modules.trade.currency,
+    deal_cancellation_price: modules.trade.deal_cancellation_price,
+    onChangeMultiple       : modules.trade.onChangeMultiple,
 }))(CancelDeal);

@@ -14,6 +14,7 @@ import Icon                        from 'Assets/icon.jsx';
 import { PositionsCardLoader }     from 'App/Components/Elements/ContentLoader';
 import RemainingTime               from 'App/Containers/remaining-time.jsx';
 import { getLimitOrderAmount }     from 'Stores/Modules/Contract/Helpers/limit-orders';
+import { isValidToCancel }         from 'Stores/Modules/Contract/Helpers/logic';
 import { isMultiplierContract }    from 'Stores/Modules/Contract/Helpers/multiplier';
 import ContractTypeCell            from './contract-type-cell.jsx';
 import ProgressSlider              from './ProgressSlider';
@@ -30,7 +31,6 @@ const PositionsDrawerCard = ({
     is_loading,
     is_sell_requested,
     is_unsupported,
-    is_valid_to_cancel = true,
     is_valid_to_sell,
     profit_loss,
     onClickCancel,
@@ -50,11 +50,10 @@ const PositionsDrawerCard = ({
         </div>
     );
 
-    const fallback_result = (profit_loss < 0) ? 'lost' : 'won';
+    const fallback_result = (profit_loss >= 0) ? 'won' : 'lost';
     const is_multiplier   = isMultiplierContract(contract_info.contract_type);
-
     const { take_profit, stop_loss } = getLimitOrderAmount(contract_info);
-    const expiry_time = contract_info.date_expiry;
+    const is_valid_to_cancel = isValidToCancel(contract_info);
 
     const contract_el = (
         <React.Fragment>
@@ -316,7 +315,7 @@ const PositionsDrawerCard = ({
                             >
                                 {localize('Cancel')}
                                 <RemainingTime
-                                    end_time={expiry_time}
+                                    end_time={contract_info.deal_cancellation.date_expiry}
                                     format='mm:ss'
                                 />
                             </Button>

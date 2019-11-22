@@ -123,7 +123,7 @@ export default class TradeStore extends BaseStore {
     @observable has_take_profit = false;
     @observable cancel_deal = 0;
     @observable commission = 0;
-    @observable cost_of_deal_cancellation = 0;
+    @observable deal_cancellation_price = 0;
 
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
@@ -364,11 +364,14 @@ export default class TradeStore extends BaseStore {
         }
         this.hovered_contract_type = is_over ? contract_type : null;
         setLimitOrderBarriers({
-            barriers             : this.barriers,
+            barriers     : this.barriers,
             is_over,
             contract_type,
-            contract_info        : this.proposal_info[contract_type],
+            contract_info: this.proposal_info[contract_type],
         });
+        if (this.hovered_contract_type && this.proposal_info[contract_type].deal_cancellation) {
+            this.deal_cancellation_price = this.proposal_info[contract_type].deal_cancellation.ask_price;
+        }
     }
 
     @action.bound
@@ -730,9 +733,8 @@ export default class TradeStore extends BaseStore {
         };
 
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
-            const { commission, cost_of_deal_cancellation } = this.proposal_info.MULTUP;
+            const { commission } = this.proposal_info.MULTUP;
             this.commission = commission;
-            this.cost_of_deal_cancellation = cost_of_deal_cancellation;
         }
 
         this.setMainBarrier(response.echo_req);

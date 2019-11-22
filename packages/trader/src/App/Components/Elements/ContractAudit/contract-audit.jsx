@@ -14,7 +14,9 @@ import {
     getBarrierValue,
     isDigitType }           from 'App/Components/Elements/PositionsDrawer/helpers';
 import {
-    isMultiplierContract }  from 'Stores/Modules/Contract/Helpers/multiplier';
+    isUserCancelled,
+    isValidToCancel }       from 'Stores/Modules/Contract/Helpers/logic';
+import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { getThemedIcon }    from './Helpers/icons';
 import ContractAuditItem    from './contract-audit-item.jsx';
 
@@ -33,6 +35,8 @@ class ContractAudit extends React.PureComponent {
         const is_profit    = (contract_info.profit >= 0);
         const IconExitTime = (is_profit) ? <IconExitWon /> : <IconExitLoss />;
         const is_multiplier = isMultiplierContract(contract_info.contract_type);
+        const is_cancelled = isUserCancelled(contract_info);
+        const is_valid_to_cancel = isValidToCancel(contract_info);
         return (
             <div className='contract-audit__wrapper'>
                 <ThemedScrollbars
@@ -60,17 +64,19 @@ class ContractAudit extends React.PureComponent {
                                     }
                                 />
                             </div>
-                            <div id='dt_cancel_deal_label' className='contract-audit__grid'>
-                                <ContractAuditItem
-                                    icon={getThemedIcon('safeguard', is_dark_theme)}
-                                    label={localize('Cancel deal (expired)')}
-                                    value={<Money
-                                        amount={contract_info.cost_of_deal_cancellation}
-                                        currency={contract_info.currency}
+                            {is_valid_to_cancel &&
+                                <div id='dt_cancel_deal_label' className='contract-audit__grid'>
+                                    <ContractAuditItem
+                                        icon={getThemedIcon('safeguard', is_dark_theme)}
+                                        label={is_cancelled ? localize('Cancel deal (used)') : localize('Cancel deal (expired)')}
+                                        value={<Money
+                                            amount={contract_info.deal_cancellation.ask_price}
+                                            currency={contract_info.currency}
+                                        />
+                                        }
                                     />
-                                    }
-                                />
-                            </div>
+                                </div>
+                            }
                         </React.Fragment>
                         :
                         <React.Fragment>

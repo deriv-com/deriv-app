@@ -332,7 +332,7 @@ export default class TradeStore extends BaseStore {
 
         this.validateAllProperties();
 
-        const should_forget_first = !(name === 'has_take_profit' || name === 'has_stop_loss' || name === 'update_take_profit' || name === 'update_stop_loss');
+        const should_forget_first = !(name === 'update_take_profit' || name === 'update_stop_loss');
         this.processNewValuesAsync({ [name]: value }, true, {}, should_forget_first);
     }
 

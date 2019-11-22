@@ -167,7 +167,7 @@ export default class ContractStore {
                 );
                 main_barrier.updateBarrierColor(is_dark_mode);
             }
-            if (contract_info.contract_id === this.contract_id) {
+            if (contract_info.contract_id === this.root_store.modules.contract_replay.contract_id) {
                 setLimitOrderBarriers({
                     barriers: this.barriers_array,
                     contract_info,

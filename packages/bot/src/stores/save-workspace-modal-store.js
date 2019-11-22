@@ -13,7 +13,7 @@ export default class SaveWorkspaceModalStore {
 
     @observable is_save_workspace_modal_open = false;
     @observable workspace_list = [];
-    @observable selected_button = '';
+    @observable selected_strategy = {};
     preview_workspace = undefined;
 
     @action.bound
@@ -27,13 +27,17 @@ export default class SaveWorkspaceModalStore {
     }
 
     @action.bound
-    loadWorkspace({ strategy }) {
+    loadWorkspace() {
+        const { id, strategy } = this.selected_strategy;
+
         load(strategy);
+        removeLocalWorkspace(id);
         this.toggleSaveWorkpsaceModal();
     }
 
     @action.bound
-    previewWorkspace(id, strategy) {
+    previewWorkspace(workspace) {
+        const { strategy } = workspace;
         if (!this.preview_workspace) {
             const workspace_element = document.getElementById('preview_workspace');
 
@@ -45,7 +49,7 @@ export default class SaveWorkspaceModalStore {
             });
         }
 
-        this.selected_button = id;
+        this.selected_strategy = workspace;
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy), this.preview_workspace);
     }
 

@@ -3,6 +3,7 @@ import React            from 'react';
 import PropTypes        from 'prop-types';
 import {
     Modal,
+    Button,
 }                       from 'deriv-components';
 import { localize }     from 'deriv-translations/lib/i18n';
 import { connect }      from '../stores/connect';
@@ -10,9 +11,10 @@ import '../assets/sass/save-workspace-modal.scss';
 
 const SaveWorkspaceModal = ({
     is_save_workspace_modal_open,
+    loadWorkspace,
     previewWorkspace,
     removeWorkspace,
-    selected_button,
+    selected_strategy,
     toggleSaveWorkpsaceModal,
     workspace_list,
 }) => (
@@ -26,15 +28,16 @@ const SaveWorkspaceModal = ({
         <div className='modal__content'>
             <div className='modal--save-workspace-list'>
                 {
-                    workspace_list.map(({ id, name, strategy, timestamp }) => {
+                    workspace_list.map(workspace => {
+                        const { id, name, timestamp } = workspace;
                         return (
                             <div
                                 key={id}
                                 className={classNames(
                                     'modal--save-workspace-item',
-                                    { 'modal--save-workspace-item--active': selected_button === id }
+                                    { 'modal--save-workspace-item--active': selected_strategy.id === id }
                                 )}
-                                onClick={() => previewWorkspace(id, strategy)}
+                                onClick={() => previewWorkspace(workspace)}
                             >
                                 <span className='modal--save-workspace-remove' onClick={() => removeWorkspace(id)}>𝗫</span>
                                 <div className='modal--save-workspace-btn'>
@@ -48,23 +51,34 @@ const SaveWorkspaceModal = ({
             </div>
             <div id='preview_workspace' />
         </div>
+        <div className='modal__footer'>
+            <Button
+                className='modal--save-workspace-load'
+                text={localize('Load')}
+                onClick={loadWorkspace}
+                has_effect
+                primary
+            />
+        </div>
     </Modal>
 );
 
 SaveWorkspaceModal.prototype = {
     is_save_workspace_modal_open: PropTypes.bool,
+    loadWorkspace               : PropTypes.func,
     previewWorkspace            : PropTypes.func,
     removeWorkspace             : PropTypes.func,
-    selected_button             : PropTypes.string,
+    selected_strategy           : PropTypes.string,
     toggleSaveWorkpsaceModal    : PropTypes.func,
     workspace_list              : PropTypes.array,
 };
 
 export default connect(({ save_workspace }) => ({
     is_save_workspace_modal_open: save_workspace.is_save_workspace_modal_open,
+    loadWorkspace               : save_workspace.loadWorkspace,
     previewWorkspace            : save_workspace.previewWorkspace,
     removeWorkspace             : save_workspace.removeWorkspace,
-    selected_button             : save_workspace.selected_button,
+    selected_strategy           : save_workspace.selected_strategy,
     toggleSaveWorkpsaceModal    : save_workspace.toggleSaveWorkpsaceModal,
     workspace_list              : save_workspace.workspace_list,
 }))(SaveWorkspaceModal);

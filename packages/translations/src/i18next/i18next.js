@@ -5,6 +5,7 @@ import { initReactI18next } from 'react-i18next';
 // TODO: lazy load these: with i18n.addResourceBundle
 import ach                  from '../translations/ach.json';
 import en                   from '../translations/en.json';
+import es                   from '../translations/en.json';
 import fr                   from '../translations/fr.json';
 import id                   from '../translations/id.json';
 import it                   from '../translations/it.json';
@@ -70,6 +71,7 @@ const i18n_config = {
     resources: {
         ACH  : { translation: {...ach } },
         EN   : { translation: { ...en } },
+        ES   : { translation: { ...es } },
         FR   : { translation: { ...fr } },
         ID   : { translation: { ...id } },
         IT   : { translation: { ...it } },

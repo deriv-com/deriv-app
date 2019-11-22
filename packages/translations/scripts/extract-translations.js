@@ -18,8 +18,7 @@ program
  * Common
  */
 
-// TODO: add trader, core
-const packages_with_translations = ['bot']
+const packages_with_translations = ['bot', 'trader', 'core'];
 const globs = ['**/*.js', '**/*.jsx'];
 const getKeyHash = (string) => crc32(string);
 

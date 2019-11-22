@@ -1,11 +1,13 @@
 import PropTypes        from 'prop-types';
 import React            from 'react';
 import { Trans }        from 'react-i18next';
-import { i18n }         from '../i18next'
+// Trans needs to have the i18n instance in scope
+/* eslint-disable no-unused-vars */
+import i18n             from '../i18next/i18next';
+/* eslint-enable no-unused-vars */
 
 const Localize = ({ i18n_default_text, values, components, options }) => (
     <Trans
-        i18n={i18n}
         defaults={i18n_default_text}
         values={values}
         components={components}

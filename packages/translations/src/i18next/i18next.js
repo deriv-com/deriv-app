@@ -6,9 +6,9 @@ import en                   from '../translations/en.json';
 // TODO: import the rest of the language json files when they are ready
 // import fr                   from '../translations/fr.json';
 
-const LANGUAGE_KEY = 'i18n_language';
+const LANGUAGE_KEY     = 'i18n_language';
 const DEFAULT_LANGUAGE = 'EN';
-const ALL_LANGUAGES = Object.freeze({
+const ALL_LANGUAGES    = Object.freeze({
     ACH  : 'Translations',
     EN   : 'English',
     ES   : 'Español',
@@ -26,11 +26,13 @@ const ALL_LANGUAGES = Object.freeze({
 
 const hasLanguage = lang => {
     if (!lang) return false;
-    return Object.keys(ALL_LANGUAGES).includes(lang.toUpperCase())
-}
+    return Object.keys(ALL_LANGUAGES).includes(lang.toUpperCase());
+};
+
+const getAllLanguages = () => ALL_LANGUAGES;
 
 const getInitialLanguage = () => {
-    const has_url_search_language = window.location.search && window.location.search.includes('lang=')
+    const has_url_search_language = window.location.search && window.location.search.includes('lang=');
     const local_storage_language  = localStorage.getItem(LANGUAGE_KEY);
 
     if (has_url_search_language) {
@@ -41,7 +43,7 @@ const getInitialLanguage = () => {
             .toUpperCase()
         if (hasLanguage(query_lang)) {
             localStorage.setItem(LANGUAGE_KEY, query_lang);
-            return query_lang
+            return query_lang;
         }
     }
 
@@ -103,7 +105,5 @@ const loadIncontextTranslation = () => {
         document.head.appendChild(jipt)
     }
 }
-
-const getAllLanguages = () => ALL_LANGUAGES;
 
 export default { i18n, localize, changeLanguage, getLanguage, getAllLanguages, loadIncontextTranslation };

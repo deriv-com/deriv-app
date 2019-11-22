@@ -3,7 +3,10 @@ import React                        from 'react';
 import ReactDOM                     from 'react-dom';
 import { Prompt }                   from 'react-router';
 import { BrowserRouter as Router }  from 'react-router-dom';
-import  i18next, {loadIncontextTranslation } from 'deriv-translations/lib/i18n';
+// Initialize i18next by importing it here
+// eslint-disable-next-line no-unused-vars
+import i18next, {
+    loadIncontextTranslation }      from 'deriv-translations/lib/i18n';
 import Client                       from '_common/base/client_base';
 import WS                           from 'Services/ws-methods';
 import { MobxProvider }             from 'Stores/connect';

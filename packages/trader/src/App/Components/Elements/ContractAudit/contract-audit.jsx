@@ -14,8 +14,7 @@ import {
     getBarrierValue,
     isDigitType }           from 'App/Components/Elements/PositionsDrawer/helpers';
 import {
-    isMultiplierContract,
-    getCommission }         from 'Stores/Modules/Contract/Helpers/multiplier';
+    isMultiplierContract }  from 'Stores/Modules/Contract/Helpers/multiplier';
 import { getThemedIcon }    from './Helpers/icons';
 import ContractAuditItem    from './contract-audit-item.jsx';
 
@@ -55,11 +54,7 @@ class ContractAudit extends React.PureComponent {
                                     icon={getThemedIcon('commission', is_dark_theme)}
                                     label={localize('Commission')}
                                     value={<Money
-                                        amount={getCommission({
-                                            commission: contract_info.commission,
-                                            amount    : contract_info.buy_price,
-                                            multiplier: contract_info.multiplier,
-                                        })}
+                                        amount={contract_info.commission}
                                         currency={contract_info.currency}
                                     />
                                     }

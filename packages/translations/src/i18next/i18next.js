@@ -24,6 +24,11 @@ const ALL_LANGUAGES = Object.freeze({
     ZH_TW: '繁體中文',
 });
 
+const hasLanguage = lang => {
+    if (!lang) return false;
+    return Object.keys(ALL_LANGUAGES).includes(lang.toUpperCase())
+}
+
 const getInitialLanguage = () => {
     const has_url_search_language = window.location.search && window.location.search.includes('lang=')
     const local_storage_language  = localStorage.getItem(LANGUAGE_KEY);
@@ -35,7 +40,7 @@ const getInitialLanguage = () => {
             .split('=')[1]
             .toUpperCase()
         if (hasLanguage(query_lang)) {
-            localStorage.setItem(LANGUAGE_KEY, lang);
+            localStorage.setItem(LANGUAGE_KEY, query_lang);
             return query_lang
         }
     }
@@ -100,10 +105,5 @@ const loadIncontextTranslation = () => {
 }
 
 const getAllLanguages = () => ALL_LANGUAGES;
-
-const hasLanguage = lang => {
-    if (!lang) return false;
-    return Object.keys(ALL_LANGUAGES).includes(lang.toUpperCase())
-}
 
 export default { i18n, localize, changeLanguage, getLanguage, getAllLanguages, loadIncontextTranslation };

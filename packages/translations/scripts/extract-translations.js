@@ -6,7 +6,7 @@ const program        = require('commander');
 const crc32          = require('crc-32').str;
 const fs             = require('fs');
 const glob           = require('glob');
-// const static_strings = require('./app-static-strings');
+const static_strings = require('./app-static-strings');
 
 program
     .version('0.1.0')
@@ -59,7 +59,7 @@ const getKeyHash = (string) => crc32(string);
         }
 
         // Push static strings to list of messages to be added to JSON
-        // messages.push(...static_strings);
+        messages.push(...static_strings);
 
         // Hash the messages and set the key-value pair for json
         for (let i = 0; i < messages.length; i++) {

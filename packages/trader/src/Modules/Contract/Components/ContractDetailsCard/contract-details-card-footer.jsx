@@ -4,6 +4,7 @@ import { CSSTransition }           from 'react-transition-group';
 import React                       from 'react';
 import { Button }                  from 'deriv-components';
 import TogglePositionsDrawerDialog from 'App/Components/Elements/PositionsDrawer/toggle-positions-drawer-dialog.jsx';
+import RemainingTime               from 'App/Containers/remaining-time.jsx';
 import { localize }                from 'App/i18n';
 import { isValidToSell }           from 'Stores/Modules/Contract/Helpers/logic';
 import { isMultiplierContract }    from 'Stores/Modules/Contract/Helpers/multiplier';
@@ -11,9 +12,13 @@ import { isMultiplierContract }    from 'Stores/Modules/Contract/Helpers/multipl
 const ContractDetailsCardFooter = ({
     contract_info,
     is_sell_requested,
+    is_valid_to_cancel = true, // TODO: get is_valid_to_cancel from API
+    onClickCancel,
     onClickSell,
 }) => {
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
+
+    const expiry_time = contract_info.date_expiry; // TODO: replace with deal cancelation expiry_time
 
     return (
         <CSSTransition
@@ -27,9 +32,12 @@ const ContractDetailsCardFooter = ({
             unmountOnExit
         >
             {is_multiplier ?
-                <div className='contract-card__sell-button'>
+                <div className={classNames('contract-card__sell-button', {
+                    'contract-card__sell-button--has-cancel-btn': is_valid_to_cancel,
+                })}
+                >
                     <Button
-                        id={`dt_drawer_card_${contract_info.contract_id}_button`}
+                        id={`dt_drawer_card_${contract_info.contract_id}_close_button`}
                         className={classNames(
                             'btn--sell', {
                                 'btn--loading': is_sell_requested,
@@ -39,6 +47,20 @@ const ContractDetailsCardFooter = ({
                         onClick={() => onClickSell(contract_info.contract_id)}
                         primary
                     />
+                    {is_valid_to_cancel &&
+                        <Button
+                            id={`dt_drawer_card_${contract_info.contract_id}_cancel_button`}
+                            className='btn--cancel'
+                            onClick={() => onClickCancel(contract_info.contract_id)}
+                            primary
+                        >
+                            {localize('Cancel')}
+                            <RemainingTime
+                                end_time={expiry_time}
+                                format='mm:ss'
+                            />
+                        </Button>
+                    }
                     <TogglePositionsDrawerDialog />
                 </div>
                 :

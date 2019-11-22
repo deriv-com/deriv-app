@@ -12,6 +12,7 @@ import Shortcode                   from 'Modules/Reports/Helpers/shortcode';
 import { localize }                from 'App/i18n';
 import Icon                        from 'Assets/icon.jsx';
 import { PositionsCardLoader }     from 'App/Components/Elements/ContentLoader';
+import RemainingTime               from 'App/Containers/remaining-time.jsx';
 import { getLimitOrderAmount }     from 'Stores/Modules/Contract/Helpers/limit-orders';
 import { isMultiplierContract }    from 'Stores/Modules/Contract/Helpers/multiplier';
 import ContractTypeCell            from './contract-type-cell.jsx';
@@ -29,8 +30,10 @@ const PositionsDrawerCard = ({
     is_loading,
     is_sell_requested,
     is_unsupported,
+    is_valid_to_cancel = true,
     is_valid_to_sell,
     profit_loss,
+    onClickCancel,
     onClickSell,
     onClickRemove,
     result,
@@ -51,6 +54,7 @@ const PositionsDrawerCard = ({
     const is_multiplier   = isMultiplierContract(contract_info.contract_type);
 
     const { take_profit, stop_loss } = getLimitOrderAmount(contract_info);
+    const expiry_time = contract_info.date_expiry;
 
     const contract_el = (
         <React.Fragment>
@@ -288,7 +292,10 @@ const PositionsDrawerCard = ({
                 unmountOnExit
             >
                 {is_multiplier ?
-                    <div className='positions-drawer-card__sell-button'>
+                    <div className={classNames('positions-drawer-card__sell-button', {
+                        'positions-drawer-card__sell-button--has-cancel-btn': is_valid_to_cancel,
+                    })}
+                    >
                         <Button
                             id={`dt_drawer_card_${id}_button`}
                             className={classNames(
@@ -300,6 +307,20 @@ const PositionsDrawerCard = ({
                             onClick={() => onClickSell(id)}
                             primary
                         />
+                        {is_valid_to_cancel &&
+                            <Button
+                                id={`dt_drawer_card_${contract_info.contract_id}_cancel_button`}
+                                className='btn--cancel'
+                                onClick={() => onClickCancel(contract_info.contract_id)}
+                                primary
+                            >
+                                {localize('Cancel')}
+                                <RemainingTime
+                                    end_time={expiry_time}
+                                    format='mm:ss'
+                                />
+                            </Button>
+                        }
                         <TogglePositionsDrawerDialog contract_id={id} />
                     </div>
                     :

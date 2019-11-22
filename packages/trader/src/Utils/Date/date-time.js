@@ -85,11 +85,16 @@ export const getDiffDuration = (start_time, end_time) =>
  * @param  {moment.duration} moment duration object
  * @return {String} formatted display string
  */
-export const formatDuration = (duration) => {
+export const formatDuration = (duration, format) => {
     const d = Math.floor(duration.asDays()); // duration.days() does not include months/years
     const h = duration.hours();
     const m = duration.minutes();
     const s = duration.seconds();
+
+    if (format) {
+        return moment(0).hour(h).minute(m).seconds(s).format(format);
+    }
+
     let formatted_str = moment(0).hour(h).minute(m).seconds(s).format('HH:mm:ss');
     if (d > 0) {
         formatted_str = `${d} ${d > 1 ? localize('days') : localize('day')} ${formatted_str}`;

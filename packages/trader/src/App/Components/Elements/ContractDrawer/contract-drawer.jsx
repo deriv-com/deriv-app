@@ -45,6 +45,8 @@ class ContractDrawer extends Component {
             contract_info,
             is_dark_theme,
             is_sell_requested,
+            is_valid_to_cancel,
+            onClickCancel,
             onClickSell,
         } = this.props;
         const exit_spot = isUserSold(contract_info) ? '-' : exit_tick_display_value;
@@ -72,6 +74,8 @@ class ContractDrawer extends Component {
                         <ContractDetailsCardFooter
                             contract_info={contract_info}
                             is_sell_requested={is_sell_requested}
+                            is_valid_to_cancel={is_valid_to_cancel}
+                            onClickCancel={onClickCancel}
                             onClickSell={onClickSell}
                         />
                     </ContractCardFooter>

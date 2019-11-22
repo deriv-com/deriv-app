@@ -8,12 +8,13 @@ import {
 const RemainingTime = ({
     end_time = null,
     start_time,
+    format,
 }) => {
     if (!+end_time || start_time.unix() > +end_time) {
         return '';
     }
 
-    const remaining_time = formatDuration(getDiffDuration(start_time.unix(), end_time));
+    const remaining_time = formatDuration(getDiffDuration(start_time.unix(), end_time), format);
 
     return (
         <div className='remaining-time'>{remaining_time}</div>

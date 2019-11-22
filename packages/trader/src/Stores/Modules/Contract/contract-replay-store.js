@@ -151,6 +151,21 @@ export default class ContractReplayStore extends BaseStore {
     }
 
     @action.bound
+    onClickCancel(contract_id) {
+        if (contract_id) {
+            WS.cancel(contract_id).then(response => {
+                if (response.error) {
+                    this.root_store.common.setServicesError({
+                        type: response.msg_type,
+                        ...response.error,
+                    });
+                    this.root_store.ui.toggleServicesErrorModal(true);
+                }
+            });
+        }
+    }
+
+    @action.bound
     onClickSell(contract_id) {
         const { bid_price } = this.contract_info;
         if (contract_id && bid_price) {

@@ -22,7 +22,6 @@ import ContractAuditItem    from './contract-audit-item.jsx';
 class ContractAudit extends React.PureComponent {
     render() {
         const {
-            commission = 0.012, // TODO: replace with value from API
             contract_end_time,
             contract_info,
             duration,
@@ -50,21 +49,34 @@ class ContractAudit extends React.PureComponent {
                         />
                     </div>
                     {is_multiplier ?
-                        <div id='dt_commission_label' className='contract-audit__grid'>
-                            <ContractAuditItem
-                                icon={getThemedIcon('commission', is_dark_theme)}
-                                label={localize('Commission')}
-                                value={<Money
-                                    amount={getCommission({
-                                        commission,
-                                        amount    : contract_info.buy_price,
-                                        multiplier: contract_info.multiplier,
-                                    })}
-                                    currency={contract_info.currency}
+                        <React.Fragment>
+                            <div id='dt_commission_label' className='contract-audit__grid'>
+                                <ContractAuditItem
+                                    icon={getThemedIcon('commission', is_dark_theme)}
+                                    label={localize('Commission')}
+                                    value={<Money
+                                        amount={getCommission({
+                                            commission: contract_info.commission,
+                                            amount    : contract_info.buy_price,
+                                            multiplier: contract_info.multiplier,
+                                        })}
+                                        currency={contract_info.currency}
+                                    />
+                                    }
                                 />
-                                }
-                            />
-                        </div>
+                            </div>
+                            <div id='dt_cancel_deal_label' className='contract-audit__grid'>
+                                <ContractAuditItem
+                                    icon={getThemedIcon('safeguard', is_dark_theme)}
+                                    label={localize('Cancel deal (expired)')}
+                                    value={<Money
+                                        amount={contract_info.cost_of_deal_cancellation}
+                                        currency={contract_info.currency}
+                                    />
+                                    }
+                                />
+                            </div>
+                        </React.Fragment>
                         :
                         <React.Fragment>
                             <div id='dt_duration_label' className='contract-audit__grid'>

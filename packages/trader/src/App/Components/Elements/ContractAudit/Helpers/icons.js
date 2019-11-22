@@ -14,14 +14,17 @@ import IconIdLight        from 'Assets/SvgComponents/contract_details/light/ic-i
 import IconStartLight     from 'Assets/SvgComponents/contract_details/light/ic-starttime.svg';
 import IconTargetLight    from 'Assets/SvgComponents/contract_details/light/ic-target.svg';
 
+import IconCommissionDark  from 'Assets/SvgComponents/contract_details/dark/ic-commission.svg';
 import IconCommissionLight from 'Assets/SvgComponents/contract_details/light/ic-commission.svg';
+import IconSafeguardDark   from 'Assets/SvgComponents/contract_details/dark/ic-safeguard.svg';
+import IconSafeguardLight  from 'Assets/SvgComponents/contract_details/light/ic-safeguard.svg';
 
 export const getThemedIcon = (type, is_dark_theme) => {
     let IconType;
     if (type) {
         switch (type) {
             case 'commission':
-                IconType = <IconCommissionLight />; // TODO: add dark theme icon
+                IconType = is_dark_theme ? <IconCommissionDark /> : <IconCommissionLight />;
                 break;
             case 'id':
                 IconType = is_dark_theme ? <IconIdDark /> : <IconIdLight />;
@@ -43,6 +46,9 @@ export const getThemedIcon = (type, is_dark_theme) => {
                 break;
             case 'exit_spot':
                 IconType = is_dark_theme ? <IconExitSpotDark /> : <IconExitSpotLight />;
+                break;
+            case 'safeguard':
+                IconType = is_dark_theme ? <IconSafeguardDark /> : <IconSafeguardLight />;
                 break;
             default:
                 break;

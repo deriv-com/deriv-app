@@ -29,6 +29,7 @@ class PositionsDrawer extends React.Component {
             currency,
             is_empty,
             is_positions_drawer_on,
+            onClickCancel,
             onClickSell,
             onClickRemove,
             toggleDrawer,
@@ -55,6 +56,7 @@ class PositionsDrawer extends React.Component {
                             unmountOnExit
                         >
                             <PositionsDrawerCard
+                                onClickCancel={onClickCancel}
                                 onClickSell={onClickSell}
                                 onClickRemove={onClickRemove}
                                 onMouseEnter={() => {
@@ -144,6 +146,7 @@ export default connect(
         error                         : modules.portfolio.error,
         is_empty                      : modules.portfolio.is_empty,
         is_loading                    : modules.portfolio.is_loading,
+        onClickCancel                 : modules.portfolio.onClickCancel,
         onClickSell                   : modules.portfolio.onClickSell,
         onClickRemove                 : modules.portfolio.removePositionById,
         onHoverPosition               : modules.portfolio.onHoverPosition,

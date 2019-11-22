@@ -9,13 +9,13 @@ const App = () => (
         <main>
             <nav>
                 <ul className="navbar-nav mr-auto">
-                    <li><Link to={'/buy-sell'}>Buy/Sell</Link></li>
+                    <li><Link to={'/'}>Buy/Sell</Link></li>
                     <li><Link to={'/orders'}>Orders</Link></li>
                 </ul>
             </nav>
             <hr />
             <Switch>
-                <Route exact path='/buy-sell' component={Ads} />
+                <Route exact path='/' component={Ads} />
                 <Route path='/orders' component={Orders} />
             </Switch>
         </main>

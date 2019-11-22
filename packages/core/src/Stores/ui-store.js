@@ -400,9 +400,9 @@ export default class UIStore extends BaseStore {
             const active_loginid = LocalStore.get('active_loginid');
             const messages       = LocalStore.getObject('notification_messages');
             if (active_loginid && !ObjectUtils.isEmptyObject(messages)) {
-                const current_message     = { key: notification.key, loginid: active_loginid };
-                const is_existing_message = Object.keys(messages).some(
-                    k => ObjectUtils.isEqualObject(messages[k], current_message));
+                // Check if is existing message to remove already closed messages stored in LocalStore
+                const is_existing_message = Array.isArray(messages[active_loginid]) ?
+                    messages[active_loginid].includes(notification.key) : false;
                 if (is_existing_message) {
                     this.removeNotificationMessage({ key: notification.key });
                 }
@@ -417,15 +417,20 @@ export default class UIStore extends BaseStore {
         // Add notification messages to LocalStore when user closes, check for redundancy
         const active_loginid = LocalStore.get('active_loginid');
         if (!excluded_notifications.includes(key) && active_loginid) {
-            const current_message = { loginid: active_loginid, key };
-            let messages = [];
-            if (!ObjectUtils.isEmptyObject(LocalStore.getObject('notification_messages'))) {
-                messages = LocalStore.getObject('notification_messages');
-                const is_existing_message = Object.keys(messages).some(
-                    k => ObjectUtils.isEqualObject(messages[k], current_message));
-                if (is_existing_message) return;
+            const messages = LocalStore.getObject('notification_messages');
+            // Check if same message already exists in LocalStore for this account
+            if (messages[active_loginid] && messages[active_loginid].includes(key)) {
+                return;
             }
-            messages.push(current_message);
+            const current_message = () => {
+                if (Array.isArray(messages[active_loginid])) {
+                    messages[active_loginid].push(key);
+                    return messages[active_loginid];
+                }
+                return [key];
+            };
+            // Store message into LocalStore upon closing message
+            Object.assign(messages, { [active_loginid]: current_message() });
             LocalStore.setObject('notification_messages', messages);
         }
     }

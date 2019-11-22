@@ -28,7 +28,7 @@ export const createMarkerEndTime = (contract_info) => {
         +end_time,
         null,
         {
-            status       : `${contract_info.profit > 0 ? 'won' : 'lost' }`,
+            status       : `${contract_info.profit >= 0 ? 'won' : 'lost' }`,
             marker_config: MARKER_TYPES_CONFIG,
         },
     );
@@ -105,7 +105,7 @@ export const createMarkerSpotExit = (contract_info, tick, idx) => {
             {
                 spot_value: `${exit_tick}`,
                 spot_epoch: `${contract_info.exit_tick_time}`,
-                status    : `${+contract_info.profit > 0 ? 'won' : 'lost' }`,
+                status    : `${+contract_info.profit >= 0 ? 'won' : 'lost' }`,
                 align_label,
                 spot_count,
             } : {},

@@ -46,33 +46,14 @@ src
     │   ├── orders/
     │   │   ├── orders.js
     │   │   ├── orders.scss
-    |   
-    │   └── app.jsx
-    ├── /
-    │   ├── containers/
-    │   ├── elements/
-    │   ├── form/
-    │   ├── layout/
-    │   ├── localization/
-    ├── images/
-    │   ├── common/
-    │   ├── svg/
-    ├── pages/
-    │   ├── about/
-    │   │   ├── index.js
-    │   │   ├── _component-name.js
-    │   │   ├── ...
-    │   ├── help-centre/
-    │   ├── 404.js
-    │   ├── index.js
     │   ├── ...
-    ├── themes/
-    │   ├── global-style.js
-    │   ├── reset.js
-    │   ├── variables.js
+    │   └── app.jsx
+    ├── utils/
+    │   ├── timer.js // TODO
+    │   ├── ...
+    ├── index.js
 
 index.js // publish file
 webpack.config.js
 package.json
-...
 ```

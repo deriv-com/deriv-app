@@ -589,6 +589,8 @@ export default class ClientStore extends BaseStore {
             // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
+                this.root_store.segment.identifyEvent();
+                this.root_store.segment.pageView();
             } else { // So it will send an authorize with the accepted token, to be handled by socket-general
                 await BinarySocket.authorize(client.token);
             }
@@ -634,6 +636,11 @@ export default class ClientStore extends BaseStore {
                     statement: 1,
                 }),
             );
+            const account_settings = (await WS.authorized.storage.getSettings()).get_settings;
+            if (account_settings && !account_settings.residence) {
+                await this.fetchResidenceList();
+                this.root_store.ui.toggleSetResidenceModal(true);
+            }
         }
         this.responseWebsiteStatus(await WS.storage.websiteStatus());
 
@@ -1005,6 +1012,29 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setDeviceData(device_data) {
         this.device_data = device_data;
+    }
+
+    @action.bound
+    onSetResidence({ residence }, cb) {
+        if (!residence) return;
+        WS.setSettings({ residence }).then(async response => {
+            if (response.error) {
+                cb(response.error.message);
+            } else {
+                await this.setResidence(residence);
+                await WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)
+                    .then(this.responseLandingCompany);
+                await WS.authorized.storage.getSettings().then(async response => {
+                    this.setAccountSettings(response.get_settings);
+                });
+                runInAction(async() => {
+                    await BinarySocket.authorize(this.getToken()).then(() => {
+                        runInAction(() => this.upgrade_info = this.getBasicUpgradeInfo());
+                    })
+                });
+                cb();
+            }
+        });
     }
 
     @action.bound

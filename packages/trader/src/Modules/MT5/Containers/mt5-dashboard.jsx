@@ -81,10 +81,12 @@ class MT5Dashboard extends React.Component {
             is_loading,
             has_mt5_account,
             has_real_account,
+            NotificationMessages,
         } = this.props;
 
         return (
             <div className='mt5-dashboard'>
+                <NotificationMessages />
                 { !has_mt5_account &&
                     <div className='mt5-dashboard__welcome-message'>
                         <h1 className='mt5-dashboard__welcome-message--heading'>
@@ -191,6 +193,7 @@ export default withRouter(connect(({ client, modules, ui }) => ({
     toggleCompareAccounts      : modules.mt5.toggleCompareAccountsModal,
     closeMt5AndOpenCashier     : modules.mt5.closeMt5AndOpenCashier,
     openTopUpModal             : ui.openTopUpModal,
+    NotificationMessages       : ui.notification_messages_ui,
     onMount                    : modules.mt5.onMount,
     onUnmount                  : modules.mt5.onUnmount,
 }))(MT5Dashboard));

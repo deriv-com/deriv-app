@@ -5,11 +5,11 @@ const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 
 module.exports = {
     entry: {
-        'index'  : path.resolve(__dirname, 'src', 'components/app.js'),
+        'index'  : path.resolve(__dirname, 'src', 'index.js'),
     },
     output: {
         path         : path.resolve(__dirname),
-        filename     : 'index.js',
+        filename     : '[name].js',
         libraryExport: 'default',
         library      : ['deriv-p2p', '[name]'],
         libraryTarget: 'umd',
@@ -29,7 +29,28 @@ module.exports = {
             {
                 test   : /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader : 'babel-loader',
+                use    : [
+                    {
+                        loader: 'deriv-shared/utils/deriv-components-loader.js'
+                    },
+                    {
+                        loader : 'babel-loader',
+                        options: {
+                            presets: [
+                                '@babel/preset-env',
+                                '@babel/preset-react'
+                            ],
+                            plugins: [
+                                ["@babel/plugin-proposal-decorators", { "legacy": true }],
+                                ["@babel/plugin-proposal-class-properties", { "loose": true }],
+                                '@babel/plugin-proposal-export-default-from',
+                                '@babel/plugin-proposal-object-rest-spread',
+                                '@babel/plugin-proposal-export-namespace-from',
+                                '@babel/plugin-syntax-dynamic-import',
+                            ],
+                        }
+                    },
+                ]
             },
             {
                 test: /\.scss$/,

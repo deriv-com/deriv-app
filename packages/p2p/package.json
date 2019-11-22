@@ -23,7 +23,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "styled-components": "^4.4.1"
+    "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",
@@ -38,7 +38,6 @@
     "babel-eslint": "^10.0.2",
     "babel-jest": "^24.8.0",
     "babel-loader": "^8.0.6",
-    "babel-plugin-styled-components": "^1.10.6",
     "copy-webpack-plugin": "^5.0.4",
     "cross-env": "^5.2.0",
     "css-hot-loader": "^1.4.4",

@@ -106,7 +106,6 @@
     "classnames": "^2.2.6",
     "crc-32": "^1.2.0",
     "deriv-components": "^1.0.0",
-    "deriv-p2p": "^1.0.1",
     "deriv-shared": "^1.0.0",
     "event-source-polyfill": "^1.0.5",
     "formik": "^1.5.8",

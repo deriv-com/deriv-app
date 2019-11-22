@@ -21,10 +21,14 @@
         color: var(--text-general);
     }
     &__tab-content {
-        height: calc(100vh - 320px);
+        height: calc(100vh - 280px);
         overflow: auto;
+        display: flex;
+        flex-direction: column;
     }
     &__form {
+        margin-top: auto;
+
         &-row {
             width: 100%;
             display: flex;

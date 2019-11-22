@@ -36,6 +36,216 @@ const TradetypeOption = ({ type }) => (
     </div>
 );
 
+const QuickStrategyForm = ({
+    active_index,
+    asset_dropdown_options,
+    createStrategy,
+    duration_dropdown_options,
+    getSizeDesc,
+    getSizeText,
+    initial_values,
+    onChangeDurationDropdown,
+    onChangeMarketDropdown,
+    onChangeTradeTypeDropdown,
+    trade_type_dropdown_options,
+    validateQuickStrategy,
+}) => (
+    <div className='quick-strategy__form'>
+        <Formik
+            initialValues={initial_values}
+            validate={validateQuickStrategy}
+            onSubmit={createStrategy}
+        >
+            {
+                ({
+                    errors,
+                    isValid,
+                    isSubmitting,
+                    values : {
+                        symbol,
+                        trade_type,
+                        duration_type,
+                    },
+                    setFieldValue,
+                    touched,
+                }) => (
+                    <Form>
+                        <div className='quick-strategy__form-row'>
+                            <Dropdown
+                                placeholder={localize('Assets')}
+                                is_align_text_left
+                                list={asset_dropdown_options}
+                                name='symbol'
+                                value={symbol}
+                                onChange={e =>
+                                    onChangeMarketDropdown(
+                                        setFieldValue,
+                                        e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className='quick-strategy__form-row'>
+                            <Dropdown
+                                placeholder={localize('Trade type')}
+                                is_align_text_left
+                                list={trade_type_dropdown_options}
+                                name='trade_type'
+                                value={trade_type}
+                                onChange={e =>
+                                    onChangeTradeTypeDropdown(
+                                        setFieldValue,
+                                        symbol,
+                                        e.target.value
+                                    )
+                                }
+                            />
+                        </div>
+                        <div className='quick-strategy__form-row'>
+                            <Dropdown
+                                className='quick-strategy__duration-dropdown'
+                                placeholder={localize('Duration type')}
+                                is_align_text_left
+                                list={duration_dropdown_options}
+                                name='duration_type'
+                                value={duration_type}
+                                onChange={e =>
+                                    onChangeDurationDropdown(
+                                        setFieldValue,
+                                        e.target.value
+                                    )
+                                }
+                            />
+                            <Field name='duration'>
+                                {({ field }) => (
+                                    <Input
+                                        {...field}
+                                        className='quick-strategy__input'
+                                        type='text'
+                                        error={
+                                            touched.duration
+                                        && errors.duration
+                                        }
+                                        label={localize('Duration')}
+                                        trailing_icon={
+                                            <Popover
+                                                alignment='bottom'
+                                                message={
+                                                    localize('The trade length of your purchased contract.')
+                                                }
+                                            >
+                                                <InfoOutlineIcon />
+                                            </Popover>
+                                        }
+                                    />
+                                )}
+                            </Field>
+                        </div>
+                        <div className='quick-strategy__form-row'>
+                            <Field name='stake'>
+                                {({ field }) => (
+                                    <Input
+                                        {...field}
+                                        className='quick-strategy__input'
+                                        type='text'
+                                        error={touched.stake && errors.stake}
+                                        label={localize('Initial stake')}
+                                        placeholder='10'
+                                        trailing_icon={
+                                            <Popover
+                                                alignment='bottom'
+                                                message={
+                                                    localize('The amount that you pay to enter a trade.')
+                                                }
+                                            >
+                                                <InfoOutlineIcon />
+                                            </Popover>
+                                        }
+                                    />
+                                )}
+                            </Field>
+                            <Field name='loss'>
+                                {({ field }) => (
+                                    <Input
+                                        {...field}
+                                        className='quick-strategy__input'
+                                        type='text'
+                                        error={touched.loss && errors.loss}
+                                        label={localize('Loss Threshold')}
+                                        placeholder='5000'
+                                        trailing_icon={
+                                            <Popover
+                                                alignment='bottom'
+                                                message={
+                                                    localize('The bot will stop trading if your total loss exceeds this amount.')
+                                                }
+                                            >
+                                                <InfoOutlineIcon />
+                                            </Popover>
+                                        }
+                                    />
+                                )}
+                            </Field>
+                        </div>
+                        <div className='quick-strategy__form-row'>
+                            <Field name='size'>
+                                {({ field }) => (
+                                    <Input
+                                        {...field}
+                                        className='quick-strategy__input'
+                                        type='text'
+                                        error={touched.size && errors.size}
+                                        label={getSizeText(active_index)}
+                                        placeholder='2'
+                                        trailing_icon={
+                                            <Popover
+                                                alignment='bottom'
+                                                message={
+                                                    getSizeDesc(active_index)
+                                                }
+                                            >
+                                                <InfoOutlineIcon />
+                                            </Popover>
+                                        }
+                                    />
+                                )}
+                            </Field>
+                            <Field name='profit'>
+                                {({ field }) => (
+                                    <Input
+                                        {...field}
+                                        className='quick-strategy__input'
+                                        type='text'
+                                        error={touched.profit && errors.profit}
+                                        label={localize('Profit Threshold')}
+                                        placeholder='5000'
+                                        trailing_icon={
+                                            <Popover
+                                                alignment='bottom'
+                                                message={localize('The bot will stop trading if your total profit exceeds this amount.')}
+                                            >
+                                                <InfoOutlineIcon />
+                                            </Popover>
+                                        }
+                                    />
+                                )}
+                            </Field>
+                        </div>
+                        <div className='quick-strategy__form-footer' >
+                            <Button
+                                type='submit'
+                                className='quick-strategy__button--create'
+                                text={localize('Create')}
+                                is_disabled={!isValid || isSubmitting}
+                                primary
+                            />
+                        </div>
+                    </Form>
+                )
+            }
+        </Formik>
+    </div>
+);
+
 const QuickStrategy = ({
     active_index,
     createStrategy,
@@ -108,205 +318,20 @@ const QuickStrategy = ({
                                     <div key={index} label={label}>
                                         <div className='quick-strategy__tab-content'>
                                             <div className='quick-strategy__description'>{description}</div>
-                                            <div className='quick-strategy__form'>
-                                                <Formik
-                                                    initialValues={initial_values}
-                                                    validate={validateQuickStrategy}
-                                                    onSubmit={createStrategy}
-                                                >
-                                                    {
-                                                        ({
-                                                            errors,
-                                                            isValid,
-                                                            isSubmitting,
-                                                            values : {
-                                                                symbol,
-                                                                trade_type,
-                                                                duration_type,
-                                                            },
-                                                            setFieldValue,
-                                                            touched,
-                                                        }) => (
-                                                            <Form>
-                                                                <div className='quick-strategy__form-row'>
-                                                                    <Dropdown
-                                                                        placeholder={localize('Assets')}
-                                                                        is_align_text_left
-                                                                        list={asset_dropdown_options}
-                                                                        name='symbol'
-                                                                        value={symbol}
-                                                                        onChange={e =>
-                                                                            onChangeMarketDropdown(
-                                                                                setFieldValue,
-                                                                                e.target.value)
-                                                                        }
-                                                                    />
-                                                                </div>
-                                                                <div className='quick-strategy__form-row'>
-                                                                    <Dropdown
-                                                                        placeholder={localize('Trade type')}
-                                                                        is_align_text_left
-                                                                        list={trade_type_dropdown_options}
-                                                                        name='trade_type'
-                                                                        value={trade_type}
-                                                                        onChange={e =>
-                                                                            onChangeTradeTypeDropdown(
-                                                                                setFieldValue,
-                                                                                symbol,
-                                                                                e.target.value
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                </div>
-                                                                <div className='quick-strategy__form-row'>
-                                                                    <Dropdown
-                                                                        className='quick-strategy__duration-dropdown'
-                                                                        placeholder={localize('Duration type')}
-                                                                        is_align_text_left
-                                                                        list={duration_dropdown_options}
-                                                                        name='duration_type'
-                                                                        value={duration_type}
-                                                                        onChange={e =>
-                                                                            onChangeDurationDropdown(
-                                                                                setFieldValue,
-                                                                                e.target.value
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                    <Field name='duration'>
-                                                                        {({ field }) => (
-                                                                            <Input
-                                                                                {...field}
-                                                                                className='quick-strategy__input'
-                                                                                type='text'
-                                                                                error={
-                                                                                    touched.duration
-                                                                                    && errors.duration
-                                                                                }
-                                                                                label={localize('Duration')}
-                                                                                trailing_icon={
-                                                                                    <Popover
-                                                                                        alignment='bottom'
-                                                                                        message={
-                                                                                            localize('The trade length of' +
-                                                                                            'your purchased contract.'
-                                                                                            )
-                                                                                        }
-                                                                                    >
-                                                                                        <InfoOutlineIcon />
-                                                                                    </Popover>
-                                                                                }
-                                                                            />
-                                                                        )}
-                                                                    </Field>
-                                                                </div>
-                                                                <div className='quick-strategy__form-row'>
-                                                                    <Field name='stake'>
-                                                                        {({ field }) => (
-                                                                            <Input
-                                                                                {...field}
-                                                                                className='quick-strategy__input'
-                                                                                type='text'
-                                                                                error={touched.stake && errors.stake}
-                                                                                label={localize('Initial stake')}
-                                                                                placeholder='10'
-                                                                                trailing_icon={
-                                                                                    <Popover
-                                                                                        alignment='bottom'
-                                                                                        message={
-                                                                                            localize('The amount that ' +
-                                                                                            'you pay to enter a trade.')
-                                                                                        }
-                                                                                    >
-                                                                                        <InfoOutlineIcon />
-                                                                                    </Popover>
-                                                                                }
-                                                                            />
-                                                                        )}
-                                                                    </Field>
-                                                                    <Field name='loss'>
-                                                                        {({ field }) => (
-                                                                            <Input
-                                                                                {...field}
-                                                                                className='quick-strategy__input'
-                                                                                type='text'
-                                                                                error={touched.loss && errors.loss}
-                                                                                label={localize('Loss Threshold')}
-                                                                                placeholder='5000'
-                                                                                trailing_icon={
-                                                                                    <Popover
-                                                                                        alignment='bottom'
-                                                                                        message={
-                                                                                            localize('The bot will stop ' +
-                                                                                            'trading if your total loss ' +
-                                                                                            'exceeds this amount.')
-                                                                                        }
-                                                                                    >
-                                                                                        <InfoOutlineIcon />
-                                                                                    </Popover>
-                                                                                }
-                                                                            />
-                                                                        )}
-                                                                    </Field>
-                                                                </div>
-                                                                <div className='quick-strategy__form-row'>
-                                                                    <Field name='size'>
-                                                                        {({ field }) => (
-                                                                            <Input
-                                                                                {...field}
-                                                                                className='quick-strategy__input'
-                                                                                type='text'
-                                                                                error={touched.size && errors.size}
-                                                                                label={getSizeText(active_index)}
-                                                                                placeholder='2'
-                                                                                trailing_icon={
-                                                                                    <Popover
-                                                                                        alignment='bottom'
-                                                                                        message={
-                                                                                            getSizeDesc(active_index)
-                                                                                        }
-                                                                                    >
-                                                                                        <InfoOutlineIcon />
-                                                                                    </Popover>
-                                                                                }
-                                                                            />
-                                                                        )}
-                                                                    </Field>
-                                                                    <Field name='profit'>
-                                                                        {({ field }) => (
-                                                                            <Input
-                                                                                {...field}
-                                                                                className='quick-strategy__input'
-                                                                                type='text'
-                                                                                error={touched.profit && errors.profit}
-                                                                                label={localize('Profit Threshold')}
-                                                                                placeholder='5000'
-                                                                                trailing_icon={
-                                                                                    <Popover
-                                                                                        alignment='bottom'
-                                                                                        message={localize('The bot will stop trading if your total profit exceeds this amount.')}
-                                                                                    >
-                                                                                        <InfoOutlineIcon />
-                                                                                    </Popover>
-                                                                                }
-                                                                            />
-                                                                        )}
-                                                                    </Field>
-                                                                </div>
-                                                                <div className='quick-strategy__form-footer' >
-                                                                    <Button
-                                                                        type='submit'
-                                                                        className='quick-strategy__button--create'
-                                                                        text={localize('Create')}
-                                                                        is_disabled={!isValid || isSubmitting}
-                                                                        primary
-                                                                    />
-                                                                </div>
-                                                            </Form>
-                                                        )
-                                                    }
-                                                </Formik>
-                                            </div>
+                                            <QuickStrategyForm
+                                                active_index={active_index}
+                                                asset_dropdown_options={asset_dropdown_options}
+                                                createStrategy={createStrategy}
+                                                duration_dropdown_options={duration_dropdown_options}
+                                                getSizeDesc={getSizeDesc}
+                                                getSizeText={getSizeText}
+                                                initial_values={initial_values}
+                                                onChangeDurationDropdown={onChangeDurationDropdown}
+                                                onChangeMarketDropdown={onChangeMarketDropdown}
+                                                onChangeTradeTypeDropdown={onChangeTradeTypeDropdown}
+                                                trade_type_dropdown_options={trade_type_dropdown_options}
+                                                validateQuickStrategy={validateQuickStrategy}
+                                            />
                                         </div>
                                     </div>
                                 );

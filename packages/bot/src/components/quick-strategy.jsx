@@ -135,7 +135,11 @@ const QuickStrategy = ({
                                                                         list={asset_dropdown_options}
                                                                         name='symbol'
                                                                         value={symbol}
-                                                                        onChange={e => onChangeMarketDropdown(setFieldValue, e.target.value)}
+                                                                        onChange={e =>
+                                                                            onChangeMarketDropdown(
+                                                                                setFieldValue,
+                                                                                e.target.value)
+                                                                        }
                                                                     />
                                                                 </div>
                                                                 <div className='quick-strategy__form-row'>
@@ -146,7 +150,11 @@ const QuickStrategy = ({
                                                                         name='trade_type'
                                                                         value={trade_type}
                                                                         onChange={e =>
-                                                                            onChangeTradeTypeDropdown(setFieldValue, symbol, e.target.value)
+                                                                            onChangeTradeTypeDropdown(
+                                                                                setFieldValue,
+                                                                                symbol,
+                                                                                e.target.value
+                                                                            )
                                                                         }
                                                                     />
                                                                 </div>
@@ -159,7 +167,10 @@ const QuickStrategy = ({
                                                                         name='duration_type'
                                                                         value={duration_type}
                                                                         onChange={e =>
-                                                                            onChangeDurationDropdown(setFieldValue, e.target.value)
+                                                                            onChangeDurationDropdown(
+                                                                                setFieldValue,
+                                                                                e.target.value
+                                                                            )
                                                                         }
                                                                     />
                                                                     <Field name='duration'>
@@ -168,12 +179,19 @@ const QuickStrategy = ({
                                                                                 {...field}
                                                                                 className='quick-strategy__input'
                                                                                 type='text'
-                                                                                error={touched.duration && errors.duration}
+                                                                                error={
+                                                                                    touched.duration
+                                                                                    && errors.duration
+                                                                                }
                                                                                 label={localize('Duration')}
                                                                                 trailing_icon={
                                                                                     <Popover
                                                                                         alignment='bottom'
-                                                                                        message={localize('The trade length of your purchased contract.')}
+                                                                                        message={
+                                                                                            localize('The trade length of' +
+                                                                                            'your purchased contract.'
+                                                                                            )
+                                                                                        }
                                                                                     >
                                                                                         <InfoOutlineIcon />
                                                                                     </Popover>
@@ -195,7 +213,10 @@ const QuickStrategy = ({
                                                                                 trailing_icon={
                                                                                     <Popover
                                                                                         alignment='bottom'
-                                                                                        message={localize('The amount that you pay to enter a trade.')}
+                                                                                        message={
+                                                                                            localize('The amount that ' +
+                                                                                            'you pay to enter a trade.')
+                                                                                        }
                                                                                     >
                                                                                         <InfoOutlineIcon />
                                                                                     </Popover>
@@ -215,7 +236,11 @@ const QuickStrategy = ({
                                                                                 trailing_icon={
                                                                                     <Popover
                                                                                         alignment='bottom'
-                                                                                        message={localize('The bot will stop trading if your total loss exceeds this amount.')}
+                                                                                        message={
+                                                                                            localize('The bot will stop ' +
+                                                                                            'trading if your total loss ' +
+                                                                                            'exceeds this amount.')
+                                                                                        }
                                                                                     >
                                                                                         <InfoOutlineIcon />
                                                                                     </Popover>
@@ -237,7 +262,9 @@ const QuickStrategy = ({
                                                                                 trailing_icon={
                                                                                     <Popover
                                                                                         alignment='bottom'
-                                                                                        message={getSizeDesc(active_index)}
+                                                                                        message={
+                                                                                            getSizeDesc(active_index)
+                                                                                        }
                                                                                     >
                                                                                         <InfoOutlineIcon />
                                                                                     </Popover>

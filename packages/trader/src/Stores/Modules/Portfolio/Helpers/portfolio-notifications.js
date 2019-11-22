@@ -1,7 +1,7 @@
 import { Money }    from 'deriv-components';
 import React        from 'react';
-import { localize } from 'App/i18n';
-import Localize     from '../../../../App/Components/Elements/localize.jsx';
+import { localize } from 'deriv-translations/lib/i18n';
+import Localize     from 'deriv-translations/lib/localize';
 
 export const contractSold = (currency, sold_for) => ({
     key    : 'contract_sold',

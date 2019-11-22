@@ -4,9 +4,9 @@ import {
     Money }          from 'deriv-components';
 import PropTypes     from 'prop-types';
 import React         from 'react';
-import Localize      from 'App/Components/Elements/localize.jsx';
+import Localize      from 'deriv-translations/lib/localize';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
-import { localize }  from 'App/i18n';
+import { localize }  from 'deriv-translations/lib/i18n';
 import IconWallet    from 'Assets/Common/icon-wallet.jsx';
 import { connect }   from 'Stores/connect';
 

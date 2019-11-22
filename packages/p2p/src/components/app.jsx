@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 import Ads from './ads/ads.jsx';
 import Orders from './orders/orders.jsx';
-import './styles/app.scss';
+import './app.scss';
 
 const App = () => (
     <BrowserRouter>

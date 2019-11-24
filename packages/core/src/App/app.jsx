@@ -10,6 +10,8 @@ import ErrorBoundary                from './Components/Elements/Errors/error-bou
 import AppContents                  from './Containers/Layout/app-contents.jsx';
 import Footer                       from './Containers/Layout/footer.jsx';
 import Header                       from './Containers/Layout/header.jsx';
+import NotificationMessages         from './Containers/notification-messages.jsx';
+import AppModals                    from './Containers/Modals';
 import Lazy                         from './Containers/Lazy';
 import Routes                       from './Containers/Routes/routes.jsx';
 import { interceptAcrossBot }       from './Constants/routes-config';
@@ -21,14 +23,15 @@ import 'Sass/app.scss';
 // Check if device is touch capable
 const isTouchDevice = 'ontouchstart' in document.documentElement;
 
-const shouldLoadModals = () => {
-    const url_params = new URLSearchParams(window.location.search);
-    return ['reset_password', 'signup'].includes(url_params.get('action'));
-};
-
 const App = ({ root_store }) => {
     const base = window.location.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(window.location.pathname);
+    const url_params = new URLSearchParams(window.location.search);
+    const platform_passthrough = {
+        root_store,
+        WS,
+        client_base: Client,
+    };
 
     return (
         <Router basename={ has_base ? `/${base}` : null}>
@@ -45,7 +48,7 @@ const App = ({ root_store }) => {
                             <ErrorBoundary>
                                 <AppContents>
                                     {/* TODO: [trader-remove-client-base] */}
-                                    <Routes passthrough={{ root_store, WS, client_base: Client }} />
+                                    <Routes passthrough={ platform_passthrough } />
                                     <Prompt when={ true } message={ interceptAcrossBot } />
                                     <Lazy
                                         ctor={() => import(/* webpackChunkName: "push-notification" */'./Containers/push-notification.jsx')}
@@ -55,11 +58,7 @@ const App = ({ root_store }) => {
                                 </AppContents>
                             </ErrorBoundary>
                             <Footer />
-                            <Lazy
-                                ctor={ () => import(/* webpackChunkName: "app-modals", webpackPrefetch: true */'./Containers/Modals') }
-                                should_load={ shouldLoadModals() }
-                                has_progress={ false }
-                            />
+                            <AppModals url_action_param={ url_params.get('action') } />
                         </React.Fragment>
                 }
             </MobxProvider>
@@ -73,7 +72,7 @@ App.propTypes = {
 
 export default App;
 
-const root_store = initStore();
+const root_store = initStore(NotificationMessages);
 
 const wrapper = document.getElementById('deriv_app');
 // eslint-disable-next-line no-unused-expressions

@@ -24,8 +24,9 @@ export default class UIStore extends BaseStore {
     @observable is_reports_visible          = false;
 
     // Extensions
-    @observable footer_extension   = undefined;
-    @observable settings_extension = undefined;
+    @observable footer_extension         = undefined;
+    @observable settings_extension       = undefined;
+    @observable notification_messages_ui = undefined;
 
     @observable is_cashier_modal_on     = false;
     @observable is_dark_mode_on         = false;
@@ -39,6 +40,7 @@ export default class UIStore extends BaseStore {
     @observable is_services_error_visible             = false;
     @observable is_unsupported_contract_modal_visible = false;
     @observable is_account_signup_modal_visible       = false;
+    @observable is_set_residence_modal_visible        = false;
     @observable is_reset_password_modal_visible       = false;
     // @observable is_purchase_lock_on       = false;
 
@@ -136,6 +138,11 @@ export default class UIStore extends BaseStore {
                 document.body.classList.add('theme--light');
             }
         });
+    }
+
+    @action.bound
+    init(notification_messages) {
+        this.notification_messages_ui = notification_messages;
     }
 
     @action.bound
@@ -421,6 +428,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleAccountSignupModal(state_change = !this.is_account_signup_modal_visible) {
         this.is_account_signup_modal_visible = state_change;
+    }
+
+    @action.bound
+    toggleSetResidenceModal(state_change = !this.is_set_residence_modal_visible) {
+        this.is_set_residence_modal_visible = state_change;
     }
 
     @action.bound

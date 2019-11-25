@@ -61,7 +61,7 @@ export default connect(
     ({ modules, ui }) => ({
         form_components     : modules.trade.form_components,
         is_chart_loading    : modules.trade.is_chart_loading,
-        is_market_closed    : modules.trade.is_market_closed,
+        is_market_closed    : true,
         is_trade_enabled    : modules.trade.is_trade_enabled,
         onMount             : modules.trade.onMount,
         onUnmount           : modules.trade.onUnmount,

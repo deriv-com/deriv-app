@@ -262,13 +262,13 @@ class PersonalDetails extends React.Component {
                 v => !!v,
                 v => v.length > 2,
                 v => v.length < 30,
-                v => /^[\p{L}\s'.-]{2,50}$/gu.exec(v) !== null,
+                v => /^[\w\s'.-]{2,50}$/gu.exec(v) !== null,
             ],
             last_name: [
                 v => !!v,
                 v => v.length >= 2,
                 v => v.length <= 50,
-                v =>  /^[\p{L}\s'.-]{2,50}$/gu.exec(v) !== null,
+                v =>  /^[\w\s'.-]{2,50}$/gu.exec(v) !== null,
             ],
             date_of_birth: [
                 v => !!v,
@@ -304,6 +304,7 @@ class PersonalDetails extends React.Component {
         Object.entries(validations)
             .forEach(([key, rules]) => {
                 const error_index = rules.findIndex(v => !v(values[key]));
+
                 if (error_index !== -1) {
                     switch (key) {
                         case 'date_of_birth':

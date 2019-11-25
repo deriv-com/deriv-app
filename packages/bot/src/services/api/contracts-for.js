@@ -245,6 +245,34 @@ export default class ContractsFor {
         const contracts_for_category = await this.getContractsByTradeType(symbol, trade_type);
         const durations = [];
         const getDurationIndex = input => DEFAULT_DURATION_DROPDOWN_OPTIONS.findIndex(d => d[1] === input.replace(/\d+/g, ''));
+        // convert 'duration' to 'unit_to_convert' e.g : convertDuration('10h', 's') will return 10*60*60s
+        const convertDuration = (duration, unit_to_convert) => {
+            const duration_value = duration.replace(/\D/g, '');
+            const duration_index = getDurationIndex(duration);
+            const target_index = DEFAULT_DURATION_DROPDOWN_OPTIONS
+                .findIndex(default_duration => default_duration[1] === unit_to_convert);
+
+            let converted_duration = parseInt(duration_value);
+
+            DEFAULT_DURATION_DROPDOWN_OPTIONS
+                .slice(target_index + 1, duration_index + 1)
+                .reverse()
+                .forEach(default_duration => {
+                    switch (default_duration[1]){
+                        case 'm':
+                        case 'h':
+                            converted_duration *= 60;
+                            break;
+                        case 'd':
+                            converted_duration *= 24;
+                            break;
+                        default:
+                            break;
+                    }
+                });
+
+            return converted_duration;
+        };
 
         contracts_for_category.forEach(contract => {
             if (!contract.min_contract_duration || !contract.max_contract_duration) {
@@ -266,7 +294,12 @@ export default class ContractsFor {
                         durations.push({
                             display: default_duration[0],
                             unit   : default_duration[1],
-                            min    : (index === 0 ? parseInt(contract.min_contract_duration.replace(/\D/g, '')) : 1),
+                            min    : (
+                                index === 0 ?
+                                    parseInt(contract.min_contract_duration.replace(/\D/g, ''))
+                                    : 1
+                            ),
+                            max: convertDuration(contract.max_contract_duration, default_duration[1]),
                         });
                     }
                 });

@@ -4,7 +4,6 @@ import { Button }   from 'deriv-components';
 import React        from 'react';
 import Localize     from 'deriv-translations/lib/localize';
 import { localize } from 'deriv-translations/lib/i18n';
-
 import Icon         from 'Assets/icon.jsx';
 
 const SuccessDialog = ({

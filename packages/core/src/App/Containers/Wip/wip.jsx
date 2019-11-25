@@ -4,7 +4,6 @@ import BinarySocket from '_common/base/socket_base';
 import { urlFor }   from '_common/url';
 import Localize     from 'deriv-translations/lib/localize';
 import { localize } from 'deriv-translations/lib/i18n';
-
 import Icon         from 'Assets/icon.jsx';
 import { connect }  from 'Stores/connect';
 import 'Sass/app/_common/components/wip.scss';

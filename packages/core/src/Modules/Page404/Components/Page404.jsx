@@ -1,7 +1,6 @@
 import React        from 'react';
 import { routes }   from 'Constants/index';
 import { localize } from 'deriv-translations/lib/i18n';
-
 import PageError    from 'Modules/PageError';
 
 const Page404 = () => (

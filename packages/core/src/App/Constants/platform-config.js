@@ -1,5 +1,4 @@
 import { localize } from 'deriv-translations/lib/i18n';
-
 import { routes }   from 'Constants/index';
 
 const platform_config = [

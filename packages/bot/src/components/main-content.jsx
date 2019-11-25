@@ -1,9 +1,9 @@
-import React from 'react';
-import Flyout from './flyout.jsx';
-import Chart from './chart/chart.jsx';
+import React                from 'react';
+import Flyout               from './flyout.jsx';
+import Chart                from './chart/chart.jsx';
 import NotificationMessages from './notification-messages.jsx';
-import { tabs_title } from '../constants/bot-contents';
-import { connect } from '../stores/connect';
+import { tabs_title }       from '../constants/bot-contents';
+import { connect }          from '../stores/connect';
 import '../assets/sass/main-content.scss';
 import '../assets/sass/scratch/workspace.scss';
 import '../assets/sass/scratch/toolbox.scss';

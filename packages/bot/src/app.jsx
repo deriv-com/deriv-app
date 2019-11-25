@@ -33,7 +33,9 @@ class App extends React.Component {
 
     componentWillUnmount() {
         ApiHelpers.instance.disposeOnAccountSwitch();
-        Blockly.derivWorkspace.dispose();
+        if (Blockly.derivWorkspace) {
+            Blockly.derivWorkspace.dispose();
+        }
     }
 
     render() {

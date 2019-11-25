@@ -4,10 +4,7 @@
     &__container {
         &_#{$strategy-modal} {
             .modal__content {
-                padding: 24px 24px 0;
-            }
-            .modal__footer {
-                padding: 0 24px 24px;
+                padding: 15px 24px;
             }
         }
     }
@@ -17,18 +14,26 @@
     $quick-strategy: &;
 
     &__description {
-        margin-top: 24px;
+        margin-top: 15px;
         font-size: 14px;
         font-weight: normal;
         line-height: 1.43;
         color: var(--text-general);
     }
+    &__tab-content {
+        height: calc(100vh - 330px);
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+    }
     &__form {
+        margin-top: auto;
+
         &-row {
             width: 100%;
             display: flex;
             justify-content: space-between;
-            margin: 14px 0;
+            margin: 16px 0;
 
             > * {
                 justify-content: center;
@@ -73,5 +78,10 @@
         padding: 3px;
         margin: 2px;
         background-color: var(--general-section-1);
+    }
+    &__duration {
+        &-dropdown {
+            width: 194px !important;
+        }
     }
 }

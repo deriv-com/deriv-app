@@ -59,6 +59,9 @@ class AccountSignup extends React.Component {
             throw Error(error);
         }
 
+        // GTM push data layer signup event
+        this.props.pushDataLayer({ event: 'signup' });
+
         // Handle lower level modal controls due to overriding modal rendering
         this.props.isModalVisible(false);
         this.props.enableApp();
@@ -183,11 +186,12 @@ AccountSignupModal.propTypes = {
     is_loading    : PropTypes.bool,
     is_visible    : PropTypes.bool,
     onSignup      : PropTypes.func,
+    pushDataLayer : PropTypes.func,
     residence_list: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default connect(
-    ({ ui, client }) => ({
+    ({ ui, client, gtm }) => ({
         is_visible              : ui.is_account_signup_modal_visible,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         enableApp               : ui.enableApp,
@@ -195,5 +199,6 @@ export default connect(
         is_loading              : ui.is_loading,
         onSignup                : client.onSignup,
         residence_list          : client.residence_list,
+        pushDataLayer           : gtm.pushDataLayer,
     }),
 )(AccountSignupModal);

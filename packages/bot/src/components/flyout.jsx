@@ -79,7 +79,7 @@ class Flyout extends React.PureComponent {
 
                                                 return (
                                                     <FlyoutBlockGroup
-                                                        key={`${node.getAttribute('type')}${Date.now()}`}
+                                                        key={`${node.getAttribute('type')}${Blockly.utils.genUid()}`}
                                                         id={`flyout__item-workspace--${index}`}
                                                         block_node={node}
                                                         onInfoClick={

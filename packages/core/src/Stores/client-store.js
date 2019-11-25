@@ -589,8 +589,11 @@ export default class ClientStore extends BaseStore {
             // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
+
+                // Client comes back from oauth and logs in
                 this.root_store.segment.identifyEvent();
                 this.root_store.segment.pageView();
+                this.root_store.gtm.pushDataLayer({ event: 'login' });
             } else { // So it will send an authorize with the accepted token, to be handled by socket-general
                 await BinarySocket.authorize(client.token);
             }

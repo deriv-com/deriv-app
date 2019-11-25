@@ -17,6 +17,7 @@ import {
 }                               from '../scratch';
 import { isEnded }              from '../utils/contract';
 import { observer }             from '../utils/observer';
+import { setMainContentWidth }  from '../utils/window-size';
 import { hasAllRequiredBlocks } from '../scratch/utils/scratch-helper';
 
 export default class RunPanelStore {
@@ -81,7 +82,7 @@ export default class RunPanelStore {
         }
 
         this.is_running = true;
-        this.is_drawer_open = true;
+        this.toggleDrawer(true);
         contract_card.clear();
         this.setContractStage(contract_stages.STARTING);
 
@@ -131,6 +132,7 @@ export default class RunPanelStore {
     @action.bound
     toggleDrawer(is_open) {
         this.is_drawer_open = is_open;
+        setMainContentWidth(is_open);
     }
 
     @action.bound

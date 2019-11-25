@@ -1,7 +1,12 @@
-export const getRunPanelWidth = (is_open) => {
-    return is_open ? getComputedStyle(document.getElementsByClassName('bot')[0]).getPropertyValue('--run-panel-width') : 0;
-}
-
 export const getMainContentHeight = () => {
     return getComputedStyle(document.getElementsByClassName('bot')[0]).getPropertyValue('--bot-content-height');
-}
+};
+
+export const getMainContentWidth = () => {
+    return getComputedStyle(document.getElementsByClassName('bot')[0]).getPropertyValue('--bot-content-width');
+};
+
+export const setMainContentWidth = (is_run_panel_open) => {
+    const width = is_run_panel_open ? 'calc(100vw - 366px)' : '100vw';
+    return document.getElementsByClassName('bot')[0].style.setProperty('--bot-content-width', width);
+};

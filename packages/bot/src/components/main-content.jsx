@@ -10,7 +10,7 @@ import '../assets/sass/scratch/toolbox.scss';
 
 class MainContent extends React.Component {
     render() {
-        const { active_tab, width } = this.props;
+        const { active_tab } = this.props;
         switch (active_tab) {
             case (tabs_title.WORKSPACE):
             default:
@@ -18,7 +18,7 @@ class MainContent extends React.Component {
                     <div
                         id='scratch_div'
                         style={{
-                            width,
+                            width : 'var(--bot-content-width)',
                             height: 'var(--bot-content-height)',
                         }}
                     >
@@ -32,7 +32,7 @@ class MainContent extends React.Component {
                     <div
                         className='bot__chart-container'
                         style={{
-                            width,
+                            width : 'var(--bot-content-width)',
                             height: 'var(--bot-content-height)',
                         }}
                     >
@@ -46,6 +46,5 @@ class MainContent extends React.Component {
 }
 export default connect(({ main_content }) => ({
     active_tab: main_content.active_tab,
-    width     : main_content.width,
 }))(MainContent);
 

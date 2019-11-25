@@ -6,7 +6,9 @@ import { Button }                  from 'deriv-components';
 import TogglePositionsDrawerDialog from 'App/Components/Elements/PositionsDrawer/toggle-positions-drawer-dialog.jsx';
 import RemainingTime               from 'App/Containers/remaining-time.jsx';
 import { localize }                from 'App/i18n';
-import { isValidToSell }           from 'Stores/Modules/Contract/Helpers/logic';
+import {
+    isValidToCancel,
+    isValidToSell }                from 'Stores/Modules/Contract/Helpers/logic';
 import { isMultiplierContract }    from 'Stores/Modules/Contract/Helpers/multiplier';
 
 const ContractDetailsCardFooter = ({
@@ -16,7 +18,7 @@ const ContractDetailsCardFooter = ({
     onClickSell,
 }) => {
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
-    const is_valid_to_cancel = contract_info.deal_cancellation;
+    const is_valid_to_cancel = isValidToCancel(contract_info);
 
     return (
         <CSSTransition

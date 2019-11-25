@@ -34,6 +34,7 @@ import {
     getProposalErrorField,
     getProposalInfo }                 from './Helpers/proposal';
 import { setLimitOrderBarriers }      from '../Contract/Helpers/limit-orders';
+import { isValidToCancel }            from '../Contract/Helpers/logic';
 import { ChartBarrierStore }          from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS }             from '../SmartChart/Constants/barriers';
 import {
@@ -369,7 +370,7 @@ export default class TradeStore extends BaseStore {
             contract_type,
             contract_info: this.proposal_info[contract_type],
         });
-        if (this.hovered_contract_type && this.proposal_info[contract_type].deal_cancellation) {
+        if (this.hovered_contract_type && isValidToCancel(this.proposal_info[contract_type])) {
             this.deal_cancellation_price = this.proposal_info[contract_type].deal_cancellation.ask_price;
         }
     }
@@ -733,8 +734,8 @@ export default class TradeStore extends BaseStore {
         };
 
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
-            const { commission } = this.proposal_info.MULTUP;
-            this.commission = commission;
+            // commission is the same for MULTUP/MULTDOWN
+            this.commission = this.proposal_info.MULTUP.commission;
         }
 
         this.setMainBarrier(response.echo_req);

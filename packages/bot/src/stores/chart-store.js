@@ -22,7 +22,6 @@ export default class ChartStore {
     @computed
     get is_contract_ended(){
         const { transactions } = this.root_store;
-        console.log(transactions.contracts); // eslint-disable-line no-console
 
         return transactions.contracts.lenght > 0 && transactions.contracts[0].is_ended;
     }

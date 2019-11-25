@@ -27,7 +27,6 @@ class MainContent extends React.Component {
                     </div>
                 );
             case (tabs_title.CHART): {
-
                 return (
                     <div
                         className='bot__chart-container'
@@ -40,7 +39,6 @@ class MainContent extends React.Component {
                     </div>
                 );
             }
-
         }
     }
 }

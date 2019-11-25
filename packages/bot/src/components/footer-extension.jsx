@@ -57,13 +57,15 @@ class FooterExtension extends React.Component {
 }
 
 FooterExtension.propTypes = {
+    active_tab              : PropTypes.bool,
     populateFooterExtensions: PropTypes.func,
+    setActiveTab            : PropTypes.func,
 };
 
 export default connect(
-    ({ ui, footer_extention, main_content }) => ({
+    ({ ui, main_content }) => ({
         active_tab              : main_content.active_tab,
         populateFooterExtensions: ui.populateFooterExtensions,
-        setActiveTab            : footer_extention.setActiveTab,
+        setActiveTab            : main_content.setActiveTab,
     })
 )(FooterExtension);

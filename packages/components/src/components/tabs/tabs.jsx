@@ -47,7 +47,6 @@ class Tabs extends Component {
                 >
                     {children.map((child, index) => {
                         const { label } = child.props;
-                        
                         return (
                             <Tab
                                 is_active={index === active_index}

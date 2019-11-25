@@ -21,14 +21,14 @@ export default class MainContentStore {
     @observable active_tab = tabs_title.WORKSPACE;
 
     @action.bound
+    setActiveTab(tab) {
+        this.active_tab = tab;
+    }
+
+    @action.bound
     setCharContainerSize() {
         if (this.active_tab === tabs_title.WORKSPACE) {
             onWorkspaceResize();
         }
-    }
-
-    @action.bound
-    setActiveTab(tab) {
-        this.active_tab = tab;
     }
 }

@@ -14,4 +14,4 @@ lib/
 coverage
 packages/shared/utils
 packages/components/.out
-packages/p2p/index.js
+packages/p2p/lib/index.js

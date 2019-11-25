@@ -1,6 +1,6 @@
 {
   "name": "deriv-p2p",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "p2p cashier",
   "main": "index.js",
   "scripts": {

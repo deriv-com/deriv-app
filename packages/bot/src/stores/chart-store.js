@@ -66,7 +66,6 @@ export default class ChartStore {
     wsSendRequest = (req) => {
         if (req.time) {
             return ServerTime.timePromise().then(() => {
-                console.log('HERER'); // eslint-disable-line no-console
                 return ({
                     msg_type: 'time',
                     time    : ServerTime.get().unix(),

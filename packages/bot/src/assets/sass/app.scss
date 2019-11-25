@@ -3,6 +3,7 @@
 
 .bot {
     --run-panel-width: 366;
-    --header-footer-height: 140;
-    --toolbar_height: 46;
+    --header-footer-height: 84;
+    --bot-toolbar_height: 56;
+    --bot-content-height: calc(100vh - 140px);
 }

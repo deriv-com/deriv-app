@@ -1,6 +1,5 @@
-import config               from '../../constants';
-import { getHeaderFooterHeight, 
-    getToolbarHeight }      from '../../utils/window-size';
+import config                   from '../../constants';
+import { getMainContentHeight } from '../../utils/window-size';
 
 export const hasAllRequiredBlocks = () => {
     const blocks_in_workspace     = Blockly.derivWorkspace.getAllBlocks();
@@ -18,7 +17,7 @@ export const onWorkspaceResize = () => {
 
     if (el_scratch_div) {
         el_scratch_div.style.width = `${window.innerWidth}px`;
-        el_scratch_div.style.height = `${window.innerHeight - getToolbarHeight() - getHeaderFooterHeight()}px`;
+        el_scratch_div.style.height = getMainContentHeight();;
         Blockly.svgResize(Blockly.derivWorkspace);
     }
 };

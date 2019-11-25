@@ -8,6 +8,7 @@ import MainContent              from './components/main-content.jsx';
 import Toolbar                  from './components/toolbar.jsx';
 import RunPanel                 from './components/run-panel.jsx';
 import QuickStrategy            from './components/quick-strategy.jsx';
+import { scratchWorkspaceInit } from './scratch/index';
 import ApiHelpers               from './services/api/api-helpers';
 import ServerTime               from './services/api/server_time';
 import RootStore                from './stores';
@@ -27,10 +28,12 @@ class App extends React.Component {
 
     componentDidMount() {
         ApiHelpers.instance.registerOnAccountSwitch();
+        scratchWorkspaceInit();
     }
 
     componentWillUnmount() {
         ApiHelpers.instance.disposeOnAccountSwitch();
+        Blockly.derivWorkspace.dispose();
     }
 
     render() {

@@ -7,7 +7,9 @@ import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services/ws-methods';
 import ObjectUtils                 from 'deriv-shared/utils/object';
 import { formatPortfolioPosition } from './Helpers/format-response';
-import { contractSold }            from './Helpers/portfolio-notifications';
+import {
+    contractCancelled,
+    contractSold }                 from './Helpers/portfolio-notifications';
 import {
     getCurrentTick,
     getDurationPeriod,
@@ -198,14 +200,20 @@ export default class PortfolioStore extends BaseStore {
                         ...response.error,
                     });
                     this.root_store.ui.toggleServicesErrorModal(true);
+                } else {
+                    this.root_store.ui.addNotificationMessage(
+                        contractCancelled()
+                    );
+                    this.removePositionById(contract_id);
                 }
             });
         }
     }
 
     @action.bound
-    onClickSell(contract_id) {
+    onClickSell(contract_id, remove_position_after_sell = false) {
         const i = this.getPositionIndexById(contract_id);
+        this.remove_position_after_sell = remove_position_after_sell;
         const { bid_price } = this.positions[i].contract_info;
         this.positions[i].is_sell_requested = true;
         if (contract_id && bid_price) {
@@ -239,6 +247,9 @@ export default class PortfolioStore extends BaseStore {
             this.root_store.ui.addNotificationMessage(
                 contractSold(this.root_store.client.currency, response.sell.sold_for)
             );
+            if (this.remove_position_after_sell) {
+                this.removePositionById(response.sell.contract_id);
+            }
         }
     }
 

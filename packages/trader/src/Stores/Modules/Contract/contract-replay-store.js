@@ -7,7 +7,9 @@ import { localize }            from 'App/i18n';
 import ContractStore           from './contract-store';
 import { getLimitOrderAmount } from './Helpers/limit-orders';
 import { getContractUpdate }   from './Helpers/logic';
-import { contractSold }        from '../Portfolio/Helpers/portfolio-notifications';
+import {
+    contractCancelled,
+    contractSold }             from '../Portfolio/Helpers/portfolio-notifications';
 import BaseStore               from '../../base-store';
 
 export default class ContractReplayStore extends BaseStore {
@@ -160,14 +162,20 @@ export default class ContractReplayStore extends BaseStore {
                         ...response.error,
                     });
                     this.root_store.ui.toggleServicesErrorModal(true);
+                } else {
+                    this.root_store.ui.addNotificationMessage(
+                        contractCancelled()
+                    );
+                    this.root_store.modules.portfolio.removePositionById(contract_id);
                 }
             });
         }
     }
 
     @action.bound
-    onClickSell(contract_id) {
+    onClickSell(contract_id, remove_position_after_sell = false) {
         const { bid_price } = this.contract_info;
+        this.remove_position_after_sell = remove_position_after_sell;
         if (contract_id && bid_price) {
             this.is_sell_requested = true;
             WS.sell(contract_id, bid_price).then(this.handleSell);
@@ -194,6 +202,9 @@ export default class ContractReplayStore extends BaseStore {
             this.root_store.ui.addNotificationMessage(
                 contractSold(this.root_store.client.currency, response.sell.sold_for)
             );
+            if (this.remove_position_after_sell) {
+                this.root_store.modules.portfolio.removePositionById(response.sell.contract_id);
+            }
         }
     }
 

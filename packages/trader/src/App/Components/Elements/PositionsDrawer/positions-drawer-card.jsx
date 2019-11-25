@@ -303,7 +303,7 @@ const PositionsDrawerCard = ({
                                 })}
                             is_disabled={!is_valid_to_sell || is_sell_requested}
                             text={localize('Close')}
-                            onClick={() => onClickSell(id)}
+                            onClick={() => onClickSell(id, true)}
                             primary
                         />
                         {is_valid_to_cancel &&

@@ -44,7 +44,7 @@ const ContractDetailsCardFooter = ({
                             })}
                         is_disabled={!(isValidToSell(contract_info)) || is_sell_requested}
                         text={localize('Close')}
-                        onClick={() => onClickSell(contract_info.contract_id)}
+                        onClick={() => onClickSell(contract_info.contract_id, true)}
                         primary
                     />
                     {is_valid_to_cancel &&

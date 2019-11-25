@@ -1,7 +1,7 @@
 import classNames   from 'classnames';
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import Localize     from 'deriv-translations/lib/localize';
+import { Localize } from 'deriv-translations/lib/i18n';
 
 const ProgressTicks = ({
     current_tick,

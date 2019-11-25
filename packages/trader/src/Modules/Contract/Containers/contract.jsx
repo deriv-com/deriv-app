@@ -4,7 +4,7 @@ import { withRouter }    from 'react-router';
 import { CSSTransition } from 'react-transition-group';
 import routes            from 'Constants/routes';
 import ErrorComponent    from 'App/Components/Elements/Errors';
-import Localize          from 'deriv-translations/lib/localize';
+import { Localize }      from 'deriv-translations/lib/i18n';
 import { connect }       from 'Stores/connect';
 import ContractReplay    from './contract-replay.jsx';
 

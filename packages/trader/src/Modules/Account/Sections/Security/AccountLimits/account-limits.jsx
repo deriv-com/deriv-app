@@ -1,19 +1,18 @@
 // import PropTypes      from 'prop-types';
-import classNames        from 'classnames';
-import React             from 'react';
-import { Popover }       from 'deriv-components';
-import CurrencyUtils     from 'deriv-shared/utils/currency';
-import { connect }       from 'Stores/connect';
-import { localize }      from 'deriv-translations/lib/i18n';
-import Localize          from 'deriv-translations/lib/localize';
-import { WS }            from 'Services/ws-methods';
-import Loading           from '../../../../../templates/app/components/loading.jsx';
+import classNames             from 'classnames';
+import React                  from 'react';
+import { Popover }            from 'deriv-components';
+import CurrencyUtils          from 'deriv-shared/utils/currency';
+import { connect }            from 'Stores/connect';
+import { localize, Localize } from 'deriv-translations/lib/i18n';
+import { WS }                 from 'Services/ws-methods';
+import Loading                from '../../../../../templates/app/components/loading.jsx';
 import {
     ScrollbarsContainer,
     TextContainer,
-    Text }               from '../../../Components/layout-components.jsx';
-import DemoMessage       from '../../ErrorMessages/DemoMessage';
-import LoadErrorMessage  from '../../ErrorMessages/LoadErrorMessage';
+    Text }                    from '../../../Components/layout-components.jsx';
+import DemoMessage            from '../../ErrorMessages/DemoMessage';
+import LoadErrorMessage       from '../../ErrorMessages/LoadErrorMessage';
 
 const makeTurnoverLimitRow = (currency, arr, title) => (
     <>

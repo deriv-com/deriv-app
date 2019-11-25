@@ -7,7 +7,6 @@
 //     MediaHeading,
 //     MediaIcon,
 // }                                    from 'App/Components/Elements/Media';
-// import Localize                      from 'deriv-translations/lib/localize';
 // import ConfirmationDisabledLightIcon from 'Assets/SvgComponents/settings/confirmation-disabled.svg';
 // import ConfirmationEnabledLightIcon  from 'Assets/SvgComponents/settings/confirmation-enabled.svg';
 // import ConfirmationDisabledDarkIcon  from 'Assets/SvgComponents/settings/dark/confirmation-disabled.svg';

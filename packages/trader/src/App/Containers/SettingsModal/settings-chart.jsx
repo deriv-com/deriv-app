@@ -1,9 +1,8 @@
 import { Checkbox, RadioGroup }          from 'deriv-components';
 import PropTypes                         from 'prop-types';
 import React                             from 'react';
-import { localize }                      from 'deriv-translations/lib/i18n';
+import { localize, Localize }            from 'deriv-translations/lib/i18n';
 import { connect }                       from 'Stores/connect';
-import Localize                          from 'deriv-translations/lib/localize';
 import MediaItem, {
     MediaHeading,
     MediaIcon,

@@ -2,9 +2,7 @@ import classNames      from 'classnames';
 import PropTypes       from 'prop-types';
 import React           from 'react';
 import PopoverBubble   from './popover-bubble.jsx';
-import IconInfoOutline from '../icon-info-outline.jsx';
-import IconQuestion    from '../icon-question.jsx';
-import IconRedDot      from '../icon-red-dot.jsx';
+import Icon            from '../icon';
 
 class Popover extends React.PureComponent {
     constructor (props) {
@@ -61,9 +59,9 @@ class Popover extends React.PureComponent {
                 <div className={classNames(classNameTarget, 'dc-popover__target')} ref={this.target_reference}>
                     {!disable_target_icon &&
                     <i className={message ? 'dc-popover__target__icon' : 'dc-popover__target__icon--disabled'}>
-                        {(icon === 'info') && <IconInfoOutline className={icon_class_name} />}
-                        {(icon === 'question') && <IconQuestion className={icon_class_name} />}
-                        {(icon === 'dot') && <IconRedDot className={icon_class_name} />}
+                        {(icon === 'info') && <Icon icon='IcInfoOutline' className={icon_class_name} />}
+                        {(icon === 'question') && <Icon icon='IcUnknown' className={icon_class_name} />}
+                        {(icon === 'dot') && <Icon icon='IcDot' className={icon_class_name} size={4} />}
                         {(icon === 'counter') && <span className={icon_class_name}>{ counter }</span>}
                     </i>
                     }

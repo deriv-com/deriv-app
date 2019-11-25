@@ -24,6 +24,8 @@ const Icon = ({
     size = 16,
     width,
 }) => {
+    if (!icon) return null;
+
     let spriteFileName = 'common';
     if (icon) {
         if (icon.startsWith('IcCurrency')) {
@@ -74,8 +76,11 @@ const Icon = ({
 
 Icon.propTypes = {
     active   : PropTypes.bool,
-    className: PropTypes.string,
-    color    : PropTypes.oneOfType([
+    className: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.string,
+    ]),
+    color: PropTypes.oneOfType([
         PropTypes.bool,
         PropTypes.string,
     ]),

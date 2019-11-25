@@ -3,19 +3,7 @@ import PropTypes         from 'prop-types';
 import React             from 'react';
 import ReactDOM          from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-// import Icon              from 'Assets/icon.jsx';
-
-// TODO: use-from-shared - Use this icon from icons' shared package
-const IconClose = ({ className, onClick }) => (
-    <svg onClick={onClick} className={classNames('inline-icon', className)} width='16' height='16' viewBox='0 0 16 16'>
-        <path
-            className='color1-fill'
-            fill='#2A3052'
-            fillRule='nonzero'
-            d='M8 6.587l4.293-4.294a1 1 0 0 1 1.414 1.414L9.414 8.002l4.293 4.294a1 1 0 0 1-1.414 1.414L8 9.416 3.707 13.71a1 1 0 1 1-1.414-1.414l4.293-4.294-4.293-4.295a1 1 0 1 1 1.414-1.414L8 6.587z'
-        />
-    </svg>
-);
+import Icon              from '../icon';
 
 class ModalElement extends React.PureComponent {
     constructor(props) {
@@ -87,7 +75,7 @@ class ModalElement extends React.PureComponent {
                         onClick={toggleModal}
                         className='dc-modal-header__close'
                     >
-                        {has_close_icon && <IconClose />}
+                        {has_close_icon && <Icon icon='IcCross' />}
                     </div>
                 </div>
                 {children}

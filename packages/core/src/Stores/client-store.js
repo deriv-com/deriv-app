@@ -1036,6 +1036,9 @@ export default class ClientStore extends BaseStore {
                 // Initialize client store with new user login
                 const { client_id, currency, oauth_token } = response.new_account_virtual;
                 await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
+
+                // GTM Signup event
+                this.root_store.gtm.pushDataLayer({ event: 'signup' });
             }
         });
     }

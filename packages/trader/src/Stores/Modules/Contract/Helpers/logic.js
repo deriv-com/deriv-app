@@ -99,7 +99,7 @@ export const isUserSold = (contract_info) => (
 );
 
 export const isValidToCancel = (contract_info) => (
-    !!contract_info.deal_cancellation
+    !!contract_info.is_valid_to_cancel
 );
 
 export const isValidToSell = (contract_info) => (

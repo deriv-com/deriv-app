@@ -370,7 +370,9 @@ export default class TradeStore extends BaseStore {
             contract_type,
             contract_info: this.proposal_info[contract_type],
         });
-        if (this.hovered_contract_type && isValidToCancel(this.proposal_info[contract_type])) {
+        if (this.hovered_contract_type &&
+            this.proposal_info[contract_type] &&
+            this.proposal_info[contract_type].deal_cancellation) {
             this.deal_cancellation_price = this.proposal_info[contract_type].deal_cancellation.ask_price;
         }
     }

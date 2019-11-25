@@ -1,5 +1,4 @@
 import config                   from '../../constants';
-import { getMainContentHeight } from '../../utils/window-size';
 
 export const hasAllRequiredBlocks = () => {
     const blocks_in_workspace     = Blockly.derivWorkspace.getAllBlocks();

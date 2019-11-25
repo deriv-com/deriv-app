@@ -9,8 +9,7 @@ import {
     Formik,
     Form }                    from 'formik';
 import CurrencyUtils          from 'deriv-shared/utils/currency';
-import Localize               from 'deriv-translations/lib/localize';
-import { localize }           from 'deriv-translations/lib/i18n';
+import { localize, Localize } from 'deriv-translations/lib/i18n';
 import Icon                   from 'Assets/icon.jsx';
 import { connect }            from 'Stores/connect';
 import {

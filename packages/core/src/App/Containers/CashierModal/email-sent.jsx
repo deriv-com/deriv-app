@@ -1,11 +1,10 @@
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { Button }     from 'deriv-components';
-import Localize       from 'deriv-translations/lib/localize';
-import { BinaryLink } from 'App/Components/Routes';
-import { localize }   from 'deriv-translations/lib/i18n';
-import Icon           from 'Assets/icon.jsx';
-import { connect }    from 'Stores/connect';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import { Button }             from 'deriv-components';
+import { BinaryLink }         from 'App/Components/Routes';
+import { localize, Localize } from 'deriv-translations/lib/i18n';
+import Icon                   from 'Assets/icon.jsx';
+import { connect }            from 'Stores/connect';
 
 class EmailSent extends React.Component {
     onClickVerification = () => { this.props.setVerificationResendClicked(true); };

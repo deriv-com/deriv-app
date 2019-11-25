@@ -1,6 +1,6 @@
-import React    from 'react';
-import Icon     from 'Assets/icon.jsx';
-import Localize from 'deriv-translations/lib/localize';
+import React        from 'react';
+import Icon         from 'Assets/icon.jsx';
+import { Localize } from 'deriv-translations/lib/i18n';
 
 class AccountTransferNoAccount extends React.Component {
     render = () => {

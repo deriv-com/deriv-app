@@ -6,8 +6,7 @@ import {
     Button,
     Dropdown,
     ThemedScrollbars }                from 'deriv-components';
-import Localize                       from 'deriv-translations/lib/localize';
-import { localize }                   from 'deriv-translations/lib/i18n';
+import { localize, Localize }         from 'deriv-translations/lib/i18n';
 import { connect }                    from 'Stores/connect';
 import { website_name }               from 'App/Constants/app-config';
 import PaymentAgentDetails            from './payment-agent-details.jsx';

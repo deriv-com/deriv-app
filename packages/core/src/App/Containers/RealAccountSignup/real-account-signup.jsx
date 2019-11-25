@@ -1,17 +1,16 @@
-import classNames            from 'classnames';
+import classNames             from 'classnames';
 import {
     Modal,
-    Loading }                from 'deriv-components';
-import React, { Component }  from 'react';
-import { localize }          from 'deriv-translations/lib/i18n';
-import Localize              from 'deriv-translations/lib/localize';
-import Icon                  from 'Assets/icon.jsx';
-import IconDuplicate         from 'Assets/Signup/icon-duplicate.jsx';
-import { connect }           from 'Stores/connect';
-import AccountWizard         from './account-wizard.jsx';
-import AddOrManageAccounts   from './add-or-manage-accounts.jsx';
-import FinishedSetCurrency   from './finished-set-currency.jsx';
-import SuccessDialog         from '../Modals/success-dialog.jsx';
+    Loading }                 from 'deriv-components';
+import React, { Component }   from 'react';
+import { localize, Localize } from 'deriv-translations/lib/i18n';
+import Icon                   from 'Assets/icon.jsx';
+import IconDuplicate          from 'Assets/Signup/icon-duplicate.jsx';
+import { connect }            from 'Stores/connect';
+import AccountWizard          from './account-wizard.jsx';
+import AddOrManageAccounts    from './add-or-manage-accounts.jsx';
+import FinishedSetCurrency    from './finished-set-currency.jsx';
+import SuccessDialog          from '../Modals/success-dialog.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 

@@ -1,12 +1,11 @@
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import { Button }   from 'deriv-components';
-import Localize     from 'deriv-translations/lib/localize';
-import ButtonLink   from 'App/Components/Routes/button-link.jsx';
-import { localize } from 'deriv-translations/lib/i18n';
-import Icon         from 'Assets/icon.jsx';
-import { WS }       from 'Services';
-import { connect }  from 'Stores/connect';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import { Button }             from 'deriv-components';
+import ButtonLink             from 'App/Components/Routes/button-link.jsx';
+import { localize, Localize } from 'deriv-translations/lib/i18n';
+import Icon                   from 'Assets/icon.jsx';
+import { WS }                 from 'Services';
+import { connect }            from 'Stores/connect';
 
 const ErrorComponent = ({
     header,

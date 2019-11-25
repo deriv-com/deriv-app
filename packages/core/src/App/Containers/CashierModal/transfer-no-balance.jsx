@@ -1,10 +1,9 @@
-import PropTypes        from 'prop-types';
-import React            from 'react';
-import { Button }       from 'deriv-components';
-import Icon             from 'Assets/icon.jsx';
-import Localize         from 'deriv-translations/lib/localize';
-import { website_name } from 'App/Constants/app-config';
-import { localize }     from 'deriv-translations/lib/i18n';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import { Button }             from 'deriv-components';
+import Icon                   from 'Assets/icon.jsx';
+import { website_name }       from 'App/Constants/app-config';
+import { localize, Localize } from 'deriv-translations/lib/i18n';
 
 class TransferNoBalance extends React.Component {
     onClickDeposit = () => {

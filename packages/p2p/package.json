@@ -9,7 +9,6 @@
     "build:travis": "rimraf index.js && webpack --mode=production --optimize-minimize",
     "serve": "rimraf index.js && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
     "start": "rimraf index.js && npm run test && webpack --mode=production --progress --watch",
-    "translate": "sh ./scripts/update-translations.sh",
     "deploy": "echo \"No deploy specified\"",
     "deploy:clean": "echo \"No deploy:clean specified\"",
     "deploy:folder": "echo \"No deploy:folder specified\"",

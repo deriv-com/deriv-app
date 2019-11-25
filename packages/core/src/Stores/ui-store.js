@@ -58,6 +58,7 @@ export default class UIStore extends BaseStore {
 
     @observable notifications         = [];
     @observable notification_messages = [];
+    @observable marked_notifications  = [];
     @observable push_notifications    = [];
 
     @observable is_advanced_duration   = false;
@@ -390,6 +391,11 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    markNotificationMessage({ key }) {
+        this.marked_notifications.push(key);
+    }
+
+    @action.bound
     addNotificationMessage(notification) {
         if (!this.notification_messages.find(item => item.header === notification.header)) {
             this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
@@ -404,7 +410,7 @@ export default class UIStore extends BaseStore {
                 const is_existing_message = Array.isArray(messages[active_loginid]) ?
                     messages[active_loginid].includes(notification.key) : false;
                 if (is_existing_message) {
-                    this.removeNotificationMessage({ key: notification.key });
+                    this.markNotificationMessage({ key: notification.key });
                 }
             }
         }

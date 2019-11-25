@@ -78,13 +78,17 @@ module.exports = {
     devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
     externals: [
         {
-            'react'           : 'react',
-            'babel-polyfill'  : 'babel-polyfill',
-            'prop-types'      : 'prop-types',
-            'deriv-shared'    : 'deriv-shared',
-            'deriv-components': 'deriv-components',
+            'react'             : 'react',
+            'react-router'      : 'react-router',
+            'react-router-dom'  : 'react-router-dom',
+            'babel-polyfill'    : 'babel-polyfill',
+            'prop-types'        : 'prop-types',
+            'deriv-shared'      : 'deriv-shared',
+            'deriv-components'  : 'deriv-components',
+            'deriv-translations': 'deriv-translations',
         },
         /^deriv-components\/.+$/,
         /^deriv-shared\/.+$/,
+        /^deriv-translations\/.+$/,
     ]
 };

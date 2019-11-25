@@ -4,10 +4,10 @@ import {
     observable,
     toJS }                        from 'mobx';
 import { LocalStore }             from '_common/storage';
+import { switch_to_tick_chart }   from './Helpers/chart-notifications';
 import ContractStore              from './contract-store';
 import BaseStore                  from '../../base-store';
 import { getContractTypesConfig } from '../Trading/Constants/contract';
-import { clientNotifications }    from '../../Helpers/client-notifications';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
@@ -50,9 +50,7 @@ export default class ContractTradeStore extends BaseStore {
         LocalStore.set('contract_trade.granularity', granularity);
         this.granularity = granularity;
         if (this.granularity === 0) {
-            this.root_store.ui.removeNotificationMessage(
-                clientNotifications().switch_to_tick_chart
-            );
+            this.root_store.ui.removeNotificationMessage(switch_to_tick_chart);
         }
     }
 
@@ -123,9 +121,7 @@ export default class ContractTradeStore extends BaseStore {
         this.contracts.push(contract);
 
         if (is_tick_contract && this.granularity !== 0) {
-            this.root_store.ui.addNotificationMessage(
-                clientNotifications().switch_to_tick_chart
-            );
+            this.root_store.ui.addNotificationMessage(switch_to_tick_chart);
         }
     }
 
@@ -164,9 +160,7 @@ export default class ContractTradeStore extends BaseStore {
                 if (contract.contract_id === contract_id) {
                     contract.populateConfig(response.proposal_open_contract);
                     if (response.proposal_open_contract.is_sold) {
-                        this.root_store.ui.removeNotificationMessage(
-                            clientNotifications().switch_to_tick_chart
-                        );
+                        this.root_store.ui.removeNotificationMessage(switch_to_tick_chart);
                     }
                 }
             });

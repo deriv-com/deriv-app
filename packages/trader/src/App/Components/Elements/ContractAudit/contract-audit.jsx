@@ -13,9 +13,7 @@ import {
     getBarrierLabel,
     getBarrierValue,
     isDigitType }           from 'App/Components/Elements/PositionsDrawer/helpers';
-import {
-    isUserCancelled,
-    isValidToCancel }       from 'Stores/Modules/Contract/Helpers/logic';
+import { isUserCancelled }  from 'Stores/Modules/Contract/Helpers/logic';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { getThemedIcon }    from './Helpers/icons';
 import ContractAuditItem    from './contract-audit-item.jsx';
@@ -36,7 +34,7 @@ class ContractAudit extends React.PureComponent {
         const IconExitTime = (is_profit) ? <IconExitWon /> : <IconExitLoss />;
         const is_multiplier = isMultiplierContract(contract_info.contract_type);
         const is_cancelled = isUserCancelled(contract_info);
-        const is_valid_to_cancel = isValidToCancel(contract_info);
+        const has_deal_cancellation = contract_info.deal_cancellation;
         return (
             <div className='contract-audit__wrapper'>
                 <ThemedScrollbars
@@ -64,7 +62,7 @@ class ContractAudit extends React.PureComponent {
                                     }
                                 />
                             </div>
-                            {is_valid_to_cancel &&
+                            {has_deal_cancellation &&
                                 <div id='dt_cancel_deal_label' className='contract-audit__grid'>
                                     <ContractAuditItem
                                         icon={getThemedIcon('safeguard', is_dark_theme)}

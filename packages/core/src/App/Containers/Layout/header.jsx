@@ -52,7 +52,7 @@ const Header = ({
             id        : 'dt_cashier_tab',
             icon      : <Icon icon='IconCashier' className='header__icon' />,
             text      : localize('Cashier'),
-            onClick   : toggleCashierModal,
+            link_to   : routes.cashier_deposit,
             login_only: true,
         },
     ];

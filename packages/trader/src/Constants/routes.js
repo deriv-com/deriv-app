@@ -27,6 +27,13 @@ const routes = {
     statement           : '/reports/statement',
     token               : '/settings/token',
     trade               : '/',
+    bot                 : '/bot',
+    cashier             : '/cashier',
+    cashier_deposit     : '/cashier/deposit',
+    cashier_withdrawal  : '/cashier/withdrawal',
+    cashier_pa          : '/cashier/payment-agent',
+    cashier_acc_transfer: '/cashier/account-transfer',
+    cashier_pa_transfer : '/cashier/payment-agent-transfer',
 };
 
 export default routes;

@@ -280,8 +280,8 @@ class PersonalDetails extends Component {
             ],
             phone: [
                 v => !!v,
-                v => validPhone(v),
-                v => validCountryCode(this.props.residence_list, v),
+                v => v.length >= 9 && v.length <= 35,
+                v => validPhone(v) && validCountryCode(this.props.residence_list, v),
             ],
         };
 

@@ -2,6 +2,7 @@
 import { str as crc32 }     from 'crc-32';
 import i18n                 from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import withI18n             from '../components'
 // TODO: lazy load these: with i18n.addResourceBundle
 import ach                  from '../translations/ach.json';
 import en                   from '../translations/en.json';
@@ -15,6 +16,7 @@ import ru                   from '../translations/ru.json';
 import vi                   from '../translations/ru.json';
 import zh_cn                from '../translations/zh_cn.json';
 import zh_tw                from '../translations/zh_tw.json';
+
 const LANGUAGE_KEY     = 'i18n_language';
 const DEFAULT_LANGUAGE = 'EN';
 const ALL_LANGUAGES    = Object.freeze({
@@ -107,6 +109,9 @@ const changeLanguage = (lang, cb) => {
 
 const getLanguage = () => i18n.language;
 
+// <Localize /> component wrapped with i18n
+const Localize = withI18n(i18n);
+
 const localize = (string, values) => {
     if (!string) return '';
     return i18n.t(crc32(string), { defaultValue: string, ...values })
@@ -126,4 +131,5 @@ const loadIncontextTranslation = () => {
         document.head.appendChild(jipt)
     }
 }
-export default { i18n, localize, changeLanguage, getLanguage, getAllLanguages, loadIncontextTranslation };
+
+export default { i18n, localize, Localize, changeLanguage, getLanguage, getAllLanguages, loadIncontextTranslation };

@@ -35,7 +35,7 @@
 * For strings use either `localize(...)` or `<Localize />`
 * [`<Localize />`](https://react.i18next.com/latest/trans-component) example:
 ```jsx
-    import Localize from 'deriv-translations/lib/localize';
+    import { Localize } from 'deriv-translations/lib/i18n';
 
     <Localize i18n_default_text='You cannot use your real money account with {{website_name}} at this time.' values={{ website_name }} />
 ```

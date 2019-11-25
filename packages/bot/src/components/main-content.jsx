@@ -1,4 +1,3 @@
-import classNames  from 'classnames';
 import React from 'react';
 import Flyout from './flyout.jsx';
 import Chart from './chart/chart.jsx';

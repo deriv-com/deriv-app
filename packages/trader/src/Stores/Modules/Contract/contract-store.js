@@ -304,6 +304,7 @@ function getConfig(contract_info) {
             hide_start_line            : true,
             is_barrier_dashed          : true,
             start_time_marker_top_index: 1,
+            hide_invisible_barrier     : true,
         };
     }
 

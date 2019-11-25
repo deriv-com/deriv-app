@@ -366,6 +366,8 @@ const NonTickContract = RawMarkerMaker(({
     const opacity = is_sold ? calc_opacity(start.left, expiry.left) : '';
 
     const canvas_height = (ctx.canvas.height / window.devicePixelRatio);
+    const is_barrier_visible = config.hide_invisible_barrier ? barrier >= 2 && barrier <= canvas_height - 32 : true;
+
     if (barrier) {
         prices[0] = barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
     }
@@ -391,7 +393,7 @@ const NonTickContract = RawMarkerMaker(({
         ctx.stroke();
     }
     // barrier line
-    if ((barrier && entry) && (
+    if (is_barrier_visible && (barrier && entry) && (
         start.visible
         || expiry.visible
         || Math.sign(start.left) !== Math.sign(expiry.left)

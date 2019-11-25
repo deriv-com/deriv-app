@@ -302,6 +302,11 @@ class PersonalDetails extends Component {
         const alt_messages = [
             '{{field_name}} is required',
             '{{field_name}} is not in a proper format.',
+        ];
+
+        const phone_messages = [
+            '{{field_name}} is required',
+            'You should enter 8-35 characters.',
             'Please enter a valid phone number, including the country code (e.g +15417541234).',
         ];
 
@@ -313,9 +318,16 @@ class PersonalDetails extends Component {
                 if (error_index !== -1) {
                     switch (key) {
                         case 'date_of_birth':
-                        case 'phone':
                             errors[key] = errors[key] = <Localize
                                 i18n_default_text={alt_messages[error_index]}
+                                values={{
+                                    field_name: mappedKey[key],
+                                }}
+                            />;
+                            break;
+                        case 'phone':
+                            errors[key] = errors[key] = <Localize
+                                i18n_default_text={phone_messages[error_index]}
                                 values={{
                                     field_name: mappedKey[key],
                                 }}

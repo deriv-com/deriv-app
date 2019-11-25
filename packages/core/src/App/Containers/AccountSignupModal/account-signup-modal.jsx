@@ -198,7 +198,7 @@ export default connect(
         disableApp              : ui.disableApp,
         is_loading              : ui.is_loading,
         onSignup                : client.onSignup,
-        pushDataLayer           : gtm.pushDataLayer,
         residence_list          : client.residence_list,
+        pushDataLayer           : gtm.pushDataLayer,
     }),
 )(AccountSignupModal);

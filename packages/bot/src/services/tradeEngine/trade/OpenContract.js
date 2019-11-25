@@ -73,7 +73,7 @@ export default Engine =>
             });
         }
 
-        resetSubscriptionTimeout(timeout = this.getContractDuration() + AFTER_FINISH_TIMEOUT) {
+        resetSubscriptionTimeout(timeout = AFTER_FINISH_TIMEOUT) {
             this.cancelSubscriptionTimeout();
             this.subscriptionTimeout = setInterval(() => {
                 this.subscribeToOpenContract();

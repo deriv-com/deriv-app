@@ -304,9 +304,8 @@ class PersonalDetails extends React.Component {
         Object.entries(validations)
             .forEach(([key, rules]) => {
                 const error_index = rules.findIndex(v => !v(values[key]));
-                console.warn(error_index, key);
+
                 if (error_index !== -1) {
-                    console.log(key, rules, errors, values);
                     switch (key) {
                         case 'date_of_birth':
                         case 'phone':
@@ -325,7 +324,6 @@ class PersonalDetails extends React.Component {
                                 }}
                             />;
                     }
-                    console.log(key, rules, errors, values);
                 }
             });
 

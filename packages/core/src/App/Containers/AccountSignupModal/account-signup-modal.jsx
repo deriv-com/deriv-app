@@ -186,7 +186,7 @@ AccountSignupModal.propTypes = {
     is_loading    : PropTypes.bool,
     is_visible    : PropTypes.bool,
     onSignup      : PropTypes.func,
-    pushDataLayer : propTypes.func,
+    pushDataLayer : PropTypes.func,
     residence_list: PropTypes.arrayOf(PropTypes.object),
 };
 

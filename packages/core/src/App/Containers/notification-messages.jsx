@@ -9,6 +9,7 @@ import Notification, {
 import                               'Sass/app/_common/components/notification-message.scss';
 
 const NotificationMessages = ({
+    marked_notifications,
     notification_messages,
     removeNotificationMessage,
 }) => (
@@ -16,6 +17,7 @@ const NotificationMessages = ({
         <TransitionGroup component='div'>
             {
                 notification_messages
+                    .filter(message => !marked_notifications.includes(message.key))
                     .slice(0, max_display_notifications)
                     .map((notification, idx) => (
                         <CSSTransition
@@ -59,6 +61,7 @@ NotificationMessages.propTypes = {
 
 export default connect(
     ({ ui }) => ({
+        marked_notifications     : ui.marked_notifications,
         notification_messages    : ui.notification_messages,
         removeNotificationMessage: ui.removeNotificationMessage,
     })

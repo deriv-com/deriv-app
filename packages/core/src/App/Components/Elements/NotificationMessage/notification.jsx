@@ -1,11 +1,14 @@
 import classNames              from 'classnames';
 import PropTypes               from 'prop-types';
 import React                   from 'react';
+import { Button }              from 'deriv-components';
+import ObjectUtils             from 'deriv-shared/utils/object';
 import CloseButton             from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
 import {
     default_delay,
     types }                    from './constants';
+import { BinaryLink }          from '../../Routes';
 
 const Notification = ({
     data,
@@ -44,6 +47,25 @@ const Notification = ({
                 <p className='notification__text-body'>
                     {data.message}
                 </p>
+                {!ObjectUtils.isEmptyObject(data.action) &&
+                    <React.Fragment>
+                        { data.action.route ?
+                            <BinaryLink
+                                className={classNames('btn', 'btn--secondary', 'notification__cta-button')}
+                                to={data.action.route}
+                            >
+                                <span className='btn__text'>{data.action.text}</span>
+                            </BinaryLink>
+                            :
+                            <Button
+                                className='notification__cta-button'
+                                onClick={data.action.onClick}
+                                text={data.action.text}
+                                secondary
+                            />
+                        }
+                    </React.Fragment>
+                }
             </div>
             { data.should_hide_close_btn ?
                 undefined
@@ -53,20 +75,17 @@ const Notification = ({
                     onClick={onClick}
                 />
             }
-            {/* TODO: Re-enable once button or call to action flow is finalized */}
-            {/* !!data.action &&
-                <Button
-                    className={classNames('btn--secondary--default', 'notification__cta-button')}
-                    onClick={data.action.onClick}
-                    text={data.action.text}
-                />
-            */}
         </div>
     );
 };
 
 Notification.propTypes = {
     data: PropTypes.shape({
+        action: PropTypes.shape({
+            onClick: PropTypes.func,
+            route  : PropTypes.string,
+            text   : PropTypes.string,
+        }),
         closeOnClick         : PropTypes.func,
         delay                : PropTypes.number,
         header               : PropTypes.string,

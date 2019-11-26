@@ -77,6 +77,7 @@ const onClick = () => {
 };
 
 const MarketIsClosedOverlay = () =>  {
+    //if there was no Synthetic Indices, we prevent showing 'try Synthetic Indices' message
     const isSytaticIndeciesExists = document
         .querySelector('.ic-synthetic_index');
     return (

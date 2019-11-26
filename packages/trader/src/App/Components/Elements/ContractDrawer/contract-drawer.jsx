@@ -18,6 +18,7 @@ import {
 import {
     getEndTime,
     isUserSold     }            from 'Stores/Modules/Contract/Helpers/logic';
+import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import ContractCardBody         from './contract-card-body.jsx';
 import ContractCardFooter       from './contract-card-footer.jsx';
 import ContractCardHeader       from './contract-card-header.jsx';
@@ -36,6 +37,7 @@ class ContractDrawer extends Component {
 
     getBodyContent () {
         const {
+            contract_type,
             currency,
             exit_tick_display_value,
             is_sold,
@@ -49,7 +51,7 @@ class ContractDrawer extends Component {
             onClickCancel,
             onClickSell,
         } = this.props;
-        const exit_spot = isUserSold(contract_info) ? '-' : exit_tick_display_value;
+        const exit_spot = isUserSold(contract_info) && !isMultiplierContract(contract_type) ? '-' : exit_tick_display_value;
 
         return (
             <React.Fragment>

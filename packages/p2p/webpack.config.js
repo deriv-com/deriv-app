@@ -59,9 +59,6 @@ module.exports = {
     optimization: {
         minimize: is_release,
     },
-    devServer: {
-        publicPath: '/dist/',
-    },
     devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
     externals: [
         {

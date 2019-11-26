@@ -29,7 +29,7 @@
 * initialize translations in root app.jsx by importing i18n.js
 * in `app.jsx`
 ```jsx
-    import { i18n } from 'deriv-translations/lib';
+    import { i18n } from 'deriv-translations';
 ```
 ### Usage
 * For strings use either `localize(...)` or `<Localize />`

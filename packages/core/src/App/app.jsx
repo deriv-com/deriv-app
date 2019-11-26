@@ -27,11 +27,12 @@ import 'Sass/app.scss';
 const isTouchDevice = 'ontouchstart' in document.documentElement;
 
 const App = ({ root_store }) => {
-    const base = window.location.pathname.split('/')[1];
-    const has_base = /^\/(br_)/.test(window.location.pathname);
-    const url_params = new URLSearchParams(window.location.search);
+    const l = window.location;
+    const base = l.pathname.split('/')[1];
+    const has_base = /^\/(br_)/.test(l.pathname);
+    const url_params = new URLSearchParams(l.search);
 
-    const is_staging = /staging\.deriv\.app/i.test(window.location.hostname);
+    const is_staging = /staging\.deriv\.app/i.test(l.hostname);
     if (is_staging) {
         loadIncontextTranslation();
     }

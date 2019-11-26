@@ -384,8 +384,8 @@ class AccountSwitcher extends React.Component {
 
                 <div className='acc-switcher__separator' />
 
-                <div id='dt_logout_button' className='acc-switcher__logout' onClick={this.handleLogout}>
-                    <span className='acc-switcher__logout-text'>{localize('Log out')}</span>
+                <div id='dt_logout_button' className='acc-switcher__logout' >
+                    <span className='acc-switcher__logout-text' onClick={this.handleLogout}>{localize('Log out')}</span>
                     <Icon icon='IconLogout' className='acc-switcher__logout-icon drawer__icon' />
                 </div>
             </div>

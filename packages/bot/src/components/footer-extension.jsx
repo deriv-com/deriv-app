@@ -57,7 +57,7 @@ class FooterExtension extends React.Component {
 }
 
 FooterExtension.propTypes = {
-    active_tab              : PropTypes.bool,
+    active_tab              : PropTypes.string,
     populateFooterExtensions: PropTypes.func,
     setActiveTab            : PropTypes.func,
 };

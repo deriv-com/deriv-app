@@ -36,9 +36,9 @@ export default class JournalStore {
         const time = formatDate(this.serverTime.get(), 'HH:mm:ss [GMT]');
         let message;
         if (typeof data === 'string') {
-            message = `${data}`;
+            message = data;
         } else {
-            message = `${data.message}`;
+            message = data.error && data.error.error ? data.error.error.message : data.message;
         }
 
         this.messages.unshift({ date, time , message ,message_type });

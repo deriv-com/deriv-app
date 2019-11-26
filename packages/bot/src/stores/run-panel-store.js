@@ -65,11 +65,6 @@ export default class RunPanelStore {
             return;
         }
 
-        if (!client.is_virtual) {
-            this.showRealAccountDialog();
-            return;
-        }
-
         this.registerBotListeners();
 
         if (!hasAllRequiredBlocks()) {
@@ -325,26 +320,10 @@ export default class RunPanelStore {
                     () => client.loginid,
                     (loginid) => {
                         if (loginid) {
-                            this.root_store.journal.pushMessage(localize('You have switched accounts.'));
+                            this.root_store.journal.pushMessage(localize('You have switched accounts. bot will be terminated after contract closes.'));
                         }
                         terminateAndClear();
                         this.root_store.summary.currency = client.currency;
-                    },
-                );
-
-                this.disposeSwitchAccountListener = reaction(
-                    () => client.switched,
-                    (switched) => {
-                        if (switched) {
-                            if (client.is_logged_in && !/^VRTC/.test(switched)) {
-                                // TODO: temporary fix to not showing modal when another modal is open
-                                const is_modal_open = document.getElementById('modal_root').hasChildNodes();
-                                if (!is_modal_open) {
-                                    this.showRealAccountDialog();
-                                }
-                                terminateAndClear();
-                            }
-                        }
                     },
                 );
             } else {

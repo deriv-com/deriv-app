@@ -19,6 +19,15 @@
         font-size: 10px;
         color: var(--text-less-prominent);
     }
+    &__container {
+        position: relative;
+
+        .notification-messages {
+            position: fixed;
+            top: 64px;
+            right: 16px;
+        }
+    }
     &__welcome-message {
         margin-bottom: 3.2em;
 

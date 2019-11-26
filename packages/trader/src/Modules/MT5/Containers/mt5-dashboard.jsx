@@ -84,97 +84,99 @@ class MT5Dashboard extends React.Component {
         } = this.props;
 
         return (
-            <div className='mt5-dashboard'>
+            <div className='mt5-dashboard__container'>
                 <NotificationMessages />
-                { !has_mt5_account &&
-                    <div className='mt5-dashboard__welcome-message'>
-                        <h1 className='mt5-dashboard__welcome-message--heading'>
-                            <Localize i18n_default_text='Welcome to your DMT5 account dashboard and manager' />
-                        </h1>
-                        <div className='mt5-dashboard__welcome-message--content'>
-                            <p className='mt5-dashboard__welcome-message--paragraph'>
-                                <Localize
-                                    i18n_default_text='MetaTrader 5 (MT5) is a popular online trading platform for forex and stock markets. Get prices and currency quotes, perform analysis using charts and technical indicators, and easily view your trading history.'
+                <div className='mt5-dashboard'>
+                    { !has_mt5_account &&
+                        <div className='mt5-dashboard__welcome-message'>
+                            <h1 className='mt5-dashboard__welcome-message--heading'>
+                                <Localize i18n_default_text='Welcome to your DMT5 account dashboard and manager' />
+                            </h1>
+                            <div className='mt5-dashboard__welcome-message--content'>
+                                <p className='mt5-dashboard__welcome-message--paragraph'>
+                                    <Localize
+                                        i18n_default_text='MetaTrader 5 (MT5) is a popular online trading platform for forex and stock markets. Get prices and currency quotes, perform analysis using charts and technical indicators, and easily view your trading history.'
+                                    />
+                                </p>
+                            </div>
+                        </div>
+                    }
+
+                    <div className='mt5-dashboard__accounts-display'>
+                        <MT5PasswordManagerModal
+                            is_visible={ this.state.password_manager.is_visible }
+                            selected_login={ this.state.password_manager.selected_login }
+                            selected_account={ this.state.password_manager.selected_account }
+                            toggleModal={ this.togglePasswordManagerModal }
+                        />
+                        <Tabs active_index={this.state.active_index}>
+                            <div label={localize('Real account')}>
+                                <MT5RealAccountDisplay
+                                    is_loading={ is_loading }
+                                    current_list={this.props.current_list}
+                                    has_mt5_account={has_mt5_account}
+                                    onSelectAccount={createMT5Account}
+                                    openAccountTransfer={this.openAccountTransfer}
+                                    openPasswordManager={ this.togglePasswordManagerModal }
+                                    beginRealSignupForMt5={ beginRealSignupForMt5 }
+                                    has_real_account={ has_real_account }
                                 />
-                            </p>
-                        </div>
+                            </div>
+                            <div label={localize('Demo account')}>
+                                <MT5DemoAccountDisplay
+                                    is_loading={ is_loading }
+                                    has_mt5_account={has_mt5_account}
+                                    current_list={this.props.current_list}
+                                    onSelectAccount={createMT5Account}
+                                    openAccountTransfer={this.openAccountTransfer}
+                                    openPasswordManager={ this.togglePasswordManagerModal }
+                                />
+                            </div>
+                        </Tabs>
+                        <CompareAccountsModal />
                     </div>
-                }
 
-                <div className='mt5-dashboard__accounts-display'>
-                    <MT5PasswordManagerModal
-                        is_visible={ this.state.password_manager.is_visible }
-                        selected_login={ this.state.password_manager.selected_login }
-                        selected_account={ this.state.password_manager.selected_account }
-                        toggleModal={ this.togglePasswordManagerModal }
-                    />
-                    <Tabs active_index={this.state.active_index}>
-                        <div label={localize('Real account')}>
-                            <MT5RealAccountDisplay
-                                is_loading={ is_loading }
-                                current_list={this.props.current_list}
-                                has_mt5_account={has_mt5_account}
-                                onSelectAccount={createMT5Account}
-                                openAccountTransfer={this.openAccountTransfer}
-                                openPasswordManager={ this.togglePasswordManagerModal }
-                                beginRealSignupForMt5={ beginRealSignupForMt5 }
-                                has_real_account={ has_real_account }
+                    <div className='mt5-dashboard__download-center'>
+                        <h1 className='mt5-dashboard__download-center--heading'>
+                            <Localize
+                                i18n_default_text='Download MT5 for your desktop or mobile'
                             />
+                        </h1>
+
+                        <div className='mt5-dashboard__download-center-options'>
+                            <div className='mt5-dashboard__download-center-options--desktop'>
+                                <div className='mt5-dashboard__download-center-options--desktop-devices'>
+                                    <IconDeviceDesktop />
+                                    <IconDeviceLaptop />
+                                    <a href='https://trade.mql5.com/trade?servers=Binary.com-Server&trade_server=Binary.com-Server' target='_blank' rel='noopener noreferrer'><IconInstallationWeb /></a>
+                                </div>
+                                <div className='mt5-dashboard__download-center-options--desktop-links'>
+                                    <a href='https://s3.amazonaws.com/binary-mt5/binarycom_mt5.exe' target='_blank' rel='noopener noreferrer'><IconInstallationWindows /></a>
+                                    <a href='https://deriv.s3-ap-southeast-1.amazonaws.com/deriv-mt5.dmg' target='_blank' rel='noopener noreferrer'><IconInstallationMac /></a>
+                                    <a href='https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux' target='_blank' rel='noopener noreferrer'><IconInstallationLinux /></a>
+                                </div>
+                            </div>
+                            <div className='mt5-dashboard__download-center-options--mobile'>
+                                <div className='mt5-dashboard__download-center-options--mobile-devices'>
+                                    <IconDeviceTablet />
+                                    <IconDevicePhone />
+                                </div>
+                                <div className='mt5-dashboard__download-center-options--mobile-links'>
+                                    <a href='https://download.mql5.com/cdn/mobile/mt5/ios?server=Binary.com-Server' target='_blank' rel='noopener noreferrer'><IconInstallationApple /></a>
+                                    <a href='https://download.mql5.com/cdn/mobile/mt5/android?server=Binary.com-Server' target='_blank' rel='noopener noreferrer'><IconInstallationGoogle /></a>
+                                </div>
+                            </div>
                         </div>
-                        <div label={localize('Demo account')}>
-                            <MT5DemoAccountDisplay
-                                is_loading={ is_loading }
-                                has_mt5_account={has_mt5_account}
-                                current_list={this.props.current_list}
-                                onSelectAccount={createMT5Account}
-                                openAccountTransfer={this.openAccountTransfer}
-                                openPasswordManager={ this.togglePasswordManagerModal }
+                        <p className='mt5-dashboard__download-center--hint'>
+                            <Localize
+                                i18n_default_text='The DMT5 platform is not supported by macOS Catalina, Windows XP, Windows 2003, and Windows Vista.'
                             />
-                        </div>
-                    </Tabs>
-                    <CompareAccountsModal />
-                </div>
-
-                <div className='mt5-dashboard__download-center'>
-                    <h1 className='mt5-dashboard__download-center--heading'>
-                        <Localize
-                            i18n_default_text='Download MT5 for your desktop or mobile'
-                        />
-                    </h1>
-
-                    <div className='mt5-dashboard__download-center-options'>
-                        <div className='mt5-dashboard__download-center-options--desktop'>
-                            <div className='mt5-dashboard__download-center-options--desktop-devices'>
-                                <IconDeviceDesktop />
-                                <IconDeviceLaptop />
-                                <a href='https://trade.mql5.com/trade?servers=Binary.com-Server&trade_server=Binary.com-Server' target='_blank' rel='noopener noreferrer'><IconInstallationWeb /></a>
-                            </div>
-                            <div className='mt5-dashboard__download-center-options--desktop-links'>
-                                <a href='https://s3.amazonaws.com/binary-mt5/binarycom_mt5.exe' target='_blank' rel='noopener noreferrer'><IconInstallationWindows /></a>
-                                <a href='https://deriv.s3-ap-southeast-1.amazonaws.com/deriv-mt5.dmg' target='_blank' rel='noopener noreferrer'><IconInstallationMac /></a>
-                                <a href='https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux' target='_blank' rel='noopener noreferrer'><IconInstallationLinux /></a>
-                            </div>
-                        </div>
-                        <div className='mt5-dashboard__download-center-options--mobile'>
-                            <div className='mt5-dashboard__download-center-options--mobile-devices'>
-                                <IconDeviceTablet />
-                                <IconDevicePhone />
-                            </div>
-                            <div className='mt5-dashboard__download-center-options--mobile-links'>
-                                <a href='https://download.mql5.com/cdn/mobile/mt5/ios?server=Binary.com-Server' target='_blank' rel='noopener noreferrer'><IconInstallationApple /></a>
-                                <a href='https://download.mql5.com/cdn/mobile/mt5/android?server=Binary.com-Server' target='_blank' rel='noopener noreferrer'><IconInstallationGoogle /></a>
-                            </div>
-                        </div>
+                        </p>
                     </div>
-                    <p className='mt5-dashboard__download-center--hint'>
-                        <Localize
-                            i18n_default_text='The DMT5 platform is not supported by macOS Catalina, Windows XP, Windows 2003, and Windows Vista.'
-                        />
-                    </p>
+                    <Mt5TopUpDemoModal />
+                    <MT5PasswordModal />
+                    <MT5ServerErrorDialog />
                 </div>
-                <Mt5TopUpDemoModal />
-                <MT5PasswordModal />
-                <MT5ServerErrorDialog />
             </div>
         );
     }

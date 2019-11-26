@@ -63,8 +63,6 @@ module.exports = {
     externals: [
         {
             'react'             : 'react',
-            'react-router'      : 'react-router',
-            'react-router-dom'  : 'react-router-dom',
             'babel-polyfill'    : 'babel-polyfill',
             'prop-types'        : 'prop-types',
             'deriv-shared'      : 'deriv-shared',

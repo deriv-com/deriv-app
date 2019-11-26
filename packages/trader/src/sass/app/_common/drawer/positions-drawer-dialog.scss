@@ -36,9 +36,9 @@
 
 /** @define positions-drawer-dialog-toggle; */
 .positions-drawer-dialog-toggle {
-    width: 16px;
-    height: 16px;
-    margin-top: 4px;
+    min-width: 16px;
+    min-height: 16px;
+    margin-left: 4px;
     @extend %inline-icon;
 
     &:hover {

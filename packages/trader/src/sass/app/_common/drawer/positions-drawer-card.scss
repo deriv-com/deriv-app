@@ -256,7 +256,7 @@
         align-items: center;
         justify-content: center;
         transition: transform 0.25s ease, opacity 0.25s linear;
-        margin-top: 4px;
+        padding-top: 8px;
         border-top: 1px solid var(--general-section-1);
 
         &--enter-done {
@@ -273,19 +273,15 @@
             }
             .btn--cancel {
                 max-width: 112px;
-            }
-            .btn--sell, .btn--cancel {
-                margin: 8px 4px !important;
+                margin-left: 0.8rem;
             }
         }
         .remaining-time {
-            background-color: #{$color-white};
             border-radius: 0.4rem;
             color: var(--text-loss-danger);
             font-size: 1.2rem;
-            margin-left: 0.5rem;
-            padding: 0.1rem 0.4rem;
-            vertical-align: middle;
+            margin-left: 0.8rem;
+            padding-top: 0.2rem;
         }
     }
 }
@@ -321,7 +317,6 @@
 /** @define btn; */
 .btn {
     &--sell {
-        margin: 8px 4px 4px !important;
         width: 100%;
     }
 }

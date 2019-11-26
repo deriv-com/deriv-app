@@ -45,14 +45,14 @@ const ContractDetailsCardFooter = ({
                         is_disabled={!(isValidToSell(contract_info)) || is_sell_requested}
                         text={localize('Close')}
                         onClick={() => onClickSell(contract_info.contract_id, true)}
-                        primary
+                        secondary
                     />
                     {is_valid_to_cancel &&
                         <Button
                             id={`dt_drawer_card_${contract_info.contract_id}_cancel_button`}
                             className='btn--cancel'
                             onClick={() => onClickCancel(contract_info.contract_id)}
-                            primary
+                            secondary
                         >
                             {localize('Cancel')}
                             <RemainingTime

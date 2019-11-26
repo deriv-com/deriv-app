@@ -34,7 +34,6 @@ import {
     getProposalErrorField,
     getProposalInfo }                 from './Helpers/proposal';
 import { setLimitOrderBarriers }      from '../Contract/Helpers/limit-orders';
-import { isValidToCancel }            from '../Contract/Helpers/logic';
 import { ChartBarrierStore }          from '../SmartChart/chart-barrier-store';
 import { BARRIER_COLORS }             from '../SmartChart/Constants/barriers';
 import {

@@ -25,16 +25,18 @@ export const getContractTypesConfig = () => (
         lb_call        : { title: localize('Close-Low'),                  trade_types: ['LBFLOATCALL'],               basis: ['multiplier'],      components: [] },
         lb_put         : { title: localize('High-Close'),                 trade_types: ['LBFLOATPUT'],                basis: ['multiplier'],      components: [] },
         lb_high_low    : { title: localize('High-Low'),                   trade_types: ['LBHIGHLOW'],                 basis: ['multiplier'],      components: [] },
+        reset_call_put : { title: localize('Reset Up/ Reset Down'),       trade_types: ['RESETCALL', 'RESETPUT'],     basis: [''],                components: [] },
     }
 );
 
 export const getContractCategoriesConfig = () => (
     {
-        [localize('Up/Down')]       : ['rise_fall', 'rise_fall_equal', 'high_low'],
-        [localize('Touch/No Touch')]: ['touch'],
-        [localize('In/Out')]        : ['end', 'stay'],
-        [localize('Asians')]        : ['asian'],
-        [localize('Digits')]        : ['match_diff', 'even_odd', 'over_under'],
+        [localize('Up/Down')]            : ['rise_fall', 'rise_fall_equal', 'high_low'],
+        [localize('Touch/No Touch')]     : ['touch'],
+        [localize('In/Out')]             : ['end', 'stay'],
+        [localize('Asians')]             : ['asian'],
+        [localize('Digits')]             : ['match_diff', 'even_odd', 'over_under'],
+        [localize('Reset Up/Reset Down')]: ['reset_call_put'],
         // [localize('Lookback')]      : ['lb_call', 'lb_put', 'lb_high_low'],
     }
 );

@@ -7,7 +7,7 @@ import TradeSettingsExtensions from 'App/Containers/trade-settings-extensions.js
 import { MobxProvider }        from 'Stores/connect';
 import initStore               from './init-store.js'; // eslint-disable-line import/extensions
 // TODO: remove this once core refactoring is done
-import                         'deriv-translations/lib/i18n';
+import                         'deriv-translations';
 import 'Sass/app.scss';
 
 class App extends React.Component {

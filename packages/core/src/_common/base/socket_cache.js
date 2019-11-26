@@ -1,6 +1,6 @@
 const moment           = require('moment');
 const ObjectUtils      = require('deriv-shared/utils/object');
-const { getLanguage }  = require('deriv-translations/lib/i18n');
+const { getLanguage }  = require('deriv-translations');
 const getStaticHash    = require('_common/utility.js').getStaticHash;
 const LocalStore       = require('../storage').LocalStore;
 

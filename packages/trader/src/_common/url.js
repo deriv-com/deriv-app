@@ -1,4 +1,4 @@
-const { getLanguage }            = require('deriv-translations/lib/i18n');
+const { getLanguage }            = require('deriv-translations');
 const urlForLanguage             = require('./language').urlFor;
 const getCurrentProductionDomain = require('../config').getCurrentProductionDomain;
 require('url-polyfill');

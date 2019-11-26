@@ -5,7 +5,7 @@ import { withRouter }         from 'react-router';
 import {
     Button,
     ThemedScrollbars }        from 'deriv-components';
-import { localize, Localize } from 'deriv-translations/lib/i18n';
+import { localize, Localize } from 'deriv-translations';
 import Icon                   from 'Assets/icon.jsx';
 import routes                 from 'Constants/routes';
 import { connect }            from 'Stores/connect';

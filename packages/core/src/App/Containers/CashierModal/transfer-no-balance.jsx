@@ -3,7 +3,7 @@ import React                  from 'react';
 import { Button }             from 'deriv-components';
 import Icon                   from 'Assets/icon.jsx';
 import { website_name }       from 'App/Constants/app-config';
-import { localize, Localize } from 'deriv-translations/lib/i18n';
+import { localize, Localize } from 'deriv-translations';
 
 class TransferNoBalance extends React.Component {
     onClickDeposit = () => {

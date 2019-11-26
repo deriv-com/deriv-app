@@ -1,4 +1,4 @@
-import { localize }     from 'deriv-translations/lib/i18n';
+import { localize }     from 'deriv-translations';
 
 export const account_opening_reason_list = [
     { text: localize('Speculative'),    value: 'Speculative' },

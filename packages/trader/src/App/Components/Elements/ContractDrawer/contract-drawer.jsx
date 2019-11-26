@@ -7,7 +7,7 @@ import {
     Button,
     Money,
     UnderlyingIcon }           from 'deriv-components';
-import { localize, Localize }  from 'deriv-translations/lib/i18n';
+import { localize, Localize }  from 'deriv-translations';
 import Icon                    from 'Assets/icon.jsx';
 import routes                  from 'Constants/routes';
 import ContractAudit           from 'App/Components/Elements/ContractAudit';

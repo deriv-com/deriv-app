@@ -12,7 +12,7 @@ import {
     getStartOfMonth,
     isDateValid,
     toMoment }              from 'Utils/Date';
-import { localize }         from 'deriv-translations/lib/i18n';
+import { localize }         from 'deriv-translations';
 import { getTradingEvents } from './helpers';
 import Calendar             from '../../Elements/Calendar';
 

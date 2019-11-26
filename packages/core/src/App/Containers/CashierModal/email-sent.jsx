@@ -2,7 +2,7 @@ import PropTypes              from 'prop-types';
 import React                  from 'react';
 import { Button }             from 'deriv-components';
 import { BinaryLink }         from 'App/Components/Routes';
-import { localize, Localize } from 'deriv-translations/lib/i18n';
+import { localize, Localize } from 'deriv-translations';
 import Icon                   from 'Assets/icon.jsx';
 import { connect }            from 'Stores/connect';
 

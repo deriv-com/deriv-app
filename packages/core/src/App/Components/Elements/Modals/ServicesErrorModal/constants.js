@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations/lib/i18n';
+import { localize } from 'deriv-translations';
 
 export const title = {
     buy : localize('Purchase Error'),

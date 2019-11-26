@@ -4,7 +4,7 @@
   "description": "Deriv translations",
   "author": "Deriv",
   "license": "Apache-2.0",
-  "main": "lib/index.js",
+  "main": "lib/main.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/binary-com/deriv-app.git"

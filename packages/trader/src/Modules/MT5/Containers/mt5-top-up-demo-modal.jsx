@@ -5,7 +5,7 @@ import {
 import PropTypes              from 'prop-types';
 import React                  from 'react';
 import SuccessDialog          from 'App/Containers/Modals/success-dialog.jsx';
-import { localize, Localize } from 'deriv-translations/lib/i18n';
+import { localize, Localize } from 'deriv-translations';
 import IconWallet             from 'Assets/Common/icon-wallet.jsx';
 import { connect }            from 'Stores/connect';
 

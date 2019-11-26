@@ -7,7 +7,7 @@ import PropTypes              from 'prop-types';
 import React                  from 'react';
 import SuccessDialog          from 'App/Containers/Modals/success-dialog.jsx';
 import FormSubmitButton       from 'App/Containers/RealAccountSignup/form-submit-button.jsx';
-import { localize, Localize } from 'deriv-translations/lib/i18n';
+import { localize, Localize } from 'deriv-translations';
 import IconMT5Advanced        from 'Assets/Mt5/icon-mt5-advanced.jsx';
 import IconMT5Standard        from 'Assets/Mt5/icon-mt5-standard.jsx';
 import IconMT5Synthetic       from 'Assets/Mt5/icon-mt5-synthetic.jsx';

@@ -6,7 +6,7 @@ import {
     PasswordInput,
     PasswordMeter }           from 'deriv-components';
 import { withRouter }         from 'react-router-dom';
-import { localize }           from 'deriv-translations/lib/i18n';
+import { localize }           from 'deriv-translations';
 import AppRoutes              from 'Constants/routes';
 import { WS }                 from 'Services/ws-methods';
 import { connect }            from 'Stores/connect';

@@ -2,7 +2,7 @@ import PropTypes              from 'prop-types';
 import classNames             from 'classnames';
 import { Button }             from 'deriv-components';
 import React                  from 'react';
-import { localize, Localize } from 'deriv-translations/lib/i18n';
+import { localize, Localize } from 'deriv-translations';
 import Icon                   from 'Assets/icon.jsx';
 
 const SuccessDialog = ({

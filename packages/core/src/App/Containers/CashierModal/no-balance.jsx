@@ -2,7 +2,7 @@ import PropTypes              from 'prop-types';
 import React                  from 'react';
 import { Button }             from 'deriv-components';
 import Icon                   from 'Assets/icon.jsx';
-import { localize, Localize } from 'deriv-translations/lib/i18n';
+import { localize, Localize } from 'deriv-translations';
 import { connect }            from 'Stores/connect';
 
 class NoBalance extends React.Component {

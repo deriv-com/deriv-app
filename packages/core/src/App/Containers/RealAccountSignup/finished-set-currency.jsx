@@ -1,5 +1,5 @@
 import React                  from 'react';
-import { localize, Localize } from 'deriv-translations/lib/i18n';
+import { localize, Localize } from 'deriv-translations';
 import Icon                   from 'Assets/icon.jsx';
 import Button                 from 'deriv-components/src/components/button';
 

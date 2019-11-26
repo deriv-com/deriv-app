@@ -1,5 +1,5 @@
 
-import { getLanguage } from 'deriv-translations/lib/i18n';
+import { getLanguage } from 'deriv-translations';
 import AppIds          from '../services/api/appIdResolver';
 
 export const isProduction = () =>

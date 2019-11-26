@@ -11,7 +11,7 @@ import {
     Formik,
     Form }                    from 'formik';
 import CurrencyUtils          from 'deriv-shared/utils/currency';
-import { localize, Localize } from 'deriv-translations/lib/i18n';
+import { localize, Localize } from 'deriv-translations';
 import { connect }            from 'Stores/connect';
 import {
     validNumber,

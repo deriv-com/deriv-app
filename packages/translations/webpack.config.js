@@ -4,9 +4,7 @@ const is_serve   = process.env.BUILD_MODE === 'serve';
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 module.exports = {
-    entry: {
-        'i18n': path.resolve(__dirname, 'src', 'i18next/index.js'),
-    },
+    entry : path.resolve(__dirname, 'src', 'i18next/index.js'),
     output: {
         path         : path.resolve(__dirname, 'lib'),
         filename     : '[name].js',

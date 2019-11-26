@@ -4,7 +4,7 @@ import React                  from 'react';
 import { withRouter }         from 'react-router';
 import { Button }             from 'deriv-components';
 import CurrencyUtils          from 'deriv-shared/utils/currency';
-import { localize, Localize } from 'deriv-translations/lib/i18n';
+import { localize, Localize } from 'deriv-translations';
 import Icon                   from 'Assets/icon.jsx';
 import routes                 from 'Constants/routes';
 import { connect }            from 'Stores/connect';

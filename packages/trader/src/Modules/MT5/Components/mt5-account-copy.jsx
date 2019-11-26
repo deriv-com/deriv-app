@@ -1,6 +1,6 @@
 import React               from 'react';
 import { copyToClipboard } from '_common/utility';
-import { localize }        from 'deriv-translations/lib/i18n';
+import { localize }        from 'deriv-translations';
 import Icon                from 'Assets/icon.jsx';
 import Tooltip             from '../Containers/tooltip.jsx';
 

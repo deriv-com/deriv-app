@@ -2,7 +2,7 @@ import {
     observable,
     action,
 }                                from 'mobx';
-import { localize, getLanguage } from 'deriv-translations/lib/i18n';
+import { localize, getLanguage } from 'deriv-translations';
 import config                    from '../constants';
 import { importExternal }        from '../utils/tools';
 

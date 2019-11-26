@@ -1,7 +1,7 @@
 import React                  from 'react';
 import { Button }             from 'deriv-components';
 import ButtonLink             from 'App/Components/Routes/button-link.jsx';
-import { localize, Localize } from 'deriv-translations/lib/i18n';
+import { localize, Localize } from 'deriv-translations';
 import IconChecked            from 'Assets/AccountManagement/ProofOfAddress/Messages/icon-checked.svg';
 import IconExpired            from 'Assets/AccountManagement/ProofOfAddress/Messages/icon-expired.svg';
 import IconSubmitted          from 'Assets/AccountManagement/ProofOfAddress/Messages/icon-submitted.svg';

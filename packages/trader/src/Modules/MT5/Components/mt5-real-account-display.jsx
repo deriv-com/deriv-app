@@ -1,6 +1,6 @@
 import { Button }             from 'deriv-components';
 import React                  from 'react';
-import { localize, Localize } from 'deriv-translations/lib/i18n';
+import { localize, Localize } from 'deriv-translations';
 // import IconMT5Advanced                  from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-advanced.svg';
 import IconMT5Standard        from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-standard.svg';
 import IconMT5Synthetic       from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-synthetic.svg';

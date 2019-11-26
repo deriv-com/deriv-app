@@ -1,6 +1,6 @@
 import React                  from 'react';
 import ButtonLink             from 'App/Components/Routes/button-link.jsx';
-import { localize, Localize } from 'deriv-translations/lib/i18n';
+import { localize, Localize } from 'deriv-translations';
 import IconPoiPersonalDetails from 'Assets/AccountManagement/icon-poi-missing-details.svg';
 import IconIdentityCard       from 'Assets/AccountManagement/icon-identity-card.svg';
 import IconDrivingLicense     from 'Assets/AccountManagement/icon-driving-licence.svg';

@@ -4,7 +4,7 @@ import React                  from 'react';
 import { Popover }            from 'deriv-components';
 import CurrencyUtils          from 'deriv-shared/utils/currency';
 import { connect }            from 'Stores/connect';
-import { localize, Localize } from 'deriv-translations/lib/i18n';
+import { localize, Localize } from 'deriv-translations';
 import { WS }                 from 'Services/ws-methods';
 import Loading                from '../../../../../templates/app/components/loading.jsx';
 import {

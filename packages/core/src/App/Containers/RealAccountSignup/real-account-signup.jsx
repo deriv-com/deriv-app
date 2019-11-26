@@ -3,7 +3,7 @@ import {
     Modal,
     Loading }                 from 'deriv-components';
 import React, { Component }   from 'react';
-import { localize, Localize } from 'deriv-translations/lib/i18n';
+import { localize, Localize } from 'deriv-translations';
 import Icon                   from 'Assets/icon.jsx';
 import IconDuplicate          from 'Assets/Signup/icon-duplicate.jsx';
 import { connect }            from 'Stores/connect';

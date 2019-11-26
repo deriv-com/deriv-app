@@ -307,27 +307,18 @@ export default class RunPanelStore {
     @action.bound
     registerCoreReactions() {
         const { client, common, ui } = this.root_store.core;
-        const { journal } = this.root_store;
         
-        const terminateAndClear = () => {
-            // TODO: Handle more gracefully, e.g. ask user for confirmation instead
-            // of killing and clearing everything instantly.
-            // Core need to change to pass beforeswitch account event
-            terminateBot();
-            RunPanelStore.unregisterBotListeners();
-            this.clearStat();
-        };
-
         const register = () => {
             if (common.is_socket_opened) {
                 this.disposeIsSocketOpenedListener = reaction(
                     () => client.loginid,
                     (loginid) => {
-                        terminateAndClear();
-                        if (loginid) {
-                            journal.pushMessage(switch_account_notification.message, message_types.ERROR);
+                        if (loginid && this.is_running) {
                             ui.addNotificationMessage(switch_account_notification);
                         }
+                        terminateBot();
+                        RunPanelStore.unregisterBotListeners();
+                        this.clearStat();
                         this.root_store.summary.currency = client.currency;
                     },
                 );

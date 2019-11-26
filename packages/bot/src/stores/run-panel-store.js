@@ -9,7 +9,6 @@ import { contract_stages }             from '../constants/contract-stage';
 import {
     error_types,
     unrecoverable_errors,
-    message_types,
 }                                      from '../constants/messages';
 import {
     runBot,

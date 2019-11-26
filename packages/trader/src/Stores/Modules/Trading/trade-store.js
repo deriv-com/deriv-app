@@ -370,11 +370,6 @@ export default class TradeStore extends BaseStore {
             contract_type,
             contract_info: this.proposal_info[contract_type],
         });
-        if (this.hovered_contract_type &&
-            this.proposal_info[contract_type] &&
-            this.proposal_info[contract_type].deal_cancellation) {
-            this.deal_cancellation_price = this.proposal_info[contract_type].deal_cancellation.ask_price;
-        }
     }
 
     @action.bound
@@ -736,8 +731,12 @@ export default class TradeStore extends BaseStore {
         };
 
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
-            // commission is the same for MULTUP/MULTDOWN
-            this.commission = this.proposal_info.MULTUP.commission;
+            const { commission, deal_cancellation } = this.proposal_info.MULTUP;
+            // commission and deal_cancellation.ask_price is the same for MULTUP/MULTDOWN
+            this.commission = commission;
+            if (deal_cancellation) {
+                this.deal_cancellation_price = this.proposal_info.MULTUP.deal_cancellation.ask_price;
+            }
         }
 
         this.setMainBarrier(response.echo_req);

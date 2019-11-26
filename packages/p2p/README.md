@@ -18,7 +18,7 @@
 1.  **Install your dependencies:**
 
     ```sh
-    npm install
+    npm ci
     ```
 
 2.  **To build publish file:**

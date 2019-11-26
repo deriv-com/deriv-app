@@ -7,11 +7,12 @@ module.exports = {
     entry: {
         'index'  : path.resolve(__dirname, 'src/components', 'app.jsx'),
     },
+    mode: is_release ? 'production' : 'development',
     output: {
         path         : path.resolve(__dirname, 'lib'),
-        filename     : '[name].js',
+        filename     : 'index.js',
         libraryExport: 'default',
-        library      : ['deriv-p2p', '[name]'],
+        library      : 'deriv-p2p',
         libraryTarget: 'umd',
     },
     module : {
@@ -35,20 +36,6 @@ module.exports = {
                     },
                     {
                         loader : 'babel-loader',
-                        options: {
-                            presets: [
-                                '@babel/preset-env',
-                                '@babel/preset-react'
-                            ],
-                            plugins: [
-                                ["@babel/plugin-proposal-decorators", { "legacy": true }],
-                                ["@babel/plugin-proposal-class-properties", { "loose": true }],
-                                '@babel/plugin-proposal-export-default-from',
-                                '@babel/plugin-proposal-object-rest-spread',
-                                '@babel/plugin-proposal-export-namespace-from',
-                                '@babel/plugin-syntax-dynamic-import',
-                            ],
-                        }
                     },
                 ]
             },
@@ -70,7 +57,7 @@ module.exports = {
         ],
     },
     optimization: {
-        minimize: true,
+        minimize: is_release,
     },
     devServer: {
         publicPath: '/dist/',

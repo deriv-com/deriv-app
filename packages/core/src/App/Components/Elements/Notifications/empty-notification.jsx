@@ -1,6 +1,5 @@
 import React        from 'react';
 import { localize } from 'deriv-translations';
-
 import Icon         from 'Assets/icon.jsx';
 
 const EmptyNotification = () => (

@@ -31,7 +31,7 @@ const App = ({ root_store }) => {
     const has_base = /^\/(br_)/.test(window.location.pathname);
     const url_params = new URLSearchParams(window.location.search);
 
-    const is_staging = process.env.NODE_ENV === 'staging';
+    const is_staging = /staging\.deriv\.app/i.test(window.location.hostname);
     if (is_staging) {
         loadIncontextTranslation();
     }

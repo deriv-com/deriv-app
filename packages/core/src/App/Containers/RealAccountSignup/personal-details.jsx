@@ -3,16 +3,20 @@ import {
     Input,
     ThemedScrollbars }        from 'deriv-components';
 import { Formik, Field }      from 'formik';
-import React                  from 'react';
+import PropTypes              from 'prop-types';
+import React, { Component }   from 'react';
 import { CSSTransition }      from 'react-transition-group';
 import { localize, Localize } from 'deriv-translations';
 import IconDatepicker         from 'Assets/Signup/icon-datepicker.jsx';
 import { toMoment }           from 'Utils/Date';
+import {
+    validPhone,
+    validCountryCode }        from 'Utils/Validator/declarative-validation-rules';
 import FormSubmitButton       from './form-submit-button.jsx';
 import DatePickerCalendar     from './date-picker-calendar.jsx';
 import 'Sass/details-form.scss';
 
-export class DateOfBirth extends React.Component {
+export class DateOfBirth extends Component {
     state = {
         should_show_calendar: false,
         max_date            : toMoment().subtract(18, 'years'),
@@ -149,7 +153,7 @@ const InputField = (props) => {
     );
 };
 
-class PersonalDetails extends React.Component {
+class PersonalDetails extends Component {
     constructor(props) {
         super(props);
         this.form = React.createRef();
@@ -275,7 +279,8 @@ class PersonalDetails extends React.Component {
             ],
             phone: [
                 v => !!v,
-                v => /^\+?((-|\s)*[0-9]){8,35}$/.exec(v) !== null,
+                v => v.length >= 9 && v.length <= 35,
+                v => validPhone(v) && validCountryCode(this.props.residence_list, v),
             ],
         };
 
@@ -298,6 +303,12 @@ class PersonalDetails extends React.Component {
             '{{field_name}} is not in a proper format.',
         ];
 
+        const phone_messages = [
+            '{{field_name}} is required',
+            'You should enter 8-35 characters.',
+            'Please enter a valid phone number, including the country code (e.g +15417541234).',
+        ];
+
         const errors    = {};
 
         Object.entries(validations)
@@ -307,9 +318,16 @@ class PersonalDetails extends React.Component {
                 if (error_index !== -1) {
                     switch (key) {
                         case 'date_of_birth':
-                        case 'phone':
                             errors[key] = errors[key] = <Localize
                                 i18n_default_text={alt_messages[error_index]}
+                                values={{
+                                    field_name: mappedKey[key],
+                                }}
+                            />;
+                            break;
+                        case 'phone':
+                            errors[key] = errors[key] = <Localize
+                                i18n_default_text={phone_messages[error_index]}
                                 values={{
                                     field_name: mappedKey[key],
                                 }}
@@ -329,5 +347,9 @@ class PersonalDetails extends React.Component {
         return errors;
     };
 }
+
+PersonalDetails.propTypes = {
+    residence_list: PropTypes.array,
+};
 
 export default PersonalDetails;

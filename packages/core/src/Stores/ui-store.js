@@ -444,7 +444,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     removeAllNotificationMessages(should_close_persistent) {
         this.notification_messages = should_close_persistent ? [] : [
-            ...this.notification_messages.filter((notifs) => notifs.is_persistent)
+            ...this.notification_messages.filter((notifs) => notifs.is_persistent),
         ];
     }
 

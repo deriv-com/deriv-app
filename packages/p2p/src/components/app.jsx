@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs } from 'deriv-components';
 import { localize } from 'deriv-translations/lib/i18n';
@@ -9,47 +9,52 @@ import MyProfile from './my-profile/my-profile.jsx';
 import { init } from '../utils/websocket';
 import './app.scss';
 
-const App = ({
-    websocket_api,
-}) => {
-    const [active_index, setActiveIndex] = useState(0);
-    useEffect(() => {
-        // initialize websocket
+class App extends Component {
+    state = {
+        activeIndex: 0,
+    }
+
+    componentDidMount() {
         const index_to_set = /orders/.test(window.location.pathname) ? 1 : 0;
+
         if (this.state.active_index !== index_to_set) {
-            setActiveIndex(index_to_set);
+            this.setState({ active_index: index_to_set});
         }
 
-        init(websocket_api);
-    }, []);
-    return (
-        <Fragment>
-            {/*
-                App can overwrite the styles by passing css variables to className deriv-api
-                you can refer to deriv-shared/themes for the css variables that are used in deriv-app as well as p2p
-            */}
-            <main className='deriv-api'>
-                <nav>
-                    <Tabs active_index={active_index}>
-                        <div label={localize('Buy/sell')}>
-                            <Ads />
-                        </div>
-                        <div label={localize('Orders')}>
-                            <Orders />
-                        </div>
-                        <div label={localize('My ads')}>
-                            <MyAds />
-                        </div>
-                        <div label={localize('My profile')}>
-                            <MyProfile />
-                        </div>
-                    </Tabs>
-                </nav>
-                <hr />
-            </main>
-        </Fragment>
-    );
-};
+        init(this.props.websocket_api);
+    }
+
+    render() {
+        const { active_index } = this.state;
+
+        return (
+            <Fragment>
+                {/*
+                    App can overwrite the styles by passing css variables to className deriv-api
+                    you can refer to deriv-shared/themes for the css variables that are used in deriv-app as well as p2p
+                */}
+                <main className='deriv-api'>
+                    <nav>
+                        <Tabs active_index={active_index}>
+                            <div label={localize('Buy/sell')}>
+                                <Ads />
+                            </div>
+                            <div label={localize('Orders')}>
+                                <Orders />
+                            </div>
+                            <div label={localize('My ads')}>
+                                <MyAds />
+                            </div>
+                            <div label={localize('My profile')}>
+                                <MyProfile />
+                            </div>
+                        </Tabs>
+                    </nav>
+                </main>
+            </Fragment>
+        );
+    }
+}
 
 App.propTypes = {
     websocket_api: PropTypes.object,

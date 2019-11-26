@@ -109,7 +109,7 @@
     "crc-32": "^1.2.0",
     "deriv-bot": "^1.0.0",
     "deriv-components": "^1.0.0",
-    "deriv-p2p": "^1.0.6",
+    "deriv-p2p": "^1.0.7",
     "deriv-shared": "^1.0.0",
     "deriv-trader": "^3.8.0",
     "event-source-polyfill": "^1.0.5",

@@ -3,10 +3,12 @@ import {
     Modal,
     Loading }                from 'deriv-components';
 import React, { Component }  from 'react';
+import { withRouter }        from 'react-router-dom';
 import { localize }          from 'App/i18n';
 import Localize              from 'App/Components/Elements/localize.jsx';
 import Icon                  from 'Assets/icon.jsx';
 import IconDuplicate         from 'Assets/Signup/icon-duplicate.jsx';
+import routes                from 'Constants/routes';
 import { connect }           from 'Stores/connect';
 import AccountWizard         from './account-wizard.jsx';
 import AddOrManageAccounts   from './add-or-manage-accounts.jsx';
@@ -119,7 +121,8 @@ class RealAccountSignup extends Component {
     }
 
     closeModalThenOpenCashier = () => {
-        this.props.closeSignupAndOpenCashier();
+        this.props.closeRealAccountSignup();
+        this.props.history.push(routes.cashier_deposit);
     };
 
     showSetCurrencySuccess = (previous_currency, current_currency) => {
@@ -223,7 +226,6 @@ export default connect(({ ui, client }) => ({
     currency                   : client.currency,
     is_real_acc_signup_on      : ui.is_real_acc_signup_on,
     closeRealAccountSignup     : ui.closeRealAccountSignup,
-    closeSignupAndOpenCashier  : ui.closeSignupAndOpenCashier,
     setParams                  : ui.setRealAccountSignupParams,
     state_value                : ui.real_account_signup,
-}))(RealAccountSignup);
+}))(withRouter(RealAccountSignup));

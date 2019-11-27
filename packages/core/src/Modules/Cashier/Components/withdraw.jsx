@@ -1,11 +1,10 @@
 import PropTypes        from 'prop-types';
 import React            from 'react';
 import { connect }      from 'Stores/connect';
-import CashierContainer from '../Layout/cashier-container.jsx';
+import CashierContainer from './cashier-container.jsx';
 
 class Withdraw extends React.Component {
     componentDidMount() {
-        this.props.setActiveTab(this.props.container);
         this.props.onMount(this.props.verification_code);
     }
 

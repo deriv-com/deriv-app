@@ -17,8 +17,8 @@ import { connect }          from 'Stores/connect';
 import {
     validNumber,
     getPreBuildDVRs }       from 'Utils/Validator/declarative-validation-rules';
-import PaymentAgentReceipt  from './payment-agent-receipt.jsx';
-import Error                from '../error.jsx';
+import Error                from '../Error/error.jsx';
+import PaymentAgentReceipt  from '../Receipt/payment-agent-receipt.jsx';
 import Loading              from '../../../../templates/_common/components/loading.jsx';
 
 const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
@@ -137,7 +137,7 @@ const RadioInput = ({
     </Radio>
 );
 
-class PaymentAgentWithdraw extends React.Component {
+class PaymentAgentWithdrawForm extends React.Component {
     componentDidMount() {
         this.props.onMount();
     }
@@ -270,7 +270,7 @@ class PaymentAgentWithdraw extends React.Component {
     }
 }
 
-PaymentAgentWithdraw.propTypes = {
+PaymentAgentWithdrawForm.propTypes = {
     balance                    : PropTypes.string,
     currency                   : PropTypes.string,
     error_message_withdraw     : PropTypes.string,
@@ -295,4 +295,4 @@ export default connect(
         requestPaymentAgentWithdraw: modules.cashier.requestPaymentAgentWithdraw,
         resetPaymentAgent          : modules.cashier.resetPaymentAgent,
     })
-)(PaymentAgentWithdraw);
+)(PaymentAgentWithdrawForm);

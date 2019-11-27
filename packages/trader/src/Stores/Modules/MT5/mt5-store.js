@@ -88,16 +88,6 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
-    async closeMt5AndOpenCashier(active_tab = 'deposit') {
-        this.root_store.ui.setCashierActiveTab(active_tab);
-        setTimeout(this.root_store.ui.toggleCashierModal, 300);
-        // We should switch the user to the first svg account in order for cashier to work
-        runInAction(() => {
-            this.is_mt5_password_modal_enabled = false;
-        });
-    }
-
-    @action.bound
     createMT5Account({ category, type }) {
         this.setAccountType({
             category,

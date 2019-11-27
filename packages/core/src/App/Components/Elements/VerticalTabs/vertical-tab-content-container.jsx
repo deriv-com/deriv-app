@@ -51,7 +51,6 @@ class VerticalTabContentContainer extends React.PureComponent {
                 <div className={classNames('vertical-tab__content-container', tab_container_classname)}>
                     { is_routed ?
                         <Switch>
-                            <Redirect exact from={routes.reports} to={routes.positions} />
                             {
                                 items.map(({ value, component, path, icon }, idx) => {
                                     const Component = value || component;

@@ -10,13 +10,12 @@ import { localize }        from 'App/i18n';
 import Icon                from 'Assets/icon.jsx';
 import routes              from 'Constants/routes';
 import { connect }         from 'Stores/connect';
-import PaymentAgentDetails from './payment-agent-details.jsx';
+import PaymentAgentDetails from '../payment-agent-details.jsx';
 
 class PaymentAgentReceipt extends React.Component {
     openStatement = () => {
         this.props.history.push(routes.statement);
         this.props.resetPaymentAgent();
-        this.props.toggleCashierModal();
     };
 
     componentWillUnmount() {
@@ -95,19 +94,17 @@ class PaymentAgentReceipt extends React.Component {
 }
 
 PaymentAgentReceipt.propTypes = {
-    clearVerification : PropTypes.func,
-    currency          : PropTypes.string,
-    loginid           : PropTypes.string,
-    receipt           : PropTypes.object,
-    toggleCashierModal: PropTypes.func,
+    clearVerification: PropTypes.func,
+    currency         : PropTypes.string,
+    loginid          : PropTypes.string,
+    receipt          : PropTypes.object,
 };
 
 export default withRouter(connect(
     ({ client, modules, ui }) => ({
-        currency          : client.currency,
-        loginid           : client.loginid,
-        receipt           : modules.cashier.config.payment_agent.receipt,
-        resetPaymentAgent : modules.cashier.resetPaymentAgent,
-        toggleCashierModal: ui.toggleCashierModal,
+        currency         : client.currency,
+        loginid          : client.loginid,
+        receipt          : modules.cashier.config.payment_agent.receipt,
+        resetPaymentAgent: modules.cashier.resetPaymentAgent,
     })
 )(PaymentAgentReceipt));

@@ -26,12 +26,14 @@ export const interceptAcrossBot = (route_to, action) => {
 };
 
 // Cashier components
-const Cashier              = lazy(() => import(/* webpackChunkName: "cashier-deposit" */ 'App/Containers/CashierModal/cashier.jsx'));
-const Deposit              = lazy(() => import(/* webpackChunkName: "cashier-deposit" */ 'App/Containers/CashierModal/deposit.jsx'));
-const Withdrawal           = lazy(() => import(/* webpackChunkName: "cashier-withdrawal" */ 'App/Containers/CashierModal/withdrawal.jsx'));
-const AccountTransfer      = lazy(() => import(/* webpackChunkName: "cashier-account-transfer" */ 'App/Containers/CashierModal/account-transfer.jsx'));
-const PaymentAgent         = lazy(() => import(/* webpackChunkName: "cashier-pa" */ 'App/Containers/CashierModal/payment-agent.jsx'));
-const PaymentAgentTransfer = lazy(() => import(/* webpackChunkName: "cashier-pa-transfer" */ 'App/Containers/CashierModal/payment-agent-transfer.jsx'));
+const Cashier              = lazy(() => import(/* webpackChunkName: "cashier-deposit" */ 'Modules/Cashier/Containers/cashier.jsx'));
+const Deposit              = lazy(() => import(/* webpackChunkName: "cashier-deposit" */ 'Modules/Cashier/Containers/deposit.jsx'));
+const Withdrawal           = lazy(() => import(/* webpackChunkName: "cashier-withdrawal" */ 'Modules/Cashier/Containers/withdrawal.jsx'));
+const AccountTransfer      = lazy(() => import(/* webpackChunkName: "cashier-account-transfer" */ 'Modules/Cashier/Containers/account-transfer.jsx'));
+const PaymentAgent         = lazy(() => import(/* webpackChunkName: "cashier-pa" */ 'Modules/Cashier/Containers/payment-agent.jsx'));
+const PaymentAgentTransfer = lazy(() => import(/* webpackChunkName: "cashier-pa-transfer" */ 'Modules/Cashier/Containers/payment-agent-transfer.jsx'));
+// To work with P2P please uncomment this line
+// const P2PCashier           = () => import(/* webpackChunkName: "cashier-otc-payment" */ 'App/Containers/CashierModal/p2p-cashier.jsx');
 
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));

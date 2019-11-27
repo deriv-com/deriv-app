@@ -1,14 +1,16 @@
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import { Button }   from 'deriv-components';
-import Localize     from 'App/Components/Elements/localize.jsx';
-import { localize } from 'App/i18n';
-import { connect }  from 'Stores/connect';
+import PropTypes      from 'prop-types';
+import React          from 'react';
+import { withRouter } from 'react-router-dom';
+import { Button }     from 'deriv-components';
+import Localize       from 'App/Components/Elements/localize.jsx';
+import { localize }   from 'App/i18n';
+import routes         from 'Constants/routes';
+import { connect }    from 'Stores/connect';
 
 class Virtual extends React.Component {
     onClickSignup = () => {
-        this.props.toggleCashierModal();
-        setTimeout(this.props.openRealAccountSignup, 500);
+        this.props.history.push(routes.trade);
+        this.props.openRealAccountSignup();
     };
 
     render = () => {
@@ -51,14 +53,12 @@ class Virtual extends React.Component {
 Virtual.propTypes = {
     has_real_account     : PropTypes.bool,
     openRealAccountSignup: PropTypes.func,
-    toggleCashierModal   : PropTypes.func,
 };
 
 export default connect(
-    ({ client, ui }) => ({
+    ({ client }) => ({
         has_real_account     : client.has_any_real_account,
         openRealAccountSignup: ui.openRealAccountSignup,
-        toggleCashierModal   : ui.toggleCashierModal,
     })
-)(Virtual);
+)(withRouter(Virtual));
 

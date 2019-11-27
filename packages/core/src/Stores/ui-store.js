@@ -23,13 +23,13 @@ export default class UIStore extends BaseStore {
     @observable is_notifications_visible    = false;
     @observable is_positions_drawer_on      = false;
     @observable is_reports_visible          = false;
+    @observable is_cashier_visible          = false;
 
     // Extensions
     @observable footer_extension         = undefined;
     @observable settings_extension       = undefined;
     @observable notification_messages_ui = undefined;
 
-    @observable is_cashier_modal_on     = false;
     @observable is_dark_mode_on         = false;
     @observable is_settings_modal_on    = false;
     @observable is_accounts_switcher_on = false;
@@ -85,8 +85,7 @@ export default class UIStore extends BaseStore {
     // position states
     @observable show_positions_toggle = true;
 
-    @observable active_cashier_tab = 'deposit';
-    @observable modal_index        = 0;
+    @observable modal_index = 0;
 
     // Mt5 topup
     @observable is_top_up_virtual_open = false;
@@ -275,13 +274,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleCashierModal() {
-        this.is_cashier_modal_on = !this.is_cashier_modal_on;
-    }
-
-    @action.bound
-    setCashierActiveTab(tab = 'deposit') {
-        if (this.active_cashier_tab !== tab) this.active_cashier_tab = tab;
+    toggleCashier() {
+        this.is_cashier_visible = !this.is_cashier_visible;
     }
 
     @action.bound
@@ -312,15 +306,6 @@ export default class UIStore extends BaseStore {
             this.resetRealAccountSignupParams();
             this.setRealAccountSignupEnd(true);
         }, 300);
-    }
-
-    @action.bound
-    closeSignupAndOpenCashier(active_tab = 'deposit') {
-        this.is_real_acc_signup_on = false;
-        this.setCashierActiveTab(active_tab);
-        this.closeRealAccountSignup();
-        // TODO enable this one cashier is active
-        setTimeout(this.toggleCashierModal, 300);
     }
 
     @action.bound

@@ -3,12 +3,10 @@ import { connect }              from 'Stores/connect';
 import { urlFor }               from '_common/url';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import MarketUnavailableModal   from 'App/Components/Elements/Modals/MarketUnavailableModal';
-import DenialOfServiceModal     from 'App/Components/Elements/Modals/DenialOfServiceModal';
 import ServicesErrorModal       from 'App/Components/Elements/Modals/ServicesErrorModal';
 
 const TradeModals = ({
     clearPurchaseInfo,
-    is_denial_of_service_modal_visible,
     is_unsupported_contract_modal_visible,
     is_market_unavailable_visible,
     is_services_error_visible,
@@ -18,17 +16,7 @@ const TradeModals = ({
     toggleServicesErrorModal,
     resetPurchase,
     services_error,
-    switchAccount,
-    virtual_account_loginid,
 }) => {
-    const denialOfServiceOnCancel = () => {
-        window.open(urlFor('trading', undefined, undefined, true));
-    };
-
-    const denialOfServiceOnConfirm = async () => {
-        await switchAccount(virtual_account_loginid);
-    };
-
     const marketUnavailableOnConfirm = () => {
         setHasOnlyForwardingContracts(false);
         resetPreviousSymbol();
@@ -62,12 +50,6 @@ const TradeModals = ({
                 is_visible={is_unsupported_contract_modal_visible}
             />
 
-            <DenialOfServiceModal
-                onConfirm={denialOfServiceOnConfirm}
-                onCancel={denialOfServiceOnCancel}
-                is_visible={is_denial_of_service_modal_visible}
-            />
-
             <MarketUnavailableModal
                 onConfirm={marketUnavailableOnConfirm}
                 onCancel={marketUnavailableOnCancel}
@@ -83,8 +65,7 @@ const TradeModals = ({
     );
 };
 
-export default connect(({ ui, client, modules, common }) => ({
-    is_denial_of_service_modal_visible   : !client.is_client_allowed_to_visit,
+export default connect(({ ui, modules, common }) => ({
     is_market_unavailable_visible        : ui.has_only_forward_starting_contracts,
     is_services_error_visible            : ui.is_services_error_visible,
     is_unsupported_contract_modal_visible: ui.is_unsupported_contract_modal_visible,
@@ -94,9 +75,7 @@ export default connect(({ ui, client, modules, common }) => ({
     clearPurchaseInfo                    : modules.trade.clearPurchaseInfo,
     resetPurchase                        : modules.trade.requestProposal,
     services_error                       : common.services_error,
-    switchAccount                        : client.switchAccount,
     setHasOnlyForwardingContracts        : ui.setHasOnlyForwardingContracts,
     toggleServicesErrorModal             : ui.toggleServicesErrorModal,
     toggleUnsupportedContractModal       : ui.toggleUnsupportedContractModal,
-    virtual_account_loginid              : client.virtual_account_loginid,
 }))(TradeModals);

@@ -266,12 +266,11 @@
         }
     }
     &__logout {
-        align-items: center;
-        align-self: flex-end;
-        display: flex;
-        justify-content: flex-end;
-        padding: 1.6em 1.3em;
-
+        position: relative;
+        cursor: pointer;
+        float: right;
+        margin: 1.6em 1.3em 1.6em 1.3em;
+        
         &-text {
             @include typeface(--paragraph-left-normal-black, none);
             color: var(--text-prominent);
@@ -280,6 +279,7 @@
         &-icon {
             margin-left: 8px;
             @extend %inline-icon;
+            cursor: pointer;
         }
     }
     &__balance {

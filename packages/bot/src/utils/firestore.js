@@ -65,7 +65,7 @@ const firestore = (() => {
             })
                 .then((docRef) => {
                     doc_id = docRef.id;
-                    onSummaryChanged(login_id, summary);
+                    onSummaryChanged(login_id, summary, server_time);
                 })
                 .catch((error) => {
                     console.warn('Error adding document to firestore ', error); // eslint-disable-line no-console

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'deriv-components';
+// import { WS } from '../../utils/websocket';
 import './ads.scss';
 
 class Ads extends React.Component {
@@ -8,6 +9,10 @@ class Ads extends React.Component {
     }
 
     componentDidMount() {
+        // Websocket call example
+        // WS().send({ active_symbols: 'brief' }).then((response) => {
+        //     console.log(response)
+        // })
         this.setState({
             ads_list: [
                 ...this.state.ads_list,

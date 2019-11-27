@@ -10,8 +10,15 @@ import { init } from '../utils/websocket';
 import './app.scss';
 
 class App extends Component {
-    state = {
-        activeIndex: 0,
+
+    constructor(props) {
+        super(props);
+
+        init(this.props.websocket_api);
+
+        this.state = {
+            activeIndex: 0,
+        }
     }
 
     componentDidMount() {
@@ -20,8 +27,6 @@ class App extends Component {
         if (this.state.active_index !== index_to_set) {
             this.setState({ active_index: index_to_set});
         }
-
-        init(this.props.websocket_api);
     }
 
     render() {

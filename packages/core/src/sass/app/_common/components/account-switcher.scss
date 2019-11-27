@@ -269,8 +269,8 @@
         position: relative;
         cursor: pointer;
         float: right;
-        margin: 1.6em 1.3em 1.6em 1.3em;
-        
+        margin: 1.6em 1.3em;
+
         &-text {
             @include typeface(--paragraph-left-normal-black, none);
             color: var(--text-prominent);

@@ -218,6 +218,24 @@ const IconTradeCategory = ({ category, className }) => {
                     </div>
                 );
                 break;
+            case 'reset_call_put':
+                IconCategory = (
+                    <React.Fragment>
+                        <div className='category-wrapper'>
+                            <IconTradeType
+                                className='category-type'
+                                type='resetcall'
+                            />
+                        </div>
+                        <div className='category-wrapper'>
+                            <IconTradeType
+                                className='category-type'
+                                type='resetput'
+                            />
+                        </div>
+                    </React.Fragment>
+                );
+                break;
             default:
                 IconCategory = (
                     <div className='category-wrapper'>

@@ -79,11 +79,11 @@ export const getUnsupportedContracts = () => ({
         position: 'bottom',
     },
     RESETCALL: {
-        name    : localize('Reset Call'),
+        name    : localize('Reset Up'),
         position: 'top',
     },
     RESETPUT: {
-        name    : localize('Reset Put'),
+        name    : localize('Reset Down'),
         position: 'bottom',
     },
     TICKHIGH: {

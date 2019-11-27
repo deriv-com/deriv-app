@@ -218,20 +218,17 @@ const IconTradeType = ({ type, className }) => {
             case 'resetcall':
                 IconType = (
                     <g fill='none' fillRule='evenodd'>
-                        <path d='M0 0h16v16H0z' />
-                        <path className='color1-fill' fill='#2A3052' d='M5 9.39630839l2-2.00345125V0H5zM0 0h4v1.99619048H0zM7 16v-5.5906593l-2 1.9188191V16zM8.87087912 0c0 1.18801912.96307978 2.1510989 2.15109888 2.1510989h1.2527473L7 7.39285714v3.01648356l6.8489011-6.77472532v1.35989011c0 1.18801912.9630798 2.15109891 2.1510989 2.15109891V0H8.87087912z' />
-                        <path fill='#F93' d='M0 11h3.33096617l2.08398134-2H0z' />
-                        <path className='color1-fill' fill='#2A3052' d='M9 14h7v1.99619048H9zM0 14h4v1.99619048H0z' />
+                        <path className='color2-fill' fill='#85ACB0' d='M4 14v2H0v-2h4zm12 0v2h-6v-2h6zM8 0v16H6V0h2zM4 0v2H0V0h4z' />
+                        <path className='color1-fill' fill='#FF444F' d='M6 8.586v2.828L5.414 12H0v-2h4.586L6 8.586zM14 0a2 2 0 0 1 2 2v5h-.01A1.99 1.99 0 0 1 14 5.014v-1.6l-5 5V5.586L12.59 2h-1.6A1.99 1.99 0 0 1 9 .01V0z' />
+                        <path fill='#85ACB0' d='M7 10v.414L7.414 10z' />
                     </g>
                 );
                 break;
             case 'resetput':
                 IconType = (
                     <g fill='none' fillRule='evenodd'>
-                        <path d='M0 0h16v16H0z' />
-                        <path className='color1-fill' fill='#2A3052' d='M5 6.6036916l2 2.0034513V16H5zM0 16h4v-1.99619048H0zM7 0v5.59065934L5 3.67184015V0zM8.87087912 16c0-1.18801912.96307978-2.1510989 2.15109888-2.1510989h1.2527473L7 8.6071428V5.5906593l6.8489011 6.77472531V11.0054945c0-1.1880192.9630798-2.1510989 2.1510989-2.1510989V16H8.87087912z' />
-                        <path fill='#F93' d='M0 5h3.33096617l2.08398134 2H0z' />
-                        <path className='color1-fill' fill='#2A3052' d='M9 2h7V.00380952H9zM0 2h4V.00380952H0z' />
+                        <path className='color2-fill' fill='#85ACB0' d='M8 0v16H6V0h2zM4 14v2H0v-2h4zM4 0v2H0V0h4zm12 0v2h-6V0h6z' />
+                        <path className='color1-fill' fill='#FF444F' d='M9 7.59l5 5v-1.6A1.99 1.99 0 0 1 15.99 9H16v5a2 2 0 0 1-2 2H9v-.01A1.99 1.99 0 0 1 10.986 14h1.6L9 10.418V7.59zM5.414 4L6 4.586v2.828L4.586 6H0V4h5.414z' />
                     </g>
                 );
                 break;

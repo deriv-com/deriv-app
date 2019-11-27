@@ -31,8 +31,10 @@ export default class ClientStore extends BaseStore {
     @observable upgrade_info;
     @observable email;
     @observable accounts                       = {};
+    @observable pre_switch_broadcast           = false;
     @observable switched                       = '';
     @observable switch_broadcast               = false;
+    @observable initialized_broadcast          = false;
     @observable currencies_list                = {};
     @observable residence_list                 = [];
     @observable states_list                    = [];
@@ -43,6 +45,8 @@ export default class ClientStore extends BaseStore {
     @observable account_settings               = {};
     @observable account_status                 = {};
     @observable device_data                    = {};
+    @observable is_logging_in                  = false;
+    @observable has_logged_out                 = false;
     @observable landing_companies              = {
         financial_company: {},
         gaming_company   : {},
@@ -137,7 +141,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get upgradeable_currencies () {
-        if (!this.legal_allowed_currencies) return [];
+        if (!this.legal_allowed_currencies || !this.website_status.currencies_config) return [];
         return this.legal_allowed_currencies.map(currency => (
             {
                 value: currency,
@@ -291,13 +295,13 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_virtual() {
         return !ObjectUtils.isEmptyObject(this.accounts) &&
-            this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
+        this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
     }
 
     @computed
     get can_upgrade() {
         return this.upgrade_info &&
-            (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);
+        (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);
     }
 
     @computed
@@ -325,6 +329,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_mt5_allowed() {
+        if (!this.landing_companies) return false;
         return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
     }
 
@@ -544,6 +549,8 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     async switchAccount(loginid) {
+        this.setPreSwitchAccount(true);
+        this.setIsLoggingIn(true);
         this.root_store.ui.removeNotifications();
         this.root_store.ui.removeAllNotificationMessages();
         this.setSwitched(loginid);
@@ -577,6 +584,7 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     async init(login_new_user) {
+        this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
@@ -647,11 +655,23 @@ export default class ClientStore extends BaseStore {
         this.responseWebsiteStatus(await WS.storage.websiteStatus());
 
         this.registerReactions();
+        this.setIsLoggingIn(false);
+        this.setInitialized(true);
     }
 
     @action.bound
     responseWebsiteStatus(response) {
         this.website_status = response.website_status;
+        if (this.website_status.message && this.website_status.message.length) {
+            this.root_store.ui.addNotificationMessage({
+                key    : 'maintenance',
+                header : localize('Site is being updated'),
+                message: localize(this.website_status.message),
+                type   : 'warning',
+            });
+        } else {
+            this.root_store.ui.removeNotificationMessage({ key: 'maintenance' });
+        }
     }
 
     @action.bound
@@ -729,6 +749,16 @@ export default class ClientStore extends BaseStore {
             icon : account_type.toLowerCase(), // TODO: display the icon
             title: account_type.toLowerCase() === 'virtual' ? localize('DEMO') : account_type,
         };
+    }
+
+    @action.bound
+    setIsLoggingIn(bool) {
+        this.is_logging_in = bool;
+    }
+
+    @action.bound
+    setPreSwitchAccount(is_pre_switch) {
+        this.pre_switch_broadcast = is_pre_switch;
     }
 
     @action.bound
@@ -1070,13 +1100,17 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     fetchStatesList() {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             WS.statesList({
                 states_list: this.accounts[this.loginid].residence,
             }).then(response => {
-                runInAction(() => {
-                    this.states_list = response.states_list || [];
-                });
+                if (response.error) {
+                    reject(response.error);
+                } else {
+                    runInAction(() => {
+                        this.states_list = response.states_list || [];
+                    });
+                }
                 resolve(response);
             });
         })

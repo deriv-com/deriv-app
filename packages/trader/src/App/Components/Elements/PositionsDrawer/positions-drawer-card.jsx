@@ -308,9 +308,9 @@ const PositionsDrawerCard = ({
                         />
                         {is_valid_to_cancel &&
                             <Button
-                                id={`dt_drawer_card_${contract_info.contract_id}_cancel_button`}
+                                id={`dt_drawer_card_${id}_cancel_button`}
                                 className='btn--cancel'
-                                onClick={() => onClickCancel(contract_info.contract_id)}
+                                onClick={() => onClickCancel(id, true)}
                                 secondary
                             >
                                 {localize('Cancel')}

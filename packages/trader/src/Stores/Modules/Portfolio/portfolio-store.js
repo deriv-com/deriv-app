@@ -110,6 +110,9 @@ export default class PortfolioStore extends BaseStore {
                 this.updateContractTradeStore(poc);
                 this.populateResultDetails(poc);
                 subscriber.unsubscribe();
+                if (this.remove_position_after_sell) {
+                    this.removePositionById(contract_id);
+                }
             });
         }
     }
@@ -189,8 +192,9 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
-    onClickCancel(contract_id) {
+    onClickCancel(contract_id, remove_position_after_sell = false) {
         const i = this.getPositionIndexById(contract_id);
+        this.remove_position_after_sell = remove_position_after_sell;
         this.positions[i].is_sell_requested = true;
         if (contract_id) {
             WS.cancel(contract_id).then(response => {
@@ -204,7 +208,6 @@ export default class PortfolioStore extends BaseStore {
                     this.root_store.ui.addNotificationMessage(
                         contractCancelled()
                     );
-                    this.removePositionById(contract_id);
                 }
             });
         }
@@ -247,9 +250,6 @@ export default class PortfolioStore extends BaseStore {
             this.root_store.ui.addNotificationMessage(
                 contractSold(this.root_store.client.currency, response.sell.sold_for)
             );
-            if (this.remove_position_after_sell) {
-                this.removePositionById(response.sell.contract_id);
-            }
         }
     }
 

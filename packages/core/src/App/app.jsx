@@ -2,7 +2,7 @@ import PropTypes                    from 'prop-types';
 import React                        from 'react';
 import ReactDOM                     from 'react-dom';
 import { Prompt }                   from 'react-router';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router }  from 'react-router-dom';
 import Client                       from '_common/base/client_base';
 import WS                           from 'Services/ws-methods';
 import { MobxProvider }             from 'Stores/connect';

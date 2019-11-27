@@ -1,11 +1,11 @@
 import {
     action,
-    computed }                  from 'mobx';
-import BinarySocket             from '_common/base/socket_base';
-import { isLoginPages }         from '_common/base/login';
-import { get as getLanguage }   from '_common/language';
-import BaseStore                from './base-store';
-import { getAppId }             from '../config';
+    computed }                    from 'mobx';
+import BinarySocket               from '_common/base/socket_base';
+import { isLoginPages }           from '_common/base/login';
+import { get as getLanguage }     from '_common/language';
+import BaseStore                  from './base-store';
+import { getAppId, isProduction } from '../config';
 
 export default class SegmentStore extends BaseStore {
     // only available on production (bot and deriv)
@@ -13,6 +13,12 @@ export default class SegmentStore extends BaseStore {
 
     constructor(root_store) {
         super({ root_store });
+
+        if (isProduction()) {
+            analytics.load("TSvHCi93nNiBjfezt24XMMDa2YOwUoqS"); // Production Token
+        } else {
+            analytics.load("KD5463ad4XabNttNNaAC0zMLie7g9GIM"); // Development Token
+        }
     }
 
     /**

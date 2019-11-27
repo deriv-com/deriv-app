@@ -21,7 +21,7 @@ const TakeProfit = ({
             label={localize('Take profit')}
             name='take_profit'
             onChange={onChange}
-            tooltip_label={localize('Close the deal when my loss reaches this amount.')}
+            tooltip_label={localize('Your contract is closed automatically when your profit is more than or equals to this amount.')}
             value={take_profit}
         />
     );

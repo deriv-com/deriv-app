@@ -6,6 +6,7 @@ import Barrier                        from 'Modules/Trading/Components/Form/Trad
 import Duration                       from 'Modules/Trading/Components/Form/TradeParams/Duration';
 import LastDigit                      from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
 import CancelDeal                     from 'Modules/Trading/Components/Form/TradeParams/Multiplier/cancel-deal.jsx';
+import Multiplier                     from 'Modules/Trading/Components/Form/TradeParams/Multiplier/multiplier.jsx';
 import StopLoss                       from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss.jsx';
 import TakeProfit                     from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
 import { connect }                    from 'Stores/connect';
@@ -34,6 +35,10 @@ class TradeParams extends React.Component {
                 {
                     this.isVisible('amount') &&
                     <Amount key={'amount'} is_minimized={is_minimized} />
+                }
+                {
+                    this.isVisible('multiplier') &&
+                    <Multiplier key={'multiplier'} />
                 }
                 {
                     this.isVisible('take_profit') &&

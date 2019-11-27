@@ -21,7 +21,7 @@ const StopLoss = ({
             label={localize('Stop loss')}
             name='stop_loss'
             onChange={onChange}
-            tooltip_label={localize('Close the deal when my loss reaches this amount.')}
+            tooltip_label={localize('Your contract is closed automatically when your loss is more than or equals to this amount.')}
             value={stop_loss}
         />
     );

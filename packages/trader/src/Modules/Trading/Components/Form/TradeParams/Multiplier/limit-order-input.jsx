@@ -1,6 +1,5 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
-import { localize }      from 'App/i18n';
 import Fieldset          from 'App/Components/Form/fieldset.jsx';
 import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
 
@@ -12,6 +11,7 @@ const LimitOrderInput = ({
     label,
     name,
     onChange,
+    tooltip_label,
     value,
 }) => {
     return (
@@ -28,7 +28,7 @@ const LimitOrderInput = ({
                 label={label}
                 name={name}
                 onChange={onChange}
-                tooltip_label={localize('Close the deal when my loss reaches this amount.')}
+                tooltip_label={tooltip_label}
                 value={value}
             />
         </Fieldset>
@@ -42,6 +42,7 @@ LimitOrderInput.propTypes = {
     label             : PropTypes.string,
     name              : PropTypes.string,
     onChange          : PropTypes.func,
+    tooltip_label     : PropTypes.string,
     value             : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,

@@ -1,16 +1,21 @@
-import classNames from 'classnames';
-import PropTypes  from 'prop-types';
-import React      from 'react';
+import classNames  from 'classnames';
+import PropTypes   from 'prop-types';
+import React       from 'react';
+import { Popover } from 'deriv-components';
 
 const Fieldset = ({
     children,
     className,
     header,
+    header_tooltip,
     is_center,
     onMouseEnter,
     onMouseLeave,
 }) => {
-    const fieldset_header_class = classNames('trade-container__fieldset-header', is_center ? 'center-text' : '');
+    const fieldset_header_class = classNames('trade-container__fieldset-header', {
+        'center-text'                             : is_center,
+        'trade-container__fieldset-header--inline': header_tooltip,
+    });
     const fieldset_info_class   = classNames('trade-container__fieldset-info', !is_center && 'trade-container__fieldset-info--left');
 
     return (
@@ -18,6 +23,14 @@ const Fieldset = ({
             {!!header &&
                 <div className={fieldset_header_class}>
                     <span className={fieldset_info_class}>{header}</span>
+                    {header_tooltip &&
+                        <Popover
+                            alignment='left'
+                            icon='info'
+                            message={header_tooltip}
+                            margin={210}
+                        />
+                    }
                 </div>
             }
             {children}
@@ -34,10 +47,11 @@ Fieldset.propTypes = {
         PropTypes.array,
         PropTypes.object,
     ]),
-    className   : PropTypes.string,
-    header      : PropTypes.string,
-    onMouseEnter: PropTypes.func,
-    onMouseLeave: PropTypes.func,
+    className     : PropTypes.string,
+    header        : PropTypes.string,
+    header_tooltip: PropTypes.string,
+    onMouseEnter  : PropTypes.func,
+    onMouseLeave  : PropTypes.func,
 };
 
 export default Fieldset;

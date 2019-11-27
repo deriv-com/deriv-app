@@ -60,6 +60,15 @@
         &-header {
             height: 1.5rem;
             position: relative;
+
+            &--inline {
+                /* postcss-bem-linter: ignore */
+                .dc-popover {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                }
+            }
         }
         &-info {
             @include typeface(--paragraph-left-normal-black);
@@ -82,6 +91,8 @@
         &-tooltip-text {
             border-bottom: 1px dotted var(--text-general);
             text-decoration: none;
+            width: fit-content;
+            margin-left: auto;
         }
     }
     &__input {

@@ -39,7 +39,7 @@ const CancelDeal = ({
                     alignment='left'
                     icon='info'
                     id='dt_cancel_deal-checkbox__tooltip'
-                    message={localize('Allows you to undo the deal within 1 hour to avoid loss.')}
+                    message={localize('Allows you to cancel this deal (within 1 hour) to avoid loss.')}
                     margin={210}
                 />
             </div>

@@ -3,10 +3,11 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
 import Localize                       from 'App/Components/Elements/localize.jsx';
+import Fieldset                       from 'App/Components/Form/fieldset.jsx';
 import { localize }                   from 'App/i18n';
 import { connect }                    from 'Stores/connect';
 
-const MultiplierDropdown = ({
+const Multiplier = ({
     amount,
     commission,
     currency,
@@ -14,7 +15,12 @@ const MultiplierDropdown = ({
     multiplier_range_list,
     onChange,
 }) => (
-    <div className='trade-container__multiplier'>
+    <Fieldset
+        className='trade-container__fieldset trade-container__fieldset__multiplier'
+        is_center
+        header={localize('Multiplier')}
+        header_tooltip={localize('Your profit and loss are multiplied by this amount.')}
+    >
         <Dropdown
             id='multiplier'
             className='trade-container__multiplier-dropdown'
@@ -39,10 +45,10 @@ const MultiplierDropdown = ({
                 {localize('Commission: {{commission}}%', { commission })}
             </p>
         </Popover>
-    </div>
+    </Fieldset>
 );
 
-MultiplierDropdown.propTypes = {
+Multiplier.propTypes = {
     amount: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
@@ -64,4 +70,4 @@ export default connect(({ modules }) => ({
     multiplier           : modules.trade.multiplier,
     multiplier_range_list: modules.trade.multiplier_range_list,
     onChange             : modules.trade.onChange,
-}))(MultiplierDropdown);
+}))(Multiplier);

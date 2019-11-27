@@ -8,8 +8,9 @@ import ButtonToggleMenu               from 'App/Components/Form/ButtonToggleMenu
 import Fieldset                       from 'App/Components/Form/fieldset.jsx';
 import InputField                     from 'App/Components/Form/InputField';
 import { connect }                    from 'Stores/connect';
+import { localize }                   from 'App/i18n';
 import AllowEquals                    from './allow-equals.jsx';
-import MultiplierDropdown             from './Multiplier/dropdown.jsx';
+// import MultiplierDropdown             from './Multiplier/dropdown.jsx';
 
 const Amount = ({
     amount,
@@ -65,7 +66,10 @@ const Amount = ({
         />;
 
     return (
-        <Fieldset className='trade-container__fieldset center-text'>
+        <Fieldset
+            className='trade-container__fieldset center-text'
+            header={is_multiplier ? localize('Stake') : undefined}
+        >
             {basis_list.length > 1 &&
                 <ButtonToggleMenu
                     id='dt_amount_toggle'
@@ -97,7 +101,6 @@ const Amount = ({
                 :
                 input
             }
-            {is_multiplier && <MultiplierDropdown />}
             <AllowEquals
                 contract_start_type={contract_start_type}
                 contract_type={contract_type}

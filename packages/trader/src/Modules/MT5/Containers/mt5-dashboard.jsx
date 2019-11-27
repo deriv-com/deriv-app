@@ -2,6 +2,7 @@ import {
     Tabs }                       from 'deriv-components';
 import React                     from 'react';
 import { withRouter }            from 'react-router';
+import { Redirect }              from 'react-router-dom';
 import Localize                  from 'App/Components/Elements/localize.jsx';
 import { localize }              from 'App/i18n';
 import IconDeviceLaptop          from 'Assets/SvgComponents/mt5/download-center/icon-device-laptop.svg';
@@ -14,6 +15,7 @@ import IconInstallationLinux     from 'Assets/SvgComponents/mt5/download-center/
 import IconInstallationMac       from 'Assets/SvgComponents/mt5/download-center/icon-installation-mac.svg';
 import IconInstallationWeb       from 'Assets/SvgComponents/mt5/download-center/icon-installation-web.svg';
 import IconInstallationWindows   from 'Assets/SvgComponents/mt5/download-center/icon-installation-windows.svg';
+import routes                    from 'Constants/routes';
 import MT5PasswordModal          from 'Modules/MT5/Containers/mt5-password-modal.jsx';
 import MT5ServerErrorDialog      from 'Modules/MT5/Containers/mt5-server-error-dialog.jsx';
 import Mt5TopUpDemoModal         from 'Modules/MT5/Containers/mt5-top-up-demo-modal.jsx';
@@ -82,8 +84,13 @@ class MT5Dashboard extends React.Component {
             has_mt5_account,
             has_real_account,
             NotificationMessages,
+            is_logged_in,
+            can_upgrade_to,
         } = this.props;
 
+        if (is_logged_in && can_upgrade_to !== 'svg') {
+            return <Redirect to={routes.trade} />
+        }
         return (
             <div className='mt5-dashboard__container'>
                 <NotificationMessages />
@@ -187,6 +194,8 @@ export default withRouter(connect(({ client, modules, ui }) => ({
     beginRealSignupForMt5      : modules.mt5.beginRealSignupForMt5,
     createMT5Account           : modules.mt5.createMT5Account,
     current_list               : modules.mt5.current_list,
+    is_logged_in               : client.is_logged_in,
+    can_upgrade_to             : client.can_upgrade_to,
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
     is_loading                 : client.is_populating_mt5_account_list,
     has_mt5_account            : modules.mt5.has_mt5_account,

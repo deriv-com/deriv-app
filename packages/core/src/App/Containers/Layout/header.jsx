@@ -57,6 +57,14 @@ const Header = ({
         },
     ];
 
+    const filterPlatformsForClients = (payload) => payload.filter(config => {
+        // MX clients cannot open MT5 account
+        if (config.link_to === routes.mt5 && can_upgrade_to !== 'svg') {
+            return false;
+        }
+        return true;
+    });
+
     return (
         <header className={classNames('header', {
             'header--is-disabled': (is_app_disabled || is_route_modal_on),
@@ -64,7 +72,7 @@ const Header = ({
         >
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
-                    <PlatformSwitcher platform_config={platform_config} />
+                    <PlatformSwitcher platform_config={filterPlatformsForClients(platform_config)} />
                     <Lazy
                         has_progress={false}
                         ctor={() => import(/* webpackChunkName: "toggle-menu-drawer", webpackPreload: true */'App/Components/Layout/Header/toggle-menu-drawer.jsx')}

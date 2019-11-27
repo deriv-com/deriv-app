@@ -1,7 +1,8 @@
-import firebase          from 'firebase';
-import                   'firebase/firestore';
-import { reaction }      from 'mobx';
-import { message_types } from '../constants/messages';
+import firebase             from 'firebase';
+import                     'firebase/firestore';
+import { reaction }        from 'mobx';
+import { contract_stages } from '../constants/contract-stage';
+import { message_types }   from '../constants/messages';
 
 const Firestore = (() => {
 
@@ -31,11 +32,11 @@ const Firestore = (() => {
             );
 
             reaction(
-                () => run_panel.has_open_contract,
+                () => s.summary.number_of_runs,
                 () => {
                     // send the summary when contract closes and bot is stopped
-                    if (!run_panel.is_running &&
-                        !run_panel.has_open_contract) {
+                    if (!run_panel.is_running && 
+                        run_panel.contract_stage.index === contract_stages.CONTRACT_CLOSED.index) {
                         onSummaryChanged(client.loginid, s.summary);
                     }
                 }

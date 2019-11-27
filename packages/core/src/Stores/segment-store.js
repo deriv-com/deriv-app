@@ -5,12 +5,9 @@ import BinarySocket               from '_common/base/socket_base';
 import { isLoginPages }           from '_common/base/login';
 import { get as getLanguage }     from '_common/language';
 import BaseStore                  from './base-store';
-import { getAppId, isProduction } from '../config';
+import { isProduction }           from '../config';
 
 export default class SegmentStore extends BaseStore {
-    // only available on production (bot and deriv)
-    is_applicable = /^(16929|19111)$/.test(getAppId());
-
     constructor(root_store) {
         super({ root_store });
 
@@ -41,7 +38,7 @@ export default class SegmentStore extends BaseStore {
      */
     @action.bound
     async identifyEvent(data) {
-        if (this.is_applicable && !isLoginPages()) {
+        if (!isLoginPages()) {
             BinarySocket.wait('authorize').then(() => {
                 window.analytics.identify(this.common_traits.user_id, {
                     language: this.common_traits.language,
@@ -56,8 +53,10 @@ export default class SegmentStore extends BaseStore {
      */
     @action.bound
     pageView() {
-        if (this.is_applicable && !isLoginPages() && this.root_store.client.is_logged_in) {
-            window.analytics.page();
-        }
+        BinarySocket.wait('authorize').then(() => {
+            if (!isLoginPages() && this.root_store.client.is_logged_in) {
+                window.analytics.page();
+            }
+        });
     }
 }

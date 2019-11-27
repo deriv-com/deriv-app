@@ -1105,15 +1105,15 @@ export default class ClientStore extends BaseStore {
                 states_list: this.accounts[this.loginid].residence,
             }).then(response => {
                 if (response.error) {
-                    reject(response.error);
+                    reject(response.error)
                 } else {
                     runInAction(() => {
                         this.states_list = response.states_list || [];
-                    });
+                    })
                 }
                 resolve(response);
-            });
-        })
+            })
+        });
     }
 
     @action.bound

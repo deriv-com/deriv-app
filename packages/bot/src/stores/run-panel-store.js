@@ -318,7 +318,6 @@ export default class RunPanelStore {
                         terminateBot();
                         RunPanelStore.unregisterBotListeners();
                         this.clearStat();
-                        this.root_store.summary.currency = client.currency;
                     },
                 );
             } else {

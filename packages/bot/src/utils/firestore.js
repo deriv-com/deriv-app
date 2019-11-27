@@ -34,7 +34,7 @@ const firestore = (() => {
                 () => s.summary.number_of_runs,
                 () => {
                     // send the summary when contract closes and bot is stopped
-                    if (!run_panel.is_running && 
+                    if (!run_panel.is_running &&
                         run_panel.contract_stage.index === contract_stages.CONTRACT_CLOSED.index) {
                         onSummaryChanged(client.loginid, s.summary, common.server_time.unix());
                     }
@@ -80,7 +80,7 @@ const firestore = (() => {
         try {
             users.doc(login_id).collection('Runs').doc(doc_id).set({
                 end_time: server_time,
-            }, {merge: true});
+            }, { merge: true });
         } catch (error) {
             console.warn('Error adding document to firestore when bot stops ', error); // eslint-disable-line no-console
         }

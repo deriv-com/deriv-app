@@ -274,12 +274,10 @@
         &-text {
             @include typeface(--paragraph-left-normal-black, none);
             color: var(--text-prominent);
-            cursor: pointer;
         }
         &-icon {
             margin-left: 8px;
             @extend %inline-icon;
-            cursor: pointer;
         }
     }
     &__balance {

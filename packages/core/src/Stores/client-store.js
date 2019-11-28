@@ -18,7 +18,7 @@ import { localize }                  from 'deriv-translations';
 import {
     LocalStore,
     State }                          from '_common/storage';
-import BinarySocketGeneral           from 'Services/socket-general';
+import BinarySocketGeneral          from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore                     from './base-store';
 import { getClientAccountType }      from './Helpers/client';
@@ -31,8 +31,10 @@ export default class ClientStore extends BaseStore {
     @observable upgrade_info;
     @observable email;
     @observable accounts                       = {};
+    @observable pre_switch_broadcast           = false;
     @observable switched                       = '';
     @observable switch_broadcast               = false;
+    @observable initialized_broadcast          = false;
     @observable currencies_list                = {};
     @observable residence_list                 = [];
     @observable states_list                    = [];
@@ -43,6 +45,8 @@ export default class ClientStore extends BaseStore {
     @observable account_settings               = {};
     @observable account_status                 = {};
     @observable device_data                    = {};
+    @observable is_logging_in                  = false;
+    @observable has_logged_out                 = false;
     @observable landing_companies              = {
         financial_company: {},
         gaming_company   : {},
@@ -137,7 +141,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get upgradeable_currencies () {
-        if (!this.legal_allowed_currencies) return [];
+        if (!this.legal_allowed_currencies || !this.website_status.currencies_config) return [];
         return this.legal_allowed_currencies.map(currency => (
             {
                 value: currency,
@@ -291,13 +295,13 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_virtual() {
         return !ObjectUtils.isEmptyObject(this.accounts) &&
-            this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
+        this.accounts[this.loginid] && !!this.accounts[this.loginid].is_virtual;
     }
 
     @computed
     get can_upgrade() {
         return this.upgrade_info &&
-            (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);
+        (this.upgrade_info.can_upgrade || this.upgrade_info.can_open_multi);
     }
 
     @computed
@@ -325,6 +329,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_mt5_allowed() {
+        if (!this.landing_companies) return false;
         return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
     }
 
@@ -439,15 +444,14 @@ export default class ClientStore extends BaseStore {
     @action.bound
     realAccountSignup(form_values) {
         return new Promise(async (resolve, reject) => {
-            form_values.residence = this.residence;
+            form_values.residence = this.accounts[this.loginid].residence;
             form_values.salutation = 'Mr'; // TODO remove this once the api for salutation is optional.
             const response = await WS.newAccountReal(form_values);
             if (!response.error) {
                 await this.accountRealReaction(response);
-                localStorage.removeItem('real_account_signup_wizard');
                 resolve(response);
             } else {
-                reject(response.error);
+                reject(response.error.message);
             }
         });
     }
@@ -480,7 +484,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     createCryptoAccount(crr) {
         const { date_of_birth, first_name, last_name, salutation } = this.account_settings;
-        const residence = this.residence;
+        const residence = this.accounts[this.loginid].residence;
 
         return new Promise(async (resolve, reject) => {
             const response = await WS.newAccountReal({
@@ -498,12 +502,6 @@ export default class ClientStore extends BaseStore {
                 reject(response.error.message);
             }
         });
-    }
-
-    @computed
-    get residence() {
-        // TODO Instead of return residence from each individual loginid, set in once in login, this is bound by user.
-        return this.accounts[this.loginid].residence;
     }
 
     @computed
@@ -544,6 +542,8 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     async switchAccount(loginid) {
+        this.setPreSwitchAccount(true);
+        this.setIsLoggingIn(true);
         this.root_store.ui.removeNotifications();
         this.root_store.ui.removeAllNotificationMessages();
         this.setSwitched(loginid);
@@ -577,6 +577,7 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     async init(login_new_user) {
+        this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
@@ -631,7 +632,7 @@ export default class ClientStore extends BaseStore {
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
             WS.authorized.storage.mt5LoginList().then(this.responseMt5LoginList);
-            WS.authorized.storage.landingCompany(this.residence)
+            WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)
                 .then(this.responseLandingCompany);
             this.responseStatement(
                 await BinarySocket.send({
@@ -647,11 +648,23 @@ export default class ClientStore extends BaseStore {
         this.responseWebsiteStatus(await WS.storage.websiteStatus());
 
         this.registerReactions();
+        this.setIsLoggingIn(false);
+        this.setInitialized(true);
     }
 
     @action.bound
     responseWebsiteStatus(response) {
         this.website_status = response.website_status;
+        if (this.website_status.message && this.website_status.message.length) {
+            this.root_store.ui.addNotificationMessage({
+                key    : 'maintenance',
+                header : localize('Site is being updated'),
+                message: localize(this.website_status.message),
+                type   : 'warning',
+            });
+        } else {
+            this.root_store.ui.removeNotificationMessage({ key: 'maintenance' });
+        }
     }
 
     @action.bound
@@ -729,6 +742,16 @@ export default class ClientStore extends BaseStore {
             icon : account_type.toLowerCase(), // TODO: display the icon
             title: account_type.toLowerCase() === 'virtual' ? localize('DEMO') : account_type,
         };
+    }
+
+    @action.bound
+    setIsLoggingIn(bool) {
+        this.is_logging_in = bool;
+    }
+
+    @action.bound
+    setPreSwitchAccount(is_pre_switch) {
+        this.pre_switch_broadcast = is_pre_switch;
     }
 
     @action.bound
@@ -1054,32 +1077,29 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     fetchResidenceList() {
-        return new Promise((resolve) => {
-            WS.storage.residenceList()
-                .then(response => {
-                    this.setResidenceList(response);
-                    resolve(response);
-                })
-        })
-    }
-
-    @action.bound
-    setResidenceList(residence_list_response) {
-        this.residence_list = residence_list_response.residence_list || [];
+        WS.residenceList().then(response => {
+            runInAction(() => {
+                this.residence_list = response.residence_list || [];
+            });
+        });
     }
 
     @action.bound
     fetchStatesList() {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             WS.statesList({
-                states_list: this.accounts[this.loginid].residence,
+                states_list: this.accounts[this.loginid].residence
             }).then(response => {
-                runInAction(() => {
-                    this.states_list = response.states_list || [];
-                });
-                resolve(response);
-            });
-        })
+                if (response.error) {
+                    reject(response.error)
+                } else {
+                    runInAction(() => {
+                        this.states_list = response.states_list || [];
+                        resolve();
+                    })
+                }
+            })
+        });
     }
 
     @action.bound
@@ -1124,7 +1144,7 @@ export default class ClientStore extends BaseStore {
         const landing_company = State.getResponse('landing_company');
         const has_changeable_field = this.landing_company_shortcode === 'svg' && !this.is_fully_authenticated;
         const changeable           = ClientBase.getLandingCompanyValue(this.loginid, landing_company, 'changeable_fields');
-        if (has_changeable_field) {
+            if (has_changeable_field) {
             let changeable_fields = [];
             if (changeable && changeable.only_before_auth) {
                 changeable_fields = [...changeable.only_before_auth];

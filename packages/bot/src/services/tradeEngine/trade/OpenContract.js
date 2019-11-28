@@ -1,11 +1,12 @@
+import { getRoundedNumber } from 'deriv-shared/utils/currency';
 import { sell, openContractReceived } from './state/actions';
 import {
     contractStatus,
     contractSettled,
     contract as
     broadcastContract,
-}                                     from '../utils/broadcast';
-import { doUntilDone, roundBalance }  from '../utils/helpers';
+}                      from '../utils/broadcast';
+import { doUntilDone } from '../utils/helpers';
 
 const AFTER_FINISH_TIMEOUT = 5;
 
@@ -28,7 +29,7 @@ export default Engine =>
                 if (this.isSold) {
                     contractSettled(contract);
                     this.contractId = '';
-                    this.updateTotals(contract);
+                    // this.updateTotals(contract);
                     contractStatus({
                         id  : 'contract.sold',
                         data: contract.transaction_ids.sell,
@@ -114,6 +115,6 @@ export default Engine =>
 
         getSellPrice() {
             const { bid_price: bidPrice, buy_price: buyPrice, currency } = this.data.get('contract');
-            return Number(roundBalance({ currency, balance: Number(bidPrice) - Number(buyPrice) }));
+            return getRoundedNumber(Number(bidPrice) - Number(buyPrice), currency);
         }
     };

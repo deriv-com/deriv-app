@@ -1,14 +1,9 @@
-import { localize }   from 'deriv-translations/lib/i18n';
-import { notify }     from './broadcast';
-import config         from '../../../constants';
-import { getUTCTime } from '../../../utils/tools';
+import { getRoundedNumber } from 'deriv-shared/utils/currency';
+import { localize }         from 'deriv-translations/lib/i18n';
+import { notify }           from './broadcast';
+import { getUTCTime }       from '../../../utils/tools';
 
-export const noop = () => {};
-
-export const roundBalance = ({ currency, balance }) => {
-    const point = config.lists.CRYPTO_CURRENCIES.includes(currency) ? 8 : 2;
-    return Number(balance).toFixed(point);
-};
+export const noop = () => { };
 
 const hasOwnProperty = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop);
 
@@ -18,11 +13,11 @@ export const tradeOptionToProposal = tradeOption =>
     tradeOption.contractTypes.map(type => {
         const proposal = {
             duration_unit: tradeOption.duration_unit,
-            basis        : tradeOption.basis,
-            currency     : tradeOption.currency,
-            symbol       : tradeOption.symbol,
-            duration     : tradeOption.duration,
-            amount       : roundBalance({ currency: tradeOption.currency, balance: tradeOption.amount }),
+            basis   : tradeOption.basis,
+            currency: tradeOption.currency,
+            symbol  : tradeOption.symbol,
+            duration: tradeOption.duration,
+            amount  : tradeOption.amount,
             contract_type: type,
         };
         if (tradeOption.prediction !== undefined) {
@@ -145,7 +140,7 @@ export const doUntilDone = (f, types) => {
 
 export const createDetails = contract => {
     const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
-    const profit = Number(roundBalance({ currency, balance: sellPrice - buyPrice }));
+    const profit = getRoundedNumber(sellPrice - buyPrice, currency);
     const result = profit < 0 ? 'loss' : 'win';
 
     return [

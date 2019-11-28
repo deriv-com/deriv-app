@@ -1,14 +1,13 @@
 import {
     Modal,
     Button,
-    Money }          from 'deriv-components';
-import PropTypes     from 'prop-types';
-import React         from 'react';
-import Localize      from 'App/Components/Elements/localize.jsx';
-import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
-import { localize }  from 'App/i18n';
-import IconWallet    from 'Assets/Common/icon-wallet.jsx';
-import { connect }   from 'Stores/connect';
+    Money }                   from 'deriv-components';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import SuccessDialog          from 'App/Containers/Modals/success-dialog.jsx';
+import { localize, Localize } from 'deriv-translations';
+import IconWallet             from 'Assets/Common/icon-wallet.jsx';
+import { connect }            from 'Stores/connect';
 
 class Mt5TopUpDemoModal extends React.Component {
     accountTitle = () => {

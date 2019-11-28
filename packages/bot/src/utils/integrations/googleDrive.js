@@ -1,4 +1,4 @@
-import { localize }                     from 'deriv-translations/lib/i18n';
+import { localize }                     from 'deriv-translations';
 import { getLanguage }                  from '../lang/lang';
 import { observer as globalObserver }   from '../observer';
 import { trackAndEmitError }            from '../tools';

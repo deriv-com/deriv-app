@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations/lib/i18n';
+import { localize } from 'deriv-translations';
 
 /**
  * Construct the blocks required by the flyout for the variable category.

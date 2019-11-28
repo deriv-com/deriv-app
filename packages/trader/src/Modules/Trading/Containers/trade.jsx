@@ -197,9 +197,11 @@ class ChartTradeClass extends React.Component {
                 chartControlsWidgets={this.chartControlsWidgets}
                 chartStatusListener={(v) => this.props.setChartStatus(!v)}
                 chartType={this.props.chart_type}
+                hasAlternativeSource={true}
                 id='trade'
                 isMobile={this.props.is_mobile}
                 granularity={this.props.granularity}
+                refToAddTick={this.props.refToAddTick.bind(this)}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}
                 requestForgetStream={this.props.wsForgetStream}
@@ -240,6 +242,7 @@ const ChartTrade = connect(
             is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
             is_ended         : modules.contract_trade.last_contract.is_ended,
         },
+        refToAddTick     : modules.trade.refToAddTick,
         main_barrier     : modules.trade.main_barrier_flattened,
         show_digits_stats: modules.trade.show_digits_stats,
         contract_type    : modules.trade.contract_type,

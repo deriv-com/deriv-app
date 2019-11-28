@@ -110,6 +110,7 @@ export default class TradeStore extends BaseStore {
     // Chart loader observables
     @observable is_chart_loading;
 
+    addTickByProposal = () => null;
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
 
@@ -653,6 +654,7 @@ export default class TradeStore extends BaseStore {
         const prev_proposal_info      = ObjectUtils.getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = ObjectUtils.getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
 
+        this.addTickByProposal(response);
         this.proposal_info  = {
             ...this.proposal_info,
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
@@ -898,4 +900,8 @@ export default class TradeStore extends BaseStore {
     resetRefresh() {
         this.should_refresh_active_symbols = false;
     }
+
+    refToAddTick = (function (ref) {
+        this.addTickByProposal = ref;
+    }).bind(this);
 }

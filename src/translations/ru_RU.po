@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: binary-static\n"
+"Project-Id-Version: deriv-app\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2019-05-08 12:06\n"
+"PO-Revision-Date: 2019-11-28 10:37\n"
 "Last-Translator: binarycom\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -10,13 +10,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Generator: crowdin.com\n"
-"X-Crowdin-Project: binary-static\n"
+"X-Crowdin-Project: deriv-app\n"
 "X-Crowdin-Language: ru\n"
-"X-Crowdin-File: messages.pot\n"
+"X-Crowdin-File: /translations/src/translations/messages.pot\n"
 "Language: ru_RU\n"
 
 msgid "404"
-msgstr "404"
+msgstr ""
 
 msgid " All calls are recorded for training and monitoring purposes."
 msgstr ""
@@ -112,25 +112,25 @@ msgid "\"Transaction\" means any purchase or sale of any financial Instrument in
 msgstr "\"Контракт\" означает любой случай покупки или продажи финансового инструмента, включая, но не ограничиваясь CFD, контрактами на Rolling Spot FX, сырьевых товарах, а также других ценных бумагах или продуктах, периодически предлагаемых Компанией Клиенту в рамках данного Соглашения."
 
 msgid "$100,000 - $250,000"
-msgstr "$100,000 - $250,000"
+msgstr ""
 
 msgid "$100,001 - $500,000"
-msgstr "$100,001 - $500,000"
+msgstr ""
 
 msgid "$100,001 and above"
 msgstr "$100,001 и выше"
 
 msgid "$25,000 - $50,000"
-msgstr "$25,000 - $50,000"
+msgstr ""
 
 msgid "$250,001 - $500,000"
-msgstr "$250,001 - $500,000"
+msgstr ""
 
 msgid "$50,001 - $100,000"
-msgstr "$50,001 - $100,000"
+msgstr ""
 
 msgid "$500,001 - $1,000,000"
-msgstr "$500,001 - $1,000,000"
+msgstr ""
 
 msgid "%1 %2 payout if %3 does not touch Barrier through close on %4."
 msgstr "Получите выплату %1 %2, если %3 не коснётся заданного барьера на момент закрытия %4."
@@ -568,7 +568,7 @@ msgid "16th MENA Financial Forum & Expo"
 msgstr "16й Финансовый форум MENA Financial Forum & Expo"
 
 msgid "2 * (6,000 – 5,200) = $1600"
-msgstr "2 * (6,000 – 5,200) = $1600"
+msgstr ""
 
 msgid "2-way pricing"
 msgstr "Оцените движение рынка в двух направлениях"
@@ -772,7 +772,7 @@ msgid "AM"
 msgstr "утра"
 
 msgid "API"
-msgstr "API"
+msgstr ""
 
 msgid "API Token"
 msgstr "Ключ API"
@@ -1321,7 +1321,7 @@ msgid "Analyse the markets with an extensive range of indicators, price bands, a
 msgstr "Анализируйте рынки с помощью большого количества индикаторов, ценовых диапазонов и инструментов наложения."
 
 msgid "Android"
-msgstr "Android"
+msgstr ""
 
 msgid "Another major award. This time we're nominated by the online readers of Global Banking and Finance Review and judged by a panel of industry experts and analysts who recognise our 13 years of platform reliability, range of trades, pricing, customer service and extensive knowledge."
 msgstr "Еще одна крупная награда: в этот раз мы были номинированы читателями онлайн изданий Global Banking и Finance Review. Нас судило жюри из экспертов индустрии и аналитиков, которое высоко оценило наш 13-летний опыт, надежность, широкий выбор контрактов, политику ценообразования, высокий уровень поддержки клиентов и общие знания нашей команды о бизнесе."
@@ -1822,7 +1822,7 @@ msgid "BIEL shall not be obliged to provide professional clients with the follow
 msgstr ""
 
 msgid "BTC"
-msgstr "BTC"
+msgstr ""
 
 msgid "Bachelor's degree in computer science, or an equivalent combination of technical education, training, and work experience"
 msgstr "Степень бакалавра в области информатики или техническое образование, обучение и опыт работы в смежной области"
@@ -1972,7 +1972,7 @@ msgid "Bid price"
 msgstr "Цена бид"
 
 msgid "Binary (BVI) Ltd"
-msgstr "Binary (BVI) Ltd"
+msgstr ""
 
 msgid "Binary (BVI) Ltd,"
 msgstr ""
@@ -1981,16 +1981,16 @@ msgid "Binary (BVI) Ltd, Kingston Chambers, P.O. Box 173, Road Town, Tortola, Br
 msgstr "Binary (BVI) Ltd, Kingston Chambers, P.O. Box 173, Road Town, Tortola, British Virgin Islands. Компания лицензирована и регулируется Комиссией по предоставлению финансовых услуг Британских Виргинских островов - %1лицензия%2."
 
 msgid "Binary (C.R.) S.A."
-msgstr "Binary (C.R.) S.A."
+msgstr ""
 
 msgid "Binary (C.R.) S.A.,"
-msgstr "Binary (C.R.) S.A.,"
+msgstr ""
 
 msgid "Binary (C.R.) S.A., registered in Costa Rica. Clients from the rest of the world (excluding certain countries such as the USA, Canada, Costa Rica, Hong Kong) will have their account opened with Binary (C.R.) S.A."
 msgstr "Компания Binary (C.R.) S.A., зарегистрированная в Коста-Рике. Счета для клиентов из других стран мира (за исключением США, Канады, Коста-Рики и Гонконга) будут открыты в компании Binary (C.R.) S.A."
 
 msgid "Binary (Europe) Limited"
-msgstr "Binary (Europe) Limited"
+msgstr ""
 
 msgid "Binary (Europe) Limited, W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta. Licensed and regulated (for gambling products only - %1's Volatility Indices) by the Malta Gaming Authority in Malta  (licence no. %2) - %3view licence%4 and also maintains an Irish licence. For UK clients by the UK Gambling Commission - %5view licence%4."
 msgstr "Компания Binary (Europe) Limited расположена по адресу W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta. Компания лицензирована и регулируется (исключительно для игорных продуктов – Индексов волатильности %1) Управлением по азартным играм Мальты (номер лицензии %2; %3см. лицензию%4), а также имеет лицензию в Ирландии. Для клиентов из Великобритании компания находится под управлением Комиссии по азартным играм Великобритании (%5см. лицензию%4)."
@@ -2005,13 +2005,13 @@ msgid "Binary (Europe) Ltd, or"
 msgstr "Binary (Europe) Ltd или"
 
 msgid "Binary (FX) Ltd"
-msgstr "Binary (FX) Ltd"
+msgstr ""
 
 msgid "Binary (FX) Ltd,"
 msgstr ""
 
 msgid "Binary (FX) Ltd, Lot No. F16, First Floor, Paragon Labuan, Jalan Tun Mustapha, 87000 Federal Territory of Labuan"
-msgstr "Binary (FX) Ltd, Lot No. F16, First Floor, Paragon Labuan, Jalan Tun Mustapha, 87000 Federal Territory of Labuan"
+msgstr ""
 
 msgid "Binary (FX) Ltd, or"
 msgstr "Binary (FX) Ltd или"
@@ -2020,22 +2020,22 @@ msgid "Binary (FX) Ltd., Lot No. F16, First Floor, Paragon Labuan, Jalan Tun Mus
 msgstr "Binary (FX) Ltd., Lot No. F16, First Floor, Paragon Labuan, Jalan Tun Mustapha, 87000 Federal Territory of Labuan, Malaysia. Компания лицензирована и находится под регулированием Управление финансовых услуг Лабуана в качестве финансового брокера %1(лицензия номер MB/18/0024)%2."
 
 msgid "Binary (IOM) Limited"
-msgstr "Binary (IOM) Limited"
+msgstr ""
 
 msgid "Binary (IOM) Limited, First Floor, Millennium House, Victoria Road, Douglas, Isle of Man, IM2 4RW. Licensed and regulated by the Gambling Supervision Commission in the Isle of Man (current online gambling licence granted on the 31 August 2017) - %1view licence%2 and for UK clients by the UK Gambling Commission - %3view licence%2."
 msgstr "Компания Binary (IOM) Limited расположена по адресу First Floor, Millennium House, Victoria Road, Douglas, Isle of Man, IM2 4RW, лицензирована и регулируется Комиссией по надзору за азартными играм на Острове Мэн (настоящая лицензия выдана 31 августа 2017 года; %1см. лицензию%2), а для клиентов из Великобритании – Комиссией по азартным играм Великобритании (%3см. лицензию%2)."
 
 msgid "Binary (IOM) Ltd, First Floor, Millennium House, Victoria Road, Douglas, IM2 4RW"
-msgstr "Binary (IOM) Ltd, First Floor, Millennium House, Victoria Road, Douglas, IM2 4RW"
+msgstr ""
 
 msgid "Binary (IOM) Ltd."
 msgstr ""
 
 msgid "Binary (V) Ltd"
-msgstr "Binary (V) Ltd"
+msgstr ""
 
 msgid "Binary (V) Ltd,"
-msgstr "Binary (V) Ltd,"
+msgstr ""
 
 msgid "Binary (V) Ltd, Govant Building, Port Vila, PO Box 1276, Vanuatu, Republic of Vanuatu. Licensed and regulated by the Vanuatu Financial Services Commission - %1view licence%2."
 msgstr "Binary (V) Ltd, Govant Building, Port Vila, PO Box 1276, Vanuatu, Republic of Vanuatu. Компания лицензирована и регулируется Комиссией по предоставлению финансовых услуг Вануату - %1лицензия%2."
@@ -2047,13 +2047,13 @@ msgid "Binary Bot released"
 msgstr "Запущен робот Binary Bot"
 
 msgid "Binary Coin"
-msgstr "Binary Coin"
+msgstr ""
 
 msgid "Binary Group (hereinafter referred to as 'Binary Group of companies', 'the Company') is commited to protecting the privacy and security of the applicant's personal information. This privacy notice sets out the types of data that the Company collects on the applicant. It also sets out how the Company collect and use the applicant' personal data, and how long it keeps them and other relevant information about the applicant's data in accordance with the General Data Protection Regulation (EU) 2016/679 (hereafter referred to as 'GDPR') and Data Protection Act 2018."
 msgstr "Binary Group (далее именуемая \"Группой компаний Binary Group\" или \"Компания\") стремится защищать безопасность и конфиденциальность частной информации заявителей. Данное уведомление о конфиденциальности устанавливает виды информации, которые Компания запрашивает у заявителя. Также уведомление определяет порядок сбора и использования личной информации заявителя, как долго хранить эти данные и другие соответствующие сведения о заявителе, согласно Общему регламенту по защите данных (ЕС) 2016/679 (далее именуемый ОРЗД или GDPR), а также Акту о защите информации от 2018 года."
 
 msgid "Binary Group Services Sdn. Bhd., C-13, iTech Tower, Jalan Impact, Cyber 6, 63000 Cyberjaya, Selangor Darul Ehsan"
-msgstr "Binary Group Services Sdn. Bhd., C-13, iTech Tower, Jalan Impact, Cyber 6, 63000 Cyberjaya, Selangor Darul Ehsan"
+msgstr ""
 
 msgid "Binary Group members are sometimes referred to collectively as \"%1\" or \"the Company\"."
 msgstr ""
@@ -2062,7 +2062,7 @@ msgid "Binary Investments (Europe) Limited is entitled to provide services in an
 msgstr "Компания Binary Investments (Europe) Limited уполномочена предоставлять услуги в других государствах-членах ЕС на основании действующих в ЕС паспортных прав. На карте ниже приведён список государств ЕС, имеющих доступ к %1 посредством действующих в ЕС паспортных прав (прав на предоставление международных услуг)."
 
 msgid "Binary Investments (Europe) Ltd"
-msgstr "Binary Investments (Europe) Ltd"
+msgstr ""
 
 msgid "Binary Investments (Europe) Ltd aggregates the Bid and Ask prices from a pool of liquidity providers to determine and offer the Client the best available price of the instrument. The Company is always the final counterparty to the Client's Transactions. The Company may execute Orders on behalf of its Clients, wherein the Company will act as a broker and pass on the Order to the liquidity provider for execution. Alternatively, the Company may also keep the Client's Order on its own account, wherein the Company will take the other side of the Client's trade. It is further noted that the Company may make a profit as a result of the Client's losses and vice-versa. Further details can be found under Conflicts of interest policy and Order execution policy."
 msgstr ""
@@ -2074,7 +2074,7 @@ msgid "Binary Investments (Europe) Ltd, or"
 msgstr ""
 
 msgid "Binary Investments (Europe) Ltd."
-msgstr "Binary Investments (Europe) Ltd."
+msgstr ""
 
 msgid "Binary Investments (Europe) Ltd. is required to collect your tax information."
 msgstr "Компании Binary Investments (Europe) Ltd. необходимо знать информацию о Ваших налогах."
@@ -2083,7 +2083,7 @@ msgid "Binary KK granted Japan license"
 msgstr "Binary KK получил японскую лицензию"
 
 msgid "Binary Limited"
-msgstr "Binary Limited"
+msgstr ""
 
 msgid "Binary Limited, with registered office at 47 Esplanade, St Helier, Jersey JE1 0BD, Channel Islands, is the holding company for the subsidiaries listed below."
 msgstr "Компания Binary Limited, зарегистрированная по адресу 47 Esplanade, St Helier, Jersey JE1 0BD, Channel Islands, является холдинговой компанией, включающей нижеперечисленные дочерние компании."
@@ -2179,7 +2179,7 @@ msgid "Binary.com recommends 1.1.1.1"
 msgstr "Binary.com рекомендует 1.1.1.1"
 
 msgid "Bitcoin"
-msgstr "Bitcoin"
+msgstr ""
 
 msgid "Bitcoin Cash"
 msgstr "Монеты Bitcoin"
@@ -2317,7 +2317,7 @@ msgid "C. Provision of services"
 msgstr ""
 
 msgid "CFD"
-msgstr "CFD"
+msgstr ""
 
 msgid "CFD Energies"
 msgstr "CFD на энергоресурсах"
@@ -3802,7 +3802,7 @@ msgid "EU Passport Rights"
 msgstr "Паспортные права ЕС"
 
 msgid "EUR"
-msgstr "EUR"
+msgstr ""
 
 msgid "EUR 1 per point"
 msgstr "EUR 1 за пункт"
@@ -3811,7 +3811,7 @@ msgid "EUR Index – Measures the value of the Euro against a basket of five glo
 msgstr "Индекс EUR, измеряющий значение евро против корзины из 5 основных мировых валют (USD, AUD, GBP, JPY, CAD), каждая из которых взвешена на 20%"
 
 msgid "EUR/GBP"
-msgstr "EUR/GBP"
+msgstr ""
 
 msgid "Each Party shall do anything reasonably required by the other Party to give effect to the provisions of this agreement."
 msgstr ""
@@ -3922,7 +3922,7 @@ msgid "Eligible counterparties"
 msgstr ""
 
 msgid "Email"
-msgstr "Email"
+msgstr ""
 
 msgid "Email address"
 msgstr "Эл. адрес"
@@ -3931,7 +3931,7 @@ msgid "Email preference"
 msgstr "Настройки эл. почты"
 
 msgid "Email:"
-msgstr "Email:"
+msgstr ""
 
 msgid "Emercoin vs US Dollar"
 msgstr "Emercoin против доллара США"
@@ -4048,10 +4048,10 @@ msgid "Estimated net worth"
 msgstr "Собственный капитал"
 
 msgid "Ether"
-msgstr "Ether"
+msgstr ""
 
 msgid "Ether Classic"
-msgstr "Ether Classic"
+msgstr ""
 
 msgid "Ether is a cryptocurrency that is used to pay for transactions on the Ethereum platform. For more information, please visit %1."
 msgstr "Ether — это криптовалюта для осуществления транзакций на платформе Ethereum. Более подробная информация: %1."
@@ -4339,7 +4339,7 @@ msgid "Experience with web application security and testing, security monitoring
 msgstr "Опыт работы с безопасностью веб приложений и их тестирования, мониторинга безопасности, а также обнаружения вторжений"
 
 msgid "Expert Advisors"
-msgstr "Expert Advisors"
+msgstr ""
 
 msgid "Expert Advisors, including any additional functions/plug-ins of trading operations provided by or developed using Expert Advisors, are applications developed using the MetaQuotes Language which can be used to analyse price charts and automate the Client's trades."
 msgstr ""
@@ -4420,10 +4420,10 @@ msgid "FAQ"
 msgstr "Частые вопросы"
 
 msgid "FIX API"
-msgstr "FIX API"
+msgstr ""
 
 msgid "FX"
-msgstr "FX"
+msgstr ""
 
 msgid "FXOpen"
 msgstr ""
@@ -4861,13 +4861,13 @@ msgid "GDPR"
 msgstr "GDPR или ОРЗД"
 
 msgid "GMT"
-msgstr "GMT"
+msgstr ""
 
 msgid "GMT stands for Greenwich Mean Time, the official time used in the UK during winter. In summer, the UK changes to British Summer Time, which is GMT + 1 hour. All times on the %1 site use GMT all year round."
 msgstr "GMT – время по Гринвичу или Greenwich Mean Time – это официальное время, используемое в зимний период в Великобритании. Летом время в Великобритании меняется на британское летнее время, которое составляет GMT +1 час. Всё время на сайте %1 всегда указывается в GMT."
 
 msgid "GamCare"
-msgstr "GamCare"
+msgstr ""
 
 msgid "Gaming"
 msgstr "Игры"
@@ -5050,13 +5050,13 @@ msgid "H. Quotes"
 msgstr ""
 
 msgid "HF Vol 10"
-msgstr "HF Vol 10"
+msgstr ""
 
 msgid "HF Vol 100"
-msgstr "HF Vol 100"
+msgstr ""
 
 msgid "HF Vol 50"
-msgstr "HF Vol 50"
+msgstr ""
 
 msgid "HR Operations Executive"
 msgstr "Специалист отдела кадров"
@@ -5080,7 +5080,7 @@ msgid "Hedge your portfolio"
 msgstr "Хеджируйте свой портфель"
 
 msgid "Hedging"
-msgstr "Hedging"
+msgstr ""
 
 msgid "Help in developing advanced risk management tools for various markets (forex, equities, commodities)"
 msgstr "Помощь в разработке передовых инструментов управления риском на различных рынках (Forex, акции, сырьевые товары)"
@@ -5335,7 +5335,7 @@ msgid "IP Address"
 msgstr "IP-адрес"
 
 msgid "IT"
-msgstr "IT"
+msgstr ""
 
 msgid "IT knowledge or experience is preferred"
 msgstr "Знание или опыт в области IT является преимуществом"
@@ -6277,7 +6277,7 @@ msgid "Labuan, Malaysia"
 msgstr "Лабуан, Малайзия"
 
 msgid "Ladders"
-msgstr "Ladders"
+msgstr ""
 
 msgid "Languages"
 msgstr "Языки"
@@ -6454,13 +6454,13 @@ msgid "Links"
 msgstr "Ссылки"
 
 msgid "Linux"
-msgstr "Linux"
+msgstr ""
 
 msgid "Liquidity solutions"
 msgstr "Варианты ликвидности"
 
 msgid "Litecoin"
-msgstr "Litecoin"
+msgstr ""
 
 msgid "Litecoin is a cryptocurrency similar to Bitcoin, but capable of a higher transaction volume and faster confirmation times. For more information, please visit %1."
 msgstr "Litecoin - это криптовалюта, похожая на Bitcoin, но позволяющая проводить более крупные транзакции и обладающая более коротким сроком подтверждения переводов. Подробную информацию можно получить здесь: %1."
@@ -6655,7 +6655,7 @@ msgid "MT5 withdrawals have been disabled on your account. Please check your ema
 msgstr "Вывод средств отключен на Вашем счету MT5. Проверьте свою электронную почту для получения более подробной информации."
 
 msgid "Mac"
-msgstr "Mac"
+msgstr ""
 
 msgid "Made an impression in the first interview? We'll invite you to a second interview with our CEO and/or hiring manager."
 msgstr "Удалось произвести хорошее впечатление на первом интервью? Будем рады пригласить Вас на второе интервью с нашим CEO и/или менеджером по найму персонала."
@@ -6946,10 +6946,10 @@ msgid "Memorable town/city"
 msgstr "Любимый город"
 
 msgid "MetaTrader"
-msgstr "MetaTrader"
+msgstr ""
 
 msgid "MetaTrader 5"
-msgstr "MetaTrader 5"
+msgstr ""
 
 msgid "MetaTrader 5 dashboard"
 msgstr "Панель MetaTrader 5"
@@ -8017,7 +8017,7 @@ msgid "Personal Details"
 msgstr "Личные данные"
 
 msgid "Personal Wealth Awards 2017"
-msgstr "Personal Wealth Awards 2017"
+msgstr ""
 
 msgid "Personal data and privacy"
 msgstr ""
@@ -8635,10 +8635,10 @@ msgid "Q. Introducing Brokers"
 msgstr ""
 
 msgid "Q3 2018"
-msgstr "Q3 2018"
+msgstr ""
 
 msgid "Q4 2018"
-msgstr "Q4 2018"
+msgstr ""
 
 msgid "Qiwi is a payment service provider that was founded in 2007. It provides individuals with a simple way to transfer money, receive payments, and pay online. For more information, please visit %1."
 msgstr "Qiwi – это платёжная система, основанная в 2007 году. Система предоставляет её пользователям простой способ перевода средств, получения платежей и онлайн оплаты. Для получения более подробной информации, пожалуйста, посетите сайт %1."
@@ -8662,10 +8662,10 @@ msgid "R. Interpretation of terms"
 msgstr ""
 
 msgid "RTS 27"
-msgstr "RTS 27"
+msgstr ""
 
 msgid "RTS 28"
-msgstr "RTS 28"
+msgstr ""
 
 msgid "Range of markets"
 msgstr "Многообразие рынков"
@@ -9082,7 +9082,7 @@ msgid "Russia"
 msgstr "Россия"
 
 msgid "SQL,"
-msgstr "SQL,"
+msgstr ""
 
 msgid "Sa"
 msgstr "Сб"
@@ -9430,10 +9430,10 @@ msgid "Small island charm"
 msgstr "Очарование маленького островка"
 
 msgid "SmartCharts"
-msgstr "SmartCharts"
+msgstr ""
 
 msgid "SmartTrader"
-msgstr "SmartTrader"
+msgstr ""
 
 msgid "Smoothing out random noise"
 msgstr "Сглаживание шумов"
@@ -9697,7 +9697,7 @@ msgid "Strong understanding of colours, typography, identity design, and brandin
 msgstr "Хорошее знание цветов, типографии, корпоративного дизайна и брендинга"
 
 msgid "Student"
-msgstr "Student"
+msgstr ""
 
 msgid "Students"
 msgstr "Студенты"
@@ -9892,7 +9892,7 @@ msgid "Tel"
 msgstr "Тел"
 
 msgid "Telegram Bot"
-msgstr "Telegram Bot"
+msgstr ""
 
 msgid "Telephone"
 msgstr "Номер телефона"
@@ -9949,7 +9949,7 @@ msgid "Test the %1 website, applications, backend, and back-office systems"
 msgstr "Тестирование вебсайта %1, приложений, back-end, а также систем бэк-офиса"
 
 msgid "Tether"
-msgstr "Tether"
+msgstr ""
 
 msgid "Tether is a blockchain-based cryptocurrency whose cryptocoins in circulation are backed by an equivalent amount of traditional fiat currencies. For more information, please visit %1."
 msgstr "Tether – это криптовалюта на основе блокчейн-технологии, обеспеченная эквивалентным количеством традиционных валют. Более подробная информация: %1."
@@ -11884,7 +11884,7 @@ msgid "Top-up successful"
 msgstr "Пополнение прошло успешно"
 
 msgid "Total"
-msgstr "Total"
+msgstr ""
 
 msgid "Total Cost"
 msgstr "Общая стоимость"
@@ -12043,7 +12043,7 @@ msgid "Trade your way"
 msgstr "Торгуйте по своей методике"
 
 msgid "Trade2Win"
-msgstr "Trade2Win"
+msgstr ""
 
 msgid "Trademark"
 msgstr ""
@@ -12115,7 +12115,7 @@ msgid "Trading times is unavailable in this country. If you have an active %1 ac
 msgstr "Время торговли не доступно в данной стране. Если у Вас есть активный счёт %1, пожалуйста, %2войдите в систему%3 для получения полного доступа."
 
 msgid "TradingView"
-msgstr "TradingView"
+msgstr ""
 
 msgid "TradingView for %1"
 msgstr "TradingView для %1"
@@ -12319,7 +12319,7 @@ msgid "US Patents"
 msgstr "Патенты США"
 
 msgid "USD"
-msgstr "USD"
+msgstr ""
 
 msgid "USD 1 per point"
 msgstr "USD 1 за пункт"
@@ -12328,7 +12328,7 @@ msgid "USD Index – Measures the value of the US Dollar against a basket of fiv
 msgstr "Индекс USD, измеряющий значение доллара США против корзины из 5 основных мировых валют (EUR, GBP, JPY, CAD, AUD), каждая из которых взвешена на 20%"
 
 msgid "USD/EUR"
-msgstr "USD/EUR"
+msgstr ""
 
 msgid "Ultra fast on-the-go trading"
 msgstr "Мгновенная торговля на ходу"
@@ -12379,7 +12379,7 @@ msgid "Understood"
 msgstr "Понятно"
 
 msgid "Unemployed"
-msgstr "Unemployed"
+msgstr ""
 
 msgid "Unified ecosystem"
 msgstr "Единая экосистема"
@@ -12643,19 +12643,19 @@ msgid "Vload is an eVoucher facility that’s available as a payment method to d
 msgstr "Vload – это электронный ваучер eVoucher и платёжная система, позволяющая пополнять счёт и выводить средства. Более подробную информацию можно получить по адресу %1."
 
 msgid "Vol 10"
-msgstr "Vol 10"
+msgstr ""
 
 msgid "Vol 100"
-msgstr "Vol 100"
+msgstr ""
 
 msgid "Vol 25"
-msgstr "Vol 25"
+msgstr ""
 
 msgid "Vol 50"
-msgstr "Vol 50"
+msgstr ""
 
 msgid "Vol 75"
-msgstr "Vol 75"
+msgstr ""
 
 msgid "Volatility 10 Index"
 msgstr "Индекс волатильн. 10"
@@ -12691,7 +12691,7 @@ msgid "Volume step"
 msgstr "Шаг"
 
 msgid "Vs 407 zrnaf nalguvat fcrpvny gb lbh lbh znl pbcl lbhe nccyvpngvba gb wl+ebg13@ovanel.pbz sbe snfg-genpx pbafvqrengvba."
-msgstr "Vs 407 zrnaf nalguvat fcrpvny gb lbh lbh znl pbcl lbhe nccyvpngvba gb wl+ebg13@ovanel.pbz sbe snfg-genpx pbafvqrengvba."
+msgstr ""
 
 msgid "Waiting for contract settlement."
 msgstr "Ожидание закрытия контракта."
@@ -12847,7 +12847,7 @@ msgid "WebMoney is an online payment settlement system that's been operating sin
 msgstr "WebMoney – это электронная платёжная система, работающая с 1998 года. Более подробная информация: %1."
 
 msgid "WebTrader"
-msgstr "WebTrader"
+msgstr ""
 
 msgid "Webinar speaker"
 msgstr "Ведущий вебинаров"
@@ -13210,7 +13210,7 @@ msgid "Win up to maximum payout if exit spot is between lower and upper barrier,
 msgstr "Получите максимальную выплату, если спот-котировка на выходе будет находиться между нижним и верхним барьером, в соответствии с разницей между верхним барьером и спот-котировкой на выходе."
 
 msgid "Windows"
-msgstr "Windows"
+msgstr ""
 
 msgid "Winning the contract"
 msgstr "Условия выигрыша контракта"
@@ -13873,7 +13873,7 @@ msgid "hours"
 msgstr "час."
 
 msgid "iOS"
-msgstr "iOS"
+msgstr ""
 
 msgid "iWallet is an online payment service provider that allows deposits, withdrawals, and transaction payments. For more information, please visit %1."
 msgstr "iWallet – это платёжная онлайн система, позволяющая пополнять счёт, выводить средства и производить денежные переводы. Более подробную информацию можно получить по адресу %1."
@@ -14035,11 +14035,11 @@ msgid "years"
 msgstr "год(а)/лет"
 
 msgid "{SPAIN ONLY}However, Binary Investments (Europe) Ltd has assessed your knowledge and experience and deems the product appropriate for you."
-msgstr "{SPAIN ONLY}However, Binary Investments (Europe) Ltd has assessed your knowledge and experience and deems the product appropriate for you."
+msgstr ""
 
 msgid "{SPAIN ONLY}This is a product with leverage. You should be aware that losses may be higher than the amount initially paid to purchase the product."
-msgstr "{SPAIN ONLY}This is a product with leverage. You should be aware that losses may be higher than the amount initially paid to purchase the product."
+msgstr ""
 
 msgid "{SPAIN ONLY}You are about to purchase a product that is not simple and may be difficult to understand: Contracts for Difference and Forex. As a general rule, the CNMV considers that such products are not appropriate for retail clients, due to their complexity."
-msgstr "{SPAIN ONLY}You are about to purchase a product that is not simple and may be difficult to understand: Contracts for Difference and Forex. As a general rule, the CNMV considers that such products are not appropriate for retail clients, due to their complexity."
+msgstr ""
 

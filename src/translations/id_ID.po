@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: binary-static\n"
+"Project-Id-Version: deriv-app\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2019-05-08 12:07\n"
+"PO-Revision-Date: 2019-11-28 10:36\n"
 "Last-Translator: binarycom\n"
 "Language-Team: Indonesian\n"
 "MIME-Version: 1.0\n"
@@ -10,13 +10,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: crowdin.com\n"
-"X-Crowdin-Project: binary-static\n"
+"X-Crowdin-Project: deriv-app\n"
 "X-Crowdin-Language: id\n"
-"X-Crowdin-File: messages.pot\n"
+"X-Crowdin-File: /translations/src/translations/messages.pot\n"
 "Language: id_ID\n"
 
 msgid "404"
-msgstr "404"
+msgstr ""
 
 msgid " All calls are recorded for training and monitoring purposes."
 msgstr ""
@@ -178,7 +178,7 @@ msgid "%1 Expert Advisor (EA)"
 msgstr "Expert Advisor (EA) %1"
 
 msgid "%1 Graduate Programme"
-msgstr "%1 Graduate Programme"
+msgstr ""
 
 msgid "%1 Introducing Broker (IB) Programme"
 msgstr "Program Introducing Broker (IB) %1"
@@ -352,7 +352,7 @@ msgid "%1 owes the client a duty of best execution when executing orders on the 
 msgstr "%1 berkewajiban kepada klien untuk melakukan eksekusi terbaik ketika mengeksekusi order atas nama klien, yaitu ketika klien menempatkan kepercayaan yang sah pada Perusahaan untuk melindungi kepentingan klien dalam kaitannya dengan eksekusi order klien."
 
 msgid "%1 per lot"
-msgstr "%1 per lot"
+msgstr ""
 
 msgid "%1 property"
 msgstr ""
@@ -568,7 +568,7 @@ msgid "16th MENA Financial Forum & Expo"
 msgstr "Finansial Forum & Expo MENA ke 16"
 
 msgid "2 * (6,000 – 5,200) = $1600"
-msgstr "2 * (6,000 – 5,200) = $1600"
+msgstr ""
 
 msgid "2-way pricing"
 msgstr "Harga 2-arah"
@@ -766,13 +766,13 @@ msgid "A. Introduction and scope of agreement"
 msgstr ""
 
 msgid "A. Spot FX"
-msgstr "A. Spot FX"
+msgstr ""
 
 msgid "AM"
-msgstr "AM"
+msgstr ""
 
 msgid "API"
-msgstr "API"
+msgstr ""
 
 msgid "API Token"
 msgstr "Token API"
@@ -979,13 +979,13 @@ msgid "Accounts with debit balances are required to settle the full amount immed
 msgstr ""
 
 msgid "Accounts/ Payments"
-msgstr "Accounts/ Payments"
+msgstr ""
 
 msgid "Accounts/Assets"
 msgstr "Akun/Aset"
 
 msgid "Accounts/Payments"
-msgstr "Accounts/Payments"
+msgstr ""
 
 msgid "Accumulation of Income/Savings"
 msgstr "Akumulasi Pendapatan/Tabungan"
@@ -1042,7 +1042,7 @@ msgid "Adjust trade parameters"
 msgstr "Menyesuaikan parameter trading"
 
 msgid "Admin"
-msgstr "Admin"
+msgstr ""
 
 msgid "Administer key human resource activities such as performance appraisals"
 msgstr "Mengelola kegiatan sumber daya manusia utama seperti penilaian kinerja"
@@ -1084,7 +1084,7 @@ msgid "Affiliate Programme"
 msgstr "Program Afiliasi"
 
 msgid "Affiliate/Country Manager"
-msgstr "Affiliate/Country Manager"
+msgstr ""
 
 msgid "Affordable cost of living"
 msgstr "Biaya hidup yang terjangkau"
@@ -1321,7 +1321,7 @@ msgid "Analyse the markets with an extensive range of indicators, price bands, a
 msgstr "Analisa pasar dengan berbagai pilihan indikator, price band dan overlay."
 
 msgid "Android"
-msgstr "Android"
+msgstr ""
 
 msgid "Another major award. This time we're nominated by the online readers of Global Banking and Finance Review and judged by a panel of industry experts and analysts who recognise our 13 years of platform reliability, range of trades, pricing, customer service and extensive knowledge."
 msgstr "Anugerah terbaik lainnya. Kali ini kami dinominasikan oleh pembaca online dari Global Banking and Finance Review dan dinilai oleh panel juri ahli yang mengakui kehandalan, pilihan trading, harga, pelayanan dan pengetahuan kami selama 13 tahun."
@@ -1441,10 +1441,10 @@ msgid "Approve e-wallet payouts and withdrawal rules"
 msgstr "Meluluskan pembayaran e-wallet dan aturan pencairan"
 
 msgid "Apr"
-msgstr "Apr"
+msgstr ""
 
 msgid "April"
-msgstr "April"
+msgstr ""
 
 msgid "Aptitude for working in an international environment"
 msgstr "Memiliki kemampuan untuk bekerja dalam lingkungan internasional"
@@ -1576,10 +1576,10 @@ msgid "As the country's cultural heartbeat and economic centre, Asunción is und
 msgstr "Sebagai pusat budaya dan ekonomi negara, Asunción sedang mengalami ledakan ekonomi yang mengesankan yang mengakibatkan perkembangan luas di seluruh kota. Saat ini, Anda akan menemukan gedung-gedung kolonial menawan bercampur dengan gedung-gedung perkantoran modern, pusat perbelanjaan yang ramai, dan tempat makan yang trendi."
 
 msgid "Asian Down"
-msgstr "Asian Down"
+msgstr ""
 
 msgid "Asian Up"
-msgstr "Asian Up"
+msgstr ""
 
 msgid "Asian contracts will be refunded at the purchase price if the contract doesn't end within 5 minutes."
 msgstr "Kontrak Asian akan memperoleh pengembalian harga beli jika kontrak tidak berakhir dalam waktu 5 menit."
@@ -1597,7 +1597,7 @@ msgid "Aside from the three main trade types above, you also get Asians and Digi
 msgstr "Selain tiga jenis trading utama di atas, tersedia juga jenis trading Asian dan Digit secara eksklusif menggunakan Indeks Volatilitas kami."
 
 msgid "Ask"
-msgstr "Ask"
+msgstr ""
 
 msgid "Ask me later"
 msgstr "Tanya lagi nanti"
@@ -1666,7 +1666,7 @@ msgid "Associate"
 msgstr ""
 
 msgid "Asunción"
-msgstr "Asunción"
+msgstr ""
 
 msgid "Asunción has one of the lowest costs of living in the world, being ranked 386th out of 441 cities by Numbeo, the world's largest database of crowdsourced consumer data. International schools with a bilingual curriculum (Spanish and English) are popular among foreigners with children. You'll also have easy access to quality healthcare with well-equipped private hospitals staffed with English-speaking doctors."
 msgstr "Asunción memiliki salah satu biaya hidup terendah di dunia, berada di peringkat 386 dari 441 kota oleh Numbeo, database konsumer crowdsourced terbesar di dunia. Sekolah internasional dengan kurikulum bilingual (Spanyol dan Inggris) sangat populer di kalangan orang asing dengan anak-anak. Anda juga akan memiliki akses mudah ke layanan kesehatan berkualitas dengan rumah sakit swasta yang lengkap dengan staf dokter berbahasa Inggris."
@@ -1675,7 +1675,7 @@ msgid "Asunción is the capital city of Paraguay and one of the oldest settlemen
 msgstr "Asunción adalah ibu kota Paraguay dan salah satu pemukiman tertua di Amerika Selatan. Di masa lalu, ekspedisi kolonial berangkat dari Asunción untuk membangun kota-kota penting lainnya, yang memberikan ia julukan sebagai 'Ibu Kota'."
 
 msgid "Asunción, Paraguay"
-msgstr "Asunción, Paraguay"
+msgstr ""
 
 msgid "At any time and for any reason or no reason, the Company, in its sole discretion, may do either of the following immediately:"
 msgstr ""
@@ -1693,7 +1693,7 @@ msgid "At reset time, if the spot is in the opposite direction of your predictio
 msgstr "Pada waktu reset, jika spot berlawanan dengan arah analisa Anda, maka batasan akan direset pada spot tersebut."
 
 msgid "Audit"
-msgstr "Audit"
+msgstr ""
 
 msgid "Audit Page"
 msgstr "Halaman Audit"
@@ -1705,7 +1705,7 @@ msgid "August"
 msgstr "Agustus"
 
 msgid "Australia"
-msgstr "Australia"
+msgstr ""
 
 msgid "Australian Dollar vs Canadian Dollar"
 msgstr "Dolar Australia vs Dolar Kanada"
@@ -1822,7 +1822,7 @@ msgid "BIEL shall not be obliged to provide professional clients with the follow
 msgstr ""
 
 msgid "BTC"
-msgstr "BTC"
+msgstr ""
 
 msgid "Bachelor's degree in computer science, or an equivalent combination of technical education, training, and work experience"
 msgstr "Gelar sarjana dalam ilmu komputer, atau kombinasi yang setara dari pendidikan teknis, pelatihan, dan pengalaman kerja"
@@ -1852,7 +1852,7 @@ msgid "Back to statement"
 msgstr "Kembali ke pernyataan"
 
 msgid "Back-End Developer"
-msgstr "Back-End Developer"
+msgstr ""
 
 msgid "Back-office support"
 msgstr "Layanan back-office"
@@ -1885,7 +1885,7 @@ msgid "Barrier Change"
 msgstr "Perubahan Batasan"
 
 msgid "Barrier offset"
-msgstr "Barrier offset"
+msgstr ""
 
 msgid "Barrier(s)"
 msgstr "Batas"
@@ -1963,7 +1963,7 @@ msgid "Betting system and method"
 msgstr "Sistem dan metode trading"
 
 msgid "Bid"
-msgstr "Bid"
+msgstr ""
 
 msgid "Bid and Ask Price(s) of each Financial Instrument in the Transaction system, quoted at market price at the moment of pricing"
 msgstr ""
@@ -1972,7 +1972,7 @@ msgid "Bid price"
 msgstr "Harga bid"
 
 msgid "Binary (BVI) Ltd"
-msgstr "Binary (BVI) Ltd"
+msgstr ""
 
 msgid "Binary (BVI) Ltd,"
 msgstr ""
@@ -1981,16 +1981,16 @@ msgid "Binary (BVI) Ltd, Kingston Chambers, P.O. Box 173, Road Town, Tortola, Br
 msgstr "Binary (BVI) Ltd, Kingston Chambers, P.O. Box 173, Road Town, Tortola, Kepulauan Virgin Britania Raya. Dilisensikan dan diatur oleh Komisi Layanan Keuangan Kepulauan Virgin Britania Raya - %1lihat lisensi%2."
 
 msgid "Binary (C.R.) S.A."
-msgstr "Binary (C.R.) S.A."
+msgstr ""
 
 msgid "Binary (C.R.) S.A.,"
-msgstr "Binary (C.R.) S.A.,"
+msgstr ""
 
 msgid "Binary (C.R.) S.A., registered in Costa Rica. Clients from the rest of the world (excluding certain countries such as the USA, Canada, Costa Rica, Hong Kong) will have their account opened with Binary (C.R.) S.A."
 msgstr "Binary (C.R.) S.A., terdaftar di Kosta Rika. Pelanggan dari seluruh dunia (kecuali Amerika Serikat, Kanada, Kosta Rika, Hong Kong) akan terdaftar dibawah Binary (C.R.) S.A."
 
 msgid "Binary (Europe) Limited"
-msgstr "Binary (Europe) Limited"
+msgstr ""
 
 msgid "Binary (Europe) Limited, W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta. Licensed and regulated (for gambling products only - %1's Volatility Indices) by the Malta Gaming Authority in Malta  (licence no. %2) - %3view licence%4 and also maintains an Irish licence. For UK clients by the UK Gambling Commission - %5view licence%4."
 msgstr "Binary (Europe) Limited, yang beralamat di W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta. Diatur sebagai penyedia Layanan Investasi Kategori 3 oleh Otoritas Jasa Keuangan Malta (nomor lisensi %2) - %3lihat lisensi%4 dan juga memiliki lisensi Irlandia."
@@ -2005,13 +2005,13 @@ msgid "Binary (Europe) Ltd, or"
 msgstr "Binary (Europe) Ltd, atau"
 
 msgid "Binary (FX) Ltd"
-msgstr "Binary (FX) Ltd"
+msgstr ""
 
 msgid "Binary (FX) Ltd,"
 msgstr ""
 
 msgid "Binary (FX) Ltd, Lot No. F16, First Floor, Paragon Labuan, Jalan Tun Mustapha, 87000 Federal Territory of Labuan"
-msgstr "Binary (FX) Ltd, Lot No. F16, First Floor, Paragon Labuan, Jalan Tun Mustapha, 87000 Federal Territory of Labuan"
+msgstr ""
 
 msgid "Binary (FX) Ltd, or"
 msgstr "Binary (FX) Ltd, atau"
@@ -2020,22 +2020,22 @@ msgid "Binary (FX) Ltd., Lot No. F16, First Floor, Paragon Labuan, Jalan Tun Mus
 msgstr "Binary (FX) Ltd., Lot No. F16, Lantai Satu, Paragon Labuan, Jalan Tun Mustapha, 87000 Wilayah Federal Labuan, Malaysia. Dilisensikan dan diregulasi oleh Otoritas Jasa Keuangan Labuan untuk menjalankan bisnis pialang keuangan %1(lisensi no. MB/18/0024)%2."
 
 msgid "Binary (IOM) Limited"
-msgstr "Binary (IOM) Limited"
+msgstr ""
 
 msgid "Binary (IOM) Limited, First Floor, Millennium House, Victoria Road, Douglas, Isle of Man, IM2 4RW. Licensed and regulated by the Gambling Supervision Commission in the Isle of Man (current online gambling licence granted on the 31 August 2017) - %1view licence%2 and for UK clients by the UK Gambling Commission - %3view licence%2."
 msgstr "Binary (IOM) Limited, Lantai Pertama, Millennium House, Victoria Road, Douglas, Isle of Man, IM2 4RW. Berlisensi dan diatur."
 
 msgid "Binary (IOM) Ltd, First Floor, Millennium House, Victoria Road, Douglas, IM2 4RW"
-msgstr "Binary (IOM) Ltd, First Floor, Millennium House, Victoria Road, Douglas, IM2 4RW"
+msgstr ""
 
 msgid "Binary (IOM) Ltd."
 msgstr ""
 
 msgid "Binary (V) Ltd"
-msgstr "Binary (V) Ltd"
+msgstr ""
 
 msgid "Binary (V) Ltd,"
-msgstr "Binary (V) Ltd,"
+msgstr ""
 
 msgid "Binary (V) Ltd, Govant Building, Port Vila, PO Box 1276, Vanuatu, Republic of Vanuatu. Licensed and regulated by the Vanuatu Financial Services Commission - %1view licence%2."
 msgstr "Binary (V) Ltd, Govant Building, Port Vila, PO Box 1276, Vanuatu, Republik Vanuatu. Dilisensikan dan diatur oleh Komisi Layanan Keuangan Vanuatu - %1lihat lisensi%2."
@@ -2053,7 +2053,7 @@ msgid "Binary Group (hereinafter referred to as 'Binary Group of companies', 'th
 msgstr "Grup Binary (selanjutnya disebut sebagai 'Grup Perusahaan Binary', 'Perusahaan') berkomitmen untuk melindungi privasi dan keamanan informasi pribadi pelamar. Pemberitahuan privasi ini menetapkan jenis data yang dikumpulkan oleh Perusahaan bagi pelamar. Hal ini juga menetapkan bagaimana Perusahaan mengumpulkan dan menggunakan data pribadi pelamar, dan berapa lama penyimpanan mereka dan informasi terkait lainnya tentang data pelamar sesuai dengan Peraturan Perlindungan Data Umum (UE) 2016/679 (selanjutnya disebut sebagai 'GDPR ') dan Undang-undang Perlindungan Data 2018."
 
 msgid "Binary Group Services Sdn. Bhd., C-13, iTech Tower, Jalan Impact, Cyber 6, 63000 Cyberjaya, Selangor Darul Ehsan"
-msgstr "Binary Group Services Sdn. Bhd., C-13, iTech Tower, Jalan Impact, Cyber 6, 63000 Cyberjaya, Selangor Darul Ehsan"
+msgstr ""
 
 msgid "Binary Group members are sometimes referred to collectively as \"%1\" or \"the Company\"."
 msgstr ""
@@ -2062,7 +2062,7 @@ msgid "Binary Investments (Europe) Limited is entitled to provide services in an
 msgstr "Binary Investments (Europe) Limited dapat memberikan layanan kepada Negara Anggota Uni Eropa lainnya melalui hak pemegang paspor Uni Eropa. Lihat peta berikut ini untuk daftar negara Uni Eropa yang dapat mengakses %1 menggunakan hak pemegang paspor Uni Eropa - kebebasan untuk memberikan layanan lintas perbatasan."
 
 msgid "Binary Investments (Europe) Ltd"
-msgstr "Binary Investments (Europe) Ltd"
+msgstr ""
 
 msgid "Binary Investments (Europe) Ltd aggregates the Bid and Ask prices from a pool of liquidity providers to determine and offer the Client the best available price of the instrument. The Company is always the final counterparty to the Client's Transactions. The Company may execute Orders on behalf of its Clients, wherein the Company will act as a broker and pass on the Order to the liquidity provider for execution. Alternatively, the Company may also keep the Client's Order on its own account, wherein the Company will take the other side of the Client's trade. It is further noted that the Company may make a profit as a result of the Client's losses and vice-versa. Further details can be found under Conflicts of interest policy and Order execution policy."
 msgstr ""
@@ -2074,7 +2074,7 @@ msgid "Binary Investments (Europe) Ltd, or"
 msgstr ""
 
 msgid "Binary Investments (Europe) Ltd."
-msgstr "Binary Investments (Europe) Ltd."
+msgstr ""
 
 msgid "Binary Investments (Europe) Ltd. is required to collect your tax information."
 msgstr "Binary Investments (Europe) Ltd. diwajibkan untuk memperoleh informasi pajak Anda."
@@ -2083,7 +2083,7 @@ msgid "Binary KK granted Japan license"
 msgstr "Binary KK telah menerima lisensi Jepang"
 
 msgid "Binary Limited"
-msgstr "Binary Limited"
+msgstr ""
 
 msgid "Binary Limited, with registered office at 47 Esplanade, St Helier, Jersey JE1 0BD, Channel Islands, is the holding company for the subsidiaries listed below."
 msgstr "Binary Limited, yang beralamat di 47 Esplanade, St Helier, Jersey JE1 0BD, Channel Islands, adalah perusahaan induk dari anak perusahaan yang tercantum di bawah ini."
@@ -2107,7 +2107,7 @@ msgid "Binary Tick Trade App"
 msgstr "Aplikasi Trading Tik Binary"
 
 msgid "Binary WebTrader"
-msgstr "Binary WebTrader"
+msgstr ""
 
 msgid "Binary granted Investment Services license"
 msgstr "Binary telah diberikan lisensi Layanan Investasi"
@@ -2173,16 +2173,16 @@ msgid "Binary's platform transacts on average %1 %2transactions%3 per second, 24
 msgstr "Platform Binary memproses rata-rata %1 %2transaksi%3 per detik, 24/7"
 
 msgid "Binary.com Graduate Program"
-msgstr "Binary.com Graduate Program"
+msgstr ""
 
 msgid "Binary.com recommends 1.1.1.1"
 msgstr "Binary.com merekomendasikan 1.1.1.1"
 
 msgid "Bitcoin"
-msgstr "Bitcoin"
+msgstr ""
 
 msgid "Bitcoin Cash"
-msgstr "Bitcoin Cash"
+msgstr ""
 
 msgid "Bitcoin Cash vs US Dollar"
 msgstr "Bitcoin vs Dolar AS"
@@ -2206,13 +2206,13 @@ msgid "Brand of first car"
 msgstr "Merek mobil pertama"
 
 msgid "Brazil"
-msgstr "Brazil"
+msgstr ""
 
 msgid "Browse and trade securely on your preferred device"
 msgstr "Jelajahi dan trading dengan aman pada perangkat pilihan Anda"
 
 msgid "Browser"
-msgstr "Browser"
+msgstr ""
 
 msgid "Build our applicant database by researching and contacting various sources (eg: universities and job portals)"
 msgstr "Bangun database pelamar kami dengan meneliti dan menghubungi berbagai sumber (misalnya: universitas dan portal lowongan kerja)"
@@ -2317,7 +2317,7 @@ msgid "C. Provision of services"
 msgstr ""
 
 msgid "CFD"
-msgstr "CFD"
+msgstr ""
 
 msgid "CFD Energies"
 msgstr "CFD Energi"
@@ -2353,10 +2353,10 @@ msgid "CPA (EU only)"
 msgstr "CPA (Uni Eropa saja)"
 
 msgid "Call Spread"
-msgstr "Call Spread"
+msgstr ""
 
 msgid "Call Spread/Put Spread"
-msgstr "Call Spread/Put Spread"
+msgstr ""
 
 msgid "Can I offer my referrals an incentive to sign up through my unique affiliate link rather than sign up directly?"
 msgstr "Dapatkah saya menawarkan referal saya insentif untuk mendaftar melalui tautan afiliasi unik saya?"
@@ -2476,7 +2476,7 @@ msgid "Changes to this privacy policy"
 msgstr "Perubahan kebijakan privasi ini"
 
 msgid "Chart"
-msgstr "Chart"
+msgstr ""
 
 msgid "Chart is not available for this underlying."
 msgstr "Chart tidak tersedia untuk pasar dasar ini."
@@ -2695,7 +2695,7 @@ msgid "Clients' money"
 msgstr ""
 
 msgid "Close"
-msgstr "Close"
+msgstr ""
 
 msgid "Close Time"
 msgstr "Waktu Tutup"
@@ -2704,7 +2704,7 @@ msgid "Close all or any of the Client's Open Positions at a closing level that i
 msgstr ""
 
 msgid "Close-Low"
-msgstr "Close-Low"
+msgstr ""
 
 msgid "Closed Bid"
 msgstr "Tutup Bid"
@@ -2863,7 +2863,7 @@ msgid "Complete your %1Tax Information%2."
 msgstr "Lengkapi %1Informasi Pajak%2 Anda."
 
 msgid "Compliance Executive"
-msgstr "Compliance Executive"
+msgstr ""
 
 msgid "Compliance and Risk Management"
 msgstr "Compliance & Risk Management"
@@ -3097,7 +3097,7 @@ msgid "Copyright"
 msgstr "Hak Cipta"
 
 msgid "Copywriter"
-msgstr "Copywriter"
+msgstr ""
 
 msgid "Cost per acquisition (CPA) for EU affiliates only"
 msgstr "Cost per acquisition (CPA) untuk affiliasi Uni Eropa saja"
@@ -3253,7 +3253,7 @@ msgid "Cryptocurrency-related transactions that occur on the blockchain might ta
 msgstr ""
 
 msgid "Cryptocurrency/Blockchain Developer"
-msgstr "Cryptocurrency/Blockchain Developer"
+msgstr ""
 
 msgid "Cultural diversity"
 msgstr "Keragaman budaya"
@@ -3286,10 +3286,10 @@ msgid "Current time:"
 msgstr "Waktu Terkini:"
 
 msgid "Customer Support"
-msgstr "Customer Support"
+msgstr ""
 
 msgid "Customer Support Executive"
-msgstr "Customer Support Executive"
+msgstr ""
 
 msgid "Customer focus"
 msgstr "Fokus pelanggan"
@@ -3298,7 +3298,7 @@ msgid "Customer funds"
 msgstr ""
 
 msgid "Cyberjaya"
-msgstr "Cyberjaya"
+msgstr ""
 
 msgid "Cyberjaya Office"
 msgstr "Kantor Cyberjaya"
@@ -3313,7 +3313,7 @@ msgid "Cyberjaya is also a pioneer green township that is designed for sustainab
 msgstr "Cyberjaya juga merupakan pelopor kota hijau yang dirancang untuk kelangsungan hidup. Memiliki lingkungan urban dimana hampir setengah dari total area pengembangannya disediakan untuk fasilitas umum dan tanaman hijau. Hal ini juga telah mengurangi emisi karbon berdasarkan kerangka kota karbon rendah, menjadi contoh bagi kota-kota yang berkelanjutan di masa depan."
 
 msgid "Cyberjaya, Malaysia"
-msgstr "Cyberjaya, Malaysia"
+msgstr ""
 
 msgid "D. Account management"
 msgstr ""
@@ -3343,7 +3343,7 @@ msgid "Dash vs US Dollar"
 msgstr "Dash vs Dolar AS"
 
 msgid "Data Analytics"
-msgstr "Data Analytics"
+msgstr ""
 
 msgid "Data Controller"
 msgstr "Pengontrol Data"
@@ -3355,7 +3355,7 @@ msgid "Data Protection Act (DPA)"
 msgstr "Akta Perlindungan Data (DPA)"
 
 msgid "Data Scientist"
-msgstr "Data Scientist"
+msgstr ""
 
 msgid "Data Subject"
 msgstr "Subjek Data"
@@ -3436,7 +3436,7 @@ msgid "Demand – Driven by industrial and commercial applications, including ne
 msgstr "Permintaan - Didorong oleh aplikasi komersil dan industri, termasuk produk teknologi terbaru atau tren fashion"
 
 msgid "Demo"
-msgstr "Demo"
+msgstr ""
 
 msgid "Demo Account"
 msgstr "Akun Demo"
@@ -3472,7 +3472,7 @@ msgid "Depending on your broker or trading platform, you can start trading from 
 msgstr "Tergantung pada platfrom trading broker Anda, Anda dapat mulai trading dari mulai pasar Sydney buka di hari Senin pagi hingga saat pasar New York tutup pada Jumat malam - sampai dengan 24 jam sehari, lima hari seminggu."
 
 msgid "Deposit"
-msgstr "Deposit"
+msgstr ""
 
 msgid "Deposit and withdraw your funds via international bank wire transfer."
 msgstr "Deposit dan cairkan dana Anda melalui transfer bank internasional."
@@ -3526,7 +3526,7 @@ msgid "Details"
 msgstr "Rincian"
 
 msgid "DevOps Engineer"
-msgstr "DevOps Engineer"
+msgstr ""
 
 msgid "Develop and implement databases; collect, design, process, analyse, and present data in a meaningful way."
 msgstr "Mengembangkan dan mengimplementasikan database; mengumpulkan, mendesain, memproses, menganalisis, dan menyajikan data dengan cara yang bermakna."
@@ -3559,31 +3559,31 @@ msgid "Differences with other data feeds"
 msgstr "Perbedaan dengan data feed lain"
 
 msgid "Digit"
-msgstr "Digit"
+msgstr ""
 
 msgid "Digit Differs"
-msgstr "Digit Differs"
+msgstr ""
 
 msgid "Digit Even"
-msgstr "Digit Even"
+msgstr ""
 
 msgid "Digit Matches"
-msgstr "Digit Matches"
+msgstr ""
 
 msgid "Digit Odd"
-msgstr "Digit Odd"
+msgstr ""
 
 msgid "Digit Over"
-msgstr "Digit Over"
+msgstr ""
 
 msgid "Digit Under"
-msgstr "Digit Under"
+msgstr ""
 
 msgid "Digit contracts will be refunded at the purchase price if the contract doesn't end within 5 minutes."
 msgstr "Kontrak Digit akan memperoleh pengembalian harga beli jika kontrak tidak berakhir dalam waktu 5 menit."
 
 msgid "Digits"
-msgstr "Digits"
+msgstr ""
 
 msgid "Disable"
 msgstr "Nonaktifkan"
@@ -3667,7 +3667,7 @@ msgid "Document submission status"
 msgstr "Status pengiriman dokumen"
 
 msgid "Does Not Touch"
-msgstr "Does Not Touch"
+msgstr ""
 
 msgid "Doing great work and inspiring others to do the same."
 msgstr "Melakukan pekerjaan dengan luar biasa dan menginspirasi orang lain untuk melakukan hal yang sama."
@@ -3691,7 +3691,7 @@ msgid "Dormant and inactive accounts"
 msgstr ""
 
 msgid "Download"
-msgstr "Download"
+msgstr ""
 
 msgid "Download Binary VPN app For Android"
 msgstr "Unduh aplikasi VPN Binary untuk Android"
@@ -3700,10 +3700,10 @@ msgid "Download Binary VPN app for Windows Desktop"
 msgstr "Unduh app VPN Binary untuk Desktop Windows"
 
 msgid "Download CSV"
-msgstr "Download CSV"
+msgstr ""
 
 msgid "Download MAM"
-msgstr "Download MAM"
+msgstr ""
 
 msgid "Download MT5 for Linux"
 msgstr "Unduh MT5 untuk Linux"
@@ -3781,7 +3781,7 @@ msgid "During volatile markets, the Company's trading platform runs across a hig
 msgstr "Selama volatilitas pasar, platform trading Perusahaan berjalan bersamaan dengan jumlah pengguna online yang tinggi, order dalam jumlah yang tinggi dan jumlah tinggi harga tik yang diimpor. Sebagai bagian dari eksekusi terbaik Perusahaan kepada pelanggannya, Perusahaan memastikan platformnya berjalan dengan lancar di bawah kondisi tertekan seperti itu dan mengambil semua langkah yang wajar untuk menjaga kesinambungan dan keteraturan dalam kinerja kegiatan investasi."
 
 msgid "E-wallet"
-msgstr "E-wallet"
+msgstr ""
 
 msgid "E. Best execution obligation"
 msgstr "E. Kewajiban eksekusi terbaik"
@@ -3802,7 +3802,7 @@ msgid "EU Passport Rights"
 msgstr "Hak Pemegang Paspor Uni Eropa"
 
 msgid "EUR"
-msgstr "EUR"
+msgstr ""
 
 msgid "EUR 1 per point"
 msgstr "1 EUR per poin"
@@ -3811,7 +3811,7 @@ msgid "EUR Index – Measures the value of the Euro against a basket of five glo
 msgstr "Indeks EUR - Mengukur nilai Euro terhadap sekeranjang lima mata uang global (USD, AUD, GBP, JPY, CAD), yang masing-masing berbobot 20%"
 
 msgid "EUR/GBP"
-msgstr "EUR/GBP"
+msgstr ""
 
 msgid "Each Party shall do anything reasonably required by the other Party to give effect to the provisions of this agreement."
 msgstr ""
@@ -3922,7 +3922,7 @@ msgid "Eligible counterparties"
 msgstr ""
 
 msgid "Email"
-msgstr "Email"
+msgstr ""
 
 msgid "Email address"
 msgstr "Alamat email"
@@ -3931,7 +3931,7 @@ msgid "Email preference"
 msgstr "Pilihan email"
 
 msgid "Email:"
-msgstr "Email:"
+msgstr ""
 
 msgid "Emercoin vs US Dollar"
 msgstr "Emercoin vs Dolar AS"
@@ -3961,10 +3961,10 @@ msgid "Endpoint"
 msgstr "PoinAkhir"
 
 msgid "Ends Between"
-msgstr "Ends Between"
+msgstr ""
 
 msgid "Ends Between/Ends Outside"
-msgstr "Ends Between/Ends Outside"
+msgstr ""
 
 msgid "Ends Between/Ends Outside contracts will be refunded at the purchase price if there are less than 2 ticks between the start and end times."
 msgstr "Kontrak Ends Between/Ends Outside akan mendapat pengembalian harga beli jika terdapat kurang dari 2 tik penyelesaian antara waktu mulai hingga akhir."
@@ -3973,7 +3973,7 @@ msgid "Ends Between/Ends Outside trades"
 msgstr "Kontrak Berakhir Antara/Berakhir Keluar"
 
 msgid "Ends Outside"
-msgstr "Ends Outside"
+msgstr ""
 
 msgid "Engage in market development to grow the client base for existing products and platforms of the company"
 msgstr "Terlibat dalam pengembangan pasar untuk menumbuhkan basis klien untuk produk dan platform perusahaan yang ada"
@@ -4048,10 +4048,10 @@ msgid "Estimated net worth"
 msgstr "Perkiraan kekayaan"
 
 msgid "Ether"
-msgstr "Ether"
+msgstr ""
 
 msgid "Ether Classic"
-msgstr "Ether Classic"
+msgstr ""
 
 msgid "Ether is a cryptocurrency that is used to pay for transactions on the Ethereum platform. For more information, please visit %1."
 msgstr "Ether adalah mata uang kripto yang digunakan untuk membayar transaksi pada platform Ethereum. Untuk informasi lebih lanjut, silakan kunjungi %1."
@@ -4108,7 +4108,7 @@ msgid "Evaluate existing procedures and policies with respect to risk management
 msgstr "Evaluasi prosedur dan kebijakan yang ada terkait dengan manajemen risiko dan saran perbaikan"
 
 msgid "Even/Odd"
-msgstr "Even/Odd"
+msgstr ""
 
 msgid "Even/Odd contracts will be refunded at the purchase price if the contract doesn't end within 5 minutes."
 msgstr "Kontrak Even/Odd akan memperoleh pengembalian harga beli jika kontrak tidak berakhir dalam waktu 5 menit."
@@ -4423,7 +4423,7 @@ msgid "FIX API"
 msgstr "API TETAP"
 
 msgid "FX"
-msgstr "FX"
+msgstr ""
 
 msgid "FXOpen"
 msgstr ""
@@ -4504,7 +4504,7 @@ msgid "Festivals galore"
 msgstr "Festival berlimpah"
 
 msgid "Fiat"
-msgstr "Fiat"
+msgstr ""
 
 msgid "Fiat Currency"
 msgstr "Mata Uang Fiat"
@@ -4552,7 +4552,7 @@ msgid "Financial Instruments traded over the counter, i.e. not traded on a forma
 msgstr ""
 
 msgid "Financial Markets Analyst"
-msgstr "Financial Markets Analyst"
+msgstr ""
 
 msgid "Financial Products"
 msgstr ""
@@ -4735,7 +4735,7 @@ msgid "Force majeure events must be confirmed by an authority or government auth
 msgstr ""
 
 msgid "Forex"
-msgstr "Forex"
+msgstr ""
 
 msgid "Forex & Metals"
 msgstr "Forex & Logam"
@@ -4813,7 +4813,7 @@ msgid "Front side"
 msgstr "Bagian depan"
 
 msgid "Front-End Developer"
-msgstr "Front-End Developer"
+msgstr ""
 
 msgid "Fund transfers"
 msgstr ""
@@ -4858,19 +4858,19 @@ msgid "GBP/USD currency pair and its bid-ask price."
 msgstr "Pasangan mata uang GBP/USD dan harga bid-ask nya."
 
 msgid "GDPR"
-msgstr "GDPR"
+msgstr ""
 
 msgid "GMT"
-msgstr "GMT"
+msgstr ""
 
 msgid "GMT stands for Greenwich Mean Time, the official time used in the UK during winter. In summer, the UK changes to British Summer Time, which is GMT + 1 hour. All times on the %1 site use GMT all year round."
 msgstr "GMT adalah singkatan dari Greenwich Mean Time, waktu resmi digunakan di Inggris selama musim dingin. Di musim panas perubahan waktu Inggris adalah GMT +1 jam. Waktu yang digunakan pada situs %1 adalah GMT sepanjang waktu."
 
 msgid "GamCare"
-msgstr "GamCare"
+msgstr ""
 
 msgid "Gaming"
-msgstr "Gaming"
+msgstr ""
 
 msgid "General"
 msgstr "Umum"
@@ -4981,7 +4981,7 @@ msgid "Go with the leader"
 msgstr "Ikuti pemimpin"
 
 msgid "Goes Outside"
-msgstr "Goes Outside"
+msgstr ""
 
 msgid "Gold vs US Dollar"
 msgstr "Emas vs Dolar AS"
@@ -5008,7 +5008,7 @@ msgid "Government Officers"
 msgstr "Pegawai Pemerintah"
 
 msgid "Graphics Designer"
-msgstr "Graphics Designer"
+msgstr ""
 
 msgid "Great Britain Pound vs Australian Dollar"
 msgstr "Pound Inggris vs Dolar Australia"
@@ -5050,16 +5050,16 @@ msgid "H. Quotes"
 msgstr ""
 
 msgid "HF Vol 10"
-msgstr "HF Vol 10"
+msgstr ""
 
 msgid "HF Vol 100"
-msgstr "HF Vol 100"
+msgstr ""
 
 msgid "HF Vol 50"
-msgstr "HF Vol 50"
+msgstr ""
 
 msgid "HR Operations Executive"
-msgstr "HR Operations Executive"
+msgstr ""
 
 msgid "Handle chargeback disputes and review regulatory complaints"
 msgstr "Menangani sengketa chargeback dan meninjau peraturan mengenai keluhan"
@@ -5080,7 +5080,7 @@ msgid "Hedge your portfolio"
 msgstr "Hedging portfolio Anda"
 
 msgid "Hedging"
-msgstr "Hedging"
+msgstr ""
 
 msgid "Help in developing advanced risk management tools for various markets (forex, equities, commodities)"
 msgstr "Membantu dalam mengembangkan alat manajemen risiko canggih untuk berbagai pasar (forex, ekuitas, komoditas)"
@@ -5092,22 +5092,22 @@ msgid "Here's an example of the EUR/USD currency pair and its bid-ask price:"
 msgstr "Berikut adalah contoh pasangan mata uang EUR/USD dan harga bid-ask nya:"
 
 msgid "High"
-msgstr "High"
+msgstr ""
 
 msgid "High Barrier"
 msgstr "Batasan Tinggi"
 
 msgid "High Tick"
-msgstr "High Tick"
+msgstr ""
 
 msgid "High Tick/Low Tick"
-msgstr "High Tick/Low Tick"
+msgstr ""
 
 msgid "High Tick/Low Tick contracts have a strict duration of five ticks."
 msgstr "Kontrak High Tick/Low Tick memiliki durasi lima tik yang tetap."
 
 msgid "High Ticks/Low Ticks"
-msgstr "High Ticks/Low Ticks"
+msgstr ""
 
 msgid "High barrier"
 msgstr "Batasan tinggi"
@@ -5128,10 +5128,10 @@ msgid "High, Low and Close"
 msgstr "High, Low dan Close"
 
 msgid "High-Close"
-msgstr "High-Close"
+msgstr ""
 
 msgid "High-Low"
-msgstr "High-Low"
+msgstr ""
 
 msgid "High-tech green township"
 msgstr "Kota hijau berteknologi tinggi"
@@ -5140,13 +5140,13 @@ msgid "High/Low Ticks"
 msgstr "High/Low Tick"
 
 msgid "Higher"
-msgstr "Higher"
+msgstr ""
 
 msgid "Higher or equal"
 msgstr "Lebih tinggi atau sama"
 
 msgid "Higher/Lower"
-msgstr "Higher/Lower"
+msgstr ""
 
 msgid "Higher/Lower contracts will be refunded at the purchase price if there are less than 2 ticks between the start and end times."
 msgstr "Kontrak Higher/Lower akan mendapat pengembalian harga beli jika terdapat kurang dari 2 tik penyelesaian dari waktu mulai hingga akhir."
@@ -5275,7 +5275,7 @@ msgid "However, with leverage you can purchase those 100 units at a fraction of 
 msgstr "Namun, dengan leverage Anda dapat membeli seluruh 100 unit tersebut pada fraksi dengan biaya tertentu - tergantung pada leverage yang diberikan oleh broker atau platform trading Anda."
 
 msgid "Human Resource"
-msgstr "Human Resource"
+msgstr ""
 
 msgid "Human Resources"
 msgstr "Sumber Daya Manusia"
@@ -5335,7 +5335,7 @@ msgid "IP Address"
 msgstr "Alamat IP"
 
 msgid "IT"
-msgstr "IT"
+msgstr ""
 
 msgid "IT knowledge or experience is preferred"
 msgstr "Lebih diutamakan memiliki pengetahuan atau pengalaman IT"
@@ -5839,7 +5839,7 @@ msgid "In-depth knowledge of accounting principles, best practices, standards, a
 msgstr "Memiliki pengetahuan mendalam tentang prinsip-prinsip akuntansi, praktik, standar, dan peraturan yang berlaku"
 
 msgid "In/Out"
-msgstr "In/Out"
+msgstr ""
 
 msgid "In/Out trades"
 msgstr "Kontrak In/Out"
@@ -5947,10 +5947,10 @@ msgid "Interested, so what's next? If you can offer our Clients a specific e-wal
 msgstr "Tertarik, bagaimana langkah selanjutnya? Jika Anda dapat menawarkan metode pembayaran e-wallet atau pembayaran lokal yang tidak disediakan oleh %1 dan Anda memiliki track record yang baik, maka kami ingin %2mendengar balasan Anda!%3"
 
 msgid "Internal Audit"
-msgstr "Internal Audit"
+msgstr ""
 
 msgid "Internal Audit Executive"
-msgstr "Internal Audit Executive"
+msgstr ""
 
 msgid "Internal currency transfers between accounts are allowed up to a maximum of USD 2,000 or equivalent. Transfers are allowed between any available currency pair but cannot be done between the Binary and MT5 accounts."
 msgstr ""
@@ -6031,7 +6031,7 @@ msgid "Investments &amp; Dividends"
 msgstr "Investasi &amp; Dividen"
 
 msgid "Investor"
-msgstr "Investor"
+msgstr ""
 
 msgid "Investor Compensation Scheme"
 msgstr "Skema Kompensasi Investor"
@@ -6052,7 +6052,7 @@ msgid "Is there a fee to join the %1 IB Programme?"
 msgstr "Apakah ada biaya untuk bergabung dengan Program IB %1?"
 
 msgid "Isle of Man"
-msgstr "Isle of Man"
+msgstr ""
 
 msgid "Issued under your own name"
 msgstr "Diterbitkan dengan nama Anda sendiri"
@@ -6130,7 +6130,7 @@ msgid "J. Electronic trading platform and Transactions"
 msgstr ""
 
 msgid "Jan"
-msgstr "Jan"
+msgstr ""
 
 msgid "January"
 msgstr "Januari"
@@ -6151,7 +6151,7 @@ msgid "Join the %1 Affiliate Programme and earn commission by referring new clie
 msgstr "Bergabunglah dengan Program Affiliasi %1 dan dapatkan komisi dengan merujuk klien baru pada platform opsi binary pemenang penghargaan kami."
 
 msgid "Jul"
-msgstr "Jul"
+msgstr ""
 
 msgid "July"
 msgstr "Juli"
@@ -6265,7 +6265,7 @@ msgid "L. Manifest Error"
 msgstr ""
 
 msgid "Labuan"
-msgstr "Labuan"
+msgstr ""
 
 msgid "Labuan has several national schools and one international school. It also has the only matriculation college in East Malaysia. Pre-university students from Sabah, Sarawak, and Labuan are required to attend this matriculation college before they continue their studies at a public university."
 msgstr "Labuan memiliki beberapa sekolah nasional dan satu sekolah internasional. Ini juga memiliki satu-satunya kampus matrikulasi di Malaysia Timur. Mahasiswa pra-universitas dari Sabah, Sarawak, dan Labuan diminta untuk menghadiri perguruan tinggi matrikulasi ini sebelum mereka melanjutkan studi mereka ke universitas negeri."
@@ -6274,7 +6274,7 @@ msgid "Labuan is a federal territory made up of the main island, Labuan Island, 
 msgstr "Labuan adalah wilayah federal yang terdiri dari pulau utama, Pulau Labuan, dan enam pulau kecil lainnya di lepas pantai Sabah. Namanya berasal dari bahasa Melayu, 'labuhan' yang berarti pelabuhan. Dulunya merupakan bagian dari Kesultanan Brunei, yang diserahkan kepada Kerajaan Inggris pada tahun 1846, sebelum bergabung dengan Malaysia pada tahun 1963."
 
 msgid "Labuan, Malaysia"
-msgstr "Labuan, Malaysia"
+msgstr ""
 
 msgid "Ladders"
 msgstr "Ladder"
@@ -6352,7 +6352,7 @@ msgid "Learn to read currency pairs"
 msgstr "Pelajari cara membaca pasangan mata uang"
 
 msgid "Legal"
-msgstr "Legal"
+msgstr ""
 
 msgid "Legal compliance"
 msgstr ""
@@ -6388,7 +6388,7 @@ msgid "Level of education"
 msgstr "Tingkat pendidikan"
 
 msgid "Leverage"
-msgstr "Leverage"
+msgstr ""
 
 msgid "Leverage can be used to generate returns that are of multiple times higher than the amount set aside from the client's account balance to open and maintain a transaction (the client's margin). However, investments that have the potential to deliver greater investment returns carry higher levels of risk. This means that if the price movement is against the client's favour, the client will suffer losses that are multiple times higher than the amount set aside from the client's account balance to open and maintain a transaction (the client's margin)."
 msgstr ""
@@ -6427,7 +6427,7 @@ msgid "Limit"
 msgstr "Batas"
 
 msgid "Limit Order"
-msgstr "Limit Order"
+msgstr ""
 
 msgid "Limit/Limit Price"
 msgstr "Batas/Batas Harga"
@@ -6454,13 +6454,13 @@ msgid "Links"
 msgstr "Berbagai Link"
 
 msgid "Linux"
-msgstr "Linux"
+msgstr ""
 
 msgid "Liquidity solutions"
 msgstr "Solusi likuiditas"
 
 msgid "Litecoin"
-msgstr "Litecoin"
+msgstr ""
 
 msgid "Litecoin is a cryptocurrency similar to Bitcoin, but capable of a higher transaction volume and faster confirmation times. For more information, please visit %1."
 msgstr "Litecoin adalah mata uang kripto yang serupa dengan Bitcoin, namun mampu menghasilkan volume transaksi yang lebih tinggi dan waktu konfirmasi yang lebih cepat. Untuk informasi lebih lanjut, silakan kunjungi %1."
@@ -6511,7 +6511,7 @@ msgid "Login History"
 msgstr "Catatan Pengaksesan"
 
 msgid "Login ID"
-msgstr "Login ID"
+msgstr ""
 
 msgid "Login ID of money manager who will trade on your behalf"
 msgstr "Login ID dari money manager yang akan bertrading atas nama Anda"
@@ -6523,7 +6523,7 @@ msgid "Long-term partnership:"
 msgstr "Kemitraan jangka panjang:"
 
 msgid "Long:"
-msgstr "Long:"
+msgstr ""
 
 msgid "Lookbacks"
 msgstr "Lookback"
@@ -6541,7 +6541,7 @@ msgid "Loss"
 msgstr "Rugi"
 
 msgid "Lot"
-msgstr "Lot"
+msgstr ""
 
 msgid "Lot size"
 msgstr "Ukuran lot"
@@ -6550,13 +6550,13 @@ msgid "Lot units"
 msgstr "Unit lot"
 
 msgid "Low"
-msgstr "Low"
+msgstr ""
 
 msgid "Low Barrier"
 msgstr "Batasan Rendah"
 
 msgid "Low Tick"
-msgstr "Low Tick"
+msgstr ""
 
 msgid "Low barrier"
 msgstr "Batasan rendah"
@@ -6568,7 +6568,7 @@ msgid "Low minimum stakes"
 msgstr "Modal minimal rendah"
 
 msgid "Lower"
-msgstr "Lower"
+msgstr ""
 
 msgid "Lower or equal"
 msgstr "Lower atau equal"
@@ -6580,7 +6580,7 @@ msgid "M. Force majeure events"
 msgstr ""
 
 msgid "MAM"
-msgstr "MAM"
+msgstr ""
 
 msgid "MAM Accounts"
 msgstr "Akum MAM"
@@ -6613,7 +6613,7 @@ msgid "MT5 Account:"
 msgstr "Akun MT5:"
 
 msgid "MT5 Demo"
-msgstr "MT5 Demo"
+msgstr ""
 
 msgid "MT5 Financial"
 msgstr "MT5 Finansial"
@@ -6655,7 +6655,7 @@ msgid "MT5 withdrawals have been disabled on your account. Please check your ema
 msgstr "Penarikan MT5 tidak tersedia pada akun Anda. Silahkan cek email untuk informasi lebih lanjut."
 
 msgid "Mac"
-msgstr "Mac"
+msgstr ""
 
 msgid "Made an impression in the first interview? We'll invite you to a second interview with our CEO and/or hiring manager."
 msgstr "Berhasil dalam wawancara pertama? Kami akan mengundang Anda untuk melakukan wawancara kedua dengan CEO dan/atau manajer perekrutan kami."
@@ -6718,7 +6718,7 @@ msgid "Make your trade"
 msgstr "Lakukan trading Anda"
 
 msgid "Malaysia"
-msgstr "Malaysia"
+msgstr ""
 
 msgid "Malaysia's lower cost of living compared to most western countries means that you can enjoy a high quality of life. You'll also find easy access to world-class healthcare, plus several international schools, colleges, and universities that offer globally-recognised programmes."
 msgstr "Biaya hidup di Malaysia yang lebih rendah dibandingkan dengan kebanyakan negara barat dimana hal ini berarti Anda dapat menikmati kualitas hidup yang lebih tinggi. Anda juga akan menemukan akses mudah ke layanan kesehatan kelas dunia, ditambah beberapa sekolah internasional, akademi, dan universitas yang menawarkan program yang diakui secara global."
@@ -6727,7 +6727,7 @@ msgid "Malicious Activity"
 msgstr ""
 
 msgid "Malta"
-msgstr "Malta"
+msgstr ""
 
 msgid "Malta celebrates a large number of religious festivities and cultural events every year, filling the streets with carts laden with traditional sweets and delicacies."
 msgstr "Malta merayakan sejumlah besar perayaan keagamaan dan acara budaya setiap tahunnya, memenuhi jalan-jalan dengan gerobak sarat dengan permen tradisional dan makanan lezat."
@@ -6793,13 +6793,13 @@ msgid "Manufacturing"
 msgstr "Manufaktur"
 
 msgid "Mar"
-msgstr "Mar"
+msgstr ""
 
 msgid "March"
 msgstr "Maret"
 
 msgid "Margin"
-msgstr "Margin"
+msgstr ""
 
 msgid "Margin Call"
 msgstr ""
@@ -6808,7 +6808,7 @@ msgid "Margin Call occurs when the Margin Level is less than the Margin Level se
 msgstr ""
 
 msgid "Margin Level"
-msgstr "Margin Level"
+msgstr ""
 
 msgid "Margin Payments are due immediately and shall be received in full by the Company."
 msgstr ""
@@ -6835,7 +6835,7 @@ msgid "Market"
 msgstr "Pasar"
 
 msgid "Market Order"
-msgstr "Market Order"
+msgstr ""
 
 msgid "Market Orders"
 msgstr ""
@@ -6862,10 +6862,10 @@ msgid "Market-closing times: The client is asked to refer to %1Trading times%2 p
 msgstr ""
 
 msgid "Marketing"
-msgstr "Marketing"
+msgstr ""
 
 msgid "Marketing Executive"
-msgstr "Marketing Executive"
+msgstr ""
 
 msgid "Marketing Materials"
 msgstr ""
@@ -6880,7 +6880,7 @@ msgid "Mastercards and Maestros issued in a non-European country may only withdr
 msgstr "Mastercard dan Maestro yang dikeluarkan di negara non-Eropa hanya dapat mencairkan sejumlah dana yang didepositkan."
 
 msgid "Matches/Differs"
-msgstr "Matches/Differs"
+msgstr ""
 
 msgid "Maximum Payout"
 msgstr "Hasil Maksimum"
@@ -6946,10 +6946,10 @@ msgid "Memorable town/city"
 msgstr "Kota bersejarah"
 
 msgid "MetaTrader"
-msgstr "MetaTrader"
+msgstr ""
 
 msgid "MetaTrader 5"
-msgstr "MetaTrader 5"
+msgstr ""
 
 msgid "MetaTrader 5 dashboard"
 msgstr "Dashboard MetaTrader 5"
@@ -6988,7 +6988,7 @@ msgid "Meticulous English language skills, with keen eye for detail when it come
 msgstr "Terampil berbahasa Inggris, memiliki mata yang tajam secara detail ketika mengecek tanda baca, ejaan, tata bahasa, dan sintaksis"
 
 msgid "Min"
-msgstr "Min"
+msgstr ""
 
 msgid "Min / Max withdrawal"
 msgstr "Penarikan min/mak"
@@ -7030,7 +7030,7 @@ msgid "Minimum volume"
 msgstr "Volume minimal"
 
 msgid "Minimum:"
-msgstr "Minimum:"
+msgstr ""
 
 msgid "Mining, Construction, Manufacturing and Transport Workers"
 msgstr "Pekerja Pertambangan, Konstruksi, Manufaktur dan Transportasi"
@@ -7171,7 +7171,7 @@ msgid "Multiple opportunities"
 msgstr "Peluang luas"
 
 msgid "Multiplier"
-msgstr "Multiplier"
+msgstr ""
 
 msgid "Must be a clear, colour photo"
 msgstr "Harus foto yang jelas dan berwarna"
@@ -7186,7 +7186,7 @@ msgid "N. Representations and warranties"
 msgstr ""
 
 msgid "N/A"
-msgstr "N/A"
+msgstr ""
 
 msgid "NETELLER provides businesses and individuals with a fast, simple, and secure way to transfer money online. For more information, please visit %1."
 msgstr "NETELLER memberi pembisnis dan individu dengan cara cepat, sederhana, dan aman untuk mentransfer dana secara online. Untuk informasi lebih lanjut, silakan kunjungi %1."
@@ -7465,10 +7465,10 @@ msgid "O. Indemnification"
 msgstr ""
 
 msgid "OAuth App ID"
-msgstr "OAuth App ID"
+msgstr ""
 
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 msgid "OSCP, CEH, Security+, CISSP, or any GIAC certification is an advantage"
 msgstr "OSCP, CEH, Security +, CISSP, atau sertifikasi GIAC apa pun merupakan nilai tambah"
@@ -7489,7 +7489,7 @@ msgid "Offices in Malta and Malaysia"
 msgstr "Kantor di Malta dan Malaysia"
 
 msgid "Offline"
-msgstr "Offline"
+msgstr ""
 
 msgid "Offset potential losses to your investment portfolio by hedging with CFDs."
 msgstr "Mengurangi potensi kerugian portofolio investasi Anda dengan melakukan hedging dengan CFD."
@@ -7528,7 +7528,7 @@ msgid "Once you click the 'Submit' button, the funds will be withdrawn from your
 msgstr "Setelah mengklik tombol 'Kirim', dana akan ditarik dari akun Anda dan ditransfer ke dalam akun Klien Anda."
 
 msgid "One Zero"
-msgstr "One Zero"
+msgstr ""
 
 msgid "One of the first things most Forex traders learn is how to read a currency pair. There are two parts to a currency pair"
 msgstr "Salah satu hal pertama yang trader Forex pelajari adalah cara membaca pasangan mata uang. Ada dua bagian untuk pasangan mata uang"
@@ -7537,7 +7537,7 @@ msgid "One simple platform"
 msgstr "Satu platform sederhana"
 
 msgid "Online"
-msgstr "Online"
+msgstr ""
 
 msgid "Online Personal Wealth Awards"
 msgstr "Penghargaan Personal Wealth Online"
@@ -7600,13 +7600,13 @@ msgid "Oops... Page Not Available"
 msgstr "Maaf ... Halaman Tidak Tersedia"
 
 msgid "Open Position"
-msgstr "Open Position"
+msgstr ""
 
 msgid "Open Positions"
 msgstr "Lowongan Pekerjaan"
 
 msgid "Open Source"
-msgstr "Open Source"
+msgstr ""
 
 msgid "Open a %1 account through BIEL's website %2"
 msgstr ""
@@ -7666,7 +7666,7 @@ msgid "Options trading can become a real addiction, as can any other activity pu
 msgstr "Trading opsi dapat menyebabkan ketagihan, sebagaimana kegiatan lain yang dilakukan di luar batas. Untuk menghidari bahaya ketagihan tersebut, kami menyediakan pengecekan yang memberikan ringkasan trading Anda secara teratur."
 
 msgid "Order"
-msgstr "Order"
+msgstr ""
 
 msgid "Order Execution"
 msgstr "Eksekusi Order"
@@ -7801,7 +7801,7 @@ msgid "Over two billion dollars in trades to date."
 msgstr "Lebih dari dua milyar dolar kontrak terjual sampai saat ini."
 
 msgid "Over/Under"
-msgstr "Over/Under"
+msgstr ""
 
 msgid "Over/Under contracts will be refunded at the purchase price if the contract doesn't end within 5 minutes."
 msgstr "Kontrak Over/Under akan memperoleh pengembalian harga beli jika kontrak tidak berakhir dalam waktu 5 menit."
@@ -7825,7 +7825,7 @@ msgid "PEP Declaration"
 msgstr "Deklarasi PEP"
 
 msgid "PM"
-msgstr "PM"
+msgstr ""
 
 msgid "Palladium vs US Dollar"
 msgstr "Palladium vs Dolar AS"
@@ -7999,7 +7999,7 @@ msgid "Performance Tuning,"
 msgstr "Penyetelan Kinerja,"
 
 msgid "Perl Developer"
-msgstr "Perl Developer"
+msgstr ""
 
 msgid "Perl modules"
 msgstr "Modul perl"
@@ -8017,7 +8017,7 @@ msgid "Personal Details"
 msgstr "Data Pribadi"
 
 msgid "Personal Wealth Awards 2017"
-msgstr "Personal Wealth Awards 2017"
+msgstr ""
 
 msgid "Personal data and privacy"
 msgstr ""
@@ -8032,7 +8032,7 @@ msgid "Pillar 3 disclosure report"
 msgstr "Laporan Pengungkapan Pilar 3"
 
 msgid "Pip"
-msgstr "Pip"
+msgstr ""
 
 msgid "Pip stands for 'percentage in point' which is generally the fourth decimal place (i.e. 0.0001)."
 msgstr "Pip singkatan dari 'titik persentase' yang umumnya angka desimal keempat (yaitu 0,0001)."
@@ -8287,7 +8287,7 @@ msgid "Postal/ZIP code"
 msgstr "Kode POS"
 
 msgid "PostgreSQL Database Administrator (DBA)"
-msgstr "PostgreSQL Database Administrator (DBA)"
+msgstr ""
 
 msgid "Potential Payout"
 msgstr "Potensi Hasil"
@@ -8623,34 +8623,34 @@ msgid "Purpose of collecting Personal Data"
 msgstr "Tujuan mengumpulkan Data Pribadi"
 
 msgid "Put Spread"
-msgstr "Put Spread"
+msgstr ""
 
 msgid "Put a limit on your winnings. Once you have reached it put some aside and trade with the rest of the money."
 msgstr "Batasi keuntungan Anda. Setelah Anda mencapai target, sisihkan dan bertrading menggunakan sisa dana yang ada."
 
 msgid "Putrajaya"
-msgstr "Putrajaya"
+msgstr ""
 
 msgid "Q. Introducing Brokers"
 msgstr ""
 
 msgid "Q3 2018"
-msgstr "Q3 2018"
+msgstr ""
 
 msgid "Q4 2018"
-msgstr "Q4 2018"
+msgstr ""
 
 msgid "Qiwi is a payment service provider that was founded in 2007. It provides individuals with a simple way to transfer money, receive payments, and pay online. For more information, please visit %1."
 msgstr "Qiwi adalah penyedia layanan pembayaran yang didirikan pada tahun 2007. Menyediakan setiap individu cara mudah dan sederhana dalam menransfer dana, menerima pembayaran, dan melakukan pembayaran online. Untuk informasi lebih lanjut, silakan kunjungi %1."
 
 msgid "Quality Assurance"
-msgstr "Quality Assurance"
+msgstr ""
 
 msgid "Quantitative Analysis"
-msgstr "Quantitative Analysis"
+msgstr ""
 
 msgid "Quantitative Analyst"
-msgstr "Quantitative Analyst"
+msgstr ""
 
 msgid "Quote currency"
 msgstr "Mata uang tawaran"
@@ -8662,10 +8662,10 @@ msgid "R. Interpretation of terms"
 msgstr ""
 
 msgid "RTS 27"
-msgstr "RTS 27"
+msgstr ""
 
 msgid "RTS 28"
-msgstr "RTS 28"
+msgstr ""
 
 msgid "Range of markets"
 msgstr "Rentang pasar"
@@ -8776,7 +8776,7 @@ msgid "Recruitment Process"
 msgstr "Proses Perekrutan"
 
 msgid "Ref."
-msgstr "Ref."
+msgstr ""
 
 msgid "Refer Clients to Binary with the knowledge, or with a reasonably expected knowledge, that these Clients engage in such conduct that constitutes Malicious Activity"
 msgstr ""
@@ -8845,7 +8845,7 @@ msgid "Regulation"
 msgstr "Regulasi"
 
 msgid "Regulator:"
-msgstr "Regulator:"
+msgstr ""
 
 msgid "Regulatory Information"
 msgstr "Informasi Peraturan"
@@ -8911,10 +8911,10 @@ msgid "Reset Barrier"
 msgstr "Batasan Reset"
 
 msgid "Reset Call"
-msgstr "Reset Call"
+msgstr ""
 
 msgid "Reset Call/Reset Put"
-msgstr "Reset Call/Reset Put"
+msgstr ""
 
 msgid "Reset MT5 password"
 msgstr "Atur ulang kata sandi MT5"
@@ -8923,7 +8923,7 @@ msgid "Reset Password"
 msgstr "Ulang Kata Sandi"
 
 msgid "Reset Put"
-msgstr "Reset Put"
+msgstr ""
 
 msgid "Reset Time"
 msgstr "Waktu Reset"
@@ -9025,7 +9025,7 @@ msgid "Ripple vs US Dollar"
 msgstr "Ripple vs Dolar AS"
 
 msgid "Rise/Fall"
-msgstr "Rise/Fall"
+msgstr ""
 
 msgid "Rise/Fall contracts will be refunded at the purchase price if the following conditions occur: (1) there are less than 2 ticks between the start and end times, or (2) for contracts of tick duration, if the contract doesn't end within 5 minutes, or (3) for contracts starting in the future, if there are no ticks in the 5 minutes before the contract's start time."
 msgstr "Kontrak Rise/Fall akan memperoleh ganti rugi berupa harga beli jika terjadi kondisi sebagai berikut: (1) terdapat kurang dari 2 tik antara waktu mulai dan akhir atau (2) jika kontrak tidak berakhir dalam tempo 5 menit untuk kontrak berdurasi tik, atau (3) kontrak dimulai di masa depan, jika tidak terdapat tik dalam 5 menit sebelum kontrak dimulai."
@@ -9037,7 +9037,7 @@ msgid "Risk Disclaimer"
 msgstr "Sanggahan Risiko"
 
 msgid "Risk Management Executive"
-msgstr "Risk Management Executive"
+msgstr ""
 
 msgid "Risk Warning"
 msgstr "Peringatan Risiko"
@@ -9070,7 +9070,7 @@ msgid "Risks of Investment Products"
 msgstr "Risiko Produk Investasi"
 
 msgid "Roll-over"
-msgstr "Roll-over"
+msgstr ""
 
 msgid "Roll-over Credit/Debit"
 msgstr "Kredit/Debit Roll-over"
@@ -9082,7 +9082,7 @@ msgid "Russia"
 msgstr "Rusia"
 
 msgid "SQL,"
-msgstr "SQL,"
+msgstr ""
 
 msgid "Sa"
 msgstr "Sab"
@@ -9166,7 +9166,7 @@ msgid "Security & Limits"
 msgstr "Keamanan & Batas"
 
 msgid "Security Researcher"
-msgstr "Security Researcher"
+msgstr ""
 
 msgid "Security Testing"
 msgstr "Pengujian Keamanan"
@@ -9271,13 +9271,13 @@ msgid "Send your funds to the payment agent. The deposited funds, less the agent
 msgstr "Kirim dana Anda kepada agen pembayaran. Jumlah deposit berdasarkan nilai tukar yang berlaku dan akan dikreditkan kedalam akun Anda."
 
 msgid "Sep"
-msgstr "Sep"
+msgstr ""
 
 msgid "September"
-msgstr "September"
+msgstr ""
 
 msgid "Server"
-msgstr "Server"
+msgstr ""
 
 msgid "Session duration limit cannot be more than 6 weeks."
 msgstr "Batas durasi sesi tidak dapat lebih dari 6 minggu."
@@ -9334,7 +9334,7 @@ msgid "Short to long-term durations"
 msgstr "Durasi pendek hingga panjang"
 
 msgid "Short:"
-msgstr "Short:"
+msgstr ""
 
 msgid "Should a disruption that cannot be readily rectified by the Company occur in the data feeds, the Company reserves the right to refund the contract purchase."
 msgstr ""
@@ -9433,7 +9433,7 @@ msgid "SmartCharts"
 msgstr "SmartChart"
 
 msgid "SmartTrader"
-msgstr "SmartTrader"
+msgstr ""
 
 msgid "Smoothing out random noise"
 msgstr "Menghaluskan data random"
@@ -9445,7 +9445,7 @@ msgid "Social media admin"
 msgstr "Admin media sosial"
 
 msgid "Software Tester"
-msgstr "Software Tester"
+msgstr ""
 
 msgid "Solving complex business problems using data-driven techniques."
 msgstr "Memecahkan masalah bisnis yang kompleks menggunakan teknik berbasis data."
@@ -9517,7 +9517,7 @@ msgid "Spot price"
 msgstr "Harga spot"
 
 msgid "Spread"
-msgstr "Spread"
+msgstr ""
 
 msgid "Stake"
 msgstr "Modal"
@@ -9565,7 +9565,7 @@ msgid "Static content"
 msgstr "Konten statik"
 
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 msgid "Stay informed. %1 offers daily market reports and market research, as well as frequent trading webinars."
 msgstr "Pengetahuan terkini. %1 menawarkan laporan dan penelitian pasar harian termasuk berbagai webinar."
@@ -9574,10 +9574,10 @@ msgid "Stay on top of the latest JavaScript frameworks, libraries, and tools in 
 msgstr "Tetap teratas pada kerangka kerja JavaScript, pustaka, dan alat terbaru untuk menerapkannya saat diperlukan untuk menyelesaikan tantangan terkait pengembangan web dan seluler"
 
 msgid "Stays Between"
-msgstr "Stays Between"
+msgstr ""
 
 msgid "Stays Between/Goes Outside"
-msgstr "Stays Between/Goes Outside"
+msgstr ""
 
 msgid "Stays Between/Goes Outside Contracts will be refunded at the purchase price if there are less than 2 ticks between the start and end times."
 msgstr "Kontrak Stays Between/Goes Outside akan mendapat pengembalian harga beli jika terdapat kurang dari 2 tik penyelesaian antara waktu mulai hingga akhir."
@@ -9643,7 +9643,7 @@ msgid "Step outdoors and soak up the sun on one of Labuan's pristine beaches. Th
 msgstr "Langkahkan kaki ke luar dan nikmati sinar matahari di salah satu pantai Labuan. Terdapat kegiatan menyelam, ekspedisi pulau, kayak, dan memancing di laut dalam untuk dieksplorasi."
 
 msgid "Step size"
-msgstr "Step size"
+msgstr ""
 
 msgid "Step size is the minimum allowable increment applied to all order types. It is the volume from which the increase of the position is based. You can only trade in the minimum ticket size or its multiples."
 msgstr "Step size adalah selisih minimum yang dapat diterapkan ke semua jenis order. Ini adalah volume dari mana kenaikan posisi didasarkan. Anda hanya bisa melakukan trading dengan ukuran tiket minimum atau kelipatannya."
@@ -9661,7 +9661,7 @@ msgid "Stop Loss Orders"
 msgstr ""
 
 msgid "Stop Order/Stop Loss Order"
-msgstr "Stop Order/Stop Loss Order"
+msgstr ""
 
 msgid "Stop Out Level"
 msgstr "Level Stop Out"
@@ -9835,7 +9835,7 @@ msgid "Synthetic indices that mimic market volatility."
 msgstr "Indeks sintesis yang meniru volatilitas pasar."
 
 msgid "System Administrator"
-msgstr "System Administrator"
+msgstr ""
 
 msgid "Table 1 - Type of execution venue"
 msgstr "Tabel 1 - Jenis tempat eksekusi"
@@ -9862,7 +9862,7 @@ msgid "Taking the following measures, the Company is committed to making sure th
 msgstr ""
 
 msgid "Talent Acquisition Executive"
-msgstr "Talent Acquisition Executive"
+msgstr ""
 
 msgid "Talk to us"
 msgstr "Hubungi kami"
@@ -9883,16 +9883,16 @@ msgid "Teamwork"
 msgstr "Kerja tim"
 
 msgid "Technical Marketing Executive"
-msgstr "Technical Marketing Executive"
+msgstr ""
 
 msgid "Technical roles"
 msgstr "Peran teknis"
 
 msgid "Tel"
-msgstr "Tel"
+msgstr ""
 
 msgid "Telegram Bot"
-msgstr "Telegram Bot"
+msgstr ""
 
 msgid "Telephone"
 msgstr "Telepon"
@@ -9949,7 +9949,7 @@ msgid "Test the %1 website, applications, backend, and back-office systems"
 msgstr "Menguji situs web %1, aplikasi, backend, dan sistem back office"
 
 msgid "Tether"
-msgstr "Tether"
+msgstr ""
 
 msgid "Tether is a blockchain-based cryptocurrency whose cryptocoins in circulation are backed by an equivalent amount of traditional fiat currencies. For more information, please visit %1."
 msgstr "Tether adalah mata uang kripto berdasarkan blockchain dimana sirkulasi kripto koinnya dididukung oleh jumlah yang setara dengan mata uang fiat. Untuk informasi lebih lanjut, silakan kunjungi %1."
@@ -11758,10 +11758,10 @@ msgid "Times are changing. We increase payouts so our clients can make the most 
 msgstr "Dengan perubahan waktu. Kami meningkatkan hasil sehingga klien kami dapat menikmati keuntungan trading mereka."
 
 msgid "Tips"
-msgstr "Tips"
+msgstr ""
 
 msgid "Tips:"
-msgstr "Tips:"
+msgstr ""
 
 msgid "Title"
 msgstr "Gelar"
@@ -11857,7 +11857,7 @@ msgid "Today, Labuan is known as a flourishing financial centre and tax-free tou
 msgstr "Hari ini, Labuan dikenal sebagai pusat keuangan yang berkembang dan tujuan wisata bebas pajak. Perekonomiannya terutama didorong oleh sumber daya minyak dan gasnya, serta investasi internasional dan layanan perbankannya. Yang terakhir ini telah menarik ribuan perusahaan ke Labuan selama bertahun-tahun, ditambah lusinan bank terkemuka."
 
 msgid "Token"
-msgstr "Token"
+msgstr ""
 
 msgid "Token name"
 msgstr "Nama token"
@@ -11884,13 +11884,13 @@ msgid "Top-up successful"
 msgstr "Isi ulang sukses"
 
 msgid "Total"
-msgstr "Total"
+msgstr ""
 
 msgid "Total Cost"
 msgstr "Total Biaya"
 
 msgid "Total Margin"
-msgstr "Total Margin"
+msgstr ""
 
 msgid "Total Profit/Loss"
 msgstr "Total Laba/Rugi"
@@ -11905,16 +11905,16 @@ msgid "Total withdrawals"
 msgstr "Total pencairan"
 
 msgid "Touch/No Touch"
-msgstr "Touch/No Touch"
+msgstr ""
 
 msgid "Touch/No Touch contracts will be refunded at the purchase price if there are less than 2 ticks between the start and end times."
 msgstr "Kontrak Touch/No Touch akan mendapat pengembalian pada harga beli jika terdapat kurang dari 2 tik penyelesaian dari waktu mulai hingga akhir."
 
 msgid "Touch/No touch"
-msgstr "Touch/No touch"
+msgstr ""
 
 msgid "Touches"
-msgstr "Touches"
+msgstr ""
 
 msgid "Tour"
 msgstr "Panduan"
@@ -11938,7 +11938,7 @@ msgid "Track laws and regulations that may affect all group companies and implem
 msgstr "Melacak undang-undang dan peraturan yang dapat mempengaruhi grup perusahaan dan menerapkan perubahan yang diperlukan terhadap kebijakan internal untuk mengelola dan memitigasi risiko dan eksposur kami"
 
 msgid "Trade"
-msgstr "Trade"
+msgstr ""
 
 msgid "Trade 24/7, even on weekends."
 msgstr "Bertrading 24/7, bahkan tersedia pada akhir pekan."
@@ -12043,7 +12043,7 @@ msgid "Trade your way"
 msgstr "Trading dengan cara Anda"
 
 msgid "Trade2Win"
-msgstr "Trade2Win"
+msgstr ""
 
 msgid "Trademark"
 msgstr ""
@@ -12052,7 +12052,7 @@ msgid "Traders choose to buy a certain currency pair if they think the value of 
 msgstr "Trader memilih untuk membeli pasangan mata uang tertentu jika mereka berpikir nilai mata uang dasar akan naik. Kebalikannya juga benar: mereka menjual pasangan mata uang tertentu jika mereka berpikir nilai mata uang dasar akan turun."
 
 msgid "Trading"
-msgstr "Trading"
+msgstr ""
 
 msgid "Trading Contracts for Difference (CFDs) on Volatility Indices may not be suitable for everyone. Please ensure that you fully understand the risks involved, including the possibility of losing all the funds in your MT5 account. Gambling can be addictive – please play responsibly."
 msgstr "Kontrak untuk Perbedaan (CFDs) pada indeks volatilitas mungkin tidak akan cocok untuk semua orang. Pastikan bahwa Anda mengerti resiko yang terdapat, termasuk kemungkinan kehilangan seluruh dana di akun MT5."
@@ -12067,7 +12067,7 @@ msgid "Trading Times"
 msgstr "Waktu Trading"
 
 msgid "Trading Window"
-msgstr "Trading Window"
+msgstr ""
 
 msgid "Trading and Withdrawal Limits"
 msgstr "Batasan Penarikan"
@@ -12091,7 +12091,7 @@ msgid "Trading forex and contracts for differences carries a high level of risk 
 msgstr ""
 
 msgid "Trading guru"
-msgstr "Trading guru"
+msgstr ""
 
 msgid "Trading in Binary Options is speculative and involves a high degree of risk that can result in the loss of the client's entire investment. Therefore, trading in Binary Options is appropriate only for persons that understand and are willing to assume the economic, legal, and other risks involved in such transactions. The client should be satisfied that Binary Options trading is suitable for the client in light of the client's investment circumstances and attitude towards risk before trading. The client should not engage in speculative Binary Options trading unless the client understands the basic aspects of such trading and its risks. If the client is in any doubt as to whether Binary Option trading is appropriate and suitable for the client, the client should seek independent advice from an investment consulting professional. %1 does not provide such advice. It is the client's responsibility, taking into account the client's personal circumstances and investment resources, to take particular care and make careful considerations independently, both prior to applying to engage in Binary Options with %1 and prior to making any individual order. Where the client does not understand the risks involved in applying for a trading account with %1 or in making any individual order, the client should seek advice and consultation from an independent investment advisor. If the client continues to not understand the risks involved in trading in Binary Options, the client should not trade at all."
 msgstr ""
@@ -12115,7 +12115,7 @@ msgid "Trading times is unavailable in this country. If you have an active %1 ac
 msgstr "Waktu trading tidak tersedia pada negara berikut. Jika Anda memiliki akun %1 aktif, silahkan %2masuk%3 untuk akses penuh."
 
 msgid "TradingView"
-msgstr "TradingView"
+msgstr ""
 
 msgid "TradingView for %1"
 msgstr "TradingView untuk %1"
@@ -12139,7 +12139,7 @@ msgid "Transactions in CFD instruments are traded outside a stock exchange or OT
 msgstr ""
 
 msgid "Transfer"
-msgstr "Transfer"
+msgstr ""
 
 msgid "Transfer Between Accounts"
 msgstr "Transfer Antar Akun"
@@ -12271,7 +12271,7 @@ msgid "Types of trades"
 msgstr "Jenis kontrak"
 
 msgid "UI/UX Designer"
-msgstr "UI/UX Designer"
+msgstr ""
 
 msgid "UK and Manx residents who wish to trade gambling products will have their accounts opened with Binary (IOM) Limited."
 msgstr "Warga Inggris dan Manx yang ingin bertrading akan mendaftar akun mereka dibawah Binary (IOM) Limited."
@@ -12319,7 +12319,7 @@ msgid "US Patents"
 msgstr "Hak Paten AS"
 
 msgid "USD"
-msgstr "USD"
+msgstr ""
 
 msgid "USD 1 per point"
 msgstr "1 USD per poin"
@@ -12328,7 +12328,7 @@ msgid "USD Index – Measures the value of the US Dollar against a basket of fiv
 msgstr "Indeks USD - Mengukur nilai Dolar AS terhadap sekeranjang lima mata uang global (EUR, GBP, JPY, CAD, AUD), masing-masing berbobot 20%"
 
 msgid "USD/EUR"
-msgstr "USD/EUR"
+msgstr ""
 
 msgid "Ultra fast on-the-go trading"
 msgstr "Trading on-the-go super cepat"
@@ -12409,7 +12409,7 @@ msgid "Up to %1 decimal places are allowed."
 msgstr "Hingga %1 desimal diperbolehkan."
 
 msgid "Up/Down"
-msgstr "Up/Down"
+msgstr ""
 
 msgid "Upcoming Events"
 msgstr "Acara Mendatang"
@@ -12571,7 +12571,7 @@ msgid "Video Room Facility"
 msgstr "Fasilitas Ruang Video"
 
 msgid "Video tutorial"
-msgstr "Video tutorial"
+msgstr ""
 
 msgid "View"
 msgstr "Lihat"
@@ -12631,7 +12631,7 @@ msgid "View your trading and withdrawal limits."
 msgstr "Lihat batas trading dan penarikan Anda."
 
 msgid "Virtual"
-msgstr "Virtual"
+msgstr ""
 
 msgid "Virtual Account"
 msgstr "Akun Virtual"
@@ -12643,19 +12643,19 @@ msgid "Vload is an eVoucher facility that’s available as a payment method to d
 msgstr "Vload adalah fasilitas eVoucher yang tersedia sebagai metode pembayaran untuk deposit dan pencairan dana. Untuk informasi lebih lanjut, silakan kunjungi %1."
 
 msgid "Vol 10"
-msgstr "Vol 10"
+msgstr ""
 
 msgid "Vol 100"
-msgstr "Vol 100"
+msgstr ""
 
 msgid "Vol 25"
-msgstr "Vol 25"
+msgstr ""
 
 msgid "Vol 50"
-msgstr "Vol 50"
+msgstr ""
 
 msgid "Vol 75"
-msgstr "Vol 75"
+msgstr ""
 
 msgid "Volatility 10 Index"
 msgstr "Indeks Volatilitas 10"
@@ -12685,13 +12685,13 @@ msgid "Volatility Indices commission rates in account currency per round trade. 
 msgstr "Tingkat komisi Indeks Volatilitas pada akun mata uang per putaran trading. Contoh: Trading putaran 1 lot Indeks Volatilitas 100 akan membayar USD 0,75 untuk akun dalam USD."
 
 msgid "Volume"
-msgstr "Volume"
+msgstr ""
 
 msgid "Volume step"
 msgstr "Langkah volume"
 
 msgid "Vs 407 zrnaf nalguvat fcrpvny gb lbh lbh znl pbcl lbhe nccyvpngvba gb wl+ebg13@ovanel.pbz sbe snfg-genpx pbafvqrengvba."
-msgstr "Vs 407 zrnaf nalguvat fcrpvny gb lbh lbh znl pbcl lbhe nccyvpngvba gb wl+ebg13@ovanel.pbz sbe snfg-genpx pbafvqrengvba."
+msgstr ""
 
 msgid "Waiting for contract settlement."
 msgstr "Menunggu penyelesaian kontrak."
@@ -12847,7 +12847,7 @@ msgid "WebMoney is an online payment settlement system that's been operating sin
 msgstr "WebMoney adalah sistem penyelesaian pembayaran online yang sudah beroperasi sejak tahun 1998. Untuk informasi lebih lanjut, silakan kunjungi %1."
 
 msgid "WebTrader"
-msgstr "WebTrader"
+msgstr ""
 
 msgid "Webinar speaker"
 msgstr "Pembicara webinar"
@@ -12856,7 +12856,7 @@ msgid "Webinars"
 msgstr "Berbagai Webinar"
 
 msgid "Webmaster"
-msgstr "Webmaster"
+msgstr ""
 
 msgid "Website"
 msgstr "Situs"
@@ -13210,7 +13210,7 @@ msgid "Win up to maximum payout if exit spot is between lower and upper barrier,
 msgstr "Dapatkan hasil maksimum jika spot akhir berada diantara batasan bawah dan batasan atas, sebanding dengan selisih antara batasan tinggi dan spot akhir."
 
 msgid "Windows"
-msgstr "Windows"
+msgstr ""
 
 msgid "Winning the contract"
 msgstr "Raih keuntungan kontrak"
@@ -13858,7 +13858,7 @@ msgid "for account %1"
 msgstr "pada akun %1"
 
 msgid "gaming"
-msgstr "gaming"
+msgstr ""
 
 msgid "h"
 msgstr "j"
@@ -13873,7 +13873,7 @@ msgid "hours"
 msgstr "jam"
 
 msgid "iOS"
-msgstr "iOS"
+msgstr ""
 
 msgid "iWallet is an online payment service provider that allows deposits, withdrawals, and transaction payments. For more information, please visit %1."
 msgstr "iWallet adalah penyedia layanan pembayaran online yang memungkinkan deposit, penarikan, dan pembayaran transaksi. Untuk informasi lebih lanjut, silakan kunjungi %1."
@@ -14035,11 +14035,11 @@ msgid "years"
 msgstr "tahun"
 
 msgid "{SPAIN ONLY}However, Binary Investments (Europe) Ltd has assessed your knowledge and experience and deems the product appropriate for you."
-msgstr "{SPAIN ONLY}However, Binary Investments (Europe) Ltd has assessed your knowledge and experience and deems the product appropriate for you."
+msgstr ""
 
 msgid "{SPAIN ONLY}This is a product with leverage. You should be aware that losses may be higher than the amount initially paid to purchase the product."
-msgstr "{SPAIN ONLY}This is a product with leverage. You should be aware that losses may be higher than the amount initially paid to purchase the product."
+msgstr ""
 
 msgid "{SPAIN ONLY}You are about to purchase a product that is not simple and may be difficult to understand: Contracts for Difference and Forex. As a general rule, the CNMV considers that such products are not appropriate for retail clients, due to their complexity."
-msgstr "{SPAIN ONLY}You are about to purchase a product that is not simple and may be difficult to understand: Contracts for Difference and Forex. As a general rule, the CNMV considers that such products are not appropriate for retail clients, due to their complexity."
+msgstr ""
 

@@ -4,7 +4,7 @@ import PropTypes      from 'prop-types';
 import React          from 'react';
 import UILoader       from 'App/Components/Elements/ui-loader.jsx';
 import Lazy           from 'App/Containers/Lazy';
-import { localize }   from 'App/i18n';
+import { localize }   from 'deriv-translations';
 import Icon           from 'Assets/icon.jsx';
 import VerticalTab    from 'App/Components/Elements/VerticalTabs';
 

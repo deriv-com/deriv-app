@@ -1,10 +1,9 @@
-import { Label, Money }  from 'deriv-components';
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import Icon              from 'Assets/icon.jsx';
-import Localize          from 'App/Components/Elements/localize.jsx';
-import { localize }      from 'App/i18n';
-import { connect }       from 'Stores/connect';
+import { Label, Money }       from 'deriv-components';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import Icon                   from 'Assets/icon.jsx';
+import { localize, Localize } from 'deriv-translations';
+import { connect }            from 'Stores/connect';
 
 const Description = ({ currency, is_virtual }) => (
     is_virtual ?

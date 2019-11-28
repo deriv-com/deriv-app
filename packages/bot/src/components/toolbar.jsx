@@ -30,6 +30,7 @@ import {
     ToolbarZoomOutIcon,
 }                           from './Icons.jsx';
 import SaveLoadModal        from './saveload-modal.jsx';
+import ShopModal            from './shop-modal.jsx';
 import TradeAnimation       from './trade-animation.jsx';
 import { connect }          from '../stores/connect';
 import                           '../assets/sass/scratch/toolbar.scss';
@@ -129,6 +130,7 @@ const ButtonGroup = ({
     onZoomInOutClick,
     onStopClick,
     toggleSaveLoadModal,
+    toggleShopModal,
 }) => (
     <div className='toolbar__group toolbar__group-btn'>
         <Popover
@@ -205,6 +207,13 @@ const ButtonGroup = ({
         >
             <ToolbarZoomOutIcon className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
         </Popover>
+        <div className='vertical-divider' />
+        <Popover
+            alignment='bottom'
+            message={localize('Shop')}
+        >
+            <ToolbarZoomOutIcon className='toolbar__icon' onClick={() => toggleShopModal(true) } />
+        </Popover>
     </div>
 );
 
@@ -231,6 +240,7 @@ const Toolbar = ({
     onUndoClick,
     onZoomInOutClick,
     toggleSaveLoadModal,
+    toggleShopModal,
 }) => (
     <div className='toolbar'>
         <div className='toolbar__section'>
@@ -272,6 +282,7 @@ const Toolbar = ({
                 onUndoClick={onUndoClick}
                 onZoomInOutClick={onZoomInOutClick}
                 toggleSaveLoadModal={toggleSaveLoadModal}
+                toggleShopModal={toggleShopModal}
             />
         </div>
         <div className='toolbar__section'>
@@ -295,6 +306,7 @@ const Toolbar = ({
             {localize('Any unsaved changes will be lost.')}
         </Dialog>
         }
+        <ShopModal />
     </div>
 );
 
@@ -322,9 +334,10 @@ Toolbar.propTypes = {
     onUndoClick            : PropTypes.func,
     onZoomInOutClick       : PropTypes.func,
     toggleSaveLoadModal    : PropTypes.func,
+    toggleShopModal        : PropTypes.func,
 };
 
-export default connect(({ run_panel, saveload, toolbar }) => ({
+export default connect(({ run_panel, saveload, shop, toolbar }) => ({
     file_name              : toolbar.file_name,
     is_dialog_open         : toolbar.is_dialog_open,
     is_drawer_open         : run_panel.is_drawer_open,
@@ -348,4 +361,5 @@ export default connect(({ run_panel, saveload, toolbar }) => ({
     onUndoClick            : toolbar.onUndoClick,
     onZoomInOutClick       : toolbar.onZoomInOutClick,
     toggleSaveLoadModal    : saveload.toggleSaveLoadModal,
+    toggleShopModal        : shop.toggleShopModal,
 }))(Toolbar);

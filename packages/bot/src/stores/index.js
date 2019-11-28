@@ -6,6 +6,7 @@ import JournalStore       from './journal-store';
 import RunPanelStore      from './run-panel-store';
 import SaveLoadModalStore from './saveload-modal-store';
 import ScratchStore       from './scratch-store';
+import ShopStore          from './shop-store';
 import SummaryStore       from './summary-store';
 import ToolbarStore       from './toolbar-store';
 import TransactionsStore  from './transactions-store';
@@ -26,6 +27,7 @@ export default class RootStore {
         this.toolbar        = new ToolbarStore(this);
         this.quick_strategy = new QuickStrategyStore(this);
         this.run_panel      = new RunPanelStore(this);
+        this.shop           = new ShopStore(this);
 
         // Create a singleton class to share root_store with scratch
         ScratchStore.setInstance(this);

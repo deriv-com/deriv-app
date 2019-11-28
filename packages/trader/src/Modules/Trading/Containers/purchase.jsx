@@ -7,6 +7,7 @@ import { connect }                 from 'Stores/connect';
 
 const Purchase = ({
     basis,
+    cancel_deal,
     contract_type,
     currency,
     is_client_allowed_to_visit,
@@ -49,6 +50,7 @@ const Purchase = ({
                 info={info}
                 key={index}
                 index={getSortedIndex()}
+                cancel_deal={cancel_deal}
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={isLoading(info)}
@@ -84,6 +86,7 @@ const Purchase = ({
 
 Purchase.propTypes = {
     basis                     : PropTypes.string,
+    cancel_deal               : PropTypes.number,
     currency                  : PropTypes.string,
     is_client_allowed_to_visit: PropTypes.bool,
     is_multiplier             : PropTypes.bool,
@@ -106,6 +109,7 @@ export default connect(
         currency                  : client.currency,
         is_client_allowed_to_visit: client.is_client_allowed_to_visit,
         basis                     : modules.trade.basis,
+        cancel_deal               : modules.trade.cancel_deal,
         contract_type             : modules.trade.contract_type,
         is_trade_enabled          : modules.trade.is_trade_enabled,
         is_multiplier             : modules.trade.is_multiplier,

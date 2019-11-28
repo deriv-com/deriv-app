@@ -20,6 +20,7 @@ class PurchaseFieldset extends React.PureComponent {
         const {
             basis,
             buy_info,
+            cancel_deal,
             currency,
             // index,
             info,
@@ -73,15 +74,17 @@ class PurchaseFieldset extends React.PureComponent {
                         },
                     )}
                 >
-                    {!is_multiplier && <ContractInfo
+                    <ContractInfo
                         basis={basis}
+                        cancel_deal={cancel_deal}
                         currency={currency}
                         proposal_info={info}
                         has_increased={info.has_increased}
                         is_loading={is_loading}
+                        is_multiplier={is_multiplier}
                         should_fade={this.state.should_fade}
                         type={type}
-                    />}
+                    />
                     <div
                         className={classNames(
                             'btn-purchase__shadow-wrapper', {

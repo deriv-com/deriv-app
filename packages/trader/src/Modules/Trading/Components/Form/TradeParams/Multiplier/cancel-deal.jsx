@@ -2,17 +2,13 @@ import PropTypes    from 'prop-types';
 import React        from 'react';
 import {
     Checkbox,
-    Money,
     Popover }       from 'deriv-components';
 import { localize } from 'App/i18n';
-import Localize     from 'App/Components/Elements/localize.jsx';
 import Fieldset     from 'App/Components/Form/fieldset.jsx';
 import { connect }  from 'Stores/connect';
 
 const CancelDeal = ({
     cancel_deal,
-    deal_cancellation_price,
-    currency,
     onChangeMultiple,
 }) => {
     const changeValue = (e) => {
@@ -43,30 +39,16 @@ const CancelDeal = ({
                     margin={210}
                 />
             </div>
-            <p className='trade-container__fieldset-text'>
-                <Localize
-                    i18n_default_text='Price: <0/>'
-                    components={[<Money
-                        key={0}
-                        amount={deal_cancellation_price}
-                        currency={currency}
-                    />]}
-                />
-            </p>
         </Fieldset>
     );
 };
 
 CancelDeal.propTypes = {
-    cancel_deal            : PropTypes.number,
-    currency               : PropTypes.string,
-    deal_cancellation_price: PropTypes.number,
-    onChangeMultiple       : PropTypes.func,
+    cancel_deal     : PropTypes.number,
+    onChangeMultiple: PropTypes.func,
 };
 
 export default connect(({ modules }) => ({
-    cancel_deal            : modules.trade.cancel_deal,
-    currency               : modules.trade.currency,
-    deal_cancellation_price: modules.trade.deal_cancellation_price,
-    onChangeMultiple       : modules.trade.onChangeMultiple,
+    cancel_deal     : modules.trade.cancel_deal,
+    onChangeMultiple: modules.trade.onChangeMultiple,
 }))(CancelDeal);

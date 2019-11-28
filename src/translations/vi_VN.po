@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: binary-static\n"
+"Project-Id-Version: deriv-app\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2019-05-08 12:07\n"
+"PO-Revision-Date: 2019-11-28 10:37\n"
 "Last-Translator: binarycom\n"
 "Language-Team: Vietnamese\n"
 "MIME-Version: 1.0\n"
@@ -10,13 +10,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: crowdin.com\n"
-"X-Crowdin-Project: binary-static\n"
+"X-Crowdin-Project: deriv-app\n"
 "X-Crowdin-Language: vi\n"
-"X-Crowdin-File: messages.pot\n"
+"X-Crowdin-File: /translations/src/translations/messages.pot\n"
 "Language: vi_VN\n"
 
 msgid "404"
-msgstr "404"
+msgstr ""
 
 msgid " All calls are recorded for training and monitoring purposes."
 msgstr ""
@@ -115,7 +115,7 @@ msgid "$100,000 - $250,000"
 msgstr "$100.000-250.000 USD"
 
 msgid "$100,001 - $500,000"
-msgstr "$100,001 - $500,000"
+msgstr ""
 
 msgid "$100,001 and above"
 msgstr "từ $100,001 trở lên"
@@ -124,10 +124,10 @@ msgid "$25,000 - $50,000"
 msgstr "$25.000-50.000"
 
 msgid "$250,001 - $500,000"
-msgstr "$250,001 - $500,000"
+msgstr ""
 
 msgid "$50,001 - $100,000"
-msgstr "$50,001 - $100,000"
+msgstr ""
 
 msgid "$500,001 - $1,000,000"
 msgstr "$500,001 - $1.000.000"
@@ -568,7 +568,7 @@ msgid "16th MENA Financial Forum & Expo"
 msgstr "Diễn đàn tài chính và hội chợ triển lãm MENA lần thứ 16"
 
 msgid "2 * (6,000 – 5,200) = $1600"
-msgstr "2 * (6,000 – 5,200) = $1600"
+msgstr ""
 
 msgid "2-way pricing"
 msgstr "Giá 2 chiều"
@@ -769,10 +769,10 @@ msgid "A. Spot FX"
 msgstr "A. Điểm giao dịch ngoại hối"
 
 msgid "AM"
-msgstr "AM"
+msgstr ""
 
 msgid "API"
-msgstr "API"
+msgstr ""
 
 msgid "API Token"
 msgstr "Mã API Token"
@@ -1321,7 +1321,7 @@ msgid "Analyse the markets with an extensive range of indicators, price bands, a
 msgstr "Phân tích thị trường với một loạt các chỉ số, biên độ giá và các lớp xếp rải."
 
 msgid "Android"
-msgstr "Android"
+msgstr ""
 
 msgid "Another major award. This time we're nominated by the online readers of Global Banking and Finance Review and judged by a panel of industry experts and analysts who recognise our 13 years of platform reliability, range of trades, pricing, customer service and extensive knowledge."
 msgstr "Một giải thưởng lớn khác. Lần này chúng tôi được đề cử bởi các khách hàng trên trang Đánh giá Tài chính và Ngân hàng Toàn cầu và được chấm điểm bởi những chuyên gia và nhà phân tích trong ngành, những người này đã tin tưởng và sử dụng các loại giao dịch phong phú, giá, dịch vụ khách hàng và kiến thức chuyên sâu của chúng tôi trong suốt 13 năm qua."
@@ -1675,7 +1675,7 @@ msgid "Asunción is the capital city of Paraguay and one of the oldest settlemen
 msgstr "Asunción là thành phố thủ đô của Paraguay và là một trong những khu định cư lâu đời nhất ở Nam Mỹ. Trong quá khứ, các đoàn thám hiểm thuộc địa khởi hành từ Asunción để thành lập các thành phố quan trọng khác, dẫn đến biệt danh của nó là 'Mẹ của các thành phố'."
 
 msgid "Asunción, Paraguay"
-msgstr "Asunción, Paraguay"
+msgstr ""
 
 msgid "At any time and for any reason or no reason, the Company, in its sole discretion, may do either of the following immediately:"
 msgstr ""
@@ -1822,7 +1822,7 @@ msgid "BIEL shall not be obliged to provide professional clients with the follow
 msgstr ""
 
 msgid "BTC"
-msgstr "BTC"
+msgstr ""
 
 msgid "Bachelor's degree in computer science, or an equivalent combination of technical education, training, and work experience"
 msgstr "Bằng cử nhân trong khoa học máy tính, hoặc học vấn tổng hợp tương đương của kỹ thuật, huấn luyện và kinh nghiệm làm việc"
@@ -1981,10 +1981,10 @@ msgid "Binary (BVI) Ltd, Kingston Chambers, P.O. Box 173, Road Town, Tortola, Br
 msgstr "Công ty TNHH Binary (BVI), Kingston Chambers, hòm P.O. 173, Road Town, quần đảo British Virgin. Được cấp phép và quản lý bởi Ủy Ban Dịch Vụ Tài Chính của quần đảo British Virgin - %1xem giấy phép%2."
 
 msgid "Binary (C.R.) S.A."
-msgstr "Binary (C.R.) S.A."
+msgstr ""
 
 msgid "Binary (C.R.) S.A.,"
-msgstr "Binary (C.R.) S.A.,"
+msgstr ""
 
 msgid "Binary (C.R.) S.A., registered in Costa Rica. Clients from the rest of the world (excluding certain countries such as the USA, Canada, Costa Rica, Hong Kong) will have their account opened with Binary (C.R.) S.A."
 msgstr "Binary (C.R.) S.A., được đăng ký ở Costa Rica. Các khách hàng từ phần còn lại của thế giới (trừ một số quốc gia như Hoa Kỳ, Canada, Costa Rica, Hồng Kông) sẽ có tài khoản của họ được mở với Binary (C.R.) S.A."
@@ -2041,13 +2041,13 @@ msgid "Binary (V) Ltd, Govant Building, Port Vila, PO Box 1276, Vanuatu, Republi
 msgstr "Công ty TNHH Binary (BVI), tòa nhà Govant, Cảng Vila, PO Box 1276, Vanuatu, Cộng hòa Vanuatu. Cấp phép và quy định bởi Ủy Ban Dịch Vụ Tài Chính của quần đảo British Virgin - %1xem giấy phép%2."
 
 msgid "Binary Bot"
-msgstr "Binary Bot"
+msgstr ""
 
 msgid "Binary Bot released"
 msgstr "Phát hành Binary Bot"
 
 msgid "Binary Coin"
-msgstr "Binary Coin"
+msgstr ""
 
 msgid "Binary Group (hereinafter referred to as 'Binary Group of companies', 'the Company') is commited to protecting the privacy and security of the applicant's personal information. This privacy notice sets out the types of data that the Company collects on the applicant. It also sets out how the Company collect and use the applicant' personal data, and how long it keeps them and other relevant information about the applicant's data in accordance with the General Data Protection Regulation (EU) 2016/679 (hereafter referred to as 'GDPR') and Data Protection Act 2018."
 msgstr "Binary Group (sau đây gọi là 'Binary Group của các công ty', 'Công ty') cam kết bảo vệ quyền riêng tư và bảo mật thông tin cá nhân của người nộp đơn. Thông báo bảo mật này trình bày các loại dữ liệu mà Công ty thu thập trên người nộp đơn. Nó cũng đặt ra cách thức Công ty thu thập và sử dụng dữ liệu cá nhân của người nộp đơn và thời gian lưu giữ thông tin liên quan đến dữ liệu của người nộp đơn theo Quy định bảo vệ dữ liệu chung (EU) 2016/679 (sau đây gọi là ' GDPR ') và Đạo luật bảo vệ dữ liệu năm 2018."
@@ -2089,7 +2089,7 @@ msgid "Binary Limited, with registered office at 47 Esplanade, St Helier, Jersey
 msgstr "Công ty TNHH Binary, địa chỉ văn phòng được đăng ký tại 47 Esplanade, St. Helier, Jersey, Đảo Channel JE1 0BD, là công ty cổ phần cho các chi nhánh được lên danh sách dưới đây."
 
 msgid "Binary Options"
-msgstr "Binary Options"
+msgstr ""
 
 msgid "Binary Options Trading has been disabled on your account. Kindly %1contact customer support%2 for assistance."
 msgstr "Giao dịch Binary Options đã bị khóa trên tài khoản của bạn. Xin vui lòng %1liên hệ hỗ trợ khách hàng%2 để được trợ giúp."
@@ -2122,7 +2122,7 @@ msgid "Binary opens Japan office"
 msgstr "Binary mở văn phòng Nhật"
 
 msgid "Binary option"
-msgstr "Binary option"
+msgstr ""
 
 msgid "Binary options"
 msgstr "Binary Options"
@@ -2179,7 +2179,7 @@ msgid "Binary.com recommends 1.1.1.1"
 msgstr "Binary.com đề xuất 1.1.1.1"
 
 msgid "Bitcoin"
-msgstr "Bitcoin"
+msgstr ""
 
 msgid "Bitcoin Cash"
 msgstr "Bitcoin tiền mặt"
@@ -2206,7 +2206,7 @@ msgid "Brand of first car"
 msgstr "Nhãn hiệu của chiếc xe đầu tiên"
 
 msgid "Brazil"
-msgstr "Brazil"
+msgstr ""
 
 msgid "Browse and trade securely on your preferred device"
 msgstr "Duyệt và giao dịch một cách an toàn trên điện thoại theo ý muốn của bạn"
@@ -2317,7 +2317,7 @@ msgid "C. Provision of services"
 msgstr ""
 
 msgid "CFD"
-msgstr "CFD"
+msgstr ""
 
 msgid "CFD Energies"
 msgstr "Năng lượng CFD"
@@ -2356,7 +2356,7 @@ msgid "Call Spread"
 msgstr "Gọi biên"
 
 msgid "Call Spread/Put Spread"
-msgstr "Call Spread/Put Spread"
+msgstr ""
 
 msgid "Can I offer my referrals an incentive to sign up through my unique affiliate link rather than sign up directly?"
 msgstr "Tôi có thể mời người tôi giới thiệu đăng ký qua đường dẫn liên kết đặc biệt của tôi thay vì đăng ký trực tiếp không?"
@@ -3109,7 +3109,7 @@ msgid "Costs and charges"
 msgstr ""
 
 msgid "Counterparty"
-msgstr "Counterparty"
+msgstr ""
 
 msgid "Countries report: Displays a list of countries where your clicks are coming from"
 msgstr "Báo cáo quốc gia: Hiển thị một danh sách các quốc gia nơi các nhấp chuột của bạn đang đến từ"
@@ -3211,10 +3211,10 @@ msgid "Credit/Debit Card"
 msgstr "Thẻ tín dụng/Thẻ ghi nợ"
 
 msgid "Crypto"
-msgstr "Crypto"
+msgstr ""
 
 msgid "Cryptocurrencies"
-msgstr "Cryptocurrencies"
+msgstr ""
 
 msgid "Cryptocurrencies are volatile assets that are extremely vulnerable to market fluctuations. Trading cryptocurrency contracts for differences is a highly speculative investment because prices of cryptocurrencies can go up and down — potentially to a worthless (zero) value. Investing in cryptocurrency contracts for differences through leveraged accounts amplifies this underlying volatility risk, making the change in prices even more significant. When the client invests in a leveraged contract for differences related to cryptocurrencies, the client's profit or loss is based on the leveraged ratio that the client has set for the client's account. If the price movement is in the client's favour, returns generated are multiple times higher than the amount set aside from the client's account balance to open and maintain a transaction. However, if the price movement is against the client's favour, the client will suffer losses that are multiple times higher than the amount set aside from the client's account balance to open and maintain a transaction. The client should not trade in cryptocurrencies unless the client fully understands and is aware that trades and/or investments involving cryptocurrencies are complex and high risk in nature, and the client not only risks incurring significant losses over a short period of time but also risks losing all the client's invested capital."
 msgstr ""
@@ -3232,7 +3232,7 @@ msgid "Cryptocurrencies such as Bitcoin and Ethereum are decentralised digital c
 msgstr "Cryptocurrencies như Bitcoin và Ethereum là các loại tiền tệ kỹ thuật số phi tập trung hóa trên blockchain."
 
 msgid "Cryptocurrency"
-msgstr "Cryptocurrency"
+msgstr ""
 
 msgid "Cryptocurrency contract specifications and commission scheme"
 msgstr "Các đặc tính kỹ thuật và kế hoạch hoa hồng của hợp đồng Cryptocurrency"
@@ -3298,7 +3298,7 @@ msgid "Customer funds"
 msgstr ""
 
 msgid "Cyberjaya"
-msgstr "Cyberjaya"
+msgstr ""
 
 msgid "Cyberjaya Office"
 msgstr "Văn phòng Cyberjaya"
@@ -3313,7 +3313,7 @@ msgid "Cyberjaya is also a pioneer green township that is designed for sustainab
 msgstr "Cyberjaya cũng là một thành phố xanh tiên phong được thiết kế cho cuộc sống bền vững. Thành phố này có một môi trường đô thị, nơi gần một nửa tổng diện tích phát triển của nó được dành riêng cho các tiện nghi công cộng và cây xanh. Họ cũng đã thực hiện các biện pháp cần thiết để giảm lượng khí thải carbon dựa trên mô hình thành phố với lượng carbon thấp, trở thành một mô hình cho các thành phố tương lai bền vững."
 
 msgid "Cyberjaya, Malaysia"
-msgstr "Cyberjaya, Malaysia"
+msgstr ""
 
 msgid "D. Account management"
 msgstr ""
@@ -3802,7 +3802,7 @@ msgid "EU Passport Rights"
 msgstr "Quyền Hộ chiếu EU"
 
 msgid "EUR"
-msgstr "EUR"
+msgstr ""
 
 msgid "EUR 1 per point"
 msgstr "1 EUR cho mỗi điểm"
@@ -3811,7 +3811,7 @@ msgid "EUR Index – Measures the value of the Euro against a basket of five glo
 msgstr "Chỉ số EUR - biện pháp giá trị của Euro chống lại một giỏ 5 loại tiền tệ toàn cầu (USD, AUD, GBP, JPY, CAD), mỗi trọng 20%"
 
 msgid "EUR/GBP"
-msgstr "EUR/GBP"
+msgstr ""
 
 msgid "Each Party shall do anything reasonably required by the other Party to give effect to the provisions of this agreement."
 msgstr ""
@@ -3922,7 +3922,7 @@ msgid "Eligible counterparties"
 msgstr ""
 
 msgid "Email"
-msgstr "Email"
+msgstr ""
 
 msgid "Email address"
 msgstr "Địa chỉ Email"
@@ -3931,7 +3931,7 @@ msgid "Email preference"
 msgstr "Tùy chọn email"
 
 msgid "Email:"
-msgstr "Email:"
+msgstr ""
 
 msgid "Emercoin vs US Dollar"
 msgstr "Emercoin vs đô-la Mỹ"
@@ -4048,10 +4048,10 @@ msgid "Estimated net worth"
 msgstr "Ước tính tổng thu nhập"
 
 msgid "Ether"
-msgstr "Ether"
+msgstr ""
 
 msgid "Ether Classic"
-msgstr "Ether Classic"
+msgstr ""
 
 msgid "Ether is a cryptocurrency that is used to pay for transactions on the Ethereum platform. For more information, please visit %1."
 msgstr "Ether là một cryptocurrency được sử dụng để trả tiền cho các giao dịch trên nền tảng Ethereum. Để biết thêm thông tin, vui lòng truy cập %1."
@@ -4420,10 +4420,10 @@ msgid "FAQ"
 msgstr "Câu hỏi thường gặp"
 
 msgid "FIX API"
-msgstr "FIX API"
+msgstr ""
 
 msgid "FX"
-msgstr "FX"
+msgstr ""
 
 msgid "FXOpen"
 msgstr ""
@@ -4504,7 +4504,7 @@ msgid "Festivals galore"
 msgstr "Các lễ hội đông đúc"
 
 msgid "Fiat"
-msgstr "Fiat"
+msgstr ""
 
 msgid "Fiat Currency"
 msgstr "Tiền tệ pháp định"
@@ -4858,10 +4858,10 @@ msgid "GBP/USD currency pair and its bid-ask price."
 msgstr "Cặp ngoại tệ GBP/USD và giá mua vào - bán ra của nó."
 
 msgid "GDPR"
-msgstr "GDPR"
+msgstr ""
 
 msgid "GMT"
-msgstr "GMT"
+msgstr ""
 
 msgid "GMT stands for Greenwich Mean Time, the official time used in the UK during winter. In summer, the UK changes to British Summer Time, which is GMT + 1 hour. All times on the %1 site use GMT all year round."
 msgstr "GMT là viết tắt của Greenwich Mean Time, thời gian chính thức được sử dụng ở Vương quốc Anh trong suốt mùa đông. Vào mùa hè, Vương quốc Anh lại chuyển sang Thời gian Mùa hè Anh, đó là GMT + 1 giờ. Tất cả thời gian trên trang %1 đều sử dụng GMT trong cả năm."
@@ -4942,13 +4942,13 @@ msgid "Global Banking & Finance Awards"
 msgstr "Giải Thưởng Ngân Hàng Và Tài Chính Toàn Cầu"
 
 msgid "Global Banking & Finance Awards 2018"
-msgstr "Global Banking & Finance Awards 2018"
+msgstr ""
 
 msgid "Global Banking and Finance Review"
 msgstr "Đánh Giá Tài Chính và Ngân Hàng Toàn Cầu"
 
 msgid "Global Brands Awards 2018"
-msgstr "Global Brands Awards 2018"
+msgstr ""
 
 msgid "Global Brands Magazine"
 msgstr "Tạp chí Global Brands"
@@ -5050,13 +5050,13 @@ msgid "H. Quotes"
 msgstr ""
 
 msgid "HF Vol 10"
-msgstr "HF Vol 10"
+msgstr ""
 
 msgid "HF Vol 100"
-msgstr "HF Vol 100"
+msgstr ""
 
 msgid "HF Vol 50"
-msgstr "HF Vol 50"
+msgstr ""
 
 msgid "HR Operations Executive"
 msgstr "Nhân Viên Điều Hành Nhân Sự"
@@ -5080,7 +5080,7 @@ msgid "Hedge your portfolio"
 msgstr "Bảo vệ danh mục đầu tư của bạn"
 
 msgid "Hedging"
-msgstr "Hedging"
+msgstr ""
 
 msgid "Help in developing advanced risk management tools for various markets (forex, equities, commodities)"
 msgstr "Trợ giúp phát triển các công cụ quản lý rủi ro tiên tiến cho các thị trường khác nhau (ngoại hối, chứng khoán, hàng hóa)"
@@ -6267,7 +6267,7 @@ msgid "L. Manifest Error"
 msgstr ""
 
 msgid "Labuan"
-msgstr "Labuan"
+msgstr ""
 
 msgid "Labuan has several national schools and one international school. It also has the only matriculation college in East Malaysia. Pre-university students from Sabah, Sarawak, and Labuan are required to attend this matriculation college before they continue their studies at a public university."
 msgstr "Labuan có vài trường công lập và một trường quốc tế. Ở đó cũng có duy nhất một trường cao đẳng ở Đông Malaysia. Học sinh trước đại học từ Sabah, Sarawak và Labuan phải theo học và tốt nghiệp trường này trước khi họ có thể đăng ký đi học ở một trường đại học công."
@@ -6276,7 +6276,7 @@ msgid "Labuan is a federal territory made up of the main island, Labuan Island, 
 msgstr "Labuan là một lãnh thổ liên bang được tạo thành từ hòn đảo chính, đảo Labuan và sáu đảo nhỏ khác ngoài khơi Sabah. Tên của nó xuất phát từ từ tiếng Malay, 'labuhan' có nghĩa là bến cảng. Trước đây, nó là một phần của Vương quốc Brunei, vào năm 1846 nó được nhượng lại cho Vương quốc Anh, và cuối cùng thì sát nhập Malaysia vào năm 1963."
 
 msgid "Labuan, Malaysia"
-msgstr "Labuan, Malaysia"
+msgstr ""
 
 msgid "Ladders"
 msgstr "Bậc thang"
@@ -6456,13 +6456,13 @@ msgid "Links"
 msgstr "Các liên kết"
 
 msgid "Linux"
-msgstr "Linux"
+msgstr ""
 
 msgid "Liquidity solutions"
 msgstr "Các giải pháp thanh khoản"
 
 msgid "Litecoin"
-msgstr "Litecoin"
+msgstr ""
 
 msgid "Litecoin is a cryptocurrency similar to Bitcoin, but capable of a higher transaction volume and faster confirmation times. For more information, please visit %1."
 msgstr "Litecoin là một cryptocurrency tương tự như Bitcoin, nhưng có khả năng tải khối lượng giao dịch cao hơn và thời gian xác nhận nhanh hơn. Để biết thêm thông tin, vui lòng truy cập %1."
@@ -6528,7 +6528,7 @@ msgid "Long:"
 msgstr "Lên:"
 
 msgid "Lookbacks"
-msgstr "Lookbacks"
+msgstr ""
 
 msgid "Lookbacks options are currently only available for %1Volatility Indices%2."
 msgstr "Tùy chọn Lookbacks hiện thời chỉ có sẵn cho Chỉ Số Biến Động%2."
@@ -6582,7 +6582,7 @@ msgid "M. Force majeure events"
 msgstr ""
 
 msgid "MAM"
-msgstr "MAM"
+msgstr ""
 
 msgid "MAM Accounts"
 msgstr "Tài Khoản MAM"
@@ -6615,7 +6615,7 @@ msgid "MT5 Account:"
 msgstr "Tài khoản MT5:"
 
 msgid "MT5 Demo"
-msgstr "MT5 Demo"
+msgstr ""
 
 msgid "MT5 Financial"
 msgstr "MT5 tài chính"
@@ -6657,7 +6657,7 @@ msgid "MT5 withdrawals have been disabled on your account. Please check your ema
 msgstr "Rút tiền MT5 đã bị vô hiệu hoá trên tài khoản của bạn. Vui lòng kiểm tra email của bạn để biết chi tiết."
 
 msgid "Mac"
-msgstr "Mac"
+msgstr ""
 
 msgid "Made an impression in the first interview? We'll invite you to a second interview with our CEO and/or hiring manager."
 msgstr "Đã tạo được một ấn tượng tốt trong cuộc phỏng vấn đầu tiên? Chúng tôi sẽ mời bạn đến một cuộc phỏng vấn thứ hai với CEO của chúng tôi và/hoặc quản lý tuyển dụng."
@@ -6948,10 +6948,10 @@ msgid "Memorable town/city"
 msgstr "Thị trấn/Thành phố đáng nhớ"
 
 msgid "MetaTrader"
-msgstr "MetaTrader"
+msgstr ""
 
 msgid "MetaTrader 5"
-msgstr "MetaTrader 5"
+msgstr ""
 
 msgid "MetaTrader 5 dashboard"
 msgstr "Đi đến bảng điều khiển MetaTrader 5"
@@ -7530,7 +7530,7 @@ msgid "Once you click the 'Submit' button, the funds will be withdrawn from your
 msgstr "Một khi bạn nhấp chuột vào nút \"Gửi yêu cầu\", tiền sẽ được rút khỏi tài khoản của bạn và được chuyển tới tài khoản của khách hàng của bạn."
 
 msgid "One Zero"
-msgstr "One Zero"
+msgstr ""
 
 msgid "One of the first things most Forex traders learn is how to read a currency pair. There are two parts to a currency pair"
 msgstr "Một trong những điều đầu tiên tìm hiểu kinh doanh ngoại hối hầu hết là làm thế nào để đọc một cặp tiền tệ. Có hai phần một cặp tiền tệ"
@@ -7827,7 +7827,7 @@ msgid "PEP Declaration"
 msgstr "Tuyên bố PEP"
 
 msgid "PM"
-msgstr "PM"
+msgstr ""
 
 msgid "Palladium vs US Dollar"
 msgstr "Palladium vs đô-la Mỹ"
@@ -8034,7 +8034,7 @@ msgid "Pillar 3 disclosure report"
 msgstr "Báo cáo tiết lộ cột 3"
 
 msgid "Pip"
-msgstr "Pip"
+msgstr ""
 
 msgid "Pip stands for 'percentage in point' which is generally the fourth decimal place (i.e. 0.0001)."
 msgstr "Pip là viết tắt của 'Percentage in point' tức là Điểm Phần Trăm được tính từ vị trí thứ tư sau dấu thập phân (ví dụ 0.0001)."
@@ -8631,7 +8631,7 @@ msgid "Put a limit on your winnings. Once you have reached it put some aside and
 msgstr "Hãy đặt giới hạn cho số hợp đồng mà bạn thắng. Khi bạn đã đạt tới mức đó, hãy cất một số tiền sang một bên riêng và tiếp tục giao dịch với số tiền còn lại."
 
 msgid "Putrajaya"
-msgstr "Putrajaya"
+msgstr ""
 
 msgid "Q. Introducing Brokers"
 msgstr ""
@@ -8664,10 +8664,10 @@ msgid "R. Interpretation of terms"
 msgstr ""
 
 msgid "RTS 27"
-msgstr "RTS 27"
+msgstr ""
 
 msgid "RTS 28"
-msgstr "RTS 28"
+msgstr ""
 
 msgid "Range of markets"
 msgstr "Phạm vi của các thị trường"
@@ -9072,7 +9072,7 @@ msgid "Risks of Investment Products"
 msgstr "Rủi ro của các Sản Phẩm Đầu Tư"
 
 msgid "Roll-over"
-msgstr "Roll-over"
+msgstr ""
 
 msgid "Roll-over Credit/Debit"
 msgstr "Roll-over tín dụng/thẻ ghi nợ"
@@ -9084,7 +9084,7 @@ msgid "Russia"
 msgstr "Nga"
 
 msgid "SQL,"
-msgstr "SQL,"
+msgstr ""
 
 msgid "Sa"
 msgstr "Thứ 7"
@@ -9432,10 +9432,10 @@ msgid "Small island charm"
 msgstr "Hòn đảo nhỏ quyến rũ"
 
 msgid "SmartCharts"
-msgstr "SmartCharts"
+msgstr ""
 
 msgid "SmartTrader"
-msgstr "SmartTrader"
+msgstr ""
 
 msgid "Smoothing out random noise"
 msgstr "Giải quyết rắc rối ngẫu nhiên"
@@ -9894,7 +9894,7 @@ msgid "Tel"
 msgstr "Điện thoại"
 
 msgid "Telegram Bot"
-msgstr "Telegram Bot"
+msgstr ""
 
 msgid "Telephone"
 msgstr "Điện thoại"
@@ -9951,7 +9951,7 @@ msgid "Test the %1 website, applications, backend, and back-office systems"
 msgstr "Kiểm tra trang web %1, ứng dụng, backend và hệ thống dùng cho văn phòng"
 
 msgid "Tether"
-msgstr "Tether"
+msgstr ""
 
 msgid "Tether is a blockchain-based cryptocurrency whose cryptocoins in circulation are backed by an equivalent amount of traditional fiat currencies. For more information, please visit %1."
 msgstr "Tether là một loại tiền cryptocurrency dựa trên hệ thống blockchain, loại tiền cryptocurrency này đang lưu hành và được hỗ trợ bởi một lượng tiền thực truyền thống tương đương. Để biết thêm thông tin, vui lòng truy cập %1."
@@ -11724,7 +11724,7 @@ msgid "Thursday"
 msgstr "Thứ Năm"
 
 msgid "Tick"
-msgstr "Tick"
+msgstr ""
 
 msgid "Tick Prediction"
 msgstr "Dự đoán tick"
@@ -12045,7 +12045,7 @@ msgid "Trade your way"
 msgstr "Giao dịch theo cách của bạn"
 
 msgid "Trade2Win"
-msgstr "Trade2Win"
+msgstr ""
 
 msgid "Trademark"
 msgstr ""
@@ -12117,7 +12117,7 @@ msgid "Trading times is unavailable in this country. If you have an active %1 ac
 msgstr "Thời gian giao dịch không có sẵn ở đất nước này. Nếu bạn có tài khoản %1 đang hoạt động, vui lòng %2lođăng nhập %3 để có thể truy cập đầy đủ."
 
 msgid "TradingView"
-msgstr "TradingView"
+msgstr ""
 
 msgid "TradingView for %1"
 msgstr "Xem giao dịch %1"
@@ -12321,7 +12321,7 @@ msgid "US Patents"
 msgstr "Bằng sáng chế Mỹ"
 
 msgid "USD"
-msgstr "USD"
+msgstr ""
 
 msgid "USD 1 per point"
 msgstr "1 USD cho mỗi điểm"
@@ -12330,7 +12330,7 @@ msgid "USD Index – Measures the value of the US Dollar against a basket of fiv
 msgstr "Chỉ số USD - Cách tính giá trị của đồng đô la Mỹ so với một loạt 5 loại tiền tệ toàn cầu (EUR, GBP, JPY, CAD, AUD), mỗi trọng 20%"
 
 msgid "USD/EUR"
-msgstr "USD/EUR"
+msgstr ""
 
 msgid "Ultra fast on-the-go trading"
 msgstr "Giao dịch siêu nhanh có sẵn"
@@ -12645,19 +12645,19 @@ msgid "Vload is an eVoucher facility that’s available as a payment method to d
 msgstr "Vload là mộthệ thống eVoucher có sẵn như là một phương thức thanh toán để gửi tiền và rút tiền. Để biết thêm chi tiết, xin vui lòng truy cập vào %1."
 
 msgid "Vol 10"
-msgstr "Vol 10"
+msgstr ""
 
 msgid "Vol 100"
-msgstr "Vol 100"
+msgstr ""
 
 msgid "Vol 25"
-msgstr "Vol 25"
+msgstr ""
 
 msgid "Vol 50"
-msgstr "Vol 50"
+msgstr ""
 
 msgid "Vol 75"
-msgstr "Vol 75"
+msgstr ""
 
 msgid "Volatility 10 Index"
 msgstr "Chỉ số biến động 10"
@@ -12693,7 +12693,7 @@ msgid "Volume step"
 msgstr "Bước khối lượng"
 
 msgid "Vs 407 zrnaf nalguvat fcrpvny gb lbh lbh znl pbcl lbhe nccyvpngvba gb wl+ebg13@ovanel.pbz sbe snfg-genpx pbafvqrengvba."
-msgstr "Vs 407 zrnaf nalguvat fcrpvny gb lbh lbh znl pbcl lbhe nccyvpngvba gb wl+ebg13@ovanel.pbz sbe snfg-genpx pbafvqrengvba."
+msgstr ""
 
 msgid "Waiting for contract settlement."
 msgstr "Đang chờ giải quyết hợp đồng."
@@ -13212,7 +13212,7 @@ msgid "Win up to maximum payout if exit spot is between lower and upper barrier,
 msgstr "Giành tối đa thanh toán nếu điểm chốt nằm giữa giới hạn dưới và giới hạn trên, theo tỷ lệ khác biệt giữa điểm chốt và giới hạn trên."
 
 msgid "Windows"
-msgstr "Windows"
+msgstr ""
 
 msgid "Winning the contract"
 msgstr "Thắng thầu hợp đồng"
@@ -13863,7 +13863,7 @@ msgid "gaming"
 msgstr "game"
 
 msgid "h"
-msgstr "h"
+msgstr ""
 
 msgid "has the meaning attached to it by the Directive 2004/39/EC of the European Parliament and of the Council (MIFID) or subsequent Directive 2014/65/EU of the European Parliament and of the Council (MIFID II), whichever is in force"
 msgstr ""
@@ -13875,7 +13875,7 @@ msgid "hours"
 msgstr "giờ"
 
 msgid "iOS"
-msgstr "iOS"
+msgstr ""
 
 msgid "iWallet is an online payment service provider that allows deposits, withdrawals, and transaction payments. For more information, please visit %1."
 msgstr "iWallet là một nhà cung cấp dịch vụ thanh toán trực tuyến cho phép gửi tiền, rút tiền và thanh toán giao dịch. Để biết thêm chi tiết, xin vui lòng truy cập vào %1."
@@ -14010,7 +14010,7 @@ msgid "thousand"
 msgstr "nghìn"
 
 msgid "tick"
-msgstr "tick"
+msgstr ""
 
 msgid "ticks"
 msgstr "tick"
@@ -14037,11 +14037,11 @@ msgid "years"
 msgstr "năm"
 
 msgid "{SPAIN ONLY}However, Binary Investments (Europe) Ltd has assessed your knowledge and experience and deems the product appropriate for you."
-msgstr "{SPAIN ONLY}However, Binary Investments (Europe) Ltd has assessed your knowledge and experience and deems the product appropriate for you."
+msgstr ""
 
 msgid "{SPAIN ONLY}This is a product with leverage. You should be aware that losses may be higher than the amount initially paid to purchase the product."
-msgstr "{SPAIN ONLY}This is a product with leverage. You should be aware that losses may be higher than the amount initially paid to purchase the product."
+msgstr ""
 
 msgid "{SPAIN ONLY}You are about to purchase a product that is not simple and may be difficult to understand: Contracts for Difference and Forex. As a general rule, the CNMV considers that such products are not appropriate for retail clients, due to their complexity."
-msgstr "{SPAIN ONLY}You are about to purchase a product that is not simple and may be difficult to understand: Contracts for Difference and Forex. As a general rule, the CNMV considers that such products are not appropriate for retail clients, due to their complexity."
+msgstr ""
 

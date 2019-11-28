@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: binary-static\n"
+"Project-Id-Version: deriv-app\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2019-05-08 12:06\n"
+"PO-Revision-Date: 2019-11-28 10:36\n"
 "Last-Translator: binarycom\n"
 "Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
@@ -10,13 +10,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: crowdin.com\n"
-"X-Crowdin-Project: binary-static\n"
+"X-Crowdin-Project: deriv-app\n"
 "X-Crowdin-Language: pl\n"
-"X-Crowdin-File: messages.pot\n"
+"X-Crowdin-File: /translations/src/translations/messages.pot\n"
 "Language: pl_PL\n"
 
 msgid "404"
-msgstr "404"
+msgstr ""
 
 msgid " All calls are recorded for training and monitoring purposes."
 msgstr ""
@@ -175,7 +175,7 @@ msgid "%1 Application Programme Interface (\"API\") terms and conditions"
 msgstr ""
 
 msgid "%1 Expert Advisor (EA)"
-msgstr "%1 Expert Advisor (EA)"
+msgstr ""
 
 msgid "%1 Graduate Programme"
 msgstr "Program %1 dla absolwentów"
@@ -769,10 +769,10 @@ msgid "A. Spot FX"
 msgstr "A. Kontrakty Spot FX"
 
 msgid "AM"
-msgstr "AM"
+msgstr ""
 
 msgid "API"
-msgstr "API"
+msgstr ""
 
 msgid "API Token"
 msgstr "Token API"
@@ -1042,7 +1042,7 @@ msgid "Adjust trade parameters"
 msgstr "Dostosuj parametry handlowe"
 
 msgid "Admin"
-msgstr "Admin"
+msgstr ""
 
 msgid "Administer key human resource activities such as performance appraisals"
 msgstr "Administrowanie kluczowymi czynnościami związanymi z zasobami ludzkimi, takimi jak ocena pracy pracowników"
@@ -1126,7 +1126,7 @@ msgid "Agriculture"
 msgstr "Rolnictwo"
 
 msgid "Alert"
-msgstr "Alert"
+msgstr ""
 
 msgid "Alerting Clients of a potential trading opportunity"
 msgstr ""
@@ -1321,7 +1321,7 @@ msgid "Analyse the markets with an extensive range of indicators, price bands, a
 msgstr "Analizuj rynki, korzystając z szerokiej gamy wskaźników, poziomów cenowych oraz nakładek."
 
 msgid "Android"
-msgstr "Android"
+msgstr ""
 
 msgid "Another major award. This time we're nominated by the online readers of Global Banking and Finance Review and judged by a panel of industry experts and analysts who recognise our 13 years of platform reliability, range of trades, pricing, customer service and extensive knowledge."
 msgstr "Kolejna ważna nagroda. Tym razem jesteśmy nominowani przez czytelników internetowego wydania magazynu Global Banking and Finance Review (Światowy Przegląd Bankowy i Finansowy) i oceniani przez panel ekspertów branżowych, którzy docenili nasze 13-letnie doświadczenie i wiarygodność platformy, szeroki wybór zakładów, wycenę, obsługę klienta i szeroką wiedzę."
@@ -1666,7 +1666,7 @@ msgid "Associate"
 msgstr ""
 
 msgid "Asunción"
-msgstr "Asunción"
+msgstr ""
 
 msgid "Asunción has one of the lowest costs of living in the world, being ranked 386th out of 441 cities by Numbeo, the world's largest database of crowdsourced consumer data. International schools with a bilingual curriculum (Spanish and English) are popular among foreigners with children. You'll also have easy access to quality healthcare with well-equipped private hospitals staffed with English-speaking doctors."
 msgstr "Asunción cechują jedne z najniższych kosztów życia na świecie. Numbeo, największa na świecie baza danych pozyskanych od konsumentów, plasuje to miasto na 386 pozycji pośród 441 miast. Mieszczą się tu szkoły międzynarodowe z zajęciami w dwóch językach (hiszpańskim i angielskim), które cieszą się popularnością wśród osób z zagranicy posiadających dzieci. Dostępny jest również łatwy dostęp do wysokiej jakości służby zdrowia z dobrze wyposażonymi prywatnymi szpitalami z personelem mówiącym w języku angielskim."
@@ -1705,7 +1705,7 @@ msgid "August"
 msgstr "Sierpień"
 
 msgid "Australia"
-msgstr "Australia"
+msgstr ""
 
 msgid "Australian Dollar vs Canadian Dollar"
 msgstr "Dolar australijski vs dolar kanadyjski"
@@ -1822,7 +1822,7 @@ msgid "BIEL shall not be obliged to provide professional clients with the follow
 msgstr ""
 
 msgid "BTC"
-msgstr "BTC"
+msgstr ""
 
 msgid "Bachelor's degree in computer science, or an equivalent combination of technical education, training, and work experience"
 msgstr "Dyplom inżyniera na kierunku Informatyka lub inne równoważne studia na kierunku technicznym w połączeniu z odpowiednim szkoleniem lub doświadczeniem zawodowym"
@@ -1972,7 +1972,7 @@ msgid "Bid price"
 msgstr "Cena oferowana"
 
 msgid "Binary (BVI) Ltd"
-msgstr "Binary (BVI) Ltd"
+msgstr ""
 
 msgid "Binary (BVI) Ltd,"
 msgstr ""
@@ -1981,10 +1981,10 @@ msgid "Binary (BVI) Ltd, Kingston Chambers, P.O. Box 173, Road Town, Tortola, Br
 msgstr "Binary (BVI) Ltd, Kingston Chambers, P.O. Box 173, Road Town, Tortola, Brytyjskie Wyspy Dziewicze. Za licencję i regulacje odpowiada Komisja Brytyjskich Wysp Dziewiczych ds. Usług Finansowych (British Virgin Islands Financial Services Commission) – %1zobacz licencję%2."
 
 msgid "Binary (C.R.) S.A."
-msgstr "Binary (C.R.) S.A."
+msgstr ""
 
 msgid "Binary (C.R.) S.A.,"
-msgstr "Binary (C.R.) S.A.,"
+msgstr ""
 
 msgid "Binary (C.R.) S.A., registered in Costa Rica. Clients from the rest of the world (excluding certain countries such as the USA, Canada, Costa Rica, Hong Kong) will have their account opened with Binary (C.R.) S.A."
 msgstr "Spółka Binary (C.R.) S.A., zarejestrowana w Kostaryce. Klienci z innych części świata (z wyjątkiem niektórych państw, takich jak Stany Zjednoczone, Kanada, Kostaryka, Hongkong) będą mieli założone konta przez Binary (C.R.) S.A."
@@ -2005,7 +2005,7 @@ msgid "Binary (Europe) Ltd, or"
 msgstr "Binary (Europe) Ltd, lub"
 
 msgid "Binary (FX) Ltd"
-msgstr "Binary (FX) Ltd"
+msgstr ""
 
 msgid "Binary (FX) Ltd,"
 msgstr ""
@@ -2020,28 +2020,28 @@ msgid "Binary (FX) Ltd., Lot No. F16, First Floor, Paragon Labuan, Jalan Tun Mus
 msgstr "Binary (FX) Ltd., Lot No. F16, First Floor, Paragon Labuan, Jalan Tun Mustapha, 87000 Terytorium Federalne Labuanu, Malezja. Za licencję i regulacje w zakresie prowadzenia usług brokerskich odpowiada Urząd ds. Usług Finansowych na Labuanie: Labuan Financial Services Authority %1(licencja o numerze: MB/18/0024)%2."
 
 msgid "Binary (IOM) Limited"
-msgstr "Binary (IOM) Limited"
+msgstr ""
 
 msgid "Binary (IOM) Limited, First Floor, Millennium House, Victoria Road, Douglas, Isle of Man, IM2 4RW. Licensed and regulated by the Gambling Supervision Commission in the Isle of Man (current online gambling licence granted on the 31 August 2017) - %1view licence%2 and for UK clients by the UK Gambling Commission - %3view licence%2."
 msgstr "Binary (IOM) Limited, First Floor, Millennium House, Victoria Road, Douglas, Wyspa Man, IM2 4RW. W zakresie licencji i kontroli firma podlega pod Komisję Nadzoru Gier Hazardowych Wyspy Man – Gambling Supervision Commission (aktualna licencja na prowadzenie gier hazardowych została wydana 31 sierpnia 2017 r.) – %1zobacz licencję%2, a w przypadku klientów ze Zjednoczonego Królestwa: Komisja ds. Gier Hazardowych w Zjednoczonym Królestwie (UK Gambling Commission) – %3zobacz licencję%2."
 
 msgid "Binary (IOM) Ltd, First Floor, Millennium House, Victoria Road, Douglas, IM2 4RW"
-msgstr "Binary (IOM) Ltd, First Floor, Millennium House, Victoria Road, Douglas, IM2 4RW"
+msgstr ""
 
 msgid "Binary (IOM) Ltd."
 msgstr ""
 
 msgid "Binary (V) Ltd"
-msgstr "Binary (V) Ltd"
+msgstr ""
 
 msgid "Binary (V) Ltd,"
-msgstr "Binary (V) Ltd,"
+msgstr ""
 
 msgid "Binary (V) Ltd, Govant Building, Port Vila, PO Box 1276, Vanuatu, Republic of Vanuatu. Licensed and regulated by the Vanuatu Financial Services Commission - %1view licence%2."
 msgstr "Binary (V) Ltd, Govant Building, Port Vila, PO Box 1276, Vanuatu, Republika Vanuatu. Za licencję i regulację odpowiada Komisja ds. usług finansowych Vanuatu (Vanuatu Financial Services Commission) – %1zobacz licencję%2."
 
 msgid "Binary Bot"
-msgstr "Binary Bot"
+msgstr ""
 
 msgid "Binary Bot released"
 msgstr "Bot Binary jest dostępny"
@@ -2053,7 +2053,7 @@ msgid "Binary Group (hereinafter referred to as 'Binary Group of companies', 'th
 msgstr "Binary Group (dalej zwana „grupą firm Binary Group” lub „Firmą”) dba o ochronę prywatności i bezpieczeństwa danych osobowych kandydatów. Te informacje o polityce bezpieczeństwa określają rodzaje danych dotyczących kandydatów, które gromadzi Firma. Określa również sposób, w jaki Firma gromadzi i wykorzystuje dane osobowe kandydatów i jak długo przechowuje te dane i inne informacje o kandydacie, zgodnie z ogólnym rozporządzeniem o ochronie danych (UE) 2016/679 (dalej zwanym RODO) i z ustawą o ochronie danych z 2018 r."
 
 msgid "Binary Group Services Sdn. Bhd., C-13, iTech Tower, Jalan Impact, Cyber 6, 63000 Cyberjaya, Selangor Darul Ehsan"
-msgstr "Binary Group Services Sdn. Bhd., C-13, iTech Tower, Jalan Impact, Cyber 6, 63000 Cyberjaya, Selangor Darul Ehsan"
+msgstr ""
 
 msgid "Binary Group members are sometimes referred to collectively as \"%1\" or \"the Company\"."
 msgstr ""
@@ -2062,7 +2062,7 @@ msgid "Binary Investments (Europe) Limited is entitled to provide services in an
 msgstr "Firma Binary Investments (Europe) Limited jest upoważniona do świadczenia usług w innych państwach członkowskich UE, gdyż posiada prawo dostępu do rynków UE. Na poniższej mapie można zobaczyć listę krajów UE posiadających dostęp do usług %1 dzięki udzielonym zezwoleniom – wolności świadczenia usług transgranicznych."
 
 msgid "Binary Investments (Europe) Ltd"
-msgstr "Binary Investments (Europe) Ltd"
+msgstr ""
 
 msgid "Binary Investments (Europe) Ltd aggregates the Bid and Ask prices from a pool of liquidity providers to determine and offer the Client the best available price of the instrument. The Company is always the final counterparty to the Client's Transactions. The Company may execute Orders on behalf of its Clients, wherein the Company will act as a broker and pass on the Order to the liquidity provider for execution. Alternatively, the Company may also keep the Client's Order on its own account, wherein the Company will take the other side of the Client's trade. It is further noted that the Company may make a profit as a result of the Client's losses and vice-versa. Further details can be found under Conflicts of interest policy and Order execution policy."
 msgstr ""
@@ -2074,7 +2074,7 @@ msgid "Binary Investments (Europe) Ltd, or"
 msgstr ""
 
 msgid "Binary Investments (Europe) Ltd."
-msgstr "Binary Investments (Europe) Ltd."
+msgstr ""
 
 msgid "Binary Investments (Europe) Ltd. is required to collect your tax information."
 msgstr "Firma Binary Investments (Europe) Ltd. jest zobowiązana do gromadzenia informacji podatkowych."
@@ -2083,7 +2083,7 @@ msgid "Binary KK granted Japan license"
 msgstr "Binary KK uzyskuje licencję na świadczenie usług w Japonii"
 
 msgid "Binary Limited"
-msgstr "Binary Limited"
+msgstr ""
 
 msgid "Binary Limited, with registered office at 47 Esplanade, St Helier, Jersey JE1 0BD, Channel Islands, is the holding company for the subsidiaries listed below."
 msgstr "Binary Limited, z siedzibą zarejestrowaną pod adresem: 47 Esplanade, St. Helier, Jersey, JE 0BD Channel Islands, jest spółką holdingową dla niżej wymienionych spółek zależnych."
@@ -2107,7 +2107,7 @@ msgid "Binary Tick Trade App"
 msgstr "Aplikacja Binary TickTrade"
 
 msgid "Binary WebTrader"
-msgstr "Binary WebTrader"
+msgstr ""
 
 msgid "Binary granted Investment Services license"
 msgstr "Binary uzyskuje licencję na świadczenie usług inwestycyjnych"
@@ -2179,7 +2179,7 @@ msgid "Binary.com recommends 1.1.1.1"
 msgstr "Binary.com poleca 1.1.1.1"
 
 msgid "Bitcoin"
-msgstr "Bitcoin"
+msgstr ""
 
 msgid "Bitcoin Cash"
 msgstr "Gotówka bitcoin"
@@ -2317,7 +2317,7 @@ msgid "C. Provision of services"
 msgstr ""
 
 msgid "CFD"
-msgstr "CFD"
+msgstr ""
 
 msgid "CFD Energies"
 msgstr "Kontrakty na różnice kursowe surowców energetycznych"
@@ -3097,7 +3097,7 @@ msgid "Copyright"
 msgstr "Prawa autorskie"
 
 msgid "Copywriter"
-msgstr "Copywriter"
+msgstr ""
 
 msgid "Cost per acquisition (CPA) for EU affiliates only"
 msgstr "Koszt za akcję (CPA) dostępny wyłącznie dla partnerów z UE"
@@ -3298,7 +3298,7 @@ msgid "Customer funds"
 msgstr ""
 
 msgid "Cyberjaya"
-msgstr "Cyberjaya"
+msgstr ""
 
 msgid "Cyberjaya Office"
 msgstr "Biuro w Cyberjaya"
@@ -3355,7 +3355,7 @@ msgid "Data Protection Act (DPA)"
 msgstr "Ustawa o ochronie danych osobowych (DPA)"
 
 msgid "Data Scientist"
-msgstr "Data Scientist"
+msgstr ""
 
 msgid "Data Subject"
 msgstr "Przedmiot danych"
@@ -3436,7 +3436,7 @@ msgid "Demand – Driven by industrial and commercial applications, including ne
 msgstr "Popyt – napędzany przez przemysł i handel, w tym przez produkty w zakresie nowych technologii i trendy modowe"
 
 msgid "Demo"
-msgstr "Demo"
+msgstr ""
 
 msgid "Demo Account"
 msgstr "Konto Demo"
@@ -3802,7 +3802,7 @@ msgid "EU Passport Rights"
 msgstr "Prawa paszportowe UE"
 
 msgid "EUR"
-msgstr "EUR"
+msgstr ""
 
 msgid "EUR 1 per point"
 msgstr "1 EUR za punkt"
@@ -3811,7 +3811,7 @@ msgid "EUR Index – Measures the value of the Euro against a basket of five glo
 msgstr "Indeks EUR – mierzy wartość euro w stosunku do koszyka pięciu światowych walut (USD, AUD, GBP, JPY, CAD), z których każda ma wagę 20%"
 
 msgid "EUR/GBP"
-msgstr "EUR/GBP"
+msgstr ""
 
 msgid "Each Party shall do anything reasonably required by the other Party to give effect to the provisions of this agreement."
 msgstr ""
@@ -4048,10 +4048,10 @@ msgid "Estimated net worth"
 msgstr "Szacowana wartość netto"
 
 msgid "Ether"
-msgstr "Ether"
+msgstr ""
 
 msgid "Ether Classic"
-msgstr "Ether Classic"
+msgstr ""
 
 msgid "Ether is a cryptocurrency that is used to pay for transactions on the Ethereum platform. For more information, please visit %1."
 msgstr "Ether to kryptowaluta używana do płatności za transakcje na platformie Ethereum. Odwiedź %1, aby uzyskać więcej informacji."
@@ -4339,7 +4339,7 @@ msgid "Experience with web application security and testing, security monitoring
 msgstr "Doświadczenie w zapewnianiu i testowaniu bezpieczeństwa aplikacji internetowych, monitorowaniu bezpieczeństwa i wykrywaniu ataków"
 
 msgid "Expert Advisors"
-msgstr "Expert Advisors"
+msgstr ""
 
 msgid "Expert Advisors, including any additional functions/plug-ins of trading operations provided by or developed using Expert Advisors, are applications developed using the MetaQuotes Language which can be used to analyse price charts and automate the Client's trades."
 msgstr ""
@@ -4417,13 +4417,13 @@ msgid "F. Margin and Leverage"
 msgstr ""
 
 msgid "FAQ"
-msgstr "FAQ"
+msgstr ""
 
 msgid "FIX API"
-msgstr "FIX API"
+msgstr ""
 
 msgid "FX"
-msgstr "FX"
+msgstr ""
 
 msgid "FXOpen"
 msgstr ""
@@ -4735,7 +4735,7 @@ msgid "Force majeure events must be confirmed by an authority or government auth
 msgstr ""
 
 msgid "Forex"
-msgstr "Forex"
+msgstr ""
 
 msgid "Forex & Metals"
 msgstr "Forex i metale"
@@ -4861,13 +4861,13 @@ msgid "GDPR"
 msgstr "RODO"
 
 msgid "GMT"
-msgstr "GMT"
+msgstr ""
 
 msgid "GMT stands for Greenwich Mean Time, the official time used in the UK during winter. In summer, the UK changes to British Summer Time, which is GMT + 1 hour. All times on the %1 site use GMT all year round."
 msgstr "GMT, czyli Greenwich Mean Time to oficjalny czas stosowany zimą w Wlk. Brytanii. Latem Wlk. Brytania zmienia czas na British Summer Time, czyli czas GMT + 1 godzina. Wszystkie godziny podawane są na %1 według czasu GMT przez cały rok."
 
 msgid "GamCare"
-msgstr "GamCare"
+msgstr ""
 
 msgid "Gaming"
 msgstr "Gra hazardowa"
@@ -4942,16 +4942,16 @@ msgid "Global Banking & Finance Awards"
 msgstr "Nagrody Global Banking & Finance Awards"
 
 msgid "Global Banking & Finance Awards 2018"
-msgstr "Global Banking & Finance Awards 2018"
+msgstr ""
 
 msgid "Global Banking and Finance Review"
-msgstr "Global Banking and Finance Review"
+msgstr ""
 
 msgid "Global Brands Awards 2018"
 msgstr "Nagroda Global Brands Awards 2018"
 
 msgid "Global Brands Magazine"
-msgstr "Global Brands Magazine"
+msgstr ""
 
 msgid "Glossary"
 msgstr "Słowniczek"
@@ -5050,13 +5050,13 @@ msgid "H. Quotes"
 msgstr ""
 
 msgid "HF Vol 10"
-msgstr "HF Vol 10"
+msgstr ""
 
 msgid "HF Vol 100"
-msgstr "HF Vol 100"
+msgstr ""
 
 msgid "HF Vol 50"
-msgstr "HF Vol 50"
+msgstr ""
 
 msgid "HR Operations Executive"
 msgstr "Kierownik ds. HR"
@@ -5080,7 +5080,7 @@ msgid "Hedge your portfolio"
 msgstr "Zabezpiecz swoje portfolio"
 
 msgid "Hedging"
-msgstr "Hedging"
+msgstr ""
 
 msgid "Help in developing advanced risk management tools for various markets (forex, equities, commodities)"
 msgstr "Pomoc w tworzeniu zaawansowanych narzędzi do zarządzania ryzykiem na potrzeby różnych rynków (forex, akcje, towary)"
@@ -5335,7 +5335,7 @@ msgid "IP Address"
 msgstr "Adres IP"
 
 msgid "IT"
-msgstr "IT"
+msgstr ""
 
 msgid "IT knowledge or experience is preferred"
 msgstr "Preferowana jest wiedza lub doświadczenie w zakresie IT"
@@ -6265,7 +6265,7 @@ msgid "L. Manifest Error"
 msgstr ""
 
 msgid "Labuan"
-msgstr "Labuan"
+msgstr ""
 
 msgid "Labuan has several national schools and one international school. It also has the only matriculation college in East Malaysia. Pre-university students from Sabah, Sarawak, and Labuan are required to attend this matriculation college before they continue their studies at a public university."
 msgstr "Na Labuan jest kilka szkół państwowych i jednak szkoła międzynarodowa. Znajduje się tu również jedyna we Wschodniej Malezji szkoła średnia przygotowująca do egzaminu dojrzałości. Uczniowie z Sabah, Sarawak i Labuan, którzy planują rozpoczęcie studiów, muszą ukończyć tę szkołę przed kontynuacją nauki na uczelni państwowej."
@@ -6424,7 +6424,7 @@ msgid "Likelihood of execution and settlement - the depth of liquidity of the ma
 msgstr ""
 
 msgid "Limit"
-msgstr "Limit"
+msgstr ""
 
 msgid "Limit Order"
 msgstr "Zlecenie Limit"
@@ -6454,13 +6454,13 @@ msgid "Links"
 msgstr "Łącza"
 
 msgid "Linux"
-msgstr "Linux"
+msgstr ""
 
 msgid "Liquidity solutions"
 msgstr "Rozwiązania w zakresie płynności"
 
 msgid "Litecoin"
-msgstr "Litecoin"
+msgstr ""
 
 msgid "Litecoin is a cryptocurrency similar to Bitcoin, but capable of a higher transaction volume and faster confirmation times. For more information, please visit %1."
 msgstr "Litecoin to kryptowaluta podobna do Bitcoin, ale pozwalająca na transakcje o większej wysokości i z szybszym potwierdzaniem. Odwiedź %1, aby uzyskać więcej informacji."
@@ -6580,7 +6580,7 @@ msgid "M. Force majeure events"
 msgstr ""
 
 msgid "MAM"
-msgstr "MAM"
+msgstr ""
 
 msgid "MAM Accounts"
 msgstr "Konta MAM"
@@ -6613,7 +6613,7 @@ msgid "MT5 Account:"
 msgstr "Konto MT5:"
 
 msgid "MT5 Demo"
-msgstr "MT5 Demo"
+msgstr ""
 
 msgid "MT5 Financial"
 msgstr "MT5 Finanse"
@@ -6655,7 +6655,7 @@ msgid "MT5 withdrawals have been disabled on your account. Please check your ema
 msgstr "Opcja dokonywania wypłat z MT5 została wyłączona na Twoim koncie. Sprawdź swoją skrzynkę e-mailową, aby uzyskać więcej informacji."
 
 msgid "Mac"
-msgstr "Mac"
+msgstr ""
 
 msgid "Made an impression in the first interview? We'll invite you to a second interview with our CEO and/or hiring manager."
 msgstr "Udało Ci się zrobić wrażenie na rozmowie rekrutacyjnej? Zaprosimy Cię na drugą rozmowę z naszym dyrektorem generalnym lub kierownikiem ds. rekrutacji."
@@ -6727,7 +6727,7 @@ msgid "Malicious Activity"
 msgstr ""
 
 msgid "Malta"
-msgstr "Malta"
+msgstr ""
 
 msgid "Malta celebrates a large number of religious festivities and cultural events every year, filling the streets with carts laden with traditional sweets and delicacies."
 msgstr "Co roku na Malcie odbywa się wiele festiwali religijnych i wydarzeń kulturalnych, a ulice są pełne straganów z tradycyjnymi słodyczami i innymi smakołykami."
@@ -6862,7 +6862,7 @@ msgid "Market-closing times: The client is asked to refer to %1Trading times%2 p
 msgstr ""
 
 msgid "Marketing"
-msgstr "Marketing"
+msgstr ""
 
 msgid "Marketing Executive"
 msgstr "Kierownik ds. marketingu"
@@ -6946,10 +6946,10 @@ msgid "Memorable town/city"
 msgstr "Pamiętne miasto"
 
 msgid "MetaTrader"
-msgstr "MetaTrader"
+msgstr ""
 
 msgid "MetaTrader 5"
-msgstr "MetaTrader 5"
+msgstr ""
 
 msgid "MetaTrader 5 dashboard"
 msgstr "Pulpit MetaTrader 5"
@@ -7030,7 +7030,7 @@ msgid "Minimum volume"
 msgstr "Minimalny wolumen"
 
 msgid "Minimum:"
-msgstr "Minimum:"
+msgstr ""
 
 msgid "Mining, Construction, Manufacturing and Transport Workers"
 msgstr "Pracownicy sektora wydobywczego, produkcyjnego i transportowego"
@@ -7468,7 +7468,7 @@ msgid "OAuth App ID"
 msgstr "Identyfikator aplikacji OAuth"
 
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 msgid "OSCP, CEH, Security+, CISSP, or any GIAC certification is an advantage"
 msgstr "Certyfikat w zakresie OSCP, CEH, Security+, CISSP, lub GIAC będzie dodatkowym atutem"
@@ -7477,7 +7477,7 @@ msgid "OTC"
 msgstr ""
 
 msgid "Occupation"
-msgstr "Occupation"
+msgstr ""
 
 msgid "Oct"
 msgstr "Październik"
@@ -7489,7 +7489,7 @@ msgid "Offices in Malta and Malaysia"
 msgstr "Biura na Malcie i w Malezji"
 
 msgid "Offline"
-msgstr "Offline"
+msgstr ""
 
 msgid "Offset potential losses to your investment portfolio by hedging with CFDs."
 msgstr "Zrekompensuj potencjalne straty w Twoim portfolio inwestycyjnym, korzystając z hedgingu i kup kontrakty CFD."
@@ -7528,7 +7528,7 @@ msgid "Once you click the 'Submit' button, the funds will be withdrawn from your
 msgstr "Po kliknięciu przycisku „Prześlij” środki zostaną wypłacone z Twojego konta i przesłane na Twoje konto Klienta."
 
 msgid "One Zero"
-msgstr "One Zero"
+msgstr ""
 
 msgid "One of the first things most Forex traders learn is how to read a currency pair. There are two parts to a currency pair"
 msgstr "Jedną, z pierwszych rzeczy, jakich uczą się gracze Forex, to interpretowanie par walutowych. Para walutowa składa się z dwóch elementów"
@@ -7537,7 +7537,7 @@ msgid "One simple platform"
 msgstr "Jedna prosta platforma"
 
 msgid "Online"
-msgstr "Online"
+msgstr ""
 
 msgid "Online Personal Wealth Awards"
 msgstr "Internetowa nagroda Personal Wealth Award"
@@ -7825,7 +7825,7 @@ msgid "PEP Declaration"
 msgstr "Oświadczenie ws. PEP"
 
 msgid "PM"
-msgstr "PM"
+msgstr ""
 
 msgid "Palladium vs US Dollar"
 msgstr "Pallad vs dolar amerykański"
@@ -8032,7 +8032,7 @@ msgid "Pillar 3 disclosure report"
 msgstr "raport dotyczący ujawnienia informacji w zakresie Filaru 3"
 
 msgid "Pip"
-msgstr "Pip"
+msgstr ""
 
 msgid "Pip stands for 'percentage in point' which is generally the fourth decimal place (i.e. 0.0001)."
 msgstr "Pip to wartość procentowa w punktach, zwykle jest to czwarte miejsce po przecinku (np. 0,0001)."
@@ -8269,7 +8269,7 @@ msgid "Poland"
 msgstr "Polska"
 
 msgid "Portfolio"
-msgstr "Portfolio"
+msgstr ""
 
 msgid "Positions that are still open on Friday at market close will be charged three times the swap rate to account for weekends, a standard practice for all brokers."
 msgstr "W przypadku pozycji, które będą wciąż otwarte w piętek w momencie zamknięcia rynku zostanie pobrana potrójna wartość stawek swapowych, aby uwzględnić dni weekendowe – jest to standardowa praktyka w przypadku wszystkich brokerów."
@@ -8629,7 +8629,7 @@ msgid "Put a limit on your winnings. Once you have reached it put some aside and
 msgstr "Ustaw limit dla swoich wygranych. Kiedy zostanie osiągnięty, odłóż część i handluj resztą pieniędzy."
 
 msgid "Putrajaya"
-msgstr "Putrajaya"
+msgstr ""
 
 msgid "Q. Introducing Brokers"
 msgstr ""
@@ -8662,10 +8662,10 @@ msgid "R. Interpretation of terms"
 msgstr ""
 
 msgid "RTS 27"
-msgstr "RTS 27"
+msgstr ""
 
 msgid "RTS 28"
-msgstr "RTS 28"
+msgstr ""
 
 msgid "Range of markets"
 msgstr "Wiele rynków"
@@ -8911,10 +8911,10 @@ msgid "Reset Barrier"
 msgstr "Limit resetowania"
 
 msgid "Reset Call"
-msgstr "Reset Call"
+msgstr ""
 
 msgid "Reset Call/Reset Put"
-msgstr "Reset Call/Reset Put"
+msgstr ""
 
 msgid "Reset MT5 password"
 msgstr "Zresetuj hasło MT5"
@@ -8923,7 +8923,7 @@ msgid "Reset Password"
 msgstr "Zresetuj hasło"
 
 msgid "Reset Put"
-msgstr "Reset Put"
+msgstr ""
 
 msgid "Reset Time"
 msgstr "Moment resetowania"
@@ -9082,7 +9082,7 @@ msgid "Russia"
 msgstr "Rosja"
 
 msgid "SQL,"
-msgstr "SQL,"
+msgstr ""
 
 msgid "Sa"
 msgstr "So"
@@ -9433,7 +9433,7 @@ msgid "SmartCharts"
 msgstr "Wykresy Smart"
 
 msgid "SmartTrader"
-msgstr "SmartTrader"
+msgstr ""
 
 msgid "Smoothing out random noise"
 msgstr "Wygładzanie przypadkowych szumów"
@@ -9517,7 +9517,7 @@ msgid "Spot price"
 msgstr "Cena punktowa"
 
 msgid "Spread"
-msgstr "Spread"
+msgstr ""
 
 msgid "Stake"
 msgstr "Stawka"
@@ -9565,7 +9565,7 @@ msgid "Static content"
 msgstr "Treści statyczne"
 
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 msgid "Stay informed. %1 offers daily market reports and market research, as well as frequent trading webinars."
 msgstr "Bądź na bieżąco. %1 oferuje codzienne raporty rynkowe i analizy rynkowe, a także częste szkolenia internetowe."
@@ -9697,7 +9697,7 @@ msgid "Strong understanding of colours, typography, identity design, and brandin
 msgstr "Dobre zrozumienie kolorów, typografii, identyfikacji wizualnej i brandingu"
 
 msgid "Student"
-msgstr "Student"
+msgstr ""
 
 msgid "Students"
 msgstr "Studenci"
@@ -9829,7 +9829,7 @@ msgid "Swiss Franc vs Japanese Yen"
 msgstr "Frank szwajcarski vs jen japoński"
 
 msgid "Symbol"
-msgstr "Symbol"
+msgstr ""
 
 msgid "Synthetic indices that mimic market volatility."
 msgstr "Wskaźniki syntetyczne imitujące zmienność rynkową."
@@ -9892,7 +9892,7 @@ msgid "Tel"
 msgstr "Telefon"
 
 msgid "Telegram Bot"
-msgstr "Telegram Bot"
+msgstr ""
 
 msgid "Telephone"
 msgstr "Telefon"
@@ -9949,7 +9949,7 @@ msgid "Test the %1 website, applications, backend, and back-office systems"
 msgstr "Testowanie strony internetowej %1, aplikacji oraz systemów back-end i back-office"
 
 msgid "Tether"
-msgstr "Tether"
+msgstr ""
 
 msgid "Tether is a blockchain-based cryptocurrency whose cryptocoins in circulation are backed by an equivalent amount of traditional fiat currencies. For more information, please visit %1."
 msgstr "Tether to kryptowaluta oparta na blockchain, której kryptomonety będące w obiegu mają pokrycie w odpowiadającej im wartości tradycyjnych walutach fiducjarnych. Aby uzyskać więcej informacji, odwiedź %1."
@@ -11857,7 +11857,7 @@ msgid "Today, Labuan is known as a flourishing financial centre and tax-free tou
 msgstr "Dziś Labuan to rozwijające się centrum finansowe i pozbawiony ceł kierunek turystyczny. Jego gospodarka opiera się głównie na zasobach ropy naftowej i gazu oraz na sektorze międzynarodowych usług inwestycyjnych i bankowych. Sektor ten w ostatnich latach przyciągnął tysiące firm oraz kilkadziesiąt wiodących banków."
 
 msgid "Token"
-msgstr "Token"
+msgstr ""
 
 msgid "Token name"
 msgstr "Nazwa tokenu"
@@ -12043,7 +12043,7 @@ msgid "Trade your way"
 msgstr "Handluj na swój sposób"
 
 msgid "Trade2Win"
-msgstr "Trade2Win"
+msgstr ""
 
 msgid "Trademark"
 msgstr ""
@@ -12271,7 +12271,7 @@ msgid "Types of trades"
 msgstr "Rodzaje zakładów"
 
 msgid "UI/UX Designer"
-msgstr "UI/UX Designer"
+msgstr ""
 
 msgid "UK and Manx residents who wish to trade gambling products will have their accounts opened with Binary (IOM) Limited."
 msgstr "Obywatele Brytyjscy i z Wyspy Man, którzy chcą handlować produktami hazardowymi będą mieli konto otwarte przez firmę Binary (IOM) Limited."
@@ -12319,7 +12319,7 @@ msgid "US Patents"
 msgstr "Patenty amerykańskie"
 
 msgid "USD"
-msgstr "USD"
+msgstr ""
 
 msgid "USD 1 per point"
 msgstr "1 USD za punkt"
@@ -12328,7 +12328,7 @@ msgid "USD Index – Measures the value of the US Dollar against a basket of fiv
 msgstr "Indeks USD – mierzy wartość dolara amerykańskiego w stosunku do koszyka pięciu światowych walut (EUR, GBP, JPY, CAD, AUD), z których każda ma wagę 20%"
 
 msgid "USD/EUR"
-msgstr "USD/EUR"
+msgstr ""
 
 msgid "Ultra fast on-the-go trading"
 msgstr "Super szybkie handlowanie gdziekolwiek jesteś"
@@ -12643,19 +12643,19 @@ msgid "Vload is an eVoucher facility that’s available as a payment method to d
 msgstr "Vload to usługa bazująca na eVoucherach dostępna jako metoda płatności. Można z niej korzystać w celu wpłacania i wypłacania funduszy. Aby uzyskać więcej informacji, odwiedź %1."
 
 msgid "Vol 10"
-msgstr "Vol 10"
+msgstr ""
 
 msgid "Vol 100"
-msgstr "Vol 100"
+msgstr ""
 
 msgid "Vol 25"
-msgstr "Vol 25"
+msgstr ""
 
 msgid "Vol 50"
-msgstr "Vol 50"
+msgstr ""
 
 msgid "Vol 75"
-msgstr "Vol 75"
+msgstr ""
 
 msgid "Volatility 10 Index"
 msgstr "Wskaźnik zmienności 10"
@@ -12691,7 +12691,7 @@ msgid "Volume step"
 msgstr "Krok – wolumen"
 
 msgid "Vs 407 zrnaf nalguvat fcrpvny gb lbh lbh znl pbcl lbhe nccyvpngvba gb wl+ebg13@ovanel.pbz sbe snfg-genpx pbafvqrengvba."
-msgstr "Vs 407 zrnaf nalguvat fcrpvny gb lbh lbh znl pbcl lbhe nccyvpngvba gb wl+ebg13@ovanel.pbz sbe snfg-genpx pbafvqrengvba."
+msgstr ""
 
 msgid "Waiting for contract settlement."
 msgstr "Oczekiwanie na rozliczenie kontraktu."
@@ -12847,7 +12847,7 @@ msgid "WebMoney is an online payment settlement system that's been operating sin
 msgstr "WebMoney to system rozliczania płatności internetowych działający od 1998 r. Odwiedź %1, aby uzyskać więcej informacji."
 
 msgid "WebTrader"
-msgstr "WebTrader"
+msgstr ""
 
 msgid "Webinar speaker"
 msgstr "Prelegent webinarium"
@@ -12856,7 +12856,7 @@ msgid "Webinars"
 msgstr "Szkolenia internetowe"
 
 msgid "Webmaster"
-msgstr "Webmaster"
+msgstr ""
 
 msgid "Website"
 msgstr "Strona internetowa"
@@ -12874,7 +12874,7 @@ msgid "Weekend quotes"
 msgstr "Oferty weekendowe"
 
 msgid "Weekend:"
-msgstr "Weekend:"
+msgstr ""
 
 msgid "Welcome to Binary.com"
 msgstr "Witamy w Binary.com"
@@ -13210,7 +13210,7 @@ msgid "Win up to maximum payout if exit spot is between lower and upper barrier,
 msgstr "Zyskaj wygraną w wysokości nawet maksymalnej wypłaty, jeśli punkt wyjściowy będzie mieścił się w przedziale między dolnym a górnym limitem, proporcjonalnie do różnicy między górnym limitem a punktem wyjściowym."
 
 msgid "Windows"
-msgstr "Windows"
+msgstr ""
 
 msgid "Winning the contract"
 msgstr "Wygranie kontraktu"
@@ -13873,7 +13873,7 @@ msgid "hours"
 msgstr "godziny"
 
 msgid "iOS"
-msgstr "iOS"
+msgstr ""
 
 msgid "iWallet is an online payment service provider that allows deposits, withdrawals, and transaction payments. For more information, please visit %1."
 msgstr "iWallet to dostawca usług płatniczych on-line umożliwiający dokonywanie wpłat, wypłat i transakcji płatniczych. Aby uzyskać więcej informacji, odwiedź %1."
@@ -14035,11 +14035,11 @@ msgid "years"
 msgstr "lat(a)"
 
 msgid "{SPAIN ONLY}However, Binary Investments (Europe) Ltd has assessed your knowledge and experience and deems the product appropriate for you."
-msgstr "{SPAIN ONLY}However, Binary Investments (Europe) Ltd has assessed your knowledge and experience and deems the product appropriate for you."
+msgstr ""
 
 msgid "{SPAIN ONLY}This is a product with leverage. You should be aware that losses may be higher than the amount initially paid to purchase the product."
-msgstr "{SPAIN ONLY}This is a product with leverage. You should be aware that losses may be higher than the amount initially paid to purchase the product."
+msgstr ""
 
 msgid "{SPAIN ONLY}You are about to purchase a product that is not simple and may be difficult to understand: Contracts for Difference and Forex. As a general rule, the CNMV considers that such products are not appropriate for retail clients, due to their complexity."
-msgstr "{SPAIN ONLY}You are about to purchase a product that is not simple and may be difficult to understand: Contracts for Difference and Forex. As a general rule, the CNMV considers that such products are not appropriate for retail clients, due to their complexity."
+msgstr ""
 

@@ -43,10 +43,12 @@ export default class ShopStore {
     @action.bound
     retrieveShopCollections() {
         this.shopify.collection.fetchAllWithProducts().then(collections => {
-            console.log({ collections });
             runInAction(() => {
+                const is_valid_collection = (collection) =>
+                    this.enabled_collection_handles.includes(collection.handle) || collection.products.length > 0;
+
                 this.collections = collections
-                    .filter(collection => this.enabled_collection_handles.includes(collection.handle) && collection.products.length > 0)
+                    .filter(is_valid_collection)
                     .map(collection => {
                         return {
                             id      : collection.id,
@@ -95,6 +97,8 @@ export default class ShopStore {
                     existing_product = p;
                     return true;
                 }
+
+                return false;
             });
         });
 

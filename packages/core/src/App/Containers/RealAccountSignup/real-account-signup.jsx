@@ -3,8 +3,8 @@ import {
     Button,
     Modal,
     Loading }                 from 'deriv-components';
-import React, { Component }   from 'react';
 import { localize, Localize } from 'deriv-translations';
+import React, { Component }   from 'react';
 import Icon                   from 'Assets/icon.jsx';
 import IconDuplicate          from 'Assets/Signup/icon-duplicate.jsx';
 import { connect }            from 'Stores/connect';
@@ -18,7 +18,9 @@ import 'Sass/real-account-signup.scss';
 const ErrorModal = ({ message, code, openPersonalDetails }) => {
     return (
         <div className='account-wizard--error'>
-            <IconDuplicate />
+            <Icon
+                icon={IconDuplicate}
+            />
             <h1><Localize i18n_default_text='Whoops!' /></h1>
             <p>
                 {localize(message)}
@@ -165,13 +167,6 @@ class RealAccountSignup extends Component {
 
     closeModalWithHooks = () => {
         this.closeModal();
-        setTimeout(() => {
-            const post_signup = JSON.parse(sessionStorage.getItem('post_real_account_signup'));
-            if (post_signup && post_signup.category && post_signup.type) {
-                sessionStorage.removeItem('post_real_account_signup');
-                this.props.enableMt5PasswordModal();
-            }
-        }, 400);
     };
 
     showLoadingModal = () => {

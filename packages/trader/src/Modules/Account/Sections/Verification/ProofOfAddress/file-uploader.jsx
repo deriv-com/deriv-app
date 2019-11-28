@@ -3,7 +3,7 @@ import classNames       from 'classnames';
 import React            from 'react';
 import { FileDropzone } from 'deriv-components';
 import { WS }           from 'Services/ws-methods';
-import { localize }     from 'App/i18n';
+import { localize }     from 'deriv-translations';
 import IconCloudUpload  from 'Assets/AccountManagement/ProofOfAddress/icon-cloud-uploading.svg';
 import IconRemoveFile   from 'Assets/AccountManagement/icon-remove-file.svg';
 import {

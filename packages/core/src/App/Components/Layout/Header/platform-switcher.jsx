@@ -3,7 +3,7 @@ import PropTypes            from 'prop-types';
 import React                from 'react';
 import { withRouter }       from 'react-router-dom';
 import { CSSTransition }    from 'react-transition-group';
-import { localize }         from 'App/i18n';
+import { localize }         from 'deriv-translations';
 import Icon                 from 'Assets/icon.jsx';
 import { isBot, isMT5 }     from 'Utils/PlatformSwitcher';
 import { PlatformDropdown } from './platform-dropdown.jsx';

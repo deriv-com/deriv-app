@@ -101,7 +101,7 @@ PaymentAgentReceipt.propTypes = {
 };
 
 export default withRouter(connect(
-    ({ client, modules, ui }) => ({
+    ({ client, modules }) => ({
         currency         : client.currency,
         loginid          : client.loginid,
         receipt          : modules.cashier.config.payment_agent.receipt,

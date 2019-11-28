@@ -8,7 +8,7 @@ import {
 import platform_config    from 'App/Constants/platform-config';
 import Lazy               from 'App/Containers/Lazy';
 import RealAccountSignup  from 'App/Containers/RealAccountSignup';
-import { localize }       from 'App/i18n';
+import { localize }       from 'deriv-translations';
 import Icon               from 'Assets/icon.jsx';
 import routes             from 'Constants/routes';
 import { connect }        from 'Stores/connect';

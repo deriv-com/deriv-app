@@ -7,7 +7,7 @@ import {
     ThemedScrollbars }       from 'deriv-components';
 import { BinaryLink }        from 'App/Components/Routes';
 import { connect }           from 'Stores/connect';
-import { localize }          from 'App/i18n';
+import { localize }          from 'deriv-translations';
 import { toTitleCase }       from '_common/string_util';
 import ObjectUtils           from 'deriv-shared/utils/object';
 import Icon                  from 'Assets/icon.jsx';

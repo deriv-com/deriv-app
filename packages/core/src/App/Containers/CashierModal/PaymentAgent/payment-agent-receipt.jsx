@@ -1,16 +1,15 @@
-import classNames          from 'classnames';
-import PropTypes           from 'prop-types';
-import React               from 'react';
-import { withRouter }      from 'react-router';
+import classNames             from 'classnames';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import { withRouter }         from 'react-router';
 import {
     Button,
-    ThemedScrollbars }     from 'deriv-components';
-import Localize            from 'App/Components/Elements/localize.jsx';
-import { localize }        from 'App/i18n';
-import Icon                from 'Assets/icon.jsx';
-import routes              from 'Constants/routes';
-import { connect }         from 'Stores/connect';
-import PaymentAgentDetails from './payment-agent-details.jsx';
+    ThemedScrollbars }        from 'deriv-components';
+import { localize, Localize } from 'deriv-translations';
+import Icon                   from 'Assets/icon.jsx';
+import routes                 from 'Constants/routes';
+import { connect }            from 'Stores/connect';
+import PaymentAgentDetails    from './payment-agent-details.jsx';
 
 class PaymentAgentReceipt extends React.Component {
     openStatement = () => {

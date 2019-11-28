@@ -5,7 +5,7 @@ import {
     Button,
     ThemedScrollbars } from 'deriv-components';
 import Icon            from 'Assets/icon.jsx';
-import { localize }    from 'App/i18n';
+import { localize }    from 'deriv-translations';
 
 const TradeTypeInfoItem = ({
     handleNavigationClick,

@@ -27,5 +27,8 @@
     "hooks": {
       "post-merge": "bash ./hooks/post-merge.sh"
     }
+  },
+  "dependencies": {
+    "shopify-buy": "^2.8.1"
   }
 }

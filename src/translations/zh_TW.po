@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: binary-static\n"
+"Project-Id-Version: deriv-app\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2019-05-08 12:07\n"
+"PO-Revision-Date: 2019-11-28 10:35\n"
 "Last-Translator: binarycom\n"
 "Language-Team: Chinese Traditional\n"
 "MIME-Version: 1.0\n"
@@ -10,13 +10,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: crowdin.com\n"
-"X-Crowdin-Project: binary-static\n"
+"X-Crowdin-Project: deriv-app\n"
 "X-Crowdin-Language: zh-TW\n"
-"X-Crowdin-File: messages.pot\n"
+"X-Crowdin-File: /translations/src/translations/messages.pot\n"
 "Language: zh_TW\n"
 
 msgid "404"
-msgstr "404"
+msgstr ""
 
 msgid " All calls are recorded for training and monitoring purposes."
 msgstr ""
@@ -112,25 +112,25 @@ msgid "\"Transaction\" means any purchase or sale of any financial Instrument in
 msgstr "「交易」指公司根據客戶協議隨時向客戶提供的任何金融工具的任何購買或銷售, 包括但不限於差價合約、滾動現貨外匯、大宗商品及任何其它證券或產品。"
 
 msgid "$100,000 - $250,000"
-msgstr "$100,000 - $250,000"
+msgstr ""
 
 msgid "$100,001 - $500,000"
-msgstr "$100,001 - $500,000"
+msgstr ""
 
 msgid "$100,001 and above"
 msgstr "100001元及以上"
 
 msgid "$25,000 - $50,000"
-msgstr "$25,000 - $50,000"
+msgstr ""
 
 msgid "$250,001 - $500,000"
-msgstr "$250,001 - $500,000"
+msgstr ""
 
 msgid "$50,001 - $100,000"
-msgstr "$50,001 - $100,000"
+msgstr ""
 
 msgid "$500,001 - $1,000,000"
-msgstr "$500,001 - $1,000,000"
+msgstr ""
 
 msgid "%1 %2 payout if %3 does not touch Barrier through close on %4."
 msgstr "%4閉市時如果%3未觸及障礙價格，可獲取%1 %2的賠付額。"
@@ -568,7 +568,7 @@ msgid "16th MENA Financial Forum & Expo"
 msgstr "十六屆MENA金融論壇&博覽會"
 
 msgid "2 * (6,000 – 5,200) = $1600"
-msgstr "2 * (6,000 – 5,200) = $1600"
+msgstr ""
 
 msgid "2-way pricing"
 msgstr "雙向報價"
@@ -1321,7 +1321,7 @@ msgid "Analyse the markets with an extensive range of indicators, price bands, a
 msgstr "採用範圍廣泛的指標、價格帶和多重覆蓋圖等分析市場走勢。"
 
 msgid "Android"
-msgstr "Android"
+msgstr ""
 
 msgid "Another major award. This time we're nominated by the online readers of Global Banking and Finance Review and judged by a panel of industry experts and analysts who recognise our 13 years of platform reliability, range of trades, pricing, customer service and extensive knowledge."
 msgstr "這是我們贏得的另一大獎項。該獎項由《Global Banking and Finance Review》雜誌的線上讀者提名，並由行業專家和分析師評審團評選得出。這是對我們13年來的平台可靠性、交易品種範圍、定價、客戶服務和專業程度的認可。"
@@ -1972,7 +1972,7 @@ msgid "Bid price"
 msgstr "標價"
 
 msgid "Binary (BVI) Ltd"
-msgstr "Binary (BVI) Ltd"
+msgstr ""
 
 msgid "Binary (BVI) Ltd,"
 msgstr ""
@@ -1981,10 +1981,10 @@ msgid "Binary (BVI) Ltd, Kingston Chambers, P.O. Box 173, Road Town, Tortola, Br
 msgstr "Binary (BVI) Ltd, Kingston Chambers, P.O. Box 173, Road Town, Tortola, British Virgin Islands. 由英屬維爾京群島金融服務委員會授權和管理- %1查看許可證%2。"
 
 msgid "Binary (C.R.) S.A."
-msgstr "Binary (C.R.) S.A."
+msgstr ""
 
 msgid "Binary (C.R.) S.A.,"
-msgstr "Binary (C.R.) S.A.,"
+msgstr ""
 
 msgid "Binary (C.R.) S.A., registered in Costa Rica. Clients from the rest of the world (excluding certain countries such as the USA, Canada, Costa Rica, Hong Kong) will have their account opened with Binary (C.R.) S.A."
 msgstr "Binary (C.R.) S.A.，在哥斯大黎加註冊。全球其他地區的客戶(不包括某些國家如美國、加拿大、哥斯大黎加、香港)可在 Binary (CR) SA 開設帳戶。"
@@ -1996,7 +1996,7 @@ msgid "Binary (Europe) Limited, W Business Centre, Level 3, Triq Dun Karm, Birki
 msgstr "Binary (Europe) Limited, W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta。公司經馬爾他博彩局授予執照並受其監管（僅博彩產品-%1的波動率指數），（執照號 %2） - %3檢視執照%4。·同時也擁有愛爾蘭執照。而英國客戶由英國博彩委員會授予執照和監管 - %5檢視執照%4。"
 
 msgid "Binary (Europe) Ltd & Binary Investments (Europe) Ltd, W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033"
-msgstr "Binary (Europe) Ltd & Binary Investments (Europe) Ltd, W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033"
+msgstr ""
 
 msgid "Binary (Europe) Ltd,"
 msgstr ""
@@ -2005,13 +2005,13 @@ msgid "Binary (Europe) Ltd, or"
 msgstr "Binary (Europe) Ltd, 或"
 
 msgid "Binary (FX) Ltd"
-msgstr "Binary (FX) Ltd"
+msgstr ""
 
 msgid "Binary (FX) Ltd,"
 msgstr ""
 
 msgid "Binary (FX) Ltd, Lot No. F16, First Floor, Paragon Labuan, Jalan Tun Mustapha, 87000 Federal Territory of Labuan"
-msgstr "Binary (FX) Ltd, Lot No. F16, First Floor, Paragon Labuan, Jalan Tun Mustapha, 87000 Federal Territory of Labuan"
+msgstr ""
 
 msgid "Binary (FX) Ltd, or"
 msgstr "Binary (FX) Ltd, 或"
@@ -2020,7 +2020,7 @@ msgid "Binary (FX) Ltd., Lot No. F16, First Floor, Paragon Labuan, Jalan Tun Mus
 msgstr "Binary (FX) Ltd., 地址: Lot No. F16, First Floor, Paragon Labuan, Jalan Tun Mustapha, 87000 Federal Territory of Labuan, Malaysia。由Labuan 金融服務管理局授予牌照執行資金經紀商業活動 %1(牌照編號MB/18/0024)%2和監管。"
 
 msgid "Binary (IOM) Limited"
-msgstr "Binary (IOM) Limited"
+msgstr ""
 
 msgid "Binary (IOM) Limited, First Floor, Millennium House, Victoria Road, Douglas, Isle of Man, IM2 4RW. Licensed and regulated by the Gambling Supervision Commission in the Isle of Man (current online gambling licence granted on the 31 August 2017) - %1view licence%2 and for UK clients by the UK Gambling Commission - %3view licence%2."
 msgstr "Binary (IOM) Limited, First Floor, Millennium House, Victoria Road, Douglas, Isle of Man, IM2 4RW。公司經曼島博彩監管委員會授予執照並受其監管（目前線上博彩執照的授予時間是2017 年8 月31 日）- %1檢視執照%2，而英國客戶由英國博彩委員會授予執照和監管 - %3檢視執照%2。"
@@ -2032,16 +2032,16 @@ msgid "Binary (IOM) Ltd."
 msgstr ""
 
 msgid "Binary (V) Ltd"
-msgstr "Binary (V) Ltd"
+msgstr ""
 
 msgid "Binary (V) Ltd,"
-msgstr "Binary (V) Ltd,"
+msgstr ""
 
 msgid "Binary (V) Ltd, Govant Building, Port Vila, PO Box 1276, Vanuatu, Republic of Vanuatu. Licensed and regulated by the Vanuatu Financial Services Commission - %1view licence%2."
 msgstr "Binary (V) Ltd, Govant Building, Port Vila, PO Box 1276, Vanuatu, Republic of Vanuatu。由瓦努阿圖金融服務委員會授權和管理- %1查看許可證%2。"
 
 msgid "Binary Bot"
-msgstr "Binary Bot"
+msgstr ""
 
 msgid "Binary Bot released"
 msgstr "Binary Bot 已發布"
@@ -2062,7 +2062,7 @@ msgid "Binary Investments (Europe) Limited is entitled to provide services in an
 msgstr "Binary Investments (Europe) Limited 有權通過歐盟金融護照權利在另一歐盟成員國提供服務。 請參閱以下地圖查看有權通過歐盟金融護照（自由提供跨國界服務）權利訪問%1的歐盟國家清單。"
 
 msgid "Binary Investments (Europe) Ltd"
-msgstr "Binary Investments (Europe) Ltd"
+msgstr ""
 
 msgid "Binary Investments (Europe) Ltd aggregates the Bid and Ask prices from a pool of liquidity providers to determine and offer the Client the best available price of the instrument. The Company is always the final counterparty to the Client's Transactions. The Company may execute Orders on behalf of its Clients, wherein the Company will act as a broker and pass on the Order to the liquidity provider for execution. Alternatively, the Company may also keep the Client's Order on its own account, wherein the Company will take the other side of the Client's trade. It is further noted that the Company may make a profit as a result of the Client's losses and vice-versa. Further details can be found under Conflicts of interest policy and Order execution policy."
 msgstr ""
@@ -2074,7 +2074,7 @@ msgid "Binary Investments (Europe) Ltd, or"
 msgstr ""
 
 msgid "Binary Investments (Europe) Ltd."
-msgstr "Binary Investments (Europe) Ltd."
+msgstr ""
 
 msgid "Binary Investments (Europe) Ltd. is required to collect your tax information."
 msgstr "Binary投資 (歐洲) 有限公司需要收集您的稅務資訊。"
@@ -2107,7 +2107,7 @@ msgid "Binary Tick Trade App"
 msgstr "Binary跳動交易應用程式"
 
 msgid "Binary WebTrader"
-msgstr "Binary WebTrader"
+msgstr ""
 
 msgid "Binary granted Investment Services license"
 msgstr "Binary 被授予投資服務執照"
@@ -3298,7 +3298,7 @@ msgid "Customer funds"
 msgstr ""
 
 msgid "Cyberjaya"
-msgstr "Cyberjaya"
+msgstr ""
 
 msgid "Cyberjaya Office"
 msgstr "Cyberjaya辦公室"
@@ -4420,7 +4420,7 @@ msgid "FAQ"
 msgstr "常見問題集"
 
 msgid "FIX API"
-msgstr "FIX API"
+msgstr ""
 
 msgid "FX"
 msgstr "外匯"
@@ -4504,7 +4504,7 @@ msgid "Festivals galore"
 msgstr "盛大節日"
 
 msgid "Fiat"
-msgstr "Fiat"
+msgstr ""
 
 msgid "Fiat Currency"
 msgstr "法定貨幣"
@@ -4858,7 +4858,7 @@ msgid "GBP/USD currency pair and its bid-ask price."
 msgstr "英鎊/美元貨幣對及其買賣價格。"
 
 msgid "GDPR"
-msgstr "GDPR"
+msgstr ""
 
 msgid "GMT"
 msgstr "格林威治標準時間"
@@ -6454,7 +6454,7 @@ msgid "Links"
 msgstr "連結"
 
 msgid "Linux"
-msgstr "Linux"
+msgstr ""
 
 msgid "Liquidity solutions"
 msgstr "流動性解決方案"
@@ -6580,7 +6580,7 @@ msgid "M. Force majeure events"
 msgstr ""
 
 msgid "MAM"
-msgstr "MAM"
+msgstr ""
 
 msgid "MAM Accounts"
 msgstr "MAM帳戶"
@@ -6655,7 +6655,7 @@ msgid "MT5 withdrawals have been disabled on your account. Please check your ema
 msgstr "您的MT5帳戶已被禁提款。請檢查您的電子郵件, 以瞭解更多詳情。"
 
 msgid "Mac"
-msgstr "Mac"
+msgstr ""
 
 msgid "Made an impression in the first interview? We'll invite you to a second interview with our CEO and/or hiring manager."
 msgstr "在第一次面試中留下了印象？我們將邀請您與首席執行官和/或招聘經理進行第二次面談。"
@@ -6946,10 +6946,10 @@ msgid "Memorable town/city"
 msgstr "難忘的城鎮/城市"
 
 msgid "MetaTrader"
-msgstr "MetaTrader"
+msgstr ""
 
 msgid "MetaTrader 5"
-msgstr "MetaTrader 5"
+msgstr ""
 
 msgid "MetaTrader 5 dashboard"
 msgstr "MetaTrader 5 儀表板"
@@ -7528,7 +7528,7 @@ msgid "Once you click the 'Submit' button, the funds will be withdrawn from your
 msgstr "一旦您點擊「送出」按鈕，資金將從您的帳戶取出並轉至您客戶的帳戶。"
 
 msgid "One Zero"
-msgstr "One Zero"
+msgstr ""
 
 msgid "One of the first things most Forex traders learn is how to read a currency pair. There are two parts to a currency pair"
 msgstr "大多數外匯交易者學習的第一件事就是如何閱讀貨幣對。貨幣對有兩部分"
@@ -8629,7 +8629,7 @@ msgid "Put a limit on your winnings. Once you have reached it put some aside and
 msgstr "對您的利潤設置限額。一旦達到限額就將部份金額存起來，用剩餘的資金繼續操作。"
 
 msgid "Putrajaya"
-msgstr "Putrajaya"
+msgstr ""
 
 msgid "Q. Introducing Brokers"
 msgstr ""
@@ -8662,10 +8662,10 @@ msgid "R. Interpretation of terms"
 msgstr ""
 
 msgid "RTS 27"
-msgstr "RTS 27"
+msgstr ""
 
 msgid "RTS 28"
-msgstr "RTS 28"
+msgstr ""
 
 msgid "Range of markets"
 msgstr "市場範圍"
@@ -9082,7 +9082,7 @@ msgid "Russia"
 msgstr "俄國"
 
 msgid "SQL,"
-msgstr "SQL,"
+msgstr ""
 
 msgid "Sa"
 msgstr "星期六"
@@ -9430,10 +9430,10 @@ msgid "Small island charm"
 msgstr "小島的魅力"
 
 msgid "SmartCharts"
-msgstr "SmartCharts"
+msgstr ""
 
 msgid "SmartTrader"
-msgstr "SmartTrader"
+msgstr ""
 
 msgid "Smoothing out random noise"
 msgstr "消除隨機噪音"
@@ -9697,7 +9697,7 @@ msgid "Strong understanding of colours, typography, identity design, and brandin
 msgstr "對顏色、排版、辨識設計和品牌非常熟悉"
 
 msgid "Student"
-msgstr "Student"
+msgstr ""
 
 msgid "Students"
 msgstr "學生"
@@ -9892,7 +9892,7 @@ msgid "Tel"
 msgstr "電話"
 
 msgid "Telegram Bot"
-msgstr "Telegram Bot"
+msgstr ""
 
 msgid "Telephone"
 msgstr "電話"
@@ -9949,7 +9949,7 @@ msgid "Test the %1 website, applications, backend, and back-office systems"
 msgstr "測試 %1 網站、應用程式、後端和後台系統"
 
 msgid "Tether"
-msgstr "Tether"
+msgstr ""
 
 msgid "Tether is a blockchain-based cryptocurrency whose cryptocoins in circulation are backed by an equivalent amount of traditional fiat currencies. For more information, please visit %1."
 msgstr "Tether是基於區塊鏈的加密貨幣, 其流通由同等數量的傳統法定貨幣提供支援。欲瞭解更多資訊, 請訪問 %1。"
@@ -12043,7 +12043,7 @@ msgid "Trade your way"
 msgstr "以您的方式執行交易"
 
 msgid "Trade2Win"
-msgstr "Trade2Win"
+msgstr ""
 
 msgid "Trademark"
 msgstr ""
@@ -12115,7 +12115,7 @@ msgid "Trading times is unavailable in this country. If you have an active %1 ac
 msgstr "此國家不提供交易時間。如果您有活躍的 %1 帳戶, 請%2登入%3以獲得完整的存取權限。"
 
 msgid "TradingView"
-msgstr "TradingView"
+msgstr ""
 
 msgid "TradingView for %1"
 msgstr "%1專用的TradingView"
@@ -12379,7 +12379,7 @@ msgid "Understood"
 msgstr "理解"
 
 msgid "Unemployed"
-msgstr "Unemployed"
+msgstr ""
 
 msgid "Unified ecosystem"
 msgstr "統一生態系統"
@@ -12691,7 +12691,7 @@ msgid "Volume step"
 msgstr "量額步驟"
 
 msgid "Vs 407 zrnaf nalguvat fcrpvny gb lbh lbh znl pbcl lbhe nccyvpngvba gb wl+ebg13@ovanel.pbz sbe snfg-genpx pbafvqrengvba."
-msgstr "Vs 407 zrnaf nalguvat fcrpvny gb lbh lbh znl pbcl lbhe nccyvpngvba gb wl+ebg13@ovanel.pbz sbe snfg-genpx pbafvqrengvba."
+msgstr ""
 
 msgid "Waiting for contract settlement."
 msgstr "等待合約結算。"
@@ -12847,7 +12847,7 @@ msgid "WebMoney is an online payment settlement system that's been operating sin
 msgstr "WebMoney 是線上支付結算系統, 1998年開始運作至今。欲知詳情, 請存取 %1。"
 
 msgid "WebTrader"
-msgstr "WebTrader"
+msgstr ""
 
 msgid "Webinar speaker"
 msgstr "網路研討會演講嘉賓"
@@ -13210,7 +13210,7 @@ msgid "Win up to maximum payout if exit spot is between lower and upper barrier,
 msgstr "如果退市現價介於低、高障礙之間, 其比例與高障礙及退市現價之間的差異相等, 可獲得最大賠付。"
 
 msgid "Windows"
-msgstr "Windows"
+msgstr ""
 
 msgid "Winning the contract"
 msgstr "合約盈利"
@@ -13873,7 +13873,7 @@ msgid "hours"
 msgstr "小時"
 
 msgid "iOS"
-msgstr "iOS"
+msgstr ""
 
 msgid "iWallet is an online payment service provider that allows deposits, withdrawals, and transaction payments. For more information, please visit %1."
 msgstr "imwallet 是允許存款、取款和交易付款的線上支付服務提供者 。欲瞭解詳細資訊, 請前往 %1。"
@@ -14035,11 +14035,11 @@ msgid "years"
 msgstr "年"
 
 msgid "{SPAIN ONLY}However, Binary Investments (Europe) Ltd has assessed your knowledge and experience and deems the product appropriate for you."
-msgstr "{SPAIN ONLY}However, Binary Investments (Europe) Ltd has assessed your knowledge and experience and deems the product appropriate for you."
+msgstr ""
 
 msgid "{SPAIN ONLY}This is a product with leverage. You should be aware that losses may be higher than the amount initially paid to purchase the product."
-msgstr "{SPAIN ONLY}This is a product with leverage. You should be aware that losses may be higher than the amount initially paid to purchase the product."
+msgstr ""
 
 msgid "{SPAIN ONLY}You are about to purchase a product that is not simple and may be difficult to understand: Contracts for Difference and Forex. As a general rule, the CNMV considers that such products are not appropriate for retail clients, due to their complexity."
-msgstr "{SPAIN ONLY}You are about to purchase a product that is not simple and may be difficult to understand: Contracts for Difference and Forex. As a general rule, the CNMV considers that such products are not appropriate for retail clients, due to their complexity."
+msgstr ""
 

@@ -56,7 +56,7 @@ Virtual.propTypes = {
 };
 
 export default connect(
-    ({ client }) => ({
+    ({ client, ui }) => ({
         has_real_account     : client.has_any_real_account,
         openRealAccountSignup: ui.openRealAccountSignup,
     })

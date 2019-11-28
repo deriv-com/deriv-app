@@ -19,7 +19,7 @@ export const contractSold = (currency, sold_for) => ({
 });
 
 export const contractCancelled = () => ({
-    key    : 'contract_cancelled',
+    key    : 'contract_sold',
     header : localize('Contract cancelled'),
     message: (
         <Localize

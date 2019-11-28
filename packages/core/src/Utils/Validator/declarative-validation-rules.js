@@ -3,7 +3,7 @@ import ObjectUtils               from 'deriv-shared/utils/object';
 import Client                    from '_common/base/client_base';
 import { getElementById }        from '_common/common_functions';
 import { compareBigUnsignedInt } from '_common/string_util';
-import { localize }              from 'App/i18n';
+import { localize }              from 'deriv-translations';
 
 // ------------------------------
 // ----- Validation Methods -----

@@ -1,5 +1,5 @@
 import React              from 'react';
-import { localize }       from 'App/i18n';
+import { localize }       from 'deriv-translations';
 import IconClearPhoto     from 'Assets/AccountManagement/ProofOfAddress/icon-clear-photo.svg';
 import IconIssuedUnder    from 'Assets/AccountManagement/ProofOfAddress/icon-issued-under.svg';
 import IconLessThanEight  from 'Assets/AccountManagement/ProofOfAddress/icon-less-than-8.svg';

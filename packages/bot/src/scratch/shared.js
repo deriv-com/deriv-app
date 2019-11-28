@@ -1,5 +1,5 @@
 import filesaver     from 'file-saver';
-import { localize }  from 'deriv-translations/lib/i18n';
+import { localize }  from 'deriv-translations';
 import config        from '../constants';
 
 export const saveAs = ({ data, filename, type }) => {

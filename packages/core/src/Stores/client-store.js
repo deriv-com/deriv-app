@@ -14,7 +14,7 @@ import {
 import ClientBase                    from '_common/base/client_base';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
-import { localize }                  from 'App/i18n';
+import { localize }                  from 'deriv-translations';
 import {
     LocalStore,
     State }                          from '_common/storage';

@@ -9,7 +9,7 @@ import {
 }                                     from 'mobx';
 import CurrencyUtils                  from 'deriv-shared/utils/currency';
 import ObjectUtils                    from 'deriv-shared/utils/object';
-import { localize }                   from 'App/i18n';
+import { localize }                   from 'deriv-translations';
 import { WS }                         from 'Services/ws-methods';
 import {
     isDigitContractType,

@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations/lib/i18n';
+import { localize } from 'deriv-translations';
 
 Blockly.Blocks.rsia_statement = {
     protected_statements : ['STATEMENT'],

@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations/lib/i18n';
+import { localize } from 'deriv-translations';
 
 // TODO: fix this for translating category names supplied to Blockly.
 export const translateLangToLang = (str /* fromLang, toLang */) => {

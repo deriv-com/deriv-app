@@ -1,7 +1,7 @@
 import classNames           from 'classnames';
 import React                from 'react';
 import PropTypes            from 'prop-types';
-import { localize }         from 'deriv-translations/lib/i18n';
+import { localize }         from 'deriv-translations';
 import FlyoutBlockGroup     from './flyout-block-group.jsx';
 import HelpBase             from '../scratch/help-content/flyout-help-base.jsx';
 import { config }           from '../scratch/help-content/help-content.config';

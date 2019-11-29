@@ -1,4 +1,4 @@
-import { localize }   from 'deriv-translations/lib/i18n';
+import { localize }   from 'deriv-translations';
 import { notify }     from './broadcast';
 import config         from '../../../constants';
 import { getUTCTime } from '../../../utils/tools';

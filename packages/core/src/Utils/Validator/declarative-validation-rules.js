@@ -3,7 +3,7 @@ import ObjectUtils               from 'deriv-shared/utils/object';
 import Client                    from '_common/base/client_base';
 import { getElementById }        from '_common/common_functions';
 import { compareBigUnsignedInt } from '_common/string_util';
-import { localize }              from 'App/i18n';
+import { localize }              from 'deriv-translations';
 
 // ------------------------------
 // ----- Validation Methods -----
@@ -22,8 +22,7 @@ export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+
 const validGeneral             = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 export const validAddress      = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
 export const validPostCode     = value => /^[a-zA-Z\d-\s]*$/.test(value);
-export const validPhone        = value =>  /^\+(?:[0-9] ?){6,14}[0-9]$/.test(value);
-export const validCountryCode  = (list, value) => list.some(item => value.startsWith(`+${item.phone_idd}`));
+export const validPhone        = value => /^\+?((-|\s)*[0-9])*$/.test(value);
 const validRegular             = (value, options) => options.regex.test(value);
 const validEmailToken          = value => value.trim().length === 8;
 export const validTaxID        = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);

@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations/lib/i18n';
+import { localize } from 'deriv-translations';
 
 Blockly.Blocks.std_dev_multiplier_down = {
     init() {

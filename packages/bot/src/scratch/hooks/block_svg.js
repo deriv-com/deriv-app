@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations/lib/i18n';
+import { localize } from 'deriv-translations';
 import ScratchStore from '../../stores/scratch-store';
 
 /* eslint-disable func-names, no-underscore-dangle */

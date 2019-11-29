@@ -1,15 +1,14 @@
-import PropTypes        from 'prop-types';
-import fromEntries      from 'object.fromentries';
-import React            from 'react';
-import Localize         from 'App/Components/Elements/localize.jsx';
-import { localize }     from 'App/i18n';
-import { connect }      from 'Stores/connect';
-import { toMoment }     from 'Utils/Date';
-import AddressDetails   from './address-details.jsx';
-import CurrencySelector from './currency-selector.jsx';
-import FormProgress     from './form-progress.jsx';
-import PersonalDetails  from './personal-details.jsx';
-import TermsOfUse       from './terms-of-use.jsx';
+import PropTypes              from 'prop-types';
+import fromEntries            from 'object.fromentries';
+import React                  from 'react';
+import { localize, Localize } from 'deriv-translations';
+import { connect }            from 'Stores/connect';
+import { toMoment }           from 'Utils/Date';
+import AddressDetails         from './address-details.jsx';
+import CurrencySelector       from './currency-selector.jsx';
+import FormProgress           from './form-progress.jsx';
+import PersonalDetails        from './personal-details.jsx';
+import TermsOfUse             from './terms-of-use.jsx';
 
 class AccountWizard extends React.Component {
     constructor(props) {
@@ -41,7 +40,6 @@ class AccountWizard extends React.Component {
                         date_of_birth: '',
                         phone        : '',
                     },
-                    passthrough: ['residence_list'],
                 },
                 {
                     header: {
@@ -72,35 +70,6 @@ class AccountWizard extends React.Component {
         };
     }
 
-    componentDidMount() {
-        this.fetchFromStorage();
-        const items = this.state.items.slice(0);
-        this.getCountryCode().then(phone_idd => {
-            items[1].form_value.phone = phone_idd || '';
-            this.setState(items);
-        });
-    }
-
-    fetchFromStorage = () => {
-        const stored_items = localStorage.getItem('real_account_signup_wizard');
-        try {
-            const items  = JSON.parse(stored_items);
-            const cloned = this.state.items.slice(0);
-            items.forEach((item, index) => {
-                if (typeof item === 'object') {
-                    cloned[index].form_value = item;
-                }
-            });
-            this.setState({
-                items: cloned,
-                step : 1, // Send the user back to personal details.
-            });
-            localStorage.removeItem('real_account_signup_wizard');
-        } catch (e) {
-            localStorage.removeItem('real_account_signup_wizard');
-        }
-    }
-
     get form_values() {
         return this.state.items.map(item => item.form_value)
             .reduce((obj, item) => {
@@ -119,13 +88,6 @@ class AccountWizard extends React.Component {
     get state_index() {
         return this.state.step;
     }
-
-    getCountryCode = async () => {
-        await this.props.fetchResidenceList();
-        const response = this.props.residence_list.find((item => item.value === this.props.residence));
-        if (!response || !response.phone_idd) return '';
-        return `+${response.phone_idd}`;
-    };
 
     clearError = () => {
         this.setState({
@@ -159,9 +121,7 @@ class AccountWizard extends React.Component {
         });
     };
 
-    submitForm = () => {
-        return this.props.realAccountSignup(this.form_values);
-    };
+    submitForm = () => this.props.realAccountSignup(this.form_values);
 
     setAccountCurrency = () => this.props.setAccountCurrency(this.form_values.currency);
 
@@ -179,18 +139,6 @@ class AccountWizard extends React.Component {
         });
     };
 
-    getPropsForChild = () => {
-        const passthrough = this.getCurrent('passthrough');
-        if (passthrough && passthrough.length) {
-            const props = {};
-            passthrough.forEach(item => {
-                Object.assign(props, { [item]: this.props[item] });
-            });
-            return props;
-        }
-        return {};
-    };
-
     createRealAccount(setSubmitting) {
         if (this.props.has_real_account
             && !this.props.has_currency
@@ -199,7 +147,7 @@ class AccountWizard extends React.Component {
                 .then((response) => {
                     setSubmitting(false);
                     this.props.onSuccessAddCurrency(
-                        response.echo_req.set_account_currency.toLowerCase(),
+                        response.echo_req.set_account_currency.toLowerCase()
                     );
                 })
                 .catch(error_message => {
@@ -212,11 +160,11 @@ class AccountWizard extends React.Component {
                 .then((response) => {
                     setSubmitting(false);
                     this.props.onSuccessAddCurrency(
-                        response.new_account_real.currency.toLowerCase(),
+                        response.new_account_real.currency.toLowerCase()
                     );
                 })
-                .catch(error => {
-                    this.props.onError(error, this.state.items);
+                .catch(error_message => {
+                    this.props.onError(error_message);
                 });
         }
     }
@@ -237,7 +185,6 @@ class AccountWizard extends React.Component {
     render() {
         if (!this.state.finished) {
             const BodyComponent = this.getCurrent('body');
-            const passthrough   = this.getPropsForChild();
             return (
                 <div className='account-wizard'>
                     {!this.props.has_real_account &&
@@ -273,7 +220,6 @@ class AccountWizard extends React.Component {
                             onSave={this.saveFormData}
                             has_currency={this.props.has_currency}
                             form_error={this.state.form_error}
-                            {...passthrough}
                         />
                     </div>
                 </div>
@@ -288,16 +234,9 @@ class AccountWizard extends React.Component {
 }
 
 AccountWizard.propTypes = {
-    fetchResidenceList  : PropTypes.func,
-    has_currency        : PropTypes.bool,
-    has_real_account    : PropTypes.bool,
     onError             : PropTypes.func,
     onLoading           : PropTypes.func,
     onSuccessAddCurrency: PropTypes.func,
-    realAccountSignup   : PropTypes.func,
-    residence           : PropTypes.string,
-    residence_list      : PropTypes.array,
-    setAccountCurrency  : PropTypes.func,
 };
 
 export default connect(({ client }) => ({
@@ -305,7 +244,4 @@ export default connect(({ client }) => ({
     has_real_account  : client.has_active_real_account,
     has_currency      : !!client.currency,
     setAccountCurrency: client.setAccountCurrency,
-    residence         : client.residence,
-    residence_list    : client.residence_list,
-    fetchResidenceList: client.fetchResidenceList,
 }))(AccountWizard);

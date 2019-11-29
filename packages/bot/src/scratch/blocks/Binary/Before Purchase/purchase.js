@@ -37,8 +37,6 @@ Blockly.Blocks.purchase = {
             return;
         }
 
-        this.enforceLimitations();
-
         if (event.type === Blockly.Events.BLOCK_CHANGE) {
             if (event.name === 'TYPE_LIST' || event.name === 'TRADETYPE_LIST') {
                 this.populatePurchaseList(event);
@@ -74,19 +72,7 @@ Blockly.Blocks.purchase = {
             event_group  : event.group,
         });
     },
-    enforceLimitations() {
-        const top_parent = this.getTopParent();
-
-        if (top_parent) {
-            if (this.isDescendantOf('before_purchase')) {
-                if (this.disabled) {
-                    this.setDisabled(false);
-                }
-            } else if (!this.disabled) {
-                this.setDisabled(true);
-            }
-        }
-    },
+    restricted_parents: ['before_purchase'],
 };
 
 Blockly.JavaScript.purchase = block => {

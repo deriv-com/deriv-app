@@ -319,6 +319,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         
         return container;
     },
+    restricted_parents: ['trade_definition'],
 };
 
 Blockly.Blocks.trade_definition_tradeoptions_payout = Blockly.Blocks.trade_definition_tradeoptions;

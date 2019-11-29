@@ -24,21 +24,7 @@ Blockly.Blocks.trade_again = {
             'description' : localize('This block will transfer the control back to the Purchase conditions block, enabling you to purchase another contract.'),
         };
     },
-    onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
-            return;
-        }
-
-        if (event.type === Blockly.Events.BLOCK_CREATE || event.type === Blockly.Events.END_DRAG) {
-            if (this.isDescendantOf('after_purchase')) {
-                if (this.disabled) {
-                    this.setDisabled(false);
-                }
-            } else if (!this.disabled) {
-                this.setDisabled(true);
-            }
-        }
-    },
+    restricted_parents: ['after_purchase'],
 };
 
 Blockly.JavaScript.trade_again = () => {

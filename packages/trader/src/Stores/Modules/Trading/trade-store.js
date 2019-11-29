@@ -380,6 +380,7 @@ export default class TradeStore extends BaseStore {
             );
             purchaseSpotBarrier.key = key;
             purchaseSpotBarrier.draggable = false;
+            purchaseSpotBarrier.hideOffscreenBarrier = true;
             purchaseSpotBarrier.isSingleBarrier = true;
             purchaseSpotBarrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
             this.barriers.push(purchaseSpotBarrier);

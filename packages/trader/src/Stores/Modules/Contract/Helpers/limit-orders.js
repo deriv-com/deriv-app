@@ -33,7 +33,10 @@ export const setLimitOrderBarriers = ({
     is_over,
 }) => {
     if (is_over && isLimitOrderBarrierSupported(contract_type, contract_info)) {
-        Object.keys(contract_info.limit_order).forEach((key)=>{
+        const limit_orders = Object.keys(contract_info.limit_order);
+        const has_stop_loss = limit_orders.some((l) => l === LIMIT_ORDER_TYPES.STOP_LOSS);
+
+        limit_orders.forEach((key)=>{
             const obj_limit_order = contract_info.limit_order[key];
 
             let barrier  = barriers.find((b)=>b.key === key);
@@ -55,10 +58,11 @@ export const setLimitOrderBarriers = ({
                         BARRIER_LINE_STYLES.DOTTED
                         :
                         BARRIER_LINE_STYLES.SOLID,
-                    hideBarrierLine  : hide_stop_out_barrier && key === LIMIT_ORDER_TYPES.STOP_OUT,
-                    hideOffscreenLine: true,
-                    arrowDirection   : getArrowDirection(contract_type, key),
-                    isSingleBarrier  : true,
+                    hideBarrierLine     : hide_stop_out_barrier && key === LIMIT_ORDER_TYPES.STOP_OUT,
+                    hideOffscreenBarrier: has_stop_loss && key === LIMIT_ORDER_TYPES.STOP_OUT,
+                    hideOffscreenLine   : true,
+                    arrowDirection      : getArrowDirection(contract_type, key),
+                    isSingleBarrier     : true,
                 };
                 barrier = new ChartBarrierStore(
                     obj_limit_order.value

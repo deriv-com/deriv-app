@@ -447,9 +447,10 @@ const NonTickContract = RawMarkerMaker(({
     // start-time marker
     const start_time_marker_top = prices[config.start_time_marker_top_index || 0];
     if (start.visible && start_time_marker_top) {
+        const left = config.start_time_marker_top_index === 1 ? entry.left : start.left;
         draw_path(ctx, {
             top : start_time_marker_top - 9 * scale,
-            left: start.left - 1 * scale,
+            left: left - 1 * scale,
             zoom: start.zoom,
             icon: ICONS.START.with_color(color + opacity),
         });

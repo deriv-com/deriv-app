@@ -1,5 +1,6 @@
 import                                    './blocks';
 import                                    './hooks';
+import { checkDisabledBlocks } from './utils';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import ScratchStore                   from '../stores/scratch-store';
 import { observer as globalObserver } from '../utils/observer';
@@ -20,6 +21,8 @@ export const scratchWorkspaceInit = async () => {
             trashcan: true,
             zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
         });
+
+        workspace.addChangeListener((event) => checkDisabledBlocks(workspace, event));
 
         Blockly.JavaScript.init(workspace);
         Blockly.JavaScript.variableDB_.setVariableMap(workspace.getVariableMap()); // eslint-disable-line

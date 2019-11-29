@@ -1,6 +1,5 @@
-const getLanguage      = require('../language').get;
-const localize         = require('../../App/i18n').localize;
-const getPropertyValue = require('../utility').getPropertyValue;
+const { getLanguage, localize } = require('deriv-translations');
+const getPropertyValue          = require('../utility').getPropertyValue;
 
 let currencies_config = {};
 

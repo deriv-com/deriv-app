@@ -1,20 +1,19 @@
-import React                 from 'react';
-import PropTypes             from 'prop-types';
-import classNames            from 'classnames';
+import React                  from 'react';
+import PropTypes              from 'prop-types';
+import classNames             from 'classnames';
 import {
     Formik,
-    Form }                   from 'formik';
+    Form }                    from 'formik';
 import {
     Button,
     Dialog,
     PasswordInput,
-    PasswordMeter }          from 'deriv-components';
-import Localize              from 'App/Components/Elements/localize.jsx';
-import { localize }          from 'App/i18n';
-import { connect }           from 'Stores/connect';
-import { validPassword }     from 'Utils/Validator/declarative-validation-rules';
-import { redirectToLogin }   from '_common/base/login';
-import { WS }                from 'Services/index';
+    PasswordMeter }           from 'deriv-components';
+import { localize, Localize } from 'deriv-translations';
+import { connect }            from 'Stores/connect';
+import { validPassword }      from 'Utils/Validator/declarative-validation-rules';
+import { redirectToLogin }    from '_common/base/login';
+import { WS }                 from 'Services/index';
 
 const resetInitialValues = { password: '' };
 

@@ -2,7 +2,11 @@ import PropTypes                    from 'prop-types';
 import React                        from 'react';
 import ReactDOM                     from 'react-dom';
 import { Prompt }                   from 'react-router';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router }  from 'react-router-dom';
+// Initialize i18n by importing it here
+// eslint-disable-next-line no-unused-vars
+import { i18n,
+    loadIncontextTranslation }      from 'deriv-translations';
 import Client                       from '_common/base/client_base';
 import WS                           from 'Services/ws-methods';
 import { MobxProvider }             from 'Stores/connect';
@@ -15,7 +19,6 @@ import AppModals                    from './Containers/Modals';
 import Lazy                         from './Containers/Lazy';
 import Routes                       from './Containers/Routes/routes.jsx';
 import { interceptAcrossBot }       from './Constants/routes-config';
-import './i18n';
 // eslint-disable-next-line import/extensions
 import initStore                   from './app.js';
 // eslint-disable-next-line import/no-unresolved
@@ -24,9 +27,16 @@ import 'Sass/app.scss';
 const isTouchDevice = 'ontouchstart' in document.documentElement;
 
 const App = ({ root_store }) => {
-    const base = window.location.pathname.split('/')[1];
-    const has_base = /^\/(br_)/.test(window.location.pathname);
-    const url_params = new URLSearchParams(window.location.search);
+    const l = window.location;
+    const base = l.pathname.split('/')[1];
+    const has_base = /^\/(br_)/.test(l.pathname);
+    const url_params = new URLSearchParams(l.search);
+
+    const is_staging = /staging\.deriv\.app/i.test(l.hostname);
+    if (is_staging) {
+        loadIncontextTranslation();
+    }
+
     const platform_passthrough = {
         root_store,
         WS,

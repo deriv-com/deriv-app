@@ -135,8 +135,6 @@ export default class ContractStore {
     onClickContractUpdate() {
         const limit_order = getLimitOrder(this.contract_update);
 
-        if (!limit_order) return;
-
         WS.contractUpdate(this.contract_id, limit_order).then(response => {
             if (response.error) {
                 this.root_store.common.setServicesError({

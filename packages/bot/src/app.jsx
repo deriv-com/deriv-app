@@ -8,8 +8,8 @@ import RunPanel                 from './components/run-panel.jsx';
 import Workspace                from './components/workspace.jsx';
 import QuickStrategy            from './components/quick-strategy.jsx';
 import { scratchWorkspaceInit } from './scratch';
+import ScratchStore             from './stores/scratch-store';
 import firestore                from './utils/firestore';
-
 import './assets/sass/app.scss';
 
 class App extends React.Component {
@@ -43,7 +43,9 @@ class App extends React.Component {
         if (Blockly.derivWorkspace) {
             Blockly.derivWorkspace.dispose();
         }
+
         ApiHelpers.instance.disposeOnAccountSwitch();
+        ScratchStore.instance.disposeReactions();
     }
 }
 export default App;

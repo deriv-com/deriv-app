@@ -1,4 +1,4 @@
-import { localize }                   from 'deriv-translations/lib/i18n';
+import { localize }                   from 'deriv-translations';
 import                                    './blocks';
 import                                    './hooks';
 import { hasAllRequiredBlocks }       from './utils';

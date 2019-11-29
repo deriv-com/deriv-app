@@ -300,7 +300,6 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
     workspace.scrollbar.set(scroll_x, scroll_y);
 };
 
-
 export const checkDisabledBlocks = (workspace, event) => {
     if (event.type !== Blockly.Events.END_DRAG) {
         return;
@@ -321,4 +320,4 @@ export const checkDisabledBlocks = (workspace, event) => {
             block.setDisabled(should_disable);
         }
     });
-}
+};

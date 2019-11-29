@@ -1,6 +1,7 @@
 import { localize } from 'deriv-translations';
 import config       from '../../../../constants';
 import ApiHelpers   from '../../../../services/api/api-helpers';
+import ScratchStore from '../../../../stores/scratch-store';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
     init() {
@@ -65,6 +66,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
         const market_block     = trade_definition_block.getChildByType('trade_definition_market');
         const trade_type_block = trade_definition_block.getChildByType('trade_definition_tradetype');
+
         if (!market_block || !trade_type_block) {
             return;
         }
@@ -87,10 +89,13 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.updateDurationInput(false, false);
                 this.updatePredictionInput(false);
             } else {
+                const { client } = ScratchStore.instance.root_store.core;
+
                 this.updateBarrierInputs(true, true);
                 this.enforceSingleBarrierType('BARRIEROFFSETTYPE_LIST', true);
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
+                this.setCurrency(client.currency);
             }
         } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
             if (is_load_event) {
@@ -295,6 +300,14 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             } else if (new_value === 'absolute' && other_barrier_type !== 'absolute') {
                 other_barrier_field.setValue('absolute');
             }
+        }
+    },
+    setCurrency(currency) {
+        const currency_field   = this.getField('CURRENCY_LIST');
+        const dropdown_options = currency_field.menuGenerator_.map(o => o[1]);
+
+        if (dropdown_options.includes(currency)) {
+            currency_field.setValue(currency);
         }
     },
     domToMutation(xmlElement) {

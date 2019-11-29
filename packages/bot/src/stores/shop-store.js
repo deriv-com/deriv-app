@@ -4,7 +4,7 @@ import {
     runInAction,
     computed }      from 'mobx';
 import ShopifyBuy   from 'shopify-buy';
-import { localize } from 'deriv-translations/lib/i18n';
+import { localize } from 'deriv-translations';
 
 export default class ShopStore {
     shopify                    = null;

@@ -1,7 +1,7 @@
 import PropTypes        from 'prop-types';
 import React            from 'react';
 import { Modal }        from 'deriv-components';
-import { localize }     from 'deriv-translations/lib/i18n';
+import { localize }     from 'deriv-translations';
 import Shop             from './shop.jsx';
 import { connect }      from '../stores/connect';
 

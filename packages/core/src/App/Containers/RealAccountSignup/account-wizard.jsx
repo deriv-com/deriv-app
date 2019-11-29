@@ -1,15 +1,14 @@
-import PropTypes        from 'prop-types';
-import fromEntries      from 'object.fromentries';
-import React            from 'react';
-import Localize         from 'App/Components/Elements/localize.jsx';
-import { localize }     from 'App/i18n';
-import { connect }      from 'Stores/connect';
-import { toMoment }     from 'Utils/Date';
-import AddressDetails   from './address-details.jsx';
-import CurrencySelector from './currency-selector.jsx';
-import FormProgress     from './form-progress.jsx';
-import PersonalDetails  from './personal-details.jsx';
-import TermsOfUse       from './terms-of-use.jsx';
+import PropTypes              from 'prop-types';
+import fromEntries            from 'object.fromentries';
+import React                  from 'react';
+import { localize, Localize } from 'deriv-translations';
+import { connect }            from 'Stores/connect';
+import { toMoment }           from 'Utils/Date';
+import AddressDetails         from './address-details.jsx';
+import CurrencySelector       from './currency-selector.jsx';
+import FormProgress           from './form-progress.jsx';
+import PersonalDetails        from './personal-details.jsx';
+import TermsOfUse             from './terms-of-use.jsx';
 
 class AccountWizard extends React.Component {
     constructor(props) {

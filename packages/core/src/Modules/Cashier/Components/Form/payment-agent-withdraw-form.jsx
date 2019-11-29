@@ -1,19 +1,18 @@
-import classNames           from 'classnames';
-import PropTypes            from 'prop-types';
-import React                from 'react';
+import classNames             from 'classnames';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
 import {
     Button,
     Dropdown,
     Input,
-    Money }                 from 'deriv-components';
+    Money }                   from 'deriv-components';
 import {
     Field,
     Formik,
-    Form }                  from 'formik';
-import CurrencyUtils        from 'deriv-shared/utils/currency';
-import Localize             from 'App/Components/Elements/localize.jsx';
-import { localize }         from 'App/i18n';
-import { connect }          from 'Stores/connect';
+    Form }                    from 'formik';
+import CurrencyUtils          from 'deriv-shared/utils/currency';
+import { localize, Localize } from 'deriv-translations';
+import { connect }            from 'Stores/connect';
 import {
     validNumber,
     getPreBuildDVRs }       from 'Utils/Validator/declarative-validation-rules';

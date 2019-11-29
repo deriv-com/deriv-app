@@ -1,4 +1,4 @@
-import { localize }                      from 'deriv-translations/lib/i18n';
+import { localize }                      from 'deriv-translations';
 import { purchaseSuccessful }            from './state/actions';
 import { BEFORE_PURCHASE }               from './state/constants';
 import { contractStatus, info, notify }  from '../utils/broadcast';

@@ -1,7 +1,7 @@
 import classNames               from 'classnames';
 import React                    from 'react';
 import PropTypes                from 'prop-types';
-import { localize }             from 'deriv-translations/lib/i18n';
+import { localize }             from 'deriv-translations';
 import ContractResultOverlay    from './contract-result-overlay.jsx';
 import { connect }              from '../stores/connect';
 import '../assets/sass/trade-animation.scss';

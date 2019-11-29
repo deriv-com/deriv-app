@@ -5,7 +5,7 @@ import {
 import CurrencyUtils       from 'deriv-shared/utils/currency';
 import ObjectUtils         from 'deriv-shared/utils/object';
 import BinarySocket        from '_common/base/socket_base';
-import { localize }        from 'App/i18n';
+import { localize }        from 'deriv-translations';
 import { WS }              from 'Services';
 import BaseStore           from '../../base-store';
 import {

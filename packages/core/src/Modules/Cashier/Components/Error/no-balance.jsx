@@ -1,12 +1,11 @@
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { withRouter } from 'react-router-dom';
-import { Button }     from 'deriv-components';
-import Icon           from 'Assets/icon.jsx';
-import Localize       from 'App/Components/Elements/localize.jsx';
-import { localize }   from 'App/i18n';
-import { connect }    from 'Stores/connect';
-import routes         from 'Constants/routes';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import { withRouter }         from 'react-router-dom';
+import { Button }             from 'deriv-components';
+import { localize, Localize } from 'deriv-translations';
+import Icon                   from 'Assets/icon.jsx';
+import routes                 from 'Constants/routes';
+import { connect }            from 'Stores/connect';
 
 class NoBalance extends React.Component {
     onClickDeposit = () => {

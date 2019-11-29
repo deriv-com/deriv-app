@@ -1,7 +1,7 @@
 import PropTypes      from 'prop-types';
 import React          from 'react';
 import { Button }     from 'deriv-components';
-import { localize }   from 'App/i18n';
+import { localize }   from 'deriv-translations';
 import Icon           from 'Assets/icon.jsx';
 
 class SendEmailTemplate extends React.Component {

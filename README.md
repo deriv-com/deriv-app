@@ -1,6 +1,6 @@
 Deriv App
 ============
-This repository contains the various platforms of Deriv.
+This repository contains the various platforms of the Deriv application.
 
 - [Installation](#installation)
 - [Working With This Repo](#working-with-this-repo)
@@ -13,11 +13,11 @@ This repository contains the various platforms of Deriv.
 [comment]: <> (TODO: Refactor Clean Project to be under usage)
 
 ## Installation
-In order to work on your own version of the Deriv Javascript and CSS, please **fork this project**.
+In order to work on your own version of the Deriv application, please **fork this project**.
 
 You will need to perform the following on your development machine:
 
-1. Node.js (10.14.2 or higher is recommended) and NPM (see <https://nodejs.org/en/download/package-manager/>)
+1. Node.js (v11.15.0 is recommended, v12 has compat issues currently) and NPM (see <https://nodejs.org/en/download/package-manager/>)
 2. Run `npm run bootstrap` from the root folder
 
 [comment]: <> (3. If you wish to install and work with only a single, or multiple but specific packages, then follow `3i` for each package. However, if you wish to install and work with all packages, follow `3ii`.)

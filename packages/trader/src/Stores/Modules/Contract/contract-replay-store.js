@@ -246,12 +246,14 @@ export default class ContractReplayStore extends BaseStore {
         } = contract_update;
 
         const {
-            stop_loss  : contract_stop_loss,
-            take_profit: contract_take_profit,
+            stop_loss  : contract_info_stop_loss,
+            take_profit: contract_info_take_profit,
         } = getLimitOrderAmount(contract_info);
 
-        const is_take_profit_valid = (has_take_profit ? take_profit > 0 : contract_take_profit !== undefined);
-        const is_stop_loss_valid   = (has_stop_loss ? stop_loss > 0 : contract_stop_loss !== undefined);
+        const isValid = (val) => !(val === undefined || val === null);
+
+        const is_take_profit_valid = (has_take_profit ? take_profit > 0 : isValid(contract_info_take_profit));
+        const is_stop_loss_valid   = (has_stop_loss ? stop_loss > 0 : isValid(contract_info_stop_loss));
 
         return !!(is_take_profit_valid || is_stop_loss_valid);
     }

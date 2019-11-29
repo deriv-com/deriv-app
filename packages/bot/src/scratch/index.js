@@ -1,6 +1,6 @@
 import                                    './blocks';
 import                                    './hooks';
-import { checkDisabledBlocks } from './utils';
+import { checkDisabledBlocks }        from './utils';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import ScratchStore                   from '../stores/scratch-store';
 import { observer as globalObserver } from '../utils/observer';

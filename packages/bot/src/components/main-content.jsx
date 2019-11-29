@@ -1,7 +1,6 @@
 import React                from 'react';
 import Flyout               from './flyout.jsx';
 import Chart                from './chart/chart.jsx';
-import NotificationMessages from './notification-messages.jsx';
 import { tabs_title }       from '../constants/bot-contents';
 import { connect }          from '../stores/connect';
 import '../assets/sass/main-content.scss';
@@ -22,7 +21,6 @@ class MainContent extends React.Component {
                             height: 'var(--bot-content-height)',
                         }}
                     >
-                        <NotificationMessages />
                         <Flyout />
                     </div>
                 );

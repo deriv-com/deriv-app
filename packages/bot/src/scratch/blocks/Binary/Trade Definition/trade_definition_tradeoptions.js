@@ -304,7 +304,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     },
     setCurrency(currency) {
         const currency_field   = this.getField('CURRENCY_LIST');
-        const dropdown_options = currency_field.menuGenerator_.map(o => o[1]);
+        const dropdown_options = currency_field.menuGenerator_.map(o => o[1]); // eslint-disable-line
 
         if (dropdown_options.includes(currency)) {
             currency_field.setValue(currency);

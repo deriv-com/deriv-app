@@ -14,6 +14,6 @@ export default {
         localize('- Exit spot: the contract expiration time'),
         localize('- Exit value: the value of the last tick of the contract'),
         localize('- Barrier: the barrier value of the contract (applicable to barrier-based trade types such as stays in/out, touch/no touch, etc.)'),
-        localize('- Result: the result of the last contract: "win” or "loss”'),
+        localize('- Result: the result of the last contract: "win" or "loss"'),
     ],
 };

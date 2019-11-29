@@ -2,8 +2,8 @@ import { localize } from 'deriv-translations';
 
 export default {
     text: [
-        localize('This block returns "True” if the last candle is black. It can be placed anywhere on the canvas except within the Trade parameters root block.'),
-        localize('The term "candle” refers to each bar on the candlestick chart. Each candle represents four market prices for the selected time interval:'),
+        localize('This block returns "True" if the last candle is black. It can be placed anywhere on the canvas except within the Trade parameters root block.'),
+        localize('The term "candle" refers to each bar on the candlestick chart. Each candle represents four market prices for the selected time interval:'),
         localize('Each candlestick on the chart represents 4 market prices for the selected time interval:'),
         localize('- Open price: the opening price'),
         localize('- High price: the highest price'),

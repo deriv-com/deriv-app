@@ -1,13 +1,4 @@
-import { localize } from 'deriv-translations/lib/i18n';
-
-// TODO:  get from core once it's ready
-export const getLanguage = () => {
-    // const queryLang = parseQueryString().l;
-    // const lang = queryLang in supportedLanguages ? queryLang : localStorage.getItem('lang') || 'en';
-    // localStorage.setItem('lang', lang);
-    // return lang;
-    return 'en';
-};
+import { localize } from 'deriv-translations';
 
 /* eslint-disable */
 export const addUiLang = () => {

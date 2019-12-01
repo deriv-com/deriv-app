@@ -1,6 +1,6 @@
 import React                from 'react';
 import ReactDOM             from 'react-dom';
-import { localize }         from 'deriv-translations/lib/i18n';
+import { localize }         from 'deriv-translations';
 import ScratchStore         from '../../stores/scratch-store';
 import { Arrow1Icon }       from '../../components/Icons.jsx';
 

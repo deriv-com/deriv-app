@@ -14,7 +14,7 @@ import {
     Form,
     Field,
 }                           from 'formik';
-import { localize }         from 'deriv-translations/lib/i18n';
+import { localize }         from 'deriv-translations';
 import IconTradeType        from './icon-trade-types.jsx';
 import { InfoOutlineIcon }  from './Icons.jsx';
 import { connect }          from '../stores/connect';

@@ -1,13 +1,12 @@
 import {
     Dropdown,
     Input,
-    ThemedScrollbars }      from 'deriv-components';
-import { Formik, Field }    from 'formik';
-import React, { Component } from 'react';
-import { connect }          from 'Stores/connect';
-import { localize }         from 'App/i18n';
-import Localize             from 'App/Components/Elements/localize.jsx';
-import FormSubmitButton     from './form-submit-button.jsx';
+    ThemedScrollbars }        from 'deriv-components';
+import { Formik, Field }      from 'formik';
+import React, { Component }   from 'react';
+import { connect }            from 'Stores/connect';
+import { localize, Localize } from 'deriv-translations';
+import FormSubmitButton       from './form-submit-button.jsx';
 
 const InputField = (props) => {
     return (

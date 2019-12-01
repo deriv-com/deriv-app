@@ -1,4 +1,4 @@
-import { localize }  from 'deriv-translations/lib/i18n';
+import { localize }  from 'deriv-translations';
 import config        from '../constants';
 import ApiHelpers    from '../services/api/api-helpers';
 import ScratchStore  from '../stores/scratch-store';

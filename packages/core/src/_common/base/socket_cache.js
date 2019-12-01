@@ -1,7 +1,8 @@
-const moment        = require('moment');
-const ObjectUtils   = require('deriv-shared/utils/object');
-const getStaticHash = require('_common/utility.js').getStaticHash;
-const LocalStore    = require('../storage').LocalStore;
+const moment           = require('moment');
+const ObjectUtils      = require('deriv-shared/utils/object');
+const { getLanguage }  = require('deriv-translations');
+const getStaticHash    = require('_common/utility.js').getStaticHash;
+const LocalStore       = require('../storage').LocalStore;
 
 /*
  * Caches WS responses to reduce delay time and number of requests
@@ -61,8 +62,7 @@ const SocketCache = (() => {
         // Excluding closed markets from caching once we have ws_cache and active_symbols cache set up
         const ws_cache = JSON.parse(localStorage.getItem('ws_cache'));
         // TODO: Update method of getting language from cookies once we have it in ui_store localStorage
-        const curr_lang = document.cookie.replace(/(?:(?:^|.*;\s*)language\s*=\s*([^;]*).*$)|^.*$/, '$1');
-
+        const curr_lang = getLanguage();
         const active_symbols_obj = curr_lang ? `active_symbols___${curr_lang}` : null;
 
         if (!ObjectUtils.isEmptyObject(ws_cache)) {

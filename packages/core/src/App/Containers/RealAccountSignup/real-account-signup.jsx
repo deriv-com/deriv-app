@@ -3,8 +3,8 @@ import {
     Button,
     Modal,
     Loading }                 from 'deriv-components';
-import { localize, Localize } from 'deriv-translations';
 import React, { Component }   from 'react';
+import { localize, Localize } from 'deriv-translations';
 import Icon                   from 'Assets/icon.jsx';
 import IconDuplicate          from 'Assets/Signup/icon-duplicate.jsx';
 import { connect }            from 'Stores/connect';

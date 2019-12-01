@@ -10,7 +10,7 @@ const performanceMetrics = {
 
 let is_data_sent = false;
 
-function measurePerformance (gtmStore) {
+function measurePerformance (pushLoadPerformance) {
     try {
         if (is_data_sent) {
             return;
@@ -42,7 +42,7 @@ function measurePerformance (gtmStore) {
         const differences = performance.getEntriesByType('measure');
         
         for (let i = 0; i < differences.length; i++) {
-            gtmStore.pushLoadPerformance(differences[i].name,  differences[i].duration);
+            pushLoadPerformance(differences[i].name,  differences[i].duration);
         }
         is_data_sent = true;
     } catch (error) {

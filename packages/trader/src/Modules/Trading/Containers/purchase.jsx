@@ -10,7 +10,6 @@ const Purchase = ({
     basis,
     contract_type,
     currency,
-    gtmStore,
     is_client_allowed_to_visit,
     // is_purchase_confirm_on,
     purchased_states_arr,
@@ -20,6 +19,7 @@ const Purchase = ({
     onHoverPurchase,
     // togglePurchaseLock,
     purchase_info,
+    pushLoadPerformance,
     proposal_info,
     setPurchaseState,
     trade_types,
@@ -84,7 +84,7 @@ const Purchase = ({
         !components[0].props.is_disabled &&
         !components[1].props.is_disabled) {
         // the moment that both purchase buttons are enabled
-        measurePerformance(gtmStore);
+        measurePerformance(pushLoadPerformance);
     }
     return components;
 };
@@ -92,7 +92,7 @@ const Purchase = ({
 Purchase.propTypes = {
     basis                     : PropTypes.string,
     currency                  : PropTypes.string,
-    gtmStore                  : PropTypes.object,
+    pushLoadPerformance       : PropTypes.func,
     is_client_allowed_to_visit: PropTypes.bool,
     // is_purchase_confirm_on    : PropTypes.bool,
     is_purchase_locked        : PropTypes.bool,
@@ -114,7 +114,7 @@ export default connect(
         is_client_allowed_to_visit: client.is_client_allowed_to_visit,
         basis                     : modules.trade.basis,
         contract_type             : modules.trade.contract_type,
-        gtmStore                  : gtm,
+        pushLoadPerformance       : gtm.pushLoadPerformance,
         is_trade_enabled          : modules.trade.is_trade_enabled,
         onClickPurchase           : modules.trade.onPurchase,
         onHoverPurchase           : modules.trade.onHoverPurchase,

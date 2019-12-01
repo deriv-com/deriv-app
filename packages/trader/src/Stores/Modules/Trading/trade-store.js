@@ -374,7 +374,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onPurchase(proposal_id, price, type) {
         if (!this.is_purchase_enabled) return;
-        performance.mark('purchase-start');
+        performance.mark('purchase-started');
         if (proposal_id) {
             this.is_purchase_enabled = false;
             const is_tick_contract = this.duration_unit === 't';
@@ -427,7 +427,7 @@ export default class TradeStore extends BaseStore {
                         this.proposal_requests = {};
                         this.debouncedProposal();
                         this.pushPurchaseDataToGtm(contract_data);
-                        performance.mark('purchase-end');
+                        performance.mark('purchase-ended');
                         return;
                     }
                 } else if (response.error) {
@@ -775,7 +775,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onMount() {
-        performance.mark('trade-engine-start');
+        performance.mark('trade-engine-started');
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onLogout(this.logoutListener);
@@ -788,7 +788,7 @@ export default class TradeStore extends BaseStore {
             this.refresh();
             await this.prepareTradeStore();
             this.debouncedProposal();
-            performance.mark('trade-engine-ready');
+            performance.mark('trade-engine-enabled');
         });
     }
 

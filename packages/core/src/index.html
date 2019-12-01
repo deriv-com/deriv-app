@@ -2,7 +2,7 @@
 <html>
 <head>
     <script>
-        performance.mark('start');
+        performance.mark('started');
         const observer = new PerformanceObserver(function(list) {
             const perfEntries = list.getEntries();
             for (let i = 0; i < perfEntries.length; i++) {

@@ -278,6 +278,7 @@ class PersonalDetails extends React.Component {
                 v => toMoment(v).isValid() && toMoment(v).isBefore(max_date),
             ],
             phone: [
+                v => !!v,
                 v => v.length >= 9 && v.length <= 35,
                 v => validPhone(v) && validCountryCode(this.props.residence_list, v),
             ],

@@ -2,7 +2,7 @@ import React                  from 'react';
 import { withRouter }         from 'react-router-dom';
 import { FormikConsumer }     from 'formik';
 import { Button }             from 'deriv-components';
-import { localize }           from 'App/i18n';
+import { localize }           from 'deriv-translations';
 import IconUnsavedChanges     from 'Assets/AccountManagement/icon-unsaved-changes.svg';
 import IconMessageContent     from './icon-message-content.jsx';
 

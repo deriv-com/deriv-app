@@ -6,7 +6,6 @@ import {
     redirectToLogin,
     redirectToSignUp }    from '_common/base/login';
 import { WS }             from 'Services/ws-methods';
-import Language           from '_common/language';
 import LoginPrompt        from 'App/Components/Elements/login-prompt.jsx';
 import { default_title } from 'App/Constants/app-config';
 import routes             from 'Constants/routes';
@@ -37,7 +36,6 @@ const RouteWithSubRoutes = route => {
             );
         }
 
-        Language.setCookie();
         const title = route.title ? `${route.title} | ` : '';
         document.title = `${ title }${ default_title }`;
         WS.wait('website_status').then(() => {

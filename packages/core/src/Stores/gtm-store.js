@@ -2,9 +2,9 @@ import * as Cookies           from 'js-cookie';
 import {
     action,
     computed }                from 'mobx';
+import { getLanguage }        from 'deriv-translations';
 import BinarySocket           from '_common/base/socket_base';
 import { isLoginPages }       from '_common/base/login';
-import { get as getLanguage } from '_common/language';
 import {
     toMoment,
     epochToMoment }           from 'Utils/Date';

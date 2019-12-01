@@ -1,7 +1,7 @@
 import { Button, Popover }  from 'deriv-components';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
-import { localize }         from 'App/i18n';
+import { localize }         from 'deriv-translations';
 import CurrencyUtils        from 'deriv-shared/utils/currency';
 import Icon                 from 'Assets/icon.jsx';
 import routes               from 'Constants/routes';

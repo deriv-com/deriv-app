@@ -1,7 +1,7 @@
 import { lazy }                       from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
 import { Redirect }                   from 'App/Containers/Redirect';
-import { localize }                   from 'App/i18n';
+import { localize }                   from 'deriv-translations';
 import { routes }                     from 'Constants';
 import { isBot }                      from 'Utils/PlatformSwitcher';
 import { getUrlBase }                 from '_common/url';

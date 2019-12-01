@@ -2,7 +2,7 @@ import { Autocomplete } from 'deriv-components';
 import { Field }        from 'formik';
 import PropTypes        from 'prop-types';
 import React            from 'react';
-import { localize }     from 'App/i18n';
+import { localize }     from 'deriv-translations';
 
 const SetResidenceForm = ({
     class_prefix = 'set-residence',

@@ -2,7 +2,7 @@ import PropTypes           from 'prop-types';
 import React               from 'react';
 import { Button }          from 'deriv-components';
 import { redirectToLogin } from '_common/base/login';
-import { localize }        from 'App/i18n';
+import { localize }        from 'deriv-translations';
 
 const LoginButton = ({ className }) => (
     <Button

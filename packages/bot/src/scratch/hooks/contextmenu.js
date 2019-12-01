@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations/lib/i18n';
+import { localize } from 'deriv-translations';
 
 /**
  * Make a context menu option for cleaning up blocks on the workspace, by

@@ -172,15 +172,15 @@ export default class GTMStore extends BaseStore {
         }
     }
 
-    @action.bound	
-    pushLoadPerformance(performanceMetric, duration) {	
-        const data = {	
-            'event': performanceMetric,	
-            duration,	
-        };	
-        dataLayer.push({	
-            ...this.common_variables,	
-            ...data,	
-        });	
+    @action.bound
+    pushLoadPerformance(performanceMetric, duration) {
+        const data = {
+            'event': performanceMetric,
+            duration,
+        };
+        dataLayer.push({
+            ...this.common_variables,
+            ...data,
+        });
     }
 }

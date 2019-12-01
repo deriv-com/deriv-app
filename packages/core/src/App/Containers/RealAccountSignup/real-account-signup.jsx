@@ -6,7 +6,6 @@ import {
 import React, { Component }   from 'react';
 import { localize, Localize } from 'deriv-translations';
 import Icon                   from 'Assets/icon.jsx';
-import IconDuplicate          from 'Assets/Signup/icon-duplicate.jsx';
 import { connect }            from 'Stores/connect';
 import AccountWizard          from './account-wizard.jsx';
 import AddOrManageAccounts    from './add-or-manage-accounts.jsx';
@@ -19,7 +18,7 @@ const ErrorModal = ({ message, code, openPersonalDetails }) => {
     return (
         <div className='account-wizard--error'>
             <Icon
-                icon={IconDuplicate}
+                icon='IconDuplicate'
             />
             <h1><Localize i18n_default_text='Whoops!' /></h1>
             <p>

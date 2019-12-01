@@ -11,29 +11,14 @@ import {
     Formik,
     Form }                    from 'formik';
 import CurrencyUtils          from 'deriv-shared/utils/currency';
-import Localize               from 'App/Components/Elements/localize.jsx';
 import { website_name }       from 'App/Constants/app-config';
-import { localize }           from 'App/i18n';
+import { localize, Localize } from 'deriv-translations';
 import Icon                   from 'Assets/icon.jsx';
 import { connect }            from 'Stores/connect';
 import {
     getPreBuildDVRs,
     validNumber }             from 'Utils/Validator/declarative-validation-rules';
 import Loading                from '../../../../templates/_common/components/loading.jsx';
-
-const validateTransfer = (values, { balance, currency, transfer_limit }) => {
-    const errors = {};
-
-    if (!values.amount) {
-        errors.amount = localize('This field is required.');
-    } else if (!validNumber(values.amount, { type: 'float', decimals: CurrencyUtils.getDecimalPlaces(currency), min: transfer_limit.min, max: transfer_limit.max })) {
-        errors.amount = getPreBuildDVRs().number.message;
-    } else if (+balance < +values.amount) {
-        errors.amount = localize('Insufficient balance.');
-    }
-
-    return errors;
-};
 
 const AccountOption = ({ account, idx }) => (
     <React.Fragment key={idx}>
@@ -52,13 +37,19 @@ const AccountOption = ({ account, idx }) => (
 );
 
 class AccountTransferForm extends React.Component {
-    validateTransferPassthrough = (values) => (
-        validateTransfer(values, {
-            balance       : this.props.selected_from.balance,
-            currency      : this.props.selected_from.currency,
-            transfer_limit: this.props.transfer_limit,
-        })
-    );
+    validateAmount = (amount) => {
+        let error;
+
+        if (!amount) {
+            error = localize('This field is required.');
+        } else if (!validNumber(amount, { type: 'float', decimals: CurrencyUtils.getDecimalPlaces(this.props.selected_from.currency), min: this.props.transfer_limit.min, max: this.props.transfer_limit.max })) {
+            error = getPreBuildDVRs().number.message;
+        } else if (+this.props.selected_from.balance < +amount) {
+            error = localize('Insufficient balance.');
+        }
+
+        return error;
+    }
 
     onTransferPassthrough = async (values, actions) => {
         const transfer_between_accounts = await this.props.requestTransferBetweenAccounts({
@@ -113,11 +104,10 @@ class AccountTransferForm extends React.Component {
                         initialValues={{
                             amount: '',
                         }}
-                        validate={this.validateTransferPassthrough}
                         onSubmit={this.onTransferPassthrough}
                     >
                         {
-                            ({ errors, isSubmitting, isValid, touched, handleChange }) => (
+                            ({ errors, isSubmitting, isValid, touched, validateField, handleChange }) => (
                                 <React.Fragment>
                                     {isSubmitting ?
                                         <div className='cashier__loader-wrapper'>
@@ -136,7 +126,11 @@ class AccountTransferForm extends React.Component {
                                                 list={from_accounts}
                                                 name='transfer_from'
                                                 value={this.props.selected_from.value}
-                                                onChange={this.props.onChangeTransferFrom}
+                                                onChange={(e) => {
+                                                    this.props.onChangeTransferFrom(e);
+                                                    handleChange(e);
+                                                    validateField('amount');
+                                                }}
                                             />
                                             <Icon className='cashier__transferred-icon account-transfer__transfer-icon' icon='IconBack' />
                                             <Dropdown
@@ -152,7 +146,7 @@ class AccountTransferForm extends React.Component {
                                                 value={this.props.selected_to.value}
                                                 onChange={this.props.onChangeTransferTo}
                                             />
-                                            <Field name='amount'>
+                                            <Field name='amount' validate={this.validateAmount}>
                                                 {({ field }) => (
                                                     <Input
                                                         { ...field }
@@ -160,25 +154,31 @@ class AccountTransferForm extends React.Component {
                                                             this.props.setErrorMessage('');
                                                             handleChange(e);
                                                         }}
-                                                        className='cashier__input-long dc-input--no-placeholder'
+                                                        className='cashier__input cashier__input--long dc-input--no-placeholder'
                                                         type='text'
                                                         label={localize('Amount')}
                                                         error={ touched.amount && errors.amount }
                                                         required
                                                         leading_icon={
                                                             this.props.selected_from.currency ?
-                                                                <span className={classNames('cashier__amount-symbol', 'symbols', `symbols--${this.props.selected_from.currency.toLowerCase()}`)} />
+                                                                <span className={classNames('symbols', `symbols--${this.props.selected_from.currency.toLowerCase()}`)} />
                                                                 : undefined
                                                         }
                                                         autoComplete='off'
                                                         maxLength='30'
                                                         hint={
+                                                            this.props.transfer_limit.min &&
                                                             this.props.transfer_limit.max &&
                                                             <Localize
-                                                                i18n_default_text='Transfer limit: <0 />'
+                                                                i18n_default_text='Transfer limits: <0 />-<1 />'
                                                                 components={[
                                                                     <Money
                                                                         key={0}
+                                                                        amount={this.props.transfer_limit.min}
+                                                                        currency={this.props.selected_from.currency}
+                                                                    />,
+                                                                    <Money
+                                                                        key={1}
                                                                         amount={this.props.transfer_limit.max}
                                                                         currency={this.props.selected_from.currency}
                                                                     />,
@@ -232,6 +232,7 @@ class AccountTransferForm extends React.Component {
                                                     type='submit'
                                                     is_disabled={!isValid || isSubmitting}
                                                     primary
+                                                    large
                                                 >
                                                     <Localize i18n_default_text='Transfer' />
                                                 </Button>

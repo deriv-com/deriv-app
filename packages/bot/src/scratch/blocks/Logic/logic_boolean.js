@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations';
 
 Blockly.Blocks.logic_boolean = {
     init() {
@@ -11,22 +11,22 @@ Blockly.Blocks.logic_boolean = {
                 {
                     type   : 'field_dropdown',
                     name   : 'BOOL',
-                    options: [[translate('true'), 'TRUE'], [translate('false'), 'FALSE']],
+                    options: [[localize('true'), 'TRUE'], [localize('false'), 'FALSE']],
                 },
             ],
             output         : 'Boolean',
-            outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
+            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Returns either True or False'),
+            tooltip        : localize('Returns either True or False'),
             category       : Blockly.Categories.Logic,
         };
     },
     meta(){
         return {
-            'display_name': translate('True-False'),
-            'description' : translate('This is a single block that returns a boolean value, either true or false.'),
+            'display_name': localize('True-False'),
+            'description' : localize('This is a single block that returns a boolean value, either true or false.'),
         };
     },
 };

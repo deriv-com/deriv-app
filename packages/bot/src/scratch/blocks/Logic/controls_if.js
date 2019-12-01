@@ -1,8 +1,8 @@
+import { localize } from 'deriv-translations';
 import {
     plusIconDark,
     minusIconDark,
-}                    from '../images';
-import { translate } from '../../../utils/lang/i18n';
+}                   from '../images';
 
 Blockly.Blocks.controls_if = {
     init() {
@@ -16,7 +16,7 @@ Blockly.Blocks.controls_if = {
     },
     definition(){
         return {
-            message0: translate('if %1 then'),
+            message0: localize('if %1 then'),
             message1: '%1',
             args0   : [
                 {
@@ -36,14 +36,14 @@ Blockly.Blocks.controls_if = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Conditional block'),
+            tooltip          : localize('Conditional block'),
             category         : Blockly.Categories.Logic,
         };
     },
     meta(){
         return {
-            'display_name': translate('Conditional block'),
-            'description' : translate('This block evaluates a statement and will perform an action only when the statement is true.'),
+            'display_name': localize('Conditional block'),
+            'description' : localize('This block evaluates a statement and will perform an action only when the statement is true.'),
         };
     },
     /**
@@ -99,15 +99,15 @@ Blockly.Blocks.controls_if = {
 
         // Rebuild block
         for (let j = 1; j <= this.elseIfCount; j++) {
-            this.appendDummyInput(`IF_LABEL${j}`).appendField(translate('else if'));
+            this.appendDummyInput(`IF_LABEL${j}`).appendField(localize('else if'));
             this.appendValueInput(`IF${j}`).setCheck('Boolean');
-            this.appendDummyInput(`THEN_LABEL${j}`).appendField(translate('then'));
+            this.appendDummyInput(`THEN_LABEL${j}`).appendField(localize('then'));
             this.appendDummyInput(`DELETE_ICON${j}`).appendField(this.getRemoveInputIcon(j, false));
             this.appendStatementInput(`DO${j}`);
         }
 
         if (this.elseCount) {
-            this.appendDummyInput('ELSE_LABEL').appendField(translate('else'));
+            this.appendDummyInput('ELSE_LABEL').appendField(localize('else'));
             this.appendDummyInput('DELETE_ELSE').appendField(this.getRemoveInputIcon(this.elseIfCount + 1, true));
             this.appendStatementInput('ELSE');
         }
@@ -127,16 +127,16 @@ Blockly.Blocks.controls_if = {
 
             if (this.elseCount === 0) {
                 // No `elseif`, just add an `else`-statement
-                this.appendDummyInput('ELSE_LABEL').appendField(translate('else'));
+                this.appendDummyInput('ELSE_LABEL').appendField(localize('else'));
                 this.appendDummyInput('DELETE_ELSE').appendField(this.getRemoveInputIcon(newInputNum, true));
                 this.appendStatementInput('ELSE');
 
                 this.elseCount++;
             } else {
                 // We've already got `elseif` + `else`, keep adding more `elseif`'s
-                this.appendDummyInput(`IF_LABEL${newInputNum}`).appendField(translate('else if'));
+                this.appendDummyInput(`IF_LABEL${newInputNum}`).appendField(localize('else if'));
                 this.appendValueInput(`IF${newInputNum}`).setCheck('Boolean');
-                this.appendDummyInput(`THEN_LABEL${newInputNum}`).appendField(translate('then'));
+                this.appendDummyInput(`THEN_LABEL${newInputNum}`).appendField(localize('then'));
                 this.appendDummyInput(`DELETE_ICON${newInputNum}`).appendField(
                     this.getRemoveInputIcon(newInputNum, false)
                 );

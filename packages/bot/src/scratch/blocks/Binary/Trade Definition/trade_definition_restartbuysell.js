@@ -1,9 +1,9 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations';
 
 Blockly.Blocks.trade_definition_restartbuysell = {
     init() {
         this.jsonInit({
-            message0: translate('Restart buy/sell on error (disable for better performance): %1'),
+            message0: localize('Restart buy/sell on error (disable for better performance): %1'),
             args0   : [
                 {
                     type : 'input_value',

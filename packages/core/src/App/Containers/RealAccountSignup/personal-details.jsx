@@ -1,16 +1,15 @@
-import classNames           from 'classnames';
+import classNames             from 'classnames';
 import {
     Input,
-    ThemedScrollbars }      from 'deriv-components';
-import { Formik, Field }    from 'formik';
-import React                from 'react';
-import { CSSTransition }    from 'react-transition-group';
-import { localize }         from 'App/i18n';
-import Localize             from 'App/Components/Elements/localize.jsx';
-import IconDatepicker       from 'Assets/Signup/icon-datepicker.jsx';
-import { toMoment }         from 'Utils/Date';
-import FormSubmitButton     from './form-submit-button.jsx';
-import DatePickerCalendar   from './date-picker-calendar.jsx';
+    ThemedScrollbars }        from 'deriv-components';
+import { Formik, Field }      from 'formik';
+import React                  from 'react';
+import { CSSTransition }      from 'react-transition-group';
+import { localize, Localize } from 'deriv-translations';
+import IconDatepicker         from 'Assets/Signup/icon-datepicker.jsx';
+import { toMoment }           from 'Utils/Date';
+import FormSubmitButton       from './form-submit-button.jsx';
+import DatePickerCalendar     from './date-picker-calendar.jsx';
 import 'Sass/details-form.scss';
 
 export class DateOfBirth extends React.Component {
@@ -86,7 +85,7 @@ export class DateOfBirth extends React.Component {
                                 'datepicker--active-label': !!value,
                             })}
                             onBlur={handleBlur}
-                            value={value ? toMoment(value).format('YYYY-MM-DD') : ''}
+                            value={value ? toMoment(value).format('DD-MM-YYYY') : ''}
                             readOnly
                         />
                         <IconDatepicker className='icon-datepicker' />
@@ -205,9 +204,9 @@ class PersonalDetails extends React.Component {
                                 </p>
                                 <div className='details-form__elements-container'>
                                     <ThemedScrollbars
-                                        autohide
+                                        autoHide
                                         style={{
-                                            height: '100%',
+                                            height: 'calc(100% - 16px)',
                                         }}
                                     >
                                         <div className='details-form__elements' style={{ paddingBottom: this.state.paddingBottom }}>
@@ -224,7 +223,7 @@ class PersonalDetails extends React.Component {
                                             <DateOfBirth
                                                 name='date_of_birth'
                                                 label={localize('Date of birth*')}
-                                                placeholder={localize('1999-07-01')}
+                                                placeholder={localize('01-07-1999')}
                                                 onFocus={this.onFocus}
                                             />
                                             <InputField
@@ -237,6 +236,7 @@ class PersonalDetails extends React.Component {
                                 </div>
                             </div>
                             <FormSubmitButton
+                                is_absolute
                                 cancel_label={localize('Previous')}
                                 has_cancel
                                 is_disabled={
@@ -261,13 +261,13 @@ class PersonalDetails extends React.Component {
                 v => !!v,
                 v => v.length > 2,
                 v => v.length < 30,
-                v => /^[\p{L}\s'.-]{2,50}$/gu.exec(v) !== null,
+                v => /^[\w\s'.-]{2,50}$/gu.exec(v) !== null,
             ],
             last_name: [
                 v => !!v,
                 v => v.length >= 2,
                 v => v.length <= 50,
-                v =>  /^[\p{L}\s'.-]{2,50}$/gu.exec(v) !== null,
+                v =>  /^[\w\s'.-]{2,50}$/gu.exec(v) !== null,
             ],
             date_of_birth: [
                 v => !!v,
@@ -303,6 +303,7 @@ class PersonalDetails extends React.Component {
         Object.entries(validations)
             .forEach(([key, rules]) => {
                 const error_index = rules.findIndex(v => !v(values[key]));
+
                 if (error_index !== -1) {
                     switch (key) {
                         case 'date_of_birth':

@@ -4,15 +4,16 @@
     <variable type="" id="[M$5RsD`g|8-P;C+mbf4" islocal="false" iscloud="false">martingale:profit</variable>
     <variable type="" id="Kb@{Vb{+5IqV=d~y*dcr" islocal="false" iscloud="false">martingale:totalProfit</variable>
     <variable type="" id="6G^6o^Ic@rjF|sHv*m.6" islocal="false" iscloud="false">martingale:tradeAgain</variable>
-    <variable type="" id="*p5|Lkk9Q^ZuPBQ-48g2" islocal="false" iscloud="false">martingale:expectedProfit</variable>
+    <variable type="" id="*p5|Lkk9Q^ZuPBQ-48g2" islocal="false" iscloud="false">martingale:profitThreshold</variable>
     <variable type="" id="ipD5?_dQ1Zkvf%v|[?DQ" islocal="false" iscloud="false">martingale:size</variable>
-    <variable type="" id="[$B]vBH,~wrN`PUt5m/f" islocal="false" iscloud="false">martingale:amount</variable>
-    <variable type="" id="a1BTYNHC?_yR4sfvNJ7N" islocal="false" iscloud="false">martingale:maximumLoss</variable>
+    <variable type="" id="[$B]vBH,~wrN`PUt5m/f" islocal="false" iscloud="false">martingale:initialStake</variable>
+    <variable type="" id="a1BTYNHC?_yR4sfvNJ7N" islocal="false" iscloud="false">martingale:lossThreshold</variable>
     <variable type="" id="_(;)ob:l.sc|#L7kv7Z6" islocal="false" iscloud="false">won</variable>
     <variable type="" id="p#@Pr/Y.sKueWX#oRSPl" islocal="false" iscloud="false">total profit</variable>
     <variable type="" id="5SwcMzq.f)VNUzjbKfrw" islocal="false" iscloud="false">max loss</variable>
     <variable type="" id="g-j|c!)nK2VN`qwryRs]" islocal="false" iscloud="false">loss</variable>
     <variable type="" id="I--KAm(C+#{d?~ip*23e" islocal="false" iscloud="false">expected profit</variable>
+    <variable type="" id="FRbI:RhI/`[lrO`o;=P," islocal="false" iscloud="false">martingale:multiplier</variable>
   </variables>
   <block type="trade_definition" id="i]`fLRZ]?mshi{9kS+fg" x="0" y="0">
     <statement name="TRADE_OPTIONS">
@@ -59,9 +60,9 @@
     <statement name="SUBMARKET">
       <block type="trade_definition_tradeoptions" id="8=uN{72G(CSbw2LN=h?0">
         <mutation has_first_barrier="false" has_second_barrier="false" has_prediction="false"></mutation>
-        <field name="DURATIONTYPE_LIST">t</field>
+        <field name="DURATIONTYPE_LIST">m</field>
         <field name="CURRENCY_LIST">USD</field>
-        <value name="DURATION">
+        <value name="DURATION" strategy_value="duration">
           <shadow type="math_number" id="U0Z*M,J@5n%2!YcjTbSU">
             <field name="NUM">5</field>
           </shadow>
@@ -122,7 +123,7 @@
             <field name="OP">EQ</field>
             <value name="A">
               <block type="variables_get" id="f.km2[vh(%]*F2SuNU%G">
-                <field name="VAR" id="*p5|Lkk9Q^ZuPBQ-48g2" variabletype="">martingale:expectedProfit</field>
+                <field name="VAR" id="*p5|Lkk9Q^ZuPBQ-48g2" variabletype="">martingale:ProfitThreshold</field>
               </block>
             </value>
             <value name="B">
@@ -132,7 +133,7 @@
         </value>
         <statement name="DO0">
           <block type="variables_set" id="{}-XA:3=]2W.Aq|zIiP(">
-            <field name="VAR" id="*p5|Lkk9Q^ZuPBQ-48g2" variabletype="">martingale:expectedProfit</field>
+            <field name="VAR" id="*p5|Lkk9Q^ZuPBQ-48g2" variabletype="">martingale:ProfitThreshold</field>
             <value name="VALUE" strategy_value="profit">
               <block type="text_prompt_ext" id="Xk/kdhNk!8S=H#k(z8ZK">
                 <field name="TYPE">NUMBER</field>
@@ -152,7 +153,7 @@
                 <field name="OP">EQ</field>
                 <value name="A">
                   <block type="variables_get" id="EzMg)v,zllQlN8mb?5{h">
-                    <field name="VAR" id="a1BTYNHC?_yR4sfvNJ7N" variabletype="">martingale:maximumLoss</field>
+                    <field name="VAR" id="a1BTYNHC?_yR4sfvNJ7N" variabletype="">martingale:lossThreshold</field>
                   </block>
                 </value>
                 <value name="B">
@@ -162,7 +163,7 @@
             </value>
             <statement name="DO0">
               <block type="variables_set" id=":OS%IuonU;AkRO!H-SEF">
-                <field name="VAR" id="a1BTYNHC?_yR4sfvNJ7N" variabletype="">martingale:maximumLoss</field>
+                <field name="VAR" id="a1BTYNHC?_yR4sfvNJ7N" variabletype="">martingale:lossThreshold</field>
                 <value name="VALUE" strategy_value="loss">
                   <block type="text_prompt_ext" id="VzzZ|#G2u],5bu1C%nhV">
                     <field name="TYPE">NUMBER</field>
@@ -182,7 +183,7 @@
                     <field name="OP">EQ</field>
                     <value name="A">
                       <block type="variables_get" id="{:C[v0vezVot0F{#8z#C">
-                        <field name="VAR" id="[$B]vBH,~wrN`PUt5m/f" variabletype="">martingale:amount</field>
+                        <field name="VAR" id="[$B]vBH,~wrN`PUt5m/f" variabletype="">martingale:initialStake</field>
                       </block>
                     </value>
                     <value name="B">
@@ -192,7 +193,7 @@
                 </value>
                 <statement name="DO0">
                   <block type="variables_set" id="BEp45H17VcN)bNjaC13X">
-                    <field name="VAR" id="[$B]vBH,~wrN`PUt5m/f" variabletype="">martingale:amount</field>
+                    <field name="VAR" id="[$B]vBH,~wrN`PUt5m/f" variabletype="">martingale:initialStake</field>
                     <value name="VALUE" strategy_value="stake">
                       <block type="text_prompt_ext" id="eDI}~Q?gz;|Mee%Eio6[">
                         <field name="TYPE">NUMBER</field>
@@ -223,7 +224,7 @@
                     <statement name="DO0">
                       <block type="variables_set" id="-93lGY=!6I#8sh)~z`3Z">
                         <field name="VAR" id="ipD5?_dQ1Zkvf%v|[?DQ" variabletype="">martingale:size</field>
-                        <value name="VALUE">
+                        <value name="VALUE" strategy_value="size">
                           <shadow type="math_number" id="V_wKk,@wB*OF9ev0RrZx">
                             <field name="NUM">1</field>
                           </shadow>
@@ -231,30 +232,57 @@
                       </block>
                     </statement>
                     <next>
-                      <block type="controls_if" id="$8xAQGgiV1U|3nDiZ0:X">
+                      <block type="controls_if" id="D?v;;-QQ=]k/%a8XK/RQ">
                         <value name="IF0">
-                          <block type="logic_compare" id="]TOR9VFmHAS3vC~A20mf">
+                          <block type="logic_compare" id="@LNL@pA9b#8SJGe$4zur">
                             <field name="OP">EQ</field>
                             <value name="A">
-                              <block type="variables_get" id="]esY#,FN9C}bbgG:As`K">
-                                <field name="VAR" id="Kb@{Vb{+5IqV=d~y*dcr" variabletype="">martingale:totalProfit</field>
+                              <block type="variables_get" id="Wc7riq/+8b5q+,f9@uR6">
+                                <field name="VAR" id="FRbI:RhI/`[lrO`o;=P," variabletype="">martingale:multiplier</field>
                               </block>
                             </value>
                             <value name="B">
-                              <block type="logic_null" id="0NIH0U%Bk-4w*SgA+dX|"></block>
+                              <block type="logic_null" id="g^$2zUmo/#v.0SthN[lG"></block>
                             </value>
                           </block>
                         </value>
                         <statement name="DO0">
-                          <block type="variables_set" id="2s+YXTZv%VGRY=?APf^h">
-                            <field name="VAR" id="Kb@{Vb{+5IqV=d~y*dcr" variabletype="">martingale:totalProfit</field>
+                          <block type="variables_set" id="ZA0SX,/mZR=Q@Qs{0-nM">
+                            <field name="VAR" id="FRbI:RhI/`[lrO`o;=P," variabletype="">martingale:multiplier</field>
                             <value name="VALUE">
-                              <shadow type="math_number" id="%JgI()#r0Zu#ruzKLXpj">
-                                <field name="NUM">0</field>
+                              <shadow type="math_number" id="y^=8[fZs0weMPlUMzJ0v">
+                                <field name="NUM">1</field>
                               </shadow>
                             </value>
                           </block>
                         </statement>
+                        <next>
+                          <block type="controls_if" id="$8xAQGgiV1U|3nDiZ0:X">
+                            <value name="IF0">
+                              <block type="logic_compare" id="]TOR9VFmHAS3vC~A20mf">
+                                <field name="OP">EQ</field>
+                                <value name="A">
+                                  <block type="variables_get" id="]esY#,FN9C}bbgG:As`K">
+                                    <field name="VAR" id="Kb@{Vb{+5IqV=d~y*dcr" variabletype="">martingale:totalProfit</field>
+                                  </block>
+                                </value>
+                                <value name="B">
+                                  <block type="logic_null" id="0NIH0U%Bk-4w*SgA+dX|"></block>
+                                </value>
+                              </block>
+                            </value>
+                            <statement name="DO0">
+                              <block type="variables_set" id="2s+YXTZv%VGRY=?APf^h">
+                                <field name="VAR" id="Kb@{Vb{+5IqV=d~y*dcr" variabletype="">martingale:totalProfit</field>
+                                <value name="VALUE">
+                                  <shadow type="math_number" id="%JgI()#r0Zu#ruzKLXpj">
+                                    <field name="NUM">0</field>
+                                  </shadow>
+                                </value>
+                              </block>
+                            </statement>
+                          </block>
+                        </next>
                       </block>
                     </next>
                   </block>
@@ -272,8 +300,8 @@
           <shadow type="math_number">
             <field name="NUM">1</field>
           </shadow>
-          <block type="variables_get" id="I)2Y6F!a0;ezl+NRmvU?">
-            <field name="VAR" id="ipD5?_dQ1Zkvf%v|[?DQ" variabletype="">martingale:size</field>
+          <block type="variables_get" id="Wc7riq/+8b5q+,f9@uR6">
+            <field name="VAR" id="FRbI:RhI/`[lrO`o;=P," variabletype="">martingale:multiplier</field>
           </block>
         </value>
         <value name="B">
@@ -281,7 +309,7 @@
             <field name="NUM">1</field>
           </shadow>
           <block type="variables_get" id="w$Dd.MXXRvJmyJuC~XUu">
-            <field name="VAR" id="[$B]vBH,~wrN`PUt5m/f" variabletype="">martingale:amount</field>
+            <field name="VAR" id="[$B]vBH,~wrN`PUt5m/f" variabletype="">martingale:initialStake</field>
           </block>
         </value>
       </block>
@@ -301,8 +329,8 @@
           </block>
         </value>
         <statement name="DO0">
-          <block type="variables_set" id="dBpW`FWzhfYxYL[m%r_/">
-            <field name="VAR" id="ipD5?_dQ1Zkvf%v|[?DQ" variabletype="">martingale:size</field>
+          <block type="variables_set" id="ZA0SX,/mZR=Q@Qs{0-nM">
+            <field name="VAR" id="FRbI:RhI/`[lrO`o;=P," variabletype="">martingale:multiplier</field>
             <value name="VALUE">
               <shadow type="math_number" id="#{5k!r3Zgo@m8VSv[fPn">
                 <field name="NUM">1</field>
@@ -311,8 +339,8 @@
           </block>
         </statement>
         <statement name="ELSE">
-          <block type="variables_set" id="+YbJiYj%gjdP=:s02X({">
-            <field name="VAR" id="ipD5?_dQ1Zkvf%v|[?DQ" variabletype="">martingale:size</field>
+          <block type="variables_set" id="ZA0SX,/mZR=Q@Qs{0-nM">
+            <field name="VAR" id="FRbI:RhI/`[lrO`o;=P," variabletype="">martingale:multiplier</field>
             <value name="VALUE">
               <block type="math_arithmetic" id="YzC3]lEc(!m8!NK/T/^0">
                 <field name="OP">MULTIPLY</field>
@@ -320,14 +348,17 @@
                   <shadow type="math_number">
                     <field name="NUM">1</field>
                   </shadow>
-                  <block type="variables_get" id="OIfB4l~Tv5_$I;ILt79^">
-                    <field name="VAR" id="ipD5?_dQ1Zkvf%v|[?DQ" variabletype="">martingale:size</field>
+                  <block type="variables_get" id="Wc7riq/+8b5q+,f9@uR6">
+                    <field name="VAR" id="FRbI:RhI/`[lrO`o;=P," variabletype="">martingale:multiplier</field>
                   </block>
                 </value>
-                <value name="B" strategy_value="size">
+                <value name="B">
                   <shadow type="math_number" id="#Om$-j0C[l$EXD$2JdKl">
                     <field name="NUM">2</field>
                   </shadow>
+                  <block type="variables_get" id="OIfB4l~Tv5_$I;ILt79^">
+                    <field name="VAR" id="ipD5?_dQ1Zkvf%v|[?DQ" variabletype="">martingale:size</field>
+                  </block>
                 </value>
               </block>
             </value>
@@ -559,7 +590,7 @@
                                         </value>
                                         <value name="B">
                                           <block type="variables_get" id="5m`a=f+P*-wT*3b-Acg=">
-                                            <field name="VAR" id="*p5|Lkk9Q^ZuPBQ-48g2" variabletype="">martingale:expectedProfit</field>
+                                            <field name="VAR" id="*p5|Lkk9Q^ZuPBQ-48g2" variabletype="">martingale:ProfitThreshold</field>
                                           </block>
                                         </value>
                                       </block>
@@ -583,7 +614,7 @@
                                                     <field name="NUM">9</field>
                                                   </shadow>
                                                   <block type="variables_get" id="`nfV$q=C}%gf{r$Jyt-#">
-                                                    <field name="VAR" id="a1BTYNHC?_yR4sfvNJ7N" variabletype="">martingale:maximumLoss</field>
+                                                    <field name="VAR" id="a1BTYNHC?_yR4sfvNJ7N" variabletype="">martingale:lossThreshold</field>
                                                   </block>
                                                 </value>
                                               </block>

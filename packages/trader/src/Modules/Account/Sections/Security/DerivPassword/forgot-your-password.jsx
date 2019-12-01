@@ -1,5 +1,5 @@
 import React             from 'react';
-import { localize }      from 'App/i18n';
+import { localize }      from 'deriv-translations';
 import IconFirewall      from 'Assets/AccountManagement/icon-firewall.svg';
 import IconSpamEmail     from 'Assets/AccountManagement/icon-spam-email.svg';
 import IconWorkEmail     from 'Assets/AccountManagement/icon-work-email.svg';

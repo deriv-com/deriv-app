@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations';
 
 Blockly.Blocks.math_arithmetic = {
     init() {
@@ -29,14 +29,14 @@ Blockly.Blocks.math_arithmetic = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('This block performs arithmetic operations between two numbers.'),
+            tooltip        : localize('This block performs arithmetic operations between two numbers.'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Arithmetical operations'),
-            'description' : translate('This block performs arithmetic operations between two numbers.'),
+            'display_name': localize('Arithmetical operations'),
+            'description' : localize('This block performs arithmetic operations between two numbers.'),
         };
     },
 };

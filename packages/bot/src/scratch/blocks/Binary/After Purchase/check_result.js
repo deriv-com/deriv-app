@@ -1,5 +1,5 @@
+import { localize }  from 'deriv-translations';
 import config        from '../../../../constants';
-import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.contract_check_result = {
     init() {
@@ -7,7 +7,7 @@ Blockly.Blocks.contract_check_result = {
     },
     definition(){
         return {
-            message0: translate('Result is %1'),
+            message0: localize('Result is %1'),
             args0   : [
                 {
                     type   : 'field_dropdown',
@@ -16,18 +16,18 @@ Blockly.Blocks.contract_check_result = {
                 },
             ],
             output         : 'Boolean',
-            outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
+            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('True if the result of the last trade matches the selection'),
+            tooltip        : localize('True if the result of the last trade matches the selection'),
             category       : Blockly.Categories.After_Purchase,
         };
     },
     meta(){
         return {
-            'display_name': translate('Last trade result'),
-            'description' : translate('You can check the result of the last trade with this block.'),
+            'display_name': localize('Last trade result'),
+            'description' : localize('You can check the result of the last trade with this block.'),
         };
     },
     onchange(event) {

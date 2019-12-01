@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations';
 
 Blockly.Blocks.math_single = {
     init() {
@@ -6,14 +6,14 @@ Blockly.Blocks.math_single = {
     },
     definition(){
         return {
-            message0: translate('%1 %2'),
+            message0: localize('%1 %2'),
             args0   : [
                 {
                     type   : 'field_dropdown',
                     name   : 'OP',
                     options: [
-                        [translate('square root'), 'ROOT'],
-                        [translate('absolute'), 'ABS'],
+                        [localize('square root'), 'ROOT'],
+                        [localize('absolute'), 'ABS'],
                         ['-', 'NEG'],
                         ['ln', 'LN'],
                         ['log10', 'LOG10'],
@@ -31,14 +31,14 @@ Blockly.Blocks.math_single = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Operations on a given number'),
+            tooltip        : localize('Operations on a given number'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Operations on a given number'),
-            'description' : translate('This block performs the selected operations to a given number.'),
+            'display_name': localize('Operations on a given number'),
+            'description' : localize('This block performs the selected operations to a given number.'),
         };
     },
 };

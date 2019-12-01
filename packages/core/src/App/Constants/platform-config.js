@@ -1,27 +1,24 @@
-import { localize } from 'App/i18n';
+import { localize } from 'deriv-translations';
 import { routes }   from 'Constants/index';
-import { isBot }    from 'Utils/PlatformSwitcher';
-
-const key = isBot() ? 'href' : 'link_to';
 
 const platform_config = [
     {
         icon       : 'IconDeriv',
         title      : localize('DTrader'),
         description: localize('Start trading now with a powerful, yet easy-to-use platform.'),
-        [key]      : routes.trade,
+        link_to    : routes.trade,
     },
     {
         icon       : 'IconDBot',
         title      : localize('DBot'),
         description: localize('Automate your trading ideas without coding.'),
-        href       : '/bot',
+        link_to    : routes.bot,
     },
     {
         icon       : 'IconMT5',
         title      : localize('DMT5'),
         description: localize('Trade with the platform of choice for professionals.'),
-        [key]      : routes.mt5,
+        link_to    : routes.mt5,
     },
 ];
 

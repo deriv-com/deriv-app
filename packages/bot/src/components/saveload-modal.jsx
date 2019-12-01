@@ -12,12 +12,12 @@ import {
     Form,
     Field,
 }                       from 'formik';
+import { localize }     from 'deriv-translations';
 import {
     ToolbarLocalIcon,
     ToolbarDriveIcon,
 }                       from './Icons.jsx';
 import { connect }      from '../stores/connect';
-import { translate }    from '../utils/tools';
 import '../assets/sass/google-drive.scss';
 import '../assets/sass/saveload-modal.scss';
 
@@ -34,7 +34,7 @@ const SaveLoadModal = ({
     onLoadClick,
     toggleSaveLoadModal,
 }) => {
-    const title = translate(is_save_modal ? 'Save Bot' : 'Load Bot');
+    const title = localize(is_save_modal ? 'Save Bot' : 'Load Bot');
 
     return (
         <Modal
@@ -64,7 +64,7 @@ const SaveLoadModal = ({
                                             {
                                                 id   : 'local',
                                                 label: <IconRadio
-                                                    text={translate('Local')}
+                                                    text={localize('Local')}
                                                     icon={<ToolbarLocalIcon />}
                                                 />,
                                                 value: true,
@@ -99,13 +99,13 @@ const SaveLoadModal = ({
                                                             setFieldValue('save_as_collection', !save_as_collection)
                                                         }
                                                         defaultChecked={save_as_collection}
-                                                        label={translate('Save as collection')}
+                                                        label={localize('Save as collection')}
                                                         classNameLabel='saveload-type__checkbox-text'
                                                     />
                                                 )}
                                             </Field>
                                             <div className='saveload-type__checkbox-description'>
-                                                {translate('This option allows you to save your strategy as a collection of individual blocks which you can add to other strategies.')}
+                                                {localize('This option allows you to save your strategy as a collection of individual blocks which you can add to other strategies.')}
                                             </div>
                                         </>
                                         : <input
@@ -121,7 +121,7 @@ const SaveLoadModal = ({
                                 <Button
                                     type='button'
                                     className='modal__footer--button'
-                                    text={translate('Cancel')}
+                                    text={localize('Cancel')}
                                     onClick={() => toggleSaveLoadModal(is_save_modal)}
                                     secondary
                                 />
@@ -130,7 +130,7 @@ const SaveLoadModal = ({
                                     type='submit'
                                     is_loading={button_status === 1}
                                     is_submit_success={button_status === 2}
-                                    text={translate('Continue')}
+                                    text={localize('Continue')}
                                     primary
                                 />
                             </div>
@@ -169,7 +169,7 @@ const IconRadio = ({
                             !google_drive_connected,
                     })}
                 >
-                    {translate(text)}
+                    {localize(text)}
                 </p>
             </div>
             {
@@ -179,10 +179,10 @@ const IconRadio = ({
                     onClick={onDriveConnect}
                 >
                     {
-                        translate(google_drive_connected ?
-                            translate('Disconnect')
+                        localize(google_drive_connected ?
+                            localize('Disconnect')
                             :
-                            translate('Connect'))
+                            localize('Connect'))
                     }
                 </p>
             }

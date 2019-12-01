@@ -1,14 +1,13 @@
-import classNames     from 'classnames';
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { withRouter } from 'react-router';
-import { Button }     from 'deriv-components';
-import CurrencyUtils  from 'deriv-shared/utils/currency';
-import Localize       from 'App/Components/Elements/localize.jsx';
-import { localize }   from 'App/i18n';
-import Icon           from 'Assets/icon.jsx';
-import routes         from 'Constants/routes';
-import { connect }    from 'Stores/connect';
+import classNames             from 'classnames';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import { withRouter }         from 'react-router';
+import { Button }             from 'deriv-components';
+import CurrencyUtils          from 'deriv-shared/utils/currency';
+import { localize, Localize } from 'deriv-translations';
+import Icon                   from 'Assets/icon.jsx';
+import routes                 from 'Constants/routes';
+import { connect }            from 'Stores/connect';
 
 class PaymentAgentTransferReceipt extends React.Component {
     openStatement = () => {
@@ -19,7 +18,7 @@ class PaymentAgentTransferReceipt extends React.Component {
 
     render() {
         return (
-            <div className='cashier__wrapper account-transfer__receipt'>
+            <div className='cashier__wrapper'>
                 <div className='cashier__success'>
                     <h2 className='cashier__header'>
                         <Localize i18n_default_text='Your funds have been transferred to {{name}}.' values={{ name: this.props.receipt.client_name }} />
@@ -50,22 +49,24 @@ class PaymentAgentTransferReceipt extends React.Component {
                             </span>
                         </span>
                     </div>
-                    <div className='cashier__form-submit payment-agent-transfer__buttons'>
-                        <Button
-                            className='payment-agent__statement-button'
-                            has_effect
-                            text={localize('View in statement')}
-                            onClick={this.openStatement}
-                            tertiary
-                        />
-                        <Button
-                            className='payment-agent__done-button payment-agent-transfer__done-button'
-                            has_effect
-                            text={localize('Done')}
-                            onClick={this.props.resetPaymentAgentTransfer}
-                            primary
-                        />
-                    </div>
+                </div>
+                <div className='cashier__form-submit'>
+                    <Button
+                        className='cashier__form-submit-button'
+                        has_effect
+                        text={localize('View in statement')}
+                        onClick={this.openStatement}
+                        secondary
+                        large
+                    />
+                    <Button
+                        className='cashier__form-submit-button cashier__done-button'
+                        has_effect
+                        text={localize('Done')}
+                        onClick={this.props.resetPaymentAgentTransfer}
+                        primary
+                        large
+                    />
                 </div>
             </div>
         );

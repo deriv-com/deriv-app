@@ -1,9 +1,8 @@
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import { Button }   from 'deriv-components';
-import Localize     from 'App/Components/Elements/localize.jsx';
-import { localize } from 'App/i18n';
-import { connect }  from 'Stores/connect';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import { Button }             from 'deriv-components';
+import { localize, Localize } from 'deriv-translations';
+import { connect }            from 'Stores/connect';
 
 class Virtual extends React.Component {
     onClickSignup = () => {
@@ -38,6 +37,7 @@ class Virtual extends React.Component {
                                 text={localize('Create my real account')}
                                 onClick={this.onClickSignup}
                                 primary
+                                large
                             />
                         </React.Fragment>
                     }
@@ -55,7 +55,7 @@ Virtual.propTypes = {
 
 export default connect(
     ({ client, ui }) => ({
-        has_real_account     : client.has_real_account,
+        has_real_account     : client.has_any_real_account,
         openRealAccountSignup: ui.openRealAccountSignup,
         toggleCashierModal   : ui.toggleCashierModal,
     })

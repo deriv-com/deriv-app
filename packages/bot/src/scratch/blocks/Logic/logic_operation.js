@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations';
 
 Blockly.Blocks.logic_operation = {
     init() {
@@ -15,7 +15,7 @@ Blockly.Blocks.logic_operation = {
                 {
                     type   : 'field_dropdown',
                     name   : 'OP',
-                    options: [[translate('and'), 'AND'], [translate('or'), 'OR']],
+                    options: [[localize('and'), 'AND'], [localize('or'), 'OR']],
                 },
                 {
                     type: 'input_value',
@@ -23,18 +23,18 @@ Blockly.Blocks.logic_operation = {
                 },
             ],
             output         : 'Boolean',
-            outputShape    : Blockly.OUTPUT_SHAPE_HEXAGONAL,
+            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Performs selected logic operation'),
+            tooltip        : localize('Performs selected logic operation'),
             category       : Blockly.Categories.Logic,
         };
     },
     meta(){
         return {
-            'display_name': translate('Logic operation'),
-            'description' : translate('This block performs the "AND" or the "OR" logic operation.'),
+            'display_name': localize('Logic operation'),
+            'description' : localize('This block performs the "AND" or the "OR" logic operation.'),
         };
     },
 };

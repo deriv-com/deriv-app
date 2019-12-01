@@ -2,7 +2,7 @@ import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
 import { CSSTransition }   from 'react-transition-group';
-import Localize            from 'App/Components/Elements/localize.jsx';
+import { Localize }        from 'deriv-translations';
 import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
 import Icon                from 'Assets/icon.jsx';
 

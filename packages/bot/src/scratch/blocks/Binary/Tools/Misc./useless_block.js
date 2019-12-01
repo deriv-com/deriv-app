@@ -1,14 +1,14 @@
-import { translate }         from '../../../../../utils/lang/i18n';
+import { localize }  from 'deriv-translations';
 import { setBlockTextColor } from '../../../../utils';
 
 Blockly.Blocks.useless_block = {
     init() {
         this.jsonInit({
-            message0         : translate('Conversion Helper Block'),
+            message0         : localize('Conversion Helper Block'),
             colour           : Blockly.Colours.RootBlock.colour,
             colourSecondary  : Blockly.Colours.RootBlock.colourSecondary,
             colourTertiary   : Blockly.Colours.RootBlock.colourTertiary,
-            tooltip          : translate('This block was required to correctly convert your old strategy.'),
+            tooltip          : localize('This block was required to correctly convert your old strategy.'),
             category         : Blockly.Categories.Miscellaneous,
             nextStatement    : null,
             previousStatement: null,

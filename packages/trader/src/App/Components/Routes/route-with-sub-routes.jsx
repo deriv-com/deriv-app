@@ -1,16 +1,15 @@
-import React               from 'react';
+import React              from 'react';
 import {
     Redirect,
-    Route }                from 'react-router-dom';
+    Route }               from 'react-router-dom';
 import {
     redirectToLogin,
-    redirectToSignUp }     from '_common/base/login';
-import BinarySocket        from '_common/base/socket_base';
-import Language            from '_common/language';
-import LoginPrompt         from 'App/Components/Elements/login-prompt.jsx';
-import { default_title }   from 'App/Constants/app-config';
-import routes              from 'Constants/routes';
-import { connect }         from 'Stores/connect';
+    redirectToSignUp }    from '_common/base/login';
+import { WS }             from 'Services/ws-methods';
+import LoginPrompt        from 'App/Components/Elements/login-prompt.jsx';
+import { default_title } from 'App/Constants/app-config';
+import routes             from 'Constants/routes';
+import { connect }        from 'Stores/connect';
 
 const RouteWithSubRoutes = route => {
     const renderFactory = props => {
@@ -28,7 +27,7 @@ const RouteWithSubRoutes = route => {
             result = (
                 (route.is_authenticated && !route.is_logged_in) ?
                     <LoginPrompt
-                        onLogin={redirectToLogin}
+                        onLogin={() => redirectToLogin(route.is_logged_in)}
                         onSignup={redirectToSignUp}
                         page_title={route.title}
                     />
@@ -37,10 +36,9 @@ const RouteWithSubRoutes = route => {
             );
         }
 
-        Language.setCookie();
         const title = route.title ? `${route.title} | ` : '';
         document.title = `${ title }${ default_title }`;
-        BinarySocket.wait('website_status').then(() => {
+        WS.wait('website_status').then(() => {
             route.pushDataLayer({ event: 'page_load' });
         });
         return result;

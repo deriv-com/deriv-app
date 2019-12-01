@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 /**
  * Create a copy of this block on the workspace.
  * @param {!Blockly.BlockSvg} originalBlock The block to copy from the flyout.

@@ -1,13 +1,12 @@
 import {
     Dropdown,
     Input,
-    ThemedScrollbars }      from 'deriv-components';
-import { Formik, Field }    from 'formik';
-import React, { Component } from 'react';
-import { connect }          from 'Stores/connect';
-import { localize }         from 'App/i18n';
-import Localize             from 'App/Components/Elements/localize.jsx';
-import FormSubmitButton     from './form-submit-button.jsx';
+    ThemedScrollbars }        from 'deriv-components';
+import { Formik, Field }      from 'formik';
+import React, { Component }   from 'react';
+import { connect }            from 'Stores/connect';
+import { localize, Localize } from 'deriv-translations';
+import FormSubmitButton       from './form-submit-button.jsx';
 
 const InputField = (props) => {
     return (
@@ -83,11 +82,12 @@ class AddressDetails extends Component {
                                 </p>
                                 <div className='details-form__elements-container'>
                                     <ThemedScrollbars
+                                        autoHide={!(window.innerHeight < 890)}
                                         style={{
-                                            height: '100%',
+                                            height: 'calc(100% - 16px)',
                                         }}
                                     >
-                                        <div className='details-form__elements'>
+                                        <div className='details-form__elements' style={{ paddingBottom: (window.innerHeight < 930) ? '10rem' : '12rem' }}>
                                             <InputField
                                                 name='address_line_1'
                                                 required
@@ -107,7 +107,6 @@ class AddressDetails extends Component {
                                             />
                                             <fieldset className='address-state__fieldset'>
                                                 <Dropdown
-                                                    is_alignment_top={(window.innerHeight < 930)}
                                                     id='address_state'
                                                     className='address_state-dropdown'
                                                     is_align_text_left
@@ -129,6 +128,7 @@ class AddressDetails extends Component {
                                 </div>
                             </div>
                             <FormSubmitButton
+                                is_absolute
                                 is_disabled={
                                     // eslint-disable-next-line no-unused-vars
                                     isSubmitting ||

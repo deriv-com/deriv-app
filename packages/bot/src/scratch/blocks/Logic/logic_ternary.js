@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations';
 
 Blockly.Blocks.logic_ternary = {
     init() {
@@ -6,9 +6,9 @@ Blockly.Blocks.logic_ternary = {
     },
     definition(){
         return {
-            message0: translate('test %1'),
-            message1: translate('if true %1'),
-            message2: translate('if false %1'),
+            message0: localize('test %1'),
+            message1: localize('if true %1'),
+            message2: localize('if false %1'),
             args0   : [
                 {
                     type : 'input_value',
@@ -33,14 +33,14 @@ Blockly.Blocks.logic_ternary = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('This block tests if a given value is true or false and returns “True” or “False” accordingly.'),
+            tooltip        : localize('This block tests if a given value is true or false and returns “True” or “False” accordingly.'),
             category       : Blockly.Categories.Logic,
         };
     },
     meta(){
         return {
-            'display_name': translate('Test value'),
-            'description' : translate('This block tests if a given value is true or false and returns “True” or “False” accordingly.'),
+            'display_name': localize('Test value'),
+            'description' : localize('This block tests if a given value is true or false and returns “True” or “False” accordingly.'),
         };
     },
 };

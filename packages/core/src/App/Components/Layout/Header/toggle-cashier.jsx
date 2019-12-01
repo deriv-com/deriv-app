@@ -1,17 +1,19 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { Button, Modal } from 'deriv-components';
-import { localize }      from 'App/i18n';
+import { localize }      from 'deriv-translations';
 import Lazy              from 'App/Containers/Lazy';
 import VerticalTab       from 'App/Components/Elements/VerticalTabs';
 import WalletInformation from 'Modules/Reports/Containers/wallet-information.jsx';
 import UILoader          from '../../Elements/ui-loader.jsx';
 
-const Deposit              = () => import('App/Containers/CashierModal/deposit.jsx');
-const Withdrawal           = () => import('App/Containers/CashierModal/withdrawal.jsx');
-const PaymentAgent         = () => import('App/Containers/CashierModal/payment-agent.jsx');
-const AccountTransfer      = () => import('App/Containers/CashierModal/account-transfer.jsx');
-const PaymentAgentTransfer = () => import('App/Containers/CashierModal/payment-agent-transfer.jsx');
+const Deposit              = () => import(/* webpackChunkName: "cashier-deposit" */ 'App/Containers/CashierModal/deposit.jsx');
+const Withdrawal           = () => import(/* webpackChunkName: "cashier-withdrawal" */ 'App/Containers/CashierModal/withdrawal.jsx');
+const PaymentAgent         = () => import(/* webpackChunkName: "cashier-pa" */ 'App/Containers/CashierModal/payment-agent.jsx');
+const AccountTransfer      = () => import(/* webpackChunkName: "cashier-account-transfer" */ 'App/Containers/CashierModal/account-transfer.jsx');
+const PaymentAgentTransfer = () => import(/* webpackChunkName: "cashier-pa-transfer" */ 'App/Containers/CashierModal/payment-agent-transfer.jsx');
+// To work with P2P please uncomment this line
+// const P2PCashier           = () => import(/* webpackChunkName: "cashier-otc-payment" */ 'App/Containers/CashierModal/p2p-cashier.jsx');
 
 const modal_content = [
     {
@@ -75,6 +77,20 @@ const modal_content = [
             />
         ),
     },
+    // To work with P2P please uncomment this line
+    // {
+    //     container: 'p2p_cashier',
+    //     icon     : 'IconP2PCashier',
+    //     label    : localize('P2P Cashier'),
+    //     // eslint-disable-next-line react/display-name
+    //     value    : () => (
+    //         <Lazy
+    //             ctor={P2PCashier}
+    //             should_load={true}
+    //             has_progress={true}
+    //         />
+    //     ),
+    // },
 ];
 
 const ModalContent = ({
@@ -141,7 +157,7 @@ class ToggleCashier extends React.Component {
                         is_open={is_cashier_visible}
                         title={localize('Cashier')}
                         toggleModal={toggleCashier}
-                        height='616px'
+                        height='664px'
                         width='904px'
                     >
                         <ModalContent

@@ -1,12 +1,12 @@
-import { localize } from 'App/i18n';
+import { localize } from 'deriv-translations';
 import { toMoment } from 'Utils/Date';
 
 const getDurationMaps = () => ({
-    t: { display: localize('ticks'),   order: 1 },
-    s: { display: localize('seconds'), order: 2, to_second: 1 },
-    m: { display: localize('minutes'), order: 3, to_second: 60 },
-    h: { display: localize('hours'),   order: 4, to_second: 60 * 60 },
-    d: { display: localize('days'),    order: 5, to_second: 60 * 60 * 24 },
+    t: { display: localize('Ticks'),   order: 1 },
+    s: { display: localize('Seconds'), order: 2, to_second: 1 },
+    m: { display: localize('Minutes'), order: 3, to_second: 60 },
+    h: { display: localize('Hours'),   order: 4, to_second: 60 * 60 },
+    d: { display: localize('Days'),    order: 5, to_second: 60 * 60 * 24 },
 });
 
 export const buildDurationConfig = (contract, durations = { min_max: {}, units_display: {} }) => {

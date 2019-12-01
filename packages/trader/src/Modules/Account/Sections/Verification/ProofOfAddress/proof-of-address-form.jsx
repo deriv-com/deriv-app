@@ -4,9 +4,8 @@ import {
     Button,
     Input }                   from 'deriv-components';
 import { Formik }             from 'formik';
-import BinarySocket           from '_common/base/socket_base';
-import { localize }           from 'App/i18n';
-import { WS }                 from 'Services';
+import { localize }           from 'deriv-translations';
+import { WS }                 from 'Services/ws-methods';
 import { connect }            from 'Stores/connect';
 import {
     validAddress,
@@ -41,7 +40,7 @@ class ProofOfAddressForm extends React.Component {
     }
 
     componentDidMount() {
-        BinarySocket.wait('get_settings').then(() => {
+        WS.wait('get_settings').then(() => {
             const {
                 address_line_1,
                 address_line_2,

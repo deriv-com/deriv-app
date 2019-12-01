@@ -1,15 +1,14 @@
-import PropTypes        from 'prop-types';
-import fromEntries      from 'object.fromentries';
-import React            from 'react';
-import Localize         from 'App/Components/Elements/localize.jsx';
-import { localize }     from 'App/i18n';
-import { connect }      from 'Stores/connect';
-import { toMoment }     from 'Utils/Date';
-import AddressDetails   from './address-details.jsx';
-import CurrencySelector from './currency-selector.jsx';
-import FormProgress     from './form-progress.jsx';
-import PersonalDetails  from './personal-details.jsx';
-import TermsOfUse       from './terms-of-use.jsx';
+import PropTypes              from 'prop-types';
+import fromEntries            from 'object.fromentries';
+import React                  from 'react';
+import { localize, Localize } from 'deriv-translations';
+import { connect }            from 'Stores/connect';
+import { toMoment }           from 'Utils/Date';
+import AddressDetails         from './address-details.jsx';
+import CurrencySelector       from './currency-selector.jsx';
+import FormProgress           from './form-progress.jsx';
+import PersonalDetails        from './personal-details.jsx';
+import TermsOfUse             from './terms-of-use.jsx';
 
 class AccountWizard extends React.Component {
     constructor(props) {
@@ -196,7 +195,7 @@ class AccountWizard extends React.Component {
                     }
                     {this.props.has_real_account &&
                     <div className='account-wizard__set-currency'>
-                        {this.props.has_currency &&
+                        {!this.props.has_currency &&
                         <p>
                             <Localize
                                 i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.'
@@ -242,7 +241,7 @@ AccountWizard.propTypes = {
 
 export default connect(({ client }) => ({
     realAccountSignup : client.realAccountSignup,
-    has_real_account  : client.has_real_account,
+    has_real_account  : client.has_active_real_account,
     has_currency      : !!client.currency,
     setAccountCurrency: client.setAccountCurrency,
 }))(AccountWizard);

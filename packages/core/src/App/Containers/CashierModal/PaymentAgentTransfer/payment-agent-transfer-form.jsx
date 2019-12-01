@@ -9,8 +9,7 @@ import {
     Formik,
     Form }                    from 'formik';
 import CurrencyUtils          from 'deriv-shared/utils/currency';
-import Localize               from 'App/Components/Elements/localize.jsx';
-import { localize }           from 'App/i18n';
+import { localize, Localize } from 'deriv-translations';
 import Icon                   from 'Assets/icon.jsx';
 import { connect }            from 'Stores/connect';
 import {
@@ -118,7 +117,7 @@ class PaymentAgentTransferForm extends React.Component {
                                             error={ touched.amount && errors.amount }
                                             required
                                             leading_icon={
-                                                <span className={classNames('cashier__amount-symbol', 'symbols', `symbols--${(this.props.currency || '').toLowerCase()}`)} />
+                                                <span className={classNames('symbols', `symbols--${(this.props.currency || '').toLowerCase()}`)} />
                                             }
                                             autoComplete='off'
                                             maxLength='30'
@@ -157,6 +156,7 @@ class PaymentAgentTransferForm extends React.Component {
                                         type='submit'
                                         is_disabled={!isValid || isSubmitting}
                                         primary
+                                        large
                                     >
                                         <Localize i18n_default_text='Transfer' />
                                     </Button>

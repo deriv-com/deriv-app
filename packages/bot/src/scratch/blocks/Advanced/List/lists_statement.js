@@ -1,5 +1,5 @@
+import { localize }      from 'deriv-translations';
 import { minusIconDark } from '../../images';
-import { translate } from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.lists_statement = {
     init() {
@@ -25,14 +25,14 @@ Blockly.Blocks.lists_statement = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('List Statement Tooltip'),
+            tooltip          : localize('List Statement Tooltip'),
             category         : Blockly.Categories.List,
         };
     },
     meta(){
         return {
-            'display_name': translate('List Statement'),
-            'description' : translate('List Statement Description'),
+            'display_name': localize('List Statement'),
+            'description' : localize('List Statement Description'),
         };
     },
     onIconClick() {

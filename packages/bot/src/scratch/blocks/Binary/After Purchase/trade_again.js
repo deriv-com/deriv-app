@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations';
 
 Blockly.Blocks.trade_again = {
     init() {
@@ -9,19 +9,19 @@ Blockly.Blocks.trade_again = {
     },
     definition(){
         return {
-            message0         : translate('Trade again'),
+            message0         : localize('Trade again'),
             colour           : Blockly.Colours.Special1.colour,
             colourSecondary  : Blockly.Colours.Special1.colourSecondary,
             colourTertiary   : Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
-            tooltip          : translate('This blocks transfers control to the Purchase conditions block.'),
+            tooltip          : localize('This blocks transfers control to the Purchase conditions block.'),
             category         : Blockly.Categories.After_Purchase,
         };
     },
     meta(){
         return {
-            'display_name': translate('Trade again'),
-            'description' : translate('This block will transfer the control back to the Purchase conditions block, enabling you to purchase another contract.'),
+            'display_name': localize('Trade again'),
+            'description' : localize('This block will transfer the control back to the Purchase conditions block, enabling you to purchase another contract.'),
         };
     },
     onchange(event) {

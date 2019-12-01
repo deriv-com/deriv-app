@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations';
 
 Blockly.Blocks.math_change = {
     /**
@@ -17,12 +17,12 @@ Blockly.Blocks.math_change = {
      */
     definition() {
         return {
-            message0: translate('change %1 by %2'),
+            message0: localize('change %1 by %2'),
             args0   : [
                 {
                     type    : 'field_variable',
                     name    : 'VAR',
-                    variable: translate('item'),
+                    variable: localize('item'),
                 },
                 {
                     type : 'input_value',
@@ -35,7 +35,7 @@ Blockly.Blocks.math_change = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('This block adds the given number to the selected variable'),
+            tooltip          : localize('This block adds the given number to the selected variable'),
             category         : Blockly.Categories.Mathematical,
         };
     },
@@ -46,8 +46,8 @@ Blockly.Blocks.math_change = {
      */
     meta() {
         return {
-            'display_name': translate('Change variable'),
-            'description' : translate('This block adds the given number to the selected variable.'),
+            'display_name': localize('Change variable'),
+            'description' : localize('This block adds the given number to the selected variable.'),
         };
     },
 };

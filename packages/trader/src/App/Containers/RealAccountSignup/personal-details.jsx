@@ -1,19 +1,18 @@
-import classNames           from 'classnames';
+import classNames             from 'classnames';
 import {
     Input,
-    ThemedScrollbars }      from 'deriv-components';
-import { Formik, Field }    from 'formik';
-import React, { Component } from 'react';
-import { CSSTransition }    from 'react-transition-group';
-import { localize }         from 'App/i18n';
-import Localize             from 'App/Components/Elements/localize.jsx';
-import IconDatepicker       from 'Assets/Signup/icon-datepicker.jsx';
-import { toMoment }         from 'Utils/Date';
-import FormSubmitButton     from './form-submit-button.jsx';
-import DatePickerCalendar   from './date-picker-calendar.jsx';
+    ThemedScrollbars }        from 'deriv-components';
+import { Formik, Field }      from 'formik';
+import React                  from 'react';
+import { CSSTransition }      from 'react-transition-group';
+import { localize, Localize } from 'deriv-translations';
+import IconDatepicker         from 'Assets/Signup/icon-datepicker.jsx';
+import { toMoment }           from 'Utils/Date';
+import FormSubmitButton       from './form-submit-button.jsx';
+import DatePickerCalendar     from './date-picker-calendar.jsx';
 import 'Sass/details-form.scss';
 
-export class DateOfBirth extends Component {
+export class DateOfBirth extends React.Component {
     state = {
         should_show_calendar: false,
         max_date            : toMoment().subtract(18, 'years'),
@@ -150,7 +149,7 @@ const InputField = (props) => {
     );
 };
 
-class PersonalDetails extends Component {
+class PersonalDetails extends React.Component {
     constructor(props) {
         super(props);
         this.form = React.createRef();

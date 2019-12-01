@@ -1,11 +1,10 @@
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { Button }     from 'deriv-components';
-import Localize       from 'App/Components/Elements/localize.jsx';
-import { localize }   from 'App/i18n';
-import Icon           from 'Assets/icon.jsx';
-import { connect }    from 'Stores/connect';
-import EmailSent      from './email-sent.jsx';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import { Button }             from 'deriv-components';
+import { localize, Localize } from 'deriv-translations';
+import Icon                   from 'Assets/icon.jsx';
+import { connect }            from 'Stores/connect';
+import EmailSent              from './email-sent.jsx';
 
 class SendEmail extends React.Component {
     render() {
@@ -24,11 +23,11 @@ class SendEmail extends React.Component {
                         <p className='withdraw__text'><Localize i18n_default_text='This is a safeguard against unauthorised withdrawals from your account.' /></p>
                         <Button
                             className='withdraw__verify-button'
-                            classNameSpan='withdraw__verify-button-text'
                             has_effect
                             text={localize('Request authentication email')}
                             onClick={this.props.sendVerificationEmail}
                             primary
+                            large
                         />
                     </React.Fragment>
                 }

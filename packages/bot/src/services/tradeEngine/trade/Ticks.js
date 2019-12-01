@@ -1,8 +1,8 @@
 import { getLast }                    from 'binary-utils';
+import { localize }                   from 'deriv-translations';
 import * as constants                 from './state/constants';
 import { getDirection, getLastDigit } from '../utils/helpers';
 import { expectPositiveInteger }      from '../utils/sanitize';
-import { translate }                  from '../../../utils/lang/i18n';
 
 let tickListenerKey;
 
@@ -94,7 +94,7 @@ export default Engine =>
         getOhlcFromEnd(args) {
             const { index: i = 1 } = args || {};
 
-            const index = expectPositiveInteger(Number(i), translate('Index must be a positive integer'));
+            const index = expectPositiveInteger(Number(i), localize('Index must be a positive integer'));
 
             return new Promise(resolve => this.getOhlc(args).then(ohlc => resolve(ohlc.slice(-index)[0])));
         }

@@ -1,11 +1,10 @@
-import { ThemedScrollbars } from 'deriv-components';
-import { Field, Formik }    from 'formik';
-import React                from 'react';
-import Localize             from 'App/Components/Elements/localize.jsx';
-import CheckboxField        from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
-import { localize }         from 'App/i18n';
-import { Hr }               from './currency-selector.jsx';
-import FormSubmitButton     from './form-submit-button.jsx';
+import { ThemedScrollbars }   from 'deriv-components';
+import { Field, Formik }      from 'formik';
+import React                  from 'react';
+import CheckboxField          from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
+import { localize, Localize } from 'deriv-translations';
+import { Hr }                 from './currency-selector.jsx';
+import FormSubmitButton       from './form-submit-button.jsx';
 import 'Sass/terms-of-use.scss';
 
 class TermsOfUse extends React.Component {
@@ -32,7 +31,7 @@ class TermsOfUse extends React.Component {
                         <ThemedScrollbars
                             autohide
                             style={{
-                                height: '100%',
+                                height: 'calc(100% - 50px)',
                             }}
                         >
                             <div className='terms-of-use'>
@@ -100,6 +99,7 @@ class TermsOfUse extends React.Component {
                             </div>
                         </ThemedScrollbars>
                         <FormSubmitButton
+                            is_absolute
                             is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
                             label={localize('Add account')}
                             has_cancel={true}

@@ -2,9 +2,8 @@ import {
     action,
     observable }              from 'mobx';
 import ObjectUtils            from 'deriv-shared/utils/object';
-import BinarySocket           from '_common/base/socket_base';
-import { WS }                 from 'Services';
-import { localize }           from 'App/i18n';
+import { WS }                 from 'Services/ws-methods';
+import { localize }           from 'deriv-translations';
 import ContractStore          from './contract-store';
 import { contractSold }       from '../Portfolio/Helpers/portfolio-notifications';
 import BaseStore              from '../../base-store';
@@ -61,7 +60,7 @@ export default class ContractReplayStore extends BaseStore {
         if (contract_id) {
             this.contract_id = contract_id;
             this.contract_store = new ContractStore(this.root_store, { contract_id });
-            BinarySocket.wait('authorize').then(() => {
+            WS.wait('authorize').then(() => {
                 this.handleSubscribeProposalOpenContract(this.contract_id, this.populateConfig);
             });
             WS.storage.activeSymbols('brief');

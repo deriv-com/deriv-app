@@ -1,5 +1,5 @@
+import { localize }    from 'deriv-translations';
 import { expectValue } from '../../../shared';
-import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.smaa_statement = {
     protected_statements : ['STATEMENT'],
@@ -9,7 +9,7 @@ Blockly.Blocks.smaa_statement = {
     },
     definition(){
         return {
-            message0: translate('set %1 to Simple Moving Average Array %2'),
+            message0: localize('set %1 to Simple Moving Average Array %2'),
             message1: '%1',
             args0   : [
                 {
@@ -31,7 +31,7 @@ Blockly.Blocks.smaa_statement = {
             colour           : Blockly.Colours.Base.colour,
             colourSecondary  : Blockly.Colours.Base.colourSecondary,
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
-            tooltip          : translate('Calculates Simple Moving Average line from a list with a period'),
+            tooltip          : localize('Calculates Simple Moving Average line from a list with a period'),
             previousStatement: null,
             nextStatement    : null,
             category         : Blockly.Categories.Indicators,
@@ -39,8 +39,8 @@ Blockly.Blocks.smaa_statement = {
     },
     meta(){
         return {
-            'display_name': translate('Simple Moving Average Array (SMAA)'),
-            'description' : translate('Similar to SMA, this block gives you the entire SMA line containing a list of all values for a given period.'),
+            'display_name': localize('Simple Moving Average Array (SMAA)'),
+            'description' : localize('Similar to SMA, this block gives you the entire SMA line containing a list of all values for a given period.'),
         };
     },
     onchange: Blockly.Blocks.bb_statement.onchange,

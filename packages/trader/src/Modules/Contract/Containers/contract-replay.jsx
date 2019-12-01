@@ -1,24 +1,20 @@
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import { withRouter }    from 'react-router';
-import ObjectUtils       from 'deriv-shared/utils/object';
-import ChartLoader       from 'App/Components/Elements/chart-loader.jsx';
-import ContractDrawer    from 'App/Components/Elements/ContractDrawer';
-import Digits            from 'Modules/Contract/Components/Digits';
-import InfoBox           from 'Modules/Contract/Components/InfoBox';
-import Lazy              from 'App/Containers/Lazy';
-import { localize }      from 'App/i18n';
-import Icon              from 'Assets/icon.jsx';
-import AppRoutes         from 'Constants/routes';
-import { SmartChart }    from 'Modules/SmartChart';
-import { connect }       from 'Stores/connect';
+import PropTypes      from 'prop-types';
+import React          from 'react';
+import { withRouter } from 'react-router';
+import ObjectUtils    from 'deriv-shared/utils/object';
+import ChartLoader    from 'App/Components/Elements/chart-loader.jsx';
+import ContractDrawer from 'App/Components/Elements/ContractDrawer';
+import Digits         from 'Modules/Contract/Components/Digits';
+import InfoBox        from 'Modules/Contract/Components/InfoBox';
+import { localize }   from 'deriv-translations';
+import Icon           from 'Assets/icon.jsx';
+import AppRoutes      from 'Constants/routes';
+import { SmartChart } from 'Modules/SmartChart';
+import { connect }    from 'Stores/connect';
 
 import BottomWidgets           from '../../SmartChart/Components/bottom-widgets.jsx';
 import ChartMarker             from '../../SmartChart/Components/Markers/marker.jsx';
 import TopWidgets              from '../../SmartChart/Components/top-widgets.jsx';
-
-// TODO: see if it worth to lazy load the smartchart.js here and at trade.jsx
-const loadNotificationMessages = () => import(/* webpackChunkName: "notification-messages", webpackPrefetch: 99 */'App/Containers/notification-messages.jsx');
 
 class ContractReplay extends React.Component {
     setWrapperRef = (node) => {
@@ -61,6 +57,7 @@ class ContractReplay extends React.Component {
             is_ended,
             is_sell_requested,
             location,
+            NotificationMessages,
             onClickSell,
             removeError,
             indicative_status,
@@ -92,11 +89,7 @@ class ContractReplay extends React.Component {
                                 />
                             </div>
                         </div>
-                        <Lazy
-                            ctor={loadNotificationMessages}
-                            has_progress={false}
-                            should_load={true}
-                        />
+                        <NotificationMessages />
                         <ChartLoader is_dark={is_dark_theme} is_visible={is_chart_loading} />
                         { contract_info.underlying  &&
                         <ReplayChart
@@ -151,21 +144,22 @@ export default withRouter(connect(
         const contract_replay = modules.contract_replay;
         const contract_store = contract_replay.contract_store;
         return ({
-            contract_info    : contract_store.contract_info,
-            digits_info      : contract_store.digits_info,
-            display_status   : contract_store.display_status,
-            error_message    : contract_replay.error_message,
-            is_digit_contract: contract_store.is_digit_contract,
-            is_ended         : contract_store.is_ended,
-            is_sell_requested: contract_replay.is_sell_requested,
-            onClickSell      : contract_replay.onClickSell,
-            onMount          : contract_replay.onMount,
-            onUnmount        : contract_replay.onUnmount,
-            removeError      : contract_replay.removeErrorMessage,
-            indicative_status: contract_replay.indicative_status,
-            is_chart_loading : contract_replay.is_chart_loading,
-            is_dark_theme    : ui.is_dark_mode_on,
-            has_service_error: ui.is_services_error_visible,
+            contract_info       : contract_store.contract_info,
+            digits_info         : contract_store.digits_info,
+            display_status      : contract_store.display_status,
+            error_message       : contract_replay.error_message,
+            is_digit_contract   : contract_store.is_digit_contract,
+            is_ended            : contract_store.is_ended,
+            is_sell_requested   : contract_replay.is_sell_requested,
+            onClickSell         : contract_replay.onClickSell,
+            onMount             : contract_replay.onMount,
+            onUnmount           : contract_replay.onUnmount,
+            removeError         : contract_replay.removeErrorMessage,
+            indicative_status   : contract_replay.indicative_status,
+            is_chart_loading    : contract_replay.is_chart_loading,
+            is_dark_theme       : ui.is_dark_mode_on,
+            has_service_error   : ui.is_services_error_visible,
+            NotificationMessages: ui.notification_messages_ui,
         });
     }
 )(ContractReplay));

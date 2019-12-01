@@ -1,5 +1,5 @@
+import { localize }     from 'deriv-translations';
 import { plusIconDark } from '../images';
-import { translate }    from '../../../utils/lang/i18n';
 
 Blockly.Blocks.text_join = {
     protected_statements: ['STACK'],
@@ -13,13 +13,13 @@ Blockly.Blocks.text_join = {
     },
     definition(){
         return {
-            message0: translate('set %1 to create text with'),
+            message0: localize('set %1 to create text with'),
             message1: '%1',
             args0   : [
                 {
                     type    : 'field_variable',
                     name    : 'VARIABLE',
-                    variable: translate('text'),
+                    variable: localize('text'),
                 },
             ],
             args1: [
@@ -33,14 +33,14 @@ Blockly.Blocks.text_join = {
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement    : null,
-            tooltip          : translate('Text join'),
+            tooltip          : localize('Text join'),
             category         : Blockly.Categories.Text,
         };
     },
     meta(){
         return {
-            'display_name': translate('Text join'),
-            'description' : translate('Creates a single text string from combining the text value of each attached item, without spaces in between. The number of items can be added accordingly.'),
+            'display_name': localize('Text join'),
+            'description' : localize('Creates a single text string from combining the text value of each attached item, without spaces in between. The number of items can be added accordingly.'),
         };
     },
     onIconClick() {

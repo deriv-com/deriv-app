@@ -1,5 +1,5 @@
+const { getLanguage }            = require('deriv-translations');
 const urlForLanguage             = require('./language').urlFor;
-const getLanguage                = require('./language').get;
 const getCurrentProductionDomain = require('../config').getCurrentProductionDomain;
 require('url-polyfill');
 
@@ -100,7 +100,7 @@ const Url = (() => {
     const getUrlBase = (path = '') => {
         const l = window.location;
 
-        if (!/^\/br_|bot/.test(l.pathname)) return path;
+        if (!/^\/(br_)/.test(l.pathname)) return path;
 
         return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
     };

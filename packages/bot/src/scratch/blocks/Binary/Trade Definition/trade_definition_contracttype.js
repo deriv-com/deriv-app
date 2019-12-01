@@ -1,5 +1,5 @@
-import config                  from '../../../../constants';
-import { translate }           from '../../../../utils/lang/i18n';
+import { localize }               from 'deriv-translations';
+import config                     from '../../../../constants';
 import { getContractTypeOptions } from '../../../shared';
 
 Blockly.Blocks.trade_definition_contracttype = {
@@ -38,7 +38,7 @@ Blockly.Blocks.trade_definition_contracttype = {
                 const trade_types = getContractTypeOptions('both', trade_type);
                 
                 if (trade_types.length > 1) {
-                    contract_type_options.push([translate('Both'), 'both']);
+                    contract_type_options.push([localize('Both'), 'both']);
                 }
 
                 contract_type_options.push(...trade_types);

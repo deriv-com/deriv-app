@@ -1,8 +1,7 @@
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { urlFor }   from '_common/url';
 import PageError    from 'Modules/PageError';
-import Localize     from './localize.jsx';
+import { Localize } from 'deriv-translations';
 
 const LoginPrompt = ({
     onLogin,
@@ -34,11 +33,6 @@ LoginPrompt.propTypes = {
     onLogin   : PropTypes.func,
     onSignup  : PropTypes.func,
     page_title: PropTypes.string,
-};
-
-// TODO - Remove this default setting once sign-up has been integrated to app 2
-LoginPrompt.defaultProps = {
-    onSignup: () => { window.open(urlFor('new-account', undefined, undefined, true)); },
 };
 
 export default LoginPrompt;

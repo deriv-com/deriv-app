@@ -1,5 +1,5 @@
+import { localize }    from 'deriv-translations';
 import { expectValue } from '../../../shared';
-import { translate }   from '../../../../utils/lang/i18n';
 
 Blockly.Blocks.ema_statement = {
     protected_statements : ['STATEMENT'],
@@ -9,7 +9,7 @@ Blockly.Blocks.ema_statement = {
     },
     definition() {
         return {
-            message0: translate('set %1 to Exponentional Moving Average %2'),
+            message0: localize('set %1 to Exponentional Moving Average %2'),
             message1: '%1',
             args0   : [
                 {
@@ -31,7 +31,7 @@ Blockly.Blocks.ema_statement = {
             colour           : Blockly.Colours.Base.colour,
             colourSecondary  : Blockly.Colours.Base.colourSecondary,
             colourTertiary   : Blockly.Colours.Base.colourTertiary,
-            tooltip          : translate('Calculates Exponential Moving Average (EMA) from a list with a period'),
+            tooltip          : localize('Calculates Exponential Moving Average (EMA) from a list with a period'),
             previousStatement: null,
             nextStatement    : null,
             category         : Blockly.Categories.Indicators,
@@ -39,8 +39,8 @@ Blockly.Blocks.ema_statement = {
     },
     meta() {
         return {
-            'display_name': translate('Exponential Moving Average (EMA)'),
-            'description' : translate('EMA is a type of moving average that places more significance on the most recent data points. It’s also known as the exponentially weighted moving average. EMA is different from SMA in that it reacts more significantly to recent price changes.'),
+            'display_name': localize('Exponential Moving Average (EMA)'),
+            'description' : localize('EMA is a type of moving average that places more significance on the most recent data points. It’s also known as the exponentially weighted moving average. EMA is different from SMA in that it reacts more significantly to recent price changes.'),
         };
     },
     onchange: Blockly.Blocks.bb_statement.onchange,

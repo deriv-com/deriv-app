@@ -1,8 +1,7 @@
 import { LiveApi }                                      from 'binary-live-api';
+import { getLanguage }                                  from 'deriv-translations';
 import AppIds                                           from './appIdResolver';
-import Elevio                                           from '../../utils/customerSupport/elevio';
 import GTM                                              from '../../utils/gtm';
-import { getLanguage }                                  from '../../utils/lang/lang';
 import {
     addToken,
     removeToken,
@@ -137,7 +136,6 @@ export async function addTokenIfValid(token, tokenObjectList) {
         if (tokenObjectList && tokenObjectList.length !== 0) {
             removeToken(tokenObjectList[0].token);
         }
-        Elevio.logoutUser();
         GTM.setVisitorId();
         throw e;
     }

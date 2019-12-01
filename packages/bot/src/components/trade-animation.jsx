@@ -1,9 +1,9 @@
 import classNames               from 'classnames';
 import React                    from 'react';
 import PropTypes                from 'prop-types';
+import { localize }             from 'deriv-translations';
 import ContractResultOverlay    from './contract-result-overlay.jsx';
 import { connect }              from '../stores/connect';
-import { translate }            from '../utils/tools';
 import '../assets/sass/trade-animation.scss';
 
 const CircularWrapper = ({ className }) => (
@@ -58,7 +58,7 @@ const TradeAnimation = ({
                     <ContractResultOverlay profit={profit} />
             }
             <span className='animation__text'>
-                {translate(text)}
+                {localize(text)}
             </span>
             <div className='animation__progress'>
                 <div className='animation__progress-line' >

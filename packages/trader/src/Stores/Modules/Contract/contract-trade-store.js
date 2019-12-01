@@ -4,10 +4,10 @@ import {
     observable,
     toJS }                        from 'mobx';
 import { LocalStore }             from '_common/storage';
+import { switch_to_tick_chart }   from './Helpers/chart-notifications';
 import ContractStore              from './contract-store';
 import BaseStore                  from '../../base-store';
 import { getContractTypesConfig } from '../Trading/Constants/contract';
-import { clientNotifications }    from '../../Helpers/client-notifications';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
@@ -19,9 +19,16 @@ export default class ContractTradeStore extends BaseStore {
     @observable granularity = +LocalStore.get('contract_trade.granularity') || 0;
     @observable chart_type = LocalStore.get('contract_trade.chart_type') || 'mountain';
 
+    constructor({ root_store }) {
+        super({ root_store });
+
+        this.onSwitchAccount(this.accountSwitchListener);
+    }
+
     // -------------------
     // ----- Actions -----
     // -------------------
+
     @action.bound
     updateChartType(type) {
         LocalStore.set('contract_trade.chart_type', type);
@@ -43,9 +50,7 @@ export default class ContractTradeStore extends BaseStore {
         LocalStore.set('contract_trade.granularity', granularity);
         this.granularity = granularity;
         if (this.granularity === 0) {
-            this.root_store.ui.removeNotificationMessage(
-                clientNotifications().switch_to_tick_chart
-            );
+            this.root_store.ui.removeNotificationMessage(switch_to_tick_chart);
         }
     }
 
@@ -78,7 +83,7 @@ export default class ContractTradeStore extends BaseStore {
                 }
                 return trade_type_is_supported;
             });
-    }
+    };
 
     @computed
     get markers_array() {
@@ -116,15 +121,22 @@ export default class ContractTradeStore extends BaseStore {
         this.contracts.push(contract);
 
         if (is_tick_contract && this.granularity !== 0) {
-            this.root_store.ui.addNotificationMessage(
-                clientNotifications().switch_to_tick_chart
-            );
+            this.root_store.ui.addNotificationMessage(switch_to_tick_chart);
         }
     }
 
     @action.bound
     removeContract({ contract_id }) {
         this.contracts = this.contracts.filter(c => c.contract_id !== contract_id);
+    }
+
+    @action.bound
+    accountSwitchListener() {
+        if (this.has_error) {
+            this.clearError();
+        }
+
+        return Promise.resolve();
     }
 
     @action.bound
@@ -148,9 +160,7 @@ export default class ContractTradeStore extends BaseStore {
                 if (contract.contract_id === contract_id) {
                     contract.populateConfig(response.proposal_open_contract);
                     if (response.proposal_open_contract.is_sold) {
-                        this.root_store.ui.removeNotificationMessage(
-                            clientNotifications().switch_to_tick_chart
-                        );
+                        this.root_store.ui.removeNotificationMessage(switch_to_tick_chart);
                     }
                 }
             });

@@ -1,15 +1,14 @@
-import { Field, Formik }    from 'formik';
-import PropTypes            from 'prop-types';
-import React, { Component } from 'react';
-import { connect }          from 'Stores/connect';
-import Localize             from 'App/Components/Elements/localize.jsx';
-import { localize }         from 'App/i18n';
+import { Field, Formik }      from 'formik';
+import PropTypes              from 'prop-types';
+import React, { Component }   from 'react';
+import { connect }            from 'Stores/connect';
+import { localize, Localize } from 'deriv-translations';
 import {
     Hr,
     RadioButtonGroup,
     RadioButton,
-}                           from './currency-selector.jsx';
-import FormSubmitButton     from './form-submit-button.jsx';
+}                             from './currency-selector.jsx';
+import FormSubmitButton       from './form-submit-button.jsx';
 
 const messages = [
     'Choose your preferred cryptocurrency',
@@ -45,7 +44,17 @@ class AddCryptoCurrency extends Component {
         return !this.props.has_fiat;
     }
 
+    get crypto_currencies () {
+        return this.props.legal_allowed_currencies.filter(currency => currency.type === 'crypto');
+    }
+
+    canAddCrypto = (currency) => {
+        // check if the cryptocurrency has not been created
+        return this.props.available_crypto_currencies.map((e) => e.value).indexOf(currency.value) === -1;
+    }
+
     render() {
+
         return (
             <Formik
                 initialValues={{
@@ -64,33 +73,51 @@ class AddCryptoCurrency extends Component {
                     isSubmitting,
                 }) => (
                     <form onSubmit={handleSubmit}>
-
-                        {!this.can_add_fiat && this.props.available_crypto_currencies.length !== 0 &&
+                        {!this.can_add_fiat &&
                         <Headers heading={messages[0]} subheading={messages[1]} />
                         }
                         {this.can_add_fiat &&
                         <Headers heading={messages[2]} subheading={messages[3]} />
                         }
-                        {this.props.available_crypto_currencies.length !== 0 &&
-                        <RadioButtonGroup
-                            id='crypto_currency'
-                            className='currency-selector__radio-group'
-                            label={localize('Cryptocurrencies')}
-                            value={values.currency}
-                            error={errors.currency}
-                            touched={touched.currency}
-                            is_title_enabled={this.can_add_fiat}
-                        >
-                            {this.props.available_crypto_currencies.map(currency => (
-                                <Field
-                                    key={currency.value}
-                                    component={RadioButton}
-                                    name='currency'
-                                    id={currency.value}
-                                    label={currency.name}
-                                />
-                            ))}
-                        </RadioButtonGroup>
+                        {this.props.available_crypto_currencies.length !== 0 ?
+                            <RadioButtonGroup
+                                id='crypto_currency'
+                                className='currency-selector__radio-group'
+                                label={localize('Cryptocurrencies')}
+                                value={values.currency}
+                                error={errors.currency}
+                                touched={touched.currency}
+                                is_title_enabled={this.can_add_fiat}
+                            >
+                                {this.crypto_currencies.map(currency => (
+                                    <Field
+                                        key={currency.value}
+                                        component={RadioButton}
+                                        name='currency'
+                                        id={currency.value}
+                                        label={currency.name}
+                                        selected={this.canAddCrypto(currency)}
+                                    />
+                                ))}
+                            </RadioButtonGroup>
+                            :
+                            <RadioButtonGroup
+                                id='crypto_currency'
+                                className='currency-selector__radio-group'
+                                label={localize('Cryptocurrencies')}
+                                is_title_enabled={this.can_add_fiat}
+                            >
+                                {this.crypto_currencies.map(currency => (
+                                    <Field
+                                        key={currency.value}
+                                        component={RadioButton}
+                                        name='currency'
+                                        id={currency.value}
+                                        label={currency.name}
+                                        selected
+                                    />
+                                ))}
+                            </RadioButtonGroup>
                         }
                         {this.can_add_fiat &&
                         <React.Fragment>
@@ -116,16 +143,12 @@ class AddCryptoCurrency extends Component {
                             </RadioButtonGroup>
                         </React.Fragment>
                         }
-                        {(this.can_add_fiat ||
-                          this.props.available_crypto_currencies.length !== 0) &&
-                          <FormSubmitButton
-                              is_disabled={isSubmitting || !values.currency}
-                              label={ localize('Add account') }
-                              is_absolute={false}
-                              is_center={true}
-                              form_error={this.props.form_error}
-                          />
-                        }
+                        <FormSubmitButton
+                            is_disabled={isSubmitting || !values.currency}
+                            label={ localize('Add account') }
+                            is_center={true}
+                            form_error={this.props.form_error}
+                        />
                     </form>
                 )}
             />

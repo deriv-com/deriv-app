@@ -1,4 +1,4 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations';
 
 Blockly.Blocks.tick = {
     init() {
@@ -6,20 +6,20 @@ Blockly.Blocks.tick = {
     },
     definition(){
         return {
-            message0       : translate('Last Tick'),
+            message0       : localize('Last Tick'),
             output         : 'Number',
             outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Returns the tick value received from server'),
+            tooltip        : localize('Returns the tick value received from server'),
             category       : Blockly.Categories.Tick_Analysis,
         };
     },
     meta(){
         return {
-            'display_name': translate('Last tick'),
-            'description' : translate('This block gives you the value of the last tick.'),
+            'display_name': localize('Last tick'),
+            'description' : localize('This block gives you the value of the last tick.'),
         };
     },
 };
@@ -30,20 +30,20 @@ Blockly.Blocks.tick_string = {
     },
     definition() {
         return {
-            message0       : translate('Last Tick String'),
+            message0       : localize('Last Tick String'),
             output         : 'String',
-            outputShape    : Blockly.OUTPUT_SHAPE_SQUARE,
+            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Returns the tick value received by a before purchase block in string format'),
+            tooltip        : localize('Returns the tick value received by a before purchase block in string format'),
             category       : Blockly.Categories.Tick_Analysis,
         };
     },
     meta(){
         return {
-            'display_name': translate('Tick value'),
-            'description' : translate('Tick value Description'),
+            'display_name': localize('Tick value'),
+            'description' : localize('Tick value Description'),
         };
     },
     onchange: Blockly.Blocks.tick.onchange,

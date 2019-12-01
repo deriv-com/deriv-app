@@ -1,7 +1,7 @@
 import PropTypes    from 'prop-types';
 import React        from 'react';
 import ButtonLink   from 'App/Components/Routes/button-link.jsx';
-import Localize     from 'App/Components/Elements/localize.jsx';
+import { Localize } from 'deriv-translations';
 
 const PageError = ({
     buttonOnClick,
@@ -37,7 +37,6 @@ const PageError = ({
                 className='page-error__btn'
                 to={redirect_url}
                 onClick={buttonOnClick}
-                primary
             >
                 <span className='page-error__btn-text btn__text'>
                     {redirect_label}

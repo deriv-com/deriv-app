@@ -1,7 +1,7 @@
+const { getLanguage }     = require('deriv-translations');
 const website_name        = require('App/Constants/app-config').website_name;
 const Client              = require('./client_base');
 const getElementById      = require('../common_functions').getElementById;
-const getLanguage         = require('../language').get;
 const isMobile            = require('../os_detect').isMobile;
 const isStorageSupported  = require('../storage').isStorageSupported;
 const LocalStore          = require('../storage').LocalStore;
@@ -17,6 +17,10 @@ const Login = (() => {
         }
     };
 
+    const redirectToSignUp = () => {
+        window.open('https://deriv.com?action=signup');
+    };
+    
     const loginUrl = () => {
         const server_url         = localStorage.getItem('config.server_url');
         const language           = getLanguage();
@@ -55,6 +59,7 @@ const Login = (() => {
         redirectToLogin,
         isLoginPages,
         initOneAll,
+        redirectToSignUp,
     };
 })();
 

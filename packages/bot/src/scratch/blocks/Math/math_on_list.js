@@ -1,4 +1,4 @@
-import { translate } from '../../../utils/lang/i18n';
+import { localize } from 'deriv-translations';
 
 Blockly.Blocks.math_on_list = {
     init() {
@@ -6,20 +6,20 @@ Blockly.Blocks.math_on_list = {
     },
     definition(){
         return {
-            message0: translate('%1 of list %2'),
+            message0: localize('%1 of list %2'),
             args0   : [
                 {
                     type   : 'field_dropdown',
                     name   : 'OP',
                     options: [
-                        [translate('sum'), 'SUM'],
-                        [translate('min'), 'MIN'],
-                        [translate('max'), 'MAX'],
-                        [translate('average'), 'AVERAGE'],
-                        [translate('median'), 'MEDIAN'],
-                        [translate('modes'), 'MODE'],
-                        [translate('standard deviation'), 'STD_DEV'],
-                        [translate('random item'), 'RANDOM'],
+                        [localize('sum'), 'SUM'],
+                        [localize('min'), 'MIN'],
+                        [localize('max'), 'MAX'],
+                        [localize('average'), 'AVERAGE'],
+                        [localize('median'), 'MEDIAN'],
+                        [localize('modes'), 'MODE'],
+                        [localize('standard deviation'), 'STD_DEV'],
+                        [localize('random item'), 'RANDOM'],
                     ],
                 },
                 {
@@ -32,14 +32,14 @@ Blockly.Blocks.math_on_list = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('Aggregate operations'),
+            tooltip        : localize('Aggregate operations'),
             category       : Blockly.Categories.Mathematical,
         };
     },
     meta(){
         return {
-            'display_name': translate('Aggregate operations'),
-            'description' : translate('This block performs the following operations on a given list: sum, minimum, maximum, average, median, modes, standard deviation, random item.'),
+            'display_name': localize('Aggregate operations'),
+            'description' : localize('This block performs the following operations on a given list: sum, minimum, maximum, average, median, modes, standard deviation, random item.'),
         };
     },
 };

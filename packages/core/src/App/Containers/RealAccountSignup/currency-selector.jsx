@@ -1,11 +1,11 @@
 import classNames           from 'classnames';
+import { ThemedScrollbars } from 'deriv-components';
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import { Field, Formik }    from 'formik';
-import { ThemedScrollbars } from 'deriv-components';
 import { connect }          from 'Stores/connect';
 import Icon                 from 'Assets/icon.jsx';
-import { localize }         from 'App/i18n';
+import { localize }         from 'deriv-translations';
 import FormSubmitButton     from './form-submit-button.jsx';
 import 'Sass/currency-select-radio.scss';
 
@@ -145,7 +145,7 @@ class CurrencySelector extends React.Component {
                         <ThemedScrollbars
                             autohide
                             style={{
-                                height: '100%',
+                                height: 'calc(100% - 50px)',
                             }}
                         >
                             <RadioButtonGroup
@@ -191,6 +191,7 @@ class CurrencySelector extends React.Component {
                             }
                         </ThemedScrollbars>
                         <FormSubmitButton
+                            is_absolute
                             is_disabled={isSubmitting || !values.currency}
                             is_center={!this.props.has_currency}
                             label={!this.props.currency ? localize('Set currency') : localize('Next')}

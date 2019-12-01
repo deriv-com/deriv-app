@@ -1,7 +1,7 @@
 import ObjectUtils             from 'deriv-shared/utils/object';
 import ServerTime              from '_common/base/server_time';
-import { localize }            from 'App/i18n';
-import { WS }                  from 'Services';
+import { localize }            from 'deriv-translations';
+import { WS }                  from 'Services/ws-methods';
 import {
     isTimeValid,
     minDate,

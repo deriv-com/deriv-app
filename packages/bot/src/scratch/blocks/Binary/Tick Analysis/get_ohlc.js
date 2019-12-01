@@ -1,5 +1,5 @@
-import config        from '../../../../constants';
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations';
+import config       from '../../../../constants';
 
 Blockly.Blocks.get_ohlc = {
     init() {
@@ -7,8 +7,8 @@ Blockly.Blocks.get_ohlc = {
     },
     definition(){
         return {
-            message0: translate('in candle list get # from end %1'),
-            message1: translate('with interval: %1'),
+            message0: localize('in candle list get # from end %1'),
+            message1: localize('with interval: %1'),
             args0   : [
                 {
                     type : 'input_value',
@@ -28,14 +28,14 @@ Blockly.Blocks.get_ohlc = {
             colour         : Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : translate('This block gives you a specific candle from within the selected time interval.'),
+            tooltip        : localize('This block gives you a specific candle from within the selected time interval.'),
             category       : Blockly.Categories.Tick_Analysis,
         };
     },
     meta(){
         return {
-            'display_name': translate('Get candle'),
-            'description' : translate('This block gives you a specific candle from within the selected time interval.'),
+            'display_name': localize('Get candle'),
+            'description' : localize('This block gives you a specific candle from within the selected time interval.'),
         };
     },
 };

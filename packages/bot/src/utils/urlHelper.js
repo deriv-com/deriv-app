@@ -1,6 +1,6 @@
 
-import { getLanguage }              from './lang/lang';
-import AppIds                       from '../services/api/appIdResolver';
+import { getLanguage } from 'deriv-translations';
+import AppIds          from '../services/api/appIdResolver';
 
 export const isProduction = () =>
     // Check if the hostname is one of the production domains

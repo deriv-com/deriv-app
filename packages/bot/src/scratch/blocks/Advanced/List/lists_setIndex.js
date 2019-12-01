@@ -1,22 +1,22 @@
-import { translate } from '../../../../utils/lang/i18n';
+import { localize } from 'deriv-translations';
 
 Blockly.Blocks.lists_setIndex = {
     init() {
-        this.MODE_OPTIONS = [[translate('set'), 'SET'], [translate('insert at'), 'INSERT']];
+        this.MODE_OPTIONS = [[localize('set'), 'SET'], [localize('insert at'), 'INSERT']];
         this.WHERE_OPTIONS = [
-            [translate('#'), 'FROM_START'],
-            [translate('# from end'), 'FROM_END'],
-            [translate('first'), 'FIRST'],
-            [translate('last'), 'LAST'],
-            [translate('random'), 'RANDOM'],
+            [localize('#'), 'FROM_START'],
+            [localize('# from end'), 'FROM_END'],
+            [localize('first'), 'FIRST'],
+            [localize('last'), 'LAST'],
+            [localize('random'), 'RANDOM'],
         ];
 
         this.appendValueInput('LIST')
             .setCheck('Array')
-            .appendField(translate('in list'));
+            .appendField(localize('in list'));
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(this.MODE_OPTIONS), 'MODE');
         this.appendDummyInput('AT');
-        this.appendValueInput('TO').appendField(translate('as'));
+        this.appendValueInput('TO').appendField(localize('as'));
 
         // eslint-disable-next-line no-underscore-dangle
         this.setColourFromRawValues_(
@@ -26,13 +26,13 @@ Blockly.Blocks.lists_setIndex = {
         );
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setTooltip(translate('This block replaces a specific item in a list with another given item. It can also insert the new item in the list at a specific position.'));
+        this.setTooltip(localize('This block replaces a specific item in a list with another given item. It can also insert the new item in the list at a specific position.'));
         this.updateAt(true);
     },
     meta(){
         return {
-            'display_name': translate('Set list item'),
-            'description' : translate('This block replaces a specific item in a list with another given item. It can also insert the new item in the list at a specific position.'),
+            'display_name': localize('Set list item'),
+            'description' : localize('This block replaces a specific item in a list with another given item. It can also insert the new item in the list at a specific position.'),
             'category'    : Blockly.Categories.List,
         };
     },

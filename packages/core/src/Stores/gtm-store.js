@@ -171,4 +171,16 @@ export default class GTMStore extends BaseStore {
             localStorage.setItem('GTM_login', event_name);
         }
     }
+
+    @action.bound	
+    pushLoadPerformance(performanceMetric, duration) {	
+        const data = {	
+            'event': performanceMetric,	
+            duration,	
+        };	
+        dataLayer.push({	
+            ...this.common_variables,	
+            ...data,	
+        });	
+    }
 }

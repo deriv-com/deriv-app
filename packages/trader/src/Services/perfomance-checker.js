@@ -1,11 +1,11 @@
 const performanceMetrics = {
-    start           : 'start',
+    start           : 'started',
     smartChartLoaded: 'smart-chart-loaded',
-    purchaseStart   : 'purchase-start',
-    purchaseEnd     : 'purchase-end',
+    purchaseStart   : 'purchase-started',
+    purchaseEnd     : 'purchase-ended',
     purchaseEnabled : 'purchase-enabled',
-    tradeEngineStart: 'trade-engine-start',
-    tradeEngineReady: 'trade-engine-ready',
+    tradeEngineStart: 'trade-engine-started',
+    tradeEngineReady: 'trade-engine-enabled',
 };
 
 let is_data_sent = false;

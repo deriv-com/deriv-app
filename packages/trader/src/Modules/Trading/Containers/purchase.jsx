@@ -4,7 +4,7 @@ import ObjectUtils                 from 'deriv-shared/utils/object';
 import PurchaseFieldset            from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { connect }                 from 'Stores/connect';
-import { measurePerformance }      from 'Services/perfomance-checker';	
+import { measurePerformance }      from 'Services/perfomance-checker';
 
 const Purchase = ({
     basis,
@@ -92,7 +92,6 @@ const Purchase = ({
 Purchase.propTypes = {
     basis                     : PropTypes.string,
     currency                  : PropTypes.string,
-    pushLoadPerformance       : PropTypes.func,
     is_client_allowed_to_visit: PropTypes.bool,
     // is_purchase_confirm_on    : PropTypes.bool,
     is_purchase_locked        : PropTypes.bool,
@@ -102,6 +101,7 @@ Purchase.propTypes = {
     proposal_info             : PropTypes.object,
     purchase_info             : PropTypes.object,
     purchased_states_arr      : PropTypes.array,
+    pushLoadPerformance       : PropTypes.func,
     setPurchaseState          : PropTypes.func,
     // togglePurchaseLock        : PropTypes.func,
     trade_types               : PropTypes.object,

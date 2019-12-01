@@ -1,10 +1,10 @@
 import PropTypes                   from 'prop-types';
 import React                       from 'react';
 import ObjectUtils                 from 'deriv-shared/utils/object';
-import { measurePerformance }      from 'deriv-shared/perfomance-checker';
 import PurchaseFieldset            from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { connect }                 from 'Stores/connect';
+import { measurePerformance }      from 'Services/perfomance-checker';	
 
 const Purchase = ({
     basis,

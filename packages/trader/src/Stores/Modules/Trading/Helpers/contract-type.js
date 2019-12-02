@@ -36,7 +36,6 @@ const ContractType = (() => {
         available_categories = ObjectUtils.cloneObject(contract_categories); // To preserve the order (will clean the extra items later in this function)
 
         r.contracts_for.available.forEach((contract) => {
-            // console.log(contract);
             const type = Object.keys(contract_types).find(key => (
                 contract_types[key].trade_types.indexOf(contract.contract_type) !== -1 &&
                 (typeof contract_types[key].barrier_count === 'undefined' || +contract_types[key].barrier_count === contract.barriers) // To distinguish betweeen Rise/Fall & Higher/Lower

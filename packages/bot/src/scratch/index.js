@@ -326,7 +326,7 @@ class DBot {
                 const required_inputs_object = block.getRequiredValueInputs();
                 const required_input_names   = Object.keys(required_inputs_object);
                 const should_highlight       = required_input_names.some(input_name => {
-                    if (block.disabled || block.getInheritedDisabled() || Blockly.utils.hasClass(block.svgGroup_, 'blocklySelected')) {
+                    if (block.disabled || block.getInheritedDisabled() || Blockly.selected === block) {
                         return false;
                     }
 

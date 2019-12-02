@@ -6,7 +6,6 @@ import { Formik }             from 'formik';
 import PropTypes              from 'prop-types';
 import React                  from 'react';
 import SuccessDialog          from 'App/Containers/Modals/success-dialog.jsx';
-import FormSubmitButton       from 'App/Containers/RealAccountSignup/form-submit-button.jsx';
 import { localize, Localize } from 'deriv-translations';
 import IconMT5Advanced        from 'Assets/Mt5/icon-mt5-advanced.jsx';
 import IconMT5Standard        from 'Assets/Mt5/icon-mt5-standard.jsx';
@@ -15,6 +14,7 @@ import { connect }            from 'Stores/connect';
 import {
     validPassword,
     validLength }             from 'Utils/Validator/declarative-validation-rules';
+import FormSubmitButton       from '../Components/mt5-form-submit-button.jsx';
 import 'Sass/app/modules/mt5/mt5.scss';
 
 const getSubmitText = (account_title, category) => {

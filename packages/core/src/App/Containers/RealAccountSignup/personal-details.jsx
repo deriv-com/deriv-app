@@ -153,6 +153,15 @@ const InputField = (props) => {
     );
 };
 
+const trimStrings = (values) => {
+    Object.keys(values)
+        .forEach(key => {
+            if (typeof values[key] === 'string') {
+                values[key] = values[key].replace(/[ ]/g, '');
+            }
+        });
+};
+
 class PersonalDetails extends React.Component {
     constructor(props) {
         super(props);
@@ -188,6 +197,7 @@ class PersonalDetails extends React.Component {
                 }}
                 validate={this.validatePersonalDetails}
                 onSubmit={(values, actions) => {
+                    trimStrings(values);
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
                 ref={this.form}
@@ -313,7 +323,7 @@ class PersonalDetails extends React.Component {
 
         Object.entries(validations)
             .forEach(([key, rules]) => {
-                const error_index = rules.findIndex(v => !v(values[key]));
+                const error_index = rules.findIndex(v => !v((values[key])));
 
                 if (error_index !== -1) {
                     switch (key) {

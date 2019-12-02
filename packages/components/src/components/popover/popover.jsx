@@ -115,7 +115,7 @@ Popover.propTypes = {
     disable_message_icon: PropTypes.bool,
     disable_target_icon : PropTypes.bool,
     has_error           : PropTypes.bool,
-    icon                : PropTypes.string,
+    icon                : PropTypes..oneOf(['info', 'question', 'dot', 'counter']),
     id                  : PropTypes.string,
     margin              : PropTypes.number,
     message             : PropTypes.string,

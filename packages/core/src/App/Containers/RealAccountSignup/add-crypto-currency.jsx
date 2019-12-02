@@ -1,15 +1,14 @@
-import { Field, Formik }    from 'formik';
-import PropTypes            from 'prop-types';
-import React, { Component } from 'react';
-import { connect }          from 'Stores/connect';
-import Localize             from 'App/Components/Elements/localize.jsx';
-import { localize }         from 'App/i18n';
+import { Field, Formik }      from 'formik';
+import PropTypes              from 'prop-types';
+import React, { Component }   from 'react';
+import { connect }            from 'Stores/connect';
+import { localize, Localize } from 'deriv-translations';
 import {
     Hr,
     RadioButtonGroup,
     RadioButton,
-}                           from './currency-selector.jsx';
-import FormSubmitButton     from './form-submit-button.jsx';
+}                             from './currency-selector.jsx';
+import FormSubmitButton       from './form-submit-button.jsx';
 
 const messages = [
     'Choose your preferred cryptocurrency',

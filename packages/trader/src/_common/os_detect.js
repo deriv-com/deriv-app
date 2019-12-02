@@ -1,4 +1,4 @@
-const localize = require('../App/i18n').localize;
+const { localize }  = require('deriv-translations');
 
 const systems = {
     mac  : ['Mac68K', 'MacIntel', 'MacPPC'],

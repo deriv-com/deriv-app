@@ -1,10 +1,9 @@
-import { Dialog }       from 'deriv-components';
-import PropTypes        from 'prop-types';
-import React            from 'react';
-import { localize }     from 'App/i18n';
-import Localize         from 'App/Components/Elements/localize.jsx';
-import { connect }      from 'Stores/connect';
-import { website_name } from 'App/Constants/app-config';
+import { Dialog }             from 'deriv-components';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import { localize, Localize } from 'deriv-translations';
+import { connect }            from 'Stores/connect';
+import { website_name }       from 'App/Constants/app-config';
 
 const MarketUnavailableModal = ({
     disableApp,

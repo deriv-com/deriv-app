@@ -1,4 +1,4 @@
-import { localize } from 'App/i18n';
+import { localize } from 'deriv-translations';
 
 export const getMtCompanies = () => {
     const standard_config   = {

@@ -3,7 +3,7 @@ import {
     observable }              from 'mobx';
 import ObjectUtils            from 'deriv-shared/utils/object';
 import { WS }                 from 'Services/ws-methods';
-import { localize }           from 'App/i18n';
+import { localize }           from 'deriv-translations';
 import ContractStore          from './contract-store';
 import { contractSold }       from '../Portfolio/Helpers/portfolio-notifications';
 import BaseStore              from '../../base-store';

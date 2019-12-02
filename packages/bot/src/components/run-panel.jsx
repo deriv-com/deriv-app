@@ -4,7 +4,7 @@ import { Button,
     Tabs }                                    from 'deriv-components';
 import PropTypes                              from 'prop-types';
 import React                                  from 'react';
-import { localize }                           from 'deriv-translations/lib/i18n';
+import { localize }                           from 'deriv-translations';
 import Dialog                                 from './dialog.jsx';
 import { InfoOutlineIcon, RunIcon, StopIcon } from './Icons.jsx';
 import Journal                                from './journal.jsx';
@@ -12,7 +12,7 @@ import Summary                                from './summary.jsx';
 import TradeAnimation                         from './trade-animation.jsx';
 import Transactions                           from './transactions.jsx';
 import { connect }                            from '../stores/connect';
-import '../assets/sass/run-panel.scss';
+import                                             '../assets/sass/run-panel.scss';
 
 const drawerContent = ({
     active_index,

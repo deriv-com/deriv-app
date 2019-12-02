@@ -1,7 +1,7 @@
 import { LiveApi }                                      from 'binary-live-api';
+import { getLanguage }                                  from 'deriv-translations';
 import AppIds                                           from './appIdResolver';
 import GTM                                              from '../../utils/gtm';
-import { getLanguage }                                  from '../../utils/lang/lang';
 import {
     addToken,
     removeToken,

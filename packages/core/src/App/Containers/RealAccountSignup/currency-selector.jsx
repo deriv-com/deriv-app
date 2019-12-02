@@ -5,7 +5,7 @@ import React                from 'react';
 import { Field, Formik }    from 'formik';
 import { connect }          from 'Stores/connect';
 import Icon                 from 'Assets/icon.jsx';
-import { localize }         from 'App/i18n';
+import { localize }         from 'deriv-translations';
 import FormSubmitButton     from './form-submit-button.jsx';
 import 'Sass/currency-select-radio.scss';
 

@@ -7,10 +7,9 @@ import {
     Button,
     Money,
     UnderlyingIcon }           from 'deriv-components';
-import { localize }            from 'App/i18n';
+import { localize, Localize }  from 'deriv-translations';
 import Icon                    from 'Assets/icon.jsx';
 import routes                  from 'Constants/routes';
-import Localize                from 'App/Components/Elements/localize.jsx';
 import ContractAudit           from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';

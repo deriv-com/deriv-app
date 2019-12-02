@@ -116,6 +116,11 @@ export default class TradeStore extends BaseStore {
     initial_barriers;
     is_initial_barrier_applied = false;
 
+    proposal_req_id = {
+        CALL: null,
+        PUT : null,
+    };
+
     @action.bound
     init = async () => {
         // To be sure that the website_status response has been received before processing trading page.
@@ -632,7 +637,6 @@ export default class TradeStore extends BaseStore {
 
         if (!ObjectUtils.isEmptyObject(requests)) {
             this.proposal_requests = requests;
-            this.proposal_info     = {};
             this.purchase_info     = {};
 
             Object.keys(this.proposal_requests).forEach((type) => {
@@ -652,6 +656,16 @@ export default class TradeStore extends BaseStore {
         const contract_type           = response.echo_req.contract_type;
         const prev_proposal_info      = ObjectUtils.getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = ObjectUtils.getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
+
+        // Sometimes the API doesn't forget old 'proposal' response and returns them with new 'proposal' response, so here
+        // we need to send 'forget' req for old proposal subscriptions and store the latest proposal req_id
+        if (this.proposal_req_id[contract_type] < response.echo_req.req_id) {
+            // if an old proposal subscription exist, send 'forget'
+            if (this.proposal_info[contract_type] && this.proposal_info[contract_type].id) {
+                WS.forget(this.proposal_info[contract_type].id);
+            }
+            this.proposal_req_id[contract_type] = response.echo_req.req_id;
+        }
 
         this.proposal_info  = {
             ...this.proposal_info,

@@ -46,12 +46,12 @@ class DBot {
             this.workspace.clearUndo();
 
             const { saveload } = ScratchStore.instance;
+            const drop_zone    = document.body;
     
             window.addEventListener('resize', () => this.onWorkspaceResize(el_app_contents, el_scratch_div));
             window.dispatchEvent(new Event('resize'));
-
-            document.addEventListener('dragover', DBot.handleDragOver);
-            document.addEventListener('drop', saveload.handleFileChange);
+            drop_zone.addEventListener('dragover', DBot.handleDragOver);
+            drop_zone.addEventListener('drop', saveload.handleFileChange);
     
             // disable overflow
             el_scratch_div.parentNode.style.overflow = 'hidden';
@@ -259,6 +259,8 @@ class DBot {
         if (!force_check && (!this.workspace || this.workspace.isDragging())) {
             return;
         }
+
+        Blockly.JavaScript.init(this.workspace);
 
         const isGlobalEndDragEvent = () => event.type === Blockly.Events.END_DRAG;
         const isGlobalDeleteEvent  = () => event.type === Blockly.Events.BLOCK_DELETE;

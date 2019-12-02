@@ -9,6 +9,7 @@ import './data_category';
 import './field_dropdown';
 import './field_image';
 import './flyout_base';
+import './generator';
 import './gesture';
 import './icon';
 import './procedures';

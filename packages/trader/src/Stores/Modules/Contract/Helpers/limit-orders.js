@@ -20,9 +20,9 @@ const getArrowDirection = (contract_type, limit_order_type) => {
 };
 
 export const LIMIT_ORDER_TYPES = {
+    STOP_OUT   : 'stop_out',
     TAKE_PROFIT: 'take_profit',
     STOP_LOSS  : 'stop_loss',
-    STOP_OUT   : 'stop_out',
 };
 
 export const setLimitOrderBarriers = ({
@@ -63,6 +63,7 @@ export const setLimitOrderBarriers = ({
                     hideOffscreenLine   : true,
                     arrowDirection      : getArrowDirection(contract_type, key),
                     isSingleBarrier     : true,
+                    opacityOnOverlap    : key === LIMIT_ORDER_TYPES.STOP_OUT && 0.15,
                 };
                 barrier = new ChartBarrierStore(
                     obj_limit_order.value

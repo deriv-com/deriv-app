@@ -419,7 +419,7 @@ const ContractType = (() => {
     };
 
     const getBasis = (contract_type, basis) => {
-        const arr_basis  = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'basis']) || {};
+        const arr_basis  = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'basis']) || [];
         const localized_basis = getLocalizedBasis();
         const basis_list = arr_basis.reduce((cur, bas) => (
             [...cur, { text: localized_basis[bas], value: bas }]

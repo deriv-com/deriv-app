@@ -14,7 +14,7 @@
     "build": "rimraf lib && webpack --mode=production --optimize-minimize --progress",
     "build:travis": "rimraf lib && webpack --mode=production --optimize-minimize",
     "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
-    "start": "rimraf lib && npm run test && webpack --mode=production --progress --watch",
+    "start": "rimraf lib && npm run test && npm run serve",
     "translate": "sh ./scripts/update-translations.sh",
     "deploy": "echo \"No deploy specified\"",
     "deploy:clean": "echo \"No deploy:clean specified\"",

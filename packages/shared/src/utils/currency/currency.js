@@ -6,7 +6,7 @@ export const getRoundedNumber = (number, currency) => {
     return Number(Number(number).toFixed(getDecimalPlaces(currency)));
 }
 
-export const getFormatedText = (number, currency) => {
+export const getFormattedText = (number, currency) => {
     return `${addComma(number, getDecimalPlaces(currency), isCryptocurrency(currency))} ${currency}`;
 }
 

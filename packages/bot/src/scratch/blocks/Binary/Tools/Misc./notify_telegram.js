@@ -41,9 +41,9 @@ Blockly.Blocks.notify_telegram = {
     },
     getRequiredValueInputs() {
         return {
-            TELEGRAM_ACCESS_TOKEN: null,
-            TELEGRAM_CHAT_ID     : null,
-            TELEGRAM_MESSAGE     : null,
+            TELEGRAM_ACCESS_TOKEN: (input) => !input || input === '\'\'',
+            TELEGRAM_CHAT_ID     : (input) => !input || input === '\'\'',
+            TELEGRAM_MESSAGE     : (input) => !input || input === '\'\'',
         };
     },
 };

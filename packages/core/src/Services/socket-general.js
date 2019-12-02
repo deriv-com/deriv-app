@@ -120,7 +120,7 @@ const BinarySocketGeneral = (() => {
                 break;
             case 'InvalidToken':
                 // if message type equals to cashier, there is no need to logout user
-                if (msg_type === 'cashier') {
+                if (msg_type === 'cashier' || msg_type === 'paymentagent_withdraws') {
                     return;
                 }
                 client_store.logout().then(() => {

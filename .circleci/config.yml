@@ -33,25 +33,9 @@ commands:
   npm_install:
     description: "Install npm modules"
     steps:
-      - restore_cache:
-          name: Restore npm cache
-          keys:
-            - npm-v1-{{ checksum "package.json" }}
-            - npm-v1-
       - run:
           name: Bootstrap
           command: npm run bootstrap
-      - save_cache:
-          name: Save NPM cache
-          key: npm-v1-{{ checksum "package.json" }}
-          paths:
-            - "node_modules"
-            - "packages/bot/node_modules"
-            - "packages/components/node_modules"
-            - "packages/core/node_modules"
-            - "packages/trader/node_modules"
-            - "packages/shared/node_modules"
-            - "packages/translations/node_modules"
 
   build:
     description: "Build"
@@ -75,7 +59,7 @@ commands:
           name: Pushing Image to docker hub
           command: |
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-            docker push ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_SHA1}
+            docker push ${DOCKHUB_ORGANISATION}/staging-deriv-app:${CIRCLE_SHA1}
   k8s_deploy:
     description: "Deploy to k8s cluster"
     steps:

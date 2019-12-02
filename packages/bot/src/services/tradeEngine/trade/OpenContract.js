@@ -29,7 +29,7 @@ export default Engine =>
                 if (this.isSold) {
                     contractSettled(contract);
                     this.contractId = '';
-                    // this.updateTotals(contract);
+                    this.updateTotals(contract);
                     contractStatus({
                         id  : 'contract.sold',
                         data: contract.transaction_ids.sell,

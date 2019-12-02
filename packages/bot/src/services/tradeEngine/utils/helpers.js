@@ -13,11 +13,11 @@ export const tradeOptionToProposal = tradeOption =>
     tradeOption.contractTypes.map(type => {
         const proposal = {
             duration_unit: tradeOption.duration_unit,
-            basis   : tradeOption.basis,
-            currency: tradeOption.currency,
-            symbol  : tradeOption.symbol,
-            duration: tradeOption.duration,
-            amount  : tradeOption.amount,
+            basis        : tradeOption.basis,
+            currency     : tradeOption.currency,
+            symbol       : tradeOption.symbol,
+            duration     : tradeOption.duration,
+            amount       : tradeOption.amount,
             contract_type: type,
         };
         if (tradeOption.prediction !== undefined) {

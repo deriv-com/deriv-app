@@ -18,7 +18,7 @@ class App extends Component {
 
         this.state = {
             activeIndex: 0,
-        }
+        };
     }
 
     componentDidMount() {
@@ -26,7 +26,7 @@ class App extends Component {
         const index_to_set = /orders/.test(window.location.pathname) ? 1 : 0;
 
         if (this.state.active_index !== index_to_set) {
-            this.setState({ active_index: index_to_set});
+            this.setState({ active_index: index_to_set });
         }
     }
 

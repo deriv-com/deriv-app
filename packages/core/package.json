@@ -132,6 +132,7 @@
     "react-i18next": "^10.11.1",
     "react-pose": "^4.0.8",
     "react-router-dom": "^5.0.1",
+    "react-tiny-popover": "^4.0.0",
     "react-transition-group": "^2.5.0",
     "react-window": "^1.8.4",
     "url-polyfill": "^1.1.5",

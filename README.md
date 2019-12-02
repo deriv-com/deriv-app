@@ -13,6 +13,7 @@ This repository contains the various platforms of the Deriv application.
   - [Trader](packages/trader/README.md)
   - [Translations](packages/translations/README.md)
 - [Working With This Repo](#working-with-this-repo)
+    - [Package names](#package-names)
 - [Usage](#usage)
   - [Starting a Development Server](#starting-a-dev-server)
   - [How to Clean Packages](#how-to-clean-packages)
@@ -63,6 +64,11 @@ All packages must contain the following scripts to perform the stated actions:
 
 **Please follow the README of each package you intend to work with on how to get set up and their custom scripts.** However, the above scripts can be run from the root directory in the following manner.
 
+### Package names
+Each package is named with the `deriv-` prefix, however for the scripts above, you do not need to add the `deriv-` prefix as the scripts already prefix the 1st argument of the script with `deriv-`.
+
+You can find the names of packages by first navigating to the `packages` folder. Each subfolder is a package, and contains a `package.json` file. The value of the `name` key in `package.json` is the package name.
+
 ### Usage
 #### Starting a Development Server
 
@@ -106,8 +112,6 @@ There are 3 types of release:
     3. You can deploy to a folder in your `gh-pages` branch in order to separate from root app deployment and other folder deployments with: `npm run deploy:folder br_test_folder` (folder name must be prefixed with `br_`)
 2. Release to staging: simply run `npm run deploy:staging` and follow the instructions.
 3. Release to production: simply run `npm run deploy:production` and follow the instructions.
-
-You can find the names of packages by first navigating to the `packages` folder. Each subfolder is a package, and contains a `package.json` file. The value of the `name` key in `package.json` is the package name.
 
 ## PR Guidelines
 1. Use the `developer 1|developer 2/task_name` format for PR titles. (e.g.: `dev1|dev2/fixed_emoji_issue`, `dev1/added_superfast_jellyfish`)

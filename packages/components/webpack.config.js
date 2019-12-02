@@ -137,6 +137,7 @@ module.exports = {
             'react'                     : 'react',
             'react-dom'                 : 'react-dom',
             'deriv-shared'              : 'deriv-shared',
+            'react-tiny-popover'        : 'react-tiny-popover',
         },
         /^deriv-shared\/.+$/,
     ],

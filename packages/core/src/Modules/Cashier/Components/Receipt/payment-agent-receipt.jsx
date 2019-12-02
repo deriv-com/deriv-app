@@ -26,6 +26,7 @@ class PaymentAgentReceipt extends React.Component {
         return (
             <div className='cashier__wrapper--align-left'>
                 <ThemedScrollbars
+                    style={{ position: 'absolute', height: 'calc(100% - 4.8rem)', width: 'calc(100% - 4.8rem)' }}
                     autoHide
                     autoHeightMax={550}
                 >

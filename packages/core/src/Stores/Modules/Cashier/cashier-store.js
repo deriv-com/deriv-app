@@ -482,8 +482,8 @@ export default class CashierStore extends BaseStore {
         this.setIsWithdrawSuccessful(false);
         this.setReceipt({});
 
-        if (!this.config.payment_agent.list.length) {
-            const payment_agent_list = await this.getPaymentAgentList();
+        if (!this.config.payment_agent.agents.length) {
+            const payment_agent_list = this.config.payment_agent.list.length ? await BinarySocket.wait('paymentagent_list') : await this.getPaymentAgentList();
             payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
                 this.addPaymentAgent(payment_agent);
             });

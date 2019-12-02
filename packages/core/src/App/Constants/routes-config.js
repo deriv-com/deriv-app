@@ -86,11 +86,11 @@ const initRoutesConfig = () => ([
         is_authenticated: true,
         title           : localize('Cashier'),
         routes          : [
-            { path: routes.cashier_deposit,      component: Deposit,              title: localize('Deposit'),                icon_component: 'IconDepositSmall',   default: true },
-            { path: routes.cashier_withdrawal,   component: Withdrawal,           title: localize('Withdrawal'),             icon_component: 'IconWithdrawalSmall' },
-            { path: routes.cashier_acc_transfer, component: AccountTransfer,      title: localize('Account Transfer'),       icon_component: 'IconAccountTransfer' },
-            { path: routes.cashier_pa,           component: PaymentAgent,         title: localize('Payment Agent'),          icon_component: 'IconPaymentAgent' },
-            { path: routes.cashier_pa_transfer,  component: PaymentAgentTransfer, title: localize('Payment Agent Transfer'), icon_component: 'IconAccountTransfer' },
+            { path: routes.cashier_deposit,      component: Deposit,              title: localize('Deposit'),                   icon_component: 'IconDepositSmall',   default: true },
+            { path: routes.cashier_withdrawal,   component: Withdrawal,           title: localize('Withdrawal'),                icon_component: 'IconWithdrawalSmall' },
+            { path: routes.cashier_pa,           component: PaymentAgent,         title: localize('Payment agent'),             icon_component: 'IconPaymentAgent' },
+            { path: routes.cashier_acc_transfer, component: AccountTransfer,      title: localize('Transfer between accounts'), icon_component: 'IconAccountTransfer' },
+            { path: routes.cashier_pa_transfer,  component: PaymentAgentTransfer, title: localize('Transfer to client'),        icon_component: 'IconAccountTransfer' },
             // To work with P2P please uncomment this line
             // { path: routes.cashier_p2p,          component: P2PCashier,           title: localize('P2P Cashier'),            icon_component: 'IconP2PCashier' },
         ],

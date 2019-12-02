@@ -57,7 +57,6 @@ class Cashier extends React.Component {
             {
                 onClick: () => {
                     this.props.history.push(routes.trade);
-                    this.props.toggleCashier();
                 },
                 icon : 'ModalIconClose',
                 title: localize('Close'),

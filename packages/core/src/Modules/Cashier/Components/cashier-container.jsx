@@ -10,7 +10,7 @@ class CashierContainer extends React.Component {
                 {this.props.is_loading && <Loading />}
                 {this.props.iframe_url &&
                 <ThemedScrollbars
-                    style={{ position: 'absolute', width: '100%', height: this.props.iframe_height ? '100%' : 0 }}
+                    style={{ position: 'absolute', height: this.props.iframe_height ? '100%' : 0, width: '100%' }}
                     autoHide
                     autoHeightMax={780}
                     renderTrackHorizontal={props => <div {...props} className='track-horizontal' style={{ display: 'none' }} />}

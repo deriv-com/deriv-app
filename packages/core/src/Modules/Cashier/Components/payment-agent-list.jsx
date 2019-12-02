@@ -33,7 +33,7 @@ class PaymentAgentList extends React.Component {
         return (
             <div className='cashier__wrapper--align-left'>
                 <ThemedScrollbars
-                    style={{ width: '100%', height: '100%' }}
+                    style={{ position: 'absolute', height: 'calc(100% - 4.8rem)', width: 'calc(100% - 4.8rem)' }}
                     autoHide
                 >
                     <p className='cashier__paragraph'><Localize i18n_default_text='A payment agent is authorised to process deposits and withdrawals for you if your local payment methods or currencies are not supported on {{website_name}}.' values={{ website_name }} /></p>

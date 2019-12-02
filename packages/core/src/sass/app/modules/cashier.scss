@@ -189,9 +189,14 @@
         background-size: 100%;
         margin: 2.4rem auto;
     }
-    &__virtual-header {
-        margin-top: 0;
-        margin-bottom: 0.8rem;
+    &__virtual {
+        &-center {
+            margin: 12vh 0;
+        }
+        &-header {
+            margin-top: 0;
+            margin-bottom: 0.8rem;
+        }
     }
     &__center-align {
         height: 100%;

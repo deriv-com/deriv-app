@@ -1,5 +1,5 @@
 export const buildBarriersConfig = (contract, barriers = { count: contract.barriers }) => {
-    if (!contract.barriers) {
+    if (!contract.barriers || /RESET(CALL|PUT)/.test(contract.contract_type)) {
         return undefined;
     }
 

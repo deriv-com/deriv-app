@@ -78,14 +78,6 @@ export const getUnsupportedContracts = () => ({
         name    : localize('Goes Outside'),
         position: 'bottom',
     },
-    RESETCALL: {
-        name    : localize('Reset Up'),
-        position: 'top',
-    },
-    RESETPUT: {
-        name    : localize('Reset Down'),
-        position: 'bottom',
-    },
     TICKHIGH: {
         name    : localize('High Tick'),
         position: 'top',
@@ -179,6 +171,14 @@ export const getSupportedContracts = is_high_low => ({
     },
     NOTOUCH: {
         name    : localize('No Touch'),
+        position: 'bottom',
+    },
+    RESETCALL: {
+        name    : localize('Reset Up'),
+        position: 'top',
+    },
+    RESETPUT: {
+        name    : localize('Reset Down'),
         position: 'bottom',
     },
 });

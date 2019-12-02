@@ -383,7 +383,6 @@ export default class TradeStore extends BaseStore {
             purchaseSpotBarrier.hideOffscreenBarrier = true;
             purchaseSpotBarrier.isSingleBarrier = true;
             purchaseSpotBarrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
-            purchaseSpotBarrier.opacityOnOverlap = 0.15;
             this.barriers.push(purchaseSpotBarrier);
         } else {
             removeBarrier(this.barriers, key);

@@ -140,9 +140,9 @@ JSX Rules
 - Use destructuring to capture parameters if needed.
 - Use `{condition && <el/> ...</el>}` syntax to conditionally render an element.
 - Use `<el attr={value || undefined}` to conditionally render an attribute, React omits attributes with null or undefined values.
-- Use `it.L('...')` for translations.
-- Use `it.url_for('...')` to build URLs.
-- Use `it.website_name` instead of `Deriv`.
+- Use `localize('...')` for translations.
+- Use `url_for('...')` to build URLs.
+- Use `website_name` constant instead of `Deriv`.
 - Do NOT use `<Element attributeName={true} />`; just use `<Element attributeName />`.
 - Components with less than four arguments should stay list all in one line, for example:
 
@@ -212,10 +212,14 @@ const Loading = ({theme}) => (
 
 export default Loading;
 ```
-- There are cases where you do not want your strings to be escaped (i.g. when you place `<a/>` tags inside a `<Table />`). To bypass HTML escape, you can use `it.dangreouslyRenderHtml()` (under normal circumstances do NOT use this.):
+- There are cases where you do not want your strings to be escaped (i.g. when you place `<a/>` tags inside a `<Table />`). To bypass HTML escape, you can use the `interpolation.escapeValue` boolean property of the localize `options` param (under normal circumstances do NOT use this.):
 
 ```
-it.dangreouslyRenderHtml('<a href="https://deriv.app"></a>');
+localize('{{opening_tag}}Deriv App{{closing_tag}}', {
+    opening_tag  : '<a href="https://deriv.app" rel="noopener noreferrer" target="_blank" class="link">',
+    closing_tag  : '</a>',
+    interpolation: { escapeValue: false },
+}),
 ```
 
 - Blocks need to have a single space after `{`, for example:

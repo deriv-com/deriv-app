@@ -98,7 +98,7 @@ npm run start bot
 npm run test:stylelint trader
 ```
 
-❌ This will not work as the script `deploy:clean` does not support "Package param" (refer to the table in [Working With This Repo](#working-with-this-repo)):
+❌ Below command will not work as the script `deploy:clean` does not support "Package param" (refer to the table in [Working With This Repo](#working-with-this-repo)):
 ```bash
 npm run deploy:clean bot
 ```

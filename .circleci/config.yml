@@ -70,7 +70,7 @@ commands:
       - run: 
           name: Building docker image
           command: |
-            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_SHA1} .
+            docker build -t ${DOCKHUB_ORGANISATION}/staging-deriv-app:${CIRCLE_SHA1} .
       - run: 
           name: Pushing Image to docker hub
           command: |
@@ -84,7 +84,7 @@ commands:
           name: Deploying to k8s cluster for service deriv-app
           command: |
             echo $CA_CRT | base64 --decode > ca.crt
-            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/staging-deriv-app staging-deriv-app=${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_SHA1}
+            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/staging-deriv-app staging-deriv-app=${DOCKHUB_ORGANISATION}/staging-deriv-app:${CIRCLE_SHA1}
 
 jobs:
   release:

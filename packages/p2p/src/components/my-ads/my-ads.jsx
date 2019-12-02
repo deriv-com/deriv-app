@@ -1,7 +1,6 @@
 import React from 'react';
 import './my-ads.scss';
 import { localize } from 'deriv-translations';
-import { Button } from 'deriv-components';
 
 const MyAds = () => {
     return <div>

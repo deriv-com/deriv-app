@@ -1,12 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes                      from 'prop-types';
+import classNames                     from 'classnames';
 
 class ToggleSwitch extends Component {
     render() {
         return (
             <Fragment>
                 <input
-                    className='toggle-switch'
+                    className={classNames('toggle-switch', {
+                    }, this.props.className)}
                     id={'dt_toggle_switch'}
                     type='checkbox'
                     checked={this.props.is_enabled}
@@ -24,7 +26,7 @@ class ToggleSwitch extends Component {
 }
 
 ToggleSwitch.propTypes = {
-    is_enabled    : PropTypes.bool,
+    is_enabled    : PropT ypes.bool,
     onStateChanged: PropTypes.func,
 };
 

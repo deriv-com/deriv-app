@@ -35,14 +35,21 @@ const InputField = (props) => {
 class AddressDetails extends Component {
     constructor(props) {
         super(props);
-        this.state = { is_states_fetched: false };
+        this.state = { has_states_loaded: false };
         this.form = React.createRef();
+        // TODO: Find a better solution for handling no-op instead of using is_mounted flags
+        this.is_mounted = false;
     }
 
     async componentDidMount() {
+        this.is_mounted = true;
         await this.props.fetchStatesList();
-        this.setState({ is_states_fetched: true });
+        if (this.is_mounted) this.setState({ has_states_loaded: true });
         this.form.current.getFormikActions().validateForm();
+    }
+
+    componentWillUnmount() {
+        this.is_mounted = false;
     }
 
     handleCancel = (values) => {
@@ -106,7 +113,7 @@ class AddressDetails extends Component {
                                                 label={localize('Town/City*')}
                                                 placeholder={localize('Town/City')}
                                             />
-                                            { this.state.is_states_fetched &&
+                                            { this.state.has_states_loaded &&
                                                 <React.Fragment>
                                                     { (this.props.states_list.length > 0) ?
                                                         <Field name='address_state'>

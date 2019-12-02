@@ -294,7 +294,7 @@ class Dropdown extends React.Component {
                     </div>
                     {
                         !this.is_single_option && <Icon
-                            icon='IcChevronLeft'
+                            icon={this.props.is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
                             className={classNames('dc-dropdown__select-arrow', {
                                 'dc-dropdown__select-arrow--left': this.props.is_alignment_left,
                             })}

@@ -1,9 +1,8 @@
 import PropTypes              from 'prop-types';
 import React                  from 'react';
-import { Button }             from 'deriv-components';
+import { Button, Icon }       from 'deriv-components';
 import ButtonLink             from 'App/Components/Routes/button-link.jsx';
 import { localize, Localize } from 'deriv-translations';
-import Icon                   from 'Assets/icon.jsx';
 import { WS }                 from 'Services';
 import { connect }            from 'Stores/connect';
 
@@ -16,7 +15,7 @@ const ErrorComponent = ({
     footer,
 }) => (
     <div className='cashier__wrapper'>
-        <Icon icon='IconCashierError' className='cashier-error__icon' />
+        <Icon icon='IcCashierError' className='cashier-error__icon' size={96} />
         {header && <h2 className='cashier-error__header'>{header}</h2>}
         {message && <p className='cashier__paragraph'>{message}</p>}
         {button_link &&

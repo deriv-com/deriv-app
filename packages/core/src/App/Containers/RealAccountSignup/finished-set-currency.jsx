@@ -1,7 +1,6 @@
 import React                  from 'react';
 import { localize, Localize } from 'deriv-translations';
-import Icon                   from 'Assets/icon.jsx';
-import Button                 from 'deriv-components/src/components/button';
+import { Button, Icon }       from 'deriv-components';
 
 const FinishedSetCurrency = ({
     current,

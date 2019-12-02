@@ -1,12 +1,12 @@
 import classNames             from 'classnames';
 import {
+    Icon,
     Input,
     ThemedScrollbars }        from 'deriv-components';
 import { Formik, Field }      from 'formik';
 import React                  from 'react';
 import { CSSTransition }      from 'react-transition-group';
 import { localize, Localize } from 'deriv-translations';
-import IconDatepicker         from 'Assets/Signup/icon-datepicker.jsx';
 import { toMoment }           from 'Utils/Date';
 import FormSubmitButton       from './form-submit-button.jsx';
 import DatePickerCalendar     from './date-picker-calendar.jsx';
@@ -88,7 +88,7 @@ export class DateOfBirth extends React.Component {
                             value={value ? toMoment(value).format('DD-MM-YYYY') : ''}
                             readOnly
                         />
-                        <IconDatepicker className='icon-datepicker' />
+                        <Icon icon='IcCalendar' className='icon-datepicker' />
                         <CSSTransition
                             in={this.state.should_show_calendar}
                             timeout={100}

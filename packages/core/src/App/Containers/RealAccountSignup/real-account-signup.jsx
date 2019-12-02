@@ -1,10 +1,10 @@
 import classNames             from 'classnames';
 import {
+    Icon,
     Modal,
     Loading }                 from 'deriv-components';
 import React, { Component }   from 'react';
 import { localize, Localize } from 'deriv-translations';
-import Icon                   from 'Assets/icon.jsx';
 import IconDuplicate          from 'Assets/Signup/icon-duplicate.jsx';
 import { connect }            from 'Stores/connect';
 import AccountWizard          from './account-wizard.jsx';
@@ -45,7 +45,7 @@ class RealAccountSignup extends Component {
         this.state = {
             modal_content: [
                 {
-                    icon : 'IconTheme',
+                    icon : 'IcTheme',
                     value: () => <AccountWizard
                         onSuccessAddCurrency={this.showAddCurrencySuccess}
                         onLoading={this.showLoadingModal}
@@ -54,7 +54,7 @@ class RealAccountSignup extends Component {
                     />,
                 },
                 {
-                    icon : 'IconTheme',
+                    icon : 'IcTheme',
                     value: () => <AddOrManageAccounts
                         onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                         onSuccessAddCurrency={this.showAddCurrencySuccess}

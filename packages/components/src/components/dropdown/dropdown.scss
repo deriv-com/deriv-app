@@ -200,7 +200,7 @@
             border: 1px solid var(--border-active);
         }
         & > .dc-dropdown__select-arrow {
-            transform: rotate(-90deg);
+            transform: rotate(-180deg);
 
             &--left {
                 transform: rotate(-180deg);

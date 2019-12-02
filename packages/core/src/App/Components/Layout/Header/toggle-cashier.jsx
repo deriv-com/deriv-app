@@ -18,7 +18,7 @@ const PaymentAgentTransfer = () => import(/* webpackChunkName: "cashier-pa-trans
 const modal_content = [
     {
         container: 'deposit',
-        icon     : 'IconDepositSmall',
+        icon     : 'IcWalletAdd',
         label    : localize('Deposit'),
         // eslint-disable-next-line react/display-name
         value    : () => (
@@ -30,7 +30,7 @@ const modal_content = [
         ),
     }, {
         container: 'withdraw',
-        icon     : 'IconWithdrawalSmall',
+        icon     : 'IcWalletMinus',
         label    : localize('Withdrawal'),
         // eslint-disable-next-line react/display-name
         value    : () => (
@@ -42,7 +42,7 @@ const modal_content = [
         ),
     }, {
         container: 'payment_agent',
-        icon     : 'IconPaymentAgent',
+        icon     : 'IcPaymentAgent',
         label    : localize('Payment agent'),
         // eslint-disable-next-line react/display-name
         value    : () => (
@@ -54,7 +54,7 @@ const modal_content = [
         ),
     }, {
         container: 'account_transfer',
-        icon     : 'IconAccountTransfer',
+        icon     : 'IcAccountTransfer',
         label    : localize('Transfer between accounts'),
         // eslint-disable-next-line react/display-name
         value    : () => (
@@ -66,7 +66,7 @@ const modal_content = [
         ),
     }, {
         container: 'payment_agent_transfer',
-        icon     : 'IconAccountTransfer',
+        icon     : 'IcAccountTransfer',
         label    : localize('Transfer to client'),
         // eslint-disable-next-line react/display-name
         value    : () => (

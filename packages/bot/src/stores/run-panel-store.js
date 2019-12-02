@@ -3,9 +3,9 @@ import {
     action,
     reaction,
     computed,
-}                                      from 'mobx';
-import { localize }                    from 'deriv-translations/lib/i18n';
-import { contract_stages }             from '../constants/contract-stage';
+}                                     from 'mobx';
+import { localize }                   from 'deriv-translations';
+import { contract_stages }            from '../constants/contract-stage';
 import {
     error_types,
     unrecoverable_errors,

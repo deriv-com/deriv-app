@@ -1,7 +1,7 @@
 import classNames   from 'classnames';
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { localize } from 'App/i18n';
+import { localize } from 'deriv-translations';
 import TickSteps    from './tick-steps.jsx';
 
 class RangeSlider extends React.PureComponent {

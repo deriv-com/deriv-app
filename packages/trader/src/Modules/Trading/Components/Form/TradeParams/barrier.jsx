@@ -5,7 +5,7 @@ import Icon         from 'Assets/icon.jsx';
 import Fieldset     from 'App/Components/Form/fieldset.jsx';
 import InputField   from 'App/Components/Form/InputField';
 import { connect }  from 'Stores/connect';
-import { localize } from 'App/i18n';
+import { localize } from 'deriv-translations';
 
 const Barrier = ({
     barrier_1,

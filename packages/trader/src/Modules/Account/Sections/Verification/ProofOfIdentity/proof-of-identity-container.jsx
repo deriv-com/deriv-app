@@ -1,6 +1,6 @@
 import * as Cookies          from 'js-cookie';
 import React                 from 'react';
-import { localize }          from 'App/i18n';
+import { localize }          from 'deriv-translations';
 import { WS }                from 'Services/ws-methods';
 import Onfido                from './onfido.jsx';
 import { getIdentityStatus } from './proof-of-identity';

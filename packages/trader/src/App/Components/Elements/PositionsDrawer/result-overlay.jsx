@@ -6,7 +6,7 @@ import { NavLink }         from 'react-router-dom';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import IconCheck           from 'Assets/SvgComponents/portfolio/ic-check.svg';
 import IconCross           from 'Assets/SvgComponents/portfolio/ic-cross.svg';
-import { localize }        from 'App/i18n';
+import { localize }        from 'deriv-translations';
 
 class ResultOverlay extends React.PureComponent {
 

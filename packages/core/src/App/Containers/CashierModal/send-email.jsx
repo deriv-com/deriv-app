@@ -1,11 +1,10 @@
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { Button }     from 'deriv-components';
-import Localize       from 'App/Components/Elements/localize.jsx';
-import { localize }   from 'App/i18n';
-import Icon           from 'Assets/icon.jsx';
-import { connect }    from 'Stores/connect';
-import EmailSent      from './email-sent.jsx';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import { Button }             from 'deriv-components';
+import { localize, Localize } from 'deriv-translations';
+import Icon                   from 'Assets/icon.jsx';
+import { connect }            from 'Stores/connect';
+import EmailSent              from './email-sent.jsx';
 
 class SendEmail extends React.Component {
     render() {

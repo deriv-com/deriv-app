@@ -58,8 +58,8 @@ Blockly.JavaScript.macda_statement = block => {
     const macd_field        = block.getFieldValue('MACDFIELDS_LIST');
     const input             = block.childValueToCode('input_list', 'INPUT_LIST');
     const fast_ema_period   = block.childValueToCode('fast_ema_period', 'FAST_EMA_PERIOD');
-    const slow_ema_period   = block.childValueToCode('slow_ema_period', 'SLOW_EMA_PERIOD') || '26';
-    const signal_ema_period = block.childValueToCode('signal_ema_period', 'SIGNAL_EMA_PERIOD') || '9';
+    const slow_ema_period   = block.childValueToCode('slow_ema_period', 'SLOW_EMA_PERIOD');
+    const signal_ema_period = block.childValueToCode('signal_ema_period', 'SIGNAL_EMA_PERIOD');
     const code              = `${var_name} = Bot.macda(${input}, { 
         fastEmaPeriod: ${fast_ema_period},
         slowEmaPeriod: ${slow_ema_period},

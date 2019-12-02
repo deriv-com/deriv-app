@@ -1,9 +1,15 @@
 import React from 'react';
 import './my-ads.scss';
-import { localize } from 'deriv-translations/lib/i18n';
+import { localize } from 'deriv-translations';
+import { MyAdsTable } from './my-ads-table.jsx';
 
 const MyAds = () => {
-    return <div>{localize('MyAds')}</div>;
+    return (
+        <div>
+            <div>{localize('MyAds')}</div>
+            <MyAdsTable />
+        </div>
+    );
 };
  
 export default MyAds;

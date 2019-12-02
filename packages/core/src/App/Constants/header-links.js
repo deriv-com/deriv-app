@@ -1,6 +1,6 @@
 import React        from 'react';
 import { Icon }     from 'deriv-components';
-import { localize } from 'App/i18n';
+import { localize } from 'deriv-translations';
 import { routes }   from 'Constants/index';
 
 const header_links = [

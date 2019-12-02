@@ -1,11 +1,11 @@
-import classNames     from 'classnames';
+import classNames      from 'classnames';
 import { Icon, Modal } from 'deriv-components';
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import UILoader       from 'App/Components/Elements/ui-loader.jsx';
-import Lazy           from 'App/Containers/Lazy';
-import { localize }   from 'App/i18n';
-import VerticalTab    from 'App/Components/Elements/VerticalTabs';
+import PropTypes       from 'prop-types';
+import React           from 'react';
+import UILoader        from 'App/Components/Elements/ui-loader.jsx';
+import Lazy            from 'App/Containers/Lazy';
+import { localize }    from 'deriv-translations';
+import VerticalTab     from 'App/Components/Elements/VerticalTabs';
 
 import 'Sass/app/modules/settings.scss';
 

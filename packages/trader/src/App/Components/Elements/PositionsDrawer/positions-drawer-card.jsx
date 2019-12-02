@@ -9,7 +9,7 @@ import {
     Money }                    from 'deriv-components';
 import CurrencyUtils           from 'deriv-shared/utils/currency';
 import Shortcode               from 'Modules/Reports/Helpers/shortcode';
-import { localize }            from 'App/i18n';
+import { localize }            from 'deriv-translations';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from './contract-type-cell.jsx';
 import ProgressSlider          from './ProgressSlider';

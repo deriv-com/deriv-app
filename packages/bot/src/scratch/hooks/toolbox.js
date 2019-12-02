@@ -1,7 +1,7 @@
 import React                from 'react';
 import ReactDOM             from 'react-dom';
 import { Icon }             from 'deriv-components';
-import { localize }         from 'deriv-translations/lib/i18n';
+import { localize }         from 'deriv-translations';
 import ScratchStore         from '../../stores/scratch-store';
 
 /**

@@ -1,6 +1,6 @@
 import PropTypes      from 'prop-types';
 import React          from 'react';
-import { localize }   from 'App/i18n';
+import { localize }   from 'deriv-translations';
 import NumberSelector from 'App/Components/Form/number-selector.jsx';
 import Fieldset       from 'App/Components/Form/fieldset.jsx';
 import { connect }    from 'Stores/connect';

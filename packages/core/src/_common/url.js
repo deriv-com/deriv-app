@@ -1,5 +1,5 @@
+const { getLanguage }            = require('deriv-translations');
 const urlForLanguage             = require('./language').urlFor;
-const getLanguage                = require('./language').get;
 const getCurrentProductionDomain = require('../config').getCurrentProductionDomain;
 require('url-polyfill');
 

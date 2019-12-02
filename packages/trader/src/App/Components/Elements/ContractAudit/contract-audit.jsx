@@ -3,7 +3,7 @@ import React                from 'react';
 import {
     Icon,
     ThemedScrollbars }      from 'deriv-components';
-import { localize }         from 'App/i18n';
+import { localize }         from 'deriv-translations';
 import {
     epochToMoment,
     toGMTFormat }           from 'Utils/Date';

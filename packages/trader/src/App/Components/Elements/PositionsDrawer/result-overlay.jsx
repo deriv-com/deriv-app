@@ -5,7 +5,7 @@ import { CSSTransition }   from 'react-transition-group';
 import { NavLink }         from 'react-router-dom';
 import { Icon }            from 'deriv-components';
 import { getContractPath } from 'App/Components/Routes/helpers';
-import { localize }        from 'App/i18n';
+import { localize }        from 'deriv-translations';
 
 class ResultOverlay extends React.PureComponent {
 

@@ -2,7 +2,7 @@ import classNames                 from 'classnames';
 import PropTypes                  from 'prop-types';
 import React                      from 'react';
 import { Icon }                   from 'deriv-components';
-import { localize }               from 'App/i18n';
+import { localize }               from 'deriv-translations';
 import { getContractTypeDisplay } from 'Constants/contract';
 
 const PurchaseButton = ({

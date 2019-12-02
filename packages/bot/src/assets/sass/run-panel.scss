@@ -3,8 +3,9 @@
 **/
 // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
 div.run-panel {
-    height: calc(100% - 104px);
+    height: calc(100% - 140px);
     top: 104px;
+    z-index: 9;
 
     &__footer {
         text-align: center;
@@ -24,16 +25,6 @@ div.run-panel {
     &__info {
         display: inline-block;
         font-size: 10px;
-
-        //TODO remove this after popover bug fixes
-        &--bubble {
-            left: calc(100vw - 156px) !important;
-            width: 400px !important;
-
-            .dc-popover__bubble__arrow {
-                left: 83% !important;
-            }
-        }
     }
     &__animation {
         height: 64px;

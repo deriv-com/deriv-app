@@ -33,6 +33,7 @@ module.exports = {
         'radio-group'      : path.resolve(__dirname, 'src', 'components/radio-group/index.js'),
         tabs               : path.resolve(__dirname, 'src', 'components/tabs/index.js'),
         'themed-scrollbars': path.resolve(__dirname, 'src', 'components/themed-scrollbars/index.js'),
+        'toggle-switch'    : path.resolve(__dirname, 'src', 'components/toggle-switch/index.js'),
     },
     output: {
         path         : path.resolve(__dirname, 'lib'),
@@ -161,6 +162,7 @@ module.exports = {
             'react'                     : 'react',
             'react-dom'                 : 'react-dom',
             'deriv-shared'              : 'deriv-shared',
+            'react-tiny-popover'        : 'react-tiny-popover',
         },
         /^deriv-shared\/.+$/,
     ],

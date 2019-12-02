@@ -13,7 +13,7 @@ import {
     Form,
     Field,
 }                       from 'formik';
-import { localize }     from 'deriv-translations/lib/i18n';
+import { localize }     from 'deriv-translations';
 import { connect }      from '../stores/connect';
 import '../assets/sass/google-drive.scss';
 import '../assets/sass/saveload-modal.scss';

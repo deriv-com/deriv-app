@@ -1,23 +1,21 @@
-import classNames         from 'classnames';
-import PropTypes          from 'prop-types';
-import React              from 'react';
-import { withRouter }     from 'react-router';
+import classNames             from 'classnames';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import { withRouter }         from 'react-router';
 import {
     Icon,
     Money,
     Popover,
-    ThemedScrollbars }    from 'deriv-components';
-import CurrencyUtils      from 'deriv-shared/utils/currency';
-import { localize }       from 'App/i18n';
-import { urlFor }         from '_common/url';
-import UpgradeButton      from 'App/Containers/RealAccountSignup/upgrade-button.jsx';
-import { connect }        from 'Stores/connect';
-import Localize           from 'App/Components/Elements/localize.jsx';
-import routes             from 'Constants/routes';
+    ThemedScrollbars }        from 'deriv-components';
+import CurrencyUtils          from 'deriv-shared/utils/currency';
+import { localize, Localize } from 'deriv-translations';
+import { urlFor }             from '_common/url';
+import UpgradeButton          from 'App/Containers/RealAccountSignup/upgrade-button.jsx';
+import { connect }            from 'Stores/connect';
+import routes                 from 'Constants/routes';
 import {
-    getMT5AccountDisplay,
-}                         from 'Stores/Helpers/client';
-import Loading            from '../../../templates/_common/components/loading.jsx';
+    getMT5AccountDisplay }    from 'Stores/Helpers/client';
+import Loading                from '../../../templates/_common/components/loading.jsx';
 
 const AccountWrapper = ({
     children,

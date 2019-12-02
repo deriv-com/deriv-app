@@ -3,7 +3,7 @@ import { Icon, Money, Popover } from 'deriv-components';
 import PropTypes             from 'prop-types';
 import React                 from 'react';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
-import { localize }          from 'App/i18n';
+import { localize }          from 'deriv-translations';
 
 const ContractInfo = ({
     basis,

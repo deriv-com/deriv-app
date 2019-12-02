@@ -4,7 +4,7 @@ import {
     reaction,
     computed,
 }                               from 'mobx';
-import { localize }             from 'deriv-translations/lib/i18n';
+import { localize }             from 'deriv-translations';
 import { contract_stages }      from '../constants/contract-stage';
 import {
     error_types,
@@ -30,7 +30,7 @@ export default class RunPanelStore {
     @observable dialog_options    = {};
     @observable has_open_contract = false;
     @observable is_running        = false;
-    @observable is_drawer_open    = false;
+    @observable is_drawer_open    = true;
 
     // when error happens, if it is unrecoverable_errors we reset run-panel
     // we activate run-button and clear trade info and set the ContractStage to NOT_RUNNING

@@ -4,7 +4,7 @@ import {
     Button,
     Input }                   from 'deriv-components';
 import { Formik }             from 'formik';
-import { localize }           from 'App/i18n';
+import { localize }           from 'deriv-translations';
 import { WS }                 from 'Services/ws-methods';
 import { connect }            from 'Stores/connect';
 import {

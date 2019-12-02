@@ -6,7 +6,7 @@ import { NavLink }                    from 'react-router-dom';
 import { TransitionGroup,
     CSSTransition }                   from 'react-transition-group';
 import { ThemedScrollbars }           from 'deriv-components';
-import { localize }                   from 'App/i18n';
+import { localize }                   from 'deriv-translations';
 import Icon                           from 'Assets/icon.jsx';
 import routes                         from 'Constants/routes';
 import EmptyPortfolioMessage          from 'Modules/Reports/Components/empty-portfolio-message.jsx';

@@ -32,7 +32,8 @@ stories
                             marginLeft: '2rem',
                             fontSize: '1.6rem'
                         }}
-                        >E.g Text
+                        >
+                            E.g Text
                         </h3>
                     </div>
                 </Theme>

@@ -7,19 +7,19 @@ class ToggleSwitch extends Component {
         return (
             <Fragment>
                 <input
-                    className={classNames('toggle-switch', {
+                    className={classNames('dc-toggle-switch', {
                     }, this.props.className)}
-                    id={'dt_toggle_switch'}
+                    id={this.props.id}
                     type='checkbox'
                     checked={this.props.is_enabled}
                     onChange={this.props.handleToggle}
                 />
                 <label
-                    className={classNames('toggle-switch__label', {
+                    className={classNames('dc-toggle-switch__label', {
                     }, this.props.classNameLabel)}
-                    htmlFor={'dt_toggle_switch'}
+                    htmlFor={this.props.id}
                 >
-                    <span className={classNames('toggle-switch__button', {
+                    <span className={classNames('dc-toggle-switch__button', {
                     }, this.props.classNameButton)}
                     />
                 </label>
@@ -32,8 +32,9 @@ ToggleSwitch.propTypes = {
     className      : PropTypes.string,
     classNameButton: PropTypes.string,
     classNameLabel : PropTypes.string,
-    handleToggle   : PropTypes.func,
-    is_enabled     : PropTypes.bool,
+    handleToggle   : PropTypes.func.isRequired,
+    id             : PropTypes.string.isRequired,
+    is_enabled     : PropTypes.bool.isRequired,
 };
 
 export default ToggleSwitch;

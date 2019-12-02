@@ -9,7 +9,8 @@
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "tools.js"
+      "tools.js",
+      "Misc.js"
     ]
   },
   "scripts": {

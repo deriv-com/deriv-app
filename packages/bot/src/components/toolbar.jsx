@@ -1,18 +1,18 @@
-import classNames           from 'classnames';
+import classNames         from 'classnames';
 import {
     Button,
     Input,
     Popover,
-}                           from 'deriv-components';
+}                         from 'deriv-components';
 import {
     Field,
     Formik,
     Form,
-}                           from 'formik';
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import { localize }         from 'deriv-translations';
-import Dialog               from './dialog.jsx';
+}                         from 'formik';
+import PropTypes          from 'prop-types';
+import React              from 'react';
+import { localize }       from 'deriv-translations';
+import Dialog             from './dialog.jsx';
 import {
     ToolbarCloseIcon,
     ToolbarNewFileIcon,
@@ -28,11 +28,11 @@ import {
     ToolbarUndoIcon,
     ToolbarZoomInIcon,
     ToolbarZoomOutIcon,
-}                           from './Icons.jsx';
-import SaveLoadModal        from './saveload-modal.jsx';
-import TradeAnimation       from './trade-animation.jsx';
-import { connect }          from '../stores/connect';
-import                           '../assets/sass/scratch/toolbar.scss';
+}                          from './Icons.jsx';
+import SaveLoadModal       from './saveload-modal.jsx';
+import TradeAnimation      from './trade-animation.jsx';
+import { connect }         from '../stores/connect';
+import                          '../assets/sass/scratch/toolbar.scss';
 
 const SearchBox = ({
     is_search_loading,

@@ -1,6 +1,6 @@
 import React from 'react';
 import './orders.scss';
-import { localize } from 'deriv-translations/lib/i18n';
+import { localize } from 'deriv-translations';
 
 const Orders = () => {
     return <div>{localize('Orders')}</div>;

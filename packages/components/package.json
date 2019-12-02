@@ -99,6 +99,7 @@
     "react-dom": "~16.8.6",
     "react-dropzone": "^9.0.0",
     "react-pose": "^4.0.8",
+    "react-tiny-popover": "^3.4.5",
     "react-transition-group": "^4.2.2",
     "tt-react-custom-scrollbars": "^4.2.1-tt2"
   }

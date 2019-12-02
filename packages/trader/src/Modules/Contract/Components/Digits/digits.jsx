@@ -7,7 +7,7 @@ import { isContractElapsed }   from 'Stores/Modules/Contract/Helpers/logic';
 import { SlideIn }             from 'App/Components/Animations';
 import { getMarketNamesMap }   from 'Constants';
 import { LastDigitPrediction } from '../LastDigitPrediction';
-import 'Sass/app/modules/contract/digits.scss';
+import                              'Sass/app/modules/contract/digits.scss';
 
 class Digits extends React.PureComponent {
     state = {

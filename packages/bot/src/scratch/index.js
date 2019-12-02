@@ -254,6 +254,12 @@ class DBot {
             }
             return false;
         };
+        const isParentEnabledEvent = (b) => {
+            if (event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === b.getRootBlock().id) {
+                return event.element === 'disabled';
+            }
+            return false;
+        };
         
         this.workspace.getAllBlocks(true).forEach(block => {
             if (
@@ -261,24 +267,34 @@ class DBot {
                 isChangeEvent(block) ||
                 isChangeInMyInputs(block) ||
                 isCreateEvent(block) ||
-                isUiClickEvent(block)
+                isUiClickEvent(block) ||
+                isParentEnabledEvent(block)
             ) {
-                // No required inputs, ignore this block.
-                if (!block.getRequiredValueInputs) {
+                // Unhighlight disabled blocks and their optional children.
+                if (block.disabled) {
+                    const unhighlightRecursively = (child_blocks) => {
+                        child_blocks.forEach(child_block => {
+                            child_block.setErrorHighlighted(false);
+                            unhighlightRecursively(child_block.getChildren());
+                        });
+                    };
+
+                    unhighlightRecursively([block]);
                     return;
                 }
 
-                // Unhighlight disabled blocks.
-                if (block.disabled) {
-                    if (block.is_error_highlighted) {
-                        block.setErrorHighlighted(false);
-                    }
+                // No required inputs, ignore this block.
+                if (!block.getRequiredValueInputs) {
                     return;
                 }
 
                 const required_inputs_object = block.getRequiredValueInputs();
                 const required_input_names   = Object.keys(required_inputs_object);
                 const should_highlight       = required_input_names.some(input_name => {
+                    if (block.getRootBlock().disabled) {
+                        return false;
+                    }
+
                     const input = block.getInput(input_name);
 
                     if (!input) {
@@ -305,6 +321,11 @@ class DBot {
 
                     return true;
                 });
+
+                if (should_highlight) {
+                    // Remove select highlight in favour of error highlight.
+                    block.removeSelect();
+                }
 
                 block.setErrorHighlighted(should_highlight);
             }

@@ -17,19 +17,32 @@ _Hint: In order to simply build (without tests) type 1 dependencies, use the com
 ## Diagram
 To illustrate the structure above (with packages that exist at the time of writing, it would look something like below:
                                                                                   
-                                      +------------------------------+            
-                                      | Core (deployed to deriv.app) |            
-                                      +--------------+---------------+            
-                                                     |                            
-                                                     |                            
-           Bundled here                              |                            
-                  +-------------------+--------------+---------------+            
-                  |                   |              |               |            
-                  |                   |              |               |            
-       +----------+---------+      +--+--+      +----+---+        +--+--+         
-       | Shared, Components |      | P2P |      | Trader |        | Bot |         
-       +----------+---------+      +--+--+      +----+---+        +--+--+         
-                  |                   |              |               |            
-                  |                   |              |               |            
-                  +-------------------+--------------+---------------+            
-     Uses only single vendor bundle by Core; just imports reusable/multi-instance code
+                               +------------------------------+                                                                                                                                          
+        +----------------------+ Core (deployed to deriv.app) |                                                                                                                                          
+        |                      +-------+--------------+-------+                                                                                                                                          
+        |                              |              |                                                                                                                                                  
+        |                              |              |                                                                                                                                                  
+        |   +-----+                    |              |                                                                                                                                                  
+        |   |     |                    |              |                                                                                                                                                  
+        +---+ P2P |                    |              |                                                                                                                                                  
+        |   |     |               +----+---+       +--+--+                                                               Bundled here                                                                    
+        |   +-----+               | Trader |       | Bot |                                                                                                                                               
+        |                         +----+---+       +--+--+                                                                                                                                               
+        |   +------------+             |              |                                                                                                                                                  
+        |   |            +-------------+              |                                                                                                                                                  
+        +---+ Components |             |              |                                                                                                                                                  
+        |   |            +-------------|--------------+                                                                                                                                                  
+        |   +------------+             |              |                                                                                                                                                  
+        |                              |              |                                                                                                                                                  
+        |   +--------+                 |              |                                                                                                                                                  
+        |   |        +-----------------+              |                                                                                                                                               P2P
+        +---+ Shared |                 |              |                                                                                                                                                  
+        |   |        +-----------------|--------------+                                                                                                                                                  
+        |   +--------+                 |              |                                                                                                                                                  
+        |                              |              |                                                                                                                                                  
+        |   +--------------+           |              |                                                                                                                                                  
+        |   |              ------------+              |                                                                                                                                                  
+        +---+ Translations |                          |                                                                                                                                                  
+            |              ---------------------------+                                                                                                                                                  
+            +--------------+                                                                                                                                               Shared, Components            
+      Bundling of shared packages happen only once by Core

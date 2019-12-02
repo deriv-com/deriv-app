@@ -198,7 +198,17 @@ class DBot {
         if (error_block) {
             const { run_panel } = ScratchStore.instance.root_store;
             const message       = localize('The block(s) highlighted in red are missing input values. Please update them and click "Run bot".');
-            
+
+            // Expand collapsed blocks that have errored blocks inside of them.
+            let parent_block = error_block.getParent();
+
+            while (parent_block !== null) {
+                if (parent_block.isCollapsed()) {
+                    parent_block.setCollapsed(false);
+                }
+                parent_block = parent_block.getParent();
+            }
+
             this.workspace.centerOnBlock(error_block.id);
             run_panel.showErrorMessage(message);
 
@@ -255,8 +265,16 @@ class DBot {
             return false;
         };
         const isParentEnabledEvent = (b) => {
-            if (event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === b.getRootBlock().id) {
-                return event.element === 'disabled';
+            if (event.type === Blockly.Events.BLOCK_CHANGE && event.element === 'disabled') {
+                let parent_block = b.getParent();
+
+                while (parent_block !== null) {
+                    if (parent_block.id === event.blockId) {
+                        return true;
+                    }
+
+                    parent_block = parent_block.getParent();
+                }
             }
             return false;
         };
@@ -291,7 +309,7 @@ class DBot {
                 const required_inputs_object = block.getRequiredValueInputs();
                 const required_input_names   = Object.keys(required_inputs_object);
                 const should_highlight       = required_input_names.some(input_name => {
-                    if (block.getRootBlock().disabled) {
+                    if (block.disabled || block.getInheritedDisabled()) {
                         return false;
                     }
 

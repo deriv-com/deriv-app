@@ -48,11 +48,11 @@ export default Engine =>
 
             this.sessionProfit = getRoundedNumber(Number(this.sessionProfit) + Number(profit), currency);
 
-            accountStat.totalProfit = getRoundedNumber(Number(accountStat.totalProfit) + Number(profit) , currency);
+            accountStat.totalProfit = getRoundedNumber(Number(accountStat.totalProfit) + Number(profit), currency);
 
             accountStat.totalStake = getRoundedNumber(Number(accountStat.totalStake) + Number(buyPrice), currency);
 
-            accountStat.totalPayout = getRoundedNumber(Number(accountStat.totalPayout) + Number(sellPrice),currency);
+            accountStat.totalPayout = getRoundedNumber(Number(accountStat.totalPayout) + Number(sellPrice), currency);
 
             info({
                 profit,

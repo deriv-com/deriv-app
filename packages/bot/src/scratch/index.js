@@ -36,13 +36,10 @@ class DBot {
             Blockly.derivWorkspace       = this.workspace;
 
             this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
+            this.addBeforeRunFunction(this.unselectBlocks.bind(this));
             this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
             this.addBeforeRunFunction(this.checkForErroredBlocks.bind(this));
             this.addBeforeRunFunction(this.checkForRequiredBlocks.bind(this));
-    
-            // Initialise JavaScript (this will in turn initialise the variable map).
-            Blockly.JavaScript.init(this.workspace);
-            Blockly.JavaScript.variableDB_.setVariableMap(this.workspace.getVariableMap()); // eslint-disable-line
 
             // Push main.xml to workspace and reset the undo stack.
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), this.workspace);
@@ -53,7 +50,6 @@ class DBot {
             window.addEventListener('resize', () => this.onWorkspaceResize(el_app_contents, el_scratch_div));
             window.dispatchEvent(new Event('resize'));
 
-            document.addEventListener('click', this.onClickOutsideFlyout.bind(this));
             document.addEventListener('dragover', DBot.handleDragOver);
             document.addEventListener('drop', saveload.handleFileChange);
     
@@ -79,7 +75,7 @@ class DBot {
      * JavaScript code that's fed to the interpreter.
      */
     runBot() {
-        const should_run_bot = this.before_run_funcs.every(func => func());
+        const should_run_bot = this.before_run_funcs.every(func => !!func());
         
         if (!should_run_bot) {
             const { run_panel } = ScratchStore.instance.root_store;
@@ -95,7 +91,10 @@ class DBot {
             }
 
             this.interpreter = new Interpreter();
-            this.interpreter.run(code);
+            this.interpreter.run(code).catch(error => {
+                globalObserver.emit('Error', error);
+                this.stopBot();
+            });
         } catch (error) {
             globalObserver.emit('Error', error);
 
@@ -174,6 +173,19 @@ class DBot {
     }
 
     /**
+     * Unselects any selected block before running the bot.
+     */
+    unselectBlocks() {
+        if (Blockly.selected) {
+            Blockly.selected.unselect();
+            
+            // Force a check on value inputs.
+            this.valueInputLimitationsListener({}, true);
+        }
+        return true;
+    }
+
+    /**
      * Disable blocks outside of any main or independent blocks.
      */
     disableStrayBlocks() {
@@ -243,16 +255,17 @@ class DBot {
      * Note: The value passed to the custom validator is always a string value
      * @param {Blockly.Event} event Workspace event
      */
-    valueInputLimitationsListener(event) {
-        if (!this.workspace || this.workspace.isDragging()) {
+    valueInputLimitationsListener(event, force_check = false) {
+        if (!force_check && (!this.workspace || this.workspace.isDragging())) {
             return;
         }
 
-        const isEndDragEvent     = () => event.type === Blockly.Events.END_DRAG;
-        const isCreateEvent      = (b) => event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(b.id);
-        const isUiClickEvent     = (b) => event.type === Blockly.Events.UI && event.blockId === b.id && event.element === 'click';
-        const isChangeEvent      = (b) => event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === b.id;
-        const isChangeInMyInputs = (b) => {
+        const isGlobalEndDragEvent = () => event.type === Blockly.Events.END_DRAG;
+        const isGlobalDeleteEvent  = () => event.type === Blockly.Events.BLOCK_DELETE;
+        const isGlobalCreateEvent  = () => event.type === Blockly.Events.BLOCK_CREATE;
+        const isClickEvent         = () => event.type === Blockly.Events.UI && (event.element === 'click' || event.element === 'selected');
+        const isChangeEvent        = (b) => event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === b.id;
+        const isChangeInMyInputs   = (b) => {
             if (event.type === Blockly.Events.BLOCK_CHANGE) {
                 return b.inputList.some(input => {
                     if (input.connection) {
@@ -281,11 +294,13 @@ class DBot {
         
         this.workspace.getAllBlocks(true).forEach(block => {
             if (
-                isEndDragEvent() ||
+                force_check ||
+                isGlobalEndDragEvent() ||
+                isGlobalDeleteEvent() ||
+                isGlobalCreateEvent() ||
+                isClickEvent() ||
                 isChangeEvent(block) ||
                 isChangeInMyInputs(block) ||
-                isCreateEvent(block) ||
-                isUiClickEvent(block) ||
                 isParentEnabledEvent(block)
             ) {
                 // Unhighlight disabled blocks and their optional children.
@@ -309,7 +324,7 @@ class DBot {
                 const required_inputs_object = block.getRequiredValueInputs();
                 const required_input_names   = Object.keys(required_inputs_object);
                 const should_highlight       = required_input_names.some(input_name => {
-                    if (block.disabled || block.getInheritedDisabled()) {
+                    if (block.disabled || block.getInheritedDisabled() || Blockly.utils.hasClass(block.svgGroup_, 'blocklySelected')) {
                         return false;
                     }
 

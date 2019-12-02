@@ -68,6 +68,7 @@ module.exports = {
             'deriv-shared'      : 'deriv-shared',
             'deriv-components'  : 'deriv-components',
             'deriv-translations': 'deriv-translations',
+            'formik'            : 'formik',
         },
         /^deriv-components\/.+$/,
         /^deriv-shared\/.+$/,

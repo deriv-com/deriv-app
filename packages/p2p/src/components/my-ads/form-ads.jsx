@@ -1,50 +1,84 @@
-import React       from 'react';
-import {
-    Autocomplete,
-    Button,
-    Input }        from 'deriv-components';
-import { WS }      from '../../utils/websocket'
+import React, { Component, Fragment } from 'react';
+import PropTypes            from 'prop-types';
+import { localize }         from 'deriv-translations';
+import { Formik, Field, Form }    from 'formik';
+import { Autocomplete, Loading }     from 'deriv-components';
+import { WS }               from '../../utils/websocket';
 
 class FormAds extends Component {
     state = {
-        country: '',
-        currency: '',
-        type: '',
-        asset: '',
-        fix_price: '',
-        amount: '',
-        min_transaction: '',
-        payment_method: '',
-        advertiser_note: '',
+        initial_values: {
+            country        : '',
+            currency       : '',
+            type           : '',
+            asset          : '',
+            fix_price      : '',
+            amount         : '',
+            min_transaction: '',
+            payment_method : '',
+            advertiser_note: '',
+        },
         residence_list: [],
+        is_loading    : true,
     }
-    componentDidMount() {
-        if (this.props.id) {
-            // call the api, get the file based on id
-            // populate the state from the respnose
-        }
 
+    componentDidMount() {
         WS().send({ 'residence_list': 1 }).then((response) => {
-            this.setState({ residence_list: response.residence_list })
-        })
+            this.setState({ residence_list: response.residence_list });
+
+            if (this.props.id) {
+                // call the api, get the file based on id
+                // populate the state from the respnose
+            } else {
+                this.setState({ is_loading: false });
+            }
+    
+        });
     }
-    render() { 
-        return <div>
-            <span>Go back</span>
-            <form>
-                <div>
-                <Autocomplete
-                    data-lpignore='true'
-                    autoComplete='off'
-                    type='text'
-                    label={localize('Country')}
-                    required
-                    list_items={this.state.residence_list}
-                />
-                </div>
-            </form>
-        </div>;
+
+    render() {
+        return <Fragment>
+            {this.state.is_loading ? <Loading is_fullscreen={false} /> : (
+                <Formik initial_values={this.state.initial_values}>
+                    {({
+                        // values,
+                    // errors,
+                    // status,
+                    // touched,
+                    // handleChange,
+                    // handleBlur,
+                    // handleSubmit,
+                    // isSubmitting,
+                    setFieldValue,
+                    }) => (
+                        <Form>
+                            <Field>
+                                {({ field }) => (
+                                    <Autocomplete
+                                        {...field}
+                                        data-lpignore='true'
+                                        autoComplete='off'
+                                        type='text'
+                                        label={localize('Country')}
+                                        required
+                                        list_items={this.state.residence_list}
+                                        onItemSelection={
+                                            ({ value, text }) => setFieldValue('country', value ? text : '', true)
+                                        }
+                                    />
+                                )}
+                            </Field>
+                        </Form>
+                    )}
+
+                </Formik>
+            )}
+        </Fragment>;
     }
 }
+
+FormAds.propTypes = {
+    id: PropTypes.string,
+};
  
 export default FormAds;

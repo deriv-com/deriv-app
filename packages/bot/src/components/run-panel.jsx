@@ -12,7 +12,7 @@ import Summary                                from './summary.jsx';
 import TradeAnimation                         from './trade-animation.jsx';
 import Transactions                           from './transactions.jsx';
 import { connect }                            from '../stores/connect';
-import '../assets/sass/run-panel.scss';
+import                                             '../assets/sass/run-panel.scss';
 
 const drawerContent = ({
     active_index,

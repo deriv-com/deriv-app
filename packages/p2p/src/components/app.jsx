@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs } from 'deriv-components';
-import { localize } from 'deriv-translations/lib/i18n';
+import { localize } from 'deriv-translations';
 import Ads from './ads/ads.jsx';
 import Orders from './orders/orders.jsx';
 import MyAds from './my-ads/my-ads.jsx';
@@ -18,7 +18,7 @@ class App extends Component {
 
         this.state = {
             activeIndex: 0,
-        }
+        };
     }
 
     componentDidMount() {
@@ -26,7 +26,7 @@ class App extends Component {
         const index_to_set = /orders/.test(window.location.pathname) ? 1 : 0;
 
         if (this.state.active_index !== index_to_set) {
-            this.setState({ active_index: index_to_set});
+            this.setState({ active_index: index_to_set });
         }
     }
 

@@ -42,7 +42,9 @@ Blockly.Blocks.notify = {
     },
     getRequiredValueInputs() {
         return {
-            MESSAGE: null,
+            MESSAGE: (input) => {
+                return !input || input === '\'\'';
+            },
         };
     },
 };

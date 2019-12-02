@@ -2,6 +2,7 @@ Deriv App
 ============
 This repository contains the various platforms of the Deriv application.
 
+### In this document:
 - [Installation](#installation)
 - Packages in this repo:
   - [Bot](packages/bot/README.md)
@@ -18,6 +19,12 @@ This repository contains the various platforms of the Deriv application.
   - [Examples of Script Usage](#examples-of-script-usage)
 - [PR Guidelines](#pr-guidelines)
 - [FAQ](#faq)
+
+### Other documents:
+- [General](docs/README.md) - Contains general philosophy and overview of this package
+- [Stylesheet guidelines](docs/Stylesheet/README.md) - Contains rules for CSS/SASS code style
+- [JavaScript guidelines](docs/JavaScript/README.md) - Contains rules for JS/JSX code style
+- [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding, code usage)
 
 [comment]: <> (TODO: Refactor Clean Project to be under usage)
 

@@ -71,7 +71,7 @@ const ContractDetailsCardBody = ({
                 </ContractCardItem>
             }
             <ContractCardItem
-                header={is_multiplier ? localize('Stake amount:') : localize('Purchase price:')}
+                header={is_multiplier ? localize('Buy price:') : localize('Purchase price:')}
             >
                 <Money amount={buy_price} currency={currency} />
             </ContractCardItem>

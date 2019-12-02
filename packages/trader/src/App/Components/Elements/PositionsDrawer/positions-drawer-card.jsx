@@ -172,7 +172,7 @@ const PositionsDrawerCard = ({
                 >
                     <div className='positions-drawer-card__purchase-price'>
                         <span className='positions-drawer-card__purchase-label'>
-                            {localize('Stake amount:')}
+                            {is_multiplier ? localize('Buy price:') : localize('Stake amount:')}
                         </span>
                         <span className='positions-drawer-card__purchase-value'>
                             <Money amount={contract_info.buy_price} currency={currency} />

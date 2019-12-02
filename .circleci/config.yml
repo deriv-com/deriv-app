@@ -39,9 +39,6 @@ commands:
             - npm-v1-{{ checksum "package.json" }}
             - npm-v1-
       - run:
-          name: Install npm modules
-          command: npm install
-      - run:
           name: Bootstrap
           command: npm run bootstrap
       - save_cache:
@@ -92,7 +89,7 @@ commands:
 jobs:
   release:
     docker:
-      - image: circleci/node:12.13.0-stretch
+      - image: circleci/node:11.15.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install
@@ -106,5 +103,5 @@ workflows:
       - release:
           filters:
             branches:
-              only: /^master$/
+              only: /^dev$/
 

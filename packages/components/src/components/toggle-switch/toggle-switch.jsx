@@ -15,10 +15,13 @@ class ToggleSwitch extends Component {
                     onChange={this.props.handleToggle}
                 />
                 <label
-                    className='toggle-switch__label'
+                    className={classNames('toggle-switch__label', {
+                    }, this.props.classNameLabel)}
                     htmlFor={'dt_toggle_switch'}
                 >
-                    <span className={'toggle-switch__button'} />
+                    <span className={classNames('toggle-switch__button', {
+                    }, this.props.classNameButton)}
+                    />
                 </label>
             </Fragment>
         );
@@ -26,8 +29,11 @@ class ToggleSwitch extends Component {
 }
 
 ToggleSwitch.propTypes = {
-    is_enabled    : PropT ypes.bool,
-    onStateChanged: PropTypes.func,
+    className      : PropTypes.string,
+    classNameButton: PropTypes.string,
+    classNameLabel : PropTypes.string,
+    handleToggle   : PropTypes.func,
+    is_enabled     : PropTypes.bool,
 };
 
 export default ToggleSwitch;

@@ -3,7 +3,7 @@ import ObjectUtils from '../object';
 let currencies_config = {};
 
 export const getRoundedNumber = (number, currency) => {
-    return Number(number).toFixed(getDecimalPlaces(currency));
+    return Number(Number(number).toFixed(getDecimalPlaces(currency)));
 }
 
 export const getFormatedText = (number, currency) => {

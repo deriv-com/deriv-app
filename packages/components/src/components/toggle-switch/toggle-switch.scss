@@ -1,102 +1,41 @@
-// DEFAULT COLOR VARIABLES
+.toggle-switch {
+    height: 0;
+    width: 0;
+    visibility: hidden;
 
-$ball-color: var(--text-colored-background);
-$active-color: var(--text-profit-success);
-$inactive-color: var(--text-disabled);
+    &__label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        width: 100px;
+        height: 50px;
+        background: var(--general-disabled);
+        border-radius: 100px;
+        position: relative;
+        transition: background-color 0.25s;
 
-// DEFAULT SIZING VARIABLES
-
-$switch-size: 3.2rem;
-$ball-spacing: 2px;
-$stretch-factor: 1.625;
-
-// DEFAULT CLASS VARIABLE
-
-$switch-class: 'switch-toggle';
-
-@mixin switch($size: $switch-size, $spacing: $ball-spacing, $stretch: $stretch-factor, $color: $active-color, $class: $switch-class) {
-
-    // SELECTOR VARIABLES
-
-    $self: '.' + $class;
-    $on: #{$self}--on;
-    $off: #{$self}--off;
-
-    // SWITCH VARIABLES
-
-    $active-color: $color;
-    $switch-size: $size;
-    $ball-spacing: $spacing;
-    $stretch-factor: $stretch;
-    $ball-size: $switch-size - ($ball-spacing _ 2);
-    $ball-slide-size: ($switch-size _ ($stretch-factor - 1) + $ball-spacing);
-
-    // SWITCH STYLES
-
-    height: $switch-size;
-    width: $switch-size * $stretch-factor;
-    cursor: pointer !important;
-    user-select: none !important;
-    position: relative !important;
-    display: inline-block;
-
-    &#{$on}, &#{$off} {
-        &:before, &:after {
-            content: '';
-            left: 0;
-            position: absolute !important;
-        }
-        &:before {
-            height: inherit;
-            width: inherit;
-            border-radius: $switch-size / 2;
-            will-change: background;
-            transition: background 0.4s 0.3s ease-out;
-        }
-        &:after {
-            top: $ball-spacing;
-            height: $ball-size;
-            width: $ball-size;
-            border-radius: $ball-size / 2;
-            background: $ball-color !important;
-            will-change: transform;
-            transition: transform 0.4s ease-out;
-        }
-
-    }
-    &#{$on} {
-        &:before {
-            background: $active-color !important;
-        }
-        &:after {
-            transform: translateX($ball-slide-size);
+        &:active .toggle-switch__button {
+            width: 60px;
         }
     }
-    &#{$off} {
-        &:before {
-            background: $inactive-color !important;
-        }
-        &:after {
-            transform: translateX($ball-spacing);
-        }
+    &__button {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 45px;
+        height: 45px;
+        border-radius: 45px;
+        transition: 0.2s;
+        background: var(--text-colored-background);
+        box-shadow: 0 0 2px 0 rgba(10, 10, 10, 0.29);
     }
-}
-
-@function get-switch-class($selector) {
-    // First parse the selector using `selector-parse`
-    // Extract the first selector in the first list using `nth` twice
-    // Extract the first simple selector using `simple-selectors` and `nth`
-    // Extract the class name using `str-slice`
-    @return str-slice(nth(simple-selectors(nth(nth(selector-parse($selector), 1), 1)), 1), 2);
-}
-
-.switch {
-    $self: &;
-    $toggle: #{$self}-toggle;
-    $class: get-switch-class($toggle);
-    // default theme
-    &#{$self}--default > #{$toggle} {
-        // Always pass the $class to the mixin
-        @include switch($class: $class);
+    &:checked + &__label {
+        background: var(--text-profit-success);
+    }
+    &:checked + &__label &__button {
+        left: calc(100% - 2px);
+        transform: translateX(-100%);
     }
 }

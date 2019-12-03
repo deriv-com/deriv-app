@@ -210,17 +210,6 @@ class DBot {
         if (error_block) {
             const { run_panel } = ScratchStore.instance.root_store;
             const message       = localize('The block(s) highlighted in red are missing input values. Please update them and click "Run bot".');
-
-            // Expand collapsed blocks that have errored blocks inside of them.
-            let parent_block = error_block.getParent();
-
-            while (parent_block !== null) {
-                if (parent_block.isCollapsed()) {
-                    parent_block.setCollapsed(false);
-                }
-                parent_block = parent_block.getParent();
-            }
-
             this.workspace.centerOnBlock(error_block.id);
             run_panel.showErrorMessage(message);
 
@@ -326,8 +315,16 @@ class DBot {
                 const required_inputs_object = block.getRequiredValueInputs();
                 const required_input_names   = Object.keys(required_inputs_object);
                 const should_highlight       = required_input_names.some(input_name => {
-                    if (block.disabled || block.getInheritedDisabled() || Blockly.selected === block) {
+                    const is_selected = Blockly.selected === block; // Don't highlight selected blocks.
+                    const is_disabled = block.disabled || block.getInheritedDisabled(); // Don't highlight disabled blocks.
+
+                    if (is_selected || is_disabled) {
                         return false;
+                    }
+
+                    // Don't unhighlight collapsed blocks with highlighted descendants.
+                    if (block.isCollapsed() && block.hasErrorHighlightedDescendant()) {
+                        return true;
                     }
 
                     const input = block.getInput(input_name);

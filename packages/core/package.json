@@ -114,7 +114,7 @@
     "deriv-trader": "^3.8.0",
     "deriv-translations": "^1.0.0",
     "event-source-polyfill": "^1.0.5",
-    "formik": "^1.5.8",
+    "formik": "^2.0.6",
     "i18next": "^17.0.3",
     "js-cookie": "^2.2.0",
     "lodash.debounce": "^4.0.8",

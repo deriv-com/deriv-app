@@ -1,17 +1,16 @@
 import firebase            from 'firebase/app';
+import                     'firebase/auth';
+import                     'firebase/firestore';
 import { reaction }        from 'mobx';
 import { contract_stages } from '../constants/contract-stage';
 import { message_types }   from '../constants/messages';
-import                     'firebase/auth';
-import                     'firebase/firestore';
 
 const firestore = (() => {
 
-    let db, users, doc_id;
-    let root_store;
+    let db, users, doc_id, root_store;
 
     const getServerTime = ()=> {
-        return root_store.core.common.server_time.unix()
+        return root_store.core.common.server_time.unix();
     };
 
     const init = (_root_store) => {

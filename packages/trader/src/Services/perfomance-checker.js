@@ -1,11 +1,11 @@
 const performanceMetrics = {
-    start           : 'started',
-    smartChartLoaded: 'smart-chart-loaded',
-    purchaseStart   : 'purchase-started',
-    purchaseEnd     : 'purchase-ended',
-    purchaseEnabled : 'purchase-enabled',
-    tradeEngineStart: 'trade-engine-started',
-    tradeEngineReady: 'trade-engine-enabled',
+    start            : 'started',
+    smartChartMounted: 'smart-charts-mounted',
+    purchaseStart    : 'purchase-started',
+    purchaseEnd      : 'purchase-ended',
+    purchaseEnabled  : 'purchase-enabled',
+    tradeEngineStart : 'trade-engine-started',
+    tradeEngineReady : 'trade-engine-enabled',
 };
 
 let is_data_sent = false;
@@ -15,11 +15,11 @@ function measurePerformance(pushLoadPerformance) {
         if (is_data_sent) {
             return;
         }
-        // start --- smartChartLoaded
+        // start --- smartChartMounted
         performance.measure(
-            performanceMetrics.smartChartLoaded,
+            performanceMetrics.smartChartMounted,
             performanceMetrics.start,
-            performanceMetrics.smartChartLoaded
+            performanceMetrics.smartChartMounted
         );
         // start --- purchaseEnabled
         performance.measure(

@@ -90,6 +90,7 @@ class MT5Dashboard extends React.Component {
         if (is_logged_in && can_upgrade_to !== 'svg') {
             return <Redirect to={routes.trade} />;
         }
+
         return (
             <div className='mt5-dashboard__container'>
                 <NotificationMessages />

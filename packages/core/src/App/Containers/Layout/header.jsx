@@ -59,7 +59,7 @@ const Header = ({
 
     const filterPlatformsForClients = (payload) => payload.filter(config => {
         // MX clients cannot open MT5 account
-        if (config.link_to === routes.mt5 && can_upgrade_to !== 'svg') {
+        if (is_logged_in && config.link_to === routes.mt5 && can_upgrade_to !== 'svg') {
             return false;
         }
         return true;

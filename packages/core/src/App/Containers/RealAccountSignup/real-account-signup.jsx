@@ -1,11 +1,11 @@
 import classNames             from 'classnames';
 import {
     Icon,
+    Button,
     Modal,
     Loading }                 from 'deriv-components';
 import React, { Component }   from 'react';
 import { localize, Localize } from 'deriv-translations';
-import IconDuplicate          from 'Assets/Signup/icon-duplicate.jsx';
 import { connect }            from 'Stores/connect';
 import AccountWizard          from './account-wizard.jsx';
 import AddOrManageAccounts    from './add-or-manage-accounts.jsx';
@@ -14,28 +14,45 @@ import SuccessDialog          from '../Modals/success-dialog.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
-const ErrorModal = ({ message }) => (
-    <div className='account-wizard--error'>
-        <IconDuplicate />
-        <h1><Localize i18n_default_text='Whoops!' /></h1>
-        <p>
-            {localize(message)}
-        </p>
-        <a
-            href='https://www.deriv.com/help-centre/'
-            type='button'
-            className='btn btn--primary btn__medium'
-            target='_blank'
-            rel='noopener noreferrer'
-        >
-            <span className='btn__text'>
+const ErrorModal = ({ message, code, openPersonalDetails }) => {
+    return (
+        <div className='account-wizard--error'>
+            <Icon
+                icon='IconDuplicate'
+            />
+            <h1><Localize i18n_default_text='Whoops!' /></h1>
+            <p>
+                {localize(message)}
+            </p>
+            {code !== 'InvalidPhone' &&
+            <a
+                href='https://www.deriv.com/help-centre/'
+                type='button'
+                className='btn btn--primary btn__medium'
+                target='_blank'
+                rel='noopener noreferrer'
+            >
+
+                <span className='btn__text'>
+                    <Localize
+                        i18n_default_text='Go To Help Centre'
+                    />
+                </span>
+            </a>
+            }
+            {code === 'InvalidPhone' &&
+            <Button
+                primary
+                onClick={openPersonalDetails}
+            >
                 <Localize
-                    i18n_default_text='Go To Help Centre'
+                    i18n_default_text='Try again using a different number'
                 />
-            </span>
-        </a>
-    </div>
-);
+            </Button>
+            }
+        </div>
+    );
+};
 
 const LoadingModal = () => <Loading is_fullscreen={false} />;
 
@@ -45,7 +62,10 @@ class RealAccountSignup extends Component {
         this.state = {
             modal_content: [
                 {
+<<<<<<< HEAD
                     icon : 'IcTheme',
+=======
+>>>>>>> 319fbc02208c5c5e663745e57e618f8a46f8e8a0
                     value: () => <AccountWizard
                         onSuccessAddCurrency={this.showAddCurrencySuccess}
                         onLoading={this.showLoadingModal}
@@ -54,7 +74,10 @@ class RealAccountSignup extends Component {
                     />,
                 },
                 {
+<<<<<<< HEAD
                     icon : 'IcTheme',
+=======
+>>>>>>> 319fbc02208c5c5e663745e57e618f8a46f8e8a0
                     value: () => <AddOrManageAccounts
                         onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                         onSuccessAddCurrency={this.showAddCurrencySuccess}
@@ -92,7 +115,11 @@ class RealAccountSignup extends Component {
                 },
                 {
                     value: () => (
-                        <ErrorModal message={this.props.state_value.error_message} />
+                        <ErrorModal
+                            message={this.props.state_value.error_message}
+                            code={this.props.state_value.error_code }
+                            openPersonalDetails={this.openPersonalDetails}
+                        />
                     ),
                 },
             ],
@@ -155,19 +182,45 @@ class RealAccountSignup extends Component {
         });
     };
 
-    showErrorModal = (message) => {
+    cacheFormValues = (payload) => {
+        localStorage.setItem(
+            'real_account_signup_wizard',
+            JSON.stringify(
+                payload.map(item => {
+                    if (typeof item.form_value === 'object') {
+                        return item.form_value;
+                    }
+                    return false;
+                }),
+            ),
+        );
+    };
+
+    showErrorModal = (error, payload) => {
+        if (payload) {
+            this.cacheFormValues(payload);
+        }
+
         this.props.setParams({
             active_modal_index: 5,
-            error_message     : message,
+            error_message     : error.message,
+            error_code        : error.code,
         });
     };
 
     closeModal = () => {
         if (this.active_modal_index !== 3) {
             sessionStorage.removeItem('post_real_account_signup');
+            localStorage.removeItem('real_account_signup_wizard');
         }
         this.props.closeRealAccountSignup();
     };
+
+    openPersonalDetails = () => {
+        this.props.setParams({
+            active_modal_index: 0,
+        });
+    }
 
     get active_modal_index() {
         const ACCOUNT_WIZARD = 1;

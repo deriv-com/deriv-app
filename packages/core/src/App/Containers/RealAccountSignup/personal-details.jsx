@@ -1,17 +1,13 @@
 import classNames             from 'classnames';
 import {
+    Icon,
     Input,
     ThemedScrollbars }        from 'deriv-components';
 import { Formik, Field }      from 'formik';
-import PropTypes            from 'prop-types';
 import React                  from 'react';
 import { CSSTransition }      from 'react-transition-group';
 import { localize, Localize } from 'deriv-translations';
-import IconDatepicker         from 'Assets/Signup/icon-datepicker.jsx';
 import { toMoment }           from 'Utils/Date';
-import {
-    validPhone,
-    validCountryCode }      from 'Utils/Validator/declarative-validation-rules';
 import FormSubmitButton       from './form-submit-button.jsx';
 import DatePickerCalendar     from './date-picker-calendar.jsx';
 import 'Sass/details-form.scss';
@@ -92,7 +88,7 @@ export class DateOfBirth extends React.Component {
                             value={value ? toMoment(value).format('DD-MM-YYYY') : ''}
                             readOnly
                         />
-                        <IconDatepicker className='icon-datepicker' />
+                        <Icon icon='IcCalendar' className='icon-datepicker' />
                         <CSSTransition
                             in={this.state.should_show_calendar}
                             timeout={100}
@@ -153,15 +149,6 @@ const InputField = (props) => {
     );
 };
 
-const trimStrings = (values) => {
-    Object.keys(values)
-        .forEach(key => {
-            if (typeof values[key] === 'string' && (values[key].startsWith(' ') || values[key].charAt(values[key].length - 1) === ' ')) {
-                values[key] = values[key].trim();
-            }
-        });
-};
-
 class PersonalDetails extends React.Component {
     constructor(props) {
         super(props);
@@ -197,7 +184,6 @@ class PersonalDetails extends React.Component {
                 }}
                 validate={this.validatePersonalDetails}
                 onSubmit={(values, actions) => {
-                    trimStrings(values);
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
                 ref={this.form}
@@ -275,13 +261,13 @@ class PersonalDetails extends React.Component {
                 v => !!v,
                 v => v.length > 2,
                 v => v.length < 30,
-                v => /^[\w\s'.-]{2,50}$/gu.exec(v) !== null,
+                v => /^[\p{L}\s'.-]{2,50}$/gu.exec(v) !== null,
             ],
             last_name: [
                 v => !!v,
                 v => v.length >= 2,
                 v => v.length <= 50,
-                v =>  /^[\w\s'.-]{2,50}$/gu.exec(v) !== null,
+                v =>  /^[\p{L}\s'.-]{2,50}$/gu.exec(v) !== null,
             ],
             date_of_birth: [
                 v => !!v,
@@ -289,8 +275,7 @@ class PersonalDetails extends React.Component {
             ],
             phone: [
                 v => !!v,
-                v => v.length >= 9 && v.length <= 35,
-                v => validPhone(v) && validCountryCode(this.props.residence_list, v),
+                v => /^\+?((-|\s)*[0-9]){8,35}$/.exec(v) !== null,
             ],
         };
 
@@ -313,31 +298,17 @@ class PersonalDetails extends React.Component {
             '{{field_name}} is not in a proper format.',
         ];
 
-        const phone_messages = [
-            '{{field_name}} is required',
-            'You should enter 8-35 characters.',
-            'Please enter a valid phone number, including the country code (e.g +15417541234).',
-        ];
-
         const errors    = {};
 
         Object.entries(validations)
             .forEach(([key, rules]) => {
-                const error_index = rules.findIndex(v => !v((values[key])));
-
+                const error_index = rules.findIndex(v => !v(values[key]));
                 if (error_index !== -1) {
                     switch (key) {
                         case 'date_of_birth':
-                            errors[key] = errors[key] = <Localize
-                                i18n_default_text={alt_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                            />;
-                            break;
                         case 'phone':
                             errors[key] = errors[key] = <Localize
-                                i18n_default_text={phone_messages[error_index]}
+                                i18n_default_text={alt_messages[error_index]}
                                 values={{
                                     field_name: mappedKey[key],
                                 }}
@@ -357,9 +328,5 @@ class PersonalDetails extends React.Component {
         return errors;
     };
 }
-
-PersonalDetails.propTypes = {
-    residence_list: PropTypes.array,
-};
 
 export default PersonalDetails;

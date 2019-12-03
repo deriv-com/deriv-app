@@ -24,7 +24,7 @@ const AccountOption = ({ account, idx }) => (
     <React.Fragment key={idx}>
         {(account.currency || account.mt_icon) &&
             <Icon
-                icon={`IcCurrency-${account.mt_icon || account.currency.toLowerCase()}`}
+                icon={account.mt_icon ? `IcMt5-${account.mt_icon}` : `IcCurrency-${account.currency.toLowerCase()}`}
                 className='account-transfer__currency-icon'
             />
         }
@@ -217,7 +217,7 @@ class AccountTransferForm extends React.Component {
                                             <div className='cashier__form-submit'>
                                                 {this.props.error.message &&
                                                 <React.Fragment>
-                                                    <Icon icon='IconEmergency' className='cashier__form-error-icon' />
+                                                    <Icon icon='IcAlertDanger' className='cashier__form-error-icon' size={128} />
                                                     <Icon icon='IcAlertDanger' className='cashier__form-error-small-icon' />
                                                     <p className='cashier__form-error'>
                                                         {this.props.error.message}

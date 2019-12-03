@@ -20,7 +20,7 @@ class AccountTransferReceipt extends React.Component {
 
         return (
             <div className='cashier__wrapper account-transfer__receipt'>
-                <Icon icon='IconTransferDone' className='account-transfer__receipt-icon' />
+                <Icon icon='IcCashierTransferDone' className='account-transfer__receipt-icon' size={128} />
                 <h2 className='cashier__header'>
                     <Localize i18n_default_text='Your funds have been transferred.' />
                 </h2>
@@ -39,7 +39,7 @@ class AccountTransferReceipt extends React.Component {
                             <span className='cashier__text--bold'>{selected_from.text}</span>
                         </span>
                     </span>
-                    <Icon className='cashier__transferred-icon' icon='IconBack' />
+                    <Icon className='cashier__transferred-icon' icon='IcArrowRight' />
                     <span className='account-transfer__transfer-details-to'>
                         <Icon
                             icon={`IcCurrency-${selected_to.mt_icon || selected_to.currency.toLowerCase()}`}

@@ -32,7 +32,6 @@ export const icons =
     'cashier': [
         'IcCashierAuthenticate',
         'IcCashierDeposit',
-        'IcCashierDuplicate',
         'IcCashierError',
         'IcCashierNoBalance',
         'IcCashierTransferDone',
@@ -40,6 +39,7 @@ export const icons =
         'IcCashierWithdrawal'
     ],
     'common': [
+        'IcAccountError',
         'IcAccountTransfer',
         'IcAddCircle',
         'IcAddRounded',

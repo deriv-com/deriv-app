@@ -18,7 +18,8 @@ const ErrorModal = ({ message, code, openPersonalDetails }) => {
     return (
         <div className='account-wizard--error'>
             <Icon
-                icon='IconDuplicate'
+                icon='IcAccountError'
+                size={115}
             />
             <h1><Localize i18n_default_text='Whoops!' /></h1>
             <p>
@@ -62,10 +63,6 @@ class RealAccountSignup extends Component {
         this.state = {
             modal_content: [
                 {
-<<<<<<< HEAD
-                    icon : 'IcTheme',
-=======
->>>>>>> 319fbc02208c5c5e663745e57e618f8a46f8e8a0
                     value: () => <AccountWizard
                         onSuccessAddCurrency={this.showAddCurrencySuccess}
                         onLoading={this.showLoadingModal}
@@ -74,10 +71,6 @@ class RealAccountSignup extends Component {
                     />,
                 },
                 {
-<<<<<<< HEAD
-                    icon : 'IcTheme',
-=======
->>>>>>> 319fbc02208c5c5e663745e57e618f8a46f8e8a0
                     value: () => <AddOrManageAccounts
                         onSuccessSetAccountCurrency={this.showSetCurrencySuccess}
                         onSuccessAddCurrency={this.showAddCurrencySuccess}
@@ -102,7 +95,7 @@ class RealAccountSignup extends Component {
                             onCancel={this.closeModalWithHooks}
                             onSubmit={this.closeModalThenOpenCashier}
                             message={this.props.state_value.success_message}
-                            icon={<Icon type={this.props.state_value.current_currency.toLowerCase()} icon='IconAccountsCurrency' />}
+                            icon={<Icon icon={`IcCurrency-${this.props.state_value.current_currency.toLowerCase()}`} size={120} />}
                             text_submit={localize('Deposit now')}
                             text_cancel={ RealAccountSignup.text_cancel() }
                         />

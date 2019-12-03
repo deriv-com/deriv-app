@@ -9,20 +9,26 @@ const FinishedSetCurrency = ({
     prev,
 }) => {
     const IconPrevCurrency = () => <Icon
-        icon='IconAccountsCurrency'
-        type={prev.toLowerCase()}
+        icon={`IcCurrency-${prev.toLowerCase()}`}
+        height={120}
+        width={90}
     />;
     const IconNextCurrency = () => <Icon
-        icon='IconAccountsCurrency'
-        type={current.toLowerCase()}
+        icon={`IcCurrency-${current.toLowerCase()}`}
+        height={120}
+        width={90}
     />;
     const IconArrow        = () => <Icon
-        icon='IconRedArrow'
+        icon='IcArrowRight'
+        red
+        width={50}
+        height={20}
     />;
 
     const IconWon          = ({ className }) => <Icon
         className={className}
-        icon='IconWon'
+        icon='IcCheckmarkCircle'
+        green
     />;
 
     return (

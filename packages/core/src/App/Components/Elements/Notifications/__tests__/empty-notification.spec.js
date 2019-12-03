@@ -12,7 +12,7 @@ describe('Notifications', () => {
         const wrapper = shallow(<EmptyNotification />);
         expect(wrapper).to.have.length(1);
     });
-    it('should render Icon icon=\'IconBell\'', () => {
+    it('should render Icon icon=\'IcBell\'', () => {
         const wrapper = shallow(<EmptyNotification />);
         expect(wrapper.contains(<Icon icon='IcBell' className='drawer__bell-icon' />)).to.be.true;
     });

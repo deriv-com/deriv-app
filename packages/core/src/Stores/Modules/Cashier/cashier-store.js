@@ -9,7 +9,6 @@ import { localize }        from 'deriv-translations';
 import { WS }              from 'Services';
 import BaseStore           from '../../base-store';
 import {
-    getMT5AccountType,
     getMT5AccountDisplay } from '../../Helpers/client';
 
 const bank_default_option = [{ text: localize('All payment agents'), value: 0 }];
@@ -690,7 +689,7 @@ export default class CashierStore extends BaseStore {
                 currency : account.currency,
                 is_crypto: CurrencyUtils.isCryptocurrency(account.currency),
                 is_mt    : account.account_type === 'mt5',
-                ...(account.mt5_group && { mt_icon: getMT5AccountType(account.mt5_group) }),
+                ...(account.mt5_group && { mt_icon: getMT5AccountDisplay(account.mt5_group) }),
             };
             if (idx === 0) {
                 this.setSelectedFrom(obj_values);

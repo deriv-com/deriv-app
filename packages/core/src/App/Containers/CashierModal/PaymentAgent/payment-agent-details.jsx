@@ -18,6 +18,7 @@ class Detail extends React.Component {
                 <Icon
                     icon={`Ic${icon}`}
                     className='payment-agent__accordion-content-icon'
+                    secondary
                 />
                 <a
                     className='payment-agent__contact cashier__paragraph'
@@ -63,7 +64,7 @@ class PaymentAgentDetails extends React.Component {
                 <Detail
                     action='mailto'
                     value={this.props.payment_agent_email}
-                    icon='Email'
+                    icon='EmailOutline'
                     is_last_child
                     target='_blank'
                     rel='noopener noreferrer'

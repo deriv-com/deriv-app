@@ -17,7 +17,7 @@ class SendEmail extends React.Component {
                     />
                     :
                     <React.Fragment>
-                        <Icon icon='IcCashierAuthenticate' className='withdraw__icon' size={64} />
+                        <Icon icon='IcCashierAuthenticate' className='withdraw__icon' size={128} />
                         <p className='withdraw__header'><Localize i18n_default_text='To initiate withdrawal, we need to authenticate you via email.' /></p>
                         <p className='withdraw__text'><Localize i18n_default_text='This is a safeguard against unauthorised withdrawals from your account.' /></p>
                         <Button

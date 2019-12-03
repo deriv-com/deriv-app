@@ -1,7 +1,19 @@
 @import 'deriv-shared/src/styles/reset.scss';
 
-.deriv-api {
+.deriv-p2p {
     background: transparent;
     height: 100%;
     width: 100%;
+    position: relative;
+
+    &__content {
+        padding: 0 1.6rem;
+    }
+    & .dc-tabs {
+        position: static;
+    }
+}
+
+.vertical-tab__content {
+    padding: 0 !important;
 }

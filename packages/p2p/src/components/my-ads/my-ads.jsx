@@ -7,19 +7,24 @@ import FormAds from './form-ads.jsx';
 class MyAds extends Component {
     state = {
         show_form: false,
+        ad_id: '',
+    }
+
+    handleShowForm(show_form) {
+        this.setState({ show_form });
     }
 
     render() {
         return (
-            <Fragment>
+            <div className='my-ads'>
                 {this.state.show_form ? (
-                    <FormAds />
+                    <FormAds ad_id={this.state.ad_id} handleShowForm={this.handleShowForm.bind(this)} />
                 ) : (
                     <Fragment>
-                        <Button primary onClick={() => this.setState({ show_form: !this.state.show_form })}>{localize('Create ads')}</Button>
+                        <Button primary onClick={() => this.handleShowForm(true) }>{localize('Create ads')}</Button>
                     </Fragment>
                 )}
-            </Fragment>
+            </div>
         );
     }
 }

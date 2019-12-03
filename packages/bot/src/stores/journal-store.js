@@ -34,14 +34,14 @@ export default class JournalStore {
     pushMessage(data, message_type) {
         const date = formatDate(this.serverTime.get());
         const time = formatDate(this.serverTime.get(), 'HH:mm:ss [GMT]');
-        let message;
-        if (typeof data === 'string') {
-            message = `${data}`;
-        } else {
-            message = `${data.message}`;
+        
+        let error_message  = data;
+        if (typeof data !== 'string') {
+            const { error , message } = data;
+            error_message = error && error.error ? error.error.message : message;
         }
 
-        this.messages.unshift({ date, time , message ,message_type });
+        this.messages.unshift({ date, time , message: error_message, message_type });
         this.messages = this.messages.slice(0);  // force array update
     }
 

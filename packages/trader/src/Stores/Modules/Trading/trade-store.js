@@ -637,6 +637,8 @@ export default class TradeStore extends BaseStore {
             this.purchase_info     = {};
 
             Object.keys(this.proposal_requests).forEach((type) => {
+                // to keep track of proposal req_id that is set by subscription manager in deriv-api,
+                // we need to initialize it to 0 every time a new request is being sent
                 this.proposal_req_id[type] = 0;
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });

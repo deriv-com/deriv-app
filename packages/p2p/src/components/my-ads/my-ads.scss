@@ -39,6 +39,18 @@
             &-textarea {
                 width: 57rem;
             }
+            &-trailing {
+                font-size: var(--text-size-xxs);
+                color: var(--text-less-prominent);
+            }
+            &-leading {
+                top: 1.2rem;
+            }
+            &-has_leading {
+                & .dc-input__field {
+                    padding-left: 4.2rem;
+                }
+            }
         }
         &--footer {
             height: 7.2rem;

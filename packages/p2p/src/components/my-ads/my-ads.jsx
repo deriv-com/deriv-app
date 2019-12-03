@@ -7,7 +7,7 @@ import FormAds from './form-ads.jsx';
 class MyAds extends Component {
     state = {
         show_form: false,
-        ad_id: '',
+        ad_id    : '',
     }
 
     handleShowForm(show_form) {

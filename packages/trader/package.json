@@ -107,6 +107,7 @@
     "crc-32": "^1.2.0",
     "deriv-components": "^1.0.0",
     "deriv-shared": "^1.0.0",
+    "deriv-translations": "^1.0.0",
     "event-source-polyfill": "^1.0.5",
     "formik": "^1.5.8",
     "i18next": "^17.0.3",

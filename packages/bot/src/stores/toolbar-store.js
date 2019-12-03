@@ -1,7 +1,7 @@
 import {
     observable,
     action }                 from 'mobx';
-import { localize }          from 'deriv-translations/lib/i18n';
+import { localize }          from 'deriv-translations';
 import { tabs_title }        from '../constants/bot-contents';
 import { scrollWorkspace }   from '../scratch/utils';
 import { delayCallbackByMs } from '../utils/tools';

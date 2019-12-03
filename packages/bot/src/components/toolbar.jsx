@@ -10,7 +10,7 @@ import {
 }                    from 'formik';
 import PropTypes     from 'prop-types';
 import React         from 'react';
-import { localize }  from 'deriv-translations/lib/i18n';
+import { localize }  from 'deriv-translations';
 import Dialog        from './dialog.jsx';
 import {
     StopIcon,
@@ -27,12 +27,12 @@ import {
     ToolbarUndoIcon,
     ToolbarZoomInIcon,
     ToolbarZoomOutIcon,
-} from './Icons.jsx';
+}                     from './Icons.jsx';
 import SaveLoadModal  from './saveload-modal.jsx';
 import TradeAnimation from './trade-animation.jsx';
 import { tabs_title } from '../constants/bot-contents';
 import { connect }    from '../stores/connect';
-import '../assets/sass/scratch/toolbar.scss';
+import                '../assets/sass/scratch/toolbar.scss';
 
 const SearchBox = ({
     is_search_loading,

@@ -2,8 +2,7 @@ import {
     Tabs }                       from 'deriv-components';
 import React                     from 'react';
 import { withRouter }            from 'react-router';
-import Localize                  from 'App/Components/Elements/localize.jsx';
-import { localize }              from 'App/i18n';
+import { localize, Localize }    from 'deriv-translations';
 import IconDeviceLaptop          from 'Assets/SvgComponents/mt5/download-center/icon-device-laptop.svg';
 import IconDeviceDesktop         from 'Assets/SvgComponents/mt5/download-center/icon-device-desktop.svg';
 import IconDevicePhone           from 'Assets/SvgComponents/mt5/download-center/icon-device-phone.svg';

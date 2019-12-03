@@ -22,21 +22,8 @@ div.run-panel {
         vertical-align: middle;
     }
     &__info {
+        display: block;
         font-size: 10px;
-
-        .dc-popover__target {
-            display: flex;
-        }
-
-        //TODO remove this after popover bug fixes
-        &--bubble {
-            left: calc(100vw - 156px) !important;
-            width: 400px !important;
-
-            .dc-popover__bubble__arrow {
-                left: 83% !important;
-            }
-        }
     }
     &__animation {
         height: 64px;

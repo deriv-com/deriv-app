@@ -6,7 +6,6 @@ import TradeFooterExtensions   from 'App/Containers/trade-footer-extensions.jsx'
 import TradeSettingsExtensions from 'App/Containers/trade-settings-extensions.jsx';
 import { MobxProvider }        from 'Stores/connect';
 import initStore               from './init-store.js'; // eslint-disable-line import/extensions
-import './i18n';
 import 'Sass/app.scss';
 
 class App extends React.Component {

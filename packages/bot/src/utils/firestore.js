@@ -1,4 +1,5 @@
-import firebase             from 'firebase';
+import firebase            from 'firebase/app';
+import                     'firebase/auth';
 import                     'firebase/firestore';
 import { reaction }        from 'mobx';
 import { contract_stages } from '../constants/contract-stage';
@@ -6,10 +7,15 @@ import { message_types }   from '../constants/messages';
 
 const Firestore = (() => {
 
-    let db, users, doc_id, server_time;
+    let db, users, doc_id, root_store;
 
-    const init = (root_store) => {
+    const getServerTime = ()=> {
+        return root_store.core.common.server_time.unix();
+    };
+
+    const init = (_root_store) => {
         try {
+            root_store = _root_store;
             // Initialize Cloud Firestore through Firebase
             if (!firebase.apps.length) {
                 firebase.initializeApp({
@@ -19,7 +25,6 @@ const Firestore = (() => {
             }
 
             const { core: { client }, run_panel, transactions, journal, summary: s } = root_store;
-            server_time = root_store.core.common.server_time;
 
             db = firebase.firestore();
             users = db.collection('Users');
@@ -35,7 +40,7 @@ const Firestore = (() => {
                 () => s.summary.number_of_runs,
                 () => {
                     // send the summary when contract closes and bot is stopped
-                    if (!run_panel.is_running && 
+                    if (!run_panel.is_running &&
                         run_panel.contract_stage.index === contract_stages.CONTRACT_CLOSED.index) {
                         onSummaryChanged(client.loginid, s.summary);
                     }
@@ -58,10 +63,9 @@ const Firestore = (() => {
 
     const onRunBot = (login_id, summary) => {
         try {
-            const start_time = server_time.unix();
             const strategy = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.derivWorkspace));
             users.doc(login_id).collection('Runs').add({
-                start_time,
+                start_time: getServerTime(),
                 account_id: login_id,
                 xml       : strategy,
             })
@@ -80,9 +84,9 @@ const Firestore = (() => {
 
     const onStopBot = (login_id) => {
         try {
-            users.doc(login_id).collection('Runs').doc(doc_id).update({
-                end_time: server_time.unix(),
-            });
+            users.doc(login_id).collection('Runs').doc(doc_id).set({
+                end_time: getServerTime(),
+            }, { merge: true });
         } catch (error) {
             console.warn('Error adding document to firestore when bot stops ', error); // eslint-disable-line no-console
         }
@@ -98,7 +102,7 @@ const Firestore = (() => {
                     total_payout  : summary.total_payout,
                     total_stake   : summary.total_stake,
                     won_contracts : summary.won_contracts,
-                    time_stamp    : server_time.unix(),
+                    time_stamp    : getServerTime(),
                 });
             }
         } catch (error) {
@@ -118,7 +122,7 @@ const Firestore = (() => {
                     entry_spot   : contract.entry_spot,
                     exit_spot    : contract.exit_spot,
                     profit       : contract.profit,
-                    time_stamp   : server_time.unix(),
+                    time_stamp   : getServerTime(),
                 });
             }
         } catch (error) {
@@ -134,7 +138,7 @@ const Firestore = (() => {
                     date      : message.date,
                     time      : message.time,
                     message   : message.message,
-                    time_stamp: server_time.unix(),
+                    time_stamp: getServerTime(),
                 });
             }
         } catch (error) {

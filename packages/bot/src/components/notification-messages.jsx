@@ -24,6 +24,7 @@ const NotificationMessages = ({
 
 NotificationMessages.propTypes = {
     is_drawer_open      : PropTypes.bool,
+    // Notifications       : PropTypes.node,
     notifications_length: PropTypes.number,
 };
 

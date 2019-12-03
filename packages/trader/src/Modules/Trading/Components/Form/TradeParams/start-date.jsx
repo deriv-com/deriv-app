@@ -4,7 +4,7 @@ import {
     observer }                  from 'mobx-react';
 import PropTypes                from 'prop-types';
 import React                    from 'react';
-import { localize }             from 'App/i18n';
+import { localize }             from 'deriv-translations';
 import Fieldset                 from 'App/Components/Form/fieldset.jsx';
 import TimePicker               from 'App/Components/Form/TimePicker';
 

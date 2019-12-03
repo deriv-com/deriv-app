@@ -1,23 +1,22 @@
-import classNames         from 'classnames';
-import PropTypes          from 'prop-types';
-import React              from 'react';
-import { withRouter }     from 'react-router';
+import classNames             from 'classnames';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import { withRouter }         from 'react-router';
 import {
     Money,
     Popover,
-    ThemedScrollbars }    from 'deriv-components';
-import CurrencyUtils      from 'deriv-shared/utils/currency';
-import { localize }       from 'App/i18n';
-import { urlFor }         from '_common/url';
-import UpgradeButton      from 'App/Containers/RealAccountSignup/upgrade-button.jsx';
-import Icon               from 'Assets/icon.jsx';
-import { connect }        from 'Stores/connect';
-import Localize           from 'App/Components/Elements/localize.jsx';
-import routes             from 'Constants/routes';
+    ThemedScrollbars }        from 'deriv-components';
+import CurrencyUtils          from 'deriv-shared/utils/currency';
+import { localize, Localize } from 'deriv-translations';
+import { urlFor }             from '_common/url';
+import UpgradeButton          from 'App/Containers/RealAccountSignup/upgrade-button.jsx';
+import Icon                   from 'Assets/icon.jsx';
+import { connect }            from 'Stores/connect';
+import routes                 from 'Constants/routes';
 import {
     getMT5AccountDisplay,
-    getMT5AccountType }   from 'Stores/Helpers/client';
-import Loading            from '../../../templates/_common/components/loading.jsx';
+    getMT5AccountType }       from 'Stores/Helpers/client';
+import Loading                from '../../../templates/_common/components/loading.jsx';
 
 const AccountWrapper = ({
     children,
@@ -384,9 +383,9 @@ class AccountSwitcher extends React.Component {
 
                 <div className='acc-switcher__separator' />
 
-                <div id='dt_logout_button' className='acc-switcher__logout' onClick={this.handleLogout}>
-                    <span className='acc-switcher__logout-text'>{localize('Log out')}</span>
-                    <Icon icon='IconLogout' className='acc-switcher__logout-icon drawer__icon' />
+                <div id='dt_logout_button' className='acc-switcher__logout'>
+                    <span className='acc-switcher__logout-text' onClick={this.handleLogout}>{localize('Log out')}</span>
+                    <Icon icon='IconLogout' className='acc-switcher__logout-icon drawer__icon' onClick={this.handleLogout} />
                 </div>
             </div>
         );

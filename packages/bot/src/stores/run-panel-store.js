@@ -3,22 +3,23 @@ import {
     action,
     reaction,
     computed,
-}                               from 'mobx';
-import { localize }             from 'deriv-translations/lib/i18n';
-import { contract_stages }      from '../constants/contract-stage';
+}                                     from 'mobx';
+import { localize }                   from 'deriv-translations';
+import { contract_stages }            from '../constants/contract-stage';
 import {
     error_types,
     unrecoverable_errors,
-}                               from '../constants/messages';
+}                                      from '../constants/messages';
 import {
     runBot,
     stopBot,
     terminateBot,
-}                               from '../scratch';
-import { isEnded }              from '../utils/contract';
-import { observer }             from '../utils/observer';
-import { setMainContentWidth }  from '../utils/window-size';
-import { hasAllRequiredBlocks } from '../scratch/utils/scratch-helper';
+}                                      from '../scratch';
+import { hasAllRequiredBlocks }        from '../scratch/utils/scratch-helper';
+import { isEnded }                     from '../utils/contract';
+import { observer }                    from '../utils/observer';
+import { setMainContentWidth }         from '../utils/window-size';
+import { switch_account_notification } from '../utils/notifications/bot-notifications';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -63,11 +64,6 @@ export default class RunPanelStore {
 
         if (!client.is_logged_in) {
             this.showLoginDialog();
-            return;
-        }
-
-        if (!client.is_virtual) {
-            this.showRealAccountDialog();
             return;
         }
 
@@ -311,49 +307,25 @@ export default class RunPanelStore {
 
     @action.bound
     registerCoreReactions() {
-        const { client, common } = this.root_store.core;
-        const terminateAndClear = () => {
-            // TODO: Handle more gracefully, e.g. ask user for confirmation instead
-            // of killing and clearing everything instantly.
-            // Core need to change to pass beforeswitch account event
-            terminateBot();
-            RunPanelStore.unregisterBotListeners();
-            this.clearStat();
-        };
-
+        const { client, common, ui } = this.root_store.core;
+        
         const register = () => {
             if (common.is_socket_opened) {
                 this.disposeIsSocketOpenedListener = reaction(
                     () => client.loginid,
                     (loginid) => {
-                        if (loginid) {
-                            this.root_store.journal.pushMessage(localize('You have switched accounts.'));
+                        if (loginid && this.is_running) {
+                            ui.addNotificationMessage(switch_account_notification);
                         }
-                        terminateAndClear();
-                        this.root_store.summary.currency = client.currency;
-                    },
-                );
-
-                this.disposeSwitchAccountListener = reaction(
-                    () => client.switched,
-                    (switched) => {
-                        if (switched) {
-                            if (client.is_logged_in && !/^VRTC/.test(switched)) {
-                                // TODO: temporary fix to not showing modal when another modal is open
-                                const is_modal_open = document.getElementById('modal_root').hasChildNodes();
-                                if (!is_modal_open) {
-                                    this.showRealAccountDialog();
-                                }
-                                terminateAndClear();
-                            }
-                        }
+                        terminateBot();
+                        RunPanelStore.unregisterBotListeners();
+                        this.clearStat();
                     },
                 );
             } else {
                 if (typeof this.disposeLogoutListener === 'function') {
                     this.disposeLogoutListener();
                 }
-
                 if (typeof this.disposeSwitchAccountListener === 'function') {
                     this.disposeSwitchAccountListener();
                 }

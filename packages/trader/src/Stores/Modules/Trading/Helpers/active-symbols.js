@@ -1,5 +1,5 @@
 import { flow }            from 'mobx';
-import { localize }        from 'App/i18n';
+import { localize }        from 'deriv-translations';
 import { ClientBase }     from '_common/base/client_base';
 import { redirectToLogin } from '_common/base/login';
 import { LocalStore }      from '_common/storage';

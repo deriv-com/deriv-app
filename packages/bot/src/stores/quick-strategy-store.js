@@ -4,7 +4,7 @@ import {
     action,
     runInAction,
 }                    from 'mobx';
-import { localize }  from 'deriv-translations/lib/i18n';
+import { localize }  from 'deriv-translations';
 import config        from '../constants/index';
 import { load }      from '../scratch/utils';
 import ApiHelpers     from '../services/api/api-helpers';

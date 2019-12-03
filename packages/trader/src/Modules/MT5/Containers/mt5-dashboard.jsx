@@ -80,6 +80,7 @@ class MT5Dashboard extends React.Component {
             beginRealSignupForMt5,
             createMT5Account,
             is_loading,
+            landing_company_shortcode,
             has_mt5_account,
             has_real_account,
             NotificationMessages,
@@ -87,7 +88,7 @@ class MT5Dashboard extends React.Component {
             can_upgrade_to,
         } = this.props;
 
-        if (is_logged_in && can_upgrade_to !== 'svg') {
+        if (is_logged_in && can_upgrade_to !== 'svg' && landing_company_shortcode !== 'svg') {
             return <Redirect to={routes.trade} />;
         }
 
@@ -198,6 +199,7 @@ export default withRouter(connect(({ client, modules, ui }) => ({
     can_upgrade_to             : client.can_upgrade_to,
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
     is_loading                 : client.is_populating_mt5_account_list,
+    landing_company_shortcode  : client.landing_company_shortcode,
     has_mt5_account            : modules.mt5.has_mt5_account,
     has_real_account           : client.has_active_real_account,
     setCurrentAccount          : modules.mt5.setCurrentAccount,

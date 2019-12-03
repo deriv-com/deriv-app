@@ -268,7 +268,6 @@
     &__logout {
         align-items: center;
         align-self: flex-end;
-        cursor: pointer;
         display: flex;
         justify-content: flex-end;
         padding: 1.6em 1.3em;
@@ -276,10 +275,12 @@
         &-text {
             @include typeface(--paragraph-left-normal-black, none);
             color: var(--text-prominent);
+            cursor: pointer;
         }
         &-icon {
             margin-left: 8px;
             @extend %inline-icon;
+            cursor: pointer;
         }
     }
     &__balance {

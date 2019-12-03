@@ -637,6 +637,7 @@ export default class TradeStore extends BaseStore {
             this.purchase_info     = {};
 
             Object.keys(this.proposal_requests).forEach((type) => {
+                this.proposal_req_id[type] = 0;
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });
         }

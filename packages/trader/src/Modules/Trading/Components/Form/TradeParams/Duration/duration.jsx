@@ -129,12 +129,11 @@ const Duration = ({
         },
     };
 
-    const reset_value = is_advanced_duration
-        ? Math.floor(getDurationFromUnit(advanced_duration_unit) / 2)
-        : Math.floor(getDurationFromUnit(simple_duration_unit) / 2);
-    const unit_name = is_advanced_duration
-        ? getDurationMaps()[advanced_duration_unit].display
-        : getDurationMaps()[simple_duration_unit].display;
+    const reset_value = Math.floor(
+        getDurationFromUnit(is_advanced_duration
+            ? advanced_duration_unit
+            : simple_duration_unit) / 2);
+    const unit_name = getDurationMaps()[is_advanced_duration ? advanced_duration_unit : simple_duration_unit].display;
 
     // e.g. digit contracts only has range slider - does not have toggle between advanced / simple
     const has_toggle = expiry_list.length > 1 || duration_units_list.length > 1;

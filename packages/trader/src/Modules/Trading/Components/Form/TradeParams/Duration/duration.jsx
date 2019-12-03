@@ -6,6 +6,7 @@ import { localize }                   from 'App/i18n';
 import Fieldset                       from 'App/Components/Form/fieldset.jsx';
 import RangeSlider                    from 'App/Components/Form/RangeSlider';
 import { toMoment }                   from 'Utils/Date';
+import { getDurationMaps }            from 'Stores/Modules/Trading/Helpers/duration';
 import DurationToggle                 from './duration-toggle.jsx';
 import AdvancedDuration               from './advanced-duration.jsx';
 import SimpleDuration                 from './simple-duration.jsx';
@@ -13,6 +14,7 @@ import SimpleDuration                 from './simple-duration.jsx';
 const Duration = ({
     advanced_duration_unit,
     advanced_expiry_type,
+    contract_type,
     duration,
     duration_unit,
     duration_units_list,
@@ -127,6 +129,13 @@ const Duration = ({
         },
     };
 
+    const reset_value = is_advanced_duration
+        ? Math.floor(getDurationFromUnit(advanced_duration_unit) / 2)
+        : Math.floor(getDurationFromUnit(simple_duration_unit) / 2);
+    const unit_name = is_advanced_duration
+        ? getDurationMaps()[advanced_duration_unit].display
+        : getDurationMaps()[simple_duration_unit].display;
+
     // e.g. digit contracts only has range slider - does not have toggle between advanced / simple
     const has_toggle = expiry_list.length > 1 || duration_units_list.length > 1;
 
@@ -173,6 +182,12 @@ const Duration = ({
                             shared_input_props={props.shared_input}
                             simple_duration_unit={simple_duration_unit}
                         /> }
+
+                    { (contract_type === 'reset_call_put' && expiry_type !== 'endtime') &&
+                        <span className='trade-container__fieldset-info--minor'>
+                            { localize('Reset time : {{reset_value}} {{ unit_name }}', { reset_value, unit_name }) }
+                        </span>
+                    }
                     <DurationToggle
                         name={'is_advanced_duration'}
                         onChange={onToggleDurationType}

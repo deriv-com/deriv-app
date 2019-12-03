@@ -1,7 +1,7 @@
 import { localize } from 'App/i18n';
 import { toMoment } from 'Utils/Date';
 
-const getDurationMaps = () => ({
+export const getDurationMaps = () => ({
     t: { display: localize('Ticks'),   order: 1 },
     s: { display: localize('Seconds'), order: 2, to_second: 1 },
     m: { display: localize('Minutes'), order: 3, to_second: 60 },

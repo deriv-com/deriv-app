@@ -172,6 +172,7 @@ DurationWrapper.propTypes = {
     advanced_duration_unit: PropTypes.string,
     advanced_expiry_type  : PropTypes.string,
     contract_expiry_type  : PropTypes.string,
+    contract_type         : PropTypes.string,
     duration              : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
@@ -214,6 +215,7 @@ export default connect(({ modules, ui }) => ({
     advanced_duration_unit: ui.advanced_duration_unit,
     advanced_expiry_type  : ui.advanced_expiry_type,
     contract_expiry_type  : modules.trade.contract_expiry_type,
+    contract_type         : modules.trade.contract_type,
     duration              : modules.trade.duration,
     duration_unit         : modules.trade.duration_unit,
     duration_units_list   : modules.trade.duration_units_list,

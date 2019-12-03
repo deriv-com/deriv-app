@@ -64,6 +64,14 @@
             &--left {
                 left: 5px;
             }
+
+            &--minor {
+                display: block;
+                text-align: center;
+                color: var(--text-less-prominent);
+                margin: 8px 0;
+                font-size: 12px;
+            }
         }
         &-wrapper {
             &--disabled {

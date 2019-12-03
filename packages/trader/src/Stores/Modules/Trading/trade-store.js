@@ -116,10 +116,7 @@ export default class TradeStore extends BaseStore {
     initial_barriers;
     is_initial_barrier_applied = false;
 
-    proposal_req_id = {
-        CALL: null,
-        PUT : null,
-    };
+    proposal_req_id = {};
 
     @action.bound
     init = async () => {

@@ -156,7 +156,7 @@ const InputField = (props) => {
 const trimStrings = (values) => {
     Object.keys(values)
         .forEach(key => {
-            if (typeof values[key] === 'string' && values[key].startsWith(' ')) {
+            if (typeof values[key] === 'string' && (values[key].startsWith(' ') || values[key].charAt(values[key].length - 1) === ' ')) {
                 values[key] = values[key].trim();
             }
         });

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes                 from 'prop-types';
-import { localize }              from 'deriv-translations';
+import { localize, Localize }              from 'deriv-translations';
 import { Formik, Field, Form }   from 'formik';
 import { Autocomplete, Loading, Input, Button, ThemedScrollbars } from 'deriv-components';
 import { WS }                    from '../../utils/websocket';
@@ -25,7 +25,11 @@ class FormAds extends Component {
 
     componentDidMount() {
         WS().send({ 'residence_list': 1 }).then((response) => {
-            this.setState({ residence_list: response.residence_list });
+            this.setState({
+                residence_list: response.residence_list,
+            });
+            // TODO: call api to populate country, currency, and asset
+
 
             if (this.props.ad_id) {
                 // call the api, get the file based on id
@@ -49,22 +53,18 @@ class FormAds extends Component {
                 <h2>Create new ad</h2>
             </div>
             {this.state.is_loading ? <Loading is_fullscreen={false} /> : (
-                <Formik initialValues={{...this.state.initial_values}} onSubmit={this.handleSubmit}>
+                <Formik initialValues={{...this.state.initial_values}} onSubmit={this.handleSubmit} validate={this.validateFormAds}>
                     {({
-                    // errors,
-                    // status,
-                    // touched,
-                    // handleChange,
-                    // handleBlur,
-                    // handleSubmit,
-                    // isSubmitting,
-                    setFieldValue,
+                        isSubmitting,
+                        errors,
+                        touched,
+                        setFieldValue,
                     }) => (
                         <div className='my-ads__form'>
-                            <Form>
+                            <Form noValidate>
                                 <ThemedScrollbars
                                     autoHide
-                                    style={{ height: 'calc(460px - 40px)' }} // height of container minus height of modal footer container
+                                    style={{ height: 'calc(520px - 70px)' }} // height of container minus height of modal footer container
                                 >
                                     <div className='my-ads__form--container'>
                                         <Field name='country'>
@@ -78,6 +78,7 @@ class FormAds extends Component {
                                                     label={localize('Country')}
                                                     required
                                                     list_items={this.state.residence_list}
+                                                    disabled
                                                     onItemSelection={
                                                         ({ value, text }) => setFieldValue('country', value ? text : '', true)
                                                     }
@@ -94,6 +95,7 @@ class FormAds extends Component {
                                                     className='my-ads__form--field'
                                                     label={localize('Currency')}
                                                     required
+                                                    disabled
                                                     list_items={this.state.residence_list}
                                                     onItemSelection={
                                                         ({ value, text }) => setFieldValue('currency', value ? text : '', true)
@@ -110,6 +112,7 @@ class FormAds extends Component {
                                                     data-lpignore='true'
                                                     autoComplete='off'
                                                     type='text'
+                                                    error={touched.type && errors.type}
                                                     className='my-ads__form--field'
                                                     label={localize('Type')}
                                                     required
@@ -127,6 +130,7 @@ class FormAds extends Component {
                                                     data-lpignore='true'
                                                     autoComplete='off'
                                                     type='text'
+                                                    error={touched.asset && errors.asset}
                                                     className='my-ads__form--field'
                                                     label={localize('Asset')}
                                                     required
@@ -139,12 +143,13 @@ class FormAds extends Component {
                                         </Field>
                                     </div>
                                     <div className='my-ads__form--container'>
-                                        <Field name='fixed_price'>
+                                        <Field name='fix_price'>
                                             {({ field }) => (
                                                 <Input
                                                     {...field}
                                                     data-lpignore='true'
                                                     type='number'
+                                                    error={touched.fix_price && errors.fix_price}
                                                     label={localize('Fixed price')}
                                                     className='my-ads__form--field'
                                                     required
@@ -157,6 +162,7 @@ class FormAds extends Component {
                                                     {...field}
                                                     data-lpignore='true'
                                                     type='number'
+                                                    error={touched.amount && errors.amount}
                                                     label={localize('Amount')}
                                                     className='my-ads__form--field'
                                                     required
@@ -170,6 +176,7 @@ class FormAds extends Component {
                                                 {...field}
                                                 data-lpignore='true'
                                                 type='number'
+                                                error={touched.min_transaction && errors.min_transaction}
                                                 label={localize('Min. transaction')}
                                                 className='my-ads__form--field my-ads__form--field-single'
                                                 required
@@ -183,6 +190,7 @@ class FormAds extends Component {
                                                 data-lpignore='true'
                                                 autoComplete='off'
                                                 type='text'
+                                                error={touched.payment_method && errors.payment_method}
                                                 className='my-ads__form--field my-ads__form--field-single'
                                                 label={localize('Payment method')}
                                                 required
@@ -199,6 +207,7 @@ class FormAds extends Component {
                                                 {...field}
                                                 data-lpignore='true'
                                                 type='textarea'
+                                                error={touched.advertiser_note && errors.advertiser_note}
                                                 label={localize('Advertiser notes')}
                                                 className='my-ads__form--field my-ads__form--field-textarea'
                                                 required
@@ -207,7 +216,7 @@ class FormAds extends Component {
                                     </Field>
                                 </ThemedScrollbars>
                                 <div className='my-ads__form--footer'>
-                                    <Button secondary large>{localize('Cancel')}</Button>
+                                    <Button secondary large type='reset'>{localize('Cancel')}</Button>
                                     <Button primary large>{localize('Post ad')}</Button>
                                 </div>
                             </Form>
@@ -218,6 +227,96 @@ class FormAds extends Component {
             )}
         </Fragment>;
     }
+
+    validateFormAds = (values) => {
+        const available_price = 0.8; // later get available amount from the api
+        const validations = {
+            type: [
+                v => !!v,
+            ],
+            asset: [
+                v => !!v,
+            ],
+            fix_price: [
+                v => !!v,
+            ],
+            amount: [
+                v => !!v,
+                v => v > available_price,
+            ],
+            min_transaction: [
+                v => !!v,
+            ],
+            payment_method: [
+                v => !!v,
+            ],
+            advertiser_note: [
+                v => !!v,
+                v => v.length < 400,
+            ],
+        };
+
+        const mappedKey = {
+            type           : localize('Type'),
+            asset          : localize('Asset'),
+            fix_price      : localize('Fixed price'),
+            amount         : localize('Amount'),
+            min_transaction: localize('Min. transaction'),
+            payment_method : localize('Payment method'),
+            advertiser_note: localize('Advertiser note'),
+        };
+
+        const common_messages  = [
+            '{{field_name}} is required',
+        ];
+
+        const amount_messages = [
+            '{{field_name}} is required',
+            '{{field_name}} is too low',
+        ];
+
+        const note_messages = [
+            '{{field_name}} is required',
+            '{{field_name}} has exceed maximum length',
+        ];
+
+        const errors    = {};
+
+        Object.entries(validations)
+            .forEach(([key, rules]) => {
+                const error_index = rules.findIndex(v => !v(values[key]));
+
+                if (error_index !== -1) {
+                    switch (key) {
+                        case 'amount':
+                            errors[key] = errors[key] = <Localize
+                                i18n_default_text={amount_messages[error_index]}
+                                values={{
+                                    field_name: mappedKey[key],
+                                }}
+                            />;
+                            break;
+                        case 'advertiser_note':
+                            errors[key] = errors[key] = <Localize
+                                i18n_default_text={note_messages[error_index]}
+                                values={{
+                                    field_name: mappedKey[key],
+                                }}
+                            />;
+                            break;
+                        default:
+                            errors[key] = errors[key] = <Localize
+                                i18n_default_text={common_messages[error_index]}
+                                values={{
+                                    field_name: mappedKey[key],
+                                }}
+                            />;
+                    }
+                }
+            });
+
+        return errors;
+    };
 }
 
 FormAds.propTypes = {

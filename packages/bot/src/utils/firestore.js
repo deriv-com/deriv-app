@@ -1,15 +1,22 @@
-import firebase             from 'firebase';
-import                      'firebase/firestore';
-import { reaction }         from 'mobx';
-import { contract_stages }  from '../constants/contract-stage';
-import { message_types }    from '../constants/messages';
+import firebase            from 'firebase/app';
+import { reaction }        from 'mobx';
+import { contract_stages } from '../constants/contract-stage';
+import { message_types }   from '../constants/messages';
+import                     'firebase/auth';
+import                     'firebase/firestore';
 
 const firestore = (() => {
 
     let db, users, doc_id;
+    let root_store;
 
-    const init = (root_store) => {
+    const getServerTime = ()=> {
+        return root_store.core.common.server_time.unix()
+    };
+
+    const init = (_root_store) => {
         try {
+            root_store = _root_store;
             // Initialize Cloud Firestore through Firebase
             if (!firebase.apps.length) {
                 firebase.initializeApp({
@@ -18,7 +25,7 @@ const firestore = (() => {
                 });
             }
 
-            const { core: { client, common }, run_panel, transactions, journal, summary: s } = root_store;
+            const { core: { client }, run_panel, transactions, journal, summary: s } = root_store;
 
             db = firebase.firestore();
             users = db.collection('Users');
@@ -26,8 +33,8 @@ const firestore = (() => {
             reaction(
                 () => run_panel.is_running,
                 () => run_panel.is_running ?
-                    onRunBot(client.loginid, s.summary, common.server_time.unix()) :
-                    onStopBot(client.loginid, common.server_time.unix())
+                    onRunBot(client.loginid, s.summary) :
+                    onStopBot(client.loginid)
             );
 
             reaction(
@@ -36,36 +43,36 @@ const firestore = (() => {
                     // send the summary when contract closes and bot is stopped
                     if (!run_panel.is_running &&
                         run_panel.contract_stage.index === contract_stages.CONTRACT_CLOSED.index) {
-                        onSummaryChanged(client.loginid, s.summary, common.server_time.unix());
+                        onSummaryChanged(client.loginid, s.summary);
                     }
                 }
             );
 
             reaction(
                 () => transactions.contracts,
-                () => onTransactionClosed(client.loginid, transactions.contracts, common.server_time.unix())
+                () => onTransactionClosed(client.loginid, transactions.contracts)
             );
 
             reaction(
                 () => journal.messages,
-                () => onErrorHappened(client.loginid, journal.messages, common.server_time.unix())
+                () => onErrorHappened(client.loginid, journal.messages)
             );
         } catch (error) {
             console.warn('Error initializing firestore ', error); // eslint-disable-line no-console
         }
     };
 
-    const onRunBot = (login_id, summary, server_time) => {
+    const onRunBot = (login_id, summary) => {
         try {
             const strategy = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.derivWorkspace));
             users.doc(login_id).collection('Runs').add({
-                start_time: server_time,
+                start_time: getServerTime(),
                 account_id: login_id,
                 xml       : strategy,
             })
                 .then((docRef) => {
                     doc_id = docRef.id;
-                    onSummaryChanged(login_id, summary, server_time);
+                    onSummaryChanged(login_id, summary);
                 })
                 .catch((error) => {
                     console.warn('Error adding document to firestore ', error); // eslint-disable-line no-console
@@ -76,17 +83,17 @@ const firestore = (() => {
         }
     };
 
-    const onStopBot = (login_id, server_time) => {
+    const onStopBot = (login_id) => {
         try {
             users.doc(login_id).collection('Runs').doc(doc_id).set({
-                end_time: server_time,
+                end_time: getServerTime(),
             }, { merge: true });
         } catch (error) {
             console.warn('Error adding document to firestore when bot stops ', error); // eslint-disable-line no-console
         }
     };
 
-    const onSummaryChanged = (login_id, summary, server_time) => {
+    const onSummaryChanged = (login_id, summary) => {
         try {
             if (summary) {
                 users.doc(login_id).collection('Runs').doc(doc_id).collection('Summaries').add({
@@ -96,7 +103,7 @@ const firestore = (() => {
                     total_payout  : summary.total_payout,
                     total_stake   : summary.total_stake,
                     won_contracts : summary.won_contracts,
-                    time_stamp    : server_time,
+                    time_stamp    : getServerTime(),
                 });
             }
         } catch (error) {
@@ -104,7 +111,7 @@ const firestore = (() => {
         }
     };
 
-    const onTransactionClosed = (login_id, contracts, server_time) => {
+    const onTransactionClosed = (login_id, contracts) => {
         try {
             const contract = contracts.length > 0 && contracts[0];
             if (contract && contract.is_completed) {
@@ -116,7 +123,7 @@ const firestore = (() => {
                     entry_spot   : contract.entry_spot,
                     exit_spot    : contract.exit_spot,
                     profit       : contract.profit,
-                    time_stamp   : server_time,
+                    time_stamp   : getServerTime(),
                 });
             }
         } catch (error) {
@@ -124,7 +131,7 @@ const firestore = (() => {
         }
     };
 
-    const onErrorHappened = (login_id, messages, server_time) => {
+    const onErrorHappened = (login_id, messages) => {
         try {
             const message = messages.length > 0 && messages[0];
             if (message && message.message_type === message_types.ERROR) {
@@ -132,7 +139,7 @@ const firestore = (() => {
                     date      : message.date,
                     time      : message.time,
                     message   : message.message,
-                    time_stamp: server_time,
+                    time_stamp: getServerTime(),
                 });
             }
         } catch (error) {

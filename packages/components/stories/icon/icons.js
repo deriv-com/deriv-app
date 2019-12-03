@@ -1,5 +1,7 @@
-export const icons = 
- {
+// auto-generated file. DO NOT MODIFY.
+
+export const icons =
+{
     'account': [
         'IcPoaBank',
         'IcPoaChecked',

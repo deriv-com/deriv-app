@@ -2,6 +2,14 @@ import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
 
+function getUrlBase(path = '') {
+    const l = window.location;
+
+    if (!/^\/(br_)/.test(l.pathname)) return path;
+
+    return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
+}
+
 function getKebabCase(str) {
     if (!str) return str;
     return str
@@ -69,7 +77,7 @@ const Icon = ({
                 '--fill-color1': color,
             }}
         >
-            <use xlinkHref={`${(`/${spriteFileName}.svg`)}#${icon_filename}`} />
+            <use xlinkHref={`${(getUrlBase(`/sprite/${spriteFileName}.svg`))}#${icon_filename}`} />
         </svg>
     );
 };

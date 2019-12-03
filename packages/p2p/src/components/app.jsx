@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs } from 'deriv-components';
-import { localize } from 'deriv-translations/lib/i18n';
+import { localize } from 'deriv-translations';
 import Ads from './ads/ads.jsx';
 import Orders from './orders/orders.jsx';
 import MyAds from './my-ads/my-ads.jsx';

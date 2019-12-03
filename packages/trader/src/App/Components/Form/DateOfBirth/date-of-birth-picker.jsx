@@ -32,6 +32,7 @@ const InputField = (props) => {
     );
 };
 
+// TODO: Move DateOfBirth and Calendar to components
 class DateOfBirth extends React.Component {
     state = {
         should_show_calendar: false,

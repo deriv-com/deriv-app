@@ -54,7 +54,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || this.workspace.isDragging() || this.isInFlyout) {
             return;
         }
 
@@ -122,6 +122,11 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.enforceSingleBarrierType(true);
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
+            }
+        } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.id) {
+            // Ensure this block is populated after initial drag.
+            if (!this.selected_duration) {
+                Blockly.Events.fire(new Blockly.Events.Create(this));
             }
         }
     },

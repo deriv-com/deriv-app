@@ -9,6 +9,8 @@ export const unrecoverable_errors = [
     'FinancialAssessmentRequired',
     'PositiveNumberExpected',
     'OptionError',
+    'IncorrectPayoutDecimals',
+    'IncorrectStakeDecimals',
 ];
 
 export const message_types = Object.freeze({

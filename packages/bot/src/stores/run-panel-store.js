@@ -2,15 +2,16 @@ import {
     observable,
     action,
     reaction,
-    computed }             from 'mobx';
-import { localize }        from 'deriv-translations' ;
-import { contract_stages } from '../constants/contract-stage';
+    computed }                         from 'mobx';
+import { localize }                    from 'deriv-translations' ;
+import { contract_stages }             from '../constants/contract-stage';
 import {
     error_types,
-    unrecoverable_errors } from '../constants/messages';
-import DBot                from '../scratch';
-import { isEnded }         from '../utils/contract';
-import { observer }        from '../utils/observer';
+    unrecoverable_errors }             from '../constants/messages';
+import DBot                            from '../scratch';
+import { isEnded }                     from '../utils/contract';
+import { observer }                    from '../utils/observer';
+import { switch_account_notification } from '../utils/notifications/bot-notifications';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -55,11 +56,6 @@ export default class RunPanelStore {
 
         if (!client.is_logged_in) {
             this.showLoginDialog();
-            return;
-        }
-
-        if (!client.is_virtual) {
-            this.showRealAccountDialog();
             return;
         }
 
@@ -294,49 +290,25 @@ export default class RunPanelStore {
 
     @action.bound
     registerCoreReactions() {
-        const { client, common } = this.root_store.core;
-        const terminateAndClear = () => {
-            // TODO: Handle more gracefully, e.g. ask user for confirmation instead
-            // of killing and clearing everything instantly.
-            // Core need to change to pass beforeswitch account event
-            DBot.terminateBot();
-            RunPanelStore.unregisterBotListeners();
-            this.clearStat();
-        };
-
+        const { client, common, ui } = this.root_store.core;
+        
         const register = () => {
             if (common.is_socket_opened) {
                 this.disposeIsSocketOpenedListener = reaction(
                     () => client.loginid,
                     (loginid) => {
-                        if (loginid) {
-                            this.root_store.journal.pushMessage(localize('You have switched accounts.'));
+                        if (loginid && this.is_running) {
+                            ui.addNotificationMessage(switch_account_notification);
                         }
-                        terminateAndClear();
-                        this.root_store.summary.currency = client.currency;
-                    },
-                );
-
-                this.disposeSwitchAccountListener = reaction(
-                    () => client.switched,
-                    (switched) => {
-                        if (switched) {
-                            if (client.is_logged_in && !/^VRTC/.test(switched)) {
-                                // TODO: temporary fix to not showing modal when another modal is open
-                                const is_modal_open = document.getElementById('modal_root').hasChildNodes();
-                                if (!is_modal_open) {
-                                    this.showRealAccountDialog();
-                                }
-                                terminateAndClear();
-                            }
-                        }
+                        DBot.terminateBot();
+                        RunPanelStore.unregisterBotListeners();
+                        this.clearStat();
                     },
                 );
             } else {
                 if (typeof this.disposeLogoutListener === 'function') {
                     this.disposeLogoutListener();
                 }
-
                 if (typeof this.disposeSwitchAccountListener === 'function') {
                     this.disposeSwitchAccountListener();
                 }

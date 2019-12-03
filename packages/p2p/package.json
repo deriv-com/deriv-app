@@ -22,7 +22,9 @@
     "formik": "^2.0.6",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "svg-sprite-loader": "^4.1.6",
+    "svgo-loader": "^2.2.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",

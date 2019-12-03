@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
-import PropTypes            from 'prop-types';
-import { localize }         from 'deriv-translations';
-import { Formik, Field, Form }    from 'formik';
-import { Autocomplete, Loading }     from 'deriv-components';
-import { WS }               from '../../utils/websocket';
+import PropTypes                 from 'prop-types';
+import { localize }              from 'deriv-translations';
+import { Formik, Field, Form }   from 'formik';
+import { Autocomplete, Loading } from 'deriv-components';
+import { WS }                    from '../../utils/websocket';
+import IconBack                  from '../../assets/icon-back.jsx';
 
 class FormAds extends Component {
     state = {
@@ -38,10 +39,15 @@ class FormAds extends Component {
 
     render() {
         return <Fragment>
+            <div className='my-ads__heading--wrapper'>
+                <div className='my-ads__heading--btn'>
+                    <IconBack />
+                </div>
+            </div>
             {this.state.is_loading ? <Loading is_fullscreen={false} /> : (
-                <Formik initial_values={this.state.initial_values}>
+                <Formik initialValues={{...this.state.initial_values}}>
                     {({
-                        // values,
+                        values,
                     // errors,
                     // status,
                     // touched,
@@ -52,7 +58,7 @@ class FormAds extends Component {
                     setFieldValue,
                     }) => (
                         <Form>
-                            <Field>
+                            <Field name='country'>
                                 {({ field }) => (
                                     <Autocomplete
                                         {...field}

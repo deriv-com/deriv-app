@@ -175,12 +175,10 @@ class DBot {
     /**
      * Unselects any selected block before running the bot.
      */
+    // eslint-disable-next-line class-methods-use-this
     unselectBlocks() {
         if (Blockly.selected) {
             Blockly.selected.unselect();
-            
-            // Force a check on value inputs.
-            this.valueInputLimitationsListener({}, true);
         }
         return true;
     }
@@ -204,6 +202,9 @@ class DBot {
      * Check if there are any blocks highlighted for errors.
      */
     checkForErroredBlocks() {
+        // Force a check on value inputs.
+        this.valueInputLimitationsListener({}, true);
+
         const all_blocks  = this.workspace.getAllBlocks(true);
         const error_block = all_blocks.find(block => block.is_error_highlighted && !block.disabled);
 

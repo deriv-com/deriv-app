@@ -1,5 +1,6 @@
-import { localize } from 'deriv-translations';
-import config       from '../../../../../constants';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../../../utils';
+import config                 from '../../../../../constants';
 
 Blockly.Blocks.notify = {
     init() {
@@ -42,9 +43,7 @@ Blockly.Blocks.notify = {
     },
     getRequiredValueInputs() {
         return {
-            MESSAGE: (input) => {
-                return !input || input === '\'\'';
-            },
+            MESSAGE: emptyTextValidator,
         };
     },
 };

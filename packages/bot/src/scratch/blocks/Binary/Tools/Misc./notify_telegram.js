@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../../../utils';
 
 Blockly.Blocks.notify_telegram = {
     init() {
@@ -41,9 +42,9 @@ Blockly.Blocks.notify_telegram = {
     },
     getRequiredValueInputs() {
         return {
-            TELEGRAM_ACCESS_TOKEN: (input) => !input || input === '\'\'',
-            TELEGRAM_CHAT_ID     : (input) => !input || input === '\'\'',
-            TELEGRAM_MESSAGE     : (input) => !input || input === '\'\'',
+            TELEGRAM_ACCESS_TOKEN: emptyTextValidator,
+            TELEGRAM_CHAT_ID     : emptyTextValidator,
+            TELEGRAM_MESSAGE     : emptyTextValidator,
         };
     },
 };

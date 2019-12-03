@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_changeCase = {
     init() {
@@ -39,7 +40,7 @@ Blockly.Blocks.text_changeCase = {
     },
     getRequiredValueInputs() {
         return {
-            TEXT: null,
+            TEXT: emptyTextValidator,
         };
     },
 };

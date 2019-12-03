@@ -309,3 +309,6 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
     workspace.scrollbar.set(scroll_x, scroll_y);
 };
 
+export const emptyTextValidator = (input) => {
+    return !input || input === '\'\'';
+};

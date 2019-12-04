@@ -3,12 +3,12 @@ import PropTypes          from 'prop-types';
 import { Button, Dialog } from 'deriv-components';
 import { localize }       from 'deriv-translations';
 // import { WS } from '../../utils/websocket';
-import                         './ads.scss';
+import                         './buy-sell.scss';
 import Popup              from './popup.jsx';
 
-class Ads extends React.Component {
+class BuySell extends React.Component {
     state = {
-        ads_list: [],
+        buy_sell_list: [],
         show_popup: false,
         type: 'buy'
     }
@@ -19,8 +19,8 @@ class Ads extends React.Component {
         //     console.log(response)
         // })
         this.setState({
-            ads_list: [
-                ...this.state.ads_list,
+            buy_sell_list: [
+                ...this.state.buy_sell_list,
                 {
                     label: 'Buy',
                     value: 'buy',
@@ -42,28 +42,27 @@ class Ads extends React.Component {
     }
 
     render() {
-        const { ads_list, show_popup, type } = this.state;
+        const { buy_sell_list, show_popup, type } = this.state;
         return (
-            <div className="ads">
-                <ul className="ads__list-wrapper">
-                    {ads_list.map(ads => <li key={ads.value} className="ads__list">
-                        <Button primary onClick={() => this.handleClick(ads.value)}>{ads.label}</Button>
+            <div className="buy-sell">
+                <ul className="buy-sell__list-wrapper">
+                    {buy_sell_list.map(buy_sell => <li key={buy_sell.value} className="buy-sell__list">
+                        <Button primary onClick={() => this.handleClick(buy_sell.value)}>{buy_sell.label}</Button>
                     </li>
                     )}
                 </ul>
                 {show_popup &&
-                    <div className='ads__dialog'>
+                    <div className='buy-sell__dialog'>
                         <Dialog
-                            title={type.toUpperCase()}
                             is_visible={show_popup}
-                            disableApp={() => {console.log('disable')}}
-                            enableApp={() => {console.log('enable')}}
+                            disableApp={() => {/* do nothing // disableApp is a mandatory props in dialog */}}
+                            enableApp={() => {/* do nothing // enableApp is a mandatory props in dialog */}}
                             confirm_button_text={localize('Confirm')}
                             cancel_button_text={localize('Cancel')}
                             onConfirm={this.onConfirmClick}
                             onCancel={this.onCancelClick}
                         >
-                            <Popup type={type} />
+                            <Popup type={type} onCancel={this.onCancelClick} />
                         </Dialog>
                     </div>
                 }
@@ -72,8 +71,8 @@ class Ads extends React.Component {
     }
 }
 
-Ads.propTypes = {
+BuySell.propTypes = {
     disableApp: PropTypes.func,
 }
  
-export default Ads;
+export default BuySell;

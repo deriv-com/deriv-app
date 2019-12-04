@@ -2,7 +2,7 @@ import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs } from 'deriv-components';
 import { localize } from 'deriv-translations';
-import Ads from './ads/ads.jsx';
+import BuySell from './buy-sell/buy-sell.jsx';
 import Orders from './orders/orders.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import MyProfile from './my-profile/my-profile.jsx';
@@ -31,7 +31,7 @@ class App extends Component {
     }
 
     render() {
-        const { active_index, is_app_disabled } = this.state;
+        const { active_index } = this.state;
 
         return (
             <Fragment>
@@ -43,7 +43,7 @@ class App extends Component {
                     <nav>
                         <Tabs active_index={active_index}>
                             <div label={localize('Buy/sell')}>
-                                <Ads disableApp={this.disableApp} />
+                                <BuySell />
                             </div>
                             <div label={localize('Orders')}>
                                 <Orders />

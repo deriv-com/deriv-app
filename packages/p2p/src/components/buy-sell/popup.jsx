@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 const Popup = ({ type }) => {
     return (
         <Fragment>
-            <p>{type}</p>
+            <div className='popup'>
+
+            </div>
         </Fragment>
     );
 }

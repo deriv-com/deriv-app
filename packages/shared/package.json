@@ -11,7 +11,7 @@
     "url": "git+https://github.com/binary-com/deriv-app.git"
   },
   "scripts": {
-    "start": "rimraf utils && npm run test && webpack --mode=production --progress --watch",
+    "start": "rimraf utils && npm run test && npm run serve",
     "serve": "rimraf utils && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
     "build": "rimraf utils && webpack --mode=production --optimize-minimize --progress",
     "build:travis": "rimraf utils && webpack --mode=production --optimize-minimize",

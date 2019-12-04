@@ -21,7 +21,7 @@ the current FE code.
 Other users of `DerivAPI` can simply rely on the `resolve`/`reject`/`pending` state
 of the `Promise` based calls and `RxJS` subscriptions.
 
-```
+```JavaScript
 const poc = await WS.proposalOpenContract(contract_id);
 ```
 
@@ -37,7 +37,7 @@ a `Subscriber` object is returned from each subscription.
 The use is required to keep the `Subscriber` object for calling `Subscriber.unsubscribe()`
 on that later.
 
-```
+```JavaScript
 const subscriber = WS.subscribeProposal(proposalRequest, cb);
 
 // later
@@ -52,7 +52,7 @@ page is visible, when you refresh the page, the cache will be reset automaticall
 
 To use the cache you can call `WS.cache` following the method call:
 
-```
+```JavaScript
 const active_symbols = await WS.cache.activeSymbols('brief');
 ```
 
@@ -84,14 +84,14 @@ There's a `WS.authorized` interface which can be used to make sure the API is au
 before making the requests. The method calls used with `authorize` are passed
 to the socket base and support overrides.
 
-```
+```JavaScript
 // Waits for the API to be authorized (by another call) or buys immediately if already authorized
 const buy_response = await WS.authorized.buy(buy_params);
 ```
 
 `WS.authorized` can be used with `cache` and `storage`:
 
-```
+```JavaScript
 // This tries to lookup the storage for the payout currencies
 // if not found it'll make the payout currencies request
 // but all of this happens after the API is authorized

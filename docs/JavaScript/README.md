@@ -24,35 +24,35 @@ In order to improve the clarity, quality and development time it is worth consid
 <a id="naming-conventions-variables"></a>
 **[Variables:](#naming-conventions-variables)** Variables should be lowercase words separated by `_`.
     
-```js
+```JavaScript
 const field_name = '...';
 ```
 
 <a id="naming-conventions-functions"></a>
 **[Functions:](#naming-conventions-functions)** Functions should be camelCase. This is to easily distinguish between variables and functions.
     
-```js
+```JavaScript
 const myFunction = () => { ... };
 ```
 
 <a id="naming-conventions-modules"></a>
 **[Modules:](#naming-conventions-modules)** Module names and classes should be PascalCase.
     
-```js
+```JavaScript
 const MyModule = (() => { ... })();
 ```
 
 <a id="naming-conventions-javascript-elements"></a>
 **[JavaScript elements:](#naming-conventions-javascript-elements)** JavaScript elements start with `el_` for a similar effect.
     
-```js
+```JavaScript
 const el_test = document.getElementById('test');
 ``` 
 
 <a id="naming-conventions-boolean"></a>
 **[Boolean:](#naming-conventions-boolean)** Those variables which store a boolean value, should start with `is_`, `has_`, ...
 
-```js
+```JavaScript
 const is_updated = true;
 const has_crypto = false;
 ```
@@ -60,7 +60,7 @@ const has_crypto = false;
 <a id="naming-conventions-form-elements"></a>
 **[Form elements:](#naming-conventions-form-elements)** Consider prefixes for form elements to make it more obvious what type of field they are, such as:
 
-```js
+```JavaScript
 const fields = {
     txt_name  : { id: '#txt_name' },
     chk_tnc   : { id: '#chk_tnc' },
@@ -83,13 +83,13 @@ const fields = {
 
 - For changes that can be done in API V3, use the comment 
     
-    ```js
+    ```JavaScript
     // API_V3: [description of what needs to be moved to API]
     ```
 
 - For changes that should be done in API V4, use the comment 
 
-    ```js
+    ```JavaScript
     // API_V4: [description of what needs to be moved to API]
     ```
 
@@ -103,7 +103,7 @@ const fields = {
 <a id="import-rules-align-by-equal"></a>
 **[Align by equal:](#import-rules-align-by-equal)** Assignments are generally aligned by `=` for readability purposes.
 
-```js
+```JavaScript
 const moment             = require('moment');                       // moment is an npm package
 const CookieStorage      = require('./storage').CookieStorage;      // our own function
 const applyToAllElements = require('./utility').applyToAllElements; // our own function
@@ -123,7 +123,7 @@ require('../../_common/lib/polyfills/string.includes');             // polyfill 
 <a id="import-rules-combining-require"></a>
 **[Combining require:](#import-rules-combining-require)** When there are many functions being imported from the same file, consider combining it into one import line.
 
-```js
+```JavaScript
 const Utility = require('./utility');
 
 ...
@@ -132,3 +132,101 @@ Utility.handleHash();
 Utility.createElement('div');
 ...
 ```
+
+JSX Rules
+=============
+
+- Use functional stateless components (`FSC`).
+- Use destructuring to capture parameters if needed.
+- Use `{condition && <el/> ...</el>}` syntax to conditionally render an element.
+- Use `<el attr={value || undefined}` to conditionally render an attribute, React omits attributes with null or undefined values.
+- Use `localize('...')` for translations.
+- Use `url_for('...')` to build URLs.
+- Use `website_name` constant instead of `Deriv`.
+- Do NOT use `<Element attributeName={true} />`; just use `<Element attributeName />`.
+- Components with less than four arguments should stay list all in one line, for example:
+
+```JavaScript
+export const List = ({ items, id, className }) => (
+    <React.Fragment>
+        { items.length ?
+          <ul id={id} className={className}>
+              {items.map((item, idx) => <Li key={idx} {...item} />)}
+          </ul>
+        :
+          undefined
+        }
+    </React.Fragment>
+
+);
+```
+
+- Components with more than four arguments need to be broken down to separate lines, for example:
+
+```JavaScript
+export const Li = ({
+    className,
+    id,
+    href,
+    param = '',
+    target,
+    text,
+    header,
+    p,
+}) => {
+    const content = p ? <p>{text}</p> : text;
+
+    return (
+        <li id={id} className={className}>
+            { header && (
+                text ? <strong>{header}</strong> : <h3>{header}</h3>
+            )}
+            { href ?
+                <a
+                    href={`${href}${param}`}
+                    rel={/^http/.test(href) ? 'noopener noreferrer' : undefined}
+                    target={target || undefined}
+                >
+                    {content}
+                </a>
+                : content
+            }
+        </li>
+    );
+};
+```
+
+- Imports with four or more arguments need to be broken down to separate lines, but lower than that should stay in one line.
+- Always name your components before default exporting them, for example:
+
+```JavaScript
+import React from 'react';
+
+const Loading = ({theme}) => (
+    <div className={`barspinner ${ theme || 'dark'}`}>
+        { Array.from(new Array(5)).map((x, inx) => (
+            <div key={inx} className={`rect${inx + 1}`}></div>
+        ))}
+    </div>
+);
+
+export default Loading;
+```
+- There are cases where you do not want your strings to be escaped (i.g. when you place `<a/>` tags inside a `<Table />`). To bypass HTML escape, you can use the `interpolation.escapeValue` boolean property of the localize `options` param (under normal circumstances do NOT use this.):
+
+```JavaScript
+localize('{{opening_tag}}Deriv App{{closing_tag}}', {
+    opening_tag  : '<a href="https://deriv.app" rel="noopener noreferrer" target="_blank" class="link">',
+    closing_tag  : '</a>',
+    interpolation: { escapeValue: false },
+}),
+```
+
+- Blocks need to have a single space after `{`, for example:
+
+```JavaScript
+{ array.map[() => ())}
+```
+
+- Functions should be named using CamelCase.
+- Variable should be named using lower_case.

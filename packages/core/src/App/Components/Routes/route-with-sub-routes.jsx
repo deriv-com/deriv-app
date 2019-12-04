@@ -2,6 +2,7 @@ import React               from 'react';
 import {
     Redirect,
     Route }                from 'react-router-dom';
+import ObjectUtils         from 'deriv-shared/utils/object';
 import {
     redirectToLogin,
     redirectToSignUp }     from '_common/base/login';
@@ -23,16 +24,24 @@ const RouteWithSubRoutes = route => {
                 to = location.pathname.toLowerCase().replace(route.path, '');
             }
             result = <Redirect to={to} />;
-        } else {
+        } else if (route.is_authenticated && !route.is_logged_in) {
             result = (
-                (route.is_authenticated && !route.is_logged_in) ?
-                    <LoginPrompt
-                        onLogin={redirectToLogin}
-                        onSignup={redirectToSignUp}
-                        page_title={route.title}
-                    />
-                    :
+                <LoginPrompt
+                    onLogin={redirectToLogin}
+                    onSignup={redirectToSignUp}
+                    page_title={route.title}
+                />
+            );
+        } else {
+            const default_subroute     = route.routes ? route.routes.find((r) => r.default) : {};
+            const has_default_subroute = !ObjectUtils.isEmptyObject(default_subroute);
+            result = (
+                <React.Fragment>
+                    {has_default_subroute && location.pathname === route.path &&
+                    <Redirect to={default_subroute.path} />
+                    }
                     <route.component {...props} routes={route.routes} passthrough={route.passthrough} />
+                </React.Fragment>
             );
         }
 

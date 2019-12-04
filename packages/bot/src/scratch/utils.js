@@ -29,27 +29,25 @@ export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
 };
 
 export const setBlockTextColor = block => {
-    Blockly.Events.recordUndo = false;
-    if (block.inputList instanceof Array) {
-        Array.from(block.inputList).forEach(inp =>
-            inp.fieldRow.forEach(field => {
-                if (field instanceof Blockly.FieldLabel) {
-                    const svgElement = field.getSvgRoot();
-                    if (svgElement) {
-                        svgElement.setAttribute('class', 'blocklyTextRootBlockHeader');
-                    }
-                }
-            })
-        );
-    }
-    const field = block.getField();
-    if (field) {
-        const svgElement = field.getSvgRoot();
-        if (svgElement) {
-            svgElement.setAttribute('class', 'blocklyTextRootBlockHeader');
+    const addClassAttribute = (field) => {
+        const el_svg = field.getSvgRoot();
+        if (el_svg) {
+            el_svg.setAttribute('class', 'blocklyTextRootBlockHeader');
         }
     }
-    Blockly.Events.recordUndo = true;
+
+    block.inputList.forEach(input => {
+        input.fieldRow.forEach(field => {
+            if (field instanceof Blockly.FieldLabel) {
+                addClassAttribute(field);
+            }
+        });
+    });
+
+    const field = block.getField();
+    if (field) {
+        addClassAttribute(field);
+    }
 };
 
 export const save = (filename = 'deriv-bot', collection = false, xmlDom) => {
@@ -171,17 +169,13 @@ const loadBlocksFromHeader = (xml_string, block) => {
                 reject(localize('Remote blocks to load must be a collection.'));
             }
 
-            const { recordUndo } = Blockly.Events;
-
-            Blockly.Events.recordUndo = false;
-
-            addLoaderBlocksFirst(xml).then(() => {
-                Array.from(xml.children).forEach(el_block => addDomAsBlock(el_block, block));
-                Blockly.Events.recordUndo = recordUndo;
-                resolve();
-            }).catch(() => {
-                Blockly.Events.recordUndo = recordUndo;
-                reject();
+            executeIrreversibleWsLogic(() => {
+                addLoaderBlocksFirst(xml).then(() => {
+                    Array.from(xml.children).forEach(el_block => addDomAsBlock(el_block, block));
+                    resolve();
+                }).catch(() => {
+                    reject();
+                });
             });
         } catch (e) {
             reject(localize('Unable to load the block file.'));
@@ -300,3 +294,11 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
     workspace.scrollbar.set(scroll_x, scroll_y);
 };
 
+export const executeIrreversibleWsLogic = (callback) => {
+    const { recordUndo }      = Blockly.Events;
+    Blockly.Events.recordUndo = false;
+
+    callback();
+
+    Blockly.Events.recordUndo = recordUndo;
+}

@@ -1,6 +1,9 @@
 import { localize }          from 'deriv-translations';
 import { defineContract }    from '../../images';
-import { setBlockTextColor } from '../../../utils';
+import {
+    setBlockTextColor,
+    executeIrreversibleWsLogic,
+}                            from '../../../utils';
 import config                from '../../../../constants';
 import ScratchStore          from '../../../../stores/scratch-store';
 
@@ -83,35 +86,47 @@ Blockly.Blocks.trade_definition = {
         };
     },
     onchange(event) {
-        //        if (!ScratchStore.instance.root_store.core.ui.is_dark_mode_on) {
         // TODO: incomment this when the dark mode is done
+        // if (!ScratchStore.instance.root_store.core.ui.is_dark_mode_on) {
         setBlockTextColor(this);
-        //        }
+        // }
 
+        // We don't add "this.workspace.isDragging()" condition here as we want to immediately remove
+        // other instances of this block when dragged out of the workspace.
         if (!this.workspace || this.isInFlyout) {
             return;
         }
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             // Maintain single instance of this block, dispose of older ones.
-            const top_blocks = this.workspace.getTopBlocks(false);
-
-            top_blocks.forEach(top_block => {
+            this.workspace.getTopBlocks().forEach(top_block => {
                 if (top_block.type === this.type && top_block.id !== this.id) {
-                    top_block.dispose(false);
+                    executeIrreversibleWsLogic(() => {
+                        top_block.dispose();
+                    });
                 }
             });
-        } else if (event.type === Blockly.Events.BLOCK_CHANGE || event.type === Blockly.Events.END_DRAG) {
+        } else if (
+            !this.workspace.isDragging() &&
+            event.type === Blockly.Events.BLOCK_CHANGE ||
+            event.type === Blockly.Events.END_DRAG
+        ) {
             // Enforce only trade_definition_<type> blocks in TRADE_OPTIONS statement.
             const blocks_in_trade_options = this.getBlocksInStatement('TRADE_OPTIONS');
 
-            blocks_in_trade_options.forEach(block => {
-                if (!/^trade_definition_.+$/.test(block.type)) {
-                    Blockly.Events.disable();
-                    block.unplug(true);
-                    Blockly.Events.enable();
-                }
-            });
+            if (blocks_in_trade_options.length > 0) {
+                blocks_in_trade_options.forEach(block => {
+                    if (!/^trade_definition_.+$/.test(block.type)) {
+                        executeIrreversibleWsLogic(() => {
+                            block.unplug(true);
+                        });
+                    }
+                });
+            } else {
+                executeIrreversibleWsLogic(() => {
+                    this.dispose();
+                });
+            }
         }
     },
 };

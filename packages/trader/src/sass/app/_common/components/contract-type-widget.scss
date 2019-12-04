@@ -23,6 +23,7 @@
             font-weight: bold;
             vertical-align: middle;
             padding-left: 0.4em;
+            white-space: pre-line;
         }
         &:hover, &:focus {
             border-color: var(--border-hover);

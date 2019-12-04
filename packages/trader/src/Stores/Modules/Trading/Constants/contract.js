@@ -25,7 +25,7 @@ export const getContractTypesConfig = () => (
         lb_call        : { title: localize('Close-Low'),                  trade_types: ['LBFLOATCALL'],               basis: ['multiplier'],      components: [] },
         lb_put         : { title: localize('High-Close'),                 trade_types: ['LBFLOATPUT'],                basis: ['multiplier'],      components: [] },
         lb_high_low    : { title: localize('High-Low'),                   trade_types: ['LBHIGHLOW'],                 basis: ['multiplier'],      components: [] },
-        reset_call_put : { title: localize('Reset Up/ Reset Down'),       trade_types: ['RESETCALL', 'RESETPUT'],     basis: ['stake', 'payout'], components: [] },
+        reset_call_put : { title: localize('Reset Up/ \nReset Down'),     trade_types: ['RESETCALL', 'RESETPUT'],     basis: ['stake', 'payout'], components: [] },
     }
 );
 

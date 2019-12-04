@@ -1,8 +1,7 @@
-import classNames                  from 'classnames';
-import React                       from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import Icon                        from 'Assets/icon.jsx';
-import routes                      from 'Constants/routes';
+import classNames        from 'classnames';
+import React             from 'react';
+import { Route, Switch } from 'react-router-dom';
+import Icon              from 'Assets/icon.jsx';
 
 class VerticalTabContentContainer extends React.PureComponent {
     render() {
@@ -51,7 +50,6 @@ class VerticalTabContentContainer extends React.PureComponent {
                 <div className={classNames('vertical-tab__content-container', tab_container_classname)}>
                     { is_routed ?
                         <Switch>
-                            <Redirect exact from={routes.reports} to={routes.positions} />
                             {
                                 items.map(({ value, component, path, icon }, idx) => {
                                     const Component = value || component;

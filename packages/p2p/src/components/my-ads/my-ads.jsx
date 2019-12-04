@@ -9,10 +9,15 @@ class MyAds extends Component {
     state = {
         show_form: false,
         ad_id    : '',
+        is_enabled: false,
     }
 
     handleShowForm = (show_form) => {
         this.setState({ show_form });
+    }
+
+    setEnabled (is_enabled) {
+        this.setState({ is_enabled });
     }
 
     render() {
@@ -22,7 +27,10 @@ class MyAds extends Component {
                     <FormAds ad_id={this.state.ad_id} handleShowForm={this.handleShowForm} />
                 ) : (
                     <Fragment>
-                        <ToggleAds />
+                        <ToggleAds
+                            is_enabled={this.state.is_enabled}
+                            setEnabled={this.setEnabled}
+                        />
                         <Button primary onClick={() => this.handleShowForm(true) }>{localize('Create ads')}</Button>
                     </Fragment>
                 )}

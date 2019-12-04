@@ -1,8 +1,8 @@
-import React, { Component }     from 'react';
-import PropTypes                from 'prop-types';
-import { localize }             from 'deriv-translations';
-import { ToggleSwitch }         from 'deriv-components';
-import classNames               from 'classnames';
+import React, { Component } from 'react';
+import PropTypes            from 'prop-types';
+import { localize }         from 'deriv-translations';
+import { ToggleSwitch }     from 'deriv-components';
+import classNames           from 'classnames';
 import './my-ads.scss';
 
 const ToggleMessage = props => {
@@ -14,41 +14,25 @@ const ToggleMessage = props => {
 };
 
 class ToggleAds extends Component {
-    constructor () {
-        super();
-        this.state = {
-            is_enabled: true,
-        };
-        this.setEnabled = this.setEnabled.bind(this);
-    }
-
-    setEnabled (is_enabled) {
-        this.setState(
-            {
-                is_enabled,
-            }
-        );
-    }
-
     render () {
         return (
             <div className={classNames(
                 'toggle-ads',
                 {
-                    'toggle-ads--on' : this.state.is_enabled,
-                    'toggle-ads--off': !this.state.is_enabled,
+                    'toggle-ads--on' : this.props.is_enabled,
+                    'toggle-ads--off': !this.props.is_enabled,
                 }
             )}>
                 <ToggleSwitch
-                    id="toggle-my-ads"
-                    className="toggle-ads__switch"
-                    classNameLabel="toggle-ads__switch"
-                    is_enabled={this.state.is_enabled}
-                    handleToggle={() => { this.setEnabled(!this.state.is_enabled); }}
+                    id='toggle-my-ads'
+                    className='toggle-ads__switch'
+                    classNameLabel='toggle-ads__switch'
+                    is_enabled={this.props.is_enabled}
+                    handleToggle={() => {this.props.setEnabled(!this.props.is_enabled);}}
                 />
                 <ToggleMessage
-                    is_enabled={ this.state.is_enabled }
-                    className="toggle-ads__message"
+                    is_enabled={this.props.is_enabled}
+                    className='toggle-ads__message'
                 />
             </div>
         );
@@ -58,6 +42,11 @@ class ToggleAds extends Component {
 ToggleMessage.propTypes = {
     className : PropTypes.string,
     is_enabled: PropTypes.bool.isRequired,
+};
+
+ToggleAds.propTypes = {
+    is_enabled: PropTypes.bool.isRequired,
+    setEnabled: PropTypes.func.isRequired,
 };
 
 export default ToggleAds;

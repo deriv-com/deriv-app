@@ -1,11 +1,12 @@
 const performanceMetrics = {
-    start            : 'started',
-    smartChartMounted: 'smart-charts-mounted',
-    purchaseStart    : 'purchase-started',
-    purchaseEnd      : 'purchase-ended',
-    purchaseEnabled  : 'purchase-enabled',
-    tradeEngineStart : 'trade-engine-started',
-    tradeEngineReady : 'trade-engine-enabled',
+    start               : 'started',
+    firstContentfulPaint: 'first-contentful-paint',
+    smartChartMounted   : 'smart-charts-mounted',
+    purchaseStart       : 'purchase-started',
+    purchaseEnd         : 'purchase-ended',
+    purchaseEnabled     : 'purchase-enabled',
+    tradeEngineStart    : 'trade-engine-started',
+    tradeEngineReady    : 'trade-engine-enabled',
 };
 
 let is_data_sent = false;
@@ -15,6 +16,13 @@ function measurePerformance(pushLoadPerformance) {
         if (is_data_sent) {
             return;
         }
+        // start --- firstContentfulPaint
+        performance.measure(
+            performanceMetrics.firstContentfulPaint,
+            performanceMetrics.start,
+            performanceMetrics.firstContentfulPaint
+        );
+
         // start --- smartChartMounted
         performance.measure(
             performanceMetrics.smartChartMounted,

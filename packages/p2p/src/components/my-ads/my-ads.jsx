@@ -7,8 +7,8 @@ import ToggleAds from './toggle-ads.jsx';
 
 class MyAds extends Component {
     state = {
-        show_form: false,
-        ad_id    : '',
+        show_form : false,
+        ad_id     : '',
         is_enabled: false,
     }
 
@@ -27,11 +27,16 @@ class MyAds extends Component {
                     <FormAds ad_id={this.state.ad_id} handleShowForm={this.handleShowForm} />
                 ) : (
                     <Fragment>
-                        <ToggleAds
-                            is_enabled={this.state.is_enabled}
-                            setEnabled={this.setEnabled}
-                        />
-                        <Button primary onClick={() => this.handleShowForm(true) }>{localize('Create ads')}</Button>
+                        <div className="my-ads__header">
+                            <ToggleAds
+                                is_enabled={this.state.is_enabled}
+                                setEnabled={() => { this.setEnabled(!this.state.is_enabled); }}
+                            />
+                            <Button
+                                primary
+                                onClick={() => this.handleShowForm(true) }>{localize('Create ads')}
+                            </Button>
+                        </div>
                     </Fragment>
                 )}
             </div>

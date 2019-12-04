@@ -1,6 +1,11 @@
 .my-ads {
     padding: 1.6rem;
 
+    &__header {
+        display: flex;
+        align-items: center;
+    }
+
     &__heading {
         &-wrapper {
             display: flex;

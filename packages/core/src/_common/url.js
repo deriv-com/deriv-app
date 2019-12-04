@@ -1,5 +1,5 @@
+const { getLanguage }            = require('deriv-translations');
 const urlForLanguage             = require('./language').urlFor;
-const getLanguage                = require('./language').get;
 const getCurrentProductionDomain = require('../config').getCurrentProductionDomain;
 require('url-polyfill');
 
@@ -37,6 +37,12 @@ const Url = (() => {
     const normalizePath = path => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_/])/g, '') : '');
 
     const urlFor = (path, pars, language, should_change_to_legacy = false) => {
+        if (/^bot$/.test(path)) {
+            if (should_change_to_legacy) {
+                return `https://${host_map['bot.binary.com']}`;
+            }
+        }
+
         const lang = (language || getLanguage()).toLowerCase();
         let domain = `https://${window.location.hostname}/`;
         if (should_change_to_legacy) {

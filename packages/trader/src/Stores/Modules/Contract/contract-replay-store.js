@@ -2,8 +2,8 @@ import {
     action,
     observable }               from 'mobx';
 import ObjectUtils             from 'deriv-shared/utils/object';
+import { localize }            from 'deriv-translations';
 import { WS }                  from 'Services/ws-methods';
-import { localize }            from 'App/i18n';
 import ContractStore           from './contract-store';
 import { getLimitOrderAmount } from './Helpers/limit-orders';
 import { getContractUpdate }   from './Helpers/logic';

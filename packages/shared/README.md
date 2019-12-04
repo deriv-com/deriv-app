@@ -1,6 +1,11 @@
 # `deriv-shared`
 > Responsible for the shared utilities and styles for all packages.
 
+## Index
+
+- [General](docs/README.md) - Contains general philosophy and overview of this package
+- [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding, code usage)
+
 ##Commands:
 setup :
   ```sh 

@@ -1,6 +1,6 @@
 import React              from 'react';
 import IconLimitedAccess  from 'Assets/AccountManagement/icon-limited-access.svg';
-import { localize }       from 'App/i18n';
+import { localize }       from 'deriv-translations';
 import IconMessageContent from '../../../Components/icon-message-content.jsx';
 
 const DemoMessage = () => (

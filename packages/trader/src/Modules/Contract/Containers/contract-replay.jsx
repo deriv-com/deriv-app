@@ -6,7 +6,7 @@ import ChartLoader    from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import Digits         from 'Modules/Contract/Components/Digits';
 import InfoBox        from 'Modules/Contract/Components/InfoBox';
-import { localize }   from 'App/i18n';
+import { localize }   from 'deriv-translations';
 import Icon           from 'Assets/icon.jsx';
 import AppRoutes      from 'Constants/routes';
 import { SmartChart } from 'Modules/SmartChart';

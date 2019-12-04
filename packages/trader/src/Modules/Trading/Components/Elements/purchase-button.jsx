@@ -2,7 +2,7 @@ import classNames                 from 'classnames';
 import PropTypes                  from 'prop-types';
 import React                      from 'react';
 import { Money }                  from 'deriv-components';
-import { localize }               from 'App/i18n';
+import { localize }               from 'deriv-translations';
 import Icon                       from 'Assets/icon.jsx';
 import { getContractTypeDisplay } from 'Constants/contract';
 

@@ -8,8 +8,8 @@ import {
     Money,
     UnderlyingIcon }               from 'deriv-components';
 import CurrencyUtils               from 'deriv-shared/utils/currency';
+import { localize }                from 'deriv-translations';
 import Shortcode                   from 'Modules/Reports/Helpers/shortcode';
-import { localize }                from 'App/i18n';
 import Icon                        from 'Assets/icon.jsx';
 import { PositionsCardLoader }     from 'App/Components/Elements/ContentLoader';
 import RemainingTime               from 'App/Containers/remaining-time.jsx';

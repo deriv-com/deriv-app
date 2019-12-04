@@ -1,4 +1,4 @@
-import { localize }           from 'App/i18n';
+import { localize }           from 'deriv-translations';
 import { isSessionAvailable } from 'Stores/Modules/Trading/Helpers/start-date';
 import {
     isHourValid,

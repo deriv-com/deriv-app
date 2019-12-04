@@ -1,11 +1,11 @@
 const DerivAPIBasic    = require('@deriv/deriv-api/dist/DerivAPIBasic');
 const ObjectUtils      = require('deriv-shared/utils/object');
+const { getLanguage }  = require('deriv-translations');
 const website_name     = require('App/Constants/app-config').website_name;
 const ClientBase       = require('./client_base');
 const SocketCache      = require('./socket_cache');
 const APIMiddleware    = require('./api_middleware');
 const { State }        = require('../storage');
-const getLanguage      = require('../language').get;
 const getAppId         = require('../../config').getAppId;
 const getSocketURL     = require('../../config').getSocketURL;
 

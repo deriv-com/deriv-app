@@ -2,9 +2,9 @@ import classNames               from 'classnames';
 import PropTypes                from 'prop-types';
 import React, { Component }     from 'react';
 import { withRouter }           from 'react-router';
+import { Localize }             from 'deriv-translations';
 import Icon                     from 'Assets/icon.jsx';
 import routes                   from 'Constants/routes';
-import Localize                 from 'App/Components/Elements/localize.jsx';
 import ContractAudit            from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader }  from 'App/Components/Elements/ContentLoader';
 import {

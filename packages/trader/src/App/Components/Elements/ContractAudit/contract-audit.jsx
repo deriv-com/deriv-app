@@ -3,7 +3,7 @@ import React                from 'react';
 import {
     Money,
     ThemedScrollbars }      from 'deriv-components';
-import { localize }         from 'App/i18n';
+import { localize }         from 'deriv-translations';
 import IconExitWon          from 'Assets/SvgComponents/contract_details/ic-exittime-won.svg';
 import IconExitLoss         from 'Assets/SvgComponents/contract_details/ic-exittime-loss.svg';
 import {

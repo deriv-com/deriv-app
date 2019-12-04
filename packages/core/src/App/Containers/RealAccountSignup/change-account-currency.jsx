@@ -1,15 +1,14 @@
-import { Field, Formik }    from 'formik';
-import PropTypes            from 'prop-types';
-import React, { Component } from 'react';
-import { connect }          from 'Stores/connect';
-import Localize             from 'App/Components/Elements/localize.jsx';
-import { localize }         from 'App/i18n';
+import { Field, Formik }      from 'formik';
+import PropTypes              from 'prop-types';
+import React, { Component }   from 'react';
+import { connect }            from 'Stores/connect';
+import { localize, Localize } from 'deriv-translations';
 import {
     RadioButtonGroup,
     RadioButton,
     reorderFiatCurrencies,
 } from './currency-selector.jsx';
-import FormSubmitButton     from './form-submit-button.jsx';
+import FormSubmitButton       from './form-submit-button.jsx';
 
 class ChangeAccountCurrency extends Component {
     state = {

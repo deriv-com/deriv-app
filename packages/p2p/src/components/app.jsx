@@ -31,7 +31,7 @@ class App extends Component {
     }
 
     render() {
-        const { active_index } = this.state;
+        const { active_index, is_app_disabled } = this.state;
 
         return (
             <Fragment>
@@ -43,7 +43,7 @@ class App extends Component {
                     <nav>
                         <Tabs active_index={active_index}>
                             <div label={localize('Buy/sell')}>
-                                <Ads />
+                                <Ads disableApp={this.disableApp} />
                             </div>
                             <div label={localize('Orders')}>
                                 <Orders />

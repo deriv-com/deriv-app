@@ -279,6 +279,8 @@ class FormAds extends Component {
             advertiser_note: localize('Advertiser note'),
         };
 
+        // TODO: [translation] text wont pass in the translation script
+
         const common_messages  = [
             '{{field_name}} is required',
         ];

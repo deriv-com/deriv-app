@@ -2,9 +2,8 @@ import { Dropdown, Money, Popover }   from 'deriv-components';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
-import Localize                       from 'App/Components/Elements/localize.jsx';
+import { localize, Localize }         from 'deriv-translations';
 import Fieldset                       from 'App/Components/Form/fieldset.jsx';
-import { localize }                   from 'App/i18n';
 import { connect }                    from 'Stores/connect';
 
 const Multiplier = ({

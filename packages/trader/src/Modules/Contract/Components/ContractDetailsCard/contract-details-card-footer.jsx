@@ -5,7 +5,7 @@ import React                       from 'react';
 import { Button }                  from 'deriv-components';
 import TogglePositionsDrawerDialog from 'App/Components/Elements/PositionsDrawer/toggle-positions-drawer-dialog.jsx';
 import RemainingTime               from 'App/Containers/remaining-time.jsx';
-import { localize }                from 'App/i18n';
+import { localize }                from 'deriv-translations';
 import {
     isValidToCancel,
     isValidToSell }                from 'Stores/Modules/Contract/Helpers/logic';

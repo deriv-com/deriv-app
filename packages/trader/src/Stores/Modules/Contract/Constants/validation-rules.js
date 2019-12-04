@@ -1,4 +1,4 @@
-import { localize }               from 'App/i18n';
+import { localize }               from 'deriv-translations';
 import { getProfitLossFromStore } from 'Stores/Modules/Contract/Helpers/logic';
 
 const getValidationRules = () => ({

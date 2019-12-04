@@ -8,7 +8,7 @@ import ButtonToggleMenu               from 'App/Components/Form/ButtonToggleMenu
 import Fieldset                       from 'App/Components/Form/fieldset.jsx';
 import InputField                     from 'App/Components/Form/InputField';
 import { connect }                    from 'Stores/connect';
-import { localize }                   from 'App/i18n';
+import { localize }                   from 'deriv-translations';
 import AllowEquals                    from './allow-equals.jsx';
 // import MultiplierDropdown             from './Multiplier/dropdown.jsx';
 

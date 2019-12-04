@@ -2,7 +2,7 @@ import React             from 'react';
 import PropTypes         from 'prop-types';
 import { Button }        from 'deriv-components';
 import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
-import { localize }      from 'App/i18n';
+import { localize }      from 'deriv-translations';
 import { connect }       from 'Stores/connect';
 
 class ContractUpdateForm extends React.Component {

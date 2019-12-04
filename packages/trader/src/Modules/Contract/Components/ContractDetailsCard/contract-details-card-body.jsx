@@ -4,7 +4,7 @@ import React                    from 'react';
 import { Money }                from 'deriv-components';
 import CurrencyUtils            from 'deriv-shared/utils/currency';
 import ContractCardItem         from 'App/Components/Elements/ContractDrawer/contract-card-item.jsx';
-import { localize }             from 'App/i18n';
+import { localize }             from 'deriv-translations';
 import Icon                     from 'Assets/icon.jsx';
 import { getLimitOrderAmount }  from 'Stores/Modules/Contract/Helpers/limit-orders';
 import { getIndicativePrice }   from 'Stores/Modules/Contract/Helpers/logic';

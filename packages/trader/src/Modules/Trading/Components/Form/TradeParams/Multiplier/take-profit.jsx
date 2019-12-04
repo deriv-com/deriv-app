@@ -1,8 +1,9 @@
-import PropTypes       from 'prop-types';
-import React           from 'react';
-import { localize }    from 'App/i18n';
-import { connect }     from 'Stores/connect';
-import LimitOrderInput from './limit-order-input.jsx';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import { localize }      from 'deriv-translations';
+import Fieldset          from 'App/Components/Form/fieldset.jsx';
+import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
+import { connect }       from 'Stores/connect';
 
 const TakeProfit = ({
     currency,
@@ -13,17 +14,23 @@ const TakeProfit = ({
     validation_errors,
 }) => {
     return (
-        <LimitOrderInput
-            currency={currency}
-            defaultChecked={has_take_profit}
-            error_messages={has_take_profit ? validation_errors.take_profit : undefined}
-            is_single_currency={is_single_currency}
-            label={localize('Take profit')}
-            name='take_profit'
-            onChange={onChange}
-            tooltip_label={localize('Your contract is closed automatically when your profit is more than or equals to this amount.')}
-            value={take_profit}
-        />
+        <Fieldset className='trade-container__fieldset'>
+            <InputWithCheckbox
+                className='trade-container__amount'
+                classNameInlinePrefix='trade-container__currency'
+                classNameInput='trade-container__input'
+                currency={currency}
+                defaultChecked={has_take_profit}
+                error_messages={has_take_profit ? validation_errors.take_profit : undefined}
+                is_single_currency={is_single_currency}
+                is_negative_disabled={true}
+                label={localize('Take profit')}
+                name='take_profit'
+                onChange={onChange}
+                tooltip_label={localize('Your contract is closed automatically when your profit is more than or equals to this amount.')}
+                value={take_profit}
+            />
+        </Fieldset>
     );
 };
 

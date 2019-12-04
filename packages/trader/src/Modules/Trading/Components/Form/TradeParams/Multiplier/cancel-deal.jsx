@@ -3,7 +3,7 @@ import React        from 'react';
 import {
     Checkbox,
     Popover }       from 'deriv-components';
-import { localize } from 'App/i18n';
+import { localize } from 'deriv-translations';
 import Fieldset     from 'App/Components/Form/fieldset.jsx';
 import { connect }  from 'Stores/connect';
 

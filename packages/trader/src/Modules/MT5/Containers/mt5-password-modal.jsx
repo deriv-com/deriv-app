@@ -2,16 +2,16 @@ import {
     Icon,
     PasswordInput,
     Modal,
-    PasswordMeter }     from 'deriv-components';
-import { Formik }       from 'formik';
-import PropTypes        from 'prop-types';
-import React            from 'react';
-import SuccessDialog    from 'App/Containers/Modals/success-dialog.jsx';
-import FormSubmitButton from 'App/Containers/RealAccountSignup/form-submit-button.jsx';
-import {
-    localize,
-    Localize }          from 'deriv-translations';
-import { connect }      from 'Stores/connect';
+    PasswordMeter }           from 'deriv-components';
+import { Formik }             from 'formik';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import { withRouter }         from 'react-router';
+import { localize, Localize } from 'deriv-translations';
+import SuccessDialog          from 'App/Containers/Modals/success-dialog.jsx';
+import FormSubmitButton       from 'App/Containers/RealAccountSignup/form-submit-button.jsx';
+import routes                 from 'Constants/routes';
+import { connect }            from 'Stores/connect';
 import {
     validPassword,
     validLength }       from 'Utils/Validator/declarative-validation-rules';
@@ -39,7 +39,6 @@ const getIconFromType = (type) => {
 const MT5PasswordModal = ({
     account_title,
     account_type,
-    closeMt5AndOpenCashier,
     disableMt5PasswordModal,
     // error_message,
     form_error,
@@ -76,8 +75,9 @@ const MT5PasswordModal = ({
     };
 
     const closeOpenSuccess = () => {
-        closeMt5AndOpenCashier('account_transfer');
+        disableMt5PasswordModal();
         closeDialogs();
+        this.props.history.push(routes.cashier_acc_transfer);
     };
 
     const IconType             = getIconFromType(account_type.type);
@@ -196,7 +196,6 @@ const MT5PasswordModal = ({
 MT5PasswordModal.propTypes = {
     account_title                : PropTypes.string,
     account_type                 : PropTypes.object,
-    closeMt5AndOpenCashier       : PropTypes.func,
     disableMt5PasswordModal      : PropTypes.func,
     error_message                : PropTypes.string,
     has_mt5_error                : PropTypes.bool,
@@ -210,7 +209,6 @@ MT5PasswordModal.propTypes = {
 export default connect(({ modules }) => ({
     account_title                : modules.mt5.account_title,
     account_type                 : modules.mt5.account_type,
-    closeMt5AndOpenCashier       : modules.mt5.closeMt5AndOpenCashier,
     disableMt5PasswordModal      : modules.mt5.disableMt5PasswordModal,
     error_message                : modules.mt5.error_message,
     has_mt5_error                : modules.mt5.has_mt5_error,
@@ -219,4 +217,4 @@ export default connect(({ modules }) => ({
     setMt5Error                  : modules.mt5.setError,
     setMt5SuccessDialog          : modules.mt5.setMt5SuccessDialog,
     submitMt5Password            : modules.mt5.submitMt5Password,
-}))(MT5PasswordModal);
+}))(withRouter(MT5PasswordModal));

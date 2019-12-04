@@ -5,6 +5,11 @@
 * React i18next configuration and translation components
 >
 
+## Index
+
+- [General](docs/README.md) - Contains general philosophy and overview of this package
+- [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding, code usage)
+
 # Requirements:
 * Crowdin CLI: download here: https://support.crowdin.com/cli-tool/#installation
 * remote `origin` should be your fork

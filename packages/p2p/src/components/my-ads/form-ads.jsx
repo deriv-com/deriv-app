@@ -9,8 +9,8 @@ import {
     Input,
     Button,
     ThemedScrollbars }                from 'deriv-components';
-import { WS }                         from '../../utils/websocket';
-import IconBack                       from '../../assets/icon-back.jsx';
+import IconBack                       from 'Assets/icon-back.jsx';
+import { WS }                         from 'Utils/websocket';
 
 class FormAds extends Component {
     state = {
@@ -26,7 +26,7 @@ class FormAds extends Component {
             advertiser_note: '',
         },
         is_loading: true,
-    }
+    };
 
     componentDidMount() {
         // TODO: [p2p-fix-api] call get offer detail api and populate state
@@ -50,7 +50,7 @@ class FormAds extends Component {
             } else {
                 this.setState({ is_loading: false });
             }
-    
+
         });
     }
 
@@ -311,5 +311,5 @@ FormAds.propTypes = {
     ad_id         : PropTypes.string,
     handleShowForm: PropTypes.func,
 };
- 
+
 export default FormAds;

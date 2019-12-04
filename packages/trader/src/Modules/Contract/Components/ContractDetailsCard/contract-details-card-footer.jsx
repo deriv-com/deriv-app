@@ -61,7 +61,7 @@ const ContractDetailsCardFooter = ({
                             />
                         </Button>
                     }
-                    <TogglePositionsDrawerDialog />
+                    <TogglePositionsDrawerDialog contract_id={contract_info.contract_id} />
                 </div>
                 :
                 <div className='contract-card__sell-button'>

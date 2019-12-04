@@ -24,22 +24,22 @@ class ContractUpdateForm extends React.Component {
         const onChange = (e) => {
             const { name, value } = e.target;
 
-            const limit_order = {};
+            const contract_update = {};
             if (name === 'contract_update_take_profit') {
-                limit_order.take_profit = value;
+                contract_update.take_profit = value;
             }
             if (name === 'contract_update_stop_loss') {
-                limit_order.stop_loss = value;
+                contract_update.stop_loss = value;
             }
             if (name === 'has_contract_update_take_profit') {
-                limit_order.has_take_profit = value;
+                contract_update.has_take_profit = value;
             }
             if (name === 'has_contract_update_stop_loss') {
-                limit_order.has_stop_loss = value;
+                contract_update.has_stop_loss = value;
             }
 
             if (onChangeContractUpdate) {
-                onChangeContractUpdate(limit_order, this.props.contract_id);
+                onChangeContractUpdate(contract_update, this.props.contract_id);
             }
         };
 

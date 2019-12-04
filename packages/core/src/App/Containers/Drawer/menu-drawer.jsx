@@ -1,10 +1,10 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
+import { Icon }          from 'deriv-components';
 import { localize }      from 'deriv-translations';
 import {
     DrawerItem,
     DrawerToggle }       from 'App/Components/Elements/Drawer';
-import { Icon }          from 'deriv-components';
 import routes            from 'Constants/routes';
 import { connect }       from 'Stores/connect';
 

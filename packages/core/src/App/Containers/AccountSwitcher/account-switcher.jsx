@@ -68,7 +68,7 @@ const AccountList = ({
             <span className={'acc-switcher__id'}>
                 <Icon
                     icon={currency_icon}
-                    className={`acc-switcher__id-icon`}
+                    className={'acc-switcher__id-icon'}
                     size={24}
                 />
                 <span>

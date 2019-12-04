@@ -9,9 +9,11 @@ const NotificationStatusIcons = ({ type, class_suffix }) => {
     // if danger icon is not lazyloaded and user loses internet connection, it will crash with missing chunk error
     if (type && type === 'danger') {
         return (
-            <Icon icon='IcAlertDanger' className={classNames('inline-icon', 'notification__icon-type', {
-                [`notification__icon-type--${class_suffix}`]: class_suffix,
-            })}
+            <Icon
+                icon='IcAlertDanger'
+                className={classNames('inline-icon', 'notification__icon-type', {
+                    [`notification__icon-type--${class_suffix}`]: class_suffix,
+                })}
             />
         );
     }
@@ -23,7 +25,7 @@ const NotificationStatusIcons = ({ type, class_suffix }) => {
                     className={classNames('notification__icon-type', {
                         [`notification__icon-type--${class_suffix}`]: class_suffix,
                     })}
-                    green={type === 'success' ? true: undefined}
+                    green={type === 'success' ? true : undefined}
                 />
             }
         </React.Fragment>

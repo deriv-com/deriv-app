@@ -3,6 +3,7 @@ import { localize } from 'deriv-translations';
 import { Button } from 'deriv-components';
 import './my-ads.scss';
 import FormAds from './form-ads.jsx';
+import ToggleAds from './toggle-ads.jsx';
 
 class MyAds extends Component {
     state = {
@@ -21,6 +22,7 @@ class MyAds extends Component {
                     <FormAds ad_id={this.state.ad_id} handleShowForm={this.handleShowForm} />
                 ) : (
                     <Fragment>
+                        <ToggleAds />
                         <Button primary onClick={() => this.handleShowForm(true) }>{localize('Create ads')}</Button>
                     </Fragment>
                 )}

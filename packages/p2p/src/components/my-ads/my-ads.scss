@@ -62,3 +62,28 @@
         }
     }
 }
+
+.toggle-ads {
+    align-items: center;
+    display: flex;
+    font-size: var(--text-size-s);
+    justify-items: flex-start;
+    margin-left: 2.4rem;
+    width: 100%;
+
+    &__switch {
+        transform: scale(0.5) translateX(-50%);
+    }
+
+    &__message {
+        margin-left: -3.4rem;
+    }
+
+    &--on {
+        color:var(--text-profit-success);
+    }
+
+    &--off {
+        color: var(--text-less-prominent);
+    }
+}

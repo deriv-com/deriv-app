@@ -1,6 +1,8 @@
 import PropTypes      from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { isDesktop }  from '_common/os_detect';
 import { connect }    from 'Stores/connect';
+import { toMoment }   from 'Utils/Date';
 import routes         from '../../../Constants/routes';
 
 const Redirect = ({
@@ -19,9 +21,9 @@ const Redirect = ({
         case 'signup': {
             const device_data = {
                 affiliate_token   : url_params.get('affiliate_token') || '',
-                date_first_contact: url_params.get('date_first_contact') || '',
+                date_first_contact: url_params.get('date_first_contact') || toMoment().format('YYYY-MM-DD'),
                 gclid_url         : url_params.get('gclid_url') || '',
-                signup_device     : url_params.get('signup_device') || '',
+                signup_device     : url_params.get('signup_device') || isDesktop() ? 'desktop' : 'mobile',
                 utm_campaign      : url_params.get('utm_campaign') || '',
                 utm_medium        : url_params.get('utm_medium') || '',
                 utm_source        : url_params.get('utm_source') || '',

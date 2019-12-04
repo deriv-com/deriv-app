@@ -2,6 +2,11 @@
   deriv-p2p
 </h1>
 
+## Index
+
+- [General](docs/README.md) - Contains general philosophy and overview of this package
+- [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding, code usage)
+
 ## Requirements
 
 -   node

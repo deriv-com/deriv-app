@@ -25,6 +25,16 @@ class VerticalTab extends React.Component {
         });
     };
 
+    componentDidUpdate(prevProps) {
+        if (this.props.list.length !== prevProps.list.length) {
+            this.setSelectedIndex({
+                current_path: this.props.current_path,
+                list        : this.props.list,
+                is_routed   : this.props.is_routed,
+            });
+        }
+    }
+
     render() {
         const selected = this.props.list[this.props.modal_index] || this.props.list[0];
         return (
@@ -41,7 +51,6 @@ class VerticalTab extends React.Component {
                     selected={selected}
                     is_routed={this.props.is_routed}
                     header_title={this.props.header_title}
-                    visible_items={this.props.visible_items}
                 />
                 }
                 <VerticalTabContentContainer
@@ -88,7 +97,6 @@ VerticalTab.propTypes = {
     modal_index   : PropTypes.number,
     selected_index: PropTypes.number,
     setModalIndex : PropTypes.func,
-    visible_items : PropTypes.array,
 };
 
 export default connect(

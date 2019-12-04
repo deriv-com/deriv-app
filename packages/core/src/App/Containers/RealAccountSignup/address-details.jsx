@@ -150,17 +150,17 @@ class AddressDetails extends Component {
         const validations = {
             address_line_1: [
                 v => !!v,
-                v => /^[\p{L}\p{Nd}\s'.,:;()@#/-]{1,70}$/gu.exec(v) !== null,
+                v => /^[\w\W\s\/-]{1,70}$/gu.exec(v) !== null,
             ],
             address_line_2: [
-                v => !v || (/^[\p{L}\p{Nd}\s'.,:;()@#/-]{0,70}$/gu.exec(v) !== null),
+                v => !v || (/^[\w\W\s\/-]{0,70}$/gu.exec(v) !== null),
             ],
             address_city: [
                 v => !!v,
-                v => /^[\p{L}\s'.-]{1,35}$/gu.exec(v) !== null,
+                v => /^[a-zA-Z\s\W'.-]{1,35}$/gu.exec(v) !== null,
             ],
             address_state: [
-                v => /^[\p{L}\p{Nd}\s'.,-]{0,35}$/gu.exec(v) !== null,
+                v => /^[a-zA-Z\s\W'.-]{0,35}$/gu.exec(v) !== null,
             ],
             address_postcode: [
                 v => !!v,

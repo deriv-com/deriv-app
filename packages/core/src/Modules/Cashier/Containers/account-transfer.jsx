@@ -1,12 +1,12 @@
 import PropTypes                from 'prop-types';
 import React                    from 'react';
 import { connect }              from 'Stores/connect';
-import AccountTransferForm      from './AccountTransfer/account-transfer-form.jsx';
-import AccountTransferNoAccount from './AccountTransfer/account-transfer-no-account.jsx';
-import AccountTransferReceipt   from './AccountTransfer/account-transfer-receipt.jsx';
-import Error                    from './error.jsx';
-import NoBalance                from './no-balance.jsx';
-import Virtual                  from './virtual.jsx';
+import AccountTransferNoAccount from '../Components/Error/account-transfer-no-account.jsx';
+import Error                    from '../Components/Error/error.jsx';
+import NoBalance                from '../Components/Error/no-balance.jsx';
+import Virtual                  from '../Components/Error/virtual.jsx';
+import AccountTransferForm      from '../Components/Form/account-transfer-form.jsx';
+import AccountTransferReceipt   from '../Components/Receipt/account-transfer-receipt.jsx';
 import Loading                  from '../../../templates/_common/components/loading.jsx';
 
 class AccountTransfer extends React.Component {
@@ -34,14 +34,10 @@ class AccountTransfer extends React.Component {
         if (this.props.has_no_accounts_balance) {
             return <NoBalance />;
         }
-        return (
-            <React.Fragment>
-                {this.props.is_transfer_successful
-                    ? <AccountTransferReceipt />
-                    : <AccountTransferForm error={this.props.error} />
-                }
-            </React.Fragment>
-        );
+        if (this.props.is_transfer_successful) {
+            return <AccountTransferReceipt />;
+        }
+        return <AccountTransferForm error={this.props.error} />;
     }
 }
 

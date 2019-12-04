@@ -1,11 +1,11 @@
 import PropTypes                   from 'prop-types';
 import React                       from 'react';
 import { connect }                 from 'Stores/connect';
-import PaymentAgentTransferForm    from './PaymentAgentTransfer/payment-agent-transfer-form.jsx';
-import PaymentAgentTransferReceipt from './PaymentAgentTransfer/payment-agent-transfer-receipt.jsx';
-import NoBalance                   from './no-balance.jsx';
-import Error                       from './error.jsx';
-import Virtual                     from './virtual.jsx';
+import Error                       from '../Components/Error/error.jsx';
+import NoBalance                   from '../Components/Error/no-balance.jsx';
+import Virtual                     from '../Components/Error/virtual.jsx';
+import PaymentAgentTransferForm    from '../Components/Form/payment-agent-transfer-form.jsx';
+import PaymentAgentTransferReceipt from '../Components/Receipt/payment-agent-transfer-receipt.jsx';
 import Loading                     from '../../../templates/_common/components/loading.jsx';
 
 class PaymentAgentTransfer extends React.Component {

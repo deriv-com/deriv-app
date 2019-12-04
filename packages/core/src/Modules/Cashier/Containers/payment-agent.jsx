@@ -1,9 +1,9 @@
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import { connect }          from 'Stores/connect';
-import Virtual              from './virtual.jsx';
-import PaymentAgentList     from './PaymentAgent/payment-agent-list.jsx';
-import PaymentAgentWithdraw from './PaymentAgent/payment-agent-withdraw.jsx';
+import PropTypes                from 'prop-types';
+import React                    from 'react';
+import { connect }              from 'Stores/connect';
+import PaymentAgentList         from '../Components/payment-agent-list.jsx';
+import Virtual                  from '../Components/Error/virtual.jsx';
+import PaymentAgentWithdrawForm from '../Components/Form/payment-agent-withdraw-form.jsx';
 
 class PaymentAgent extends React.Component {
     componentDidMount() {
@@ -14,15 +14,10 @@ class PaymentAgent extends React.Component {
         if (this.props.is_virtual) {
             return <Virtual />;
         }
-        return (
-            <React.Fragment>
-                {this.props.verification_code || this.props.is_payment_agent_withdraw ?
-                    <PaymentAgentWithdraw verification_code={this.props.verification_code} />
-                    :
-                    <PaymentAgentList />
-                }
-            </React.Fragment>
-        );
+        if (this.props.verification_code || this.props.is_payment_agent_withdraw) {
+            return <PaymentAgentWithdrawForm verification_code={this.props.verification_code} />;
+        }
+        return <PaymentAgentList />;
     }
 }
 

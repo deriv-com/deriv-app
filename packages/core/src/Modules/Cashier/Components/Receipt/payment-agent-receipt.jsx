@@ -9,13 +9,12 @@ import { localize, Localize } from 'deriv-translations';
 import Icon                   from 'Assets/icon.jsx';
 import routes                 from 'Constants/routes';
 import { connect }            from 'Stores/connect';
-import PaymentAgentDetails    from './payment-agent-details.jsx';
+import PaymentAgentDetails    from '../payment-agent-details.jsx';
 
 class PaymentAgentReceipt extends React.Component {
     openStatement = () => {
         this.props.history.push(routes.statement);
         this.props.resetPaymentAgent();
-        this.props.toggleCashierModal();
     };
 
     componentWillUnmount() {
@@ -27,6 +26,7 @@ class PaymentAgentReceipt extends React.Component {
         return (
             <div className='cashier__wrapper--align-left'>
                 <ThemedScrollbars
+                    style={{ position: 'absolute', height: 'calc(100% - 4.8rem)', width: 'calc(100% - 4.8rem)' }}
                     autoHide
                     autoHeightMax={550}
                 >
@@ -94,19 +94,17 @@ class PaymentAgentReceipt extends React.Component {
 }
 
 PaymentAgentReceipt.propTypes = {
-    clearVerification : PropTypes.func,
-    currency          : PropTypes.string,
-    loginid           : PropTypes.string,
-    receipt           : PropTypes.object,
-    toggleCashierModal: PropTypes.func,
+    clearVerification: PropTypes.func,
+    currency         : PropTypes.string,
+    loginid          : PropTypes.string,
+    receipt          : PropTypes.object,
 };
 
 export default withRouter(connect(
-    ({ client, modules, ui }) => ({
-        currency          : client.currency,
-        loginid           : client.loginid,
-        receipt           : modules.cashier.config.payment_agent.receipt,
-        resetPaymentAgent : modules.cashier.resetPaymentAgent,
-        toggleCashierModal: ui.toggleCashierModal,
+    ({ client, modules }) => ({
+        currency         : client.currency,
+        loginid          : client.loginid,
+        receipt          : modules.cashier.config.payment_agent.receipt,
+        resetPaymentAgent: modules.cashier.resetPaymentAgent,
     })
 )(PaymentAgentReceipt));

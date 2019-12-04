@@ -15,7 +15,7 @@ import {
     stopBot,
     terminateBot,
 }                                      from '../scratch';
-import { hasAllRequiredBlocks }        from '../scratch/utils/scratch-helper';
+import { hasAllRequiredBlocks }        from '../scratch/utils/workspace';
 import { isEnded }                     from '../utils/contract';
 import { observer }                    from '../utils/observer';
 import { setMainContentWidth }         from '../utils/window-size';

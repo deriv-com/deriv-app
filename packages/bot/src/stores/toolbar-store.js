@@ -30,7 +30,7 @@ export default class ToolbarStore {
         toolbox.toggle();
         if (this.is_toolbox_open) {
             const toolbox_width     = toolbox.HtmlDiv.clientWidth;
-                const block_canvas_rect = workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
+            const block_canvas_rect = workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
             
             if (block_canvas_rect.left < toolbox_width) {
                 const scroll_distance = toolbox_width - block_canvas_rect.left + toolbox.width;

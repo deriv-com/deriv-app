@@ -1,8 +1,5 @@
 import React          from 'react';
-import {
-    SmartChart,
-    setSmartChartsPublicPath,
-}                     from 'smartcharts-beta';
+import { SmartChart } from 'smartcharts-beta';
 import ControlWidgets from './control-widgets.jsx';
 import { connect }    from '../../stores/connect';
 
@@ -14,16 +11,6 @@ import { connect }    from '../../stores/connect';
 // import FormLayout            from '../Components/Form/form-layout.jsx';
 // import { symbolChange }      from '../../SmartChart/Helpers/symbol';
 // import AllMarkers            from '../../SmartChart/Components/all-markers.jsx';
-
-const getUrlBase = (path = '') => {
-    const l = window.location;
-
-    if (!/^\/(br_)/.test(l.pathname)) return path;
-
-    return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
-};
-
-setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));
 
 class Chart extends React.Component {
 

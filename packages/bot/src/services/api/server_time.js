@@ -1,15 +1,8 @@
-class PromiseClass {
-    constructor() {
-        this.promise = new Promise((resolve, reject) => {
-            this.reject  = reject;
-            this.resolve = resolve;
-        });
-    }
-}
+import PendingPromise from '../../utils/pending-promise';
 
 const ServerTime = (() => {
     let clock_started = false;
-    const pending = new PromiseClass();
+    const pending = new PendingPromise();
     let common_store;
 
     const init = (store) => {

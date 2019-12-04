@@ -1,4 +1,5 @@
 import React                from 'react';
+import PropTypes            from 'prop-types';
 import Flyout               from './flyout.jsx';
 import Chart                from './chart/chart.jsx';
 import NotificationMessages from './notification-messages.jsx';
@@ -9,6 +10,14 @@ import '../assets/sass/scratch/workspace.scss';
 import '../assets/sass/scratch/toolbox.scss';
 
 class MainContent extends React.Component {
+    componentDidMount(){
+        this.props.onMount();
+    }
+
+    componentWillUnmount(){
+        this.props.onUnMount();
+    }
+    
     render() {
         const { active_tab } = this.props;
         switch (active_tab) {
@@ -42,7 +51,16 @@ class MainContent extends React.Component {
         }
     }
 }
+
+MainContent.propTypes = {
+    active_tab: PropTypes.string,
+    onMount   : PropTypes.func,
+    onUnMount : PropTypes.func,
+};
+
 export default connect(({ main_content }) => ({
     active_tab: main_content.active_tab,
+    onMount   : main_content.onMount,
+    onUnMount : main_content.onUnMount,
 }))(MainContent);
 

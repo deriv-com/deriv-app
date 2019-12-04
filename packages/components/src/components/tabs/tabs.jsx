@@ -29,7 +29,7 @@ class Tabs extends Component {
             className,
             top,
             bottom,
-            fit_content }       = this.props;
+            fit_content }      = this.props;
         const { active_index } = this.state;
         const tab_width        = (100 / children.length).toFixed(2);
 

@@ -10,7 +10,7 @@ class MyAds extends Component {
         ad_id    : '',
     }
 
-    handleShowForm(show_form) {
+    handleShowForm = (show_form) => {
         this.setState({ show_form });
     }
 
@@ -18,7 +18,7 @@ class MyAds extends Component {
         return (
             <div className='my-ads'>
                 {this.state.show_form ? (
-                    <FormAds ad_id={this.state.ad_id} handleShowForm={this.handleShowForm.bind(this)} />
+                    <FormAds ad_id={this.state.ad_id} handleShowForm={this.handleShowForm} />
                 ) : (
                     <Fragment>
                         <Button primary onClick={() => this.handleShowForm(true) }>{localize('Create ads')}</Button>

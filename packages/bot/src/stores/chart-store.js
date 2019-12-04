@@ -1,8 +1,12 @@
 
-import { action,
+import {
+    action,
     computed,
-    observable }  from 'mobx';
-import ServerTime from '../services/api/server_time';
+    observable,
+    reaction,
+}                     from 'mobx';
+import { tabs_title } from '../constants/bot-contents';
+import ServerTime     from '../services/api/server_time';
 
 const g_subscribers_map = {};
 let WS;
@@ -11,19 +15,52 @@ export default class ChartStore {
     constructor(root_store) {
         this.root_store = root_store;
         WS = root_store.ws;
+        const { run_panel } = root_store;
+
+        reaction(() =>
+            run_panel.is_running, () =>
+            run_panel.is_running ?
+                this.startBot() :
+                this.stopBot()
+        );
     }
-    
+
     @observable symbol;
     @observable is_chart_loading;
-    @observable main_barrier  = null;
+    @observable main_barrier = null;
     @observable chart_type;
     @observable granularity;
-    
+
     @computed
-    get is_contract_ended(){
+    get is_contract_ended() {
         const { transactions } = this.root_store;
 
         return transactions.contracts.lenght > 0 && transactions.contracts[0].is_ended;
+    }
+
+    @action.bound
+    startBot() {
+        this.updateSymbol();
+
+        const { main_content } = this.root_store;
+        main_content.setActiveTab(tabs_title.CHART);
+    }
+
+    @action.bound
+    stopBot() {
+        const { main_content } = this.root_store;
+        main_content.setActiveTab(tabs_title.WORKSPACE);
+    }
+
+    @action.bound
+    updateSymbol() {
+        const workspace = Blockly.derivWorkspace;
+        const market_block = workspace.getAllBlocks().find(block => {
+            return (block.type === 'trade_definition_market');
+        });
+
+        const symbol = market_block.getFieldValue('SYMBOL_LIST');
+        this.symbol = symbol;
     }
 
     @action.bound

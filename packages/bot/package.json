@@ -14,7 +14,7 @@
     ]
   },
   "scripts": {
-    "start": "npm run test && webpack --mode=development --progress --watch",
+    "start": "npm run test && npm run serve",
     "serve": "echo \"Serving...\" && webpack --progress --watch",
     "build": "f () { webpack --optimize-minimize --progress --env.base $1 ;}; f",
     "build:travis": "echo \"No build:travis specified\"",
@@ -89,7 +89,6 @@
     "webpack": "^4.34.0",
     "webpack-bundle-analyzer": "^3.6.0",
     "webpack-cli": "^3.3.4",
-    "webpack-dev-server": "^3.7.1",
     "webpack-merge-and-include-globally": "^2.1.16"
   },
   "dependencies": {

@@ -4,7 +4,7 @@
   "description": "Deriv content",
   "main": "dist/js/trader.main.js",
   "scripts": {
-    "start": "npm run test && sudo webpack-dev-server --config \"./build/webpack.config.js\"",
+    "start": "npm run test && npm run serve",
     "serve": "echo \"Serving...\" && webpack --progress --watch --config \"./build/webpack.config.js\"",
     "build": "f () { webpack --config \"./build/webpack.config.js\" --env.base $1 ;}; f",
     "build:travis": "echo \"No build:travis specified\"",
@@ -38,7 +38,6 @@
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
     "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
-    "@babel/plugin-proposal-unicode-property-regex": "^7.6.2",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
@@ -91,7 +90,6 @@
     "webpack": "^4.34.0",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.3.4",
-    "webpack-dev-server": "^3.7.1",
     "webpack-manifest-plugin": "^2.0.4",
     "webpack-node-externals": "^1.7.2",
     "ws": "^7.0.1"

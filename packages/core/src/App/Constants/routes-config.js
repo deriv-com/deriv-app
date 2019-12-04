@@ -25,6 +25,16 @@ export const interceptAcrossBot = (route_to, action) => {
     return true;
 };
 
+// Cashier components
+const Cashier              = lazy(() => import(/* webpackChunkName: "cashier-deposit" */ 'Modules/Cashier/Containers/cashier.jsx'));
+const Deposit              = lazy(() => import(/* webpackChunkName: "cashier-deposit" */ 'Modules/Cashier/Containers/deposit.jsx'));
+const Withdrawal           = lazy(() => import(/* webpackChunkName: "cashier-withdrawal" */ 'Modules/Cashier/Containers/withdrawal.jsx'));
+const AccountTransfer      = lazy(() => import(/* webpackChunkName: "cashier-account-transfer" */ 'Modules/Cashier/Containers/account-transfer.jsx'));
+const PaymentAgent         = lazy(() => import(/* webpackChunkName: "cashier-pa" */ 'Modules/Cashier/Containers/payment-agent.jsx'));
+const PaymentAgentTransfer = lazy(() => import(/* webpackChunkName: "cashier-pa-transfer" */ 'Modules/Cashier/Containers/payment-agent-transfer.jsx'));
+// To work with P2P please uncomment this line
+// const P2PCashier           = () => import(/* webpackChunkName: "cashier-otc-payment" */ 'Modules/Cashier/Containers/p2p-cashier.jsx');
+
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
@@ -48,10 +58,7 @@ const Bot = lazy(() => {
     return import(/* webpackChunkName: "bot" */ 'deriv-bot');
 });
 
-// TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
-const initRoutesConfig = () => ([
-    { path: routes.index,     component: RouterRedirect, title: '',                                     to: routes.root },
-    { path: routes.redirect,  component: Redirect,       title: localize('Redirect') },
+const modules = [
     { path: routes.bot,       component: Bot,            title: localize('Bot') },
     {
         path     : routes.root,
@@ -65,6 +72,30 @@ const initRoutesConfig = () => ([
             { path: routes.error404, component: Trader, title: localize('Error 404') },
         ],
     },
+];
+
+// Order matters
+// TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
+const initRoutesConfig = () => ([
+    { path: routes.index,     component: RouterRedirect, title: '',                                     to: routes.root },
+    { path: routes.redirect,  component: Redirect,       title: localize('Redirect') },
+    {
+        path            : routes.cashier,
+        component       : Cashier,
+        is_modal        : true,
+        is_authenticated: true,
+        title           : localize('Cashier'),
+        routes          : [
+            { path: routes.cashier_deposit,      component: Deposit,              title: localize('Deposit'),                   icon_component: 'IconDepositSmall',   default: true },
+            { path: routes.cashier_withdrawal,   component: Withdrawal,           title: localize('Withdrawal'),                icon_component: 'IconWithdrawalSmall' },
+            { path: routes.cashier_pa,           component: PaymentAgent,         title: localize('Payment agent'),             icon_component: 'IconPaymentAgent' },
+            { path: routes.cashier_acc_transfer, component: AccountTransfer,      title: localize('Transfer between accounts'), icon_component: 'IconAccountTransfer' },
+            { path: routes.cashier_pa_transfer,  component: PaymentAgentTransfer, title: localize('Transfer to client'),        icon_component: 'IconAccountTransfer' },
+            // To work with P2P please uncomment this line
+            // { path: routes.cashier_p2p,          component: P2PCashier,           title: localize('P2P Cashier'),            icon_component: 'IconP2PCashier' },
+        ],
+    },
+    ...modules,
 ]);
 
 let routesConfig;

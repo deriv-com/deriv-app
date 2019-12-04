@@ -18,7 +18,7 @@
   "scripts": {
     "start": "rimraf lib && npm run test && npm run serve",
     "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
-    "build": "rimraf lib && webpack --mode=production --optimize-minimize --progress",
+    "build": "rimraf lib && npm run build:icons && webpack --mode=production --optimize-minimize --progress",
     "build:icons": "node -e 'require(\"./utils/build-icons\").buildIcons()'",
     "build:travis": "rimraf lib && webpack --mode=production --optimize-minimize",
     "test": "jest --all",

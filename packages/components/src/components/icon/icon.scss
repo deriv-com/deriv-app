@@ -3,6 +3,9 @@
     --fill-color2: var(--text-less-prominent);
     --fill-color3: var(--general-section-1);
 
+    &:hover:not(&--active):not(&--disabled):not(&--red):not(&--green):not(&--brand) {
+        --fill-color1: var(--text-prominent);
+    }
     &--disabled {
         --fill-color1: var(--text-disabled);
         --fill-color2: var(--text-disabled);
@@ -23,13 +26,12 @@
     }
     &--secondary {
         --fill-color1: var(--text-less-prominent);
+        --fill-color2: var(--text-less-prominent);
+        --fill-color3: #{$color-white};
     }
-    &--color {
+    &--brand {
         --fill-color1: var(--brand-red-coral);
         --fill-color2: var(--brand-secondary);
         --fill-color3: #{$color-white};
-    }
-    &:hover:not(&--active):not(&--disabled):not(&--red):not(&--green):not(&--color) {
-        --fill-color1: var(--text-prominent);
     }
 }

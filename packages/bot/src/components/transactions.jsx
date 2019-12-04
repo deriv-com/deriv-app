@@ -109,14 +109,14 @@ const Transaction = ({ contract }) => {
                                     alignment='left'
                                     message={localize('Completed')}
                                 >
-                                    <Icon icon='IcCheckmarkOutline' className='transactions__middle' green />
+                                    <Icon icon='IcCheckmarkOutline' className='transactions__middle' color='green' />
                                 </Popover> :
                                 <Popover
                                     className='transactions__inline transactions__middle'
                                     alignment='left'
                                     message={localize('Pending')}
                                 >
-                                    <Icon icon='IcClockOutline' className='transactions__middle' secondary />
+                                    <Icon icon='IcClockOutline' className='transactions__middle' color='secondary' />
                                 </Popover>}
                     </td>
                 </tr>

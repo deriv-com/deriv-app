@@ -66,14 +66,14 @@ const drawerFooter = ({
                         <Button
                             is_disabled={is_stop_button_disabled}
                             text={localize('Stop bot')}
-                            icon={<Icon icon='IcPause' className='run-panel__button--icon' active />}
+                            icon={<Icon icon='IcPause' className='run-panel__button--icon' color='active' />}
                             onClick={onStopButtonClick}
                             has_effect
                             primary
                         /> :
                         <Button
                             text={localize('Run bot')}
-                            icon={<Icon icon='IcPlay' className='run-panel__button--icon' active />}
+                            icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
                             onClick={onRunButtonClick}
                             has_effect
                             green

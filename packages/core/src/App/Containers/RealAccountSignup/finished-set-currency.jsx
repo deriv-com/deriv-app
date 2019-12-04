@@ -20,7 +20,7 @@ const FinishedSetCurrency = ({
     />;
     const IconArrow        = () => <Icon
         icon='IcArrowRight'
-        red
+        color='red'
         width={50}
         height={20}
     />;
@@ -28,7 +28,7 @@ const FinishedSetCurrency = ({
     const IconWon          = ({ className }) => <Icon
         className={className}
         icon='IcCheckmarkCircle'
-        green
+        color='green'
     />;
 
     return (

@@ -18,12 +18,12 @@ const ContractResultOverlay = (props) => {
                 { has_won_contract ?
                     <React.Fragment>
                         {localize('Won')}
-                        <Icon icon='IcCheckmarkCircle' className='db-contract-card__result-icon' green />
+                        <Icon icon='IcCheckmarkCircle' className='db-contract-card__result-icon' color='green' />
                     </React.Fragment>
                     :
                     <React.Fragment>
                         {localize('Lost')}
-                        <Icon icon='IcCrossCircle' className='db-contract-card__result-icon' red />
+                        <Icon icon='IcCrossCircle' className='db-contract-card__result-icon' color='red' />
                     </React.Fragment>
                 }
             </span>

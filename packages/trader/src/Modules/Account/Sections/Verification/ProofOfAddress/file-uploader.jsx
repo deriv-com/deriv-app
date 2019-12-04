@@ -131,7 +131,7 @@ class FileUploader extends React.PureComponent {
                             'account-poa__upload-remove-btn--error': !!file_error_message,
                         })}
                         onClick={this.removeFile}
-                        secondary
+                        color='secondary'
                     />
                 </div>
                 }

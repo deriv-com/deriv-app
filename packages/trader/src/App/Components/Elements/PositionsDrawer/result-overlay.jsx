@@ -63,12 +63,12 @@ class ResultOverlay extends React.PureComponent {
                                     (is_contract_won) ?
                                         <React.Fragment>
                                             {localize('won')}
-                                            <Icon icon='IcCheckmarkCircle' className='result__icon' green />
+                                            <Icon icon='IcCheckmarkCircle' className='result__icon' color='green' />
                                         </React.Fragment>
                                         :
                                         <React.Fragment>
                                             {localize('lost')}
-                                            <Icon icon='IcCrossCircle' className='result__icon' red />
+                                            <Icon icon='IcCrossCircle' className='result__icon' color='red' />
                                         </React.Fragment>
                                 }
                             </span>

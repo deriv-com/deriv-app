@@ -51,7 +51,7 @@ const PurchaseButton = ({
                             <Icon
                                 icon={`IcTradetype-${getIconType()}`}
                                 className='btn-purchase__icon'
-                                active
+                                color='active'
                             />
                         </div>
                         <div className='btn-purchase__text_wrapper'>

@@ -42,7 +42,7 @@ class Checkbox extends React.PureComponent {
                     }) }
                 >
                     { !!this.state.checked &&
-                        <Icon icon='IcCheckmark' active />
+                        <Icon icon='IcCheckmark' color='active' />
                     }
                 </span>
                 <span className={classNames('dc-checkbox__label', classNameLabel)}>

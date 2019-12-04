@@ -19,16 +19,14 @@ function getKebabCase(str) {
 }
 
 const Icon = ({
-    active,
     className,
     color,
-    disabled,
-    green,
+    customColor,
     height,
     icon,
     onClick,
-    red,
-    secondary,
+    onMouseEnter,
+    onMouseLeave,
     size = 16,
     width,
 }) => {
@@ -60,19 +58,21 @@ const Icon = ({
             xmlns='http://www.w3.org/2000/svg'
             xmlnsXlink='http://www.w3.org/1999/xlink'
             className={classNames('dc-icon', className, {
-                'dc-icon--active'   : active,
-                'dc-icon--disabled' : disabled,
-                'dc-icon--green'    : green || icon === 'IcProfit',
-                'dc-icon--red'      : red || icon === 'IcLoss',
-                'dc-icon--secondary': secondary,
-                'dc-icon--color'    : typeof color === 'boolean',
+                'dc-icon--active'   : color === 'active',
+                'dc-icon--disabled' : color === 'disabled',
+                'dc-icon--green'    : color === 'green' || icon === 'IcProfit',
+                'dc-icon--red'      : color === 'red' || icon === 'IcLoss',
+                'dc-icon--secondary': color === 'secondary',
+                'dc-icon--brand'    : color === 'brand',
             })}
             height={height || size}
             width={width || size}
             onClick={onClick}
-            style={{
-                '--fill-color1': color,
-            }}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            style={customColor ? {
+                '--fill-color1': customColor,
+            } : undefined}
         >
             <use xlinkHref={`${(getUrlBase(`/sprite/${spriteFileName}.svg`))}#${icon_filename}`} />
         </svg>
@@ -80,7 +80,6 @@ const Icon = ({
 };
 
 Icon.propTypes = {
-    active   : PropTypes.bool,
     className: PropTypes.oneOfType([
         PropTypes.object,
         PropTypes.string,
@@ -89,17 +88,16 @@ Icon.propTypes = {
         PropTypes.bool,
         PropTypes.string,
     ]),
-    disabled: PropTypes.bool,
-    green   : PropTypes.bool,
-    height  : PropTypes.oneOfType([
+    customColor: PropTypes.bool,
+    height     : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),
-    icon     : PropTypes.string,
-    onClick  : PropTypes.func,
-    red      : PropTypes.bool,
-    secondary: PropTypes.bool,
-    size     : PropTypes.oneOfType([
+    icon        : PropTypes.string,
+    onClick     : PropTypes.func,
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    size        : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),

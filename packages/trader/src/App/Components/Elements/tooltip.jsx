@@ -51,7 +51,7 @@ class Tooltip extends React.PureComponent {
                     </React.Fragment>
                 }
                 {icon === 'question' && <Icon icon='IcUnknown' className={icon_class} />}
-                {icon === 'dot'      && <Icon icon='IcDot' className={icon_class} size={4} />}
+                {icon === 'dot'      && <Icon icon='IcCircle' className={icon_class} size={4} />}
                 {children}
             </span>
         );

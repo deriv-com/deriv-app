@@ -10,7 +10,7 @@ const EmptyTradeHistoryMessage = ({
 }) => (
     <React.Fragment>
         <div className='empty-trade-history'>
-            <Icon icon={component_icon} className='empty-trade-history__icon' disabled size={96} />
+            <Icon icon={component_icon} className='empty-trade-history__icon' color='disabled' size={96} />
             <span className='empty-trade-history__text'>
                 {
                     !has_selected_date ?

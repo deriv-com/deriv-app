@@ -81,9 +81,9 @@ class Popover extends React.PureComponent {
                     <div className={classNames(classNameTarget, 'dc-popover__target')}>
                         {!disable_target_icon &&
                         <i className={message ? 'dc-popover__target__icon' : 'dc-popover__target__icon--disabled'}>
-                            {(icon === 'info')     && <Icon icon='IcInfoOutline' className={icon_class_name} />}
+                            {(icon === 'info')     && <Icon icon='IcInfoOutline' className={icon_class_name} color='secondary' />}
                             {(icon === 'question') && <Icon icon='IcUnknown' className={icon_class_name} />}
-                            {(icon === 'dot')      && <Icon icon='IcDot' className={icon_class_name} size={4} />}
+                            {(icon === 'dot')      && <Icon icon='IcCircle' className={icon_class_name} size={4} />}
                             {(icon === 'counter')  && <span className={icon_class_name}>{ counter }</span>}
                         </i>
                         }

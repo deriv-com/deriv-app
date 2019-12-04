@@ -27,7 +27,7 @@ const MarkerLine = ({
                 <Icon
                     icon='IcContractStartTimeCircle'
                     className='chart-marker-line__icon chart-marker-line__icon--time'
-                    secondary
+                    color='secondary'
                     size={24}
                 />
             }

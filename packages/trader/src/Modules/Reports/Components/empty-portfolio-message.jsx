@@ -9,7 +9,7 @@ const EmptyPortfolioMessage = ({ error }) => (
                 <span className='portfolio-empty__text'>{error}</span>
                 :
                 <React.Fragment>
-                    <Icon icon='IcPortfolio' className='portfolio-empty__icon' size={96} disabled />
+                    <Icon icon='IcPortfolio' className='portfolio-empty__icon' size={96} color='disabled' />
                     <span className='portfolio-empty__text'>{localize('No open positions')}</span>
                 </React.Fragment>
             }

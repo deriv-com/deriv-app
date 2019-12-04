@@ -53,10 +53,10 @@ const SearchBox = ({
                                                     icon='IcCloseCircle'
                                                     className='toolbar__btn--icon'
                                                     onClick={() => onSearchClear(setFieldValue)}
-                                                    secondary
+                                                    color='secondary'
                                                 />
                                             )
-                                            : <Icon icon='IcSearch' disabled />
+                                            : <Icon icon='IcSearch' color='disabled' />
                                     }
                                 />
                             )}
@@ -233,7 +233,7 @@ const Toolbar = ({
                     className='toolbar__btn--icon toolbar__btn--start'
                     has_effect
                     onClick={onToolboxToggle}
-                    icon={<Icon icon='IcPuzzle' active />}
+                    icon={<Icon icon='IcPuzzle' color='active' />}
                     green
                 >
                     {localize('Get started')}

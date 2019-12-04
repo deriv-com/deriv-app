@@ -60,7 +60,7 @@ const Button = ({
                 <ButtonLoading />
             }
             {is_submit_success &&
-                <Icon icon='IcCheckmark' active size={24} />
+                <Icon icon='IcCheckmark' color='active' size={24} />
             }
             <span className={classNames('btn__text', classNameSpan)}>
                 {!text && children}

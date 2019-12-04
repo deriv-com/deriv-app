@@ -18,7 +18,7 @@ class Detail extends React.Component {
                 <Icon
                     icon={`Ic${icon}`}
                     className='payment-agent__accordion-content-icon'
-                    secondary
+                    color='secondary'
                 />
                 <a
                     className='payment-agent__contact cashier__paragraph'

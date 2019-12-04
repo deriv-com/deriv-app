@@ -1,15 +1,17 @@
 import { storiesOf } from '@storybook/react';
 import {
     boolean,
+    color,
+    number,
+    select,
     withKnobs }      from '@storybook/addon-knobs';
 import { withInfo }  from '@storybook/addon-info';
+import { action }    from '@storybook/addon-actions';
 import React         from 'react';
 import Icon          from 'Components/icon';
 import { icons }     from './icons.js';
 import Theme         from '../shared/theme';
-import {
-    FlexWrapper,
-    Text }           from '../button/shared-style';
+import { Text }      from '../button/shared-style';
 
 const stories = storiesOf('Icon', module);
 
@@ -25,58 +27,9 @@ const grid_style = {
 };
 
 stories
-    .addDecorator(story => <div style={{ padding: '3.2rem' }}>{story()}</div>)
+    .addDecorator(story => <div>{story()}</div>)
     .add(
-        'color',
-        () => (
-            <Theme is_dark={boolean('Theme', false)}>
-                <div style={{ padding: '3.2rem', ...grid_style, gridTemplateColumns: 'repeat(6, minmax(160px, 1fr))' }}>
-                    <Text size='2.4rem'>default</Text>
-                    <Text size='2.4rem'>active</Text>
-                    <Text size='2.4rem'>disabled</Text>
-                    <Text size='2.4rem'>red</Text>
-                    <Text size='2.4rem'>green</Text>
-                    <Text size='2.4rem'>color</Text>
-
-                    <Icon icon='IcArrowUp' size={64} />
-                    <Icon icon='IcArrowUp' size={64} active />
-                    <Icon icon='IcArrowUp' size={64} disabled />
-                    <Icon icon='IcArrowUp' size={64} red />
-                    <Icon icon='IcArrowUp' size={64} green />
-                    <Icon icon='IcArrowUp' size={64} color />
-
-                    <Icon icon='IcTradetypeDigitdiff' size={64} />
-                    <Icon icon='IcTradetypeDigitdiff' size={64} active />
-                    <Icon icon='IcTradetypeDigitdiff' size={64} disabled />
-                    <Icon icon='IcTradetypeDigitdiff' size={64} red />
-                    <Icon icon='IcTradetypeDigitdiff' size={64} green />
-                    <Icon icon='IcTradetypeDigitdiff' size={64} color />
-
-                    <Icon icon='IcContractExitTime' size={64} />
-                    <Icon icon='IcContractExitTime' size={64} active />
-                    <Icon icon='IcContractExitTime' size={64} disabled />
-                    <Icon icon='IcContractExitTime' size={64} red />
-                    <Icon icon='IcContractExitTime' size={64} green />
-                    <Icon icon='IcContractExitTime' size={64} color />
-                </div>
-            </Theme>
-        )
-    )
-    .add(
-        'size',
-        () => (
-            <Theme is_dark={boolean('Theme', false)}>
-                <FlexWrapper>
-                    <Icon icon='IcArrowUp' size={24} />
-                    <Icon icon='IcArrowUp' size={48} />
-                    <Icon icon='IcArrowUp' size={64} />
-                    <Icon icon='IcArrowUp' size={96} />
-                    <Icon icon='IcArrowUp' size={128} />
-                </FlexWrapper>
-            </Theme>
-        )
-    ).add(
-        'gallery',
+        'Deriv Icons',
         () => (
             <Theme is_dark={boolean('Theme', false)}>
                 <div style={{ padding: '3.2rem' }}>
@@ -97,12 +50,30 @@ stories
                                                 <Icon
                                                     icon={icon}
                                                     size={48}
-                                                    active={boolean('active', undefined)}
-                                                    disabled={boolean('disabled', undefined)}
-                                                    secondary={boolean('secondary', undefined)}
-                                                    green={boolean('green', undefined)}
-                                                    red={boolean('red', undefined)}
-                                                    color={boolean('color', undefined)}
+                                                    color={
+                                                        select('color', {
+                                                            'default'  : undefined,
+                                                            'active'   : 'active',
+                                                            'disabled' : 'disabled',
+                                                            'secondary': 'secondary',
+                                                            'green'    : 'green',
+                                                            'red'      : 'red',
+                                                            'brand'    : 'brand',
+                                                        })
+                                                    }
+                                                    customColor={
+                                                        color('customColor', undefined)
+                                                    }
+                                                    size={
+                                                        number('size', 36, {
+                                                            range: true,
+                                                            min  : 2,
+                                                            max  : 300,
+                                                            step : 1,
+                                                        })
+                                                    }
+                                                    onClick={action('on click')}
+                                                    onMouseEnter={action('on hover')}
                                                 />
                                             </div>
                                             <Text size='1.4rem'>{icon}</Text>

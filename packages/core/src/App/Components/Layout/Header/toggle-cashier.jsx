@@ -13,7 +13,7 @@ const PaymentAgent         = () => import(/* webpackChunkName: "cashier-pa" */ '
 const AccountTransfer      = () => import(/* webpackChunkName: "cashier-account-transfer" */ 'App/Containers/CashierModal/account-transfer.jsx');
 const PaymentAgentTransfer = () => import(/* webpackChunkName: "cashier-pa-transfer" */ 'App/Containers/CashierModal/payment-agent-transfer.jsx');
 // To work with P2P please uncomment this line
-const P2PCashier           = () => import(/* webpackChunkName: "cashier-otc-payment" */ 'App/Containers/CashierModal/p2p-cashier.jsx');
+// const P2PCashier           = () => import(/* webpackChunkName: "cashier-otc-payment" */ 'App/Containers/CashierModal/p2p-cashier.jsx');
 
 const modal_content = [
     {
@@ -78,19 +78,19 @@ const modal_content = [
         ),
     },
     // To work with P2P please uncomment this line
-    {
-        container: 'p2p_cashier',
-        icon     : 'IconP2PCashier',
-        label    : localize('P2P Cashier'),
-        // eslint-disable-next-line react/display-name
-        value    : () => (
-            <Lazy
-                ctor={P2PCashier}
-                should_load={true}
-                has_progress={true}
-            />
-        ),
-    },
+    // {
+    //     container: 'p2p_cashier',
+    //     icon     : 'IconP2PCashier',
+    //     label    : localize('P2P Cashier'),
+    //     // eslint-disable-next-line react/display-name
+    //     value    : () => (
+    //         <Lazy
+    //             ctor={P2PCashier}
+    //             should_load={true}
+    //             has_progress={true}
+    //         />
+    //     ),
+    // },
 ];
 
 const ModalContent = ({

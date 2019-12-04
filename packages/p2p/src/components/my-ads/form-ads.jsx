@@ -1,10 +1,16 @@
 import React, { Component, Fragment } from 'react';
-import PropTypes                 from 'prop-types';
-import { localize, Localize }              from 'deriv-translations';
-import { Formik, Field, Form }   from 'formik';
-import { Autocomplete, Dropdown, Loading, Input, Button, ThemedScrollbars } from 'deriv-components';
-import { WS }                    from '../../utils/websocket';
-import IconBack                  from '../../assets/icon-back.jsx';
+import PropTypes                      from 'prop-types';
+import { localize, Localize }         from 'deriv-translations';
+import { Formik, Field, Form }        from 'formik';
+import {
+    Autocomplete,
+    Dropdown,
+    Loading,
+    Input,
+    Button,
+    ThemedScrollbars }                from 'deriv-components';
+import { WS }                         from '../../utils/websocket';
+import IconBack                       from '../../assets/icon-back.jsx';
 
 class FormAds extends Component {
     state = {
@@ -48,6 +54,7 @@ class FormAds extends Component {
     }
 
     handleSubmit(formik_vars) {
+        // TODO: p2p API call to create ad
         // eslint-disable-next-line no-console
         console.log(this.state);
         // eslint-disable-next-line no-console
@@ -60,7 +67,7 @@ class FormAds extends Component {
                 <div onClick={() => this.props.handleShowForm(false)} className='my-ads__heading--btn'>
                     <IconBack />
                 </div>
-                <h2>Create new ad</h2>
+                <h2>{localize('Create new ad')}</h2>
             </div>
             {this.state.is_loading ? <Loading is_fullscreen={false} /> : (
                 <Formik

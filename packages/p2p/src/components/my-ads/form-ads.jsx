@@ -22,6 +22,7 @@ class FormAds extends Component {
             fix_price      : '',
             amount         : '',
             min_transaction: '',
+            max_transaction: '',
             advertiser_note: '',
         },
         is_loading: true,
@@ -174,27 +175,45 @@ class FormAds extends Component {
                                                     type='number'
                                                     error={touched.amount && errors.amount}
                                                     label={localize('Amount')}
-                                                    hint={`Available: ${'1.5'}`} // TODO: will get from API
-                                                    className='my-ads__form--field my-ads__form--field-has_leading'
-                                                    leading_icon={<span className='my-ads__form--field-leading'>{values.asset}</span>}
+                                                    className='my-ads__form--field'
+                                                    trailing_icon={<span className='my-ads__form--field-trailing'>{values.asset}</span>}
                                                     required
                                                 />
                                             )}
                                         </Field>
                                     </div>
-                                    <Field name='min_transaction'>
-                                        {({ field }) => (
-                                            <Input
-                                                {...field}
-                                                data-lpignore='true'
-                                                type='number'
-                                                error={touched.min_transaction && errors.min_transaction}
-                                                label={localize('Min. transaction')}
-                                                className='my-ads__form--field my-ads__form--field-single'
-                                                required
-                                            />
-                                        )}
-                                    </Field>
+                                    <div className="my-ads__form--container">
+                                        <Field name='min_transaction'>
+                                            {({ field }) => (
+                                                <Input
+                                                    {...field}
+                                                    data-lpignore='true'
+                                                    type='number'
+                                                    error={touched.min_transaction && errors.min_transaction}
+                                                    label={localize('Min. transaction')}
+                                                    className='my-ads__form--field my-ads__form--field-single'
+                                                    trailing_icon={<span className='my-ads__form--field-trailing'>{values.currency}</span>}
+                                                    required
+                                                />
+                                            )}
+                                        </Field>
+                                        <Field name='max_transaction'>
+                                            {({ field }) => (
+                                                <Input
+                                                    {...field}
+                                                    data-lpignore='true'
+                                                    type='number'
+                                                    error={touched.max_transaction && errors.max_transaction}
+                                                    label={localize('Max. transaction')}
+                                                    disabled
+                                                    value={(values.amount*values.fix_price)}
+                                                    className='my-ads__form--field my-ads__form--field-single'
+                                                    trailing_icon={<span className='my-ads__form--field-trailing'>{values.currency}</span>}
+                                                    required
+                                                />
+                                            )}
+                                        </Field>
+                                    </div>
                                     <Field name='advertiser_note'>
                                         {({ field }) => (
                                             <Input

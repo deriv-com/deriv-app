@@ -21,11 +21,11 @@
         margin: 1.6rem 0;
 
         &--container {
-            display: inline-flex;
+            display: flex;
             width: 41rem;
         }
         &--field {
-            margin: 0.6rem 1.6rem 1.8rem 0;
+            margin: 1rem 1.8rem 1.8rem 0;
 
             & .dc-autocomplete__field {
                 margin-bottom: 0;

@@ -2,13 +2,11 @@
 /* eslint-disable */
 import React from 'react';
 import { Table , Button } from 'deriv-components';
-import { FixedSizeList as List } from 'react-window';
-import InfiniteLoader from 'react-window-infinite-loader';
+import { localize } from 'deriv-translations';
+import { InfiniteLoaderList } from '../table/infinite-loader-list.jsx';
+import { TableLayout } from '../table/table-layout.jsx';
 
-// import { localize } from 'deriv-translations';
-const headers = [{ text: 'Ad ID', align: 'left' }, {text: 'Amount', align: 'right'}, {text: 'Price', align: 'right'}, {text: 'Min transaction', align:'right'}, {text: 'Payment Method', align: 'left'}];
-const mock_obj = { ad_id: 'Buy 000023434', amount: 'BTC 0.00001234', price: '34,000 MYR/BTC', min_transaction: 'MYR 50', payment_method: 'Bank transfer' };
-
+const mock_response = { ad_id: 'Buy 000023434', amount: 'BTC 0.00001234', price: '34,000 MYR/BTC', min_transaction: 'MYR 50', payment_method: 'Bank transfer' };
 const data = [
     { ad_id: 'Buy 000023434', amount: 'BTC 0.00001234', price: '34,000 MYR/BTC', min_transaction: 'MYR 50', payment_method: 'Bank transfer' },
     { ad_id: 'Buy 000023434', amount: 'BTC 0.00001234', price: '34,000 MYR/BTC', min_transaction: 'MYR 50', payment_method: 'Bank transfer' },
@@ -19,42 +17,21 @@ const data = [
     { ad_id: 'Buy 000023434', amount: 'BTC 0.00001234', price: '34,000 MYR/BTC', min_transaction: 'MYR 50', payment_method: 'Bank transfer' },
 ];
 
-const dataPromise = () => {
+const getMockData = () => {
     return new Promise((resolve, reject) => {
         setTimeout(function() {
-            resolve({ ...mock_obj });
+            resolve({ ...mock_response });
         }, 300);
     });
 };
-// List component
-const ListComponent = ({ items, is_loading_more_items, loadMore, has_more_items_to_load, RowComponent, height, width }) => {
-    const RowRenderer = ({ index, style }) => (
-        <RowComponent data={items[index]} num={index} style={style} loading={index === items.length} />
-    );
 
-    const itemCount = has_more_items_to_load ? items.length + 1 : items.length;
-
-    return (
-        <InfiniteLoader
-            isItemLoaded={index => index < items.length}
-            itemCount={itemCount}
-            loadMoreItems={loadMore}
-        >
-            {({ onItemsRendered, ref }) => (
-                <List
-                    height={height || 500}
-                    width={width || 960}
-                    itemCount={itemCount}
-                    itemSize={80}
-                    onItemsRendered={onItemsRendered}
-                    ref={ref}
-                >
-                    {RowRenderer}
-                </List>
-            )}
-        </InfiniteLoader>
-    );
-};
+const headers = [
+    { text: localize('Ad ID'), align: 'left'  },
+    { text: localize('Amount'), align: 'right' },
+    { text: localize('Price'), align: 'right' },
+    { text: localize('Min transaction'), align: 'right' },
+    { text: localize('Payment Method'), align: 'left'}
+];
 
 const RowComponent = ({  data, num, style, loading }) => {
     return loading ?
@@ -76,12 +53,6 @@ const RowComponent = ({  data, num, style, loading }) => {
         </div>;
 };
 
-const TableLayout = React.forwardRef((props, ref) => (
-    <div style={{ margin: '0 24px', }} ref={ref}>
-      {props.children}
-    </div>
-  ));
-
 export class MyAdsTable extends React.Component {
     constructor(props) {
         super(props);
@@ -90,12 +61,12 @@ export class MyAdsTable extends React.Component {
             is_loading_more_items : false,
             has_more_items_to_load: true,
         };
-        this.table_container_ref = React.createRef()
+        this.table_container_ref = React.createRef();
     }
     
     loadMore = () => {
         this.setState({ is_loading_more_items: true }, () => {
-            dataPromise().then((d) => {
+            getMockData().then((d) => {
                 this.setState({
                     is_loading_more_items: false,
                     items           : [...this.state.items, d],
@@ -104,7 +75,7 @@ export class MyAdsTable extends React.Component {
         });
     }
     componentDidMount() {
-        this.setState({ width: this.table_container_ref.current.offsetWidth })
+        this.setState({ width: this.table_container_ref.current.offsetWidth });
     }
 
     render() {
@@ -120,7 +91,7 @@ export class MyAdsTable extends React.Component {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        <ListComponent
+                        <InfiniteLoaderList
                             items={items}
                             is_loading_more_items={is_loading_more_items}
                             loadMore={this.loadMore}

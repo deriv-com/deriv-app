@@ -13,25 +13,39 @@ const ToggleMessage = props => {
     );
 };
 
+ToggleMessage.propTypes = {
+    className : PropTypes.string,
+    is_enabled: PropTypes.bool.isRequired,
+};
+
 class ToggleAds extends Component {
+
+    state = {
+        is_enabled: this.props.is_enabled,
+    }
+
+    setEnabled (is_enabled) {
+        this.setState({ is_enabled });
+    }
+
     render () {
         return (
             <div className={classNames(
                 'toggle-ads',
                 {
-                    'toggle-ads--on' : this.props.is_enabled,
-                    'toggle-ads--off': !this.props.is_enabled,
+                    'toggle-ads--on' : this.state.is_enabled,
+                    'toggle-ads--off': !this.state.is_enabled,
                 }
             )}>
                 <ToggleSwitch
                     id='toggle-my-ads'
                     className='toggle-ads__switch'
                     classNameLabel='toggle-ads__switch'
-                    is_enabled={this.props.is_enabled}
-                    handleToggle={() => {this.props.setEnabled(!this.props.is_enabled);}}
+                    is_enabled={this.state.is_enabled}
+                    handleToggle={() => {this.setEnabled(!this.state.is_enabled);}}
                 />
                 <ToggleMessage
-                    is_enabled={this.props.is_enabled}
+                    is_enabled={this.state.is_enabled}
                     className='toggle-ads__message'
                 />
             </div>
@@ -39,14 +53,8 @@ class ToggleAds extends Component {
     }
 }
 
-ToggleMessage.propTypes = {
-    className : PropTypes.string,
-    is_enabled: PropTypes.bool.isRequired,
-};
-
 ToggleAds.propTypes = {
     is_enabled: PropTypes.bool.isRequired,
-    setEnabled: PropTypes.func.isRequired,
 };
 
 export default ToggleAds;

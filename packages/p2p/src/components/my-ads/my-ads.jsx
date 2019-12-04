@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { localize } from 'deriv-translations';
-import { Button } from 'deriv-components';
+import { localize }                   from 'deriv-translations';
+import { Button }                     from 'deriv-components';
+import FormAds                        from './form-ads.jsx';
+import ToggleAds                      from './toggle-ads.jsx';
 import './my-ads.scss';
-import FormAds from './form-ads.jsx';
-import ToggleAds from './toggle-ads.jsx';
 
 class MyAds extends Component {
     state = {
@@ -16,10 +16,6 @@ class MyAds extends Component {
         this.setState({ show_form });
     }
 
-    setEnabled (is_enabled) {
-        this.setState({ is_enabled });
-    }
-
     render() {
         return (
             <div className='my-ads'>
@@ -29,8 +25,7 @@ class MyAds extends Component {
                     <Fragment>
                         <div className="my-ads__header">
                             <ToggleAds
-                                is_enabled={this.state.is_enabled}
-                                setEnabled={() => { this.setEnabled(!this.state.is_enabled); }}
+                                is_enabled={true}
                             />
                             <Button
                                 primary

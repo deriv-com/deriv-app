@@ -27,7 +27,7 @@ stories
                     }}
                     >
                         <Switch
-                            id="toggle-switch-story"
+                            id='toggle-switch-story'
                             is_enabled={is_enabled}
                             handleToggle={() => setEnabled(!is_enabled)}
                         />

@@ -41,7 +41,7 @@ class App extends Component {
                 */}
                 <main className='deriv-api'>
                     <nav>
-                        <Tabs active_index={active_index}>
+                        <Tabs active_index={2}>
                             <div label={localize('Buy/sell')}>
                                 <Ads />
                             </div>

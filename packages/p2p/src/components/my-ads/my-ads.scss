@@ -2,7 +2,7 @@
     padding: 1.6rem;
 
     &__heading {
-        &--wrapper {
+        &-wrapper {
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -11,7 +11,7 @@
             line-height: 1.75;
             color: var(--text-general);
         }
-        &--btn {
+        &-btn {
             padding: 0.4rem 1.6rem 0 0;
             cursor: pointer;
             border-radius: 4px;
@@ -20,11 +20,11 @@
     &__form {
         margin: 1.6rem 0;
 
-        &--container {
+        &-container {
             display: flex;
             width: 41rem;
         }
-        &--field {
+        &-field {
             margin: 1rem 1.8rem 1.8rem 0;
 
             & .dc-autocomplete__field {
@@ -33,26 +33,18 @@
             & .dc-input__label {
                 top: 1.2rem;
             }
-            &-single {
+            &--single {
                 width: 18.9rem;
             }
-            &-textarea {
+            &--textarea {
                 width: 57rem;
             }
-            &-trailing {
+            &--trailing {
                 font-size: var(--text-size-xxs);
                 color: var(--text-less-prominent);
             }
-            &-leading {
-                top: 1.2rem;
-            }
-            &-has_leading {
-                & .dc-input__field {
-                    padding-left: 4.2rem;
-                }
-            }
         }
-        &--footer {
+        &-footer {
             height: 7.2rem;
             width: 100%;
             position: absolute;

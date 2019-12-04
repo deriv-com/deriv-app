@@ -64,8 +64,8 @@ class FormAds extends Component {
 
     render() {
         return <Fragment>
-            <div className='my-ads__heading--wrapper'>
-                <div onClick={() => this.props.handleShowForm(false)} className='my-ads__heading--btn'>
+            <div className='my-ads__heading-wrapper'>
+                <div onClick={() => this.props.handleShowForm(false)} className='my-ads__heading-btn'>
                     <IconBack />
                 </div>
                 <h2>{localize('Create new ad')}</h2>
@@ -90,13 +90,13 @@ class FormAds extends Component {
                                     autoHide
                                     style={{ height: 'calc(520px - 70px)' }} // height of container minus height of modal footer container
                                 >
-                                    <div className='my-ads__form--container'>
+                                    <div className='my-ads__form-container'>
                                         <Field name='country'>
                                             {({ field }) => (
                                                 <Autocomplete
                                                     {...field}
                                                     type='text'
-                                                    className='my-ads__form--field'
+                                                    className='my-ads__form-field'
                                                     label={localize('Country')}
                                                     list_items={[]}
                                                     disabled
@@ -111,7 +111,7 @@ class FormAds extends Component {
                                                 <Autocomplete
                                                     {...field}
                                                     type='text'
-                                                    className='my-ads__form--field'
+                                                    className='my-ads__form-field'
                                                     label={localize('Currency')}
                                                     list_items={[]}
                                                     disabled
@@ -122,14 +122,14 @@ class FormAds extends Component {
                                             )}
                                         </Field>
                                     </div>
-                                    <div className='my-ads__form--container'>
+                                    <div className='my-ads__form-container'>
                                         <Field name='type'>
                                             {({ field }) => (
                                                 <Dropdown
                                                     {...field}
                                                     placeholder={localize('Type')}
                                                     is_align_text_left
-                                                    className='my-ads__form--field'
+                                                    className='my-ads__form-field'
                                                     list={[{ text: 'Buy', value: 'buy' }, { text: 'Sell', value: 'sell' }]}
                                                     error={touched.type && errors.type}
                                                 />
@@ -140,7 +140,7 @@ class FormAds extends Component {
                                                 <Autocomplete
                                                     {...field}
                                                     type='text'
-                                                    className='my-ads__form--field'
+                                                    className='my-ads__form-field'
                                                     disabled
                                                     label={localize('Asset')}
                                                     list_items={[]}
@@ -152,7 +152,7 @@ class FormAds extends Component {
                                             )}
                                         </Field>
                                     </div>
-                                    <div className='my-ads__form--container'>
+                                    <div className='my-ads__form-container'>
                                         <Field name='fix_price'>
                                             {({ field }) => (
                                                 <Input
@@ -161,8 +161,8 @@ class FormAds extends Component {
                                                     type='number'
                                                     error={touched.fix_price && errors.fix_price}
                                                     label={localize('Fixed price')}
-                                                    className='my-ads__form--field'
-                                                    trailing_icon={<span className='my-ads__form--field-trailing'>{`${values.currency}/${values.asset}`}</span>}
+                                                    className='my-ads__form-field'
+                                                    trailing_icon={<span className='my-ads__form-field--trailing'>{`${values.currency}/${values.asset}`}</span>}
                                                     required
                                                 />
                                             )}
@@ -175,8 +175,8 @@ class FormAds extends Component {
                                                     type='number'
                                                     error={touched.amount && errors.amount}
                                                     label={localize('Amount')}
-                                                    className='my-ads__form--field'
-                                                    trailing_icon={<span className='my-ads__form--field-trailing'>{values.asset}</span>}
+                                                    className='my-ads__form-field'
+                                                    trailing_icon={<span className='my-ads__form-field--trailing'>{values.asset}</span>}
                                                     required
                                                 />
                                             )}
@@ -191,8 +191,8 @@ class FormAds extends Component {
                                                     type='number'
                                                     error={touched.min_transaction && errors.min_transaction}
                                                     label={localize('Min. transaction')}
-                                                    className='my-ads__form--field my-ads__form--field-single'
-                                                    trailing_icon={<span className='my-ads__form--field-trailing'>{values.currency}</span>}
+                                                    className='my-ads__form-field my-ads__form-field--single'
+                                                    trailing_icon={<span className='my-ads__form-field--trailing'>{values.currency}</span>}
                                                     required
                                                 />
                                             )}
@@ -207,8 +207,8 @@ class FormAds extends Component {
                                                     label={localize('Max. transaction')}
                                                     disabled
                                                     value={(values.amount * values.fix_price)}
-                                                    className='my-ads__form--field my-ads__form--field-single'
-                                                    trailing_icon={<span className='my-ads__form--field-trailing'>{values.currency}</span>}
+                                                    className='my-ads__form-field my-ads__form-field--single'
+                                                    trailing_icon={<span className='my-ads__form-field--trailing'>{values.currency}</span>}
                                                     required
                                                 />
                                             )}
@@ -222,14 +222,14 @@ class FormAds extends Component {
                                                 type='textarea'
                                                 error={touched.advertiser_note && errors.advertiser_note}
                                                 label={localize('Advertiser notes')}
-                                                className='my-ads__form--field my-ads__form--field-textarea'
+                                                className='my-ads__form-field my-ads__form-field--textarea'
                                                 placeholder='Your contact and payment info'
                                                 required
                                             />
                                         )}
                                     </Field>
                                 </ThemedScrollbars>
-                                <div className='my-ads__form--footer'>
+                                <div className='my-ads__form-footer'>
                                     <Button secondary large type='reset'>{localize('Cancel')}</Button>
                                     <Button primary large is_disabled={isSubmitting && isValid}>{localize('Post ad')}</Button>
                                 </div>

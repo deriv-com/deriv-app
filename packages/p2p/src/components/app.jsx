@@ -39,7 +39,7 @@ class App extends Component {
                     App can overwrite the styles by passing css variables to className deriv-api
                     you can refer to deriv-shared/themes for the css variables that are used in deriv-app as well as p2p
                 */}
-                <main className='deriv-api'>
+                <main className='deriv-p2p'>
                     <nav>
                         <Tabs active_index={active_index}>
                             <div label={localize('Buy/sell')}>

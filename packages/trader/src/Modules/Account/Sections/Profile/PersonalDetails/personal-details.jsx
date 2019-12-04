@@ -7,11 +7,6 @@ import {
     Checkbox,
     Button,
     Input }                                    from 'deriv-components';
-<<<<<<< HEAD
-=======
-// TODO move DateOfBirth picker to components
-import { DateOfBirth }                         from 'App/Containers/RealAccountSignup/personal-details.jsx';
->>>>>>> 683915417fe9aa1d90e9bebb835397e4a67d9b83
 import { localize }                            from 'deriv-translations';
 import { WS }                                  from 'Services/ws-methods';
 import { connect }                             from 'Stores/connect';

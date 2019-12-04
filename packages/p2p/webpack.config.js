@@ -84,6 +84,7 @@ module.exports = {
     externals: [
         {
             'react'             : 'react',
+            'react-dom'         : 'react-dom',
             'babel-polyfill'    : 'babel-polyfill',
             'prop-types'        : 'prop-types',
             'deriv-shared'      : 'deriv-shared',

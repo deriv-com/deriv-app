@@ -206,7 +206,7 @@ class FormAds extends Component {
                                                     error={touched.max_transaction && errors.max_transaction}
                                                     label={localize('Max. transaction')}
                                                     disabled
-                                                    value={(values.amount*values.fix_price)}
+                                                    value={(values.amount * values.fix_price)}
                                                     className='my-ads__form--field my-ads__form--field-single'
                                                     trailing_icon={<span className='my-ads__form--field-trailing'>{values.currency}</span>}
                                                     required

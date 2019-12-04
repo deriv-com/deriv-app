@@ -32,10 +32,7 @@ class ToggleAds extends Component {
         return (
             <div className={classNames(
                 'toggle-ads',
-                {
-                    'toggle-ads--on' : this.state.is_enabled,
-                    'toggle-ads--off': !this.state.is_enabled,
-                }
+                this.state.is_enabled ? 'toggle-ads--on' : 'toggle-ads--off',
             )}>
                 <ToggleSwitch
                     id='toggle-my-ads'

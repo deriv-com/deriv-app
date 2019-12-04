@@ -39,7 +39,7 @@ class MarkerSpotLabel extends React.Component {
                     <div className='chart-spot-label__info-container'>
                         <div className={`chart-spot-label__time-value-container chart-spot-label__time-value-container--${this.props.align_label}`}>
                             <div className='chart-spot-label__time-container'>
-                                <Icon icon='IcClock' height='10' width='10' className='chart-spot-label__time-icon' />
+                                <Icon icon='IcClockOutline' height={10} width={10} className='chart-spot-label__time-icon' />
                                 <p className='chart-spot-label__time'>{toMoment(+this.props.spot_epoch).format('HH:mm:ss')}</p>
                             </div>
                             <div

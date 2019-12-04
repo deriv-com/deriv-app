@@ -37,6 +37,7 @@ export const pickDefaultSymbol = (active_symbols = []) => {
 };
 
 const getFavoriteOpenSymbol = (active_symbols) => {
+    //test 
     try {
         const chart_favorites = LocalStore.get('cq-favorites');
         if (!chart_favorites) return undefined;

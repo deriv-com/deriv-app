@@ -104,9 +104,7 @@ export default class ToolbarStore {
 
     @action.bound
     onUndoClick = () => {
-        Blockly.Events.setGroup('undo');
         Blockly.derivWorkspace.undo();
-        Blockly.Events.setGroup(false);
     }
 
     onRedoClick = () => {

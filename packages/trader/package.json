@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run test && sudo webpack-dev-server --config \"./build/webpack.config.js\"",
     "serve": "echo \"Serving...\" && webpack --progress --watch --config \"./build/webpack.config.js\"",
-    "build": "webpack --config \"./build/webpack.config.js\"",
+    "build": "f () { webpack --config \"./build/webpack.config.js\" --env.base $1 ;}; f",
     "build:travis": "echo \"No build:travis specified\"",
     "test": "npm run test:stylelint && npm run test:eslint",
     "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",

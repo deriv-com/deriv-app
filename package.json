@@ -11,7 +11,7 @@
     "serve": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run serve ;}; f",
     "build": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run build ${@:2} ;}; f",
     "build:travis": "lerna exec --scope deriv-shared --scope deriv-components --scope deriv-translations -- npm run build:travis",
-    "build:local": "lerna exec --scope deriv-trader --scope deriv-bot --parallel -- npm run build",
+    "build:local": "f () { lerna exec --scope deriv-trader --scope deriv-bot --parallel -- npm run build $1 ;}; f",
     "test": "f () { lerna exec --scope deriv-${1:-'*'} --parallel -- npm run test ;}; f",
     "test:eslint": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test:eslint ;}; f",
     "test:stylelint": "f () { lerna exec --scope deriv-${1:-'*'} -- npm run test:stylelint ;}; f",
@@ -19,7 +19,7 @@
     "translate": "f () { lerna exec --scope deriv-translations -- npm run translate ;}; f",
     "deploy": "f () { npm run build:local && lerna exec --scope deriv-core -- npm run deploy ${@:1} ;}; f",
     "deploy:clean": "f () { npm run build:local && lerna exec --scope deriv-core -- npm run deploy:clean ${@:1} ;}; f",
-    "deploy:folder": "f () { npm run build:local && lerna exec --scope deriv-core -- npm run deploy:folder ${@:1} ;}; f",
+    "deploy:folder": "f () { npm run build:local $1 && lerna exec --scope deriv-core -- npm run deploy:folder ${@:1} ;}; f",
     "deploy:staging": "lerna exec --scope deriv-core -- npm run deploy:staging",
     "deploy:production": "lerna exec --scope deriv-core -- npm run deploy:production"
   },

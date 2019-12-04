@@ -1,3 +1,5 @@
+import { getUrlBase } from '_common/url';
+
 const EVERY_HOUR = 36000000; // 1000 * 60 * 60
 let interval_id;
 
@@ -21,7 +23,7 @@ function refreshOnUpdate() {
 export default function register() { // Register the service worker
     if (/* process.env.NODE_ENV === 'production' && */ 'serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            const sw_url = `${window.location.origin}/service-worker.js`;
+            const sw_url = `${window.location.origin}${getUrlBase('/service-worker.js')}`;
             navigator.serviceWorker
                 .register(sw_url)
                 .then(registration => {

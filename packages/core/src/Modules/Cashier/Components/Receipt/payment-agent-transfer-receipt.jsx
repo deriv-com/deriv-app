@@ -13,7 +13,6 @@ class PaymentAgentTransferReceipt extends React.Component {
     openStatement = () => {
         this.props.history.push(routes.statement);
         this.props.resetPaymentAgentTransfer();
-        this.props.toggleCashierModal();
     };
 
     render() {
@@ -78,15 +77,13 @@ PaymentAgentTransferReceipt.propTypes = {
     loginid                  : PropTypes.string,
     receipt                  : PropTypes.object,
     resetPaymentAgentTransfer: PropTypes.func,
-    toggleCashierModal       : PropTypes.func,
 };
 
 export default withRouter(connect(
-    ({ client, modules, ui }) => ({
+    ({ client, modules }) => ({
         currency                 : client.currency,
         loginid                  : client.loginid,
         receipt                  : modules.cashier.config.payment_agent_transfer.receipt,
         resetPaymentAgentTransfer: modules.cashier.resetPaymentAgentTransfer,
-        toggleCashierModal       : ui.toggleCashierModal,
     })
 )(PaymentAgentTransferReceipt));

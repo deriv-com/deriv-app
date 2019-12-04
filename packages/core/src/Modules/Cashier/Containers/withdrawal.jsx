@@ -1,11 +1,11 @@
 import PropTypes   from 'prop-types';
 import React       from 'react';
 import { connect } from 'Stores/connect';
-import Error       from './error.jsx';
-import NoBalance   from './no-balance.jsx';
-import SendEmail   from './send-email.jsx';
-import Virtual     from './virtual.jsx';
-import Withdraw    from './Withdrawal/withdraw.jsx';
+import Withdraw    from '../Components/withdraw.jsx';
+import SendEmail   from '../Components/Email/send-email.jsx';
+import Error       from '../Components/Error/error.jsx';
+import NoBalance   from '../Components/Error/no-balance.jsx';
+import Virtual     from '../Components/Error/virtual.jsx';
 
 class Withdrawal extends React.Component {
     componentDidMount() {
@@ -17,23 +17,24 @@ class Withdrawal extends React.Component {
     }
 
     render() {
+        if (this.props.verification_code || this.props.iframe_url) {
+            return <Withdraw />;
+        }
         if (this.props.is_virtual) {
             return <Virtual />;
         }
         if (!+this.props.balance) {
             return <NoBalance />;
         }
-        if (!this.props.error.message) {
-            return ((this.props.verification_code || this.props.iframe_url) ?
-                <Withdraw /> : <SendEmail />
+        if (this.props.error.message) {
+            return (
+                <Error
+                    error={this.props.error}
+                    container='withdraw'
+                />
             );
         }
-        return (
-            <Error
-                error={this.props.error}
-                container='withdraw'
-            />
-        );
+        return <SendEmail />;
     }
 }
 

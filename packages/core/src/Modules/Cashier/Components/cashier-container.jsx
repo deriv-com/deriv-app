@@ -1,7 +1,7 @@
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import { ThemedScrollbars } from 'deriv-components';
-import Loading              from '../../../../templates/_common/components/loading.jsx';
+import Loading              from '../../../templates/_common/components/loading.jsx';
 
 class CashierContainer extends React.Component {
     render() {
@@ -10,9 +10,9 @@ class CashierContainer extends React.Component {
                 {this.props.is_loading && <Loading />}
                 {this.props.iframe_url &&
                 <ThemedScrollbars
-                    style={{ width: '100%', height: this.props.iframe_height ? '100%' : 0 }}
+                    style={{ position: 'absolute', height: this.props.iframe_height ? '100%' : 0, width: '100%' }}
                     autoHide
-                    autoHeightMax={550}
+                    autoHeightMax={780}
                     renderTrackHorizontal={props => <div {...props} className='track-horizontal' style={{ display: 'none' }} />}
                     renderThumbHorizontal={props => <div {...props} className='thumb-horizontal' style={{ display: 'none' }} />}
                 >

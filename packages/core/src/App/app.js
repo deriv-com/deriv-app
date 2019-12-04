@@ -12,7 +12,7 @@ const initStore = (notification_messages) => {
 
     const root_store = new RootStore();
 
-    setStorageEvents(root_store);
+    setStorageEvents();
 
     NetworkMonitor.init(root_store);
     OutdatedBrowser.init(root_store);

@@ -1,9 +1,9 @@
 import PropTypes        from 'prop-types';
 import React            from 'react';
 import { connect }      from 'Stores/connect';
-import Error            from './error.jsx';
-import Virtual          from './virtual.jsx';
-import CashierContainer from './Layout/cashier-container.jsx';
+import CashierContainer from '../Components/cashier-container.jsx';
+import Error            from '../Components/Error/error.jsx';
+import Virtual          from '../Components/Error/virtual.jsx';
 
 class Deposit extends React.Component {
     componentDidMount() {

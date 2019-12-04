@@ -176,7 +176,7 @@ class AccountSwitcher extends React.Component {
     };
 
     redirectToMt5Real = () => {
-        if (this.props.can_upgrade_to === 'svg') {
+        if (this.props.can_upgrade_to === 'svg' || this.props.landing_company_shortcode === 'svg') {
             this.redirectToMt5('real');
         } else {
             window.open(urlFor('user/metatrader', undefined, undefined, true));
@@ -421,27 +421,28 @@ AccountSwitcher.propTypes = {
 
 const account_switcher = withRouter(connect(
     ({ client, ui }) => ({
-        account_loginid       : client.loginid,
-        accounts              : client.accounts,
-        has_fiat              : client.has_fiat,
-        can_change_currency   : client.can_change_currency,
-        account_list          : client.account_list,
-        can_upgrade           : client.can_upgrade,
-        can_upgrade_to        : client.can_upgrade_to,
-        has_mt5_login         : client.has_mt5_login,
-        is_loading_mt5        : client.is_populating_mt5_account_list,
-        is_logged_in          : client.is_logged_in,
-        is_mt5_allowed        : client.is_mt5_allowed,
-        is_virtual            : client.is_virtual,
-        mt5_login_list        : client.mt5_login_list,
-        obj_total_balance     : client.obj_total_balance,
-        switchAccount         : client.switchAccount,
-        logoutClient          : client.logout,
-        updateMt5LoginList    : client.updateMt5LoginList,
-        is_positions_drawer_on: ui.is_positions_drawer_on,
-        openRealAccountSignup : ui.openRealAccountSignup,
-        toggleAccountsDialog  : ui.toggleAccountsDialog,
-        togglePositionsDrawer : ui.togglePositionsDrawer,
+        account_loginid          : client.loginid,
+        accounts                 : client.accounts,
+        has_fiat                 : client.has_fiat,
+        can_change_currency      : client.can_change_currency,
+        account_list             : client.account_list,
+        can_upgrade              : client.can_upgrade,
+        can_upgrade_to           : client.can_upgrade_to,
+        has_mt5_login            : client.has_mt5_login,
+        is_loading_mt5           : client.is_populating_mt5_account_list,
+        is_logged_in             : client.is_logged_in,
+        is_mt5_allowed           : client.is_mt5_allowed,
+        is_virtual               : client.is_virtual,
+        landing_company_shortcode: client.landing_company_shortcode,
+        mt5_login_list           : client.mt5_login_list,
+        obj_total_balance        : client.obj_total_balance,
+        switchAccount            : client.switchAccount,
+        logoutClient             : client.logout,
+        updateMt5LoginList       : client.updateMt5LoginList,
+        is_positions_drawer_on   : ui.is_positions_drawer_on,
+        openRealAccountSignup    : ui.openRealAccountSignup,
+        toggleAccountsDialog     : ui.toggleAccountsDialog,
+        togglePositionsDrawer    : ui.togglePositionsDrawer,
     }),
 )(AccountSwitcher));
 

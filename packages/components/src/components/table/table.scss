@@ -1,0 +1,22 @@
+.dc-table {
+    color: var(--text-general);
+
+    &__row {
+        display: flex;
+        justify-content: space-between;
+        height: 100%;
+    }
+    &__header {
+        border-bottom: 2px solid var(--general-section-1);
+        height: 52px;
+    }
+    &__cell, &__head {
+        font-size: 1.4rem;
+        padding: 0.75em;
+        display: flex;
+        align-items: center;
+    }
+    &__head {
+        font-weight: 500;
+    }
+}

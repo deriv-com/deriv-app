@@ -258,6 +258,10 @@ export default class PortfolioStore extends BaseStore {
         const contract_response = response.proposal_open_contract;
         const i = this.getPositionIndexById(contract_response.contract_id);
 
+        if (!this.positions[i]) {
+            return;
+        }
+
         this.positions[i].contract_info    = contract_response;
         this.positions[i].duration         = getDurationTime(contract_response);
         this.positions[i].duration_unit    = getDurationUnitText(getDurationPeriod(contract_response));

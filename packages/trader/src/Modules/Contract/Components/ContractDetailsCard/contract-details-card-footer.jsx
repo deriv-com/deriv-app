@@ -51,7 +51,7 @@ const ContractDetailsCardFooter = ({
                         <Button
                             id={`dt_drawer_card_${contract_info.contract_id}_cancel_button`}
                             className='btn--cancel'
-                            onClick={() => onClickCancel(contract_info.contract_id)}
+                            onClick={() => onClickCancel(contract_info.contract_id, true)}
                             secondary
                         >
                             {localize('Cancel')}

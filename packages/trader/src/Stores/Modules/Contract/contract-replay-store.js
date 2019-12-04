@@ -153,7 +153,8 @@ export default class ContractReplayStore extends BaseStore {
     }
 
     @action.bound
-    onClickCancel(contract_id) {
+    onClickCancel(contract_id, remove_position_after_sell = false) {
+        this.root_store.modules.portfolio.remove_position_after_sell = remove_position_after_sell;
         if (contract_id) {
             WS.cancel(contract_id).then(response => {
                 if (response.error) {
@@ -166,7 +167,6 @@ export default class ContractReplayStore extends BaseStore {
                     this.root_store.ui.addNotificationMessage(
                         contractCancelled()
                     );
-                    this.root_store.modules.portfolio.removePositionById(contract_id);
                 }
             });
         }
@@ -175,7 +175,7 @@ export default class ContractReplayStore extends BaseStore {
     @action.bound
     onClickSell(contract_id, remove_position_after_sell = false) {
         const { bid_price } = this.contract_info;
-        this.remove_position_after_sell = remove_position_after_sell;
+        this.root_store.modules.portfolio.remove_position_after_sell = remove_position_after_sell;
         if (contract_id && bid_price) {
             this.is_sell_requested = true;
             WS.sell(contract_id, bid_price).then(this.handleSell);

@@ -261,13 +261,13 @@ class PersonalDetails extends React.Component {
                 v => !!v,
                 v => v.length > 2,
                 v => v.length < 30,
-                v => /^[\p{L}\s'.-]{2,50}$/gu.exec(v) !== null,
+                v => /^[a-zA-Z\s\W'.-]{2,50}$/gu.exec(v) !== null,
             ],
             last_name: [
                 v => !!v,
                 v => v.length >= 2,
                 v => v.length <= 50,
-                v =>  /^[\p{L}\s'.-]{2,50}$/gu.exec(v) !== null,
+                v =>  /^[a-zA-Z\s\W'.-]{2,50}$/gu.exec(v) !== null,
             ],
             date_of_birth: [
                 v => !!v,

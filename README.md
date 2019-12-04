@@ -65,7 +65,7 @@ All packages must contain the following scripts to perform the stated actions:
 **Please follow the README of each package you intend to work with on how to get set up and their custom scripts.** However, the above scripts can be run from the root directory in the following manner.
 
 ### Package names
-Each package is named with the `deriv-` prefix, however for the scripts above, you do not need to add the `deriv-` prefix as the scripts already prefix the 1st argument of the script with `deriv-`.
+Each package is named with the `deriv-` prefix, however for the scripts above, you do not need to add the `deriv-` prefix as the scripts already prefix the 1st argument of the script with `deriv-`. **However**, if you do use the `lerna` CLI directly, then you will need to use the full package name including the `deriv-` prefix.
 
 You can find the names of packages by first navigating to the `packages` folder. Each subfolder is a package, and contains a `package.json` file. The value of the `name` key in `package.json` is the package name.
 
@@ -119,24 +119,28 @@ There are 3 types of release:
 3. Use Draft PRs if you don't mean to request for reviews yet. [Read more here.](https://github.blog/2019-02-14-introducing-draft-pull-requests/)
 
 ## FAQ
-1. How do I install a package?
+1. How do I **install** an npm package in one of our packages?
 
-    **A.** Run `lerna add` with the `--scope` argument as the package you want to install to. (e.g.,  `lerna add npm-package-name --scope=trader`)
+    **A.** You can simply `cd` into the package you wish to install to, then run `npm i package-name` as usual. Or simply run a `lerna exec` like `lerna exec --scope=local-package -- npm i npm-package-name`, e.g.: `lerna exec --scope=deriv-translations -- npm i i18next`. _Please note that for direct `lerna` CLI use, you need the full package name including the `deriv-` prefix._
 
-2. How do I run `npm ci` or equivalent (to add dependencies based on `package-lock.json`?
+2. How do I **uninstall** an npm package from one of our packages?
+
+    **A.** Just as installing, except the `npm` command you'd run would be `npm uninstall` (shortened to `npm un`). e.g.: `lerna exec --scope=deriv-translations -- npm un i18next`.
+
+3. How do I run `npm ci` or equivalent (to add dependencies based on `package-lock.json`?
 
     **A.** You have two options:
 
     1. use `lerna exec` with the `--scope` argument as the package you want to run the command on, as such `lerna exec --scope=trader -- npm ci`.
     2. `cd` into `packages/PACKAGE-NAME` and run `npm ci`, as such `cd packages/trader && npm ci`
 
-3. Why do I need to run commands with `sudo`?
+4. Why do I need to run commands with `sudo`?
 
     **A.** You shouldn't need to. The only command that needs privilege is `serve` and `start` and that's because it's on port 443 **however, that script prompts you by itself, you do not need to place `sudo`**.
 
     If you face this issue, simply run `sudo chown -R $(whoami) .` from the root of the project.
 
-4. My build(s) fail and I can see it related to Node Sass (`node-sass`), what do I do?
+5. My build(s) fail and I can see it related to Node Sass (`node-sass`), what do I do?
 
     **A.** This issue happens when your `node-sass` has its `binding.node` set to a version of node different from the current projects' one. Please try the following in order:
     

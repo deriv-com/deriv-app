@@ -51,7 +51,7 @@ const initRoutesConfig = () => ([
         routes          : [
             {
                 title    : localize('Profile'),
-                icon     : 'IcUser',
+                icon     : 'IcUserOutline',
                 subroutes: [
                     { path: routes.personal_details,     component: PersonalDetails,     title: localize('Personal details'), default: true },
                     { path: routes.financial_assessment, component: FinancialAssessment, title: localize('Financial assessment') },

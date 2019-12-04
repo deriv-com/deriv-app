@@ -24,7 +24,7 @@ const NonClickableLink = ({ children, lang }) => (
 const LanguageLink = ({ lang }) => (
     <React.Fragment>
         <Icon
-            icon='IconFlagUk'
+            icon='IcFlagUk'
             className={'settings-language__language-link-flag settings-language__language-flag'}
             type={lang.replace(/(\s|_)/, '-').toLowerCase()}
         />

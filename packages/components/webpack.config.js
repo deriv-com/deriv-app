@@ -89,9 +89,6 @@ module.exports = {
                         options: {
                             extract       : true,
                             spriteFilename: svgPath => {
-                                if (svgPath.includes('components/icon/account')) {
-                                    return 'account.svg';
-                                }
                                 if (svgPath.includes('components/icon/common')) {
                                     return 'common.svg';
                                 }

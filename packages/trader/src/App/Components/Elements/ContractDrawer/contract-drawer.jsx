@@ -215,7 +215,7 @@ class ContractDrawer extends Component {
                             onClick={this.redirectBackToReports}
                         >
                             <Icon
-                                icon='IconArrowLeftBold'
+                                icon='IcArrowLeftBold'
                             />
                         </div>
                     }

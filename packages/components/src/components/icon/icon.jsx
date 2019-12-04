@@ -51,9 +51,6 @@ const Icon = ({
         if (icon.startsWith('IcUnderlying')) {
             spriteFileName = 'underlying';
         }
-        if (icon.startsWith('IcPoa') || icon.startsWith('IcPoi')) {
-            spriteFileName = 'account';
-        }
     }
 
     const icon_filename = icon.startsWith('IcUnderlying') ? `ic-underlying-${icon.split('IcUnderlying')[1]}` : getKebabCase(icon);

@@ -26,7 +26,7 @@ const TradeTypeInfoItem = ({
         {!is_mobile &&
         <div className='trade-type-info-dialog__header'>
             <span id='dt_contract_info_back_nav' onClick={() => onBackButtonClick()}>
-                <Icon icon='IconBack' />
+                <Icon icon='IcArrowLeftBold' />
             </span>
             <span className='title'>{item.text}</span>
         </div>

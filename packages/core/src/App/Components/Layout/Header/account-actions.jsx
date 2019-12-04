@@ -61,7 +61,7 @@ export class AccountActions extends Component {
                             className='account-settings-toggle'
                             to={ routes.personal_details }
                         >
-                            <Icon icon='IcUser' />
+                            <Icon icon='IcUserOutline' />
                         </BinaryLink>
                     </Popover>
                     <React.Suspense fallback={<div />}>

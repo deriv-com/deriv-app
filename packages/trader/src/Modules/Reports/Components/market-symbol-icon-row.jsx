@@ -52,9 +52,9 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
             <div className='market-symbol-icon'>
                 {
                     payload.action_type === 'deposit' ? (
-                        <Icon icon='IconDeposit' />
+                        <Icon icon='IcCashierDeposit' />
                     ) : (
-                        <Icon icon='IconWithdrawal' />
+                        <Icon icon='IcCashierWithdrawal' />
                     )
                 }
             </div>

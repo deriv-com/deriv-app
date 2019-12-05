@@ -40,6 +40,27 @@ module.exports = {
                 ]
             },
             {
+                test: /\.svg$/,
+                use : [
+                    {
+                        loader : 'svg-sprite-loader',
+                        options: {
+                            extract       : true,
+                            spriteFilename: 'p2p-sprite.svg',
+                        },
+                    },
+                    {
+                        loader : 'svgo-loader',
+                        options: {
+                            plugins: [
+                                { removeUselessStrokeAndFill: false },
+                                { removeUnknownsAndDefaults: false },
+                            ],
+                        },
+                    },
+                ],
+            },
+            {
                 test: /\.scss$/,
                 use: [
                     'style-loader',
@@ -63,11 +84,13 @@ module.exports = {
     externals: [
         {
             'react'             : 'react',
+            'react-dom'         : 'react-dom',
             'babel-polyfill'    : 'babel-polyfill',
             'prop-types'        : 'prop-types',
             'deriv-shared'      : 'deriv-shared',
             'deriv-components'  : 'deriv-components',
             'deriv-translations': 'deriv-translations',
+            'formik'            : 'formik',
         },
         /^deriv-components\/.+$/,
         /^deriv-shared\/.+$/,

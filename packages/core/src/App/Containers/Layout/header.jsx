@@ -44,12 +44,13 @@ class Header extends React.Component {
 
         const filterPlatformsForClients = (payload) => payload.filter(config => {
             // MX clients cannot open MT5 account
-            return !(
+            const is_mt5_eligible = !(
                 is_logged_in &&
                 config.link_to === routes.mt5 &&
                 can_upgrade_to !== 'svg' &&
                 landing_company_shortcode !== 'svg'
             );
+            return is_mt5_eligible;
         });
 
         return (
@@ -126,16 +127,15 @@ Header.propTypes = {
 
 export default connect(
     ({ client, ui }) => ({
-        balance           : client.balance,
-        can_upgrade       : client.can_upgrade,
-        can_upgrade_to    : client.can_upgrade_to,
-        currency          : client.currency,
-        is_logged_in      : client.is_logged_in,
-        is_logging_in     : client.is_logging_in,
-        is_virtual        : client.is_virtual,
-        enableApp         : ui.enableApp,
-        is_acc_switcher_on: ui.is_accounts_switcher_on,
-
+        balance                  : client.balance,
+        can_upgrade              : client.can_upgrade,
+        can_upgrade_to           : client.can_upgrade_to,
+        currency                 : client.currency,
+        is_logged_in             : client.is_logged_in,
+        is_logging_in            : client.is_logging_in,
+        is_virtual               : client.is_virtual,
+        enableApp                : ui.enableApp,
+        is_acc_switcher_on       : ui.is_accounts_switcher_on,
         is_dark_mode             : ui.is_dark_mode_on,
         is_app_disabled          : ui.is_app_disabled,
         is_loading               : ui.is_loading,

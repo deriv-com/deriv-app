@@ -1119,7 +1119,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     resetMt5ListPopulatedState() {
-        this.is_populating_account_list     = false;
+        this.is_mt5_account_list_updated    = false;
         this.is_populating_mt5_account_list = true;
     }
 

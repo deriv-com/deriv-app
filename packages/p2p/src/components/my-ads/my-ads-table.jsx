@@ -70,6 +70,7 @@ export class MyAdsTable extends React.Component {
             is_loading_more_items : false,
             has_more_items_to_load: true,
             width                 : null,
+            height                : null,
         };
         this.table_container_ref = React.createRef();
     }
@@ -87,12 +88,13 @@ export class MyAdsTable extends React.Component {
 
     componentDidMount() {
         this.setState({
-            width: this.table_container_ref.current.offsetWidth,
+            width : this.table_container_ref.current.offsetWidth,
+            height: this.table_container_ref.current.clientHeight,
         });
     }
 
     render() {
-        const { items, is_loading_more_items, has_more_items_to_load, width } = this.state;
+        const { items, is_loading_more_items, has_more_items_to_load, width, height } = this.state;
 
         return (
             <div ref={this.table_container_ref}>
@@ -112,6 +114,7 @@ export class MyAdsTable extends React.Component {
                             has_more_items_to_load={has_more_items_to_load}
                             RenderComponent={RowComponent}
                             width={width}
+                            heigh={height}
                         />
                     </Table.Body>
                 </Table>

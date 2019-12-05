@@ -67,7 +67,7 @@ export const InfiniteLoaderList = ({
         >
             {({ onItemsRendered, ref }) => (
                 <List
-                    height={height || 400}
+                    height={height || 452}
                     width={width || 960}
                     itemCount={item_count}
                     itemSize={item_size || 56}

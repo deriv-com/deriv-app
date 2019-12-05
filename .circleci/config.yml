@@ -60,7 +60,7 @@ commands:
           command: |
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
             docker push ${DOCKHUB_ORGANISATION}/staging-deriv-app:${CIRCLE_SHA1}
-  k8s_deploy:
+  k8s_deploy_staging:
     description: "Deploy to k8s cluster"
     steps:
       - k8s/install-kubectl
@@ -71,7 +71,7 @@ commands:
             kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/staging-deriv-app staging-deriv-app=${DOCKHUB_ORGANISATION}/staging-deriv-app:${CIRCLE_SHA1}
 
 jobs:
-  release:
+  release_staging:
     docker:
       - image: circleci/node:11.15.0-stretch
     steps:
@@ -79,13 +79,15 @@ jobs:
       - npm_install
       - build
       - docker
-      - k8s_deploy
+      - k8s_deploy_staging
       
 workflows:
-  release:
+  release_staging:
     jobs:
-      - release:
+      - release_staging:
           filters:
             branches:
-              only: /^dev$/
+              ignore: /.*/
+            tags:
+              only: /^staging.*/
 

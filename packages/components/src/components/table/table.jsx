@@ -7,6 +7,7 @@ import Cell from './table-cell.jsx';
 // import PropTypes                      from 'prop-types';
 // import classNames                     from 'classnames';
 
+// TODO: update the <Table /> component to fit with the DataTable in Trader
 class Table extends Component {
     render() {
         return (
@@ -22,5 +23,6 @@ Table.Header = Header;
 Table.Body = Body;
 Table.Row = Row;
 Table.Cell = Cell;
+// TODO add footer
 
 export default Table;

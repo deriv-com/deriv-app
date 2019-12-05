@@ -3,8 +3,12 @@
 
     &__row {
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
         height: 100%;
+
+        &--hover:hover {
+            background-color: var(--general-section-1);
+            cursor: pointer;
+        }
     }
     &__header {
         border-bottom: 2px solid var(--general-section-1);
@@ -12,9 +16,11 @@
     }
     &__cell, &__head {
         font-size: 1.4rem;
-        padding: 0.75em;
         display: flex;
         align-items: center;
+    }
+    &__cell {
+        border-bottom: 1px solid var(--general-section-1);
 
         &--right {
             display: flex;

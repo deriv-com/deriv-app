@@ -1,4 +1,79 @@
 .order-details {
+    &__wrapper {
+        width: 476px;
+        display: inline-flex;
+        margin-top: 2.4rem;
+
+        &--outer {
+            background-color: var(--general-section-1);
+            border-radius: 4px;
+            padding: 0.8rem;
+        }
+        &--inner {
+            background-color: var(--general-main-1);
+            border-radius: 4px;
+            width: 100%;
+        }
+    }
+    &__header, &__info, &__footer {
+        //border-bottom: 1px solid var(--general-section-1);
+        padding: 1.6rem;
+    }
+    &__header {
+        display: flex;
+        justify-content: space-between;
+
+        &-status {
+            font-size: 1.6rem;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+        &-amount {
+            line-height: 1.5;
+            font-size: 24px;
+        }
+        &-timer {
+            font-size: 1.2rem;
+            line-height: 1.5;
+
+            &-counter {
+                margin-top: 0.4rem;
+                border: 1px solid black;
+                border-radius: 16px;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+    }
+    &__info {
+        &-block {
+            &:not(:last-child) {
+                margin-bottom: 1.6rem;
+            }
+            &-label {
+                font-size: 12px;
+                line-height: 1.5;
+                color: var(--text-less-prominent);
+            }
+            &-value {
+                font-size: 14px;
+                line-height: 1.43;
+                color: var(--text-general);
+            }
+        }
+        &-columns {
+            display: flex;
+            flex-flow: row nowrap;
+        }
+        &--right, &--left {
+            display: flex;
+            flex-flow: column nowrap;
+            flex: 1;
+        }
+    }
+    &__footer {
+        font-size: 14px;
+        line-height: 1.43;
+    }
     &__actions-button {
         margin-left: 0.8rem;
     }

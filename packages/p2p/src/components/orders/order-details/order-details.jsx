@@ -5,10 +5,10 @@ import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 import './order-details.scss';
 
 const OrderInfoBlock = ({ label, value }) => (
-    <React.Fragment>
-        <p>{ label }</p>
-        <strong>{ value }</strong>
-    </React.Fragment>
+    <div className='order-details__info-block'>
+        <p className='order-details__info-block-label'>{ label }</p>
+        <strong className='order-details__info-block-value'>{ value }</strong>
+    </div>
 );
 
 const OrderDetailsStatusBlock = ({ order_details }) => (
@@ -52,9 +52,9 @@ const OrderDetailsTimerBlock = ({ order_details }) => {
     return (order_details.is_pending || order_details.is_buyer_confirmed) ? (
         <div className='order-details__header-timer'>
             <p>{ localize('Time left') }</p>
-            <span className='order-details__header-timer-counter'>
+            <p className='order-details__header-timer-counter'>
                 { order_details.display_remaining_time }
-            </span>
+            </p>
         </div>
     ) : null;
 };
@@ -90,26 +90,40 @@ const OrderDetails = ({
 }) => {
     return (
         <div className='order-details'>
-            <div className='order-details__wrapper'>
-                <div className='order-details__header'>
-                    <OrderDetailsStatusBlock order_details={ order_details } />
-                    <OrderDetailsAmountBlock order_details={ order_details } />
-                    <OrderDetailsTimerBlock order_details={ order_details } />
-                </div>
-                <div className='order-details__info'>
-                    <OrderInfoBlock label={ localize('Advertiser notes') } value={ order_details.advertiser_notes } />
-                    <OrderInfoBlock label={ order_details.is_buyer ? localize('Send') : localize('Receive') } value={ `${order_details.transaction_currency} ${order_details.display_transaction_amount}` } />
-                    <OrderInfoBlock label={ order_details.is_buyer ? localize('Receive') : localize('Send') } value={ `${order_details.offer_currency} ${order_details.display_offer_amount}` } />
-                    <OrderInfoBlock label={ localize('Price') } value={ `${order_details.transaction_currency} ${order_details.display_price_rate}` } />
-                    <OrderInfoBlock label={ order_details.is_buyer ? localize('Seller') : localize('Buyer') } value={ order_details.other_party } />
-                    <OrderInfoBlock label={ localize('Order ID') } value={ order_details.order_id } />
-                    <OrderInfoBlock label={ localize('Time') } value={ order_details.order_purchase_datetime.toString() } />
-                </div>
-                { (order_details.is_buyer_confirmed || (order_details.is_expired && order_details.is_buyer)) &&
-                    <div className='order-details__wrapper-footer'>
-                        <a className='link' rel='noopener noreferrer' target='_blank' href='mailto:support@deriv.com'>{ localize('Complain') }</a>
+            <div className='order-details__wrapper order-details__wrapper--outer'>
+                <div className='order-details__wrapper--inner'>
+                    <div className='order-details__header'>
+                        <span>
+                            <OrderDetailsStatusBlock order_details={ order_details } />
+                            <OrderDetailsAmountBlock order_details={ order_details } />
+                        </span>
+                        <OrderDetailsTimerBlock order_details={ order_details } />
                     </div>
-                }
+                    <div className='deriv-p2p__separator' />
+                    <div className='order-details__info'>
+                        <OrderInfoBlock label={ localize('Advertiser notes') } value={ order_details.advertiser_notes } />
+                        <div className='order-details__info-columns'>
+                            <div className='order-details__info--left'>
+                                <OrderInfoBlock label={ order_details.is_buyer ? localize('Send') : localize('Receive') } value={ `${order_details.transaction_currency} ${order_details.display_transaction_amount}` } />
+                                <OrderInfoBlock label={ localize('Price') } value={ `${order_details.transaction_currency} ${order_details.display_price_rate}` } />
+                                <OrderInfoBlock label={ localize('Order ID') } value={ order_details.order_id } />
+                            </div>
+                            <div className='order-details__info--right'>
+                                <OrderInfoBlock label={ order_details.is_buyer ? localize('Receive') : localize('Send') } value={ `${order_details.offer_currency} ${order_details.display_offer_amount}` } />
+                                <OrderInfoBlock label={ order_details.is_buyer ? localize('Seller') : localize('Buyer') } value={ order_details.other_party } />
+                                <OrderInfoBlock label={ localize('Time') } value={ order_details.order_purchase_datetime.toString() } />
+                            </div>
+                        </div>
+                    </div>
+                    { (order_details.is_buyer_confirmed || (order_details.is_expired && order_details.is_buyer)) &&
+                        <React.Fragment>
+                            <div className='deriv-p2p__separator' />
+                            <div className='order-details__footer'>
+                                <a className='link' rel='noopener noreferrer' target='_blank' href='mailto:support@deriv.com'>{ localize('Complain') }</a>
+                            </div>
+                        </React.Fragment>
+                    }
+                </div>
             </div>
 
             <FooterActions>

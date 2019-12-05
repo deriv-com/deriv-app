@@ -111,4 +111,12 @@ workflows:
               ignore: /.*/
             tags:
               only: /^staging.*/
+  release_production:
+    jobs:
+      - release_production:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^production.*/
 

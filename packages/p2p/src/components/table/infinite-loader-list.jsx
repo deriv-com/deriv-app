@@ -1,26 +1,31 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React                     from 'react';
+import PropTypes                 from 'prop-types';
 import { FixedSizeList as List } from 'react-window';
-import InfiniteLoader from 'react-window-infinite-loader';
+import InfiniteLoader            from 'react-window-infinite-loader';
+import ContentLoader             from 'react-content-loader';
 
-// const ReportsTableRowLoader = ({ speed }) => (
-//     <ContentLoader
-//         height={64}
-//         width={992}
-//         speed={speed}
-//         primaryColor={'var(--general-hover)'}
-//         secondaryColor={'var(--general-active)'}
-//     >
-//         <rect x='16' y='16' rx='0' ry='0' width='32' height='32' />
-//         <rect x='52' y='16' rx='0' ry='0' width='32' height='32' />
-//         <rect x='132' y='28' rx='0' ry='0' width='101' height='8' />
-//         <rect x='273' y='28' rx='0' ry='0' width='120' height='8' />
-//         <rect x='460' y='28' rx='0' ry='0' width='46' height='8' />
-//         <rect x='593' y='28' rx='0' ry='0' width='46' height='8' />
-//         <rect x='726' y='28' rx='0' ry='0' width='64' height='8' />
-//         <rect x='906' y='28' rx='0' ry='0' width='64' height='8' />
-//     </ContentLoader>
-// );
+// TODO: we probably need a separate skeleton loader for each table
+const SkeletonLoader = ({ width }) => (
+    <ContentLoader
+        height={64}
+        width={900 || width}
+        speed={2}
+        primaryColor={'var(--general-hover)'}
+        secondaryColor={'var(--general-active)'}
+    >
+        <rect x="1" y="20" rx="5" ry="5" width="90" height="10" />
+        <rect x="150" y="20" rx="5" ry="5" width="90" height="10" />
+        <rect x="300" y="20" rx="5" ry="5" width="90" height="10" />
+        <rect x="446" y="20" rx="5" ry="5" width="55" height="10" />
+        <rect x="600" y="20" rx="5" ry="5" width="75" height="10" />
+        <rect x="750" y="20" rx="5" ry="5" width="45" height="18" />
+        <rect x="805" y="20" rx="5" ry="5" width="50" height="18" />
+    </ContentLoader>
+);
+
+SkeletonLoader.propTypes = {
+    width: PropTypes.number,
+};
 
 export const InfiniteLoaderList = ({
     items,
@@ -30,15 +35,22 @@ export const InfiniteLoaderList = ({
     loadMore,
     has_more_items_to_load,
     item_size,
-    RowComponent,
+    RenderComponent,
     height,
     width,
 }) => {
     const RowRenderer = ({ index, style }) => {
         const is_loading = index === items.length;
 
-        if (is_loading) return <div style={style}>loading...</div>;
-        return <RowComponent data={items[index]} num={index} style={style} />;
+        if (is_loading) {
+            return (
+                <div style={style}>
+                    <SkeletonLoader width={width} />
+                </div>
+            );
+        }
+
+        return <RenderComponent data={items[index]} num={index} style={style} />;
     };
     RowRenderer.propTypes = {
         index: PropTypes.number,
@@ -55,7 +67,7 @@ export const InfiniteLoaderList = ({
         >
             {({ onItemsRendered, ref }) => (
                 <List
-                    height={height || 500}
+                    height={height || 400}
                     width={width || 960}
                     itemCount={item_count}
                     itemSize={item_size || 56}
@@ -75,7 +87,7 @@ InfiniteLoaderList.propTypes = {
     has_more_items_to_load: PropTypes.bool,
     item_size             : PropTypes.number,
     loadMore              : PropTypes.func,
-    RowComponent          : PropTypes.any,
+    RenderComponent       : PropTypes.any,
     children              : PropTypes.node,
     height                : PropTypes.number,
     width                 : PropTypes.number,

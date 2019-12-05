@@ -1,6 +1,6 @@
-import React from 'react';
+import React      from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
+import PropTypes  from 'prop-types';
 
 const Row = ({ children, className, has_hover }) => {
     const columns_in_row = React.Children.count(children);

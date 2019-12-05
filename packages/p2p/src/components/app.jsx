@@ -41,7 +41,7 @@ class App extends Component {
                 */}
                 <main className='deriv-p2p'>
                     <nav>
-                        <Tabs active_index={2}>
+                        <Tabs active_index={active_index}>
                             <div label={localize('Buy/sell')}>
                                 <Ads />
                             </div>

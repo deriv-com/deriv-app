@@ -17,8 +17,8 @@ class Popup extends Component {
         setSubmitting(false);
     }
 
-    render() {
-        const { ad, onCancel } = this.props;
+    getInitialValues = () => {
+        const { ad } = this.props;
         const is_buy = ad.type === 'buy';
         const amount_currency = ad.min_transaction;
         const amount_asset = ad.min_transaction / ad.fix_price;
@@ -26,6 +26,30 @@ class Popup extends Component {
         const initial_receive = is_buy ? amount_asset : amount_currency;
         const send_currency = is_buy ? ad.currency : ad.asset;
         const receive_currency = is_buy ? ad.asset : ad.currency;
+        const send_validation = is_buy ? amount_currency : amount_asset;
+        const receive_validation = is_buy ? amount_asset : amount_currency;
+
+        return {
+            amount_currency,
+            initial_send,
+            initial_receive,
+            send_currency,
+            receive_currency,
+            send_validation,
+            receive_validation,
+        };
+    }
+
+    render() {
+        const { ad, onCancel } = this.props;
+        const is_buy = ad.type === 'buy';
+        const {
+            initial_send,
+            initial_receive,
+            send_currency,
+            receive_currency
+        } = this.getInitialValues();
+
         return (
             <Fragment>
                 <div className='buy-sell__popup'>
@@ -127,12 +151,7 @@ class Popup extends Component {
     }
 
     validatePopup = (values) => {
-        const { ad } = this.props;
-        const is_buy = ad.type === 'buy';
-        const amount_currency = ad.min_transaction;
-        const amount_asset = ad.min_transaction / ad.fix_price;
-        const send_validation = is_buy ? amount_currency : amount_asset;
-        const receive_validation = is_buy ? amount_asset : amount_currency;
+        const { send_validation, receive_validation } = this.getInitialValues();
 
         const validations = {
             send: [

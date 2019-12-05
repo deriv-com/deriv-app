@@ -34,7 +34,7 @@ class BuySell extends React.Component {
                     min_transaction: 15000,
                     max_transaction: 240000,
                     payment_method : 'Bank transfer',
-                    advertiser_note: 'Whatsapp: +60182655318 Maybank 239847238947 JOHN DOE',
+                    advertiser_note: 'Whatsapp: +60182655318 please send to Maybank 239847238947 JOHN DOE',
                 },
                 {
                     id             : 'sell_id',
@@ -48,7 +48,7 @@ class BuySell extends React.Component {
                     min_transaction: 15000,
                     max_transaction: 240000,
                     payment_method : 'Bank transfer',
-                    advertiser_note: 'Whatsapp: +60182655318 Maybank 239847238947 JOHN DOE',
+                    advertiser_note: 'please contact through Whatsapp: +60182655318',
                 },
             ],
             is_loading: false,

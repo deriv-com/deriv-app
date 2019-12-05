@@ -22,10 +22,10 @@
     &__button {
         content: '';
         position: absolute;
-        top: 2px;
-        left: 2px;
-        width: 45%;
-        height: 92%;
+        top: 6px;
+        left: 8px;
+        width: 37%;
+        height: 75%;
         border-radius: 50%;
         transition: 0.25s;
         background: var(--text-colored-background);
@@ -34,7 +34,7 @@
         background: var(--text-profit-success);
     }
     &:checked + &__label &__button {
-        left: calc(100% - 2px);
+        left: calc(100% - 8px);
         transform: translateX(-100%);
     }
 }

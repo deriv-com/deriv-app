@@ -41,7 +41,7 @@ then
 fi
 
 message "Installing packages" &&
-lerna bootstrap --ci && lerna run build --scope=deriv-shared --scope=deriv-components &&
+lerna bootstrap --ci && lerna run build:travis &&
 
 confirm "Please confirm release to STAGING" &&
 if [[ $REPLY =~ ^[Nn]$ ]]

@@ -6,6 +6,7 @@ import {
 }                        from '../../../utils';
 
 Blockly.Blocks.lists_statement = {
+    required_parent_type: 'lists_create_with',
     init() {
         this.required_parent_id = '';
         const field_image       = new Blockly.FieldImage(minusIconDark, 25, 25, '', () => this.onIconClick());
@@ -58,7 +59,7 @@ Blockly.Blocks.lists_statement = {
                 runIrreversibleEvents(() => {
                     this.dispose();
                 });
-            } else if (!this.required_parent_id && surround_parent.type === 'lists_create_with') {
+            } else if (!this.required_parent_id && surround_parent.type === this.required_parent_type) {
                 // Create connection between parent and orphaned child.
                 this.required_parent_id = surround_parent.id;
             } else if (surround_parent.id !== this.required_parent_id) {
@@ -70,7 +71,7 @@ Blockly.Blocks.lists_statement = {
 
                 if (original_parent) {
                     const last_connection = original_parent.getLastConnectionInStatement('STACK');
-                    
+
                     runIrreversibleEvents(() => {
                         last_connection.connect(this.previousConnection);
                     });

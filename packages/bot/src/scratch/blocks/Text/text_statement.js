@@ -6,6 +6,7 @@ import {
 }                           from '../../utils';
 
 Blockly.Blocks.text_statement = {
+    required_parent_type: 'text_join',
     init() {
         this.required_parent_id = '';
         const field_image       = new Blockly.FieldImage(minusIconDark, 25, 25, '', this.onIconClick.bind(this));
@@ -36,39 +37,8 @@ Blockly.Blocks.text_statement = {
             'description' : localize('Text Statement Description'),
         };
     },
-    onIconClick() {
-        if (!this.workspace || this.isInFlyout) {
-            return;
-        }
-        
-        runGroupedEvents(false, () => {
-            this.unplug(true);
-            this.dispose();
-        });
-    },
-    onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
-            return;
-        }
-
-        if (event.type === Blockly.Events.END_DRAG) {
-            const surround_parent = this.getSurroundParent();
-
-            if (!surround_parent) {
-                runIrreversibleEvents(() => {
-                    this.dispose();
-                });
-            } else if (!this.required_parent_id && surround_parent.type === 'text_join') {
-                // Create connection between parent and orphaned child.
-                this.required_parent_id = surround_parent.id;
-            } else if (surround_parent.id !== this.required_parent_id) {
-                runIrreversibleEvents(() => {
-                    // Dispose child if it became a child of an illegal parent.
-                    this.dispose(/* healStack */ true);
-                });
-            }
-        }
-    },
+    onIconClick: Blockly.Blocks.lists_statement.onIconClick,
+    onchange   : Blockly.Blocks.lists_statement.onchange,
 };
 
 Blockly.JavaScript.text_statement = block => {

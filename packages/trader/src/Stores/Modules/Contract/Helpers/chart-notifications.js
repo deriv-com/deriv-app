@@ -9,6 +9,5 @@ export const switch_to_tick_chart = {
             i18n_default_text='Please change the chart duration to tick for a better trading experience.'
         />
     ),
-    type         : 'info',
-    is_persistent: true,
+    type: 'info',
 };

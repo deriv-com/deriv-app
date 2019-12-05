@@ -1,0 +1,40 @@
+.dc-toggle-switch {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+
+    &__label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        width: 100px;
+        height: 50px;
+        background: var(--general-disabled);
+        border-radius: 100px;
+        position: relative;
+        transition: background-color 0.25s;
+
+        &:active .dc-toggle-switch__button {
+            width: 55%;
+        }
+    }
+    &__button {
+        content: '';
+        position: absolute;
+        top: 6px;
+        left: 8px;
+        width: 37%;
+        height: 75%;
+        border-radius: 50%;
+        transition: 0.25s;
+        background: var(--text-colored-background);
+    }
+    &:checked + &__label {
+        background: var(--text-profit-success);
+    }
+    &:checked + &__label &__button {
+        left: calc(100% - 8px);
+        transform: translateX(-100%);
+    }
+}

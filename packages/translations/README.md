@@ -5,6 +5,11 @@
 * React i18next configuration and translation components
 >
 
+## Index
+
+- [General](docs/README.md) - Contains general philosophy and overview of this package
+- [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding, code usage)
+
 # Requirements:
 * Crowdin CLI: download here: https://support.crowdin.com/cli-tool/#installation
 * remote `origin` should be your fork
@@ -29,19 +34,19 @@
 * initialize translations in root app.jsx by importing i18n.js
 * in `app.jsx`
 ```jsx
-    import 'deriv-translations/lib/i18n';
+    import { i18n } from 'deriv-translations';
 ```
 ### Usage
 * For strings use either `localize(...)` or `<Localize />`
 * [`<Localize />`](https://react.i18next.com/latest/trans-component) example:
 ```jsx
-    import Localize from 'deriv-translations/lib/localize';
+    import { Localize } from 'deriv-translations';
 
     <Localize i18n_default_text='You cannot use your real money account with {{website_name}} at this time.' values={{ website_name }} />
 ```
 * localize example:
 ```jsx
-    import { localize } from 'deriv-translations/lib/i18n';
+    import { localize } from 'deriv-translations';
 
     <h4 className='drawer__notifications-header'>{localize('all notifications')}</h4>
 ```

@@ -1,7 +1,7 @@
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import { ThemedScrollbars } from 'deriv-components';
-import { localize }         from 'App/i18n';
+import { localize }         from 'deriv-translations';
 import {
     epochToMoment,
     toGMTFormat }           from 'Utils/Date';
@@ -40,7 +40,7 @@ class ContractAudit extends React.PureComponent {
 
         // For Reset callPut
         if (is_reset_call_put) {
-            
+
         }
 
         return (

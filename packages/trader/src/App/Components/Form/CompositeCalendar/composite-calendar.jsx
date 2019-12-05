@@ -1,6 +1,6 @@
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { localize } from 'App/i18n';
+import { localize } from 'deriv-translations';
 import InputField   from 'App/Components/Form/InputField/input-field.jsx';
 import Lazy         from 'App/Containers/Lazy';
 import IconCalendar from 'Assets/Reports/icon-calendar.jsx';

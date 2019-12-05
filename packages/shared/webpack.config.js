@@ -8,7 +8,6 @@ module.exports = {
     target: 'web',
     entry : {
         date    : path.resolve(__dirname, 'src', 'utils/date/index.js'),
-        events  : path.resolve(__dirname, 'src', 'utils/events/index.js'),
         currency: path.resolve(__dirname, 'src', 'utils/currency/index.js'),
         object  : path.resolve(__dirname, 'src', 'utils/object/index.js'),
     },

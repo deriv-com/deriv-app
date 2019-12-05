@@ -1,20 +1,19 @@
-import React            from 'react';
-import { WS }           from 'Services';
-import { formatDate }   from 'Utils/Date';
-import ObjectUtils      from 'deriv-shared/utils/object';
+import React                  from 'react';
+import { WS }                 from 'Services';
+import { formatDate }         from 'Utils/Date';
+import ObjectUtils            from 'deriv-shared/utils/object';
 import {
     getRiskAssessment,
     isAccountOfType,
     shouldAcceptTnc,
-    shouldCompleteTax } from '_common/base/client_base';
-import { BinaryLink }   from 'App/Components/Routes';
-import { localize }     from 'App/i18n';
-import routes           from 'Constants/routes';
+    shouldCompleteTax }       from '_common/base/client_base';
+import { BinaryLink }         from 'App/Components/Routes';
+import { localize, Localize } from 'deriv-translations';
+import routes                 from 'Constants/routes';
 import {
     LocalStore,
-    State }             from '_common/storage';
-import { urlFor }       from '_common/url';
-import Localize         from 'App/Components/Elements/localize.jsx';
+    State }                   from '_common/storage';
+import { urlFor }             from '_common/url';
 
 // TODO: Update links to app_2 links when components are done.
 /* eslint-disable react/jsx-no-target-blank */
@@ -356,7 +355,7 @@ const checkAccountStatus = (account_status, client, addNotificationMessage, logi
     };
 };
 
-export const excluded_notifications = ['you_are_offline', 'password_changed', 'switch_to_tick_chart', 'contract_sold', 'maintenance'];
+export const excluded_notifications = ['you_are_offline', 'password_changed', 'switch_to_tick_chart', 'contract_sold', 'maintenance', 'bot_switch_account'];
 
 export const handleClientNotifications = (
     client,

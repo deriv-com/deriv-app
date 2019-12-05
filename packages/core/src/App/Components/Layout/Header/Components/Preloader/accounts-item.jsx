@@ -10,8 +10,8 @@ const AccountsItemLoader = ({ speed }) => (
         primaryColor={'var(--general-section-1)'}
         secondaryColor={'var(--general-hover)'}
     >
-        <circle cx='12' cy='13' r='10' />
-        <rect x='30' y='3' rx='0' ry='0' width='108' height='20' />
+        <circle cx='18' cy='13' r='10' />
+        <rect x='36' y='3' rx='0' ry='0' width='108' height='20' />
         <rect x='175' y='3' rx='0' ry='0' width='70' height='20' />
     </ContentLoader>
 );

@@ -39,11 +39,11 @@
         height: 16px;
         width: 16px;
 
-        &--stop {
+        &-stop, &-undo, &-redo {
             stroke: var(--text-prominent);
         }
         &--disabled {
-            stroke: var(--general-disabled);
+            stroke: var(--border-normal);
             pointer-events: none;
         }
     }

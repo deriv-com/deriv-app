@@ -125,7 +125,6 @@ const ButtonGroup = ({
     is_stop_button_visible,
     onResetClick,
     onRunClick,
-    onSortClick,
     onUndoClick,
     onZoomInOutClick,
     onStopClick,
@@ -215,7 +214,7 @@ const ButtonGroup = ({
         >
             <ToolbarReaarangeIcon
                 className='toolbar__icon'
-                onClick={onSortClick}
+                onClick={() => Blockly.derivWorkspace.cleanUp()}
             />
         </Popover>
         <Popover
@@ -315,7 +314,6 @@ Toolbar.propTypes = {
     onSearchBlur           : PropTypes.func,
     onSearchClear          : PropTypes.func,
     onSearchKeyUp          : PropTypes.func,
-    onSortClick            : PropTypes.func,
     onStopClick            : PropTypes.func,
     onToolboxToggle        : PropTypes.func,
     onUndoClick            : PropTypes.func,
@@ -342,7 +340,6 @@ export default connect(({ run_panel, saveload, toolbar }) => ({
     onSearchBlur           : toolbar.onSearchBlur,
     onSearchClear          : toolbar.onSearchClear,
     onSearchKeyUp          : toolbar.onSearchKeyUp,
-    onSortClick            : toolbar.onSortClick,
     onStopClick            : toolbar.onStopClick,
     onToolboxToggle        : toolbar.onToolboxToggle,
     onUndoClick            : toolbar.onUndoClick,

@@ -26,7 +26,11 @@ stories
                         background: 'var(--general-section-1)',
                     }}
                     >
-                        <Switch is_enabled={is_enabled} handleToggle={() => setEnabled(!is_enabled)} />
+                        <Switch
+                            id='toggle-switch-story'
+                            is_enabled={is_enabled}
+                            handleToggle={() => setEnabled(!is_enabled)}
+                        />
                         <h3 style={{
                             color: (is_enabled ? 'var(--text-general)' : 'var(--text-disabled)'),
                             marginLeft: '2rem',

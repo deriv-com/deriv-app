@@ -67,7 +67,9 @@ class Popup extends Component {
                                                     trailing_icon={<span className='buy-sell__popup-field--trailing'>{send_currency}</span>}
                                                     onChange={(e) => {
                                                         const send = isNaN(e.target.value) ? 0 : e.target.value;
-                                                        setFieldValue('receive', send / ad.fix_price)
+                                                        const receive_amount = is_buy ? send / ad.fix_price : send * ad.fix_price;
+
+                                                        setFieldValue('receive', receive_amount)
                                                         handleChange(e)
                                                     }}
                                                     required
@@ -88,7 +90,9 @@ class Popup extends Component {
                                                     trailing_icon={<span className='buy-sell__popup-field--trailing'>{receive_currency}</span>}
                                                     onChange={(e) => {
                                                         const receive = isNaN(e.target.value) ? 0 : e.target.value;
-                                                        setFieldValue('send', receive * ad.fix_price)
+                                                        const send_amount = is_buy ? receive * ad.fix_price : receive / ad.fix_price;
+
+                                                        setFieldValue('send', send_amount)
                                                         handleChange(e)
                                                     }}
                                                     required

@@ -14,10 +14,10 @@ class Popup extends Component {
         console.log(this.state);
         // eslint-disable-next-line no-console
         console.log(formik_vars);
-        setSubmitting(false)
+        setSubmitting(false);
     }
 
-    render() { 
+    render() {
         const { ad, onCancel } = this.props;
         const is_buy = ad.type === 'buy';
         const amount_currency = ad.min_transaction;
@@ -41,79 +41,78 @@ class Popup extends Component {
                         onSubmit={this.handleSubmit}
                     >
                         {({
-                            touched,
                             errors,
                             isSubmitting,
                             setFieldValue,
-                            handleChange
+                            handleChange,
                         }) => (
                             <Form noValidate>
                                 <ThemedScrollbars
-                                        autoHide
-                                        style={{ height: '307px' }}
-                                    >
-                                <div className='buy-sell__popup-content'>
-                                    <div className='buy-sell__popup-field_wrapper'>
-                                        <Field name='send'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    data-lpignore='true'
-                                                    type='number'
-                                                    error={errors.send}
-                                                    label={localize('Send')}
-                                                    className='buy-sell__popup-field'
-                                                    placeholder='Send amount'
-                                                    trailing_icon={<span className='buy-sell__popup-field--trailing'>{send_currency}</span>}
-                                                    onChange={(e) => {
-                                                        const send = isNaN(e.target.value) ? 0 : e.target.value;
-                                                        const receive_amount = is_buy ? send / ad.fix_price : send * ad.fix_price;
-
-                                                        setFieldValue('receive', receive_amount)
-                                                        handleChange(e)
-                                                    }}
-                                                    required
-                                                />
-                                            )}
-                                        </Field>
-                                        <IconBack className='buy-sell__popup-field--icon' />
-                                        <Field name='receive'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    data-lpignore='true'
-                                                    type='number'
-                                                    error={errors.receive}
-                                                    label={localize('Receive')}
-                                                    className='buy-sell__popup-field'
-                                                    placeholder='Receive amount'
-                                                    trailing_icon={<span className='buy-sell__popup-field--trailing'>{receive_currency}</span>}
-                                                    onChange={(e) => {
-                                                        const receive = isNaN(e.target.value) ? 0 : e.target.value;
-                                                        const send_amount = is_buy ? receive * ad.fix_price : receive / ad.fix_price;
-
-                                                        setFieldValue('send', send_amount)
-                                                        handleChange(e)
-                                                    }}
-                                                    required
-                                                />
+                                    autoHide
+                                    style={{ height: '307px' }}
+                                >
+                                    <div className='buy-sell__popup-content'>
+                                        <div className='buy-sell__popup-field_wrapper'>
+                                            <Field name='send'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='number'
+                                                        error={errors.send}
+                                                        label={localize('Send')}
+                                                        className='buy-sell__popup-field'
+                                                        placeholder='Send amount'
+                                                        trailing_icon={<span className='buy-sell__popup-field--trailing'>{send_currency}</span>}
+                                                        onChange={(e) => {
+                                                            const send = isNaN(e.target.value) ? 0 : e.target.value;
+                                                            const receive_amount = is_buy ?
+                                                                send / ad.fix_price : send * ad.fix_price;
+                                                            setFieldValue('receive', receive_amount);
+                                                            handleChange(e);
+                                                        }}
+                                                        required
+                                                    />
                                                 )}
-                                        </Field>
-                                    </div>
-                                    <div className='buy-sell__popup-info'>
-                                        <span className='buy-sell__popup-info--title'>{ad.type === 'buy' ? localize('Seller') : localize('Buyer')}</span>
-                                        <p className='buy-sell__popup-info--text'>{ad.advertiser}</p>
-                                    </div>
-                                    <div className='buy-sell__popup-info'>
-                                        <span className='buy-sell__popup-info--title'>{localize('Payment method')}</span>
-                                        <p className='buy-sell__popup-info--text'>{ad.payment_method}</p>
-                                    </div>
-                                    <div className='buy-sell__popup-info'>
-                                        <span className='buy-sell__popup-info--title'>{localize('Advertiser notes')}</span>
-                                        <p className='buy-sell__popup-info--text'>{ad.advertiser_note}</p>
-                                    </div>
+                                            </Field>
+                                            <IconBack className='buy-sell__popup-field--icon' />
+                                            <Field name='receive'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='number'
+                                                        error={errors.receive}
+                                                        label={localize('Receive')}
+                                                        className='buy-sell__popup-field'
+                                                        placeholder='Receive amount'
+                                                        trailing_icon={<span className='buy-sell__popup-field--trailing'>{receive_currency}</span>}
+                                                        onChange={(e) => {
+                                                            const receive = isNaN(e.target.value) ? 0 : e.target.value;
+                                                            const send_amount = is_buy ?
+                                                                receive * ad.fix_price : receive / ad.fix_price;
+                                                            setFieldValue('send', send_amount);
+                                                            handleChange(e);
+                                                        }}
+                                                        required
+                                                    />
+                                                )}
+                                            </Field>
+                                        </div>
+                                        <div className='buy-sell__popup-info'>
+                                            <span className='buy-sell__popup-info--title'>{ad.type === 'buy' ? localize('Seller') : localize('Buyer')}</span>
+                                            <p className='buy-sell__popup-info--text'>{ad.advertiser}</p>
+                                        </div>
+                                        <div className='buy-sell__popup-info'>
+                                            <span className='buy-sell__popup-info--title'>{localize('Payment method')}</span>
+                                            <p className='buy-sell__popup-info--text'>{ad.payment_method}</p>
+                                        </div>
+                                        <div className='buy-sell__popup-info'>
+                                            <span className='buy-sell__popup-info--title'>{localize('Advertiser notes')}</span>
+                                            <p className='buy-sell__popup-info--text'>{ad.advertiser_note}</p>
+                                        </div>
                                     
-                                </div>
+                                    </div>
                                 </ThemedScrollbars>
                                 <div className='buy-sell__popup-footer'>
                                     <Button secondary type='button' onClick={onCancel}>{localize('Cancel')}</Button>
@@ -126,7 +125,6 @@ class Popup extends Component {
             </Fragment>
         );
     }
-
 
     validatePopup = (values) => {
         const { ad } = this.props;
@@ -148,8 +146,8 @@ class Popup extends Component {
         };
 
         const mappedKey = {
-            send    : localize('Send'),
-            receive : localize('Receive'),
+            send   : localize('Send'),
+            receive: localize('Receive'),
         };
 
         // TODO: [translation] text wont pass in the translation script
@@ -183,7 +181,7 @@ class Popup extends Component {
 }
 
 Popup.propTypes = {
-    ad: PropTypes.object,
+    ad      : PropTypes.object,
     onCancel: PropTypes.func,
 };
  

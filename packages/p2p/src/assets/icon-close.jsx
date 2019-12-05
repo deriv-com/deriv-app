@@ -20,6 +20,7 @@ const IconClose = ({ className, onClick }) => (
 
 IconClose.propTypes = {
     className: PropTypes.string,
+    onClick  : PropTypes.func,
 };
 
 export default IconClose;

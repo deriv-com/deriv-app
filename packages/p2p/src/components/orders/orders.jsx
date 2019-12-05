@@ -1,7 +1,8 @@
-import React from 'react';
-import { localize } from 'deriv-translations';
+import React                   from 'react';
+import { localize }            from 'deriv-translations';
+import PageReturn              from 'Components/page-return/page-return.jsx';
 import { millisecondsToTimer } from 'Utils/date-time';
-import OrderDetails from  './order-details/order-details.jsx';
+import OrderDetails            from  './order-details/order-details.jsx';
 import './orders.scss';
 
 class OrderDeets {
@@ -69,12 +70,22 @@ const Orders = () => {
     const toggleDetails = () => order_details && order_details.order_id ? setDetails(null) : setDetails(my_deets);
 
     return (
-        <div>
-            <span onClick={ toggleDetails }>{localize('Orders')}</span>
+        <div className='orders'>
             { order_details && order_details.order_id &&
-                <OrderDetails
-                    order_details={ order_details }
-                />
+                <React.Fragment>
+                    <PageReturn
+                        onClick={ toggleDetails }
+                        page_title={
+                            order_details.is_buyer ?
+                                localize('Buy {{offered_currency}} order', { offered_currency: order_details.offer_currency })
+                                :
+                                localize('Sell {{offered_currency}} order', { offered_currency: order_details.offer_currency })
+                        }
+                    />
+                    <OrderDetails
+                        order_details={ order_details }
+                    />
+                </React.Fragment>
             }
         </div>
     );

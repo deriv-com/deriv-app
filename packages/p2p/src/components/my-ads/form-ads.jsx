@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import PropTypes                      from 'prop-types';
-import { localize }         from 'deriv-translations';
+import PropTypes                       from 'prop-types';
+import { localize }                    from 'deriv-translations';
 import { Formik, Field, Form }        from 'formik';
 import {
     Autocomplete,
@@ -8,9 +8,9 @@ import {
     Loading,
     Input,
     Button,
-    ThemedScrollbars }                from 'deriv-components';
-import IconBack                       from 'Assets/icon-back.jsx';
-import { WS }                         from 'Utils/websocket';
+    ThemedScrollbars }                 from 'deriv-components';
+import PageReturn                      from 'Components/page-return/page-return.jsx';
+import { WS }                          from 'Utils/websocket';
 
 class FormAds extends Component {
     state = {
@@ -65,12 +65,10 @@ class FormAds extends Component {
 
     render() {
         return <Fragment>
-            <div className='my-ads__heading-wrapper'>
-                <div onClick={() => this.props.handleShowForm(false)} className='my-ads__heading-btn'>
-                    <IconBack />
-                </div>
-                <h2>{localize('Create new ad')}</h2>
-            </div>
+            <PageReturn
+                onClick={ () => this.props.handleShowForm(false) }
+                page_title={ localize('Create new ad') }
+            />
             {this.state.is_loading ? <Loading is_fullscreen={false} /> : (
                 <Formik
                     initialValues={{ ...this.state.initial_values }}

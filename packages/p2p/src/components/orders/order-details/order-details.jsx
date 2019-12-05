@@ -2,7 +2,6 @@ import React        from 'react';
 import { localize } from 'deriv-translations';
 import { Button }   from 'deriv-components';
 import './order-details.scss';
-import IconBack     from 'Assets/icon-back.jsx';
 
 const OrderInfoBlock = ({ label, value }) => (
     <React.Fragment>
@@ -90,19 +89,6 @@ const OrderDetails = ({
 }) => {
     return (
         <div className='order-details'>
-            <div className='order-details__header-actions'>
-                <div onClick={() => console.log('Go back')} className='order-details__header-actions-button'>
-                    <IconBack />
-                </div>
-                <h2>
-                    {
-                        order_details.is_buyer ?
-                            localize('Buy {{offered_currency}} order', { offered_currency: order_details.offer_currency })
-                            :
-                            localize('Sell {{offered_currency}} order', { offered_currency: order_details.offer_currency })
-                    }
-                </h2>
-            </div>
             <div className='order-details__wrapper'>
                 <div className='order-details__header'>
                     <OrderDetailsStatusBlock order_details={ order_details } />

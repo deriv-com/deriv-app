@@ -1,15 +1,16 @@
 import { localize }      from 'deriv-translations';
 import { minusIconDark } from '../../images';
+import {
+    runIrreversibleEvents,
+    runGroupedEvents,
+}                        from '../../../utils';
 
 Blockly.Blocks.lists_statement = {
     init() {
-        this.requiredParentId = '';
-
+        this.required_parent_id = '';
+        const field_image       = new Blockly.FieldImage(minusIconDark, 25, 25, '', () => this.onIconClick());
         this.jsonInit(this.definition());
-
-        // Render a ➖-icon for removing self
-        const fieldImage = new Blockly.FieldImage(minusIconDark, 25, 25, '', () => this.onIconClick());
-        this.appendDummyInput('REMOVE_ICON').appendField(fieldImage);
+        this.appendDummyInput('REMOVE_ICON').appendField(field_image);
     },
     definition(){
         return {
@@ -40,31 +41,31 @@ Blockly.Blocks.lists_statement = {
             return;
         }
 
-        this.unplug(true);
-        this.dispose();
+        runGroupedEvents(false, () => {
+            this.unplug(true);
+            this.dispose();
+        });
     },
     onchange(event) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
 
-        const surroundParent = this.getSurroundParent();
         if (event.type === Blockly.Events.END_DRAG) {
-            if (!this.requiredParentId && surroundParent.type === 'lists_create_with') {
-                this.requiredParentId = surroundParent.id;
-            } else if (!surroundParent || surroundParent.id !== this.requiredParentId) {
-                Blockly.Events.disable();
-                this.unplug(false);
+            const surround_parent = this.getSurroundParent();
 
-                const parentBlock = this.workspace.getAllBlocks().find(block => block.id === this.requiredParentId);
-
-                if (parentBlock) {
-                    const parentConnection = parentBlock.getLastConnectionInStatement('STACK');
-                    parentConnection.connect(this.previousConnection);
-                } else {
+            if (!surround_parent) {
+                runIrreversibleEvents(() => {
                     this.dispose();
-                }
-                Blockly.Events.enable();
+                });
+            } else if (!this.required_parent_id && surround_parent.type === 'lists_create_with') {
+                // Create connection between parent and orphaned child.
+                this.required_parent_id = surround_parent.id;
+            } else if (surround_parent.id !== this.required_parent_id) {
+                runIrreversibleEvents(() => {
+                    // Dispose child if it became a child of an illegal parent.
+                    this.dispose(/* healStack */ true);
+                });
             }
         }
     },

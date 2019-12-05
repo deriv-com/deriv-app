@@ -34,7 +34,7 @@ export const setBlockTextColor = block => {
         if (el_svg) {
             el_svg.setAttribute('class', 'blocklyTextRootBlockHeader');
         }
-    }
+    };
 
     block.inputList.forEach(input => {
         input.fieldRow.forEach(field => {
@@ -169,13 +169,11 @@ const loadBlocksFromHeader = (xml_string, block) => {
                 reject(localize('Remote blocks to load must be a collection.'));
             }
 
-            executeIrreversibleWsLogic(() => {
-                addLoaderBlocksFirst(xml).then(() => {
-                    Array.from(xml.children).forEach(el_block => addDomAsBlock(el_block, block));
-                    resolve();
-                }).catch(() => {
-                    reject();
-                });
+            addLoaderBlocksFirst(xml).then(() => {
+                Array.from(xml.children).forEach(el_block => addDomAsBlock(el_block, block));
+                resolve();
+            }).catch(() => {
+                reject();
             });
         } catch (e) {
             reject(localize('Unable to load the block file.'));
@@ -294,11 +292,44 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
     workspace.scrollbar.set(scroll_x, scroll_y);
 };
 
-export const executeIrreversibleWsLogic = (callback) => {
+/**
+ * Sets the Blockly.Events.group_ and executes the passed callBackFn. Mainly
+ * used to ensure undo/redo actions are executed correctly.
+ * @param {Boolean} use_existing_group Uses the existing event group if true.
+ * @param {Function} callbackFn Logic to execute as part of this event group.
+ */
+export const runGroupedEvents = (use_existing_group, callbackFn, opt_group_name) => {
+    const group = use_existing_group && Blockly.Events.getGroup() || opt_group_name || true;
+
+    Blockly.Events.setGroup(group);
+    callbackFn();
+
+    if (!use_existing_group) {
+        Blockly.Events.setGroup(false);
+    }
+};
+
+/**
+ * Sets the recordUndo flag to "false" globally, this will ensure any events
+ * happening as part of the callbackFn logic cannot be undone.
+ * @param {*} callbackFn Logic to execute as part of this event group.
+ */
+export const runIrreversibleEvents = (callbackFn) => {
     const { recordUndo }      = Blockly.Events;
     Blockly.Events.recordUndo = false;
 
-    callback();
+    callbackFn();
 
     Blockly.Events.recordUndo = recordUndo;
-}
+};
+
+/**
+ * Disables Blockly Events globally and runs the passed callbackFn.
+ * (Preference should be given to runIrreversibleEvents).
+ * @param {*} callbackFn Logic to completely hide from Blockly
+ */
+export const runInvisibleEvents = (callbackFn) => {
+    Blockly.Events.disable();
+    callbackFn();
+    Blockly.Events.enable();
+};

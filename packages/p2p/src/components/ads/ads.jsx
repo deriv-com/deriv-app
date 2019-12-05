@@ -1,44 +1,48 @@
-import React from 'react';
-import { Button } from 'deriv-components';
+import React, { Component }         from 'react';
+import { Button, ButtonToggleMenu } from 'deriv-components';
+import { localize }                 from 'deriv-translations';
 // import { WS } from '../../utils/websocket';
 import './ads.scss';
 
-class Ads extends React.Component {
+const ads_filters = [
+    {
+        text : localize('Buy'),
+        value: 'buy',
+    },
+    {
+        text : localize('Sell'),
+        value: 'sell',
+    },
+];
+class Ads extends Component {
     state = {
-        ads_list: [],
+        ads_list    : [],
+        filter_value: 'buy',
     }
 
-    componentDidMount() {
-        // Websocket call example
-        // WS().send({ active_symbols: 'brief' }).then((response) => {
-        //     console.log(response)
-        // })
+    onChange (event) {
         this.setState({
-            ads_list: [
-                ...this.state.ads_list,
-                {
-                    currency: 'USD',
-                },
-                {
-                    currency: 'BTC',
-                },
-            ],
+            filter_value: event.target.value,
         });
     }
 
     render() {
-        const { ads_list } = this.state;
+        const { filter_value } = this.state;
         return (
-            <div className="ads">
-                <ul className="ads__list-wrapper">
-                    {ads_list.map(ads => <li key={ads.currency} className="ads__list">
-                        <Button primary>{ads.currency}</Button>
-                    </li>
-                    )}
-                </ul>
+            <div className='ads'>
+                <div className='ads__header'>
+                    <ButtonToggleMenu
+                        buttons_arr={ads_filters}
+                        className='ads__header__filters'
+                        is_animated={true}
+                        name='filter'
+                        onChange={(event) => { this.onChange(event); }}
+                        value={filter_value}
+                    />
+                </div>
             </div>
         );
     }
 }
- 
+
 export default Ads;

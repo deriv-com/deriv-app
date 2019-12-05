@@ -1,11 +1,12 @@
 import classNames       from 'classnames';
 import PropTypes        from 'prop-types';
 import React            from 'react';
-import { Button }       from 'deriv-components';
 import HighlightWrapper from './button-highlight-wrapper.jsx';
+import Button           from '../button';
 
 const ButtonToggleMenu = ({
     buttons_arr,
+    className,
     id,
     is_animated,
     name,
@@ -17,21 +18,27 @@ const ButtonToggleMenu = ({
         onChange({ target: { value: selected_value, name } });
     };
     const menu = buttons_arr.map((val, idx) => {
-        const className = classNames('button-menu__button', {
-            'button-menu__button--active': val.value === value,
-        });
+        const menuClassNames = classNames(
+            'button-menu__button',
+            {
+                'button-menu__button--active': val.value === value,
+            },
+        );
         return (
             <Button
-                id={`dt_${val.value}_toggle_item`}
+                id={`dc_${val.value}_toggle_item`}
                 key={idx}
                 text={`${val.text.charAt(0).toUpperCase()}${val.text.slice(1)}`}
                 onClick={() => changeValue(val.value)}
-                className={className}
+                className={menuClassNames}
             />
         );
     });
     return (
-        <div id={id} className='button-menu'>
+        <div
+            id={id}
+            className={classNames('button-menu', className)}
+        >
             {is_animated ?
                 <HighlightWrapper>
                     {menu}
@@ -47,6 +54,7 @@ const ButtonToggleMenu = ({
 
 ButtonToggleMenu.propTypes = {
     buttons_arr: PropTypes.array,
+    className  : PropTypes.string,
     id         : PropTypes.string,
     is_animated: PropTypes.bool,
     name       : PropTypes.string,

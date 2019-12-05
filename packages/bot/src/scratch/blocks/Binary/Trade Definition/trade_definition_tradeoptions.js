@@ -1,7 +1,7 @@
-import { localize }                   from 'deriv-translations';
-import { executeIrreversibleWsLogic } from '../../../utils';
-import config                         from '../../../../constants';
-import ApiHelpers                     from '../../../../services/api/api-helpers';
+import { localize }              from 'deriv-translations';
+import { runIrreversibleEvents } from '../../../utils';
+import config                    from '../../../../constants';
+import ApiHelpers                from '../../../../services/api/api-helpers';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
     init() {
@@ -134,7 +134,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         }
     },
     createPredictionInput(prediction_range) {
-        executeIrreversibleWsLogic(() => {
+        runIrreversibleEvents(() => {
             if (prediction_range.length === 0) {
                 this.removeInput('PREDICTION_LABEL', true);
                 this.removeInput('PREDICTION', true);
@@ -154,7 +154,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         });
     },
     createBarrierInputs(barriers) {
-        executeIrreversibleWsLogic(() => {
+        runIrreversibleEvents(() => {
             const input_names  = ['BARRIEROFFSET', 'SECONDBARRIEROFFSET'];
 
             for (let i = 0; i < barriers.values.length; i++) {
@@ -203,7 +203,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     const min_duration = durations.find(d => d.unit === this.selected_duration);
 
                     if (min_duration) {
-                        executeIrreversibleWsLogic(() => {
+                        runIrreversibleEvents(() => {
                             target_block.setFieldValue(min_duration.min, 'NUM');
                         });
                     }
@@ -259,7 +259,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     if (target_block && target_block.isShadow()) {
                         const barrier_value = barriers.values[i] !== false ? barriers.values[i] : '';
 
-                        executeIrreversibleWsLogic(() => {
+                        runIrreversibleEvents(() => {
                             target_block.setFieldValue(barrier_value, 'NUM');
                         });
                     }
@@ -284,7 +284,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     if (target_block && target_block.isShadow()) {
                         const initial_prediction = Math.max(1, prediction_range[0]);
 
-                        executeIrreversibleWsLogic(() => {
+                        runIrreversibleEvents(() => {
                             target_block.setFieldValue(initial_prediction, 'NUM');
                         });
                     }
@@ -302,7 +302,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             const has_other_barrier  = BARRIER_TYPES.findIndex(type => type[1] === new_value) !== -1;
             const other_barrier_type = other_barrier_field.getValue();
 
-            executeIrreversibleWsLogic(() => {
+            runIrreversibleEvents(() => {
                 if (has_other_barrier && (other_barrier_type === 'absolute' || should_force_distinct)) {
                     const other_barrier_value = BARRIER_TYPES.find(type => type[1] !== new_value);
                     other_barrier_field.setValue(other_barrier_value[1]);

@@ -1,5 +1,5 @@
-import { executeIrreversibleWsLogic } from '../../../utils';
-import ApiHelpers                     from '../../../../services/api/api-helpers';
+import { runIrreversibleEvents } from '../../../utils';
+import ApiHelpers                from '../../../../services/api/api-helpers';
 
 /* eslint-disable */
 Blockly.Blocks.trade_definition_market = {
@@ -44,16 +44,16 @@ Blockly.Blocks.trade_definition_market = {
         this.enforceLimitations();
 
         const { active_symbols } = ApiHelpers.instance;
-        const market_field       = this.getField('MARKET_LIST');
-        const submarket_field    = this.getField('SUBMARKET_LIST');
-        const symbol_field       = this.getField('SYMBOL_LIST');
-        const market             = market_field.getValue();
-        const submarket          = submarket_field.getValue();
-        const symbol             = symbol_field.getValue();
+        const market_dropdown    = this.getField('MARKET_LIST');
+        const submarket_dropdown = this.getField('SUBMARKET_LIST');
+        const symbol_dropdown    = this.getField('SYMBOL_LIST');
+        const market             = market_dropdown.getValue();
+        const submarket          = submarket_dropdown.getValue();
+        const symbol             = symbol_dropdown.getValue();
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             active_symbols.getMarketDropdownOptions().then(market_options => {
-                market_field.updateOptions(market_options, {
+                market_dropdown.updateOptions(market_options, {
                     default_value: market,
                     should_pretend_empty: true,
                     event_group: event.group,
@@ -62,7 +62,7 @@ Blockly.Blocks.trade_definition_market = {
         } else if (event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === this.id) {
             if (event.name === 'MARKET_LIST') {
                 active_symbols.getSubmarketDropdownOptions(market).then(submarket_options => {
-                    submarket_field.updateOptions(submarket_options, {
+                    submarket_dropdown.updateOptions(submarket_options, {
                         default_value: submarket,
                         should_pretend_empty: true,
                         event_group: event.group,
@@ -70,7 +70,7 @@ Blockly.Blocks.trade_definition_market = {
                 });
             } else if (event.name === 'SUBMARKET_LIST') {
                 active_symbols.getSymbolDropdownOptions(submarket).then(symbol_options => {
-                    symbol_field.updateOptions(symbol_options, {
+                    symbol_dropdown.updateOptions(symbol_options, {
                         default_value: symbol,
                         should_pretend_empty: true,
                         event_group: event.group,
@@ -78,15 +78,15 @@ Blockly.Blocks.trade_definition_market = {
                 });
             }
         } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.getRootBlock().id) {
-            if (!this.getFieldValue('MARKET_LIST')) {
+            if (market_dropdown.isEmpty() || submarket_dropdown.isEmpty() || symbol_dropdown.isEmpty()) {
                 const fake_creation_event = new Blockly.Events.Create(this);
-                fake_creation_event.recordUndo = false;
+                fake_creation_event.recordUndo = true;
                 Blockly.Events.fire(fake_creation_event);
             }
         }
     },
     enforceLimitations() {
-        executeIrreversibleWsLogic(() => {
+        runIrreversibleEvents(() => {
             if (!this.isDescendantOf('trade_definition')) {
                 this.unplug(false); // Unplug without reconnecting siblings
     

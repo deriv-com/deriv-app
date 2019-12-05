@@ -1,5 +1,5 @@
-import { localize }                   from 'deriv-translations';
-import { executeIrreversibleWsLogic } from '../../../../utils';
+import { localize }              from 'deriv-translations';
+import { runIrreversibleEvents } from '../../../../utils';
 
 Blockly.Blocks.input_list = {
     init() {
@@ -44,11 +44,12 @@ Blockly.Blocks.input_list = {
             const is_illegal_parent = surround_parent.id !== this.required_parent_id;
 
             if (has_no_parent || is_illegal_parent) {
-                executeIrreversibleWsLogic(() => {
+                runIrreversibleEvents(() => {
                     this.unplug(true);
 
                     // Attempt to re-connect this child to its original parent.
-                    const parent_block = this.workspace.getAllBlocks().find(block => block.id === this.required_parent_id);
+                    const all_blocks   = this.workspace.getAllBlocks();
+                    const parent_block = all_blocks.find(block => block.id === this.required_parent_id);
 
                     if (parent_block) {
                         const parent_connection = parent_block.getLastConnectionInStatement('STATEMENT');

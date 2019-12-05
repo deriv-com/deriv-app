@@ -1,11 +1,10 @@
-import { localize }          from 'deriv-translations';
-import { defineContract }    from '../../images';
+import { localize }         from 'deriv-translations';
+import { defineContract }   from '../../images';
 import {
     setBlockTextColor,
-    executeIrreversibleWsLogic,
-}                            from '../../../utils';
-import config                from '../../../../constants';
-import ScratchStore          from '../../../../stores/scratch-store';
+    runIrreversibleEvents } from '../../../utils';
+import config               from '../../../../constants';
+import ScratchStore         from '../../../../stores/scratch-store';
 
 Blockly.Blocks.trade_definition = {
     init() {
@@ -101,7 +100,7 @@ Blockly.Blocks.trade_definition = {
             // Maintain single instance of this block, dispose of older ones.
             this.workspace.getTopBlocks().forEach(top_block => {
                 if (top_block.type === this.type && top_block.id !== this.id) {
-                    executeIrreversibleWsLogic(() => {
+                    runIrreversibleEvents(() => {
                         top_block.dispose();
                     });
                 }
@@ -117,13 +116,13 @@ Blockly.Blocks.trade_definition = {
             if (blocks_in_trade_options.length > 0) {
                 blocks_in_trade_options.forEach(block => {
                     if (!/^trade_definition_.+$/.test(block.type)) {
-                        executeIrreversibleWsLogic(() => {
+                        runIrreversibleEvents(() => {
                             block.unplug(true);
                         });
                     }
                 });
             } else {
-                executeIrreversibleWsLogic(() => {
+                runIrreversibleEvents(() => {
                     this.dispose();
                 });
             }

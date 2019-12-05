@@ -1,4 +1,4 @@
-import { executeIrreversibleWsLogic } from '../utils';
+import { runInvisibleEvents } from '../utils';
 
 /** *
  * Updates a Blockly.FieldDropdown with the passed dropdown_options. Available options:
@@ -27,14 +27,16 @@ Blockly.FieldDropdown.prototype.updateOptions = function(dropdown_options, optio
     // set dropdown options, if false the default option will be the first available one.
     const has_default_value = dropdown_options.findIndex(item => item[1] === options.default_value) !== -1;
 
-    executeIrreversibleWsLogic(() => {
+    runInvisibleEvents(() => {
+        this.setValue('');
+
         if (has_default_value) {
-            this.setValue('');
             this.setValue(options.default_value);
         } else if (dropdown_options.length > 0) {
             // Default to first if option isn't available.
-            this.setValue('');
             this.setValue(this.menuGenerator_[0][1]);
+        } else {
+            this.setValue(previous_value);
         }
     });
 
@@ -43,7 +45,6 @@ Blockly.FieldDropdown.prototype.updateOptions = function(dropdown_options, optio
         const event      = new Blockly.Events.BlockChange(this.sourceBlock_, 'field', this.name, previous_value, this.getValue());
         event.recordUndo = false;
         event.group      = options.event_group;
-
         Blockly.Events.fire(event);
     }
 };
@@ -108,4 +109,11 @@ Blockly.FieldDropdown.prototype.onHide = function() {
             this.sourceBlock_.clearShadowColour();
         }
     }
+};
+
+/**
+ * Returns whether a dropdown is empty or not.
+ */
+Blockly.FieldDropdown.prototype.isEmpty = function() {
+    return this.menuGenerator_.length === 0 || !this.menuGenerator_[0][1];
 };

@@ -2,8 +2,6 @@ import PropTypes            from 'prop-types';
 import React                from 'react';
 import { ThemedScrollbars } from 'deriv-components';
 import { localize }         from 'App/i18n';
-import IconExitWon          from 'Assets/SvgComponents/contract_details/ic-exittime-won.svg';
-import IconExitLoss         from 'Assets/SvgComponents/contract_details/ic-exittime-loss.svg';
 import {
     epochToMoment,
     toGMTFormat }           from 'Utils/Date';
@@ -27,7 +25,24 @@ class ContractAudit extends React.PureComponent {
         } = this.props;
         if (!has_result) return null;
         const is_profit    = (contract_info.profit >= 0);
-        const IconExitTime = (is_profit) ? <IconExitWon /> : <IconExitLoss />;
+        const is_reset_call_put = /RESET(CALL|PUT)/.test(contract_info.contract_type);
+
+        const is_tick = (contract_info.tick_count > 0);
+        const contract_time = is_tick ? contract_info.tick_count : duration;
+        const contract_unit = is_tick ? localize('ticks') : duration_unit;
+
+        let duration_value_hint;
+        if (is_reset_call_put) {
+            duration_value_hint = localize(
+                'The reset time is {{reset_time}} {{contract_unit}}',
+                { reset_time: Math.floor(contract_time / 2),  contract_unit });
+        }
+
+        // For Reset callPut
+        if (is_reset_call_put) {
+            
+        }
+
         return (
             <div className='contract-audit__wrapper'>
                 <ThemedScrollbars
@@ -46,10 +61,8 @@ class ContractAudit extends React.PureComponent {
                         <ContractAuditItem
                             icon={getThemedIcon('duration', is_dark_theme)}
                             label={localize('Duration')}
-                            value={(contract_info.tick_count > 0) ?
-                                `${contract_info.tick_count} ${(contract_info.tick_count < 2) ? localize('tick') : localize('ticks')}`
-                                :
-                                `${duration} ${duration_unit}`}
+                            value={`${contract_time} ${contract_unit}`}
+                            valueHint={duration_value_hint}
                         />
                     </div>
                     <div id='dt_bt_label' className='contract-audit__grid'>
@@ -63,6 +76,15 @@ class ContractAudit extends React.PureComponent {
                             value={getBarrierValue(contract_info) || ' - '}
                         />
                     </div>
+                    { is_reset_call_put &&
+                        <div className='contract-audit__grid'>
+                            <ContractAuditItem
+                                icon={getThemedIcon('reset_barrier', is_dark_theme)}
+                                label={localize('Reset barrier')}
+                                value={''}
+                            />
+                        </div>
+                    }
                     <div id='dt_start_time_label' className='contract-audit__grid'>
                         <ContractAuditItem
                             icon={getThemedIcon('start_time', is_dark_theme)}
@@ -70,7 +92,7 @@ class ContractAudit extends React.PureComponent {
                             value={toGMTFormat(epochToMoment(contract_info.purchase_time)) || ' - '}
                         />
                     </div>
-                    {!isDigitType(contract_info.contract_type) &&
+                    { !isDigitType(contract_info.contract_type) &&
                     <div id='dt_entry_spot_label' className='contract-audit__grid'>
                         <ContractAuditItem
                             icon={getThemedIcon('entry_spot', is_dark_theme)}
@@ -80,11 +102,19 @@ class ContractAudit extends React.PureComponent {
                         />
                     </div>
                     }
-                    {
-                        !isNaN(exit_spot) &&
+                    { is_reset_call_put &&
+                        <div className='contract-audit__grid'>
+                            <ContractAuditItem
+                                icon={getThemedIcon('reset_time', is_dark_theme)}
+                                label={localize('Reset time')}
+                                value={toGMTFormat(epochToMoment(contract_info.reset_time)) || '-'}
+                            />
+                        </div>
+                    }
+                    { !isNaN(exit_spot) &&
                         <div id='dt_exit_spot_label' className='contract-audit__grid'>
                             <ContractAuditItem
-                                icon={getThemedIcon('exit_spot', is_dark_theme)}
+                                icon={is_profit ? getThemedIcon('exit_spot_win', is_dark_theme) : getThemedIcon('exit_spot_loss', is_dark_theme)}
                                 label={localize('Exit spot')}
                                 value={exit_spot || ' - '}
                                 value2={toGMTFormat(epochToMoment(contract_info.exit_tick_time)) || ' - '}
@@ -93,7 +123,7 @@ class ContractAudit extends React.PureComponent {
                     }
                     <div id='dt_exit_time_label' className='contract-audit__grid'>
                         <ContractAuditItem
-                            icon={IconExitTime}
+                            icon={is_profit ? getThemedIcon('exit_time_win', is_dark_theme) : getThemedIcon('exit_time_loss', is_dark_theme)}
                             label={localize('Exit Time')}
                             value={toGMTFormat(epochToMoment(contract_end_time)) || ' - '}
                         />

@@ -46,4 +46,8 @@
         font-weight: bold;
         color: var(--text-prominent);
     }
+    &__value-hint {
+        color: var(--text-less-prominent);
+        font-size: 10px;
+    }
 }

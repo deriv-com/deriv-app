@@ -6,6 +6,7 @@ const ContractAuditItem = ({
     label,
     value,
     value2,
+    valueHint,
 }) => (
     <React.Fragment>
         {icon &&
@@ -26,6 +27,11 @@ const ContractAuditItem = ({
                     {value2}
                 </span>
                 }
+                {valueHint &&
+                <span className='contract-audit__value-hint'>
+                    {valueHint}
+                </span>
+                }
             </div>
         </div>
     </React.Fragment>
@@ -39,6 +45,10 @@ ContractAuditItem.propTypes = {
         PropTypes.string,
     ]),
     value2: PropTypes.PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]),
+    valueHint: PropTypes.PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),

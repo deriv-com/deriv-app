@@ -1,6 +1,7 @@
-import React        from 'react';
-import { localize } from 'deriv-translations';
-import { Button }   from 'deriv-components';
+import React         from 'react';
+import { localize }  from 'deriv-translations';
+import { Button }    from 'deriv-components';
+import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 import './order-details.scss';
 
 const OrderInfoBlock = ({ label, value }) => (
@@ -69,15 +70,15 @@ const OrderActionsBlock = ({ order_details }) => {
     if (is_pending && is_buyer) {
         buttons_to_render = (
             <React.Fragment>
-                <Button secondary onClick={ () => console.log('Cancel order') }>{ localize('Cancel order') }</Button>
-                <Button primary onClick={ () => console.log('I\'ve paid') }>{ localize('I\'ve paid') }</Button>
+                <Button className='order-details__actions-button' large secondary onClick={ () => console.log('Cancel order') }>{ localize('Cancel order') }</Button>
+                <Button className='order-details__actions-button' large primary onClick={ () => console.log('I\'ve paid') }>{ localize('I\'ve paid') }</Button>
             </React.Fragment>
         );
     }
 
     if ((is_pending || is_buyer_confirmed) && !is_buyer) {
         buttons_to_render = (
-            <Button primary onClick={ () => console.log('I\'ve received funds') }>{ localize('I\'ve received funds') }</Button>
+            <Button className='order-details__actions-button' large primary onClick={ () => console.log('I\'ve received funds') }>{ localize('I\'ve received funds') }</Button>
         );
     }
 
@@ -111,9 +112,9 @@ const OrderDetails = ({
                 }
             </div>
 
-            <div className='order-details__footer-actions'>
+            <FooterActions>
                 <OrderActionsBlock order_details={ order_details } />
-            </div>
+            </FooterActions>
         </div>
     );
 };

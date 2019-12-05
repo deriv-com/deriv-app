@@ -8,9 +8,10 @@ import {
     Loading,
     Input,
     Button,
-    ThemedScrollbars }                 from 'deriv-components';
-import PageReturn                      from 'Components/page-return/page-return.jsx';
-import { WS }                          from 'Utils/websocket';
+    ThemedScrollbars }                from 'deriv-components';
+import PageReturn                     from 'Components/page-return/page-return.jsx';
+import FooterActions                  from 'Components/footer-actions/footer-actions.jsx';
+import { WS }                         from 'Utils/websocket';
 
 class FormAds extends Component {
     state = {
@@ -228,10 +229,10 @@ class FormAds extends Component {
                                         )}
                                     </Field>
                                 </ThemedScrollbars>
-                                <div className='my-ads__form-footer'>
-                                    <Button secondary large type='reset'>{localize('Cancel')}</Button>
-                                    <Button primary large is_disabled={isSubmitting || !isValid}>{localize('Post ad')}</Button>
-                                </div>
+                                <FooterActions has_border>
+                                    <Button className='my-ads__form-button' secondary large type='reset'>{localize('Cancel')}</Button>
+                                    <Button className='my-ads__form-button' primary large is_disabled={isSubmitting || !isValid}>{localize('Post ad')}</Button>
+                                </FooterActions>
                             </Form>
                         </div>
                     )}

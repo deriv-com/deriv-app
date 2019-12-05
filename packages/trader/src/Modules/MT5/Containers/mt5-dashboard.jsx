@@ -57,7 +57,8 @@ class MT5Dashboard extends React.Component {
 
     openAccountTransfer = (data, meta) => {
         if (meta.category === 'real') {
-            this.props.closeMt5AndOpenCashier('account_transfer');
+            this.props.disableMt5PasswordModal();
+            this.props.history.push(routes.cashier_acc_transfer);
         } else {
             this.props.setCurrentAccount(data, meta);
             this.props.openTopUpModal();
@@ -197,6 +198,7 @@ export default withRouter(connect(({ client, modules, ui }) => ({
     current_list               : modules.mt5.current_list,
     is_logged_in               : client.is_logged_in,
     can_upgrade_to             : client.can_upgrade_to,
+    disableMt5PasswordModal    : modules.mt5.disableMt5PasswordModal,
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
     is_loading                 : client.is_populating_mt5_account_list,
     landing_company_shortcode  : client.landing_company_shortcode,
@@ -204,7 +206,6 @@ export default withRouter(connect(({ client, modules, ui }) => ({
     has_real_account           : client.has_active_real_account,
     setCurrentAccount          : modules.mt5.setCurrentAccount,
     toggleCompareAccounts      : modules.mt5.toggleCompareAccountsModal,
-    closeMt5AndOpenCashier     : modules.mt5.closeMt5AndOpenCashier,
     openTopUpModal             : ui.openTopUpModal,
     NotificationMessages       : ui.notification_messages_ui,
     onMount                    : modules.mt5.onMount,

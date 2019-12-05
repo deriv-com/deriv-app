@@ -111,9 +111,10 @@ class Icon extends React.PureComponent {
             IconWallet: React.lazy(() => import(/* webpackChunkName: "icon-wallet" */ './Statement/icon-wallet.jsx')),
 
             // Signup
-            IconAdd     : React.lazy(() => import(/* webpackChunkName: "icon-add" */ './Signup/icon-add.jsx')),
-            IconRedArrow: React.lazy(() => import(/* webpackChunkName: "icon-red-arrow" */ './Signup/icon-red-arrow.jsx')),
-            IconWon     : React.lazy(() => import(/* webpackChunkName: "icon-won" */ './Signup/icon-won.jsx')),
+            IconAdd      : React.lazy(() => import(/* webpackChunkName: "icon-add" */ './Signup/icon-add.jsx')),
+            IconRedArrow : React.lazy(() => import(/* webpackChunkName: "icon-red-arrow" */ './Signup/icon-red-arrow.jsx')),
+            IconWon      : React.lazy(() => import(/* webpackChunkName: "icon-won" */ './Signup/icon-won.jsx')),
+            IconDuplicate: React.lazy(() => import(/* webpackChunkName: "icon-duplicate" */'./Signup/icon-duplicate.jsx')),
 
             // Trading
             IconBarrierDown   : React.lazy(() => import(/* webpackChunkName: "icon-barrier-down" */ './Trading/Barriers/icon-barrier-down.jsx')),

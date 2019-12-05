@@ -1,5 +1,6 @@
-import { info }         from '../utils/broadcast';
-import { roundBalance } from '../utils/helpers';
+import { getFormattedText } from 'deriv-shared/utils/currency';
+import { info }            from '../utils/broadcast';
+import ScratchStore        from '../../../stores/scratch-store';
 
 let balanceStr = '';
 
@@ -11,8 +12,7 @@ export default Engine =>
                     balance: { balance: b, currency },
                 } = r;
 
-                this.balance = roundBalance({ currency, balance: b });
-                balanceStr = `${this.balance} ${currency}`;
+                balanceStr = getFormattedText(b, currency);
 
                 info({ accountID: this.accountInfo.loginid, balance: balanceStr });
             });
@@ -21,15 +21,12 @@ export default Engine =>
         // eslint-disable-next-line class-methods-use-this
         getBalance(type) {
             const { scope } = this.store.getState();
-            let { balance } = this;
+            const { balance } = this;
 
             // Deduct trade `amount` in this scope for correct value in `balance`-block
             if (scope === 'BEFORE_PURCHASE') {
-                balance = roundBalance({
-                    currency: this.tradeOptions.currency,
-                    balance : Number(balance) - this.tradeOptions.amount,
-                });
-                balanceStr = `${balance} ${this.tradeOptions.currency}`;
+                const value = Number(balance) - this.tradeOptions.amount;
+                balanceStr = getFormattedText(value, ScratchStore.core.client.currency, false);
             }
 
             return type === 'STR' ? balanceStr : Number(balance);

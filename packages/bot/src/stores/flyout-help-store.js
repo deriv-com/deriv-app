@@ -25,22 +25,22 @@ export default class FlyoutHelpStore {
 
     @action.bound
     setHelpContent = async block_node => {
-        this.root_store.flyout.is_help_content = true;
-
-        const block_hw = Blockly.Block.getDimensions(block_node);
-        const block_type = block_node.getAttribute('type');
-        const title = Blockly.Blocks[block_type].meta().display_name;
-        const help_string  = await import(/* webpackChunkName: `[request]` */ `../scratch/help-content/help-string/${block_type}.json`);
-        const start_scale = config.workspaces.flyoutWorkspacesStartScale;
+        const block_hw        = Blockly.Block.getDimensions(block_node);
+        const block_type      = block_node.getAttribute('type');
+        const title           = Blockly.Blocks[block_type].meta().display_name;
+        const help_string_obj = await import(/* webpackChunkName: `[request]` */ `../scratch/help-content/help-strings/${block_type}`);
+        const start_scale     = config.workspaces.flyoutWorkspacesStartScale;
 
         block_node.setAttribute('width', block_hw.width * start_scale);
         block_node.setAttribute('height', block_hw.height * start_scale);
 
         runInAction(() => {
-            this.block_node = block_node;
-            this.block_type = block_type;
-            this.title = title;
-            this.help_string = help_string;
+            const { flyout }       = this.root_store;
+            flyout.is_help_content = true;
+            this.block_node        = block_node;
+            this.block_type        = block_type;
+            this.title             = title;
+            this.help_string       = help_string_obj.default;
         });
     }
 
@@ -79,14 +79,15 @@ export default class FlyoutHelpStore {
         const getNextBlock = async (xml, current_index, direction) => {
             const next_index = current_index + (direction ? 1 : -1);
             const block_type = Object.keys(xml).find((key, index) => next_index === index);
-            // eslint-disable-next-line consistent-return
-            if (!block_type) return;
+
+            if (!block_type) {
+                return false;
+            }
+
             try {
-                await import(/* webpackChunkName: `[request]` */ `../scratch/help-content/help-string/${block_type}.json`);
-                // eslint-disable-next-line consistent-return
+                await import(/* webpackChunkName: `[request]` */ `../scratch/help-content/help-strings/${block_type}`);
                 return block_type;
             } catch (e) {
-                // eslint-disable-next-line consistent-return
                 return getNextBlock(xml,next_index,direction);
             }
         };

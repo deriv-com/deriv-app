@@ -19,9 +19,12 @@
   "license": "ISC",
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
+    "formik": "^1.5.8",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "svg-sprite-loader": "^4.1.6",
+    "svgo-loader": "^2.2.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",

@@ -38,11 +38,6 @@ class ContractAudit extends React.PureComponent {
                 { reset_time: Math.floor(contract_time / 2),  contract_unit });
         }
 
-        // For Reset callPut
-        if (is_reset_call_put) {
-
-        }
-
         return (
             <div className='contract-audit__wrapper'>
                 <ThemedScrollbars

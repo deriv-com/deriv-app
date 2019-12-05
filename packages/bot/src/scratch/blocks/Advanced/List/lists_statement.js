@@ -62,10 +62,25 @@ Blockly.Blocks.lists_statement = {
                 // Create connection between parent and orphaned child.
                 this.required_parent_id = surround_parent.id;
             } else if (surround_parent.id !== this.required_parent_id) {
-                runIrreversibleEvents(() => {
-                    // Dispose child if it became a child of an illegal parent.
-                    this.dispose(/* healStack */ true);
-                });
+                // Someone pretending to be this child's parent. Find original parent and reconnect.
+                // Happens when someone tries to connect a statement block and Blockly automagically
+                // reconnects the children to this foreign statement block.
+                const all_blocks      = this.workspace.getAllBlocks();
+                const original_parent = all_blocks.find(block => block.id === this.required_parent_id);
+
+                if (original_parent) {
+                    const last_connection = original_parent.getLastConnectionInStatement('STACK');
+                    
+                    runIrreversibleEvents(() => {
+                        last_connection.connect(this.previousConnection);
+                    });
+                } else {
+                    // Dispose child if it became a child of an illegal parent and original parent
+                    // is nowhere to be found.
+                    runIrreversibleEvents(() => {
+                        this.dispose(/* healStack */ true);
+                    });
+                }
             }
         }
     },

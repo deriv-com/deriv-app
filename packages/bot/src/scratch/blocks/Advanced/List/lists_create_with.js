@@ -73,7 +73,7 @@ Blockly.Blocks.lists_create_with = {
             blocks_in_stack.forEach(block => {
                 if (!this.allowed_children.includes(block.type)) {
                     runIrreversibleEvents(() => {
-                        block.unplug(/* healStack */ true);
+                        block.unplug(/* healStack */ false);
                     });
                 }
             });

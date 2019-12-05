@@ -5,10 +5,10 @@ import { ToggleSwitch }     from 'deriv-components';
 import classNames           from 'classnames';
 import './my-ads.scss';
 
-const ToggleMessage = props => {
+const ToggleMessage = ({ is_enabled, className }) => {
     return (
-        <p className={props.className}>
-            {props.is_enabled ? localize('Your ads are running') : localize('Your ads are paused')}
+        <p className={className}>
+            {is_enabled ? localize('Your ads are running') : localize('Your ads are paused')}
         </p>
     );
 };

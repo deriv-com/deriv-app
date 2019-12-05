@@ -78,15 +78,12 @@
     &__switch {
         transform: scale(0.5) translateX(-50%);
     }
-
     &__message {
         margin-left: -3.4rem;
     }
-
     &--on {
-        color:var(--text-profit-success);
+        color: var(--text-profit-success);
     }
-
     &--off {
         color: var(--text-less-prominent);
     }

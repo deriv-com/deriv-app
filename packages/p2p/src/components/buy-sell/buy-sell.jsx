@@ -4,7 +4,6 @@ import {
         Button,
         Dialog,
         Loading }         from 'deriv-components';
-import { localize }       from 'deriv-translations';
 // import { WS } from '../../utils/websocket';
 import                         './buy-sell.scss';
 import Popup              from './popup.jsx';
@@ -29,6 +28,20 @@ class BuySell extends React.Component {
                     country: 'Indonesia',
                     currency: 'IDR',
                     type: 'buy',
+                    asset: 'USD',
+                    fix_price: 12000,
+                    amount: 20,
+                    min_transaction: 15000,
+                    max_transaction: 240000,
+                    payment_method: 'Bank transfer',
+                    advertiser_note: 'Whatsapp: +60182655318 Maybank 239847238947 JOHN DOE'
+                },
+                {
+                    id: 'sell_id',
+                    advertiser: 'John doe',
+                    country: 'Indonesia',
+                    currency: 'IDR',
+                    type: 'sell',
                     asset: 'USD',
                     fix_price: 12000,
                     amount: 20,

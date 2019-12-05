@@ -66,11 +66,8 @@ export const createProposalRequests = (store) => {
     const requests = {};
 
     Object.keys(store.trade_types).forEach((type) => {
-        const new_req     = createProposalRequestForContract(store, type);
-        const current_req = store.proposal_requests[type];
-        if (!ObjectUtils.isDeepEqual(new_req, current_req)) {
-            requests[type] = new_req;
-        }
+        const new_req  = createProposalRequestForContract(store, type);
+        requests[type] = new_req;
     });
 
     return requests;
@@ -80,19 +77,13 @@ const setProposalMultiplier = (store, obj_multiplier)=>{
     obj_multiplier.multiplier = store.multiplier;
     obj_multiplier.deal_cancellation = store.cancel_deal;
 
-    const has_limit_order = store.take_profit > 0 || store.stop_loss > 0;
-
-    if (!has_limit_order) {
-        return;
-    }
-
     obj_multiplier.limit_order = {};
 
-    if (store.take_profit > 0 && store.has_take_profit) {
+    if (store.has_take_profit) {
         obj_multiplier.limit_order.take_profit = +store.take_profit; // send positive take_profit to API
     }
 
-    if (store.stop_loss > 0 && store.has_stop_loss) {
+    if (store.has_stop_loss) {
         obj_multiplier.limit_order.stop_loss = -store.stop_loss; // send negative stop_loss to API
     }
 };

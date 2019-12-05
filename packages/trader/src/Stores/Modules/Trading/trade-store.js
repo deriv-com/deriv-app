@@ -332,8 +332,14 @@ export default class TradeStore extends BaseStore {
 
         this.validateAllProperties();
 
-        const should_forget_first = !(name === 'update_take_profit' || name === 'update_stop_loss');
-        this.processNewValuesAsync({ [name]: value }, true, {}, should_forget_first);
+        if (name === 'has_take_profit' && value && this.take_profit === undefined) {
+            this.take_profit = 0;
+        }
+        if (name === 'has_stop_loss' && value && this.stop_loss === undefined) {
+            this.stop_loss = 0;
+        }
+
+        this.processNewValuesAsync({ [name]: value }, true, {}, true);
     }
 
     @action.bound
@@ -733,7 +739,9 @@ export default class TradeStore extends BaseStore {
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
             const { commission, deal_cancellation } = this.proposal_info.MULTUP;
             // commission and deal_cancellation.ask_price is the same for MULTUP/MULTDOWN
-            this.commission = commission;
+            if (commission) {
+                this.commission = commission;
+            }
             if (deal_cancellation) {
                 this.deal_cancellation_price = this.proposal_info.MULTUP.deal_cancellation.ask_price;
             }

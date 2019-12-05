@@ -14,7 +14,7 @@ class MainContent extends React.Component {
     }
 
     componentWillUnmount(){
-        this.props.onUnMount();
+        this.props.onUnmount();
     }
     
     render() {
@@ -53,12 +53,12 @@ class MainContent extends React.Component {
 MainContent.propTypes = {
     active_tab: PropTypes.string,
     onMount   : PropTypes.func,
-    onUnMount : PropTypes.func,
+    onUnmount : PropTypes.func,
 };
 
 export default connect(({ main_content }) => ({
     active_tab: main_content.active_tab,
     onMount   : main_content.onMount,
-    onUnMount : main_content.onUnMount,
+    onUnmount : main_content.onUnmount,
 }))(MainContent);
 

@@ -64,6 +64,11 @@ export default class ChartStore {
     }
 
     @action.bound
+    onSymbolChange(symbol){
+        this.symbol = symbol;
+    }
+
+    @action.bound
     updateGranularity(granularity) {
         this.granularity = granularity;
     }

@@ -1,5 +1,9 @@
 import React          from 'react';
-import { SmartChart } from 'smartcharts-beta';
+import {
+    AssetInformation,
+    ChartTitle,
+    SmartChart,
+} from 'smartcharts-beta';
 import ControlWidgets from './control-widgets.jsx';
 import { connect }    from '../../stores/connect';
 
@@ -7,12 +11,18 @@ import { connect }    from '../../stores/connect';
 // import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 // import Lazy                  from 'App/Containers/Lazy';
 // import Digits                from 'Modules/Contract/Components/Digits';
-// import TopWidgets            from '../../SmartChart/Components/top-widgets.jsx';
 // import FormLayout            from '../Components/Form/form-layout.jsx';
 // import { symbolChange }      from '../../SmartChart/Helpers/symbol';
 // import AllMarkers            from '../../SmartChart/Components/all-markers.jsx';
 
 class Chart extends React.Component {
+
+    chartTopWidgets = () => (
+        <>
+            <ChartTitle onChange={this.props.onSymbolChange} />
+            <AssetInformation />
+        </>
+    );
 
     chartControlsWidgets = () => (
         <ControlWidgets
@@ -72,7 +82,7 @@ class Chart extends React.Component {
                 requestSubscribe={wsSubscribe}
                 settings={settings}
                 symbol={symbol}
-                // topWidgets={ChartTopWidgets}
+                topWidgets={this.chartTopWidgets}
                 isConnectionOpened={is_socket_opened}
             // clearChart={false}
             // importedLayout={chart_layout}
@@ -92,6 +102,7 @@ export default connect(({ chart_store, common, ui }) => ({
     updateGranularity: chart_store.updateGranularity,
     granularity      : chart_store.granularity,
     chart_type       : chart_store.chart_type,
+    onSymbolChange   : chart_store.onSymbolChange,
     settings         : {
         assetInformation            : false, // ui.is_chart_asset_info_visible,
         countdown                   : true,

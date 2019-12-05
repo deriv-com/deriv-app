@@ -1,10 +1,10 @@
-import React, { Fragment, Component } from 'react';
-import PropTypes                      from 'prop-types';
-import { Formik, Field, Form }        from 'formik';
-import { Input, Button }              from 'deriv-components';
-import { localize, Localize }         from 'deriv-translations';
-import IconBack                       from '../../assets/icon-back.jsx';
-import IconClose                      from '../../assets/icon-close.jsx';
+import React, { Fragment, Component }      from 'react';
+import PropTypes                           from 'prop-types';
+import { Formik, Field, Form }             from 'formik';
+import { Input, Button, ThemedScrollbars } from 'deriv-components';
+import { localize, Localize }              from 'deriv-translations';
+import IconBack                            from '../../assets/icon-back.jsx';
+import IconClose                           from '../../assets/icon-close.jsx';
 
 class Popup extends Component {
 
@@ -41,6 +41,10 @@ class Popup extends Component {
                             handleChange
                         }) => (
                             <Form noValidate>
+                                <ThemedScrollbars
+                                        autoHide
+                                        style={{ height: '307px' }}
+                                    >
                                 <div className='buy-sell__popup-content'>
                                     <div className='buy-sell__popup-field_wrapper'>
                                         <Field name='send'>
@@ -97,7 +101,9 @@ class Popup extends Component {
                                         <span className='buy-sell__popup-info--title'>{localize('Advertiser notes')}</span>
                                         <p className='buy-sell__popup-info--text'>{ad.advertiser_note}</p>
                                     </div>
+                                    
                                 </div>
+                                </ThemedScrollbars>
                                 <div className='buy-sell__popup-footer'>
                                     <Button secondary type='button' onClick={onCancel}>{localize('Cancel')}</Button>
                                     <Button is_disabled={isSubmitting} primary>{localize('Confirm')}</Button>
@@ -136,7 +142,7 @@ class Popup extends Component {
 
         const send_messages = [
             '{{field_name}} is required',
-            '{{field_name}} should be above min. transaction',
+            '{{field_name}} > minimum',
         ];
 
         const errors    = {};

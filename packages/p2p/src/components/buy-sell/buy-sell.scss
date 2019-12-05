@@ -26,11 +26,12 @@
         }
         & .dc-dialog__content {
             margin-bottom: 0;
+            width: 100%;
         }
     }
     &__popup {
         &-header {
-            border-bottom: 1px solid var(--general-section-1);
+            border-bottom: 1px solid var(--general-section-2);
 
             &_wrapper {
                 padding: 1.6rem 2.4rem;
@@ -41,6 +42,7 @@
             }
             &--title {
                 font-weight: bold;
+                color: var(--text-prominent);
 
                 &:first-letter {
                     text-transform: uppercase;
@@ -51,9 +53,12 @@
             padding: 2.4rem;
         }
         &-field {
+            margin-bottom: 0 !important;
+
             &_wrapper {
                 display: flex;
-                margin-bottom: 1.6rem;
+                margin-bottom: 2.4rem;
+                align-items: center;
             }
             &--icon {
                 width: 3.66rem;
@@ -83,7 +88,7 @@
             align-items: center;
             justify-content: flex-end;
             padding: 0 2.4rem;
-            border-top: 1px solid var(--general-section-1);
+            border-top: 1px solid var(--general-section-2);
 
             & > button:first-of-type {
                 margin-right: 0.8rem;
@@ -91,6 +96,7 @@
         }
         &-close_icon {
             cursor: pointer;
+            fill: var(--text-general);
         }
     }
 }

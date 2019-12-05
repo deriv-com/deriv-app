@@ -54,12 +54,13 @@ class FormAds extends Component {
         });
     }
 
-    handleSubmit(formik_vars) {
+    handleSubmit(formik_vars, { setSubmitting }) {
         // TODO: p2p API call to create ad
         // eslint-disable-next-line no-console
         console.log(this.state);
         // eslint-disable-next-line no-console
         console.log(formik_vars);
+        setSubmitting(false);
     }
 
     render() {

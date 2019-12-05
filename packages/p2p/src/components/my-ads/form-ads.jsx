@@ -231,7 +231,7 @@ class FormAds extends Component {
                                 </ThemedScrollbars>
                                 <div className='my-ads__form-footer'>
                                     <Button secondary large type='reset'>{localize('Cancel')}</Button>
-                                    <Button primary large is_disabled={isSubmitting && isValid}>{localize('Post ad')}</Button>
+                                    <Button primary large is_disabled={isSubmitting || !isValid}>{localize('Post ad')}</Button>
                                 </div>
                             </Form>
                         </div>
@@ -245,12 +245,6 @@ class FormAds extends Component {
     validateFormAds = (values) => {
         const available_price = 0.8; // later get available amount from the api
         const validations = {
-            type: [
-                v => !!v,
-            ],
-            asset: [
-                v => !!v,
-            ],
             fix_price: [
                 v => !!v,
             ],
@@ -261,9 +255,6 @@ class FormAds extends Component {
             min_transaction: [
                 v => !!v,
             ],
-            payment_method: [
-                v => !!v,
-            ],
             advertiser_note: [
                 v => !!v,
                 v => v.length < 400,
@@ -271,8 +262,6 @@ class FormAds extends Component {
         };
 
         const mappedKey = {
-            type           : localize('Type'),
-            asset          : localize('Asset'),
             fix_price      : localize('Fixed price'),
             amount         : localize('Amount'),
             min_transaction: localize('Min. transaction'),

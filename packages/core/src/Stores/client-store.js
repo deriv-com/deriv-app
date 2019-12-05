@@ -664,10 +664,11 @@ export default class ClientStore extends BaseStore {
         this.website_status = response.website_status;
         if (this.website_status.message && this.website_status.message.length) {
             this.root_store.ui.addNotificationMessage({
-                key    : 'maintenance',
-                header : localize('Site is being updated'),
-                message: localize(this.website_status.message),
-                type   : 'warning',
+                key          : 'maintenance',
+                header       : localize('Site is being updated'),
+                message      : localize(this.website_status.message),
+                type         : 'warning',
+                is_persistent: true,
             });
         } else {
             this.root_store.ui.removeNotificationMessage({ key: 'maintenance' });
@@ -1114,6 +1115,12 @@ export default class ClientStore extends BaseStore {
                 resolve(response);
             })
         });
+    }
+
+    @action.bound
+    resetMt5ListPopulatedState() {
+        this.is_populating_account_list     = false;
+        this.is_populating_mt5_account_list = true;
     }
 
     @action.bound

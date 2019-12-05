@@ -38,15 +38,16 @@ class Account extends React.Component {
         }
     };
 
-    componentDidMount() {
-        WS.wait('authorize', 'get_account_status').then(() => {
-            if (this.props.account_status) {
-                const { authentication } = this.props.account_status;
-                const is_high_risk_client = this.props.is_high_risk;
-                const needs_verification = authentication.needs_verification.includes('identity') || authentication.needs_verification.includes('document');
-                this.setState({ is_high_risk_client, is_loading: false, needs_verification });
-            }
-        });
+    async componentDidMount() {
+        console.warn('start');
+        const account_status = await WS.authorized.getAccountStatus();
+        if (account_status) {
+            console.warn('done');
+            const { authentication, risk_classification } = account_status;
+            const is_high_risk_client = (risk_classification === 'high');
+            const needs_verification = authentication.needs_verification.includes('identity') || authentication.needs_verification.includes('document');
+            this.setState({ is_high_risk_client, is_loading: false, needs_verification });
+        }
         this.props.enableRouteMode();
         document.addEventListener('mousedown', this.handleClickOutside);
         this.props.toggleAccount(true);

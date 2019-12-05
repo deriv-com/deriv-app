@@ -2,10 +2,10 @@ import PropTypes      from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { isDesktop }  from '_common/os_detect';
 import { connect }    from 'Stores/connect';
-import { toMoment }   from 'Utils/Date';
 import routes         from '../../../Constants/routes';
 
 const Redirect = ({
+    getServerTime,
     history,
     setDeviceData,
     setVerificationCode,
@@ -21,7 +21,7 @@ const Redirect = ({
         case 'signup': {
             const device_data = {
                 affiliate_token   : url_params.get('affiliate_token') || '',
-                date_first_contact: url_params.get('date_first_contact') || toMoment().format('YYYY-MM-DD'),
+                date_first_contact: url_params.get('date_first_contact') || getServerTime().get().format('YYYY-MM-DD'),
                 gclid_url         : url_params.get('gclid_url') || '',
                 signup_device     : url_params.get('signup_device') || isDesktop() ? 'desktop' : 'mobile',
                 utm_campaign      : url_params.get('utm_campaign') || '',
@@ -60,6 +60,7 @@ const Redirect = ({
 };
 
 Redirect.propTypes = {
+    getServerTime           : PropTypes.object,
     history                 : PropTypes.object,
     setDeviceData           : PropTypes.func,
     setVerificationCode     : PropTypes.func,
@@ -68,9 +69,10 @@ Redirect.propTypes = {
 };
 
 export default withRouter(connect(
-    ({ client, ui }) => ({
+    ({ client, ui, common }) => ({
         setDeviceData           : client.setDeviceData,
         setVerificationCode     : client.setVerificationCode,
+        getServerTime           : common.server_time,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,
     }),

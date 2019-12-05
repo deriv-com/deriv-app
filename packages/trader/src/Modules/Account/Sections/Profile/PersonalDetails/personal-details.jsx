@@ -7,7 +7,6 @@ import {
     Checkbox,
     Button,
     Input }                                    from 'deriv-components';
-import { DateOfBirth }                         from 'App/Containers/RealAccountSignup/personal-details.jsx';
 import { localize }                            from 'deriv-translations';
 import { WS }                                  from 'Services/ws-methods';
 import { connect }                             from 'Stores/connect';
@@ -16,9 +15,11 @@ import {
     validPostCode,
     validTaxID,
     validPhone,
+    validCountryCode,
     validLetterSymbol,
     validLength }                              from 'Utils/Validator/declarative-validation-rules';
 import { toMoment }                            from 'Utils/Date';
+import DateOfBirth                             from 'App/Components/Form/DateOfBirth';
 // import { account_opening_reason_list }         from './constants';
 import Loading                                 from '../../../../../templates/app/components/loading.jsx';
 import FormSubmitErrorMessage                  from '../../ErrorMessages/FormSubmitErrorMessage';
@@ -159,8 +160,10 @@ class PersonalDetailsForm extends React.Component {
             const max_phone_number = 35;
             const phone_trim =  values.phone.replace(/\D/g,'');
 
-            if (!validPhone(values.phone.trim())) {
-                errors.phone = localize('Only numbers, hyphens, and spaces are allowed.');
+            if (!validPhone(values.phone)) {
+                errors.phone = localize('Please enter a valid phone number, including the country code (e.g. +15417541234)');
+            } else if (!validCountryCode(this.props.residence_list, values.phone)) {
+                errors.phone = localize('Please enter a valid phone number, including the country code (e.g +15417541234).');
             }  else if (!validLength(phone_trim, { min: min_phone_number, max: max_phone_number })) {
                 errors.phone = localize('You should enter 8-35 characters.');
             }
@@ -548,9 +551,11 @@ class PersonalDetailsForm extends React.Component {
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
+                                    {!(isSubmitting || (status && status.msg)) &&
                                     <div className='account-form__footer-note'>
                                         { localize('Please make sure your information is correct or it may affect your trading experience.') }
                                     </div>
+                                    }
                                     <Button
                                         className={classNames('account-form__footer-btn', {
                                             'btn--primary--green': is_submit_success,

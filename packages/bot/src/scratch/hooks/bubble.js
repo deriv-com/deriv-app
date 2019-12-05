@@ -20,23 +20,3 @@ Blockly.Bubble.prototype.positionBubble_ = function() {
     this.moveTo(left, top);
 };
 
-/**
- * Fire a create event for the given workspace comment, if comments are enabled.
- * @param {!Blockly.WorkspaceComment} comment The comment that was just created.
- * @package
- */
-Blockly.ScratchBlockComment.fireCreateEvent = function(comment) {
-    if (Blockly.Events.isEnabled()) {
-        const existingGroup = Blockly.Events.getGroup();
-        if (!existingGroup) {
-            Blockly.Events.setGroup(true);
-        }
-        try {
-            Blockly.Events.fire(new Blockly.Events.CommentCreate(comment));
-        } finally {
-            if (!existingGroup) {
-                Blockly.Events.setGroup(false);
-            }
-        }
-    }
-};

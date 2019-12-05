@@ -1,5 +1,5 @@
 import {
-    Dropdown,
+    Autocomplete,
     Input,
     ThemedScrollbars }        from 'deriv-components';
 import { Formik, Field }      from 'formik';
@@ -35,13 +35,21 @@ const InputField = (props) => {
 class AddressDetails extends Component {
     constructor(props) {
         super(props);
-
+        this.state = { has_fetched_states_list: false };
         this.form = React.createRef();
+        // TODO: Find a better solution for handling no-op instead of using is_mounted flags
+        this.is_mounted = false;
     }
 
-    componentDidMount() {
-        this.props.fetchStatesList();
+    async componentDidMount() {
+        this.is_mounted = true;
+        await this.props.fetchStatesList();
+        if (this.is_mounted) this.setState({ has_fetched_states_list: true });
         this.form.current.getFormikActions().validateForm();
+    }
+
+    componentWillUnmount() {
+        this.is_mounted = false;
     }
 
     handleCancel = (values) => {
@@ -71,7 +79,7 @@ class AddressDetails extends Component {
                         isSubmitting,
                         errors,
                         values,
-                        handleChange,
+                        setFieldValue,
                     }) => (
                         <form onSubmit={handleSubmit}>
                             <div className='details-form'>
@@ -105,18 +113,34 @@ class AddressDetails extends Component {
                                                 label={localize('Town/City*')}
                                                 placeholder={localize('Town/City')}
                                             />
-                                            <fieldset className='address-state__fieldset'>
-                                                <Dropdown
-                                                    id='address_state'
-                                                    className='address_state-dropdown'
-                                                    is_align_text_left
-                                                    list={this.props.states_list}
-                                                    name='address_state'
-                                                    value={values.address_state}
-                                                    onChange={handleChange}
-                                                    placeholder={localize('State/Province')}
-                                                />
-                                            </fieldset>
+                                            { this.state.has_fetched_states_list &&
+                                                <React.Fragment>
+                                                    { (this.props.states_list.length > 0) ?
+                                                        <Field name='address_state'>
+                                                            {({ field }) => (
+                                                                <Autocomplete
+                                                                    { ...field }
+                                                                    data-lpignore='true'
+                                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                                    dropdown_offset='3.2rem'
+                                                                    type='text'
+                                                                    label={ localize('State/Province') }
+                                                                    list_items={this.props.states_list}
+                                                                    onItemSelection={
+                                                                        ({ value, text }) => setFieldValue('address_state', value ? text : '', true)
+                                                                    }
+                                                                />
+                                                            )}
+                                                        </Field>
+                                                        :
+                                                        <InputField
+                                                            name='address_state'
+                                                            label={ localize('State/Province') }
+                                                            placeholder={ localize('State/Province') }
+                                                        />
+                                                    }
+                                                </React.Fragment>
+                                            }
                                             <InputField
                                                 name='address_postcode'
                                                 required

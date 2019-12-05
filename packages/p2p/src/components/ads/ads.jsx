@@ -14,6 +14,7 @@ const ads_filters = [
         value: 'sell',
     },
 ];
+
 class Ads extends Component {
     state = {
         ads_list    : [],

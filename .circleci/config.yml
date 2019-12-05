@@ -54,12 +54,12 @@ commands:
       - run: 
           name: Building docker image
           command: |
-            docker build -t ${DOCKHUB_ORGANISATION}/staging-deriv-app:${CIRCLE_TAG} .
+            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG} .
       - run: 
           name: Pushing Image to docker hub
           command: |
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-            docker push ${DOCKHUB_ORGANISATION}/staging-deriv-app:${CIRCLE_TAG}
+            docker push ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
   k8s_deploy_staging:
     description: "Deploy to k8s cluster"
     steps:
@@ -68,7 +68,18 @@ commands:
           name: Deploying to k8s cluster for service deriv-app
           command: |
             echo $CA_CRT | base64 --decode > ca.crt
-            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/staging-deriv-app staging-deriv-app=${DOCKHUB_ORGANISATION}/staging-deriv-app:${CIRCLE_TAG}
+            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/staging-deriv-app staging-deriv-app=${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
+
+  k8s_deploy_production:
+    description: "Deploy to k8s cluster"
+    steps:
+      - k8s/install-kubectl
+      - run: 
+          name: Deploying to k8s cluster for service deriv-app
+          command: |
+            echo $CA_CRT | base64 --decode > ca.crt
+            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/production-deriv-app production-deriv-app=${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
+
 
 jobs:
   release_staging:
@@ -81,6 +92,16 @@ jobs:
       - docker
       - k8s_deploy_staging
       
+  release_production:
+    docker:
+      - image: circleci/node:11.15.0-stretch
+    steps:
+      - git_checkout_from_cache
+      - npm_install
+      - build
+      - docker
+      - k8s_deploy_production
+ 
 workflows:
   release_staging:
     jobs:

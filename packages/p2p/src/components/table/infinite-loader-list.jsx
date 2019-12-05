@@ -18,8 +18,8 @@ const SkeletonLoader = ({ width }) => (
         <rect x="300" y="20" rx="5" ry="5" width="90" height="10" />
         <rect x="446" y="20" rx="5" ry="5" width="55" height="10" />
         <rect x="600" y="20" rx="5" ry="5" width="75" height="10" />
-        <rect x="750" y="20" rx="5" ry="5" width="45" height="18" />
-        <rect x="805" y="20" rx="5" ry="5" width="50" height="18" />
+        <rect x="750" y="15" rx="5" ry="5" width="45" height="16" />
+        <rect x="803" y="15" rx="5" ry="5" width="55" height="16" />
     </ContentLoader>
 );
 

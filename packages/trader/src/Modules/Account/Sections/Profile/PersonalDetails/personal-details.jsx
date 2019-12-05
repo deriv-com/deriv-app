@@ -7,8 +7,6 @@ import {
     Checkbox,
     Button,
     Input }                                    from 'deriv-components';
-// TODO move DateOfBirth picker to components
-import { DateOfBirth }                         from 'App/Containers/RealAccountSignup/personal-details.jsx';
 import { localize }                            from 'deriv-translations';
 import { WS }                                  from 'Services/ws-methods';
 import { connect }                             from 'Stores/connect';
@@ -21,6 +19,7 @@ import {
     validLetterSymbol,
     validLength }                              from 'Utils/Validator/declarative-validation-rules';
 import { toMoment }                            from 'Utils/Date';
+import DateOfBirth                             from 'App/Components/Form/DateOfBirth';
 // import { account_opening_reason_list }         from './constants';
 import Loading                                 from '../../../../../templates/app/components/loading.jsx';
 import FormSubmitErrorMessage                  from '../../ErrorMessages/FormSubmitErrorMessage';

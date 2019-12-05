@@ -1,9 +1,5 @@
-import { localize }         from 'deriv-translations';
-import { minusIconDark }    from '../images';
-import {
-    runGroupedEvents,
-    runIrreversibleEvents,
-}                           from '../../utils';
+import { localize }      from 'deriv-translations';
+import { minusIconDark } from '../images';
 
 Blockly.Blocks.text_statement = {
     required_parent_type: 'text_join',

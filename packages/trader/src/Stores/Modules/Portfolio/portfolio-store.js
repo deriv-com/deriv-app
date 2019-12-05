@@ -18,7 +18,6 @@ import {
 import {
     getDisplayStatus,
     getEndTime,
-    isEnded,
     isUserSold,
     isValidToSell }                from '../Contract/Helpers/logic';
 import {
@@ -284,7 +283,7 @@ export default class PortfolioStore extends BaseStore {
 
         this.positions[i].is_loading = false;
 
-        if (isEnded(contract_response)) {
+        if (getEndTime(contract_response)) {
             // also forget for buy
             [this.populateResultDetails, this.proposalOpenContractHandler].forEach(() => {
                 if (!(contract_response.contract_id in this.subscribers)) return;

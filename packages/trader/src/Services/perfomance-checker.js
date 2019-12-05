@@ -1,3 +1,9 @@
+import {
+    isFirefox,
+    isSafari,
+    isEdge,
+} from '_common/browser_detect';
+
 const performanceMetrics = {
     start               : 'started',
     firstContentfulPaint: 'first-contentful-paint',
@@ -16,12 +22,15 @@ function measurePerformance(pushLoadPerformance) {
         if (is_data_sent) {
             return;
         }
-        // start --- firstContentfulPaint
-        performance.measure(
-            performanceMetrics.firstContentfulPaint,
-            performanceMetrics.start,
-            performanceMetrics.firstContentfulPaint
-        );
+        
+        if (isFirefox() || isSafari() || isEdge()) {
+            // start --- firstContentfulPaint
+            performance.measure(
+                performanceMetrics.firstContentfulPaint,
+                performanceMetrics.start,
+                performanceMetrics.firstContentfulPaint
+            );
+        }
 
         // start --- smartChartMounted
         performance.measure(

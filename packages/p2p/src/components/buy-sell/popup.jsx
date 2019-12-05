@@ -86,7 +86,7 @@ class Popup extends Component {
                                                         error={errors.send}
                                                         label={localize('Send')}
                                                         className='buy-sell__popup-field'
-                                                        placeholder='Send amount'
+                                                        placeholder={localize('Send amount')}
                                                         trailing_icon={<span className='buy-sell__popup-field--trailing'>{send_currency}</span>}
                                                         onChange={(e) => {
                                                             const send = isNaN(e.target.value) ? 0 : e.target.value;
@@ -109,7 +109,7 @@ class Popup extends Component {
                                                         error={errors.receive}
                                                         label={localize('Receive')}
                                                         className='buy-sell__popup-field'
-                                                        placeholder='Receive amount'
+                                                        placeholder={localize('Receive amount')}
                                                         trailing_icon={<span className='buy-sell__popup-field--trailing'>{receive_currency}</span>}
                                                         onChange={(e) => {
                                                             const receive = isNaN(e.target.value) ? 0 : e.target.value;

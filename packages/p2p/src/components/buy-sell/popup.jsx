@@ -18,13 +18,15 @@ class Popup extends Component {
     }
 
     render() { 
-        const { ad } = this.props;
+        const { ad, onCancel } = this.props;
         return (
             <Fragment>
                 <div className='buy-sell__popup'>
                     <div className='buy-sell__popup-header'>
-                        <h2 className='buy-sell__popup-header--title'>{`${ad.type} ${ad.asset}`}</h2>
-                        <IconClose />
+                        <div className="buy-sell__popup-header_wrapper">
+                            <h2 className='buy-sell__popup-header--title'>{`${ad.type} ${ad.asset}`}</h2>
+                            <IconClose className='buy-sell__popup-close_icon' onClick={onCancel} />
+                        </div>
                     </div>
                     <Formik
                         validate={this.validatePopup}
@@ -49,8 +51,9 @@ class Popup extends Component {
                                                     type='number'
                                                     error={touched.send && errors.send}
                                                     label={localize('Send')}
-                                                    className='my-ads__form-field my-ads__form-field--textarea'
+                                                    className='buy-sell__popup-field'
                                                     placeholder='Send amount'
+                                                    trailing_icon={<span className='buy-sell__popup-field--trailing'>{ad.currency}</span>}
                                                     onChange={(e) => {
                                                         const send = isNaN(e.target.value) ? 0 : e.target.value;
                                                         setFieldValue('receive', send / ad.fix_price)
@@ -69,8 +72,9 @@ class Popup extends Component {
                                                     type='number'
                                                     error={touched.receive && errors.receive}
                                                     label={localize('Receive')}
-                                                    className='my-ads__form-field my-ads__form-field--textarea'
+                                                    className='buy-sell__popup-field'
                                                     placeholder='Receive amount'
+                                                    trailing_icon={<span className='buy-sell__popup-field--trailing'>{ad.asset}</span>}
                                                     onChange={(e) => {
                                                         const receive = isNaN(e.target.value) ? 0 : e.target.value;
                                                         setFieldValue('send', receive * ad.fix_price)
@@ -81,22 +85,22 @@ class Popup extends Component {
                                                 )}
                                         </Field>
                                     </div>
-                                    <div>
-                                        <span></span>
-                                        <p>{ad.value}</p>
+                                    <div className='buy-sell__popup-info'>
+                                        <span className='buy-sell__popup-info--title'>{localize('Seller')}</span>
+                                        <p className='buy-sell__popup-info--text'>{ad.advertiser}</p>
                                     </div>
-                                    <div>
-                                        <span></span>
-                                        <p></p>
+                                    <div className='buy-sell__popup-info'>
+                                        <span className='buy-sell__popup-info--title'>{localize('Payment method')}</span>
+                                        <p className='buy-sell__popup-info--text'>{ad.payment_method}</p>
                                     </div>
-                                    <div>
-                                        <span></span>
-                                        <p></p>
+                                    <div className='buy-sell__popup-info'>
+                                        <span className='buy-sell__popup-info--title'>{localize('Advertiser notes')}</span>
+                                        <p className='buy-sell__popup-info--text'>{ad.advertiser_note}</p>
                                     </div>
-                                    <div>
-                                        <Button secondary>Cancel</Button>
-                                        <Button is_disabled={isSubmitting} primary>OK</Button>
-                                    </div>
+                                </div>
+                                <div className='buy-sell__popup-footer'>
+                                    <Button secondary type='button' onClick={onCancel}>{localize('Cancel')}</Button>
+                                    <Button is_disabled={isSubmitting} primary>{localize('Confirm')}</Button>
                                 </div>
                             </Form>
                         )}
@@ -111,7 +115,7 @@ class Popup extends Component {
         const validations = {
             send: [
                 v => !!v,
-                v => v > this.props.ad.min_transaction,
+                v => v >= this.props.ad.min_transaction,
             ],
             receive: [
                 v => !!v,
@@ -168,6 +172,7 @@ class Popup extends Component {
 
 Popup.propTypes = {
     ad: PropTypes.object,
+    onCancel: PropTypes.func,
 };
  
 export default Popup;

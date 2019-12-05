@@ -83,7 +83,7 @@ export class MyAdsTable extends React.Component {
         const { items, is_loading_more_items, has_more_items_to_load, width } = this.state;
 
         return (
-            <TableLayout ref={this.table_container_ref}>
+            <div ref={this.table_container_ref}>
                 <Table>
                     <Table.Header>
                         <Table.Row>
@@ -103,7 +103,7 @@ export class MyAdsTable extends React.Component {
                         />
                     </Table.Body>
                 </Table>
-            </TableLayout>
+            </div>
         );
     }
 }

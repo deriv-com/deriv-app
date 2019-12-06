@@ -295,7 +295,7 @@ class FormAds extends Component {
                             errors[key] = amount_messages(mappedKey[key])[error_index];
                             break;
                         case 'advertiser_note':
-                            errors[key] = errors[key] = note_messages(mappedKey[key])[error_index];
+                            errors[key] = note_messages(mappedKey[key])[error_index];
                             break;
                         default:
                             errors[key] = common_messages(mappedKey[key])[error_index];

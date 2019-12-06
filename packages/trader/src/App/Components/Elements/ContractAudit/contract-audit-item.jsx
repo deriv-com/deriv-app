@@ -37,6 +37,10 @@ const ContractAuditItem = ({
     </React.Fragment>
 );
 
+ContractAuditItem.defaultProps = {
+    value: '-',
+};
+
 ContractAuditItem.propTypes = {
     icon : PropTypes.node,
     label: PropTypes.string,

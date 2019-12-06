@@ -10,6 +10,7 @@
 /* stylelint-disable */
 /** @define mt5-dashboard; */
 .mt5-dashboard {
+    position: relative;
     margin: 4.8em auto;
     max-width: 960px;
 
@@ -17,6 +18,15 @@
         //@include typeface(--xsmall-left-normal-black, none);
         font-size: 10px;
         color: var(--text-less-prominent);
+    }
+    &__container {
+        position: relative;
+
+        .notification-messages {
+            position: fixed;
+            top: 64px;
+            right: 16px;
+        }
     }
     &__welcome-message {
         margin-bottom: 3.2em;
@@ -135,6 +145,9 @@
             @include typeface(--xsmall-left-normal-black, none);
             margin-left: 7.05em;
         }
+    }
+    .notification-messages {
+        top: calc(-4.8rem + 16px);
     }
 }
 

@@ -9,7 +9,7 @@ import {
 }                                     from 'mobx';
 import CurrencyUtils                  from 'deriv-shared/utils/currency';
 import ObjectUtils                    from 'deriv-shared/utils/object';
-import { localize }                   from 'App/i18n';
+import { localize }                   from 'deriv-translations';
 import { WS }                         from 'Services/ws-methods';
 import {
     isDigitContractType,
@@ -115,6 +115,8 @@ export default class TradeStore extends BaseStore {
 
     initial_barriers;
     is_initial_barrier_applied = false;
+
+    proposal_req_id = {};
 
     @action.bound
     init = async () => {
@@ -295,8 +297,10 @@ export default class TradeStore extends BaseStore {
     onChange(e) {
         const { name, value } = e.target;
 
-        // save trade_chart_symbol upon user change
         if (name === 'symbol' && value) {
+            // set trade params skeleton and chart loader to true until processNewValuesAsync resolves
+            this.setChartStatus(true);
+            this.is_trade_enabled = false;
             // this.root_store.modules.contract_trade.contracts = [];
             // TODO: Clear the contracts in contract-trade-store
         }
@@ -630,10 +634,12 @@ export default class TradeStore extends BaseStore {
 
         if (!ObjectUtils.isEmptyObject(requests)) {
             this.proposal_requests = requests;
-            this.proposal_info     = {};
             this.purchase_info     = {};
 
             Object.keys(this.proposal_requests).forEach((type) => {
+                // to keep track of proposal req_id that is set by subscription manager in deriv-api,
+                // we need to initialize it to 0 every time a new request is being sent
+                this.proposal_req_id[type] = 0;
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
             });
         }
@@ -650,6 +656,16 @@ export default class TradeStore extends BaseStore {
         const contract_type           = response.echo_req.contract_type;
         const prev_proposal_info      = ObjectUtils.getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = ObjectUtils.getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
+
+        // Sometimes the API doesn't forget old 'proposal' response and returns them with new 'proposal' response, so here
+        // we need to send 'forget' req for old proposal subscriptions and store the latest proposal req_id
+        if (this.proposal_req_id[contract_type] < response.echo_req.req_id) {
+            // if an old proposal subscription exist, send 'forget'
+            if (this.proposal_info[contract_type] && this.proposal_info[contract_type].id) {
+                WS.forget(this.proposal_info[contract_type].id);
+            }
+            this.proposal_req_id[contract_type] = response.echo_req.req_id;
+        }
 
         this.proposal_info  = {
             ...this.proposal_info,
@@ -718,7 +734,6 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     accountSwitcherListener() {
-        this.clearContracts();
         this.resetErrorServices();
         return this.processNewValuesAsync(
             { currency: this.root_store.client.currency },
@@ -733,7 +748,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     preSwitchAccountListener() {
         this.clearContracts();
-
+        this.is_trade_enabled = false;
         return Promise.resolve();
     }
 
@@ -751,7 +766,6 @@ export default class TradeStore extends BaseStore {
     clientInitListener() {
         this.should_refresh_active_symbols = true;
         this.initAccountCurrency(this.root_store.client.currency);
-        this.prepareTradeStore();
         return Promise.resolve();
     }
 

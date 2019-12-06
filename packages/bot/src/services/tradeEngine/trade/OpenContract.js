@@ -1,11 +1,12 @@
+import { getRoundedNumber } from 'deriv-shared/utils/currency';
 import { sell, openContractReceived } from './state/actions';
 import {
     contractStatus,
     contractSettled,
     contract as
     broadcastContract,
-}                                     from '../utils/broadcast';
-import { doUntilDone, roundBalance }  from '../utils/helpers';
+}                      from '../utils/broadcast';
+import { doUntilDone } from '../utils/helpers';
 
 const AFTER_FINISH_TIMEOUT = 5;
 
@@ -73,7 +74,7 @@ export default Engine =>
             });
         }
 
-        resetSubscriptionTimeout(timeout = this.getContractDuration() + AFTER_FINISH_TIMEOUT) {
+        resetSubscriptionTimeout(timeout = AFTER_FINISH_TIMEOUT) {
             this.cancelSubscriptionTimeout();
             this.subscriptionTimeout = setInterval(() => {
                 this.subscribeToOpenContract();
@@ -114,6 +115,6 @@ export default Engine =>
 
         getSellPrice() {
             const { bid_price: bidPrice, buy_price: buyPrice, currency } = this.data.get('contract');
-            return Number(roundBalance({ currency, balance: Number(bidPrice) - Number(buyPrice) }));
+            return getRoundedNumber(Number(bidPrice) - Number(buyPrice), currency);
         }
     };

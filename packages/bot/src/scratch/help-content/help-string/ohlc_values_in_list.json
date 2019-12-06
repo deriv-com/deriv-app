@@ -1,7 +1,0 @@
-{
-    "text": [
-        "This block gives you the selected candle value from a list of candles. You can choose from open price, close price, high price, low price, and open time.",
-        "This block requires a list of candles as an input parameter.",
-        "In this example, the open prices from a list of candles are assigned to a variable called “cl”."
-    ]
-}

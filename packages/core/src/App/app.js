@@ -7,16 +7,17 @@ import { setStorageEvents } from 'Utils/Events/storage';
 
 configure({ enforceActions: 'observed' });
 
-const initStore = () => {
+const initStore = (notification_messages) => {
     Client.init();
 
     const root_store = new RootStore();
 
-    setStorageEvents(root_store);
+    setStorageEvents();
 
     NetworkMonitor.init(root_store);
     OutdatedBrowser.init(root_store);
     root_store.client.init();
+    root_store.ui.init(notification_messages);
     // root_store.modules.trade.init();
 
     return root_store;

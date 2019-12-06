@@ -10,26 +10,29 @@ const AppContents = ({
     // addNotificationBar,
     children,
     is_app_disabled,
-    is_logged_in,
     is_positions_drawer_on,
     is_route_modal_on,
+    pageView,
     // setPWAPromptEvent,
 }) => {
-    if (is_logged_in) {
-        // TODO: uncomment these after the issues with showing the prompt too often and in the app are fixed
-        // window.addEventListener('beforeinstallprompt', e => {
-        //     console.log('Going to show the installation prompt'); // eslint-disable-line no-console
-        //
-        //     e.preventDefault();
-        //
-        //     setPWAPromptEvent(e);
-        //     addNotificationBar({
-        //         content : <InstallPWA />,
-        //         autoShow: 10000, // show after 10 secs
-        //         msg_type: 'pwa',
-        //     });
-        // });
-    }
+    // Segment page view trigger
+    pageView();
+
+    // if (is_logged_in) {
+    // TODO: uncomment these after the issues with showing the prompt too often and in the app are fixed
+    // window.addEventListener('beforeinstallprompt', e => {
+    //     console.log('Going to show the installation prompt'); // eslint-disable-line no-console
+    //
+    //     e.preventDefault();
+    //
+    //     setPWAPromptEvent(e);
+    //     addNotificationBar({
+    //         content : <InstallPWA />,
+    //         autoShow: 10000, // show after 10 secs
+    //         msg_type: 'pwa',
+    //     });
+    // });
+    // }
 
     return (
         <div
@@ -63,12 +66,13 @@ AppContents.propTypes = {
 };
 
 export default withRouter(connect(
-    ({ client, ui }) => ({
-        is_logged_in          : client.is_logged_in,
+    ({ ui, segment }) => ({
+        // is_logged_in          : client.is_logged_in,
         // addNotificationBar    : ui.addNotificationBar,
         is_app_disabled       : ui.is_app_disabled,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         is_route_modal_on     : ui.is_route_modal_on,
+        pageView              : segment.pageView,
         pwa_prompt_event      : ui.pwa_prompt_event,
         // setPWAPromptEvent     : ui.setPWAPromptEvent,
     })

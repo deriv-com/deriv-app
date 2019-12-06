@@ -2,10 +2,14 @@ import PropTypes             from 'prop-types';
 import classNames            from 'classnames';
 import React                 from 'react';
 import { CSSTransition }     from 'react-transition-group';
-import { ThemedScrollbars }  from 'deriv-components';
+import {
+    Button,
+    ThemedScrollbars }       from 'deriv-components';
+import { BinaryLink }        from 'App/Components/Routes';
 import { connect }           from 'Stores/connect';
-import { localize }          from 'App/i18n';
+import { localize }          from 'deriv-translations';
 import { toTitleCase }       from '_common/string_util';
+import ObjectUtils           from 'deriv-shared/utils/object';
 import Icon                  from 'Assets/icon.jsx';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
@@ -85,6 +89,24 @@ class NotificationsDialog extends React.Component {
                                                 <div className='notifications-item__message'>
                                                     {item.message}
                                                 </div>
+                                                {!ObjectUtils.isEmptyObject(item.action) &&
+                                                    <React.Fragment>
+                                                        { item.action.route ?
+                                                            <BinaryLink
+                                                                className={classNames('btn', 'btn--secondary', 'notifications-item__cta-button')}
+                                                                to={item.action.route}
+                                                            >
+                                                                <span className='btn__text'>{item.action.text}</span>
+                                                            </BinaryLink>
+                                                            :
+                                                            <Button
+                                                                className={classNames('btn--secondary', 'notifications-item__cta-button')}
+                                                                onClick={item.action.onClick}
+                                                                text={item.action.text}
+                                                            />
+                                                        }
+                                                    </React.Fragment>
+                                                }
                                             </div>
                                         ))
                                     }

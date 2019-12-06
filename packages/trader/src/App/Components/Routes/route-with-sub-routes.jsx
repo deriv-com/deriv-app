@@ -1,16 +1,16 @@
-import React              from 'react';
+import React             from 'react';
 import {
     Redirect,
-    Route }               from 'react-router-dom';
+    Route }              from 'react-router-dom';
+import ObjectUtils       from 'deriv-shared/utils/object';
 import {
     redirectToLogin,
-    redirectToSignUp }    from '_common/base/login';
-import { WS }             from 'Services/ws-methods';
-import Language           from '_common/language';
-import LoginPrompt        from 'App/Components/Elements/login-prompt.jsx';
+    redirectToSignUp }   from '_common/base/login';
+import { WS }            from 'Services/ws-methods';
+import LoginPrompt       from 'App/Components/Elements/login-prompt.jsx';
 import { default_title } from 'App/Constants/app-config';
-import routes             from 'Constants/routes';
-import { connect }        from 'Stores/connect';
+import routes            from 'Constants/routes';
+import { connect }       from 'Stores/connect';
 
 const RouteWithSubRoutes = route => {
     const renderFactory = props => {
@@ -24,20 +24,27 @@ const RouteWithSubRoutes = route => {
                 to = location.pathname.toLowerCase().replace(route.path, '');
             }
             result = <Redirect to={to} />;
-        } else {
+        } else if (route.is_authenticated && !route.is_logged_in) {
             result = (
-                (route.is_authenticated && !route.is_logged_in) ?
-                    <LoginPrompt
-                        onLogin={() => redirectToLogin(route.is_logged_in)}
-                        onSignup={redirectToSignUp}
-                        page_title={route.title}
-                    />
-                    :
+                <LoginPrompt
+                    onLogin={() => redirectToLogin(route.is_logged_in)}
+                    onSignup={redirectToSignUp}
+                    page_title={route.title}
+                />
+            );
+        } else {
+            const default_subroute     = route.routes ? route.routes.find((r) => r.default) : {};
+            const has_default_subroute = !ObjectUtils.isEmptyObject(default_subroute);
+            result = (
+                <React.Fragment>
+                    {has_default_subroute && location.pathname === route.path &&
+                    <Redirect to={default_subroute.path} />
+                    }
                     <route.component {...props} routes={route.routes} />
+                </React.Fragment>
             );
         }
 
-        Language.setCookie();
         const title = route.title ? `${route.title} | ` : '';
         document.title = `${ title }${ default_title }`;
         WS.wait('website_status').then(() => {

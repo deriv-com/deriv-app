@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
 
-const IconOtcPayment = ({ className }) => (
+const IconP2PCashier = ({ className }) => (
     <svg className={classNames('inline-icon', className)} xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'>
         <g fill='none' fillRule='evenodd'>
             <path className='color1-fill' fill='#000' fillRule='nonzero' d='M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1m0-1a8 8 0 1 0 0 16A8 8 0 0 0 8 0z' />
@@ -11,8 +11,8 @@ const IconOtcPayment = ({ className }) => (
     </svg>
 );
 
-IconOtcPayment.propTypes = {
+IconP2PCashier.propTypes = {
     className: PropTypes.string,
 };
 
-export default IconOtcPayment;
+export default IconP2PCashier;

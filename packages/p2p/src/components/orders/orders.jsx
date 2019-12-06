@@ -28,7 +28,7 @@ class OrderDeets {
             if (this.remaining_time !== 0) {
                 this.remaining_time -= 1000;
             } else {
-                // TODO: [timeout-status-check] - Check if order has timed out
+                // TODO: [timeout-status-check] - Check if order has timed out; add timeout message to `OrderDetails`
                 clearInterval(this.remainingTimeInterval);
                 this.remainingTimeInterval = null;
             }

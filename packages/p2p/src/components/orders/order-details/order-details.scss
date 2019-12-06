@@ -1,9 +1,19 @@
 .order-details {
     &__wrapper {
         width: 476px;
-        display: inline-flex;
         margin-top: 2.4rem;
 
+        &-message {
+            margin: 0.8rem 0.8rem 1.6rem;
+            font-size: 1.4rem;
+            line-height: 1.43;
+            font-weight: bold;
+            color: var(--text-general);
+
+            &--success {
+                color: var(--text-profit-success)
+            }
+        }
         &--outer {
             background-color: var(--general-section-1);
             border-radius: 4px;
@@ -30,7 +40,7 @@
         }
         &-amount {
             line-height: 1.5;
-            font-size: 24px;
+            font-size: 2.4rem;
         }
         &-timer {
             font-size: 1.2rem;
@@ -50,12 +60,12 @@
                 margin-bottom: 1.6rem;
             }
             &-label {
-                font-size: 12px;
+                font-size: 1.2rem;
                 line-height: 1.5;
                 color: var(--text-less-prominent);
             }
             &-value {
-                font-size: 14px;
+                font-size: 1.4rem;
                 line-height: 1.43;
                 color: var(--text-general);
             }
@@ -71,7 +81,7 @@
         }
     }
     &__footer {
-        font-size: 14px;
+        font-size: 1.4rem;
         line-height: 1.43;
     }
     &__actions-button {

@@ -85,12 +85,44 @@ const OrderActionsBlock = ({ order_details }) => {
     return buttons_to_render;
 };
 
+const OrderDetailsResultMessage = ({ order_details }) => {
+
+    if (order_details.is_seller_confirmed && order_details.is_buyer) {
+        return (
+            <p className='order-details__wrapper-message order-details__wrapper-message--success'>
+                { localize('{{offered_currency}} {{offered_amount}} was deposited on your account',
+                    {
+                        offered_currency: order_details.offer_currency,
+                        offered_amount  : order_details.display_offer_amount,
+                    })
+                }
+            </p>
+        );
+    }
+
+    if (order_details.is_seller_confirmed && !order_details.is_buyer) {
+        return (
+            <p className='order-details__wrapper-message order-details__wrapper-message--success'>
+                { localize('You sold {{offered_currency}} {{offered_amount}}',
+                    {
+                        offered_currency: order_details.offer_currency,
+                        offered_amount  : order_details.display_offer_amount,
+                    })
+                }
+            </p>
+        );
+    }
+    // TODO: [timeout-status-check] - Check if order has timed out and add timeout message
+    return null;
+};
+
 const OrderDetails = ({
     order_details,
 }) => {
     return (
         <div className='order-details'>
             <div className='order-details__wrapper order-details__wrapper--outer'>
+                <OrderDetailsResultMessage order_details={ order_details } />
                 <div className='order-details__wrapper--inner'>
                     <div className='order-details__header'>
                         <span>

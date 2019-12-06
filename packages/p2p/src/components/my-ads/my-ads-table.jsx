@@ -84,17 +84,15 @@ export class MyAdsTable extends React.Component {
         });
     }
 
-    componentDidMount() {
-        const { offsetWidth, clientHeight } = this.table_container_ref.current;
-
-        this.setState({
-            width : offsetWidth,
-            height: clientHeight,
-        });
-    }
-
     render() {
-        const { items, is_loading_more_items, has_more_items_to_load, width, height } = this.state;
+        const { items, is_loading_more_items, has_more_items_to_load } = this.state;
+
+        let width, height;
+        if (this.table_container_ref.current) {
+            const { offsetWidth, clientHeight } = this.table_container_ref.current;
+            width = offsetWidth;
+            height = clientHeight;
+        }
 
         return (
             <div ref={this.table_container_ref}>

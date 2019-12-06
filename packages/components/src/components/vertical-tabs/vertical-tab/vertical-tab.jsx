@@ -14,10 +14,7 @@ export default class VerticalTab extends React.Component {
         const index = typeof selected_index === 'undefined'
             ? (is_routed ? list.indexOf(list.find(item => (item.path === (current_path || item.default)))) || 0 : 0)
             : selected_index;
-
-        if (typeof this.props.setModalIndex === 'function') {
-            this.props.setModalIndex(typeof index === 'object' ? list.indexOf(index) : index);
-        }
+        this.props.setModalIndex(typeof index === 'object' ? list.indexOf(index) : index);
     };
 
     changeSelected = (e) => {
@@ -38,7 +35,7 @@ export default class VerticalTab extends React.Component {
     }
 
     render() {
-        const selected = this.props.modal_index && this.props.list[this.props.modal_index] || this.props.list[0];
+        const selected = this.props.list[this.props.modal_index] || this.props.list[0];
         return (
             <div
                 className={classNames('vertical-tab', {

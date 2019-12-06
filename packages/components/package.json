@@ -58,6 +58,7 @@
     "cross-env": "^5.2.0",
     "css-hot-loader": "^1.4.4",
     "css-loader": "^3.1.0",
+    "enzyme": "^3.10.0",
     "eslint": "^6.0.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-binary": "^1.0.2",
@@ -99,6 +100,7 @@
     "react-dom": "~16.8.6",
     "react-dropzone": "^9.0.0",
     "react-pose": "^4.0.8",
+    "react-router-dom": "^5.1.2",
     "react-tiny-popover": "^3.4.5",
     "react-transition-group": "^4.2.2",
     "tt-react-custom-scrollbars": "^4.2.1-tt2"

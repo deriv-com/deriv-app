@@ -1,0 +1,36 @@
+.vertical-tab__header {
+    @include typeface(--paragraph-center-bold-black, none);
+    line-height: 1.5;
+    color: var(--text-general);
+    padding: 10px 12px 10px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.1s ease-in;
+    text-decoration: none;
+
+    &:hover:not(.vertical-tab__header--active) {
+        background-color: var(--state-hover);
+    }
+    &--active {
+        @include typeface(--paragraph-left-bold-active, none);
+        color: var(--text-prominent);
+        background-color: var(--state-normal);
+        border-left: 4px solid var(--brand-red-coral);
+    }
+    &__link {
+        font-weight: normal;
+    }
+    &--active &__link {
+        font-weight: bold;
+    }
+    &__icon {
+        margin-right: 16px;
+        @include colorIcon(var(--text-general));
+
+        &--active {
+            // make up for the border being 4px
+            margin-left: -4px;
+        }
+    }
+}

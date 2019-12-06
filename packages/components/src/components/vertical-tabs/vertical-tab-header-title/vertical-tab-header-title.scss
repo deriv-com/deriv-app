@@ -1,0 +1,9 @@
+.vertical-tab__header-title {
+    @include typeface(--title-center-bold-black, none);
+    color: var(--text-general);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.1s ease-in;
+    text-decoration: none;
+}

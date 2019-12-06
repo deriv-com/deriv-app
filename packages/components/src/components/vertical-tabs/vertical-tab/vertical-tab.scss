@@ -1,0 +1,19 @@
+$BOTTOM_SPACING_REQUIRED: 31px; // Spacing between end of the container and Footer (including shadow)
+$MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING_REQUIRED});
+
+.vertical-tab {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    border-radius: $BORDER_RADIUS;
+    background-color: var(--general-section-1);
+    height: 100%;
+
+    // &:not(.vertical-tab--full-screen) {
+    //     height: 600px;
+    // }
+
+    &--full-screen {
+        min-height: $MIN_HEIGHT;
+    }
+}

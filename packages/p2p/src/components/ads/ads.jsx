@@ -1,6 +1,6 @@
-import React, { Component }     from 'react';
-import { Button, ButtonToggle } from 'deriv-components';
-import { localize }             from 'deriv-translations';
+import React, { Component } from 'react';
+import { ButtonToggle }     from 'deriv-components';
+import { localize }         from 'deriv-translations';
 // import { WS } from '../../utils/websocket';
 import './ads.scss';
 

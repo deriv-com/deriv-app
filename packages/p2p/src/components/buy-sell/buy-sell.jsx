@@ -5,8 +5,8 @@ import {
     Dialog,
     Loading }    from 'deriv-components';
 // import { WS } from '../../utils/websocket';
-import           './buy-sell.scss';
 import Popup     from './popup.jsx';
+import           './buy-sell.scss';
 
 class BuySell extends React.Component {
     state = {

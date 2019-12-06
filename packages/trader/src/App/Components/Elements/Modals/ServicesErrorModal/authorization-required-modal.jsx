@@ -22,10 +22,8 @@ const AuthorizationRequiredModal = ({
         is_visible={is_visible}
         onCancel={() => redirectToLogin(ClientBase.isLoggedIn())}
         onConfirm={redirectToSignUp}
-        title={localize('Get started for free and without any risk')}
-    >
-        {localize('Log in or create a free account to start trading')}
-    </Dialog>
+        title={localize('Log in or create a free account to start trading')}
+    />
 );
 
 AuthorizationRequiredModal.propTypes = {

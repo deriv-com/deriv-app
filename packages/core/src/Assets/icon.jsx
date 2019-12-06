@@ -68,6 +68,7 @@ class Icon extends React.PureComponent {
             IconWebsite                : React.lazy(() => import(/* webpackChunkName: "icon-website" */ './Cashier/icon-website.jsx')),
             IconEmail                  : React.lazy(() => import(/* webpackChunkName: "icon-email" */ './Cashier/icon-email.jsx')),
             IconTransferDone           : React.lazy(() => import(/* webpackChunkName: "icon-transfer-done" */ './Cashier/icon-transfer-done.jsx')),
+            IconOtcPayment             : React.lazy(() => import(/* webpackChunkName: "icon-otc-payment" */ './Cashier/icon-otc-payment.jsx')),
 
             // Modal
             ModalIconClose: React.lazy(() => import(/* webpackChunkName: "icon-modal-close" */ './Modal/icon-close.jsx')),

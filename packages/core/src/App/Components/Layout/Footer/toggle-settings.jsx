@@ -1,5 +1,5 @@
 import classNames      from 'classnames';
-import { 
+import {
     Modal,
     VerticalTab }      from 'deriv-components';
 import PropTypes       from 'prop-types';

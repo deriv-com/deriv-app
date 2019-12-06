@@ -23,10 +23,12 @@ class App extends Component {
 
     componentDidMount() {
         // TODO: [fix-index-set] Fix issues with unresolved index to set in tabs
-        const index_to_set = /orders/.test(window.location.pathname) ? 1 : 0;
+        if (typeof window !== 'undefined') {
+            const index_to_set = /orders/.test(window.location.pathname) ? 1 : 0;
 
-        if (this.state.active_index !== index_to_set) {
-            this.setState({ active_index: index_to_set });
+            if (this.state.active_index !== index_to_set) {
+                this.setState({ active_index: index_to_set });
+            }
         }
     }
 

@@ -65,12 +65,12 @@ class BuySell extends React.Component {
     render() {
         const { buy_sell_list, show_popup, type, is_loading, selected_ad } = this.state;
         return (
-            <div className="buy-sell">
+            <div className='buy-sell'>
                 {type}
                 {is_loading ? <Loading is_fullscreen={false} /> : (
-                    <ul className="buy-sell__list-wrapper">
+                    <ul className='buy-sell__list-wrapper'>
                         {buy_sell_list.map(ad => (
-                            <li key={ad.id} className="buy-sell__list">
+                            <li key={ad.id} className='buy-sell__list'>
                                 <Button primary onClick={() => this.handleClick(ad)}>
                                     {ad.type}
                                 </Button>
@@ -79,7 +79,7 @@ class BuySell extends React.Component {
                     </ul>
                 )}
                 {show_popup && (
-                    <div className="buy-sell__dialog">
+                    <div className='buy-sell__dialog'>
                         <Dialog
                             is_visible={show_popup}
                             disableApp={() => {

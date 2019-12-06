@@ -61,7 +61,7 @@ class Popup extends Component {
             <Fragment>
                 <div className='buy-sell__popup'>
                     <div className='buy-sell__popup-header'>
-                        <div className="buy-sell__popup-header_wrapper">
+                        <div className='buy-sell__popup-header_wrapper'>
                             <h2 className='buy-sell__popup-header--title'>{`${ad.type} ${ad.asset}`}</h2>
                             <IconClose className='buy-sell__popup-close_icon' onClick={onCancel} />
                         </div>

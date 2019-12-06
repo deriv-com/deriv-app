@@ -22,17 +22,17 @@ class Popup extends Component {
         const amount_currency = ad.min_transaction;
         const amount_asset = ad.min_transaction / ad.fix_price;
         const buy_initial_values = {
-            initial_send: amount_currency,
-            initial_receive: amount_asset,
-            send_currency: ad.currency,
+            initial_send    : amount_currency,
+            initial_receive : amount_asset,
+            send_currency   : ad.currency,
             receive_currency: ad.asset,
-        }
+        };
         const sell_initial_values = {
-            initial_send: amount_asset,
-            initial_receive: amount_currency,
-            send_currency: ad.asset,
+            initial_send    : amount_asset,
+            initial_receive : amount_currency,
+            send_currency   : ad.asset,
             receive_currency: ad.currency,
-        }
+        };
 
         return is_buy ? buy_initial_values : sell_initial_values;
     }
@@ -54,7 +54,7 @@ class Popup extends Component {
             initial_send,
             initial_receive,
             send_currency,
-            receive_currency
+            receive_currency,
         } = this.getInitialValues(is_buy);
 
         return (
@@ -97,7 +97,8 @@ class Popup extends Component {
                                                         trailing_icon={<span className='buy-sell__popup-field--trailing'>{send_currency}</span>}
                                                         onChange={(e) => {
                                                             const send = isNaN(e.target.value) ? 0 : e.target.value;
-                                                            const receive_amount = this.calculateReceiveAmount(send, is_buy);
+                                                            const receive_amount =
+                                                                this.calculateReceiveAmount(send, is_buy);
 
                                                             setFieldValue('receive', receive_amount);
                                                             handleChange(e);
@@ -119,8 +120,10 @@ class Popup extends Component {
                                                         placeholder={localize('Receive amount')}
                                                         trailing_icon={<span className='buy-sell__popup-field--trailing'>{receive_currency}</span>}
                                                         onChange={(e) => {
-                                                            const receive = isNaN(e.target.value) ? 0 : e.target.value;
-                                                            const send_amount = this.calculateSendAmount(receive, is_buy);
+                                                            const receive =
+                                                                isNaN(e.target.value) ? 0 : e.target.value;
+                                                            const send_amount =
+                                                                this.calculateSendAmount(receive, is_buy);
 
                                                             setFieldValue('send', send_amount);
                                                             handleChange(e);

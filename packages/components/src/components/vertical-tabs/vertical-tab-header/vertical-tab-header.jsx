@@ -7,7 +7,7 @@ const HeaderIcon = ({ icon, is_active }) => {
         className: classNames(
             'vertical-tab__header__icon', {
                 'vertical-tab__header__icon--active': is_active,
-                [icon && icon.props.className]      : !!icon.props.className,
+                [icon.props.className]      : !!icon.props.className,
             }),
     }
     );

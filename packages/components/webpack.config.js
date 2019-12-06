@@ -29,6 +29,7 @@ module.exports = {
         'password-meter'   : path.resolve(__dirname, 'src', 'components/password-meter/index.js'),
         popover            : path.resolve(__dirname, 'src', 'components/popover/index.js'),
         'radio-group'      : path.resolve(__dirname, 'src', 'components/radio-group/index.js'),
+        table              : path.resolve(__dirname, 'src', 'components/table/index.js'),
         tabs               : path.resolve(__dirname, 'src', 'components/tabs/index.js'),
         'themed-scrollbars': path.resolve(__dirname, 'src', 'components/themed-scrollbars/index.js'),
         'toggle-switch'    : path.resolve(__dirname, 'src', 'components/toggle-switch/index.js'),

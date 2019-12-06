@@ -111,7 +111,7 @@ There are 3 types of release:
     2. You can clean (remove `br_` folders and clear root) your `gh-pages` branch and deploy to root in a single command with `npm run deploy:clean`
     3. You can deploy to a folder in your `gh-pages` branch in order to separate from root app deployment and other folder deployments with: `npm run deploy:folder br_test_folder` (folder name must be prefixed with `br_`)
 2. Release to staging: 
-    1. `git tag staging_v20191205 -m 'release staging'` # tag need to follow the format `staging.*`
+    1. `git tag staging_v20191205 -m 'release staging'` # the tag needs to follow the RegExp format `/^staging.*/`
     2. `git push origin staging_v20191205`
 3. Release to production:
     1. `git tag production_v20191205 -m 'release production'`

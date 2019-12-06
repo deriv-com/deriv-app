@@ -267,7 +267,10 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get landing_company_shortcode() {
-        return this.accounts[this.loginid].landing_company_shortcode;
+        if (this.accounts[this.loginid]) {
+            return this.accounts[this.loginid].landing_company_shortcode;
+        }
+        return undefined;
     }
 
     @computed

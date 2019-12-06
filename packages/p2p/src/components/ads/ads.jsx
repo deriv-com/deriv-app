@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'deriv-components';
+import { BuySellTable } from './buy-sell-table.jsx';
 // import { WS } from '../../utils/websocket';
 import './ads.scss';
 
@@ -36,6 +37,11 @@ class Ads extends React.Component {
                     </li>
                     )}
                 </ul>
+                <BuySellTable
+                    // TODO: pass this down
+                    type='sell | buy'
+                    setSelectedAd={() => {}}
+                />
             </div>
         );
     }

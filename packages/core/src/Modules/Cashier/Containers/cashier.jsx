@@ -1,9 +1,10 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { withRouter }    from 'react-router-dom';
+import { VerticalTab }   from 'deriv-components';
 import { localize }      from 'deriv-translations';
 import { FadeWrapper }   from 'App/Components/Animations';
-import VerticalTab       from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
+import Icon              from 'Assets/icon.jsx';
 import routes            from 'Constants/routes';
 import { connect }       from 'Stores/connect';
 import WalletInformation from '../../Reports/Containers/wallet-information.jsx';
@@ -42,7 +43,7 @@ class Cashier extends React.Component {
                     (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible)) {
                     options.push({
                         default: route.default,
-                        icon   : route.icon_component,
+                        icon   : <Icon icon={route.icon_component} />,
                         label  : route.title,
                         value  : route.component,
                         path   : route.path,
@@ -58,7 +59,7 @@ class Cashier extends React.Component {
                 onClick: () => {
                     this.props.history.push(routes.trade);
                 },
-                icon : 'ModalIconClose',
+                icon : <Icon icon={'ModalIconClose'} />,
                 title: localize('Close'),
             },
             {
@@ -84,6 +85,8 @@ class Cashier extends React.Component {
                         is_routed={true}
                         is_full_width={true}
                         list={menu_options()}
+                        modal_index={this.props.modal_index}
+                        setModalIndex={this.props.setModalIndex}
                     />
                 </div>
             </FadeWrapper>
@@ -99,8 +102,10 @@ Cashier.propTypes = {
     is_payment_agent_visible         : PropTypes.bool,
     is_visible                       : PropTypes.bool,
     location                         : PropTypes.object,
+    modal_index                      : PropTypes.number,
     onMount                          : PropTypes.func,
     routes                           : PropTypes.arrayOf(PropTypes.object),
+    setModalIndex                    : PropTypes.func,
     toggleCashier                    : PropTypes.func,
 };
 
@@ -112,7 +117,9 @@ export default connect(
         is_payment_agent_visible: !!(modules.cashier.config.payment_agent.filtered_list.length
             || modules.cashier.config.payment_agent.agents.length),
         is_payment_agent_transfer_visible: modules.cashier.config.payment_agent_transfer.is_payment_agent,
+        modal_index                      : ui.modal_index,
         onMount                          : modules.cashier.onMountCommon,
+        setModalIndex                    : ui.setModalIndex,
         toggleCashier                    : ui.toggleCashier,
     })
 )(withRouter(Cashier));

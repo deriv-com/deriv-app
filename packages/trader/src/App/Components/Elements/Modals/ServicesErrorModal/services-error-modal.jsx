@@ -4,6 +4,7 @@ import React         from 'react';
 import { localize }  from 'deriv-translations';
 import { connect }   from 'Stores/connect';
 import { title }     from './constants';
+import AuthorizationRequiredModal from './authorization-required-modal.jsx';
 
 const ServicesErrorModal = ({
     disableApp,
@@ -16,6 +17,17 @@ const ServicesErrorModal = ({
     const { code, message } = services_error;
 
     if (!code || !message) return null;
+
+    if (code === 'AuthorizationRequired') {
+        return (
+            <AuthorizationRequiredModal
+                disableApp={disableApp}
+                enableApp={enableApp}
+                is_loading={is_loading}
+                is_visible={is_visible}
+            />
+        );
+    }
 
     return (
         <Dialog

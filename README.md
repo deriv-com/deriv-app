@@ -59,8 +59,6 @@ All packages must contain the following scripts to perform the stated actions:
 | ❌            | `deploy`            | Runs `build` script, then pushes the output to GH Pages.                                      |
 | ❌            | `deploy:clean`      | Runs `build` script, clears `gh-pages` branch, then pushes the output to GH Pages.            |
 | ❌            | `deploy:folder`     | Runs `build` script, then pushes the output to the specified folder in GH Pages.              |
-| ❌            | `deploy:staging`    | Initiates procedures for deploying to staging. (Package specific)                             |
-| ❌            | `deploy:production` | Initiates procedures for deploying to production. (Package specific)                          |
 
 **Please follow the README of each package you intend to work with on how to get set up and their custom scripts.** However, the above scripts can be run from the root directory in the following manner.
 

@@ -1,12 +1,12 @@
-import React              from 'react';
-import PropTypes          from 'prop-types';
+import React     from 'react';
+import PropTypes from 'prop-types';
 import {
     Button,
     Dialog,
-    Loading }         from 'deriv-components';
+    Loading }    from 'deriv-components';
 // import { WS } from '../../utils/websocket';
-import                         './buy-sell.scss';
-import Popup              from './popup.jsx';
+import           './buy-sell.scss';
+import Popup     from './popup.jsx';
 
 class BuySell extends React.Component {
     state = {

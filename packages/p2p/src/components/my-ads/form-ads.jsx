@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes                      from 'prop-types';
-import { localize, Localize }         from 'deriv-translations';
+import { localize }         from 'deriv-translations';
 import { Formik, Field, Form }        from 'formik';
 import {
     Autocomplete,
@@ -29,7 +29,7 @@ class FormAds extends Component {
     }
 
     componentDidMount() {
-        // TODO: call api to populate country, currency, and asset
+        // TODO: [p2p-fix-api] call get offer detail api and populate state
         WS().send({ 'residence_list': 1 }).then(() => { // this is just to mock the api delay response
             const new_initial_values = {
                 country        : 'Indonesia',
@@ -55,7 +55,7 @@ class FormAds extends Component {
     }
 
     handleSubmit(formik_vars, { setSubmitting }) {
-        // TODO: p2p API call to create ad
+        // TODO: [p2p-fix-api] call offer create api
         // eslint-disable-next-line no-console
         console.log(this.state);
         // eslint-disable-next-line no-console
@@ -269,21 +269,19 @@ class FormAds extends Component {
             advertiser_note: localize('Advertiser note'),
         };
 
-        // TODO: [translation] text wont pass in the translation script
+        const common_messages  = (field_name) => ([
+            localize('{{field_name}} is required', { field_name }),
+        ]);
 
-        const common_messages  = [
-            '{{field_name}} is required',
-        ];
+        const amount_messages  = (field_name) => ([
+            localize('{{field_name}} is required', { field_name }),
+            localize('{{field_name}} is too low', { field_name }),
+        ]);
 
-        const amount_messages = [
-            '{{field_name}} is required',
-            '{{field_name}} is too low',
-        ];
-
-        const note_messages = [
-            '{{field_name}} is required',
-            '{{field_name}} has exceed maximum length',
-        ];
+        const note_messages  = (field_name) => ([
+            localize('{{field_name}} is required', { field_name }),
+            localize('{{field_name}} has exceed maximum length', { field_name }),
+        ]);
 
         const errors    = {};
 
@@ -294,28 +292,13 @@ class FormAds extends Component {
                 if (error_index !== -1) {
                     switch (key) {
                         case 'amount':
-                            errors[key] = errors[key] = <Localize
-                                i18n_default_text={amount_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                            />;
+                            errors[key] = amount_messages(mappedKey[key])[error_index];
                             break;
                         case 'advertiser_note':
-                            errors[key] = errors[key] = <Localize
-                                i18n_default_text={note_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                            />;
+                            errors[key] = errors[key] = note_messages(mappedKey[key])[error_index];
                             break;
                         default:
-                            errors[key] = errors[key] = <Localize
-                                i18n_default_text={common_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                            />;
+                            errors[key] = common_messages(mappedKey[key])[error_index];
                     }
                 }
             });

@@ -2,14 +2,14 @@ import React, { Fragment, Component }      from 'react';
 import PropTypes                           from 'prop-types';
 import { Formik, Field, Form }             from 'formik';
 import { Input, Button, ThemedScrollbars } from 'deriv-components';
-import { localize, Localize }              from 'deriv-translations';
+import { localize }                        from 'deriv-translations';
 import IconBack                            from '../../assets/icon-back.jsx';
 import IconClose                           from '../../assets/icon-close.jsx';
 
 class Popup extends Component {
 
     handleSubmit = (formik_vars, { setSubmitting }) => {
-        // TODO: p2p API call to create ad
+        // TODO: [p2p-fix-api] call order create api
         // eslint-disable-next-line no-console
         console.log(this.state);
         // eslint-disable-next-line no-console
@@ -17,28 +17,35 @@ class Popup extends Component {
         setSubmitting(false);
     }
 
-    getInitialValues = () => {
+    getInitialValues = (is_buy) => {
         const { ad } = this.props;
-        const is_buy = ad.type === 'buy';
         const amount_currency = ad.min_transaction;
         const amount_asset = ad.min_transaction / ad.fix_price;
-        const initial_send = is_buy ? amount_currency : amount_asset;
-        const initial_receive = is_buy ? amount_asset : amount_currency;
-        const send_currency = is_buy ? ad.currency : ad.asset;
-        const receive_currency = is_buy ? ad.asset : ad.currency;
-        const send_validation = is_buy ? amount_currency : amount_asset;
-        const receive_validation = is_buy ? amount_asset : amount_currency;
+        const buy_initial_values = {
+            initial_send: amount_currency,
+            initial_receive: amount_asset,
+            send_currency: ad.currency,
+            receive_currency: ad.asset,
+        }
+        const sell_initial_values = {
+            initial_send: amount_asset,
+            initial_receive: amount_currency,
+            send_currency: ad.asset,
+            receive_currency: ad.currency,
+        }
 
-        return {
-            amount_currency,
-            initial_send,
-            initial_receive,
-            send_currency,
-            receive_currency,
-            send_validation,
-            receive_validation,
-        };
+        return is_buy ? buy_initial_values : sell_initial_values;
     }
+
+    calculateReceiveAmount = (send_amount, is_buy) => {
+        const { ad } = this.props;
+        return is_buy ? send_amount / ad.fix_price : send_amount * ad.fix_price;
+    };
+
+    calculateSendAmount = (receive_amount, is_buy) => {
+        const { ad } = this.props;
+        return is_buy ? receive_amount * ad.fix_price : receive_amount / ad.fix_price;
+    };
 
     render() {
         const { ad, onCancel } = this.props;
@@ -48,7 +55,7 @@ class Popup extends Component {
             initial_receive,
             send_currency,
             receive_currency
-        } = this.getInitialValues();
+        } = this.getInitialValues(is_buy);
 
         return (
             <Fragment>
@@ -90,8 +97,8 @@ class Popup extends Component {
                                                         trailing_icon={<span className='buy-sell__popup-field--trailing'>{send_currency}</span>}
                                                         onChange={(e) => {
                                                             const send = isNaN(e.target.value) ? 0 : e.target.value;
-                                                            const receive_amount = is_buy ?
-                                                                send / ad.fix_price : send * ad.fix_price;
+                                                            const receive_amount = this.calculateReceiveAmount(send, is_buy);
+
                                                             setFieldValue('receive', receive_amount);
                                                             handleChange(e);
                                                         }}
@@ -113,8 +120,8 @@ class Popup extends Component {
                                                         trailing_icon={<span className='buy-sell__popup-field--trailing'>{receive_currency}</span>}
                                                         onChange={(e) => {
                                                             const receive = isNaN(e.target.value) ? 0 : e.target.value;
-                                                            const send_amount = is_buy ?
-                                                                receive * ad.fix_price : receive / ad.fix_price;
+                                                            const send_amount = this.calculateSendAmount(receive, is_buy);
+
                                                             setFieldValue('send', send_amount);
                                                             handleChange(e);
                                                         }}
@@ -151,16 +158,18 @@ class Popup extends Component {
     }
 
     validatePopup = (values) => {
-        const { send_validation, receive_validation } = this.getInitialValues();
+        const { ad } = this.props;
+        const is_buy = ad.type === 'buy';
+        const { initial_send, initial_receive } = this.getInitialValues(is_buy);
 
         const validations = {
             send: [
                 v => !!v,
-                v => v >= send_validation,
+                v => v >= initial_send,
             ],
             receive: [
                 v => !!v,
-                v => v >= receive_validation,
+                v => v >= initial_receive,
             ],
         };
 
@@ -169,12 +178,10 @@ class Popup extends Component {
             receive: localize('Receive'),
         };
 
-        // TODO: [translation] text wont pass in the translation script
-
-        const common_messages  = [
-            '{{field_name}} is required',
-            '{{field_name}} below minimum value',
-        ];
+        const common_messages  = (field_name) => ([
+            localize('{{field_name}} is required', { field_name }),
+            localize('{{field_name}} below minimum value', { field_name }),
+        ]);
 
         const errors    = {};
 
@@ -185,12 +192,7 @@ class Popup extends Component {
                 if (error_index !== -1) {
                     switch (key) {
                         default:
-                            errors[key] = errors[key] = <Localize
-                                i18n_default_text={common_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                            />;
+                            errors[key] = common_messages(mappedKey[key])[error_index];
                     }
                 }
             });

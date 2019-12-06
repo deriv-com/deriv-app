@@ -3,8 +3,8 @@ import React     from 'react';
 
 const Highlight = ({ left, width }) => {
     const border_radius_size = '4px';
-    const left_offset        = (left < 60) ? 0 : left;
-    const width_offset       = (width < 60) ? 61 : width;
+    const left_offset        = left;
+    const width_offset       = width;
     const highlight_style = {
         width                    : width_offset,
         left                     : 0,

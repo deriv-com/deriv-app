@@ -1,5 +1,5 @@
 import classNames                     from 'classnames';
-import { ButtonToggleMenu, Dropdown } from 'deriv-components';
+import { ButtonToggle, Dropdown }     from 'deriv-components';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React, { Fragment }            from 'react';
@@ -51,7 +51,7 @@ const AdvancedDuration = ({
     return (
         <Fragment>
             { expiry_list.length > 1 &&
-                <ButtonToggleMenu
+                <ButtonToggle
                     id='dt_advanced_duration_toggle'
                     buttons_arr={expiry_list}
                     name='advanced_expiry_type'

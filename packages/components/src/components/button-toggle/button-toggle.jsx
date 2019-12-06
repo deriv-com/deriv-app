@@ -4,7 +4,7 @@ import React            from 'react';
 import HighlightWrapper from './button-highlight-wrapper.jsx';
 import Button           from '../button';
 
-const ButtonToggleMenu = ({
+const ButtonToggle = ({
     buttons_arr,
     className,
     id,
@@ -52,7 +52,7 @@ const ButtonToggleMenu = ({
     );
 };
 
-ButtonToggleMenu.propTypes = {
+ButtonToggle.propTypes = {
     buttons_arr: PropTypes.array,
     className  : PropTypes.string,
     id         : PropTypes.string,
@@ -65,4 +65,4 @@ ButtonToggleMenu.propTypes = {
     ]),
 };
 
-export default ButtonToggleMenu;
+export default ButtonToggle;

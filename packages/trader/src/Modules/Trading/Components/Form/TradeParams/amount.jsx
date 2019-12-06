@@ -1,5 +1,5 @@
 import classNames                     from 'classnames';
-import { ButtonToggleMenu, Dropdown } from 'deriv-components';
+import { ButtonToggle, Dropdown }     from 'deriv-components';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
@@ -63,7 +63,7 @@ const Amount = ({
 
     return (
         <Fieldset className='trade-container__fieldset'>
-            <ButtonToggleMenu
+            <ButtonToggle
                 id='dt_amount_toggle'
                 buttons_arr={basis_list}
                 className='dropdown--no-margin'

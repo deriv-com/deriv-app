@@ -1,6 +1,6 @@
-import React, { Component }         from 'react';
-import { Button, ButtonToggleMenu } from 'deriv-components';
-import { localize }                 from 'deriv-translations';
+import React, { Component }     from 'react';
+import { Button, ButtonToggle } from 'deriv-components';
+import { localize }             from 'deriv-translations';
 // import { WS } from '../../utils/websocket';
 import './ads.scss';
 
@@ -32,7 +32,7 @@ class Ads extends Component {
         return (
             <div className='ads'>
                 <div className='ads__header'>
-                    <ButtonToggleMenu
+                    <ButtonToggle
                         buttons_arr={ads_filters}
                         className='ads__header__filters'
                         is_animated={true}

@@ -10,10 +10,10 @@ import           './buy-sell.scss';
 class BuySell extends React.Component {
     state = {
         buy_sell_list: [],
+        is_loading   : true,
+        selected_ad  : {},
         show_popup   : false,
         type         : 'buy',
-        selected_ad  : {},
-        is_loading   : true,
     }
 
     componentDidMount() {

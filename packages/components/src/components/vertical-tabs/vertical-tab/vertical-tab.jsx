@@ -75,7 +75,7 @@ VerticalTab.propTypes = {
     action_bar: PropTypes.arrayOf(
         PropTypes.shape({
             component: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-            icon     : PropTypes.any, // TEMP
+            icon     : PropTypes.elementType,
             onClick  : PropTypes.func,
             title    : PropTypes.string,
         }),
@@ -90,7 +90,7 @@ VerticalTab.propTypes = {
     list                : PropTypes.arrayOf(
         PropTypes.shape({
             default: PropTypes.bool,
-            icon   : PropTypes.any, // TEMP
+            icon   : PropTypes.elementType,
             label  : PropTypes.string,
             path   : PropTypes.string,
             value  : PropTypes.oneOfType([PropTypes.func, PropTypes.object]),

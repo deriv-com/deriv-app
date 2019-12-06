@@ -1,9 +1,10 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { withRouter }    from 'react-router-dom';
+import { VerticalTab }   from 'deriv-components';
 import { localize }      from 'deriv-translations';
 import { FadeWrapper }   from 'App/Components/Animations';
-import VerticalTab       from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
+import Icon              from 'Assets/icon.jsx';
 import AppRoutes         from 'Constants/routes';
 import { connect }       from 'Stores/connect';
 import WalletInformation from './wallet-information.jsx';
@@ -39,7 +40,7 @@ class Reports extends React.Component {
             this.props.routes.forEach(route => {
                 options.push({
                     default: route.default,
-                    icon   : route.icon_component,
+                    icon   : <Icon icon={route.icon_component} />,
                     label  : route.title,
                     value  : route.component,
                     path   : route.path,
@@ -55,7 +56,7 @@ class Reports extends React.Component {
                     this.props.history.push(AppRoutes.trade);
                     this.props.toggleReports(false);
                 },
-                icon : 'ModalIconClose',
+                icon: <Icon icon={'ModalIconClose'} />,
                 title: localize('Close'),
             },
             {
@@ -81,6 +82,8 @@ class Reports extends React.Component {
                         is_routed={true}
                         is_full_width={true}
                         list={menu_options()}
+                        modal_index={this.props.modal_index}
+                        setModalIndex={this.props.setModalIndex}
                     />
                 </div>
             </FadeWrapper>
@@ -94,7 +97,9 @@ Reports.propTypes = {
     history         : PropTypes.object,
     is_visible      : PropTypes.bool,
     location        : PropTypes.object,
+    modal_index     : PropTypes.number,
     routes          : PropTypes.arrayOf(PropTypes.object),
+    setModalIndex   : PropTypes.func,
     toggleReports   : PropTypes.func,
 };
 
@@ -103,6 +108,8 @@ export default connect(
         disableRouteMode: ui.disableRouteModal,
         enableRouteMode : ui.setRouteModal,
         is_visible      : ui.is_reports_visible,
+        modal_index     : ui.modal_index,
+        setModalIndex   : ui.setModalIndex,
         toggleReports   : ui.toggleReports,
     })
 )(withRouter(Reports));

@@ -47,7 +47,7 @@ const RowComponent = React.memo(({ data, style }) => (
             <Table.Cell>{data.payment_method}</Table.Cell>
             <Table.Cell>
                 <div style={{
-                    marginRight: '9px',
+                    marginRight: '0.9rem',
                 }}>
                     <Button secondary small>{localize('Edit')}</Button>
                 </div>
@@ -63,17 +63,15 @@ RowComponent.propTypes = {
 RowComponent.displayName = 'RowComponent';
 
 export class MyAdsTable extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            items                 : initial_data,
-            is_loading_more_items : false,
-            has_more_items_to_load: true,
-            width                 : null,
-            height                : null,
-        };
-        this.table_container_ref = React.createRef();
-    }
+    state = {
+        items                 : initial_data,
+        is_loading_more_items : false,
+        has_more_items_to_load: true,
+        width                 : null,
+        height                : null,
+    };
+
+    table_container_ref = React.createRef();
     
     loadMore = () => {
         this.setState({ is_loading_more_items: true }, () => {
@@ -87,9 +85,11 @@ export class MyAdsTable extends React.Component {
     }
 
     componentDidMount() {
+        const { offsetWidth, clientHeight } = this.table_container_ref.current;
+
         this.setState({
-            width : this.table_container_ref.current.offsetWidth,
-            height: this.table_container_ref.current.clientHeight,
+            width : offsetWidth,
+            height: clientHeight,
         });
     }
 

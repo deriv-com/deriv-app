@@ -29,7 +29,7 @@ SkeletonLoader.propTypes = {
 
 export const InfiniteLoaderList = ({
     items,
-    // I think we'll need this in the future
+    // TODO: use with API later
     // eslint-disable-next-line no-unused-vars
     is_loading_more_items,
     loadMore,

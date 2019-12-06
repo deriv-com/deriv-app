@@ -239,6 +239,7 @@
         grid-gap: 0.2em;
 
         .dc-dropdown-container {
+            /* postcss-bem-linter: ignore */
             &__currency {
                 margin-top: 0.8em;
                 min-width: unset;

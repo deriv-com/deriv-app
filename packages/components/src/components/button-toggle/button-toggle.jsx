@@ -19,9 +19,9 @@ const ButtonToggle = ({
     };
     const menu = buttons_arr.map((val, idx) => {
         const menuClassNames = classNames(
-            'button-menu__button',
+            'dc-button-menu__button',
             {
-                'button-menu__button--active': val.value === value,
+                'dc-button-menu__button--active': val.value === value,
             },
         );
         return (
@@ -37,7 +37,7 @@ const ButtonToggle = ({
     return (
         <div
             id={id}
-            className={classNames('button-menu', className)}
+            className={classNames('dc-button-menu', className)}
         >
             {is_animated ?
                 <HighlightWrapper>

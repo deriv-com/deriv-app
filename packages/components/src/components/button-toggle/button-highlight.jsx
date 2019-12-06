@@ -3,20 +3,18 @@ import React     from 'react';
 
 const Highlight = ({ left, width }) => {
     const border_radius_size = '4px';
-    const left_offset        = left;
-    const width_offset       = width;
     const highlight_style = {
-        width                    : width_offset,
+        width,
         left                     : 0,
-        transform                : `translate3d(${left_offset}px, 0, 0)`,
-        'borderTopLeftRadius'    : (left_offset === 0) ? border_radius_size : 0,
-        'borderTopRightRadius'   : (left_offset === 0) ? 0 : border_radius_size ,
-        'borderBottomLeftRadius' : (left_offset === 0) ? border_radius_size  : 0,
-        'borderBottomRightRadius': (left_offset === 0) ? 0 : border_radius_size ,
+        transform                : `translate3d(${left}px, 0, 0)`,
+        'borderTopLeftRadius'    : (left === 0) ? border_radius_size : 0,
+        'borderTopRightRadius'   : (left === 0) ? 0 : border_radius_size ,
+        'borderBottomLeftRadius' : (left === 0) ? border_radius_size  : 0,
+        'borderBottomRightRadius': (left === 0) ? 0 : border_radius_size ,
     };
 
     return (
-        <span style={highlight_style} className='button-menu--highlight' />
+        <span style={highlight_style} className='dc-button-menu--highlight' />
     );
 };
 

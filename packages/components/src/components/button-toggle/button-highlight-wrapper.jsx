@@ -10,13 +10,13 @@ class HighlightWrapper extends React.PureComponent {
     }
 
     componentDidMount() {
-        const active_button_el = [...this.node.getElementsByClassName('button-menu__button--active')][0];
+        const active_button_el = [...this.node.getElementsByClassName('dc-button-menu__button--active')][0];
         if (!this.node) return;
         this.updateHighlightPosition(active_button_el);
     }
 
     componentDidUpdate() {
-        const active_button_el = [...this.node.getElementsByClassName('button-menu__button--active')][0];
+        const active_button_el = [...this.node.getElementsByClassName('dc-button-menu__button--active')][0];
         if (active_button_el) {
             this.updateHighlightPosition(active_button_el);
         } else if (this.state.left !== 0 || this.state.width !== 0) {
@@ -57,7 +57,7 @@ class HighlightWrapper extends React.PureComponent {
     render() {
         const { className, ...other_props } = this.props;
         const props = {
-            className: classnames('button-menu__wrapper', className),
+            className: classnames('dc-button-menu__wrapper', className),
             ...other_props,
         };
 

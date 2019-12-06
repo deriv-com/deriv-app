@@ -1,5 +1,5 @@
-/** @define button-menu */
-.button-menu {
+/** @define dc-button-menu */
+.dc-button-menu {
     display: flex;
     justify-content: center;
     width: 100%;
@@ -20,7 +20,7 @@
         width: 50%;
         background-color: var(--state-normal);
 
-        &:hover:not(.button-menu__button--active) {
+        &:hover:not(.dc-button-menu__button--active) {
             background-color: var(--state-hover) !important;
         }
         /* postcss-bem-linter: ignore */
@@ -46,7 +46,7 @@
         background-color: var(--state-normal);
         display: flex;
 
-        .button-menu {
+        .dc-button-menu {
             &__button, &__button--active {
                 background-color: rgba(0, 0, 0, 0) !important;
                 z-index: 1;

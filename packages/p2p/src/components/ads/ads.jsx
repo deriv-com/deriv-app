@@ -21,7 +21,7 @@ class Ads extends Component {
         filter_value: 'buy',
     }
 
-    onChange (event) {
+    onChange = (event) => {
         this.setState({
             filter_value: event.target.value,
         });
@@ -35,9 +35,9 @@ class Ads extends Component {
                     <ButtonToggle
                         buttons_arr={ads_filters}
                         className='ads__header__filters'
-                        is_animated={true}
+                        is_animated
                         name='filter'
-                        onChange={(event) => { this.onChange(event); }}
+                        onChange={this.onChange}
                         value={filter_value}
                     />
                 </div>

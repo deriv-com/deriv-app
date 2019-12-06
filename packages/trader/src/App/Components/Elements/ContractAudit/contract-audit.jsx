@@ -8,7 +8,8 @@ import {
 import {
     getBarrierLabel,
     getBarrierValue,
-    isDigitType }           from 'App/Components/Elements/PositionsDrawer/helpers';
+    isDigitType,
+    isResetCallPutType }           from 'App/Components/Elements/PositionsDrawer/helpers';
 import { getThemedIcon }    from './Helpers/icons';
 import ContractAuditItem    from './contract-audit-item.jsx';
 
@@ -23,14 +24,19 @@ class ContractAudit extends React.PureComponent {
             has_result,
             is_dark_theme,
         } = this.props;
+
         if (!has_result) return null;
-        const is_profit    = (contract_info.profit >= 0);
+
+        // Contract type checks
+        const is_digit          = isDigitType(contract_info.contract_type);
+        const is_reset_call_put = isResetCallPutType(contract_info.contract_type);
+
+        const is_profit = (contract_info.profit >= 0);
 
         const is_tick = (contract_info.tick_count > 0);
         const contract_time = is_tick ? contract_info.tick_count : duration;
         const contract_unit = is_tick ? localize('ticks') : duration_unit;
 
-        const is_reset_call_put = /RESET(CALL|PUT)/.test(contract_info.contract_type);
         const contract_audit_item_config_list = [
             {
                 containerId           : 'dt_id_label',
@@ -55,11 +61,9 @@ class ContractAudit extends React.PureComponent {
             {
                 containerId           : 'dt_bt_label',
                 contractAuditItemProps: {
-                    icon: isDigitType(contract_info.contract_type)
-                        ? 'target'
-                        : 'barrier',
+                    icon : is_digit ? 'target' : 'barrier',
                     label: getBarrierLabel(contract_info),
-                    value: getBarrierValue(contract_info),
+                    value: is_reset_call_put ? contract_info.entry_spot : getBarrierValue(contract_info),
                 },
                 shouldShow: true,
             },
@@ -67,6 +71,7 @@ class ContractAudit extends React.PureComponent {
                 contractAuditItemProps: {
                     icon : 'reset_barrier',
                     label: localize('Reset barrier'),
+                    value: contract_info.barrier,
                 },
                 shouldShow: is_reset_call_put,
             },
@@ -87,7 +92,7 @@ class ContractAudit extends React.PureComponent {
                     value : contract_info.entry_spot_display_value,
                     value2: toGMTFormat(epochToMoment(contract_info.entry_tick_time)) || '-',
                 },
-                shouldShow: !isDigitType(contract_info.contract_type),
+                shouldShow: !is_digit,
             },
             {
                 contractAuditItemProps: {

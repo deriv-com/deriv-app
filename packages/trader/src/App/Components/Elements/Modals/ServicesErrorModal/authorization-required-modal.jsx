@@ -24,7 +24,7 @@ const AuthorizationRequiredModal = ({
         onConfirm={redirectToSignUp}
         title={localize('Get started for free and without any risk')}
     >
-        {localize('Please log in to start trading.')}
+        {localize('Log in or create a free account to start trading')}
     </Dialog>
 );
 

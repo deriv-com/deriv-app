@@ -9,7 +9,6 @@ import Lazy            from 'App/Containers/Lazy';
 import { localize }    from 'deriv-translations';
 import Icon            from 'Assets/icon.jsx';
 
-
 import 'Sass/app/modules/settings.scss';
 
 const ThemeSetting = () => (

@@ -58,6 +58,10 @@ class BuySell extends React.Component {
         this.setState({ selected_ad: ad, show_popup: true });
     }
 
+    onCancelClick = () => {
+        this.setState({ show_popup: false });
+    }
+
     render() {
         const { buy_sell_list, show_popup, type, is_loading, selected_ad } = this.state;
         return (

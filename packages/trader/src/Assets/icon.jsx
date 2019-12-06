@@ -66,6 +66,7 @@ class Icon extends React.PureComponent {
             IconWebsite                : React.lazy(() => import(/* webpackChunkName: "icon-website" */ './Cashier/icon-website.jsx')),
             IconEmail                  : React.lazy(() => import(/* webpackChunkName: "icon-email" */ './Cashier/icon-email.jsx')),
             IconTransferDone           : React.lazy(() => import(/* webpackChunkName: "icon-transfer-done" */ './Cashier/icon-transfer-done.jsx')),
+            IconP2PCashier             : React.lazy(() => import(/* webpackChunkName: "icon-p2p-cashier" */ './Cashier/icon-p2p-cashier.jsx')),
 
             // Modal
             ModalIconClose: React.lazy(() => import(/* webpackChunkName: "icon-modal-close" */ './Modal/icon-close.jsx')),
@@ -111,9 +112,10 @@ class Icon extends React.PureComponent {
             IconWallet: React.lazy(() => import(/* webpackChunkName: "icon-wallet" */ './Statement/icon-wallet.jsx')),
 
             // Signup
-            IconAdd     : React.lazy(() => import(/* webpackChunkName: "icon-add" */ './Signup/icon-add.jsx')),
-            IconRedArrow: React.lazy(() => import(/* webpackChunkName: "icon-red-arrow" */ './Signup/icon-red-arrow.jsx')),
-            IconWon     : React.lazy(() => import(/* webpackChunkName: "icon-won" */ './Signup/icon-won.jsx')),
+            IconAdd      : React.lazy(() => import(/* webpackChunkName: "icon-add" */ './Signup/icon-add.jsx')),
+            IconRedArrow : React.lazy(() => import(/* webpackChunkName: "icon-red-arrow" */ './Signup/icon-red-arrow.jsx')),
+            IconWon      : React.lazy(() => import(/* webpackChunkName: "icon-won" */ './Signup/icon-won.jsx')),
+            IconDuplicate: React.lazy(() => import(/* webpackChunkName: "icon-duplicate" */'./Signup/icon-duplicate.jsx')),
 
             // Trading
             IconBarrierDown   : React.lazy(() => import(/* webpackChunkName: "icon-barrier-down" */ './Trading/Barriers/icon-barrier-down.jsx')),

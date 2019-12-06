@@ -3,7 +3,7 @@ import { Money }            from 'deriv-components';
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import CurrencyUtils        from 'deriv-shared/utils/currency';
-import Localize             from 'App/Components/Elements/localize.jsx';
+import { Localize }         from 'deriv-translations';
 import Icon                 from 'Assets/icon.jsx';
 
 const ProfitLossCardContent = ({

@@ -60,10 +60,7 @@ const SocketCache = (() => {
 
         // Excluding closed markets from caching once we have ws_cache and active_symbols cache set up
         const ws_cache = JSON.parse(localStorage.getItem('ws_cache'));
-        // TODO: Update method of getting language from cookies once we have it in ui_store localStorage
-        const curr_lang = document.cookie.replace(/(?:(?:^|.*;\s*)language\s*=\s*([^;]*).*$)|^.*$/, '$1');
-
-        const active_symbols_obj = curr_lang ? `active_symbols___${curr_lang}` : null;
+        const active_symbols_obj = 'active_symbols';
 
         if (!ObjectUtils.isEmptyObject(ws_cache)) {
             if (msg_type === 'ticks_history' && !ObjectUtils.isEmptyObject(ws_cache[active_symbols_obj])) {
@@ -77,6 +74,11 @@ const SocketCache = (() => {
 
         // check if response has subscription, since we only want to cache non-streaming responses
         if (response.subscription || (response.echo_req.end === 'latest')) return;
+
+        // TODO: remove once caching is fixed to distinguish non-streaming/expired contracts from poc calls
+        if (msg_type === 'proposal_open_contract') {
+            if (!response.proposal_open_contract.is_sold) return;
+        }
 
         if (!config[msg_type]) return;
         // prevent unwanted page behaviour

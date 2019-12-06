@@ -1,0 +1,89 @@
+.my-ads {
+    padding: 2.4rem;
+
+    &__header {
+        display: flex;
+        align-items: center;
+    }
+    &__heading {
+        &-wrapper {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            font-size: 1.6rem;
+            font-weight: bold;
+            line-height: 1.75;
+            color: var(--text-general);
+        }
+        &-btn {
+            padding: 0.4rem 1.6rem 0 0;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    }
+    &__form {
+        margin: 1.6rem 0;
+
+        &-container {
+            display: flex;
+            width: 41rem;
+        }
+        &-field {
+            margin: 1rem 1.8rem 1.8rem 0;
+
+            & .dc-autocomplete__field {
+                margin-bottom: 0;
+            }
+            & .dc-input__label {
+                top: 1.2rem;
+            }
+            &--single {
+                width: 18.9rem;
+            }
+            &--textarea {
+                width: 57rem;
+            }
+            &--trailing {
+                font-size: var(--text-size-xxs);
+                color: var(--text-less-prominent);
+            }
+        }
+        &-footer {
+            height: 7.2rem;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            border-top: 1px solid var(--general-section-1);
+            padding-right: 1.6rem;
+
+            & > button:first-of-type {
+                margin-right: 0.8rem;
+            }
+        }
+    }
+}
+
+.toggle-ads {
+    align-items: center;
+    display: flex;
+    font-size: var(--text-size-s);
+    justify-items: flex-start;
+    width: 100%;
+
+    &__switch {
+        transform: scale(0.5) translateX(-50%);
+    }
+    &__message {
+        margin-left: -3.4rem;
+    }
+    &--on {
+        color: var(--text-profit-success);
+    }
+    &--off {
+        color: var(--text-less-prominent);
+    }
+}

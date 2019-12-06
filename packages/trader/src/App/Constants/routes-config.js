@@ -1,5 +1,5 @@
 import { lazy }                       from 'react';
-import { localize }                   from 'App/i18n';
+import { localize }                   from 'deriv-translations';
 import { routes }                     from 'Constants';
 
 import PersonalDetails     from 'Modules/Account/Sections/Profile/PersonalDetails';
@@ -28,6 +28,7 @@ const Account = lazy(() => import(/* webpackChunkName: "account" */ 'Modules/Acc
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
+// Order matters
 const initRoutesConfig = () => ([
     { path: routes.contract,  component: ContractDetails, title: localize('Contract Details'),  is_authenticated: true },
     { path: routes.mt5,       component: MT5,             title: localize('MT5'),               is_authenticated: true },

@@ -1,14 +1,13 @@
 import { Button, Popover }  from 'deriv-components';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
-import { localize }         from 'App/i18n';
+import { localize }         from 'deriv-translations';
 import CurrencyUtils        from 'deriv-shared/utils/currency';
 import Icon                 from 'Assets/icon.jsx';
 import routes               from 'Constants/routes';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
 import ToggleNotifications  from './toggle-notifications.jsx';
-import ToggleCashier        from './toggle-cashier.jsx';
 import { BinaryLink }       from '../../Routes';
 import                           'Sass/app/_common/components/account-switcher.scss';
 
@@ -17,16 +16,12 @@ const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info",
 export class AccountActions extends Component {
     shouldComponentUpdate(nextProps) {
         return (
-            nextProps.active_cashier_tab !== this.props.active_cashier_tab ||
             nextProps.balance !== this.props.balance ||
             nextProps.can_upgrade !== this.props.can_upgrade ||
             nextProps.can_upgrade_to !== this.props.can_upgrade_to ||
             nextProps.currency !== this.props.currency ||
             nextProps.is_acc_switcher_on !== this.props.is_acc_switcher_on ||
-            nextProps.is_cashier_modal_on !== this.props.is_cashier_modal_on ||
             nextProps.is_notifications_visible !== this.props.is_notifications_visible ||
-            nextProps.is_payment_agent_visible !== this.props.is_payment_agent_visible ||
-            nextProps.is_payment_agent_transfer_visible !== this.props.is_payment_agent_transfer_visible ||
             nextProps.is_logged_in !== this.props.is_logged_in ||
             nextProps.is_virtual !== this.props.is_virtual ||
             nextProps.loginid !== this.props.loginid ||
@@ -36,23 +31,18 @@ export class AccountActions extends Component {
 
     render() {
         const {
-            active_cashier_tab,
             balance,
             can_upgrade,
             currency,
             is_acc_switcher_on,
-            is_cashier_modal_on,
             is_logged_in,
             is_notifications_visible,
-            is_payment_agent_visible,
-            is_payment_agent_transfer_visible,
             is_virtual,
             notifications_count,
+            onClickDeposit,
             openRealAccountSignup,
-            setCashierActiveTab,
             toggleAccountsDialog,
             toggleNotifications,
-            toggleCashierModal,
         } = this.props;
         if (is_logged_in) {
             return (
@@ -97,14 +87,12 @@ export class AccountActions extends Component {
                         </div>
                     }
                     {currency &&
-                    <ToggleCashier
-                        active_tab={active_cashier_tab}
+                    <Button
                         className='acc-info__button'
-                        toggleCashier={toggleCashierModal}
-                        is_cashier_visible={is_cashier_modal_on}
-                        is_payment_agent_visible={is_payment_agent_visible}
-                        is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
-                        setCashierActiveTab={setCashierActiveTab}
+                        has_effect
+                        text={localize('Deposit')}
+                        onClick={onClickDeposit}
+                        primary
                     />
                     }
                 </React.Fragment>
@@ -120,22 +108,17 @@ export class AccountActions extends Component {
 }
 
 AccountActions.propTypes = {
-    active_cashier_tab               : PropTypes.any,
-    balance                          : PropTypes.any,
-    can_upgrade                      : PropTypes.any,
-    can_upgrade_to                   : PropTypes.any,
-    currency                         : PropTypes.any,
-    is_acc_switcher_on               : PropTypes.any,
-    is_cashier_modal_on              : PropTypes.any,
-    is_logged_in                     : PropTypes.any,
-    is_notifications_visible         : PropTypes.any,
-    is_payment_agent_transfer_visible: PropTypes.any,
-    is_payment_agent_visible         : PropTypes.any,
-    is_virtual                       : PropTypes.any,
-    notifications_count              : PropTypes.any,
-    openRealAccountSignup            : PropTypes.func,
-    setCashierActiveTab              : PropTypes.func,
-    toggleAccountsDialog             : PropTypes.any,
-    toggleCashierModal               : PropTypes.any,
-    toggleNotifications              : PropTypes.any,
+    balance                 : PropTypes.any,
+    can_upgrade             : PropTypes.any,
+    can_upgrade_to          : PropTypes.any,
+    currency                : PropTypes.any,
+    is_acc_switcher_on      : PropTypes.any,
+    is_logged_in            : PropTypes.any,
+    is_notifications_visible: PropTypes.any,
+    is_virtual              : PropTypes.any,
+    notifications_count     : PropTypes.any,
+    onClickDeposit          : PropTypes.func,
+    openRealAccountSignup   : PropTypes.func,
+    toggleAccountsDialog    : PropTypes.any,
+    toggleNotifications     : PropTypes.any,
 };

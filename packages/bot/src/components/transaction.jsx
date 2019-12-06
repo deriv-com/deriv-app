@@ -3,7 +3,7 @@ import {
     Money,
     Popover }                  from 'deriv-components';
 import React                   from 'react';
-import { localize }            from 'deriv-translations/lib/i18n';
+import { localize }            from 'deriv-translations';
 import {
     BuyPriceIcon,
     CompletedIcon,

@@ -94,6 +94,15 @@ const TradeCategories = ({ category }) => {
                     </React.Fragment>
                 );
                 break;
+            case 'reset_call_put':
+                TradeTypeTemplate = (
+                    <React.Fragment>
+                        <p>{ localize('If you select "Reset-Up”, you win the payout if the exit spot is strictly higher than either the entry spot or the spot at reset time.') }</p>
+                        <p>{ localize('If you select "Reset-Down”, you win the payout if the exit spot is strictly lower than either the entry spot or the spot at reset time.') }</p>
+                        <p>{ localize('If the exit spot is equal to the barrier or the new barrier (if a reset occurs), you don\'t win the payout.') }</p>
+                    </React.Fragment>
+                );
+                break;
             default:
                 TradeTypeTemplate = (
                     <p>{ localize('Description not found.') }</p>

@@ -4,7 +4,6 @@ import {
     Button,
     Dialog,
     Loading }    from 'deriv-components';
-// import { WS } from '../../utils/websocket';
 import Popup     from './popup.jsx';
 import           './buy-sell.scss';
 
@@ -57,16 +56,6 @@ class BuySell extends React.Component {
 
     handleClick = (ad) => {
         this.setState({ selected_ad: ad, show_popup: true });
-    }
-
-    onConfirmClick = () => {
-        // TODO: [p2p] will create order from API
-        // eslint-disable-next-line no-console
-        console.log(this.state);
-    }
-
-    onCancelClick = () => {
-        this.setState({ show_popup: false });
     }
 
     render() {

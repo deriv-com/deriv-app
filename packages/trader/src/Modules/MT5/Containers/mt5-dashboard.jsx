@@ -3,6 +3,7 @@ import {
     Tabs }                       from 'deriv-components';
 import React                     from 'react';
 import { withRouter }            from 'react-router';
+import { Redirect }              from 'react-router-dom';
 import { localize, Localize }    from 'deriv-translations';
 import routes                    from 'Constants/routes';
 import MT5PasswordModal          from 'Modules/MT5/Containers/mt5-password-modal.jsx';
@@ -71,10 +72,17 @@ class MT5Dashboard extends React.Component {
             beginRealSignupForMt5,
             createMT5Account,
             is_loading,
+            landing_company_shortcode,
             has_mt5_account,
             has_real_account,
             NotificationMessages,
+            is_logged_in,
+            can_upgrade_to,
         } = this.props;
+
+        if (is_logged_in && can_upgrade_to !== 'svg' && landing_company_shortcode !== 'svg') {
+            return <Redirect to={routes.trade} />;
+        }
 
         return (
             <div className='mt5-dashboard__container'>
@@ -179,9 +187,12 @@ export default withRouter(connect(({ client, modules, ui }) => ({
     beginRealSignupForMt5      : modules.mt5.beginRealSignupForMt5,
     createMT5Account           : modules.mt5.createMT5Account,
     current_list               : modules.mt5.current_list,
+    is_logged_in               : client.is_logged_in,
+    can_upgrade_to             : client.can_upgrade_to,
     disableMt5PasswordModal    : modules.mt5.disableMt5PasswordModal,
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
     is_loading                 : client.is_populating_mt5_account_list,
+    landing_company_shortcode  : client.landing_company_shortcode,
     has_mt5_account            : modules.mt5.has_mt5_account,
     has_real_account           : client.has_active_real_account,
     setCurrentAccount          : modules.mt5.setCurrentAccount,

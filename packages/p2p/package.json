@@ -22,7 +22,10 @@
     "formik": "^1.5.8",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
+    "react-content-loader": "^4.3.2",
     "react-dom": "^16.8.6",
+    "react-window": "^1.8.5",
+    "react-window-infinite-loader": "^1.0.5",
     "svg-sprite-loader": "^4.1.6",
     "svgo-loader": "^2.2.1"
   },

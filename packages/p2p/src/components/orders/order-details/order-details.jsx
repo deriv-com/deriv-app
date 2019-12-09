@@ -76,7 +76,10 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         is_buyer,
         is_buyer_confirmed,
         is_pending,
-        setStatus,
+        offer_currency,
+        transaction_currency,
+        price_rate,
+        offer_amount,
     } = order_details;
     let buttons_to_render = null;
 
@@ -92,7 +95,31 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
 
     const paidOrder = () => {
         // TODO [p2p-order-api] call paid api
-        setStatus('confirmed-client');
+        const options = {
+            title: localize('Confirm this payment?'),
+            message: localize('Make sure you have successfully sent the funds to the seller’s bank account or e-wallet mentioned above.'),
+            has_cancel: true,
+            cancel_text: localize('I didn\'t pay yet'),
+            confirm_text: localize('I\'ve paid'),
+            onClickConfirm: cancelPopup,
+        }
+        showPopup(options);
+    }
+
+    const receivedFunds = () => {
+        const options = {
+            title: localize('Have you received funds?'),
+            message: localize('Make sure that you have logged in your bank account or other e-wallet to check the receipt.'),
+            need_confirmation: true,
+            offer: {
+                currency       : offer_currency,
+                asset          : transaction_currency,
+                fix_price      : price_rate,
+                amount         : offer_amount,
+            },
+            onClickConfirm: cancelPopup,
+        }
+        showPopup(options);
     }
 
     if (is_pending && is_buyer) {
@@ -106,7 +133,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
 
     if ((is_pending || is_buyer_confirmed) && !is_buyer) {
         buttons_to_render = ( // TODO: [p2p-add-confirmation-popup] - Add popup to `onClick` function to confirm user action
-            <Button className='order-details__actions-button' large primary onClick={ () => console.log('I\'ve received funds') }>{ localize('I\'ve received funds') }</Button>
+            <Button className='order-details__actions-button' large primary onClick={receivedFunds}>{ localize('I\'ve received funds') }</Button>
         );
     }
 

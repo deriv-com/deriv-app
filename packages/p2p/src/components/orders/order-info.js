@@ -2,8 +2,8 @@ import { millisecondsToTimer } from 'Utils/date-time';
 
 export default class OrderInfo {
     order_id = 'ABC123';
-    status = 'pending';
-    type = 'buy';
+    status = 'confirmed-client';
+    type = 'sell';
     advertiser_notes = 'Hello I am watermelon';
     order_purchase_datetime = new Date();
     other_party = 'John Doe';
@@ -56,14 +56,5 @@ export default class OrderInfo {
 
     get display_remaining_time() {
         return millisecondsToTimer(this.remaining_time);
-    }
-    // set status(status) {
-    //     this.status = status;
-    // }
-
-    setStatus(st) {
-        console.log(st)
-        console.log(this)
-        this.status = st
     }
 }

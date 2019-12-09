@@ -6,7 +6,8 @@ import { localize }                           from 'deriv-translations';
 import IconClose                              from '../../assets/icon-close.jsx';
 
 class Popup extends Component {
-    handleSubmit = ({ setSubmitting }) => {
+    handleSubmit = (values, { setSubmitting }) => {
+        console.log(values)
         this.props.onClickConfirm();
         setSubmitting(false);
     }

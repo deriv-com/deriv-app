@@ -16,7 +16,7 @@ const user_data = {
     average_release_unit      : 'min',
 };
 
-function capitalize (string) {
+function toSentenceCase (string) {
     if (!string) {
         return '';
     }
@@ -61,7 +61,7 @@ const MyProfile = () => {
     return (
         <div className='my-profile'>
             <div className='my-profile__name'>
-                {`${capitalize(user_data.first_name)} ${capitalize(user_data.last_name)}`}
+                {`${toSentenceCase(user_data.first_name)} ${toSentenceCase(user_data.last_name)}`}
             </div>
             <div className='my-profile__data'>
                 <Cell

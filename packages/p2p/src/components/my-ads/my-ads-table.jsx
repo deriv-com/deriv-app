@@ -2,6 +2,7 @@ import React                  from 'react';
 import PropTypes              from 'prop-types';
 import { Table, Button }      from 'deriv-components';
 import { localize }           from 'deriv-translations';
+import { MyAdsLoader }        from './my-ads-loader.jsx';
 import { InfiniteLoaderList } from '../table/infinite-loader-list.jsx';
 import { TableDimensions }    from '../table/table-dimensions.jsx';
 
@@ -105,6 +106,7 @@ export class MyAdsTable extends React.Component {
                                     loadMore={this.loadMore}
                                     has_more_items_to_load={has_more_items_to_load}
                                     RenderComponent={RowComponent}
+                                    RowLoader={MyAdsLoader}
                                     width={dimensions.width}
                                     heigh={dimensions.height}
                                 />

@@ -2,27 +2,6 @@ import React                     from 'react';
 import PropTypes                 from 'prop-types';
 import { FixedSizeList as List } from 'react-window';
 import InfiniteLoader            from 'react-window-infinite-loader';
-import ContentLoader             from 'react-content-loader';
-
-const BuySellLoader = ({ width }) => (
-    <ContentLoader
-        height={64}
-        width={900 || width}
-        speed={2}
-        primaryColor={'var(--general-hover)'}
-        secondaryColor={'var(--general-active)'}
-    >
-        <rect x="1" y="20" rx="5" ry="5" width="90" height="10" />
-        <rect x="150" y="20" rx="5" ry="5" width="90" height="10" />
-        <rect x="300" y="20" rx="5" ry="5" width="90" height="10" />
-        <rect x="446" y="20" rx="5" ry="5" width="90" height="10" />
-        <rect x="600" y="20" rx="5" ry="5" width="90" height="10" />
-        <rect x="750" y="15" rx="5" ry="5" width="45" height="18" />
-    </ContentLoader>
-);
-BuySellLoader.propTypes = {
-    width: PropTypes.number,
-};
 
 export const InfiniteLoaderList = ({
     items,
@@ -33,6 +12,7 @@ export const InfiniteLoaderList = ({
     has_more_items_to_load,
     item_size,
     RenderComponent,
+    RowLoader,
     height,
     width,
 }) => {
@@ -42,7 +22,7 @@ export const InfiniteLoaderList = ({
         if (is_loading) {
             return (
                 <div style={style}>
-                    <BuySellLoader width={width} />
+                    <RowLoader width={width} />
                 </div>
             );
         }
@@ -85,6 +65,7 @@ InfiniteLoaderList.propTypes = {
     item_size             : PropTypes.number,
     loadMore              : PropTypes.func,
     RenderComponent       : PropTypes.any,
+    RowLoader             : PropTypes.any.isRequired,
     children              : PropTypes.node,
     height                : PropTypes.number,
     width                 : PropTypes.number,

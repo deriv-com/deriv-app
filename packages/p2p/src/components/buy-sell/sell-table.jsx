@@ -1,7 +1,9 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
 import { Loading }            from 'deriv-components';
-import { RowComponent }       from './row.jsx';
+import {
+    RowComponent,
+    BuySellRowLoader }        from './row.jsx';
 import { InfiniteLoaderList } from '../table/infinite-loader-list.jsx';
 import { TableDimensions }    from '../table/table-dimensions.jsx';
 
@@ -94,6 +96,7 @@ export class SellTable extends React.Component {
                         loadMore={this.loadMore}
                         has_more_items_to_load={has_more_items_to_load}
                         RenderComponent={Row}
+                        RowLoader={BuySellRowLoader}
                         width={dimensions.width}
                         height={dimensions.height}
                     />

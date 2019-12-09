@@ -10,7 +10,7 @@ import { TableDimensions }    from '../table/table-dimensions.jsx';
 // TODO: replace with API response
 const mock_response = {
     advertiser     : 'John Doe',
-    price          : 'IRD 2,000,000.00',
+    price          : 'IDR 2,000,000.00',
     payment_method : 'Bank transfer',
     type           : 'sell',
     id             : 'sell_id',

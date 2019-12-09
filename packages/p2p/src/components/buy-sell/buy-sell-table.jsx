@@ -2,8 +2,8 @@ import React         from 'react';
 import PropTypes     from 'prop-types';
 import { Table }     from 'deriv-components';
 import { BuyTable }  from './buy-table.jsx';
-import { SellTable } from './sell-table.jsx';
 import { headers }   from './row.jsx';
+import { SellTable } from './sell-table.jsx';
 
 export const BuySellTable = ({ table_type, setSelectedAd }) => {
     const is_buy = table_type === 'buy';

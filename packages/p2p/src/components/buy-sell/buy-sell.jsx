@@ -21,14 +21,9 @@ const buy_sell_filters = [
 
 class BuySell extends Component {
     state = {
-        filter_value: 'buy',
-        selected_ad : {},
-        show_popup  : false,
-    }
-
-    componentDidMount() {
-        // Call API to retrieve buy_sell ad list
-        this.setState({ is_loading: false });
+        table_type : 'buy',
+        selected_ad: {},
+        show_popup : false,
     }
 
     setSelectedAd = selected_ad => {
@@ -39,12 +34,12 @@ class BuySell extends Component {
         this.setState({ show_popup: false });
     }
 
-    onFilterChange = (event) => {
-        this.setState({ filter_value: event.target.value });
+    onChangeTableType = (event) => {
+        this.setState({ table_type: event.target.value });
     }
 
     render() {
-        const { show_popup, filter_value, selected_ad } = this.state;
+        const { table_type, selected_ad, show_popup } = this.state;
 
         return (
             <div className='buy-sell'>
@@ -54,11 +49,11 @@ class BuySell extends Component {
                         className='buy-sell__header__filters'
                         is_animated
                         name='filter'
-                        onChange={this.onFilterChange}
-                        value={filter_value}
+                        onChange={this.onChangeTableType}
+                        value={table_type}
                     />
                 </div>
-                <BuySellTable table_type={filter_value} setSelectedAd={this.setSelectedAd} />
+                <BuySellTable table_type={table_type} setSelectedAd={this.setSelectedAd} />
                 {show_popup && (
                     <div className='buy-sell__dialog'>
                         <Dialog

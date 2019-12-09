@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { localize }                   from 'deriv-translations';
 import { Button }                     from 'deriv-components';
 import FormAds                        from './form-ads.jsx';
+import { MyAdsTable }                 from './my-ads-table.jsx';
 import ToggleAds                      from './toggle-ads.jsx';
 import './my-ads.scss';
 
@@ -34,6 +35,7 @@ class MyAds extends Component {
                                 {localize('Create ads')}
                             </Button>
                         </div>
+                        <MyAdsTable />
                     </Fragment>
                 )}
             </div>

@@ -5,7 +5,7 @@ import {
     Dialog,
     Loading,
     ButtonToggle }          from 'deriv-components';
-import { localize }         from 'deriv-translations';
+import { localize }         from '../i18next';
 import Popup                from './popup.jsx';
 import                           './buy-sell.scss';
 

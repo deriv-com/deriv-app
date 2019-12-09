@@ -22,6 +22,8 @@ const fallback_content = {
 };
 
 class Account extends React.Component {
+    // TODO: find better fix for no-op issue
+    is_mounted = false;
     state = {
         is_high_risk_client: false,
         is_loading         : true,
@@ -39,12 +41,13 @@ class Account extends React.Component {
     };
 
     componentDidMount() {
+        this.is_mounted = true;
         WS.wait('authorize', 'get_account_status').then(() => {
             if (this.props.account_status) {
                 const { authentication } = this.props.account_status;
                 const is_high_risk_client = this.props.is_high_risk;
                 const needs_verification = authentication.needs_verification.includes('identity') || authentication.needs_verification.includes('document');
-                this.setState({ is_high_risk_client, is_loading: false, needs_verification });
+                if (this.is_mounted) this.setState({ is_high_risk_client, is_loading: false, needs_verification });
             }
         });
         this.props.enableRouteMode();
@@ -53,6 +56,7 @@ class Account extends React.Component {
     }
 
     componentWillUnmount() {
+        this.is_mounted = false;
         this.props.toggleAccount(false);
         this.props.disableRouteMode();
         document.removeEventListener('mousedown', this.handleClickOutside);

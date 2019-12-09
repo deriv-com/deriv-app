@@ -1,19 +1,32 @@
-import React     from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import PropTypes            from 'prop-types';
 import {
     Button,
     Dialog,
-    Loading }    from 'deriv-components';
-import Popup     from './popup.jsx';
-import           './buy-sell.scss';
+    Loading,
+    ButtonToggle }          from 'deriv-components';
+import { localize }         from 'deriv-translations';
+import Popup                from './popup.jsx';
+import                           './buy-sell.scss';
 
-class BuySell extends React.Component {
+const buy_sell_filters = [
+    {
+        text : localize('Buy'),
+        value: 'buy',
+    },
+    {
+        text : localize('Sell'),
+        value: 'sell',
+    },
+];
+
+class BuySell extends Component {
     state = {
         buy_sell_list: [],
         is_loading   : true,
         selected_ad  : {},
         show_popup   : false,
-        type         : 'buy',
+        filter_value : 'buy',
     }
 
     componentDidMount() {
@@ -62,11 +75,26 @@ class BuySell extends React.Component {
         this.setState({ show_popup: false });
     }
 
+    onFilterChange = (event) => {
+        this.setState({
+            filter_value: event.target.value,
+        });
+    }
+
     render() {
-        const { buy_sell_list, show_popup, type, is_loading, selected_ad } = this.state;
+        const { buy_sell_list, show_popup, filter_value, is_loading, selected_ad } = this.state;
         return (
             <div className='buy-sell'>
-                {type}
+                <div className='buy-sell__header'>
+                    <ButtonToggle
+                        buttons_arr={buy_sell_filters}
+                        className='buy-sell__header__filters'
+                        is_animated
+                        name='filter'
+                        onChange={this.onFilterChange}
+                        value={filter_value}
+                    />
+                </div>
                 {is_loading ? <Loading is_fullscreen={false} /> : (
                     <ul className='buy-sell__list-wrapper'>
                         {buy_sell_list.map(ad => (

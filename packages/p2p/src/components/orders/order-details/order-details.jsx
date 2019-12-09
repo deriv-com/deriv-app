@@ -1,4 +1,5 @@
 import React              from 'react';
+import PropTypes          from 'prop-types';
 import { Button, Dialog } from 'deriv-components';
 import { localize }       from 'deriv-translations';
 import FooterActions      from 'Components/footer-actions/footer-actions.jsx';
@@ -11,6 +12,11 @@ const OrderInfoBlock = ({ label, value }) => (
         <strong className='order-details__info-block-value'>{ value }</strong>
     </div>
 );
+
+OrderInfoBlock.propTypes = {
+    label: PropTypes.string,
+    value: PropTypes.string,
+};
 
 const OrderDetailsStatusBlock = ({ order_details }) => {
     const {
@@ -52,6 +58,10 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
     );
 };
 
+OrderDetailsStatusBlock.propTypes = {
+    order_details: PropTypes.object,
+};
+
 const OrderDetailsAmountBlock = ({ order_details }) => (
     (order_details.is_pending || order_details.is_buyer_confirmed) ? (
         <h1 className='order-details__header-amount'>
@@ -59,6 +69,10 @@ const OrderDetailsAmountBlock = ({ order_details }) => (
         </h1>
     ) : null
 );
+
+OrderDetailsAmountBlock.propTypes = {
+    order_details: PropTypes.object,
+};
 
 const OrderDetailsTimerBlock = ({ order_details }) => {
     return (order_details.is_pending || order_details.is_buyer_confirmed) ? (
@@ -69,6 +83,10 @@ const OrderDetailsTimerBlock = ({ order_details }) => {
             </p>
         </div>
     ) : null;
+};
+
+OrderDetailsTimerBlock.propTypes = {
+    order_details: PropTypes.object,
 };
 
 const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
@@ -140,6 +158,12 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     return buttons_to_render;
 };
 
+OrderActionsBlock.propTypes = {
+    cancelPopup  : PropTypes.func,
+    order_details: PropTypes.object,
+    showPopup    : PropTypes.func,
+};
+
 const OrderDetailsResultMessage = ({ order_details }) => {
 
     if (order_details.is_seller_confirmed && order_details.is_buyer) {
@@ -169,6 +193,10 @@ const OrderDetailsResultMessage = ({ order_details }) => {
     }
     // TODO: [p2p-timeout-status-check] - Check if order has timed out and add timeout message
     return null;
+};
+
+OrderDetailsResultMessage.propTypes = {
+    order_details: PropTypes.object,
 };
 
 const OrderDetails = ({
@@ -257,6 +285,10 @@ const OrderDetails = ({
             )}
         </div>
     );
+};
+
+OrderDetails.propTypes = {
+    order_details: PropTypes.object,
 };
 
 export default OrderDetails;

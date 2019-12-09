@@ -16,9 +16,10 @@ const AuthorizationRequiredModal = ({
         is_open={is_visible}
         small
         toggleModal={toggleModal}
+        title={localize('Start trading with us')}
     >
         <Modal.Body>
-            {localize('Log in or create a free account to start trading.')}
+            {localize('Log in or create a free account to place a trade.')}
         </Modal.Body >
         <Modal.Footer>
             <Button

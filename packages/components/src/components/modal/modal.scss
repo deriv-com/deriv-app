@@ -30,6 +30,11 @@
         }
         &--small {
             max-width: 440px;
+
+            /* postcss-bem-linter: ignore */
+            .dc-modal-header {
+                border-bottom: none;
+            }
         }
     }
     /**

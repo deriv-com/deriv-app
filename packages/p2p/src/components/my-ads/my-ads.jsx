@@ -19,12 +19,12 @@ class MyAds extends Component {
 
     render() {
         return (
-            <div className='my-ads'>
+            <div className='p2p-my-ads'>
                 {this.state.show_form ? (
                     <FormAds ad_id={this.state.ad_id} handleShowForm={this.handleShowForm} />
                 ) : (
                     <Fragment>
-                        <div className='my-ads__header'>
+                        <div className='p2p-my-ads__header'>
                             <ToggleAds
                                 is_enabled={true}
                             />

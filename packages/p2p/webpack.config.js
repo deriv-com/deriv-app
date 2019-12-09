@@ -15,6 +15,13 @@ module.exports = {
         library      : 'deriv-p2p',
         libraryTarget: 'umd',
     },
+    resolve: {
+        alias: {
+            Assets    : path.resolve(__dirname, 'src/assets'),
+            Components: path.resolve(__dirname, 'src/components'),
+            Utils     : path.resolve(__dirname, 'src/utils'),
+        }
+    },
     module : {
         rules: [
             (!is_serve ? {

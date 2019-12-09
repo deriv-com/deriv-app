@@ -5,22 +5,6 @@
         display: flex;
         align-items: center;
     }
-    &__heading {
-        &-wrapper {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            font-size: 1.6rem;
-            font-weight: bold;
-            line-height: 1.75;
-            color: var(--text-general);
-        }
-        &-btn {
-            padding: 0.4rem 1.6rem 0 0;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-    }
     &__form {
         margin: 1.6rem 0;
 
@@ -48,21 +32,8 @@
                 color: var(--text-less-prominent);
             }
         }
-        &-footer {
-            height: 7.2rem;
-            width: 100%;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            border-top: 1px solid var(--general-section-1);
-            padding-right: 1.6rem;
-
-            & > button:first-of-type {
-                margin-right: 0.8rem;
-            }
+        &-button {
+            margin-left: 0.8rem;
         }
     }
 }

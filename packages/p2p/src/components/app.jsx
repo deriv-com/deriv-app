@@ -2,11 +2,11 @@ import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs } from 'deriv-components';
 import { localize, setLanguage, initTranslation } from './i18next';
+import { init } from 'Utils/websocket';
 import BuySell from './buy-sell/buy-sell.jsx';
 import Orders from './orders/orders.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import MyProfile from './my-profile/my-profile.jsx';
-import { init } from '../utils/websocket';
 import './app.scss';
 
 class App extends Component {
@@ -24,7 +24,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        // TODO: [fix-index-set] Fix issues with unresolved index to set in tabs
+        // TODO: [p2p-fix-index-set] Fix issues with unresolved index to set in tabs
         if (typeof window !== 'undefined') {
             const index_to_set = /orders/.test(window.location.pathname) ? 1 : 0;
 

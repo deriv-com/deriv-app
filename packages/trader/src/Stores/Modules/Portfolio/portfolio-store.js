@@ -18,6 +18,7 @@ import {
 import {
     getDisplayStatus,
     getEndTime,
+    isEnded,
     isUserSold,
     isValidToSell }                from '../Contract/Helpers/logic';
 import {

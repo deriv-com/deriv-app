@@ -17,7 +17,13 @@ const user_data = {
     average_release_unit      : 'min',
 };
 
-const Cell = ({title, value, upper_sub_value, lower_sub_value, dimension}) => {
+const Cell = ({
+    title,
+    value,
+    upper_sub_value,
+    lower_sub_value,
+    dimension,
+}) => {
     return (
         <div className='my-profile__cell'>
             <div className='my-profile__cell-data'>

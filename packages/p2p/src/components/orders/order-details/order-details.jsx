@@ -21,7 +21,7 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
         is_seller_confirmed,
     } = order_details;
 
-    return status_to_show ? (
+    return (
         <h2 className='order-details__header-status'>
             { is_pending && is_buyer &&
                 localize('Please pay')
@@ -48,7 +48,7 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
                 localize('Order complete')
             }
         </h2>
-    ) : null;
+    );
 };
 
 const OrderDetailsAmountBlock = ({ order_details }) => (

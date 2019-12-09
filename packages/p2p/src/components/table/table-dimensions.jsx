@@ -1,5 +1,5 @@
-import React                  from 'react';
-import PropTypes              from 'prop-types';
+import React     from 'react';
+import PropTypes from 'prop-types';
 
 export const TableDimensions = ({ children }) => {
     const [dimensions, setDimensions] = React.useState({ width: null, height: null });

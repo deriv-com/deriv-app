@@ -4,19 +4,10 @@ import ContentLoader     from 'react-content-loader';
 import { Table, Button } from 'deriv-components';
 import { localize }      from 'deriv-translations';
 
-export const headers = [
-    { text: localize('Advertisers')  },
-    { text: localize('Amount') },
-    { text: localize('Price for 1 BTC') },
-    { text: localize('Min transaction') },
-    { text: localize('Payment Method') },
-    { text: localize('Trade') },
-];
-
-export const BuySellRowLoader = ({ width }) => (
+export const BuySellRowLoader = () => (
     <ContentLoader
         height={64}
-        width={900 || width}
+        width={900}
         speed={2}
         primaryColor={'var(--general-hover)'}
         secondaryColor={'var(--general-active)'}
@@ -29,11 +20,12 @@ export const BuySellRowLoader = ({ width }) => (
         <rect x='750' y='15' rx='5' ry='5' width='45' height='18' />
     </ContentLoader>
 );
+
 BuySellRowLoader.propTypes = {
     width: PropTypes.number,
 };
 
-export const RowComponent = React.memo(({ data, style, is_buy, setSelectedAd }) => (
+export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) => (
     <div style={style}>
         <Table.Row>
             <Table.Cell>{data.advertiser}</Table.Cell>
@@ -49,10 +41,12 @@ export const RowComponent = React.memo(({ data, style, is_buy, setSelectedAd }) 
         </Table.Row>
     </div>
 ));
+
 RowComponent.propTypes = {
     data         : PropTypes.object,
     style        : PropTypes.object,
     is_buy       : PropTypes.bool,
     setSelectedAd: PropTypes.func,
 };
+
 RowComponent.displayName = 'RowComponent';

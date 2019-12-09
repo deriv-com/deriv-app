@@ -2,10 +2,10 @@ import React         from 'react';
 import PropTypes     from 'prop-types';
 import ContentLoader from 'react-content-loader';
 
-export const MyAdsLoader = ({ width }) => (
+export const MyAdsLoader = () => (
     <ContentLoader
         height={64}
-        width={900 || width}
+        width={900}
         speed={2}
         primaryColor={'var(--general-hover)'}
         secondaryColor={'var(--general-active)'}
@@ -19,6 +19,7 @@ export const MyAdsLoader = ({ width }) => (
         <rect x='803' y='15' rx='5' ry='5' width='55' height='16' />
     </ContentLoader>
 );
+
 MyAdsLoader.propTypes = {
     width: PropTypes.number,
 };

@@ -80,7 +80,13 @@ export class BuyTable extends React.Component {
     }
 
     render() {
-        const { items, is_loading_more_items, has_more_items_to_load, is_loading } = this.state;
+        const {
+            has_more_items_to_load,
+            is_loading,
+            is_loading_more_items,
+            items,
+        } = this.state;
+
         const { setSelectedAd } = this.props;
 
         const Row = props => <RowComponent {...props} is_buy setSelectedAd={setSelectedAd} />;

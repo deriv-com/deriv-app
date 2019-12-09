@@ -53,7 +53,14 @@ class BuySell extends Component {
                         value={table_type}
                     />
                 </div>
-                <BuySellTable table_type={table_type} setSelectedAd={this.setSelectedAd} />
+                <BuySellTable
+                    table_type={table_type}
+                    setSelectedAd={this.setSelectedAd}
+                    // TODO: pass currency here
+                    exchange_to_currency={'BTC'}
+                    // TODO: get from API
+                    exchange_amount={'1'}
+                />
                 {show_popup && (
                     <div className='buy-sell__dialog'>
                         <Dialog

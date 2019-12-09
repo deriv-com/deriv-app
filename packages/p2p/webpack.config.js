@@ -47,27 +47,6 @@ module.exports = {
                 ]
             },
             {
-                test: /\.svg$/,
-                use : [
-                    {
-                        loader : 'svg-sprite-loader',
-                        options: {
-                            extract       : true,
-                            spriteFilename: 'p2p-sprite.svg',
-                        },
-                    },
-                    {
-                        loader : 'svgo-loader',
-                        options: {
-                            plugins: [
-                                { removeUselessStrokeAndFill: false },
-                                { removeUnknownsAndDefaults: false },
-                            ],
-                        },
-                    },
-                ],
-            },
-            {
                 test: /\.scss$/,
                 use: [
                     'style-loader',

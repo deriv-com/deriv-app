@@ -57,4 +57,13 @@ export default class OrderInfo {
     get display_remaining_time() {
         return millisecondsToTimer(this.remaining_time);
     }
+    // set status(status) {
+    //     this.status = status;
+    // }
+
+    setStatus(st) {
+        console.log(st)
+        console.log(this)
+        this.status = st
+    }
 }

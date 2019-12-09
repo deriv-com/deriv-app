@@ -1,7 +1,8 @@
 import React         from 'react';
-import { Button }    from 'deriv-components';
+import { Button, Dialog }    from 'deriv-components';
 import { localize }  from 'deriv-translations';
 import FooterActions from 'Components/footer-actions/footer-actions.jsx';
+import Popup        from '../popup.jsx';
 import './order-details.scss';
 
 const OrderInfoBlock = ({ label, value }) => (
@@ -70,19 +71,35 @@ const OrderDetailsTimerBlock = ({ order_details }) => {
     ) : null;
 };
 
-const OrderActionsBlock = ({ order_details }) => {
+const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     const {
         is_buyer,
         is_buyer_confirmed,
         is_pending,
+        setStatus,
     } = order_details;
     let buttons_to_render = null;
+
+    const cancelOrder = () => {
+        const options = {
+            title: localize('Cancel this order?'),
+            message: localize('There will be no refund after canceling the order. If you have paid, please do not cancel the order.'),
+            confirm_text: localize('Cancel this order'),
+            onClickConfirm: cancelPopup,
+        }
+        showPopup(options);
+    }
+
+    const paidOrder = () => {
+        // TODO [p2p-order-api] call paid api
+        setStatus('confirmed-client');
+    }
 
     if (is_pending && is_buyer) {
         buttons_to_render = ( // TODO: [p2p-add-confirmation-popup] - Add popup to `onClick` function to confirm user action
             <React.Fragment>
-                <Button className='order-details__actions-button' large secondary onClick={ () => console.log('Cancel order') }>{ localize('Cancel order') }</Button>
-                <Button className='order-details__actions-button' large primary onClick={ () => console.log('I\'ve paid') }>{ localize('I\'ve paid') }</Button>
+                <Button className='order-details__actions-button' large secondary onClick={cancelOrder}>{ localize('Cancel order') }</Button>
+                <Button className='order-details__actions-button' large primary onClick={paidOrder}>{ localize('I\'ve paid') }</Button>
             </React.Fragment>
         );
     }
@@ -144,6 +161,15 @@ const OrderDetails = ({
         other_party,
         transaction_currency,
     } = order_details;
+    const [show_popup, setShowPopup] = React.useState(false);
+    const [popup_options, setPopupOptions] = React.useState({});
+
+    const onCancelClick = () => setShowPopup(false);
+
+    const handleShowPopup = (options) => {
+        setPopupOptions(options);
+        setShowPopup(true);
+    }
 
     return (
         <div className='order-details'>
@@ -185,8 +211,23 @@ const OrderDetails = ({
             </div>
 
             <FooterActions>
-                <OrderActionsBlock order_details={ order_details } />
+                <OrderActionsBlock cancelPopup={onCancelClick} showPopup={handleShowPopup} order_details={ order_details } />
             </FooterActions>
+            {show_popup && (
+                <div className='orders__dialog'>
+                    <Dialog
+                        is_visible={show_popup}
+                        disableApp={() => {
+                            /* do nothing // disableApp is a mandatory props in dialog */
+                        }}
+                        enableApp={() => {
+                            /* do nothing // enableApp is a mandatory props in dialog */
+                        }}
+                    >
+                        <Popup {...popup_options} onCancel={onCancelClick} />
+                    </Dialog>
+                </div>
+            )}
         </div>
     );
 };

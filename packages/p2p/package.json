@@ -8,7 +8,7 @@
     "build": "rimraf lib && webpack --optimize-minimize --progress",
     "build:travis": "rimraf lib && webpack --optimize-minimize",
     "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --progress --watch",
-    "start": "rimraf lib && npm run test && webpack --progress --watch",
+    "start": "rimraf lib && npm run test && npm run serve",
     "deploy": "echo \"No deploy specified\"",
     "deploy:clean": "echo \"No deploy:clean specified\"",
     "deploy:folder": "echo \"No deploy:folder specified\"",

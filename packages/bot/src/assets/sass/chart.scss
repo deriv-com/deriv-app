@@ -1,0 +1,19 @@
+.bot {
+    &__chart-container {
+        position: relative;
+
+        .cq-context {
+            div.ciq-chart {
+                div.stx_jump_today.home > svg {
+                    top: 6px;
+                    left: 8px;
+                    padding: 0;
+                    position: absolute;
+                }
+            }
+        }
+        .injectionDiv {
+            display: none;
+        }
+    }
+}

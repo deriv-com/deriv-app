@@ -3,9 +3,11 @@ import {
     AssetInformation,
     ChartTitle,
     SmartChart,
-} from 'smartcharts-beta';
+}                     from 'smartcharts-beta';
 import ControlWidgets from './control-widgets.jsx';
 import { connect }    from '../../stores/connect';
+
+import                     '../../assets/sass/chart.scss';
 
 // import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
 // import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';

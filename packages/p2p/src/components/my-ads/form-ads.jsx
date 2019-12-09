@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes                      from 'prop-types';
-import { localize, Localize }         from 'deriv-translations';
+import { localize }         from 'deriv-translations';
 import { Formik, Field, Form }        from 'formik';
 import {
     Autocomplete,
@@ -29,7 +29,7 @@ class FormAds extends Component {
     }
 
     componentDidMount() {
-        // TODO: call api to populate country, currency, and asset
+        // TODO: [p2p-fix-api] call get offer detail api and populate state
         WS().send({ 'residence_list': 1 }).then(() => { // this is just to mock the api delay response
             const new_initial_values = {
                 country        : 'Indonesia',
@@ -54,12 +54,13 @@ class FormAds extends Component {
         });
     }
 
-    handleSubmit(formik_vars) {
-        // TODO: p2p API call to create ad
+    handleSubmit(formik_vars, { setSubmitting }) {
+        // TODO: [p2p-fix-api] call offer create api
         // eslint-disable-next-line no-console
         console.log(this.state);
         // eslint-disable-next-line no-console
         console.log(formik_vars);
+        setSubmitting(false);
     }
 
     render() {
@@ -231,7 +232,7 @@ class FormAds extends Component {
                                 </ThemedScrollbars>
                                 <div className='my-ads__form-footer'>
                                     <Button secondary large type='reset'>{localize('Cancel')}</Button>
-                                    <Button primary large is_disabled={isSubmitting && isValid}>{localize('Post ad')}</Button>
+                                    <Button primary large is_disabled={isSubmitting || !isValid}>{localize('Post ad')}</Button>
                                 </div>
                             </Form>
                         </div>
@@ -245,12 +246,6 @@ class FormAds extends Component {
     validateFormAds = (values) => {
         const available_price = 0.8; // later get available amount from the api
         const validations = {
-            type: [
-                v => !!v,
-            ],
-            asset: [
-                v => !!v,
-            ],
             fix_price: [
                 v => !!v,
             ],
@@ -261,9 +256,6 @@ class FormAds extends Component {
             min_transaction: [
                 v => !!v,
             ],
-            payment_method: [
-                v => !!v,
-            ],
             advertiser_note: [
                 v => !!v,
                 v => v.length < 400,
@@ -271,29 +263,25 @@ class FormAds extends Component {
         };
 
         const mappedKey = {
-            type           : localize('Type'),
-            asset          : localize('Asset'),
             fix_price      : localize('Fixed price'),
             amount         : localize('Amount'),
             min_transaction: localize('Min. transaction'),
             advertiser_note: localize('Advertiser note'),
         };
 
-        // TODO: [translation] text wont pass in the translation script
+        const common_messages  = (field_name) => ([
+            localize('{{field_name}} is required', { field_name }),
+        ]);
 
-        const common_messages  = [
-            '{{field_name}} is required',
-        ];
+        const amount_messages  = (field_name) => ([
+            localize('{{field_name}} is required', { field_name }),
+            localize('{{field_name}} is too low', { field_name }),
+        ]);
 
-        const amount_messages = [
-            '{{field_name}} is required',
-            '{{field_name}} is too low',
-        ];
-
-        const note_messages = [
-            '{{field_name}} is required',
-            '{{field_name}} has exceed maximum length',
-        ];
+        const note_messages  = (field_name) => ([
+            localize('{{field_name}} is required', { field_name }),
+            localize('{{field_name}} has exceed maximum length', { field_name }),
+        ]);
 
         const errors    = {};
 
@@ -304,28 +292,13 @@ class FormAds extends Component {
                 if (error_index !== -1) {
                     switch (key) {
                         case 'amount':
-                            errors[key] = errors[key] = <Localize
-                                i18n_default_text={amount_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                            />;
+                            errors[key] = amount_messages(mappedKey[key])[error_index];
                             break;
                         case 'advertiser_note':
-                            errors[key] = errors[key] = <Localize
-                                i18n_default_text={note_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                            />;
+                            errors[key] = note_messages(mappedKey[key])[error_index];
                             break;
                         default:
-                            errors[key] = errors[key] = <Localize
-                                i18n_default_text={common_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                            />;
+                            errors[key] = common_messages(mappedKey[key])[error_index];
                     }
                 }
             });

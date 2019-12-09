@@ -4,6 +4,7 @@ import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
 import ThemedScrollbars  from 'Components/themed-scrollbars';
 import Icon              from 'Components/icon-arrow.jsx';
+import MobileDialog      from 'Components/mobile-dialog/mobile-dialog.jsx';
 import {
     getItemFromValue,
     getValueFromIndex,
@@ -304,74 +305,74 @@ class Dropdown extends React.Component {
                         <p className='dc-field-error'>{this.props.error}</p>
                     }
                     {this.props.is_mobile ?
-                    <MobileDialog
+                        <MobileDialog
                         // visible={open} TODO
                         // onClose={onClose} TODO
                         // title={title} TODO
-                        wrapperClassName='dropdown-modal'
-                    >
-                        {/* {children} TODO */} 
-                    </MobileDialog>
-                    :
-                    <CSSTransition
-                        in={this.state.is_list_visible}
-                        timeout={100}
-                        classNames={this.transition_class_names}
-                        onEntered={this.setListDimension}
-                        unmountOnExit
-                    >
-                        <div className={this.dropdown_list_class_names}>
-                            <div
-                                className={this.list_class_names}
-                                ref={this.list_ref}
-                                style={getDropDownAlignment()}
-                            >
-                                <ThemedScrollbars
-                                    autoHeight
-                                    autoHide
-                                    autoHeightMax={200}
-                                    renderTrackHorizontal={props => <div
-                                        {...props}
-                                        style={{ display: 'none' }}
-                                    />}
-                                    renderThumbHorizontal={props => <div
-                                        {...props}
-                                        style={{ display: 'none' }}
-                                    />}
+                            wrapperClassName='dropdown-modal'
+                        >
+                            {/* {children} TODO */}
+                        </MobileDialog>
+                        :
+                        <CSSTransition
+                            in={this.state.is_list_visible}
+                            timeout={100}
+                            classNames={this.transition_class_names}
+                            onEntered={this.setListDimension}
+                            unmountOnExit
+                        >
+                            <div className={this.dropdown_list_class_names}>
+                                <div
+                                    className={this.list_class_names}
+                                    ref={this.list_ref}
+                                    style={getDropDownAlignment()}
                                 >
-                                    {Array.isArray(this.props.list) ?
-                                        <Items
-                                            className={this.props.classNameItems}
-                                            index={this.state.curr_index}
-                                            handleSelect={this.handleSelect}
-                                            has_symbol={this.props.has_symbol}
-                                            items={this.props.list}
-                                            name={this.props.name}
-                                            is_align_text_left={this.props.is_align_text_left}
-                                            value={this.props.value}
-                                        /> :
-                                        Object.keys(this.props.list).map((key, idx) => (
-                                            <React.Fragment key={key}>
-                                                <div className={classNames('dc-list__label', this.props.classNameLabel)}>{key}</div>
-                                                <Items
-                                                    className={this.props.classNameItems}
-                                                    handleSelect={this.handleSelect}
-                                                    has_symbol={this.props.has_symbol}
-                                                    items={this.props.list[key]}
-                                                    name={this.props.name}
-                                                    is_align_text_left={this.props.is_align_text_left}
-                                                    value={this.props.value}
-                                                />
-                                                {idx !== Object.keys(this.props.list).length - 1 &&
+                                    <ThemedScrollbars
+                                        autoHeight
+                                        autoHide
+                                        autoHeightMax={200}
+                                        renderTrackHorizontal={props => <div
+                                            {...props}
+                                            style={{ display: 'none' }}
+                                        />}
+                                        renderThumbHorizontal={props => <div
+                                            {...props}
+                                            style={{ display: 'none' }}
+                                        />}
+                                    >
+                                        {Array.isArray(this.props.list) ?
+                                            <Items
+                                                className={this.props.classNameItems}
+                                                index={this.state.curr_index}
+                                                handleSelect={this.handleSelect}
+                                                has_symbol={this.props.has_symbol}
+                                                items={this.props.list}
+                                                name={this.props.name}
+                                                is_align_text_left={this.props.is_align_text_left}
+                                                value={this.props.value}
+                                            /> :
+                                            Object.keys(this.props.list).map((key, idx) => (
+                                                <React.Fragment key={key}>
+                                                    <div className={classNames('dc-list__label', this.props.classNameLabel)}>{key}</div>
+                                                    <Items
+                                                        className={this.props.classNameItems}
+                                                        handleSelect={this.handleSelect}
+                                                        has_symbol={this.props.has_symbol}
+                                                        items={this.props.list[key]}
+                                                        name={this.props.name}
+                                                        is_align_text_left={this.props.is_align_text_left}
+                                                        value={this.props.value}
+                                                    />
+                                                    {idx !== Object.keys(this.props.list).length - 1 &&
                                                     <span className='dc-list__separator' />
-                                                }
-                                            </React.Fragment>
-                                        ))
-                                    }
-                                </ThemedScrollbars>
+                                                    }
+                                                </React.Fragment>
+                                            ))
+                                        }
+                                    </ThemedScrollbars>
+                                </div>
                             </div>
-                        </div>
-                    </CSSTransition>}
+                        </CSSTransition>}
                 </div>
             </React.Fragment>
         );

@@ -2,8 +2,8 @@ import { millisecondsToTimer } from 'Utils/date-time';
 
 export default class OrderInfo {
     order_id = 'ABC123';
-    status = 'confirmed-client';
-    type = 'sell';
+    status = 'pending';
+    type = 'buy';
     advertiser_notes = 'Hello I am watermelon';
     order_purchase_datetime = new Date();
     other_party = 'John Doe';

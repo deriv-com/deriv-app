@@ -26,6 +26,8 @@ export default class RunPanelStore {
         this.registerCoreReactions();
     }
 
+    run_id = '';
+
     @observable active_index      = 0;
     @observable contract_stage    = contract_stages.NOT_RUNNING;
     @observable dialog_options    = {};
@@ -76,11 +78,12 @@ export default class RunPanelStore {
             return;
         }
 
-        this.is_running = true;
+        this.is_running     = true;
         this.is_drawer_open = true;
+        this.run_id         = `run-${Date.now()}`;
+
         contract_card.clear();
         this.setContractStage(contract_stages.STARTING);
-
         runBot();
     }
 
@@ -340,6 +343,7 @@ export default class RunPanelStore {
         );
     }
 
+    @action.bound
     setContractStage(value) {
         this.contract_stage = value;
     }

@@ -11,4 +11,8 @@
     & .dc-tabs {
         position: static;
     }
+    &__separator {
+        width: 100%;
+        border-top: 1px solid var(--general-section-1);
+    }
 }

@@ -1,8 +1,8 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
 import { Table, Button }      from 'deriv-components';
-import { localize }           from '../i18next';
 import { MyAdsLoader }        from './my-ads-loader.jsx';
+import { localize }           from '../i18next';
 import { InfiniteLoaderList } from '../table/infinite-loader-list.jsx';
 import { TableDimensions }    from '../table/table-dimensions.jsx';
 

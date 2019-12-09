@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 /* eslint-disable no-console */
-const path           = require('path');
-const program        = require('commander');
-const crc32          = require('crc-32').str;
-const fs             = require('fs');
-const glob           = require('glob');
+const path    = require('path');
+const program = require('commander');
+const crc32   = require('crc-32').str;
+const fs      = require('fs');
+const glob    = require('glob');
 
 program
     .version('0.1.0')

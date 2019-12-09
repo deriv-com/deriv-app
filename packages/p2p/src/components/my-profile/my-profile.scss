@@ -12,6 +12,7 @@
         border: 1px solid var(--border-normal);
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         justify-content: space-between;
         padding: 1.6rem 0;
     }

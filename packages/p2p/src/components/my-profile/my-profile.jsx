@@ -1,19 +1,20 @@
-import React from 'react';
-import './my-profile.scss';
+import React        from 'react';
+import PropTypes    from 'prop-types';
 import { localize } from 'deriv-translations';
+import                   './my-profile.scss';
 
 // TODO: This is just mockup data. it will be removed after Adding BE API.
 const user_data = {
-    firstName: 'johny',
-    lastName: 'bravo',
-    securityDeposit: 0,
-    buyTrades: 23,
-    sellTrades: 25,
-    pastMonthTrades: 42,
+    firstName              : 'johny',
+    lastName               : 'bravo',
+    securityDeposit        : 0,
+    buyTrades              : 23,
+    sellTrades             : 25,
+    pastMonthTrades        : 42,
     pastMonthCompletionRate: 99,
-    averageReleaseTime: 5,
-    averageReleaseUnit: 'min'
-}
+    averageReleaseTime     : 5,
+    averageReleaseUnit     : 'min',
+};
 
 function capitalize (string) {
     if (!string) {
@@ -34,10 +35,10 @@ const Cell = (props) => {
                 </div>
                 <div className='my-profile__cell__data__sub'>
                     <div className='my-profile__cell__data__sub__upper'>
-                        {props.upper}
+                        {props.upperSubValue}
                     </div>
                     <div className='my-profile__cell__data__sub__lower'>
-                        {props.lower}
+                        {props.lowerSubValue}
                     </div>
                 </div>
             </div>
@@ -45,8 +46,16 @@ const Cell = (props) => {
                 {props.title}
             </div>
         </div>
-    )
-}
+    );
+};
+
+Cell.propTypes = {
+    title        : PropTypes.string,
+    value        : PropTypes.string,
+    dimension    : PropTypes.string,
+    upperSubValue: PropTypes.string,
+    lowerSubValue: PropTypes.string,
+};
 
 const MyProfile = () => {
     return (
@@ -62,8 +71,8 @@ const MyProfile = () => {
                 <Cell
                     title={localize('Trades')}
                     value={user_data.buyTrades + user_data.sellTrades}
-                    upper={user_data.buyTrades + ' buy'}
-                    lower={user_data.sellTrades + ' sell'}
+                    upperSubValue={localize('{{ buyTrades }} buy', { buyTrades: user_data.buyTrades })}
+                    lowerSubValue={localize('{{ sellTrades }} sell', { sellTrades: user_data.sellTrades })}
                 />
                 <Cell
                     title={localize('Trades in the last 30 days')}
@@ -71,7 +80,7 @@ const MyProfile = () => {
                 />
                 <Cell
                     title={localize('30 day completion rate')}
-                    value={user_data.pastMonthCompletionRate + '%'}
+                    value={`${user_data.pastMonthCompletionRate}%`}
                 />
                 <Cell
                     title={localize('Average release time')}

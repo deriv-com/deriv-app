@@ -53,7 +53,6 @@ export class SellTable extends React.Component {
     };
 
     loadMore = () => {
-        // Check with type if sell or buy data should be loaded
         this.setState({ is_loading_more_items: true }, () => {
             getMockData().then((res) => {
                 if (this.is_mounted) {

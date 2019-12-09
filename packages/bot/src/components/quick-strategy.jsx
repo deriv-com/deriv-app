@@ -22,7 +22,7 @@ import '../assets/sass/quick-strategy.scss';
 
 const MarketOption = ({ symbol }) => (
     <div key={symbol.value} className='quick-strategy__option'>
-        <Icon icon={`IcUnderlying${symbol.value}`} width={32} height={24} />
+        <Icon icon={`IcUnderlying${symbol.value}`} size={32} />
         <span className='quick-strategy__symbol'>{symbol.name}</span>
     </div>
 );

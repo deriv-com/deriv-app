@@ -6,6 +6,7 @@ import {
     epochToMoment,
     toGMTFormat }           from 'Utils/Date';
 import {
+    addCommaToNumber,
     getBarrierLabel,
     getBarrierValue,
     isDigitType,
@@ -63,7 +64,9 @@ class ContractAudit extends React.PureComponent {
                 contractAuditItemProps: {
                     icon : is_digit ? 'target' : 'barrier',
                     label: getBarrierLabel(contract_info),
-                    value: is_reset_call_put ? contract_info.entry_spot : getBarrierValue(contract_info),
+                    value: is_reset_call_put
+                        ? addCommaToNumber(contract_info.entry_spot)
+                        : getBarrierValue(contract_info),
                 },
                 shouldShow: true,
             },
@@ -71,7 +74,7 @@ class ContractAudit extends React.PureComponent {
                 contractAuditItemProps: {
                     icon : 'reset_barrier',
                     label: localize('Reset barrier'),
-                    value: contract_info.barrier,
+                    value: addCommaToNumber(contract_info.barrier),
                 },
                 shouldShow: is_reset_call_put,
             },

@@ -1,7 +1,7 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
 import { Table, Button }      from 'deriv-components';
-import { localize }           from 'deriv-translations';
+import { localize }           from '../i18next';
 import { InfiniteLoaderList } from '../table/infinite-loader-list.jsx';
 
 // TODO: replace with API response

@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs } from 'deriv-components';
-import { localize } from 'deriv-translations';
+import { localize, setLanguage, initTranslation } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import Orders from './orders/orders.jsx';
 import MyAds from './my-ads/my-ads.jsx';
@@ -14,6 +14,8 @@ class App extends Component {
     constructor(props) {
         super(props);
 
+        setLanguage(this.props.lang);
+        initTranslation();
         init(this.props.websocket_api);
 
         this.state = {
@@ -65,6 +67,7 @@ class App extends Component {
 }
 
 App.propTypes = {
+    lang         : PropTypes.string,
     websocket_api: PropTypes.object,
 };
 

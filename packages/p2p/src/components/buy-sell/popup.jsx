@@ -2,7 +2,7 @@ import React, { Fragment, Component }      from 'react';
 import PropTypes                           from 'prop-types';
 import { Formik, Field, Form }             from 'formik';
 import { Input, Button, ThemedScrollbars } from 'deriv-components';
-import { localize }                        from 'deriv-translations';
+import { localize }                        from '../i18next';
 import IconBack                            from '../../assets/icon-back.jsx';
 import IconClose                           from '../../assets/icon-close.jsx';
 

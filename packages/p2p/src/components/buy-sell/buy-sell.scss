@@ -1,7 +1,6 @@
 .buy-sell {
     margin: 1.6rem;
     padding: 1.6rem;
-    background: var(--general-section-1);
 
     &__header {
         background: var(--general-section-1);
@@ -11,13 +10,6 @@
         &__filters {
             width: 12rem;
         }
-    }
-
-    &__list {
-        padding: 0.8rem;
-        margin: 0.8rem;
-        background: var(--general-main-2);
-        color: var(--text-general);
     }
     &__dialog {
         position: absolute;

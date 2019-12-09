@@ -1,4 +1,4 @@
-import React, { Fragment, Component }         from 'react';
+import React, { Component }                   from 'react';
 import PropTypes                              from 'prop-types';
 import { Formik, Field, Form }                from 'formik';
 import { Checkbox, Button, ThemedScrollbars } from 'deriv-components';
@@ -6,7 +6,6 @@ import { localize }                           from 'deriv-translations';
 import IconClose                              from '../../assets/icon-close.jsx';
 
 class Popup extends Component {
-
     handleSubmit = ({ setSubmitting }) => {
         this.props.onClickConfirm();
         setSubmitting(false);
@@ -26,7 +25,7 @@ class Popup extends Component {
         } = this.props;
 
         return (
-            <Fragment>
+            <>
                 <div className="orders__popup">
                     <div className="orders__popup-header">
                         <div className="orders__popup-header_wrapper">
@@ -95,21 +94,21 @@ class Popup extends Component {
                         </>
                     )}
                 </div>
-            </Fragment>
+            </>
         )
     }
 }
 
 Popup.propTypes = {
-    offer         : PropTypes.object,
-    onCancel      : PropTypes.func,
-    onClickConfirm: PropTypes.func,
-    confirm_text: PropTypes.string,
-    cancel_text: PropTypes.string,
-    title: PropTypes.string,
-    message: PropTypes.string,
-    has_cancel: PropTypes.bool,
+    cancel_text      : PropTypes.string,
+    confirm_text     : PropTypes.string,
+    has_cancel       : PropTypes.bool,
+    message          : PropTypes.string,
     need_confirmation: PropTypes.bool,
+    offer            : PropTypes.object,
+    onCancel         : PropTypes.func,
+    onClickConfirm   : PropTypes.func,
+    title            : PropTypes.string,
 };
  
 export default Popup;

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import PropTypes                       from 'prop-types';
-import { localize }                    from 'deriv-translations';
+import PropTypes                      from 'prop-types';
+import { localize }                   from 'deriv-translations';
 import { Formik, Field, Form }        from 'formik';
 import {
     Autocomplete,

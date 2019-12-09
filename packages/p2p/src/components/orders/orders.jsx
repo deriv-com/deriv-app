@@ -1,14 +1,14 @@
-import React                   from 'react';
-import { localize }            from 'deriv-translations';
-import PageReturn              from 'Components/page-return/page-return.jsx';
-import OrderDetails            from  './order-details/order-details.jsx';
-import OrderInfo               from './order-info';
+import React        from 'react';
+import { localize } from 'deriv-translations';
+import PageReturn   from 'Components/page-return/page-return.jsx';
+import OrderDetails from './order-details/order-details.jsx';
+import OrderInfo    from './order-info';
 import './orders.scss';
 
 const Orders = () => {
     const order_info = new OrderInfo();
     const [order_details, setDetails] = React.useState(order_info);
-    // TODO: [replace-with-api] - remove these dev toggle once data fetch works
+    // TODO: [p2p-replace-with-api] - remove these dev toggle once data fetch works
     const toggleDetails = () => order_details && order_details.order_id ? setDetails(null) : setDetails(order_info);
 
     return (

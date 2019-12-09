@@ -42,7 +42,7 @@ const ContractCard = ({
                 { is_contract_completed && <ContractResultOverlay profit={contract.profit} /> }
                 <div className='db-contract-card__underlying'>
                     <div className='db-contract-card__underlying-name'>
-                        <Icon icon={`IcUnderlying${contract.underlying}`} width={32} height={24} />
+                        <Icon icon={`IcUnderlying${contract.underlying}`} size={32} />
                         <span className='db-contract-card__underlying-symbol'>
                             { contract.display_name }
                         </span>

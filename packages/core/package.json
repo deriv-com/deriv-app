@@ -4,8 +4,8 @@
   "description": "Deriv Core",
   "main": "index.js",
   "scripts": {
-    "start": "npm run test && sudo webpack-dev-server --config \"./build/webpack.config.js\"",
-    "serve": "echo \"Serving...\" && sudo webpack-dev-server --config \"./build/webpack.config.js\"",
+    "start": "npm run test && npm run serve",
+    "serve": "echo \"Serving...\" && sudo ./node_modules/.bin/webpack-dev-server --config \"./build/webpack.config.js\"",
     "build": "f () { webpack --config \"./build/webpack.config.js\" --env.base $1;}; f",
     "build:travis": "echo \"No build:travis specified\"",
     "test": "npm run test:stylelint && npm run test:eslint",
@@ -15,9 +15,7 @@
     "test:mocha": "mochapack -r babel-polyfill -r jsdom-global/register -r mock-local-storage --webpack-config \"./build/webpack.config-test.js\" \"src/**/__tests__/*.js\" --webpack-env.mocha_only --require ignore-styles",
     "deploy": "npm run build && gh-pages -d dist --remove=\"js\"",
     "deploy:clean": "npm run build && gh-pages -d dist",
-    "deploy:folder": "f () { npm run build -- $1 && gh-pages -d dist -e $1 ;}; f",
-    "deploy:staging": "./scripts/release-staging.sh",
-    "deploy:production": "./scripts/release-prod.sh"
+    "deploy:folder": "f () { npm run build -- $1 && gh-pages -d dist -e $1 ;}; f"
   },
   "repository": {
     "type": "git",
@@ -39,7 +37,6 @@
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
     "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
-    "@babel/plugin-proposal-unicode-property-regex": "^7.6.2",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",

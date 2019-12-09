@@ -105,6 +105,7 @@ export default class CashierStore extends BaseStore {
 
     active_container = this.config.deposit.container;
     current_client;
+    is_populating_values = false;
 
     containers = [
         this.config.deposit.container,
@@ -128,6 +129,13 @@ export default class CashierStore extends BaseStore {
     async onMountCommon() {
         await BinarySocket.wait('authorize');
         this.resetValuesIfNeeded();
+
+        // avoid calling this again
+        if (this.is_populating_values) {
+            return;
+        }
+
+        this.is_populating_values = true;
 
         // we need to see if client's country has PA
         // if yes, we can show the PA tab in cashier
@@ -372,8 +380,6 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setActiveTab(container) {
         this.active_container = container;
-        // used to detect if old tabs with withdrawal tab open should be closed after verification token is opened in new tab
-        this.root_store.ui.setCashierActiveTab(container);
     }
 
     @action.bound
@@ -411,11 +417,24 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    sortSupportedBanks() {
+        // sort supported banks alphabetically by value, the option 'All payment agents' with value 0 should be on top
+        this.config.payment_agent.supported_banks.replace(
+            this.config.payment_agent.supported_banks.slice().sort(function(a, b){
+                if (a.value < b.value) { return -1; }
+                if (a.value > b.value) { return 1; }
+                return 0;
+            })
+        );
+    }
+
+    @action.bound
     async setPaymentAgentList(pa_list) {
         const payment_agent_list = pa_list || await this.getPaymentAgentList();
         if (!payment_agent_list || !payment_agent_list.paymentagent_list) {
             return;
         }
+
         payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
             this.config.payment_agent.list.push({
                 email          : payment_agent.email,
@@ -431,14 +450,7 @@ export default class CashierStore extends BaseStore {
             }
         });
 
-        // sort supported banks alphabetically by value, the option 'All payment agents' with value 0 should be on top
-        this.config.payment_agent.supported_banks.replace(
-            this.config.payment_agent.supported_banks.slice().sort(function(a, b){
-                if (a.value < b.value) { return -1; }
-                if (a.value > b.value) { return 1; }
-                return 0;
-            })
-        );
+        this.sortSupportedBanks();
     }
 
     @action.bound
@@ -470,8 +482,8 @@ export default class CashierStore extends BaseStore {
         this.setIsWithdrawSuccessful(false);
         this.setReceipt({});
 
-        if (!this.config.payment_agent.list.length) {
-            const payment_agent_list = await this.getPaymentAgentList();
+        if (!this.config.payment_agent.agents.length) {
+            const payment_agent_list = this.config.payment_agent.list.length ? await BinarySocket.wait('paymentagent_list') : await this.getPaymentAgentList();
             payment_agent_list.paymentagent_list.list.forEach((payment_agent) => {
                 this.addPaymentAgent(payment_agent);
             });
@@ -883,5 +895,6 @@ export default class CashierStore extends BaseStore {
         this.config.payment_agent = new ConfigPaymentAgent();
         this.config.account_transfer = new ConfigAccountTransfer();
         this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
+        this.is_populating_values = false;
     }
 }

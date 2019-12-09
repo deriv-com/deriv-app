@@ -125,6 +125,14 @@
                     top: 1.2rem;
                     right: 1rem;
                 }
+                .calendar__cell {
+                    &--disabled {
+                        color: var(--text-disabled) !important;
+                    }
+                    &--other:not(.calendar__cell--today) {
+                        color: var(--text-prominent);
+                    }
+                }
             }
             .dc-input__label {
                 top: 1.2rem;

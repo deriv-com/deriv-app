@@ -3,6 +3,11 @@
 
 # Binary Bot
 
+## Index
+
+- [General](docs/README.md) - Contains general philosophy and overview of this package
+- [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding, code usage)
+
 Visual automation for binary.com [bot.binary.com](https://bot.binary.com)
 
 Visit [wiki](https://github.com/binary-com/binary-bot/wiki) for more info.

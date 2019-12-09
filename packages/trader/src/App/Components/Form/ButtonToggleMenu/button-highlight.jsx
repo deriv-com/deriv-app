@@ -3,6 +3,9 @@ import React     from 'react';
 
 const Highlight = ({ left, width }) => {
     const border_radius_size = '4px';
+    // TODO: [move-to-components] - This is already moved to components, just needs to refactor usage
+    // Change These 2 ternaries after finding what is the bug related to them.
+    // Then Change all <ButtonToggleMenu /> in trader to <ButtonToggle /> from deriv-components, which doesn't have these ternaries.
     const left_offset        = (left < 110) ? 0 : left;
     const width_offset       = (width < 110) ? 111 : width;
     const highlight_style = {

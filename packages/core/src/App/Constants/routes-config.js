@@ -33,7 +33,7 @@ const AccountTransfer      = lazy(() => import(/* webpackChunkName: "cashier-acc
 const PaymentAgent         = lazy(() => import(/* webpackChunkName: "cashier-pa" */ 'Modules/Cashier/Containers/payment-agent.jsx'));
 const PaymentAgentTransfer = lazy(() => import(/* webpackChunkName: "cashier-pa-transfer" */ 'Modules/Cashier/Containers/payment-agent-transfer.jsx'));
 // To work with P2P please uncomment this line
-// const P2PCashier           = () => import(/* webpackChunkName: "cashier-otc-payment" */ 'Modules/Cashier/Containers/p2p-cashier.jsx');
+// const P2PCashier           = lazy(() => import(/* webpackChunkName: "cashier-p2p" */ 'Modules/Cashier/Containers/p2p-cashier.jsx'));
 
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
@@ -92,7 +92,7 @@ const initRoutesConfig = () => ([
             { path: routes.cashier_acc_transfer, component: AccountTransfer,      title: localize('Transfer between accounts'), icon_component: 'IconAccountTransfer' },
             { path: routes.cashier_pa_transfer,  component: PaymentAgentTransfer, title: localize('Transfer to client'),        icon_component: 'IconAccountTransfer' },
             // To work with P2P please uncomment this line
-            // { path: routes.cashier_p2p,          component: P2PCashier,           title: localize('P2P Cashier'),            icon_component: 'IconP2PCashier' },
+            // { path: routes.cashier_p2p,          component: P2PCashier,           title: localize('P2P cashier'),               icon_component: 'IconP2PCashier' },
         ],
     },
     ...modules,

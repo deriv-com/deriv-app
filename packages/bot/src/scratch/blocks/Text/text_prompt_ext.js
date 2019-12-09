@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_prompt_ext = {
     init() {
@@ -46,7 +47,7 @@ Blockly.Blocks.text_prompt_ext = {
     },
     getRequiredValueInputs() {
         return {
-            TEXT: null,
+            TEXT: emptyTextValidator,
         };
     },
 };

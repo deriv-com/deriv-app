@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../../../utils';
 
 Blockly.Blocks.totimestamp = {
     init() {
@@ -36,7 +37,7 @@ Blockly.Blocks.totimestamp = {
     },
     getRequiredValueInputs() {
         return {
-            DATETIME: null,
+            DATETIME: emptyTextValidator,
         };
     },
 };

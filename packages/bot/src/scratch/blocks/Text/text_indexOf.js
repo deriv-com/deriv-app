@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_indexOf = {
     init() {
@@ -39,8 +40,8 @@ Blockly.Blocks.text_indexOf = {
     },
     getRequiredValueInputs() {
         return {
-            VALUE: null,
-            FIND : null,
+            VALUE: emptyTextValidator,
+            FIND : emptyTextValidator,
         };
     },
 };

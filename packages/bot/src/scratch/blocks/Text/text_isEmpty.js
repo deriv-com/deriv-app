@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_isEmpty = {
     init() {
@@ -31,7 +32,7 @@ Blockly.Blocks.text_isEmpty = {
     },
     getRequiredValueInputs() {
         return {
-            VALUE: null,
+            VALUE: emptyTextValidator,
         };
     },
 };

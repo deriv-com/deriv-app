@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../../utils';
 
 Blockly.Blocks.lists_repeat = {
     init() {
@@ -34,8 +35,8 @@ Blockly.Blocks.lists_repeat = {
     },
     getRequiredValueInputs() {
         return {
-            ITEM: null,
-            NUM : null,
+            ITEM: emptyTextValidator,
+            NUM : emptyTextValidator,
         };
     },
 };

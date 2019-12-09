@@ -32,4 +32,4 @@ AccountsInfoLoader.propTypes = {
     speed: PropTypes.number,
 };
 
-export default AccountsInfoLoader;
+export { AccountsInfoLoader };

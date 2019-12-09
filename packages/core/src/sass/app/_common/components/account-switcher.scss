@@ -101,7 +101,16 @@
     align-items: center;
     margin: 0 0.8rem;
     height: 4rem;
+    position: relative;
 
+    &--is-loading {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        background: var(--general-main-2);
+    }
     &__wrapper {
         border-radius: $BORDER_RADIUS;
         position: absolute;
@@ -186,6 +195,7 @@
     &__accounts {
         border-radius: $BORDER_RADIUS;
         background: var(--general-main-2);
+        position: relative;
 
         .acc-switcher__account {
             background: var(--general-main-2);

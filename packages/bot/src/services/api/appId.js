@@ -1,58 +1,12 @@
-import { LiveApi }                                      from 'binary-live-api';
-import { getLanguage }                                  from 'deriv-translations';
-import AppIds                                           from './appIdResolver';
-import GTM                                              from '../../utils/gtm';
+import { LiveApi }     from 'binary-live-api';
+import { getLanguage } from 'deriv-translations';
+import AppIds          from './appIdResolver';
 import {
     addToken,
     removeToken,
     getTokenList,
     removeAllTokens,
-}                                                       from '../../utils/tokenHelper';
-import { parseQueryString, isProduction, getExtension } from '../../utils/urlHelper';
-
-export const AppConstants = Object.freeze({
-    STORAGE_ACTIVE_TOKEN: 'activeToken',
-});
-
-const hostName = document.location.hostname;
-
-const queryToObjectArray = queryStr => {
-    // Parse and return token from querystring
-    const tokens = [];
-    Object.keys(queryStr).forEach(o => {
-        if (!/\d$/.test(o)) return;
-        const index = parseInt(o.slice(-1));
-        let key = o.slice(0, -1);
-        key = key === 'acct' ? 'accountName' : key; // Make it consistent with storageManage naming
-        if (index <= tokens.length) {
-            tokens[index - 1][key] = queryStr[o];
-        } else {
-            tokens.push({});
-            tokens[index - 1][key] = queryStr[o];
-        }
-    });
-    return tokens;
-};
-
-export const oauthLogin = (done = () => 0) => {
-    // Get token from QueryString and save it into localstorage
-    const queryStr = parseQueryString();
-
-    const tokenObjectList = queryToObjectArray(queryStr);
-
-    if (tokenObjectList.length) {
-        // TODO hide loader
-        addTokenIfValid(tokenObjectList[0].token, tokenObjectList).then(() => {
-            const accounts = getTokenList();
-            if (accounts.length) {
-                localStorage.setItem(AppConstants.STORAGE_ACTIVE_TOKEN, accounts[0].token);
-            }
-            document.location = 'index.html';
-        });
-    } else {
-        done();
-    }
-};
+}                      from '../../utils/tokenHelper';
 
 export const getCustomEndpoint = () => ({
     url  : localStorage.getItem('config.server_url'),
@@ -61,7 +15,7 @@ export const getCustomEndpoint = () => ({
 
 const isRealAccount = () => {
     const accountList = JSON.parse(localStorage.getItem('tokenList') || '{}');
-    const activeToken = localStorage.getItem(AppConstants.STORAGE_ACTIVE_TOKEN) || [];
+    const activeToken = localStorage.getItem('activeToken') || [];
     let activeAccount = null;
     let isReal = false;
     try {
@@ -71,22 +25,12 @@ const isRealAccount = () => {
     return isReal;
 };
 
-const getDomainAppId = () => AppIds[hostName.replace(/^www./, '')];
+const getDomainAppId = () => AppIds[document.location.hostname.replace(/^www./, '')];
 
 export const getDefaultEndpoint = () => ({
     url  : isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
-    appId: localStorage.getItem('config.default_app_id') || getDomainAppId() || 16014,
+    appId: localStorage.getItem('config.default_app_id') || getDomainAppId() || 19111,
 });
-
-const generateOAuthDomain = () => {
-    const endpointUrl = getCustomEndpoint().url;
-    if (endpointUrl) {
-        return endpointUrl;
-    } else if (isProduction()) {
-        return `oauth.binary.${getExtension()}`;
-    }
-    return 'oauth.binary.com';
-};
 
 export const getServerAddressFallback = () => getCustomEndpoint().url || getDefaultEndpoint().url;
 
@@ -94,21 +38,11 @@ export const getAppIdFallback = () => getCustomEndpoint().appId || getDefaultEnd
 
 export const getWebSocketURL = () => `wss://${getServerAddressFallback()}/websockets/v3`;
 
-export const generateWebSocketURL = serverUrl => `wss://${serverUrl}/websockets/v3`;
-
-export const getOAuthURL = () =>
-    // return the url to login page
-    `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}`;
-
-const options = {
+export const generateLiveApiInstance = () => new LiveApi({
     apiUrl  : getWebSocketURL(),
     language: getLanguage().toUpperCase(),
     appId   : getAppIdFallback(),
-};
-
-export const generateLiveApiInstance = () => new LiveApi(options);
-
-export const generateTestLiveApiInstance = overrideOptions => new LiveApi(Object.assign({}, options, overrideOptions));
+});
 
 export async function addTokenIfValid(token, tokenObjectList) {
     // Create a new instance of api, send autorize req,
@@ -136,7 +70,6 @@ export async function addTokenIfValid(token, tokenObjectList) {
         if (tokenObjectList && tokenObjectList.length !== 0) {
             removeToken(tokenObjectList[0].token);
         }
-        GTM.setVisitorId();
         throw e;
     }
     return api.disconnect();

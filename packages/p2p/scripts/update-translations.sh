@@ -32,6 +32,8 @@ function confirm {
 cd $(git rev-parse --show-toplevel) &&
 
 message "Updating translations branch" &&
+git branch -D translations &&
+git push origin --delete translations
 git checkout -b translations &&
 git pull upstream dev &&
 

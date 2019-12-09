@@ -1,5 +1,5 @@
-project_identifier: 'deriv-p2p'
-api_key_env: TODO
+project_identifier: 'P2P'
+api_key_env: P2P_CROWDIN_API_KEY
 
 files:
   - source: /crowdin/messages.json

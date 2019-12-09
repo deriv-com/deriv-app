@@ -1,62 +1,57 @@
 .transactions {
-    $trade-type-icon-width  : 24px;
-    $trade-information-width: 100px;
-    $spot-width             : 85px;
-    $profit-width           : auto;
-    $settlement-width       : 16px;
+    $grid-template-columns: 40px 1fr 1fr 16px; // 16px (icon) + 24px (spacing)
 
     &__header {
-        align-items: center;
-        border-bottom: 1px solid var(--border-normal);
-        display: flex;
-        font-size: 12px;
-        font-weight: bold;
-        line-height: 40px;
+        border-bottom: 1px solid var(--general-section-1);
+        display: grid;
+        @include typeface(--small-left-bold-black, none);
+        grid-template-columns: $grid-template-columns;
+        grid-template-areas: '. spot profit .';
+        margin: 0 16px;
+        padding: 16px 8px; // Equal l+r with transaction__item padding.
 
-        &-column {
-            &:nth-child(1) {
-                margin-left: $trade-type-icon-width + 8px;
-            }
-            &:nth-child(2) {
-                margin: 0 15px;
-            }
-            &:nth-child(3) {
-                margin-right: $trade-type-icon-width + 8px;
+        $header-grid-items: (
+            unquote('spot'),
+            unquote('profit'),
+        );
+
+        @each $item in $header-grid-items {
+            &-#{$item} {
+                grid-column: $item;
             }
         }
     }
     &__item {
-        border: 1px solid var(--border-normal);
-        border-radius: $BORDER_RADIUS;
         display: grid;
-        font-size: 10px;
+        font-size: 12px;
         grid-row-gap: 4px;
-        grid-template-columns: (
-            $trade-type-icon-width
-            $trade-information-width
-            $spot-width $profit-width
-            $settlement-width
-        );
-        grid-template-rows: auto auto auto;
+        grid-template-columns: $grid-template-columns;
+        grid-template-rows: auto auto;
         grid-template-areas: (
-            'trade-type reference entry-spot . .'
-            '. buy-price exit-spot profit settlement'
-            '. start-time start-time . .'
+            'symbol     entry-spot stake  info'
+            'trade-type exit-spot  profit info'
         );
-        margin: 8px 16px;
+        margin: 0 16px;
         padding: 8px;
         text-align: left;
+
+        &:not(:first-child) {
+            border-top: 1px solid var(--general-section-1);
+            margin-top: 0;
+        }
+        &:last-child {
+            border-bottom: 1px solid var(--general-section-1);
+        }
     }
 
     $grid-items: (
+        unquote('symbol'),
         unquote('trade-type'),
-        unquote('reference'),
-        unquote('buy-price'),
-        unquote('start-time'),
         unquote('entry-spot'),
         unquote('exit-spot'),
+        unquote('stake'),
         unquote('profit'),
-        unquote('settlement'),
+        unquote('info'),
     );
 
     @each $item in $grid-items {
@@ -66,20 +61,29 @@
         }
     }
 
+    &__divider {
+        border-top: 1px solid var(--general-section-1);
+        margin: 0 16px;
+        padding: 16px 0;
+
+        &-line {
+            height: 4px;
+            background-color: var(--general-section-1);
+        }
+    }
     &__icon {
-        display: inline-block;
-        margin-right: 4px;
-        height: 16px;
+        margin-right: 8px;
+        max-height: 16px;
+        max-width: 16px;
+        min-height: 16px;
+        min-width: 16px;
     }
     &__cell {
         display: flex;
         align-items: center;
+        line-height: 1.5;
     }
     &__profit {
-        font-weight: bold;
-        align-self: center;
-        justify-content: center;
-
         &--win {
             color: var(--text-profit-success);
 
@@ -93,6 +97,11 @@
             &:before {
                 content: '-';
             }
+        }
+    }
+    &__info {
+        &-header {
+            font-weight: bold;
         }
     }
 }

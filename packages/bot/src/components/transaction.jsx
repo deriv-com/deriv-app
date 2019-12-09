@@ -1,25 +1,23 @@
-import className               from 'classnames';
+import classNames               from 'classnames';
 import {
     Money,
-    Popover }                  from 'deriv-components';
+    Popover,
+    UnderlyingIcon }           from 'deriv-components';
 import React                   from 'react';
 import { localize }            from 'deriv-translations';
 import {
     BuyPriceIcon,
-    CompletedIcon,
     ExitSpotIcon,
     EntrySpotIcon,
-    ReferenceIdIcon,
-    StartTimeIcon,
-    PendingIcon }              from './Icons.jsx';
+    InfoOutlineIcon }          from './Icons.jsx';
 import IconTradeType           from './icon-trade-types.jsx';
 import { getContractTypeName } from '../utils/contract';
 
-const TransactionIcon = ({ icon, title, message }) => {
+const TransactionIconWithText = ({ icon, title, message, className }) => {
     return (
         <React.Fragment>
             <Popover
-                className='transactions__icon'
+                className={classNames(className, 'transactions__icon')}
                 alignment='left'
                 message={title}
             >
@@ -33,22 +31,37 @@ const TransactionIcon = ({ icon, title, message }) => {
 const Transaction = ({ contract }) => {
     return (
         <div className='transactions__item'>
+            <div className='transactions__cell transactions__symbol'>
+                <TransactionIconWithText
+                    icon={<UnderlyingIcon market={contract.underlying} />}
+                    title={contract.display_name}
+                />
+            </div>
             <div className='transactions__cell transactions__trade-type'>
-                <TransactionIcon
+                <TransactionIconWithText
                     icon={<IconTradeType trade_type={contract.contract_type} />}
                     title={getContractTypeName(contract)}
                 />
             </div>
-            <div className='transactions__cell transactions__reference'>
-                <TransactionIcon
-                    icon={<ReferenceIdIcon />}
-                    title={localize('Reference ID')}
-                    message={contract.reference_id}
+
+            <div className='transactions__cell transactions__entry-spot'>
+                <TransactionIconWithText
+                    icon={<EntrySpotIcon />}
+                    title={localize('Entry spot')}
+                    message={contract.entry_spot}
                 />
             </div>
-            <div className='transactions__cell transactions__buy-price'>
-                <TransactionIcon
-                    icon={<BuyPriceIcon className='transactions__middle' />}
+            <div className='transactions__cell transactions__exit-spot'>
+                <TransactionIconWithText
+                    icon={<ExitSpotIcon />}
+                    title={localize('Exit spot')}
+                    message={contract.exit_spot}
+                />
+            </div>
+
+            <div className='transactions__cell transactions__stake'>
+                <TransactionIconWithText
+                    icon={<BuyPriceIcon />}
                     title={localize('Buy price')}
                     message={
                         <Money
@@ -58,30 +71,9 @@ const Transaction = ({ contract }) => {
                     }
                 />
             </div>
-            <div className='transactions__cell transactions__start-time'>
-                <TransactionIcon
-                    icon={<StartTimeIcon />}
-                    title={localize('Start time')}
-                    message={contract.date_start}
-                />
-            </div>
-            <div className='transactions__cell transactions__entry-spot'>
-                <TransactionIcon
-                    icon={<EntrySpotIcon />}
-                    title={localize('Entry spot')}
-                    message={contract.entry_spot}
-                />
-            </div>
-            <div className='transactions__cell transactions__exit-spot'>
-                <TransactionIcon
-                    icon={<ExitSpotIcon />}
-                    title={localize('Exit spot')}
-                    message={contract.exit_spot}
-                />
-            </div>
             <div className='transactions__cell transactions__profit'>
                 {contract.profit &&
-                    <div className={className({
+                    <div className={classNames({
                         'transactions__profit--win' : contract.profit > 0,
                         'transactions__profit--loss': contract.profit < 0,
                     })}
@@ -93,18 +85,21 @@ const Transaction = ({ contract }) => {
                     </div>
                 }
             </div>
-            <div className='transactions__cell transactions__settlement'>
-                { contract.is_completed ?
-                    <TransactionIcon
-                        icon={<CompletedIcon />}
-                        title={localize('Completed')}
-                    />
-                    :
-                    <TransactionIcon
-                        icon={<PendingIcon />}
-                        title={localize('Pending')}
-                    />
-                }
+            
+            <div className='transactions__cell transactions__info'>
+                <TransactionIconWithText
+                    icon={<InfoOutlineIcon />}
+                    title={
+                        <div className='transactions__info-content'>
+                            <div className='transactions__info-header'>
+                                { localize('Start time:') }
+                            </div>
+                            <div className='transactions__info-value'>
+                                { contract.date_start }
+                            </div>
+                        </div>
+                    }
+                />
             </div>
         </div>
     );

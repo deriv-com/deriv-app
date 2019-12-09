@@ -1,4 +1,5 @@
 import React         from 'react';
+import PropTypes     from 'prop-types';
 import { Button }    from 'deriv-components';
 import { localize }  from 'deriv-translations';
 import FooterActions from 'Components/footer-actions/footer-actions.jsx';
@@ -10,6 +11,11 @@ const OrderInfoBlock = ({ label, value }) => (
         <strong className='order-details__info-block-value'>{ value }</strong>
     </div>
 );
+
+OrderInfoBlock.propTypes = {
+    label: PropTypes.string,
+    value: PropTypes.string,
+};
 
 const OrderDetailsStatusBlock = ({ order_details }) => {
     const {
@@ -51,6 +57,10 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
     );
 };
 
+OrderDetailsStatusBlock.propTypes = {
+    order_details: PropTypes.object,
+};
+
 const OrderDetailsAmountBlock = ({ order_details }) => (
     (order_details.is_pending || order_details.is_buyer_confirmed) ? (
         <h1 className='order-details__header-amount'>
@@ -58,6 +68,10 @@ const OrderDetailsAmountBlock = ({ order_details }) => (
         </h1>
     ) : null
 );
+
+OrderDetailsAmountBlock.propTypes = {
+    order_details: PropTypes.object,
+};
 
 const OrderDetailsTimerBlock = ({ order_details }) => {
     return (order_details.is_pending || order_details.is_buyer_confirmed) ? (
@@ -68,6 +82,10 @@ const OrderDetailsTimerBlock = ({ order_details }) => {
             </p>
         </div>
     ) : null;
+};
+
+OrderDetailsTimerBlock.propTypes = {
+    order_details: PropTypes.object,
 };
 
 const OrderActionsBlock = ({ order_details }) => {
@@ -81,19 +99,26 @@ const OrderActionsBlock = ({ order_details }) => {
     if (is_pending && is_buyer) {
         buttons_to_render = ( // TODO: [p2p-add-confirmation-popup] - Add popup to `onClick` function to confirm user action
             <React.Fragment>
+                {/* eslint-disable-next-line no-console */}
                 <Button className='order-details__actions-button' large secondary onClick={ () => console.log('Cancel order') }>{ localize('Cancel order') }</Button>
+                {/* eslint-disable-next-line no-console */}
                 <Button className='order-details__actions-button' large primary onClick={ () => console.log('I\'ve paid') }>{ localize('I\'ve paid') }</Button>
             </React.Fragment>
         );
     }
 
     if ((is_pending || is_buyer_confirmed) && !is_buyer) {
-        buttons_to_render = ( // TODO: [p2p-add-confirmation-popup] - Add popup to `onClick` function to confirm user action
+        // TODO: [p2p-add-confirmation-popup] - Add popup to `onClick` function to confirm user action
+        buttons_to_render = ( // eslint-disable-next-line no-console
             <Button className='order-details__actions-button' large primary onClick={ () => console.log('I\'ve received funds') }>{ localize('I\'ve received funds') }</Button>
         );
     }
 
     return buttons_to_render;
+};
+
+OrderActionsBlock.propTypes = {
+    order_details: PropTypes.object,
 };
 
 const OrderDetailsResultMessage = ({ order_details }) => {
@@ -125,6 +150,10 @@ const OrderDetailsResultMessage = ({ order_details }) => {
     }
     // TODO: [p2p-timeout-status-check] - Check if order has timed out and add timeout message
     return null;
+};
+
+OrderDetailsResultMessage.propTypes = {
+    order_details: PropTypes.object,
 };
 
 const OrderDetails = ({
@@ -189,6 +218,10 @@ const OrderDetails = ({
             </FooterActions>
         </div>
     );
+};
+
+OrderDetails.propTypes = {
+    order_details: PropTypes.object,
 };
 
 export default OrderDetails;

@@ -1,6 +1,7 @@
 import React        from 'react';
 import PropTypes    from 'prop-types';
 import { localize } from 'deriv-translations';
+import StringUtils from '../../utils/string'
 import                   './my-profile.scss';
 
 // TODO: This is just mockup data. it will be removed after Adding BE API.
@@ -16,13 +17,6 @@ const user_data = {
     average_release_unit      : 'min',
 };
 
-function toSentenceCase (string) {
-    if (!string) {
-        return '';
-    }
-    return string[0].toUpperCase() + string.slice(1);
-}
-
 const Cell = (props) => {
     return (
         <div className='my-profile__cell'>
@@ -35,10 +29,10 @@ const Cell = (props) => {
                 </div>
                 <div className='my-profile__cell-data-sub'>
                     <div className='my-profile__cell-data-sub-upper'>
-                        {props.upperSubValue}
+                        {props.upper_sub_value}
                     </div>
                     <div className='my-profile__cell-data-sub-lower'>
-                        {props.lowerSubValue}
+                        {props.lower_sub_value}
                     </div>
                 </div>
             </div>
@@ -50,18 +44,18 @@ const Cell = (props) => {
 };
 
 Cell.propTypes = {
-    title        : PropTypes.string,
-    value        : PropTypes.string,
-    dimension    : PropTypes.string,
-    upperSubValue: PropTypes.string,
-    lowerSubValue: PropTypes.string,
+    title          : PropTypes.string,
+    value          : PropTypes.string,
+    dimension      : PropTypes.string,
+    upper_sub_value: PropTypes.string,
+    lower_sub_value: PropTypes.string,
 };
 
 const MyProfile = () => {
     return (
         <div className='my-profile'>
             <div className='my-profile__name'>
-                {`${toSentenceCase(user_data.first_name)} ${toSentenceCase(user_data.last_name)}`}
+                {`${StringUtils.toSentenceCase(user_data.first_name)} ${StringUtils.toSentenceCase(user_data.last_name)}`}
             </div>
             <div className='my-profile__data'>
                 <Cell
@@ -71,8 +65,8 @@ const MyProfile = () => {
                 <Cell
                     title={localize('Trades')}
                     value={user_data.buy_trades + user_data.sell_trades}
-                    upperSubValue={localize('{{buy_trades}} buy', { buy_trades: user_data.buy_trades })}
-                    lowerSubValue={localize('{{sell_trades}} sell', { sell_trades: user_data.sell_trades })}
+                    upper_sub_value={localize('{{buy_trades}} buy', { buy_trades: user_data.buy_trades })}
+                    lower_sub_value={localize('{{sell_trades}} sell', { sell_trades: user_data.sell_trades })}
                 />
                 <Cell
                     title={localize('Trades in the last 30 days')}

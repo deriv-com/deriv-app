@@ -303,6 +303,16 @@ class Dropdown extends React.Component {
                     {this.props.error &&
                         <p className='dc-field-error'>{this.props.error}</p>
                     }
+                    {this.props.is_mobile ?
+                    <MobileDialog
+                        // visible={open} TODO
+                        // onClose={onClose} TODO
+                        // title={title} TODO
+                        wrapperClassName='dropdown-modal'
+                    >
+                        {/* {children} TODO */} 
+                    </MobileDialog>
+                    :
                     <CSSTransition
                         in={this.state.is_list_visible}
                         timeout={100}
@@ -361,7 +371,7 @@ class Dropdown extends React.Component {
                                 </ThemedScrollbars>
                             </div>
                         </div>
-                    </CSSTransition>
+                    </CSSTransition>}
                 </div>
             </React.Fragment>
         );

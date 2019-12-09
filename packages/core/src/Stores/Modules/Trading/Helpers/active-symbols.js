@@ -52,6 +52,9 @@ const getFavoriteOpenSymbol = (active_symbols) => {
         }
         return undefined;
     } catch (error) {
+        // Some errors was seen in this function during tests that pervented setting favorite symbol,
+        // We could reproduce them only with setting manually cq-favorites.
+        // For prevent showing this error on console, we're using catch.
         return undefined;
     }
 };

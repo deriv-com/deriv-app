@@ -1,0 +1,10 @@
+project_identifier: 'deriv-p2p'
+api_key_env: TODO
+
+files:
+  - source: /crowdin/messages.json
+    translation: /src/translations/%two_letters_code%.json
+    languages_mapping:
+      two_letters_code:
+        zh-CN: zh_cn
+        zh-TW: zh_tw

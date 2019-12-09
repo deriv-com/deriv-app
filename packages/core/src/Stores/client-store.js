@@ -333,7 +333,9 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_mt5_allowed() {
         if (!this.landing_companies) return false;
-        return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
+        // TODO revert next line when Non-CR MT5 is enabled.
+        // return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
+        return 'mt_gaming_company' in this.landing_companies;
     }
 
     /**

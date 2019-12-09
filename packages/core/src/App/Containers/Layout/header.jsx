@@ -31,6 +31,7 @@ class Header extends React.Component {
             is_logged_in,
             is_logging_in,
             is_mobile,
+            is_mt5_allowed,
             is_notifications_visible,
             is_route_modal_on,
             is_virtual,
@@ -43,12 +44,11 @@ class Header extends React.Component {
         } = this.props;
 
         const filterPlatformsForClients = (payload) => payload.filter(config => {
-            // MX clients cannot open MT5 account
+            // non-CR clients cannot open MT5 account
             const is_mt5_eligible = !(
                 is_logged_in &&
                 config.link_to === routes.mt5 &&
-                can_upgrade_to !== 'svg' &&
-                landing_company_shortcode !== 'svg'
+                !is_mt5_allowed
             );
             return is_mt5_eligible;
         });
@@ -140,6 +140,7 @@ export default connect(
         is_app_disabled          : ui.is_app_disabled,
         is_loading               : ui.is_loading,
         landing_company_shortcode: client.landing_company_shortcode,
+        is_mt5_allowed           : client.is_mt5_allowed,
         notifications_count      : ui.notifications.length,
         is_notifications_visible : ui.is_notifications_visible,
         is_route_modal_on        : ui.is_route_modal_on,

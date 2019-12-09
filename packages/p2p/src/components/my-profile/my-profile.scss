@@ -27,7 +27,7 @@
             border: none;
         }
 
-        &__title {
+        &-title {
             color: var(--text-less-prominent);
             // TODO: Change this to css variable when this font-size added:
             font-size: 1rem;
@@ -35,34 +35,35 @@
             transform: translateY(50%);
         }
 
-        &__data {
+        &-data {
             display: flex;
 
-            &__main {
+            &-main {
                 color: var(--text-general);
                 font-size: var(--text-size-l);
                 font-weight: bold;
                 line-height: 1.25;
                 margin-right: 0.8rem;
 
-                &__dimension {
-                    font-size: var(--text-size-s);
-                    line-height: 1.5;
-                }
             }
 
-            &__sub{
+            &-dimension {
+                font-size: var(--text-size-s);
+                line-height: 1.5;
+            }
+
+            &-sub{
                 display: flex;
                 flex-direction: column;
                 justify-content: space-evenly;
 
-                &__upper {
+                &-upper {
                     color: var(--text-profit-success);
                     // TODO: Change this to css variable when this font-size added:
                     font-size: 1rem;
                 }
 
-                &__lower {
+                &-lower {
                     color: var(--text-loss-danger);
                     // TODO: Change this to css variable when this font-size added:
                     font-size: 1rem;

@@ -26,23 +26,23 @@ function capitalize (string) {
 const Cell = (props) => {
     return (
         <div className='my-profile__cell'>
-            <div className='my-profile__cell__data'>
-                <div className='my-profile__cell__data__main'>
+            <div className='my-profile__cell-data'>
+                <div className='my-profile__cell-data-main'>
                     {props.value}
-                    <sub className="my-profile__cell__data__main__dimension" >
+                    <sub className="my-profile__cell-data-dimension" >
                         {props.dimension}
                     </sub>
                 </div>
-                <div className='my-profile__cell__data__sub'>
-                    <div className='my-profile__cell__data__sub__upper'>
+                <div className='my-profile__cell-data-sub'>
+                    <div className='my-profile__cell-data-sub-upper'>
                         {props.upperSubValue}
                     </div>
-                    <div className='my-profile__cell__data__sub__lower'>
+                    <div className='my-profile__cell-data-sub-lower'>
                         {props.lowerSubValue}
                     </div>
                 </div>
             </div>
-            <div className='my-profile__cell__title'>
+            <div className='my-profile__cell-title'>
                 {props.title}
             </div>
         </div>

@@ -36,7 +36,9 @@ const InsufficientBalanceModal = ({
 );
 
 InsufficientBalanceModal.propTypes = {
+    history    : PropTypes.object,
     is_visible : PropTypes.bool,
+    message    : PropTypes.string,
     toggleModal: PropTypes.func,
 };
 

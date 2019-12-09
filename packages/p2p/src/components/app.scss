@@ -1,0 +1,14 @@
+@import 'deriv-shared/src/styles/reset.scss';
+
+.deriv-p2p {
+    background: transparent;
+    height: 100%;
+    width: 100%;
+
+    &__content {
+        padding: 0 1.6rem;
+    }
+    & .dc-tabs {
+        position: static;
+    }
+}

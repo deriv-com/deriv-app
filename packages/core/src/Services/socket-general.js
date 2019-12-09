@@ -4,7 +4,7 @@ import Login             from '_common/base/login';
 import ServerTime        from '_common/base/server_time';
 import BinarySocket      from '_common/base/socket_base';
 import { State }         from '_common/storage';
-import { localize }      from 'App/i18n';
+import { localize }      from 'deriv-translations';
 import WS                from './ws-methods';
 
 let client_store,
@@ -100,6 +100,28 @@ const BinarySocketGeneral = (() => {
         const error_code = ObjectUtils.getPropertyValue(response, ['error', 'code']);
         switch (error_code) {
             case 'WrongResponse':
+                // TODO: Remove condition checks below for WrongResponse once mt5 is more reliable
+                if (msg_type === 'mt5_login_list') {
+                    WS.authorized.mt5LoginList().then((mt5_list_response) => {
+                        if (!mt5_list_response.error) {
+                            client_store.responseMt5LoginList(mt5_list_response);
+                            WS.balanceAll().then((balance_response) => {
+                                this.setBalance(balance_response.balance);
+                            });
+                        } else {
+                            client_store.resetMt5ListPopulatedState();
+                        }
+                    });
+                } else if (msg_type === 'balance') {
+                    forgetAndSubscribeBalance();
+                } else if (msg_type === 'get_account_status') {
+                    WS.authorized.getAccountStatus().then((account_status_response) => {
+                        if (!account_status_response.error) {
+                            client_store.setAccountStatus(account_status_response.get_account_status);
+                        }
+                    });
+                }
+                break;
             case 'InternalServerError':
             case 'OutputValidationFailed': {
                 if (msg_type !== 'mt5_login_list') {
@@ -119,6 +141,10 @@ const BinarySocketGeneral = (() => {
                 common_store.setError(true, { message: response.error.message });
                 break;
             case 'InvalidToken':
+                // if message type equals to cashier, there is no need to logout user
+                if (msg_type === 'cashier' || msg_type === 'paymentagent_withdraw') {
+                    return;
+                }
                 client_store.logout().then(() => {
                     common_store.setError(true, {
                         header             : response.error.message,
@@ -144,14 +170,18 @@ const BinarySocketGeneral = (() => {
         };
     };
 
-    const authorizeAccount = (response) => {
-        client_store.responseAuthorize(response);
+    const forgetAndSubscribeBalance = () => {
         WS.forgetAll('balance').then(() => {
             // the first has to be without subscribe to quickly update current account's balance
             WS.authorized.balance().then(ResponseHandlers.balance);
             // the second is to subscribe to balance and update all sibling accounts' balances too
             WS.subscribeBalanceAll(ResponseHandlers.balance);
         });
+    };
+
+    const authorizeAccount = (response) => {
+        client_store.responseAuthorize(response);
+        forgetAndSubscribeBalance();
         WS.getSettings();
         WS.getAccountStatus();
         WS.storage.payoutCurrencies();

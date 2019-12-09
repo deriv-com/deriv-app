@@ -101,7 +101,16 @@
     align-items: center;
     margin: 0 0.8rem;
     height: 4rem;
+    position: relative;
 
+    &--is-loading {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        background: var(--general-main-2);
+    }
     &__wrapper {
         border-radius: $BORDER_RADIUS;
         position: absolute;
@@ -186,6 +195,7 @@
     &__accounts {
         border-radius: $BORDER_RADIUS;
         background: var(--general-main-2);
+        position: relative;
 
         .acc-switcher__account {
             background: var(--general-main-2);
@@ -268,7 +278,6 @@
     &__logout {
         align-items: center;
         align-self: flex-end;
-        cursor: pointer;
         display: flex;
         justify-content: flex-end;
         padding: 1.6em 1.3em;
@@ -276,10 +285,12 @@
         &-text {
             @include typeface(--paragraph-left-normal-black, none);
             color: var(--text-prominent);
+            cursor: pointer;
         }
         &-icon {
             margin-left: 8px;
             @extend %inline-icon;
+            cursor: pointer;
         }
     }
     &__balance {

@@ -58,6 +58,7 @@ class BuySell extends Component {
                         value={filter_value}
                     />
                 </div>
+                <BuySellTable table_type={filter_value} setSelectedAd={this.setSelectedAd} />
                 {show_popup && (
                     <div className='buy-sell__dialog'>
                         <Dialog
@@ -73,10 +74,6 @@ class BuySell extends Component {
                         </Dialog>
                     </div>
                 )}
-                {/* <BuySellTable
-                    setSelectedAd={this.setSelectedAd}
-                    table={filter_value}
-                /> */}
             </div>
         );
     }

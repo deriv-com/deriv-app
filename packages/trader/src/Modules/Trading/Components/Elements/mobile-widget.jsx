@@ -1,5 +1,5 @@
 import React            from 'react';
-import MobileDialog     from './mobile-dialog.jsx';
+import MobileDialog     from 'deriv-components/mobile-dialog.jsx';
 import TradeParams      from '../../Containers/trade-params.jsx';
 
 class MobileWidget extends React.PureComponent {

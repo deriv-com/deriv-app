@@ -1,0 +1,42 @@
+diff --git a/packages/core/build/webpack.config.js b/packages/core/build/webpack.config.js
+index e94d617fb..7e4ef0a88 100644
+--- a/packages/core/build/webpack.config.js
++++ b/packages/core/build/webpack.config.js
+@@ -16,7 +16,7 @@ module.exports = function (env, argv) {
+             open              : openChromeBasedOnPlatform(process.platform),
+             host              : 'localhost.binary.sx',
+             https             : true,
+-            port              : 443,
++            port              : 3000,
+             historyApiFallback: true,
+             stats             : {
+                 colors: true,
+diff --git a/packages/core/package.json b/packages/core/package.json
+index 764eb9a2e..fa1f0ddf0 100644
+--- a/packages/core/package.json
++++ b/packages/core/package.json
+@@ -4,8 +4,8 @@
+   "description": "Deriv Core",
+   "main": "index.js",
+   "scripts": {
+-    "start": "npm run test && npm run serve",
+-    "serve": "echo \"Serving...\" && sudo ./node_modules/.bin/webpack-dev-server --config \"./build/webpack.config.js\"",
++    "start": "npm run test && webpack-dev-server --config \"./build/webpack.config.js\"",
++    "serve": "echo \"Serving...\" && webpack-dev-server --config \"./build/webpack.config.js\"",
+     "build": "f () { webpack --config \"./build/webpack.config.js\" --env.base $1;}; f",
+     "build:travis": "echo \"No build:travis specified\"",
+     "test": "npm run test:stylelint && npm run test:eslint",
+diff --git a/packages/trader/package.json b/packages/trader/package.json
+index edcd813e4..6618b508d 100644
+--- a/packages/trader/package.json
++++ b/packages/trader/package.json
+@@ -4,7 +4,7 @@
+   "description": "Deriv content",
+   "main": "dist/js/trader.main.js",
+   "scripts": {
+-    "start": "npm run test && npm run serve",
++    "start": "npm run test && webpack-dev-server --config \"./build/webpack.config.js\"",
+     "serve": "echo \"Serving...\" && webpack --progress --watch --config \"./build/webpack.config.js\"",
+     "build": "webpack --config \"./build/webpack.config.js\"",
+     "build:travis": "echo \"No build:travis specified\"",
+

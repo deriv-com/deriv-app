@@ -1,7 +1,7 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
-import MobileDialog      from '../../Elements/mobile-dialog.jsx';
+import MobileDialog      from 'deriv-components/mobile-dialog.jsx';
 
 const TradeTypeInfoDialog = ({
     children,

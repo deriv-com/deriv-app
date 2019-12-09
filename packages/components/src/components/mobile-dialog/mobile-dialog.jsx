@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
-import Icon       from 'Assets/icon.jsx';
+import Icon       from '../icon/icon.jsx';
 
 const MobileDialog = (props) => {
     const { title, visible, children, wrapperClassName } = props;

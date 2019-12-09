@@ -17,28 +17,28 @@ const user_data = {
     average_release_unit      : 'min',
 };
 
-const Cell = (props) => {
+const Cell = ({title, value, upper_sub_value, lower_sub_value, dimension}) => {
     return (
         <div className='my-profile__cell'>
             <div className='my-profile__cell-data'>
                 <div className='my-profile__cell-data-main'>
-                    {props.value}
+                    {value}
                     <sub className="my-profile__cell-data-dimension" >
-                        {props.dimension}
+                        {dimension}
                     </sub>
                 </div>
                 <div className='my-profile__cell-data-sub'>
                     <div className='my-profile__cell-data-sub-upper'>
-                        {props.upper_sub_value}
+                        {upper_sub_value}
                     </div>
                     <div className='my-profile__cell-data-sub-lower'>
-                        {props.lower_sub_value}
+                        {lower_sub_value}
                     </div>
                 </div>
             </div>
-            <div className='my-profile__cell-title'>
-                {props.title}
-            </div>
+            <h2 className='my-profile__cell-title'>
+                {title}
+            </h2>
         </div>
     );
 };
@@ -54,9 +54,9 @@ Cell.propTypes = {
 const MyProfile = () => {
     return (
         <div className='my-profile'>
-            <div className='my-profile__name'>
+            <h1 className='my-profile__name'>
                 {`${StringUtils.toSentenceCase(user_data.first_name)} ${StringUtils.toSentenceCase(user_data.last_name)}`}
-            </div>
+            </h1>
             <div className='my-profile__data'>
                 <Cell
                     title={localize('Security Deposit')}

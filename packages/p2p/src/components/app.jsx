@@ -2,11 +2,11 @@ import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tabs } from 'deriv-components';
 import { localize } from 'deriv-translations';
-import Ads from './ads/ads.jsx';
+import { init } from 'Utils/websocket';
+import BuySell from './buy-sell/buy-sell.jsx';
 import Orders from './orders/orders.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import MyProfile from './my-profile/my-profile.jsx';
-import { init } from '../utils/websocket';
 import './app.scss';
 
 class App extends Component {
@@ -22,11 +22,13 @@ class App extends Component {
     }
 
     componentDidMount() {
-        // TODO: [fix-index-set] Fix issues with unresolved index to set in tabs
-        const index_to_set = /orders/.test(window.location.pathname) ? 1 : 0;
+        // TODO: [p2p-fix-index-set] Fix issues with unresolved index to set in tabs
+        if (typeof window !== 'undefined') {
+            const index_to_set = /orders/.test(window.location.pathname) ? 1 : 0;
 
-        if (this.state.active_index !== index_to_set) {
-            this.setState({ active_index: index_to_set });
+            if (this.state.active_index !== index_to_set) {
+                this.setState({ active_index: index_to_set });
+            }
         }
     }
 
@@ -43,7 +45,7 @@ class App extends Component {
                     <nav>
                         <Tabs active_index={active_index}>
                             <div label={localize('Buy/sell')}>
-                                <Ads />
+                                <BuySell />
                             </div>
                             <div label={localize('Orders')}>
                                 <Orders />

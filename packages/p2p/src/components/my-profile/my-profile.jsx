@@ -2,7 +2,7 @@ import React        from 'react';
 import PropTypes    from 'prop-types';
 import                   './my-profile.scss';
 import { localize } from '../i18next';
-import StringUtils  from '../../utils/string'
+import StringUtils  from '../../utils/string';
 
 // TODO: This is just mockup data. it will be removed after Adding BE API.
 const user_data = {

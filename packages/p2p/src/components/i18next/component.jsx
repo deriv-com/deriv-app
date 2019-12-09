@@ -12,8 +12,13 @@ const Localize = ({ i18n_default_text, values, components, options, i18n }) => (
     />
 );
 
+Localize.displayName = 'Localize';
+
 // Trans needs to have the i18n instance in scope
+// eslint-disable-next-line react/display-name
 const withI18n = i18n => props => <Localize i18n={i18n} {...props} />;
+
+withI18n.displayName = 'withI18n';
 
 Localize.propTypes = {
     components       : PropTypes.arrayOf(PropTypes.node),

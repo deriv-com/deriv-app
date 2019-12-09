@@ -3,9 +3,9 @@ import PropTypes            from 'prop-types';
 import {
     Dialog,
     ButtonToggle }          from 'deriv-components';
-import { localize }         from '../i18next';
 import { BuySellTable }     from './buy-sell-table.jsx';
 import Popup                from './popup.jsx';
+import { localize }         from '../i18next';
 import                           './buy-sell.scss';
 
 const buy_sell_filters = [

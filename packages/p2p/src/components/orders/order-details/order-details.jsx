@@ -1,8 +1,8 @@
-import React         from 'react';
-import { Button, Dialog }    from 'deriv-components';
-import { localize }  from 'deriv-translations';
-import FooterActions from 'Components/footer-actions/footer-actions.jsx';
-import Popup        from '../popup.jsx';
+import React              from 'react';
+import { Button, Dialog } from 'deriv-components';
+import { localize }       from 'deriv-translations';
+import FooterActions      from 'Components/footer-actions/footer-actions.jsx';
+import Popup              from '../popup.jsx';
 import './order-details.scss';
 
 const OrderInfoBlock = ({ label, value }) => (
@@ -85,9 +85,9 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
 
     const cancelOrder = () => {
         const options = {
-            title: localize('Cancel this order?'),
-            message: localize('There will be no refund after canceling the order. If you have paid, please do not cancel the order.'),
-            confirm_text: localize('Cancel this order'),
+            title         : localize('Cancel this order?'),
+            message       : localize('There will be no refund after canceling the order. If you have paid, please do not cancel the order.'),
+            confirm_text  : localize('Cancel this order'),
             onClickConfirm: cancelPopup,
         }
         showPopup(options);
@@ -96,11 +96,11 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     const paidOrder = () => {
         // TODO [p2p-order-api] call paid api
         const options = {
-            title: localize('Confirm this payment?'),
-            message: localize('Make sure you have successfully sent the funds to the seller’s bank account or e-wallet mentioned above.'),
-            has_cancel: true,
-            cancel_text: localize('I didn\'t pay yet'),
-            confirm_text: localize('I\'ve paid'),
+            title         : localize('Confirm this payment?'),
+            message       : localize('Make sure you have successfully sent the funds to the seller’s bank account or e-wallet mentioned above.'),
+            has_cancel    : true,
+            cancel_text   : localize('I didn\'t pay yet'),
+            confirm_text  : localize('I\'ve paid'),
             onClickConfirm: cancelPopup,
         }
         showPopup(options);
@@ -108,14 +108,14 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
 
     const receivedFunds = () => {
         const options = {
-            title: localize('Have you received funds?'),
-            message: localize('Make sure that you have logged in your bank account or other e-wallet to check the receipt.'),
+            title            : localize('Have you received funds?'),
+            message          : localize('Make sure that you have logged in your bank account or other e-wallet to check the receipt.'),
             need_confirmation: true,
             offer: {
-                currency       : offer_currency,
-                asset          : transaction_currency,
-                fix_price      : price_rate,
-                amount         : offer_amount,
+                currency : offer_currency,
+                asset    : transaction_currency,
+                fix_price: price_rate,
+                amount   : offer_amount,
             },
             onClickConfirm: cancelPopup,
         }

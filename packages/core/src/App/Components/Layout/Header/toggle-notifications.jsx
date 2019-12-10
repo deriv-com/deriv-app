@@ -30,7 +30,7 @@ const ToggleNotificationsDrawer = ({ count, is_visible, toggleDialog, tooltip_me
                 {!!count &&
                     <Counter
                         count={count}
-                        className="notifications-toggle__step"
+                        className='notifications-toggle__step'
                     />
                 }
             </div>

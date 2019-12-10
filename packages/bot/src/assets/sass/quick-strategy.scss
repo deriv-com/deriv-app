@@ -85,6 +85,7 @@
     }
 }
 
+/* stylelint-disable */
 @media (resolution: 100dpi) {
     .quick-strategy__tab-content {
         height: 100%;
@@ -96,3 +97,4 @@
         height: calc(100vh - 330px);
     }
 }
+/* stylelint-enable */

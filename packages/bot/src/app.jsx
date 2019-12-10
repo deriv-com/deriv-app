@@ -1,7 +1,5 @@
 import { Provider }             from 'mobx-react';
 import React                    from 'react';
-// TODO:  move to core once it's ready
-import                          'deriv-translations';
 import                          './public-path'; // Leave this here! OK boss!
 import FooterExtension          from './components/footer-extension.jsx';
 import MainContent              from './components/main-content.jsx';

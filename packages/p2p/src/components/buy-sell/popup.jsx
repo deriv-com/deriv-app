@@ -10,8 +10,8 @@ import {
     Input,
     Button,
     ThemedScrollbars,
-} from 'deriv-components';
-import { localize }        from 'deriv-translations';
+}                          from 'deriv-components';
+import { localize }        from '../i18next';
 import IconBack            from 'Assets/icon-back.jsx';
 import IconClose           from 'Assets/icon-close.jsx';
 

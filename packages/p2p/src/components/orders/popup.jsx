@@ -22,15 +22,15 @@ class Popup extends Component {
 
     render() {
         const {
-            onCancel,
-            onClickConfirm,
-            title,
-            need_confirmation,
-            offer,
-            message,
-            has_cancel,
             cancel_text,
             confirm_text,
+            onClickConfirm,
+            has_cancel,
+            message,
+            need_confirmation,
+            offer,
+            onCancel,
+            title,
         } = this.props;
 
         return (

@@ -1,7 +1,12 @@
 import React        from 'react';
 import PropTypes    from 'prop-types';
+<<<<<<< HEAD
 import { localize } from 'deriv-translations';
 import StringUtils  from '../../utils/string';
+=======
+import { localize } from 'Components/i18next';
+import StringUtils  from 'Utils/string';
+>>>>>>> 73642eba4ac792de1cfc00b645fc13a8fcbdbc38
 import                   './my-profile.scss';
 
 // TODO: This is just mockup data. it will be removed after Adding BE API.
@@ -29,7 +34,7 @@ const Cell = ({
             <div className='my-profile__cell-data'>
                 <div className='my-profile__cell-data-main'>
                     {value}
-                    <sub className="my-profile__cell-data-dimension" >
+                    <sub className='my-profile__cell-data-dimension' >
                         {dimension}
                     </sub>
                 </div>
@@ -50,11 +55,11 @@ const Cell = ({
 };
 
 Cell.propTypes = {
-    title          : PropTypes.string,
-    value          : PropTypes.string,
     dimension      : PropTypes.string,
-    upper_sub_value: PropTypes.string,
     lower_sub_value: PropTypes.string,
+    title          : PropTypes.string,
+    upper_sub_value: PropTypes.string,
+    value          : PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
 };
 
 const MyProfile = () => {

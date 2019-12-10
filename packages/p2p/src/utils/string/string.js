@@ -3,4 +3,4 @@ export const toSentenceCase = (string) => {
         return '';
     }
     return string[0].toUpperCase() + string.slice(1);
-}
+};

@@ -3,7 +3,7 @@ import { localize }             from 'deriv-translations';
 import { PropTypes }            from 'prop-types';
 import React                    from 'react';
 import Transaction              from './transaction.jsx';
-import { transaction_elements } from '../constants/transactions.js';
+import { transaction_elements } from '../constants/transactions';
 import { connect }              from '../stores/connect';
 import                           '../assets/sass/transactions.scss';
 

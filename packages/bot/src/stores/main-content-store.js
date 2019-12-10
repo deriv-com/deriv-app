@@ -2,16 +2,16 @@ import {
     action,
     observable,
     reaction,
-}                                  from 'mobx';
-import { tabs_title }              from '../constants/bot-contents';
-import { onWorkspaceResize }       from '../scratch/utils/workspace';
+}                            from 'mobx';
+import { tabs_title }        from '../constants/bot-contents';
+import { onWorkspaceResize } from '../scratch/utils/workspace';
 
 export default class MainContentStore {
     constructor(root_store) {
         this.root_store = root_store;
         const { run_panel } = this.root_store;
 
-        reaction(
+        this.disposeIsDrawerOpenReaction = reaction(
             () => run_panel.is_drawer_open,
             () => this.setContainerSize());
     }
@@ -38,5 +38,8 @@ export default class MainContentStore {
     @action.bound
     onUnmount() {
         window.removeEventListener('resize', this.setContainerSize);
+        if (this.disposeIsDrawerOpenReaction === function) {
+            this.disposeIsDrawerOpenReaction();
+        }
     }
 }

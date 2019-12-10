@@ -1,19 +1,19 @@
 import React, {
     Fragment,
-    Component }            from 'react';
-import PropTypes           from 'prop-types';
+    Component }       from 'react';
+import PropTypes      from 'prop-types';
 import {
     Formik,
     Field,
-    Form }                 from 'formik';
+    Form }            from 'formik';
 import {
     Input,
     Button,
     ThemedScrollbars,
-}                          from 'deriv-components';
-import IconBack            from 'Assets/icon-back.jsx';
-import IconClose           from 'Assets/icon-close.jsx';
-import { localize }        from '../i18next';
+}                     from 'deriv-components';
+import IconBack       from 'Assets/icon-back.jsx';
+import IconClose      from 'Assets/icon-close.jsx';
+import { localize }   from '../i18next';
 
 class Popup extends Component {
     handleSubmit = (formik_vars, { setSubmitting }) => {

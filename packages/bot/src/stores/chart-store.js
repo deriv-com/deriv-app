@@ -20,8 +20,8 @@ export default class ChartStore {
         reaction(() =>
             run_panel.is_running, () =>
             run_panel.is_running ?
-                this.startBot() :
-                this.stopBot()
+                this.onStartBot() :
+                this.onStopBot()
         );
     }
 
@@ -35,11 +35,11 @@ export default class ChartStore {
     get is_contract_ended() {
         const { transactions } = this.root_store;
 
-        return transactions.contracts.lenght > 0 && transactions.contracts[0].is_ended;
+        return transactions.contracts.length > 0 && transactions.contracts[0].is_ended;
     }
 
     @action.bound
-    startBot() {
+    onStartBot() {
         this.updateSymbol();
 
         const { main_content } = this.root_store;
@@ -47,7 +47,7 @@ export default class ChartStore {
     }
 
     @action.bound
-    stopBot() {
+    onStopBot() {
         const { main_content } = this.root_store;
         main_content.setActiveTab(tabs_title.WORKSPACE);
     }

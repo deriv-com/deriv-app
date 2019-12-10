@@ -35,8 +35,6 @@
         align-items: center;
     }
     &__toggle {
-        $toggle: &;
-
         align-items: center;
         border-left: 1px solid var(--border-disabled);
         border-right: 1px solid var(--border-disabled);
@@ -53,10 +51,8 @@
             transition: 0.25s ease;
             transform: rotate(180deg);
         }
-        &--open {
-            & #{$toggle}-icon {
-                transform: rotate(0);
-            }
+        &--open > &-icon {
+            transform: rotate(0);
         }
     }
     &--open {

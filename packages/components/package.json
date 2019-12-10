@@ -29,7 +29,7 @@
     "deploy:production": "echo \"No deploy:production specified\"",
     "storybook": "start-storybook -s /.out -p 6006",
     "storybook:build": "build-storybook --output-dir .out",
-    "storybook:deploy": "exit 0; # TODO rm -fr .out && npm run build-storybook && cp scripts/CNAME .out/ && storybook-to-ghpages -- --existing-output-dir .out"
+    "storybook:deploy": "rm -fr .out && npm run storybook:build && gh-pages -d .out -e $1"
   },
   "author": "Deriv",
   "license": "Apache-2.0",
@@ -96,6 +96,7 @@
     "classnames": "^2.2.6",
     "deriv-shared": "^1.0.0",
     "formik": "^1.5.8",
+    "gh-pages": "^2.1.1",
     "prop-types": "^15.7.2",
     "react": "~16.8.6",
     "react-dom": "~16.8.6",

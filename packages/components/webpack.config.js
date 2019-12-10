@@ -14,6 +14,7 @@ module.exports = {
         accordion          : path.resolve(__dirname, 'src', 'components/accordion/index.js'),
         autocomplete       : path.resolve(__dirname, 'src', 'components/autocomplete/index.js'),
         button             : path.resolve(__dirname, 'src', 'components/button/index.js'),
+        'button-toggle'    : path.resolve(__dirname, 'src', 'components/button-toggle/index.js'),
         checkbox           : path.resolve(__dirname, 'src', 'components/checkbox/index.js'),
         dialog             : path.resolve(__dirname, 'src', 'components/dialog/index.js'),
         drawer             : path.resolve(__dirname, 'src', 'components/drawer/index.js'),

@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_getSubstring = {
     init() {
@@ -123,7 +124,7 @@ Blockly.Blocks.text_getSubstring = {
     },
     getRequiredValueInputs() {
         return {
-            STRING: null,
+            STRING: emptyTextValidator,
         };
     },
 };

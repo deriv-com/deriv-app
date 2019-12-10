@@ -4,7 +4,7 @@ import {
     isEdge,
 } from '_common/browser_detect';
 
-const performanceMetrics = {
+const performance_metrics = {
     start               : 'started',
     firstContentfulPaint: 'first-contentful-paint',
     smartChartMounted   : 'smart-charts-mounted',
@@ -26,41 +26,41 @@ function measurePerformance(pushLoadPerformance) {
         if (isFirefox() || isSafari() || isEdge()) {
             // start --- firstContentfulPaint
             performance.measure(
-                performanceMetrics.firstContentfulPaint,
-                performanceMetrics.start,
-                performanceMetrics.firstContentfulPaint
+                performance_metrics.firstContentfulPaint,
+                performance_metrics.start,
+                performance_metrics.firstContentfulPaint
             );
         }
 
         // start --- smartChartMounted
         performance.measure(
-            performanceMetrics.smartChartMounted,
-            performanceMetrics.start,
-            performanceMetrics.smartChartMounted
+            performance_metrics.smartChartMounted,
+            performance_metrics.start,
+            performance_metrics.smartChartMounted
         );
         // start --- purchaseEnabled
         performance.measure(
-            performanceMetrics.purchaseEnabled,
-            performanceMetrics.start,
-            performanceMetrics.purchaseEnabled
+            performance_metrics.purchaseEnabled,
+            performance_metrics.start,
+            performance_metrics.purchaseEnabled
         );
         // tradeEngineStart --- tradeEngineReady
         performance.measure(
-            performanceMetrics.tradeEngineReady,
-            performanceMetrics.tradeEngineStart,
-            performanceMetrics.tradeEngineReady
+            performance_metrics.tradeEngineReady,
+            performance_metrics.tradeEngineStart,
+            performance_metrics.tradeEngineReady
         );
 
         if (
-            performance.getEntriesByName(performanceMetrics.purchaseStart, 'mark')
+            performance.getEntriesByName(performance_metrics.purchaseStart, 'mark')
                 .length > 0 &&
-      performance.getEntriesByName(performanceMetrics.purchaseEnd, 'mark')
+      performance.getEntriesByName(performance_metrics.purchaseEnd, 'mark')
           .length > 0
         ) {
             performance.measure(
-                performanceMetrics.purchaseEnd,
-                performanceMetrics.purchaseStart,
-                performanceMetrics.purchaseEnd
+                performance_metrics.purchaseEnd,
+                performance_metrics.purchaseStart,
+                performance_metrics.purchaseEnd
             );
         }
 
@@ -71,7 +71,7 @@ function measurePerformance(pushLoadPerformance) {
         }
         is_data_sent = true;
     } catch (error) {
-    // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console
         console.warn(error);
     }
 }

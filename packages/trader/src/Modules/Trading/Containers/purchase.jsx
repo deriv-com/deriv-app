@@ -3,8 +3,8 @@ import React                       from 'react';
 import ObjectUtils                 from 'deriv-shared/utils/object';
 import PurchaseFieldset            from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
+import { measurePerformance }      from 'Services/performance-checker';
 import { connect }                 from 'Stores/connect';
-import { measurePerformance }      from 'Services/perfomance-checker';
 
 const Purchase = ({
     basis,

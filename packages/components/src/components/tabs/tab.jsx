@@ -37,9 +37,9 @@ class Tab extends Component {
 
 Tab.propTypes = {
     className: PropTypes.string,
+    count    : PropTypes.number,
     is_active: PropTypes.bool,
     label    : PropTypes.string,
-    count    : PropTypes.number,
     onClick  : PropTypes.func,
 };
 

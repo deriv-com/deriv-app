@@ -11,8 +11,8 @@ const Counter = ({ count, className }) => {
 };
 
 Counter.propTypes = {
-    count    : PropTypes.number,
     className: PropTypes.string,
+    count    : PropTypes.number,
 };
 
 export default Counter;

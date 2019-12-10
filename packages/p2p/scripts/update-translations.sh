@@ -31,26 +31,26 @@ function confirm {
 
 cd $(git rev-parse --show-toplevel) &&
 
-message "Updating translations branch" &&
-git branch -D translations &&
-git push origin --delete translations
-git checkout -b translations &&
+message "Updating p2p translations branch" &&
+git branch -D p2p_translations &&
+git push origin --delete p2p_translations
+git checkout -b p2p_translations &&
 git pull upstream dev &&
 
 confirm "Update the source file (messages.json) and push to Crowdin?" &&
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-    message "Updating translations source file" &&
+    message "Updating p2p translations source file" &&
     cd $(git rev-parse --show-toplevel) && cd packages/p2p/scripts && node extract-translations.js &&
     message "Uploading source file to Crowdin"
     cd $(git rev-parse --show-toplevel) && cd packages/p2p && source ~/.bash_profile && crowdin upload sources
-    message "Complete, new translations have been uploaded to Crowdin"
+    message "Complete, new p2p translations have been uploaded to Crowdin"
 fi &&
 
-confirm "Download translation files and update javascript texts?" &&
+confirm "Download p2p translation files and update javascript texts?" &&
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-    message "Downloading translation files from Crowdin (*.json)" &&
+    message "Downloading p2p translation files from Crowdin (*.json)" &&
     crowdin download
 fi &&
 
@@ -59,9 +59,9 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
     cd $(git rev-parse --show-toplevel) &&
     message "Committing"
-    git commit -a -m "Update translations" &&
+    git commit -a -m "Update p2p translations" &&
     message "Pushing"
-    git push
+    git push -u origin p2p_translations
 fi &&
 
 echo ${GREEN}"\nSuccessfully Done."

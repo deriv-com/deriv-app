@@ -2,8 +2,8 @@ import React        from 'react';
 import PageReturn   from 'Components/page-return/page-return.jsx';
 import OrderDetails from './order-details/order-details.jsx';
 import OrderInfo    from './order-info';
-import                   './orders.scss';
 import { localize } from '../i18next';
+import                   './orders.scss';
 
 const Orders = () => {
     const order_info = new OrderInfo();

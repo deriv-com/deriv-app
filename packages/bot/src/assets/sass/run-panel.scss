@@ -5,6 +5,7 @@
 .run-panel {
     height: var(--bot-content-height) !important;
     top: 104px !important;
+    z-index: 9;
 
     &__footer {
         text-align: center;

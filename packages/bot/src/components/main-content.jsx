@@ -1,22 +1,30 @@
-import React                from 'react';
-import PropTypes            from 'prop-types';
-import Flyout               from './flyout.jsx';
-import Chart                from './chart/chart.jsx';
-import { tabs_title }       from '../constants/bot-contents';
-import { connect }          from '../stores/connect';
-import '../assets/sass/main-content.scss';
-import '../assets/sass/scratch/workspace.scss';
-import '../assets/sass/scratch/toolbox.scss';
+import React          from 'react';
+import PropTypes      from 'prop-types';
+import Flyout         from './flyout.jsx';
+import Chart          from './chart/chart.jsx';
+import { tabs_title } from '../constants/bot-contents';
+import { connect }    from '../stores/connect';
+import                '../assets/sass/main-content.scss';
+import                '../assets/sass/scratch/workspace.scss';
+import                '../assets/sass/scratch/toolbox.scss';
 
 class MainContent extends React.Component {
-    componentDidMount(){
+    componentDidMount() {
         this.props.onMount();
     }
 
-    componentWillUnmount(){
+    componentDidUpdate(prevProps) {
+        if (this.props.active_tab === tabs_title.WORKSPACE
+            &&
+            this.props.active_tab !== prevProps.active_tab) {
+            this.props.setContainerSize();
+        }
+    }
+
+    componentWillUnmount() {
         this.props.onUnmount();
     }
-    
+
     render() {
         const { active_tab } = this.props;
         switch (active_tab) {
@@ -57,8 +65,9 @@ MainContent.propTypes = {
 };
 
 export default connect(({ main_content }) => ({
-    active_tab: main_content.active_tab,
-    onMount   : main_content.onMount,
-    onUnmount : main_content.onUnmount,
+    active_tab      : main_content.active_tab,
+    onMount         : main_content.onMount,
+    onUnmount       : main_content.onUnmount,
+    setContainerSize: main_content.setContainerSize,
 }))(MainContent);
 

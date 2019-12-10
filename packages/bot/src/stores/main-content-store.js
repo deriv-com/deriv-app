@@ -12,8 +12,8 @@ export default class MainContentStore {
         const { run_panel } = this.root_store;
 
         reaction(
-            () => [run_panel.is_drawer_open, this.active_tab],
-            () => this.setCharContainerSize());
+            () => run_panel.is_drawer_open,
+            () => this.setContainerSize());
     }
 
     @observable active_tab = tabs_title.WORKSPACE;
@@ -24,7 +24,7 @@ export default class MainContentStore {
     }
 
     @action.bound
-    setCharContainerSize() {
+    setContainerSize() {
         if (this.active_tab === tabs_title.WORKSPACE) {
             onWorkspaceResize();
         }
@@ -32,11 +32,11 @@ export default class MainContentStore {
 
     @action.bound
     onMount() {
-        window.addEventListener('resize', this.setCharContainerSize);
+        window.addEventListener('resize', this.setContainerSize);
     }
 
     @action.bound
     onUnmount() {
-        window.removeEventListener('resize', this.setCharContainerSize);
+        window.removeEventListener('resize', this.setContainerSize);
     }
 }

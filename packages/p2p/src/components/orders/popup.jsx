@@ -8,8 +8,8 @@ import {
     Checkbox,
     Button,
     ThemedScrollbars }      from 'deriv-components';
-import { localize }         from '../i18next';
 import IconClose            from '../../assets/icon-close.jsx';
+import { localize }         from '../i18next';
 
 class Popup extends Component {
     handleSubmit = (values, { setSubmitting }) => {

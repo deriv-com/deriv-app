@@ -118,7 +118,7 @@ Popover.propTypes = {
     icon                : PropTypes.oneOf(['info', 'question', 'dot', 'counter']),
     id                  : PropTypes.string,
     margin              : PropTypes.number,
-    message             : PropTypes.string,
+    message             : PropTypes.oneOfType([PropTypes.string, PropTypes.elementType]),
     portal_container    : PropTypes.string,
 };
 

@@ -2,7 +2,7 @@ import React             from 'react';
 import PropTypes         from 'prop-types';
 import ContentLoader     from 'react-content-loader';
 import { Table, Button } from 'deriv-components';
-import { localize }      from 'deriv-translations';
+import { localize }      from 'Components/i18next';
 
 export const BuySellRowLoader = () => (
     <ContentLoader

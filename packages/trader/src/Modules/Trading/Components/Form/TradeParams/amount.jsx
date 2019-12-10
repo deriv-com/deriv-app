@@ -42,7 +42,7 @@ const Amount = ({
         );
     }
 
-    const input =
+    const Input = () => (
         <InputField
             className='trade-container__amount'
             classNameInlinePrefix='trade-container__currency'
@@ -63,7 +63,8 @@ const Amount = ({
             onChange={onChange}
             type='tel'
             value={amount}
-        />;
+        />
+    );
 
     return (
         <Fieldset
@@ -85,8 +86,7 @@ const Amount = ({
                 <div className='trade-container__currency-options'>
                     <Dropdown
                         id='amount'
-                        className={classNames({ 'trade-container__currency-options-dropdown': !is_single_currency })}
-                        classNameDisplay='trade-container__currency-options--display'
+                        className={classNames({ 'dc-dropdown-container__currency': !is_single_currency })}
                         has_symbol
                         is_alignment_left
                         is_nativepicker={false}
@@ -95,11 +95,12 @@ const Amount = ({
                         no_border={true}
                         value={currency}
                         onChange={onChange}
+
                     />
-                    {input}
+                    <Input />
                 </div>
                 :
-                input
+                <Input />
             }
             <AllowEquals
                 contract_start_type={contract_start_type}

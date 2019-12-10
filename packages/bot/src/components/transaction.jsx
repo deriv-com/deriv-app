@@ -163,7 +163,7 @@ const PopoverContent = ({ contract }) => (
             </PopoverItem>
         }
         { contract.entry_tick &&
-            <PopoverItem title={localize('Entry spot')}>
+            <PopoverItem title={localize('Entry tick')}>
                 <div className='transactions__popover-value'>{ contract.entry_tick }</div>
                 { contract.entry_tick_time &&
                     <div className='transactions__popover-value'>{ contract.entry_tick_time }</div>
@@ -172,7 +172,7 @@ const PopoverContent = ({ contract }) => (
             // TODO: Durations for non-tick contracts, requires helpers from Trader.
         }
         { contract.exit_tick && contract.exit_tick_time &&
-            <PopoverItem title={localize('Exit spot')}>
+            <PopoverItem title={localize('Exit tick')}>
                 <div className='transactions__popover-value'>{ contract.exit_tick }</div>
                 <div className='transactions__popover-value'>{ contract.exit_tick_time }</div>
             </PopoverItem>

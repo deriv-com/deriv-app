@@ -6,7 +6,7 @@ import { MyAdsLoader }        from './my-ads-loader.jsx';
 import { InfiniteLoaderList } from '../table/infinite-loader-list.jsx';
 import { TableDimensions }    from '../table/table-dimensions.jsx';
 
-// TODO: replace with API response
+// TODO: [p2p-replace-with-api] - replace with API response
 const mock_response = {
     ad_id          : 'Buy 000023434',
     amount         : 'BTC 0.00001234',
@@ -72,7 +72,7 @@ export class MyAdsTable extends React.Component {
     };
 
     table_container_ref = React.createRef();
-    
+
     loadMore = () => {
         this.setState({ is_loading_more_items: true }, () => {
             getMockData().then((res) => {

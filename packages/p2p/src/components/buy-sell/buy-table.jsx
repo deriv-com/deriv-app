@@ -7,7 +7,7 @@ import {
 import { InfiniteLoaderList } from '../table/infinite-loader-list.jsx';
 import { TableDimensions }    from '../table/table-dimensions.jsx';
 
-// TODO: replace with API response
+// TODO: [p2p-replace-with-api] - replace with API response
 const mock_response = {
     advertiser     : 'John Doe',
     price          : 'IDR 2,000,000.00',
@@ -43,7 +43,7 @@ const getMockData = () => {
 
 export class BuyTable extends React.Component {
     // TODO: Find a better solution for handling no-op instead of using is_mounted flags
-    is_mounted = false
+    is_mounted = false;
 
     state = {
         items                 : null,
@@ -64,7 +64,7 @@ export class BuyTable extends React.Component {
                 }
             });
         });
-    }
+    };
 
     componentDidMount() {
         this.is_mounted = true;

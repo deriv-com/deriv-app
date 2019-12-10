@@ -161,6 +161,7 @@ const OrderDetails = ({
 }) => {
     const {
         advertiser_notes,
+        counterparty,
         display_offer_amount,
         display_price_rate,
         display_transaction_amount,
@@ -170,7 +171,6 @@ const OrderDetails = ({
         offer_currency,
         order_id,
         order_purchase_datetime,
-        other_party,
         transaction_currency,
     } = order_details;
 
@@ -197,7 +197,7 @@ const OrderDetails = ({
                             </div>
                             <div className='order-details__info--right'>
                                 <OrderInfoBlock label={ is_buyer ? localize('Receive') : localize('Send') } value={ `${offer_currency} ${display_offer_amount}` } />
-                                <OrderInfoBlock label={ is_buyer ? localize('Seller') : localize('Buyer') } value={ other_party } />
+                                <OrderInfoBlock label={ is_buyer ? localize('Seller') : localize('Buyer') } value={ counterparty } />
                                 <OrderInfoBlock label={ localize('Time') } value={ order_purchase_datetime.toString() } />
                             </div>
                         </div>

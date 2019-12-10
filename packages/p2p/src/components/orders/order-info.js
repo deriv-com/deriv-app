@@ -6,7 +6,7 @@ export default class OrderInfo {
     type = 'buy';
     advertiser_notes = 'Hello I am watermelon';
     order_purchase_datetime = new Date();
-    other_party = 'John Doe';
+    counterparty = 'John Doe';
     price_rate = 2000000;
     display_price_rate = '2,000,000.00';
     offer_currency = 'BTC'; // The currency that is being purchased

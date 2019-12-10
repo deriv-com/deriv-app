@@ -42,6 +42,9 @@ class Popup extends Component {
                             <IconClose className='orders__popup-close_icon' onClick={onCancel} />
                         </div>
                     </div>
+                    {/* TODO: [p2p-fix-component-pollution]
+                        the value inside form should be from outside of components instead
+                    */}
                     {need_confirmation ? (
                         <Formik
                             initialValues={{

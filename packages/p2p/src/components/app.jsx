@@ -1,19 +1,24 @@
-import React, { Fragment, Component } from 'react';
-import PropTypes from 'prop-types';
-import { Tabs } from 'deriv-components';
-import { localize } from 'deriv-translations';
-import { init } from 'Utils/websocket';
-import BuySell from './buy-sell/buy-sell.jsx';
-import Orders from './orders/orders.jsx';
-import MyAds from './my-ads/my-ads.jsx';
-import MyProfile from './my-profile/my-profile.jsx';
-import './app.scss';
+import React, {
+    Fragment,
+    Component }   from 'react';
+import PropTypes  from 'prop-types';
+import { Tabs }   from 'deriv-components';
+import { init }   from 'Utils/websocket';
+import {
+    localize,
+    setLanguage } from './i18next';
+import BuySell    from './buy-sell/buy-sell.jsx';
+import Orders     from './orders/orders.jsx';
+import MyAds      from './my-ads/my-ads.jsx';
+import MyProfile  from './my-profile/my-profile.jsx';
+import                 './app.scss';
 
 class App extends Component {
 
     constructor(props) {
         super(props);
 
+        setLanguage(this.props.lang);
         init(this.props.websocket_api);
 
         this.state = {
@@ -65,6 +70,7 @@ class App extends Component {
 }
 
 App.propTypes = {
+    lang         : PropTypes.string,
     websocket_api: PropTypes.object,
 };
 

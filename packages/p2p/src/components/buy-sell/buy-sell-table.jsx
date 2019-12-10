@@ -1,9 +1,9 @@
 import React         from 'react';
 import PropTypes     from 'prop-types';
 import { Table }     from 'deriv-components';
-import { localize }  from 'deriv-translations';
 import { BuyTable }  from './buy-table.jsx';
 import { SellTable } from './sell-table.jsx';
+import { localize }  from '../i18next';
 
 export const BuySellTable = ({ table_type, setSelectedAd, exchange_amount, exchange_to_currency }) => {
     const is_buy = table_type === 'buy';

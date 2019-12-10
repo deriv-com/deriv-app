@@ -1,10 +1,10 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
 import { Table, Button }      from 'deriv-components';
-import { localize }           from 'deriv-translations';
+import { localize }           from 'Components/i18next';
+import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
+import { TableDimensions }    from 'Components/table/table-dimensions.jsx';
 import { MyAdsLoader }        from './my-ads-loader.jsx';
-import { InfiniteLoaderList } from '../table/infinite-loader-list.jsx';
-import { TableDimensions }    from '../table/table-dimensions.jsx';
 
 // TODO: [p2p-replace-with-api] - replace with API response
 const mock_response = {

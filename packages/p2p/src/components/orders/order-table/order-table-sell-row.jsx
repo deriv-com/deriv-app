@@ -1,7 +1,7 @@
 import { Table }                  from 'deriv-components';
-import { localize }               from 'deriv-translations';
 import PropTypes                  from 'prop-types';
 import React                      from 'react';
+import { localize }               from 'Components/i18next';
 import { getFormattedDateString } from 'Utils/date-time';
 
 // TODO: [p2p-refactor-row-component] - Reuse row component that we have in other places

@@ -1,4 +1,4 @@
-import { localize }            from 'deriv-translations';
+import { localize }            from 'Components/i18next';
 import { millisecondsToTimer } from 'Utils/date-time';
 
 export default class OrderInfo {

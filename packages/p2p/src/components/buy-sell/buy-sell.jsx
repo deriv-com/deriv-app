@@ -3,7 +3,7 @@ import PropTypes            from 'prop-types';
 import {
     Dialog,
     ButtonToggle }          from 'deriv-components';
-import { localize }         from 'deriv-translations';
+import { localize }         from 'Components/i18next';
 import { BuySellTable }     from './buy-sell-table.jsx';
 import Popup                from './popup.jsx';
 import                           './buy-sell.scss';
@@ -84,5 +84,5 @@ class BuySell extends Component {
 BuySell.propTypes = {
     disableApp: PropTypes.func,
 };
- 
+
 export default BuySell;

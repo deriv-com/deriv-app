@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes                      from 'prop-types';
-import { localize }                   from 'deriv-translations';
 import { Formik, Field, Form }        from 'formik';
 import {
     Autocomplete,
@@ -9,8 +8,9 @@ import {
     Input,
     Button,
     ThemedScrollbars }                from 'deriv-components';
-import PageReturn                     from 'Components/page-return/page-return.jsx';
 import FooterActions                  from 'Components/footer-actions/footer-actions.jsx';
+import { localize }                   from 'Components/i18next';
+import PageReturn                     from 'Components/page-return/page-return.jsx';
 import { WS }                         from 'Utils/websocket';
 
 class FormAds extends Component {

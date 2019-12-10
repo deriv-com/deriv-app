@@ -1,8 +1,8 @@
 import { Table }              from 'deriv-components';
-import { localize }           from 'deriv-translations';
 import React                  from 'react';
 import PropTypes              from 'prop-types';
 import { BuySellRowLoader }   from 'Components/buy-sell/row.jsx';
+import { localize }           from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableDimensions }    from 'Components/table/table-dimensions.jsx';
 import BuyOrderRowComponent   from './order-table-buy-row.jsx';

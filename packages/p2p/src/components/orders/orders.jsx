@@ -1,5 +1,5 @@
 import React        from 'react';
-import { localize } from 'deriv-translations';
+import { localize } from 'Components/i18next';
 import PageReturn   from 'Components/page-return/page-return.jsx';
 import OrderDetails from './order-details/order-details.jsx';
 import OrderInfo    from './order-info';

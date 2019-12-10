@@ -4,7 +4,6 @@ import React                      from 'react';
 import { localize }               from 'Components/i18next';
 import { getFormattedDateString } from 'Utils/date-time';
 
-// TODO: [p2p-refactor-row-component] - Reuse row component that we have in other places
 const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
     const {
         counterparty,
@@ -20,7 +19,15 @@ const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
     return (
         <div style={ style }>
             <Table.Row>
-                <Table.Cell><span>{ localize('Buy') }<br /><a onClick={ () => onOpenDetails(data) } className='link'>{ order_id }</a></span></Table.Cell>
+                <Table.Cell>
+                    <span>
+                        { localize('Buy') }<br />
+                        <a
+                            onClick={ () => onOpenDetails(data) } className='link'>
+                            { order_id }
+                        </a>
+                    </span>
+                </Table.Cell>
                 <Table.Cell>{ display_status }</Table.Cell>
                 <Table.Cell>{ transaction_currency }{ ' ' }{ display_transaction_amount }</Table.Cell>
                 <Table.Cell>{ offer_currency }{ ' ' }{ display_offer_amount }</Table.Cell>

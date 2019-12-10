@@ -47,7 +47,7 @@ export default class ToolbarStore {
 
     @action.bound
     onSearchKeyUp(submitForm) {
-        const doneTypingInterval = 2500;
+        const doneTypingInterval = 1000;
         this.is_search_loading = true;
 
         clearTimeout(this.typingTimer);

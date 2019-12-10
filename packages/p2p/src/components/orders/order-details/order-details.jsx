@@ -1,8 +1,8 @@
 import React         from 'react';
 import PropTypes     from 'prop-types';
 import { Button }    from 'deriv-components';
-import { localize }  from 'deriv-translations';
 import FooterActions from 'Components/footer-actions/footer-actions.jsx';
+import { localize }  from '../../i18next';
 import './order-details.scss';
 
 const OrderInfoBlock = ({ label, value }) => (

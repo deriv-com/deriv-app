@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
-import { localize }         from 'deriv-translations';
 import { ToggleSwitch }     from 'deriv-components';
 import classNames           from 'classnames';
+import { localize }         from '../i18next';
 import './my-ads.scss';
 
 const ToggleMessage = ({ is_enabled, className }) => {

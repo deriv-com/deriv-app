@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = {
     parser: 'babel-eslint',
+    plugins: ['prettier'],
     env: {
         es6    : true,
         browser: true,
@@ -17,14 +18,18 @@ module.exports = {
         semi                                : ['error', 'always'],
         'array-callback-return'             : 0,
         'brace-style'                       : ['error', '1tbs', { allowSingleLine: true }],
+        'comma-dangle'                      : ['error', 'always-multiline'],
         'eol-last'                          : ['error', 'always'],
         'func-names'                        : ['error', 'never'],
         'keyword-spacing'                   : ['error', { after: true }],
         'lines-between-class-members'       : ['error', 'always', { exceptAfterSingleLine: true }],
+        'indent'                            : ['error', 4, { 'ImportDeclaration': 1 }],
+        'max-len'                           : ['error', { code: 120, 'ignoreComments': true }],
         'no-extra-semi'                     : 'error',
         'no-console'                        : 'error',
         'no-else-return'                    : ['error', { allowElseIf: true }],
         'no-multi-assign'                   : 0,
+        'no-multi-spaces'                   : [2, { exceptions: { 'BinaryExpression': true, 'VariableDeclarator': true, 'ImportDeclaration': true } }],
         'no-param-reassign'                 : ['error', { props: false }],
         'no-restricted-globals'             : 0,
         'no-script-url'                     : 0,
@@ -59,6 +64,8 @@ module.exports = {
         'react/sort-prop-types'             : ['error', { ignoreCase: true, sortShapeProp: true }],
     },
     extends: [
+        'prettier',
+        'prettier/react',
         'airbnb-base',
         'binary',
         'plugin:react/recommended',

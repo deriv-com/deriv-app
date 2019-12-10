@@ -38,10 +38,12 @@
         $toggle: &;
 
         align-items: center;
+        border-left: 1px solid var(--border-disabled);
+        border-right: 1px solid var(--border-disabled);
         display: flex;
         position: absolute;
         top: 0;
-        left: 0;
+        left: 2px;
         width: $toggler-width;
         height: 100%;
         background-color: var(--general-section-1);

@@ -6,7 +6,7 @@ import                          './public-path'; // Leave this here! OK boss!
 import FooterExtension          from './components/footer-extension.jsx';
 import MainContent              from './components/main-content.jsx';
 import Toolbar                  from './components/toolbar.jsx';
-import NotificationMessages from './components/notification-messages.jsx';
+import NotificationMessages     from './components/notification-messages.jsx';
 import RunPanel                 from './components/run-panel.jsx';
 import QuickStrategy            from './components/quick-strategy.jsx';
 import { scratchWorkspaceInit } from './scratch/index';

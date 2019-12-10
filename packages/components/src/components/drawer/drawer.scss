@@ -10,6 +10,7 @@
     will-change: transform;
     transition: transform 0.3s ease;
     background: var(--general-main-2);
+    z-index: 10;
 
     &__container {
         display: flex;

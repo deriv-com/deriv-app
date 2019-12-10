@@ -1,10 +1,19 @@
-import React, { Fragment, Component }      from 'react';
-import PropTypes                           from 'prop-types';
-import { Formik, Field, Form }             from 'formik';
-import { Input, Button, ThemedScrollbars } from 'deriv-components';
-import { localize }                        from 'deriv-translations';
-import IconBack                            from 'Assets/icon-back.jsx';
-import IconClose                           from 'Assets/icon-close.jsx';
+import React, {
+    Fragment,
+    Component }            from 'react';
+import PropTypes           from 'prop-types';
+import {
+    Formik,
+    Field,
+    Form }                 from 'formik';
+import {
+    Input,
+    Button,
+    ThemedScrollbars,
+} from 'deriv-components';
+import { localize }        from 'deriv-translations';
+import IconBack            from 'Assets/icon-back.jsx';
+import IconClose           from 'Assets/icon-close.jsx';
 
 class Popup extends Component {
     handleSubmit = (formik_vars, { setSubmitting }) => {

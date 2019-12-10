@@ -63,15 +63,7 @@ class BuySell extends Component {
                 />
                 {show_popup && (
                     <div className='buy-sell__dialog'>
-                        <Dialog
-                            is_visible={show_popup}
-                            disableApp={() => {
-                                /* do nothing // disableApp is a mandatory props in dialog */
-                            }}
-                            enableApp={() => {
-                                /* do nothing // enableApp is a mandatory props in dialog */
-                            }}
-                        >
+                        <Dialog is_visible={show_popup}>
                             <Popup ad={selected_ad} onCancel={this.onCancelClick} />
                         </Dialog>
                     </div>

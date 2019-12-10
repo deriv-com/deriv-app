@@ -1,9 +1,15 @@
-import React, { Component }                   from 'react';
-import PropTypes                              from 'prop-types';
-import { Formik, Field, Form }                from 'formik';
-import { Checkbox, Button, ThemedScrollbars } from 'deriv-components';
-import { localize }                           from 'deriv-translations';
-import IconClose                              from '../../assets/icon-close.jsx';
+import React, { Component } from 'react';
+import PropTypes            from 'prop-types';
+import {
+    Formik,
+    Field,
+    Form }                  from 'formik';
+import {
+    Checkbox,
+    Button,
+    ThemedScrollbars }      from 'deriv-components';
+import { localize }         from 'deriv-translations';
+import IconClose            from '../../assets/icon-close.jsx';
 
 class Popup extends Component {
     handleSubmit = (values, { setSubmitting }) => {

@@ -1,9 +1,11 @@
-import React              from 'react';
-import PropTypes          from 'prop-types';
-import { Button, Dialog } from 'deriv-components';
-import { localize }       from 'deriv-translations';
-import FooterActions      from 'Components/footer-actions/footer-actions.jsx';
-import Popup              from '../popup.jsx';
+import React         from 'react';
+import PropTypes     from 'prop-types';
+import {
+    Button,
+    Dialog }         from 'deriv-components';
+import { localize }  from 'deriv-translations';
+import FooterActions from 'Components/footer-actions/footer-actions.jsx';
+import Popup         from '../popup.jsx';
 import './order-details.scss';
 
 const OrderInfoBlock = ({ label, value }) => (
@@ -94,10 +96,10 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         is_buyer,
         is_buyer_confirmed,
         is_pending,
-        offer_currency,
-        transaction_currency,
-        price_rate,
         offer_amount,
+        offer_currency,
+        price_rate,
+        transaction_currency,
     } = order_details;
     let buttons_to_render = null;
 
@@ -141,7 +143,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     };
 
     if (is_pending && is_buyer) {
-        buttons_to_render = ( // TODO: [p2p-add-confirmation-popup] - Add popup to `onClick` function to confirm user action
+        buttons_to_render = (
             <React.Fragment>
                 <Button className='order-details__actions-button' large secondary onClick={cancelOrder}>{ localize('Cancel order') }</Button>
                 <Button className='order-details__actions-button' large primary onClick={paidOrder}>{ localize('I\'ve paid') }</Button>
@@ -150,7 +152,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     }
 
     if ((is_pending || is_buyer_confirmed) && !is_buyer) {
-        buttons_to_render = ( // TODO: [p2p-add-confirmation-popup] - Add popup to `onClick` function to confirm user action
+        buttons_to_render = (
             <Button className='order-details__actions-button' large primary onClick={receivedFunds}>{ localize('I\'ve received funds') }</Button>
         );
     }
@@ -274,15 +276,7 @@ const OrderDetails = ({
             </FooterActions>
             {show_popup && (
                 <div className='orders__dialog'>
-                    <Dialog
-                        is_visible={show_popup}
-                        disableApp={() => {
-                            /* do nothing // disableApp is a mandatory props in dialog */
-                        }}
-                        enableApp={() => {
-                            /* do nothing // enableApp is a mandatory props in dialog */
-                        }}
-                    >
+                    <Dialog is_visible={show_popup}>
                         <Popup {...popup_options} onCancel={onCancelClick} />
                     </Dialog>
                 </div>

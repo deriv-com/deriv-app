@@ -8,7 +8,7 @@ import {
     Checkbox,
     Button,
     ThemedScrollbars }      from 'deriv-components';
-import { localize }         from 'deriv-translations';
+import { localize }         from '../i18next';
 import IconClose            from '../../assets/icon-close.jsx';
 
 class Popup extends Component {

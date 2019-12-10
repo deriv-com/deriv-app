@@ -11,9 +11,9 @@ import {
     Button,
     ThemedScrollbars,
 }                          from 'deriv-components';
-import { localize }        from '../i18next';
 import IconBack            from 'Assets/icon-back.jsx';
 import IconClose           from 'Assets/icon-close.jsx';
+import { localize }        from '../i18next';
 
 class Popup extends Component {
     handleSubmit = (formik_vars, { setSubmitting }) => {

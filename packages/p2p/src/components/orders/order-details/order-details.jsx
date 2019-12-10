@@ -3,9 +3,9 @@ import PropTypes     from 'prop-types';
 import {
     Button,
     Dialog }         from 'deriv-components';
-import { localize }  from '../../i18next';
 import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 import Popup         from '../popup.jsx';
+import { localize }  from '../../i18next';
 import './order-details.scss';
 
 const OrderInfoBlock = ({ label, value }) => (

@@ -1,4 +1,5 @@
 import { Table }                  from 'deriv-components';
+import { localize }               from 'deriv-translations';
 import PropTypes                  from 'prop-types';
 import React                      from 'react';
 import { getFormattedDateString } from 'Utils/date-time';
@@ -9,22 +10,22 @@ const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
         counterparty,
         display_transaction_amount,
         display_offer_amount,
+        display_status,
         order_id,
         order_purchase_datetime,
         offer_currency,
-        status,
         transaction_currency,
     } = data;
 
     return (
-        <div style={style}>
+        <div style={ style }>
             <Table.Row>
-                <Table.Cell><span>Sell<br /><a onClick={ () => onOpenDetails(data) } className='link'>{ order_id }</a></span></Table.Cell>
-                <Table.Cell>{status /* TODO: [p2p-order-status-mapping] */}</Table.Cell>
-                <Table.Cell>{offer_currency}{' '}{display_offer_amount}</Table.Cell>
-                <Table.Cell>{transaction_currency}{' '}{display_transaction_amount}</Table.Cell>
-                <Table.Cell>{counterparty}</Table.Cell>
-                <Table.Cell>{getFormattedDateString(order_purchase_datetime)}</Table.Cell>
+                <Table.Cell><span>{ localize('Sell') }<br /><a onClick={ () => onOpenDetails(data) } className='link'>{ order_id }</a></span></Table.Cell>
+                <Table.Cell>{ display_status }</Table.Cell>
+                <Table.Cell>{ offer_currency }{ ' ' }{ display_offer_amount }</Table.Cell>
+                <Table.Cell>{ transaction_currency }{ ' ' }{ display_transaction_amount }</Table.Cell>
+                <Table.Cell>{ counterparty }</Table.Cell>
+                <Table.Cell>{ getFormattedDateString(order_purchase_datetime) }</Table.Cell>
             </Table.Row>
         </div>
     );
@@ -35,10 +36,10 @@ SellOrderRowComponent.propTypes = {
         counterparty              : PropTypes.string,
         display_transaction_amount: PropTypes.string,
         display_offer_amount      : PropTypes.string,
+        display_status            : PropTypes.string,
         order_id                  : PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
         order_purchase_datetime   : PropTypes.date,
         offer_currency            : PropTypes.string,
-        status                    : PropTypes.string,
         transaction_currency      : PropTypes.string,
     }),
     onOpenDetails: PropTypes.func,

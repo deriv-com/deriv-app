@@ -5,8 +5,8 @@ import PropTypes              from 'prop-types';
 import { BuySellRowLoader }   from 'Components/buy-sell/row.jsx';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableDimensions }    from 'Components/table/table-dimensions.jsx';
-import BuyOrderRowComponent  from './order-table-buy-row.jsx';
-import SellOrderRowComponent from './order-table-sell-row.jsx';
+import BuyOrderRowComponent   from './order-table-buy-row.jsx';
+import SellOrderRowComponent  from './order-table-sell-row.jsx';
 
 const OrderTable = ({
     is_loading_more,
@@ -26,12 +26,12 @@ const OrderTable = ({
         <Table>
             <Table.Header>
                 <Table.Row>
-                    <Table.Head>{localize('Order ID')}</Table.Head>
-                    <Table.Head>{localize('Status')}</Table.Head>
-                    <Table.Head>{localize('Send')}</Table.Head>
-                    <Table.Head>{localize('Receive') }</Table.Head>
-                    <Table.Head>{localize('Counterparty')}</Table.Head>
-                    <Table.Head>{localize('Time')}</Table.Head>
+                    <Table.Head>{ localize('Order ID') }</Table.Head>
+                    <Table.Head>{ localize('Status') }</Table.Head>
+                    <Table.Head>{ localize('Send') }</Table.Head>
+                    <Table.Head>{ localize('Receive') }</Table.Head>
+                    <Table.Head>{ localize('Counterparty') }</Table.Head>
+                    <Table.Head>{ localize('Time') }</Table.Head>
                 </Table.Row>
             </Table.Header>
             <Table.Body>

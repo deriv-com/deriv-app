@@ -1,3 +1,4 @@
+import { localize }            from 'deriv-translations';
 import { millisecondsToTimer } from 'Utils/date-time';
 
 export default class OrderInfo {
@@ -28,6 +29,18 @@ export default class OrderInfo {
                 this.remainingTimeInterval = null;
             }
         }, 1000);
+    }
+
+    static status_map = {
+        'pending'         : localize('Unpaid'),
+        'confirmed-client': localize('Paid'),
+        'cancelled-client': localize('Cancelled'),
+        'expired'         : localize('Cancelled'),
+        'complete'        : localize('Complete'),
+    };
+
+    get display_status() {
+        return OrderInfo.status_map[this.status];
     }
 
     get is_buyer() {

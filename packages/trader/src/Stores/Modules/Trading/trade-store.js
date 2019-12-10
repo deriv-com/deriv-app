@@ -162,6 +162,8 @@ export default class TradeStore extends BaseStore {
             'start_date',
             'start_time',
             'symbol',
+            'stop_loss',
+            'take_profit',
         ];
         super({
             root_store,

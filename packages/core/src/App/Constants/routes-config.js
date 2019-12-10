@@ -91,8 +91,8 @@ const initRoutesConfig = () => ([
             { path: routes.cashier_pa,           component: PaymentAgent,         title: localize('Payment agent'),             icon_component: 'IconPaymentAgent' },
             { path: routes.cashier_acc_transfer, component: AccountTransfer,      title: localize('Transfer between accounts'), icon_component: 'IconAccountTransfer' },
             { path: routes.cashier_pa_transfer,  component: PaymentAgentTransfer, title: localize('Transfer to client'),        icon_component: 'IconAccountTransfer' },
-            // To work with P2P please uncomment this line, Change the count property value when BE API is ready.
-            // { path: routes.cashier_p2p,          component: P2PCashier,           title: localize('P2P'),                       icon_component: 'IconP2PCashier',     count: 1 },
+            // To work with P2P please uncomment this line
+            // { path: routes.cashier_p2p,          component: P2PCashier,           title: localize('P2P'),                       icon_component: 'IconP2PCashier' },
         ],
     },
     ...modules,

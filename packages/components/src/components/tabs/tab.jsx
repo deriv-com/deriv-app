@@ -11,9 +11,9 @@ class Tab extends Component {
 
     render() {
         const {
+            count,
             is_active,
             label,
-            count,
         } = this.props;
 
         return (

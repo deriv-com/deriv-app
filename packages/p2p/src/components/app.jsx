@@ -52,8 +52,8 @@ class App extends Component {
                             <div label={localize('Buy / Sell')}>
                                 <BuySell />
                             </div>
-                            {/* TODO: Change this count prop after BE API is ready */}
-                            <div label={localize('Orders')} count={1}>
+                            {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
+                            <div label={localize('Orders')}>
                                 <Orders />
                             </div>
                             <div label={localize('My ads')}>

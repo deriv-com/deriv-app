@@ -30,7 +30,8 @@ const SocketCache = (() => {
         active_symbols        : { expire: 10 },
         contracts_for         : { expire: 10 },
         exchange_rates        : { expire: 60 },
-        ticks_history         : { expire: 10 },
+        // TODO: fix issue with streaming ticks_history being cached after DerivAPI changes
+        // ticks_history         : { expire: 10 },
         trading_times         : { expire: 120 },
         // TODO: Enable statement and profit table caching once we have UI design for handling
         // transitions between cached table and newly added data to table

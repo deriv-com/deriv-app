@@ -1,11 +1,11 @@
 import { ThemedScrollbars }     from 'deriv-components';
+import { localize }             from 'deriv-translations';
 import { PropTypes }            from 'prop-types';
 import React                    from 'react';
-import { localize }             from 'deriv-translations';
 import Transaction              from './transaction.jsx';
+import { transaction_elements } from '../constants/transactions.js';
 import { connect }              from '../stores/connect';
 import                           '../assets/sass/transactions.scss';
-import { transaction_elements } from '../constants/transactions.js';
 
 const Transactions = ({ elements }) => {
     return (

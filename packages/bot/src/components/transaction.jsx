@@ -2,9 +2,9 @@ import classNames               from 'classnames';
 import {
     Money,
     Popover }                  from 'deriv-components';
+import { localize }            from 'deriv-translations';
 import React                   from 'react';
 import ContentLoader           from 'react-content-loader';
-import { localize }            from 'deriv-translations';
 import {
     BuyPriceIcon,
     ExitSpotIcon,

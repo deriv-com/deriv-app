@@ -7,18 +7,6 @@ import { removeBarrier }              from '../../SmartChart/Helpers/barriers';
 const isLimitOrderBarrierSupported = (contract_type, contract_info) =>
     isMultiplierContract(contract_type) && contract_info.limit_order;
 
-const getArrowDirection = (contract_type, limit_order_type) => {
-    if (!/^MULT(UP|DOWN)$/.test(contract_type)) { return null; }
-
-    const contract_direction = contract_type.replace('MULT', '');
-
-    if (limit_order_type === LIMIT_ORDER_TYPES.TAKE_PROFIT) {
-        return contract_direction;
-    }
-
-    return contract_direction && 'UPDOWN'.replace(contract_direction, '');
-};
-
 export const LIMIT_ORDER_TYPES = {
     STOP_OUT   : 'stop_out',
     TAKE_PROFIT: 'take_profit',
@@ -61,7 +49,7 @@ export const setLimitOrderBarriers = ({
                     hideBarrierLine     : hide_stop_out_barrier && key === LIMIT_ORDER_TYPES.STOP_OUT,
                     hideOffscreenBarrier: has_stop_loss && key === LIMIT_ORDER_TYPES.STOP_OUT,
                     hideOffscreenLine   : true,
-                    arrowDirection      : getArrowDirection(contract_type, key),
+                    showOffscreenArrows : true,
                     isSingleBarrier     : true,
                     opacityOnOverlap    : key === LIMIT_ORDER_TYPES.STOP_OUT && 0.15,
                 };

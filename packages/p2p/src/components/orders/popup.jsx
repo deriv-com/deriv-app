@@ -71,7 +71,7 @@ class Popup extends Component {
                                                             defaultChecked={
                                                                 values.need_confirmation
                                                             }
-                                                            label={localize('I have received {{ offer }} {{ price }}', {
+                                                            label={localize('I have received {{offer}} {{price}}', {
                                                                 offer: offer.currency,
                                                                 price: offer.fix_price,
                                                             })}

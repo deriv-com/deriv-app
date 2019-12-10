@@ -107,9 +107,9 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             message       : localize('There will be no refund after canceling the order. If you have paid, please do not cancel the order.'),
             confirm_text  : localize('Cancel this order'),
             onClickConfirm: cancelPopup,
-        }
+        };
         showPopup(options);
-    }
+    };
 
     const paidOrder = () => {
         // TODO [p2p-order-api] call paid api
@@ -120,25 +120,25 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             cancel_text   : localize('I didn\'t pay yet'),
             confirm_text  : localize('I\'ve paid'),
             onClickConfirm: cancelPopup,
-        }
+        };
         showPopup(options);
-    }
+    };
 
     const receivedFunds = () => {
         const options = {
             title            : localize('Have you received funds?'),
             message          : localize('Make sure that you have logged in your bank account or other e-wallet to check the receipt.'),
             need_confirmation: true,
-            offer: {
+            offer            : {
                 currency : offer_currency,
                 asset    : transaction_currency,
                 fix_price: price_rate,
                 amount   : offer_amount,
             },
             onClickConfirm: cancelPopup,
-        }
+        };
         showPopup(options);
-    }
+    };
 
     if (is_pending && is_buyer) {
         buttons_to_render = ( // TODO: [p2p-add-confirmation-popup] - Add popup to `onClick` function to confirm user action
@@ -224,7 +224,7 @@ const OrderDetails = ({
     const handleShowPopup = (options) => {
         setPopupOptions(options);
         setShowPopup(true);
-    }
+    };
 
     return (
         <div className='order-details'>
@@ -266,7 +266,11 @@ const OrderDetails = ({
             </div>
 
             <FooterActions>
-                <OrderActionsBlock cancelPopup={onCancelClick} showPopup={handleShowPopup} order_details={ order_details } />
+                <OrderActionsBlock
+                    cancelPopup={onCancelClick}
+                    showPopup={handleShowPopup}
+                    order_details={order_details}
+                />
             </FooterActions>
             {show_popup && (
                 <div className='orders__dialog'>

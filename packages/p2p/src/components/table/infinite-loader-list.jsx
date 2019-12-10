@@ -59,14 +59,14 @@ export const InfiniteLoaderList = ({
 };
 
 InfiniteLoaderList.propTypes = {
-    items                 : PropTypes.array,
-    is_loading_more_items : PropTypes.bool,
+    children              : PropTypes.node,
     has_more_items_to_load: PropTypes.bool,
+    height                : PropTypes.number,
+    is_loading_more_items : PropTypes.bool,
     item_size             : PropTypes.number,
+    items                 : PropTypes.array,
     loadMore              : PropTypes.func,
     RenderComponent       : PropTypes.any,
     RowLoader             : PropTypes.any.isRequired,
-    children              : PropTypes.node,
-    height                : PropTypes.number,
     width                 : PropTypes.number,
 };

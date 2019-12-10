@@ -44,9 +44,9 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) 
 
 RowComponent.propTypes = {
     data         : PropTypes.object,
-    style        : PropTypes.object,
     is_buy       : PropTypes.bool,
     setSelectedAd: PropTypes.func,
+    style        : PropTypes.object,
 };
 
 RowComponent.displayName = 'RowComponent';

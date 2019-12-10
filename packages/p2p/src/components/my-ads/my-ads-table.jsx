@@ -50,7 +50,8 @@ const RowComponent = React.memo(({ data, style }) => (
             <Table.Cell>
                 <div style={{
                     marginRight: '0.9rem',
-                }}>
+                }}
+                >
                     <Button secondary small>{localize('Edit')}</Button>
                 </div>
                 <Button secondary small>{localize('Delete')}</Button>

@@ -7,7 +7,6 @@ import IconBack                            from 'Assets/icon-back.jsx';
 import IconClose                           from 'Assets/icon-close.jsx';
 
 class Popup extends Component {
-
     handleSubmit = (formik_vars, { setSubmitting }) => {
         // TODO: [p2p-fix-api] call order create api
         // eslint-disable-next-line no-console

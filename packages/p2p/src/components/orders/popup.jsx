@@ -7,7 +7,9 @@ import IconClose                              from '../../assets/icon-close.jsx'
 
 class Popup extends Component {
     handleSubmit = (values, { setSubmitting }) => {
-        console.log(values)
+        // TODO [p2p-remove-console] this console is to avoid unused variable eslint linter
+        // eslint-disable-next-line no-console
+        console.log(values);
         this.props.onClickConfirm();
         setSubmitting(false);
     }
@@ -27,11 +29,11 @@ class Popup extends Component {
 
         return (
             <>
-                <div className="orders__popup">
-                    <div className="orders__popup-header">
-                        <div className="orders__popup-header_wrapper">
-                            <h2 className="orders__popup-header--title">{title}</h2>
-                            <IconClose className="orders__popup-close_icon" onClick={onCancel} />
+                <div className='orders__popup'>
+                    <div className='orders__popup-header'>
+                        <div className='orders__popup-header_wrapper'>
+                            <h2 className='orders__popup-header--title'>{title}</h2>
+                            <IconClose className='orders__popup-close_icon' onClick={onCancel} />
                         </div>
                     </div>
                     {need_confirmation ? (
@@ -44,10 +46,10 @@ class Popup extends Component {
                             {({ isSubmitting, setFieldValue, values }) => (
                                 <Form noValidate>
                                     <ThemedScrollbars autoHide style={{ height: '124px' }}>
-                                        <div className="orders__popup-content">
+                                        <div className='orders__popup-content'>
                                             {message}
-                                            <div className="orders__popup-field">
-                                                <Field name="need_confirmation">
+                                            <div className='orders__popup-field'>
+                                                <Field name='need_confirmation'>
                                                     {({ field }) => (
                                                         <Checkbox
                                                             {...field}
@@ -63,14 +65,14 @@ class Popup extends Component {
                                                             label={localize(
                                                                 `I have received ${offer.currency} ${offer.fix_price}`,
                                                             )}
-                                                            classNameLabel="orders__popup-field_text"
+                                                            classNameLabel='orders__popup-field_text'
                                                         />
                                                     )}
                                                 </Field>
                                             </div>
                                         </div>
                                     </ThemedScrollbars>
-                                    <div className="orders__popup-footer">
+                                    <div className='orders__popup-footer'>
                                         <Button
                                             is_disabled={isSubmitting || !values.need_confirmation}
                                             primary
@@ -84,11 +86,11 @@ class Popup extends Component {
                     ) : (
                         <>
                             <ThemedScrollbars autoHide style={{ height: '88px' }}>
-                                <div className="orders__popup-content">
+                                <div className='orders__popup-content'>
                                     {message}
                                 </div>
                             </ThemedScrollbars>
-                            <div className="orders__popup-footer">
+                            <div className='orders__popup-footer'>
                                 {has_cancel && <Button onClick={onCancel} secondary>{cancel_text}</Button>}
                                 <Button onClick={onClickConfirm} primary>{confirm_text}</Button>
                             </div>
@@ -96,7 +98,7 @@ class Popup extends Component {
                     )}
                 </div>
             </>
-        )
+        );
     }
 }
 

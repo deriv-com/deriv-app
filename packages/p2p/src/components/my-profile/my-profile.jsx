@@ -1,8 +1,8 @@
 import React        from 'react';
 import PropTypes    from 'prop-types';
+import { localize } from 'Components/i18next';
+import StringUtils  from 'Utils/string';
 import                   './my-profile.scss';
-import { localize } from '../i18next';
-import StringUtils  from '../../utils/string';
 
 // TODO: This is just mockup data. it will be removed after Adding BE API.
 const user_data = {
@@ -50,6 +50,8 @@ const Cell = ({
 };
 
 Cell.propTypes = {
+    title          : PropTypes.string,
+    value          : PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
     dimension      : PropTypes.string,
     lower_sub_value: PropTypes.string,
     title          : PropTypes.string,

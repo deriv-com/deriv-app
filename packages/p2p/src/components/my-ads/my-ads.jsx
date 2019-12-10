@@ -11,11 +11,11 @@ class MyAds extends Component {
         ad_id     : '',
         is_enabled: false,
         show_form : false,
-    }
+    };
 
     handleShowForm = (show_form) => {
         this.setState({ show_form });
-    }
+    };
 
     render() {
         return (

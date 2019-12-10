@@ -49,10 +49,11 @@ class App extends Component {
                 <main className='deriv-p2p'>
                     <nav>
                         <Tabs active_index={active_index}>
-                            <div label={localize('Buy/sell')}>
+                            <div label={localize('Buy / Sell')}>
                                 <BuySell />
                             </div>
-                            <div label={localize('Orders')}>
+                            {/* TODO: Change this count prop after BE API is ready */}
+                            <div label={localize('Orders')} count={1}>
                                 <Orders />
                             </div>
                             <div label={localize('My ads')}>

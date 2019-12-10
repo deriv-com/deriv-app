@@ -41,6 +41,7 @@ class Cashier extends React.Component {
                 if ((route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                     (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible)) {
                     options.push({
+                        count  : route.count,
                         default: route.default,
                         icon   : route.icon_component,
                         label  : route.title,

@@ -32,13 +32,14 @@ class Tabs extends Component {
             <div className='dc-tabs' style={{ '--tab-width': `${tab_width}%` }}>
                 <ul className='dc-tabs__list'>
                     {children.map((child, index) => {
-                        const { label } = child.props;
+                        const { label, count } = child.props;
 
                         return (
                             <Tab
                                 is_active={index === active_index}
                                 key={label}
                                 label={label}
+                                count={count}
                                 onClick={() => this.onClickTabItem(index)}
                             />
                         );

@@ -4,9 +4,9 @@ import {
     Button,
     Dialog }         from 'deriv-components';
 import FooterActions from 'Components/footer-actions/footer-actions.jsx';
-import Popup         from '../popup.jsx';
 import { localize }  from 'Components/i18next';
-import './order-details.scss';
+import Popup         from '../popup.jsx';
+import                    './order-details.scss';
 
 const OrderInfoBlock = ({ label, value }) => (
     <div className='order-details__info-block'>

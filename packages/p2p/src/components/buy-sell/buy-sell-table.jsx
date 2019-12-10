@@ -12,11 +12,10 @@ export const BuySellTable = ({ table_type, setSelectedAd, exchange_amount, excha
         <Table>
             <Table.Header>
                 <Table.Row>
-                    <Table.Head>{localize('Advertisers')}</Table.Head>
+                    <Table.Head>{localize('Advertiser')}</Table.Head>
                     <Table.Head>{localize('Amount')}</Table.Head>
                     <Table.Head>{localize('Price for')}{' '}{exchange_amount}{' '}{exchange_to_currency}</Table.Head>
                     <Table.Head>{localize('Min transaction') }</Table.Head>
-                    <Table.Head>{localize('Payment Method')}</Table.Head>
                     <Table.Head>{localize('Trade')}</Table.Head>
                 </Table.Row>
             </Table.Header>

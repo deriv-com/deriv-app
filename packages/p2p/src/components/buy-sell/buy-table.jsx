@@ -1,78 +1,29 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
 import { Loading }            from 'deriv-components';
+import { MockWS }             from 'Utils/websocket';
 import {
     RowComponent,
     BuySellRowLoader }        from './row.jsx';
 import { InfiniteLoaderList } from '../table/infinite-loader-list.jsx';
 import { TableDimensions }    from '../table/table-dimensions.jsx';
 
-// TODO: replace with API response
-const mock_response = {
-    advertiser     : 'John Doe',
-    price          : 'IDR 2,000,000.00',
-    payment_method : 'Bank transfer',
-    type           : 'sell',
-    id             : 'sell_id',
-    country        : 'Indonesia',
-    currency       : 'IDR',
-    asset          : 'USD',
-    fix_price      : 12000,
-    amount         : 20,
-    min_transaction: 15000,
-    max_transaction: 240000,
-    advertiser_note: 'Whatsapp: +60182655318 please send to Maybank 239847238947 JOHN DOE',
-};
-
-const initial_data = [
-    { ...mock_response },
-    { ...mock_response },
-    { ...mock_response },
-    { ...mock_response },
-];
-
-const getMockData = () => {
-    return new Promise(resolve => {
-        setTimeout(function() {
-            resolve([
-                { ...mock_response }, { ...mock_response }, { ...mock_response }, { ...mock_response },
-            ]);
-        }, 300);
-    });
-};
-
 export class BuyTable extends React.Component {
     // TODO: Find a better solution for handling no-op instead of using is_mounted flags
     is_mounted = false
 
     state = {
-        items                 : null,
-        is_loading_more_items : false,
-        has_more_items_to_load: true,
-        is_loading            : true,
+        items     : null,
+        is_loading: true,
     };
-
-    loadMore = () => {
-        // Check with type if sell or buy data should be loaded
-        this.setState({ is_loading_more_items: true }, () => {
-            getMockData().then((res) => {
-                if (this.is_mounted) {
-                    this.setState({
-                        is_loading_more_items: false,
-                        items                : [...this.state.items, ...res],
-                    });
-                }
-            });
-        });
-    }
 
     componentDidMount() {
         this.is_mounted = true;
-        setTimeout(() => {
+        MockWS({ p2p_offer_list: 1, type: 'buy' }).then((response) => {
             if (this.is_mounted) {
-                this.setState({ items: initial_data, is_loading: false });
+                this.setState({ items: response, is_loading: false });
             }
-        }, 1000);
+        });
     }
 
     componentWillUnmount() {
@@ -80,13 +31,7 @@ export class BuyTable extends React.Component {
     }
 
     render() {
-        const {
-            has_more_items_to_load,
-            is_loading,
-            is_loading_more_items,
-            items,
-        } = this.state;
-
+        const { is_loading, items } = this.state;
         const { setSelectedAd } = this.props;
 
         const Row = props => <RowComponent {...props} is_buy setSelectedAd={setSelectedAd} />;
@@ -98,9 +43,6 @@ export class BuyTable extends React.Component {
                 {dimensions =>
                     <InfiniteLoaderList
                         items={items}
-                        is_loading_more_items={is_loading_more_items}
-                        loadMore={this.loadMore}
-                        has_more_items_to_load={has_more_items_to_load}
                         RenderComponent={Row}
                         RowLoader={BuySellRowLoader}
                         width={dimensions.width}

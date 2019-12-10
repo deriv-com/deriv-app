@@ -2,7 +2,7 @@ import React             from 'react';
 import PropTypes         from 'prop-types';
 import ContentLoader     from 'react-content-loader';
 import { Table, Button } from 'deriv-components';
-import { localize }      from '../i18next';
+import { localize }      from 'Components/i18next';
 
 export const BuySellRowLoader = () => (
     <ContentLoader
@@ -29,10 +29,9 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) 
     <div style={style}>
         <Table.Row>
             <Table.Cell>{data.advertiser}</Table.Cell>
-            <Table.Cell>{data.currency}{' '}{data.amount}</Table.Cell>
-            <Table.Cell>{data.price}</Table.Cell>
-            <Table.Cell>{data.currency}{' '}{data.min_transaction}</Table.Cell>
-            <Table.Cell>{data.payment_method}</Table.Cell>
+            <Table.Cell>{data.offer_currency}{' '}{data.amount}</Table.Cell>
+            <Table.Cell>{data.transaction_currency}{' '}{data.price}</Table.Cell>
+            <Table.Cell>{data.transaction_currency}{' '}{data.min_transaction}</Table.Cell>
             <Table.Cell>
                 <Button primary small onClick={() => setSelectedAd(data)}>
                     {is_buy ? localize('Buy') : localize('Sell')}
@@ -44,9 +43,9 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) 
 
 RowComponent.propTypes = {
     data         : PropTypes.object,
-    style        : PropTypes.object,
     is_buy       : PropTypes.bool,
     setSelectedAd: PropTypes.func,
+    style        : PropTypes.object,
 };
 
 RowComponent.displayName = 'RowComponent';

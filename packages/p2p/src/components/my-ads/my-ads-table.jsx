@@ -12,7 +12,6 @@ const mock_response = {
     amount         : 'BTC 0.00001234',
     price          : '34,000 MYR/BTC',
     min_transaction: 'MYR 50',
-    payment_method : 'Bank transfer',
 };
 const initial_data = [
     { ...mock_response },
@@ -36,7 +35,6 @@ const headers = [
     { text: localize('Amount') },
     { text: localize('Price') },
     { text: localize('Min transaction') },
-    { text: localize('Payment Method') },
 ];
 
 const RowComponent = React.memo(({ data, style }) => (
@@ -46,7 +44,6 @@ const RowComponent = React.memo(({ data, style }) => (
             <Table.Cell>{data.amount}</Table.Cell>
             <Table.Cell>{data.price}</Table.Cell>
             <Table.Cell>{data.min_transaction}</Table.Cell>
-            <Table.Cell>{data.payment_method}</Table.Cell>
             <Table.Cell>
                 <div style={{
                     marginRight: '0.9rem',

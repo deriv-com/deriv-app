@@ -132,6 +132,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             message          : localize('Make sure that you have logged in your bank account or other e-wallet to check the receipt.'),
             need_confirmation: true,
             offer            : {
+                // TODO: [p2p-fix-schema-name] fix the naming according to the schema
                 currency : offer_currency,
                 asset    : transaction_currency,
                 fix_price: price_rate,

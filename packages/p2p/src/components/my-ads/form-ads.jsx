@@ -66,178 +66,177 @@ class FormAds extends Component {
 
     render() {
         return (
-        <Fragment>
-            <PageReturn
-                onClick={ () => this.props.handleShowForm(false) }
-                page_title={ localize('Create new ad') }
-            />
-            {this.state.is_loading ? <Loading is_fullscreen={false} /> : (
-                <Formik
-                    initialValues={{ ...this.state.initial_values }}
-                    onSubmit={this.handleSubmit}
-                    validate={this.validateFormAds}
-                >
-                    {({
-                        isSubmitting,
-                        errors,
-                        touched,
-                        isValid,
-                        setFieldValue,
-                        values,
-                    }) => (
-                        <div className='p2p-my-ads__form'>
-                            <Form noValidate>
-                                <ThemedScrollbars
-                                    autoHide
-                                    style={{ height: 'calc(520px - 70px)' }} // height of container minus height of modal footer container
-                                >
-                                    <div className='p2p-my-ads__form-container'>
-                                        <Field name='country'>
-                                            {({ field }) => (
-                                                <Autocomplete
-                                                    {...field}
-                                                    type='text'
-                                                    className='p2p-my-ads__form-field'
-                                                    label={localize('Country')}
-                                                    list_items={[]}
-                                                    disabled
-                                                    onItemSelection={
-                                                        ({ value, text }) => setFieldValue('country', value ? text : '', true)
-                                                    }
-                                                />
-                                            )}
-                                        </Field>
-                                        <Field name='currency'>
-                                            {({ field }) => (
-                                                <Autocomplete
-                                                    {...field}
-                                                    type='text'
-                                                    className='p2p-my-ads__form-field'
-                                                    label={localize('Currency')}
-                                                    list_items={[]}
-                                                    disabled
-                                                    onItemSelection={
-                                                        ({ value, text }) => setFieldValue('currency', value ? text : '', true)
-                                                    }
-                                                />
-                                            )}
-                                        </Field>
-                                    </div>
-                                    <div className='p2p-my-ads__form-container'>
-                                        <Field name='type'>
-                                            {({ field }) => (
-                                                <Dropdown
-                                                    {...field}
-                                                    placeholder={localize('Type')}
-                                                    is_align_text_left
-                                                    className='p2p-my-ads__form-field'
-                                                    list={[{ text: 'Buy', value: 'buy' }, { text: 'Sell', value: 'sell' }]}
-                                                    error={touched.type && errors.type}
-                                                />
-                                            )}
-                                        </Field>
-                                        <Field name='asset'>
-                                            {({ field }) => (
-                                                <Autocomplete
-                                                    {...field}
-                                                    type='text'
-                                                    className='p2p-my-ads__form-field'
-                                                    disabled
-                                                    label={localize('Asset')}
-                                                    list_items={[]}
-                                                    required
-                                                    onItemSelection={
-                                                        ({ value, text }) => setFieldValue('asset', value ? text : '', true)
-                                                    }
-                                                />
-                                            )}
-                                        </Field>
-                                    </div>
-                                    <div className='p2p-my-ads__form-container'>
-                                        <Field name='fix_price'>
+            <Fragment>
+                <PageReturn
+                    onClick={ () => this.props.handleShowForm(false) }
+                    page_title={ localize('Create new ad') }
+                />
+                {this.state.is_loading ? <Loading is_fullscreen={false} /> : (
+                    <Formik
+                        initialValues={{ ...this.state.initial_values }}
+                        onSubmit={this.handleSubmit}
+                        validate={this.validateFormAds}
+                    >
+                        {({
+                            isSubmitting,
+                            errors,
+                            touched,
+                            isValid,
+                            setFieldValue,
+                            values,
+                        }) => (
+                            <div className='p2p-my-ads__form'>
+                                <Form noValidate>
+                                    <ThemedScrollbars
+                                        autoHide
+                                        style={{ height: 'calc(520px - 70px)' }} // height of container minus height of modal footer container
+                                    >
+                                        <div className='p2p-my-ads__form-container'>
+                                            <Field name='country'>
+                                                {({ field }) => (
+                                                    <Autocomplete
+                                                        {...field}
+                                                        type='text'
+                                                        className='p2p-my-ads__form-field'
+                                                        label={localize('Country')}
+                                                        list_items={[]}
+                                                        disabled
+                                                        onItemSelection={
+                                                            ({ value, text }) => setFieldValue('country', value ? text : '', true)
+                                                        }
+                                                    />
+                                                )}
+                                            </Field>
+                                            <Field name='currency'>
+                                                {({ field }) => (
+                                                    <Autocomplete
+                                                        {...field}
+                                                        type='text'
+                                                        className='p2p-my-ads__form-field'
+                                                        label={localize('Currency')}
+                                                        list_items={[]}
+                                                        disabled
+                                                        onItemSelection={
+                                                            ({ value, text }) => setFieldValue('currency', value ? text : '', true)
+                                                        }
+                                                    />
+                                                )}
+                                            </Field>
+                                        </div>
+                                        <div className='p2p-my-ads__form-container'>
+                                            <Field name='type'>
+                                                {({ field }) => (
+                                                    <Dropdown
+                                                        {...field}
+                                                        placeholder={localize('Type')}
+                                                        is_align_text_left
+                                                        className='p2p-my-ads__form-field'
+                                                        list={[{ text: 'Buy', value: 'buy' }, { text: 'Sell', value: 'sell' }]}
+                                                        error={touched.type && errors.type}
+                                                    />
+                                                )}
+                                            </Field>
+                                            <Field name='asset'>
+                                                {({ field }) => (
+                                                    <Autocomplete
+                                                        {...field}
+                                                        type='text'
+                                                        className='p2p-my-ads__form-field'
+                                                        disabled
+                                                        label={localize('Asset')}
+                                                        list_items={[]}
+                                                        required
+                                                        onItemSelection={
+                                                            ({ value, text }) => setFieldValue('asset', value ? text : '', true)
+                                                        }
+                                                    />
+                                                )}
+                                            </Field>
+                                        </div>
+                                        <div className='p2p-my-ads__form-container'>
+                                            <Field name='fix_price'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='number'
+                                                        error={touched.fix_price && errors.fix_price}
+                                                        label={localize('Fixed price')}
+                                                        className='p2p-my-ads__form-field'
+                                                        trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{`${values.currency}/${values.asset}`}</span>}
+                                                        required
+                                                    />
+                                                )}
+                                            </Field>
+                                            <Field name='amount'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='number'
+                                                        error={touched.amount && errors.amount}
+                                                        label={localize('Amount')}
+                                                        className='p2p-my-ads__form-field'
+                                                        trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.asset}</span>}
+                                                        required
+                                                    />
+                                                )}
+                                            </Field>
+                                        </div>
+                                        <div className="p2p-my-ads__form--container">
+                                            <Field name='min_transaction'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='number'
+                                                        error={touched.min_transaction && errors.min_transaction}
+                                                        label={localize('Min. transaction')}
+                                                        className='p2p-my-ads__form-field p2p-my-ads__form-field--single'
+                                                        trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.currency}</span>}
+                                                        required
+                                                    />
+                                                )}
+                                            </Field>
+                                            <Field name='max_transaction'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='number'
+                                                        error={touched.max_transaction && errors.max_transaction}
+                                                        label={localize('Max. transaction')}
+                                                        disabled
+                                                        value={(values.amount * values.fix_price)}
+                                                        className='p2p-my-ads__form-field p2p-my-ads__form-field--single'
+                                                        trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.currency}</span>}
+                                                        required
+                                                    />
+                                                )}
+                                            </Field>
+                                        </div>
+                                        <Field name='advertiser_note'>
                                             {({ field }) => (
                                                 <Input
                                                     {...field}
                                                     data-lpignore='true'
-                                                    type='number'
-                                                    error={touched.fix_price && errors.fix_price}
-                                                    label={localize('Fixed price')}
-                                                    className='p2p-my-ads__form-field'
-                                                    trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{`${values.currency}/${values.asset}`}</span>}
+                                                    type='textarea'
+                                                    error={touched.advertiser_note && errors.advertiser_note}
+                                                    label={localize('Advertiser notes')}
+                                                    className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                    placeholder='Your contact and payment info'
                                                     required
                                                 />
                                             )}
                                         </Field>
-                                        <Field name='amount'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    data-lpignore='true'
-                                                    type='number'
-                                                    error={touched.amount && errors.amount}
-                                                    label={localize('Amount')}
-                                                    className='p2p-my-ads__form-field'
-                                                    trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.asset}</span>}
-                                                    required
-                                                />
-                                            )}
-                                        </Field>
-                                    </div>
-                                    <div className="p2p-my-ads__form--container">
-                                        <Field name='min_transaction'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    data-lpignore='true'
-                                                    type='number'
-                                                    error={touched.min_transaction && errors.min_transaction}
-                                                    label={localize('Min. transaction')}
-                                                    className='p2p-my-ads__form-field p2p-my-ads__form-field--single'
-                                                    trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.currency}</span>}
-                                                    required
-                                                />
-                                            )}
-                                        </Field>
-                                        <Field name='max_transaction'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    data-lpignore='true'
-                                                    type='number'
-                                                    error={touched.max_transaction && errors.max_transaction}
-                                                    label={localize('Max. transaction')}
-                                                    disabled
-                                                    value={(values.amount * values.fix_price)}
-                                                    className='p2p-my-ads__form-field p2p-my-ads__form-field--single'
-                                                    trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.currency}</span>}
-                                                    required
-                                                />
-                                            )}
-                                        </Field>
-                                    </div>
-                                    <Field name='advertiser_note'>
-                                        {({ field }) => (
-                                            <Input
-                                                {...field}
-                                                data-lpignore='true'
-                                                type='textarea'
-                                                error={touched.advertiser_note && errors.advertiser_note}
-                                                label={localize('Advertiser notes')}
-                                                className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                placeholder='Your contact and payment info'
-                                                required
-                                            />
-                                        )}
-                                    </Field>
-                                </ThemedScrollbars>
-                                <FooterActions has_border>
-                                    <Button className='p2p-my-ads__form-button' secondary large type='reset'>{localize('Cancel')}</Button>
-                                    <Button className='p2p-my-ads__form-button' primary large is_disabled={isSubmitting || !isValid}>{localize('Post ad')}</Button>
-                                </FooterActions>
-                            </Form>
-                        </div>
-                    )}
-
+                                    </ThemedScrollbars>
+                                    <FooterActions has_border>
+                                        <Button className='p2p-my-ads__form-button' secondary large type='reset'>{localize('Cancel')}</Button>
+                                        <Button className='p2p-my-ads__form-button' primary large is_disabled={isSubmitting || !isValid}>{localize('Post ad')}</Button>
+                                    </FooterActions>
+                                </Form>
+                            </div>
+                        )}
                     </Formik>
                 )}
             </Fragment>

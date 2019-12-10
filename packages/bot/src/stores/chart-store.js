@@ -59,8 +59,10 @@ export default class ChartStore {
             return (block.type === 'trade_definition_market');
         });
 
-        const symbol = market_block.getFieldValue('SYMBOL_LIST');
-        this.symbol = symbol;
+        if (market_block && market_block !== 'na') {
+            const symbol = market_block.getFieldValue('SYMBOL_LIST');
+            this.symbol = symbol;
+        }
     }
 
     @action.bound

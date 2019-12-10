@@ -15,6 +15,8 @@ export default class ToolbarStore {
     @observable is_search_loading = false;
     @observable file_name = localize('Untitled Bot');
 
+    typingTimer;
+
     @action.bound
     onRunClick() {
         this.root_store.run_panel.onRunButtonClick();
@@ -46,16 +48,14 @@ export default class ToolbarStore {
 
     @action.bound
     onSearchKeyUp(submitForm) {
+        const doneTypingInterval = 2500;
         this.is_search_loading = true;
-        delayCallbackByMs(submitForm, 1000).then(action(timer => {
-            clearTimeout(timer);
-            this.is_search_loading = false;
-        }));
-    }
 
-    @action.bound
-    onSearchBlur() {
-        this.on_search_focus = false;
+        clearTimeout(this.typingTimer);
+        this.typingTimer = setTimeout(action(() => {
+            submitForm();
+            this.is_search_loading = false;
+        }), doneTypingInterval);
     }
 
     @action.bound

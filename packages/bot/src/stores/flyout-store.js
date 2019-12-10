@@ -160,9 +160,10 @@ export default class FlyoutStore {
         const toolbox         = Blockly.derivWorkspace.toolbox_; // eslint-disable-line
         const is_flyout_click = event.path.some(el => el.classList && el.classList.contains('flyout'));
         const isToolboxClick  = () => toolbox.HtmlDiv.contains(event.target);
+        const isSearchInput   = document.querySelector('input[name="search"]') === event.target;
 
-        if (!is_flyout_click && !isToolboxClick()) {
-            toolbox.clearSelection();
+        if (!is_flyout_click && !isToolboxClick() && !isSearchInput) {
+            this.setVisibility(false);
         }
     }
 

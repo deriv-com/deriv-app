@@ -1,10 +1,12 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
 import { Table, Button }      from 'deriv-components';
-import { localize }           from 'deriv-translations';
-import { InfiniteLoaderList } from '../table/infinite-loader-list.jsx';
+import { localize }           from 'Components/i18next';
+import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
+import { TableDimensions }    from 'Components/table/table-dimensions.jsx';
+import { MyAdsLoader }        from './my-ads-loader.jsx';
 
-// TODO: replace with API response
+// TODO: [p2p-replace-with-api] - replace with API response
 const mock_response = {
     ad_id          : 'Buy 000023434',
     amount         : 'BTC 0.00001234',
@@ -67,12 +69,10 @@ export class MyAdsTable extends React.Component {
         items                 : initial_data,
         is_loading_more_items : false,
         has_more_items_to_load: true,
-        width                 : null,
-        height                : null,
     };
 
     table_container_ref = React.createRef();
-    
+
     loadMore = () => {
         this.setState({ is_loading_more_items: true }, () => {
             getMockData().then((res) => {
@@ -87,13 +87,6 @@ export class MyAdsTable extends React.Component {
     render() {
         const { items, is_loading_more_items, has_more_items_to_load } = this.state;
 
-        let width, height;
-        if (this.table_container_ref.current) {
-            const { offsetWidth, clientHeight } = this.table_container_ref.current;
-            width = offsetWidth;
-            height = clientHeight;
-        }
-
         return (
             <div ref={this.table_container_ref}>
                 <Table>
@@ -105,15 +98,20 @@ export class MyAdsTable extends React.Component {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        <InfiniteLoaderList
-                            items={items}
-                            is_loading_more_items={is_loading_more_items}
-                            loadMore={this.loadMore}
-                            has_more_items_to_load={has_more_items_to_load}
-                            RenderComponent={RowComponent}
-                            width={width}
-                            heigh={height}
-                        />
+                        <TableDimensions>
+                            {dimensions =>
+                                <InfiniteLoaderList
+                                    items={items}
+                                    is_loading_more_items={is_loading_more_items}
+                                    loadMore={this.loadMore}
+                                    has_more_items_to_load={has_more_items_to_load}
+                                    RenderComponent={RowComponent}
+                                    RowLoader={MyAdsLoader}
+                                    width={dimensions.width}
+                                    heigh={dimensions.height}
+                                />
+                            }
+                        </TableDimensions>
                     </Table.Body>
                 </Table>
             </div>

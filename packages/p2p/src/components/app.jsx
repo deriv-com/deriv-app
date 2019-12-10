@@ -13,6 +13,7 @@ import MyAds      from './my-ads/my-ads.jsx';
 import MyProfile  from './my-profile/my-profile.jsx';
 import                 './app.scss';
 
+const allowed_currency = 'USD';
 class App extends Component {
 
     constructor(props) {
@@ -39,6 +40,12 @@ class App extends Component {
 
     render() {
         const { active_index } = this.state;
+        const { currency, is_virtual } = this.props.client;
+
+        // TODO:
+        if (currency !== allowed_currency || is_virtual) {
+            return <h1 className='p2p-not-allowed'>{localize('This feature is only available for real-money USD accounts right now.')}</h1>;
+        }
 
         return (
             <Fragment>
@@ -47,22 +54,20 @@ class App extends Component {
                     you can refer to deriv-shared/themes for the css variables that are used in deriv-app as well as p2p
                 */}
                 <main className='deriv-p2p'>
-                    <nav>
-                        <Tabs active_index={active_index}>
-                            <div label={localize('Buy/sell')}>
-                                <BuySell />
-                            </div>
-                            <div label={localize('Orders')}>
-                                <Orders />
-                            </div>
-                            <div label={localize('My ads')}>
-                                <MyAds />
-                            </div>
-                            <div label={localize('My profile')}>
-                                <MyProfile />
-                            </div>
-                        </Tabs>
-                    </nav>
+                    <Tabs active_index={active_index}>
+                        <div label={localize('Buy/sell')}>
+                            <BuySell />
+                        </div>
+                        <div label={localize('Orders')}>
+                            <Orders />
+                        </div>
+                        <div label={localize('My ads')}>
+                            <MyAds />
+                        </div>
+                        <div label={localize('My profile')}>
+                            <MyProfile />
+                        </div>
+                    </Tabs>
                 </main>
             </Fragment>
         );

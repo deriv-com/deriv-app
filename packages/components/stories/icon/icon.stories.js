@@ -10,6 +10,7 @@ import { action }    from '@storybook/addon-actions';
 import React         from 'react';
 import Icon          from 'Components/icon';
 import { icons }     from './icons.js';
+import notes         from './README.md';
 import Theme         from '../shared/theme';
 import { Text }      from '../button/shared-style';
 
@@ -85,6 +86,9 @@ stories
                     })}
                 </div>
             </Theme>
-        )
+        ),
+        {
+            notes: { markDown: notes },
+        }
     );
     

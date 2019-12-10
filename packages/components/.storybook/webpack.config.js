@@ -53,7 +53,7 @@ module.exports = async ({ config, mode }) => {
 
     config.plugins.push(
         new CopyPlugin([
-            { from: path.resolve(__dirname, '../lib/icon/sprite'), to: 'sprite', toType: 'dir' },
+            { from: path.resolve(__dirname, '../lib/icon/sprite'), to: 'public/sprite', toType: 'dir' },
 		])
     )
     // Return the altered config

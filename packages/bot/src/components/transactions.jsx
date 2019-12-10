@@ -1,11 +1,11 @@
-import { ThemedScrollbars } from 'deriv-components';
-import { PropTypes }        from 'prop-types';
-import React                from 'react';
-import { localize }         from 'deriv-translations';
-import Transaction          from './transaction.jsx';
-import { connect }          from '../stores/connect';
+import { ThemedScrollbars }     from 'deriv-components';
+import { PropTypes }            from 'prop-types';
+import React                    from 'react';
+import { localize }             from 'deriv-translations';
+import Transaction              from './transaction.jsx';
+import { connect }              from '../stores/connect';
 import                           '../assets/sass/transactions.scss';
-import { transactions } from '../constants/transactions.js';
+import { transaction_elements } from '../constants/transactions.js';
 
 const Transactions = ({ elements }) => {
     return (
@@ -25,7 +25,7 @@ const Transactions = ({ elements }) => {
                 >
                     { elements.map((element, index) => {
                         switch (element.type) {
-                            case (transactions.CONTRACT): {
+                            case (transaction_elements.CONTRACT): {
                                 const contract = element.data;
                                 return (
                                     <Transaction
@@ -34,7 +34,7 @@ const Transactions = ({ elements }) => {
                                     />
                                 );
                             }
-                            case (transactions.DIVIDER): {
+                            case (transaction_elements.DIVIDER): {
                                 const run_id = element.data;
                                 return (
                                     <div key={run_id} className='transactions__divider'>

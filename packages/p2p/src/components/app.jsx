@@ -1,17 +1,17 @@
 import React, {
     Fragment,
-    Component }      from 'react';
-import PropTypes     from 'prop-types';
-import { Tabs }      from 'deriv-components';
-import { init }      from 'Utils/websocket';
+    Component }   from 'react';
+import PropTypes  from 'prop-types';
+import { Tabs }   from 'deriv-components';
+import { init }   from 'Utils/websocket';
 import {
     localize,
-    setLanguage }    from './i18next';
-import BuySell       from './buy-sell/buy-sell.jsx';
-import Orders        from './orders/orders.jsx';
-import MyAds         from './my-ads/my-ads.jsx';
-import MyProfile     from './my-profile/my-profile.jsx';
-import                    './app.scss';
+    setLanguage } from './i18next';
+import BuySell    from './buy-sell/buy-sell.jsx';
+import Orders     from './orders/orders.jsx';
+import MyAds      from './my-ads/my-ads.jsx';
+import MyProfile  from './my-profile/my-profile.jsx';
+import                 './app.scss';
 
 class App extends Component {
 

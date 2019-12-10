@@ -48,10 +48,10 @@ const i18n_config = {
             return crc32(defaultValue);
         },
     },
-    lng: initial_language,
+    lng        : initial_language,
     fallbackLng: 'EN',
-    ns: ['translations'],
-    defaultNS: 'translations',
+    ns         : ['translations'],
+    defaultNS  : 'translations',
 };
 
 i18n

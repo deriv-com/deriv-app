@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { localize }                   from 'deriv-translations';
 import { Button }                     from 'deriv-components';
 import FormAds                        from './form-ads.jsx';
 import { MyAdsTable }                 from './my-ads-table.jsx';
 import ToggleAds                      from './toggle-ads.jsx';
+import { localize }                   from '../i18next';
 import './my-ads.scss';
 
 class MyAds extends Component {
@@ -11,11 +11,11 @@ class MyAds extends Component {
         ad_id     : '',
         is_enabled: false,
         show_form : false,
-    }
+    };
 
     handleShowForm = (show_form) => {
         this.setState({ show_form });
-    }
+    };
 
     render() {
         return (

@@ -1,4 +1,4 @@
-const EVERY_HOUR = 36000000; // 1000 * 60 * 60
+const EVERY_HOUR = 3600000; // 1000 * 60 * 60
 let interval_id;
 
 function refreshOnUpdate() {

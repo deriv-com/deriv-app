@@ -50,13 +50,11 @@ const Cell = ({
 };
 
 Cell.propTypes = {
-    title          : PropTypes.string,
-    value          : PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
     dimension      : PropTypes.string,
     lower_sub_value: PropTypes.string,
     title          : PropTypes.string,
     upper_sub_value: PropTypes.string,
-    value          : PropTypes.string,
+    value          : PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
 };
 
 const MyProfile = () => {

@@ -29,7 +29,7 @@ const Cell = ({
             <div className='my-profile__cell-data'>
                 <div className='my-profile__cell-data-main'>
                     {value}
-                    <sub className="my-profile__cell-data-dimension" >
+                    <sub className='my-profile__cell-data-dimension' >
                         {dimension}
                     </sub>
                 </div>
@@ -53,8 +53,10 @@ Cell.propTypes = {
     title          : PropTypes.string,
     value          : PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
     dimension      : PropTypes.string,
-    upper_sub_value: PropTypes.string,
     lower_sub_value: PropTypes.string,
+    title          : PropTypes.string,
+    upper_sub_value: PropTypes.string,
+    value          : PropTypes.string,
 };
 
 const MyProfile = () => {

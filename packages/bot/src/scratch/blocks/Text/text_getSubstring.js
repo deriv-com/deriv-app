@@ -125,6 +125,8 @@ Blockly.Blocks.text_getSubstring = {
     getRequiredValueInputs() {
         return {
             STRING: emptyTextValidator,
+            AT1   : emptyTextValidator,
+            AT2   : emptyTextValidator,
         };
     },
 };

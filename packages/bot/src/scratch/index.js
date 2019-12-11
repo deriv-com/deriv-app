@@ -330,7 +330,7 @@ class DBot {
 
                     const input = block.getInput(input_name);
 
-                    if (!input) {
+                    if (!input && !block.domToMutation) {
                         // eslint-disable-next-line no-console
                         console.warn('Detected a non-existent required input.', {
                             input_name,

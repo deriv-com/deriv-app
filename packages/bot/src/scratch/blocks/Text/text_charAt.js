@@ -75,6 +75,7 @@ Blockly.Blocks.text_charAt = {
     getRequiredValueInputs() {
         return {
             VALUE: emptyTextValidator,
+            AT   : emptyTextValidator,
         };
     },
 };

@@ -9,7 +9,7 @@ import './my-ads.scss';
 class MyAds extends Component {
     state = {
         ad_id     : '',
-        is_enabled: false,
+        // is_enabled: false,
         show_form : false,
     };
 
@@ -25,14 +25,14 @@ class MyAds extends Component {
                 ) : (
                     <Fragment>
                         <div className='p2p-my-ads__header'>
-                            <ToggleAds
+                            {/* <ToggleAds
                                 is_enabled={true}
-                            />
+                            /> */}
                             <Button
                                 primary
                                 onClick={() => this.handleShowForm(true) }
                             >
-                                {localize('Create ads')}
+                                {localize('Create ad')}
                             </Button>
                         </div>
                         <MyAdsTable />

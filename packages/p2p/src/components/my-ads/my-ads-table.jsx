@@ -26,9 +26,6 @@ const RowComponent = React.memo(({ data, style }) => (
             <Table.Cell>{data.amount}</Table.Cell>
             <Table.Cell>{data.price}</Table.Cell>
             <Table.Cell>{data.min_transaction}</Table.Cell>
-            <Table.Cell>
-                <Button secondary small>{localize('Delete')}</Button>
-            </Table.Cell>
         </Table.Row>
     </div>
 ));
@@ -53,9 +50,7 @@ export class MyAdsTable extends React.Component {
 
         MockWS({ p2p_offer_list: 1, type: 'buy' }).then((response) => {
             // TODO [p2p-replace-api] p2p agent details should be the one retrieve the agent id
-            console.log(response)
             const filtered_response = response.filter(offer => offer.advertiser_id === 'ABC123');
-            console.log(filtered_response)
 
             if (this.is_mounted) {
                 this.setState({ items: filtered_response, is_loading: false });
@@ -77,7 +72,6 @@ export class MyAdsTable extends React.Component {
                         <Table.Row>
                             {headers.map(header =>
                                 <Table.Head key={header.text}>{header.text}</Table.Head>)}
-                            <Table.Head />
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>

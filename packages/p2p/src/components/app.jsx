@@ -10,7 +10,7 @@ import {
 import BuySell    from './buy-sell/buy-sell.jsx';
 import Orders     from './orders/orders.jsx';
 import MyAds      from './my-ads/my-ads.jsx';
-import MyProfile  from './my-profile/my-profile.jsx';
+// import MyProfile  from './my-profile/my-profile.jsx';
 import                 './app.scss';
 
 const allowed_currency = 'USD';
@@ -19,7 +19,7 @@ const path = {
     buy_sell  : 0,
     orders    : 1,
     my_ads    : 2,
-    my_profile: 3,
+    // my_profile: 3,
 };
 
 class App extends Component {
@@ -77,9 +77,10 @@ class App extends Component {
                         <div label={localize('My ads')}>
                             <MyAds navigate={this.redirectTo} params={parameters} />
                         </div>
-                        <div label={localize('My profile')}>
+                        {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
+                        {/* <div label={localize('My profile')}>
                             <MyProfile navigate={this.redirectTo} params={parameters} />
-                        </div>
+                        </div> */}
                     </Tabs>
                 </main>
             </Fragment>

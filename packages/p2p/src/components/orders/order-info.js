@@ -3,7 +3,7 @@ import { millisecondsToTimer } from 'Utils/date-time';
 
 export default class OrderInfo {
     order_id = '';
-    status = '';
+    status;
     type = '';
     advertiser_notes = '';
     order_purchase_datetime = new Date();
@@ -39,10 +39,12 @@ export default class OrderInfo {
 
     static status_map = {
         'pending'         : localize('Unpaid'),
-        'confirmed-client': localize('Paid'),
-        'cancelled-client': localize('Cancelled'),
-        'expired'         : localize('Cancelled'),
-        'complete'        : localize('Complete'),
+        'client-confirmed': localize('Paid'),
+        'cancelled'       : localize('Cancelled'),
+        'timed-out'       : localize('Cancelled'),
+        'refunded'        : localize('Refunded'),
+        'agent-confirmed' : localize('Complete'),
+        'completed'       : localize('Complete'),
     };
 
     get display_status() {
@@ -58,22 +60,34 @@ export default class OrderInfo {
     }
 
     get is_buyer_confirmed() {
-        return this.status === 'confirmed-client';
+        return this.status === 'client-confirmed';
     }
 
     get is_buyer_cancelled() {
-        return this.status === 'cancelled-client';
+        return this.status === 'cancelled';
     }
 
     get is_expired() {
-        return this.status === 'expired';
+        return this.status === 'timed-out';
+    }
+
+    get is_refunded() {
+        return this.status === 'refunded';
     }
 
     get is_seller_confirmed() {
-        return this.status === 'complete';
+        return this.status === 'agent-confirmed';
+    }
+
+    get is_completed() {
+        return this.status === 'completed';
     }
 
     get display_remaining_time() {
         return millisecondsToTimer(this.remaining_time);
+    }
+
+    setStatus = (value) => {
+        this.status = value;
     }
 }

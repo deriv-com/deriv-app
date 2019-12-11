@@ -1,5 +1,6 @@
 import React         from 'react';
 import PropTypes     from 'prop-types';
+import { MockWS }    from 'Utils/websocket';
 import {
     Button,
     Dialog }         from 'deriv-components';
@@ -25,8 +26,10 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
         is_buyer,
         is_buyer_cancelled,
         is_buyer_confirmed,
+        is_completed,
         is_expired,
         is_pending,
+        is_refunded,
         is_seller_confirmed,
     } = order_details;
 
@@ -47,13 +50,16 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
             { is_expired &&
                 localize('Cancelled due to timeout')
             }
+            { is_refunded &&
+                localize('Refunded') // TODO: [p2p-needs-design] needs design and copywriting
+            }
             { is_buyer_confirmed && is_buyer &&
                 localize('Wait for release')
             }
             { is_buyer_confirmed && !is_buyer &&
                 localize('Confirm payment')
             }
-            { is_seller_confirmed &&
+            { (is_seller_confirmed || is_completed) &&
                 localize('Order complete')
             }
         </h2>
@@ -99,34 +105,68 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         offer_amount,
         offer_currency,
         price_rate,
+        order_id,
         transaction_currency,
+        setStatus,
     } = order_details;
     let buttons_to_render = null;
 
+
     const cancelOrder = () => {
+        const cancel = async () => {
+            const cancel_response = await MockWS({ p2p_order_cancel: 1, order_id })
+            if (!cancel_response.error) {
+                            // TODO: [p2p-replace-with-api] remove this line when api update the status  
+                setStatus('cancelled');
+                cancelPopup();
+            }
+        }
         const options = {
             title         : localize('Cancel this order?'),
             message       : localize('There will be no refund after canceling the order. If you have paid, please do not cancel the order.'),
             confirm_text  : localize('Cancel this order'),
-            onClickConfirm: cancelPopup,
+            onClickConfirm: cancel,
         };
         showPopup(options);
     };
 
     const paidOrder = () => {
-        // TODO [p2p-order-api] call paid api
+        const payOrder = async () => {
+            const update_response = await MockWS({
+                p2p_order_update: 1,
+                order_id,
+                status: 'client-confirmed'
+            });
+            if (!update_response.error) {
+                // TODO: [p2p-replace-with-api] remove this line when api update the status  
+                setStatus('client-confirmed');
+                cancelPopup();
+            }
+        }
         const options = {
             title         : localize('Confirm this payment?'),
             message       : localize('Make sure you have successfully sent the funds to the seller’s bank account or e-wallet mentioned above.'),
             has_cancel    : true,
             cancel_text   : localize('I didn\'t pay yet'),
             confirm_text  : localize('I\'ve paid'),
-            onClickConfirm: cancelPopup,
+            onClickConfirm: payOrder,
         };
         showPopup(options);
     };
 
     const receivedFunds = () => {
+        const receive = async () => {
+            const update_response = await MockWS({
+                p2p_order_update: 1,
+                order_id,
+                status: 'agent-confirmed'
+            });
+            if (!update_response.error) {
+                // TODO: [p2p-replace-with-api] remove this line when api update the status  
+                setStatus('agent-confirmed');
+                cancelPopup();
+            }
+        }
         const options = {
             title            : localize('Have you received funds?'),
             message          : localize('Make sure that you have logged in your bank account or other e-wallet to check the receipt.'),
@@ -138,7 +178,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                 fix_price: price_rate,
                 amount   : offer_amount,
             },
-            onClickConfirm: cancelPopup,
+            onClickConfirm: receive,
         };
         showPopup(options);
     };
@@ -169,26 +209,34 @@ OrderActionsBlock.propTypes = {
 
 const OrderDetailsResultMessage = ({ order_details }) => {
 
-    if (order_details.is_seller_confirmed && order_details.is_buyer) {
+    const {
+        is_seller_confirmed,
+        is_completed,
+        is_buyer,
+        offer_currency,
+        display_offer_amount,
+    } = order_details;
+
+    if ((is_seller_confirmed || is_completed) && is_buyer) {
         return (
             <p className='order-details__wrapper-message order-details__wrapper-message--success'>
                 { localize('{{offered_currency}} {{offered_amount}} was deposited on your account',
                     {
-                        offered_currency: order_details.offer_currency,
-                        offered_amount  : order_details.display_offer_amount,
+                        offered_currency: offer_currency,
+                        offered_amount  : display_offer_amount,
                     })
                 }
             </p>
         );
     }
 
-    if (order_details.is_seller_confirmed && !order_details.is_buyer) {
+    if ((is_seller_confirmed || is_completed) && !is_buyer) {
         return (
             <p className='order-details__wrapper-message order-details__wrapper-message--success'>
                 { localize('You sold {{offered_currency}} {{offered_amount}}',
                     {
-                        offered_currency: order_details.offer_currency,
-                        offered_amount  : order_details.display_offer_amount,
+                        offered_currency: offer_currency,
+                        offered_amount  : display_offer_amount,
                     })
                 }
             </p>

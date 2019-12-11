@@ -1,5 +1,4 @@
 import React        from 'react';
-import { MockWS }   from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import PageReturn   from 'Components/page-return/page-return.jsx';
 import OrderDetails from './order-details/order-details.jsx';
@@ -8,26 +7,30 @@ import OrderTable   from './order-table/order-table.jsx';
 import './orders.scss';
 
 const Orders = ({ params }) => {
-    const buy_order = new OrderInfo();
-    const sell_order = new OrderInfo();
-    sell_order.type = 'sell';
-    sell_order.order_id = 'SELL123';
-    sell_order.counterparty = 'Ronald McDonald';
-
+    // const buy_order = new OrderInfo();
+    // const sell_order = new OrderInfo();
+    // sell_order.type = 'sell';
+    // sell_order.order_id = 'SELL123';
+    // sell_order.counterparty = 'Ronald McDonald';
     const [order_details, setDetails] = React.useState(null);
     // TODO: [p2p-replace-with-api] - remove these dev toggle once data fetch works
-    const showDetails = (order) => setDetails(order);
+    const showDetails = (order) => {
+        console.log(order)
+        setDetails(order)
+    };
     const hideDetails = () => setDetails(null);
 
     // TODO: [p2p-replace-with-api] - Link next 4 lines with API
-    const is_loading_more        = false;
-    const has_more_items_to_load = false;
-    const loadMore               = () => { console.log('Load more'); /* eslint-disable-line no-console */ };
-    const items                  = [ buy_order, sell_order ];
+    // const is_loading_more        = false;
+    // const has_more_items_to_load = false;
+    // const loadMore               = () => { console.log('Load more'); /* eslint-disable-line no-console */ };
+    // const items                  = [ buy_order, sell_order ];
 
     React.useEffect(() => {
-        const order_info = new OrderInfo(params.order_info);
-        setDetails(order_info);
+        if (params && params.order_info) {
+            const order_info = new OrderInfo(params.order_info);
+            setDetails(order_info);
+        }
     }, []);
 
     return (
@@ -50,10 +53,9 @@ const Orders = ({ params }) => {
             }
             { !order_details &&
                 <OrderTable
-                    items={ items }
-                    is_loading_more={ is_loading_more }
-                    has_more_items_to_load={ has_more_items_to_load }
-                    loadMore={ loadMore }
+                    // is_loading_more={ is_loading_more }
+                    // has_more_items_to_load={ has_more_items_to_load }
+                    // loadMore={ loadMore }
                     showDetails={ showDetails }
                 />
             }

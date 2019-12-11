@@ -6,7 +6,10 @@ import OrderInfo    from './order-info';
 import OrderTable   from './order-table/order-table.jsx';
 import './orders.scss';
 
-const Orders = () => {
+const Orders = ({ navigate, params }) => {
+    React.useEffect(() => {
+        console.log(params)
+    }, [])
     const buy_order = new OrderInfo();
     const sell_order = new OrderInfo();
     sell_order.type = 'sell';

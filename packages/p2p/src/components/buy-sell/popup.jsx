@@ -2,6 +2,7 @@ import React, {
     Fragment,
     Component }        from 'react';
 import PropTypes       from 'prop-types';
+import { MockWS }      from 'Utils/websocket';
 import {
     Formik,
     Field,
@@ -15,13 +16,18 @@ import IconClose       from 'Assets/icon-close.jsx';
 import { localize }    from 'Components/i18next';
 
 class Popup extends Component {
-    handleSubmit = (formik_vars, { setSubmitting }) => {
-        // TODO: [p2p-fix-api] call order create api
+    handleSubmit = async (formik_vars, { setSubmitting }) => {
+        // TODO: [p2p-api-request] call order create api
         // eslint-disable-next-line no-console
         console.log(this.state);
         // eslint-disable-next-line no-console
         console.log(formik_vars);
+        
+        const offer = MockWS({ p2p_offer_list: 1 });
+        console.log(offer)
+        this.props.onConfirm(offer);
         setSubmitting(false);
+        this.props.onCancel();
     }
 
     getInitialValues = (is_buy) => {
@@ -230,8 +236,9 @@ class Popup extends Component {
 }
 
 Popup.propTypes = {
-    ad      : PropTypes.object,
-    onCancel: PropTypes.func,
+    ad       : PropTypes.object,
+    onCancel : PropTypes.func,
+    onConfirm: PropTypes.func,
 };
 
 export default Popup;

@@ -38,6 +38,10 @@ class BuySell extends Component {
         this.setState({ table_type: event.target.value });
     }
 
+    onConfirmClick = (offer) => {
+        this.props.navigate('orders', { offer })
+    }
+
     render() {
         const { table_type, selected_ad, show_popup } = this.state;
 
@@ -64,7 +68,7 @@ class BuySell extends Component {
                 {show_popup && (
                     <div className='buy-sell__dialog'>
                         <Dialog is_visible={show_popup}>
-                            <Popup ad={selected_ad} onCancel={this.onCancelClick} />
+                            <Popup ad={selected_ad} onCancel={this.onCancelClick} onConfirm={this.onConfirmClick}  />
                         </Dialog>
                     </div>
                 )}
@@ -74,7 +78,8 @@ class BuySell extends Component {
 }
 
 BuySell.propTypes = {
-    disableApp: PropTypes.func,
+    navigate: PropTypes.func,
+    params: PropTypes.object,
 };
 
 export default BuySell;

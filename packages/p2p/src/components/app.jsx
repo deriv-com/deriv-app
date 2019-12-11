@@ -15,6 +15,12 @@ import                 './app.scss';
 
 const allowed_currency        = 'USD';
 const allowed_landing_company = 'svg';
+const path = {
+    buy_sell: 0,
+    orders: 1,
+    my_ads: 2,
+    my_profile: 3,
+}
 
 class App extends Component {
     constructor(props) {
@@ -25,6 +31,7 @@ class App extends Component {
 
         this.state = {
             activeIndex: 0,
+            parameters: null,
         };
     }
 
@@ -39,8 +46,13 @@ class App extends Component {
         }
     }
 
+    redirectTo = (path_name, params) => {
+        this.setState({ active_index: path[path_name], parameters: null });
+        this.setState({ parameters: params });
+    }
+
     render() {
-        const { active_index } = this.state;
+        const { active_index, parameters } = this.state;
         const {
             currency,
             is_virtual,
@@ -61,17 +73,17 @@ class App extends Component {
                 <main className='deriv-p2p'>
                     <Tabs active_index={active_index}>
                         <div label={localize('Buy / sell')}>
-                            <BuySell />
+                            <BuySell navigate={this.redirectTo} params={parameters} />
                         </div>
                         {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
                         <div label={localize('Orders')}>
-                            <Orders />
+                            <Orders navigate={this.redirectTo} params={parameters} />
                         </div>
                         <div label={localize('My ads')}>
-                            <MyAds />
+                            <MyAds navigate={this.redirectTo} params={parameters} />
                         </div>
                         <div label={localize('My profile')}>
-                            <MyProfile />
+                            <MyProfile navigate={this.redirectTo} params={parameters} />
                         </div>
                     </Tabs>
                 </main>

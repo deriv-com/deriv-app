@@ -1,13 +1,13 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
 import { Loading }            from 'deriv-components';
+import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
+import { TableDimensions }    from 'Components/table/table-dimensions.jsx';
 import {
     RowComponent,
     BuySellRowLoader }        from './row.jsx';
-import { InfiniteLoaderList } from '../table/infinite-loader-list.jsx';
-import { TableDimensions }    from '../table/table-dimensions.jsx';
 
-// TODO: replace with API response
+// TODO: [p2p-replace-with-api] - replace with API response
 const mock_response = {
     advertiser     : 'John Doe',
     price          : 'IDR 2,000,000.00',

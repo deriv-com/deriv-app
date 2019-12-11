@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Button }                     from 'deriv-components';
+import { localize }                   from 'Components/i18next';
 import FormAds                        from './form-ads.jsx';
 import { MyAdsTable }                 from './my-ads-table.jsx';
 import ToggleAds                      from './toggle-ads.jsx';
-import { localize }                   from '../i18next';
 import './my-ads.scss';
 
 class MyAds extends Component {
@@ -19,12 +19,12 @@ class MyAds extends Component {
 
     render() {
         return (
-            <div className='my-ads'>
+            <div className='p2p-my-ads'>
                 {this.state.show_form ? (
                     <FormAds ad_id={this.state.ad_id} handleShowForm={this.handleShowForm} />
                 ) : (
                     <Fragment>
-                        <div className='my-ads__header'>
+                        <div className='p2p-my-ads__header'>
                             <ToggleAds
                                 is_enabled={true}
                             />

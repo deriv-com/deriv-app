@@ -49,9 +49,10 @@ class App extends Component {
                 <main className='deriv-p2p'>
                     <nav>
                         <Tabs active_index={active_index}>
-                            <div label={localize('Buy/sell')}>
+                            <div label={localize('Buy / Sell')}>
                                 <BuySell />
                             </div>
+                            {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
                             <div label={localize('Orders')}>
                                 <Orders />
                             </div>

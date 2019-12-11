@@ -23,7 +23,7 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                         message={getMarketName(info_from_shortcode.underlying)}
                         disable_target_icon
                     >
-                        <Icon icon={`IcUnderlying${info_from_shortcode.underlying}`} width={32} height={24} />
+                        <Icon icon={info_from_shortcode.underlying ? `IcUnderlying${info_from_shortcode.underlying}` : 'IcUnknown'} width={32} height={24} />
                     </Popover>
                     {show_description && payload.display_name}
                 </div>

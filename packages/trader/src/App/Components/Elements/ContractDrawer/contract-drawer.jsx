@@ -79,7 +79,7 @@ class ContractDrawer extends Component {
                         )}
                         >
                             <div id='dt_underlying_label' className='contract-card__underlying-name'>
-                                <Icon icon={`IcUnderlying${contract_info.underlying}`} width={32} height={24} />
+                                <Icon icon={contract_info.underlying ? `IcUnderlying${contract_info.underlying}` : 'IcUnknown'} width={32} height={24} />
                                 <span className='contract-card__symbol'>
                                     {contract_info.display_name}
                                 </span>

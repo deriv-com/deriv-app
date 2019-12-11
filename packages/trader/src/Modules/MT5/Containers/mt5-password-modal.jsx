@@ -81,7 +81,7 @@ const MT5PasswordModal = ({
         this.props.history.push(routes.cashier_acc_transfer);
     };
 
-    const IconType             = getIconFromType(account_type.type);
+    const IconType             = () => getIconFromType(account_type.type);
     const should_show_password = is_mt5_password_modal_enabled && !has_mt5_error &&
         !is_mt5_success_dialog_enabled;
     const should_show_success  = !has_mt5_error && is_mt5_success_dialog_enabled;

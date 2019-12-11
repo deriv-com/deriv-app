@@ -14,7 +14,12 @@ import IconTradeType           from './icon-trade-types.jsx';
 import { connect }             from '../stores/connect';
 import { getContractTypeName } from '../utils/contract';
 
-const TransactionIconWithText = ({ icon, title, message, className }) => (
+const TransactionIconWithText = ({
+    icon,
+    title,
+    message,
+    className,
+}) => (
     <React.Fragment>
         <Popover
             className={classNames(className, 'transactions__icon')}
@@ -40,7 +45,11 @@ const TransactionFieldLoader = () => (
     </ContentLoader>
 );
 
-const PopoverItem = ({ icon, title, children }) => (
+const PopoverItem = ({
+    icon,
+    title,
+    children,
+}) => (
     <div className='transactions__popover-item'>
         { icon &&
             <div className='transaction__popover-icon'>
@@ -201,6 +210,7 @@ const Transaction = ({
 
 Transaction.propTypes = {
     active_transaction_id: PropTypes.number,
+    contract             : PropTypes.object,
     setActiveTransaction : PropTypes.func,
 };
 

@@ -13,7 +13,7 @@ import MyAds      from './my-ads/my-ads.jsx';
 import MyProfile  from './my-profile/my-profile.jsx';
 import                 './app.scss';
 
-const allowed_currency        = 'USD';
+const allowed_currency = 'USD';
 const allowed_landing_company = 'svg';
 const path = {
     buy_sell: 0,
@@ -55,11 +55,10 @@ class App extends Component {
         const {
             currency,
             is_virtual,
-            landing_company_shortcode,
         } = this.props.client;
 
         // TODO: remove landing_company and allowed_currency checks once we publish this to everyone
-        if (is_virtual || landing_company_shortcode !== allowed_landing_company || currency !== allowed_currency) {
+        if (is_virtual || currency !== allowed_currency) {
             return <h1 className='p2p-not-allowed'>{localize('This feature is only available for real-money USD accounts right now.')}</h1>;
         }
 

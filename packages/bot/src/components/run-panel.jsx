@@ -65,6 +65,7 @@ const drawerFooter = ({
                     (is_stop_button_visible) ?
                         <Button
                             is_disabled={is_stop_button_disabled}
+                            id='gtm-stop-bot'
                             text={localize('Stop bot')}
                             icon={<StopIcon className='run-panel__button--icon' />}
                             onClick={onStopButtonClick}
@@ -72,6 +73,7 @@ const drawerFooter = ({
                             primary
                         /> :
                         <Button
+                            id='gtm-run-bot'
                             text={localize('Run bot')}
                             icon={<RunIcon className='run-panel__button--icon' />}
                             onClick={onRunButtonClick}

@@ -240,7 +240,7 @@ const Toolbar = ({
                 message={localize('Click here to start building your DBot.')}
             >
                 <Button
-                    id='start'
+                    id='gtm-get-started'
                     className='toolbar__btn--icon toolbar__btn--start'
                     has_effect
                     onClick={onToolboxToggle}

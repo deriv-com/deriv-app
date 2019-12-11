@@ -39,7 +39,6 @@ class Transactions extends React.PureComponent {
                                     const contract = element.data;
                                     return (
                                         <Transaction
-                                            index={index}
                                             key={`${contract.reference_id}${index}`}
                                             contract={contract}
                                         />

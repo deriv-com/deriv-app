@@ -40,17 +40,24 @@ const TransactionFieldLoader = () => (
     </ContentLoader>
 );
 
-const PopoverItem = ({ title, children }) => (
+const PopoverItem = ({ icon, title, children }) => (
     <div className='transactions__popover-item'>
-        <div className='transactions__popover-title'>
-            { title }
+        { icon &&
+            <div className='transaction__popover-icon'>
+                { icon }
+            </div>
+        }
+        <div className='transactions__popover-details'>
+            <div className='transactions__popover-title'>
+                { title }
+            </div>
+            { children }
         </div>
-        { children }
     </div>
 );
 
 const PopoverContent = ({ contract }) => (
-    <React.Fragment>
+    <div className='transactions__popover-content'>
         { contract.transaction_ids &&
             <PopoverItem title={localize('Reference IDs')}>
                 { contract.transaction_ids.buy &&
@@ -98,7 +105,7 @@ const PopoverContent = ({ contract }) => (
             // TODO: Durations for non-tick contracts, requires helpers from Trader.
         }
         { contract.exit_tick && contract.exit_tick_time &&
-            <PopoverItem title={localize('Exit tick')}>
+            <PopoverItem title={localize('Exit spot')}>
                 <div className='transactions__popover-value'>{ contract.exit_tick }</div>
                 <div className='transactions__popover-value'>{ contract.exit_tick_time }</div>
             </PopoverItem>
@@ -108,20 +115,18 @@ const PopoverContent = ({ contract }) => (
                     <div className='transactions__popover-value'>{ contract.exit_tick }</div>
                 </PopoverItem>
         }
-    </React.Fragment>
+    </div>
 );
 
 const Transaction = ({
     active_transaction_id,
     contract,
-    index,
     setActiveTransaction,
 }) => (
     <Popover
         alignment='left'
         className={classNames('transactions__item-wrapper', {
             'transactions__item-wrapper--active': contract.transaction_ids.buy === active_transaction_id,
-            'transactions__item-wrapper--first' : index === 0,
         })}
         is_open={contract.transaction_ids.buy === active_transaction_id}
         message={<PopoverContent contract={contract} />}

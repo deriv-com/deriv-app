@@ -21,6 +21,7 @@ export class SellTable extends React.Component {
 
     componentDidMount() {
         this.is_mounted = true;
+        // TOOD: [p2p-api-request] API should add `type` to the p2p_offer_list request
         MockWS({ p2p_offer_list: 1, type: 'sell' }).then((response) => {
             if (this.is_mounted) {
                 this.setState({ items: response, is_loading: false });

@@ -63,23 +63,23 @@ export const MockWS = (request) => (
         let response,
             modified_response;
 
-        populateInitialResponses().then( async () => {
+        populateInitialResponses().then(async () => {
 
             if (request.p2p_offer_list) {
                 // TODO: [p2p-replace-with-api] call the API here and assign the real response
                 response = {
                     list: [{
-                        agent_id             : 'ABC123',
-                        agent_name           : 'Fancy PA name',
-                        currency             : 'IDR',
-                        max                  : '1000.00',
-                        min                  : '10.00',
-                        offer_id             : '1234sldkfj',
-                        price                : '200.00',
+                        agent_id  : 'ABC123',
+                        agent_name: 'Fancy PA name',
+                        currency  : 'IDR',
+                        max       : '1000.00',
+                        min       : '10.00',
+                        offer_id  : '1234sldkfj',
+                        price     : '200.00',
 
                         // TOOD: [p2p-api-request] API should return this
-                        type                 : request.type,
-                        summary              : 'send money to maybank',
+                        type   : request.type,
+                        summary: 'send money to maybank',
                     }],
                 };
                 modified_response = getModifiedP2POfferList(response);
@@ -87,8 +87,8 @@ export const MockWS = (request) => (
             if (request.p2p_order_create) {
                 modified_response = {
                     p2p_order_create: 1,
-                    order_id: 'abc1234'
-                }
+                    order_id        : 'abc1234',
+                };
                 // const order_info = await MockWs({ p2p_order_info: 1, order_id: request.offer_id });
                 // modified_response = order_info;
             }
@@ -100,23 +100,23 @@ export const MockWS = (request) => (
             if (request.p2p_order_info) {
                 // TODO: [p2p-replace-with-api] call the API here and assign the real response
                 modified_response = {
-                    order_id: request.order_id,
-                    status: 'pending',
-                    type: 'buy',
-                    advertiser_notes: 'Hello I am watermelon',
-                    order_purchase_datetime: new Date(),
-                    counterparty: 'John Doe',
-                    price_rate: 2000000,
-                    display_price_rate: '2,000,000.00',
-                    offer_currency: 'BTC', // The currency that is being purchased
-                    transaction_currency: 'IDR', // The currency that is used to purchase the selling currency
-                    display_offer_amount: '0.002931',
+                    order_id                  : request.order_id,
+                    status                    : 'pending',
+                    type                      : 'buy',
+                    advertiser_notes          : 'Hello I am watermelon',
+                    order_purchase_datetime   : new Date(),
+                    counterparty              : 'John Doe',
+                    price_rate                : 2000000,
+                    display_price_rate        : '2,000,000.00',
+                    offer_currency            : 'BTC', // The currency that is being purchased
+                    transaction_currency      : 'IDR', // The currency that is used to purchase the selling currency
+                    display_offer_amount      : '0.002931',
                     display_transaction_amount: '100,000.00',
-                    offer_amount: 0.002931,
-                    transaction_amount: 100000,
-                    remaining_time: 3600000, // 60 * 60 * 1000
-                    remainingTimeInterval: null,
-                }
+                    offer_amount              : 0.002931,
+                    transaction_amount        : 100000,
+                    remaining_time            : 3600000, // 60 * 60 * 1000
+                    remainingTimeInterval     : null,
+                };
             }
             resolve(modified_response);
         });

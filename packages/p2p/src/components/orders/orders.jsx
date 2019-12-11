@@ -26,11 +26,8 @@ const Orders = ({ params }) => {
     const items                  = [ buy_order, sell_order ];
 
     React.useEffect(() => {
-        
-        if (params && params.order_info) {
-            const order_info = new OrderInfo(params.order_info)
-            setDetails(order_info)
-        }
+        const order_info = new OrderInfo(params.order_info);
+        setDetails(order_info);
     }, []);
 
     return (

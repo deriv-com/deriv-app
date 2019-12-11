@@ -23,7 +23,7 @@ export default class OrderInfo {
         if (order_info) {
             Object.keys(order_info).forEach(detail => {
                 this[detail] = order_info[detail];
-            })
+            });
         }
 
         this.remainingTimeInterval = setInterval(() => {

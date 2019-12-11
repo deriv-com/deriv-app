@@ -795,9 +795,7 @@ export default class TradeStore extends BaseStore {
         this.setChartStatus(true);
         runInAction(async() => {
             this.is_trade_component_mounted = true;
-            this.refresh();
-            await this.prepareTradeStore();
-            this.debouncedProposal();
+            this.prepareTradeStore();
         });
     }
 

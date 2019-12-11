@@ -1,13 +1,20 @@
-import React, { Fragment, Component }      from 'react';
-import PropTypes                           from 'prop-types';
-import { Formik, Field, Form }             from 'formik';
-import { Input, Button, ThemedScrollbars } from 'deriv-components';
-import { localize }                        from 'deriv-translations';
-import IconBack                            from '../../assets/icon-back.jsx';
-import IconClose                           from '../../assets/icon-close.jsx';
+import React, {
+    Fragment,
+    Component }        from 'react';
+import PropTypes       from 'prop-types';
+import {
+    Formik,
+    Field,
+    Form }             from 'formik';
+import {
+    Input,
+    Button,
+    ThemedScrollbars } from 'deriv-components';
+import IconBack        from 'Assets/icon-back.jsx';
+import IconClose       from 'Assets/icon-close.jsx';
+import { localize }    from 'Components/i18next';
 
 class Popup extends Component {
-
     handleSubmit = (formik_vars, { setSubmitting }) => {
         // TODO: [p2p-fix-api] call order create api
         // eslint-disable-next-line no-console
@@ -145,7 +152,7 @@ class Popup extends Component {
                                             <span className='buy-sell__popup-info--title'>{localize('Advertiser notes')}</span>
                                             <p className='buy-sell__popup-info--text'>{ad.advertiser_note}</p>
                                         </div>
-                                    
+
                                     </div>
                                 </ThemedScrollbars>
                                 <div className='buy-sell__popup-footer'>
@@ -208,5 +215,5 @@ Popup.propTypes = {
     ad      : PropTypes.object,
     onCancel: PropTypes.func,
 };
- 
+
 export default Popup;

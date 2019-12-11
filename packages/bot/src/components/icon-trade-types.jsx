@@ -1,6 +1,6 @@
-import PropTypes  from 'prop-types';
-import React      from 'react';
-import { Icon }   from 'deriv-components';
+import PropTypes from 'prop-types';
+import React     from 'react';
+import { Icon }  from 'deriv-components';
 
 const IconTradeType = ({ type, className, ...props }) => {
     switch (type.toLowerCase()) {

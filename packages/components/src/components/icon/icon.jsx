@@ -2,21 +2,21 @@ import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
 
-function getUrlBase(path = '') {
+const getUrlBase = (path = '') => {
     const l = window.location;
 
     if (!/^\/(br_)/.test(l.pathname)) return path;
 
     return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
-}
+};
 
-function getKebabCase(str) {
+const getKebabCase = (str) => {
     if (!str) return str;
     return str
         .replace(/([a-z0-9])([A-Z])/g, '$1-$2') // get all lowercase letters that are near to uppercase ones
         .replace(/[\s]+/g, '-')                 // replace all spaces and low dash
         .toLowerCase();
-}
+};
 
 const Icon = ({
     className,

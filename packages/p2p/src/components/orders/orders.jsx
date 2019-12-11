@@ -15,8 +15,7 @@ const Orders = ({ params }) => {
     const [order_details, setDetails] = React.useState(null);
     // TODO: [p2p-replace-with-api] - remove these dev toggle once data fetch works
     const showDetails = (order) => {
-        console.log(order)
-        setDetails(order)
+        setDetails(order);
     };
     const hideDetails = () => setDetails(null);
 

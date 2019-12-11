@@ -22,7 +22,8 @@ const OrderTable = ({
             const modified_list = list_response.map(list => new OrderInfo(list));
             setOrderList(modified_list);
         });
-    }, [])
+    }, []);
+
     const Row = (row_props) => (
         row_props.data.is_buyer ?
             <BuyOrderRowComponent { ...row_props } onOpenDetails={ showDetails } />

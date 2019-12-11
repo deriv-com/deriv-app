@@ -1,9 +1,9 @@
 import React         from 'react';
 import PropTypes     from 'prop-types';
-import { MockWS }    from 'Utils/websocket';
 import {
     Button,
     Dialog }         from 'deriv-components';
+import { MockWS }    from 'Utils/websocket';
 import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 import { localize }  from 'Components/i18next';
 import Popup         from '../popup.jsx';
@@ -111,16 +111,16 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     } = order_details;
     let buttons_to_render = null;
 
-
     const cancelOrder = () => {
         const cancel = async () => {
-            const cancel_response = await MockWS({ p2p_order_cancel: 1, order_id })
+            const cancel_response = await MockWS({ p2p_order_cancel: 1, order_id });
+
             if (!cancel_response.error) {
-                            // TODO: [p2p-replace-with-api] remove this line when api update the status  
+                // TODO: [p2p-replace-with-api] remove this line when api update the status
                 setStatus('cancelled');
                 cancelPopup();
             }
-        }
+        };
         const options = {
             title         : localize('Cancel this order?'),
             message       : localize('There will be no refund after canceling the order. If you have paid, please do not cancel the order.'),
@@ -134,15 +134,15 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         const payOrder = async () => {
             const update_response = await MockWS({
                 p2p_order_update: 1,
+                status          : 'client-confirmed',
                 order_id,
-                status: 'client-confirmed'
             });
             if (!update_response.error) {
-                // TODO: [p2p-replace-with-api] remove this line when api update the status  
+                // TODO: [p2p-replace-with-api] remove this line when api update the status
                 setStatus('client-confirmed');
                 cancelPopup();
             }
-        }
+        };
         const options = {
             title         : localize('Confirm this payment?'),
             message       : localize('Make sure you have successfully sent the funds to the seller’s bank account or e-wallet mentioned above.'),
@@ -158,15 +158,15 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         const receive = async () => {
             const update_response = await MockWS({
                 p2p_order_update: 1,
+                status          : 'agent-confirmed',
                 order_id,
-                status: 'agent-confirmed'
             });
             if (!update_response.error) {
-                // TODO: [p2p-replace-with-api] remove this line when api update the status  
+                // TODO: [p2p-replace-with-api] remove this line when api update the status
                 setStatus('agent-confirmed');
                 cancelPopup();
             }
-        }
+        };
         const options = {
             title            : localize('Have you received funds?'),
             message          : localize('Make sure that you have logged in your bank account or other e-wallet to check the receipt.'),

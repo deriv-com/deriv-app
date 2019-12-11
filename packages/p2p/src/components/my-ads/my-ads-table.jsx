@@ -1,6 +1,6 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
-import { Table, Button }      from 'deriv-components';
+import { Table }              from 'deriv-components';
 import { MockWS }             from 'Utils/websocket';
 import { localize }           from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
@@ -15,9 +15,9 @@ const headers = [
 ];
 
 const type = {
-    buy: localize('Buy'),
+    buy : localize('Buy'),
     sell: localize('Sell'),
-}
+};
 
 const RowComponent = React.memo(({ data, style }) => (
     <div style={style}>

@@ -94,7 +94,7 @@ const getModifiedP2POrderList = (response) => {
         modified_response[i].remaining_time             = 60 * 60 * 1000;
     }
     return (modified_response);
-}
+};
 
 export const MockWS = (request) => (
     new Promise(resolve => {
@@ -107,13 +107,13 @@ export const MockWS = (request) => (
                 // TODO: [p2p-replace-with-api] call the API here and assign the real response
                 response = {
                     list: [{
-                        agent_id  : 'ABC123',
-                        agent_name: 'Fancy PA name',
-                        currency  : 'IDR',
-                        max       : '1000.00',
-                        min       : '10.00',
-                        offer_id  : '1234sldkfj',
-                        price     : '200.00',
+                        agent_id   : 'ABC123',
+                        agent_name : 'Fancy PA name',
+                        currency   : 'IDR',
+                        max        : '1000.00',
+                        min        : '10.00',
+                        offer_id   : '1234sldkfj',
+                        price      : '200.00',
                         description: 'send money to maybank',
                     }],
                 };
@@ -130,15 +130,15 @@ export const MockWS = (request) => (
             }
             if (request.p2p_order_list) {
                 response = [{
-                    type: 'buy',
-                    agent_id: 'ABC123',
-                    agent_name: 'Fancy PA name',
+                    type          : 'buy',
+                    agent_id      : 'ABC123',
+                    agent_name    : 'Fancy PA name',
                     local_currency: 'IDR',
-                    offer_id: '1234sldkfj',
-                    order_id: 'abc1234',
-                    price: '200.00',
-                    status: 'pending'
-                }]
+                    offer_id      : '1234sldkfj',
+                    order_id      : 'abc1234',
+                    price         : '200.00',
+                    status        : 'pending',
+                }];
                 modified_response = getModifiedP2POrderList(response);
             }
             if (request.p2p_order_info) {

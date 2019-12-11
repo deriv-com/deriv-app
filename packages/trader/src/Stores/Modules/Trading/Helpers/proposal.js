@@ -84,7 +84,7 @@ const setProposalMultiplier = (store, obj_multiplier)=>{
     }
 
     if (store.has_stop_loss) {
-        obj_multiplier.limit_order.stop_loss = -store.stop_loss; // send negative stop_loss to API
+        obj_multiplier.limit_order.stop_loss = +store.stop_loss; // send positive stop_loss to API
     }
 };
 

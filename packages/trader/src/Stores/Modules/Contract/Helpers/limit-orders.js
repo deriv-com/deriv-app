@@ -106,8 +106,8 @@ export const getLimitOrder = (contract_update) => {
     // send positive take_profit to update or null cancel
     limit_order.take_profit = has_take_profit ? +take_profit : null;
 
-    // send negative stop_loss to update or null to cancel
-    limit_order.stop_loss = has_stop_loss ? -stop_loss : null;
+    // send positive stop_loss to update or null to cancel
+    limit_order.stop_loss = has_stop_loss ? +stop_loss : null;
 
     return limit_order;
 };

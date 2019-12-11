@@ -93,15 +93,6 @@ const getSocketURL = () => {
     return server_url;
 };
 
-const urlParams = new URLSearchParams(window.location.search);
-const param = urlParams.get('server_url');
-
-if (param) {
-    window.localStorage.setItem('config.server_url', param);
-    window.localStorage.setItem('config.app_id', '1003');
-    window.history.replaceState(null, null, window.location.pathname);
-}
-
 module.exports = {
     domain_app_ids,
     getCurrentProductionDomain,

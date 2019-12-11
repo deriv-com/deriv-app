@@ -27,7 +27,7 @@ class App extends Component {
         super(props);
 
         setLanguage(this.props.lang);
-        init(this.props.websocket_api);
+        init(this.props.websocket_api, this.props.client.currency);
 
         this.state = {
             activeIndex: 0,

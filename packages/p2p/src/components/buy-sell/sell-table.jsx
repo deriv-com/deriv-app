@@ -1,12 +1,12 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
 import { Loading }            from 'deriv-components';
+import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
+import { TableDimensions }    from 'Components/table/table-dimensions.jsx';
 import { MockWS }             from 'Utils/websocket';
 import {
     RowComponent,
     BuySellRowLoader }        from './row.jsx';
-import { InfiniteLoaderList } from '../table/infinite-loader-list.jsx';
-import { TableDimensions }    from '../table/table-dimensions.jsx';
 
 export class SellTable extends React.Component {
     // TODO: Find a better solution for handling no-op instead of using is_mounted flags

@@ -3,9 +3,9 @@ import PropTypes            from 'prop-types';
 import {
     Dialog,
     ButtonToggle }          from 'deriv-components';
+import { localize }         from 'Components/i18next';
 import { BuySellTable }     from './buy-sell-table.jsx';
 import Popup                from './popup.jsx';
-import { localize }         from '../i18next';
 import                           './buy-sell.scss';
 
 const buy_sell_filters = [
@@ -63,15 +63,7 @@ class BuySell extends Component {
                 />
                 {show_popup && (
                     <div className='buy-sell__dialog'>
-                        <Dialog
-                            is_visible={show_popup}
-                            disableApp={() => {
-                                /* do nothing // disableApp is a mandatory props in dialog */
-                            }}
-                            enableApp={() => {
-                                /* do nothing // enableApp is a mandatory props in dialog */
-                            }}
-                        >
+                        <Dialog is_visible={show_popup}>
                             <Popup ad={selected_ad} onCancel={this.onCancelClick} />
                         </Dialog>
                     </div>
@@ -84,5 +76,5 @@ class BuySell extends Component {
 BuySell.propTypes = {
     disableApp: PropTypes.func,
 };
- 
+
 export default BuySell;

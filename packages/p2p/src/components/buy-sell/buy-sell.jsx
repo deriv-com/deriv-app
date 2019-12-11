@@ -38,8 +38,8 @@ class BuySell extends Component {
         this.setState({ table_type: event.target.value });
     }
 
-    onConfirmClick = (offer) => {
-        this.props.navigate('orders', { offer })
+    onConfirmClick = (order_info) => {
+        this.props.navigate('orders', { order_info })
     }
 
     render() {

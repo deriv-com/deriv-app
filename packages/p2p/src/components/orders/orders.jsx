@@ -6,10 +6,7 @@ import OrderInfo    from './order-info';
 import OrderTable   from './order-table/order-table.jsx';
 import './orders.scss';
 
-const Orders = ({ navigate, params }) => {
-    React.useEffect(() => {
-        console.log(params)
-    }, [])
+const Orders = ({ params }) => {
     const buy_order = new OrderInfo();
     const sell_order = new OrderInfo();
     sell_order.type = 'sell';
@@ -26,6 +23,11 @@ const Orders = ({ navigate, params }) => {
     const has_more_items_to_load = false;
     const loadMore               = () => { console.log('Load more'); /* eslint-disable-line no-console */ };
     const items                  = [ buy_order, sell_order ];
+
+    React.useEffect(() => {
+        const order_info = new OrderInfo(params.order_info)
+        setDetails(order_info)
+    }, [])
 
     return (
         <div className='orders'>

@@ -47,8 +47,7 @@ class App extends Component {
     }
 
     redirectTo = (path_name, params) => {
-        this.setState({ active_index: path[path_name], parameters: null });
-        this.setState({ parameters: params });
+        this.setState({ active_index: path[path_name], parameters: params });
     }
 
     render() {

@@ -16,36 +16,43 @@ import IconClose       from 'Assets/icon-close.jsx';
 import { localize }    from 'Components/i18next';
 
 class Popup extends Component {
-    handleSubmit = async (formik_vars, { setSubmitting }) => {
+    handleSubmit = async (values, { setSubmitting }) => {
         // TODO: [p2p-api-request] call order create api
-        // eslint-disable-next-line no-console
-        console.log(this.state);
-        // eslint-disable-next-line no-console
-        console.log(formik_vars);
+        const { ad } = this.props
         
-        const offer = MockWS({ p2p_offer_list: 1 });
-        console.log(offer)
-        this.props.onConfirm(offer);
-        setSubmitting(false);
-        this.props.onCancel();
+        const order = await MockWS({ p2p_order_create: 1, amount: values.send, offer_id: ad.offer_id });
+
+        // TODO: [p2p-handle-error] ahndle error on order creation
+        if (!order.error) {
+            const order_info = await MockWS({ p2p_order_info: 1, order_id: order.order_id });
+            this.props.onConfirm(order_info);
+            setSubmitting(false);
+            this.props.onCancel();
+        } else {
+            // TODO: [p2p-handle-error] ahndle error on order creation
+            setSubmitting(false);
+        }
+
     }
 
     getInitialValues = (is_buy) => {
         const { ad } = this.props;
-        const amount_asset = +(ad.min_transaction / ad.price).toFixed(ad.transction_currency_decimals);
+
+        const amount_asset = +(ad.min_transaction / ad.price).toFixed(ad.transaction_currency_decimals);
+
         const buy_initial_values = {
             initial_receive : amount_asset,
             initial_send    : ad.min_transaction,
             receive_currency: ad.offer_currency,
             receive_decimals: ad.offer_currency_decimals,
             send_currency   : ad.transaction_currency,
-            send_decimals   : ad.transction_currency_decimals,
+            send_decimals   : ad.transaction_currency_decimals,
         };
         const sell_initial_values = {
             initial_receive : ad.min_transaction,
             initial_send    : amount_asset,
             receive_currency: ad.transaction_currency,
-            receive_decimals: ad.transction_currency_decimals,
+            receive_decimals: ad.transaction_currency_decimals,
             send_currency   : ad.offer_currency,
             send_decimals   : ad.offer_currency_decimals,
         };
@@ -56,17 +63,17 @@ class Popup extends Component {
     calculateReceiveAmount = (send_amount, is_buy) => {
         const { ad } = this.props;
         return is_buy ?
-            +(send_amount / ad.price).toFixed(ad.transction_currency_decimals)
+            +(send_amount / ad.price).toFixed(ad.transaction_currency_decimals)
             :
-            +(send_amount * ad.price).toFixed(ad.transction_currency_decimals);
+            +(send_amount * ad.price).toFixed(ad.transaction_currency_decimals);
     };
 
     calculateSendAmount = (receive_amount, is_buy) => {
         const { ad } = this.props;
         return is_buy ?
-            +(receive_amount * ad.price).toFixed(ad.transction_currency_decimals)
+            +(receive_amount * ad.price).toFixed(ad.transaction_currency_decimals)
             :
-            +(receive_amount / ad.price).toFixed(ad.transction_currency_decimals);
+            +(receive_amount / ad.price).toFixed(ad.transaction_currency_decimals);
     };
 
     render() {

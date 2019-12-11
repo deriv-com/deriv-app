@@ -2,24 +2,30 @@ import { localize }            from 'Components/i18next';
 import { millisecondsToTimer } from 'Utils/date-time';
 
 export default class OrderInfo {
-    order_id = 'ABC123';
-    status = 'pending';
-    type = 'buy';
-    advertiser_notes = 'Hello I am watermelon';
+    order_id = '';
+    status = '';
+    type = '';
+    advertiser_notes = '';
     order_purchase_datetime = new Date();
-    counterparty = 'John Doe';
-    price_rate = 2000000;
-    display_price_rate = '2,000,000.00';
-    offer_currency = 'BTC'; // The currency that is being purchased
-    transaction_currency = 'IDR'; // The currency that is used to purchase the selling currency
-    display_offer_amount = '0.002931';
-    display_transaction_amount = '100,000.00';
-    offer_amount = 0.002931;
-    transaction_amount = 100000;
-    remaining_time = 3600000; // 60 * 60 * 1000
+    counterparty = '';
+    price_rate = 0;
+    display_price_rate = '';
+    offer_currency = ''; // The currency that is being purchased
+    transaction_currency = ''; // The currency that is used to purchase the selling currency
+    display_offer_amount = '';
+    display_transaction_amount = '';
+    offer_amount = 0;
+    transaction_amount = 0;
+    remaining_time = 0; // 60 * 60 * 1000
     remainingTimeInterval = null;
 
-    constructor() {
+    constructor(order_info = null) {
+        if (order_info) {
+            Object.keys(order_info).forEach(detail => {
+                this[detail] = order_info[detail];
+            })
+        }
+
         this.remainingTimeInterval = setInterval(() => {
             if (this.remaining_time !== 0) {
                 this.remaining_time -= 1000;

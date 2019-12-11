@@ -14,13 +14,13 @@ import MyProfile  from './my-profile/my-profile.jsx';
 import                 './app.scss';
 
 const allowed_currency = 'USD';
-const allowed_landing_company = 'svg';
+
 const path = {
-    buy_sell: 0,
-    orders: 1,
-    my_ads: 2,
+    buy_sell  : 0,
+    orders    : 1,
+    my_ads    : 2,
     my_profile: 3,
-}
+};
 
 class App extends Component {
     constructor(props) {
@@ -31,7 +31,7 @@ class App extends Component {
 
         this.state = {
             activeIndex: 0,
-            parameters: null,
+            parameters : null,
         };
     }
 
@@ -52,12 +52,9 @@ class App extends Component {
 
     render() {
         const { active_index, parameters } = this.state;
-        const {
-            currency,
-            is_virtual,
-        } = this.props.client;
+        const { currency, is_virtual } = this.props.client;
 
-        // TODO: remove landing_company and allowed_currency checks once we publish this to everyone
+        // TODO: remove allowed_currency check once we publish this to everyone
         if (is_virtual || currency !== allowed_currency) {
             return <h1 className='p2p-not-allowed'>{localize('This feature is only available for real-money USD accounts right now.')}</h1>;
         }

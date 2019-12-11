@@ -2,7 +2,6 @@ import React, {
     Fragment,
     Component }        from 'react';
 import PropTypes       from 'prop-types';
-import { MockWS }      from 'Utils/websocket';
 import {
     Formik,
     Field,
@@ -11,6 +10,7 @@ import {
     Input,
     Button,
     ThemedScrollbars } from 'deriv-components';
+import { MockWS }      from 'Utils/websocket';
 import IconBack        from 'Assets/icon-back.jsx';
 import IconClose       from 'Assets/icon-close.jsx';
 import { localize }    from 'Components/i18next';
@@ -18,7 +18,7 @@ import { localize }    from 'Components/i18next';
 class Popup extends Component {
     handleSubmit = async (values, { setSubmitting }) => {
         // TODO: [p2p-api-request] call order create api
-        const { ad } = this.props
+        const { ad } = this.props;
         
         const order = await MockWS({ p2p_order_create: 1, amount: values.send, offer_id: ad.offer_id });
 

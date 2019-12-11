@@ -39,7 +39,7 @@ class BuySell extends Component {
     }
 
     onConfirmClick = (order_info) => {
-        this.props.navigate('orders', { order_info })
+        this.props.navigate('orders', { order_info });
     }
 
     render() {
@@ -79,7 +79,7 @@ class BuySell extends Component {
 
 BuySell.propTypes = {
     navigate: PropTypes.func,
-    params: PropTypes.object,
+    params  : PropTypes.object,
 };
 
 export default BuySell;

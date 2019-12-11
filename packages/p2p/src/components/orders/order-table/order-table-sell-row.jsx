@@ -23,7 +23,9 @@ const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
                     <span>
                         { localize('Sell') }<br />
                         <a
-                            onClick={ () => onOpenDetails(data) } className='link'>
+                            onClick={() => onOpenDetails(data)}
+                            className='link'
+                        >
                             { order_id }
                         </a>
                     </span>
@@ -41,12 +43,12 @@ const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
 SellOrderRowComponent.propTypes = {
     data: PropTypes.shape({
         counterparty              : PropTypes.string,
-        display_transaction_amount: PropTypes.string,
         display_offer_amount      : PropTypes.string,
         display_status            : PropTypes.string,
+        display_transaction_amount: PropTypes.string,
+        offer_currency            : PropTypes.string,
         order_id                  : PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
         order_purchase_datetime   : PropTypes.date,
-        offer_currency            : PropTypes.string,
         transaction_currency      : PropTypes.string,
     }),
     onOpenDetails: PropTypes.func,

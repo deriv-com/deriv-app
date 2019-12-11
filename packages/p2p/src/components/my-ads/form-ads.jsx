@@ -183,7 +183,7 @@ class FormAds extends Component {
                                                 )}
                                             </Field>
                                         </div>
-                                        <div className="p2p-my-ads__form--container">
+                                        <div className='p2p-my-ads__form--container'>
                                             <Field name='min_transaction'>
                                                 {({ field }) => (
                                                     <Input

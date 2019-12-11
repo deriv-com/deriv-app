@@ -1,8 +1,9 @@
 import classNames  from 'classnames';
-import { Counter } from 'deriv-components';
+import {
+    Counter,
+    Icon }         from 'deriv-components';
 import React       from 'react';
 import { NavLink } from 'react-router-dom';
-import { Icon }    from 'deriv-components';
 
 const HeaderIcon = ({ icon, is_active }) => (
     <Icon

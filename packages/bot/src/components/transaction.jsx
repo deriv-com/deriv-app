@@ -96,7 +96,7 @@ const PopoverContent = ({ contract }) => (
             </PopoverItem>
         }
         { contract.entry_tick &&
-            <PopoverItem title={localize('Entry tick')}>
+            <PopoverItem title={localize('Entry spot')}>
                 <div className='transactions__popover-value'>{ contract.entry_tick }</div>
                 { contract.entry_tick_time &&
                     <div className='transactions__popover-value'>{ contract.entry_tick_time }</div>

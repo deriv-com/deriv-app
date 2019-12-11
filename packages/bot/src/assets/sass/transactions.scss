@@ -1,5 +1,5 @@
 .transactions {
-    $grid-template-columns: 40px 1fr 1fr 16px; // 16px (icon) + 24px (spacing)
+    $grid-template-columns: 40px 1fr 1fr; // 16px (icon) + 24px (spacing)
 
     &__header {
         border-bottom: 1px solid var(--general-section-1);
@@ -28,19 +28,49 @@
         grid-template-columns: $grid-template-columns;
         grid-template-rows: auto auto;
         grid-template-areas: (
-            'info entry-spot stake  trade-type' // TODO: Re-add "symbol" in place of "trade-type" once <Icon> is shared.
-            'info exit-spot  profit trade-type'
+            'trade-type entry-spot stake' // TODO: Re-add "symbol" in place of "trade-type" once <Icon> is shared.
+            'trade-type exit-spot  profit'
         );
-        margin: 0 16px;
         padding: 8px;
-        text-align: left;
 
-        &:not(:first-child) {
+        &-wrapper {
             border-top: 1px solid var(--general-section-1);
-            margin-top: 0;
-        }
-        &:last-child {
             border-bottom: 1px solid var(--general-section-1);
+            margin: -1px 16px 0;
+            cursor: pointer;
+            position: relative;
+            box-sizing: border-box;
+
+            &--first {
+                margin-top: 1px;
+                border-top: 1px solid var(--general-main-1);
+            }
+            &--active {
+                box-shadow: 0px 0px 3px 1px var(--state-hover);
+                border-radius: 4px;
+            }
+            &:hover {
+                border-radius: 4px;
+            }
+            &:not(&--active) {
+                &:after {
+                    border: none;
+                    border-radius: 4px;
+                    box-shadow: 0 0 3px 1px var(--general-hover);
+                    content: ' ';
+                    opacity: 0;
+                    transition: opacity 0.1s ease-in-out;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                    position: absolute;
+                    z-index: -1;
+                }
+                &:hover:after {
+                    opacity: 1;
+                }
+            }
         }
     }
 
@@ -51,7 +81,6 @@
         unquote('exit-spot'),
         unquote('stake'),
         unquote('profit'),
-        unquote('info'),
     );
 
     @each $item in $grid-items {

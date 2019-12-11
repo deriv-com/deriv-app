@@ -8,7 +8,8 @@ export default class TransactionsStore {
         this.root_store = root_store;
     }
 
-    @observable elements = [];
+    @observable elements              = [];
+    @observable active_transaction_id = null;
 
     @action.bound
     onBotContractEvent(data) {
@@ -47,6 +48,9 @@ export default class TransactionsStore {
         );
 
         if (same_contract_index === -1) {
+            // Hide popover so it doesn't scroll into infinity.
+            this.setActiveTransaction(null);
+
             // Render a divider if the "run_id" for this contract is different.
             if (this.elements.length > 0) {
                 const is_new_run =
@@ -74,6 +78,33 @@ export default class TransactionsStore {
         }
 
         this.elements = this.elements.slice(); // force array update
+    }
+
+    @action.bound
+    setActiveTransaction(transaction_id) {
+        if (this.active_transaction_id === transaction_id) {
+            this.active_transaction_id = null;
+        } else {
+            this.active_transaction_id = transaction_id;
+        }
+    }
+
+    @action.bound
+    onClickOutsideTransaction(event) {
+        const is_transaction_click = event.path.some(el => el.classList && el.classList.contains('transactions__item-wrapper'));
+        if (!is_transaction_click) {
+            this.setActiveTransaction(null);
+        }
+    }
+
+    @action.bound
+    onMount() {
+        window.addEventListener('click', this.onClickOutsideTransaction);
+    }
+
+    @action.bound
+    onUnmount() {
+        window.removeEventListener('click', this.onClickOutsideTransaction);
     }
 
     @action.bound

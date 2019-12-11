@@ -5,28 +5,27 @@ import {
 import { localize }            from 'deriv-translations';
 import React                   from 'react';
 import ContentLoader           from 'react-content-loader';
+import PropTypes               from 'prop-types';
 import {
     BuyPriceIcon,
     ExitSpotIcon,
-    EntrySpotIcon,
-    InfoOutlineIcon }          from './Icons.jsx';
+    EntrySpotIcon }            from './Icons.jsx';
 import IconTradeType           from './icon-trade-types.jsx';
+import { connect }             from '../stores/connect';
 import { getContractTypeName } from '../utils/contract';
 
-const TransactionIconWithText = ({ icon, title, message, className }) => {
-    return (
-        <React.Fragment>
-            <Popover
-                className={classNames(className, 'transactions__icon')}
-                alignment='left'
-                message={title}
-            >
-                { icon }
-            </Popover>
-            { message }
-        </React.Fragment>
-    );
-};
+const TransactionIconWithText = ({ icon, title, message, className }) => (
+    <React.Fragment>
+        <Popover
+            className={classNames(className, 'transactions__icon')}
+            alignment='left'
+            message={title}
+        >
+            { icon }
+        </Popover>
+        { message }
+    </React.Fragment>
+);
 
 const TransactionFieldLoader = () => (
     <ContentLoader
@@ -40,79 +39,6 @@ const TransactionFieldLoader = () => (
         <rect x='0' y='0' rx='0' ry='0' width='100' height='12' />
     </ContentLoader>
 );
-
-const Transaction = ({ contract }) => {
-    return (
-        <div className='transactions__item'>
-            {/* TODO: Re-enable when <Icon> is shared.
-            <div className='transactions__cell transactions__symbol'>
-                <TransactionIconWithText
-                    icon={<UnderlyingIcon market={contract.underlying} />}
-                    title={contract.display_name}
-                />
-            </div> */}
-            <div className='transactions__cell transactions__trade-type'>
-                <TransactionIconWithText
-                    icon={<IconTradeType trade_type={contract.contract_type} />}
-                    title={getContractTypeName(contract)}
-                />
-            </div>
-            <div className='transactions__cell transactions__entry-spot'>
-                <React.Fragment>
-                    <Popover
-                        className='transactions__icon'
-                        alignment='left'
-                        message={localize('Entry spot')}
-                    >
-                        <EntrySpotIcon />
-                    </Popover>
-                    { contract.entry_tick || <TransactionFieldLoader /> }
-                </React.Fragment>
-            </div>
-            <div className='transactions__cell transactions__exit-spot'>
-                <React.Fragment>
-                    <Popover
-                        className='transactions__icon'
-                        alignment='left'
-                        message={localize('Exit spot')}
-                    >
-                        <ExitSpotIcon />
-                    </Popover>
-                    { contract.exit_tick || <TransactionFieldLoader /> }
-                </React.Fragment>
-            </div>
-            <div className='transactions__cell transactions__stake'>
-                <TransactionIconWithText
-                    icon={<BuyPriceIcon />}
-                    title={localize('Buy price')}
-                    message={<Money amount={contract.buy_price} currency={contract.currency} />}
-                />
-            </div>
-            <div className='transactions__cell transactions__profit'>
-                { contract.profit ?
-                    <div className={classNames({
-                        'transactions__profit--win' : contract.profit > 0,
-                        'transactions__profit--loss': contract.profit < 0,
-                    })}
-                    >
-                        <Money
-                            amount={Math.abs(contract.profit)}
-                            currency={contract.currency}
-                        />
-                    </div>
-                    :
-                    <TransactionFieldLoader />
-                }
-            </div>
-            <div className='transactions__cell transactions__info'>
-                <TransactionIconWithText
-                    icon={<InfoOutlineIcon />}
-                    title={<PopoverContent contract={contract} />}
-                />
-            </div>
-        </div>
-    );
-};
 
 const PopoverItem = ({ title, children }) => (
     <div className='transactions__popover-item'>
@@ -185,4 +111,95 @@ const PopoverContent = ({ contract }) => (
     </React.Fragment>
 );
 
-export default Transaction;
+const Transaction = ({
+    active_transaction_id,
+    contract,
+    index,
+    setActiveTransaction,
+}) => (
+    <Popover
+        alignment='left'
+        className={classNames('transactions__item-wrapper', {
+            'transactions__item-wrapper--active': contract.transaction_ids.buy === active_transaction_id,
+            'transactions__item-wrapper--first' : index === 0,
+        })}
+        is_open={contract.transaction_ids.buy === active_transaction_id}
+        message={<PopoverContent contract={contract} />}
+    >
+        <div
+            className='transactions__item'
+            onClick={() => setActiveTransaction(contract.transaction_ids.buy)}
+        >
+            {/* TODO: Re-enable when <Icon> is shared.
+            <div className='transactions__cell transactions__symbol'>
+                <TransactionIconWithText
+                    icon={<UnderlyingIcon market={contract.underlying} />}
+                    title={contract.display_name}
+                />
+            </div> */}
+            <div className='transactions__cell transactions__trade-type'>
+                <TransactionIconWithText
+                    icon={<IconTradeType trade_type={contract.contract_type} />}
+                    title={getContractTypeName(contract)}
+                />
+            </div>
+            <div className='transactions__cell transactions__entry-spot'>
+                <React.Fragment>
+                    <Popover
+                        className='transactions__icon'
+                        alignment='left'
+                        message={localize('Entry spot')}
+                    >
+                        <EntrySpotIcon />
+                    </Popover>
+                    { contract.entry_tick || <TransactionFieldLoader /> }
+                </React.Fragment>
+            </div>
+            <div className='transactions__cell transactions__exit-spot'>
+                <React.Fragment>
+                    <Popover
+                        className='transactions__icon'
+                        alignment='left'
+                        message={localize('Exit spot')}
+                    >
+                        <ExitSpotIcon />
+                    </Popover>
+                    { contract.exit_tick || <TransactionFieldLoader /> }
+                </React.Fragment>
+            </div>
+            <div className='transactions__cell transactions__stake'>
+                <TransactionIconWithText
+                    icon={<BuyPriceIcon />}
+                    title={localize('Buy price')}
+                    message={<Money amount={contract.buy_price} currency={contract.currency} />}
+                />
+            </div>
+            <div className='transactions__cell transactions__profit'>
+                { contract.profit ?
+                    <div className={classNames({
+                        'transactions__profit--win' : contract.profit > 0,
+                        'transactions__profit--loss': contract.profit < 0,
+                    })}
+                    >
+                        <Money
+                            amount={Math.abs(contract.profit)}
+                            currency={contract.currency}
+                        />
+                    </div>
+                    :
+                    <TransactionFieldLoader />
+                }
+            </div>
+        </div>
+    </Popover>
+);
+
+Transaction.propTypes = {
+    active_transaction_id: PropTypes.number,
+    setActiveTransaction : PropTypes.func,
+};
+
+export default connect(({ transactions }) => ({
+    active_transaction_id: transactions.active_transaction_id,
+    setActiveTransaction : transactions.setActiveTransaction,
+}))(Transaction);

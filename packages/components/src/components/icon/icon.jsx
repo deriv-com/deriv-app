@@ -32,26 +32,13 @@ const Icon = ({
 }) => {
     if (!icon) return null;
 
-    let spriteFileName = 'common';
-    if (icon) {
-        if (icon.startsWith('IcCurrency')) {
-            spriteFileName = 'currency';
-        }
-        if (icon.startsWith('IcTradetype')) {
-            spriteFileName = 'tradetype';
-        }
-        if (icon.startsWith('IcMt5')) {
-            spriteFileName = 'mt5';
-        }
-        if (icon.startsWith('IcFlag')) {
-            spriteFileName = 'flag';
-        }
-        if (icon.startsWith('IcUnderlying')) {
-            spriteFileName = 'underlying';
-        }
+    let filename = 'common';
+    const filenames = /Currency|Tradetype|Mt5|Flag|Underlying/g.exec(icon);
+    if (filenames) {
+        filename = getKebabCase(filenames[0]);
     }
 
-    const icon_filename = icon.startsWith('IcUnderlying') ? `ic-underlying-${icon.split('IcUnderlying')[1].toUpperCase()}` : getKebabCase(icon);
+    const id = icon.startsWith('IcUnderlying') ? `ic-underlying-${icon.split('IcUnderlying')[1].toUpperCase()}` : getKebabCase(icon);
 
     return (
         <svg
@@ -74,7 +61,7 @@ const Icon = ({
                 '--fill-color1': customColor,
             } : undefined}
         >
-            <use xlinkHref={`${(getUrlBase(`/public/sprite/${spriteFileName}.svg`))}#${icon_filename}`} />
+            <use xlinkHref={`${(getUrlBase(`/public/sprite/${filename}.svg`))}#${id}`} />
         </svg>
     );
 };

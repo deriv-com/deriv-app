@@ -128,10 +128,10 @@ const App = () => (
         ...
     }) => {
         ...
-        if (icon) {
-            if (icon.startsWith('IcNewCategory')) { // or any rules
-                spriteFileName = 'new_category';
-            }
+        let filename = 'common';
+        const filenames = /Currency|Tradetype|Mt5|Flag|Underlying|NewCategory/g.exec(icon); // add here
+        if (filenames) {
+            filename = getKebabCase(filenames[0]);
         }
         ...
     };

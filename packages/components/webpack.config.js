@@ -16,6 +16,7 @@ module.exports = {
         button             : path.resolve(__dirname, 'src', 'components/button/index.js'),
         'button-toggle'    : path.resolve(__dirname, 'src', 'components/button-toggle/index.js'),
         checkbox           : path.resolve(__dirname, 'src', 'components/checkbox/index.js'),
+        counter            : path.resolve(__dirname, 'src', 'components/counter/index.js'),
         dialog             : path.resolve(__dirname, 'src', 'components/dialog/index.js'),
         drawer             : path.resolve(__dirname, 'src', 'components/drawer/index.js'),
         dropdown           : path.resolve(__dirname, 'src', 'components/dropdown/index.js'),

@@ -2,7 +2,7 @@ import React             from 'react';
 import PropTypes         from 'prop-types';
 import ContentLoader     from 'react-content-loader';
 import { Table, Button } from 'deriv-components';
-import { localize }      from 'deriv-translations';
+import { localize }      from 'Components/i18next';
 
 export const BuySellRowLoader = () => (
     <ContentLoader
@@ -44,9 +44,9 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) 
 
 RowComponent.propTypes = {
     data         : PropTypes.object,
-    style        : PropTypes.object,
     is_buy       : PropTypes.bool,
     setSelectedAd: PropTypes.func,
+    style        : PropTypes.object,
 };
 
 RowComponent.displayName = 'RowComponent';

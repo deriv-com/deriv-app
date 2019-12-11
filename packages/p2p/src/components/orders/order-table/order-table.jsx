@@ -19,7 +19,7 @@ const OrderTable = ({
         row_props.data.is_buyer ?
             <BuyOrderRowComponent { ...row_props } onOpenDetails={ showDetails } />
             :
-            <SellOrderRowComponent { ...row_props } onOpenDetails={ showDetails }/>
+            <SellOrderRowComponent { ...row_props } onOpenDetails={ showDetails } />
     );
 
     return (
@@ -56,9 +56,9 @@ const OrderTable = ({
 };
 
 OrderTable.propTypes = {
+    has_more_items_to_load: PropTypes.bool,
     is_loading_more       : PropTypes.bool,
     items                 : PropTypes.array,
-    has_more_items_to_load: PropTypes.bool,
     loadMore              : PropTypes.func,
     showDetails           : PropTypes.func,
 };

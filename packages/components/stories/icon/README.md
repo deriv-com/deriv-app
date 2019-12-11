@@ -28,7 +28,7 @@
 | height | `number | string` | `16` | Sets the height of the icon
 | width  | `number | string` | `16` | Sets the width of the icon
 | color  | `'active' |` `'disabled' |` `'secondary' |` `'red' |` `'green' |` `'brand' `| primary fill color: ```var(--text-general)```  <br/> secondary fill color: ```var(--text-less-prominent)``` <br/>tertiary fill color: ```var(--general-section-1)```| Sets the icon color with our current theme colors palette
-| customColor | `string (hex color)` | - | Sets the icon custom color (on the primary fill color only)
+| customColor | `string (hex color or CSS variable)` | - | Sets the icon custom color (on the primary fill color only)
 | onClick | `function` | - | Adds onClick event handler
 | onMouseEnter | `function` | - | Adds onMouseEnter event handler
 | onMouseLeave | `function` | - | Adds onMouseLeave event handler

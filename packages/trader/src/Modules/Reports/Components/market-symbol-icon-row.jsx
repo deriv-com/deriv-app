@@ -3,6 +3,7 @@ import {
     Popover }          from 'deriv-components';
 import PropTypes       from 'prop-types';
 import React           from 'react';
+import IconTradeType   from 'Assets/Trading/Types/icon-trade-types.jsx';
 import {
     getMarketName,
     getTradeTypeName } from '../Helpers/market-underlying';
@@ -36,11 +37,13 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                         message={getTradeTypeName(info_from_shortcode.category)}
                         disable_target_icon
                     >
-                        <Icon
-                            icon={`IcTradetype-${(Shortcode.isHighLow({ shortcode_info: info_from_shortcode }))
-                                ? `${info_from_shortcode.category.toLowerCase()}Barrier`
-                                : info_from_shortcode.category.toLowerCase()}`}
-                            color
+                        <IconTradeType
+                            type={
+                                Shortcode.isHighLow({ shortcode_info: info_from_shortcode })
+                                    ? `${info_from_shortcode.category.toLowerCase()}_barrier`
+                                    : info_from_shortcode.category.toLowerCase()
+                            }
+                            color='brand'
                         />
                     </Popover>
                     {show_description && info_from_shortcode.category}

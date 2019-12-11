@@ -50,7 +50,7 @@ const ContractCard = ({
                     <div className='db-contract-card__underlying-type'>
                         <div className='db-contract-card__underlying-type-wrapper'>
                             <div className='db-contract-card__underlying-type-icon'>
-                                <IconTradeType trade_type={contract.contract_type} />
+                                <IconTradeType type={contract.contract_type} />
                             </div>
                         </div>
                         <span className='db-contract-card__underlying-type-label'>

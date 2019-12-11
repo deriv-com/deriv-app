@@ -51,7 +51,7 @@ const Icon = ({
         }
     }
 
-    const icon_filename = icon.startsWith('IcUnderlying') ? `ic-underlying-${icon.split('IcUnderlying')[1]}` : getKebabCase(icon);
+    const icon_filename = icon.startsWith('IcUnderlying') ? `ic-underlying-${icon.split('IcUnderlying')[1].toUpperCase()}` : getKebabCase(icon);
 
     return (
         <svg
@@ -88,7 +88,7 @@ Icon.propTypes = {
         PropTypes.bool,
         PropTypes.string,
     ]),
-    customColor: PropTypes.bool,
+    customColor: PropTypes.string,
     height     : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,

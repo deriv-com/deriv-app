@@ -25,7 +25,7 @@ class ContractAudit extends React.PureComponent {
         } = this.props;
         if (!has_result) return null;
         const is_profit    = (contract_info.profit >= 0);
-        const IconExitTime = (is_profit) ? <Icon icon='IcContractExitTime' color='green' size={24} /> : <Icon icon='IcContractExitTime' color='red' size={24} />;
+        const IconExitTime = <Icon icon='IcContractExitTime' color={is_profit ? 'green' : 'red'} size={24} />;
         return (
             <div className='contract-audit__wrapper'>
                 <ThemedScrollbars

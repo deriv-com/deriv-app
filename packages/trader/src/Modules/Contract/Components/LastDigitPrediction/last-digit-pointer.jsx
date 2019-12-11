@@ -21,9 +21,8 @@ const LastDigitPointer = ({
                     'digits__icon--win' : is_won && !is_trade_page,
                     'digits__icon--loss': is_lost && !is_trade_page,
                 })}
-                green={(is_won && !is_trade_page) || undefined}
-                red={(is_lost && !is_trade_page) || undefined}
-                color={(is_won || is_won) ? undefined : 'var(--brand-orange)'}
+                color={is_won ? 'green' : 'red'}
+                customColor={!(is_won || is_lost) ? 'var(--brand-orange)' : undefined}
             />
         </span>
         }

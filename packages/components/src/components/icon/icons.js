@@ -209,7 +209,6 @@ import './tradetype/ic-tradetype-runhigh.svg';
 import './tradetype/ic-tradetype-runlow.svg';
 import './tradetype/ic-tradetype-tickhigh.svg';
 import './tradetype/ic-tradetype-ticklow.svg';
-import './tradetype/ic-tradetype-unknown.svg';
 import './tradetype/ic-tradetype-upordown.svg';
 import './underlying/ic-underlying-1HZ100V.svg';
 import './underlying/ic-underlying-1HZ10V.svg';

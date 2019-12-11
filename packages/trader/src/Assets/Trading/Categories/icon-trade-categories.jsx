@@ -244,7 +244,7 @@ const IconTradeCategory = ({ category, className }) => {
                 IconCategory = (
                     <div className='category-wrapper'>
                         <Icon
-                            icon='IcTradetypeUnknown'
+                            icon='IcUnknown'
                             className='category-type'
                             color='brand'
                         />

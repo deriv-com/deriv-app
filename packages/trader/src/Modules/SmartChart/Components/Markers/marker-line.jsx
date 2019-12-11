@@ -18,8 +18,7 @@ const MarkerLine = ({
                 <Icon
                     icon='IcContractExitTimeCircle'
                     className='chart-marker-line__icon'
-                    red={status === 'lost' || undefined}
-                    green={status === 'won' || undefined}
+                    color={status === 'lost' ? 'red' : 'green'}
                     size={24}
                 />
             }

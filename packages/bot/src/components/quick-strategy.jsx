@@ -29,8 +29,8 @@ const MarketOption = ({ symbol }) => (
 
 const TradetypeOption = ({ type }) => (
     <div key={type.value} className='quick-strategy__option'>
-        <IconTradeType trade_type={type.icon[0]} className='quick-strategy__icon' />
-        <IconTradeType trade_type={type.icon[1]} className='quick-strategy__icon' />
+        <IconTradeType type={type.icon[0]} className='quick-strategy__icon' />
+        <IconTradeType type={type.icon[1]} className='quick-strategy__icon' />
         <span className='quick-strategy__symbol'>{type.name}</span>
     </div>
 );

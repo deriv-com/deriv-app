@@ -23,7 +23,7 @@ const Transaction = ({ contract }) => {
                             message={contract.contract_type}
                         >
                             <IconTradeType
-                                trade_type={contract.contract_type}
+                                type={contract.contract_type}
                             />
                         </Popover>
                         <div className='transactions__inline transactions__middle'>

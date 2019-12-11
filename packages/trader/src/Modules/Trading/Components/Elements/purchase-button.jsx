@@ -1,9 +1,9 @@
 import classNames                 from 'classnames';
 import PropTypes                  from 'prop-types';
 import React                      from 'react';
-import { Icon }                   from 'deriv-components';
 import { localize }               from 'deriv-translations';
 import { getContractTypeDisplay } from 'Constants/contract';
+import IconTradeType              from 'Assets/Trading/Types/icon-trade-types.jsx';
 
 const PurchaseButton = ({
     buy_info,
@@ -21,7 +21,7 @@ const PurchaseButton = ({
 }) => {
     const getIconType = () => {
         if (!should_fade && is_loading) return '';
-        return (is_high_low) ? `${type.toLowerCase()}Barrier` : type.toLowerCase();
+        return (is_high_low) ? `${type.toLowerCase()}_barrier` : type.toLowerCase();
     };
     const is_button_disabled = (is_disabled && !is_loading) || is_proposal_empty;
 
@@ -48,8 +48,8 @@ const PurchaseButton = ({
                 <div className='btn-purchase__info btn-purchase__info--left'>
                     <div className='btn-purchase__type-wrapper'>
                         <div className='btn-purchase__icon_wrapper'>
-                            <Icon
-                                icon={`IcTradetype-${getIconType()}`}
+                            <IconTradeType
+                                type={getIconType()}
                                 className='btn-purchase__icon'
                                 color='active'
                             />

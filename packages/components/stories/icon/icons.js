@@ -226,7 +226,6 @@ export const icons =
         'IcTradetypeRunlow',
         'IcTradetypeTickhigh',
         'IcTradetypeTicklow',
-        'IcTradetypeUnknown',
         'IcTradetypeUpordown'
     ],
     'underlying': [

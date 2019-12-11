@@ -133,7 +133,7 @@ const ButtonAddAccount = ({
 }) => (
     <UpgradeButton
         onClick={onClick}
-        icon={<Icon icon='IcAddCircle' red size={24} />}
+        icon={<Icon icon='IcAddCircle' color='red' size={24} />}
     >
         {text}
     </UpgradeButton>

@@ -92,6 +92,11 @@ export const MockWS = (request) => (
                 // const order_info = await MockWs({ p2p_order_info: 1, order_id: request.offer_id });
                 // modified_response = order_info;
             }
+            if (request.p2p_order_list) {
+                modified_response = {
+                    
+                }
+            }
             if (request.p2p_order_info) {
                 // TODO: [p2p-replace-with-api] call the API here and assign the real response
                 modified_response = {

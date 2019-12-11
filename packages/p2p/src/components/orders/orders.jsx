@@ -1,4 +1,5 @@
 import React        from 'react';
+import { MockWS }   from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import PageReturn   from 'Components/page-return/page-return.jsx';
 import OrderDetails from './order-details/order-details.jsx';
@@ -25,9 +26,12 @@ const Orders = ({ params }) => {
     const items                  = [ buy_order, sell_order ];
 
     React.useEffect(() => {
-        const order_info = new OrderInfo(params.order_info)
-        setDetails(order_info)
-    }, [])
+        
+        if (params && params.order_info) {
+            const order_info = new OrderInfo(params.order_info)
+            setDetails(order_info)
+        }
+    }, []);
 
     return (
         <div className='orders'>

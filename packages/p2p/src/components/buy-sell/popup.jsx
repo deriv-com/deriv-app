@@ -17,19 +17,17 @@ import { localize }    from 'Components/i18next';
 
 class Popup extends Component {
     handleSubmit = async (values, { setSubmitting }) => {
-        // TODO: [p2p-api-request] call order create api
         const { ad } = this.props
         
         const order = await MockWS({ p2p_order_create: 1, amount: values.send, offer_id: ad.offer_id });
 
-        // TODO: [p2p-handle-error] ahndle error on order creation
         if (!order.error) {
             const order_info = await MockWS({ p2p_order_info: 1, order_id: order.order_id });
             this.props.onConfirm(order_info);
             setSubmitting(false);
             this.props.onCancel();
         } else {
-            // TODO: [p2p-handle-error] ahndle error on order creation
+            // TODO: [p2p-handle-error] handle error on order creation
             setSubmitting(false);
         }
 

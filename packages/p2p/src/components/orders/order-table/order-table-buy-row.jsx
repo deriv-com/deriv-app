@@ -2,7 +2,8 @@ import { Table }                  from 'deriv-components';
 import PropTypes                  from 'prop-types';
 import React                      from 'react';
 import { localize }               from 'Components/i18next';
-import { getFormattedDateString } from 'Utils/date-time';
+// todo: uncomment this when API sends epoch for time
+// import { getFormattedDateString } from 'Utils/date-time';
 
 const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
     const {
@@ -32,7 +33,7 @@ const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
                 <Table.Cell>{ display_status }</Table.Cell>
                 <Table.Cell>{ transaction_currency }{ ' ' }{ display_transaction_amount }</Table.Cell>
                 <Table.Cell>{ offer_currency }{ ' ' }{ display_offer_amount }</Table.Cell>
-                <Table.Cell>{ getFormattedDateString(order_purchase_datetime) }</Table.Cell>
+                <Table.Cell>{ order_purchase_datetime.toString() }</Table.Cell>
             </Table.Row>
         </div>
     );

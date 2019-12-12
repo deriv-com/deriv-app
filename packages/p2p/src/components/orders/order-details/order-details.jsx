@@ -120,8 +120,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             const cancel_response = await WS({ p2p_order_cancel: 1, order_id });
 
             if (!cancel_response.error) {
-                // TODO: [p2p-replace-with-api] remove this line when api update the status
-                setStatus('cancelled');
+                setStatus(cancel_response.status);
                 cancelPopup();
             } else {
                 setFormStatus({ error_message: cancel_response.error.message });
@@ -145,8 +144,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                 order_id,
             });
             if (!update_response.error) {
-                // TODO: [p2p-replace-with-api] remove this line when api update the status
-                setStatus('client-confirmed');
+                setStatus(update_response.status);
                 cancelPopup();
             } else {
                 setFormStatus({ error_message: update_response.error.message });
@@ -172,8 +170,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                 order_id,
             });
             if (!update_response.error) {
-                // TODO: [p2p-replace-with-api] remove this line when api update the status
-                setStatus('agent-confirmed');
+                setStatus(update_response.status);
                 cancelPopup();
             } else {
                 setFormStatus({ error_message: update_response.error.message });
@@ -299,7 +296,7 @@ const OrderDetails = ({
                             <OrderDetailsStatusBlock order_details={ order_details } />
                             <OrderDetailsAmountBlock order_details={ order_details } />
                         </span>
-                        <OrderDetailsTimerBlock order_details={ order_details } />
+                        {/* <OrderDetailsTimerBlock order_details={ order_details } /> */}
                     </div>
                     <div className='deriv-p2p__separator' />
                     <div className='order-details__info'>

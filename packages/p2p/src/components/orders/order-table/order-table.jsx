@@ -50,7 +50,7 @@ const OrderTable = ({ showDetails }) => {
 };
 
 OrderTable.propTypes = {
-    showDetails           : PropTypes.func,
+    showDetails: PropTypes.func,
 };
 
 export default OrderTable;

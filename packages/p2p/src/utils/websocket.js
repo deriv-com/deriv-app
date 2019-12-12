@@ -1,5 +1,5 @@
-import ObjectUtils   from 'deriv-shared/utils/object';
 import CurrencyUtils from 'deriv-shared/utils/currency';
+import ObjectUtils   from 'deriv-shared/utils/object';
 
 let offer_currency,
     ws;

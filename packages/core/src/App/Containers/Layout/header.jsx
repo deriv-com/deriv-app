@@ -31,11 +31,11 @@ class Header extends React.Component {
             is_logged_in,
             is_logging_in,
             is_mobile,
-            is_mt5_allowed,
             is_notifications_visible,
             is_route_modal_on,
             is_virtual,
             disableApp,
+            landing_company_shortcode,
             notifications_count,
             toggleAccountsDialog,
             toggleNotifications,
@@ -43,11 +43,12 @@ class Header extends React.Component {
         } = this.props;
 
         const filterPlatformsForClients = (payload) => payload.filter(config => {
-            // non-CR clients cannot open MT5 account
+            // MX clients cannot open MT5 account
             const is_mt5_eligible = !(
                 is_logged_in &&
                 config.link_to === routes.mt5 &&
-                !is_mt5_allowed
+                can_upgrade_to !== 'svg' &&
+                landing_company_shortcode !== 'svg'
             );
             return is_mt5_eligible;
         });
@@ -126,26 +127,26 @@ Header.propTypes = {
 
 export default connect(
     ({ client, ui }) => ({
-        balance                 : client.balance,
-        can_upgrade             : client.can_upgrade,
-        can_upgrade_to          : client.can_upgrade_to,
-        currency                : client.currency,
-        is_logged_in            : client.is_logged_in,
-        is_logging_in           : client.is_logging_in,
-        is_virtual              : client.is_virtual,
-        enableApp               : ui.enableApp,
-        is_acc_switcher_on      : ui.is_accounts_switcher_on,
-        is_dark_mode            : ui.is_dark_mode_on,
-        is_app_disabled         : ui.is_app_disabled,
-        is_loading              : ui.is_loading,
-        is_mt5_allowed          : client.is_mt5_allowed,
-        notifications_count     : ui.notifications.length,
-        is_notifications_visible: ui.is_notifications_visible,
-        is_route_modal_on       : ui.is_route_modal_on,
-        is_mobile               : ui.is_mobile,
-        openRealAccountSignup   : ui.openRealAccountSignup,
-        disableApp              : ui.disableApp,
-        toggleAccountsDialog    : ui.toggleAccountsDialog,
-        toggleNotifications     : ui.toggleNotificationsModal,
+        balance                  : client.balance,
+        can_upgrade              : client.can_upgrade,
+        can_upgrade_to           : client.can_upgrade_to,
+        currency                 : client.currency,
+        is_logged_in             : client.is_logged_in,
+        is_logging_in            : client.is_logging_in,
+        is_virtual               : client.is_virtual,
+        enableApp                : ui.enableApp,
+        is_acc_switcher_on       : ui.is_accounts_switcher_on,
+        is_dark_mode             : ui.is_dark_mode_on,
+        is_app_disabled          : ui.is_app_disabled,
+        is_loading               : ui.is_loading,
+        landing_company_shortcode: client.landing_company_shortcode,
+        notifications_count      : ui.notifications.length,
+        is_notifications_visible : ui.is_notifications_visible,
+        is_route_modal_on        : ui.is_route_modal_on,
+        is_mobile                : ui.is_mobile,
+        openRealAccountSignup    : ui.openRealAccountSignup,
+        disableApp               : ui.disableApp,
+        toggleAccountsDialog     : ui.toggleAccountsDialog,
+        toggleNotifications      : ui.toggleNotificationsModal,
     })
 )(withRouter(Header));

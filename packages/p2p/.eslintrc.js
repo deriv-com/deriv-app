@@ -1,16 +1,9 @@
-const path = require('path');
-
 module.exports = {
     parser: 'babel-eslint',
     env: {
         es6    : true,
         browser: true,
         amd    : true,
-        mocha  : true,
-    },
-    globals: {
-        dataLayer : true,
-        texts_json: false,
     },
     rules: {
         camelcase                           : 0,
@@ -43,38 +36,18 @@ module.exports = {
         'import/order'                      : ['error', { groups: [['builtin', 'external'], 'internal', 'sibling', 'parent'], 'newlines-between': 'ignore' }],
         'import/prefer-default-export'      : 0,
         'import/extensions'                 : ['error', 'never', { 'jsx': 'always', 'json': 'always' }],
-        "import/no-unresolved"              : [2, { ignore: ['deriv-components' , 'deriv-shared'] }],
-
-        // react rules
-        'jsx-quotes'                        : ['error', 'prefer-single'],
-        'react/jsx-closing-bracket-location': ['error', { selfClosing: 'line-aligned', nonEmpty: 'line-aligned' }],
-        'react/jsx-closing-tag-location'    : 'error',
-        'react/jsx-first-prop-new-line'     : ['error', 'multiline-multiprop'],
-        'react/jsx-indent'                  : ['error', 4],
-        'react/jsx-indent-props'            : ['error', 4],
-        'react/jsx-max-props-per-line'      : ['error', { when: 'multiline' }],
-        'react/jsx-tag-spacing'             : ['error', { closingSlash: 'never', beforeSelfClosing: 'always' }],
-        'react/prop-types'                  : 0,
-        'react/self-closing-comp'           : 'error',
-        'react/sort-prop-types'             : ['error', { ignoreCase: true, sortShapeProp: true }],
     },
     extends: [
         'airbnb-base',
-        'binary',
-        'plugin:react/recommended',
+        "binary",
+        'plugin:react/recommended'
     ],
     parserOptions: {
         ecmaVersion : 6,
-        ecmaFeatures: {
-            jsx: true,
-        },
     },
     settings: {
-        react: {
-            version: '16',
-        },
         'import/resolver': {
-            webpack: { config: path.resolve(__dirname, 'webpack.config.js') },
+            webpack: { config: 'webpack.config.js' }
         }
     },
 };

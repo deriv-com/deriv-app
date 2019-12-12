@@ -3,8 +3,6 @@ import PropTypes         from 'prop-types';
 import React             from 'react';
 import ReactDOM          from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import Body              from './modal-body.jsx';
-import Footer            from './modal-footer.jsx';
 // import Icon              from 'Assets/icon.jsx';
 
 // TODO: use-from-shared - Use this icon from icons' shared package
@@ -56,7 +54,6 @@ class ModalElement extends React.PureComponent {
                 className={classNames(
                     'dc-modal__container', {
                         [`dc-modal__container_${className}`]: className,
-                        'dc-modal__container--small'        : this.props.small,
                     }
                 )}
                 style={{
@@ -86,14 +83,12 @@ class ModalElement extends React.PureComponent {
                         {header}
                     </div>
                     }
-                    { has_close_icon &&
                     <div
                         onClick={toggleModal}
                         className='dc-modal-header__close'
                     >
-                        <IconClose />
+                        {has_close_icon && <IconClose />}
                     </div>
-                    }
                 </div>
                 {children}
             </div>,
@@ -117,7 +112,6 @@ ModalElement.propTypes = {
     header        : PropTypes.node,
     id            : PropTypes.string,
     is_open       : PropTypes.bool,
-    small         : PropTypes.bool,
     title         : PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
@@ -133,7 +127,6 @@ const Modal = ({
     is_open,
     has_close_icon,
     height,
-    small,
     title,
     toggleModal,
     width,
@@ -159,16 +152,12 @@ const Modal = ({
             toggleModal={toggleModal}
             has_close_icon={has_close_icon}
             height={height}
-            small={small}
             width={width}
         >
             {children}
         </ModalElement>
     </CSSTransition>
 );
-
-Modal.Body = Body;
-Modal.Footer = Footer;
 
 Modal.defaultProps = {
     has_close_icon: true,
@@ -182,7 +171,6 @@ Modal.propTypes = {
     height        : PropTypes.string,
     id            : PropTypes.string,
     is_open       : PropTypes.bool,
-    small         : PropTypes.bool,
     title         : PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,

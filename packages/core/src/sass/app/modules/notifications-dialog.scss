@@ -28,6 +28,18 @@
             left: 1rem;
             top: -2px;
             pointer-events: none;
+
+            &-count {
+                background: $color-red-1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 3px 5px;
+                border-radius: 1rem;
+                color: $color-white;
+                font-size: 1rem;
+                font-weight: bold;
+            }
         }
         &--active {
             .dc-popover {

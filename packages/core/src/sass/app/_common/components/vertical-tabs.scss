@@ -105,9 +105,6 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
                 margin-left: -4px;
             }
         }
-        &__counter {
-            margin-left: 1rem;
-        }
     }
     &__content {
         width: 100%;

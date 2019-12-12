@@ -59,8 +59,6 @@ All packages must contain the following scripts to perform the stated actions:
 | ❌            | `deploy`            | Runs `build` script, then pushes the output to GH Pages.                                      |
 | ❌            | `deploy:clean`      | Runs `build` script, clears `gh-pages` branch, then pushes the output to GH Pages.            |
 | ❌            | `deploy:folder`     | Runs `build` script, then pushes the output to the specified folder in GH Pages.              |
-| ❌            | `deploy:staging`    | Initiates procedures for deploying to staging. (Package specific)                             |
-| ❌            | `deploy:production` | Initiates procedures for deploying to production. (Package specific)                          |
 
 **Please follow the README of each package you intend to work with on how to get set up and their custom scripts.** However, the above scripts can be run from the root directory in the following manner.
 
@@ -110,8 +108,12 @@ There are 3 types of release:
     1. You can simply deploy to root of the `gh-pages` branch with: `npm run deploy`.
     2. You can clean (remove `br_` folders and clear root) your `gh-pages` branch and deploy to root in a single command with `npm run deploy:clean`
     3. You can deploy to a folder in your `gh-pages` branch in order to separate from root app deployment and other folder deployments with: `npm run deploy:folder br_test_folder` (folder name must be prefixed with `br_`)
-2. Release to staging: simply run `npm run deploy:staging` and follow the instructions.
-3. Release to production: simply run `npm run deploy:production` and follow the instructions.
+2. Release to staging: 
+    1. `git tag staging_v20191205 -m 'release staging'` # the tag needs to follow the RegExp format `/^staging.*/`
+    2. `git push origin staging_v20191205`
+3. Release to production:
+    1. `git tag production_v20191205 -m 'release production'`
+    2. `git push origin production_v20191205`
 
 ## PR Guidelines
 1. Use the `developer 1|developer 2/task_name` format for PR titles. (e.g.: `dev1|dev2/fixed_emoji_issue`, `dev1/added_superfast_jellyfish`)

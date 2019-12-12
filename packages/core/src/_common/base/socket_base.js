@@ -152,6 +152,9 @@ const BinarySocketBase = (() => {
         });
     };
 
+    const buy = ({ proposal_id, price }) =>
+        deriv_api.send({ buy: proposal_id, price });
+
     const sell = (contract_id, bid_price) =>
         deriv_api.send({ sell: contract_id, price: bid_price });
 
@@ -264,6 +267,7 @@ const BinarySocketBase = (() => {
         removeOnDisconnect: () => { delete config.onDisconnect; },
         cache             : delegateToObject({}, () => deriv_api.cache),
         storage           : delegateToObject({}, () => deriv_api.storage),
+        buy,
         buyAndSubscribe,
         sell,
         cashier,

@@ -1,18 +1,18 @@
-import classNames         from 'classnames';
-import PropTypes          from 'prop-types';
-import React              from 'react';
-import { withRouter }     from 'react-router-dom';
+import classNames             from 'classnames';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import { withRouter }         from 'react-router-dom';
 import {
     AccountActions,
     MenuLinks,
-    PlatformSwitcher }    from 'App/Components/Layout/Header';
-import platform_config    from 'App/Constants/platform-config';
-import Lazy               from 'App/Containers/Lazy';
-import RealAccountSignup  from 'App/Containers/RealAccountSignup';
-import { connect }        from 'Stores/connect';
-import { header_links }   from 'App/Constants/header-links';
-import AccountsInfoLoader from 'App/Components/Layout/Header/Components/Preloader';
-import routes             from 'Constants/routes';
+    PlatformSwitcher }        from 'App/Components/Layout/Header';
+import platform_config        from 'App/Constants/platform-config';
+import Lazy                   from 'App/Containers/Lazy';
+import RealAccountSignup      from 'App/Containers/RealAccountSignup';
+import { connect }            from 'Stores/connect';
+import { header_links }       from 'App/Constants/header-links';
+import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
+import routes                 from 'Constants/routes';
 
 class Header extends React.Component {
     onClickDeposit = () => {
@@ -31,6 +31,7 @@ class Header extends React.Component {
             is_logged_in,
             is_logging_in,
             is_mobile,
+            is_mt5_allowed,
             is_notifications_visible,
             is_route_modal_on,
             is_virtual,
@@ -41,6 +42,16 @@ class Header extends React.Component {
             openRealAccountSignup,
         } = this.props;
 
+        const filterPlatformsForClients = (payload) => payload.filter(config => {
+            // non-CR clients cannot open MT5 account
+            const is_mt5_eligible = !(
+                is_logged_in &&
+                config.link_to === routes.mt5 &&
+                !is_mt5_allowed
+            );
+            return is_mt5_eligible;
+        });
+
         return (
             <header className={classNames('header', {
                 'header--is-disabled': (is_app_disabled || is_route_modal_on),
@@ -48,7 +59,7 @@ class Header extends React.Component {
             >
                 <div className='header__menu-items'>
                     <div className='header__menu-left'>
-                        <PlatformSwitcher platform_config={platform_config} />
+                        <PlatformSwitcher platform_config={filterPlatformsForClients(platform_config)} />
                         <Lazy
                             has_progress={false}
                             ctor={() => import(/* webpackChunkName: "toggle-menu-drawer", webpackPreload: true */'App/Components/Layout/Header/toggle-menu-drawer.jsx')}
@@ -127,6 +138,7 @@ export default connect(
         is_dark_mode            : ui.is_dark_mode_on,
         is_app_disabled         : ui.is_app_disabled,
         is_loading              : ui.is_loading,
+        is_mt5_allowed          : client.is_mt5_allowed,
         notifications_count     : ui.notifications.length,
         is_notifications_visible: ui.is_notifications_visible,
         is_route_modal_on       : ui.is_route_modal_on,

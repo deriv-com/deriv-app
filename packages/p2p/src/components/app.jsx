@@ -9,7 +9,7 @@ import {
     setLanguage } from './i18next';
 import BuySell    from './buy-sell/buy-sell.jsx';
 import Orders     from './orders/orders.jsx';
-import MyAds      from './my-ads/my-ads.jsx';
+// import MyAds      from './my-ads/my-ads.jsx';
 // import MyProfile  from './my-profile/my-profile.jsx';
 import                 './app.scss';
 
@@ -67,16 +67,19 @@ class App extends Component {
                 */}
                 <main className='deriv-p2p'>
                     <Tabs active_index={active_index}>
-                        <div label={localize('Buy / sell')}>
+                        {/* TODO [p2p-uncomment] uncomment this when sell is ready */}
+                        {/* <div label={localize('Buy / Sell')}> */}
+                        <div label={localize('Buy')}>
                             <BuySell navigate={this.redirectTo} params={parameters} />
                         </div>
                         {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
                         <div label={localize('Orders')}>
                             <Orders navigate={this.redirectTo} params={parameters} />
                         </div>
-                        <div label={localize('My ads')}>
-                            <MyAds navigate={this.redirectTo} params={parameters} />
-                        </div>
+                        {/* TODO [p2p-uncomment] uncomment this when my ads is ready */}
+                        {/* <div label={localize('My ads')}> */}
+                        {/*    <MyAds navigate={this.redirectTo} params={parameters} /> */}
+                        {/* </div> */}
                         {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
                         {/* <div label={localize('My profile')}>
                             <MyProfile navigate={this.redirectTo} params={parameters} />

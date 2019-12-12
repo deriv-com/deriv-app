@@ -43,8 +43,6 @@ export class BuyTable extends React.Component {
                 items={items}
                 RenderComponent={Row}
                 RowLoader={BuySellRowLoader}
-                width={dimensions.width}
-                height={dimensions.height}
             />
         );
     }

@@ -163,7 +163,7 @@ export default class FlyoutStore {
         const isSearchInput   = document.querySelector('input[name="search"]') === event.target;
 
         if (!is_flyout_click && !isToolboxClick() && !isSearchInput) {
-            this.setVisibility(false);
+            toolbox.clearSelection();
         }
     }
 

@@ -115,13 +115,16 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     let buttons_to_render = null;
 
     const cancelOrder = () => {
-        const cancel = async () => {
+        const cancel = async (setFormStatus) => {
+            setFormStatus({ error_message: '' });
             const cancel_response = await MockWS({ p2p_order_cancel: 1, order_id });
 
             if (!cancel_response.error) {
                 // TODO: [p2p-replace-with-api] remove this line when api update the status
                 setStatus('cancelled');
                 cancelPopup();
+            } else {
+                setFormStatus({ error_message: cancel_response.error.message });
             }
         };
         const options = {
@@ -134,7 +137,9 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     };
 
     const paidOrder = () => {
-        const payOrder = async () => {
+        const payOrder = async (setFormStatus) => {
+            setFormStatus({ error_message: '' });
+
             const update_response = await MockWS({
                 p2p_order_confirm: 1,
                 order_id,
@@ -143,6 +148,8 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                 // TODO: [p2p-replace-with-api] remove this line when api update the status
                 setStatus('client-confirmed');
                 cancelPopup();
+            } else {
+                setFormStatus({ error_message: update_response.error.message });
             }
         };
         const options = {
@@ -157,7 +164,9 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     };
 
     const receivedFunds = () => {
-        const receive = async () => {
+        const receive = async (setFormStatus) => {
+            setFormStatus({ error_message: '' });
+
             const update_response = await MockWS({
                 p2p_order_confirm: 1,
                 order_id,
@@ -166,6 +175,8 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                 // TODO: [p2p-replace-with-api] remove this line when api update the status
                 setStatus('agent-confirmed');
                 cancelPopup();
+            } else {
+                setFormStatus({ error_message: update_response.error.message });
             }
         };
         const options = {

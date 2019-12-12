@@ -1,0 +1,10 @@
+.dp2p-table-error {
+    height: 100%;
+    width: 100%;
+    color: var(--text-loss-danger);
+    font-size: 1.4rem;
+    display: flex;
+    justify-content: center;
+    // TODO: [p2p-fix-layout-size] remove this margin when container layout is ok
+    margin-top: 5rem;
+}

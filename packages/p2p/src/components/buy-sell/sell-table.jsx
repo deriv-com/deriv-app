@@ -3,6 +3,7 @@ import PropTypes              from 'prop-types';
 import { Loading }            from 'deriv-components';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableDimensions }    from 'Components/table/table-dimensions.jsx';
+import { TableError }         from 'Components/table/table-error.jsx';
 import { MockWS }             from 'Utils/websocket';
 import {
     RowComponent,
@@ -13,6 +14,7 @@ export class SellTable extends React.Component {
     is_mounted = false
 
     state = {
+        api_error             : '',
         items                 : null,
         is_loading_more_items : false,
         has_more_items_to_load: true,
@@ -24,7 +26,11 @@ export class SellTable extends React.Component {
 
         MockWS({ p2p_offer_list: 1, type: 'sell' }).then((response) => {
             if (this.is_mounted) {
-                this.setState({ items: response, is_loading: false });
+                if (!response.error) {
+                    this.setState({ items: response, is_loading: false });
+                } else {
+                    this.setState({ is_loading: false, api_error: response.error.message });
+                }
             }
         });
     }
@@ -34,12 +40,14 @@ export class SellTable extends React.Component {
     }
 
     render() {
-        const { items, is_loading } = this.state;
+        const { api_error, items, is_loading } = this.state;
         const { setSelectedAd } = this.props;
 
         const Row = props => <RowComponent {...props} is_buy={false} setSelectedAd={setSelectedAd} />;
 
         if (is_loading) return <Loading is_fullscreen={false} />;
+
+        if (api_error) return <TableError message={api_error} />;
 
         return (
             <TableDimensions>

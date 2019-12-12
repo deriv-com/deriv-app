@@ -21,7 +21,7 @@ class Popup extends Component {
         const { ad } = this.props;
         setStatus({ error_message: '' });
 
-        const order = await WS({ p2p_order_create: 1, amount: values.send, offer_id: ad.offer_id });
+        const order = await WS({ p2p_order_create: 1, amount: values.receive, offer_id: ad.offer_id });
 
         if (!order.error) {
             const order_info = await WS({ p2p_order_info: 1, order_id: order.order_id });
@@ -38,19 +38,19 @@ class Popup extends Component {
     getInitialValues = (is_buy) => {
         const { ad } = this.props;
 
-        const amount_asset = +((ad.min_transaction / ad.price_rate).toFixed(ad.transaction_currency_decimals));
+        const amount_asset = +((ad.min_transaction * ad.price_rate).toFixed(ad.transaction_currency_decimals));
 
         const buy_initial_values = {
-            initial_receive : amount_asset,
-            initial_send    : ad.min_transaction,
+            initial_receive : ad.min_transaction,
+            initial_send    : amount_asset,
             receive_currency: ad.offer_currency,
             receive_decimals: ad.offer_currency_decimals,
             send_currency   : ad.transaction_currency,
             send_decimals   : ad.transaction_currency_decimals,
         };
         const sell_initial_values = {
-            initial_receive : ad.min_transaction,
-            initial_send    : amount_asset,
+            initial_receive : amount_asset,
+            initial_send    : ad.min_transaction,
             receive_currency: ad.transaction_currency,
             receive_decimals: ad.transaction_currency_decimals,
             send_currency   : ad.offer_currency,
@@ -197,17 +197,16 @@ class Popup extends Component {
             send_decimals,
         } = this.getInitialValues(is_buy);
 
-        // TODO: uncomment decimal places validation
         const validations = {
             send: [
                 v => !!v,
                 v => v >= initial_send,
-                // v => (((v.toString().split('.') || [])[1]) || []).length <= send_decimals,
+                v => (((v.toString().split('.') || [])[1]) || []).length <= send_decimals,
             ],
             receive: [
                 v => !!v,
                 v => v >= initial_receive,
-                // v => (((v.toString().split('.') || [])[1]) || []).length <= receive_decimals,
+                v => (((v.toString().split('.') || [])[1]) || []).length <= receive_decimals,
             ],
         };
 

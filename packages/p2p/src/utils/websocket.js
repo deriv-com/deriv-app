@@ -70,7 +70,7 @@ const getModifiedP2POrderList = (response) => {
         modified_response[i].type                       = response[0].type;
         modified_response[i].order_id                   = response[0].order_id;
         modified_response[i].status                     = response[0].status;
-        modified_response[i].advertiser_name            = response[0].name;
+        modified_response[i].advertiser_name            = response[0].agent_name;
         modified_response[i].advertiser_notes           = 'Hello I am watermelon';
         modified_response[i].order_purchase_datetime    = new Date();
         modified_response[i].price_rate                 = +response[0].price;

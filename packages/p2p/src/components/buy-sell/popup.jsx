@@ -241,8 +241,8 @@ class Popup extends Component {
 }
 
 Popup.propTypes = {
-    ad       : PropTypes.object,
-    handleClose : PropTypes.func,
+    ad           : PropTypes.object,
+    handleClose  : PropTypes.func,
     handleConfirm: PropTypes.func,
 };
 

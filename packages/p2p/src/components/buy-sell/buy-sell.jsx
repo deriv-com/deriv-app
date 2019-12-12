@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
-import {
-    Dialog,
-    ButtonToggle }          from 'deriv-components';
-import { localize }         from 'Components/i18next';
+import { Dialog }           from 'deriv-components';
 import { BuySellTable }     from './buy-sell-table.jsx';
 import Popup                from './popup.jsx';
 import                           './buy-sell.scss';
 
-const buy_sell_filters = [
-    {
-        text : localize('Buy'),
-        value: 'buy',
-    },
-    {
-        text : localize('Sell'),
-        value: 'sell',
-    },
-];
+/* TODO [p2p-uncomment] uncomment this when sell is ready */
+// const buy_sell_filters = [
+//     {
+//         text : localize('Buy'),
+//         value: 'buy',
+//     },
+//     {
+//         text : localize('Sell'),
+//         value: 'sell',
+//     },
+// ];
 
 class BuySell extends Component {
     state = {
@@ -69,7 +67,11 @@ class BuySell extends Component {
                 {show_popup && (
                     <div className='buy-sell__dialog'>
                         <Dialog is_visible={show_popup}>
-                            <Popup ad={selected_ad} handleClose={this.onCancelClick} handleConfirm={this.onConfirmClick}  />
+                            <Popup
+                                ad={selected_ad}
+                                handleClose={this.onCancelClick}
+                                handleConfirm={this.onConfirmClick}
+                            />
                         </Dialog>
                     </div>
                 )}

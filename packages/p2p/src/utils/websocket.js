@@ -1,14 +1,12 @@
 import CurrencyUtils from 'deriv-shared/utils/currency';
 import ObjectUtils   from 'deriv-shared/utils/object';
 
-let offer_currency,
-    ws;
+let ws;
 
 const initial_responses = {};
 
-export const init = (websocket, currency) => {
+export const init = (websocket) => {
     ws = websocket;
-    offer_currency = currency;
 };
 
 const setCurrenciesConfig = (website_status_response) => {
@@ -19,19 +17,12 @@ const setCurrenciesConfig = (website_status_response) => {
 
 const formatMoney = (currency, amount) => (CurrencyUtils.formatMoney(currency, amount, true));
 
-const populateInitialResponses = () => (
-    new Promise(resolve => {
-        if (ObjectUtils.isEmptyObject(initial_responses)) {
-            ws.send({ website_status: 1 }).then((response) => {
-                initial_responses.website_status = response;
-                setCurrenciesConfig(response);
-                resolve();
-            });
-        } else {
-            resolve();
-        }
-    })
-);
+const populateInitialResponses = async () => {
+    if (ObjectUtils.isEmptyObject(initial_responses)) {
+        initial_responses.website_status = await ws.send({ website_status: 1 });
+        setCurrenciesConfig(initial_responses.website_status);
+    }
+};
 
 const getModifiedP2POfferList = (response) => {
     const length = response.list.length;
@@ -57,17 +48,20 @@ const getModifiedP2POfferList = (response) => {
         // remaining: "0"
         // type: "buy"
 
-        modified_response[i].offer_currency          = response.list[i].account_currency;
+        const offer_currency = response.list[i].account_currency;
+        const transaction_currency = response.list[i].transaction_currency;
+
+        modified_response[i].offer_currency          = offer_currency;
         modified_response[i].advertiser_id           = response.list[i].agent_id;
         modified_response[i].offer_amount            = +response.list[i].max_amount;
-        modified_response[i].display_offer_amount    = formatMoney(response.list[i].offer_currency, response.list[i].max_amount);
+        modified_response[i].display_offer_amount    = formatMoney(offer_currency, response.list[i].max_amount);
         modified_response[i].advertiser_note         = response.list[i].description;
         modified_response[i].offer_id                = response.list[i].id;
         modified_response[i].transaction_currency    = response.list[i].transaction_currency;
         modified_response[i].min_transaction         = +response.list[i].min_amount;
-        modified_response[i].display_min_transaction = formatMoney(response.list[i].transaction_currency, response.list[i].min_amount);
+        modified_response[i].display_min_transaction = formatMoney(offer_currency, response.list[i].min_amount);
         modified_response[i].price_rate              = +response.list[i].price;
-        modified_response[i].display_price_rate      = formatMoney(response.list[i].transaction_currency, response.list[i].price);
+        modified_response[i].display_price_rate      = formatMoney(transaction_currency, response.list[i].price);
         modified_response[i].type                    = response.list[i].type;
 
         // missing in api
@@ -101,6 +95,7 @@ const getModifiedP2POrder = (response) => {
     modified_response.type                       = response.offer_type;
     modified_response.status                     = response.status;
 
+    // missing in API
     modified_response.advertiser_name            = response.agent_name;
     modified_response.price_rate                 = +response.price;
     modified_response.display_price_rate         = formatMoney(response.local_currency, response.price);

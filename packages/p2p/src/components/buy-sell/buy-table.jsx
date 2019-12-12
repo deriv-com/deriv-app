@@ -3,7 +3,7 @@ import PropTypes              from 'prop-types';
 import { Loading }            from 'deriv-components';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError }         from 'Components/table/table-error.jsx';
-import { MockWS }             from 'Utils/websocket';
+import { WS }                 from 'Utils/websocket';
 import {
     RowComponent,
     BuySellRowLoader }        from './row.jsx';
@@ -21,10 +21,11 @@ export class BuyTable extends React.Component {
     componentDidMount() {
         this.is_mounted = true;
 
-        MockWS({ p2p_offer_list: 1, type: 'buy' }).then((response) => {
+        WS({ p2p_offer_list: 1, type: 'buy' }).then((response) => {
             if (this.is_mounted) {
                 if (!response.error) {
                     this.setState({ items: response, is_loading: false });
+                    this.props.setOfferCurrency(response[0].offer_currency);
                 } else {
                     this.setState({ is_loading: false, api_error_message: response.error.message });
                 }
@@ -57,5 +58,6 @@ export class BuyTable extends React.Component {
 }
 
 BuyTable.propTypes = {
-    setSelectedAd: PropTypes.func,
+    setOfferCurrency: PropTypes.func,
+    setSelectedAd   : PropTypes.func,
 };

@@ -1,7 +1,7 @@
 import { Table }              from 'deriv-components';
 import React                  from 'react';
 import PropTypes              from 'prop-types';
-import { MockWS }             from 'Utils/websocket';
+import { WS }                 from 'Utils/websocket';
 import { BuySellRowLoader }   from 'Components/buy-sell/row.jsx';
 import { localize }           from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
@@ -13,7 +13,7 @@ const OrderTable = ({ showDetails }) => {
     const [order_list, setOrderList] = React.useState([]);
 
     React.useEffect(() => {
-        MockWS({ p2p_order_list: 1 }).then(list_response => {
+        WS({ p2p_order_list: 1 }).then(list_response => {
             const modified_list = list_response.map(list => new OrderInfo(list));
             setOrderList(modified_list);
         });

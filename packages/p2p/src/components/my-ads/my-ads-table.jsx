@@ -1,7 +1,7 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
 import { Table }              from 'deriv-components';
-import { MockWS }             from 'Utils/websocket';
+import { WS }                 from 'Utils/websocket';
 import { localize }           from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { MyAdsLoader }        from './my-ads-loader.jsx';
@@ -47,7 +47,7 @@ export class MyAdsTable extends React.Component {
     componentDidMount() {
         this.is_mounted = true;
 
-        MockWS({ p2p_offer_list: 1, type: 'buy' }).then((response) => {
+        WS({ p2p_offer_list: 1, type: 'buy' }).then((response) => {
             // TODO [p2p-replace-api] p2p agent details should be the one retrieve the agent id
             const filtered_response = response.filter(offer => offer.advertiser_id === 'ABC123');
 

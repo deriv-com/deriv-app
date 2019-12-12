@@ -13,7 +13,7 @@ import {
 import IconBack        from 'Assets/icon-back.jsx';
 import IconClose       from 'Assets/icon-close.jsx';
 import { localize }    from 'Components/i18next';
-import { MockWS }      from 'Utils/websocket';
+import { WS }          from 'Utils/websocket';
 import FormError       from '../form/error.jsx';
 
 class Popup extends Component {
@@ -21,10 +21,10 @@ class Popup extends Component {
         const { ad } = this.props;
         setStatus({ error_message: '' });
 
-        const order = await MockWS({ p2p_order_create: 1, amount: values.send, offer_id: ad.offer_id });
+        const order = await WS({ p2p_order_create: 1, amount: values.send, offer_id: ad.offer_id });
 
         if (!order.error) {
-            const order_info = await MockWS({ p2p_order_info: 1, order_id: order.order_id });
+            const order_info = await WS({ p2p_order_info: 1, order_id: order.order_id });
             this.props.handleConfirm(order_info);
             setSubmitting(false);
             this.props.handleClose();

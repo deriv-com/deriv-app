@@ -3,7 +3,7 @@ import PropTypes     from 'prop-types';
 import {
     Button,
     Dialog }         from 'deriv-components';
-import { MockWS }    from 'Utils/websocket';
+import { WS }        from 'Utils/websocket';
 import FooterActions from 'Components/footer-actions/footer-actions.jsx';
 import { localize }  from 'Components/i18next';
 import Popup         from '../popup.jsx';
@@ -114,7 +114,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     const cancelOrder = () => {
         const cancel = async (setFormStatus) => {
             setFormStatus({ error_message: '' });
-            const cancel_response = await MockWS({ p2p_order_cancel: 1, order_id });
+            const cancel_response = await WS({ p2p_order_cancel: 1, order_id });
 
             if (!cancel_response.error) {
                 // TODO: [p2p-replace-with-api] remove this line when api update the status
@@ -137,7 +137,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         const payOrder = async (setFormStatus) => {
             setFormStatus({ error_message: '' });
 
-            const update_response = await MockWS({
+            const update_response = await WS({
                 p2p_order_confirm: 1,
                 order_id,
             });
@@ -164,7 +164,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         const receive = async (setFormStatus) => {
             setFormStatus({ error_message: '' });
 
-            const update_response = await MockWS({
+            const update_response = await WS({
                 p2p_order_confirm: 1,
                 order_id,
             });

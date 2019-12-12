@@ -31,7 +31,7 @@ class FormAds extends Component {
 
     componentDidMount() {
         // TODO: [p2p-fix-api] call get offer detail api and populate state
-        WS().send({ 'residence_list': 1 }).then(() => { // this is just to mock the api delay response
+        WS({ 'residence_list': 1 }).then(() => { // this is just to mock the api delay response
             const new_initial_values = {
                 country        : 'Indonesia',
                 currency       : 'IDR',

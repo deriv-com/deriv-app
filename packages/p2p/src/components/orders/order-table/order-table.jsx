@@ -4,7 +4,6 @@ import PropTypes              from 'prop-types';
 import { BuySellRowLoader }   from 'Components/buy-sell/row.jsx';
 import { localize }           from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
-import { TableDimensions }    from 'Components/table/table-dimensions.jsx';
 import BuyOrderRowComponent   from './order-table-buy-row.jsx';
 import SellOrderRowComponent  from './order-table-sell-row.jsx';
 
@@ -35,21 +34,15 @@ const OrderTable = ({
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                <TableDimensions>
-                    {dimensions =>
-                        <InfiniteLoaderList
-                            items={ items }
-                            item_size={ 72 }
-                            is_loading_more_items={ is_loading_more }
-                            loadMore={ loadMore }
-                            has_more_items_to_load={ has_more_items_to_load }
-                            RenderComponent={ Row }
-                            RowLoader={ BuySellRowLoader }
-                            width={ dimensions.width }
-                            height={ dimensions.height }
-                        />
-                    }
-                </TableDimensions>
+                <InfiniteLoaderList
+                    items={ items }
+                    item_size={ 72 }
+                    is_loading_more_items={ is_loading_more }
+                    loadMore={ loadMore }
+                    has_more_items_to_load={ has_more_items_to_load }
+                    RenderComponent={ Row }
+                    RowLoader={ BuySellRowLoader }
+                />
             </Table.Body>
         </Table>
     );

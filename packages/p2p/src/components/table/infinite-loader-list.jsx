@@ -1,8 +1,8 @@
 import React                     from 'react';
 import PropTypes                 from 'prop-types';
+import AutoSizer                 from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List } from 'react-window';
 import InfiniteLoader            from 'react-window-infinite-loader';
-import AutoSizer                 from 'react-virtualized-auto-sizer';
 
 export const InfiniteLoaderList = ({
     items,
@@ -15,7 +15,6 @@ export const InfiniteLoaderList = ({
     RenderComponent,
     RowLoader,
     height: initial_height,
-    width: initial_width,
 }) => {
     const RowRenderer = ({ index, style }) => {
         const is_loading = index === items.length;
@@ -23,7 +22,7 @@ export const InfiniteLoaderList = ({
         if (is_loading) {
             return (
                 <div style={style}>
-                    <RowLoader width={initial_width} />
+                    <RowLoader />
                 </div>
             );
         }
@@ -73,5 +72,4 @@ InfiniteLoaderList.propTypes = {
     loadMore              : PropTypes.func,
     RenderComponent       : PropTypes.any,
     RowLoader             : PropTypes.any.isRequired,
-    width                 : PropTypes.number,
 };

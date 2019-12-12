@@ -3,7 +3,6 @@ import PropTypes              from 'prop-types';
 import { Table, Button }      from 'deriv-components';
 import { localize }           from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
-import { TableDimensions }    from 'Components/table/table-dimensions.jsx';
 import { MyAdsLoader }        from './my-ads-loader.jsx';
 
 // TODO: [p2p-replace-with-api] - replace with API response
@@ -96,20 +95,14 @@ export class MyAdsTable extends React.Component {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        <TableDimensions>
-                            {dimensions =>
-                                <InfiniteLoaderList
-                                    items={items}
-                                    is_loading_more_items={is_loading_more_items}
-                                    loadMore={this.loadMore}
-                                    has_more_items_to_load={has_more_items_to_load}
-                                    RenderComponent={RowComponent}
-                                    RowLoader={MyAdsLoader}
-                                    width={dimensions.width}
-                                    heigh={dimensions.height}
-                                />
-                            }
-                        </TableDimensions>
+                        <InfiniteLoaderList
+                            items={items}
+                            is_loading_more_items={is_loading_more_items}
+                            loadMore={this.loadMore}
+                            has_more_items_to_load={has_more_items_to_load}
+                            RenderComponent={RowComponent}
+                            RowLoader={MyAdsLoader}
+                        />
                     </Table.Body>
                 </Table>
             </div>

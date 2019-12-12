@@ -2,6 +2,7 @@ import React                     from 'react';
 import PropTypes                 from 'prop-types';
 import { FixedSizeList as List } from 'react-window';
 import InfiniteLoader            from 'react-window-infinite-loader';
+import AutoSizer                 from 'react-virtualized-auto-sizer';
 
 export const InfiniteLoaderList = ({
     items,
@@ -14,7 +15,7 @@ export const InfiniteLoaderList = ({
     RenderComponent,
     RowLoader,
     height,
-    width,
+    width
 }) => {
     const RowRenderer = ({ index, style }) => {
         const is_loading = index === items.length;
@@ -43,16 +44,20 @@ export const InfiniteLoaderList = ({
             loadMoreItems={loadMore}
         >
             {({ onItemsRendered, ref }) => (
-                <List
-                    height={height || 452}
-                    width={width || 960}
-                    itemCount={item_count}
-                    itemSize={item_size || 56}
-                    onItemsRendered={onItemsRendered}
-                    ref={ref}
-                >
-                    {RowRenderer}
-                </List>
+                <AutoSizer style={{ height: (height || 600) }}>
+                    {({ height, width }) => (
+                        <List
+                            height={height}
+                            width={width}
+                            itemCount={item_count}
+                            itemSize={item_size || 56}
+                            onItemsRendered={onItemsRendered}
+                            ref={ref}
+                        >
+                            {RowRenderer}
+                        </List>
+                    )}
+                </AutoSizer>
             )}
         </InfiniteLoader>
     );

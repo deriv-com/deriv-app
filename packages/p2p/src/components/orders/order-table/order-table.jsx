@@ -39,7 +39,6 @@ const OrderTable = ({
                     <Table.Head>{ localize('Status') }</Table.Head>
                     <Table.Head>{ localize('Send') }</Table.Head>
                     <Table.Head>{ localize('Receive') }</Table.Head>
-                    <Table.Head>{ localize('Counterparty') }</Table.Head>
                     <Table.Head>{ localize('Time') }</Table.Head>
                 </Table.Row>
             </Table.Header>

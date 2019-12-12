@@ -133,8 +133,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     const paidOrder = () => {
         const payOrder = async () => {
             const update_response = await MockWS({
-                p2p_order_update: 1,
-                status          : 'client-confirmed',
+                p2p_order_confirm: 1,
                 order_id,
             });
             if (!update_response.error) {
@@ -157,8 +156,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     const receivedFunds = () => {
         const receive = async () => {
             const update_response = await MockWS({
-                p2p_order_update: 1,
-                status          : 'agent-confirmed',
+                p2p_order_confirm: 1,
                 order_id,
             });
             if (!update_response.error) {

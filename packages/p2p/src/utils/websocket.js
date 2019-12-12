@@ -168,10 +168,10 @@ export const MockWS = (request) => (
                     order_id        : 'abc1234',
                 };
             }
-            if (request.p2p_order_update) {
+            if (request.p2p_order_confirm) {
                 modified_response = {
-                    p2p_order_update: 1,
-                    order_id        : 'abc1234',
+                    p2p_order_confirm: 1,
+                    order_id         : 'abc1234',
                 };
             }
             resolve(modified_response);

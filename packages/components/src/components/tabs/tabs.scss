@@ -21,6 +21,11 @@
         width: var(--tab-width);
         color: var(--text-general);
 
+        &__counter {
+            display: inline-flex;
+            margin-left: 1rem;
+            vertical-align: middle;
+        }
         &:not(.dc-tabs__active) {
             border-bottom: 1px solid var(--general-section-1);
             cursor: pointer;

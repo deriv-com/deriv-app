@@ -44,6 +44,7 @@ const MT5PasswordModal = ({
     disableMt5PasswordModal,
     // error_message,
     form_error,
+    history,
     has_mt5_error,
     is_mt5_password_modal_enabled,
     is_mt5_success_dialog_enabled,
@@ -79,7 +80,7 @@ const MT5PasswordModal = ({
     const closeOpenSuccess = () => {
         disableMt5PasswordModal();
         closeDialogs();
-        this.props.history.push(routes.cashier_acc_transfer);
+        history.push(routes.cashier_acc_transfer);
     };
 
     const IconType             = getIconFromType(account_type.type);

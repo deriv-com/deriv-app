@@ -1,4 +1,8 @@
-const path = require('path');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserPlugin            = require('terser-webpack-plugin');
+const BundleAnalyzerPlugin    = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const MiniCssExtractPlugin    = require('mini-css-extract-plugin');
+const path                    = require('path');
 
 const is_serve   = process.env.BUILD_MODE === 'serve';
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
@@ -22,6 +26,7 @@ module.exports = {
             Translations: path.resolve(__dirname, 'src/translations'),
             Utils       : path.resolve(__dirname, 'src/utils'),
         },
+        symlinks: false,
     },
     module : {
         rules: [
@@ -45,9 +50,16 @@ module.exports = {
                 ]
             },
             {
-                test: /\.scss$/,
+                test: /\.(sc|sa|c)ss$/,
                 use: [
                     'style-loader',
+                    {
+                        loader : MiniCssExtractPlugin.loader,
+                        options: {
+                            sourceMap: !is_release,
+                        }
+                    },
+                    path.resolve(__dirname, 'scripts', 'dp2p-css-unit-loader.js'),
                     'css-loader',
                     'sass-loader',
                     {
@@ -61,8 +73,20 @@ module.exports = {
             }
         ],
     },
+    plugins: [
+        new MiniCssExtractPlugin({ filename: 'main.css' }),
+        ...(is_release ? [] : [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ]),
+    ],
     optimization: {
         minimize: is_release,
+        minimizer: is_release ? [
+            new TerserPlugin({
+                test     : /\.js/,
+                parallel : true,
+                sourceMap: true,
+            }),
+            new OptimizeCssAssetsPlugin(),
+        ] : [],
     },
     devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
     externals: [

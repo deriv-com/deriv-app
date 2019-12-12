@@ -89,8 +89,10 @@ class App extends Component {
 }
 
 App.propTypes = {
-    currency     : PropTypes.string.isRequired,
-    is_virtual   : PropTypes.string.isRequired,
+    client: PropTypes.shape({
+        currency  : PropTypes.string.isRequired,
+        is_virtual: PropTypes.bool.isRequired,
+    }),
     lang         : PropTypes.string,
     websocket_api: PropTypes.object.isRequired,
 };

@@ -30,25 +30,14 @@ class App extends Component {
         init(this.props.websocket_api, this.props.client.currency);
 
         this.state = {
-            activeIndex: 0,
-            parameters : null,
+            active_index: 0,
+            parameters  : null,
         };
-    }
-
-    componentDidMount() {
-        // TODO: [p2p-fix-index-set] Fix issues with unresolved index to set in tabs
-        if (typeof window !== 'undefined') {
-            const index_to_set = /orders/.test(window.location.pathname) ? 1 : 0;
-
-            if (this.state.active_index !== index_to_set) {
-                this.setState({ active_index: index_to_set });
-            }
-        }
     }
 
     redirectTo = (path_name, params) => {
         this.setState({ active_index: path[path_name], parameters: params });
-    }
+    };
 
     render() {
         const { active_index, parameters } = this.state;

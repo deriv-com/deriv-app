@@ -18,7 +18,7 @@ import { MockWS }      from 'Utils/websocket';
 class Popup extends Component {
     handleSubmit = async (values, { setSubmitting }) => {
         const { ad } = this.props;
-        
+
         const order = await MockWS({ p2p_order_create: 1, amount: values.send, offer_id: ad.offer_id });
 
         if (!order.error) {
@@ -31,12 +31,12 @@ class Popup extends Component {
             setSubmitting(false);
         }
 
-    }
+    };
 
     getInitialValues = (is_buy) => {
         const { ad } = this.props;
 
-        const amount_asset = +((ad.min_transaction / ad.price).toFixed(ad.transaction_currency_decimals));
+        const amount_asset = +((ad.min_transaction / ad.price_rate).toFixed(ad.transaction_currency_decimals));
 
         const buy_initial_values = {
             initial_receive : amount_asset,
@@ -61,17 +61,17 @@ class Popup extends Component {
     calculateReceiveAmount = (send_amount, is_buy) => {
         const { ad } = this.props;
         return is_buy ?
-            +((send_amount / ad.price).toFixed(ad.transaction_currency_decimals))
+            +((send_amount / ad.price_rate).toFixed(ad.transaction_currency_decimals))
             :
-            +((send_amount * ad.price).toFixed(ad.transaction_currency_decimals));
+            +((send_amount * ad.price_rate).toFixed(ad.transaction_currency_decimals));
     };
 
     calculateSendAmount = (receive_amount, is_buy) => {
         const { ad } = this.props;
         return is_buy ?
-            +((receive_amount * ad.price).toFixed(ad.transaction_currency_decimals))
+            +((receive_amount * ad.price_rate).toFixed(ad.transaction_currency_decimals))
             :
-            +((receive_amount / ad.price).toFixed(ad.transaction_currency_decimals));
+            +((receive_amount / ad.price_rate).toFixed(ad.transaction_currency_decimals));
     };
 
     render() {

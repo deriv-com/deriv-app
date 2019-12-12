@@ -1,4 +1,5 @@
-import ObjectUtils from 'deriv-shared/utils/object';
+import ObjectUtils   from 'deriv-shared/utils/object';
+import CurrencyUtils from 'deriv-shared/utils/currency';
 
 let offer_currency,
     ws;
@@ -12,11 +13,20 @@ export const init = (websocket, currency) => {
 
 export const WS = () => ws;
 
+const setCurrenciesConfig = (website_status_response) => {
+    if (('website_status' in website_status_response) && ObjectUtils.isEmptyObject(CurrencyUtils.currencies_config)) {
+        CurrencyUtils.setCurrencies(website_status_response.website_status);
+    }
+};
+
+const formatMoney = (currency, amount) => (CurrencyUtils.formatMoney(currency, amount, true));
+
 const populateInitialResponses = () => (
     new Promise(resolve => {
         if (ObjectUtils.isEmptyObject(initial_responses)) {
             ws.send({ website_status: 1 }).then((response) => {
                 initial_responses.website_status = response;
+                setCurrenciesConfig(response);
                 resolve();
             });
         } else {
@@ -31,16 +41,18 @@ const getModifiedP2POfferList = (response) => {
     for (let i = 0; i < length; i++) {
         modified_response[i] = {};
         // TODO: [p2p-replace-with-api] change `response.list[0]` to `response.list[i]` once we have API
-        // TODO: add formatMoney function and create display variables for each price field
-        modified_response[i].advertiser_id        = response.list[0].agent_id;
-        modified_response[i].advertiser           = response.list[0].agent_name;
-        modified_response[i].advertiser_note      = response.list[0].description;
-        modified_response[i].offer_currency       = offer_currency;
-        modified_response[i].offer_id             = response.list[0].offer_id;
-        modified_response[i].amount               = +response.list[0].max;
-        modified_response[i].transaction_currency = response.list[0].currency;
-        modified_response[i].price                = +response.list[0].price;
-        modified_response[i].min_transaction      = +response.list[0].min;
+        modified_response[i].advertiser_id           = response.list[0].agent_id;
+        modified_response[i].advertiser              = response.list[0].agent_name;
+        modified_response[i].advertiser_note         = response.list[0].description;
+        modified_response[i].offer_currency          = offer_currency;
+        modified_response[i].offer_id                = response.list[0].offer_id;
+        modified_response[i].offer_amount            = +response.list[0].max;
+        modified_response[i].display_offer_amount    = formatMoney(offer_currency, response.list[0].max);
+        modified_response[i].transaction_currency    = response.list[0].currency;
+        modified_response[i].price_rate              = +response.list[0].price;
+        modified_response[i].display_price_rate      = formatMoney(response.list[0].currency, response.list[0].price);
+        modified_response[i].min_transaction         = +response.list[0].min;
+        modified_response[i].display_min_transaction = formatMoney(response.list[0].currency, response.list[0].min);
         // TODO: [p2p-replace-with-api] get type from response.echo_req.type
         modified_response[i].type                 = 'buy';
 
@@ -74,13 +86,13 @@ const getModifiedP2POrderList = (response) => {
         modified_response[i].advertiser_notes           = 'Hello I am watermelon';
         modified_response[i].order_purchase_datetime    = new Date();
         modified_response[i].price_rate                 = +response[0].price;
-        modified_response[i].display_price_rate         = +response[0].price;
+        modified_response[i].display_price_rate         = formatMoney(response[0].local_currency, response[0].price);
         modified_response[i].offer_currency             = offer_currency;
         modified_response[i].transaction_currency       = response[0].local_currency;
         modified_response[i].offer_amount               = +'0.002931';
-        modified_response[i].display_offer_amount       = '0.002931';
+        modified_response[i].display_offer_amount       = formatMoney(offer_currency, '0.002931');
         modified_response[i].transaction_amount         = +'100000';
-        modified_response[i].display_transaction_amount = '100000';
+        modified_response[i].display_transaction_amount = formatMoney(response[0].local_currency, '100000');
         modified_response[i].remaining_time             = 60 * 60 * 1000;
     }
     return (modified_response);
@@ -107,7 +119,7 @@ export const MockWS = (request) => (
                         description: 'send money to maybank',
                     }],
                 };
-                
+
                 modified_response = getModifiedP2POfferList(response);
             }
             if (request.p2p_order_create) {
@@ -139,11 +151,11 @@ export const MockWS = (request) => (
                     advertiser_notes          : 'Hello I am watermelon',
                     order_purchase_datetime   : new Date(),
                     price_rate                : 2000000,
-                    display_price_rate        : '2,000,000.00',
+                    display_price_rate        : formatMoney('IDR', '2,000,000.00'),
                     offer_currency            : 'BTC', // The currency that is being purchased
                     transaction_currency      : 'IDR', // The currency that is used to purchase the selling currency
-                    display_offer_amount      : '0.002931',
-                    display_transaction_amount: '100,000.00',
+                    display_offer_amount      : formatMoney('BTC', '0.002931'),
+                    display_transaction_amount: formatMoney('IDR', '100,000.00'),
                     offer_amount              : 0.002931,
                     transaction_amount        : 100000,
                     remaining_time            : 3600000, // 60 * 60 * 1000

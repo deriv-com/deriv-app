@@ -1,4 +1,5 @@
-import ObjectUtils from 'deriv-shared/utils/object';
+import CurrencyUtils from 'deriv-shared/utils/currency';
+import ObjectUtils   from 'deriv-shared/utils/object';
 
 let offer_currency,
     ws;
@@ -10,11 +11,20 @@ export const init = (websocket, currency) => {
     offer_currency = currency;
 };
 
+const setCurrenciesConfig = (website_status_response) => {
+    if (('website_status' in website_status_response) && ObjectUtils.isEmptyObject(CurrencyUtils.currencies_config)) {
+        CurrencyUtils.setCurrencies(website_status_response.website_status);
+    }
+};
+
+const formatMoney = (currency, amount) => (CurrencyUtils.formatMoney(currency, amount, true));
+
 const populateInitialResponses = () => (
     new Promise(resolve => {
         if (ObjectUtils.isEmptyObject(initial_responses)) {
             ws.send({ website_status: 1 }).then((response) => {
                 initial_responses.website_status = response;
+                setCurrenciesConfig(response);
                 resolve();
             });
         } else {
@@ -48,22 +58,25 @@ const getModifiedP2POfferList = (response) => {
         // type: "buy"
 
         // TODO: add formatMoney function and create display variables for each price field
-        modified_response[i].offer_currency       = response.list[i].offer_currency;
-        modified_response[i].advertiser_id        = response.list[i].agent_id;
-        modified_response[i].amount               = +response.list[i].amount;
-        modified_response[i].advertiser_note      = response.list[i].description;
-        modified_response[i].offer_id             = response.list[i].id;
-        modified_response[i].transaction_currency = response.list[i].transaction_currency;
-        modified_response[i].min_transaction      = +response.list[i].min_amount;
-        modified_response[i].price                = +response.list[i].price;
-        modified_response[i].type                 = response.list[i].type;
+        modified_response[i].offer_currency          = response.list[i].offer_currency;
+        modified_response[i].advertiser_id           = response.list[i].agent_id;
+        modified_response[i].offer_amount            = +response.list[i].amount;
+        modified_response[i].display_offer_amount    = formatMoney(response.list[i].offer_currency, response.list[i].amount);
+        modified_response[i].advertiser_note         = response.list[i].description;
+        modified_response[i].offer_id                = response.list[i].id;
+        modified_response[i].transaction_currency    = response.list[i].transaction_currency;
+        modified_response[i].min_transaction         = +response.list[i].min_amount;
+        modified_response[i].display_min_transaction = formatMoney(response.list[i].transaction_currency, response.list[i].min_amount);
+        modified_response[i].price_rate              = +response.list[i].price;
+        modified_response[i].display_price_rate      = formatMoney(response.list[i].transaction_currency, response.list[i].price);
+        modified_response[i].type                    = response.list[i].type;
 
         // missing in api
         modified_response[i].advertiser           = response.list[i].agent_loginid;
 
         // TOOD: [p2p-api-request] API should give us the allowed decimal places of local currency
         modified_response[i].transaction_currency_decimals =
-            (((response.list[0].price.toString().split('.') || [])[1]) || []).length;
+            (((response.list[i].price.toString().split('.') || [])[1]) || []).length;
 
         modified_response[i].offer_currency_decimals =
             ObjectUtils.getPropertyValue(initial_responses, [
@@ -98,10 +111,9 @@ const getModifiedP2POrderList = (response) => {
         //     "status": "cancelled"
 
 
-        // TODO: [p2p-replace-with-api] change `response.list[0]` to `response.list[i]` once we have API
         // TODO: add formatMoney function and create display variables for each price field
         modified_response[i].offer_amount               = +response.list[i].amount;
-        modified_response[i].display_offer_amount       = response.list[i].amount;
+        modified_response[i].display_offer_amount       = formatMoney(response.list[i].offer_currency, response.list[i].amount);
         modified_response[i].order_purchase_datetime    = new Date(response.list[i].created_time); // API should give epoch
         modified_response[i].advertiser_notes           = response.list[i].description;
         modified_response[i].order_id                   = response.list[i].id;
@@ -111,10 +123,10 @@ const getModifiedP2POrderList = (response) => {
 
         modified_response[i].advertiser_name            = response.list[i].agent_name;
         modified_response[i].price_rate                 = +response.list[i].price;
-        modified_response[i].display_price_rate         = +response.list[i].price;
+        modified_response[i].display_price_rate         = formatMoney(response.list[i].local_currency, response.list[i].price);
         modified_response[i].transaction_currency       = response.list[i].local_currency;
         modified_response[i].transaction_amount         = +'100000';
-        modified_response[i].display_transaction_amount = '100000';
+        modified_response[i].display_transaction_amount = formatMoney(response.list[i].local_currency, '100000');
         modified_response[i].remaining_time             = 60 * 60 * 1000;
     }
     return (modified_response);
@@ -173,11 +185,11 @@ export const WS = async (request) => {
             advertiser_notes          : 'Hello I am watermelon',
             order_purchase_datetime   : new Date(),
             price_rate                : 2000000,
-            display_price_rate        : '2,000,000.00',
+            display_price_rate        : formatMoney('IDR', '2,000,000.00'),
             offer_currency            : 'BTC', // The currency that is being purchased
             transaction_currency      : 'IDR', // The currency that is used to purchase the selling currency
-            display_offer_amount      : '0.002931',
-            display_transaction_amount: '100,000.00',
+            display_offer_amount      : formatMoney('BTC', '0.002931'),
+            display_transaction_amount: formatMoney('IDR', '100,000.00'),
             offer_amount              : 0.002931,
             transaction_amount        : 100000,
             remaining_time            : 3600000, // 60 * 60 * 1000

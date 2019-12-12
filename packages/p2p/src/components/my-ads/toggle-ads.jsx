@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
+import { localize }         from 'deriv-translations';
 import { ToggleSwitch }     from 'deriv-components';
 import classNames           from 'classnames';
-import { localize }         from 'Components/i18next';
 import './my-ads.scss';
 
 const ToggleMessage = ({ is_enabled, className }) => {
@@ -30,12 +30,10 @@ class ToggleAds extends Component {
 
     render () {
         return (
-            <div
-                className={classNames(
-                    'toggle-ads',
-                    this.state.is_enabled ? 'toggle-ads--on' : 'toggle-ads--off',
-                )}
-            >
+            <div className={classNames(
+                'toggle-ads',
+                this.state.is_enabled ? 'toggle-ads--on' : 'toggle-ads--off',
+            )}>
                 <ToggleSwitch
                     id='toggle-my-ads'
                     className='toggle-ads__switch'

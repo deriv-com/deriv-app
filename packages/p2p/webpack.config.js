@@ -15,14 +15,6 @@ module.exports = {
         library      : 'deriv-p2p',
         libraryTarget: 'umd',
     },
-    resolve: {
-        alias: {
-            Assets      : path.resolve(__dirname, 'src/assets'),
-            Components  : path.resolve(__dirname, 'src/components'),
-            Translations: path.resolve(__dirname, 'src/translations'),
-            Utils       : path.resolve(__dirname, 'src/utils'),
-        },
-    },
     module : {
         rules: [
             (!is_serve ? {
@@ -31,6 +23,9 @@ module.exports = {
                 exclude: /node_modules/,
                 include: /src/,
                 loader : 'eslint-loader',
+                options: {
+                    fix: true,
+                },
             } : {}),
             {
                 test   : /\.(js|jsx)$/,
@@ -43,6 +38,27 @@ module.exports = {
                         loader : 'babel-loader',
                     },
                 ]
+            },
+            {
+                test: /\.svg$/,
+                use : [
+                    {
+                        loader : 'svg-sprite-loader',
+                        options: {
+                            extract       : true,
+                            spriteFilename: 'p2p-sprite.svg',
+                        },
+                    },
+                    {
+                        loader : 'svgo-loader',
+                        options: {
+                            plugins: [
+                                { removeUselessStrokeAndFill: false },
+                                { removeUnknownsAndDefaults: false },
+                            ],
+                        },
+                    },
+                ],
             },
             {
                 test: /\.scss$/,
@@ -73,9 +89,11 @@ module.exports = {
             'prop-types'        : 'prop-types',
             'deriv-shared'      : 'deriv-shared',
             'deriv-components'  : 'deriv-components',
+            'deriv-translations': 'deriv-translations',
             'formik'            : 'formik',
         },
         /^deriv-components\/.+$/,
         /^deriv-shared\/.+$/,
+        /^deriv-translations\/.+$/,
     ]
 };

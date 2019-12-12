@@ -18,7 +18,7 @@ const allowed_currency = 'USD';
 const path = {
     buy_sell: 0,
     orders  : 1,
-    my_ads  : 2,
+    // my_ads  : 2,
     // my_profile: 3,
 };
 

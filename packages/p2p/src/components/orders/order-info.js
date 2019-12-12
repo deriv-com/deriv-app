@@ -5,9 +5,9 @@ export default class OrderInfo {
     order_id = '';
     status;
     type = '';
+    advertiser_name = '';
     advertiser_notes = '';
     order_purchase_datetime = new Date();
-    counterparty = '';
     price_rate = 0;
     display_price_rate = '';
     offer_currency = ''; // The currency that is being purchased

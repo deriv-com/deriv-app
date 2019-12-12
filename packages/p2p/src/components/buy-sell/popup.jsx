@@ -13,15 +13,20 @@ import {
 import IconBack        from 'Assets/icon-back.jsx';
 import IconClose       from 'Assets/icon-close.jsx';
 import { localize }    from 'Components/i18next';
+import FormError       from '../form/error.jsx';
 
 class Popup extends Component {
-    handleSubmit = (formik_vars, { setSubmitting }) => {
+    handleSubmit = (formik_vars, { setStatus, setSubmitting }) => {
         // TODO: [p2p-fix-api] call order create api
         // eslint-disable-next-line no-console
         console.log(this.state);
         // eslint-disable-next-line no-console
         console.log(formik_vars);
+        setStatus({ msg: '' });
         setSubmitting(false);
+        if (true) {
+            setStatus({ msg: 'data.error.message' });
+        }
     }
 
     getInitialValues = (is_buy) => {
@@ -83,6 +88,7 @@ class Popup extends Component {
                             isSubmitting,
                             setFieldValue,
                             handleChange,
+                            status,
                         }) => (
                             <Form noValidate>
                                 <ThemedScrollbars
@@ -156,6 +162,7 @@ class Popup extends Component {
                                     </div>
                                 </ThemedScrollbars>
                                 <div className='buy-sell__popup-footer'>
+                                    {status && status.msg && <FormError message={status.msg} />}
                                     <Button secondary type='button' onClick={onCancel}>{localize('Cancel')}</Button>
                                     <Button is_disabled={isSubmitting} primary>{localize('Confirm')}</Button>
                                 </div>

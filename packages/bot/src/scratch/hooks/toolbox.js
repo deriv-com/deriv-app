@@ -652,13 +652,3 @@ Blockly.Toolbox.prototype.toggle = function () {
         this.removeStyle('hidden');
     }
 };
-
-/**
- * Unhighlight any previously specified option.
- */
-Blockly.Toolbox.prototype.clearSelection = function() {
-    const { flyout } = ScratchStore.instance;
-
-    this.setSelectedItem(null);
-    flyout.setVisibility(false);
-};

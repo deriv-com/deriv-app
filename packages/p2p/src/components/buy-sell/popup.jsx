@@ -14,11 +14,13 @@ import IconBack        from 'Assets/icon-back.jsx';
 import IconClose       from 'Assets/icon-close.jsx';
 import { localize }    from 'Components/i18next';
 import { MockWS }      from 'Utils/websocket';
+import FormError       from '../form/error.jsx';
 
 class Popup extends Component {
-    handleSubmit = async (values, { setSubmitting }) => {
+    handleSubmit = async (values, { setStatus, setSubmitting }) => {
         const { ad } = this.props;
-        
+        setStatus({ error_message: '' });
+
         const order = await MockWS({ p2p_order_create: 1, amount: values.send, offer_id: ad.offer_id });
 
         if (!order.error) {
@@ -27,8 +29,8 @@ class Popup extends Component {
             setSubmitting(false);
             this.props.handleClose();
         } else {
-            // TODO: [p2p-handle-error] handle error on order creation
             setSubmitting(false);
+            setStatus({ error_message: order.error.message });
         }
 
     }
@@ -103,6 +105,7 @@ class Popup extends Component {
                             isSubmitting,
                             setFieldValue,
                             handleChange,
+                            status,
                         }) => (
                             <Form noValidate>
                                 <ThemedScrollbars
@@ -172,6 +175,7 @@ class Popup extends Component {
                                     </div>
                                 </ThemedScrollbars>
                                 <div className='buy-sell__popup-footer'>
+                                    {status && status.error_message && <FormError message={status.error_message} />}
                                     <Button secondary type='button' onClick={handleClose}>{localize('Cancel')}</Button>
                                     <Button is_disabled={isSubmitting} primary>{localize('Confirm')}</Button>
                                 </div>

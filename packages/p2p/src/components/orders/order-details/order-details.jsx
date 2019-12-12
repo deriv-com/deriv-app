@@ -1,13 +1,13 @@
-import React         from 'react';
-import PropTypes     from 'prop-types';
+import React                  from 'react';
+import PropTypes              from 'prop-types';
 import {
     Button,
-    Dialog }         from 'deriv-components';
-import { MockWS }    from 'Utils/websocket';
-import FooterActions from 'Components/footer-actions/footer-actions.jsx';
-import { localize }  from 'Components/i18next';
-import Popup         from '../popup.jsx';
-import                    './order-details.scss';
+    Dialog }                  from 'deriv-components';
+import { MockWS }             from 'Utils/websocket';
+import FooterActions          from 'Components/footer-actions/footer-actions.jsx';
+import { localize, Localize } from 'Components/i18next';
+import Popup                  from '../popup.jsx';
+import './order-details.scss';
 
 const OrderInfoBlock = ({ label, value }) => (
     <div className='order-details__info-block'>
@@ -50,8 +50,11 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
             { is_expired &&
                 localize('Cancelled due to timeout')
             }
-            { is_refunded &&
-                localize('Refunded') // TODO: [p2p-needs-design] needs design and copywriting
+            { is_refunded && is_buyer &&
+                localize('You have been refunded')
+            }
+            { is_refunded && !is_buyer &&
+                localize('Buyer has been refunded')
             }
             { is_buyer_confirmed && is_buyer &&
                 localize('Wait for release')
@@ -307,7 +310,13 @@ const OrderDetails = ({
                         <React.Fragment>
                             <div className='deriv-p2p__separator' />
                             <div className='order-details__footer'>
-                                <a className='link' rel='noopener noreferrer' target='_blank' href='mailto:support@deriv.com'>{ localize('Complain') }</a>
+                                <p>
+                                    <Localize
+                                        i18n_default_text='If you have a complaint, please email <0>{{support_email}}</0> and include your order ID.'
+                                        values={{ support_email: 'support@deriv.com' }}
+                                        components={[ <a key={0} className='link' rel='noopener noreferrer' target='_blank' href='mailto:support@deriv.com' /> ]}
+                                    />
+                                </p>
                             </div>
                         </React.Fragment>
                     }

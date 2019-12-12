@@ -176,7 +176,7 @@ class AccountSwitcher extends React.Component {
     };
 
     redirectToMt5Real = () => {
-        if (this.props.can_upgrade_to === 'svg' || this.props.landing_company_shortcode === 'svg') {
+        if (!this.props.is_logged_in || this.props.is_mt5_allowed) {
             this.redirectToMt5('real');
         } else {
             window.open(urlFor('user/metatrader', undefined, undefined, true));

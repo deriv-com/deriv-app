@@ -1,5 +1,6 @@
 import React                     from 'react';
 import PropTypes                 from 'prop-types';
+import AutoSizer                 from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List } from 'react-window';
 import InfiniteLoader            from 'react-window-infinite-loader';
 
@@ -13,8 +14,7 @@ export const InfiniteLoaderList = ({
     item_size,
     RenderComponent,
     RowLoader,
-    height,
-    width,
+    height: initial_height,
 }) => {
     const RowRenderer = ({ index, style }) => {
         const is_loading = index === items.length;
@@ -22,7 +22,7 @@ export const InfiniteLoaderList = ({
         if (is_loading) {
             return (
                 <div style={style}>
-                    <RowLoader width={width} />
+                    <RowLoader />
                 </div>
             );
         }
@@ -43,16 +43,20 @@ export const InfiniteLoaderList = ({
             loadMoreItems={loadMore}
         >
             {({ onItemsRendered, ref }) => (
-                <List
-                    height={height || 452}
-                    width={width || 960}
-                    itemCount={item_count}
-                    itemSize={item_size || 56}
-                    onItemsRendered={onItemsRendered}
-                    ref={ref}
-                >
-                    {RowRenderer}
-                </List>
+                <AutoSizer style={{ height: (initial_height || 600) }}>
+                    {({ height, width }) => (
+                        <List
+                            height={height}
+                            width={width}
+                            itemCount={item_count}
+                            itemSize={item_size || 56}
+                            onItemsRendered={onItemsRendered}
+                            ref={ref}
+                        >
+                            {RowRenderer}
+                        </List>
+                    )}
+                </AutoSizer>
             )}
         </InfiniteLoader>
     );
@@ -68,5 +72,4 @@ InfiniteLoaderList.propTypes = {
     loadMore              : PropTypes.func,
     RenderComponent       : PropTypes.any,
     RowLoader             : PropTypes.any.isRequired,
-    width                 : PropTypes.number,
 };

@@ -13,9 +13,9 @@ export class BuyTable extends React.Component {
     is_mounted = false;
 
     state = {
-        api_error : '',
-        items     : null,
-        is_loading: true,
+        api_error_message: '',
+        items            : null,
+        is_loading       : true,
     };
 
     componentDidMount() {
@@ -26,7 +26,7 @@ export class BuyTable extends React.Component {
                 if (!response.error) {
                     this.setState({ items: response, is_loading: false });
                 } else {
-                    this.setState({ is_loading: false, api_error: response.error.message });
+                    this.setState({ is_loading: false, api_error_message: response.error.message });
                 }
             }
         });
@@ -37,14 +37,14 @@ export class BuyTable extends React.Component {
     }
 
     render() {
-        const { api_error, is_loading, items } = this.state;
+        const { api_error_message, is_loading, items } = this.state;
         const { setSelectedAd } = this.props;
 
         const Row = props => <RowComponent {...props} is_buy setSelectedAd={setSelectedAd} />;
 
         if (is_loading) return <Loading is_fullscreen={false} />;
 
-        if (api_error) return <TableError message={api_error} />;
+        if (api_error_message) return <TableError message={api_error_message} />;
 
         return (
             <InfiniteLoaderList

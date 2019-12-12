@@ -22,7 +22,7 @@ const LastDigitPointer = ({
                     'digits__icon--loss': is_lost && !is_trade_page,
                 })}
                 color={is_won ? 'green' : 'red'}
-                customColor={!(is_won || is_lost) ? 'var(--brand-orange)' : undefined}
+                custom_color={!(is_won || is_lost) ? 'var(--brand-orange)' : undefined}
             />
         </span>
         }

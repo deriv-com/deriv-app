@@ -62,8 +62,8 @@ stories
                                                             'brand'    : 'brand',
                                                         })
                                                     }
-                                                    customColor={
-                                                        color('customColor', undefined)
+                                                    custom_color={
+                                                        color('custom_color', undefined)
                                                     }
                                                     size={
                                                         number('size', 36, {

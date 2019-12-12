@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
 
+// TODO: [move-to-shared]
 const getUrlBase = (path = '') => {
     const l = window.location;
 
@@ -10,6 +11,7 @@ const getUrlBase = (path = '') => {
     return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
 };
 
+// TODO: [move-to-shared]
 const getKebabCase = (str) => {
     if (!str) return str;
     return str
@@ -21,7 +23,7 @@ const getKebabCase = (str) => {
 const Icon = ({
     className,
     color,
-    customColor,
+    custom_color,
     height,
     icon,
     onClick,
@@ -57,8 +59,8 @@ const Icon = ({
             onClick={onClick}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            style={customColor ? {
-                '--fill-color1': customColor,
+            style={custom_color ? {
+                '--fill-color1': custom_color,
             } : undefined}
         >
             <use xlinkHref={`${(getUrlBase(`/public/sprite/${filename}.svg`))}#${id}`} />
@@ -75,8 +77,8 @@ Icon.propTypes = {
         PropTypes.bool,
         PropTypes.string,
     ]),
-    customColor: PropTypes.string,
-    height     : PropTypes.oneOfType([
+    custom_color: PropTypes.string,
+    height      : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),

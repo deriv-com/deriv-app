@@ -28,7 +28,7 @@
 | height | `number | string` | `16` | Sets the height of the icon
 | width  | `number | string` | `16` | Sets the width of the icon
 | color  | `'active' |` `'disabled' |` `'secondary' |` `'red' |` `'green' |` `'brand' `| primary fill color: ```var(--text-general)```  <br/> secondary fill color: ```var(--text-less-prominent)``` <br/>tertiary fill color: ```var(--general-section-1)```| Sets the icon color with our current theme colors palette
-| customColor | `string (hex color or CSS variable)` | - | Sets the icon custom color (on the primary fill color only)
+| custom_color | `string (hex color or CSS variable)` | - | Sets the icon custom color (on the primary fill color only)
 | onClick | `function` | - | Adds onClick event handler
 | onMouseEnter | `function` | - | Adds onMouseEnter event handler
 | onMouseLeave | `function` | - | Adds onMouseLeave event handler
@@ -44,7 +44,7 @@ const App = () => (
         <Icon icon='IcBell' height={32} width={48} /> // icon with different width and height
         <Icon icon='IcBell' size={128} />   // icon with the same width and height
         <Icon icon='IcBell' color='active' />
-        <Icon icon='IcBell' customColor='#dedede' />
+        <Icon icon='IcBell' custom_color='#dedede' />
     </>
 );
 ```

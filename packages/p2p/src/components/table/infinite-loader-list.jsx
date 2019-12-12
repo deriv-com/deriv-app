@@ -14,8 +14,8 @@ export const InfiniteLoaderList = ({
     item_size,
     RenderComponent,
     RowLoader,
-    height,
-    width
+    height: initial_height,
+    width: initial_width,
 }) => {
     const RowRenderer = ({ index, style }) => {
         const is_loading = index === items.length;
@@ -23,7 +23,7 @@ export const InfiniteLoaderList = ({
         if (is_loading) {
             return (
                 <div style={style}>
-                    <RowLoader width={width} />
+                    <RowLoader width={initial_width} />
                 </div>
             );
         }
@@ -44,7 +44,7 @@ export const InfiniteLoaderList = ({
             loadMoreItems={loadMore}
         >
             {({ onItemsRendered, ref }) => (
-                <AutoSizer style={{ height: (height || 600) }}>
+                <AutoSizer style={{ height: (initial_height || 600) }}>
                     {({ height, width }) => (
                         <List
                             height={height}

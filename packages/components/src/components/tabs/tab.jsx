@@ -1,6 +1,7 @@
 import classNames           from 'classnames';
 import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
+import Counter              from '../counter';
 
 class Tab extends Component {
     onClick = () => {
@@ -10,6 +11,7 @@ class Tab extends Component {
 
     render() {
         const {
+            count,
             is_active,
             label,
         } = this.props;
@@ -22,6 +24,12 @@ class Tab extends Component {
                 onClick={this.onClick}
             >
                 {label}
+                {!!count &&
+                    <Counter
+                        className='dc-tabs__item__counter'
+                        count={count}
+                    />
+                }
             </li>
         );
     }
@@ -29,6 +37,7 @@ class Tab extends Component {
 
 Tab.propTypes = {
     className: PropTypes.string,
+    count    : PropTypes.number,
     is_active: PropTypes.bool,
     label    : PropTypes.string,
     onClick  : PropTypes.func,

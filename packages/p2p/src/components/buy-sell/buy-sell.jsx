@@ -47,16 +47,17 @@ class BuySell extends Component {
 
         return (
             <div className='buy-sell'>
-                <div className='buy-sell__header'>
-                    <ButtonToggle
-                        buttons_arr={buy_sell_filters}
-                        className='buy-sell__header__filters'
-                        is_animated
-                        name='filter'
-                        onChange={this.onChangeTableType}
-                        value={table_type}
-                    />
-                </div>
+                {/* TODO [p2p-uncomment] uncomment this when sell is ready */}
+                {/* <div className='buy-sell__header'> */}
+                {/*    <ButtonToggle */}
+                {/*        buttons_arr={buy_sell_filters} */}
+                {/*        className='buy-sell__header__filters' */}
+                {/*        is_animated */}
+                {/*        name='filter' */}
+                {/*        onChange={this.onChangeTableType} */}
+                {/*        value={table_type} */}
+                {/*    /> */}
+                {/* </div> */}
                 <BuySellTable
                     table_type={table_type}
                     setSelectedAd={this.setSelectedAd}

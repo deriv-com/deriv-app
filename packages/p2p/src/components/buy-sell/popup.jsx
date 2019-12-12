@@ -19,7 +19,7 @@ import FormError       from '../form/error.jsx';
 class Popup extends Component {
     handleSubmit = async (values, { setStatus, setSubmitting }) => {
         const { ad } = this.props;
-        setStatus({ msg: '' });
+        setStatus({ error_message: '' });
 
         const order = await MockWS({ p2p_order_create: 1, amount: values.send, offer_id: ad.offer_id });
 
@@ -30,7 +30,7 @@ class Popup extends Component {
             this.props.handleClose();
         } else {
             setSubmitting(false);
-            setStatus({ msg: order.error });
+            setStatus({ error_message: order.error.message });
         }
 
     }
@@ -175,7 +175,7 @@ class Popup extends Component {
                                     </div>
                                 </ThemedScrollbars>
                                 <div className='buy-sell__popup-footer'>
-                                    {status && status.msg && <FormError message={status.msg} />}
+                                    {status && status.error_message && <FormError message={status.error_message} />}
                                     <Button secondary type='button' onClick={handleClose}>{localize('Cancel')}</Button>
                                     <Button is_disabled={isSubmitting} primary>{localize('Confirm')}</Button>
                                 </div>

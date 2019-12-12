@@ -112,26 +112,31 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     let buttons_to_render = null;
 
     const cancelOrder = () => {
-        const cancel = async () => {
+        const cancel = async (setFormStatus) => {
+            setFormStatus({ error_message: '' });
             const cancel_response = await MockWS({ p2p_order_cancel: 1, order_id });
 
             if (!cancel_response.error) {
                 // TODO: [p2p-replace-with-api] remove this line when api update the status
                 setStatus('cancelled');
                 cancelPopup();
+            } else {
+                setFormStatus({ error_message: cancel_response.error.message });
             }
         };
         const options = {
             title         : localize('Cancel this order?'),
             message       : localize('There will be no refund after canceling the order. If you have paid, please do not cancel the order.'),
             confirm_text  : localize('Cancel this order'),
-            onClickConfirm: cancel,
+            onClickConfirm: (setFormStatus) => cancel(setFormStatus),
         };
         showPopup(options);
     };
 
     const paidOrder = () => {
-        const payOrder = async () => {
+        const payOrder = async (setFormStatus) => {
+            setFormStatus({ error_message: '' });
+
             const update_response = await MockWS({
                 p2p_order_confirm: 1,
                 order_id,
@@ -140,6 +145,8 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                 // TODO: [p2p-replace-with-api] remove this line when api update the status
                 setStatus('client-confirmed');
                 cancelPopup();
+            } else {
+                setFormStatus({ error_message: update_response.error.message });
             }
         };
         const options = {
@@ -148,13 +155,15 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             has_cancel    : true,
             cancel_text   : localize('I didn\'t pay yet'),
             confirm_text  : localize('I\'ve paid'),
-            onClickConfirm: payOrder,
+            onClickConfirm: (setFormStatus) => payOrder(setFormStatus),
         };
         showPopup(options);
     };
 
     const receivedFunds = () => {
-        const receive = async () => {
+        const receive = async (setFormStatus) => {
+            setFormStatus({ error_message: '' });
+
             const update_response = await MockWS({
                 p2p_order_confirm: 1,
                 order_id,
@@ -163,6 +172,8 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                 // TODO: [p2p-replace-with-api] remove this line when api update the status
                 setStatus('agent-confirmed');
                 cancelPopup();
+            } else {
+                setFormStatus({ error_message: update_response.error.message });
             }
         };
         const options = {
@@ -176,7 +187,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                 fix_price: price_rate,
                 amount   : offer_amount,
             },
-            onClickConfirm: receive,
+            onClickConfirm: (setFormStatus) => receive(setFormStatus),
         };
         showPopup(options);
     };

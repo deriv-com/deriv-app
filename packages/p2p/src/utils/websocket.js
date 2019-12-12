@@ -58,10 +58,10 @@ const getModifiedP2POfferList = (response) => {
         // type: "buy"
 
         // TODO: add formatMoney function and create display variables for each price field
-        modified_response[i].offer_currency          = response.list[i].offer_currency;
+        modified_response[i].offer_currency          = response.list[i].account_currency;
         modified_response[i].advertiser_id           = response.list[i].agent_id;
-        modified_response[i].offer_amount            = +response.list[i].amount;
-        modified_response[i].display_offer_amount    = formatMoney(response.list[i].offer_currency, response.list[i].amount);
+        modified_response[i].offer_amount            = +response.list[i].max_amount;
+        modified_response[i].display_offer_amount    = formatMoney(response.list[i].offer_currency, response.list[i].max_amount);
         modified_response[i].advertiser_note         = response.list[i].description;
         modified_response[i].offer_id                = response.list[i].id;
         modified_response[i].transaction_currency    = response.list[i].transaction_currency;
@@ -75,8 +75,8 @@ const getModifiedP2POfferList = (response) => {
         modified_response[i].advertiser           = response.list[i].agent_loginid;
 
         // TOOD: [p2p-api-request] API should give us the allowed decimal places of local currency
-        modified_response[i].transaction_currency_decimals =
-            (((response.list[i].price.toString().split('.') || [])[1]) || []).length;
+        modified_response[i].transaction_currency_decimals = 2;
+        // (((response.list[i].price.toString().split('.') || [])[1]) || []).length;
 
         modified_response[i].offer_currency_decimals =
             ObjectUtils.getPropertyValue(initial_responses, [
@@ -133,11 +133,11 @@ const getModifiedP2POrderList = (response) => {
 };
 
 export const WS = async (request) => {
-    let modified_response;
-
     await populateInitialResponses();
 
     const response = await ws.send(request);
+
+    let modified_response = response;
 
     if (response.p2p_offer_list) {
         // TODO: [p2p-replace-with-api] call the API here and assign the real response

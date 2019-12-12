@@ -197,16 +197,17 @@ class Popup extends Component {
             send_decimals,
         } = this.getInitialValues(is_buy);
 
+        // TODO: uncomment decimal places validation
         const validations = {
             send: [
                 v => !!v,
                 v => v >= initial_send,
-                v => (((v.toString().split('.') || [])[1]) || []).length <= send_decimals,
+                // v => (((v.toString().split('.') || [])[1]) || []).length <= send_decimals,
             ],
             receive: [
                 v => !!v,
                 v => v >= initial_receive,
-                v => (((v.toString().split('.') || [])[1]) || []).length <= receive_decimals,
+                // v => (((v.toString().split('.') || [])[1]) || []).length <= receive_decimals,
             ],
         };
 

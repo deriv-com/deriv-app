@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
-import {
-    Dialog,
-    ButtonToggle }          from 'deriv-components';
-import { localize }         from 'Components/i18next';
+import { Dialog }           from 'deriv-components';
 import { BuySellTable }     from './buy-sell-table.jsx';
 import Popup                from './popup.jsx';
 import                           './buy-sell.scss';
 
-const buy_sell_filters = [
-    {
-        text : localize('Buy'),
-        value: 'buy',
-    },
-    {
-        text : localize('Sell'),
-        value: 'sell',
-    },
-];
+/* TODO [p2p-uncomment] uncomment this when sell is ready */
+// const buy_sell_filters = [
+//     {
+//         text : localize('Buy'),
+//         value: 'buy',
+//     },
+//     {
+//         text : localize('Sell'),
+//         value: 'sell',
+//     },
+// ];
 
 class BuySell extends Component {
     state = {
@@ -38,21 +36,26 @@ class BuySell extends Component {
         this.setState({ table_type: event.target.value });
     }
 
+    onConfirmClick = (order_info) => {
+        this.props.navigate('orders', { order_info });
+    }
+
     render() {
         const { table_type, selected_ad, show_popup } = this.state;
 
         return (
             <div className='buy-sell'>
-                <div className='buy-sell__header'>
-                    <ButtonToggle
-                        buttons_arr={buy_sell_filters}
-                        className='buy-sell__header__filters'
-                        is_animated
-                        name='filter'
-                        onChange={this.onChangeTableType}
-                        value={table_type}
-                    />
-                </div>
+                {/* TODO [p2p-uncomment] uncomment this when sell is ready */}
+                {/* <div className='buy-sell__header'> */}
+                {/*    <ButtonToggle */}
+                {/*        buttons_arr={buy_sell_filters} */}
+                {/*        className='buy-sell__header__filters' */}
+                {/*        is_animated */}
+                {/*        name='filter' */}
+                {/*        onChange={this.onChangeTableType} */}
+                {/*        value={table_type} */}
+                {/*    /> */}
+                {/* </div> */}
                 <BuySellTable
                     table_type={table_type}
                     setSelectedAd={this.setSelectedAd}
@@ -64,7 +67,11 @@ class BuySell extends Component {
                 {show_popup && (
                     <div className='buy-sell__dialog'>
                         <Dialog is_visible={show_popup}>
-                            <Popup ad={selected_ad} onCancel={this.onCancelClick} />
+                            <Popup
+                                ad={selected_ad}
+                                handleClose={this.onCancelClick}
+                                handleConfirm={this.onConfirmClick}
+                            />
                         </Dialog>
                     </div>
                 )}
@@ -74,7 +81,8 @@ class BuySell extends Component {
 }
 
 BuySell.propTypes = {
-    disableApp: PropTypes.func,
+    navigate: PropTypes.func,
+    params  : PropTypes.object,
 };
 
 export default BuySell;

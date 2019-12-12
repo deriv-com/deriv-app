@@ -36,7 +36,7 @@ class Popup extends Component {
     getInitialValues = (is_buy) => {
         const { ad } = this.props;
 
-        const amount_asset = +(ad.min_transaction / ad.price).toFixed(ad.transaction_currency_decimals);
+        const amount_asset = +((ad.min_transaction / ad.price).toFixed(ad.transaction_currency_decimals));
 
         const buy_initial_values = {
             initial_receive : amount_asset,
@@ -61,17 +61,17 @@ class Popup extends Component {
     calculateReceiveAmount = (send_amount, is_buy) => {
         const { ad } = this.props;
         return is_buy ?
-            +(send_amount / ad.price).toFixed(ad.transaction_currency_decimals)
+            +((send_amount / ad.price).toFixed(ad.transaction_currency_decimals))
             :
-            +(send_amount * ad.price).toFixed(ad.transaction_currency_decimals);
+            +((send_amount * ad.price).toFixed(ad.transaction_currency_decimals));
     };
 
     calculateSendAmount = (receive_amount, is_buy) => {
         const { ad } = this.props;
         return is_buy ?
-            +(receive_amount * ad.price).toFixed(ad.transaction_currency_decimals)
+            +((receive_amount * ad.price).toFixed(ad.transaction_currency_decimals))
             :
-            +(receive_amount / ad.price).toFixed(ad.transaction_currency_decimals);
+            +((receive_amount / ad.price).toFixed(ad.transaction_currency_decimals));
     };
 
     render() {

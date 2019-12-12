@@ -71,7 +71,6 @@ const SocketCache = (() => {
 
         if ((has_error_or_missing || has_new_value || has_old_cache) && has_valid_cache) {
             clear();
-            // window.location.reload();
             return;
         }
 

@@ -89,6 +89,8 @@ class App extends Component {
 }
 
 App.propTypes = {
+    currency     : PropTypes.string,
+    is_virtual   : PropTypes.string,
     lang         : PropTypes.string,
     websocket_api: PropTypes.object,
 };

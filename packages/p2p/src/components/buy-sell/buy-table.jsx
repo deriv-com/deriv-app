@@ -2,7 +2,6 @@ import React                  from 'react';
 import PropTypes              from 'prop-types';
 import { Loading }            from 'deriv-components';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
-import { TableDimensions }    from 'Components/table/table-dimensions.jsx';
 import { TableError }         from 'Components/table/table-error.jsx';
 import { MockWS }             from 'Utils/websocket';
 import {
@@ -48,17 +47,11 @@ export class BuyTable extends React.Component {
         if (api_error) return <TableError message={api_error} />;
 
         return (
-            <TableDimensions>
-                {dimensions =>
-                    <InfiniteLoaderList
-                        items={items}
-                        RenderComponent={Row}
-                        RowLoader={BuySellRowLoader}
-                        width={dimensions.width}
-                        height={dimensions.height}
-                    />
-                }
-            </TableDimensions>
+            <InfiniteLoaderList
+                items={items}
+                RenderComponent={Row}
+                RowLoader={BuySellRowLoader}
+            />
         );
     }
 }

@@ -68,7 +68,7 @@ class BuySell extends Component {
                 {show_popup && (
                     <div className='buy-sell__dialog'>
                         <Dialog is_visible={show_popup}>
-                            <Popup ad={selected_ad} onCancel={this.onCancelClick} onConfirm={this.onConfirmClick}  />
+                            <Popup ad={selected_ad} handleClose={this.onCancelClick} handleConfirm={this.onConfirmClick}  />
                         </Dialog>
                     </div>
                 )}

@@ -23,9 +23,9 @@ class Popup extends Component {
 
         if (!order.error) {
             const order_info = await MockWS({ p2p_order_info: 1, order_id: order.order_id });
-            this.props.onConfirm(order_info);
+            this.props.handleConfirm(order_info);
             setSubmitting(false);
-            this.props.onCancel();
+            this.props.handleClose();
         } else {
             // TODO: [p2p-handle-error] handle error on order creation
             setSubmitting(false);
@@ -75,7 +75,7 @@ class Popup extends Component {
     };
 
     render() {
-        const { ad, onCancel } = this.props;
+        const { ad, handleClose } = this.props;
         const is_buy = ad.type === 'buy';
         const {
             initial_send,
@@ -90,7 +90,7 @@ class Popup extends Component {
                     <div className='buy-sell__popup-header'>
                         <div className='buy-sell__popup-header_wrapper'>
                             <h2 className='buy-sell__popup-header--title'>{`${ad.type} ${ad.offer_currency}`}</h2>
-                            <IconClose className='buy-sell__popup-close_icon' onClick={onCancel} />
+                            <IconClose className='buy-sell__popup-close_icon' onClick={handleClose} />
                         </div>
                     </div>
                     <Formik
@@ -172,7 +172,7 @@ class Popup extends Component {
                                     </div>
                                 </ThemedScrollbars>
                                 <div className='buy-sell__popup-footer'>
-                                    <Button secondary type='button' onClick={onCancel}>{localize('Cancel')}</Button>
+                                    <Button secondary type='button' onClick={handleClose}>{localize('Cancel')}</Button>
                                     <Button is_disabled={isSubmitting} primary>{localize('Confirm')}</Button>
                                 </div>
                             </Form>
@@ -242,8 +242,8 @@ class Popup extends Component {
 
 Popup.propTypes = {
     ad       : PropTypes.object,
-    onCancel : PropTypes.func,
-    onConfirm: PropTypes.func,
+    handleClose : PropTypes.func,
+    handleConfirm: PropTypes.func,
 };
 
 export default Popup;

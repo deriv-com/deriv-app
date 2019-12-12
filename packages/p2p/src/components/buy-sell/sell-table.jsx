@@ -14,10 +14,10 @@ export class SellTable extends React.Component {
 
     state = {
         api_error_message     : '',
-        items                 : null,
-        is_loading_more_items : false,
         has_more_items_to_load: true,
         is_loading            : true,
+        is_loading_more_items : false,
+        items                 : null,
     };
 
     componentDidMount() {

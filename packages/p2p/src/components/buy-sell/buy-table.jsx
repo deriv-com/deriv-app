@@ -14,8 +14,8 @@ export class BuyTable extends React.Component {
 
     state = {
         api_error_message: '',
-        items            : null,
         is_loading       : true,
+        items            : null,
     };
 
     componentDidMount() {

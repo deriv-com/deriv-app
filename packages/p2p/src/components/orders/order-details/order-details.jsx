@@ -128,7 +128,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             title         : localize('Cancel this order?'),
             message       : localize('There will be no refund after canceling the order. If you have paid, please do not cancel the order.'),
             confirm_text  : localize('Cancel this order'),
-            onClickConfirm: (setFormStatus) => cancel(setFormStatus),
+            onClickConfirm: cancel,
         };
         showPopup(options);
     };
@@ -155,7 +155,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             has_cancel    : true,
             cancel_text   : localize('I didn\'t pay yet'),
             confirm_text  : localize('I\'ve paid'),
-            onClickConfirm: (setFormStatus) => payOrder(setFormStatus),
+            onClickConfirm: payOrder,
         };
         showPopup(options);
     };
@@ -187,7 +187,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                 fix_price: price_rate,
                 amount   : offer_amount,
             },
-            onClickConfirm: (setFormStatus) => receive(setFormStatus),
+            onClickConfirm: receive,
         };
         showPopup(options);
     };

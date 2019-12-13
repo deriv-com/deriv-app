@@ -84,7 +84,7 @@ const getModifiedP2POrder = (response) => {
     modified_response.transaction_currency       = response.local_currency;
     modified_response.transaction_amount         = +response.transaction_amount;
     modified_response.display_transaction_amount = formatMoney(response.local_currency, response.transaction_amount);
-    modified_response.remaining_time             = 60 * 60 * 1000;
+    modified_response.remaining_time             = 60 * 60 * 1000; // initial value is one hour
 
     return modified_response;
 };

@@ -8,7 +8,7 @@ import { SellTable } from './sell-table.jsx';
 export const BuySellTable = ({ table_type, setSelectedAd }) => {
 
     const is_buy = table_type === 'buy';
-    const [offer_currency, setOfferCurrency] = React.useState([]);
+    const [offer_currency, setOfferCurrency] = React.useState('');
 
     return (
         <Table>

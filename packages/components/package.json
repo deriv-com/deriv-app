@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "deriv components",
   "main": "lib/index.js",
+  "private": true,
   "jest": {
     "modulePaths": [
       "<rootDir>"

@@ -16,3 +16,11 @@
         border-top: 1px solid var(--general-section-1);
     }
 }
+
+.p2p-not-allowed {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+}

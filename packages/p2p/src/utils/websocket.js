@@ -24,7 +24,7 @@ const populateInitialResponses = async () => {
         setCurrenciesConfig(initial_responses.website_status);
 
         const agent_info = await ws.send({ p2p_agent_info: 1 });
-        if (!agent_info.p2p_agent_info.error) {
+        if (!agent_info.error) {
             is_agent = true;
         }
     }
@@ -126,16 +126,6 @@ export const WS = async (request) => {
     }
     if (response.p2p_order_info) {
         modified_response = getModifiedP2POrder(response.p2p_order_info);
-    }
-    if (response.p2p_order_cancel) {
-        modified_response = {
-            p2p_order_cancel: 1,
-        };
-    }
-    if (response.p2p_order_confirm) {
-        modified_response = {
-            p2p_order_confirm: 1,
-        };
     }
 
     return modified_response;

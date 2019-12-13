@@ -16,7 +16,7 @@
   "scripts": {
     "start": "npm run test && npm run serve",
     "serve": "echo \"Serving...\" && webpack --progress --watch",
-    "build": "f () { webpack --optimize-minimize --progress --env.base $1 ;}; f",
+    "build": "webpack --optimize-minimize --progress",
     "build:travis": "echo \"No build:travis specified\"",
     "test": "npm run test:eslint && npm run test:mocha",
     "test:mocha": "jest --w=4 --coverage",

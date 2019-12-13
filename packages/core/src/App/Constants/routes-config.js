@@ -41,7 +41,7 @@ const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404
 const Trader = lazy(() => {
     const el_head = document.querySelector('head');
     const el_main_css = document.createElement('link');
-    el_main_css.href = getUrlBase('/css/trader.main.css');
+    el_main_css.href = '/css/trader.main.css';
     el_main_css.rel = 'stylesheet';
     el_main_css.type = 'text/css';
     el_head.appendChild(el_main_css);
@@ -52,7 +52,7 @@ const Trader = lazy(() => {
 const Bot = lazy(() => {
     const el_head = document.querySelector('head');
     const el_scratch_js = document.createElement('script');
-    el_scratch_js.src = getUrlBase('/js/bot/scratch.min.js');
+    el_scratch_js.src = '/js/bot/scratch.min.js';
     el_head.appendChild(el_scratch_js);
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "bot" */ 'deriv-bot');

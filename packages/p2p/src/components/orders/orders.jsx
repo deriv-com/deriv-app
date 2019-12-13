@@ -1,22 +1,29 @@
 import React        from 'react';
+import { localize } from 'Components/i18next';
 import PageReturn   from 'Components/page-return/page-return.jsx';
 import OrderDetails from './order-details/order-details.jsx';
 import OrderInfo    from './order-info';
-import { localize } from '../i18next';
-import                   './orders.scss';
+import OrderTable   from './order-table/order-table.jsx';
+import './orders.scss';
 
-const Orders = () => {
-    const order_info = new OrderInfo();
-    const [order_details, setDetails] = React.useState(order_info);
-    // TODO: [p2p-replace-with-api] - remove these dev toggle once data fetch works
-    const toggleDetails = () => order_details && order_details.order_id ? setDetails(null) : setDetails(order_info);
+const Orders = ({ params }) => {
+    const [order_details, setDetails] = React.useState(null);
+    const showDetails = setDetails;
+    const hideDetails = () => setDetails(null);
+
+    React.useEffect(() => {
+        if (params && params.order_info) {
+            const order_info = new OrderInfo(params.order_info);
+            setDetails(order_info);
+        }
+    }, []);
 
     return (
         <div className='orders'>
-            { order_details && order_details.order_id &&
+            { order_details &&
                 <React.Fragment>
                     <PageReturn
-                        onClick={ toggleDetails }
+                        onClick={ hideDetails }
                         page_title={
                             order_details.is_buyer ?
                                 localize('Buy {{offered_currency}} order', { offered_currency: order_details.offer_currency })
@@ -28,6 +35,11 @@ const Orders = () => {
                         order_details={ order_details }
                     />
                 </React.Fragment>
+            }
+            { !order_details &&
+                <OrderTable
+                    showDetails={ showDetails }
+                />
             }
         </div>
     );

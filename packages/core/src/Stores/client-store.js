@@ -333,7 +333,16 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_mt5_allowed() {
         if (!this.landing_companies) return false;
-        return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
+        // TODO revert this when all landing companies are accepted.
+        // return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
+        if ('mt_financial_company' in this.landing_companies ||  'mt_gaming_company' in this.landing_companies) {
+            const { gaming_company, financial_company } = this.landing_companies;
+            // eslint-disable-next-line no-nested-ternary
+            return gaming_company ? gaming_company.shortcode === 'svg' :
+                financial_company ? financial_company.shortcode === 'svg' : false;
+        }
+
+        return false;
     }
 
     /**

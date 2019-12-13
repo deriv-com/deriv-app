@@ -17,10 +17,11 @@ module.exports = {
     },
     resolve: {
         alias: {
-            Assets    : path.resolve(__dirname, 'src/assets'),
-            Components: path.resolve(__dirname, 'src/components'),
-            Utils     : path.resolve(__dirname, 'src/utils'),
-        }
+            Assets      : path.resolve(__dirname, 'src/assets'),
+            Components  : path.resolve(__dirname, 'src/components'),
+            Translations: path.resolve(__dirname, 'src/translations'),
+            Utils       : path.resolve(__dirname, 'src/utils'),
+        },
     },
     module : {
         rules: [
@@ -30,9 +31,6 @@ module.exports = {
                 exclude: /node_modules/,
                 include: /src/,
                 loader : 'eslint-loader',
-                options: {
-                    fix: true,
-                },
             } : {}),
             {
                 test   : /\.(js|jsx)$/,
@@ -45,27 +43,6 @@ module.exports = {
                         loader : 'babel-loader',
                     },
                 ]
-            },
-            {
-                test: /\.svg$/,
-                use : [
-                    {
-                        loader : 'svg-sprite-loader',
-                        options: {
-                            extract       : true,
-                            spriteFilename: 'p2p-sprite.svg',
-                        },
-                    },
-                    {
-                        loader : 'svgo-loader',
-                        options: {
-                            plugins: [
-                                { removeUselessStrokeAndFill: false },
-                                { removeUnknownsAndDefaults: false },
-                            ],
-                        },
-                    },
-                ],
             },
             {
                 test: /\.scss$/,

@@ -48,9 +48,7 @@
         &:not(.dc-tabs__active) {
             cursor: pointer;
             color: var(--text-general);
-
         }
-
     }
     &__active {
         font-weight: 700;

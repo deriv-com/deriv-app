@@ -25,11 +25,13 @@ class Tabs extends Component {
     }
 
     render() {
-        const { children,
+        const { 
+            children,
             className,
             top,
             bottom,
-            fit_content }      = this.props;
+            fit_content 
+        } = this.props;
         const { active_index } = this.state;
         const tab_width        = (100 / children.length).toFixed(2);
 
@@ -39,7 +41,7 @@ class Tabs extends Component {
                 style={{ '--tab-width': `${tab_width}%` }}
             >
                 <ul className={
-                    classNames('dc-tabs__list' , {
+                    classNames('dc-tabs__list', {
                         'dc-tabs__list--top'        : top,
                         'dc-tabs__list--bottom'     : bottom,
                         'dc-tabs__list--fit-content': fit_content,
@@ -61,7 +63,7 @@ class Tabs extends Component {
                         );
                     })}
                     <span className={
-                        classNames('dc-tabs__active-line' , {
+                        classNames('dc-tabs__active-line', {
                             'dc-tabs__active-line--top'        : top,
                             'dc-tabs__active-line--bottom'     : bottom,
                             'dc-tabs__active-line--fit-content': fit_content,

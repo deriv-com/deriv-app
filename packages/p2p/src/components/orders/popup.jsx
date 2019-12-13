@@ -8,16 +8,25 @@ import {
     Checkbox,
     Button,
     ThemedScrollbars }      from 'deriv-components';
+import FormError            from '../form/error.jsx';
 import IconClose            from '../../assets/icon-close.jsx';
 import { localize }         from '../i18next';
 
 class Popup extends Component {
-    handleSubmit = (values, { setSubmitting }) => {
+    state = {
+        api_error_message: '',
+    }
+
+    handleSubmit = (values, { setStatus, setSubmitting }) => {
         // TODO [p2p-remove-console] this console is to avoid unused variable eslint linter
         // eslint-disable-next-line no-console
         console.log(values);
-        this.props.onClickConfirm();
+        this.props.onClickConfirm(setStatus);
         setSubmitting(false);
+    }
+
+    setApiError = ({ error_message: api_error_message }) => {
+        this.setState({ api_error_message });
     }
 
     render() {
@@ -32,6 +41,7 @@ class Popup extends Component {
             onCancel,
             title,
         } = this.props;
+        const { api_error_message } = this.state;
 
         return (
             <>
@@ -52,7 +62,7 @@ class Popup extends Component {
                             }}
                             onSubmit={this.handleSubmit}
                         >
-                            {({ isSubmitting, setFieldValue, values }) => (
+                            {({ isSubmitting, setFieldValue, values, status }) => (
                                 <Form noValidate>
                                     <ThemedScrollbars autoHide style={{ height: '124px' }}>
                                         <div className='orders__popup-content'>
@@ -83,6 +93,7 @@ class Popup extends Component {
                                         </div>
                                     </ThemedScrollbars>
                                     <div className='orders__popup-footer'>
+                                        {status && status.error_message && <FormError message={status.error_message} />}
                                         <Button
                                             is_disabled={isSubmitting || !values.need_confirmation}
                                             primary
@@ -101,8 +112,9 @@ class Popup extends Component {
                                 </div>
                             </ThemedScrollbars>
                             <div className='orders__popup-footer'>
+                                {api_error_message && <FormError message={api_error_message} />}
                                 {has_cancel && <Button onClick={onCancel} secondary>{cancel_text}</Button>}
-                                <Button onClick={onClickConfirm} primary>{confirm_text}</Button>
+                                <Button onClick={() => onClickConfirm(this.setApiError)} primary>{confirm_text}</Button>
                             </div>
                         </>
                     )}

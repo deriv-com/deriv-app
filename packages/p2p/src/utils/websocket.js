@@ -30,25 +30,7 @@ const getModifiedP2POfferList = (response) => {
     for (let i = 0; i < length; i++) {
         modified_response[i] = {};
 
-        // offer_currency: "USD"
-        // agent_id: "1"
-        // agent_loginid: "CR90000051"
-        // amount: "100"
-        // country: "ID"
-        // created_time: "2019-12-12 03:13:40.632565"
-        // description: "Please contact via whatsapp 1234"
-        // expire_time: "2019-12-12 05:13:40.632565"
-        // id: "1"
-        // is_active: 1
-        // transaction_currency: null
-        // max_amount: "100"
-        // method: "bank_transfer"
-        // min_amount: "10"
-        // price: 14500
-        // remaining: "0"
-        // type: "buy"
-
-        const offer_currency = response.list[i].account_currency;
+        const offer_currency       = response.list[i].account_currency;
         const transaction_currency = response.list[i].transaction_currency;
 
         modified_response[i].offer_currency          = offer_currency;
@@ -64,8 +46,8 @@ const getModifiedP2POfferList = (response) => {
         modified_response[i].display_price_rate      = formatMoney(transaction_currency, response.list[i].price);
         modified_response[i].type                    = response.list[i].type;
 
-        // missing in api
-        modified_response[i].advertiser           = response.list[i].agent_name;
+        // TOOD: [p2p-api-request] missing in API
+        modified_response[i].advertiser              = response.list[i].agent_name;
 
         // TOOD: [p2p-api-request] API should give us the allowed decimal places of local currency
         modified_response[i].transaction_currency_decimals = 2;
@@ -88,14 +70,14 @@ const getModifiedP2POrder = (response) => {
 
     modified_response.offer_amount               = +response.amount;
     modified_response.display_offer_amount       = formatMoney(response.offer_currency, response.amount);
-    modified_response.order_purchase_datetime    = new Date(response.created_time); // API should give epoch
+    modified_response.order_purchase_datetime    = new Date(response.created_time); // TOOD: [p2p-api-request] API should give epoch
     modified_response.advertiser_notes           = response.description;
     modified_response.order_id                   = response.id;
     modified_response.offer_currency             = response.offer_currency;
     modified_response.type                       = response.offer_type;
     modified_response.status                     = response.status;
 
-    // missing in API
+    // TOOD: [p2p-api-request] missing in API
     modified_response.advertiser_name            = response.agent_name;
     modified_response.price_rate                 = +response.price;
     modified_response.display_price_rate         = formatMoney(response.local_currency, response.price);
@@ -130,23 +112,6 @@ export const WS = async (request) => {
     }
     if (response.p2p_order_info) {
         modified_response = getModifiedP2POrder(response.p2p_order_info);
-        // modified_response = {
-        //     order_id                  : request.order_id,
-        //     status                    : 'pending',
-        //     type                      : 'buy',
-        //     advertiser_name           : 'Fancy PA name',
-        //     advertiser_notes          : 'Hello I am watermelon',
-        //     order_purchase_datetime   : new Date(),
-        //     price_rate                : 2000000,
-        //     display_price_rate        : formatMoney('IDR', '2,000,000.00'),
-        //     offer_currency            : 'BTC', // The currency that is being purchased
-        //     transaction_currency      : 'IDR', // The currency that is used to purchase the selling currency
-        //     display_offer_amount      : formatMoney('BTC', '0.002931'),
-        //     display_transaction_amount: formatMoney('IDR', '100,000.00'),
-        //     offer_amount              : 0.002931,
-        //     transaction_amount        : 100000,
-        //     remaining_time            : 3600000, // 60 * 60 * 1000
-        // };
     }
     if (response.p2p_order_cancel) {
         modified_response = {

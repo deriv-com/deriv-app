@@ -5,7 +5,7 @@ import { BuySellTable }     from './buy-sell-table.jsx';
 import Popup                from './popup.jsx';
 import                           './buy-sell.scss';
 
-/* TODO [p2p-uncomment] uncomment this when sell is ready */
+/* TODO: [p2p-uncomment] uncomment this when sell is ready */
 // const buy_sell_filters = [
 //     {
 //         text : localize('Buy'),

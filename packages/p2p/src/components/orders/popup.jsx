@@ -18,7 +18,7 @@ class Popup extends Component {
     }
 
     handleSubmit = (values, { setStatus, setSubmitting }) => {
-        // TODO [p2p-remove-console] this console is to avoid unused variable eslint linter
+        // TODO: [p2p-remove-console] this console is to avoid unused variable eslint linter
         // eslint-disable-next-line no-console
         console.log(values);
         this.props.onClickConfirm(setStatus);

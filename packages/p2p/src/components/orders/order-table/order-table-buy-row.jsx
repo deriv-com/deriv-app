@@ -2,7 +2,7 @@ import { Table }                  from 'deriv-components';
 import PropTypes                  from 'prop-types';
 import React                      from 'react';
 import { localize }               from 'Components/i18next';
-// todo: uncomment this when API sends epoch for time
+// TODO: [p2p-uncomment] uncomment this when API sends epoch for time
 // import { getFormattedDateString } from 'Utils/date-time';
 
 const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {

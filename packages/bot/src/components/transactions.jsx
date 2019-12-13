@@ -1,4 +1,4 @@
-import className       from 'classnames';
+import classNames      from 'classnames';
 import {
     Icon,
     Money,
@@ -84,7 +84,7 @@ const Transaction = ({ contract }) => {
                     <td className='transactions__col'>
                         {contract.profit ?
                             <div
-                                className={className(
+                                className={classNames(
                                     'transactions__inline',
                                     'transactions__middle',
                                     {

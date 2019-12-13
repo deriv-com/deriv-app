@@ -109,7 +109,7 @@ class MT5Dashboard extends React.Component {
                             selected_account={ this.state.password_manager.selected_account }
                             toggleModal={ this.togglePasswordManagerModal }
                         />
-                        <Tabs active_index={this.state.active_index}>
+                        <Tabs active_index={this.state.active_index} top>
                             <div label={localize('Real account')}>
                                 <MT5RealAccountDisplay
                                     is_loading={ is_loading }

@@ -1,5 +1,7 @@
 .dc-tabs {
     position: relative;
+    display: grid;
+
     //TODO send the tab count from outside
     @for $i from 1 through 5 {
         .dc-tabs__item:nth-child(#{$i}).dc-tabs__active ~ .dc-tabs__active-line {
@@ -9,9 +11,19 @@
 
     &__list {
         width: 100%;
-        line-height: 40px;
+        line-height: 35px;
         display: flex;
         justify-content: center;
+
+        &--top {
+            order: 0;
+        }
+        &--bottom {
+            order: 1;
+        }
+        &--fit-content {
+            width: fit-content;
+        }
     }
     &__item {
         list-style: none;
@@ -26,8 +38,13 @@
             margin-left: 1rem;
             vertical-align: middle;
         }
-        &:not(.dc-tabs__active) {
+        &--top {
             border-bottom: 1px solid var(--general-section-1);
+        }
+        &--bottom {
+            border-top: 1px solid var(--general-section-1);
+        }
+        &:not(.dc-tabs__active) {
             cursor: pointer;
             color: var(--text-general);
         }
@@ -39,11 +56,20 @@
     &__active-line {
         display: block;
         position: absolute;
-        top: 39px;
         left: 0;
         width: var(--tab-width);
         height: 2px;
         background: var(--brand-red-coral);
         transition: all ease-in-out 0.3s;
+
+        &--top {
+            top: 34px;
+        }
+        &--bottom {
+            bottom: 34px;
+        }
+        &--fit-content {
+            width: 120px;
+        }
     }
 }

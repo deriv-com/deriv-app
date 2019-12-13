@@ -37,7 +37,10 @@ class Tabs extends Component {
 
         return (
             <div
-                className={`dc-tabs dc-tabs--${className}`}
+                className={
+                    classNames('dc-tabs', {
+                        [`dc-tabs dc-tabs--${className}`]: className},
+                    )}
                 style={{ '--tab-width': `${tab_width}%` }}
             >
                 <ul className={

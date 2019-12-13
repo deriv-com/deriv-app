@@ -21,7 +21,7 @@ const SuccessDialog = ({
     const Checkmark = ({ className }) => <Icon
         className={className}
         icon='IcCheckmarkCircle'
-        green
+        color='green'
         size={24}
     />;
 

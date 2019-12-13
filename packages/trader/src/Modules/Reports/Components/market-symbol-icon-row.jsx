@@ -24,7 +24,7 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                         message={getMarketName(info_from_shortcode.underlying)}
                         disable_target_icon
                     >
-                        <Icon icon={info_from_shortcode.underlying ? `IcUnderlying${info_from_shortcode.underlying}` : 'IcUnknown'} width={32} height={24} />
+                        <Icon icon={info_from_shortcode.underlying ? `IcUnderlying${info_from_shortcode.underlying}` : 'IcUnknown'} size={32} />
                     </Popover>
                     {show_description && payload.display_name}
                 </div>
@@ -55,9 +55,9 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
             <div className='market-symbol-icon'>
                 {
                     payload.action_type === 'deposit' ? (
-                        <Icon icon='IcCashierDeposit' />
+                        <Icon icon='IcCashierDeposit' size={32} />
                     ) : (
-                        <Icon icon='IcCashierWithdrawal' />
+                        <Icon icon='IcCashierWithdrawal' size={32} />
                     )
                 }
             </div>

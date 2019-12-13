@@ -35,9 +35,9 @@ const Icon = ({
     if (!icon) return null;
 
     let filename = 'common';
-    const filenames = /Currency|Tradetype|Mt5|Flag|Underlying/g.exec(icon);
+    const filenames = /^Ic(Currency|Tradetype|Mt5|Flag|Underlying)/g.exec(icon);
     if (filenames) {
-        filename = getKebabCase(filenames[0]);
+        filename = getKebabCase(filenames[1]);
     }
 
     const id = icon.startsWith('IcUnderlying') ? `ic-underlying-${icon.split('IcUnderlying')[1].toUpperCase()}` : getKebabCase(icon);

@@ -25,7 +25,7 @@ const NotificationStatusIcons = ({ type, class_suffix }) => {
                     className={classNames('notification__icon-type', {
                         [`notification__icon-type--${class_suffix}`]: class_suffix,
                     })}
-                    green={type === 'success' ? true : undefined}
+                    color={type === 'success' ? 'green' : undefined}
                 />
             }
         </React.Fragment>

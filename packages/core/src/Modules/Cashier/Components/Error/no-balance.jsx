@@ -17,7 +17,7 @@ class NoBalance extends React.Component {
         return (
             <div className='cashier__wrapper cashier__no-balance cashier__center-align-wrapper'>
                 <div className='cashier__center-align-content'>
-                    <Icon icon='IcCashierNoBalance' className='cashier__no-balance-icon' size={128} />
+                    <Icon icon='IcCashierNoBalance' className='cashier__no-balance-icon' size={116} />
                     <h2 className='withdraw__header'><Localize i18n_default_text='You have no funds in your {{currency}} account' values={{ currency: this.props.currency.toUpperCase() }} /></h2>
                     <p className='cashier__text'><Localize i18n_default_text='Please make a deposit to use this feature.' /></p>
                     <Button

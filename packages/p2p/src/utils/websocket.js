@@ -2,6 +2,7 @@ import CurrencyUtils from 'deriv-shared/utils/currency';
 import ObjectUtils   from 'deriv-shared/utils/object';
 
 let ws;
+let is_agent = false;
 
 const initial_responses = {};
 
@@ -21,6 +22,11 @@ const populateInitialResponses = async () => {
     if (ObjectUtils.isEmptyObject(initial_responses)) {
         initial_responses.website_status = await ws.send({ website_status: 1 });
         setCurrenciesConfig(initial_responses.website_status);
+
+        const agent_info = await ws.send({ p2p_agent_info: 1 });
+        if (!agent_info.p2p_agent_info.error) {
+            is_agent = true;
+        }
     }
 };
 
@@ -32,6 +38,9 @@ const getModifiedP2POfferList = (response) => {
 
         const offer_currency       = response.list[i].account_currency;
         const transaction_currency = response.list[i].transaction_currency;
+
+        // hide buy/sell button for agent accounts
+        modified_response[i].is_agent = is_agent;
 
         modified_response[i].offer_currency          = offer_currency;
         modified_response[i].advertiser_id           = response.list[i].agent_id;
@@ -65,8 +74,14 @@ const getModifiedP2POfferList = (response) => {
     return (modified_response);
 };
 
+// for agents API still returns buy if client created a buy order
+// but agent should see that as sell type so they can go through the sell flow
+const map_agent_action = { buy: 'sell', sell: 'buy' };
+
 const getModifiedP2POrder = (response) => {
     const modified_response = {};
+
+    modified_response.type = is_agent ? map_agent_action[response.offer_type] : response.offer_type;
 
     modified_response.offer_amount               = +response.amount;
     modified_response.display_offer_amount       = formatMoney(response.offer_currency, response.amount);
@@ -74,7 +89,6 @@ const getModifiedP2POrder = (response) => {
     modified_response.advertiser_notes           = response.description;
     modified_response.order_id                   = response.id;
     modified_response.offer_currency             = response.offer_currency;
-    modified_response.type                       = response.offer_type;
     modified_response.status                     = response.status;
 
     // TOOD: [p2p-api-request] missing in API

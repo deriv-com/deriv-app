@@ -25,19 +25,29 @@ BuySellRowLoader.propTypes = {
     width: PropTypes.number,
 };
 
+// TODO: [p2p-cleanup] cleanup repetition of rows
 export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) => (
     <div style={style}>
-        <Table.Row>
-            <Table.Cell>{data.advertiser}</Table.Cell>
-            <Table.Cell>{data.offer_currency}{' '}{data.display_offer_amount}</Table.Cell>
-            <Table.Cell>{data.transaction_currency}{' '}{data.display_price_rate}</Table.Cell>
-            <Table.Cell>{data.offer_currency}{' '}{data.display_min_transaction}</Table.Cell>
-            <Table.Cell>
-                <Button primary small onClick={() => setSelectedAd(data)}>
-                    {is_buy ? localize('Buy') : localize('Sell')}
-                </Button>
-            </Table.Cell>
-        </Table.Row>
+        {data.is_agent ?
+            <Table.Row>
+                <Table.Cell>{data.advertiser}</Table.Cell>
+                <Table.Cell>{data.offer_currency}{' '}{data.display_offer_amount}</Table.Cell>
+                <Table.Cell>{data.transaction_currency}{' '}{data.display_price_rate}</Table.Cell>
+                <Table.Cell>{data.offer_currency}{' '}{data.display_min_transaction}</Table.Cell>
+            </Table.Row>
+            :
+            <Table.Row>
+                <Table.Cell>{data.advertiser}</Table.Cell>
+                <Table.Cell>{data.offer_currency}{' '}{data.display_offer_amount}</Table.Cell>
+                <Table.Cell>{data.transaction_currency}{' '}{data.display_price_rate}</Table.Cell>
+                <Table.Cell>{data.offer_currency}{' '}{data.display_min_transaction}</Table.Cell>
+                <Table.Cell>
+                    <Button primary small onClick={() => setSelectedAd(data)}>
+                        {is_buy ? localize('Buy') : localize('Sell')}
+                    </Button>
+                </Table.Cell>
+            </Table.Row>
+        }
     </div>
 ));
 

@@ -9,22 +9,42 @@ export const BuySellTable = ({ table_type, setSelectedAd }) => {
 
     const is_buy = table_type === 'buy';
     const [offer_currency, setOfferCurrency] = React.useState('');
+    const [is_agent, setIsAgent] = React.useState(true);
 
+    // TODO: [p2p-cleanup] cleanup repetition of header
     return (
         <Table>
             <Table.Header>
-                <Table.Row>
-                    <Table.Head>{localize('Advertiser')}</Table.Head>
-                    <Table.Head>{localize('Amount')}</Table.Head>
-                    <Table.Head>{localize('Price for 1 {{currency}}', { currency: offer_currency })}</Table.Head>
-                    <Table.Head>{localize('Min transaction') }</Table.Head>
-                    <Table.Head>{localize('Trade')}</Table.Head>
-                </Table.Row>
+                {is_agent ?
+                    <Table.Row>
+                        <Table.Head>{localize('Advertiser')}</Table.Head>
+                        <Table.Head>{localize('Amount')}</Table.Head>
+                        <Table.Head>{localize('Price for 1 {{currency}}', { currency: offer_currency })}</Table.Head>
+                        <Table.Head>{localize('Min transaction') }</Table.Head>
+                    </Table.Row>
+                    :
+                    <Table.Row>
+                        <Table.Head>{localize('Advertiser')}</Table.Head>
+                        <Table.Head>{localize('Amount')}</Table.Head>
+                        <Table.Head>{localize('Price for 1 {{currency}}', { currency: offer_currency })}</Table.Head>
+                        <Table.Head>{localize('Min transaction') }</Table.Head>
+                        <Table.Head>{localize('Trade')}</Table.Head>
+                    </Table.Row>
+                }
             </Table.Header>
             <Table.Body>
                 { is_buy ?
-                    <BuyTable setSelectedAd={setSelectedAd} setOfferCurrency={setOfferCurrency} /> :
-                    <SellTable setSelectedAd={setSelectedAd} setOfferCurrency={setOfferCurrency} />
+                    <BuyTable
+                        setSelectedAd={setSelectedAd}
+                        setOfferCurrency={setOfferCurrency}
+                        setIsAgent={setIsAgent}
+                    />
+                    :
+                    <SellTable
+                        setSelectedAd={setSelectedAd}
+                        setOfferCurrency={setOfferCurrency}
+                        setIsAgent={setIsAgent}
+                    />
                 }
             </Table.Body>
         </Table>

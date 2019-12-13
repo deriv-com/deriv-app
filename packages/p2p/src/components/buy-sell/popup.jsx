@@ -24,7 +24,7 @@ class Popup extends Component {
         const order = await WS({ p2p_order_create: 1, amount: values.receive, offer_id: ad.offer_id });
 
         if (!order.error) {
-            const order_info = await WS({ p2p_order_info: 1, order_id: order.order_id });
+            const order_info = await WS({ p2p_order_info: 1, order_id: order.p2p_order_create.order_id });
             this.props.handleConfirm(order_info);
             setSubmitting(false);
             this.props.handleClose();

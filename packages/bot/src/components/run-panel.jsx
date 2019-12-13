@@ -21,7 +21,8 @@ const drawerContent = ({
     return (
         <Tabs
             active_index={active_index}
-            onClickTabItem={setActiveTabIndex}
+            onTabItemClick={setActiveTabIndex}
+            top
         >
             <div label={localize('Summary')}>
                 <Summary />

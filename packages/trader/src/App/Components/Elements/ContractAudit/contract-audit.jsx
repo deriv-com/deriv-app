@@ -74,7 +74,7 @@ class ContractAudit extends React.PureComponent {
                 contractAuditItemProps: {
                     icon : 'reset_barrier',
                     label: localize('Reset barrier'),
-                    value: addCommaToNumber(contract_info.barrier),
+                    value: getBarrierValue(contract_info),
                 },
                 shouldShow: is_reset_call_put,
             },

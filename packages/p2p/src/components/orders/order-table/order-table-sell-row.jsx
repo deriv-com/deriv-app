@@ -6,7 +6,6 @@ import { getFormattedDateString } from 'Utils/date-time';
 
 const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
     const {
-        counterparty,
         display_transaction_amount,
         display_offer_amount,
         display_status,
@@ -33,7 +32,6 @@ const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
                 <Table.Cell>{ display_status }</Table.Cell>
                 <Table.Cell>{ offer_currency }{ ' ' }{ display_offer_amount }</Table.Cell>
                 <Table.Cell>{ transaction_currency }{ ' ' }{ display_transaction_amount }</Table.Cell>
-                <Table.Cell>{ counterparty }</Table.Cell>
                 <Table.Cell>{ getFormattedDateString(order_purchase_datetime) }</Table.Cell>
             </Table.Row>
         </div>
@@ -42,7 +40,6 @@ const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
 
 SellOrderRowComponent.propTypes = {
     data: PropTypes.shape({
-        counterparty              : PropTypes.string,
         display_offer_amount      : PropTypes.string,
         display_status            : PropTypes.string,
         display_transaction_amount: PropTypes.string,

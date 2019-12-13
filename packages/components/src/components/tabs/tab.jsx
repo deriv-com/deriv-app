@@ -14,13 +14,18 @@ class Tab extends Component {
             count,
             is_active,
             label,
+            top,
+            bottom,
         } = this.props;
 
+        const classes = classNames('dc-tabs__item', {
+            'dc-tabs__active'      : is_active,
+            'dc-tabs__item--top'   : top,
+            'dc-tabs__item--bottom': bottom,
+        });
         return (
             <li
-                className={classNames('dc-tabs__item',
-                    { 'dc-tabs__active': is_active }
-                )}
+                className={classes}
                 onClick={this.onClick}
             >
                 {label}

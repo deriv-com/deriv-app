@@ -6,23 +6,17 @@ import OrderInfo    from './order-info';
 import OrderTable   from './order-table/order-table.jsx';
 import './orders.scss';
 
-const Orders = () => {
-    const buy_order = new OrderInfo();
-    const sell_order = new OrderInfo();
-    sell_order.type = 'sell';
-    sell_order.order_id = 'SELL123';
-    sell_order.counterparty = 'Ronald McDonald';
-
+const Orders = ({ params }) => {
     const [order_details, setDetails] = React.useState(null);
-    // TODO: [p2p-replace-with-api] - remove these dev toggle once data fetch works
-    const showDetails = (order) => setDetails(order);
+    const showDetails = setDetails;
     const hideDetails = () => setDetails(null);
 
-    // TODO: [p2p-replace-with-api] - Link next 4 lines with API
-    const is_loading_more        = false;
-    const has_more_items_to_load = false;
-    const loadMore               = () => { console.log('Load more'); /* eslint-disable-line no-console */ };
-    const items                  = [ buy_order, sell_order ];
+    React.useEffect(() => {
+        if (params && params.order_info) {
+            const order_info = new OrderInfo(params.order_info);
+            setDetails(order_info);
+        }
+    }, []);
 
     return (
         <div className='orders'>
@@ -44,10 +38,6 @@ const Orders = () => {
             }
             { !order_details &&
                 <OrderTable
-                    items={ items }
-                    is_loading_more={ is_loading_more }
-                    has_more_items_to_load={ has_more_items_to_load }
-                    loadMore={ loadMore }
                     showDetails={ showDetails }
                 />
             }

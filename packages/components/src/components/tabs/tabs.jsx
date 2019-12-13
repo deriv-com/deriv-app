@@ -25,21 +25,22 @@ class Tabs extends Component {
     }
 
     render() {
-        const { 
+        const {
             children,
             className,
             top,
             bottom,
-            fit_content 
+            fit_content
         } = this.props;
         const { active_index } = this.state;
-        const tab_width        = (100 / children.length).toFixed(2);
+        const tab_width = (100 / children.length).toFixed(2);
 
         return (
             <div
                 className={
                     classNames('dc-tabs', {
-                        [`dc-tabs dc-tabs--${className}`]: className},
+                        [`dc-tabs dc-tabs--${className}`]: className
+                    },
                     )}
                 style={{ '--tab-width': `${tab_width}%` }}
             >
@@ -59,8 +60,8 @@ class Tabs extends Component {
                                 is_active={index === active_index}
                                 key={label}
                                 label={label}
-                                top = {top}
-                                bottom = {bottom}
+                                top={top}
+                                bottom={bottom}
                                 onClick={() => this.onTabItemClick(index)}
                             />
                         );

@@ -7,24 +7,11 @@ import { localize }                    from 'deriv-translations' ;
 import { contract_stages }             from '../constants/contract-stage';
 import {
     error_types,
-<<<<<<< HEAD
     unrecoverable_errors }             from '../constants/messages';
 import DBot                            from '../scratch';
 import { isEnded }                     from '../utils/contract';
 import { observer }                    from '../utils/observer';
-=======
-    unrecoverable_errors,
-}                                      from '../constants/messages';
-import {
-    runBot,
-    stopBot,
-    terminateBot,
-}                                      from '../scratch';
-import { hasAllRequiredBlocks }        from '../scratch/utils/workspace';
-import { isEnded }                     from '../utils/contract';
-import { observer }                    from '../utils/observer';
 import { setMainContentWidth }         from '../utils/window-size';
->>>>>>> fd611224cf3efa7bee7700134452b92f6f853488
 import { switch_account_notification } from '../utils/notifications/bot-notifications';
 
 export default class RunPanelStore {

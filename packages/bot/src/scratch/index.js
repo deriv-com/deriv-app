@@ -21,7 +21,6 @@ class DBot {
     async initWorkspace() {
         try {
             const el_scratch_div  = document.getElementById('scratch_div');
-            const el_app_contents = document.getElementById('app_contents');
             const toolbox_xml     = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(r => r.text()); // eslint-disable-line
             const main_xml        = await fetch(`${__webpack_public_path__}xml/main.xml`).then(r => r.text()); // eslint-disable-line
             this.workspace        = Blockly.inject(el_scratch_div, {

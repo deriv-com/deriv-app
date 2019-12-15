@@ -7,10 +7,9 @@ import NotificationMessages     from './components/notification-messages.jsx';
 import QuickStrategy            from './components/quick-strategy.jsx';
 import RunPanel                 from './components/run-panel.jsx';
 import Toolbar                  from './components/toolbar.jsx';
-import ApiHelpers               from './services/api/api-helpers';
 import ServerTime               from './services/api/server_time';
-import DBot, { 
-    scratchWorkspaceInit 
+import DBot, {
+    scratchWorkspaceInit,
 }                               from './scratch';
 import ApiHelpers               from './services/api/api-helpers';
 import RootStore                from './stores';

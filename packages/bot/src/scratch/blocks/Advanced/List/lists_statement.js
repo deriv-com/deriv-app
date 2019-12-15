@@ -57,7 +57,7 @@ Blockly.Blocks.lists_statement = {
                 Blockly.Events.recordUndo = false;
                 this.dispose(true);
                 Blockly.Events.recordUndo = recordUndo;
-            } else if (!this.requiredParentId && surround_parent.type === 'text_join') {
+            } else if (!this.requiredParentId && surround_parent.type === this.required_parent_type) {
                 // Legal parent, but not yet related, set connection.
                 this.requiredParentId = surround_parent.id;
             } else if (surround_parent.id !== this.requiredParentId) {

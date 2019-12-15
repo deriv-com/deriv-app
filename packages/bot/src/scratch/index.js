@@ -2,6 +2,7 @@ import { localize }                   from 'deriv-translations';
 import                                    './blocks';
 import                                    './hooks';
 import { hasAllRequiredBlocks }       from './utils';
+import { onWorkspaceResize }          from './utils/workspace';
 import config                         from '../constants';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import ScratchStore                   from '../stores/scratch-store';
@@ -48,7 +49,7 @@ class DBot {
             const { saveload } = ScratchStore.instance;
             const drop_zone    = document.body;
     
-            window.addEventListener('resize', () => this.onWorkspaceResize(el_app_contents, el_scratch_div));
+            window.addEventListener('resize', () => onWorkspaceResize());
             window.dispatchEvent(new Event('resize'));
             drop_zone.addEventListener('dragover', DBot.handleDragOver);
             drop_zone.addEventListener('drop', saveload.handleFileChange);
@@ -363,14 +364,6 @@ class DBot {
                 block.setErrorHighlighted(should_highlight);
             }
         });
-    }
-
-    onWorkspaceResize(el_app_contents, el_scratch_div) {
-        const toolbar_height        = 56;
-        el_scratch_div.style.width  = `${el_app_contents.offsetWidth}px`;
-        el_scratch_div.style.height = `${el_app_contents.offsetHeight - toolbar_height}px`;
-
-        Blockly.svgResize(this.workspace);
     }
 
     static handleDragOver(event) {

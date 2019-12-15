@@ -5,11 +5,19 @@ import PurchaseFieldset            from 'Modules/Trading/Components/Elements/pur
 import { getContractTypePosition } from 'Constants/contract';
 import { connect }                 from 'Stores/connect';
 
+const getSortedIndex = (index, type) => {
+    if (getContractTypePosition(type) === 'top') return 0;
+    if (getContractTypePosition(type) === 'bottom') return 1;
+
+    return index;
+};
+
 const Purchase = ({
     basis,
     contract_type,
     currency,
     is_client_allowed_to_visit,
+    is_mobile,
     // is_purchase_confirm_on,
     purchased_states_arr,
     // is_purchase_locked,
@@ -32,11 +40,6 @@ const Purchase = ({
 
     const components = [];
     Object.keys(trade_types).map((type, index) => {
-        const getSortedIndex = () => {
-            if (getContractTypePosition(type) === 'top') return 0;
-            if (getContractTypePosition(type) === 'bottom') return 1;
-            return index;
-        };
         const info              = proposal_info[type] || {};
         const is_disabled       = !is_trade_enabled || !info.id || !is_client_allowed_to_visit;
         const is_proposal_error = info.has_error && !info.has_error_details;
@@ -47,10 +50,11 @@ const Purchase = ({
                 currency={currency}
                 info={info}
                 key={index}
-                index={getSortedIndex()}
+                index={getSortedIndex(index, type)}
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={isLoading(info)}
+                is_mobile={is_mobile}
                 // is_purchase_confirm_on={is_purchase_confirm_on}
                 is_proposal_empty={is_proposal_empty}
                 is_proposal_error={is_proposal_error}
@@ -84,6 +88,7 @@ Purchase.propTypes = {
     basis                     : PropTypes.string,
     currency                  : PropTypes.string,
     is_client_allowed_to_visit: PropTypes.bool,
+    is_mobile                 : PropTypes.bool,
     // is_purchase_confirm_on    : PropTypes.bool,
     is_purchase_locked        : PropTypes.bool,
     is_trade_enabled          : PropTypes.bool,
@@ -102,6 +107,7 @@ export default connect(
     ({ client, modules, ui }) => ({
         currency                  : client.currency,
         is_client_allowed_to_visit: client.is_client_allowed_to_visit,
+        is_mobile                 : ui.is_mobile,
         basis                     : modules.trade.basis,
         contract_type             : modules.trade.contract_type,
         is_trade_enabled          : modules.trade.is_trade_enabled,

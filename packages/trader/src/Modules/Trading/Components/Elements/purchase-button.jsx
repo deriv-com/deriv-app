@@ -1,12 +1,38 @@
 import classNames                 from 'classnames';
 import PropTypes                  from 'prop-types';
 import React                      from 'react';
+import {
+    Desktop,
+    Mobile,
+}                                 from 'deriv-components';
 import { localize }               from 'deriv-translations';
 import Icon                       from 'Assets/icon.jsx';
 import { getContractTypeDisplay } from 'Constants/contract';
+import ContractInfo               from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
+
+// TODO [lazy-loading-required] Responsive related components
+const ButtonTextWrapper = ({
+    should_fade,
+    is_loading,
+    type,
+    is_high_low,
+}) => {
+    return (
+        <div className='btn-purchase__text_wrapper'>
+            <span className='btn-purchase__text'>
+                {(!should_fade && is_loading) ? '' : localize(
+                    '{{value}}',
+                    { value: getContractTypeDisplay(type, is_high_low) },
+                )}
+            </span>
+        </div>
+    );
+};
 
 const PurchaseButton = ({
     buy_info,
+    basis, // mobile-only
+    currency,
     index,
     info,
     is_disabled,
@@ -19,11 +45,22 @@ const PurchaseButton = ({
     onClickPurchase,
     type,
 }) => {
-    const getIconType = () => {
+    const getIconType        = () => {
         if (!should_fade && is_loading) return '';
         return (is_high_low) ? `${type.toLowerCase()}_barrier` : type.toLowerCase();
     };
+    const { has_increased }  = info;
     const is_button_disabled = (is_disabled && !is_loading) || is_proposal_empty;
+
+    const IconComponentWrapper = () => (
+        <div className='btn-purchase__icon_wrapper'>
+            <Icon
+                icon='IconTradeType'
+                className='btn-purchase__icon'
+                type={getIconType()}
+            />
+        </div>
+    );
 
     return (
         <button
@@ -38,27 +75,23 @@ const PurchaseButton = ({
                     'btn-purchase--swoosh'         : !!(purchased_states_arr[index]),
                     'btn-purchase--1'              : index === 0,
                     'btn-purchase--2'              : index === 1,
-                })}
+                },
+            )}
             onClick={() => {
                 setPurchaseState(index);
                 onClickPurchase(info.id, info.stake, type);
             }}
         >
-            <React.Fragment>
+            <Desktop>
                 <div className='btn-purchase__info btn-purchase__info--left'>
                     <div className='btn-purchase__type-wrapper'>
-                        <div className='btn-purchase__icon_wrapper'>
-                            <Icon
-                                icon='IconTradeType'
-                                className='btn-purchase__icon'
-                                type={getIconType()}
-                            />
-                        </div>
-                        <div className='btn-purchase__text_wrapper'>
-                            <span className='btn-purchase__text'>
-                                {(!should_fade && is_loading) ? '' : localize('{{value}}', { value: getContractTypeDisplay(type, is_high_low) })}
-                            </span>
-                        </div>
+                        <IconComponentWrapper />
+                        <ButtonTextWrapper
+                            should_fade={should_fade}
+                            is_loading={is_loading}
+                            type={type}
+                            is_high_low={is_high_low}
+                        />
                     </div>
                 </div>
                 <div className='btn-purchase__effect-detail' />
@@ -68,7 +101,29 @@ const PurchaseButton = ({
                         <span className='btn-purchase__text'>{!(is_loading || is_disabled) ? info.returns : ''}</span>
                     </div>
                 </div>
-            </React.Fragment>
+            </Desktop>
+            <Mobile>
+                <div className='btn-purchase__top'>
+                    <IconComponentWrapper />
+                    <ButtonTextWrapper
+                        should_fade={should_fade}
+                        is_loading={is_loading}
+                        type={type}
+                        is_high_low={is_high_low}
+                    />
+                </div>
+                <div className='btn-purchase__bottom'>
+                    <ContractInfo
+                        basis={basis}
+                        currency={currency}
+                        has_increased={has_increased}
+                        is_loading={is_loading}
+                        should_fade={should_fade}
+                        proposal_info={info}
+                        type={type}
+                    />
+                </div>
+            </Mobile>
         </button>
     );
 };

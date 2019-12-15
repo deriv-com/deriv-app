@@ -140,6 +140,9 @@
             display: flex;
             justify-self: left;
             align-items: center;
+            @include mobile {
+                color: var(--text-colored-background);
+            }
 
             &--slide {
                 width: 92px;
@@ -168,12 +171,20 @@
                 color: var(--text-prominent);
                 opacity: 1;
                 transition: 0.3s;
+
+                @include mobile {
+                    color: var(--text-colored-background);
+                }
             }
             &-basis {
                 margin-left: 0;
                 font-weight: normal;
                 @include typeface(--paragraph-left-normal-black);
                 color: var(--text-less-prominent);
+                @include mobile {
+                    @include typeface(--xsmall-left-normal-black);
+                    color: var(--text-colored-background);
+                }
             }
             &-currency {
                 margin-left: 4px;
@@ -277,6 +288,17 @@
 .purchase-container {
     position: relative;
 
+    @include mobile {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        & fieldset {
+            flex-grow: 1;
+            max-width: 50%;
+        }
+    }
+
     &__option {
         padding-top: 8px;
         padding-bottom: 8px;
@@ -370,4 +392,13 @@
     .dropdown-container {
         margin-top: 0.8em;
     }
+}
+
+/** @define mobile-trading-params-btn */
+.mobile-trade-params-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-prominent);
+    
 }

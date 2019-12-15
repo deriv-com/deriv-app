@@ -1,5 +1,8 @@
 import classNames            from 'classnames';
-import { Money, Popover }    from 'deriv-components';
+import {
+    Desktop,
+    Money,
+    Popover }                from 'deriv-components';
 import PropTypes             from 'prop-types';
 import React                 from 'react';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
@@ -57,13 +60,15 @@ const ContractInfo = ({
                     }
                 </div>
             </div>
-            <Popover
-                alignment='left'
-                icon='info'
-                id={`dt_purchase_${type.toLowerCase()}_info`}
-                margin={210}
-                message={has_error_or_not_loaded ? '' : proposal_info.message }
-            />
+            <Desktop>
+                <Popover
+                    alignment='left'
+                    icon='info'
+                    id={`dt_purchase_${type.toLowerCase()}_info`}
+                    margin={210}
+                    message={has_error_or_not_loaded ? '' : proposal_info.message }
+                />
+            </Desktop>
         </div>
     );
 };

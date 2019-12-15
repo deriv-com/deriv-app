@@ -1,6 +1,7 @@
 import                                    './blocks';
 import                                    './hooks';
 import { checkDisabledBlocks }        from './utils';
+import { onWorkspaceResize }          from './utils/workspace';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import ScratchStore                   from '../stores/scratch-store';
 import { observer as globalObserver } from '../utils/observer';
@@ -9,7 +10,6 @@ import config                         from '../constants';
 export const scratchWorkspaceInit = async () => {
     try {
         const el_scratch_div = document.getElementById('scratch_div');
-        const el_app_contents = document.getElementById('app_contents');
 
         const toolbox_xml = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(response => response.text());
         const main_xml = await fetch(`${__webpack_public_path__}xml/main.xml`).then(response => response.text());
@@ -33,16 +33,7 @@ export const scratchWorkspaceInit = async () => {
 
         Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), workspace);
         Blockly.derivWorkspace.clearUndo();
-        
-        const onWorkspaceResize = () => {
-            const toolbar_height = 56;
 
-            el_scratch_div.style.width  = `${el_app_contents.offsetWidth}px`;
-            el_scratch_div.style.height = `${el_app_contents.offsetHeight - toolbar_height}px`;
-            Blockly.svgResize(workspace);
-        };
-
-        window.addEventListener('resize', onWorkspaceResize);
         onWorkspaceResize();
 
         const handleDragOver = e => {

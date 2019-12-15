@@ -31,11 +31,11 @@ class MobileWidget extends React.Component {
     getHumanReadableDuration() {
         const { duration, duration_unit } = this.props;
         const lookup                      = {
-            t: ['Tick', 'Ticks'],
-            s: ['Second', 'Seconds'],
-            m: ['Minute', 'Minutes'],
-            h: ['Hour', 'Hours'],
-            d: ['Day', 'days'],
+            t: ['tick', 'ticks'],
+            s: ['second', 'seconds'],
+            m: ['min', 'mins'],
+            h: ['hour', 'hours'],
+            d: ['day', 'days'],
         };
 
         return (
@@ -61,9 +61,9 @@ class MobileWidget extends React.Component {
         const stakeOrPayout = () => {
             switch (basis) {
                 case 'stake':
-                    return localized_basis.payout;
-                case 'payout':
                     return localized_basis.stake;
+                case 'payout':
+                    return localized_basis.payout;
                 default:
                     return basis;
             }
@@ -72,19 +72,17 @@ class MobileWidget extends React.Component {
         return (
             <React.Fragment>
                 <div className='mobile-widget' onClick={this.handleWidgetClick}>
-                    <div className='mobile-trade-params-btn'>
-                        <div className='mobile-trade-params-btn__duration'>
-                            {this.getHumanReadableDuration()}
-                        </div>
-                        <div className='mobile-trade-params-btn__amount'>
-                            <Money
-                                amount={amount}
-                                currency={currency}
-                            />
-                        </div>
-                        <div className='mobile-trade-params-btn__type'>
-                            {stakeOrPayout()}
-                        </div>
+                    <div className='mobile-widget__duration'>
+                        {this.getHumanReadableDuration()}
+                    </div>
+                    <div className='mobile-widget__amount'>
+                        <Money
+                            amount={amount}
+                            currency={currency}
+                        />
+                    </div>
+                    <div className='mobile-widget__type'>
+                        {stakeOrPayout()}
                     </div>
                 </div>
 

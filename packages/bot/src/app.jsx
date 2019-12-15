@@ -8,9 +8,7 @@ import QuickStrategy            from './components/quick-strategy.jsx';
 import RunPanel                 from './components/run-panel.jsx';
 import Toolbar                  from './components/toolbar.jsx';
 import ServerTime               from './services/api/server_time';
-import DBot, {
-    scratchWorkspaceInit,
-}                               from './scratch';
+import DBot                     from './scratch';
 import ApiHelpers               from './services/api/api-helpers';
 import RootStore                from './stores';
 import Firestore                from './utils/firestore';
@@ -29,7 +27,6 @@ class App extends React.Component {
     componentDidMount() {
         DBot.initWorkspace();
         ApiHelpers.instance.registerOnAccountSwitch();
-        scratchWorkspaceInit();
     }
 
     componentWillUnmount() {

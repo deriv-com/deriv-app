@@ -136,19 +136,6 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
             },
         });
     }
-
-    menu_options.push({
-        text    : localize('DEV: Render'),
-        enabled : true,
-        callback: () => block.render(),
-    });
-
-    menu_options.push({
-        text    : localize('DEV: Init Svg'),
-        enabled : true,
-        callback: () => block.updateDisabled(),
-    });
-    
     // Allow the block to add or modify menu_options.
     if (this.customContextMenu) {
         this.customContextMenu(menu_options);

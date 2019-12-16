@@ -43,6 +43,9 @@
                 margin: 10px 0 0;
                 width: 196px;
 
+                input {
+                    width: 80%;
+                }
                 .dc-field-error {
                     padding: 0;
                     left: 0;
@@ -88,7 +91,7 @@
 }
 
 /* stylelint-disable */
-@media (resolution: 100dpi) {
+@media (max-resolution: 200dpi) {
     .quick-strategy__tab-content {
         height: 100%;
     }

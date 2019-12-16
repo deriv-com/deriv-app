@@ -81,8 +81,8 @@ class Popup extends Component {
                                                             defaultChecked={
                                                                 values.need_confirmation
                                                             }
-                                                            label={localize('I have received {{offer}} {{price}}', {
-                                                                offer: offer.currency,
+                                                            label={localize('I have received {{currency}} {{price}}', {
+                                                                currency: offer.asset,
                                                                 price: offer.fix_price,
                                                             })}
                                                             classNameLabel='orders__popup-field_text'
@@ -98,7 +98,10 @@ class Popup extends Component {
                                             is_disabled={isSubmitting || !values.need_confirmation}
                                             primary
                                         >
-                                            {localize(`Release ${offer.asset} ${offer.amount}`)}
+                                            {localize('Release {{currency}} {{price}}', {
+                                                currency: offer.currency,
+                                                price: offer.amount,
+                                            })}
                                         </Button>
                                     </div>
                                 </Form>

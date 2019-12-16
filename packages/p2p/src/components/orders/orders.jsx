@@ -16,6 +16,11 @@ const Orders = ({ params }) => {
             const order_info = new OrderInfo(params.order_info);
             setDetails(order_info);
         }
+
+        // Clear details when unmounting
+        return () => {
+            setDetails(null);
+        }
     }, []);
 
     return (

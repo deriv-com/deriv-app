@@ -120,7 +120,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             const cancel_response = await WS({ p2p_order_cancel: 1, order_id });
 
             if (!cancel_response.error) {
-                setStatus(cancel_response.status);
+                setStatus(cancel_response.p2p_order_cancel.status);
                 cancelPopup();
             } else {
                 setFormStatus({ error_message: cancel_response.error.message });
@@ -144,7 +144,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                 order_id,
             });
             if (!update_response.error) {
-                setStatus(update_response.status);
+                setStatus(update_response.p2p_order_confirm.status);
                 cancelPopup();
             } else {
                 setFormStatus({ error_message: update_response.error.message });
@@ -170,7 +170,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                 order_id,
             });
             if (!update_response.error) {
-                setStatus(update_response.status);
+                setStatus(update_response.p2p_order_confirm.status);
                 cancelPopup();
             } else {
                 setFormStatus({ error_message: update_response.error.message });

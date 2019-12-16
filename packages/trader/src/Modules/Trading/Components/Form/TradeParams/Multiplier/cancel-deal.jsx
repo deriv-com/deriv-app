@@ -8,16 +8,22 @@ import Fieldset     from 'App/Components/Form/fieldset.jsx';
 import { connect }  from 'Stores/connect';
 
 const CancelDeal = ({
-    cancel_deal,
+    has_deal_cancellation,
     onChangeMultiple,
 }) => {
-    const changeValue = (e) => {
-        e.persist();
-        const new_val = Number(e.target.checked);
+    const changeValue = () => {
+        // e.target.checked is not reliable, we have to toggle its previous value
+        const new_val = !has_deal_cancellation;
         onChangeMultiple({
-            cancel_deal: new_val,
-            // set deal_cancellation_price to 0 only if Cancel Deal is un-checked
-            ...(!new_val ? { deal_cancellation_price: 0 } : {}),
+            has_deal_cancellation: new_val,
+            ...(!new_val ? {
+                // reset deal cancellation price
+                deal_cancellation_price: 0,
+            } : {
+                // unchecked Take profit & Stop loss
+                has_stop_loss  : false,
+                has_take_profit: false,
+            }),
         });
     };
 
@@ -25,16 +31,16 @@ const CancelDeal = ({
         <Fieldset className='trade-container__fieldset'>
             <div className='input-wrapper--inline'>
                 <Checkbox
-                    id='dt_cancel_deal-checkbox_input'
+                    id='dt_deal_cancellation-checkbox_input'
                     onChange={changeValue}
-                    name='cancel_deal'
+                    name='has_deal_cancellation'
                     label={localize('Cancel deal')}
-                    defaultChecked={cancel_deal}
+                    defaultChecked={has_deal_cancellation}
                 />
                 <Popover
                     alignment='left'
                     icon='info'
-                    id='dt_cancel_deal-checkbox__tooltip'
+                    id='dt_deal_cancellation-checkbox__tooltip'
                     message={localize('Allows you to cancel this deal (within 1 hour) to avoid loss.')}
                     margin={210}
                 />
@@ -44,11 +50,11 @@ const CancelDeal = ({
 };
 
 CancelDeal.propTypes = {
-    cancel_deal     : PropTypes.number,
-    onChangeMultiple: PropTypes.func,
+    has_deal_cancellation: PropTypes.bool,
+    onChangeMultiple     : PropTypes.func,
 };
 
 export default connect(({ modules }) => ({
-    cancel_deal     : modules.trade.cancel_deal,
-    onChangeMultiple: modules.trade.onChangeMultiple,
+    has_deal_cancellation: modules.trade.has_deal_cancellation,
+    onChangeMultiple     : modules.trade.onChangeMultiple,
 }))(CancelDeal);

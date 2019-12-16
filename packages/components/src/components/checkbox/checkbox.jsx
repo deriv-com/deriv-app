@@ -14,7 +14,7 @@ const IconCheckmark = ({ className, classNamePath }) => (
     </svg>
 );
 
-class Checkbox extends React.PureComponent {
+class Checkbox extends React.Component {
     constructor(props) {
         super(props);
 
@@ -23,9 +23,18 @@ class Checkbox extends React.PureComponent {
         };
     }
 
+    static getDerivedStateFromProps(nextProps, state) {
+        if (state.checked !== nextProps.defaultChecked) {
+            return { checked: nextProps.defaultChecked };
+        }
+        return null;
+    }
+
     onChange = (e) => {
-        this.setState({ checked: e.target.checked });
-        this.props.onChange(e);
+        e.persist();
+        this.setState(state => ({ checked: !state.checked }), () => {
+            this.props.onChange(e);
+        });
     };
 
     setChecked = (checked) => {
@@ -38,6 +47,7 @@ class Checkbox extends React.PureComponent {
             classNameLabel,
             id,
             label,
+            defaultChecked,
             onChange, // This needs to be here so it's not included in `otherProps`
             ...otherProps
         } = this.props;
@@ -49,6 +59,7 @@ class Checkbox extends React.PureComponent {
                     type='checkbox'
                     id={ id }
                     onChange={ this.onChange }
+                    defaultChecked={this.state.checked}
                     { ...otherProps }
                 />
                 <span

@@ -63,7 +63,7 @@ class ContractAudit extends React.PureComponent {
                                 />
                             </div>
                             {has_deal_cancellation &&
-                                <div id='dt_cancel_deal_label' className='contract-audit__grid'>
+                                <div id='dt_deal_cancellation_label' className='contract-audit__grid'>
                                     <ContractAuditItem
                                         icon={getThemedIcon('safeguard', is_dark_theme)}
                                         label={is_cancelled ? localize('Cancel deal (used)') : localize('Cancel deal (expired)')}

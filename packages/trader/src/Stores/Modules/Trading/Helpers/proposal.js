@@ -75,7 +75,7 @@ export const createProposalRequests = (store) => {
 
 const setProposalMultiplier = (store, obj_multiplier)=>{
     obj_multiplier.multiplier = store.multiplier;
-    obj_multiplier.deal_cancellation = store.cancel_deal;
+    obj_multiplier.deal_cancellation = Number(store.has_deal_cancellation);
 
     obj_multiplier.limit_order = {};
 

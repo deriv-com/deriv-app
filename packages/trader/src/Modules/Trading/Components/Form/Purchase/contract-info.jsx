@@ -53,8 +53,8 @@ const CancelDealInfo = ({
 
 const ContractInfo = ({
     basis,
-    cancel_deal,
     currency,
+    deal_cancellation,
     has_increased,
     is_loading,
     is_multiplier,
@@ -81,7 +81,7 @@ const ContractInfo = ({
         ? stakeOrPayout()
         : localize('{{value}}', { value: proposal_info.obj_contract_basis.text });
 
-    const { deal_cancellation, message, obj_contract_basis } = proposal_info;
+    const { message, obj_contract_basis } = proposal_info;
 
     return (
         <div className='trade-container__price'>
@@ -95,7 +95,7 @@ const ContractInfo = ({
                         'trade-container__price-info--fade'    : is_loading && should_fade,
                     })}
             >
-                {is_multiplier && cancel_deal && deal_cancellation ?
+                {is_multiplier && deal_cancellation ?
                     <CancelDealInfo
                         amount={deal_cancellation.ask_price}
                         currency={currency}

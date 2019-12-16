@@ -20,7 +20,7 @@ class PurchaseFieldset extends React.PureComponent {
         const {
             basis,
             buy_info,
-            cancel_deal,
+            deal_cancellation,
             currency,
             // index,
             info,
@@ -76,7 +76,7 @@ class PurchaseFieldset extends React.PureComponent {
                 >
                     <ContractInfo
                         basis={basis}
-                        cancel_deal={cancel_deal}
+                        deal_cancellation={deal_cancellation}
                         currency={currency}
                         proposal_info={info}
                         has_increased={info.has_increased}

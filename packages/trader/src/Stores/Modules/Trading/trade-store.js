@@ -121,7 +121,7 @@ export default class TradeStore extends BaseStore {
     @observable take_profit;
     @observable has_stop_loss = false;
     @observable has_take_profit = false;
-    @observable cancel_deal = 0;
+    @observable has_deal_cancellation = false;
     @observable commission = 0;
     @observable deal_cancellation_price = 0;
 

@@ -3,6 +3,7 @@ import {
     PropTypes as MobxPropTypes,
 }                            from 'mobx-react';
 import React, {
+    useEffect,
     useRef,
     useState,
 }                            from 'react';
@@ -26,22 +27,23 @@ const InputWithCheckbox = ({
     value,
 }) => {
     const checkboxRef = useRef();
-    const [disabled, setDisabled] = useState(!defaultChecked);
+    const [is_checked, setChecked] = useState(defaultChecked);
 
     const checkboxName = `has_${name}`;
 
+    useEffect(() => {
+        setChecked(defaultChecked);
+    });
+
     const changeValue = (e) => {
-        const { checked } = e.target;
-        setDisabled(!checked);
-        onChange({ target: { name: e.target.name, value: checked } });
+        // e.target.checked is not reliable, we have to toggle its previous value
+        onChange({ target: { name: e.target.name, value: !is_checked } });
     };
 
     const enableInputOnClick = (e) => {
-        if (disabled) {
-            setDisabled(false);
+        if (!is_checked) {
+            setChecked(true);
             onChange({ target: { name: checkboxName, value: true } });
-
-            checkboxRef.current.setChecked(true);
 
             const input = e.target.querySelector('input.input-wrapper__input');
             setTimeout(() => input.focus());
@@ -55,7 +57,7 @@ const InputWithCheckbox = ({
             classNameInput={classNameInput}
             currency={currency}
             error_messages={error_messages}
-            is_disabled={disabled ? 'disabled' : undefined}
+            is_disabled={!is_checked ? 'disabled' : undefined}
             fractional_digits={CurrencyUtils.getDecimalPlaces(currency)}
             id={`dt_${name}_input`}
             inline_prefix={is_single_currency ? currency : null}

@@ -123,7 +123,11 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
             callback: () => {
                 const xml = Blockly.Xml.textToDom('<xml/>');
                 xml.appendChild(Blockly.Xml.blockToDom(block));
-                save(/* filename */ 'deriv-bot-block', /* collection */ true, /* xmlDom */ xml);
+                save(
+                    /* filename */ block.type,
+                    /* collection */ true,
+                    /* xmlDom */ xml
+                );
             },
         });
     }

@@ -34,9 +34,9 @@ export default class GTMStore extends BaseStore {
     @computed
     get common_variables() {
         const platform = () => {
-            const url_parsed = window.location.href.toLowerCase().split('&')[0].replace(/:\/\//,'/').split('/');
-            const domain = url_parsed[1];
-            const path = url_parsed[2];
+            const url    = new URL(window.location.href);
+            const domain = url.hostname;
+            const path   = url.pathname;
             
             if(/^(deriv.app|staging.deriv.app|localhost.binary.sx)$/.test(domain)) {
                 if(path === 'bot') {

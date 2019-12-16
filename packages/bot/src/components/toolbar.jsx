@@ -1,3 +1,4 @@
+import classNames    from 'classnames';
 import {
     Button,
     Input,
@@ -210,85 +211,89 @@ const WorkspaceGroup = ({
     </div>
 );
 
-const Toolbar = ({
-    active_tab,
-    is_dialog_open,
-    is_drawer_open,
-    is_stop_button_disabled,
-    is_stop_button_visible,
-    onOkButtonClick,
-    onCancelButtonClick,
-    onRunButtonClick,
-    onStopButtonClick,
-    onToolboxToggle,
-}) => (
-    <div className='toolbar'>
-        <div className='toolbar__section'>
-            <Popover
-                alignment='bottom'
-                classNameBubble='toolbar__bubble'
-                message={localize('Click here to start building your DBot.')}
-            >
-                <Button
-                    id='gtm-get-started'
-                    className='toolbar__btn--icon toolbar__btn--start'
-                    has_effect
-                    onClick={onToolboxToggle}
-                    icon={<ToolbarStartIcon />}
-                    green
+const Toolbar = (props) => {
+    const {
+        active_tab,
+        is_dialog_open,
+        is_drawer_open,
+        is_stop_button_disabled,
+        is_stop_button_visible,
+        onOkButtonClick,
+        onCancelButtonClick,
+        onRunButtonClick,
+        onStopButtonClick,
+        onToolboxToggle,
+    } = props;
+
+    return (
+        <div className='toolbar'>
+            <div className='toolbar__section'>
+                <Popover
+                    alignment='bottom'
+                    classNameBubble='toolbar__bubble'
+                    message={localize('Click here to start building your DBot.')}
                 >
-                    {localize('Get started')}
-                </Button>
-            </Popover>
-            {active_tab === tabs_title.WORKSPACE &&
-                <SearchBox {...props} />
-            }
-            <BotNameBox {...props} />
-            {active_tab === tabs_title.WORKSPACE &&
-                <WorkspaceGroup {...props} />
-            }
-        </div>
-        {!is_drawer_open &&
-        <div className='toolbar__section'>
-            {
-                (is_stop_button_visible) ?
                     <Button
-                        className='toolbar__btn'
-                        is_disabled={is_stop_button_disabled}
-                        text={localize('Stop bot')}
-                        icon={<StopIcon className='run-panel__button--icon' />}
-                        onClick={onStopButtonClick}
+                        id='gtm-get-started'
+                        className='toolbar__btn--icon toolbar__btn--start'
                         has_effect
-                        primary
-                    /> :
-                    <Button
-                        className='toolbar__btn'
-                        text={localize('Run bot')}
-                        icon={<RunIcon className='run-panel__button--icon' />}
-                        onClick={onRunButtonClick}
-                        has_effect
+                        onClick={onToolboxToggle}
+                        icon={<ToolbarStartIcon />}
                         green
-                    />
+                    >
+                        {localize('Get started')}
+                    </Button>
+                </Popover>
+                {active_tab === tabs_title.WORKSPACE &&
+                    <SearchBox {...props} />
+                }
+                <BotNameBox {...props} />
+                {active_tab === tabs_title.WORKSPACE &&
+                    <WorkspaceGroup {...props} />
+                }
+            </div>
+            {!is_drawer_open &&
+            <div className='toolbar__section'>
+                {
+                    (is_stop_button_visible) ?
+                        <Button
+                            className='toolbar__btn'
+                            is_disabled={is_stop_button_disabled}
+                            text={localize('Stop bot')}
+                            icon={<StopIcon className='run-panel__button--icon' />}
+                            onClick={onStopButtonClick}
+                            has_effect
+                            primary
+                        /> :
+                        <Button
+                            className='toolbar__btn'
+                            text={localize('Run bot')}
+                            icon={<RunIcon className='run-panel__button--icon' />}
+                            onClick={onRunButtonClick}
+                            has_effect
+                            green
+                        />
+                }
+                <TradeAnimation
+                    className='toolbar__animation'
+                    should_show_overlay={true}
+                />
+            </div>
             }
-            <TradeAnimation
-                className='toolbar__animation'
-                should_show_overlay={true}
-            />
+            <SaveLoadModal />
+            {is_dialog_open &&
+            <Dialog
+                title={localize('Are you sure?')}
+                is_open={is_dialog_open}
+                onOkButtonClick={onOkButtonClick}
+                onCancelButtonClick={onCancelButtonClick}
+            >
+                {localize('Any unsaved changes will be lost.')}
+            </Dialog>
+            }
         </div>
-        }
-        <SaveLoadModal />
-        {is_dialog_open &&
-        <Dialog
-            title={localize('Are you sure?')}
-            is_open={is_dialog_open}
-            onOkButtonClick={onOkButtonClick}
-            onCancelButtonClick={onCancelButtonClick}
-        >
-            {localize('Any unsaved changes will be lost.')}
-        </Dialog>
-        }
-    </div>
-);
+    );
+};
 
 Toolbar.propTypes = {
     active_tab             : PropTypes.string,

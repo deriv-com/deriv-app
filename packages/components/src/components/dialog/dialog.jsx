@@ -7,26 +7,26 @@ import Text               from '../text';
 
 class Dialog extends React.Component {
     componentDidMount() {
-        if (this.props.is_visible) {
+        if (this.props.is_visible && this.props.disableApp) {
             this.props.disableApp();
         }
     }
 
     componentDidUpdate() {
-        if (this.props.is_visible) {
+        if (this.props.is_visible && this.props.disableApp) {
             this.props.disableApp();
         }
     }
 
     handleCancel = () => {
-        if (this.props.is_closed_on_cancel) {
+        if (this.props.is_closed_on_cancel && this.props.enableApp) {
             this.props.enableApp();
         }
         this.props.onCancel();
     };
 
     handleConfirm = () => {
-        if (this.props.is_closed_on_confirm) {
+        if (this.props.is_closed_on_confirm && this.props.enableApp) {
             this.props.enableApp();
         }
         this.props.onConfirm();

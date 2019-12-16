@@ -2,12 +2,12 @@ import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { toJS }                from 'mobx';
 import { Popover }             from 'deriv-components';
-import { localize }            from 'App/i18n';
+import { localize }            from 'deriv-translations';
 import { isContractElapsed }   from 'Stores/Modules/Contract/Helpers/logic';
 import { SlideIn }             from 'App/Components/Animations';
 import { getMarketNamesMap }   from 'Constants';
 import { LastDigitPrediction } from '../LastDigitPrediction';
-import 'Sass/app/modules/contract/digits.scss';
+import                              'Sass/app/modules/contract/digits.scss';
 
 class Digits extends React.PureComponent {
     state = {

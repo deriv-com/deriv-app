@@ -4,7 +4,7 @@ import { Button,
     Tabs }                                    from 'deriv-components';
 import PropTypes                              from 'prop-types';
 import React                                  from 'react';
-import { localize }                           from 'deriv-translations/lib/i18n';
+import { localize }                           from 'deriv-translations';
 import Dialog                                 from './dialog.jsx';
 import { InfoOutlineIcon, RunIcon, StopIcon } from './Icons.jsx';
 import Journal                                from './journal.jsx';
@@ -12,7 +12,7 @@ import Summary                                from './summary.jsx';
 import TradeAnimation                         from './trade-animation.jsx';
 import Transactions                           from './transactions.jsx';
 import { connect }                            from '../stores/connect';
-import '../assets/sass/run-panel.scss';
+import                                             '../assets/sass/run-panel.scss';
 
 const drawerContent = ({
     active_index,
@@ -21,7 +21,8 @@ const drawerContent = ({
     return (
         <Tabs
             active_index={active_index}
-            onClickTabItem={setActiveTabIndex}
+            onTabItemClick={setActiveTabIndex}
+            top
         >
             <div label={localize('Summary')}>
                 <Summary />
@@ -65,6 +66,7 @@ const drawerFooter = ({
                     (is_stop_button_visible) ?
                         <Button
                             is_disabled={is_stop_button_disabled}
+                            id='gtm-stop-bot'
                             text={localize('Stop bot')}
                             icon={<StopIcon className='run-panel__button--icon' />}
                             onClick={onStopButtonClick}
@@ -72,6 +74,7 @@ const drawerFooter = ({
                             primary
                         /> :
                         <Button
+                            id='gtm-run-bot'
                             text={localize('Run bot')}
                             icon={<RunIcon className='run-panel__button--icon' />}
                             onClick={onRunButtonClick}

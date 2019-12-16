@@ -28,18 +28,6 @@
             left: 1rem;
             top: -2px;
             pointer-events: none;
-
-            &-count {
-                background: $color-red-1;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 3px 5px;
-                border-radius: 1rem;
-                color: $color-white;
-                font-size: 1rem;
-                font-weight: bold;
-            }
         }
         &--active {
             .dc-popover {
@@ -63,6 +51,8 @@
         border-radius: $BORDER_RADIUS;
         box-shadow: 0 4px 8px 2px var(--shadow-menu);
         transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
+        opacity: 0;
+        transform: translate3d(0, -20px, 0);
 
         &__header {
             display: flex;

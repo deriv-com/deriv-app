@@ -33,14 +33,16 @@ const {
 const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 const HOISTED_PACKAGES = {
-    'react'           : path.resolve(__dirname, '../node_modules/react'),
-    'react-dom'       : path.resolve(__dirname, '../node_modules/react-dom'),
-    'react-router'    : path.resolve(__dirname, '../node_modules/react-router'),
-    'react-router-dom': path.resolve(__dirname, '../node_modules/react-router-dom'),
-    'mobx'            : path.resolve(__dirname, '../node_modules/mobx'),
-    'mobx-react'      : path.resolve(__dirname, '../node_modules/mobx-react'),
-    'deriv-shared'    : path.resolve(__dirname, '../node_modules/deriv-shared'),
-    'deriv-components': path.resolve(__dirname, '../node_modules/deriv-components'),
+    'react'             : path.resolve(__dirname, '../node_modules/react'),
+    'react-dom'         : path.resolve(__dirname, '../node_modules/react-dom'),
+    'react-router'      : path.resolve(__dirname, '../node_modules/react-router'),
+    'react-router-dom'  : path.resolve(__dirname, '../node_modules/react-router-dom'),
+    'mobx'              : path.resolve(__dirname, '../node_modules/mobx'),
+    'mobx-react'        : path.resolve(__dirname, '../node_modules/mobx-react'),
+    'deriv-shared'      : path.resolve(__dirname, '../node_modules/deriv-shared'),
+    'deriv-components'  : path.resolve(__dirname, '../node_modules/deriv-components'),
+    'deriv-translations': path.resolve(__dirname, '../node_modules/deriv-translations'),
+    'smartcharts-beta'  : path.resolve(__dirname, '../node_modules/smartcharts-beta'),
 };
 
 const ALIASES = {
@@ -133,7 +135,7 @@ const plugins = (base, is_test_env, is_mocha_only) => ([
     ...(is_test_env && !is_mocha_only ? [
         new StylelintPlugin(stylelintConfig()),
     ] : [
-        new GenerateSW(generateSWConfig())
+        new GenerateSW(generateSWConfig()),
         // ...(!IS_RELEASE ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
     ]),
 ]);

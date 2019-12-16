@@ -1,7 +1,7 @@
 import { Button }       from 'deriv-components';
 import React            from 'react';
 import PropTypes        from 'prop-types';
-import { localize }     from 'deriv-translations/lib/i18n';
+import { localize }     from 'deriv-translations';
 import FlyoutVideo      from './help-components/flyout-video.jsx';
 import FlyoutText       from './help-components/flyout-text.jsx';
 import FlyoutImage      from './help-components/flyout-img.jsx';
@@ -20,6 +20,7 @@ const HelpBase = ({
     onSequenceClick,
     title,
 }) => {
+    const { display_name } = Blockly.Blocks[block_type].meta();
     const block_help_component = help_string && config[block_type];
     let text_count = 0;
 
@@ -34,6 +35,7 @@ const HelpBase = ({
                     <Button
                         className='flyout__button-add'
                         has_effect
+                        id={`gtm-${  display_name.replace(/\s/ig, '-')}`}
                         onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}
                         primary
                         text={localize('Add')}

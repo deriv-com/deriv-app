@@ -1,8 +1,8 @@
-import classNames          from 'classnames';
-import PropTypes           from 'prop-types';
-import React               from 'react';
-import Popover             from 'Components/popover';
-import Text                from 'Components/text';
+import classNames from 'classnames';
+import PropTypes  from 'prop-types';
+import React      from 'react';
+import Popover    from 'Components/popover';
+import Text       from 'Components/text';
 
 const Items = ({
     className,

@@ -14,11 +14,11 @@ import {
 import ClientBase                    from '_common/base/client_base';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
-import { localize }                  from 'App/i18n';
+import { localize }                  from 'deriv-translations';
 import {
     LocalStore,
     State }                          from '_common/storage';
-import BinarySocketGeneral          from 'Services/socket-general';
+import BinarySocketGeneral           from 'Services/socket-general';
 import { handleClientNotifications } from './Helpers/client-notifications';
 import BaseStore                     from './base-store';
 import { getClientAccountType }      from './Helpers/client';
@@ -267,7 +267,10 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get landing_company_shortcode() {
-        return this.accounts[this.loginid].landing_company_shortcode;
+        if (this.accounts[this.loginid]) {
+            return this.accounts[this.loginid].landing_company_shortcode;
+        }
+        return undefined;
     }
 
     @computed
@@ -330,7 +333,16 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_mt5_allowed() {
         if (!this.landing_companies) return false;
-        return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
+        // TODO revert this when all landing companies are accepted.
+        // return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
+        if ('mt_financial_company' in this.landing_companies ||  'mt_gaming_company' in this.landing_companies) {
+            const { gaming_company, financial_company } = this.landing_companies;
+            // eslint-disable-next-line no-nested-ternary
+            return gaming_company ? gaming_company.shortcode === 'svg' :
+                financial_company ? financial_company.shortcode === 'svg' : false;
+        }
+
+        return false;
     }
 
     /**
@@ -444,14 +456,15 @@ export default class ClientStore extends BaseStore {
     @action.bound
     realAccountSignup(form_values) {
         return new Promise(async (resolve, reject) => {
-            form_values.residence = this.accounts[this.loginid].residence;
+            form_values.residence = this.residence;
             form_values.salutation = 'Mr'; // TODO remove this once the api for salutation is optional.
             const response = await WS.newAccountReal(form_values);
             if (!response.error) {
                 await this.accountRealReaction(response);
+                localStorage.removeItem('real_account_signup_wizard');
                 resolve(response);
             } else {
-                reject(response.error.message);
+                reject(response.error);
             }
         });
     }
@@ -484,7 +497,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     createCryptoAccount(crr) {
         const { date_of_birth, first_name, last_name, salutation } = this.account_settings;
-        const residence = this.accounts[this.loginid].residence;
+        const residence = this.residence;
 
         return new Promise(async (resolve, reject) => {
             const response = await WS.newAccountReal({
@@ -502,6 +515,12 @@ export default class ClientStore extends BaseStore {
                 reject(response.error.message);
             }
         });
+    }
+
+    @computed
+    get residence() {
+        // TODO Instead of return residence from each individual loginid, set in once in login, this is bound by user.
+        return this.accounts[this.loginid].residence;
     }
 
     @computed
@@ -589,6 +608,11 @@ export default class ClientStore extends BaseStore {
             // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
+
+                // Client comes back from oauth and logs in
+                this.root_store.segment.identifyEvent();
+                this.root_store.segment.pageView();
+                this.root_store.gtm.pushDataLayer({ event: 'login' });
             } else { // So it will send an authorize with the accepted token, to be handled by socket-general
                 await BinarySocket.authorize(client.token);
             }
@@ -627,7 +651,7 @@ export default class ClientStore extends BaseStore {
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
             WS.authorized.storage.mt5LoginList().then(this.responseMt5LoginList);
-            WS.authorized.storage.landingCompany(this.accounts[this.loginid].residence)
+            WS.authorized.storage.landingCompany(this.residence)
                 .then(this.responseLandingCompany);
             this.responseStatement(
                 await BinarySocket.send({
@@ -652,10 +676,11 @@ export default class ClientStore extends BaseStore {
         this.website_status = response.website_status;
         if (this.website_status.message && this.website_status.message.length) {
             this.root_store.ui.addNotificationMessage({
-                key    : 'maintenance',
-                header : localize('Site is being updated'),
-                message: localize(this.website_status.message),
-                type   : 'warning',
+                key          : 'maintenance',
+                header       : localize('Site is being updated'),
+                message      : localize(this.website_status.message),
+                type         : 'warning',
+                is_persistent: true,
             });
         } else {
             this.root_store.ui.removeNotificationMessage({ key: 'maintenance' });
@@ -1054,6 +1079,9 @@ export default class ClientStore extends BaseStore {
                 // Initialize client store with new user login
                 const { client_id, currency, oauth_token } = response.new_account_virtual;
                 await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
+
+                // GTM Signup event
+                this.root_store.gtm.pushDataLayer({ event: 'signup' });
             }
         });
     }
@@ -1069,29 +1097,42 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     fetchResidenceList() {
-        WS.residenceList().then(response => {
-            runInAction(() => {
-                this.residence_list = response.residence_list || [];
-            });
-        });
+        return new Promise((resolve) => {
+            WS.storage.residenceList()
+                .then(response => {
+                    this.setResidenceList(response);
+                    resolve(response);
+                })
+        })
+    }
+
+    @action.bound
+    setResidenceList(residence_list_response) {
+        this.residence_list = residence_list_response.residence_list || [];
     }
 
     @action.bound
     fetchStatesList() {
         return new Promise((resolve, reject) => {
             WS.statesList({
-                states_list: this.accounts[this.loginid].residence
+                states_list: this.accounts[this.loginid].residence,
             }).then(response => {
                 if (response.error) {
                     reject(response.error)
                 } else {
                     runInAction(() => {
                         this.states_list = response.states_list || [];
-                        resolve();
                     })
                 }
+                resolve(response);
             })
         });
+    }
+
+    @action.bound
+    resetMt5ListPopulatedState() {
+        this.is_mt5_account_list_updated    = false;
+        this.is_populating_mt5_account_list = true;
     }
 
     @action.bound
@@ -1136,7 +1177,7 @@ export default class ClientStore extends BaseStore {
         const landing_company = State.getResponse('landing_company');
         const has_changeable_field = this.landing_company_shortcode === 'svg' && !this.is_fully_authenticated;
         const changeable           = ClientBase.getLandingCompanyValue(this.loginid, landing_company, 'changeable_fields');
-            if (has_changeable_field) {
+        if (has_changeable_field) {
             let changeable_fields = [];
             if (changeable && changeable.only_before_auth) {
                 changeable_fields = [...changeable.only_before_auth];

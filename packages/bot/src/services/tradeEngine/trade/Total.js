@@ -1,6 +1,6 @@
-import { localize }                   from 'deriv-translations/lib/i18n';
+import { getRoundedNumber }           from 'deriv-shared/utils/currency';
+import { localize }                   from 'deriv-translations';
 import { info, notify }               from '../utils/broadcast';
-import { roundBalance }               from '../utils/helpers';
 import createError                    from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
 
@@ -36,7 +36,7 @@ export default Engine =>
         updateTotals(contract) {
             const { sell_price: sellPrice, buy_price: buyPrice, currency } = contract;
 
-            const profit = Number(roundBalance({ currency, balance: Number(sellPrice) - Number(buyPrice) }));
+            const profit = getRoundedNumber(Number(sellPrice) - Number(buyPrice), currency);
 
             const win = profit > 0;
 
@@ -46,20 +46,13 @@ export default Engine =>
 
             accountStat.totalLosses += !win ? 1 : 0;
 
-            this.sessionProfit = roundBalance({ currency, balance: Number(this.sessionProfit) + Number(profit) });
+            this.sessionProfit = getRoundedNumber(Number(this.sessionProfit) + Number(profit), currency);
 
-            accountStat.totalProfit = roundBalance({
-                currency,
-                balance: Number(accountStat.totalProfit) + Number(profit),
-            });
-            accountStat.totalStake = roundBalance({
-                currency,
-                balance: Number(accountStat.totalStake) + Number(buyPrice),
-            });
-            accountStat.totalPayout = roundBalance({
-                currency,
-                balance: Number(accountStat.totalPayout) + Number(sellPrice),
-            });
+            accountStat.totalProfit = getRoundedNumber(Number(accountStat.totalProfit) + Number(profit), currency);
+
+            accountStat.totalStake = getRoundedNumber(Number(accountStat.totalStake) + Number(buyPrice), currency);
+
+            accountStat.totalPayout = getRoundedNumber(Number(accountStat.totalPayout) + Number(sellPrice), currency);
 
             info({
                 profit,
@@ -96,7 +89,7 @@ export default Engine =>
             const accountStat = this.getAccountStat();
             
             return toString && accountStat.totalProfit !== 0
-                ? roundBalance({ currency, balance: +accountStat.totalProfit })
+                ? getRoundedNumber(+accountStat.totalProfit, currency)
                 : +accountStat.totalProfit;
         }
 

@@ -12,9 +12,13 @@ class VerticalTab extends React.Component {
     }
 
     setSelectedIndex = ({ list, selected_index, is_routed, current_path }) => {
-        const index = typeof selected_index === 'undefined'
-            ? (is_routed ? list.indexOf(list.find(item => (item.path === (current_path || item.default)))) || 0 : 0)
-            : selected_index;
+        let index;
+        if (typeof selected_index === 'undefined') {
+            index = is_routed ?
+                list.indexOf(list.find(item => (item.path === (current_path || item.default)))) || 0 : 0;
+        } else {
+            index = selected_index;
+        }
         this.props.setModalIndex(typeof index === 'object' ? list.indexOf(index) : index);
     };
 
@@ -24,6 +28,16 @@ class VerticalTab extends React.Component {
             selected_index: e,
         });
     };
+
+    componentDidUpdate(prevProps) {
+        if (this.props.list.length !== prevProps.list.length) {
+            this.setSelectedIndex({
+                current_path: this.props.current_path,
+                list        : this.props.list,
+                is_routed   : this.props.is_routed,
+            });
+        }
+    }
 
     render() {
         const selected = this.props.list[this.props.modal_index] || this.props.list[0];
@@ -41,7 +55,6 @@ class VerticalTab extends React.Component {
                     selected={selected}
                     is_routed={this.props.is_routed}
                     header_title={this.props.header_title}
-                    visible_items={this.props.visible_items}
                 />
                 }
                 <VerticalTabContentContainer
@@ -88,7 +101,6 @@ VerticalTab.propTypes = {
     modal_index   : PropTypes.number,
     selected_index: PropTypes.number,
     setModalIndex : PropTypes.func,
-    visible_items : PropTypes.array,
 };
 
 export default connect(

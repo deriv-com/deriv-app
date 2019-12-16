@@ -71,7 +71,7 @@ class PopoverBubble extends React.PureComponent {
         const popover_bubble = (
             <PoseGroup>
                 { is_open &&
-                <FadeIn key='fade_in' initialPose='exit' style={{ position: 'fixed', zIndex: 999 }}>
+                <FadeIn key='fade_in' initialPose='exit' style={{ position: 'fixed', zIndex: 99999 }}>
                     <Text
                         as='span'
                         style={ target_rectangle ? this.calculatePosition() : {}}

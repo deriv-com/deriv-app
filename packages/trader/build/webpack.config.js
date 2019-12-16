@@ -68,6 +68,7 @@ module.exports = function (env, argv) {
                 'mobx-react': 'mobx-react',
                 'deriv-shared': 'deriv-shared',
                 'deriv-components': 'deriv-components',
+                'smartcharts-beta': 'smartcharts-beta',
             },
             /^deriv-shared\/.+$/,
             /^deriv-components\/.+$/

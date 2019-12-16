@@ -1,13 +1,12 @@
 import {
-    Dropdown,
+    Autocomplete,
     Input,
-    ThemedScrollbars }      from 'deriv-components';
-import { Formik, Field }    from 'formik';
-import React, { Component } from 'react';
-import { connect }          from 'Stores/connect';
-import { localize }         from 'App/i18n';
-import Localize             from 'App/Components/Elements/localize.jsx';
-import FormSubmitButton     from './form-submit-button.jsx';
+    ThemedScrollbars }        from 'deriv-components';
+import { Formik, Field }      from 'formik';
+import React, { Component }   from 'react';
+import { connect }            from 'Stores/connect';
+import { localize, Localize } from 'deriv-translations';
+import FormSubmitButton       from './form-submit-button.jsx';
 
 const InputField = (props) => {
     return (
@@ -36,13 +35,21 @@ const InputField = (props) => {
 class AddressDetails extends Component {
     constructor(props) {
         super(props);
-
+        this.state = { has_fetched_states_list: false };
         this.form = React.createRef();
+        // TODO: Find a better solution for handling no-op instead of using is_mounted flags
+        this.is_mounted = false;
     }
 
-    componentDidMount() {
-        this.props.fetchStatesList();
+    async componentDidMount() {
+        this.is_mounted = true;
+        await this.props.fetchStatesList();
+        if (this.is_mounted) this.setState({ has_fetched_states_list: true });
         this.form.current.getFormikActions().validateForm();
+    }
+
+    componentWillUnmount() {
+        this.is_mounted = false;
     }
 
     handleCancel = (values) => {
@@ -72,7 +79,7 @@ class AddressDetails extends Component {
                         isSubmitting,
                         errors,
                         values,
-                        handleChange,
+                        setFieldValue,
                     }) => (
                         <form onSubmit={handleSubmit}>
                             <div className='details-form'>
@@ -106,18 +113,34 @@ class AddressDetails extends Component {
                                                 label={localize('Town/City*')}
                                                 placeholder={localize('Town/City')}
                                             />
-                                            <fieldset className='address-state__fieldset'>
-                                                <Dropdown
-                                                    id='address_state'
-                                                    className='address_state-dropdown'
-                                                    is_align_text_left
-                                                    list={this.props.states_list}
-                                                    name='address_state'
-                                                    value={values.address_state}
-                                                    onChange={handleChange}
-                                                    placeholder={localize('State/Province')}
-                                                />
-                                            </fieldset>
+                                            { this.state.has_fetched_states_list &&
+                                                <React.Fragment>
+                                                    { (this.props.states_list.length > 0) ?
+                                                        <Field name='address_state'>
+                                                            {({ field }) => (
+                                                                <Autocomplete
+                                                                    { ...field }
+                                                                    data-lpignore='true'
+                                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                                    dropdown_offset='3.2rem'
+                                                                    type='text'
+                                                                    label={ localize('State/Province') }
+                                                                    list_items={this.props.states_list}
+                                                                    onItemSelection={
+                                                                        ({ value, text }) => setFieldValue('address_state', value ? text : '', true)
+                                                                    }
+                                                                />
+                                                            )}
+                                                        </Field>
+                                                        :
+                                                        <InputField
+                                                            name='address_state'
+                                                            label={ localize('State/Province') }
+                                                            placeholder={ localize('State/Province') }
+                                                        />
+                                                    }
+                                                </React.Fragment>
+                                            }
                                             <InputField
                                                 name='address_postcode'
                                                 required
@@ -151,17 +174,17 @@ class AddressDetails extends Component {
         const validations = {
             address_line_1: [
                 v => !!v,
-                v => /^[\p{L}\p{Nd}\s'.,:;()@#/-]{1,70}$/gu.exec(v) !== null,
+                v => /^[\w\W\s\/-]{1,70}$/gu.exec(v) !== null,
             ],
             address_line_2: [
-                v => !v || (/^[\p{L}\p{Nd}\s'.,:;()@#/-]{0,70}$/gu.exec(v) !== null),
+                v => !v || (/^[\w\W\s\/-]{0,70}$/gu.exec(v) !== null),
             ],
             address_city: [
                 v => !!v,
-                v => /^[\p{L}\s'.-]{1,35}$/gu.exec(v) !== null,
+                v => /^[a-zA-Z\s\W'.-]{1,35}$/gu.exec(v) !== null,
             ],
             address_state: [
-                v => /^[\p{L}\p{Nd}\s'.,-]{0,35}$/gu.exec(v) !== null,
+                v => /^[a-zA-Z\s\W'.-]{0,35}$/gu.exec(v) !== null,
             ],
             address_postcode: [
                 v => !!v,

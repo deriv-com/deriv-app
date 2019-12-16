@@ -1,0 +1,16 @@
+.page-return {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 1.6rem;
+    font-weight: bold;
+    line-height: 1.75;
+    color: var(--text-general);
+
+    &__button {
+        display: flex;
+        padding-right: 2.4rem;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+}

@@ -1,0 +1,62 @@
+.p2p-my-ads {
+    padding: 2.4rem;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.6rem;
+        justify-content: flex-end;
+    }
+    &__form {
+        margin: 1.6rem 0;
+
+        &-container {
+            display: flex;
+            width: 41rem;
+        }
+        &-field {
+            margin: 1rem 1.8rem 1.8rem 0;
+
+            & .dc-autocomplete__field {
+                margin-bottom: 0;
+            }
+            & .dc-input__label {
+                top: 1.2rem;
+            }
+            &--single {
+                width: 18.9rem;
+            }
+            &--textarea {
+                width: 57rem;
+            }
+            &--trailing {
+                font-size: var(--text-size-xxs);
+                color: var(--text-less-prominent);
+            }
+        }
+        &-button {
+            margin-left: 0.8rem;
+        }
+    }
+}
+
+.toggle-ads {
+    align-items: center;
+    display: flex;
+    font-size: var(--text-size-s);
+    justify-items: flex-start;
+    width: 100%;
+
+    &__switch {
+        transform: scale(0.5) translateX(-50%);
+    }
+    &__message {
+        margin-left: -3.4rem;
+    }
+    &--on {
+        color: var(--text-profit-success);
+    }
+    &--off {
+        color: var(--text-less-prominent);
+    }
+}

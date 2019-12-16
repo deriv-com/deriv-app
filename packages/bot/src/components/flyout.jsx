@@ -1,7 +1,7 @@
 import classNames           from 'classnames';
 import React                from 'react';
 import PropTypes            from 'prop-types';
-import { localize }         from 'deriv-translations/lib/i18n';
+import { localize }         from 'deriv-translations';
 import FlyoutBlockGroup     from './flyout-block-group.jsx';
 import HelpBase             from '../scratch/help-content/flyout-help-base.jsx';
 import { config }           from '../scratch/help-content/help-content.config';
@@ -31,6 +31,8 @@ class Flyout extends React.PureComponent {
 
         return (
             <div
+                id='gtm-search-results'
+                gtm-search-term={search_term}
                 className={classNames(
                     'flyout', {
                         'hidden'        : !is_visible,
@@ -79,7 +81,7 @@ class Flyout extends React.PureComponent {
 
                                                 return (
                                                     <FlyoutBlockGroup
-                                                        key={`${node.getAttribute('type')}${Date.now()}`}
+                                                        key={`${node.getAttribute('type')}${Blockly.utils.genUid()}`}
                                                         id={`flyout__item-workspace--${index}`}
                                                         block_node={node}
                                                         onInfoClick={

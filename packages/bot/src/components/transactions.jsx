@@ -1,11 +1,11 @@
-import className       from 'classnames';
+import classNames      from 'classnames';
 import {
     Money,
     Popover,
     ThemedScrollbars } from 'deriv-components';
 import { PropTypes }   from 'prop-types';
 import React           from 'react';
-import { localize }    from 'deriv-translations/lib/i18n';
+import { localize }    from 'deriv-translations';
 import {
     BuyPriceIcon,
     ExitSpotIcon,
@@ -90,7 +90,7 @@ const Transaction = ({ contract }) => {
                     <td className='transactions__col'>
                         {contract.profit ?
                             <div
-                                className={className(
+                                className={classNames(
                                     'transactions__inline',
                                     'transactions__middle',
                                     {

@@ -52,7 +52,7 @@ export default class ToolbarStore {
         this.is_search_loading = true;
 
         clearTimeout(this.typing_timer);
-        this.typingTimer = setTimeout(action(() => {
+        this.typing_timer = setTimeout(action(() => {
             submitForm();
             this.is_search_loading = false;
         }), typing_interval);

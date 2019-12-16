@@ -38,17 +38,15 @@ export default class GTMStore extends BaseStore {
             const domain = url.hostname;
             const path   = url.pathname;
             
-            if(/^(deriv.app|staging.deriv.app|localhost.binary.sx)$/.test(domain)) {
-                if(path === 'bot') {
+            if (/^(deriv.app|staging.deriv.app|localhost.binary.sx)$/.test(domain)) {
+                if (path === 'bot') {
                     return 'DBot';
-                } else if(path === 'mt5') {
+                } else if (path === 'mt5') {
                     return 'MT5';
-                } else {
-                    return 'DTrader';
                 }
-            } else {
-                return 'undefined';
+                return 'DTrader';
             }
+            return 'undefined';
         };
         return {
             language: getLanguage(),
@@ -60,7 +58,7 @@ export default class GTMStore extends BaseStore {
             ...this.root_store.ui.is_dark_mode_on && {
                 theme: this.root_store.ui.is_dark_mode_on ? 'dark' : 'light',
             },
-            platform: platform()
+            platform: platform(),
         };
     }
 

@@ -224,7 +224,7 @@ const TickContract = RawMarkerMaker(({
     if (draw_start_line) {
         render_label({
             ctx,
-            text: 'Start\nTime',
+            text: 'Buy Time',
             tick: { zom: start.zoom, left: start.left - 1 * scale,  top: canvas_height - 50 },
         });
         ctx.beginPath();
@@ -238,6 +238,20 @@ const TickContract = RawMarkerMaker(({
         ctx.stroke();
     }
 
+    const has_reset_time = reset_time && reset_time.epoch;
+    if (has_reset_time && !is_sold) {
+        render_label({
+            ctx,
+            text: 'Reset Time',
+            tick: { zom: reset_time.zoom, left: reset_time.left - 1 * scale,  top: canvas_height - 50 },
+        });
+        ctx.beginPath();
+        ctx.setLineDash([3, 3]);
+        ctx.moveTo(reset_time.left - 1 * scale, 0);
+        ctx.lineTo(reset_time.left - 1 * scale, ctx.canvas.height);
+        ctx.stroke();
+    }
+
     if (!ticks.length || !barrier) {
         ctx.restore();
         return;
@@ -245,7 +259,6 @@ const TickContract = RawMarkerMaker(({
     const entry = ticks[0];
     const exit = ticks[ticks.length - 1];
     const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
-    const has_reset_time = reset_time && reset_time.epoch;
 
     // barrier line
     drawTickBarrier({

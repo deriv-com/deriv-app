@@ -105,9 +105,9 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         is_buyer,
         is_buyer_confirmed,
         is_pending,
-        offer_amount,
+        display_offer_amount,
         offer_currency,
-        price_rate,
+        display_price_rate,
         order_id,
         transaction_currency,
         setStatus,
@@ -180,12 +180,11 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             title            : localize('Have you received funds?'),
             message          : localize('Make sure that you have logged in your bank account or other e-wallet to check the receipt.'),
             need_confirmation: true,
-            offer            : {
-                // TODO: [p2p-fix-schema-name] fix the naming according to the schema
-                currency : offer_currency,
-                asset    : transaction_currency,
-                fix_price: price_rate,
-                amount   : offer_amount,
+            order            : {
+                offer_amount        : display_offer_amount,
+                offer_currency      : offer_currency,
+                transaction_currency: transaction_currency,
+                price_rate          : display_price_rate,
             },
             onClickConfirm: receive,
         };

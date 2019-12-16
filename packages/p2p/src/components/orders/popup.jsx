@@ -37,7 +37,7 @@ class Popup extends Component {
             has_cancel,
             message,
             need_confirmation,
-            offer,
+            order,
             onCancel,
             title,
         } = this.props;
@@ -81,9 +81,9 @@ class Popup extends Component {
                                                             defaultChecked={
                                                                 values.need_confirmation
                                                             }
-                                                            label={localize('I have received {{currency}} {{price}}', {
-                                                                currency: offer.asset,
-                                                                price   : offer.fix_price,
+                                                            label={localize('I have received {{currency}} {{price_rate}}', {
+                                                                currency  : order.transaction_currency,
+                                                                price_rate: order.price_rate,
                                                             })}
                                                             classNameLabel='orders__popup-field_text'
                                                         />
@@ -98,9 +98,9 @@ class Popup extends Component {
                                             is_disabled={isSubmitting || !values.need_confirmation}
                                             primary
                                         >
-                                            {localize('Release {{currency}} {{price}}', {
-                                                currency: offer.currency,
-                                                price   : offer.amount,
+                                            {localize('Release {{currency}} {{offer_amount}}', {
+                                                currency    : order.offer_currency,
+                                                offer_amount: order.offer_amount,
                                             })}
                                         </Button>
                                     </div>
@@ -133,7 +133,7 @@ Popup.propTypes = {
     has_cancel       : PropTypes.bool,
     message          : PropTypes.string,
     need_confirmation: PropTypes.bool,
-    offer            : PropTypes.object,
+    order            : PropTypes.object,
     onCancel         : PropTypes.func,
     onClickConfirm   : PropTypes.func,
     title            : PropTypes.string,

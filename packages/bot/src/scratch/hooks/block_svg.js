@@ -32,23 +32,25 @@ Blockly.BlockSvg.prototype.setDisabled = function(disabled) {
 
 /**
  * Enable or disable a block.
+ * deriv-bot: Update fill path if it doesn't match the disabledPatternId.
  */
 Blockly.BlockSvg.prototype.updateDisabled = function() {
     if (this.disabled || this.getInheritedDisabled()) {
-        const added = Blockly.utils.addClass(/** @type {!Element} */ (this.svgGroup_), 'blocklyDisabled');
-        if (added) {
-            this.svgPath_.setAttribute('fill', `url(#${this.workspace.options.disabledPatternId})`);
+        Blockly.utils.addClass(this.svgGroup_, 'blocklyDisabled');
+        
+        const fill = `url(#${this.workspace.options.disabledPatternId})`;
+        if (this.svgPath_.getAttribute('fill') !== fill) {
+            this.svgPath_.setAttribute('fill', fill);
         }
     } else {
-        const removed = Blockly.utils.removeClass(/** @type {!Element} */ (this.svgGroup_), 'blocklyDisabled');
+        const removed = Blockly.utils.removeClass(this.svgGroup_, 'blocklyDisabled');
         if (removed) {
             this.updateColour();
         }
     }
+
     const children = this.getChildren(false);
-    children.forEach(child => {
-        child.updateDisabled();
-    });
+    children.forEach(child => child.updateDisabled());
 };
 
 /**
@@ -121,16 +123,31 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
             text    : localize('Download block'),
             enabled : true,
             callback: () => {
-                const xml = Blockly.Xml.textToDom('<xml/>');
+                const xml            = Blockly.Xml.textToDom('<xml/>');
+                const has_next_block = block.nextConnection && block.nextConnection.isConnected();
+                const file_name      = `${block.type}${has_next_block ? `_${localize('stack')}` : ''}`;
+
                 xml.appendChild(Blockly.Xml.blockToDom(block));
                 save(
-                    /* filename */ block.type,
+                    /* filename */ file_name,
                     /* collection */ true,
                     /* xmlDom */ xml
                 );
             },
         });
     }
+
+    menu_options.push({
+        text    : localize('DEV: Render'),
+        enabled : true,
+        callback: () => block.render(),
+    });
+
+    menu_options.push({
+        text    : localize('DEV: Init Svg'),
+        enabled : true,
+        callback: () => block.updateDisabled(),
+    });
     
     // Allow the block to add or modify menu_options.
     if (this.customContextMenu) {

@@ -16,6 +16,7 @@ const getModeFromValue = (key) => {
         sell      : 'danger',
         buy       : 'success',
         default   : 'default',
+        escrow    : 'success-invert',
     };
 
     if (Object.keys(map).find(x => x === key)) {

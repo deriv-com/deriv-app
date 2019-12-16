@@ -60,6 +60,12 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                 }
             </div>
         );
+    } else if (payload.action_type === 'escrow') {
+        return (
+            <div className='market-symbol-icon'>
+                <Icon icon='IconP2PCashier' />
+            </div>
+        );
     }
 
     return (

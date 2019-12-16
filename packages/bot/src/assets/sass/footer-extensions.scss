@@ -1,0 +1,13 @@
+.footer_extensions {
+    display: inline;
+
+    &__button {
+        font-size: 14px;
+        font-weight: 700;
+        padding: 8px;
+
+        &--active {
+            border-top: 2px solid var(--brand-red-coral);
+        }
+    }
+}

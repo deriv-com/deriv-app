@@ -19,7 +19,7 @@ const FinishedSetCurrency = ({
         width={90}
     />;
     const IconArrow        = () => <Icon
-        icon='IcArrowRight'
+        icon='IcArrowPointerRight'
         color='red'
         width={50}
         height={20}

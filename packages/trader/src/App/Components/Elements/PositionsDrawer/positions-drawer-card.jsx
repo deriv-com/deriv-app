@@ -49,7 +49,7 @@ const PositionsDrawerCard = ({
             )}
             >
                 <div className='positions-drawer-card__underlying-name'>
-                    <Icon icon={contract_info.underlying ? `IcUnderlying${contract_info.underlying}` : 'IcUnknown'} width={32} height={24} />
+                    <Icon icon={contract_info.underlying ? `IcUnderlying${contract_info.underlying}` : 'IcUnknown'} width={40} height={34} />
                     <span className='positions-drawer-card__symbol'>
                         {contract_info.display_name}
                     </span>

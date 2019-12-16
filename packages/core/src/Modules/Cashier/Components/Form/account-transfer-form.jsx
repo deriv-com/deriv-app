@@ -129,7 +129,7 @@ class AccountTransferForm extends React.Component {
                                                     validateField('amount');
                                                 }}
                                             />
-                                            <Icon className='cashier__transferred-icon account-transfer__transfer-icon' icon='IcArrowLeft' />
+                                            <Icon className='cashier__transferred-icon account-transfer__transfer-icon' icon='IcArrowLeftBold' />
                                             <Dropdown
                                                 id='transfer_to'
                                                 className='cashier__drop-down account-transfer__drop-down'

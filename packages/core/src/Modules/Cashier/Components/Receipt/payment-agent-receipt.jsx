@@ -49,7 +49,7 @@ class PaymentAgentReceipt extends React.Component {
                             <span className='cashier__transferred-details'>
                                 <span className='cashier__text--bold'>{this.props.currency}</span>&nbsp;({this.props.loginid})
                             </span>
-                            <Icon className='cashier__transferred-icon' icon='IcArrowLeft' />
+                            <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
                             <Icon icon='IcPaymentAgent' />
                             <span className='cashier__transferred-details'>
                                 {this.props.receipt.payment_agent_name && <span className='cashier__text--bold'>{this.props.receipt.payment_agent_name}&nbsp;</span>}({this.props.receipt.payment_agent_id})

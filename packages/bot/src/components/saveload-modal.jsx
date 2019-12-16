@@ -62,7 +62,7 @@ const SaveLoadModal = ({
                                                 id   : 'local',
                                                 label: <IconRadio
                                                     text={localize('Local')}
-                                                    icon={<Icon icon='IcDesktop' size={48} />}
+                                                    icon={<Icon icon='IcDesktop' size={48} custom_color='#2A3052' />}
                                                 />,
                                                 value: true,
                                             },

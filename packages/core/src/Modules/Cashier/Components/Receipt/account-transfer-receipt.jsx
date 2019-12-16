@@ -33,16 +33,16 @@ class AccountTransferReceipt extends React.Component {
                 <div className='cashier__transferred-details-wrapper'>
                     <span className='account-transfer__transfer-details-from'>
                         <Icon
-                            icon={`IcCurrency-${selected_from.mt_icon || selected_from.currency.toLowerCase()}`}
+                            icon={selected_from.mt_icon ? `IcMt5-${selected_from.mt_icon}` : `IcCurrency-${selected_from.currency.toLowerCase()}`}
                         />
                         <span className='cashier__transferred-details'>
                             <span className='cashier__text--bold'>{selected_from.text}</span>
                         </span>
                     </span>
-                    <Icon className='cashier__transferred-icon' icon='IcArrowRight' />
+                    <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
                     <span className='account-transfer__transfer-details-to'>
                         <Icon
-                            icon={`IcCurrency-${selected_to.mt_icon || selected_to.currency.toLowerCase()}`}
+                            icon={selected_to.mt_icon ? `IcMt5-${selected_to.mt_icon}` : `IcCurrency-${selected_to.currency.toLowerCase()}`}
                         />
                         <span className='cashier__transferred-details'>
                             <span className='cashier__text--bold'>{selected_to.text}</span>

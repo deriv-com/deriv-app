@@ -37,6 +37,7 @@ import                          '../assets/sass/scratch/toolbar.scss';
 const SearchBox = ({
     is_search_loading,
     onSearch,
+    onSearchBlur,
     onSearchClear,
     onSearchKeyUp,
 }) => (
@@ -58,6 +59,7 @@ const SearchBox = ({
                                     placeholder={localize('Search block...')}
                                     onKeyUp={() => onSearchKeyUp(submitForm)}
                                     onFocus={submitForm}
+                                    onBlur={onSearchBlur}
                                     trailing_icon={
                                         search ?
                                             (is_search_loading ?
@@ -311,6 +313,7 @@ Toolbar.propTypes = {
     onResetClick           : PropTypes.func,
     onRunClick             : PropTypes.func,
     onSearch               : PropTypes.func,
+    onSearchBlur           : PropTypes.func,
     onSearchClear          : PropTypes.func,
     onSearchKeyUp          : PropTypes.func,
     onSortClick            : PropTypes.func,
@@ -336,6 +339,7 @@ export default connect(({ run_panel, saveload, toolbar }) => ({
     onResetClick           : toolbar.onResetClick,
     onRunClick             : toolbar.onRunClick,
     onSearch               : toolbar.onSearch,
+    onSearchBlur           : toolbar.onSearchBlur,
     onSearchClear          : toolbar.onSearchClear,
     onSearchKeyUp          : toolbar.onSearchKeyUp,
     onSortClick            : toolbar.onSortClick,

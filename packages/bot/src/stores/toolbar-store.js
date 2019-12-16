@@ -12,6 +12,7 @@ export default class ToolbarStore {
     @observable is_dialog_open = false;
     @observable is_toolbox_open = false;
     @observable is_search_loading = false;
+    @observable is_search_focus = false;
     @observable file_name = localize('Untitled Bot');
 
     typing_timer;
@@ -63,8 +64,14 @@ export default class ToolbarStore {
             this.onToolboxToggle();
         }
 
+        this.is_search_focus = true;
         // eslint-disable-next-line no-underscore-dangle
         Blockly.derivWorkspace.toolbox_.showSearch(search);
+    }
+
+    @action.bound
+    onSearchBlur() {
+        this.is_search_focus = false;
     }
 
     onSearchClear = (setFieldValue) => {

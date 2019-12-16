@@ -3,9 +3,6 @@
     --fill-color2: var(--text-less-prominent);
     --fill-color3: var(--general-section-1);
 
-    &:hover:not(&--active):not(&--disabled):not(&--red):not(&--green):not(&--brand) {
-        --fill-color1: var(--text-prominent);
-    }
     &--disabled {
         --fill-color1: var(--text-disabled);
         --fill-color2: var(--text-disabled);

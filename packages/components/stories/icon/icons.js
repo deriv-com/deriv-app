@@ -33,7 +33,7 @@ export const icons =
         'IcArrowLeftBold',
         'IcArrowLeft',
         'IcArrowPointerRight',
-        'IcArrowLeftBold',
+        'IcArrowRightBold',
         'IcArrowRight',
         'IcArrowUp',
         'IcBank',

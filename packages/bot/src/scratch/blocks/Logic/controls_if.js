@@ -227,6 +227,14 @@ Blockly.Blocks.controls_if = {
 
         return new Blockly.FieldImage(minusIconDark, 24, 24, '-', onRemoveClick.bind(this));
     },
+    getRequiredValueInputs() {
+        const required_inputs = {};
+        this.inputList
+            .filter(input => /^IF[0-9]*?$/.test(input.name))
+            .forEach(input => required_inputs[input.name] = null);
+
+        return required_inputs;
+    },
 };
 
 Blockly.JavaScript.controls_if = block => {

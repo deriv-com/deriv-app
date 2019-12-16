@@ -1,3 +1,4 @@
+import throttle                    from 'lodash.throttle';
 import {
     action,
     computed,
@@ -34,6 +35,8 @@ export default class PortfolioStore extends BaseStore {
 
     subscribers = {};
 
+    @observable active_positions = [];
+    @observable active_positions_totals = {};
     @observable active_positions_drawer_dialog_id = null;
 
     @action.bound
@@ -129,10 +132,12 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
-    updateTradeStore(is_over, portfolio_position) {
+    updateTradeStore(is_over, portfolio_position, is_limit_order_update) {
         const trade = this.root_store.modules.trade;
-        trade.setPurchaseSpotBarrier(is_over, portfolio_position);
-        trade.toggleLimitOrderBarriers(is_over, portfolio_position);
+        if (!is_limit_order_update) {
+            trade.setPurchaseSpotBarrier(is_over, portfolio_position);
+        }
+        trade.updateLimitOrderBarriers(is_over, portfolio_position);
     }
 
     @action.bound
@@ -186,9 +191,15 @@ export default class PortfolioStore extends BaseStore {
             portfolio_position.status = null;
         }
 
-        if (this.hovered_position_id  === portfolio_position.id && portfolio_position.contract_info.is_sold) {
-            this.updateTradeStore(false, portfolio_position);
+        if (this.hovered_position_id  === portfolio_position.id) {
+            if (portfolio_position.contract_info.is_sold === 1) {
+                this.updateTradeStore(false, portfolio_position);
+            } else {
+                this.updateTradeStore(true, portfolio_position, true);
+            }
         }
+
+        this.throttledSetActivePositions();
     }
 
     @action.bound
@@ -391,8 +402,15 @@ export default class PortfolioStore extends BaseStore {
         };
     }
 
-    @computed
-    get active_positions_totals() {
+    @action.bound
+    setActivePositions() {
+        this.active_positions = this.positions.filter(portfolio_pos => !getEndTime(portfolio_pos.contract_info));
+        this.active_positions_totals = this.get_active_positions_totals();
+    }
+
+    throttledSetActivePositions = throttle(this.setActivePositions, 300);
+
+    get_active_positions_totals() {
         let indicative = 0;
         let purchase   = 0;
 
@@ -404,11 +422,6 @@ export default class PortfolioStore extends BaseStore {
             indicative,
             purchase,
         };
-    }
-
-    @computed
-    get active_positions() {
-        return this.positions.filter(portfolio_pos => !getEndTime(portfolio_pos.contract_info));
     }
 
     @computed

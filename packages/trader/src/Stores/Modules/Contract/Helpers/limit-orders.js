@@ -21,15 +21,23 @@ export const setLimitOrderBarriers = ({
     is_over,
 }) => {
     if (is_over && isLimitOrderBarrierSupported(contract_type, contract_info)) {
-        const limit_orders = Object.keys(contract_info.limit_order);
-        const has_stop_loss = limit_orders.some((l) => l === LIMIT_ORDER_TYPES.STOP_LOSS);
+        const limit_orders = Object.values(LIMIT_ORDER_TYPES);
+        const has_stop_loss = Object.keys(contract_info.limit_order)
+            .some((k) => k === LIMIT_ORDER_TYPES.STOP_LOSS && contract_info.limit_order[k].value);
 
-        limit_orders.forEach((key)=>{
+        limit_orders.forEach((key) => {
             const obj_limit_order = contract_info.limit_order[key];
+
+            if (!obj_limit_order || !obj_limit_order.value) {
+                removeBarrier(barriers, key);
+                return;
+            }
 
             let barrier  = barriers.find((b)=>b.key === key);
 
             if (barrier) {
+                if (barrier.high === +obj_limit_order.value) { return; }
+
                 barrier.onChange({
                     high: obj_limit_order.value,
                 });

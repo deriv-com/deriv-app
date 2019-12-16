@@ -40,10 +40,10 @@ Blockly.Blocks.input_list = {
             setParentId();
 
             const surround_parent   = this.getSurroundParent();
-            const has_no_parent     = !surround_parent;
-            const is_illegal_parent = surround_parent.id !== this.required_parent_id;
+            const has_parent        = !!surround_parent;
+            const is_illegal_parent = !has_parent || surround_parent.id !== this.required_parent_id;
 
-            if (has_no_parent || is_illegal_parent) {
+            if (!has_parent || is_illegal_parent) {
                 runIrreversibleEvents(() => {
                     this.unplug(true);
 
@@ -72,6 +72,11 @@ Blockly.Blocks.input_list = {
         'sma_statement',
         'smaa_statement',
     ],
+    getRequiredValueInputs() {
+        return {
+            INPUT_LIST: null,
+        };
+    },
 };
 
 Blockly.JavaScript.input_list = () => {};

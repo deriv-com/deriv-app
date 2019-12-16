@@ -5,7 +5,7 @@ import { reaction }        from 'mobx';
 import { contract_stages } from '../constants/contract-stage';
 import { message_types }   from '../constants/messages';
 
-const firestore = (() => {
+const Firestore = (() => {
 
     let db, users, doc_id, root_store;
 
@@ -151,4 +151,4 @@ const firestore = (() => {
     };
 })();
 
-export default firestore;
+export default Firestore;

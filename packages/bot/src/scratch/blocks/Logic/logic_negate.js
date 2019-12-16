@@ -28,6 +28,11 @@ Blockly.Blocks.logic_negate = {
             'description' : localize('This block converts the boolean value (true or false) to its opposite.'),
         };
     },
+    getRequiredValueInputs() {
+        return {
+            BOOL: null,
+        };
+    },
 };
 
 Blockly.JavaScript.logic_negate = block => {

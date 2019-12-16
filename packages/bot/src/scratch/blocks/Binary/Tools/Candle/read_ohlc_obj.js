@@ -34,6 +34,11 @@ Blockly.Blocks.read_ohlc_obj = {
             'description' : localize('This block gives you the selected candle value.'),
         };
     },
+    getRequiredValueInputs() {
+        return {
+            OHLCOBJ: null,
+        };
+    },
 };
 
 Blockly.JavaScript.read_ohlc_obj = block => {

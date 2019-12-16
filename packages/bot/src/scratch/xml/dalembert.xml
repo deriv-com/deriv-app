@@ -33,18 +33,10 @@
                     <field name="CANDLEINTERVAL_LIST">60</field>
                     <next>
                       <block type="trade_definition_restartbuysell" id="gAd13y{LVy%s4(hqgmfB" deletable="false" movable="false">
-                        <value name="TIME_MACHINE_ENABLED">
-                          <shadow type="logic_boolean" id="x3tH(g[9.9ZMla{mth5G">
-                            <field name="BOOL">FALSE</field>
-                          </shadow>
-                        </value>
+                        <field name="TIME_MACHINE_ENABLED">FALSE</field>
                         <next>
                           <block type="trade_definition_restartonerror" id="*aUzV1ENk`-z`9hg_Apk" deletable="false" movable="false">
-                            <value name="RESTARTONERROR">
-                              <shadow type="logic_boolean" id="{I$H!Zhz#+SV{61u7ppa">
-                                <field name="BOOL">FALSE</field>
-                              </shadow>
-                            </value>
+                            <field name="RESTARTONERROR">TRUE</field>
                           </block>
                         </next>
                       </block>

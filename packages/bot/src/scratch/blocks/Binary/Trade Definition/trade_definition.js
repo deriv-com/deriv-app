@@ -137,30 +137,30 @@ Blockly.JavaScript.trade_definition = block => {
         throw new Error('Please login'); // TEMP.
     }
 
-    const { loginid }               = client;
-    const account                   = client.getToken(loginid);
+    const { loginid }                = client;
+    const account                    = client.getToken(loginid);
+    
+    const market_block               = block.getChildByType('trade_definition_market');
+    const trade_type_block           = block.getChildByType('trade_definition_tradetype');
+    const contract_type_block        = block.getChildByType('trade_definition_contracttype');
+    const candle_interval_block      = block.getChildByType('trade_definition_candleinterval');
+    const restart_on_error_block     = block.getChildByType('trade_definition_restartonerror');
+    const restart_on_buy_sell_block  = block.getChildByType('trade_definition_restartbuysell');
 
-    const market_block              = block.getChildByType('trade_definition_market');
-    const trade_type_block          = block.getChildByType('trade_definition_tradetype');
-    const contract_type_block       = block.getChildByType('trade_definition_contracttype');
-    const candle_interval_block     = block.getChildByType('trade_definition_candleinterval');
-    const restart_on_error_block    = block.getChildByType('trade_definition_restartonerror');
-    const restart_on_buy_sell_block = block.getChildByType('trade_definition_restartbuysell');
+    const symbol                     = market_block.getFieldValue('SYMBOL_LIST');
+    const trade_type                 = trade_type_block.getFieldValue('TRADETYPE_LIST');
+    const contract_type              = contract_type_block.getFieldValue('TYPE_LIST');
+    const candle_interval            = candle_interval_block.getFieldValue('CANDLEINTERVAL_LIST');
+    const should_restart_on_error    = restart_on_error_block.getFieldValue('RESTARTONERROR');
+    const should_restart_on_buy_sell = restart_on_buy_sell_block.getFieldValue('TIME_MACHINE_ENABLED');
 
-    const symbol                    = market_block.getFieldValue('SYMBOL_LIST');
-    const trade_type                = trade_type_block.getFieldValue('TRADETYPE_LIST');
-    const contract_type             = contract_type_block.getFieldValue('TYPE_LIST');
-    const candle_interval           = candle_interval_block.getFieldValue('CANDLEINTERVAL_LIST');
-    const should_restart_on_error   = Blockly.JavaScript.valueToCode(restart_on_error_block, 'RESTARTONERROR', Blockly.JavaScript.ORDER_ATOMIC);
-    const should_restart_on_buysell = Blockly.JavaScript.valueToCode(restart_on_buy_sell_block, 'TIME_MACHINE_ENABLED', Blockly.JavaScript.ORDER_ATOMIC);
-
-    const { opposites }             = config;
-    const contract_type_list        = contract_type === 'both'
+    const { opposites }              = config;
+    const contract_type_list         = contract_type === 'both'
         ? opposites[trade_type.toUpperCase()].map(opposite => Object.keys(opposite)[0])
         : [contract_type];
 
-    const initialization            = Blockly.JavaScript.statementToCode(block, 'INITIALIZATION');
-    const trade_options_statement   = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
+    const initialization             = Blockly.JavaScript.statementToCode(block, 'INITIALIZATION');
+    const trade_options_statement    = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
 
     const code = `  
     BinaryBotPrivateInit = function BinaryBotPrivateInit() {
@@ -168,8 +168,8 @@ Blockly.JavaScript.trade_definition = block => {
           symbol              : '${symbol}',
           contractTypes       : ${JSON.stringify(contract_type_list)},
           candleInterval      : '${candle_interval || 'FALSE'}',
-          shouldRestartOnError: ${should_restart_on_error || 'FALSE'},
-          timeMachineEnabled  : ${should_restart_on_buysell || 'FALSE'},
+          shouldRestartOnError: '${should_restart_on_error}',
+          timeMachineEnabled  : '${should_restart_on_buy_sell}',
         });
         ${initialization.trim()}
     };

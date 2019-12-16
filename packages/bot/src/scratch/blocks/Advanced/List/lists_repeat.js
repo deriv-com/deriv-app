@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../../utils';
 
 Blockly.Blocks.lists_repeat = {
     init() {
@@ -30,6 +31,12 @@ Blockly.Blocks.lists_repeat = {
         return {
             'display_name': localize('Repeat an item'),
             'description' : localize('Creates a list with a given item repeated for a specific number of times.'),
+        };
+    },
+    getRequiredValueInputs() {
+        return {
+            ITEM: emptyTextValidator,
+            NUM : emptyTextValidator,
         };
     },
 };

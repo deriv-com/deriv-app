@@ -1,0 +1,74 @@
+.my-profile {
+    padding: 2.4rem;
+
+    &__name {
+        color: var(--text-general);
+        font-size: var(--text-size-s);
+        font-weight: bold;
+        margin-bottom: 2.4rem;
+    }
+
+    &__data {
+        border: 1px solid var(--border-normal);
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 1.6rem 0;
+    }
+
+    &__cell {
+        border-left: 1px solid var(--border-normal);
+        display: flex;
+        flex-direction: column;
+        padding: 0 3.2rem;
+
+        &:first-child {
+            border: none;
+        }
+
+        &-title {
+            color: var(--text-less-prominent);
+            // TODO: Change this to css variable when this font-size added:
+            font-size: 1rem;
+            position: relative;
+            transform: translateY(50%);
+        }
+
+        &-data {
+            display: flex;
+
+            &-main {
+                color: var(--text-general);
+                font-size: var(--text-size-l);
+                font-weight: bold;
+                line-height: 1.25;
+                margin-right: 0.8rem;
+
+            }
+
+            &-dimension {
+                font-size: var(--text-size-s);
+                line-height: 1.5;
+            }
+
+            &-sub{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+
+                &-upper {
+                    color: var(--text-profit-success);
+                    // TODO: Change this to css variable when this font-size added:
+                    font-size: 1rem;
+                }
+
+                &-lower {
+                    color: var(--text-loss-danger);
+                    // TODO: Change this to css variable when this font-size added:
+                    font-size: 1rem;
+                }
+            }
+        }
+    }
+}

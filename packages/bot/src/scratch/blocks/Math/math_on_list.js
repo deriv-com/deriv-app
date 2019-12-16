@@ -42,6 +42,11 @@ Blockly.Blocks.math_on_list = {
             'description' : localize('This block performs the following operations on a given list: sum, minimum, maximum, average, median, modes, standard deviation, random item.'),
         };
     },
+    getRequiredValueInputs() {
+        return {
+            LIST: null,
+        };
+    },
 };
 
 /* eslint-disable no-underscore-dangle */

@@ -2,14 +2,40 @@ import classNames            from 'classnames';
 import {
     Desktop,
     Money,
-    Popover }                from 'deriv-components';
+    Mobile,
+    Popover,
+}                            from 'deriv-components';
 import PropTypes             from 'prop-types';
 import React                 from 'react';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
 import { localize }          from 'deriv-translations';
 import Icon                  from 'Assets/icon.jsx';
 
-const ContractInfo = ({
+const ValueMovement = ({
+    has_error_or_not_loaded,
+    proposal_info,
+    currency,
+    has_increased,
+}) => (
+    <React.Fragment>
+        <div className='trade-container__price-info-value'>
+            {!has_error_or_not_loaded &&
+            <Money
+                amount={proposal_info.obj_contract_basis.value}
+                className='trade-container__price-info-currency'
+                currency={currency}
+            />
+            }
+        </div>
+        <div className='trade-container__price-info-movement'>
+            {(!has_error_or_not_loaded && has_increased !== null) &&
+            <Icon icon='IconPriceMove' type={has_increased ? 'profit' : 'loss'} />
+            }
+        </div>
+    </React.Fragment>
+);
+
+const ContractInfo     = ({
     basis,
     currency,
     has_increased,
@@ -19,7 +45,7 @@ const ContractInfo = ({
     type,
 }) => {
     const localized_basis = getLocalizedBasis();
-    const stakeOrPayout = () => {
+    const stakeOrPayout   = () => {
         switch (basis) {
             case 'stake':
                 return localized_basis.payout;
@@ -41,7 +67,8 @@ const ContractInfo = ({
                         'trade-container__price-info--disabled': has_error_or_not_loaded,
                         'trade-container__price-info--slide'   : is_loading && !should_fade,
                         'trade-container__price-info--fade'    : is_loading && should_fade,
-                    })}
+                    },
+                )}
             >
                 <div className='trade-container__price-info-basis'>
                     {has_error_or_not_loaded
@@ -49,16 +76,24 @@ const ContractInfo = ({
                         : localize('{{value}}', { value: proposal_info.obj_contract_basis.text })
                     }
                 </div>
-                <div className='trade-container__price-info-value'>
-                    {!has_error_or_not_loaded &&
-                    <Money amount={proposal_info.obj_contract_basis.value} className='trade-container__price-info-currency' currency={currency} />
-                    }
-                </div>
-                <div className='trade-container__price-info-movement'>
-                    {(!has_error_or_not_loaded && has_increased !== null) &&
-                        <Icon icon='IconPriceMove' type={has_increased ? 'profit' : 'loss'} />
-                    }
-                </div>
+                <Desktop>
+                    <ValueMovement
+                        has_error_or_not_loaded={has_error_or_not_loaded}
+                        proposal_info={proposal_info}
+                        currency={currency}
+                        has_increased={has_increased}
+                    />
+                </Desktop>
+                <Mobile>
+                    <div className='trade-container__price-info-wrapper'>
+                        <ValueMovement
+                            has_error_or_not_loaded={has_error_or_not_loaded}
+                            proposal_info={proposal_info}
+                            currency={currency}
+                            has_increased={has_increased}
+                        />
+                    </div>
+                </Mobile>
             </div>
             <Desktop>
                 <Popover
@@ -66,7 +101,7 @@ const ContractInfo = ({
                     icon='info'
                     id={`dt_purchase_${type.toLowerCase()}_info`}
                     margin={210}
-                    message={has_error_or_not_loaded ? '' : proposal_info.message }
+                    message={has_error_or_not_loaded ? '' : proposal_info.message}
                 />
             </Desktop>
         </div>

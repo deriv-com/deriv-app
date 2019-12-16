@@ -52,6 +52,9 @@
         background-color: var(--general-section-1);
         border-color: var(--general-section-1);
         color: var(--text-general);
+        @include mobile {
+            padding: 0;
+        }
 
         &-header {
             height: 1.5rem;
@@ -140,10 +143,18 @@
             display: flex;
             justify-self: left;
             align-items: center;
+
             @include mobile {
                 color: var(--text-colored-background);
+                width: 100%;
+                justify-content: space-between;
+                align-items: center;
+                &-wrapper {
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                }
             }
-
             &--slide {
                 width: 92px;
                 height: 8px;
@@ -289,14 +300,9 @@
     position: relative;
 
     @include mobile {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        & fieldset {
-            flex-grow: 1;
-            max-width: 50%;
-        }
+        display: grid;
+        grid-template-areas: "a b";
+        grid-column-gap: 0.5rem;
     }
 
     &__option {
@@ -320,6 +326,9 @@
                     margin-top: -4px;
                 }
             }
+        }
+        @include mobile {
+            padding: initial;
         }
     }
     &__loading {

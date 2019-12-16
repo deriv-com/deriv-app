@@ -1,6 +1,7 @@
 import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
+import { Desktop }         from 'deriv-components';
 import Icon                from 'Assets/icon.jsx';
 import ContractTypeDialog  from './contract-type-dialog.jsx';
 import ContractTypeList    from './contract-type-list.jsx';
@@ -158,12 +159,14 @@ class ContractTypeWidget extends React.PureComponent {
                     <span name={name} value={value}>
                         {this.getDisplayText()}
                     </span>
-                    <Icon
-                        icon='IconArrow'
-                        className={classNames(
-                          'contract-type-widget__select-arrow',
-                          'contract-type-widget__select-arrow--left')}
-                    />
+                    <Desktop>
+                        <Icon
+                            icon='IconArrow'
+                            className={classNames(
+                              'contract-type-widget__select-arrow',
+                              'contract-type-widget__select-arrow--left')}
+                        />
+                    </Desktop>
                 </div>
 
                 <ContractTypeDialog

@@ -37,6 +37,9 @@
         &__top {
             width: 50%;
         }
+        &__bottom {
+            width: 40vw; // TODO remove this when find a solution for fill-width inside flex.
+        }
     }
 
     &__icon_wrapper {
@@ -48,6 +51,9 @@
         /* postcss-bem-linter: ignore */
         .color2-fill {
             fill: var(--text-colored-background);
+        }
+        @include mobile {
+            margin-right: .5rem;
         }
     }
     &__text {

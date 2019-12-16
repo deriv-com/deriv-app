@@ -8,9 +8,7 @@ import 'Sass/app/_common/mobile-widget.scss';
 const ScreenSmall = (/* { is_trade_enabled } */) => (
     <React.Fragment>
         <ContractType />
-        <div className='mobile-only'>
-            <MobileWidget />
-        </div>
+        <MobileWidget />
         <div className='purchase-container'>
             <Purchase />
         </div>

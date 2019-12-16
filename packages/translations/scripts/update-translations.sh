@@ -5,7 +5,7 @@ YELLOW='\033[0;33m'
 WHITE='\033[1;37m'
 RESET='\033[0m'
 GIT_USERNAME=$(git config user.name)
-NEW_TRANSLATION_BRANCH='add_translations'
+NEW_TRANSLATION_BRANCH='deriv_app_translations'
 
 if ! [ -x "$(command -v crowdin)" ]; then
     if [ -f /usr/local/bin/crowdin-cli.jar ]; then
@@ -31,11 +31,11 @@ function confirm {
     echo "${RESET}"
 }
 
-message "Checkout dev" &&
-git checkout dev &&
-message "Updating dev" &&
-git fetch upstream dev &&
-git reset --hard upstream/dev &&
+message "Updating deriv app translations branch" &&
+git branch -D ${NEW_TRANSLATION_BRANCH} &&
+git push origin --delete ${NEW_TRANSLATION_BRANCH}
+git checkout -b ${NEW_TRANSLATION_BRANCH} &&
+git pull upstream dev &&
 
 confirm "Update the source file (messages.json) and push to Crowdin?" &&
 if [[ $REPLY =~ ^[Yy]$ ]]
@@ -47,3 +47,22 @@ then
     cd $(git rev-parse --show-toplevel) && git checkout packages/translations/crowdin/messages.json
     message "Complete, new translations have been uploaded to Crowdin"
 fi
+
+confirm "Download deriv app files and update javascript texts?" &&
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    message "Downloading deriv app files from Crowdin (*.json)" &&
+    crowdin download
+fi &&
+
+confirm "Commit changes and push to origin?" &&
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    cd $(git rev-parse --show-toplevel) &&
+    message "Committing"
+    git commit -a -m "Update deriv app translations" &&
+    message "Pushing"
+    git push -u origin ${NEW_TRANSLATION_BRANCH}
+fi &&
+
+echo ${GREEN}"\nSuccessfully Done."

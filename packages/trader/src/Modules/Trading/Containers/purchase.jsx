@@ -9,7 +9,7 @@ const Purchase = ({
     basis,
     contract_type,
     currency,
-    deal_cancellation,
+    has_deal_cancellation,
     is_client_allowed_to_visit,
     is_multiplier,
     // is_purchase_confirm_on,
@@ -50,7 +50,7 @@ const Purchase = ({
                 info={info}
                 key={index}
                 index={getSortedIndex()}
-                deal_cancellation={deal_cancellation}
+                has_deal_cancellation={has_deal_cancellation}
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={isLoading(info)}
@@ -87,7 +87,7 @@ const Purchase = ({
 Purchase.propTypes = {
     basis                     : PropTypes.string,
     currency                  : PropTypes.string,
-    deal_cancellation         : PropTypes.bool,
+    has_deal_cancellation     : PropTypes.bool,
     is_client_allowed_to_visit: PropTypes.bool,
     is_multiplier             : PropTypes.bool,
     // is_purchase_confirm_on    : PropTypes.bool,
@@ -110,7 +110,7 @@ export default connect(
         is_client_allowed_to_visit: client.is_client_allowed_to_visit,
         basis                     : modules.trade.basis,
         contract_type             : modules.trade.contract_type,
-        deal_cancellation         : modules.trade.deal_cancellation,
+        has_deal_cancellation     : modules.trade.has_deal_cancellation,
         is_trade_enabled          : modules.trade.is_trade_enabled,
         is_multiplier             : modules.trade.is_multiplier,
         onClickPurchase           : modules.trade.onPurchase,

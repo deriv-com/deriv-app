@@ -20,8 +20,8 @@ class PurchaseFieldset extends React.PureComponent {
         const {
             basis,
             buy_info,
-            cancel_deal,
             currency,
+            has_deal_cancellation,
             // index,
             info,
             index,
@@ -76,9 +76,9 @@ class PurchaseFieldset extends React.PureComponent {
                 >
                     <ContractInfo
                         basis={basis}
-                        cancel_deal={cancel_deal}
                         currency={currency}
                         proposal_info={info}
+                        has_deal_cancellation={has_deal_cancellation}
                         has_increased={info.has_increased}
                         is_loading={is_loading}
                         is_multiplier={is_multiplier}
@@ -135,25 +135,26 @@ class PurchaseFieldset extends React.PureComponent {
 }
 
 PurchaseFieldset.propTypes = {
-    basis               : PropTypes.string,
-    buy_info            : PropTypes.object,
-    currency            : PropTypes.string,
-    index               : PropTypes.number,
-    info                : PropTypes.object,
-    is_disabled         : PropTypes.bool,
-    is_high_low         : PropTypes.bool,
-    is_loading          : PropTypes.bool,
-    is_multiplier       : PropTypes.bool,
-    is_proposal_empty   : PropTypes.bool,
-    is_proposal_error   : PropTypes.bool,
-    onClickPurchase     : PropTypes.func,
+    basis                : PropTypes.string,
+    buy_info             : PropTypes.object,
+    currency             : PropTypes.string,
+    has_deal_cancellation: PropTypes.bool,
+    index                : PropTypes.number,
+    info                 : PropTypes.object,
+    is_disabled          : PropTypes.bool,
+    is_high_low          : PropTypes.bool,
+    is_loading           : PropTypes.bool,
+    is_multiplier        : PropTypes.bool,
+    is_proposal_empty    : PropTypes.bool,
+    is_proposal_error    : PropTypes.bool,
+    onClickPurchase      : PropTypes.func,
     // is_purchase_confirm_on: PropTypes.bool,
     // is_purchase_locked    : PropTypes.bool,
-    onHoverPurchase     : PropTypes.func,
-    purchased_states_arr: PropTypes.array,
+    onHoverPurchase      : PropTypes.func,
+    purchased_states_arr : PropTypes.array,
     // togglePurchaseLock    : PropTypes.func,
-    setPurchaseState    : PropTypes.func,
-    type                : PropTypes.string,
+    setPurchaseState     : PropTypes.func,
+    type                 : PropTypes.string,
 };
 
 export default PurchaseFieldset;

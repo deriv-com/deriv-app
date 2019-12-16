@@ -10,9 +10,22 @@ const StopLoss = ({
     has_stop_loss,
     is_single_currency,
     onChange,
+    onChangeMultiple,
     stop_loss,
     validation_errors,
 }) => {
+    const changeValue = (e) => {
+        if (e.target.name === 'has_stop_loss') {
+            const new_val = e.target.value;
+            onChangeMultiple({
+                [e.target.name]: new_val,
+                ...(new_val ? { has_deal_cancellation: false } : {}),
+            });
+        } else {
+            onChange(e);
+        }
+    };
+
     return (
         <Fieldset className='trade-container__fieldset'>
             <InputWithCheckbox
@@ -26,7 +39,7 @@ const StopLoss = ({
                 is_negative_disabled={true}
                 label={localize('Stop loss')}
                 name='stop_loss'
-                onChange={onChange}
+                onChange={changeValue}
                 tooltip_label={localize('Your contract is closed automatically when your loss is more than or equals to this amount.')}
                 value={stop_loss}
             />
@@ -39,6 +52,7 @@ StopLoss.propTypes = {
     has_stop_loss     : PropTypes.bool,
     is_single_currency: PropTypes.bool,
     onChange          : PropTypes.func,
+    onChangeMultiple  : PropTypes.func,
     stop_loss         : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
@@ -51,6 +65,7 @@ export default connect(({ modules, client }) => ({
     currency          : modules.trade.currency,
     has_stop_loss     : modules.trade.has_stop_loss,
     onChange          : modules.trade.onChange,
+    onChangeMultiple  : modules.trade.onChangeMultiple,
     stop_loss         : modules.trade.stop_loss,
     validation_errors : modules.trade.validation_errors,
 }))(StopLoss);

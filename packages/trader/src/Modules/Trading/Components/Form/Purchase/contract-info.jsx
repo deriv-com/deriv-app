@@ -53,8 +53,8 @@ const CancelDealInfo = ({
 
 const ContractInfo = ({
     basis,
-    cancel_deal,
     currency,
+    has_deal_cancellation,
     has_increased,
     is_loading,
     is_multiplier,
@@ -95,7 +95,7 @@ const ContractInfo = ({
                         'trade-container__price-info--fade'    : is_loading && should_fade,
                     })}
             >
-                {is_multiplier && cancel_deal && deal_cancellation ?
+                {is_multiplier && has_deal_cancellation && deal_cancellation ?
                     <CancelDealInfo
                         amount={deal_cancellation.ask_price}
                         currency={currency}

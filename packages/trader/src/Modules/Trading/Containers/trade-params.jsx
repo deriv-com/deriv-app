@@ -49,8 +49,8 @@ class TradeParams extends React.Component {
                     <StopLoss key={'stop_loss'} />
                 }
                 {
-                    this.isVisible('cancel_deal') &&
-                    <CancelDeal key={'cancel_deal'} />
+                    this.isVisible('deal_cancellation') &&
+                    <CancelDeal key={'deal_cancellation'} />
                 }
             </React.Fragment>
         );

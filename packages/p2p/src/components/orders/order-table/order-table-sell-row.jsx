@@ -2,7 +2,6 @@ import { Table }                  from 'deriv-components';
 import PropTypes                  from 'prop-types';
 import React                      from 'react';
 import { localize }               from 'Components/i18next';
-import { getFormattedDateString } from 'Utils/date-time';
 
 const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
     const {

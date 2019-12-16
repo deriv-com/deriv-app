@@ -20,7 +20,7 @@ const Orders = ({ params }) => {
         // Clear details when unmounting
         return () => {
             setDetails(null);
-        }
+        };
     }, []);
 
     return (

@@ -83,7 +83,7 @@ class Popup extends Component {
                                                             }
                                                             label={localize('I have received {{currency}} {{price}}', {
                                                                 currency: offer.asset,
-                                                                price: offer.fix_price,
+                                                                price   : offer.fix_price,
                                                             })}
                                                             classNameLabel='orders__popup-field_text'
                                                         />
@@ -100,7 +100,7 @@ class Popup extends Component {
                                         >
                                             {localize('Release {{currency}} {{price}}', {
                                                 currency: offer.currency,
-                                                price: offer.amount,
+                                                price   : offer.amount,
                                             })}
                                         </Button>
                                     </div>

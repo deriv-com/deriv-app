@@ -7,6 +7,17 @@ export const getFormattedDateString = (date_obj) => {
     return `${day} ${month} ${year} ${time}`;
 };
 
+export const getLocalUnix = (epoch) => {
+    if (typeof epoch !== "number") throw Error('getLocalEpoch argument needs a number');
+
+    const current_date = new Date();
+    const timezone_offset = current_date.getTimezoneOffset();
+    const local_epoch = epoch + timezone_offset;
+    const local_unix = local_epoch * 1000;
+
+    return local_unix;
+}
+
 export const millisecondsToTimer = (milliseconds) => {
     const length = 2;
     const pad = '0';

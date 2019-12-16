@@ -1,5 +1,8 @@
-import CurrencyUtils from 'deriv-shared/utils/currency';
-import ObjectUtils   from 'deriv-shared/utils/object';
+import CurrencyUtils         from 'deriv-shared/utils/currency';
+import ObjectUtils           from 'deriv-shared/utils/object';
+import {
+    getLocalUnix,
+    getFormattedDateString } from 'Utils/date-time';
 
 let ws;
 let is_agent = false;
@@ -83,7 +86,7 @@ const getModifiedP2POrder = (response) => {
 
     modified_response.offer_amount               = +response.amount;
     modified_response.display_offer_amount       = formatMoney(response.account_currency, response.amount);
-    modified_response.order_purchase_datetime    = new Date(response.created_time); // TOOD: [p2p-api-request] API should give epoch
+    modified_response.order_purchase_datetime    = getFormattedDateString(new Date(getLocalUnix(response.created_time)));
     modified_response.advertiser_notes           = response.description;
     modified_response.order_id                   = response.order_id;
     modified_response.offer_currency             = response.account_currency;

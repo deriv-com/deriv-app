@@ -44,6 +44,8 @@
         margin-right: 0.8rem;
     }
     &__id {
+        pointer-events: none;
+
         &-icon {
             vertical-align: middle;
             margin-right: 0.8rem;

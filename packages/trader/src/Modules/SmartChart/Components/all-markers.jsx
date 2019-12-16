@@ -157,10 +157,36 @@ const shadowed_text = ({ ctx, is_dark_theme, text, left, top, scale }) => {
     }
 };
 
+const drawTickBarrier = ({
+    start,
+    entry,
+    exit,
+    barrier,
+    ctx,
+    color,
+    opacity,
+}) => {
+    if (start.visible || entry.visible || exit.visible) {
+        ctx.strokeStyle = color + opacity;
+        ctx.beginPath();
+        ctx.setLineDash([1, 1]);
+        ctx.moveTo(start.left, barrier);
+        ctx.lineTo(entry.left, barrier);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.setLineDash([]);
+        ctx.moveTo(entry.left, barrier);
+        ctx.lineTo(exit.left, barrier);
+        ctx.stroke();
+        ctx.strokeStyle = color;
+    }
+};
+
 const TickContract = RawMarkerMaker(({
     ctx: context,
-    points: [start, ...ticks],
-    prices: [barrier], // TODO: support two barrier contracts
+    points: [start, reset_time, ...ticks],
+    prices: [barrier, entry_tick_top], // TODO: support two barrier contracts
     is_last_contract,
     is_dark_theme,
     granularity,
@@ -218,24 +244,32 @@ const TickContract = RawMarkerMaker(({
     }
     const entry = ticks[0];
     const exit = ticks[ticks.length - 1];
+    const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
+    const has_reset_time = reset_time && reset_time.epoch;
 
     // barrier line
-    const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
-    if (start.visible || entry.visible || exit.visible) {
-        ctx.strokeStyle = color + opacity;
-        ctx.beginPath();
-        ctx.setLineDash([1, 1]);
-        ctx.moveTo(start.left, barrier);
-        ctx.lineTo(entry.left, barrier);
-        ctx.stroke();
+    drawTickBarrier({
+        start,
+        entry  : ticks[0],
+        exit   : has_reset_time ? reset_time : exit,
+        ctx,
+        barrier: has_reset_time ? entry_tick_top : barrier,
+        opacity,
+        color,
+    });
 
-        ctx.beginPath();
-        ctx.setLineDash([]);
-        ctx.moveTo(entry.left, barrier);
-        ctx.lineTo(exit.left, barrier);
-        ctx.stroke();
-        ctx.strokeStyle = color;
+    if (has_reset_time) {
+        drawTickBarrier({
+            start: reset_time,
+            entry: reset_time,
+            exit,
+            ctx,
+            barrier,
+            opacity,
+            color,
+        });
     }
+
     // ticks for last contract
     if (is_last_contract && granularity === 0 && !is_sold) {
         ticks

@@ -144,6 +144,7 @@ function calculate_marker(contract_info) {
         barrier,
         high_barrier,
         low_barrier,
+        reset_time,
     } = contract_info;
     const ticks_epoch_array = tick_stream ? tick_stream.map(t => t.epoch) : [];
     const is_digit_contract = isDigitContract(contract_type);
@@ -182,7 +183,7 @@ function calculate_marker(contract_info) {
                 contract_info: toJS(contract_info),
                 type         : 'TickContract',
                 key          : `${contract_id}-date_start`,
-                epoch_array  : [date_start, ...ticks_epoch_array],
+                epoch_array  : [date_start, reset_time || 0, ...ticks_epoch_array],
                 price_array,
             };
         }

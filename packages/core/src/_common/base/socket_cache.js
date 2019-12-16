@@ -30,7 +30,6 @@ const SocketCache = (() => {
         active_symbols        : { expire: 10 },
         contracts_for         : { expire: 10 },
         exchange_rates        : { expire: 60 },
-        ticks_history         : { expire: 10 },
         trading_times         : { expire: 120 },
         // TODO: Enable statement and profit table caching once we have UI design for handling
         // transitions between cached table and newly added data to table
@@ -47,30 +46,8 @@ const SocketCache = (() => {
         candles: 'ticks_history',
     };
 
-    const isMarketClosed = (active_symbols = [], symbol) => {
-        if (!active_symbols.length) return false;
-        return (active_symbols.filter(x => x.symbol === symbol)[0]) ?
-            !active_symbols.filter(symbol_info => symbol_info.symbol === symbol)[0].exchange_is_open
-            :
-            false;
-    };
-
     const set = (key, response) => {
         const msg_type = msg_type_mapping[response.msg_type] || response.msg_type;
-
-        // Excluding closed markets from caching once we have ws_cache and active_symbols cache set up
-        const ws_cache = JSON.parse(localStorage.getItem('ws_cache'));
-        const active_symbols_obj = 'active_symbols';
-
-        if (!ObjectUtils.isEmptyObject(ws_cache)) {
-            if (msg_type === 'ticks_history' && !ObjectUtils.isEmptyObject(ws_cache[active_symbols_obj])) {
-                const active_symbols = ws_cache[active_symbols_obj].value.active_symbols;
-                const curr_symbol    = response.echo_req.ticks_history;
-                if (isMarketClosed(active_symbols, curr_symbol)) {
-                    return;
-                }
-            }
-        }
 
         // check if response has subscription, since we only want to cache non-streaming responses
         if (response.subscription || (response.echo_req.end === 'latest')) return;
@@ -94,7 +71,6 @@ const SocketCache = (() => {
 
         if ((has_error_or_missing || has_new_value || has_old_cache) && has_valid_cache) {
             clear();
-            // window.location.reload();
             return;
         }
 

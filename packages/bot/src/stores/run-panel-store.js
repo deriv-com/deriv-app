@@ -15,10 +15,11 @@ import {
     stopBot,
     terminateBot,
 }                                      from '../scratch';
+import { hasAllRequiredBlocks }        from '../scratch/utils/workspace';
 import { isEnded }                     from '../utils/contract';
-import { switch_account_notification } from '../utils/notifications/bot-notifications';
 import { observer }                    from '../utils/observer';
-import { hasAllRequiredBlocks }        from '../scratch/utils/scratchHelper';
+import { setMainContentWidth }         from '../utils/window-size';
+import { switch_account_notification } from '../utils/notifications/bot-notifications';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -78,10 +79,10 @@ export default class RunPanelStore {
             return;
         }
 
-        this.is_running     = true;
-        this.is_drawer_open = true;
+        this.is_running = true;
+        this.toggleDrawer(true);
         this.run_id         = `run-${Date.now()}`;
-
+        
         contract_card.clear();
         this.setContractStage(contract_stages.STARTING);
         runBot();
@@ -130,6 +131,7 @@ export default class RunPanelStore {
     @action.bound
     toggleDrawer(is_open) {
         this.is_drawer_open = is_open;
+        setMainContentWidth(is_open);
     }
 
     @action.bound

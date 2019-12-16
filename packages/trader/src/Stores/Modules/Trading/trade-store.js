@@ -124,7 +124,9 @@ export default class TradeStore extends BaseStore {
     @observable has_deal_cancellation = false;
     @observable commission = 0;
     @observable deal_cancellation_price = 0;
+    @observable hovered_contract_type;
 
+    addTickByProposal = () => null;
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests = {};
 
@@ -400,7 +402,7 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    toggleLimitOrderBarriers(is_over, position) {
+    updateLimitOrderBarriers(is_over, position) {
         const contract_info = position.contract_info;
         const { barriers } = this;
         setLimitOrderBarriers({
@@ -766,6 +768,7 @@ export default class TradeStore extends BaseStore {
         this.setMainBarrier(response.echo_req);
 
         if (this.hovered_contract_type === contract_type) {
+            this.addTickByProposal(response);
             setLimitOrderBarriers({
                 barriers             : this.barriers,
                 contract_info        : this.proposal_info[this.hovered_contract_type],
@@ -1010,6 +1013,15 @@ export default class TradeStore extends BaseStore {
     @action.bound
     resetRefresh() {
         this.should_refresh_active_symbols = false;
+    }
+
+    refToAddTick = (ref) => {
+        this.addTickByProposal = ref;
+    }
+
+    @computed
+    get has_alternative_source() {
+        return this.contract_type === 'mult' && !!this.hovered_contract_type;
     }
 
     @computed

@@ -214,6 +214,8 @@ class ChartTradeClass extends React.Component {
                 onExportLayout={this.props.exportLayout}
                 shouldFetchTradingTimes={!this.props.end_epoch}
                 refreshActiveSymbols={should_refresh}
+                hasAlternativeSource={this.props.has_alternative_source}
+                refToAddTick={this.props.refToAddTick}
             >
                 <ChartMarkers />
             </SmartChart>
@@ -256,5 +258,7 @@ const ChartTrade = connect(
         wsSubscribe      : modules.trade.wsSubscribe,
         should_refresh   : modules.trade.should_refresh_active_symbols,
         resetRefresh     : modules.trade.resetRefresh,
+        has_alternative_source: modules.trade.has_alternative_source,
+        refToAddTick     : modules.trade.refToAddTick,
     })
 )(ChartTradeClass);

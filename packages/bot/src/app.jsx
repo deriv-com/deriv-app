@@ -1,14 +1,17 @@
 import { Provider }             from 'mobx-react';
 import React                    from 'react';
-import                               './public-path'; // Leave this here!
-import ApiHelpers               from './services/api/api-helpers';
-import RootStore                from './stores';
+import                          './public-path'; // Leave this here! OK boss!
+import FooterExtension          from './components/footer-extension.jsx';
+import MainContent              from './components/main-content.jsx';
 import Toolbar                  from './components/toolbar.jsx';
+import NotificationMessages     from './components/notification-messages.jsx';
 import RunPanel                 from './components/run-panel.jsx';
-import Workspace                from './components/workspace.jsx';
 import QuickStrategy            from './components/quick-strategy.jsx';
-import { scratchWorkspaceInit } from './scratch';
-import firestore                from './utils/firestore';
+import { scratchWorkspaceInit } from './scratch/index';
+import ApiHelpers               from './services/api/api-helpers';
+import ServerTime               from './services/api/server_time';
+import RootStore                from './stores';
+import Firestore                from './utils/firestore';
 
 import './assets/sass/app.scss';
 
@@ -18,32 +21,35 @@ class App extends React.Component {
         const { passthrough: { WS, root_store } } = props;
         this.root_store = new RootStore(root_store, WS);
         ApiHelpers.setInstance(this.root_store);
-        firestore.init(this.root_store);
+        Firestore.init(this.root_store);
+        ServerTime.init(root_store.common);
+    }
+
+    componentDidMount() {
+        ApiHelpers.instance.registerOnAccountSwitch();
+        scratchWorkspaceInit();
+    }
+
+    componentWillUnmount() {
+        ApiHelpers.instance.disposeOnAccountSwitch();
+        if (Blockly.derivWorkspace) {
+            Blockly.derivWorkspace.dispose();
+        }
     }
 
     render() {
         return (
             <Provider {...this.root_store}>
-                <React.Fragment>
+                <div className='bot'>
+                    <NotificationMessages />
                     <Toolbar />
-                    <Workspace />
+                    <MainContent />
                     <RunPanel />
                     <QuickStrategy />
-                </React.Fragment>
+                    <FooterExtension />
+                </div>
             </Provider>
         );
-    }
-
-    componentDidMount() {
-        scratchWorkspaceInit();
-        ApiHelpers.instance.registerOnAccountSwitch();
-    }
-
-    componentWillUnmount() {
-        if (Blockly.derivWorkspace) {
-            Blockly.derivWorkspace.dispose();
-        }
-        ApiHelpers.instance.disposeOnAccountSwitch();
     }
 }
 export default App;

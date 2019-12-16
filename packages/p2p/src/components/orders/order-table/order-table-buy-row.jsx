@@ -6,7 +6,6 @@ import { getFormattedDateString } from 'Utils/date-time';
 
 const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
     const {
-        counterparty,
         display_transaction_amount,
         display_offer_amount,
         display_status,
@@ -23,7 +22,9 @@ const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
                     <span>
                         { localize('Buy') }<br />
                         <a
-                            onClick={ () => onOpenDetails(data) } className='link'>
+                            onClick={() => onOpenDetails(data)}
+                            className='link'
+                        >
                             { order_id }
                         </a>
                     </span>
@@ -31,7 +32,6 @@ const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
                 <Table.Cell>{ display_status }</Table.Cell>
                 <Table.Cell>{ transaction_currency }{ ' ' }{ display_transaction_amount }</Table.Cell>
                 <Table.Cell>{ offer_currency }{ ' ' }{ display_offer_amount }</Table.Cell>
-                <Table.Cell>{ counterparty }</Table.Cell>
                 <Table.Cell>{ getFormattedDateString(order_purchase_datetime) }</Table.Cell>
             </Table.Row>
         </div>
@@ -40,13 +40,12 @@ const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
 
 BuyOrderRowComponent.propTypes = {
     data: PropTypes.shape({
-        counterparty              : PropTypes.string,
-        display_transaction_amount: PropTypes.string,
         display_offer_amount      : PropTypes.string,
         display_status            : PropTypes.string,
+        display_transaction_amount: PropTypes.string,
+        offer_currency            : PropTypes.string,
         order_id                  : PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
         order_purchase_datetime   : PropTypes.date,
-        offer_currency            : PropTypes.string,
         transaction_currency      : PropTypes.string,
     }),
     onOpenDetails: PropTypes.func,

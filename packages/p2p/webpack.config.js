@@ -31,9 +31,6 @@ module.exports = {
                 exclude: /node_modules/,
                 include: /src/,
                 loader : 'eslint-loader',
-                options: {
-                    fix: true,
-                },
             } : {}),
             {
                 test   : /\.(js|jsx)$/,
@@ -46,27 +43,6 @@ module.exports = {
                         loader : 'babel-loader',
                     },
                 ]
-            },
-            {
-                test: /\.svg$/,
-                use : [
-                    {
-                        loader : 'svg-sprite-loader',
-                        options: {
-                            extract       : true,
-                            spriteFilename: 'p2p-sprite.svg',
-                        },
-                    },
-                    {
-                        loader : 'svgo-loader',
-                        options: {
-                            plugins: [
-                                { removeUselessStrokeAndFill: false },
-                                { removeUnknownsAndDefaults: false },
-                            ],
-                        },
-                    },
-                ],
             },
             {
                 test: /\.scss$/,

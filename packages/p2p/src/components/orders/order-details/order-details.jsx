@@ -1,8 +1,12 @@
-import React         from 'react';
-import PropTypes     from 'prop-types';
-import { Button }    from 'deriv-components';
-import FooterActions from 'Components/footer-actions/footer-actions.jsx';
-import { localize }  from 'Components/i18next';
+import React                  from 'react';
+import PropTypes              from 'prop-types';
+import {
+    Button,
+    Dialog }                  from 'deriv-components';
+import { MockWS }             from 'Utils/websocket';
+import FooterActions          from 'Components/footer-actions/footer-actions.jsx';
+import { localize, Localize } from 'Components/i18next';
+import Popup                  from '../popup.jsx';
 import './order-details.scss';
 
 const OrderInfoBlock = ({ label, value }) => (
@@ -22,8 +26,10 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
         is_buyer,
         is_buyer_cancelled,
         is_buyer_confirmed,
+        is_completed,
         is_expired,
         is_pending,
+        is_refunded,
         is_seller_confirmed,
     } = order_details;
 
@@ -44,13 +50,19 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
             { is_expired &&
                 localize('Cancelled due to timeout')
             }
+            { is_refunded && is_buyer &&
+                localize('You have been refunded')
+            }
+            { is_refunded && !is_buyer &&
+                localize('Buyer has been refunded')
+            }
             { is_buyer_confirmed && is_buyer &&
                 localize('Wait for release')
             }
             { is_buyer_confirmed && !is_buyer &&
                 localize('Confirm payment')
             }
-            { is_seller_confirmed &&
+            { (is_seller_confirmed || is_completed) &&
                 localize('Order complete')
             }
         </h2>
@@ -88,29 +100,113 @@ OrderDetailsTimerBlock.propTypes = {
     order_details: PropTypes.object,
 };
 
-const OrderActionsBlock = ({ order_details }) => {
+const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     const {
         is_buyer,
         is_buyer_confirmed,
         is_pending,
+        offer_amount,
+        offer_currency,
+        price_rate,
+        order_id,
+        transaction_currency,
+        setStatus,
     } = order_details;
     let buttons_to_render = null;
 
+    const cancelOrder = () => {
+        const cancel = async (setFormStatus) => {
+            setFormStatus({ error_message: '' });
+            const cancel_response = await MockWS({ p2p_order_cancel: 1, order_id });
+
+            if (!cancel_response.error) {
+                // TODO: [p2p-replace-with-api] remove this line when api update the status
+                setStatus('cancelled');
+                cancelPopup();
+            } else {
+                setFormStatus({ error_message: cancel_response.error.message });
+            }
+        };
+        const options = {
+            title         : localize('Cancel this order?'),
+            message       : localize('There will be no refund after canceling the order. If you have paid, please do not cancel the order.'),
+            confirm_text  : localize('Cancel this order'),
+            onClickConfirm: cancel,
+        };
+        showPopup(options);
+    };
+
+    const paidOrder = () => {
+        const payOrder = async (setFormStatus) => {
+            setFormStatus({ error_message: '' });
+
+            const update_response = await MockWS({
+                p2p_order_confirm: 1,
+                order_id,
+            });
+            if (!update_response.error) {
+                // TODO: [p2p-replace-with-api] remove this line when api update the status
+                setStatus('client-confirmed');
+                cancelPopup();
+            } else {
+                setFormStatus({ error_message: update_response.error.message });
+            }
+        };
+        const options = {
+            title         : localize('Confirm this payment?'),
+            message       : localize('Make sure you have successfully sent the funds to the seller’s bank account or e-wallet mentioned above.'),
+            has_cancel    : true,
+            cancel_text   : localize('I didn\'t pay yet'),
+            confirm_text  : localize('I\'ve paid'),
+            onClickConfirm: payOrder,
+        };
+        showPopup(options);
+    };
+
+    const receivedFunds = () => {
+        const receive = async (setFormStatus) => {
+            setFormStatus({ error_message: '' });
+
+            const update_response = await MockWS({
+                p2p_order_confirm: 1,
+                order_id,
+            });
+            if (!update_response.error) {
+                // TODO: [p2p-replace-with-api] remove this line when api update the status
+                setStatus('agent-confirmed');
+                cancelPopup();
+            } else {
+                setFormStatus({ error_message: update_response.error.message });
+            }
+        };
+        const options = {
+            title            : localize('Have you received funds?'),
+            message          : localize('Make sure that you have logged in your bank account or other e-wallet to check the receipt.'),
+            need_confirmation: true,
+            offer            : {
+                // TODO: [p2p-fix-schema-name] fix the naming according to the schema
+                currency : offer_currency,
+                asset    : transaction_currency,
+                fix_price: price_rate,
+                amount   : offer_amount,
+            },
+            onClickConfirm: receive,
+        };
+        showPopup(options);
+    };
+
     if (is_pending && is_buyer) {
-        buttons_to_render = ( // TODO: [p2p-add-confirmation-popup] - Add popup to `onClick` function to confirm user action
+        buttons_to_render = (
             <React.Fragment>
-                {/* eslint-disable-next-line no-console */}
-                <Button className='order-details__actions-button' large secondary onClick={ () => console.log('Cancel order') }>{ localize('Cancel order') }</Button>
-                {/* eslint-disable-next-line no-console */}
-                <Button className='order-details__actions-button' large primary onClick={ () => console.log('I\'ve paid') }>{ localize('I\'ve paid') }</Button>
+                <Button className='order-details__actions-button' large secondary onClick={cancelOrder}>{ localize('Cancel order') }</Button>
+                <Button className='order-details__actions-button' large primary onClick={paidOrder}>{ localize('I\'ve paid') }</Button>
             </React.Fragment>
         );
     }
 
     if ((is_pending || is_buyer_confirmed) && !is_buyer) {
-        // TODO: [p2p-add-confirmation-popup] - Add popup to `onClick` function to confirm user action
-        buttons_to_render = ( // eslint-disable-next-line no-console
-            <Button className='order-details__actions-button' large primary onClick={ () => console.log('I\'ve received funds') }>{ localize('I\'ve received funds') }</Button>
+        buttons_to_render = (
+            <Button className='order-details__actions-button' large primary onClick={receivedFunds}>{ localize('I\'ve received funds') }</Button>
         );
     }
 
@@ -118,31 +214,41 @@ const OrderActionsBlock = ({ order_details }) => {
 };
 
 OrderActionsBlock.propTypes = {
+    cancelPopup  : PropTypes.func,
     order_details: PropTypes.object,
+    showPopup    : PropTypes.func,
 };
 
 const OrderDetailsResultMessage = ({ order_details }) => {
 
-    if (order_details.is_seller_confirmed && order_details.is_buyer) {
+    const {
+        is_seller_confirmed,
+        is_completed,
+        is_buyer,
+        offer_currency,
+        display_offer_amount,
+    } = order_details;
+
+    if ((is_seller_confirmed || is_completed) && is_buyer) {
         return (
             <p className='order-details__wrapper-message order-details__wrapper-message--success'>
                 { localize('{{offered_currency}} {{offered_amount}} was deposited on your account',
                     {
-                        offered_currency: order_details.offer_currency,
-                        offered_amount  : order_details.display_offer_amount,
+                        offered_currency: offer_currency,
+                        offered_amount  : display_offer_amount,
                     })
                 }
             </p>
         );
     }
 
-    if (order_details.is_seller_confirmed && !order_details.is_buyer) {
+    if ((is_seller_confirmed || is_completed) && !is_buyer) {
         return (
             <p className='order-details__wrapper-message order-details__wrapper-message--success'>
                 { localize('You sold {{offered_currency}} {{offered_amount}}',
                     {
-                        offered_currency: order_details.offer_currency,
-                        offered_amount  : order_details.display_offer_amount,
+                        offered_currency: offer_currency,
+                        offered_amount  : display_offer_amount,
                     })
                 }
             </p>
@@ -160,8 +266,8 @@ const OrderDetails = ({
     order_details,
 }) => {
     const {
+        advertiser_name,
         advertiser_notes,
-        counterparty,
         display_offer_amount,
         display_price_rate,
         display_transaction_amount,
@@ -173,6 +279,15 @@ const OrderDetails = ({
         order_purchase_datetime,
         transaction_currency,
     } = order_details;
+    const [show_popup, setShowPopup] = React.useState(false);
+    const [popup_options, setPopupOptions] = React.useState({});
+
+    const onCancelClick = () => setShowPopup(false);
+
+    const handleShowPopup = (options) => {
+        setPopupOptions(options);
+        setShowPopup(true);
+    };
 
     return (
         <div className='order-details'>
@@ -197,7 +312,7 @@ const OrderDetails = ({
                             </div>
                             <div className='order-details__info--right'>
                                 <OrderInfoBlock label={ is_buyer ? localize('Receive') : localize('Send') } value={ `${offer_currency} ${display_offer_amount}` } />
-                                <OrderInfoBlock label={ is_buyer ? localize('Seller') : localize('Buyer') } value={ counterparty } />
+                                {is_buyer && <OrderInfoBlock label={localize('Seller')} value={ advertiser_name } />}
                                 <OrderInfoBlock label={ localize('Time') } value={ order_purchase_datetime.toString() } />
                             </div>
                         </div>
@@ -206,7 +321,13 @@ const OrderDetails = ({
                         <React.Fragment>
                             <div className='deriv-p2p__separator' />
                             <div className='order-details__footer'>
-                                <a className='link' rel='noopener noreferrer' target='_blank' href='mailto:support@deriv.com'>{ localize('Complain') }</a>
+                                <p>
+                                    <Localize
+                                        i18n_default_text='If you have a complaint, please email <0>{{support_email}}</0> and include your order ID.'
+                                        values={{ support_email: 'support@deriv.com' }}
+                                        components={[ <a key={0} className='link' rel='noopener noreferrer' target='_blank' href='mailto:support@deriv.com' /> ]}
+                                    />
+                                </p>
                             </div>
                         </React.Fragment>
                     }
@@ -214,8 +335,19 @@ const OrderDetails = ({
             </div>
 
             <FooterActions>
-                <OrderActionsBlock order_details={ order_details } />
+                <OrderActionsBlock
+                    cancelPopup={onCancelClick}
+                    showPopup={handleShowPopup}
+                    order_details={order_details}
+                />
             </FooterActions>
+            {show_popup && (
+                <div className='orders__dialog'>
+                    <Dialog is_visible={show_popup}>
+                        <Popup {...popup_options} onCancel={onCancelClick} />
+                    </Dialog>
+                </div>
+            )}
         </div>
     );
 };

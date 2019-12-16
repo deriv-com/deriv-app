@@ -106,7 +106,7 @@ const BinarySocketGeneral = (() => {
                         if (!mt5_list_response.error) {
                             client_store.responseMt5LoginList(mt5_list_response);
                             WS.balanceAll().then((balance_response) => {
-                                this.setBalance(balance_response.balance);
+                                if (!balance_response.error) client_store.setBalance(balance_response.balance);
                             });
                         } else {
                             client_store.resetMt5ListPopulatedState();
@@ -120,6 +120,14 @@ const BinarySocketGeneral = (() => {
                             client_store.setAccountStatus(account_status_response.get_account_status);
                         }
                     });
+                } else if (msg_type === 'landing_company') {
+                    if (client_store.residence) {
+                        WS.authorized.landingCompany(client_store.residence).then((landing_company_response) => {
+                            if (!landing_company_response.error) {
+                                client_store.responseLandingCompany(landing_company_response);
+                            }
+                        });
+                    }
                 }
                 break;
             case 'InternalServerError':

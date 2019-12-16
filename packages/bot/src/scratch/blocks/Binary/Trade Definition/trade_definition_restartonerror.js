@@ -6,9 +6,9 @@ Blockly.Blocks.trade_definition_restartonerror = {
             message0: localize('Restart last trade on error (bot ignores the unsuccessful trade): %1'),
             args0   : [
                 {
-                    type : 'input_value',
-                    name : 'RESTARTONERROR',
-                    check: 'Boolean',
+                    type   : 'field_image_checkbox',
+                    name   : 'RESTARTONERROR',
+                    checked: true,
                 },
             ],
             colour           : Blockly.Colours.Base.colour,

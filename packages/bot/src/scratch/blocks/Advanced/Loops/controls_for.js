@@ -51,6 +51,13 @@ Blockly.Blocks.controls_for = {
             'description' : localize('This block uses the variable “i” to control the iterations. With each iteration, the value of “i” is determined by the items in a given list.'),
         };
     },
+    getRequiredValueInputs() {
+        return {
+            FROM: null,
+            TO  : null,
+            BY  : null,
+        };
+    },
 };
 
 Blockly.JavaScript.controls_for = block => {

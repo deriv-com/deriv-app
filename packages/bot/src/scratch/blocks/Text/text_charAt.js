@@ -1,4 +1,5 @@
 import { localize } from 'deriv-translations';
+import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_charAt = {
     init() {
@@ -46,7 +47,7 @@ Blockly.Blocks.text_charAt = {
             category       : Blockly.Categories.Text,
         };
     },
-    meta(){
+    meta() {
         return {
             'display_name': localize('Get character'),
             'description' : localize('Returns the specific character from a given string of text according to the selected option. '),
@@ -70,6 +71,12 @@ Blockly.Blocks.text_charAt = {
         this.isAt = isAt;
         this.initSvg();
         this.render(false);
+    },
+    getRequiredValueInputs() {
+        return {
+            VALUE: emptyTextValidator,
+            AT   : emptyTextValidator,
+        };
     },
 };
 

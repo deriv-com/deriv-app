@@ -23,6 +23,11 @@ Blockly.Blocks.signal_ema_period = {
     },
     onchange       : Blockly.Blocks.input_list.onchange,
     allowed_parents: ['macda_statement'],
+    getRequiredValueInputs() {
+        return {
+            SIGNAL_EMA_PERIOD: null,
+        };
+    },
 };
 
 Blockly.JavaScript.signal_ema_period = () => {};

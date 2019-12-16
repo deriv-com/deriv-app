@@ -3,8 +3,9 @@
 **/
 // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
 .run-panel {
-    height: calc(100% - 140px) !important;
+    height: var(--bot-content-height) !important;
     top: 104px !important;
+    z-index: 9;
 
     &__footer {
         text-align: center;

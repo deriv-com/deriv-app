@@ -4,7 +4,6 @@ import { Table }              from 'deriv-components';
 import { MockWS }             from 'Utils/websocket';
 import { localize }           from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
-import { TableDimensions }    from 'Components/table/table-dimensions.jsx';
 import { MyAdsLoader }        from './my-ads-loader.jsx';
 
 const headers = [
@@ -75,17 +74,11 @@ export class MyAdsTable extends React.Component {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        <TableDimensions>
-                            {dimensions =>
-                                <InfiniteLoaderList
-                                    items={items}
-                                    RenderComponent={RowComponent}
-                                    RowLoader={MyAdsLoader}
-                                    width={dimensions.width}
-                                    heigh={dimensions.height}
-                                />
-                            }
-                        </TableDimensions>
+                        <InfiniteLoaderList
+                            items={items}
+                            RenderComponent={RowComponent}
+                            RowLoader={MyAdsLoader}
+                        />
                     </Table.Body>
                 </Table>
             </div>

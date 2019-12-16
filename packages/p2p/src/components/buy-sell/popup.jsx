@@ -14,11 +14,13 @@ import IconBack        from 'Assets/icon-back.jsx';
 import IconClose       from 'Assets/icon-close.jsx';
 import { localize }    from 'Components/i18next';
 import { MockWS }      from 'Utils/websocket';
+import FormError       from '../form/error.jsx';
 
 class Popup extends Component {
-    handleSubmit = async (values, { setSubmitting }) => {
+    handleSubmit = async (values, { setStatus, setSubmitting }) => {
         const { ad } = this.props;
-        
+        setStatus({ error_message: '' });
+
         const order = await MockWS({ p2p_order_create: 1, amount: values.send, offer_id: ad.offer_id });
 
         if (!order.error) {
@@ -27,16 +29,16 @@ class Popup extends Component {
             setSubmitting(false);
             this.props.handleClose();
         } else {
-            // TODO: [p2p-handle-error] handle error on order creation
             setSubmitting(false);
+            setStatus({ error_message: order.error.message });
         }
 
-    }
+    };
 
     getInitialValues = (is_buy) => {
         const { ad } = this.props;
 
-        const amount_asset = +((ad.min_transaction / ad.price).toFixed(ad.transaction_currency_decimals));
+        const amount_asset = +((ad.min_transaction / ad.price_rate).toFixed(ad.transaction_currency_decimals));
 
         const buy_initial_values = {
             initial_receive : amount_asset,
@@ -61,17 +63,17 @@ class Popup extends Component {
     calculateReceiveAmount = (send_amount, is_buy) => {
         const { ad } = this.props;
         return is_buy ?
-            +((send_amount / ad.price).toFixed(ad.transaction_currency_decimals))
+            +((send_amount / ad.price_rate).toFixed(ad.transaction_currency_decimals))
             :
-            +((send_amount * ad.price).toFixed(ad.transaction_currency_decimals));
+            +((send_amount * ad.price_rate).toFixed(ad.transaction_currency_decimals));
     };
 
     calculateSendAmount = (receive_amount, is_buy) => {
         const { ad } = this.props;
         return is_buy ?
-            +((receive_amount * ad.price).toFixed(ad.transaction_currency_decimals))
+            +((receive_amount * ad.price_rate).toFixed(ad.transaction_currency_decimals))
             :
-            +((receive_amount / ad.price).toFixed(ad.transaction_currency_decimals));
+            +((receive_amount / ad.price_rate).toFixed(ad.transaction_currency_decimals));
     };
 
     render() {
@@ -103,6 +105,7 @@ class Popup extends Component {
                             isSubmitting,
                             setFieldValue,
                             handleChange,
+                            status,
                         }) => (
                             <Form noValidate>
                                 <ThemedScrollbars
@@ -172,6 +175,7 @@ class Popup extends Component {
                                     </div>
                                 </ThemedScrollbars>
                                 <div className='buy-sell__popup-footer'>
+                                    {status && status.error_message && <FormError message={status.error_message} />}
                                     <Button secondary type='button' onClick={handleClose}>{localize('Cancel')}</Button>
                                     <Button is_disabled={isSubmitting} primary>{localize('Confirm')}</Button>
                                 </div>

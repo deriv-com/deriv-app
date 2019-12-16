@@ -1,3 +1,5 @@
+import { setSmartChartsPublicPath } from 'smartcharts-beta';
+
 const getUrlBase = (path = '') => {
     const l = window.location;
 
@@ -11,3 +13,4 @@ export function setBotPublicPath(path) {
 }
 
 setBotPublicPath(getUrlBase('/js/bot/'));
+setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));

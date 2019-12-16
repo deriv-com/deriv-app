@@ -31,6 +31,8 @@ class Flyout extends React.PureComponent {
 
         return (
             <div
+                id='gtm-search-results'
+                gtm-search-term={search_term}
                 className={classNames(
                     'flyout', {
                         'hidden'        : !is_visible,

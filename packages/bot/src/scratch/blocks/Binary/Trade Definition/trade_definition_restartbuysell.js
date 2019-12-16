@@ -6,9 +6,9 @@ Blockly.Blocks.trade_definition_restartbuysell = {
             message0: localize('Restart buy/sell on error (disable for better performance): %1'),
             args0   : [
                 {
-                    type : 'input_value',
-                    name : 'TIME_MACHINE_ENABLED',
-                    check: 'Boolean',
+                    type   : 'field_image_checkbox',
+                    name   : 'TIME_MACHINE_ENABLED',
+                    checked: false,
                 },
             ],
             colour           : Blockly.Colours.Base.colour,

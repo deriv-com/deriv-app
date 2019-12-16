@@ -23,6 +23,7 @@ Blockly.Toolbox.prototype.init = function () {
      * @type {Element}
      */
     this.HtmlDiv = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox');
+    this.HtmlDiv.setAttribute('id','gtm-toolbox');
     this.HtmlDiv.setAttribute('dir', workspace.RTL ? 'RTL' : 'LTR');
 
     // deriv-bot: Create Toolbox header
@@ -78,6 +79,7 @@ Blockly.Toolbox.prototype.populate_ = function (newTree) {
     const quick_strat_btn = document.createElement('BUTTON');
     quick_strat_btn.innerHTML = localize('Quick Strategy');
     quick_strat_btn.className = 'toolbox__button btn effect btn--primary btn__medium';
+    quick_strat_btn.id = 'gtm-quick-strategy';
     quick_strat_btn.onclick = quick_strategy.toggleStrategyModal;
 
     parent.appendChild(quick_strat_btn);

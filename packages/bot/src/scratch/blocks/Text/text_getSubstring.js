@@ -14,11 +14,10 @@ Blockly.Blocks.text_getSubstring = {
         ];
 
         this.jsonInit(this.definition());
-
         this.updateAt(1, true);
         this.updateAt(2, true);
     },
-    definition(){
+    get definition() {
         return {
             message0: localize('in text %1 get substring from %2 %3 to %4 %5'),
             args0   : [
@@ -54,10 +53,10 @@ Blockly.Blocks.text_getSubstring = {
             category       : Blockly.Categories.Text,
         };
     },
-    meta(){
+    get meta() {
         return {
-            'display_name': localize('Get substring'),
-            'description' : localize('Returns a specific portion of a given string of text.'),
+            display_name: localize('Get substring'),
+            description : localize('Returns a specific portion of a given string of text.'),
         };
     },
     mutationToDom() {
@@ -114,6 +113,7 @@ Blockly.Blocks.text_getSubstring = {
         });
 
         this.getInput(`AT${n}`).appendField(menu, `WHERE${n}`);
+        
         if (n === 1) {
             this.moveInputBefore('AT1', 'AT2');
         }

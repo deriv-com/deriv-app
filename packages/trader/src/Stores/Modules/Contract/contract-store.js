@@ -214,7 +214,6 @@ function calculate_marker(contract_info) {
         barrier,
         high_barrier,
         low_barrier,
-        limit_order,
     } = contract_info;
     const ticks_epoch_array = tick_stream ? tick_stream.map(t => t.epoch) : [];
     const is_digit_contract = isDigitContract(contract_type);
@@ -228,8 +227,6 @@ function calculate_marker(contract_info) {
         price_array = [+barrier];
     } else if (+barrier_count === 2 && high_barrier && low_barrier) {
         price_array = [+low_barrier, +high_barrier];
-    } else if (limit_order && limit_order.stop_out){
-        price_array = [+limit_order.stop_out.value];
     }
 
     if (entry_tick) { price_array.push(entry_tick); }
@@ -292,12 +289,12 @@ function getConfig(contract_info) {
     const { contract_type } = contract_info;
     if (isMultiplierContract(contract_type)) {
         return {
-            color                      : BARRIER_COLORS.ORANGE,
-            hide_profit                : true,
-            hide_start_line            : true,
-            is_barrier_dashed          : true,
-            start_time_marker_top_index: 1,
-            hide_invisible_barrier     : true,
+            color                          : BARRIER_COLORS.ORANGE,
+            hide_barrier                   : true,
+            hide_profit                    : true,
+            hide_start_line                : true,
+            start_time_marker_top_index    : 1,
+            use_entry_time_for_start_marker: true,
         };
     }
 

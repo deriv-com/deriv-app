@@ -333,7 +333,7 @@ const NonTickContract = RawMarkerMaker(({
     ctx: context,
     points: [start, expiry, entry, exit],
     is_last_contract,
-    prices, // TODO: support two barrier contracts
+    prices: [barrier, entry_tick_top, exit_tick_top], // TODO: support two barrier contracts
     is_dark_theme,
     granularity,
     currency,
@@ -349,9 +349,6 @@ const NonTickContract = RawMarkerMaker(({
 }) => {
     /** @type {CanvasRenderingContext2D} */
     const ctx = context;
-    
-    // eslint-disable-next-line prefer-const
-    let [barrier, entry_tick_top, exit_tick_top] = prices;
 
     // the y value reported for candles is not accurate
     if (granularity !== 0) {
@@ -371,10 +368,8 @@ const NonTickContract = RawMarkerMaker(({
     const opacity = is_sold ? calc_opacity(start.left, expiry.left) : '';
 
     const canvas_height = (ctx.canvas.height / window.devicePixelRatio);
-    const is_barrier_visible = config.hide_invisible_barrier ? barrier >= 2 && barrier <= canvas_height - 32 : true;
-
     if (barrier) {
-        prices[0] = barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
+        barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
     }
 
     if (draw_start_line) {
@@ -398,7 +393,7 @@ const NonTickContract = RawMarkerMaker(({
         ctx.stroke();
     }
     // barrier line
-    if (is_barrier_visible && (barrier && entry) && (
+    if (!config.hide_barrier && (barrier && entry) && (
         start.visible
         || expiry.visible
         || Math.sign(start.left) !== Math.sign(expiry.left)
@@ -411,7 +406,7 @@ const NonTickContract = RawMarkerMaker(({
         ctx.stroke();
 
         ctx.beginPath();
-        ctx.setLineDash(config.is_barrier_dashed ? [2,2] : []);
+        ctx.setLineDash([]);
         ctx.moveTo(entry.left, barrier);
         ctx.lineTo(expiry.left, barrier);
         ctx.stroke();
@@ -443,15 +438,14 @@ const NonTickContract = RawMarkerMaker(({
             ctx.strokeStyle = color;
         }
     });
-
+    
     // start-time marker
-    const start_time_marker_top = prices[config.start_time_marker_top_index || 0];
-    if (start.visible && start_time_marker_top) {
-        const left = config.start_time_marker_top_index === 1 ? entry.left : start.left;
+    const marker_start_time = config.use_entry_time_for_start_marker ? entry : start;
+    if (marker_start_time && marker_start_time.visible && barrier) {
         draw_path(ctx, {
-            top : start_time_marker_top - 9 * scale,
-            left: left - 1 * scale,
-            zoom: start.zoom,
+            top : barrier - 9 * scale,
+            left: marker_start_time.left - 1 * scale,
+            zoom: marker_start_time.zoom,
             icon: ICONS.START.with_color(color + opacity),
         });
     }

@@ -124,6 +124,7 @@ const WorkspaceGroup = ({
     has_redo_stack,
     has_undo_stack,
     onResetClick,
+    onSortClick,
     onUndoClick,
     onZoomInOutClick,
     toggleSaveLoadModal,
@@ -187,7 +188,7 @@ const WorkspaceGroup = ({
         >
             <ToolbarReaarangeIcon
                 className='toolbar__icon'
-                onClick={() => Blockly.derivWorkspace.cleanUp()}
+                onClick={() => onSortClick()}
             />
         </Popover>
         <Popover

@@ -104,11 +104,23 @@ export default class ToolbarStore {
         this.is_dialog_open = false;
     }
 
+    onSortClick = () => {
+        Blockly.derivWorkspace.cleanUp();
+    }
+
     @action.bound
     onUndoClick(is_redo) {
         Blockly.derivWorkspace.undo(is_redo);
         this.setHasRedoStack();
         this.setHasUndoStack();
+    }
+
+    onZoomInOutClick = (is_zoom_in) => {
+        const workspace = Blockly.derivWorkspace;
+        const metrics   = workspace.getMetrics();
+        const addition  = is_zoom_in ? 1 : -1;
+
+        workspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, addition);
     }
 
     @action.bound
@@ -119,13 +131,5 @@ export default class ToolbarStore {
     @action.bound
     setHasRedoStack() {
         this.has_redo_stack = Blockly.derivWorkspace.hasRedoStack();
-    }
-
-    onZoomInOutClick = (is_zoom_in) => {
-        const workspace = Blockly.derivWorkspace;
-        const metrics   = workspace.getMetrics();
-        const addition  = is_zoom_in ? 1 : -1;
-
-        workspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, addition);
     }
 }

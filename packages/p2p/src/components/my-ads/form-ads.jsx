@@ -11,7 +11,6 @@ import {
 import FooterActions                  from 'Components/footer-actions/footer-actions.jsx';
 import { localize }                   from 'Components/i18next';
 import PageReturn                     from 'Components/page-return/page-return.jsx';
-import { WS }                         from 'Utils/websocket';
 
 class FormAds extends Component {
     state = {
@@ -31,28 +30,25 @@ class FormAds extends Component {
 
     componentDidMount() {
         // TODO: [p2p-fix-api] call get offer detail api and populate state
-        WS({ 'residence_list': 1 }).then(() => { // this is just to mock the api delay response
-            const new_initial_values = {
-                country        : 'Indonesia',
-                currency       : 'IDR',
-                type           : 'buy',
-                asset          : 'USD',
-                fix_price      : 10000,
-                amount         : 50,
-                min_transaction: 1000,
-            };
-            this.setState({
-                initial_values: new_initial_values,
-            });
-
-            if (this.props.ad_id) {
-                // call the api, get the file based on id
-                // populate the state from the respnose
-            } else {
-                this.setState({ is_loading: false });
-            }
-
+        const new_initial_values = {
+            country        : 'Indonesia',
+            currency       : 'IDR',
+            type           : 'buy',
+            asset          : 'USD',
+            fix_price      : 10000,
+            amount         : 50,
+            min_transaction: 1000,
+        };
+        this.setState({
+            initial_values: new_initial_values,
         });
+
+        if (this.props.ad_id) {
+            // call the api, get the file based on id
+            // populate the state from the respnose
+        } else {
+            this.setState({ is_loading: false });
+        }
     }
 
     handleSubmit(formik_vars, { setSubmitting }) {

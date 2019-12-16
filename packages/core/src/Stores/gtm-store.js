@@ -13,12 +13,7 @@ import { getMT5AccountType }  from './Helpers/client';
 import { getAppId }           from '../config';
 
 export default class GTMStore extends BaseStore {
-    //The below line is commented to for testing purposes and should be uncommented before pushing to stageing/production
-    
-    // is_gtm_applicable = /^(16303|16929|19111|19112)$/.test(getAppId());
-
-    //the below line should be removed before pushing to staging/production 
-    is_gtm_applicable = true;
+    is_gtm_applicable = /^(16303|16929|19111|19112)$/.test(getAppId());
 
     constructor(root_store) {
         super({ root_store });

@@ -55,7 +55,7 @@ class App extends Component {
                     you can refer to deriv-shared/themes for the css variables that are used in deriv-app as well as p2p
                 */}
                 <main className='deriv-p2p'>
-                    <Tabs active_index={active_index}>
+                    <Tabs active_index={active_index} top>
                         {/* TODO [p2p-uncomment] uncomment this when sell is ready */}
                         {/* <div label={localize('Buy / Sell')}> */}
                         <div label={localize('Buy')}>

@@ -1,31 +1,8 @@
 import React                     from 'react';
 import PropTypes                 from 'prop-types';
+import AutoSizer                 from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List } from 'react-window';
 import InfiniteLoader            from 'react-window-infinite-loader';
-import ContentLoader             from 'react-content-loader';
-
-// TODO: we probably need a separate skeleton loader for each table
-const SkeletonLoader = ({ width }) => (
-    <ContentLoader
-        height={64}
-        width={900 || width}
-        speed={2}
-        primaryColor={'var(--general-hover)'}
-        secondaryColor={'var(--general-active)'}
-    >
-        <rect x="1" y="20" rx="5" ry="5" width="90" height="10" />
-        <rect x="150" y="20" rx="5" ry="5" width="90" height="10" />
-        <rect x="300" y="20" rx="5" ry="5" width="90" height="10" />
-        <rect x="446" y="20" rx="5" ry="5" width="55" height="10" />
-        <rect x="600" y="20" rx="5" ry="5" width="75" height="10" />
-        <rect x="750" y="15" rx="5" ry="5" width="45" height="16" />
-        <rect x="803" y="15" rx="5" ry="5" width="55" height="16" />
-    </ContentLoader>
-);
-
-SkeletonLoader.propTypes = {
-    width: PropTypes.number,
-};
 
 export const InfiniteLoaderList = ({
     items,
@@ -36,8 +13,8 @@ export const InfiniteLoaderList = ({
     has_more_items_to_load,
     item_size,
     RenderComponent,
-    height,
-    width,
+    RowLoader,
+    height: initial_height,
 }) => {
     const RowRenderer = ({ index, style }) => {
         const is_loading = index === items.length;
@@ -45,7 +22,7 @@ export const InfiniteLoaderList = ({
         if (is_loading) {
             return (
                 <div style={style}>
-                    <SkeletonLoader width={width} />
+                    <RowLoader />
                 </div>
             );
         }
@@ -66,29 +43,33 @@ export const InfiniteLoaderList = ({
             loadMoreItems={loadMore}
         >
             {({ onItemsRendered, ref }) => (
-                <List
-                    height={height || 452}
-                    width={width || 960}
-                    itemCount={item_count}
-                    itemSize={item_size || 56}
-                    onItemsRendered={onItemsRendered}
-                    ref={ref}
-                >
-                    {RowRenderer}
-                </List>
+                <AutoSizer style={{ height: (initial_height || 600) }}>
+                    {({ height, width }) => (
+                        <List
+                            height={height}
+                            width={width}
+                            itemCount={item_count}
+                            itemSize={item_size || 56}
+                            onItemsRendered={onItemsRendered}
+                            ref={ref}
+                        >
+                            {RowRenderer}
+                        </List>
+                    )}
+                </AutoSizer>
             )}
         </InfiniteLoader>
     );
 };
 
 InfiniteLoaderList.propTypes = {
-    items                 : PropTypes.array,
-    is_loading_more_items : PropTypes.bool,
+    children              : PropTypes.node,
     has_more_items_to_load: PropTypes.bool,
+    height                : PropTypes.number,
+    is_loading_more_items : PropTypes.bool,
     item_size             : PropTypes.number,
+    items                 : PropTypes.array,
     loadMore              : PropTypes.func,
     RenderComponent       : PropTypes.any,
-    children              : PropTypes.node,
-    height                : PropTypes.number,
-    width                 : PropTypes.number,
+    RowLoader             : PropTypes.any.isRequired,
 };

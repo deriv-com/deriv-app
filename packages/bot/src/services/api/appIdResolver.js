@@ -1,6 +1,5 @@
 const AppIds = Object.freeze({
-    'bot.binary.com': '1169',
-    'bot.binary.me' : '15438',
-    'binary.bot'    : '15481',
+    'deriv.app'        : '19111',
+    'staging.deriv.app': '19112',
 });
 export default AppIds;

@@ -43,29 +43,27 @@ const hasLanguage = lang => {
 const getAllLanguages = () => ALL_LANGUAGES;
 
 const getInitialLanguage = () => {
+    const has_url_search_language = window.location.search && window.location.search.includes('lang=');
+    const local_storage_language  = localStorage.getItem(LANGUAGE_KEY);
+    if (has_url_search_language) {
+        const query_lang = window.location.search
+            .substr(1).split('&')
+            .find(query => query.includes('lang='))
+            .split('=')[1]
+            .toUpperCase()
+        if (hasLanguage(query_lang)) {
+            localStorage.setItem(LANGUAGE_KEY, query_lang);
+            return query_lang;
+        }
+    }
+
+    if (local_storage_language) {
+        if (hasLanguage(local_storage_language)) {
+            return local_storage_language;
+        }
+    }
+
     return DEFAULT_LANGUAGE;
-    // TODO: uncomment this when translations are ready
-    // const has_url_search_language = window.location.search && window.location.search.includes('lang=');
-    // const local_storage_language  = localStorage.getItem(LANGUAGE_KEY);
-    // if (has_url_search_language) {
-    //     const query_lang = window.location.search
-    //         .substr(1).split('&')
-    //         .find(query => query.includes('lang='))
-    //         .split('=')[1]
-    //         .toUpperCase()
-    //     if (hasLanguage(query_lang)) {
-    //         localStorage.setItem(LANGUAGE_KEY, query_lang);
-    //         return query_lang;
-    //     }
-    // }
-
-    // if (local_storage_language) {
-    //     if (hasLanguage(local_storage_language)) {
-    //         return local_storage_language;
-    //     }
-    // }
-
-    // return DEFAULT_LANGUAGE;
 };
 
 const initial_language = getInitialLanguage();
@@ -117,6 +115,7 @@ const Localize = withI18n(i18n);
 
 const localize = (string, values) => {
     if (!string) return '';
+
     return i18n.t(crc32(string), { defaultValue: string, ...values })
 };
 

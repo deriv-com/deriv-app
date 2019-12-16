@@ -20,6 +20,7 @@ const HelpBase = ({
     onSequenceClick,
     title,
 }) => {
+    const { display_name } = Blockly.Blocks[block_type].meta();
     const block_help_component = help_string && config[block_type];
     let text_count = 0;
 
@@ -34,6 +35,7 @@ const HelpBase = ({
                     <Button
                         className='flyout__button-add'
                         has_effect
+                        id={`gtm-${  display_name.replace(/\s/ig, '-')}`}
                         onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}
                         primary
                         text={localize('Add')}

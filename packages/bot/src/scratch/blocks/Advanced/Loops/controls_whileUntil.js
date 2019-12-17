@@ -41,6 +41,11 @@ Blockly.Blocks.controls_whileUntil = {
             'description' : localize('This block repeats instructions as long as a given condition is true.'),
         };
     },
+    getRequiredValueInputs() {
+        return {
+            BOOL: null,
+        };
+    },
 };
 
 Blockly.JavaScript.controls_whileUntil = block => {

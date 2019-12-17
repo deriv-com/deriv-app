@@ -34,6 +34,12 @@ Blockly.Blocks.math_modulo = {
             'description' : localize(' Returns the remainder after the division of the given numbers.'),
         };
     },
+    getRequiredValueInputs() {
+        return {
+            DIVIDEND: null,
+            DIVISOR : null,
+        };
+    },
 };
 
 Blockly.JavaScript.math_modulo = block => {

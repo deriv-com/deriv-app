@@ -1,77 +1,37 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
 import { Loading }            from 'deriv-components';
+import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
+import { TableError }         from 'Components/table/table-error.jsx';
+import { MockWS }             from 'Utils/websocket';
 import {
     RowComponent,
     BuySellRowLoader }        from './row.jsx';
-import { InfiniteLoaderList } from '../table/infinite-loader-list.jsx';
-import { TableDimensions }    from '../table/table-dimensions.jsx';
-
-// TODO: replace with API response
-const mock_response = {
-    advertiser     : 'John Doe',
-    price          : 'IDR 2,000,000.00',
-    payment_method : 'Bank transfer',
-    type           : 'buy',
-    id             : 'buy_id',
-    country        : 'Indonesia',
-    currency       : 'IDR',
-    asset          : 'USD',
-    fix_price      : 12000,
-    amount         : 20,
-    min_transaction: 15000,
-    max_transaction: 240000,
-    advertiser_note: 'Whatsapp: +60182655318 please send to Maybank 239847238947 JOHN DOE',
-};
-
-const initial_data = [
-    { ...mock_response },
-    { ...mock_response },
-    { ...mock_response },
-    { ...mock_response },
-];
-
-const getMockData = () => {
-    return new Promise(resolve => {
-        setTimeout(function() {
-            resolve([
-                { ...mock_response }, { ...mock_response }, { ...mock_response }, { ...mock_response },
-            ]);
-        }, 300);
-    });
-};
 
 export class SellTable extends React.Component {
     // TODO: Find a better solution for handling no-op instead of using is_mounted flags
     is_mounted = false
 
     state = {
-        items                 : null,
-        is_loading_more_items : false,
+        api_error_message     : '',
         has_more_items_to_load: true,
         is_loading            : true,
+        is_loading_more_items : false,
+        items                 : null,
     };
-
-    loadMore = () => {
-        this.setState({ is_loading_more_items: true }, () => {
-            getMockData().then((res) => {
-                if (this.is_mounted) {
-                    this.setState({
-                        is_loading_more_items: false,
-                        items                : [...this.state.items, ...res],
-                    });
-                }
-            });
-        });
-    }
 
     componentDidMount() {
         this.is_mounted = true;
-        setTimeout(() => {
+
+        MockWS({ p2p_offer_list: 1, type: 'sell' }).then((response) => {
             if (this.is_mounted) {
-                this.setState({ items: initial_data, is_loading: false });
+                if (!response.error) {
+                    this.setState({ items: response, is_loading: false });
+                } else {
+                    this.setState({ is_loading: false, api_error_message: response.error.message });
+                }
             }
-        }, 1000);
+        });
     }
 
     componentWillUnmount() {
@@ -79,28 +39,21 @@ export class SellTable extends React.Component {
     }
 
     render() {
-        const { items, is_loading_more_items, has_more_items_to_load, is_loading } = this.state;
+        const { api_error_message, items, is_loading } = this.state;
         const { setSelectedAd } = this.props;
 
         const Row = props => <RowComponent {...props} is_buy={false} setSelectedAd={setSelectedAd} />;
 
         if (is_loading) return <Loading is_fullscreen={false} />;
 
+        if (api_error_message) return <TableError message={api_error_message} />;
+
         return (
-            <TableDimensions>
-                {dimensions =>
-                    <InfiniteLoaderList
-                        items={items}
-                        is_loading_more_items={is_loading_more_items}
-                        loadMore={this.loadMore}
-                        has_more_items_to_load={has_more_items_to_load}
-                        RenderComponent={Row}
-                        RowLoader={BuySellRowLoader}
-                        width={dimensions.width}
-                        height={dimensions.height}
-                    />
-                }
-            </TableDimensions>
+            <InfiniteLoaderList
+                items={items}
+                RenderComponent={Row}
+                RowLoader={BuySellRowLoader}
+            />
         );
     }
 }

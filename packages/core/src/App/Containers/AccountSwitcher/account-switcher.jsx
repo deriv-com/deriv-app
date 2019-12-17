@@ -20,7 +20,6 @@ import ButtonAddAccount       from './account-switcher-add-account-button.jsx';
 
 class AccountSwitcher extends React.Component {
     state = {
-        active_tab_index     : 0,
         is_demo_deriv_visible: true,
         is_demo_dmt5_visible : true,
         is_real_deriv_visible: true,
@@ -68,6 +67,11 @@ class AccountSwitcher extends React.Component {
         this.redirectToMt5('demo');
     };
 
+    setAccountCurrency = () => {
+        this.props.toggleAccountsDialog();
+        this.props.toggleSetCurrencyModal(true);
+    };
+
     onClickUpgrade = () => {
         if (this.props.can_upgrade_to === 'svg') {
             this.props.openRealAccountSignup();
@@ -85,10 +89,6 @@ class AccountSwitcher extends React.Component {
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
 
-    updateAccountTabIndex = (index) => {
-        this.setState({ active_tab_index: index });
-    };
-
     async doSwitch(loginid) {
         this.props.toggleAccountsDialog();
         if (this.props.account_loginid === loginid) return;
@@ -102,7 +102,7 @@ class AccountSwitcher extends React.Component {
 
     get is_real_account_tab() {
         // Real accounts is always the first tab index based on design
-        return this.state.active_tab_index === 0;
+        return this.props.active_tab_index === 0;
     }
 
     get sorted_account_list() {
@@ -180,9 +180,9 @@ class AccountSwitcher extends React.Component {
         return (
             <div className='acc-switcher__list' ref={this.setWrapperRef}>
                 <Tabs
-                    active_index={this.state.active_tab_index}
+                    active_index={this.props.active_tab_index}
                     className='acc-switcher__list-tabs'
-                    onTabItemClick={this.updateAccountTabIndex}
+                    onTabItemClick={this.props.updateAccountTabIndex}
                     top
                 >
                     <div label={localize('Real')}>
@@ -225,12 +225,18 @@ class AccountSwitcher extends React.Component {
                                         </div>
                                         {this.has_add_button &&
                                         <ButtonAddAccount
+                                            currency={
+                                                this.props.accounts ?
+                                                    this.props.accounts[this.props.account_loginid].currency
+                                                    : false
+                                            }
                                             onClick={
                                                 this.can_upgrade ?
                                                     this.onClickUpgrade
                                                     :
                                                     this.props.openRealAccountSignup
                                             }
+                                            toggleSetCurrency={this.setAccountCurrency}
                                             text={<Localize i18n_default_text='Add Deriv account' />}
                                         />
                                         }
@@ -251,31 +257,29 @@ class AccountSwitcher extends React.Component {
                                                 :
                                                 <React.Fragment>
                                                     {this.props.has_mt5_login &&
-                                                        <>
-                                                            <div className={classNames('acc-switcher__accounts', {
-                                                                'acc-switcher__accounts--has-add-account': this.has_mt5_upgrade_button,
-                                                            })}
-                                                            >
-                                                                {this.sorted_mt5_list.filter((account)=> !(/^demo/.test(account.group))).map((account) => (
-                                                                    <AccountList
-                                                                        key={account.login}
-                                                                        account_type={account.group}
-                                                                        balance={account.balance}
-                                                                        currency={account.currency}
-                                                                        currency_icon={getMT5AccountType(account.group).replace(/^demo/, 'real')}
-                                                                        has_balance={'balance' in account}
-                                                                        loginid={account.login}
-                                                                        onClickAccount={/^demo/.test(account.group) ? this.redirectToMt5Demo : this.redirectToMt5Real}
-                                                                    />
-                                                                ))}
-                                                            </div>
-                                                            {(this.has_mt5_upgrade_button) &&
-                                                            <ButtonAddAccount
-                                                                onClick={this.redirectToMt5Real}
-                                                                text={<Localize i18n_default_text='Add DMT5 account' />}
-                                                            />
-                                                            }
-                                                        </>
+                                                        <div className={classNames('acc-switcher__accounts', {
+                                                            'acc-switcher__accounts--has-add-account': this.has_mt5_upgrade_button,
+                                                        })}
+                                                        >
+                                                            {this.sorted_mt5_list.filter((account)=> !(/^demo/.test(account.group))).map((account) => (
+                                                                <AccountList
+                                                                    key={account.login}
+                                                                    account_type={account.group}
+                                                                    balance={account.balance}
+                                                                    currency={account.currency}
+                                                                    currency_icon={getMT5AccountType(account.group).replace(/^demo/, 'real')}
+                                                                    has_balance={'balance' in account}
+                                                                    loginid={account.login}
+                                                                    onClickAccount={/^demo/.test(account.group) ? this.redirectToMt5Demo : this.redirectToMt5Real}
+                                                                />
+                                                            ))}
+                                                        </div>
+                                                    }
+                                                    {(this.has_mt5_upgrade_button) &&
+                                                    <ButtonAddAccount
+                                                        onClick={this.redirectToMt5Real}
+                                                        text={<Localize i18n_default_text='Add DMT5 account' />}
+                                                    />
                                                     }
                                                 </React.Fragment>
                                             }
@@ -337,32 +341,30 @@ class AccountSwitcher extends React.Component {
                                                 :
                                                 <React.Fragment>
                                                     {this.props.has_mt5_login &&
-                                                        <>
-                                                            <div className={classNames('acc-switcher__accounts', {
-                                                                'acc-switcher__accounts--has-add-account': this.has_mt5_upgrade_button,
-                                                            })}
-                                                            >
-                                                                {this.sorted_mt5_list.filter((account)=> /^demo/.test(account.group)).map((account) => (
-                                                                    <AccountList
-                                                                        key={account.login}
-                                                                        account_type={account.group}
-                                                                        balance={account.balance}
-                                                                        currency={account.currency}
-                                                                        currency_icon={getMT5AccountType(account.group).replace(/^demo/, 'real')}
-                                                                        has_balance={'balance' in account}
-                                                                        is_virtual
-                                                                        loginid={account.login}
-                                                                        onClickAccount={/^demo/.test(account.group) ? this.redirectToMt5Demo : this.redirectToMt5Real}
-                                                                    />
-                                                                ))}
-                                                            </div>
-                                                            {(this.has_mt5_upgrade_button) &&
-                                                            <ButtonAddAccount
-                                                                onClick={this.redirectToMt5Demo}
-                                                                text={<Localize i18n_default_text='Add DMT5 account' />}
-                                                            />
-                                                            }
-                                                        </>
+                                                        <div className={classNames('acc-switcher__accounts', {
+                                                            'acc-switcher__accounts--has-add-account': this.has_mt5_upgrade_button,
+                                                        })}
+                                                        >
+                                                            {this.sorted_mt5_list.filter((account)=> /^demo/.test(account.group)).map((account) => (
+                                                                <AccountList
+                                                                    key={account.login}
+                                                                    account_type={account.group}
+                                                                    balance={account.balance}
+                                                                    currency={account.currency}
+                                                                    currency_icon={getMT5AccountType(account.group).replace(/^demo/, 'real')}
+                                                                    has_balance={'balance' in account}
+                                                                    is_virtual
+                                                                    loginid={account.login}
+                                                                    onClickAccount={/^demo/.test(account.group) ? this.redirectToMt5Demo : this.redirectToMt5Real}
+                                                                />
+                                                            ))}
+                                                        </div>
+                                                    }
+                                                    {(this.has_mt5_upgrade_button) &&
+                                                    <ButtonAddAccount
+                                                        onClick={this.redirectToMt5Demo}
+                                                        text={<Localize i18n_default_text='Add DMT5 account' />}
+                                                    />
                                                     }
                                                 </React.Fragment>
                                             }
@@ -412,6 +414,7 @@ AccountSwitcher.propTypes = {
     account_list          : PropTypes.array,
     account_loginid       : PropTypes.string,
     accounts              : PropTypes.object,
+    active_tab_index      : PropTypes.number,
     display               : PropTypes.string,
     has_fiat              : PropTypes.bool,
     has_mt5_login         : PropTypes.bool,
@@ -426,6 +429,8 @@ AccountSwitcher.propTypes = {
     obj_total_balance     : PropTypes.object,
     toggleAccountsDialog  : PropTypes.func,
     togglePositionsDrawer : PropTypes.func,
+    toggleSetCurrencyModal: PropTypes.func,
+    updateAccountTabIndex : PropTypes.func,
     updateMt5LoginList    : PropTypes.func,
 };
 
@@ -449,10 +454,13 @@ const account_switcher = withRouter(connect(
         switchAccount            : client.switchAccount,
         logoutClient             : client.logout,
         updateMt5LoginList       : client.updateMt5LoginList,
+        active_tab_index         : ui.account_switcher_tab_index,
         is_positions_drawer_on   : ui.is_positions_drawer_on,
         openRealAccountSignup    : ui.openRealAccountSignup,
+        updateAccountTabIndex    : ui.setAccountSwitcherTabIndex,
         toggleAccountsDialog     : ui.toggleAccountsDialog,
         togglePositionsDrawer    : ui.togglePositionsDrawer,
+        toggleSetCurrencyModal   : ui.toggleSetCurrencyModal,
     }),
 )(AccountSwitcher));
 

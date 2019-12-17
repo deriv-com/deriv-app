@@ -28,11 +28,19 @@
             top: 0;
             background: var(--general-main-1);
         }
+        &--no-currency:before {
+            left: -140px;
+            width: 140px;
+        }
     }
     &__container {
         align-items: center;
         -webkit-box-align: center;
         display: flex;
+
+        .set-currency {
+            margin-right: 8px;
+        }
     }
     &__wrapper {
         align-items: center;
@@ -239,7 +247,7 @@
                 margin-bottom: 16px;
             }
         }
-        &--has-add-account {
+        &--has-add-account:not(:empty) {
             margin-bottom: -16px;
         }
     }

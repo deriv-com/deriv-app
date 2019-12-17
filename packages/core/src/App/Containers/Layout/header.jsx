@@ -72,7 +72,10 @@ class Header extends React.Component {
                     </div>
                     <div className='header__menu-right'>
                         {is_logging_in &&
-                        <div className='acc-info__preloader'>
+                        <div className={classNames('acc-info__preloader', {
+                            'acc-info__preloader--no-currency': !currency,
+                        })}
+                        >
                             <AccountsInfoLoader is_logged_in={is_logged_in} speed={3} />
                         </div>
                         }

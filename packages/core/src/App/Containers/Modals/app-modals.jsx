@@ -4,12 +4,14 @@ import DenialOfServiceModal from 'App/Components/Elements/Modals/DenialOfService
 import { connect }          from 'Stores/connect';
 import { isBot, isMT5 }     from 'Utils/PlatformSwitcher';
 
-const AccountSignupModal = React.lazy(() => import(/* webpackChunkName: "account-signup-modal" */'../AccountSignupModal'));
-const ResetPasswordModal = React.lazy(() => import(/* webpackChunkName: "reset-password-modal" */'../ResetPasswordModal'));
-const SetResidenceModal  = React.lazy(() => import(/* webpackChunkName: "set-residence-modal"  */'../SetResidenceModal'));
+const AccountSignupModal      = React.lazy(() => import(/* webpackChunkName: "account-signup-modal" */'../AccountSignupModal'));
+const ResetPasswordModal      = React.lazy(() => import(/* webpackChunkName: "reset-password-modal" */'../ResetPasswordModal'));
+const SetAccountCurrencyModal = React.lazy(() => import(/* webpackChunkName: "set-currency-modal"   */'../SetAccountCurrencyModal'));
+const SetResidenceModal       = React.lazy(() => import(/* webpackChunkName: "set-residence-modal"  */'../SetResidenceModal'));
 
 const AppModals = ({
     is_denial_of_service_modal_visible,
+    is_set_currency_modal_visible,
     is_set_residence_modal_visible,
     url_action_param,
     switchAccount,
@@ -26,7 +28,8 @@ const AppModals = ({
         default:
             if (is_denial_of_service_modal_visible) {
                 const denialOfServiceOnCancel = () => {
-                    const link_to = isBot() ? 'bot' : isMT5() ? 'user/metatrader' : 'trading';
+                    const trade_link = isMT5() ? 'user/metatrader' : 'trading';
+                    const link_to = isBot() ? 'bot' : trade_link;
                     window.open(urlFor(link_to, undefined, undefined, true));
                 };
 
@@ -43,6 +46,8 @@ const AppModals = ({
                 );
             } else if (is_set_residence_modal_visible) {
                 ComponentToLoad = <SetResidenceModal />;
+            } else if (is_set_currency_modal_visible) {
+                ComponentToLoad = <SetAccountCurrencyModal />;
             }
             break;
     }
@@ -56,6 +61,7 @@ const AppModals = ({
 
 export default connect(({ client, ui }) => ({
     is_set_residence_modal_visible    : ui.is_set_residence_modal_visible,
+    is_set_currency_modal_visible     : ui.is_set_currency_modal_visible,
     is_denial_of_service_modal_visible: !client.is_client_allowed_to_visit,
     switchAccount                     : client.switchAccount,
     virtual_account_loginid           : client.virtual_account_loginid,

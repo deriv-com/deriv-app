@@ -669,6 +669,9 @@ export default class ClientStore extends BaseStore {
         this.registerReactions();
         this.setIsLoggingIn(false);
         this.setInitialized(true);
+
+        // upon logging in, check if account that is logged into is demo to make sure account tab is corect upon toggling
+        if (this.is_virtual) this.root_store.ui.setAccountSwitcherTabIndex(1);
     }
 
     @action.bound

@@ -23,9 +23,7 @@ export default class ToolbarStore {
         const workspace = Blockly.derivWorkspace;
         const toolbox   = workspace.getToolbox();
 
-        if (!workspace.is_chunk_loaded) {
-            await this.initToolbox();
-        }
+        await this.initToolbox();
 
         const { main_content } = this.root_store;
 
@@ -93,9 +91,7 @@ export default class ToolbarStore {
         const workspace = Blockly.derivWorkspace;
         const toolbox   = workspace.getToolbox();
 
-        if (!toolbox.is_chunk_loaded) {
-            await this.initToolbox();
-        }
+        await this.initToolbox();
 
         if (this.is_toolbox_open && search !== '') {
             this.onToolboxToggle();

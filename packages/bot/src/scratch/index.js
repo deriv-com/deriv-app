@@ -3,6 +3,7 @@ import                                    './blocks';
 import                                    './hooks';
 import { hasAllRequiredBlocks }       from './utils';
 import { onWorkspaceResize }          from './utils/workspace';
+import main_xml                       from './xml/main.xml';
 import config                         from '../constants';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import ScratchStore                   from '../stores/scratch-store';
@@ -21,19 +22,18 @@ class DBot {
     async initWorkspace() {
         try {
             const el_scratch_div  = document.getElementById('scratch_div');
-            const toolbox_xml     = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(r => r.text()); // eslint-disable-line
-            const main_xml        = await fetch(`${__webpack_public_path__}xml/main.xml`).then(r => r.text()); // eslint-disable-line
             this.workspace        = Blockly.inject(el_scratch_div, {
                 grid    : { spacing: 40, length: 11, colour: '#f3f3f3' },
                 media   : `${__webpack_public_path__}media/`, // eslint-disable-line
-                toolbox : toolbox_xml,
+                // Load placeholder toolbox, replaced when user first opens it. Requires category!
+                // See: https://developers.google.com/blockly/guides/configure/web/toolbox#changing_the_toolbox
+                toolbox : '<xml id="toolbox"><category name="placeholder"><category></xml>',
                 trashcan: true,
                 zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
             });
 
-            this.workspace.blocksXmlStr  = main_xml;
-            this.workspace.toolboxXmlStr = toolbox_xml;
-            Blockly.derivWorkspace       = this.workspace;
+            this.workspace.cached_xml = { main: main_xml };
+            Blockly.derivWorkspace    = this.workspace;
 
             this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
             this.addBeforeRunFunction(this.unselectBlocks.bind(this));

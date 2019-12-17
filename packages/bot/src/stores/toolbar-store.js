@@ -1,6 +1,7 @@
 import {
     observable,
-    action }                 from 'mobx';
+    action,
+    runInAction }            from 'mobx';
 import { localize }          from 'deriv-translations';
 import { tabs_title }        from '../constants/bot-contents';
 import { scrollWorkspace }   from '../scratch/utils';
@@ -14,21 +15,26 @@ export default class ToolbarStore {
     @observable is_dialog_open = false;
     @observable is_toolbox_open = false;
     @observable is_search_loading = false;
+    @observable is_toolbox_loading = false;
     @observable file_name = localize('Untitled Bot');
 
     @action.bound
-    onToolboxToggle() {
-        const workspace        = Blockly.derivWorkspace;
-        const toolbox          = workspace.toolbox_; // eslint-disable-line
-        this.is_toolbox_open   = !this.is_toolbox_open;
+    async onToolboxToggle() {
+        const workspace = Blockly.derivWorkspace;
+        const toolbox   = workspace.getToolbox();
+
+        if (!workspace.is_chunk_loaded) {
+            await this.initToolbox();
+        }
+
         const { main_content } = this.root_store;
 
         if (main_content.active_tab !== tabs_title.WORKSPACE) {
             main_content.setActiveTab(tabs_title.WORKSPACE);
         }
-        
-        toolbox.toggle();
-        if (this.is_toolbox_open) {
+
+        // Bump workspace if the toolbox is going to be open and overlaps blocks.
+        if (!this.is_toolbox_open) {
             const toolbox_width     = toolbox.HtmlDiv.clientWidth;
             const block_canvas_rect = workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
             
@@ -37,16 +43,44 @@ export default class ToolbarStore {
                 scrollWorkspace(workspace, scroll_distance, true, false);
             }
         }
-        
+
+        runInAction(() => {
+            this.is_toolbox_open = !this.is_toolbox_open;
+        });
+
+        toolbox.toggle();
     }
 
     @action.bound
-    onSearchKeyUp(submitForm) {
+    async initToolbox() {
+        const workspace = Blockly.derivWorkspace;
+        const toolbox   = workspace.getToolbox();
+
+        if (!toolbox.is_chunk_loaded) {
+            runInAction(() => {
+                this.is_toolbox_loading = true;
+            });
+
+            await toolbox.loadChunk();
+            
+            runInAction(() => {
+                this.is_toolbox_loading = false;
+            });
+        }
+
+        return true;
+    }
+
+    @action.bound
+    async onSearchKeyUp(submitForm) {
         this.is_search_loading = true;
-        delayCallbackByMs(submitForm, 1000).then(action(timer => {
+
+        delayCallbackByMs(submitForm, 1000).then(timer => {
             clearTimeout(timer);
-            this.is_search_loading = false;
-        }));
+            runInAction(() => {
+                this.is_search_loading = false;
+            });
+        });
     }
 
     @action.bound
@@ -55,13 +89,19 @@ export default class ToolbarStore {
     }
 
     @action.bound
-    onSearch({ search }) {
+    async onSearch({ search }) {
+        const workspace = Blockly.derivWorkspace;
+        const toolbox   = workspace.getToolbox();
+
+        if (!toolbox.is_chunk_loaded) {
+            await this.initToolbox();
+        }
+
         if (this.is_toolbox_open && search !== '') {
             this.onToolboxToggle();
         }
 
-        // eslint-disable-next-line no-underscore-dangle
-        Blockly.derivWorkspace.toolbox_.showSearch(search);
+        toolbox.showSearch(search);
     }
 
     onSearchClear = (setFieldValue) => {
@@ -92,7 +132,7 @@ export default class ToolbarStore {
         const workspace = Blockly.derivWorkspace;
         Blockly.Events.setGroup('reset');
         workspace.clear();
-        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.blocksXmlStr), workspace);
+        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.cached_xml.main), workspace);
         Blockly.Events.setGroup(false);
         this.file_name = localize('Untitled Bot');
         this.is_dialog_open = false;

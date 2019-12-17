@@ -43,6 +43,13 @@ Blockly.Blocks.logic_ternary = {
             'description' : localize('This block tests if a given value is true or false and returns “True” or “False” accordingly.'),
         };
     },
+    getRequiredValueInputs() {
+        return {
+            IF  : null,
+            THEN: null,
+            ELSE: null,
+        };
+    },
 };
 
 Blockly.JavaScript.logic_ternary = block => {

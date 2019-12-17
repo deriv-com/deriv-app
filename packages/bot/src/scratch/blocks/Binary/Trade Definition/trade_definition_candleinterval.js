@@ -21,7 +21,7 @@ Blockly.Blocks.trade_definition_candleinterval = {
         this.setMovable(false);
         this.setDeletable(false);
     },
-    onchange() {
+    onchange(/* event */) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }

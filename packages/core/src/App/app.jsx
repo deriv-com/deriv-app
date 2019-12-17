@@ -33,7 +33,7 @@ const App = ({ root_store }) => {
     const url_params = new URLSearchParams(l.search);
 
     const is_staging = /staging\.deriv\.app/i.test(l.hostname);
-    if (is_staging) {
+    if (true) {
         loadIncontextTranslation();
     }
 

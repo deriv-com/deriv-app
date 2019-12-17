@@ -1,3 +1,4 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
 const is_serve   = process.env.BUILD_MODE === 'serve';
@@ -42,6 +43,11 @@ module.exports = {
             },
         ],
     },
+    plugins: [
+        new CopyWebpackPlugin([
+            { from: 'src/translations', to: 'languages/' },
+        ]),
+    ],
     externals: {
         'react'         : 'react',
         'babel-polyfill': 'babel-polyfill',

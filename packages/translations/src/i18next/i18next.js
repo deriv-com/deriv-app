@@ -4,18 +4,17 @@ import i18n                 from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import withI18n             from '../components'
 // TODO: lazy load these: with i18n.addResourceBundle
-import ach                  from '../translations/ach.json';
-import en                   from '../translations/en.json';
-import es                   from '../translations/es.json';
-import fr                   from '../translations/fr.json';
-import id                   from '../translations/id.json';
-import it                   from '../translations/it.json';
-import pl                   from '../translations/pl.json';
-import pt                   from '../translations/pt.json';
-import ru                   from '../translations/ru.json';
-import vi                   from '../translations/ru.json';
-import zh_cn                from '../translations/zh_cn.json';
-import zh_tw                from '../translations/zh_tw.json';
+// import ach                  from '../translations/ach.json';
+// import es                   from '../translations/es.json';
+// import fr                   from '../translations/fr.json';
+// import id                   from '../translations/id.json';
+// import it                   from '../translations/it.json';
+// import pl                   from '../translations/pl.json';
+// import pt                   from '../translations/pt.json';
+// import ru                   from '../translations/ru.json';
+// import vi                   from '../translations/ru.json';
+// import zh_cn                from '../translations/zh_cn.json';
+// import zh_tw                from '../translations/zh_tw.json';
 
 const LANGUAGE_KEY     = 'i18n_language';
 const DEFAULT_LANGUAGE = 'EN';
@@ -29,7 +28,6 @@ const ALL_LANGUAGES    = Object.freeze({
     PL   : 'Polish',
     PT   : 'Português',
     RU   : 'Русский',
-    TH   : 'Thai',
     VI   : 'Tiếng Việt',
     ZH_CN: '简体中文',
     ZH_TW: '繁體中文',
@@ -69,18 +67,17 @@ const getInitialLanguage = () => {
 const initial_language = getInitialLanguage();
 const i18n_config = {
     resources: {
-        ACH  : { translations: {...ach } },
-        EN   : { translations: { ...en } },
-        ES   : { translations: { ...es } },
-        FR   : { translations: { ...fr } },
-        ID   : { translations: { ...id } },
-        IT   : { translations: { ...it } },
-        PL   : { translations: { ...pl } },
-        PT   : { translations: { ...pt } },
-        RU   : { translations: { ...ru } },
-        VI   : { translations: { ...vi } },
-        ZH_CN: { translations: { ...zh_cn } },
-        ZH_TW: { translations: { ...zh_tw } },
+        // ACH  : { translations: {...ach } },
+        // ES   : { translations: { ...es } },
+        // FR   : { translations: { ...fr } },
+        // ID   : { translations: { ...id } },
+        // IT   : { translations: { ...it } },
+        // PL   : { translations: { ...pl } },
+        // PT   : { translations: { ...pt } },
+        // RU   : { translations: { ...ru } },
+        // VI   : { translations: { ...vi } },
+        // ZH_CN: { translations: { ...zh_cn } },
+        // ZH_TW: { translations: { ...zh_tw } },
     },
     react: {
         hashTransKey(defaultValue) {
@@ -97,13 +94,30 @@ i18n
     .use(initReactI18next) // passes i18n down to react-i18next
     .init(i18n_config);
 
+loadLanguageJson(initial_language);
+
+function loadLanguageJson(lang) {
+    return new Promise((resolve) => {
+        if (!i18n.hasResourceBundle(lang, 'translations') && lang !== DEFAULT_LANGUAGE) {
+            import(`public/i18n/${lang.toLowerCase()}.json`).then(({default: lang_json}) => {
+                console.log('lang_json ', lang_json);
+                i18n.addResourceBundle(lang, 'translations', { ...lang_json })
+                resolve();
+            })
+        } else {
+            resolve()
+        }
+    })
+}
+    
 const changeLanguage = (lang, cb) => {
-    return;
     // TODO: uncomment this when translations are ready
     // if (hasLanguage(lang)) {
     //     i18n.changeLanguage(lang, () => {
     //         localStorage.setItem(LANGUAGE_KEY, lang);
-    //         cb();
+    //         loadLanguageJson(lang).then(() => {
+    //             cb();
+    //         })
     //     })
     // }
 }

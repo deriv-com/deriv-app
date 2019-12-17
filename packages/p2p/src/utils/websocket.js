@@ -101,7 +101,8 @@ const getModifiedP2POrder = (response) => {
     modified_response.display_transaction_amount = formatMoney(response.local_currency, response.transaction_amount);
 
     // TOOD: calculate this based on expiry time - created time
-    modified_response.remaining_time             = 60 * 60 * 1000; // initial value is one hour
+    // const remaining_seconds = (+response.expiry_time) - (+response.created_time);
+    modified_response.order_expiry_millis         = convertToMillis(response.expiry_time);
 
     return modified_response;
 };

@@ -1,5 +1,4 @@
 import { localize }            from 'Components/i18next';
-import { millisecondsToTimer } from 'Utils/date-time';
 
 export default class OrderInfo {
     order_id = '';
@@ -7,7 +6,7 @@ export default class OrderInfo {
     type = '';
     advertiser_name = '';
     advertiser_notes = '';
-    order_purchase_datetime = new Date();
+    order_purchase_datetime = '';
     price_rate = 0;
     display_price_rate = '';
     offer_currency = ''; // The currency that is being purchased
@@ -16,8 +15,7 @@ export default class OrderInfo {
     display_transaction_amount = '';
     offer_amount = 0;
     transaction_amount = 0;
-    remaining_time = 0; // 60 * 60 * 1000
-    remainingTimeInterval = null;
+    order_expiry_millis = 0;
 
     constructor(order_info = null) {
         if (order_info) {
@@ -25,16 +23,6 @@ export default class OrderInfo {
                 this[detail] = order_info[detail];
             });
         }
-
-        this.remainingTimeInterval = setInterval(() => {
-            if (this.remaining_time !== 0) {
-                this.remaining_time -= 1000;
-            } else {
-                // TODO: [p2p-timeout-status-check] - Check if order has timed out; add timeout message to `OrderDetails`
-                clearInterval(this.remainingTimeInterval);
-                this.remainingTimeInterval = null;
-            }
-        }, 1000);
     }
 
     static status_map = {
@@ -81,10 +69,6 @@ export default class OrderInfo {
 
     get is_completed() {
         return this.status === 'completed';
-    }
-
-    get display_remaining_time() {
-        return millisecondsToTimer(this.remaining_time);
     }
 
     setStatus = (value) => {

@@ -15,9 +15,10 @@ export const convertToMillis = (epoch) => {
     return local_unix;
 };
 
-export const millisecondsToTimer = (milliseconds) => {
-    const length = 2;
-    const pad = '0';
+export const secondsToTimer = (distance) => {
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    return `${ (new Array(length + 1).join(pad) + ((milliseconds / 60) / 1000)).slice(-length) }:${ (new Array(length + 1).join(pad) + (milliseconds / 1000)).slice(-length) }`;
+    return `${hours}:${minutes}:${seconds}`;
 };

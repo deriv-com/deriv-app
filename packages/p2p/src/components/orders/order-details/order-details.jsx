@@ -6,6 +6,7 @@ import {
 import FooterActions          from 'Components/footer-actions/footer-actions.jsx';
 import { localize, Localize } from 'Components/i18next';
 import { WS }                 from 'Utils/websocket';
+import { secondsToTimer }     from 'Utils/date-time';
 import Popup                  from '../popup.jsx';
 import './order-details.scss';
 
@@ -86,11 +87,50 @@ OrderDetailsAmountBlock.propTypes = {
 };
 
 const OrderDetailsTimerBlock = ({ order_details }) => {
+    const [remaining_time, setRemainingTime] = React.useState();
+    let interval;
+
+    const checkDistance = (expiry_in_millis) => {
+        const now_millis = new Date().getTime();
+        const distance = expiry_in_millis - now_millis;
+
+        return distance;
+    };
+
+    const countDownTimer = () => {
+        const distance = checkDistance(order_details.order_expiry_millis);
+        const timer = secondsToTimer(distance);
+
+        if (distance < 0) {
+            setRemainingTime('expired');
+            clearInterval(interval);
+
+        } else {
+            setRemainingTime(timer);
+        }
+    };
+
+    React.useEffect(() => {
+        interval = setInterval(countDownTimer, 1000);
+        const distance = checkDistance(order_details.order_expiry_millis);
+        const timer = secondsToTimer(distance);
+
+        if (distance < 0) {
+            setRemainingTime('expired');
+        } else {
+            setRemainingTime(timer);
+        }
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
+
     return (order_details.is_pending || order_details.is_buyer_confirmed) ? (
         <div className='order-details__header-timer'>
             <p>{ localize('Time left') }</p>
             <p className='order-details__header-timer-counter'>
-                { order_details.display_remaining_time }
+                { remaining_time }
             </p>
         </div>
     ) : null;
@@ -295,7 +335,7 @@ const OrderDetails = ({
                             <OrderDetailsStatusBlock order_details={ order_details } />
                             <OrderDetailsAmountBlock order_details={ order_details } />
                         </span>
-                        {/* <OrderDetailsTimerBlock order_details={ order_details } /> */}
+                        <OrderDetailsTimerBlock order_details={ order_details } />
                     </div>
                     <div className='deriv-p2p__separator' />
                     <div className='order-details__info'>
@@ -309,7 +349,7 @@ const OrderDetails = ({
                             <div className='order-details__info--right'>
                                 <OrderInfoBlock label={ is_buyer ? localize('Receive') : localize('Send') } value={ `${offer_currency} ${display_offer_amount}` } />
                                 {is_buyer && <OrderInfoBlock label={localize('Seller')} value={ advertiser_name } />}
-                                <OrderInfoBlock label={ localize('Time') } value={ order_purchase_datetime.toString() } />
+                                <OrderInfoBlock label={ localize('Time') } value={ order_purchase_datetime } />
                             </div>
                         </div>
                     </div>

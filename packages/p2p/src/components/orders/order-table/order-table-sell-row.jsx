@@ -44,7 +44,7 @@ SellOrderRowComponent.propTypes = {
         display_transaction_amount: PropTypes.string,
         offer_currency            : PropTypes.string,
         order_id                  : PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
-        order_purchase_datetime   : PropTypes.date,
+        order_purchase_datetime   : PropTypes.string,
         transaction_currency      : PropTypes.string,
     }),
     onOpenDetails: PropTypes.func,

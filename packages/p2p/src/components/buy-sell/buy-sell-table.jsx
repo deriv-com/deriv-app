@@ -6,7 +6,6 @@ import { BuyTable }  from './buy-table.jsx';
 import { SellTable } from './sell-table.jsx';
 
 export const BuySellTable = ({ setSelectedAd, table_type }) => {
-
     const is_buy = table_type === 'buy';
     const [offer_currency, setOfferCurrency] = React.useState('');
     const [is_agent, setIsAgent] = React.useState(true);

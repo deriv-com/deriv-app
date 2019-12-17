@@ -423,7 +423,7 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
                 return null;
             };
 
-            const toolbox_xml       = this.workspace.cached_xml.toolbox;
+            const toolbox_xml       = this.workspace_.cached_xml.toolbox;
             const toolbox_dom       = Blockly.Xml.textToDom(toolbox_xml);
             const selected_category = findCategory(toolbox_dom.children);
 

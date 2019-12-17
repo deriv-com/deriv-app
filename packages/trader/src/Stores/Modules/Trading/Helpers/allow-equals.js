@@ -1,10 +1,11 @@
+import { localize } from 'deriv-translations';
 import ObjectUtils  from 'deriv-shared/utils/object';
 import ContractType from './contract-type';
 
 export const hasCallPutEqual = (contract_type_list) => {
     if (!contract_type_list) return false;
 
-    return ObjectUtils.getPropertyValue(contract_type_list, 'Up/Down')
+    return ObjectUtils.getPropertyValue(contract_type_list, localize('Up/Down'))
         .some(contract => contract.value === 'rise_fall_equal');
 };
 

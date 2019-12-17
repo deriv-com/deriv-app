@@ -119,22 +119,34 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
 
     // Option to download block.
     if (this.isMovable()) {
+        const has_next_block = block.nextConnection && block.nextConnection.isConnected();
+        const downloadBlock  = (should_delete_next) => {
+            const xml       = Blockly.Xml.textToDom('<xml/>');
+            const block_xml = Blockly.Xml.blockToDom(block);
+            const file_name = should_delete_next ? block.type : `${block.type}_${localize('stack')}`;
+
+            if (should_delete_next) {
+                Blockly.Xml.deleteNext(block_xml);
+            }
+
+            xml.appendChild(block_xml);
+            save(file_name, /* collection */ true, xml);
+        };
+
         menu_options.push({
             text    : localize('Download block'),
             enabled : true,
-            callback: () => {
-                const xml            = Blockly.Xml.textToDom('<xml/>');
-                const has_next_block = block.nextConnection && block.nextConnection.isConnected();
-                const file_name      = `${block.type}${has_next_block ? `_${localize('stack')}` : ''}`;
-
-                xml.appendChild(Blockly.Xml.blockToDom(block));
-                save(
-                    /* filename */ file_name,
-                    /* collection */ true,
-                    /* xmlDom */ xml
-                );
-            },
+            callback: () => downloadBlock(true),
         });
+
+        if (has_next_block) {
+            menu_options.push({
+                text    : localize('Download stack'),
+                enabled : true,
+                callback: () => downloadBlock(false),
+            });
+        }
+        
     }
     // Allow the block to add or modify menu_options.
     if (this.customContextMenu) {

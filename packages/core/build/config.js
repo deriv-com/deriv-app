@@ -6,7 +6,6 @@ const { transformContentUrlBase } = require('./helpers');
 const copyConfig = (base) => ([
     { from: path.resolve(__dirname, '../node_modules/deriv-bot/dist/bot.main.css*'), to: 'css/', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/deriv-bot/dist/media/**'), to: 'js/bot/media', flatten: true },
-    { from: path.resolve(__dirname, '../node_modules/deriv-bot/dist/xml/**'), to: 'js/bot/xml', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/deriv-bot/dist/*.*'), to: 'js/bot/', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/deriv-trader/dist/js/smartcharts/**'), to: 'js/smartcharts/', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/deriv-trader/dist/css/smartcharts.css*'), to: 'css/', flatten: true },

@@ -2,23 +2,17 @@ import {
     observable,
     action,
     reaction,
-    computed,
-}                                     from 'mobx';
-import { localize }                   from 'deriv-translations';
-import { contract_stages }            from '../constants/contract-stage';
+    computed }                         from 'mobx';
+import { localize }                    from 'deriv-translations' ;
+import { contract_stages }             from '../constants/contract-stage';
 import {
     error_types,
-    unrecoverable_errors,
-}                                      from '../constants/messages';
-import {
-    runBot,
-    stopBot,
-    terminateBot,
-}                                      from '../scratch';
+    unrecoverable_errors }             from '../constants/messages';
+import DBot                            from '../scratch';
 import { isEnded }                     from '../utils/contract';
-import { switch_account_notification } from '../utils/notifications/bot-notifications';
 import { observer }                    from '../utils/observer';
-import { hasAllRequiredBlocks }        from '../scratch/utils/scratchHelper';
+import { setMainContentWidth }         from '../utils/window-size';
+import { switch_account_notification } from '../utils/notifications/bot-notifications';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -68,25 +62,17 @@ export default class RunPanelStore {
 
         this.registerBotListeners();
 
-        if (!hasAllRequiredBlocks()) {
-            this.showErrorMessage(
-                new Error(localize('One or more mandatory blocks are missing from your workspace. ' +
-                'Please add the required block(s) and then try again.'))
-            );
-            return;
-        }
-
         this.is_running = true;
-        this.is_drawer_open = true;
+        this.toggleDrawer(true);
         contract_card.clear();
         this.setContractStage(contract_stages.STARTING);
 
-        runBot();
+        DBot.runBot();
     }
 
     @action.bound
     onStopButtonClick() {
-        stopBot();
+        DBot.stopBot();
 
         this.is_running = false;
 
@@ -127,6 +113,7 @@ export default class RunPanelStore {
     @action.bound
     toggleDrawer(is_open) {
         this.is_drawer_open = is_open;
+        setMainContentWidth(is_open);
     }
 
     @action.bound
@@ -282,9 +269,9 @@ export default class RunPanelStore {
         this.showErrorMessage(data);
     }
 
+    @action.bound
     showErrorMessage(data) {
         const { journal } = this.root_store;
-
         journal.onError(data);
         this.setActiveTabIndex(2);
     }
@@ -315,7 +302,7 @@ export default class RunPanelStore {
                         if (loginid && this.is_running) {
                             ui.addNotificationMessage(switch_account_notification);
                         }
-                        terminateBot();
+                        DBot.terminateBot();
                         RunPanelStore.unregisterBotListeners();
                         this.clearStat();
                     },

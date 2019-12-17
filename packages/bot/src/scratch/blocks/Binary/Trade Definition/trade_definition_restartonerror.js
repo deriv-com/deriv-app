@@ -6,9 +6,9 @@ Blockly.Blocks.trade_definition_restartonerror = {
             message0: localize('Restart last trade on error (bot ignores the unsuccessful trade): %1'),
             args0   : [
                 {
-                    type : 'input_value',
-                    name : 'RESTARTONERROR',
-                    check: 'Boolean',
+                    type   : 'field_image_checkbox',
+                    name   : 'RESTARTONERROR',
+                    checked: true,
                 },
             ],
             colour           : Blockly.Colours.Base.colour,
@@ -21,7 +21,7 @@ Blockly.Blocks.trade_definition_restartonerror = {
         this.setMovable(false);
         this.setDeletable(false);
     },
-    onchange() {
+    onchange(/* event */) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
@@ -29,5 +29,6 @@ Blockly.Blocks.trade_definition_restartonerror = {
         this.enforceLimitations();
     },
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
+    required_inputs   : ['RESTARTONERROR'],
 };
 Blockly.JavaScript.trade_definition_restartonerror = () => {};

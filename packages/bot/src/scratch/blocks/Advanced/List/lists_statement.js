@@ -48,26 +48,39 @@ Blockly.Blocks.lists_statement = {
             return;
         }
 
-        const surroundParent = this.getSurroundParent();
         if (event.type === Blockly.Events.END_DRAG) {
-            if (!this.requiredParentId && surroundParent.type === 'lists_create_with') {
-                this.requiredParentId = surroundParent.id;
-            } else if (!surroundParent || surroundParent.id !== this.requiredParentId) {
-                Blockly.Events.disable();
+            const { recordUndo }  = Blockly.Events;
+            const surround_parent = this.getSurroundParent();
+
+            if (!surround_parent) {
+                // No parent, dispose.
+                Blockly.Events.recordUndo = false;
+                this.dispose(true);
+                Blockly.Events.recordUndo = recordUndo;
+            } else if (!this.requiredParentId && surround_parent.type === this.required_parent_type) {
+                // Legal parent, but not yet related, set connection.
+                this.requiredParentId = surround_parent.id;
+            } else if (surround_parent.id !== this.requiredParentId) {
+                // Illegal parent, dispose.
+                Blockly.Events.recordUndo = false;
+
                 this.unplug(false);
+                
+                const all_blocks   = this.workspace.getAllBlocks();
+                const parent_block = all_blocks.find(block => block.id === this.requiredParentId);
 
-                const parentBlock = this.workspace.getAllBlocks().find(block => block.id === this.requiredParentId);
-
-                if (parentBlock) {
-                    const parentConnection = parentBlock.getLastConnectionInStatement('STACK');
-                    parentConnection.connect(this.previousConnection);
+                if (parent_block) {
+                    const parent_connection = parent_block.getLastConnectionInStatement('STACK');
+                    parent_connection.connect(this.previousConnection);
                 } else {
-                    this.dispose();
+                    this.dispose(true);
                 }
-                Blockly.Events.enable();
+
+                Blockly.Events.recordUndo = recordUndo;
             }
         }
     },
+    required_parent_type: 'lists_create_with',
 };
 
 Blockly.JavaScript.lists_statement = block => {

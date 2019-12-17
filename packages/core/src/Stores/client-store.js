@@ -333,7 +333,16 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_mt5_allowed() {
         if (!this.landing_companies) return false;
-        return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
+        // TODO revert this when all landing companies are accepted.
+        // return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
+        if ('mt_financial_company' in this.landing_companies ||  'mt_gaming_company' in this.landing_companies) {
+            const { gaming_company, financial_company } = this.landing_companies;
+            // eslint-disable-next-line no-nested-ternary
+            return gaming_company ? gaming_company.shortcode === 'svg' :
+                financial_company ? financial_company.shortcode === 'svg' : false;
+        }
+
+        return false;
     }
 
     /**
@@ -667,10 +676,11 @@ export default class ClientStore extends BaseStore {
         this.website_status = response.website_status;
         if (this.website_status.message && this.website_status.message.length) {
             this.root_store.ui.addNotificationMessage({
-                key    : 'maintenance',
-                header : localize('Site is being updated'),
-                message: localize(this.website_status.message),
-                type   : 'warning',
+                key          : 'maintenance',
+                header       : localize('Site is being updated'),
+                message      : localize(this.website_status.message),
+                type         : 'warning',
+                is_persistent: true,
             });
         } else {
             this.root_store.ui.removeNotificationMessage({ key: 'maintenance' });
@@ -1117,6 +1127,12 @@ export default class ClientStore extends BaseStore {
                 resolve(response);
             })
         });
+    }
+
+    @action.bound
+    resetMt5ListPopulatedState() {
+        this.is_mt5_account_list_updated    = false;
+        this.is_populating_mt5_account_list = true;
     }
 
     @action.bound

@@ -11,9 +11,13 @@ export default class VerticalTab extends React.Component {
     }
 
     setSelectedIndex = ({ list, selected_index, is_routed, current_path }) => {
-        const index = typeof selected_index === 'undefined'
-            ? (is_routed ? list.indexOf(list.find(item => (item.path === (current_path || item.default)))) || 0 : 0)
-            : selected_index;
+        let index;
+        if (typeof selected_index === 'undefined') {
+            index = is_routed ?
+                list.indexOf(list.find(item => (item.path === (current_path || item.default)))) || 0 : 0;
+        } else {
+            index = selected_index;
+        }
         this.props.setModalIndex(typeof index === 'object' ? list.indexOf(index) : index);
     };
 

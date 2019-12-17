@@ -16,7 +16,7 @@ import routes                 from 'Constants/routes';
 import {
     getMT5AccountDisplay,
     getMT5AccountType }       from 'Stores/Helpers/client';
-import Loading                from '../../../templates/_common/components/loading.jsx';
+import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
 
 const AccountWrapper = ({
     children,
@@ -176,7 +176,7 @@ class AccountSwitcher extends React.Component {
     };
 
     redirectToMt5Real = () => {
-        if (this.props.can_upgrade_to === 'svg' || this.props.landing_company_shortcode === 'svg') {
+        if (!this.props.is_logged_in || this.props.is_mt5_allowed) {
             this.redirectToMt5('real');
         } else {
             window.open(urlFor('user/metatrader', undefined, undefined, true));
@@ -322,7 +322,9 @@ class AccountSwitcher extends React.Component {
                                     toggleVisibility={() => { this.toggleVisibility('dmt5'); }}
                                 >
                                     {this.props.is_loading_mt5 ?
-                                        <Loading className='acc-switcher__loader' />
+                                        <div className='acc-switcher__accounts--is-loading'>
+                                            <AccountsItemLoader speed={3} />
+                                        </div>
                                         :
                                         <React.Fragment>
                                             {this.props.has_mt5_login ?

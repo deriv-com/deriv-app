@@ -31,6 +31,11 @@ Blockly.Blocks.is_candle_black = {
             'description' : localize('This block returns “True” if the last candle is black. It can be placed anywhere on the canvas except within the Trade parameters root block.'),
         };
     },
+    getRequiredValueInputs() {
+        return {
+            OHLCOBJ: null,
+        };
+    },
 };
 
 Blockly.JavaScript.is_candle_black = block => {

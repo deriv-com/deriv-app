@@ -2,6 +2,7 @@ import {
     observable,
     action }                 from 'mobx';
 import { localize }          from 'deriv-translations';
+import { tabs_title }        from '../constants/bot-contents';
 import { scrollWorkspace }   from '../scratch/utils';
 import { delayCallbackByMs } from '../utils/tools';
 
@@ -16,23 +17,17 @@ export default class ToolbarStore {
     @observable file_name = localize('Untitled Bot');
 
     @action.bound
-    onRunClick() {
-        this.root_store.run_panel.onRunButtonClick();
-    }
-
-    @action.bound
-    onStopClick() {
-        this.root_store.run_panel.onStopButtonClick();
-    }
-
-    @action.bound
     onToolboxToggle() {
-        const workspace      = Blockly.derivWorkspace;
-        const toolbox        = workspace.toolbox_; // eslint-disable-line
-        this.is_toolbox_open = !this.is_toolbox_open;
+        const workspace        = Blockly.derivWorkspace;
+        const toolbox          = workspace.toolbox_; // eslint-disable-line
+        this.is_toolbox_open   = !this.is_toolbox_open;
+        const { main_content } = this.root_store;
 
+        if (main_content.active_tab !== tabs_title.WORKSPACE) {
+            main_content.setActiveTab(tabs_title.WORKSPACE);
+        }
+        
         toolbox.toggle();
-
         if (this.is_toolbox_open) {
             const toolbox_width     = toolbox.HtmlDiv.clientWidth;
             const block_canvas_rect = workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
@@ -42,6 +37,7 @@ export default class ToolbarStore {
                 scrollWorkspace(workspace, scroll_distance, true, false);
             }
         }
+        
     }
 
     @action.bound

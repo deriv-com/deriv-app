@@ -1,8 +1,8 @@
 import { localize }    from 'deriv-translations';
-import BlockConversion from './backward-compatibility';
-import { saveAs }      from './shared';
-import config          from '../constants';
-import ScratchStore    from '../stores/scratch-store';
+import BlockConversion from '../backward-compatibility';
+import { saveAs }      from '../shared';
+import config          from '../../constants';
+import ScratchStore    from '../../stores/scratch-store';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 
@@ -285,6 +285,15 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
     return block;
 };
 
+export const hasAllRequiredBlocks = (workspace) => {
+    const blocks_in_workspace     = workspace.getAllBlocks();
+    const { mandatoryMainBlocks } = config;
+    const required_block_types    = ['trade_definition_tradeoptions', ...mandatoryMainBlocks];
+    const all_block_types         = blocks_in_workspace.map(block => block.type);
+    const has_all_required_blocks = required_block_types.every(block_type => all_block_types.includes(block_type));
+
+    return has_all_required_blocks;
+};
 export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chronological) => {
     const ws_metrics = workspace.getMetrics();
 
@@ -300,3 +309,6 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
     workspace.scrollbar.set(scroll_x, scroll_y);
 };
 
+export const emptyTextValidator = (input) => {
+    return !input || input === '\'\'';
+};

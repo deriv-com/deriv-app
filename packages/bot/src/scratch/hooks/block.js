@@ -1,5 +1,7 @@
 import config from '../../constants';
 
+Blockly.Block.Dimensions = {};
+
 Blockly.Block.prototype.getDisplayName = function() {
     if (this.meta) {
         const block_meta = this.meta();
@@ -88,21 +90,35 @@ Blockly.Block.prototype.getTopParent = function() {
 };
 
 Blockly.Block.getDimensions = function(block_node) {
-    const options = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
-    const fragment = document.createDocumentFragment();
+    // Attempt to retrieve dimensions from memory rather than recalculating.
+    let known_dimensions = null;
+
+    Object.keys(Blockly.Block.Dimensions).some(outer_html => {
+        if (block_node.outerHTML === outer_html) {
+            known_dimensions = Blockly.Block.Dimensions[outer_html];
+            return true;
+        }
+        return false;
+    });
+
+    if (known_dimensions) {
+        return known_dimensions;
+    }
+
+    const options          = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
+    const fragment         = document.createDocumentFragment();
     const el_injection_div = document.createElement('div');
 
     fragment.appendChild(el_injection_div);
 
     // Create a headless workspace to calculate xmlList block dimensions
-    const svg = Blockly.createDom_(el_injection_div, options);
+    const svg       = Blockly.createDom_(el_injection_div, options);
     const workspace = Blockly.createMainWorkspace_(svg, options, false, false);
-
-    const block = Blockly.Xml.domToBlock(block_node, workspace);
-    const block_hw = block.getHeightWidth();
+    const block     = Blockly.Xml.domToBlock(block_node, workspace);
+    const block_hw  = block.getHeightWidth();
 
     workspace.dispose();
-
+    Blockly.Block.Dimensions[block_node.outerHTML] = block_hw;
     return block_hw;
 };
 

@@ -109,7 +109,7 @@ export default class FlyoutStore {
         block.moveBy(1,1);
 
         // Use original Blockly flyout functionality to create block on drag.
-        const blockly_flyout = Blockly.derivWorkspace.toolbox_.flyout_;
+        const blockly_flyout = Blockly.derivWorkspace.getToolbox().flyout_;
 
         this.block_listeners.push(
             Blockly.bindEventWithChecks_(block.getSvgRoot(), 'mousedown', null, (event) => {
@@ -118,7 +118,7 @@ export default class FlyoutStore {
         );
 
         this.block_workspaces.push(workspace);
-        this.block_workspaces.forEach(Blockly.svgResize);
+        Blockly.svgResize(workspace);
     }
 
     /**
@@ -153,11 +153,13 @@ export default class FlyoutStore {
      */
     @action.bound
     onClickOutsideFlyout(event) {
-        if (!this.is_visible || !Blockly.derivWorkspace) {
+        const workspace = Blockly.derivWorkspace;
+
+        if (!this.is_visible || !workspace) {
             return;
         }
 
-        const toolbox         = Blockly.derivWorkspace.toolbox_; // eslint-disable-line
+        const toolbox         = workspace.getToolbox();
         const is_flyout_click = event.path.some(el => el.classList && el.classList.contains('flyout'));
         const isToolboxClick  = () => toolbox.HtmlDiv.contains(event.target);
 

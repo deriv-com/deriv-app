@@ -55,7 +55,7 @@ const AccountList = ({
                 }
                 {!currency &&
                 <span className='no-currency'>
-                    <Localize i18n_default_text='No currency assigned' />
+                    <Localize i18n_default_text='No currency selected' />
                 </span>
                 }
             </span>

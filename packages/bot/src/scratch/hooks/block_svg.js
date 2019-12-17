@@ -3,9 +3,6 @@ import ScratchStore from '../../stores/scratch-store';
 
 /* eslint-disable func-names, no-underscore-dangle */
 
-// deriv-bot: Blockly value, Scratch resets this to 0, req for correct spacing in flyout.
-Blockly.BlockSvg.TAB_WIDTH = 8;
-
 /**
  * Select this block.  Highlight it visually.
  */
@@ -127,4 +124,69 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
         Blockly.ContextMenu.show(e, menuOptions, this.RTL);
         Blockly.ContextMenu.currentBlock = this;
     }
+};
+
+/**
+ * Set whether the block is error highlighted or not.
+ * @param {boolean} highlighted True if highlighted for error.
+ */
+Blockly.BlockSvg.prototype.setErrorHighlighted = function(should_be_error_highlighted) {
+    if (this.is_error_highlighted === should_be_error_highlighted) {
+        return;
+    }
+
+    const highlight_class = 'block--error-highlighted';
+
+    if (should_be_error_highlighted) {
+        // Below function does its own checks to check if class already exists.
+        Blockly.utils.addClass(this.svgGroup_, highlight_class);
+    } else {
+        Blockly.utils.removeClass(this.svgGroup_, highlight_class);
+    }
+
+    this.is_error_highlighted = should_be_error_highlighted;
+};
+
+/**
+ * Set whether the block is collapsed or not.
+ * @param {boolean} collapsed True if collapsed.
+ */
+Blockly.BlockSvg.prototype.setCollapsed = function(collapsed) {
+    if (this.collapsed_ === collapsed) {
+        return;
+    }
+
+    const render_list          = [];
+    const COLLAPSED_INPUT_NAME = '_TEMP_COLLAPSED_INPUT';
+
+    // Show/hide the inputs.
+    this.inputList.forEach(input => render_list.push(...input.setVisible(!collapsed)));
+
+    if (collapsed) {
+        const icons = this.getIcons();
+        icons.forEach(icon => icon.setVisible(false));
+
+        const text = this.toString(Blockly.COLLAPSE_CHARS);
+        this.appendDummyInput(COLLAPSED_INPUT_NAME).appendField(text).init();
+    } else {
+        this.removeInput(COLLAPSED_INPUT_NAME);
+        this.setWarningText(null); // Clear any warnings inherited from enclosed blocks.
+    }
+
+    Blockly.BlockSvg.superClass_.setCollapsed.call(this, collapsed);
+  
+    if (!render_list.length) {
+        render_list.push(this); // No child blocks, just render this block.
+    }
+
+    if (this.rendered) {
+        render_list.forEach(block => block.render());
+        // Don't bump neighbours.
+        // Although bumping neighbours would make sense, users often collapse
+        // all their functions and store them next to each other.  Expanding and
+        // bumping causes all their definitions to go out of alignment.
+    }
+
+    // Check whether the collapsed block needs to be highlighted.
+    this.setErrorHighlighted(collapsed && this.hasErrorHighlightedDescendant());
 };

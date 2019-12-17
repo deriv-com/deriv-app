@@ -191,6 +191,7 @@ const Toolbar = ({
     is_search_loading,
     is_stop_button_disabled,
     is_stop_button_visible,
+    is_toolbox_loading,
     onBotNameTyped,
     onOkButtonClick,
     onCancelButtonClick,
@@ -221,6 +222,7 @@ const Toolbar = ({
                     has_effect
                     onClick={onToolboxToggle}
                     icon={<ToolbarStartIcon />}
+                    is_loading={is_toolbox_loading}
                     green
                 >
                     {localize('Get started')}
@@ -300,6 +302,7 @@ Toolbar.propTypes = {
     is_search_loading      : PropTypes.bool,
     is_stop_button_disabled: PropTypes.bool,
     is_stop_button_visible : PropTypes.bool,
+    is_toolbox_loading     : PropTypes.bool,
     onBotNameTyped         : PropTypes.func,
     onCancelButtonClick    : PropTypes.func,
     onGoogleDriveClick     : PropTypes.func,
@@ -327,6 +330,7 @@ export default connect(({ main_content, run_panel, saveload, toolbar }) => ({
     is_search_loading      : toolbar.is_search_loading,
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
     is_stop_button_visible : run_panel.is_stop_button_visible,
+    is_toolbox_loading     : toolbar.is_toolbox_loading,
     onBotNameTyped         : toolbar.onBotNameTyped,
     onCancelButtonClick    : toolbar.onResetCancelButtonClick,
     onGoogleDriveClick     : toolbar.onGoogleDriveClick,

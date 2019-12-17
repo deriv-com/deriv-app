@@ -24,9 +24,9 @@ const SetAccountCurrencyModal = ({
         disableApp={disableApp}
         enableApp={enableApp}
         is_loading={is_loading}
-        title={localize('Set account currency')}
+        title={localize('You have an account that needs action')}
     >
-        <Localize i18n_default_text='Please set your currency for this account before creating a new Deriv account.' />
+        <Localize i18n_default_text='Please set a currency for your existing real account before creating another account.' />
     </Dialog>
 );
 

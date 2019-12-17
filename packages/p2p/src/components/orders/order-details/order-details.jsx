@@ -102,15 +102,15 @@ OrderDetailsTimerBlock.propTypes = {
 
 const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     const {
+        display_offer_amount,
+        display_transaction_amount,
         is_buyer,
         is_buyer_confirmed,
         is_pending,
-        display_offer_amount,
         offer_currency,
-        display_price_rate,
         order_id,
-        transaction_currency,
         setStatus,
+        transaction_currency,
     } = order_details;
     let buttons_to_render = null;
 
@@ -128,7 +128,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         };
         const options = {
             title         : localize('Cancel this order?'),
-            message       : localize('There will be no refund after canceling the order. If you have paid, please do not cancel the order.'),
+            message       : localize('There will be no refund after cancelling the order. If you have paid, please do not cancel the order.'),
             confirm_text  : localize('Cancel this order'),
             onClickConfirm: cancel,
         };
@@ -181,10 +181,10 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             message          : localize('Make sure that you have logged in your bank account or other e-wallet to check the receipt.'),
             need_confirmation: true,
             order            : {
-                offer_amount        : display_offer_amount,
-                offer_currency      : offer_currency,
-                transaction_currency: transaction_currency,
-                price_rate          : display_price_rate,
+                display_offer_amount,
+                offer_currency,
+                transaction_currency,
+                display_transaction_amount,
             },
             onClickConfirm: receive,
         };

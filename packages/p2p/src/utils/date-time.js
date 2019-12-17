@@ -7,7 +7,7 @@ export const getFormattedDateString = (date_obj) => {
     return `${day} ${month} ${year} ${time}`;
 };
 
-export const getLocalUnix = (epoch) => {
+export const convertToMillis = (epoch) => {
     if (typeof epoch !== 'number') throw Error('getLocalEpoch argument needs a number');
 
     const local_unix = epoch * 1000;

@@ -35,9 +35,8 @@ class App extends Component {
         };
     }
 
-    redirectTo = (path_name, params) => {
-        const parameter = params || null
-        this.setState({ active_index: path[path_name], parameters: parameter });
+    redirectTo = (path_name, params = null) => {
+        this.setState({ active_index: path[path_name], parameters: params });
     };
 
     handleTabClick = () => {

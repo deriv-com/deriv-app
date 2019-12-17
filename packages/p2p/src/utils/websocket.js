@@ -1,7 +1,7 @@
 import CurrencyUtils         from 'deriv-shared/utils/currency';
 import ObjectUtils           from 'deriv-shared/utils/object';
 import {
-    getLocalUnix,
+    convertToMillis,
     getFormattedDateString } from 'Utils/date-time';
 
 let ws;
@@ -87,7 +87,7 @@ const getModifiedP2POrder = (response) => {
     modified_response.offer_amount               = +response.amount;
     modified_response.display_offer_amount       = formatMoney(response.account_currency, response.amount);
     modified_response.order_purchase_datetime    = getFormattedDateString(
-        new Date(getLocalUnix(response.created_time))
+        new Date(convertToMillis(response.created_time))
     );
     modified_response.advertiser_notes           = response.description;
     modified_response.order_id                   = response.order_id;

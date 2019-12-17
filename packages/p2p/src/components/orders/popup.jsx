@@ -64,7 +64,7 @@ class Popup extends Component {
                         >
                             {({ isSubmitting, setFieldValue, values, status }) => (
                                 <Form noValidate>
-                                    <ThemedScrollbars autoHide style={{ height: '124px' }}>
+                                    <ThemedScrollbars autoHide style={{ height: '128px' }}>
                                         <div className='orders__popup-content'>
                                             {message}
                                             <div className='orders__popup-field'>
@@ -81,9 +81,9 @@ class Popup extends Component {
                                                             defaultChecked={
                                                                 values.need_confirmation
                                                             }
-                                                            label={localize('I have received {{currency}} {{price_rate}}', {
-                                                                currency  : order.transaction_currency,
-                                                                price_rate: order.price_rate,
+                                                            label={localize('I have received {{currency}} {{amount}}', {
+                                                                amount  : order.display_transaction_amount,
+                                                                currency: order.transaction_currency,
                                                             })}
                                                             classNameLabel='orders__popup-field_text'
                                                         />
@@ -98,9 +98,9 @@ class Popup extends Component {
                                             is_disabled={isSubmitting || !values.need_confirmation}
                                             primary
                                         >
-                                            {localize('Release {{currency}} {{offer_amount}}', {
-                                                currency    : order.offer_currency,
-                                                offer_amount: order.offer_amount,
+                                            {localize('Release {{currency}} {{amount}}', {
+                                                currency: order.offer_currency,
+                                                amount  : order.display_offer_amount,
                                             })}
                                         </Button>
                                     </div>
@@ -109,7 +109,7 @@ class Popup extends Component {
                         </Formik>
                     ) : (
                         <>
-                            <ThemedScrollbars autoHide style={{ height: '88px' }}>
+                            <ThemedScrollbars autoHide style={{ height: '92px' }}>
                                 <div className='orders__popup-content'>
                                     {message}
                                 </div>
@@ -133,9 +133,9 @@ Popup.propTypes = {
     has_cancel       : PropTypes.bool,
     message          : PropTypes.string,
     need_confirmation: PropTypes.bool,
-    order            : PropTypes.object,
     onCancel         : PropTypes.func,
     onClickConfirm   : PropTypes.func,
+    order            : PropTypes.object,
     title            : PropTypes.string,
 };
  

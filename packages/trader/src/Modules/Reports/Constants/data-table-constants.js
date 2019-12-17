@@ -1,8 +1,8 @@
 import classNames           from 'classnames';
-import { Label, Money }     from 'deriv-components';
+import { Label, Money, Popover }     from 'deriv-components';
 import React                from 'react';
 import Icon                 from 'Assets/icon.jsx';
-import { localize }         from 'deriv-translations';
+import { localize, Localize }         from 'deriv-translations';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
 import { getProfitOrLoss }  from 'Modules/Reports/Helpers/profit-loss';
 import { isMultiplierContract }    from 'Stores/Modules/Contract/Helpers/multiplier';
@@ -135,9 +135,37 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
     }, {
         title            : localize('Buy price'),
         col_index        : 'purchase',
-        renderCellContent: ({ cell_value }) => (
-            <Money amount={cell_value} currency={currency} />
-        ),
+        renderCellContent: ({ cell_value, row_obj }) => {
+            if (!row_obj.contract_info || !row_obj.contract_info.buy_price) return;
+            const { buy_price, deal_cancellation } = row_obj.contract_info;
+            let deal_cancellation_price = 0;
+            let stake = buy_price;
+            if (deal_cancellation) {
+                deal_cancellation_price = deal_cancellation.ask_price;
+                stake = buy_price - deal_cancellation_price;
+            } else {
+                deal_cancellation_price = '-';
+            }
+            // eslint-disable-next-line consistent-return
+            return (
+                <Popover
+                    alignment='top'
+                    message={<Localize
+                        i18n_default_text='Stake: <0>{{stake}}</0> <1/> Deal cancellation: <2>{{deal_cancellation_price}}</2>'
+                        values={{ stake, deal_cancellation_price }}
+                        components={[<Money key={0} amount={stake} currency={currency} />,
+                            <br key={1} />,
+                            deal_cancellation ?
+                                <Money key={2} amount={deal_cancellation_price} currency={currency} />
+                                :
+                                <span key={2}>-</span>,
+                        ]}
+                    />}
+                >
+                    <Money amount={cell_value} currency={currency} />
+                </Popover>
+            );
+        },
     }, {
         title            : localize('Potential payout'),
         col_index        : 'payout',

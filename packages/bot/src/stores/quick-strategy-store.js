@@ -63,7 +63,9 @@ export default class QuickStrategyStore {
         const submarket      = await contracts_for.getSubmarketBySymbol(symbol);
         const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(trade_type);
         const { strategies } = config;
-        const strategy_name  = Object.keys(strategies).find(strategy => strategies[strategy].index === this.active_index);
+        const strategy_name  = Object.keys(strategies).find(strategy =>
+            strategies[strategy].index === this.active_index
+        );
         const strategy_xml   = await import(/* webpackChunkName: `[request]` */ `../scratch/xml/${strategy_name}.xml`);
         const strategy_dom   = Blockly.Xml.textToDom(strategy_xml.default);
 

@@ -55,25 +55,27 @@ const Button = ({
             tabIndex={tabIndex || '0'}
             type={is_submit_success ? 'button' : (type || 'submit')}
         >
-            {icon &&
+            { icon && !is_loading &&
                 <div className='btn__icon'>
                     {icon}
                 </div>
             }
-            {text && !(is_loading || is_submit_success) &&
+            { text && !is_loading && !is_submit_success &&
                 <span className={classNames('btn__text', classNameSpan)}>
                     { text[0].toUpperCase() + text.substr(1) }
                 </span>
             }
-            {is_loading &&
+            { is_loading &&
                 <ButtonLoading />
             }
-            {is_submit_success &&
+            { is_submit_success &&
                 <IconCheckmark />
             }
-            <span className={classNames('btn__text', classNameSpan)}>
-                {!text && children}
-            </span>
+            { !is_loading && !is_submit_success &&
+                <span className={classNames('btn__text', classNameSpan)}>
+                    {!text && children}
+                </span>
+            }
         </button>
     );
     const wrapper = (<div className={wrapperClassName}>{button}</div>);

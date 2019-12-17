@@ -55,7 +55,7 @@ const Button = ({
             tabIndex={tabIndex || '0'}
             type={is_submit_success ? 'button' : (type || 'submit')}
         >
-            { icon && !is_loading &&
+            { icon &&
                 <div className='btn__icon'>
                     {icon}
                 </div>

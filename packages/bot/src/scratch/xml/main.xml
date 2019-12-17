@@ -18,18 +18,10 @@
                     <field name="CANDLEINTERVAL_LIST">60</field>
                     <next>
                       <block type="trade_definition_restartbuysell" deletable="false" movable="false">
-                        <value name="TIME_MACHINE_ENABLED">
-                          <shadow type="logic_boolean">
-                            <field name="BOOL">FALSE</field>
-                          </shadow>
-                        </value>
+                        <field name="TIME_MACHINE_ENABLED">FALSE</field>
                         <next>
                           <block type="trade_definition_restartonerror" deletable="false" movable="false">
-                            <value name="RESTARTONERROR">
-                              <shadow type="logic_boolean">
-                                <field name="BOOL">TRUE</field>
-                              </shadow>
-                            </value>
+                            <field name="RESTARTONERROR">TRUE</field>
                           </block>
                         </next>
                       </block>

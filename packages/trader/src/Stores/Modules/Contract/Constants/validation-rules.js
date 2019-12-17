@@ -8,7 +8,7 @@ const getValidationRules = () => ({
             ['custom' , { func: (value, options, store) => {
                 const profit = getProfitLossFromStore(store.root_store.modules);
                 return !(profit < 0 && -value > profit);
-            }, message: localize('Stop loss must be lower than current loss.') }],
+            }, message: localize('Stop loss must be lower than current potential loss.') }],
         ],
     },
     contract_update_take_profit: {
@@ -17,7 +17,7 @@ const getValidationRules = () => ({
             ['custom' , { func: (value, options, store) => {
                 const profit = getProfitLossFromStore(store.root_store.modules);
                 return !(profit > 0 && +value < profit);
-            }, message: localize('Take profit must be higher than current profit.') }],
+            }, message: localize('Take profit must be higher than current potential profit.') }],
         ],
     },
 });

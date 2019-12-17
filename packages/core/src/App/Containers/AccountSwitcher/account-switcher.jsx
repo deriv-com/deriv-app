@@ -1,9 +1,9 @@
+import classNames             from 'classnames';
 import PropTypes              from 'prop-types';
 import React                  from 'react';
 import { withRouter }         from 'react-router';
 import {
     Money,
-    Popover,
     Tabs,
     ThemedScrollbars }        from 'deriv-components';
 import CurrencyUtils          from 'deriv-shared/utils/currency';
@@ -20,9 +20,11 @@ import ButtonAddAccount       from './account-switcher-add-account-button.jsx';
 
 class AccountSwitcher extends React.Component {
     state = {
-        active_tab_index: 0,
-        is_deriv_visible: true,
-        is_dmt5_visible : true,
+        active_tab_index     : 0,
+        is_demo_deriv_visible: true,
+        is_demo_dmt5_visible : true,
+        is_real_deriv_visible: true,
+        is_real_dmt5_visible : true,
     };
 
     toggleVisibility = (section) => {
@@ -37,12 +39,12 @@ class AccountSwitcher extends React.Component {
         const accounts_toggle_btn = !(event.target.classList.contains('acc-info'));
         if (this.wrapper_ref && !this.wrapper_ref.contains(event.target)
             && this.props.is_visible && accounts_toggle_btn) {
-            this.props.toggle();
+            this.props.toggleAccountsDialog();
         }
     };
 
     handleLogout = () => {
-        this.props.toggle();
+        this.props.toggleAccountsDialog();
         if (this.props.is_positions_drawer_on) {
             this.props.togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
@@ -81,7 +83,6 @@ class AccountSwitcher extends React.Component {
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
-        this.props.hideDialog();
     }
 
     updateAccountTabIndex = (index) => {
@@ -89,7 +90,7 @@ class AccountSwitcher extends React.Component {
     };
 
     async doSwitch(loginid) {
-        this.props.toggle();
+        this.props.toggleAccountsDialog();
         if (this.props.account_loginid === loginid) return;
         await this.props.switchAccount(loginid);
     }
@@ -100,7 +101,7 @@ class AccountSwitcher extends React.Component {
     }
 
     get is_real_account_tab() {
-        // we're assuming real accounts is always the first tab index
+        // Real accounts is always the first tab index based on design
         return this.state.active_tab_index === 0;
     }
 
@@ -144,7 +145,12 @@ class AccountSwitcher extends React.Component {
         });
     }
 
-    get can_upgrade () {
+    get has_mt5_upgrade_button() {
+        if (!this.props.mt5_login_list) return false;
+        return (this.props.mt5_login_list.length < 3);
+    }
+
+    get can_upgrade() {
         return !!(this.props.is_upgrade_enabled && this.props.is_virtual && this.props.can_upgrade_to);
     }
 
@@ -152,7 +158,19 @@ class AccountSwitcher extends React.Component {
         return this.can_upgrade || this.can_manage_currency;
     }
 
-    get total_assets() {
+    get total_demo_assets() {
+        const vrtc_loginid = this.props.account_list.find(account => account.is_virtual).loginid;
+        const vrtc_balance = this.props.accounts[vrtc_loginid] ? this.props.accounts[vrtc_loginid].balance : 0;
+        const mt5_demo_total = this.props.mt5_login_list
+            .filter((account)=> /^demo/.test(account.group))
+            .reduce((total, account) => {
+                total.balance += account.balance;
+                return total;
+            }, { balance: 0 });
+        return Array.isArray(this.props.mt5_login_list) ? (mt5_demo_total.balance + vrtc_balance) : vrtc_balance;
+    }
+
+    get total_real_assets() {
         return this.props.obj_total_balance.amount_real + this.props.obj_total_balance.amount_mt5;
     }
 
@@ -160,13 +178,18 @@ class AccountSwitcher extends React.Component {
         if (!this.props.is_logged_in) return false;
 
         return (
-            <div className='acc-switcher__list' ref={this.setWrapperRef} style={{ display: this.props.display }}>
-                <Tabs active_tab_index={this.state.active_tab_index} onClickTabItem={this.updateAccountTabIndex}>
-                    <div label={localize('Real account')}>
+            <div className='acc-switcher__list' ref={this.setWrapperRef}>
+                <Tabs
+                    active_index={this.state.active_tab_index}
+                    className='acc-switcher__list-tabs'
+                    onTabItemClick={this.updateAccountTabIndex}
+                    top
+                >
+                    <div label={localize('Real')}>
                         <ThemedScrollbars
                             autoHeight
                             autoHide
-                            autoHeightMax={462}
+                            autoHeightMax={354}
                             renderTrackHorizontal={props => <div {...props} className='track-horizontal' style={{ display: 'none' }} />}
                             renderThumbHorizontal={props => <div {...props} className='thumb-horizontal' style={{ display: 'none' }} />}
                         >
@@ -174,10 +197,13 @@ class AccountSwitcher extends React.Component {
                                 <div>
                                     <AccountWrapper
                                         header={<Localize i18n_default_text='Deriv Accounts' />}
-                                        is_visible={this.state.is_deriv_visible}
-                                        toggleVisibility={() => { this.toggleVisibility('deriv'); }}
+                                        is_visible={this.state.is_real_deriv_visible}
+                                        toggleVisibility={() => { this.toggleVisibility('real_deriv'); }}
                                     >
-                                        <div className='acc-switcher__accounts'>
+                                        <div className={classNames('acc-switcher__accounts', {
+                                            'acc-switcher__accounts--has-add-account': this.has_add_button,
+                                        })}
+                                        >
                                             {this.sorted_account_list.filter(account => !account.is_virtual).map(
                                                 (account) => (
                                                     <AccountList
@@ -212,10 +238,11 @@ class AccountSwitcher extends React.Component {
                                 </div>
                                 {this.props.is_mt5_allowed &&
                                     <div>
+                                        <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                                         <AccountWrapper
                                             header={<Localize i18n_default_text='DMT5 Accounts' />}
-                                            is_visible={this.state.is_dmt5_visible}
-                                            toggleVisibility={() => { this.toggleVisibility('dmt5'); }}
+                                            is_visible={this.state.is_real_dmt5_visible}
+                                            toggleVisibility={() => { this.toggleVisibility('real_dmt5'); }}
                                         >
                                             {this.props.is_loading_mt5 ?
                                                 <div className='acc-switcher__accounts--is-loading'>
@@ -223,27 +250,32 @@ class AccountSwitcher extends React.Component {
                                                 </div>
                                                 :
                                                 <React.Fragment>
-                                                    {this.props.has_mt5_login ?
-                                                        <div className='acc-switcher__accounts'>
-                                                            {this.sorted_mt5_list.filter((account)=> !(/^demo/.test(account.group))).map((account) => (
-                                                                <AccountList
-                                                                    key={account.login}
-                                                                    account_type={account.group}
-                                                                    balance={account.balance}
-                                                                    currency={account.currency}
-                                                                    currency_icon={getMT5AccountType(account.group).replace(/^demo/, 'real')}
-                                                                    has_balance={'balance' in account}
-                                                                    has_demo_text={/^demo/.test(account.group)}
-                                                                    loginid={account.login}
-                                                                    onClickAccount={/^demo/.test(account.group) ? this.redirectToMt5Demo : this.redirectToMt5Real}
-                                                                />
-                                                            ))}
-                                                        </div>
-                                                        :
-                                                        <ButtonAddAccount
-                                                            onClick={this.redirectToMt5Real}
-                                                            text={<Localize i18n_default_text='Add DMT5 account' />}
-                                                        />
+                                                    {this.props.has_mt5_login &&
+                                                        <>
+                                                            <div className={classNames('acc-switcher__accounts', {
+                                                                'acc-switcher__accounts--has-add-account': this.has_mt5_upgrade_button,
+                                                            })}
+                                                            >
+                                                                {this.sorted_mt5_list.filter((account)=> !(/^demo/.test(account.group))).map((account) => (
+                                                                    <AccountList
+                                                                        key={account.login}
+                                                                        account_type={account.group}
+                                                                        balance={account.balance}
+                                                                        currency={account.currency}
+                                                                        currency_icon={getMT5AccountType(account.group).replace(/^demo/, 'real')}
+                                                                        has_balance={'balance' in account}
+                                                                        loginid={account.login}
+                                                                        onClickAccount={/^demo/.test(account.group) ? this.redirectToMt5Demo : this.redirectToMt5Real}
+                                                                    />
+                                                                ))}
+                                                            </div>
+                                                            {(this.has_mt5_upgrade_button) &&
+                                                            <ButtonAddAccount
+                                                                onClick={this.redirectToMt5Real}
+                                                                text={<Localize i18n_default_text='Add DMT5 account' />}
+                                                            />
+                                                            }
+                                                        </>
                                                     }
                                                 </React.Fragment>
                                             }
@@ -253,11 +285,11 @@ class AccountSwitcher extends React.Component {
                             </div>
                         </ThemedScrollbars>
                     </div>
-                    <div label={localize('Demo account')}>
+                    <div label={localize('Demo')}>
                         <ThemedScrollbars
                             autoHeight
                             autoHide
-                            autoHeightMax={462}
+                            autoHeightMax={354}
                             renderTrackHorizontal={props => <div {...props} className='track-horizontal' style={{ display: 'none' }} />}
                             renderThumbHorizontal={props => <div {...props} className='thumb-horizontal' style={{ display: 'none' }} />}
                         >
@@ -265,8 +297,8 @@ class AccountSwitcher extends React.Component {
                                 <div>
                                     <AccountWrapper
                                         header={<Localize i18n_default_text='Deriv Accounts' />}
-                                        is_visible={this.state.is_deriv_visible}
-                                        toggleVisibility={() => { this.toggleVisibility('deriv'); }}
+                                        is_visible={this.state.is_demo_deriv_visible}
+                                        toggleVisibility={() => { this.toggleVisibility('demo_deriv'); }}
                                     >
                                         <div className='acc-switcher__accounts'>
                                             {this.sorted_account_list.filter(account => account.is_virtual).map(
@@ -292,10 +324,11 @@ class AccountSwitcher extends React.Component {
                                 </div>
                                 {this.props.is_mt5_allowed &&
                                     <div>
+                                        <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                                         <AccountWrapper
                                             header={<Localize i18n_default_text='DMT5 Accounts' />}
-                                            is_visible={this.state.is_dmt5_visible}
-                                            toggleVisibility={() => { this.toggleVisibility('dmt5'); }}
+                                            is_visible={this.state.is_demo_dmt5_visible}
+                                            toggleVisibility={() => { this.toggleVisibility('demo_dmt5'); }}
                                         >
                                             {this.props.is_loading_mt5 ?
                                                 <div className='acc-switcher__accounts--is-loading'>
@@ -303,27 +336,33 @@ class AccountSwitcher extends React.Component {
                                                 </div>
                                                 :
                                                 <React.Fragment>
-                                                    {this.props.has_mt5_login ?
-                                                        <div className='acc-switcher__accounts'>
-                                                            {this.sorted_mt5_list.filter((account)=> /^demo/.test(account.group)).map((account) => (
-                                                                <AccountList
-                                                                    key={account.login}
-                                                                    account_type={account.group}
-                                                                    balance={account.balance}
-                                                                    currency={account.currency}
-                                                                    currency_icon={getMT5AccountType(account.group).replace(/^demo/, 'real')}
-                                                                    has_balance={'balance' in account}
-                                                                    has_demo_text={/^demo/.test(account.group)}
-                                                                    loginid={account.login}
-                                                                    onClickAccount={/^demo/.test(account.group) ? this.redirectToMt5Demo : this.redirectToMt5Real}
-                                                                />
-                                                            ))}
-                                                        </div>
-                                                        :
-                                                        <ButtonAddAccount
-                                                            onClick={this.redirectToMt5Real}
-                                                            text={<Localize i18n_default_text='Add DMT5 account' />}
-                                                        />
+                                                    {this.props.has_mt5_login &&
+                                                        <>
+                                                            <div className={classNames('acc-switcher__accounts', {
+                                                                'acc-switcher__accounts--has-add-account': this.has_mt5_upgrade_button,
+                                                            })}
+                                                            >
+                                                                {this.sorted_mt5_list.filter((account)=> /^demo/.test(account.group)).map((account) => (
+                                                                    <AccountList
+                                                                        key={account.login}
+                                                                        account_type={account.group}
+                                                                        balance={account.balance}
+                                                                        currency={account.currency}
+                                                                        currency_icon={getMT5AccountType(account.group).replace(/^demo/, 'real')}
+                                                                        has_balance={'balance' in account}
+                                                                        is_virtual
+                                                                        loginid={account.login}
+                                                                        onClickAccount={/^demo/.test(account.group) ? this.redirectToMt5Demo : this.redirectToMt5Real}
+                                                                    />
+                                                                ))}
+                                                            </div>
+                                                            {(this.has_mt5_upgrade_button) &&
+                                                            <ButtonAddAccount
+                                                                onClick={this.redirectToMt5Demo}
+                                                                text={<Localize i18n_default_text='Add DMT5 account' />}
+                                                            />
+                                                            }
+                                                        </>
                                                     }
                                                 </React.Fragment>
                                             }
@@ -339,27 +378,24 @@ class AccountSwitcher extends React.Component {
                     <span>
                         <Localize i18n_default_text='Total assets' />
                     </span>
-                    <Popover
-                        alignment='bottom'
-                        message={this.is_real_account_tab
+                    <span className={classNames('acc-switcher__balance', { 'acc-switcher__balance--virtual': !this.is_real_account_tab })}>
+                        <Money
+                            currency={this.props.obj_total_balance.currency}
+                            amount={CurrencyUtils.formatMoney(
+                                this.props.obj_total_balance.currency,
+                                this.is_real_account_tab ? this.total_real_assets : this.total_demo_assets,
+                                true,
+                            )}
+                            should_format={false}
+                        />
+                    </span>
+                </div>
+                <div className='acc-switcher__total-subtitle'>
+                    <span>
+                        {this.is_real_account_tab
                             ? localize('Total assets in your Deriv and DMT5 real accounts.')
                             : localize('Total assets in your Deriv and DMT5 demo accounts.')
                         }
-                    >
-                        <Icon icon='IconInfoOutline' className='acc-switcher__total-icon' />
-                    </Popover>
-                    <span className='acc-switcher__balance'>
-                        <Money
-                            currency={this.props.obj_total_balance.currency}
-                            amount={
-                                CurrencyUtils.formatMoney(
-                                    this.props.obj_total_balance.currency,
-                                    this.total_assets,
-                                    true
-                                )
-                            }
-                            should_format={false}
-                        />
                     </span>
                 </div>
                 <div className='acc-switcher__separator' />
@@ -379,7 +415,6 @@ AccountSwitcher.propTypes = {
     display               : PropTypes.string,
     has_fiat              : PropTypes.bool,
     has_mt5_login         : PropTypes.bool,
-    hideDialog            : PropTypes.func,
     is_loading_mt5        : PropTypes.bool,
     is_logged_in          : PropTypes.bool,
     is_mt5_allowed        : PropTypes.bool,
@@ -389,7 +424,6 @@ AccountSwitcher.propTypes = {
     is_visible            : PropTypes.bool,
     mt5_login_list        : PropTypes.array,
     obj_total_balance     : PropTypes.object,
-    toggle                : PropTypes.func,
     toggleAccountsDialog  : PropTypes.func,
     togglePositionsDrawer : PropTypes.func,
     updateMt5LoginList    : PropTypes.func,

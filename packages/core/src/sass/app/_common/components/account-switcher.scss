@@ -140,6 +140,7 @@
     &__new-account {
         background-color: transparent;
         border-radius: 4px;
+        margin: 0 0 16px;
 
         &-link {
             background-color: transparent;
@@ -191,7 +192,7 @@
             flex: 1;
         }
         &-wrapper {
-            padding: 0.4em 0.8em 0.8em;
+            padding: 0.4em 0.8em 0;
         }
     }
     &__accounts {
@@ -234,6 +235,12 @@
             &:only-child {
                 border-radius: 4px;
             }
+            &:last-child {
+                margin-bottom: 16px;
+            }
+        }
+        &--has-add-account {
+            margin-bottom: -16px;
         }
     }
     &__account {
@@ -245,6 +252,8 @@
         position: relative;
         background: var(--general-main-2);
         text-decoration: none;
+        padding-top: 0.3em;
+        padding-bottom: 0.3em;
 
         .acc-switcher__id {
             @include typeface(--paragraph-left-normal-black);
@@ -271,10 +280,10 @@
                     border: 1px solid var(--text-prominent);
                 }
             }
-        }
-        &--demo-text {
-            padding-top: 0.3em;
-            padding-bottom: 0.3em;
+            .acc-switcher__loginid-text {
+                color: var(--text-prominent);
+                font-weight: normal;
+            }
         }
     }
     &__logout {
@@ -298,6 +307,7 @@
     &__balance {
         color: var(--status-success);
         margin-left: auto;
+        font-weight: normal;
 
         &--virtual {
             color: var(--text-prominent);
@@ -306,25 +316,29 @@
     &__separator {
         height: 4px;
         background-color: var(--general-section-2);
-    }
-    &__total {
-        font-size: 1.4rem;
-        height: 4rem;
-        margin: 0.4rem 1.6rem;
-        align-items: center;
-        font-weight: bold;
-        display: flex;
-        color: var(--text-prominent);
 
-        &-icon {
-            margin: 0 0.4rem;
-
-            .color1-fill {
-                fill: var(--text-prominent) !important;
-            }
+        &--no-padding {
+            margin: 0 -8px;
         }
     }
-    &__demo-text {
+    &__total {
+        height: 2.6rem;
+        margin: 0.4rem 1.6rem;
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: var(--text-prominent);
+        align-items: center;
+        display: flex;
+
+        &-subtitle {
+            margin: 0.4rem 1.6rem;
+            font-size: 1rem;
+            line-height: 1.4rem;
+            font-weight: normal;
+            color: var(--text-less-prominent);
+        }
+    }
+    &__loginid-text {
         font-size: 1rem;
         color: var(--text-less-prominent);
         line-height: 1.4;

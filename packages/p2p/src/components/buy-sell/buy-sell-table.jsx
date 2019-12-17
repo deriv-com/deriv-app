@@ -1,14 +1,15 @@
-import React         from 'react';
-import PropTypes     from 'prop-types';
-import { Table }     from 'deriv-components';
-import { localize }  from 'Components/i18next';
-import { BuyTable }  from './buy-table.jsx';
-import { SellTable } from './sell-table.jsx';
+import React             from 'react';
+import PropTypes         from 'prop-types';
+import { Table }         from 'deriv-components';
+import { localize }      from 'Components/i18next';
+import AgentContext     from 'Components/context/agent-context';
+import { BuyTable }      from './buy-table.jsx';
+import { SellTable }     from './sell-table.jsx';
 
 export const BuySellTable = ({ setSelectedAd, table_type }) => {
     const is_buy = table_type === 'buy';
     const [offer_currency, setOfferCurrency] = React.useState('');
-    const [is_agent, setIsAgent] = React.useState(true);
+    const is_agent = React.useContext(AgentContext);
 
     // TODO: [p2p-cleanup] cleanup repetition of header
     return (
@@ -36,13 +37,11 @@ export const BuySellTable = ({ setSelectedAd, table_type }) => {
                     <BuyTable
                         setSelectedAd={setSelectedAd}
                         setOfferCurrency={setOfferCurrency}
-                        setIsAgent={setIsAgent}
                     />
                     :
                     <SellTable
                         setSelectedAd={setSelectedAd}
                         setOfferCurrency={setOfferCurrency}
-                        setIsAgent={setIsAgent}
                     />
                 }
             </Table.Body>

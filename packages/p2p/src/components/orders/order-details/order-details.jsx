@@ -4,6 +4,7 @@ import {
     Button,
     Dialog }                  from 'deriv-components';
 import FooterActions          from 'Components/footer-actions/footer-actions.jsx';
+import AgentContext           from 'Components/context/agent-context';
 import { localize, Localize } from 'Components/i18next';
 import { WS }                 from 'Utils/websocket';
 import { secondsToTimer }     from 'Utils/date-time';
@@ -23,6 +24,7 @@ OrderInfoBlock.propTypes = {
 };
 
 const OrderDetailsStatusBlock = ({ order_details }) => {
+    const is_agent = React.useContext(AgentContext);
     const {
         is_buyer,
         is_buyer_cancelled,
@@ -36,32 +38,59 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
 
     return (
         <h2 className='order-details__header-status'>
-            { is_pending && is_buyer &&
-                localize('Please pay')
-            }
-            { is_pending && !is_buyer &&
+            {/* Agent view */}
+            { is_agent && is_pending && is_buyer &&
                 localize('Wait for payment')
             }
-            { is_buyer_cancelled && is_buyer &&
-                localize('You have cancelled this order')
+            { is_agent && is_pending && !is_buyer &&
+                localize('Please pay')
             }
-            { is_buyer_cancelled && !is_buyer &&
+            { is_agent && is_buyer_cancelled && is_buyer &&
                 localize('Buyer has cancelled this order')
             }
-            { is_expired &&
-                localize('Cancelled due to timeout')
+            { is_agent && is_buyer_cancelled && !is_buyer &&
+                localize('You have cancelled this order')
             }
-            { is_refunded && is_buyer &&
-                localize('You have been refunded')
-            }
-            { is_refunded && !is_buyer &&
+            { is_agent && is_refunded && is_buyer &&
                 localize('Buyer has been refunded')
             }
-            { is_buyer_confirmed && is_buyer &&
+            { is_agent && is_refunded && !is_buyer &&
+                localize('You have been refunded')
+            }
+            { is_agent && is_buyer_confirmed && is_buyer &&
+                localize('Confirm payment')
+            }
+            { is_agent && is_buyer_confirmed && !is_buyer &&
                 localize('Wait for release')
             }
-            { is_buyer_confirmed && !is_buyer &&
+            {/* Client view */}
+            { !is_agent && is_pending && is_buyer &&
+                localize('Please pay')
+            }
+            { !is_agent && is_pending && !is_buyer &&
+                localize('Wait for payment')
+            }
+            { !is_agent && is_buyer_cancelled && is_buyer &&
+                localize('You have cancelled this order')
+            }
+            { !is_agent && is_buyer_cancelled && !is_buyer &&
+                localize('Buyer has cancelled this order')
+            }
+            { !is_agent && is_refunded && is_buyer &&
+                localize('You have been refunded')
+            }
+            { !is_agent && is_refunded && !is_buyer &&
+                localize('Buyer has been refunded')
+            }
+            { !is_agent && is_buyer_confirmed && is_buyer &&
+                localize('Wait for release')
+            }
+            { !is_agent && is_buyer_confirmed && !is_buyer &&
                 localize('Confirm payment')
+            }
+            {/* Common view */}
+            { is_expired &&
+                localize('Cancelled due to timeout')
             }
             { (is_seller_confirmed || is_completed) &&
                 localize('Order complete')
@@ -141,6 +170,7 @@ OrderDetailsTimerBlock.propTypes = {
 };
 
 const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
+    const is_agent = React.useContext(AgentContext);
     const {
         display_offer_amount,
         display_transaction_amount,
@@ -231,7 +261,13 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         showPopup(options);
     };
 
-    if (is_pending && is_buyer) {
+    if (is_agent && (is_pending || is_buyer_confirmed) && is_buyer) {
+        buttons_to_render = (
+            <Button className='order-details__actions-button' large primary onClick={receivedFunds}>{ localize('I\'ve received funds') }</Button>
+        );
+    }
+
+    if (is_agent && is_pending && !is_buyer) {
         buttons_to_render = (
             <React.Fragment>
                 <Button className='order-details__actions-button' large secondary onClick={cancelOrder}>{ localize('Cancel order') }</Button>
@@ -240,7 +276,16 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         );
     }
 
-    if ((is_pending || is_buyer_confirmed) && !is_buyer) {
+    if (!is_agent && is_pending && is_buyer) {
+        buttons_to_render = (
+            <React.Fragment>
+                <Button className='order-details__actions-button' large secondary onClick={cancelOrder}>{ localize('Cancel order') }</Button>
+                <Button className='order-details__actions-button' large primary onClick={paidOrder}>{ localize('I\'ve paid') }</Button>
+            </React.Fragment>
+        );
+    }
+
+    if (!is_agent && (is_pending || is_buyer_confirmed) && !is_buyer) {
         buttons_to_render = (
             <Button className='order-details__actions-button' large primary onClick={receivedFunds}>{ localize('I\'ve received funds') }</Button>
         );
@@ -256,7 +301,7 @@ OrderActionsBlock.propTypes = {
 };
 
 const OrderDetailsResultMessage = ({ order_details }) => {
-
+    const is_agent = React.useContext(AgentContext);
     const {
         is_seller_confirmed,
         is_completed,
@@ -265,7 +310,20 @@ const OrderDetailsResultMessage = ({ order_details }) => {
         display_offer_amount,
     } = order_details;
 
-    if ((is_seller_confirmed || is_completed) && is_buyer) {
+    if (is_agent && (is_seller_confirmed || is_completed) && is_buyer) {
+        return (
+            <p className='order-details__wrapper-message order-details__wrapper-message--success'>
+                { localize('You sold {{offered_currency}} {{offered_amount}}',
+                    {
+                        offered_currency: offer_currency,
+                        offered_amount  : display_offer_amount,
+                    })
+                }
+            </p>
+        );
+    }
+
+    if (is_agent && (is_seller_confirmed || is_completed) && !is_buyer) {
         return (
             <p className='order-details__wrapper-message order-details__wrapper-message--success'>
                 { localize('{{offered_currency}} {{offered_amount}} was deposited on your account',
@@ -278,7 +336,20 @@ const OrderDetailsResultMessage = ({ order_details }) => {
         );
     }
 
-    if ((is_seller_confirmed || is_completed) && !is_buyer) {
+    if (!is_agent && (is_seller_confirmed || is_completed) && is_buyer) {
+        return (
+            <p className='order-details__wrapper-message order-details__wrapper-message--success'>
+                { localize('{{offered_currency}} {{offered_amount}} was deposited on your account',
+                    {
+                        offered_currency: offer_currency,
+                        offered_amount  : display_offer_amount,
+                    })
+                }
+            </p>
+        );
+    }
+
+    if (!is_agent && (is_seller_confirmed || is_completed) && !is_buyer) {
         return (
             <p className='order-details__wrapper-message order-details__wrapper-message--success'>
                 { localize('You sold {{offered_currency}} {{offered_amount}}',
@@ -318,6 +389,7 @@ const OrderDetails = ({
     const [show_popup, setShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
 
+    const is_agent = React.useContext(AgentContext);
     const onCancelClick = () => setShowPopup(false);
 
     const handleShowPopup = (options) => {
@@ -342,13 +414,16 @@ const OrderDetails = ({
                         <OrderInfoBlock label={ localize('Advertiser notes') } value={ advertiser_notes } />
                         <div className='order-details__info-columns'>
                             <div className='order-details__info--left'>
-                                <OrderInfoBlock label={ is_buyer ? localize('Send') : localize('Receive') } value={ `${transaction_currency} ${display_transaction_amount}` } />
+                                {is_agent && <OrderInfoBlock label={ is_buyer ? localize('Receive') : localize('Send') } value={ `${transaction_currency} ${display_transaction_amount}` } />}
+                                {!is_agent && <OrderInfoBlock label={ is_buyer ? localize('Send') : localize('Receive') } value={ `${transaction_currency} ${display_transaction_amount}` } />}
                                 <OrderInfoBlock label={ localize('Price') } value={ `${transaction_currency} ${display_price_rate}` } />
                                 <OrderInfoBlock label={ localize('Order ID') } value={ order_id } />
                             </div>
                             <div className='order-details__info--right'>
-                                <OrderInfoBlock label={ is_buyer ? localize('Receive') : localize('Send') } value={ `${offer_currency} ${display_offer_amount}` } />
-                                {is_buyer && <OrderInfoBlock label={localize('Seller')} value={ advertiser_name } />}
+                                {is_agent && <OrderInfoBlock label={ is_buyer ? localize('Send') : localize('Receive') } value={ `${offer_currency} ${display_offer_amount}` } />}
+                                {!is_agent && <OrderInfoBlock label={ is_buyer ? localize('Receive') : localize('Send') } value={ `${offer_currency} ${display_offer_amount}` } />}
+                                {is_agent && !is_buyer && <OrderInfoBlock label={localize('Seller')} value={ advertiser_name } />}
+                                {!is_agent && is_buyer && <OrderInfoBlock label={localize('Seller')} value={ advertiser_name } />}
                                 <OrderInfoBlock label={ localize('Time') } value={ order_purchase_datetime } />
                             </div>
                         </div>

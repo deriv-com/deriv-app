@@ -5,7 +5,6 @@ import {
     getFormattedDateString } from 'Utils/date-time';
 
 let ws;
-let is_agent = false;
 
 const initial_responses = {};
 
@@ -25,11 +24,6 @@ const populateInitialResponses = async () => {
     if (ObjectUtils.isEmptyObject(initial_responses)) {
         initial_responses.website_status = await ws.send({ website_status: 1 });
         setCurrenciesConfig(initial_responses.website_status);
-
-        const agent_info = await ws.send({ p2p_agent_info: 1 });
-        if (!agent_info.error) {
-            is_agent = true;
-        }
     }
 };
 
@@ -41,9 +35,6 @@ const getModifiedP2POfferList = (response) => {
 
         const offer_currency       = response.list[i].account_currency;
         const transaction_currency = response.list[i].local_currency;
-
-        // hide buy/sell button for agent accounts
-        modified_response[i].is_agent = is_agent;
 
         modified_response[i].offer_currency          = offer_currency;
         modified_response[i].advertiser_id           = response.list[i].agent_id;
@@ -75,14 +66,10 @@ const getModifiedP2POfferList = (response) => {
     return (modified_response);
 };
 
-// for agents API still returns buy if client created a buy order
-// but agent should see that as sell type so they can go through the sell flow
-const map_agent_action = { buy: 'sell', sell: 'buy' };
-
 const getModifiedP2POrder = (response) => {
     const modified_response = {};
 
-    modified_response.type = is_agent ? map_agent_action[response.type] : response.type;
+    modified_response.type = response.type;
 
     modified_response.offer_amount               = +response.amount;
     modified_response.display_offer_amount       = formatMoney(response.account_currency, response.amount);

@@ -26,7 +26,6 @@ export class BuyTable extends React.Component {
                 if (!response.error) {
                     this.setState({ items: response, is_loading: false });
                     this.props.setOfferCurrency(response[0].offer_currency);
-                    this.props.setIsAgent(response[0].is_agent);
                 } else {
                     this.setState({ is_loading: false, api_error_message: response.error.message });
                 }

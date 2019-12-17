@@ -4,6 +4,7 @@ import React, {
 import PropTypes  from 'prop-types';
 import { Tabs }   from 'deriv-components';
 import { init }   from 'Utils/websocket';
+import { AgentProvider } from 'Components/context/agent-context';
 import {
     localize,
     setLanguage } from './i18next';
@@ -32,6 +33,7 @@ class App extends Component {
         this.state = {
             active_index: 0,
             parameters  : null,
+            is_agent    : false,
         };
     }
 
@@ -41,6 +43,17 @@ class App extends Component {
 
     handleTabClick = () => {
         this.setState({ parameters: null });
+    }
+
+    setIsAgent = async () => {
+        const agent_info = await this.props.websocket_api.send({ p2p_agent_info: 1 });
+        if (!agent_info.error) {
+            this.setState({ is_agent: true });
+        }
+    }
+
+    componentDidMount() {
+        this.setIsAgent();
     }
 
     render() {
@@ -63,11 +76,15 @@ class App extends Component {
                         {/* TODO [p2p-uncomment] uncomment this when sell is ready */}
                         {/* <div label={localize('Buy / Sell')}> */}
                         <div label={localize('Buy')}>
-                            <BuySell navigate={this.redirectTo} params={parameters} />
+                            <AgentProvider value={this.state.is_agent}>
+                                <BuySell navigate={this.redirectTo} params={parameters} />
+                            </AgentProvider>
                         </div>
                         {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
                         <div label={localize('Orders')}>
-                            <Orders navigate={this.redirectTo} params={parameters} />
+                            <AgentProvider value={this.state.is_agent}>
+                                <Orders navigate={this.redirectTo} params={parameters} />
+                            </AgentProvider>
                         </div>
                         {/* TODO [p2p-uncomment] uncomment this when my ads is ready */}
                         {/* <div label={localize('My ads')}> */}

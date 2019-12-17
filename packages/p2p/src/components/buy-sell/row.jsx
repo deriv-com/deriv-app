@@ -3,6 +3,7 @@ import PropTypes         from 'prop-types';
 import ContentLoader     from 'react-content-loader';
 import { Table, Button } from 'deriv-components';
 import { localize }      from 'Components/i18next';
+import AgentContext      from 'Components/context/agent-context';
 
 export const BuySellRowLoader = () => (
     <ContentLoader
@@ -26,30 +27,33 @@ BuySellRowLoader.propTypes = {
 };
 
 // TODO: [p2p-cleanup] cleanup repetition of rows
-export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) => (
-    <div style={style}>
-        {data.is_agent ?
-            <Table.Row>
-                <Table.Cell>{data.advertiser}</Table.Cell>
-                <Table.Cell>{data.offer_currency}{' '}{data.display_offer_amount}</Table.Cell>
-                <Table.Cell>{data.transaction_currency}{' '}{data.display_price_rate}</Table.Cell>
-                <Table.Cell>{data.offer_currency}{' '}{data.display_min_transaction}</Table.Cell>
-            </Table.Row>
-            :
-            <Table.Row>
-                <Table.Cell>{data.advertiser}</Table.Cell>
-                <Table.Cell>{data.offer_currency}{' '}{data.display_offer_amount}</Table.Cell>
-                <Table.Cell>{data.transaction_currency}{' '}{data.display_price_rate}</Table.Cell>
-                <Table.Cell>{data.offer_currency}{' '}{data.display_min_transaction}</Table.Cell>
-                <Table.Cell>
-                    <Button primary small onClick={() => setSelectedAd(data)}>
-                        {is_buy ? localize('Buy') : localize('Sell')}
-                    </Button>
-                </Table.Cell>
-            </Table.Row>
-        }
-    </div>
-));
+export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) => {
+    const is_agent = React.useContext(AgentContext);
+    return (
+        <div style={style}>
+            {is_agent ?
+                <Table.Row>
+                    <Table.Cell>{data.advertiser}</Table.Cell>
+                    <Table.Cell>{data.offer_currency}{' '}{data.display_offer_amount}</Table.Cell>
+                    <Table.Cell>{data.transaction_currency}{' '}{data.display_price_rate}</Table.Cell>
+                    <Table.Cell>{data.offer_currency}{' '}{data.display_min_transaction}</Table.Cell>
+                </Table.Row>
+                :
+                <Table.Row>
+                    <Table.Cell>{data.advertiser}</Table.Cell>
+                    <Table.Cell>{data.offer_currency}{' '}{data.display_offer_amount}</Table.Cell>
+                    <Table.Cell>{data.transaction_currency}{' '}{data.display_price_rate}</Table.Cell>
+                    <Table.Cell>{data.offer_currency}{' '}{data.display_min_transaction}</Table.Cell>
+                    <Table.Cell>
+                        <Button primary small onClick={() => setSelectedAd(data)}>
+                            {is_buy ? localize('Buy') : localize('Sell')}
+                        </Button>
+                    </Table.Cell>
+                </Table.Row>
+            }
+        </div>
+    );
+});
 
 RowComponent.propTypes = {
     data         : PropTypes.object,

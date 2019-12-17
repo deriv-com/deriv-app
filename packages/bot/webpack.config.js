@@ -87,8 +87,15 @@ module.exports = {
             {
                 test   : /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader : ['deriv-shared/utils/deriv-components-loader.js',
-                    'babel-loader'],
+                loader : [
+                    'deriv-shared/utils/deriv-components-loader.js',
+                    'babel-loader'
+                ],
+            },
+            {
+                test : /\.xml$/,
+                exclude: /node_modules/,
+                use: 'raw-loader'
             },
         ],
     },
@@ -97,7 +104,6 @@ module.exports = {
         new MiniCssExtractPlugin({ filename: 'bot.main.css' }),
         new StyleLintPlugin({ fix: true }),
         new CopyWebpackPlugin([
-            { from: './src/scratch/xml', to: 'xml' },
             { from: './node_modules/scratch-blocks/media', to: 'media' },
             { from: './src/assets/images', to: 'media' },
         ]),

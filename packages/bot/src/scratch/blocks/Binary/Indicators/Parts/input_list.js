@@ -39,17 +39,18 @@ Blockly.Blocks.input_list = {
             setParentId();
 
             const surround_parent   = this.getSurroundParent();
-            const has_no_parent     = !surround_parent;
-            const is_illegal_parent = surround_parent.id !== this.required_parent_id;
+            const has_parent        = !!surround_parent;
+            const is_illegal_parent = !has_parent || surround_parent.id !== this.required_parent_id;
 
-            if (has_no_parent || is_illegal_parent) {
+            if (!has_parent || is_illegal_parent) {
                 const { recordUndo }      = Blockly.Events;
                 Blockly.Events.recordUndo = false;
-
+                
                 this.unplug(true);
 
                 // Attempt to re-connect this child to its original parent.
-                const parent_block = this.workspace.getAllBlocks().find(block => block.id === this.required_parent_id);
+                const all_blocks   = this.workspace.getAllBlocks();
+                const parent_block = all_blocks.find(block => block.id === this.required_parent_id);
 
                 if (parent_block) {
                     const parent_connection = parent_block.getLastConnectionInStatement('STATEMENT');
@@ -73,6 +74,11 @@ Blockly.Blocks.input_list = {
         'sma_statement',
         'smaa_statement',
     ],
+    getRequiredValueInputs() {
+        return {
+            INPUT_LIST: null,
+        };
+    },
 };
 
 Blockly.JavaScript.input_list = () => {};

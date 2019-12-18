@@ -5,12 +5,11 @@ import { CSSTransition }       from 'react-transition-group';
 import { NavLink }             from 'react-router-dom';
 import {
     Button,
-    Money,
-    UnderlyingIcon }           from 'deriv-components';
+    Icon,
+    Money }                    from 'deriv-components';
 import CurrencyUtils           from 'deriv-shared/utils/currency';
 import Shortcode               from 'Modules/Reports/Helpers/shortcode';
 import { localize }            from 'deriv-translations';
-import Icon                    from 'Assets/icon.jsx';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from './contract-type-cell.jsx';
 import ProgressSlider          from './ProgressSlider';
@@ -50,7 +49,7 @@ const PositionsDrawerCard = ({
             )}
             >
                 <div className='positions-drawer-card__underlying-name'>
-                    <UnderlyingIcon market={contract_info.underlying} />
+                    <Icon icon={contract_info.underlying ? `IcUnderlying${contract_info.underlying}` : 'IcUnknown'} size={34} />
                     <span className='positions-drawer-card__symbol'>
                         {contract_info.display_name}
                     </span>
@@ -106,10 +105,8 @@ const PositionsDrawerCard = ({
                         },
                     )}
                     >
-                        <Icon
-                            icon='IconPriceMove'
-                            type={(status !== 'complete') ? status : null}
-                        />
+                        {status === 'profit' && <Icon icon='IcProfit' />}
+                        {status === 'loss'   && <Icon icon='IcLoss' />}
                     </div>
                 </div>
                 <div className='positions-drawer-card__indicative'>
@@ -120,10 +117,8 @@ const PositionsDrawerCard = ({
                         },
                     )}
                     >
-                        <Icon
-                            icon='IconPriceMove'
-                            type={(status !== 'complete') ? status : null}
-                        />
+                        {status === 'profit' && <Icon icon='IcProfit' />}
+                        {status === 'loss'   && <Icon icon='IcLoss' />}
                     </div>
                 </div>
             </div>

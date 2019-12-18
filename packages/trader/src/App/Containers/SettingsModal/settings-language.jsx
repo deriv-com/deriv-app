@@ -1,8 +1,8 @@
 import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
+import { Icon }          from 'deriv-components';
 import { Localize }      from 'deriv-translations';
-import Icon              from 'Assets/icon.jsx';
 import {
     getAllowedLanguages,
     getURL,
@@ -24,7 +24,7 @@ const NonClickableLink = ({ children, lang }) => (
 const LanguageLink = ({ lang }) => (
     <React.Fragment>
         <Icon
-            icon='IconCountryFlag'
+            icon='IcFlagUk'
             className={'settings-language__language-link-flag settings-language__language-flag'}
             type={lang.replace(/(\s|_)/, '-').toLowerCase()}
         />

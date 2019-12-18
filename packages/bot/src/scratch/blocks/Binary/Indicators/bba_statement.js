@@ -1,6 +1,5 @@
-import { localize }    from 'deriv-translations';
-import { expectValue } from '../../../shared';
-import config          from '../../../../constants';
+import { localize } from 'deriv-translations';
+import config       from '../../../../constants';
 
 Blockly.Blocks.bba_statement = {
     protected_statements : ['STATEMENT'],
@@ -54,16 +53,17 @@ Blockly.Blocks.bba_statement = {
 
 Blockly.JavaScript.bba_statement = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const varName = Blockly.JavaScript.variableDB_.getName(
-        block.getFieldValue('VARIABLE'),
-        Blockly.Variables.NAME_TYPE
-    );
-    const bbResult = block.getFieldValue('BBRESULT_LIST');
-    const input = expectValue(block.getChildByType('input_list'), 'INPUT_LIST');
-    const period = block.childValueToCode('period', 'PERIOD') || '10';
-    const stdDevUp = block.childValueToCode('std_dev_multiplier_up', 'UPMULTIPLIER') || '5';
-    const stdDevDown = block.childValueToCode('std_dev_multiplier_down', 'DOWNMULTIPLIER') || '5';
+    const var_name     = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VARIABLE'), Blockly.Variables.NAME_TYPE);
+    const bb_result    = block.getFieldValue('BBRESULT_LIST');
+    const input        = block.childValueToCode('input_list', 'INPUT_LIST');
+    const period       = block.childValueToCode('period', 'PERIOD');
+    const std_dev_up   = block.childValueToCode('std_dev_multiplier_up', 'UPMULTIPLIER');
+    const std_dev_down = block.childValueToCode('std_dev_multiplier_down', 'DOWNMULTIPLIER');
+    const code         = `${var_name} = Bot.bba(${input}, { 
+        periods: ${period}, 
+        stdDevUp: ${std_dev_up}, 
+        stdDevDown: ${std_dev_down} 
+    }, ${bb_result});\n`;
 
-    const code = `${varName} = Bot.bba(${input}, { periods: ${period}, stdDevUp: ${stdDevUp}, stdDevDown: ${stdDevDown} }, ${bbResult});\n`;
     return code;
 };

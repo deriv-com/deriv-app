@@ -43,31 +43,8 @@ Blockly.Blocks.text_statement = {
         this.unplug(true);
         this.dispose();
     },
-    onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
-            return;
-        }
-
-        const surroundParent = this.getSurroundParent();
-        if (event.type === Blockly.Events.END_DRAG) {
-            if (!this.requiredParentId && surroundParent.type === 'text_join') {
-                this.requiredParentId = surroundParent.id;
-            } else if (!surroundParent || surroundParent.id !== this.requiredParentId) {
-                Blockly.Events.disable();
-                this.unplug(false);
-
-                const parentBlock = this.workspace.getAllBlocks().find(block => block.id === this.requiredParentId);
-
-                if (parentBlock) {
-                    const parentConnection = parentBlock.getLastConnectionInStatement('STACK');
-                    parentConnection.connect(this.previousConnection);
-                } else {
-                    this.dispose();
-                }
-                Blockly.Events.enable();
-            }
-        }
-    },
+    onchange            : Blockly.Blocks.lists_statement.onchange,
+    required_parent_type: 'text_join',
 };
 
 Blockly.JavaScript.text_statement = block => {

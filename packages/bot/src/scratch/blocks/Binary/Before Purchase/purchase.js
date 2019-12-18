@@ -39,7 +39,9 @@ Blockly.Blocks.purchase = {
 
         this.enforceLimitations();
 
-        if (event.type === Blockly.Events.BLOCK_CHANGE) {
+        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+            this.populatePurchaseList(event);
+        } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
             if (event.name === 'TYPE_LIST' || event.name === 'TRADETYPE_LIST') {
                 this.populatePurchaseList(event);
             }
@@ -53,26 +55,23 @@ Blockly.Blocks.purchase = {
         }
     },
     populatePurchaseList(event) {
-        const trade_definition_block = this.workspace.getAllBlocks(true).find(block =>
-            block.type === 'trade_definition'
-        );
+        const trade_definition_block = this.workspace.getTradeDefinitionBlock();
+        
+        if (trade_definition_block) {
+            const trade_type_block      = trade_definition_block.getChildByType('trade_definition_tradetype');
+            const trade_type            = trade_type_block.getFieldValue('TRADETYPE_LIST');
+            const contract_type_block   = trade_definition_block.getChildByType('trade_definition_contracttype');
+            const contract_type         = contract_type_block.getFieldValue('TYPE_LIST');
+            const purchase_type_list    = this.getField('PURCHASE_LIST');
+            const purchase_type         = purchase_type_list.getValue();
+            const contract_type_options = getContractTypeOptions(contract_type, trade_type);
 
-        if (!trade_definition_block) {
-            return;
+            purchase_type_list.updateOptions(contract_type_options, {
+                default_value       : purchase_type,
+                event_group         : event.group,
+                should_pretend_empty: true,
+            });
         }
-
-        const trade_type_block      = trade_definition_block.getChildByType('trade_definition_tradetype');
-        const trade_type            = trade_type_block.getFieldValue('TRADETYPE_LIST');
-        const contract_type_block   = trade_definition_block.getChildByType('trade_definition_contracttype');
-        const contract_type         = contract_type_block.getFieldValue('TYPE_LIST');
-        const purchase_type_list    = this.getField('PURCHASE_LIST');
-        const purchase_type         = purchase_type_list.getValue();
-        const contract_type_options = getContractTypeOptions(contract_type, trade_type);
-
-        purchase_type_list.updateOptions(contract_type_options, {
-            default_value: purchase_type,
-            event_group  : event.group,
-        });
     },
     enforceLimitations() {
         const top_parent = this.getTopParent();

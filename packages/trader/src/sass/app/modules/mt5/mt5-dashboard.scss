@@ -173,10 +173,12 @@
         }
         &__row {
             /*                     attribute   standard advanced synthetic */
-            grid-template-columns: 2.7fr       1fr      1fr      1fr;
+            grid-template-columns: 1.7fr       1fr      1fr      1fr;
         }
         .attribute, .standard, .advanced, .synthetic {
             justify-content: flex-start;
+            align-items: flex-start;
+            text-align: left;
         }
     }
     &-modal {

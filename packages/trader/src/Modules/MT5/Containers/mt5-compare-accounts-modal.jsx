@@ -40,7 +40,7 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
 
 const compareAccountsData = [
     {
-        attribute: <MT5AttributeDescriber name={ localize('Account currency') } />,
+        attribute: <MT5AttributeDescriber name={localize('Account currency')} />,
         standard : localize('USD'),
         advanced : localize('USD'),
         synthetic: localize('USD'),
@@ -98,7 +98,7 @@ const compareAccountsData = [
         synthetic: localize('No'),
     },
     {
-        attribute: <MT5AttributeDescriber name={ localize('Minimum deposit') } />,
+        attribute: <MT5AttributeDescriber name={localize('Minimum deposit')} />,
         standard : localize('No'),
         advanced : localize('No'),
         synthetic: localize('No'),
@@ -130,7 +130,7 @@ const compareAccountsData = [
         synthetic: localize('50%'),
     },
     {
-        attribute: <MT5AttributeDescriber name={ localize('Number of assets') } />,
+        attribute: <MT5AttributeDescriber name={localize('Number of assets')} />,
         standard : localize('50+'),
         advanced : localize('50+'),
         synthetic: localize('10+'),
@@ -147,17 +147,27 @@ const compareAccountsData = [
         advanced : localize('N/A'),
         synthetic: localize('N/A'),
     },
+    {
+        attribute: (
+            <MT5AttributeDescriber
+                name={localize('Trading instruments')}
+            />
+        ),
+        standard : localize('FX-majors, FX-minors, Commodities, Cryptocurrencies'),
+        advanced : localize('FX-majors, FX-minors, FX-exotics'),
+        synthetic: localize('Synthetics'),
+    },
 ];
 
-const ModalContent = ()  => (
+const ModalContent = () => (
     <div className='mt5-compare-accounts'>
         <DataTable
             className='mt5-compare-accounts__data'
             data_source={compareAccountsData}
             columns={compareAccountsColumns}
-            item_size={40}
-            custom_height={ 400 }
+            custom_height={700}
             custom_width={'100%'}
+            getRowSize={(index) => index + 1 === compareAccountsData.length ? 80 : 40}
         />
         <p className='mt5-compare-account--hint'>
             <Localize
@@ -167,7 +177,12 @@ const ModalContent = ()  => (
     </div>
 );
 
-const CompareAccountsModal = ({ toggleCompareAccounts, disableApp, enableApp, is_compare_accounts_visible }) => (
+const CompareAccountsModal = ({
+    toggleCompareAccounts,
+    disableApp,
+    enableApp,
+    is_compare_accounts_visible,
+}) => (
     <div className='mt5-compare-accounts-modal__wrapper'>
         <Button
             className='mt5-dashboard__welcome-message--button'

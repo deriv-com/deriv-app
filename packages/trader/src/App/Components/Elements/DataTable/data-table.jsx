@@ -1,6 +1,6 @@
 import classNames                     from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
-import { FixedSizeList as List }      from 'react-window';
+import { VariableSizeList as List }   from 'react-window';
 import { ThemedScrollbars }           from 'deriv-components';
 import PropTypes                      from 'prop-types';
 import React, { useCallback }         from 'react';
@@ -40,37 +40,33 @@ const ExtendedScrollbars = ({ onScroll, forwardedRef, style, children }) => {
     );
 };
 
-class DataTable extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = {
-            height      : 200,
-            width       : 200,
-            window_width: 1024,
-        };
-    }
+const DataTable = ({
+    data_source,
+    className,
+    getRowAction,
+    getRowSize,
+    columns,
+    onScroll,
+    footer,
+    preloaderCheck,
+    id,
+    is_empty,
+    custom_height,
+    custom_width,
+    children,
+}) => {
+    const [height, setHeight]            = React.useState(200);
+    const [width, setWidth]              = React.useState(200);
+    const [window_width, setWindowWidth] = React.useState(1024);
+    let el_table_body                  = React.createRef();
+    let el_table_head                  = React.createRef();
 
-    componentDidMount() {
-        this.setState({
-            height      : this.props.custom_height || this.el_table_body.clientHeight,
-            width       : this.props.custom_width || this.el_table_body.clientWidth,
-            window_width: window.innerWidth,
-        });
-    }
-
-    rowRenderer ({
+    const rowRenderer = ({
         index,       // Index of row
         style,        // Style object to be applied to row (to position it);
-    }) {
-        const {
-            data_source,
-            className,
-            getRowAction,
-            columns,
-            preloaderCheck,
-            id } = this.props;
-        const item = data_source[index];
-        const action = getRowAction && getRowAction(item);
+    }) => {
+        const item        = data_source[index];
+        const action      = getRowAction && getRowAction(item);
         const contract_id = data_source[index].contract_id || data_source[index].id;
 
         // If row content is complex, consider rendering a light-weight placeholder while scrolling.
@@ -92,67 +88,61 @@ class DataTable extends React.PureComponent {
                 {content}
             </div>
         );
-    }
+    };
 
-    render() {
-        const {
-            children,
-            className,
-            columns,
-            data_source,
-            footer,
-            is_empty,
-            item_size,
-            onScroll,
-        } = this.props;
+    React.useEffect(() => {
+        setHeight(custom_height || el_table_body.clientHeight);
+        setWidth(custom_width || el_table_body.clientWidth);
+        setWindowWidth(window.innerWidth);
+    });
 
-        const TableData =
-            <React.Fragment>
-                <List
-                    className={className}
-                    height={this.state.height}
-                    itemCount={data_source.length}
-                    itemSize={item_size || 63}
-                    width={this.state.width}
-                    outerElementType={is_empty ? null : ListScrollbar}
-                >
-                    {this.rowRenderer.bind(this)}
-                </List>
-                {children}
-            </React.Fragment>;
-
-        return (
-            <div className={classNames('table', {
-                [`${className}`]         : className,
-                [`${className}__table`]  : className,
-                [`${className}__content`]: className,
-            })}
+    const TableData = (
+        <React.Fragment>
+            <List
+                className={className}
+                height={height}
+                itemCount={data_source.length}
+                itemSize={getRowSize}
+                width={width}
+                outerElementType={is_empty ? null : ListScrollbar}
             >
-                <div className='table__head' ref={el => { this.el_table_head = el; }}>
-                    <TableRow className={className} columns={columns} is_header />
-                </div>
-                <div
-                    className='table__body'
-                    ref={el => { this.el_table_body = el; }}
-                    onScroll={onScroll}
-                >
-                    {TableData}
-                </div>
+                {rowRenderer}
+            </List>
+            {children}
+        </React.Fragment>
+    );
 
-                {footer &&
-                    <div className='table__foot'>
-                        <TableRow
-                            className={className}
-                            row_obj={footer}
-                            columns={columns}
-                            is_footer
-                        />
-                    </div>
-                }
+    return (
+        <div className={classNames('table', {
+            [`${className}`]         : className,
+            [`${className}__table`]  : className,
+            [`${className}__content`]: className,
+        })}
+        >
+            <div className='table__head' ref={el => { el_table_head = el; }}>
+                <TableRow className={className} columns={columns} is_header />
             </div>
-        );
-    }
-}
+            <div
+                className='table__body'
+                ref={el => { el_table_body = el; }}
+                onScroll={onScroll}
+            >
+                {TableData}
+            </div>
+
+            {footer &&
+            <div className='table__foot'>
+                <TableRow
+                    className={className}
+                    row_obj={footer}
+                    columns={columns}
+                    is_footer
+                />
+            </div>
+            }
+        </div>
+    );
+};
 
 DataTable.propTypes = {
     children: PropTypes.oneOfType([
@@ -164,6 +154,7 @@ DataTable.propTypes = {
     data_source : MobxPropTypes.arrayOrObservableArray,
     footer      : PropTypes.object,
     getRowAction: PropTypes.func,
+    getRowSize  : PropTypes.func.isRequired,
     onScroll    : PropTypes.func,
 };
 

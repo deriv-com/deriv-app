@@ -177,7 +177,7 @@ class Popup extends Component {
                                 <div className='buy-sell__popup-footer'>
                                     {status && status.error_message && <FormError message={status.error_message} />}
                                     <Button secondary type='button' onClick={handleClose}>{localize('Cancel')}</Button>
-                                    <Button is_disabled={isSubmitting} primary>{localize('Confirm')}</Button>
+                                    <Button is_disabled={isSubmitting || errors.send || errors.receive} primary>{localize('Confirm')}</Button>
                                 </div>
                             </Form>
                         )}

@@ -18,6 +18,7 @@ module.exports = {
         checkbox           : path.resolve(__dirname, 'src', 'components/checkbox/index.js'),
         counter            : path.resolve(__dirname, 'src', 'components/counter/index.js'),
         desktop            : path.resolve(__dirname, 'src', 'components/desktop/index.js'),
+        collapsible        : path.resolve(__dirname, 'src', 'components/collapsible/index.js'),
         mobile             : path.resolve(__dirname, 'src', 'components/mobile/index.js'),
         dialog             : path.resolve(__dirname, 'src', 'components/dialog/index.js'),
         drawer             : path.resolve(__dirname, 'src', 'components/drawer/index.js'),

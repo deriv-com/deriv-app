@@ -1,9 +1,8 @@
 import PropTypes              from 'prop-types';
 import classNames             from 'classnames';
-import { Button }             from 'deriv-components';
+import { Button, Icon }       from 'deriv-components';
 import React                  from 'react';
 import { localize, Localize } from 'deriv-translations';
-import Icon                   from 'Assets/icon.jsx';
 
 const SuccessDialog = ({
     has_cancel,
@@ -21,7 +20,9 @@ const SuccessDialog = ({
 
     const Checkmark = ({ className }) => <Icon
         className={className}
-        icon='IconWon'
+        icon='IcCheckmarkCircle'
+        color='green'
+        size={24}
     />;
 
     return (

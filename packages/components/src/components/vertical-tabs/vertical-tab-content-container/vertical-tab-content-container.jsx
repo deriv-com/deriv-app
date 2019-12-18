@@ -1,8 +1,9 @@
 import classNames        from 'classnames';
+import { Icon }          from 'deriv-components';
 import React             from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-export default class VerticalTabContentContainer extends React.PureComponent {
+class VerticalTabContentContainer extends React.PureComponent {
     render() {
         const {
             action_bar,
@@ -25,32 +26,24 @@ export default class VerticalTabContentContainer extends React.PureComponent {
                     >
                         {
                             action_bar.map(({ component, icon, onClick }, idx) => {
-                                if (component) {
-                                    const Component = component;
-                                    return (
-                                        <Component key={idx} />
-                                    );
-                                }
-                                const Icon = React.cloneElement(icon, {
-                                    className: classNames(
-                                        'vertical-tab__action-bar--icon', {
-                                            [icon.props.className]: !!icon.props.className,
-                                        }),
-                                });
-
+                                const Component = component;
                                 return (
-                                    <div
-                                        id={`dt_${id}_close_icon`}
-                                        className='vertical-tab__action-bar-wrapper'
-                                        key={idx}
-                                        onClick={onClick}
-                                    >
-                                        { Icon }
-                                    </div>
+                                    component ?
+                                        <Component key={idx} />
+                                        :
+                                        <div
+                                            id={`dt_${id}_close_icon`}
+                                            className='vertical-tab__action-bar-wrapper'
+                                            key={idx}
+                                            onClick={onClick}
+                                        >
+                                            <Icon
+                                                className='vertical-tab__action-bar--icon'
+                                                icon={icon}
+                                            />
+                                        </div>
                                 );
-                                
                             })
-                            
                         }
                     </div>
                 }
@@ -64,7 +57,7 @@ export default class VerticalTabContentContainer extends React.PureComponent {
                                         <Route
                                             key={idx}
                                             path={path}
-                                            render={() => <Component component_icon={icon.props.icon} />}
+                                            render={() => <Component component_icon={icon} />}
                                         />
                                     );
                                 })
@@ -81,3 +74,5 @@ export default class VerticalTabContentContainer extends React.PureComponent {
         );
     }
 }
+
+export { VerticalTabContentContainer };

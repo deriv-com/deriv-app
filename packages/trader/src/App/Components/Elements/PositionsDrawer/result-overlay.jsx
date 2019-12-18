@@ -3,9 +3,8 @@ import PropTypes           from 'prop-types';
 import React               from 'react';
 import { CSSTransition }   from 'react-transition-group';
 import { NavLink }         from 'react-router-dom';
+import { Icon }            from 'deriv-components';
 import { getContractPath } from 'App/Components/Routes/helpers';
-import IconCheck           from 'Assets/SvgComponents/portfolio/ic-check.svg';
-import IconCross           from 'Assets/SvgComponents/portfolio/ic-cross.svg';
 import { localize }        from 'deriv-translations';
 
 class ResultOverlay extends React.PureComponent {
@@ -64,12 +63,12 @@ class ResultOverlay extends React.PureComponent {
                                     (is_contract_won) ?
                                         <React.Fragment>
                                             {localize('won')}
-                                            <IconCheck className='result__icon' />
+                                            <Icon icon='IcCheckmarkCircle' className='result__icon' color='green' />
                                         </React.Fragment>
                                         :
                                         <React.Fragment>
                                             {localize('lost')}
-                                            <IconCross className='result__icon' />
+                                            <Icon icon='IcCrossCircle' className='result__icon' color='red' />
                                         </React.Fragment>
                                 }
                             </span>

@@ -1,7 +1,7 @@
 import classNames   from 'classnames';
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import Icon         from 'Assets/icon.jsx';
+import { Icon }     from 'deriv-components';
 import Fieldset     from 'App/Components/Form/fieldset.jsx';
 import InputField   from 'App/Components/Form/InputField';
 import { connect }  from 'Stores/connect';
@@ -69,8 +69,8 @@ const Barrier = ({
                             is_float
                             is_signed
                         />
-                        <Icon icon='IconBarrierUp'   className='trade-container__barriers--up' />
-                        <Icon icon='IconBarrierDown' className='trade-container__barriers--down' />
+                        <Icon icon='IcArrowUp'   className='trade-container__barriers--up' />
+                        <Icon icon='IcArrowDown' className='trade-container__barriers--down' />
                     </React.Fragment>
                 }
             </div>

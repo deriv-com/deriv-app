@@ -21,6 +21,8 @@ module.exports = {
         dropdown                        : 'Components/dropdown',
         'field-error'                   : 'Components/field-error',
         'file-dropzone'                 : 'Components/file-dropzone',
+        icon                            : 'Components/icon',
+        'icon/js/icons'                 : 'Components/icon/icons.js',
         input                           : 'Components/input',
         label                           : 'Components/label',
         loading                         : 'Components/loading',
@@ -92,11 +94,32 @@ module.exports = {
             {
                 test: /\.svg$/,
                 use : [
-                    {
+                   {
                         loader : 'svg-sprite-loader',
                         options: {
                             extract       : true,
-                            spriteFilename: 'bot-sprite.svg',
+                            spriteFilename: svgPath => {
+                                if (svgPath.includes('components/icon/common')) {
+                                    return 'common.svg';
+                                }
+                                if (svgPath.includes('components/icon/currency')) {
+                                    return 'currency.svg';
+                                }
+                                if (svgPath.includes('components/icon/flag')) {
+                                    return 'flag.svg';
+                                }
+                                if (svgPath.includes('components/icon/mt5')) {
+                                    return 'mt5.svg';
+                                }
+                                if (svgPath.includes('components/icon/tradetype')) {
+                                    return 'tradetype.svg';
+                                }
+                                if (svgPath.includes('components/icon/underlying')) {
+                                    return 'underlying.svg';
+                                }
+                                return 'common.svg';
+                            },
+                            publicPath: '/icon/sprite/',
                         },
                     },
                     {
@@ -130,7 +153,7 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({ filename: '[name].css' }),
         new StyleLintPlugin({ fix: true }),
-        new SpriteLoaderPlugin(),
+        new SpriteLoaderPlugin({ plainSprite: true }),
         // ...(!is_release ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
     ],
     externals: [

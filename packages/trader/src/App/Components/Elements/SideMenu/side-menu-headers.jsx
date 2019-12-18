@@ -1,10 +1,10 @@
 import classNames         from 'classnames';
 import {
+    Icon,
     VerticalTabHeaders,
     VerticalTabHeader }   from 'deriv-components';
 import React              from 'react';
 import { withRouter }     from 'react-router-dom';
-import Icon               from 'Assets/icon.jsx';
 
 const MainHeaderLayout = ({ children }) => <div className='side-menu__main-header-layout'>{children}</div>;
 
@@ -25,7 +25,7 @@ const MainHeaders = ({ items, handleSubroute, active_title }) => (
                         onChange={handleSubroute}
                     >
                         <Icon
-                            icon='IconChevronRight'
+                            icon='IcChevronRight'
                             className='side-menu__icon'
                         />
                     </VerticalTabHeader>

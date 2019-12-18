@@ -1,3 +1,5 @@
+import ServerTime from './server-time';
+
 export const getFormattedDateString = (date_obj) => {
     if (!(date_obj instanceof Date)) throw Error('getFormattedDateString argument needs an instance of Date');
 
@@ -22,3 +24,10 @@ export const secondsToTimer = (distance) => {
 
     return `${hours}:${minutes}:${seconds}`;
 };
+
+export const getDistanceToServerTime = (compare_millis_time) => {
+    const now_millis = ServerTime.get();
+    const distance = compare_millis_time - now_millis;
+
+    return distance;
+}

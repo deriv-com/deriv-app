@@ -1,9 +1,9 @@
 import React        from 'react';
-import PropTypes    from 'prop-types';
-import { requestWS }       from 'Utils/websocket';
-import { Button }   from 'deriv-components';
-import { localize } from 'Components/i18next';
-import AgentContext from 'Components/context/agent-context';
+import PropTypes     from 'prop-types';
+import { Button }    from 'deriv-components';
+import { localize }  from 'Components/i18next';
+import AgentContext  from 'Components/context/agent-context';
+import { requestWS } from 'Utils/websocket';
 
 const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     const is_agent = React.useContext(AgentContext);

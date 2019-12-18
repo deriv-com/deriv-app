@@ -4,13 +4,13 @@ import { Dialog }                from 'deriv-components';
 import { localize, Localize }    from 'Components/i18next';
 import AgentContext              from 'Components/context/agent-context';
 import FooterActions             from 'Components/footer-actions/footer-actions.jsx';
-import Popup                     from '../popup.jsx';
 import OrderDetailsStatusBlock   from './order-details-status-block.jsx';
 import OrderInfoBlock            from './order-info-block.jsx';
 import OrderDetailsAmountBlock   from './order-details-amount-block.jsx';
 import OrderDetailsTimerBlock    from './order-details-timer-block.jsx';
 import OrderActionsBlock         from './order-actions-block.jsx';
 import OrderDetailsResultMessage from './order-details-result-message.jsx';
+import Popup                     from '../popup.jsx';
 
 import './order-details.scss';
 

@@ -1,6 +1,3 @@
-import Bot               from './app.jsx';
-import { preloadSprite } from './components/Icons.jsx';
-
-preloadSprite();
+import Bot from './app.jsx';
 
 export default Bot;

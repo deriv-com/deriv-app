@@ -1,7 +1,7 @@
 import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React, { Fragment } from 'react';
-import Icon                from 'Assets/icon.jsx';
+import { Icon }            from 'deriv-components';
 
 const DurationToggle = ({
     name,
@@ -19,7 +19,7 @@ const DurationToggle = ({
     return (
         <Fragment>
             <button id={value ? 'dt_advanced_toggle' : 'dt_simple_toggle'} className='advanced-simple-toggle' onClick={toggle}>
-                <Icon icon='IconArrow' className={icon_className} classNamePath={'advanced-simple-toggle__icon-path'} />
+                <Icon icon='IcChevronDown' className={icon_className} classNamePath={'advanced-simple-toggle__icon-path'} />
             </button>
         </Fragment>);
 };

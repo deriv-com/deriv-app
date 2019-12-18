@@ -4,13 +4,13 @@ import React                 from 'react';
 import { CSSTransition }     from 'react-transition-group';
 import {
     Button,
+    Icon,
     ThemedScrollbars }       from 'deriv-components';
 import { BinaryLink }        from 'App/Components/Routes';
 import { connect }           from 'Stores/connect';
 import { localize }          from 'deriv-translations';
 import { toTitleCase }       from '_common/string_util';
 import ObjectUtils           from 'deriv-shared/utils/object';
-import Icon                  from 'Assets/icon.jsx';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
 class NotificationsDialog extends React.Component {
@@ -75,9 +75,9 @@ class NotificationsDialog extends React.Component {
                                                     {item.type &&
                                                         <Icon
                                                             icon={(item.type === 'info' || item.type === 'contract_sold') ?
-                                                                'IconInfoBlue'
+                                                                'IcAlertInfo'
                                                                 :
-                                                                `Icon${toTitleCase(item.type)}`
+                                                                `IcAlert${toTitleCase(item.type)}`
                                                             }
                                                             className={classNames('notifications-item__title-icon', {
                                                                 [`notifications-item__title-icon--${item.type}`]: item.type,

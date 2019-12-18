@@ -11,6 +11,7 @@ export const unrecoverable_errors = [
     'OptionError',
     'IncorrectPayoutDecimals',
     'IncorrectStakeDecimals',
+    'NoMFProfessionalClient',
 ];
 
 export const message_types = Object.freeze({

@@ -1,7 +1,7 @@
 import { reaction } from 'mobx';
 
 const GTM = (() => {
-    
+
     let root_store;
 
     const getLoginId = () => {
@@ -39,17 +39,19 @@ const GTM = (() => {
 
     const onRunBot = (summary) => {
         try {
-            const run_id = getLoginId().concat(getLoginId(), getServerTime());
-            let counters ='';
-
-            Object.entries(summary).forEach(([key, value]) => {
-                counters +=`${key}: ${value}, `;
-            });
+            const run_id = `${getLoginId()}-${getServerTime()}`;
+            const counters =
+                `tr:${summary.number_of_runs},\
+                ts:${summary.total_stake},\
+                py${summary.total_payout},\
+                lc${summary.lost_contracts},\
+                wc${summary.won_contracts},\
+                pr${summary.total_profit}`;
 
             const data = {
-                event  : 'dbot_run',
+                event: 'dbot_run',
                 run_id,
-                counters,
+                counters : counters.replace(/\s/g,''),
             };
             pushDataLayer(data);
         } catch (error) {
@@ -62,7 +64,7 @@ const GTM = (() => {
             const contract = contracts.length > 0 && contracts[0];
             if (contract && contract.is_completed) {
                 const data = {
-                    event: 'dbot_run_transaction',
+                    event      : 'dbot_run_transaction',
                     refrence_id: contract.refrence_id,
                 };
                 pushDataLayer(data);

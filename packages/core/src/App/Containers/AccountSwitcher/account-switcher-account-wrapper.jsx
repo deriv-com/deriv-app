@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React      from 'react';
-import Icon       from 'Assets/icon.jsx';
+import { Icon }   from 'deriv-components';
 
 const AccountWrapper = ({
     children,
@@ -16,7 +16,7 @@ const AccountWrapper = ({
             <span className='acc-switcher__list-title'>
                 {header}
             </span>
-            <Icon icon='IconArrow' className='acc-info__select-arrow' />
+            <Icon icon='IcChevronDown' className='acc-info__select-arrow' />
         </div>
         {is_visible &&
             <React.Fragment>

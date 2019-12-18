@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
-import Icon       from 'Assets/icon.jsx';
+import { Icon }   from 'deriv-components';
 
 const MobileDialog = (props) => {
     const { title, visible, children, wrapperClassName } = props;
@@ -55,7 +55,7 @@ const MobileDialog = (props) => {
                     className='icons btn-close mobile-dialog__close-btn'
                     onClick={props.onClose}
                 >
-                    <Icon icon='IconClose' className='mobile-dialog__close-btn-icon' />
+                    <Icon icon='IcCross' className='mobile-dialog__close-btn-icon' />
                 </div>
             </div>
             <div className='mobile-dialog__header-shadow-cover' />

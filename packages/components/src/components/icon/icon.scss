@@ -1,0 +1,34 @@
+.dc-icon {
+    --fill-color1: var(--text-general);
+    --fill-color2: var(--text-less-prominent);
+    --fill-color3: var(--general-section-1);
+
+    &--disabled {
+        --fill-color1: var(--text-disabled);
+        --fill-color2: var(--text-disabled);
+    }
+    &--active {
+        --fill-color1: #{$color-white};
+        --fill-color2: #{$color-white};
+    }
+    &--green {
+        --fill-color1: var(--text-profit-success);
+        --fill-color2: var(--text-profit-success);
+        --fill-color3: #{$color-white};
+    }
+    &--red {
+        --fill-color1: var(--text-loss-danger);
+        --fill-color2: var(--text-loss-danger);
+        --fill-color3: #{$color-white};
+    }
+    &--secondary {
+        --fill-color1: var(--text-less-prominent);
+        --fill-color2: var(--text-less-prominent);
+        --fill-color3: #{$color-white};
+    }
+    &--brand {
+        --fill-color1: var(--brand-red-coral);
+        --fill-color2: var(--brand-secondary);
+        --fill-color3: #{$color-white};
+    }
+}

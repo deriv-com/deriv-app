@@ -1,6 +1,6 @@
 import React         from 'react';
+import { Icon }      from 'deriv-components';
 import UpgradeButton from 'App/Containers/RealAccountSignup/upgrade-button.jsx';
-import Icon          from 'Assets/icon.jsx';
 
 const ButtonAddAccount = ({
     currency = true,
@@ -12,7 +12,7 @@ const ButtonAddAccount = ({
     return (
         <UpgradeButton
             onClick={handleClick}
-            icon={<Icon icon='IconAdd' />}
+            icon={<Icon icon='IcAddCircle' color='red' size={24} />}
         >
             {text}
         </UpgradeButton>

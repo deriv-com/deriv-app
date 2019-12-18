@@ -1,22 +1,22 @@
-import classNames             from 'classnames';
-import PropTypes              from 'prop-types';
-import React                  from 'react';
-import { withRouter }         from 'react-router';
+import classNames               from 'classnames';
+import PropTypes                from 'prop-types';
+import React                    from 'react';
+import { withRouter }           from 'react-router';
 import {
+    Icon,
     Money,
     Tabs,
-    ThemedScrollbars }        from 'deriv-components';
-import CurrencyUtils          from 'deriv-shared/utils/currency';
-import { localize, Localize } from 'deriv-translations';
-import { urlFor }             from '_common/url';
-import Icon                   from 'Assets/icon.jsx';
-import { connect }            from 'Stores/connect';
-import routes                 from 'Constants/routes';
-import { getMT5AccountType }  from 'Stores/Helpers/client';
-import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
-import AccountList            from './account-switcher-account-list.jsx';
-import AccountWrapper         from './account-switcher-account-wrapper.jsx';
-import ButtonAddAccount       from './account-switcher-add-account-button.jsx';
+    ThemedScrollbars }          from 'deriv-components';
+import CurrencyUtils            from 'deriv-shared/utils/currency';
+import { localize, Localize }   from 'deriv-translations';
+import { urlFor }               from '_common/url';
+import { connect }              from 'Stores/connect';
+import routes                   from 'Constants/routes';
+import { getMT5AccountDisplay } from 'Stores/Helpers/client';
+import { AccountsItemLoader }   from 'App/Components/Layout/Header/Components/Preloader';
+import AccountList              from './account-switcher-account-list.jsx';
+import AccountWrapper           from './account-switcher-account-wrapper.jsx';
+import ButtonAddAccount         from './account-switcher-add-account-button.jsx';
 
 class AccountSwitcher extends React.Component {
     state = {
@@ -221,7 +221,7 @@ class AccountSwitcher extends React.Component {
                                                         key={account.loginid}
                                                         balance={this.props.accounts[account.loginid].balance}
                                                         currency={this.props.accounts[account.loginid].currency}
-                                                        currency_icon={account.icon}
+                                                        currency_icon={`IcCurrency-${account.icon}`}
                                                         display_type={'currency'}
                                                         has_balance={'balance' in this.props.accounts[account.loginid]}
                                                         is_disabled={account.is_disabled}
@@ -282,7 +282,7 @@ class AccountSwitcher extends React.Component {
                                                                     account_type={account.group}
                                                                     balance={account.balance}
                                                                     currency={account.currency}
-                                                                    currency_icon={getMT5AccountType(account.group).replace(/^demo/, 'real')}
+                                                                    currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
                                                                     has_balance={'balance' in account}
                                                                     loginid={account.login}
                                                                     onClickAccount={this.redirectToMt5Real}
@@ -332,7 +332,7 @@ class AccountSwitcher extends React.Component {
                                                         key={account.loginid}
                                                         balance={this.props.accounts[account.loginid].balance}
                                                         currency={this.props.accounts[account.loginid].currency}
-                                                        currency_icon={account.icon}
+                                                        currency_icon={`IcCurrency-${account.icon}`}
                                                         display_type={'currency'}
                                                         has_balance={'balance' in this.props.accounts[account.loginid]}
                                                         is_disabled={account.is_disabled}
@@ -372,7 +372,7 @@ class AccountSwitcher extends React.Component {
                                                                     account_type={account.group}
                                                                     balance={account.balance}
                                                                     currency={account.currency}
-                                                                    currency_icon={getMT5AccountType(account.group).replace(/^demo/, 'real')}
+                                                                    currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
                                                                     has_balance={'balance' in account}
                                                                     is_virtual
                                                                     loginid={account.login}
@@ -430,7 +430,7 @@ class AccountSwitcher extends React.Component {
                 <div className='acc-switcher__separator' />
                 <div id='dt_logout_button' className='acc-switcher__logout'>
                     <span className='acc-switcher__logout-text' onClick={this.handleLogout}>{localize('Log out')}</span>
-                    <Icon icon='IconLogout' className='acc-switcher__logout-icon drawer__icon' onClick={this.handleLogout} />
+                    <Icon icon='IcLogout' className='acc-switcher__logout-icon drawer__icon' onClick={this.handleLogout} />
                 </div>
             </div>
         );

@@ -2,9 +2,9 @@ import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
 import { CSSTransition }   from 'react-transition-group';
+import { Icon }            from 'deriv-components';
 import { Localize }        from 'deriv-translations';
 import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
-import Icon                from 'Assets/icon.jsx';
 
 const AccountInfo = ({
     balance,
@@ -27,9 +27,9 @@ const AccountInfo = ({
                 className='acc-info__id'
             >
                 <Icon
-                    icon='IconAccountsCurrency'
+                    icon={`IcCurrency-${is_virtual ? 'virtual' : (currency || 'Unknown').toLowerCase()}`}
                     className={`acc-info__id-icon acc-info__id-icon--${is_virtual ? 'virtual' : currency}`}
-                    type={is_virtual ? 'virtual' : (currency || 'real').toLowerCase()}
+                    size={24}
                 />
             </span>
             {
@@ -46,7 +46,7 @@ const AccountInfo = ({
                     {currency && balance}
                 </p>
             }
-            <Icon icon='IconArrowBold' className='acc-info__select-arrow' />
+            <Icon icon='IcChevronDownBold' className='acc-info__select-arrow' />
         </div>
         <CSSTransition
             in={is_dialog_on}

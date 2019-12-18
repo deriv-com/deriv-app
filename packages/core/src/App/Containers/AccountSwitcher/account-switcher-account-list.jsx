@@ -1,9 +1,8 @@
 import classNames               from 'classnames';
 import React                    from 'react';
-import { Money }                from 'deriv-components';
+import { Icon, Money }          from 'deriv-components';
 import CurrencyUtils            from 'deriv-shared/utils/currency';
 import { Localize, localize }   from 'deriv-translations';
-import Icon                     from 'Assets/icon.jsx';
 import { getMT5AccountDisplay } from 'Stores/Helpers/client';
 
 const AccountList = ({
@@ -31,13 +30,13 @@ const AccountList = ({
         >
             <span className={'acc-switcher__id'}>
                 <Icon
-                    icon='IconAccountsCurrency'
-                    className={`acc-switcher__id-icon acc-switcher__id-icon--${currency_icon}`}
-                    type={currency_icon}
+                    icon={ currency ? currency_icon : 'IcCurrencyUnknown'}
+                    className={'acc-switcher__id-icon'}
+                    size={24}
                 />
                 <span>
                     {display_type === 'currency'
-                        ? <CurrencyDisplay is_virtual={is_virtual} currency={currency_icon} />
+                        ? <CurrencyDisplay is_virtual={is_virtual} currency={currency} />
                         : <AccountDisplay account_type={account_type} />
                     }
                     <div className='acc-switcher__loginid-text'>
@@ -89,7 +88,7 @@ const CurrencyDisplay = ({
     if (is_virtual) {
         return <Localize i18n_default_text='Demo' />;
     }
-    if (currency.toUpperCase() === 'REAL') {
+    if (!currency) {
         return <Localize i18n_default_text='Real' />;
     }
     return currency.toUpperCase();

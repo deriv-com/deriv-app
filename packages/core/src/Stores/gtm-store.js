@@ -74,14 +74,14 @@ export default class GTMStore extends BaseStore {
      */
     @action.bound
     async pushDataLayer(data) {
-        if (this.is_gtm_applicable && !isLoginPages()) {
-            BinarySocket.wait('authorize').then(() => {
+        //if (this.is_gtm_applicable && !isLoginPages()) {
+            //BinarySocket.wait('authorize').then(() => {
                 dataLayer.push({
                     ...this.common_variables,
                     ...data,
                 });
-            });
-        }
+            //});
+        //}
     }
 
     /**

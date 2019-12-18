@@ -40,16 +40,18 @@ const GTM = (() => {
     const onRunBot = (summary) => {
         try {
             const run_id = getLoginId().concat(getLoginId(), getServerTime());
-            const summary_str = Object.values(summary).forEach(value => {
-                return value.concat(value);
+            let counters ='';
+
+            Object.entries(summary).forEach(([key, value]) => {
+                counters +=`${key}: ${value}, `;
             });
+
             const data = {
                 event  : 'dbot_run',
                 run_id,
-                summary: summary_str,
+                counters,
             };
             pushDataLayer(data);
-            console.warn('pushing run data to datalayer', data); // eslint-disable-line no-console
         } catch (error) {
             console.warn('Error pushing run data to datalayer', error); // eslint-disable-line no-console
         }
@@ -60,11 +62,10 @@ const GTM = (() => {
             const contract = contracts.length > 0 && contracts[0];
             if (contract && contract.is_completed) {
                 const data = {
-                    event: 'dbot_run',
+                    event: 'dbot_run_transaction',
                     refrence_id: contract.refrence_id,
                 };
                 pushDataLayer(data);
-                console.warn('pushing transaction data to datalayer', data); // eslint-disable-line no-console
             }
         } catch (error) {
             console.warn('Error pushing transaction to datalayer', error); // eslint-disable-line no-console

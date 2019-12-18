@@ -4,7 +4,7 @@
   "description": "Deriv translations",
   "author": "Deriv",
   "license": "Apache-2.0",
-  "main": "lib/main.js",
+  "main": "lib/translations.main.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/binary-com/deriv-app.git"
@@ -49,7 +49,7 @@
     "babel-eslint": "^10.0.2",
     "babel-jest": "^24.8.0",
     "babel-loader": "^8.0.6",
-    "copy-webpack-plugin": "^5.0.4",
+    "copy-webpack-plugin": "^5.1.1",
     "cross-env": "^5.2.0",
     "eslint": "^6.0.0",
     "eslint-config-airbnb-base": "^13.1.0",

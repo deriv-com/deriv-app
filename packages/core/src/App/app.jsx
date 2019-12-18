@@ -5,7 +5,7 @@ import { Prompt }                   from 'react-router';
 import { BrowserRouter as Router }  from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
-import { i18n,
+import { initializeTranslations,
     loadIncontextTranslation }      from 'deriv-translations';
 import Client                       from '_common/base/client_base';
 import WS                           from 'Services/ws-methods';
@@ -32,6 +32,7 @@ const App = ({ root_store }) => {
     const has_base = /^\/(br_)/.test(l.pathname);
     const url_params = new URLSearchParams(l.search);
 
+    initializeTranslations();
     const is_staging = /staging\.deriv\.app/i.test(l.hostname);
     if (is_staging) {
         loadIncontextTranslation();

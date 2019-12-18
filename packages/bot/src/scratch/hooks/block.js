@@ -136,7 +136,21 @@ Blockly.Block.prototype.getRootInputTargetBlock = function() {
     return input_name;
 };
 
+/**
+ * Returns whether the block has an error highlighted descendant.
+ */
+Blockly.Block.prototype.hasErrorHighlightedDescendant = function () {
+    const hasHighlightedDescendant = (child_blocks) =>
+        child_blocks.some(child_block => {
+            const is_self_highlighted       = child_block.is_error_highlighted;
+            const is_descendant_highlighted = hasHighlightedDescendant(child_block.getChildren());
+            
+            return is_self_highlighted || is_descendant_highlighted;
+        });
+
+    return hasHighlightedDescendant(this.getChildren());
+};
+
 Blockly.Block.isDynamic = function(block_type) {
     return /^((procedures_)|(variables_)|(math_change$))/.test(block_type);
 };
-

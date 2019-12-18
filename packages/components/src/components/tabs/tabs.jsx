@@ -30,7 +30,7 @@ class Tabs extends Component {
             className,
             top,
             bottom,
-            fit_content
+            fit_content,
         } = this.props;
         const { active_index } = this.state;
         const tab_width = (100 / children.length).toFixed(2);
@@ -39,7 +39,7 @@ class Tabs extends Component {
             <div
                 className={
                     classNames('dc-tabs', {
-                        [`dc-tabs dc-tabs--${className}`]: className
+                        [`dc-tabs dc-tabs--${className}`]: className,
                     },
                     )}
                 style={{ '--tab-width': `${tab_width}%` }}

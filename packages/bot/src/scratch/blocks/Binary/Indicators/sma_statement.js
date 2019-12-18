@@ -1,5 +1,4 @@
-import { localize }    from 'deriv-translations';
-import { expectValue } from '../../../shared';
+import { localize } from 'deriv-translations';
 
 Blockly.Blocks.sma_statement = {
     protected_statements : ['STATEMENT'],
@@ -48,13 +47,10 @@ Blockly.Blocks.sma_statement = {
 
 Blockly.JavaScript.sma_statement = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const varName = Blockly.JavaScript.variableDB_.getName(
-        block.getFieldValue('VARIABLE'),
-        Blockly.Variables.NAME_TYPE
-    );
-    const input = expectValue(block.getChildByType('input_list'), 'INPUT_LIST');
-    const period = block.getChildFieldValue('period', 'PERIOD') || '10';
-
-    const code = `${varName} = Bot.sma(${input}, ${period});\n`;
+    const var_name = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VARIABLE'), Blockly.Variables.NAME_TYPE);
+    const input    = block.childValueToCode('input_list', 'INPUT_LIST');
+    const period   = block.childValueToCode('period', 'PERIOD');
+    const code     = `${var_name} = Bot.sma(${input}, ${period});\n`;
+    
     return code;
 };

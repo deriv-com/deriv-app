@@ -11,6 +11,7 @@ import { scratchWorkspaceInit } from './scratch/index';
 import ApiHelpers               from './services/api/api-helpers';
 import ServerTime               from './services/api/server_time';
 import RootStore                from './stores';
+import GTM                      from './utils/gtm';
 import Firestore                from './utils/firestore';
 
 import './assets/sass/app.scss';
@@ -22,6 +23,7 @@ class App extends React.Component {
         this.root_store = new RootStore(root_store, WS);
         ApiHelpers.setInstance(this.root_store);
         Firestore.init(this.root_store);
+        GTM.init(this.root_store);
         ServerTime.init(root_store.common);
     }
 

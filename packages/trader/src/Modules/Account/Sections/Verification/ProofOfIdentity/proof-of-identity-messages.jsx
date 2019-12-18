@@ -1,14 +1,7 @@
 import React                  from 'react';
-import ButtonLink             from 'App/Components/Routes/button-link.jsx';
+import { Icon }               from 'deriv-components';
 import { localize, Localize } from 'deriv-translations';
-import IconPoiPersonalDetails from 'Assets/AccountManagement/icon-poi-missing-details.svg';
-import IconIdentityCard       from 'Assets/AccountManagement/icon-identity-card.svg';
-import IconDrivingLicense     from 'Assets/AccountManagement/icon-driving-licence.svg';
-import IconPassport           from 'Assets/AccountManagement/icon-passport.svg';
-import IconPoiExpired         from 'Assets/AccountManagement/icon-poi-is-expired.svg';
-import IconPoiPending         from 'Assets/AccountManagement/icon-poi-pending.svg';
-import IconPoiVerified        from 'Assets/AccountManagement/icon-poi-verified.svg';
-import IconPoiUnverified      from 'Assets/AccountManagement/icon-poi-unverified.svg';
+import ButtonLink             from 'App/Components/Routes/button-link.jsx';
 import IconMessageContent     from '../../../Components/icon-message-content.jsx';
 
 const ContinueTradingButton = () => (
@@ -39,17 +32,17 @@ export const Unsupported = () => {
     const UnsupportedIconRow = () => (
         <div className='poi-icon-row'>
             <div className='poi-icon-row__icon-container'>
-                <IconIdentityCard />
+                <Icon icon='IcIdentityCard' size={90} />
                 <p>{localize('Identity card')}</p>
                 <p>{localize('Front and back')}</p>
             </div>
             <div className='poi-icon-row__icon-container'>
-                <IconDrivingLicense />
+                <Icon icon='IcDrivingLicense' size={90} />
                 <p>{localize('Driving license')}</p>
                 <p>{localize('Front and back')}</p>
             </div>
             <div className='poi-icon-row__icon-container'>
-                <IconPassport />
+                <Icon icon='IcPassport' size={90} />
                 <p>{localize('Passport')}</p>
                 <p>{localize('Face photo page')}</p>
             </div>
@@ -77,7 +70,7 @@ export const UploadComplete = ({ has_poa }) => {
             <IconMessageContent
                 message={message}
                 text={localize('Your document is being reviewed, please check back in 1-3 days.')}
-                icon={<IconPoiVerified />}
+                icon={<Icon icon='IcPoiVerified' size={128} />}
             >
                 <ContinueTradingButton />
             </IconMessageContent>
@@ -86,7 +79,7 @@ export const UploadComplete = ({ has_poa }) => {
     return (
         <IconMessageContent
             message={message}
-            icon={<IconPoiVerified />}
+            icon={<Icon icon='IcPoiVerified' size={128} />}
         >
             <div className='account-management__text-container'>
                 <p className='account-management__text'>{localize('Your document is being reviewed, please check back in 1-3 days.')}</p>
@@ -109,7 +102,7 @@ export const Unverified = () => (
                 //     <a key={0} className='link link--orange' rel='noopener noreferrer' target='_blank' href='https://www.deriv.com/help-centre/' />,
                 // ]}
             />}
-        icon={<IconPoiUnverified />}
+        icon={<Icon icon='IcPoiError' size={128} />}
     />
 );
 
@@ -123,7 +116,7 @@ export const Expired = () => (
                     <a key={0} className='link link--orange' rel='noopener noreferrer' target='_blank' href='mailto:support@deriv.com' />,
                 ]}
             />}
-        icon={<IconPoiExpired />}
+        icon={<Icon icon='IcPoiUpload' size={128} />}
     />
 );
 
@@ -133,7 +126,7 @@ export const Verified = ({ has_poa }) => {
         return (
             <IconMessageContent
                 message={message}
-                icon={<IconPoiVerified />}
+                icon={<Icon icon='IcPoiVerified' size={128} />}
             >
                 <ContinueTradingButton />
             </IconMessageContent>
@@ -142,7 +135,7 @@ export const Verified = ({ has_poa }) => {
     return (
         <IconMessageContent
             message={message}
-            icon={<IconPoiVerified />}
+            icon={<Icon icon='IcPoiVerified' size={128} />}
             text={localize('To continue trading, you must also submit a proof of address.')}
         >
             <PoaButton />
@@ -154,7 +147,7 @@ export const MissingPersonalDetails = () => (
     <IconMessageContent
         message={localize('Your personal details are missing')}
         text={localize('Please complete your personal details before you verify your identity.')}
-        icon={<IconPoiPersonalDetails />}
+        icon={<Icon icon='IcAccountMissinglDetails' size={128} />}
     >
         <GoToPersonalDetailsButton />
     </IconMessageContent>
@@ -164,6 +157,6 @@ export const OnfidoFailed = () => (
     <IconMessageContent
         message={localize('Proof of identity verification failed')}
         text={localize('We were unable to verify your document automatically. We will try to verify your document manually. Please check back in 1-3 days.')}
-        icon={<IconPoiPending />}
+        icon={<Icon icon='IcPoiFailed' size={128} />}
     />
 );

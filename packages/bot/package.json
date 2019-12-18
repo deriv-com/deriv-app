@@ -93,7 +93,6 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
-    "@binary-com/smartcharts": "^0.3.9",
     "classnames": "^2.2.6",
     "commander": "^2.20.0",
     "concat-stream": "^2.0.0",
@@ -110,6 +109,7 @@
     "react-content-loader": "^4.2.2",
     "react-dom": "~16.8.6",
     "react-render-html": "^0.6.0",
-    "react-transition-group": "^4.0.1"
+    "react-transition-group": "^4.0.1",
+    "smartcharts-beta": "^0.6.2"
   }
 }

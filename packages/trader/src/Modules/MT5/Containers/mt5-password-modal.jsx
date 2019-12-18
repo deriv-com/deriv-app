@@ -1,4 +1,5 @@
 import {
+    Icon,
     PasswordInput,
     Modal,
     PasswordMeter }           from 'deriv-components';
@@ -8,9 +9,7 @@ import React                  from 'react';
 import { withRouter }         from 'react-router';
 import { localize, Localize } from 'deriv-translations';
 import SuccessDialog          from 'App/Containers/Modals/success-dialog.jsx';
-import IconMT5Advanced        from 'Assets/Mt5/icon-mt5-advanced.jsx';
-import IconMT5Standard        from 'Assets/Mt5/icon-mt5-standard.jsx';
-import IconMT5Synthetic       from 'Assets/Mt5/icon-mt5-synthetic.jsx';
+
 import routes                 from 'Constants/routes';
 import { connect }            from 'Stores/connect';
 import {
@@ -30,11 +29,11 @@ const getSubmitText = (account_title, category) => {
 const getIconFromType = (type) => {
     switch (type) {
         case 'synthetic_indices':
-            return IconMT5Synthetic;
+            return <Icon icon='IcMt5SyntheticIndices' size={64} />;
         case 'standard':
-            return IconMT5Standard;
+            return <Icon icon='IcMt5Standard' size={64} />;
         default:
-            return IconMT5Advanced;
+            return <Icon icon='IcMt5Advanced' size={64} />;
     }
 };
 
@@ -44,6 +43,7 @@ const MT5PasswordModal = ({
     disableMt5PasswordModal,
     // error_message,
     form_error,
+    history,
     has_mt5_error,
     is_mt5_password_modal_enabled,
     is_mt5_success_dialog_enabled,
@@ -79,10 +79,10 @@ const MT5PasswordModal = ({
     const closeOpenSuccess = () => {
         disableMt5PasswordModal();
         closeDialogs();
-        this.props.history.push(routes.cashier_acc_transfer);
+        history.push(routes.cashier_acc_transfer);
     };
 
-    const IconType             = getIconFromType(account_type.type);
+    const IconType             = () => getIconFromType(account_type.type);
     const should_show_password = is_mt5_password_modal_enabled && !has_mt5_error &&
         !is_mt5_success_dialog_enabled;
     const should_show_success  = !has_mt5_error && is_mt5_success_dialog_enabled;

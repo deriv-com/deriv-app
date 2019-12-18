@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_changeCase = {
     init() {
@@ -35,6 +36,11 @@ Blockly.Blocks.text_changeCase = {
         return {
             'display_name': localize('Change text case'),
             'description' : localize('Changes the capitalisation of a string of text to Upper case, Lower case, Title case.'),
+        };
+    },
+    getRequiredValueInputs() {
+        return {
+            TEXT: emptyTextValidator,
         };
     },
 };

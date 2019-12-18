@@ -1,9 +1,8 @@
 import React                  from 'react';
 import { withRouter }         from 'react-router-dom';
 import { FormikConsumer }     from 'formik';
-import { Button }             from 'deriv-components';
+import { Button, Icon }       from 'deriv-components';
 import { localize }           from 'deriv-translations';
-import IconUnsavedChanges     from 'Assets/AccountManagement/icon-unsaved-changes.svg';
 import IconMessageContent     from './icon-message-content.jsx';
 
 /**
@@ -52,7 +51,7 @@ class TransitionBlocker extends React.Component {
                         <IconMessageContent
                             message={localize('You have unsaved changes')}
                             text={localize('Are you sure you want to discard changes and leave this page?')}
-                            icon={<IconUnsavedChanges />}
+                            icon={<Icon icon='IcUnsavedChanges' size={128} />}
                         >
                             <div className='account-management-flex-wrapper'>
                                 <Button

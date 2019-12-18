@@ -1,3 +1,4 @@
+import classNames           from 'classnames';
 import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
 import Tab                  from './tab.jsx';
@@ -9,11 +10,11 @@ class Tabs extends Component {
         this.state = { active_index: props.active_index || 0 };
     }
 
-    onClickTabItem = index => {
+    onTabItemClick = index => {
         this.setState({ active_index: index });
 
-        if (typeof this.props.onClickTabItem === 'function') {
-            this.props.onClickTabItem(index);
+        if (typeof this.props.onTabItemClick === 'function') {
+            this.props.onTabItemClick(index);
         }
     };
 
@@ -24,13 +25,32 @@ class Tabs extends Component {
     }
 
     render() {
-        const { children }     = this.props;
+        const {
+            children,
+            className,
+            top,
+            bottom,
+            fit_content,
+        } = this.props;
         const { active_index } = this.state;
-        const tab_width        = (100 / children.length).toFixed(2);
+        const tab_width = (100 / children.length).toFixed(2);
 
         return (
-            <div className='dc-tabs' style={{ '--tab-width': `${tab_width}%` }}>
-                <ul className='dc-tabs__list'>
+            <div
+                className={
+                    classNames('dc-tabs', {
+                        [`dc-tabs dc-tabs--${className}`]: className,
+                    },
+                    )}
+                style={{ '--tab-width': `${tab_width}%` }}
+            >
+                <ul className={
+                    classNames('dc-tabs__list', {
+                        'dc-tabs__list--top'        : top,
+                        'dc-tabs__list--bottom'     : bottom,
+                        'dc-tabs__list--fit-content': fit_content,
+                    })}
+                >
                     {children.map((child, index) => {
                         const { count, label } = child.props;
 
@@ -40,11 +60,19 @@ class Tabs extends Component {
                                 is_active={index === active_index}
                                 key={label}
                                 label={label}
-                                onClick={() => this.onClickTabItem(index)}
+                                top={top}
+                                bottom={bottom}
+                                onClick={() => this.onTabItemClick(index)}
                             />
                         );
                     })}
-                    <span className='dc-tabs__active-line' />
+                    <span className={
+                        classNames('dc-tabs__active-line', {
+                            'dc-tabs__active-line--top'        : top,
+                            'dc-tabs__active-line--bottom'     : bottom,
+                            'dc-tabs__active-line--fit-content': fit_content,
+                        })}
+                    />
                 </ul>
                 <div className='dc-tabs__content'>
                     {children.map((child, index) => {

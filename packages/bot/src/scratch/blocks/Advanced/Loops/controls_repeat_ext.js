@@ -36,6 +36,11 @@ Blockly.Blocks.controls_repeat_ext = {
             'description' : localize('This block is similar to the block above, except that the number of times it repeats is determined by a given variable.'),
         };
     },
+    getRequiredValueInputs() {
+        return {
+            TIMES: null,
+        };
+    },
 };
 
 Blockly.JavaScript.controls_repeat_ext = block => {

@@ -203,6 +203,8 @@ import './tradetype/ic-tradetype-digitunder.svg';
 import './tradetype/ic-tradetype-expirymiss.svg';
 import './tradetype/ic-tradetype-expiryrange.svg';
 import './tradetype/ic-tradetype-expiryrangee.svg';
+import './tradetype/ic-tradetype-multdown.svg';
+import './tradetype/ic-tradetype-multup.svg';
 import './tradetype/ic-tradetype-notouch.svg';
 import './tradetype/ic-tradetype-onetouch.svg';
 import './tradetype/ic-tradetype-put-barrier.svg';

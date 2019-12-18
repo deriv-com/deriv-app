@@ -245,14 +245,14 @@ const IconTradeCategory = ({ category, className }) => {
                     <React.Fragment>
                         <div className='category-wrapper'>
                             <Icon
-                                con='IcTradetypeMultu'
+                                icon='IcTradetypeMultup'
                                 className='category-type'
                                 color='brand'
                             />
                         </div>
                         <div className='category-wrapper'>
                             <Icon
-                                con='IcTradetypeMultd'
+                                icon='IcTradetypeMultdown'
                                 className='category-type'
                                 color='brand'
                             />

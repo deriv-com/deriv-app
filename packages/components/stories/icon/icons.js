@@ -220,6 +220,8 @@ export const icons =
         'IcTradetypeExpirymiss',
         'IcTradetypeExpiryrange',
         'IcTradetypeExpiryrangee',
+        'IcTradetypeMultdown',
+        'IcTradetypeMultup',
         'IcTradetypeNotouch',
         'IcTradetypeOnetouch',
         'IcTradetypePutBarrier',

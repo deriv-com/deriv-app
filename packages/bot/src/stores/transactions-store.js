@@ -1,7 +1,7 @@
 import { action, observable }   from 'mobx';
 import { formatDate }           from 'deriv-shared/utils/date';
-import { isEnded }              from '../utils/contract';
 import { transaction_elements } from '../constants/transactions';
+import { isEnded }              from '../utils/contract';
 
 export default class TransactionsStore {
     constructor(root_store) {
@@ -48,9 +48,6 @@ export default class TransactionsStore {
         );
 
         if (same_contract_index === -1) {
-            // Hide popover so it doesn't scroll into infinity.
-            this.setActiveTransaction(null);
-
             // Render a divider if the "run_id" for this contract is different.
             if (this.elements.length > 0) {
                 const is_new_run =
@@ -81,8 +78,9 @@ export default class TransactionsStore {
     }
 
     @action.bound
-    setActiveTransaction(transaction_id) {
-        if (this.active_transaction_id === transaction_id) {
+    setActiveTransactionId(transaction_id) {
+        // Toggle transaction popover if passed transaction_id is the same.
+        if (transaction_id && this.active_transaction_id === transaction_id) {
             this.active_transaction_id = null;
         } else {
             this.active_transaction_id = transaction_id;
@@ -93,7 +91,7 @@ export default class TransactionsStore {
     onClickOutsideTransaction(event) {
         const is_transaction_click = event.path.some(el => el.classList && el.classList.contains('transactions__item-wrapper'));
         if (!is_transaction_click) {
-            this.setActiveTransaction(null);
+            this.setActiveTransactionId(null);
         }
     }
 

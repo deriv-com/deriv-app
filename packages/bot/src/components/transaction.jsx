@@ -130,27 +130,25 @@ const PopoverContent = ({ contract }) => (
 const Transaction = ({
     active_transaction_id,
     contract,
-    setActiveTransaction,
+    setActiveTransactionId,
 }) => (
     <Popover
         alignment='left'
-        className={classNames('transactions__item-wrapper', {
-            'transactions__item-wrapper--active': contract.transaction_ids.buy === active_transaction_id,
-        })}
-        is_open={contract.transaction_ids.buy === active_transaction_id}
+        className='transactions__item-wrapper'
+        is_open={active_transaction_id === contract.transaction_ids.buy}
         message={<PopoverContent contract={contract} />}
     >
         <div
             className='transactions__item'
-            onClick={() => setActiveTransaction(contract.transaction_ids.buy)}
+            onClick={() => setActiveTransactionId(contract.transaction_ids.buy)}
         >
             {/* TODO: Re-enable when <Icon> is shared.
-            <div className='transactions__cell transactions__symbol'>
-                <TransactionIconWithText
-                    icon={<UnderlyingIcon market={contract.underlying} />}
-                    title={contract.display_name}
-                />
-            </div> */}
+        <div className='transactions__cell transactions__symbol'>
+            <TransactionIconWithText
+                icon={<UnderlyingIcon market={contract.underlying} />}
+                title={contract.display_name}
+            />
+        </div> */}
             <div className='transactions__cell transactions__trade-type'>
                 <TransactionIconWithText
                     icon={<IconTradeType trade_type={contract.contract_type} />}
@@ -209,12 +207,13 @@ const Transaction = ({
 );
 
 Transaction.propTypes = {
-    active_transaction_id: PropTypes.number,
-    contract             : PropTypes.object,
-    setActiveTransaction : PropTypes.func,
+    active_transaction_id : PropTypes.number,
+    contract              : PropTypes.object,
+    setActiveTransactionId: PropTypes.func,
 };
 
-export default connect(({ transactions }) => ({
-    active_transaction_id: transactions.active_transaction_id,
-    setActiveTransaction : transactions.setActiveTransaction,
+export default connect(({ transactions, run_panel }) => ({
+    contract_stage        : run_panel.contract_stage,
+    active_transaction_id : transactions.active_transaction_id,
+    setActiveTransactionId: transactions.setActiveTransactionId,
 }))(Transaction);

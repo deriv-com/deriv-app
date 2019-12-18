@@ -42,14 +42,14 @@ export default class ChartStore {
     onStartBot() {
         this.updateSymbol();
 
-        const { main_content } = this.root_store;
-        main_content.setActiveTab(tabs_title.CHART);
+        // const { main_content } = this.root_store;
+        // main_content.setActiveTab(tabs_title.CHART);
     }
 
     @action.bound
     onStopBot() {
-        const { main_content } = this.root_store;
-        main_content.setActiveTab(tabs_title.WORKSPACE);
+        // const { main_content } = this.root_store;
+        // main_content.setActiveTab(tabs_title.WORKSPACE);
     }
 
     @action.bound

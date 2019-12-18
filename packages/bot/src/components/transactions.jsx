@@ -31,7 +31,7 @@ class Transactions extends React.PureComponent {
                 <div className='transactions__content'>
                     <ThemedScrollbars
                         autoHide
-                        style={{ height: 'calc(100vh - 365px)' }}
+                        style={{ height: 'var(--drawer-scroll-height)' }}
                     >
                         { elements.map((element, index) => {
                             switch (element.type) {

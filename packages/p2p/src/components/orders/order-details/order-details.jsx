@@ -133,23 +133,15 @@ const OrderDetailsTimerBlock = ({ order_details }) => {
 
         if (distance < 0) {
             setRemainingTime('expired');
-            clearInterval(interval);
-
+            if (inteval) clearInterval(interval);
         } else {
             setRemainingTime(timer);
         }
     };
 
     React.useEffect(() => {
+        countDownTimer();
         interval = setInterval(countDownTimer, 1000);
-        const distance = checkDistance(order_details.order_expiry_millis);
-        const timer = secondsToTimer(distance);
-
-        if (distance < 0) {
-            setRemainingTime('expired');
-        } else {
-            setRemainingTime(timer);
-        }
 
         return () => {
             clearInterval(interval);

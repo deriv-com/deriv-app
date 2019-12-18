@@ -1,10 +1,9 @@
 import classNames           from 'classnames';
-import { Money }            from 'deriv-components';
+import { Icon, Money }      from 'deriv-components';
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import CurrencyUtils        from 'deriv-shared/utils/currency';
 import { Localize }         from 'deriv-translations';
-import Icon                 from 'Assets/icon.jsx';
 
 const ProfitLossCardContent = ({
     currency,
@@ -34,10 +33,8 @@ const ProfitLossCardContent = ({
                     },
                 )}
                 >
-                    <Icon
-                        icon='IconPriceMove'
-                        type={(!is_sold) ? status : null}
-                    />
+                    {status === 'profit' && <Icon icon='IcProfit' />}
+                    {status === 'loss'   && <Icon icon='IcLoss' />}
                 </div>
             </div>
         </div>
@@ -53,10 +50,8 @@ const ProfitLossCardContent = ({
                     },
                 )}
                 >
-                    <Icon
-                        icon='IconPriceMove'
-                        type={(!is_sold) ? status : null}
-                    />
+                    {status === 'profit' && <Icon icon='IcProfit' />}
+                    {status === 'loss'   && <Icon icon='IcLoss' />}
                 </div>
             </div>
         </div>

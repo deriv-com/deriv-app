@@ -273,7 +273,7 @@ class MT5PasswordManagerModal extends React.Component {
                     width='904px'
                 >
                     <div className='mt5-password-manager'>
-                        <Tabs>
+                        <Tabs top>
                             <div label={ localize('Main password') }>
                                 <MainPasswordManager />
                             </div>

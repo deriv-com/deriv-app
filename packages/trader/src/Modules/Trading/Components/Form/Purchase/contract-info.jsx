@@ -1,5 +1,6 @@
 import classNames            from 'classnames';
 import {
+    Icon,
     Desktop,
     Money,
     Mobile,
@@ -9,7 +10,6 @@ import PropTypes             from 'prop-types';
 import React                 from 'react';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
 import { localize }          from 'deriv-translations';
-import Icon                  from 'Assets/icon.jsx';
 
 const ValueMovement = ({
     has_error_or_not_loaded,
@@ -29,7 +29,7 @@ const ValueMovement = ({
         </div>
         <div className='trade-container__price-info-movement'>
             {(!has_error_or_not_loaded && has_increased !== null) &&
-            <Icon icon='IconPriceMove' type={has_increased ? 'profit' : 'loss'} />
+            has_increased ?<Icon icon='IcProfit' /> : <Icon icon='IcLoss' />
             }
         </div>
     </React.Fragment>

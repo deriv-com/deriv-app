@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
-import Icon       from 'Assets/icon.jsx';
+import { Icon }   from 'deriv-components';
 
 class Detail extends React.Component {
     render() {
@@ -16,8 +16,9 @@ class Detail extends React.Component {
         return (
             <div className={classNames({ 'payment-agent__accordion-content-line': !is_last_child })}>
                 <Icon
-                    icon={`Icon${icon}`}
+                    icon={`Ic${icon}`}
                     className='payment-agent__accordion-content-icon'
+                    color='secondary'
                 />
                 <a
                     className='payment-agent__contact cashier__paragraph'
@@ -63,7 +64,7 @@ class PaymentAgentDetails extends React.Component {
                 <Detail
                     action='mailto'
                     value={this.props.payment_agent_email}
-                    icon='Email'
+                    icon='EmailOutline'
                     is_last_child
                     target='_blank'
                     rel='noopener noreferrer'

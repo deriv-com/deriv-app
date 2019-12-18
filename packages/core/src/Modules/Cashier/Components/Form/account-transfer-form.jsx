@@ -4,6 +4,7 @@ import React                  from 'react';
 import {
     Button,
     Dropdown,
+    Icon,
     Input,
     Money }                   from 'deriv-components';
 import {
@@ -13,7 +14,6 @@ import {
 import CurrencyUtils          from 'deriv-shared/utils/currency';
 import { website_name }       from 'App/Constants/app-config';
 import { localize, Localize } from 'deriv-translations';
-import Icon                   from 'Assets/icon.jsx';
 import { connect }            from 'Stores/connect';
 import {
     getPreBuildDVRs,
@@ -24,11 +24,8 @@ const AccountOption = ({ account, idx }) => (
     <React.Fragment key={idx}>
         {(account.currency || account.mt_icon) &&
             <Icon
-                icon='IconAccountsCurrency'
+                icon={account.mt_icon ? `IcMt5-${account.mt_icon}` : `IcCurrency-${account.currency.toLowerCase()}`}
                 className='account-transfer__currency-icon'
-                type={account.mt_icon || account.currency.toLowerCase()}
-                height={16}
-                width={16}
             />
         }
         <span className='account-transfer__currency'>{account.text}</span>
@@ -132,7 +129,7 @@ class AccountTransferForm extends React.Component {
                                                     validateField('amount');
                                                 }}
                                             />
-                                            <Icon className='cashier__transferred-icon account-transfer__transfer-icon' icon='IconBack' />
+                                            <Icon className='cashier__transferred-icon account-transfer__transfer-icon' icon='IcArrowLeftBold' />
                                             <Dropdown
                                                 id='transfer_to'
                                                 className='cashier__drop-down account-transfer__drop-down'
@@ -220,8 +217,8 @@ class AccountTransferForm extends React.Component {
                                             <div className='cashier__form-submit'>
                                                 {this.props.error.message &&
                                                 <React.Fragment>
-                                                    <Icon icon='IconEmergency' className='cashier__form-error-icon' />
-                                                    <Icon icon='IconError' className='cashier__form-error-small-icon' />
+                                                    <Icon icon='IcAlertDanger' className='cashier__form-error-icon' size={128} />
+                                                    <Icon icon='IcAlertDanger' className='cashier__form-error-small-icon' />
                                                     <p className='cashier__form-error'>
                                                         {this.props.error.message}
                                                     </p>

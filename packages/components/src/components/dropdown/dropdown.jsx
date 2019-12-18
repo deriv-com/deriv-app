@@ -3,7 +3,6 @@ import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
 import ThemedScrollbars  from 'Components/themed-scrollbars';
-import Icon              from 'Components/icon-arrow.jsx';
 import {
     getItemFromValue,
     getValueFromIndex,
@@ -14,6 +13,7 @@ import {
 import Items             from './items.jsx';
 import NativeSelect      from './native-select.jsx';
 import DisplayText       from './display-text.jsx';
+import Icon              from '../icon';
 
 class Dropdown extends React.Component {
     list_ref = React.createRef();
@@ -294,7 +294,7 @@ class Dropdown extends React.Component {
                     </div>
                     {
                         !this.is_single_option && <Icon
-                            icon='IconArrow'
+                            icon={this.props.is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
                             className={classNames('dc-dropdown__select-arrow', {
                                 'dc-dropdown__select-arrow--left': this.props.is_alignment_left,
                             })}

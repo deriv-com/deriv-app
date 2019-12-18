@@ -5,9 +5,8 @@ import React                          from 'react';
 import { NavLink }                    from 'react-router-dom';
 import { TransitionGroup,
     CSSTransition }                   from 'react-transition-group';
-import { ThemedScrollbars }           from 'deriv-components';
+import { Icon, ThemedScrollbars }     from 'deriv-components';
 import { localize }                   from 'deriv-translations';
-import Icon                           from 'Assets/icon.jsx';
 import routes                         from 'Constants/routes';
 import EmptyPortfolioMessage          from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import { connect }                    from 'Stores/connect';
@@ -88,7 +87,7 @@ class PositionsDrawer extends React.Component {
                             className='positions-drawer__icon-close'
                             onClick={toggleDrawer}
                         >
-                            <Icon icon='IconMinimize' />
+                            <Icon icon='IcMinusBold' />
                         </div>
                     </div>
                     <div className='positions-drawer__body'>

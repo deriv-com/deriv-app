@@ -1,7 +1,7 @@
 import React               from 'react';
+import { Icon }            from 'deriv-components';
 import { copyToClipboard } from '_common/utility';
 import { localize }        from 'deriv-translations';
-import Icon                from 'Assets/icon.jsx';
 import Tooltip             from '../Containers/tooltip.jsx';
 
 class Mt5AccountCopy extends React.PureComponent {
@@ -29,7 +29,7 @@ class Mt5AccountCopy extends React.PureComponent {
                     message={localize('Click here to copy account login number and paste into the login box in MT5 platform along with your password.')}
                 >
                     <Icon
-                        icon='IconClipboard'
+                        icon='IcClipboard'
                         className='mt5-account-card__clipboard'
                         onClick={this.onClick}
                     />
@@ -39,7 +39,7 @@ class Mt5AccountCopy extends React.PureComponent {
                 <Tooltip
                     message={localize('Account login number copied!')}
                 >
-                    <Icon icon='IconInfoOutline' className='mt5-account-card__clipboard' />
+                    <Icon icon='IcInfoOutline' className='mt5-account-card__clipboard' />
                 </Tooltip>
                 }
             </React.Fragment>

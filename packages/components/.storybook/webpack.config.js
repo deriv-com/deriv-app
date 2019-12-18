@@ -1,4 +1,5 @@
-const path = require('path');
+const path       = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 // Export a function. Accept the base config as the only param.
 module.exports = async ({ config, mode }) => {
@@ -50,6 +51,11 @@ module.exports = async ({ config, mode }) => {
         },
     });
 
+    config.plugins.push(
+        new CopyPlugin([
+            { from: path.resolve(__dirname, '../lib/icon/sprite'), to: 'public/sprite', toType: 'dir' },
+		])
+    )
     // Return the altered config
     return config;
 };

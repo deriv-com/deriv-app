@@ -6,8 +6,8 @@ import {
     Mobile,
 }                                 from 'deriv-components';
 import { localize }               from 'deriv-translations';
-import Icon                       from 'Assets/icon.jsx';
 import { getContractTypeDisplay } from 'Constants/contract';
+import IconTradeType              from 'Assets/Trading/Types/icon-trade-types.jsx';
 import ContractInfo               from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
 // TODO [lazy-loading-required] Responsive related components
@@ -58,6 +58,7 @@ const PurchaseButton = ({
                 icon='IconTradeType'
                 className='btn-purchase__icon'
                 type={getIconType()}
+                color='active'
             />
         </div>
     );

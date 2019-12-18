@@ -133,7 +133,7 @@ const OrderDetailsTimerBlock = ({ order_details }) => {
 
         if (distance < 0) {
             setRemainingTime('expired');
-            if (inteval) clearInterval(interval);
+            if (interval) clearInterval(interval);
         } else {
             setRemainingTime(timer);
         }

@@ -1,10 +1,11 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { withRouter }    from 'react-router-dom';
-import { VerticalTab }   from 'deriv-components';
+import { 
+    Icon, 
+    VerticalTab }        from 'deriv-components';
 import { localize }      from 'deriv-translations';
 import { FadeWrapper }   from 'App/Components/Animations';
-import Icon              from 'Assets/icon.jsx';
 import routes            from 'Constants/routes';
 import { connect }       from 'Stores/connect';
 import WalletInformation from '../../Reports/Containers/wallet-information.jsx';
@@ -45,7 +46,7 @@ class Cashier extends React.Component {
                         // TODO: [p2p-replace-with-api] You can pass 'count' for having notification counter in the tab, like this:
                         // count  : 1,
                         default: route.default,
-                        icon   : <Icon icon={route.icon_component} />,
+                        icon   : route.icon_component,
                         label  : route.title,
                         value  : route.component,
                         path   : route.path,

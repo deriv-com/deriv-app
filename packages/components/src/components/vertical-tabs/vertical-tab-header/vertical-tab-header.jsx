@@ -1,20 +1,16 @@
 import classNames  from 'classnames';
-import {
-    Counter,
-    Icon }         from 'deriv-components';
 import React       from 'react';
 import { NavLink } from 'react-router-dom';
+import Icon        from 'Components/icon';
 
-const HeaderIcon = ({ icon, is_active }) => {
-    return React.cloneElement(icon, {
-        className: classNames(
-            'vertical-tab__header__icon', {
-                'vertical-tab__header__icon--active': is_active,
-                [icon.props.className]              : !!icon.props.className,
-            }),
-    }
-    );
-};
+const HeaderIcon = ({ icon, is_active }) => (
+    <Icon
+        icon={icon}
+        className={classNames('vertical-tab__header__icon', {
+            'vertical-tab__header__icon--active': is_active,
+        })}
+    />
+);
 
 const Header = ({ text }) => <div className='vertical-tab__header__link'>{text}</div>;
 
@@ -24,7 +20,6 @@ const VerticalTabHeader = ({ children, className, is_routed, item, onChange, sel
     const handleClick = () => onChange(item);
     const id          = `dt_${label}_link`;
     const is_disabled = !!item.is_disabled;
-    const count       = item.count || 0;
 
     return (
         is_routed ?
@@ -41,14 +36,8 @@ const VerticalTabHeader = ({ children, className, is_routed, item, onChange, sel
                     })
                 }
             >
-                { HeaderIcon({ icon: item.icon, is_active }) }
+                <HeaderIcon icon={item.icon} is_active={is_active} />
                 <Header text={label} />
-                {!!count &&
-                    <Counter
-                        count={count}
-                        className='vertical-tab__header__counter'
-                    />
-                }
                 {children}
             </NavLink>
             :
@@ -62,7 +51,7 @@ const VerticalTabHeader = ({ children, className, is_routed, item, onChange, sel
                 }
                 onClick={handleClick}
             >
-                { HeaderIcon({ icon: item.icon, is_active }) }
+                <HeaderIcon icon={item.icon} is_active={is_active} />
                 <Header text={label} />
                 {children}
             </div>

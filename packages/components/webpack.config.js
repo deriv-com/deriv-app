@@ -36,7 +36,6 @@ module.exports = {
         tabs                            : 'Components/tabs',
         'themed-scrollbars'             : 'Components/themed-scrollbars',
         'toggle-switch'                 : 'Components/toggle-switch',
-        'underlying-icon'               : 'Components/underlying-icon',
         'vertical-tab'                  : 'Components/vertical-tabs/vertical-tab',
         'vertical-tab-content-container': 'Components/vertical-tabs/vertical-tab-content-container',
         'vertical-tab-header'           : 'Components/vertical-tabs/vertical-tab-header',

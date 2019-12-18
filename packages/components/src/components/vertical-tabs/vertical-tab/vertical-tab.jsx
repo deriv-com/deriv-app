@@ -1,8 +1,8 @@
 import classNames                  from 'classnames';
 import PropTypes                   from 'prop-types';
 import React                       from 'react';
-import VerticalTabContentContainer from '../vertical-tab-content-container';
-import VerticalTabHeaders          from '../vertical-tab-headers';
+import VerticalTabContentContainer from 'Components/vertical-tabs/vertical-tab-content-container';
+import VerticalTabHeaders          from 'Components/vertical-tabs/vertical-tab-headers';
 
 export default class VerticalTab extends React.Component {
     constructor(props) {
@@ -76,7 +76,7 @@ VerticalTab.propTypes = {
     action_bar: PropTypes.arrayOf(
         PropTypes.shape({
             component: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-            icon     : PropTypes.oneOfType([PropTypes.elementType, PropTypes.object]),
+            icon     : PropTypes.string,
             onClick  : PropTypes.func,
             title    : PropTypes.string,
         }),
@@ -91,7 +91,7 @@ VerticalTab.propTypes = {
     list                : PropTypes.arrayOf(
         PropTypes.shape({
             default: PropTypes.bool,
-            icon   : PropTypes.oneOfType([PropTypes.elementType, PropTypes.object]),
+            icon   : PropTypes.string,
             label  : PropTypes.string,
             path   : PropTypes.string,
             value  : PropTypes.oneOfType([PropTypes.func, PropTypes.object]),

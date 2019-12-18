@@ -1,9 +1,9 @@
 import classNames        from 'classnames';
-import { Icon }          from 'deriv-components';
 import React             from 'react';
 import { Route, Switch } from 'react-router-dom';
+import Icon              from 'Components/icon';
 
-class VerticalTabContentContainer extends React.PureComponent {
+export default class VerticalTabContentContainer extends React.PureComponent {
     render() {
         const {
             action_bar,
@@ -74,5 +74,3 @@ class VerticalTabContentContainer extends React.PureComponent {
         );
     }
 }
-
-export { VerticalTabContentContainer };

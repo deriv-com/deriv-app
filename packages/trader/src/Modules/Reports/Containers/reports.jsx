@@ -4,7 +4,6 @@ import { withRouter }    from 'react-router-dom';
 import { VerticalTab }   from 'deriv-components';
 import { localize }      from 'deriv-translations';
 import { FadeWrapper }   from 'App/Components/Animations';
-import Icon              from 'Assets/icon.jsx';
 import AppRoutes         from 'Constants/routes';
 import { connect }       from 'Stores/connect';
 import WalletInformation from './wallet-information.jsx';
@@ -40,7 +39,7 @@ class Reports extends React.Component {
             this.props.routes.forEach(route => {
                 options.push({
                     default: route.default,
-                    icon   : <Icon icon={route.icon_component} />,
+                    icon   : route.icon_component,
                     label  : route.title,
                     value  : route.component,
                     path   : route.path,

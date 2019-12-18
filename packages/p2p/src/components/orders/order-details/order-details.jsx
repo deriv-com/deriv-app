@@ -3,11 +3,12 @@ import PropTypes              from 'prop-types';
 import {
     Button,
     Dialog }                  from 'deriv-components';
-import FooterActions          from 'Components/footer-actions/footer-actions.jsx';
 import AgentContext           from 'Components/context/agent-context';
+import FooterActions          from 'Components/footer-actions/footer-actions.jsx';
 import { localize, Localize } from 'Components/i18next';
-import { WS }                 from 'Utils/websocket';
 import { secondsToTimer }     from 'Utils/date-time';
+import ServerTime             from 'Utils/server-time';
+import { WS }                 from 'Utils/websocket';
 import Popup                  from '../popup.jsx';
 import './order-details.scss';
 
@@ -120,7 +121,7 @@ const OrderDetailsTimerBlock = ({ order_details }) => {
     let interval;
 
     const checkDistance = (expiry_in_millis) => {
-        const now_millis = new Date().getTime();
+        const now_millis = ServerTime.get();
         const distance = expiry_in_millis - now_millis;
 
         return distance;

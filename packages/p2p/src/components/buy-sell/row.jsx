@@ -2,8 +2,8 @@ import React             from 'react';
 import PropTypes         from 'prop-types';
 import ContentLoader     from 'react-content-loader';
 import { Table, Button } from 'deriv-components';
-import { localize }      from 'Components/i18next';
 import AgentContext      from 'Components/context/agent-context';
+import { localize }      from 'Components/i18next';
 
 export const BuySellRowLoader = () => (
     <ContentLoader
@@ -29,6 +29,7 @@ BuySellRowLoader.propTypes = {
 // TODO: [p2p-cleanup] cleanup repetition of rows
 export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) => {
     const is_agent = React.useContext(AgentContext);
+
     return (
         <div style={style}>
             {is_agent ?

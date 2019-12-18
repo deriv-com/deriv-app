@@ -1,10 +1,10 @@
-import React             from 'react';
-import PropTypes         from 'prop-types';
-import { Table }         from 'deriv-components';
-import { localize }      from 'Components/i18next';
-import AgentContext     from 'Components/context/agent-context';
-import { BuyTable }      from './buy-table.jsx';
-import { SellTable }     from './sell-table.jsx';
+import React         from 'react';
+import PropTypes     from 'prop-types';
+import { Table }     from 'deriv-components';
+import { localize }  from 'Components/i18next';
+import AgentContext  from 'Components/context/agent-context';
+import { BuyTable }  from './buy-table.jsx';
+import { SellTable } from './sell-table.jsx';
 
 export const BuySellTable = ({ setSelectedAd, table_type }) => {
     const is_buy = table_type === 'buy';

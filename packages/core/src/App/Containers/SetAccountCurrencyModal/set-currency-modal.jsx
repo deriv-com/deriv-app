@@ -11,9 +11,10 @@ const SetAccountCurrencyModal = ({
 }) => (
     <Modal
         id='dt_set_account_currency_modal'
+        is_closed_on_outside_click={false}
         is_open={is_visible}
         small
-        toggleModal={()=> toggleModal(false)}
+        toggleModal={()=> toggleModal()}
         title={localize('You have an account that needs action')}
     >
         <Modal.Body>
@@ -23,15 +24,15 @@ const SetAccountCurrencyModal = ({
             <Button
                 has_effect
                 text={localize('Cancel')}
-                onClick={() => toggleModal(false)}
+                onClick={() => toggleModal()}
                 secondary
             />
             <Button
                 has_effect
                 text={localize('Set currency')}
                 onClick={() => {
-                    toggleModal(false);
                     setCurrency();
+                    toggleModal();
                 }}
                 primary
             />

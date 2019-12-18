@@ -69,7 +69,7 @@ class AccountSwitcher extends React.Component {
 
     setAccountCurrency = () => {
         this.props.toggleAccountsDialog();
-        this.props.toggleSetCurrencyModal(true);
+        this.props.toggleSetCurrencyModal();
     };
 
     onClickUpgrade = () => {

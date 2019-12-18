@@ -285,8 +285,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleSetCurrencyModal(is_visible) {
-        this.is_set_currency_modal_visible = is_visible;
+    toggleSetCurrencyModal() {
+        this.is_set_currency_modal_visible = !this.is_set_currency_modal_visible;
     }
 
     @action.bound

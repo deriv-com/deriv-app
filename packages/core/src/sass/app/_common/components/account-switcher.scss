@@ -37,10 +37,6 @@
         align-items: center;
         -webkit-box-align: center;
         display: flex;
-
-        .set-currency {
-            margin-right: 8px;
-        }
     }
     &__wrapper {
         align-items: center;
@@ -339,7 +335,7 @@
         display: flex;
 
         &-subtitle {
-            margin: 0.4rem 1.6rem;
+            margin: 0 1.6rem 1.2rem;
             font-size: 1rem;
             line-height: 1.4rem;
             font-weight: normal;
@@ -359,6 +355,8 @@
 
 /** @define set-currency; weak */
 .set-currency {
+    margin-right: 8px;
+
     & .btn {
         display: flex;
         align-items: center;

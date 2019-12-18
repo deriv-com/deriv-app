@@ -254,6 +254,9 @@ export default class RunPanelStore {
             }
             case ('contract.purchase_received'): {
                 this.setContractStage(contract_stages.PURCHASE_RECEIVED);
+
+                // Close transaction-specific popover, if any.
+                this.root_store.transactions.setActiveTransactionId(null);
                 break;
             }
             case ('contract.sold'): {

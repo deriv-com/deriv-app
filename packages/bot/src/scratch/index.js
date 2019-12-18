@@ -1,7 +1,7 @@
 import { localize }                   from 'deriv-translations';
 import                                    './blocks';
 import                                    './hooks';
-import { 
+import {
     hasAllRequiredBlocks,
     updateDisabledBlocks }            from './utils';
 import { onWorkspaceResize }          from './utils/workspace';
@@ -38,7 +38,7 @@ class DBot {
             Blockly.derivWorkspace       = this.workspace;
 
             this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
-            this.workspace.addChangeListener((event) => checkDisabledBlocks(workspace, event));
+            this.workspace.addChangeListener((event) => updateDisabledBlocks(this.workspace, event));
             this.addBeforeRunFunction(this.unselectBlocks.bind(this));
             this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
             this.addBeforeRunFunction(this.checkForErroredBlocks.bind(this));

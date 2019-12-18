@@ -329,6 +329,8 @@ export const updateDisabledBlocks = (workspace, event) => {
             block.setDisabled(should_disable);
         }
     });
+};
+
 export const emptyTextValidator = (input) => {
     return !input || input === '\'\'';
 };

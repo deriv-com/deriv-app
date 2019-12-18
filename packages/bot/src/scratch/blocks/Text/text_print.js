@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_print = {
     init() {
@@ -26,6 +27,11 @@ Blockly.Blocks.text_print = {
         return {
             'display_name': localize('Print'),
             'description' : localize('This block displays a dialog window with a given message.'),
+        };
+    },
+    getRequiredValueInputs() {
+        return {
+            TEXT: emptyTextValidator,
         };
     },
 };

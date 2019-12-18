@@ -8,6 +8,7 @@ import './contextmenu';
 import './css';
 import './data_category';
 import './field_dropdown';
+import './field';
 import './field_image';
 import './flyout_base';
 import './gesture';

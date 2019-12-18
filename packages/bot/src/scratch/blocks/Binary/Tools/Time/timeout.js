@@ -35,6 +35,33 @@ Blockly.Blocks.timeout = {
             'description' : localize('This block delays execution for a given number of seconds. You can place any blocks within this block. The execution of other blocks in your strategy will be paused until the instructions in this block are carried out.'),
         };
     },
+    onchange(event) {
+        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+            return;
+        }
+
+        if (event.type === Blockly.Events.END_DRAG) {
+            const allowedScopes = [
+                'trade_definition',
+                'during_purchase',
+                'before_purchase',
+                'after_purchase',
+                'tick_analysis',
+            ];
+            if (allowedScopes.some(scope => this.isDescendantOf(scope))) {
+                if (this.disabled) {
+                    this.setDisabled(false);
+                }
+            } else if (!this.disabled) {
+                this.setDisabled(true);
+            }
+        }
+    },
+    getRequiredValueInputs() {
+        return {
+            SECONDS: null,
+        };
+    },
 };
 
 Blockly.JavaScript.timeout = block => {

@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
 
-const IconLogout = ({ className }) => (
-    <svg className={classNames('inline-icon', className)} viewBox='0 0 16 16' width='16' height='16'>
+const IconLogout = ({ className, onClick }) => (
+    <svg className={classNames('inline-icon', className)} viewBox='0 0 16 16' width='16' height='16' onClick={onClick}>
         <path
             className='color1-fill'
             fill='#333'

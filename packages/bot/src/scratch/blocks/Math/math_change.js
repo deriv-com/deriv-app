@@ -50,6 +50,11 @@ Blockly.Blocks.math_change = {
             'description' : localize('This block adds the given number to the selected variable.'),
         };
     },
+    getRequiredValueInputs() {
+        return {
+            DELTA: null,
+        };
+    },
 };
 
 Blockly.JavaScript.math_change = block => {

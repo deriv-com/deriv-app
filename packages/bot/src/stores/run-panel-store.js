@@ -2,20 +2,13 @@ import {
     observable,
     action,
     reaction,
-    computed,
-}                                     from 'mobx';
-import { localize }                   from 'deriv-translations';
-import { contract_stages }            from '../constants/contract-stage';
+    computed }                         from 'mobx';
+import { localize }                    from 'deriv-translations' ;
+import { contract_stages }             from '../constants/contract-stage';
 import {
     error_types,
-    unrecoverable_errors,
-}                                      from '../constants/messages';
-import {
-    runBot,
-    stopBot,
-    terminateBot,
-}                                      from '../scratch';
-import { hasAllRequiredBlocks }        from '../scratch/utils/workspace';
+    unrecoverable_errors }             from '../constants/messages';
+import DBot                            from '../scratch';
 import { isEnded }                     from '../utils/contract';
 import { observer }                    from '../utils/observer';
 import { setMainContentWidth }         from '../utils/window-size';
@@ -69,25 +62,17 @@ export default class RunPanelStore {
 
         this.registerBotListeners();
 
-        if (!hasAllRequiredBlocks()) {
-            this.showErrorMessage(
-                new Error(localize('One or more mandatory blocks are missing from your workspace. ' +
-                'Please add the required block(s) and then try again.'))
-            );
-            return;
-        }
-
         this.is_running = true;
         this.toggleDrawer(true);
         contract_card.clear();
         this.setContractStage(contract_stages.STARTING);
 
-        runBot();
+        DBot.runBot();
     }
 
     @action.bound
     onStopButtonClick() {
-        stopBot();
+        DBot.stopBot();
 
         this.is_running = false;
 
@@ -284,9 +269,9 @@ export default class RunPanelStore {
         this.showErrorMessage(data);
     }
 
+    @action.bound
     showErrorMessage(data) {
         const { journal } = this.root_store;
-
         journal.onError(data);
         this.setActiveTabIndex(2);
     }
@@ -317,7 +302,7 @@ export default class RunPanelStore {
                         if (loginid && this.is_running) {
                             ui.addNotificationMessage(switch_account_notification);
                         }
-                        terminateBot();
+                        DBot.terminateBot();
                         RunPanelStore.unregisterBotListeners();
                         this.clearStat();
                     },

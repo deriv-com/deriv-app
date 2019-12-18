@@ -101,14 +101,13 @@ Blockly.FieldImage.prototype.dispose = function() {
 
 /**
  * Bind events for a mouse down on the image, but only if a click handler has
- * been defined.
+ * been defined. If a click handler is attached to the image, change the cursor to a pointer.
  * @private
  */
 Blockly.FieldImage.prototype.maybeAddClickHandler_ = function() {
     if (this.clickHandler_) {
         this.mouseDownWrapper_ = Blockly.bindEventWithChecks_(this.fieldGroup_, 'mousedown', this, this.clickHandler_);
-        // pxtblockly & deriv-bot: if a click handler is attached to the image, change the cursor to a pointer
-        if (this.imageElement_) this.imageElement_.style.cursor = 'pointer';
+        this.fieldGroup_.style.cursor = 'pointer';
     }
 };
 

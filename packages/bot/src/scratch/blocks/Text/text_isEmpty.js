@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_isEmpty = {
     init() {
@@ -27,6 +28,11 @@ Blockly.Blocks.text_isEmpty = {
         return {
             'display_name': localize('Text Is empty'),
             'description' : localize('Tests whether a string of text is empty. Returns a boolean value (true or false).'),
+        };
+    },
+    getRequiredValueInputs() {
+        return {
+            VALUE: emptyTextValidator,
         };
     },
 };

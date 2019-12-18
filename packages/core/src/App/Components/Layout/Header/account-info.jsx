@@ -27,7 +27,7 @@ const AccountInfo = ({
                 className='acc-info__id'
             >
                 <Icon
-                    icon={`IcCurrency-${is_virtual ? 'virtual' : (currency || 'Unknown').toLowerCase()}`}
+                    icon={`IcCurrency-${is_virtual ? 'virtual' : (currency || 'Unknown')}`}
                     className={`acc-info__id-icon acc-info__id-icon--${is_virtual ? 'virtual' : currency}`}
                     size={24}
                 />

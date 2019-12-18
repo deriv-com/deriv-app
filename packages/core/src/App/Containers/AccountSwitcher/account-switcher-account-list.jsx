@@ -97,11 +97,9 @@ const CurrencyDisplay = ({
 const AccountDisplay = ({
     account_type,
 }) => (
-    <React.Fragment>
-        <div>
-            {getMT5AccountDisplay(account_type)}
-        </div>
-    </React.Fragment>
+    <div>
+        {getMT5AccountDisplay(account_type)}
+    </div>
 );
 
 export default AccountList;

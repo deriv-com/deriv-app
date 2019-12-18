@@ -31,10 +31,12 @@
 * This project uses [react-i18next](https://react.i18next.com)
 
 ### Setup
-* initialize translations in root app.jsx by importing i18n.js
-* in `app.jsx`
+* initialize translations in root app.jsx by importing and calling initializeTranslations
+* in `app.jsx`:
 ```jsx
-    import { i18n } from 'deriv-translations';
+    import { initializeTranslations } from 'deriv-translations';
+    ...
+    initializeTranslations()
 ```
 ### Usage
 * For strings use either `localize(...)` or `<Localize />`

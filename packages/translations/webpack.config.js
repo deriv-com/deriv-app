@@ -8,10 +8,15 @@ module.exports = {
     entry : path.resolve(__dirname, 'src', 'i18next/index.js'),
     output: {
         path         : path.resolve(__dirname, 'lib'),
-        filename     : '[name].js',
+        filename     : 'translations.main.js',
         libraryExport: 'default',
-        library      : ['deriv-translations', '[name]'],
+        library      : 'deriv-translations',
         libraryTarget: 'umd',
+    },
+    resolve: {
+        alias: {
+            'public/i18n': path.resolve(__dirname, 'lib', 'languages'),
+        },
     },
     optimization: {
         minimize: true,
@@ -45,7 +50,7 @@ module.exports = {
     },
     plugins: [
         new CopyWebpackPlugin([
-            { from: 'src/translations', to: 'languages/' },
+            { from: 'src/translations', to: 'public/i18n/' },
         ]),
     ],
     externals: {

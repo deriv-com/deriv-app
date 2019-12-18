@@ -128,12 +128,7 @@ const draw_path = (ctx, { zoom, top, left, icon }) => {
     ctx.scale(1, 1);
     ctx.restore();
 };
-/**
-    label {
-        icon: icon,
-        text: ['list'],
-    }
- */
+
 const render_label = ({
     ctx,
     text,
@@ -184,6 +179,35 @@ const shadowed_text = ({ ctx, is_dark_theme, text, left, top, scale }) => {
     }
 };
 
+const drawArc = ({
+    ctx,
+    x,
+    y,
+    radius,
+}) => {
+    ctx.beginPath();
+    ctx.setLineDash([]);
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+    ctx.stroke();
+};
+
+const drawLine = ({
+    ctx,
+    color,
+    opacity,
+    start,
+    end,
+}) => {
+    ctx.strokeStyle = color + opacity;
+    ctx.beginPath();
+    ctx.setLineDash([1, 1]);
+    ctx.moveTo(start.x, start.y);
+    ctx.lineTo(end.x, end.y);
+    ctx.stroke();
+};
+
 const drawTickBarrier = ({
     start,
     entry,
@@ -194,31 +218,11 @@ const drawTickBarrier = ({
     opacity,
 }) => {
     if (start.visible || entry.visible || exit.visible) {
-        // First arc
-        ctx.beginPath();
-        ctx.setLineDash([]);
-        ctx.arc(start.left, barrier, 2, 0, Math.PI * 2);
-        ctx.stroke();
+        drawLine({ ctx,  color, opacity, start: { x: start.left, y: barrier }, end: { x: entry.left, y: barrier } });
+        drawLine({ ctx,  color, opacity, start: { x: entry.left, y: barrier }, end: { x: exit.left,  y: barrier } });
 
-        ctx.strokeStyle = color + opacity;
-        ctx.beginPath();
-        ctx.setLineDash([1, 1]);
-        ctx.moveTo(start.left, barrier);
-        ctx.lineTo(entry.left, barrier);
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.setLineDash([1, 1]);
-        ctx.moveTo(entry.left, barrier);
-        ctx.lineTo(exit.left, barrier);
-        ctx.stroke();
-        ctx.strokeStyle = color;
-
-        // Second arc
-        ctx.beginPath();
-        ctx.setLineDash([]);
-        ctx.arc(exit.left, barrier, 2, 0, Math.PI * 2);
-        ctx.stroke();
+        drawArc({ ctx, x: start.left, y: barrier, radius: 2 });
+        drawArc({ ctx, x: exit.left, y: barrier, radius: 2 });
     }
 };
 
@@ -309,11 +313,7 @@ const TickContract = RawMarkerMaker(({
     });
 
     if (has_reset_time) {
-        ctx.beginPath();
-        ctx.setLineDash([1, 1]);
-        ctx.moveTo(reset_time.left, entry_tick_top);
-        ctx.lineTo(reset_time.left, barrier);
-        ctx.stroke();
+        drawLine({ ctx, start: { x: reset_time.left, entry_tick_top }, end: { x: reset_time.left, y: barrier } });
 
         drawTickBarrier({
             start: reset_time,
@@ -346,21 +346,15 @@ const TickContract = RawMarkerMaker(({
             if (tick && tick.visible) {
                 // Draw a line from barrier to icon.
                 if (tick === exit) {
-                    ctx.beginPath();
-                    ctx.setLineDash([1, 1]);
-                    ctx.moveTo(tick.left, tick.top);
-                    ctx.lineTo(tick.left, barrier);
-                    ctx.stroke();
+                    drawLine({ ctx, start: { x: tick.left, y: tick.top }, end: { x: tick.left, y: barrier } });
                 }
 
                 const icon = tick === entry ? ICONS.ENTRY_SPOT : ICONS.END;
                 draw_path(ctx, {
-                    width : 16,
-                    height: 16,
-                    top   : tick.top,
-                    left  : tick.left - 1,
-                    zoom  : tick.zoom,
-                    icon  : icon.with_color(
+                    top : tick.top,
+                    left: tick.left,
+                    zoom: tick.zoom,
+                    icon: icon.with_color(
                         color + (is_sold ? opacity : ''),
                         get_color({ status: 'bg', is_dark_theme }) + (is_sold ? opacity : '')
                     ),

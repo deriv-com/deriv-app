@@ -1,9 +1,9 @@
 import {
-    Popover,
-    UnderlyingIcon }   from 'deriv-components';
+    Icon,
+    Popover }          from 'deriv-components';
 import PropTypes       from 'prop-types';
 import React           from 'react';
-import Icon            from 'Assets/icon.jsx';
+import IconTradeType   from 'Assets/Trading/Types/icon-trade-types.jsx';
 import {
     getMarketName,
     getTradeTypeName } from '../Helpers/market-underlying';
@@ -24,7 +24,7 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                         message={getMarketName(info_from_shortcode.underlying)}
                         disable_target_icon
                     >
-                        <UnderlyingIcon market={info_from_shortcode.underlying} />
+                        <Icon icon={info_from_shortcode.underlying ? `IcUnderlying${info_from_shortcode.underlying}` : 'IcUnknown'} size={32} />
                     </Popover>
                     {show_description && payload.display_name}
                 </div>
@@ -37,11 +37,13 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                         message={getTradeTypeName(info_from_shortcode.category)}
                         disable_target_icon
                     >
-                        <Icon
-                            icon='IconTradeType'
-                            type={(Shortcode.isHighLow({ shortcode_info: info_from_shortcode }))
-                                ? `${info_from_shortcode.category.toLowerCase()}_barrier`
-                                : info_from_shortcode.category.toLowerCase()}
+                        <IconTradeType
+                            type={
+                                Shortcode.isHighLow({ shortcode_info: info_from_shortcode })
+                                    ? `${info_from_shortcode.category.toLowerCase()}_barrier`
+                                    : info_from_shortcode.category.toLowerCase()
+                            }
+                            color='brand'
                         />
                     </Popover>
                     {show_description && info_from_shortcode.category}
@@ -53,9 +55,9 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
             <div className='market-symbol-icon'>
                 {
                     payload.action_type === 'deposit' ? (
-                        <Icon icon='IconDeposit' />
+                        <Icon icon='IcCashierDeposit' size={32} />
                     ) : (
-                        <Icon icon='IconWithdrawal' />
+                        <Icon icon='IcCashierWithdrawal' size={32} />
                     )
                 }
             </div>

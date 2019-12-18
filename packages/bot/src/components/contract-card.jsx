@@ -1,16 +1,13 @@
 import classNames            from 'classnames';
 import {
-    Money,
-    UnderlyingIcon }         from 'deriv-components';
+    Icon,
+    Money }                  from 'deriv-components';
 import React                 from 'react';
 import PropTypes             from 'prop-types';
 import CurrencyUtils         from 'deriv-shared/utils/currency';
 import { localize }          from 'deriv-translations';
 import ContractCardLoader    from './contract-card-loading.jsx';
 import ContractResultOverlay from './contract-result-overlay.jsx';
-import {
-    ProfitMovementIcon,
-    LossMovementIcon }       from './Icons.jsx';
 import IconTradeType         from './icon-trade-types.jsx';
 import { connect }           from '../stores/connect';
 import {
@@ -45,7 +42,7 @@ const ContractCard = ({
                 { is_contract_completed && <ContractResultOverlay profit={contract.profit} /> }
                 <div className='db-contract-card__underlying'>
                     <div className='db-contract-card__underlying-name'>
-                        <UnderlyingIcon market={contract.underlying} />
+                        <Icon icon={contract.underlying ? `IcUnderlying${contract.underlying}` : 'IcUnknown'} size={32} />
                         <span className='db-contract-card__underlying-symbol'>
                             { contract.display_name }
                         </span>
@@ -53,7 +50,7 @@ const ContractCard = ({
                     <div className='db-contract-card__underlying-type'>
                         <div className='db-contract-card__underlying-type-wrapper'>
                             <div className='db-contract-card__underlying-type-icon'>
-                                <IconTradeType trade_type={contract.contract_type} />
+                                <IconTradeType type={contract.contract_type} />
                             </div>
                         </div>
                         <span className='db-contract-card__underlying-type-label'>
@@ -80,8 +77,8 @@ const ContractCard = ({
                         >
                             <Money amount={Math.abs(contract.profit)} currency={contract.currency} />
                             <div className='db-contract-card__indicative-movement'>
-                                { profit_movement === 'profit' && <ProfitMovementIcon /> ||
-                                      profit_movement === 'loss' && <LossMovementIcon /> ||
+                                { profit_movement === 'profit' && <Icon icon='IcProfit' /> ||
+                                      profit_movement === 'loss' && <Icon icon='IcLoss' /> ||
                                       <React.Fragment /> }
                             </div>
                         </div>
@@ -92,8 +89,8 @@ const ContractCard = ({
                                 currency={contract.currency}
                             />
                             <div className='db-contract-card__indicative-movement'>
-                                { indicative_movement === 'profit' && <ProfitMovementIcon /> ||
-                                      indicative_movement === 'loss' && <LossMovementIcon /> ||
+                                { indicative_movement === 'profit' && <Icon icon='IcProfit' /> ||
+                                      indicative_movement === 'loss' && <Icon icon='IcLoss' /> ||
                                       <React.Fragment /> }
                             </div>
                         </div>

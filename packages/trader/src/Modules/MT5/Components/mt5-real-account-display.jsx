@@ -1,9 +1,6 @@
-import { Button }             from 'deriv-components';
 import React                  from 'react';
+import { Button, Icon }       from 'deriv-components';
 import { localize, Localize } from 'deriv-translations';
-// import IconMT5Advanced                  from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-advanced.svg';
-import IconMT5Standard        from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-standard.svg';
-import IconMT5Synthetic       from 'Assets/SvgComponents/mt5/accounts-display/icon-mt5-synthetic.svg';
 import { MT5AccountCard }     from './mt5-account-card.jsx';
 import Loading                from '../../../templates/_common/components/loading.jsx';
 
@@ -43,7 +40,7 @@ const MT5RealAccountDisplay = ({
         <div className='mt5-real-accounts-display'>
             <MT5AccountCard
                 has_mt5_account={has_mt5_account}
-                icon={() => (<IconMT5Standard />)}
+                icon={() => (<Icon icon='IcMt5Standard' size={64} />)}
                 title={localize('Standard')}
                 type={{
                     category: 'real',
@@ -73,7 +70,7 @@ const MT5RealAccountDisplay = ({
             {/* TODO Bring this back when Real Advanced is implemented */}
             {/* <MT5AccountCard
             has_mt5_account={has_mt5_account}
-            icon={() => (<IconMT5Advanced />)}
+            icon={() => (<Icon icon='IcMt5Advanced' size={64} />)}
             title={localize('Advanced')}
             type={{
                 category: 'real',
@@ -97,7 +94,7 @@ const MT5RealAccountDisplay = ({
         /> */}
             <MT5AccountCard
                 has_mt5_account={has_mt5_account}
-                icon={() => (<IconMT5Synthetic />)}
+                icon={() => (<Icon icon='IcMt5SyntheticIndices' size={64} />)}
                 title={localize('Synthetic Indices')}
                 type={{
                     category: 'real',

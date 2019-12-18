@@ -375,7 +375,7 @@ export default class BlockConversion {
         }
 
         const has_illegal_block = this.getIllegalBlocks().some(illegal_block_type =>
-            !!xml.querySelector(`block[type=${illegal_block_type}]`)
+            !!xml.querySelector(`block[type="${illegal_block_type}"]`)
         );
 
         if (has_illegal_block) {

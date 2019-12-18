@@ -10,9 +10,9 @@ export const getFormattedDateString = (date_obj) => {
 export const convertToMillis = (epoch) => {
     if (typeof epoch !== 'number') throw Error('getLocalEpoch argument needs a number');
 
-    const local_unix = epoch * 1000;
+    const milliseconds = epoch * 1000;
 
-    return local_unix;
+    return milliseconds;
 };
 
 export const secondsToTimer = (distance) => {

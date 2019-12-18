@@ -23,6 +23,11 @@ Blockly.Blocks.fast_ema_period = {
     },
     onchange       : Blockly.Blocks.input_list.onchange,
     allowed_parents: ['macda_statement'],
+    getRequiredValueInputs() {
+        return {
+            FAST_EMA_PERIOD: null,
+        };
+    },
 };
 
 Blockly.JavaScript.fast_ema_period = () => {};

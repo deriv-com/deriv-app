@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_indexOf = {
     init() {
@@ -11,7 +12,6 @@ Blockly.Blocks.text_indexOf = {
                 {
                     type: 'input_value',
                     name: 'VALUE',
-                    // check: 'String', Rendering looks off when check is enabled.
                 },
                 {
                     type   : 'field_dropdown',
@@ -21,7 +21,6 @@ Blockly.Blocks.text_indexOf = {
                 {
                     type: 'input_value',
                     name: 'FIND',
-                    // check: 'String',
                 },
             ],
             output         : 'String',
@@ -37,6 +36,12 @@ Blockly.Blocks.text_indexOf = {
         return {
             'display_name': localize('Search for string'),
             'description' : localize('Searches through a string of text for a specific occurrence of a given character or word, and returns the position.'),
+        };
+    },
+    getRequiredValueInputs() {
+        return {
+            VALUE: emptyTextValidator,
+            FIND : emptyTextValidator,
         };
     },
 };

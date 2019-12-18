@@ -220,8 +220,8 @@ export default class BlockConversion {
                     trade_definition_tradetype     : ['TRADETYPECAT_LIST', 'TRADETYPE_LIST'],
                     trade_definition_contracttype  : ['TYPE_LIST'],
                     trade_definition_candleinterval: ['CANDLEINTERVAL_LIST'],
-                    trade_definition_restartbuysell: [],
-                    trade_definition_restartonerror: [],
+                    trade_definition_restartbuysell: ['TIME_MACHINE_ENABLED'],
+                    trade_definition_restartonerror: ['RESTARTONERROR'],
                 };
     
                 const blocks_to_connect = {};
@@ -235,24 +235,6 @@ export default class BlockConversion {
     
                     blocks_to_connect[child_block_name] = child_block;
                 });
-    
-                // Restart last trade on error
-                const trade_error_block = blocks_to_connect.trade_definition_restartonerror;
-                const trade_error_input = trade_error_block.getInput('RESTARTONERROR');
-                const trade_error_bool = this.workspace.newBlock('logic_boolean');
-    
-                trade_error_bool.setShadow(true);
-                trade_error_bool.setFieldValue(this.getFieldValue(block_node, 'RESTARTONERROR') || 'FALSE', 'BOOL');
-                trade_error_input.connection.connect(trade_error_bool.outputConnection);
-    
-                // Restart buy/sell on error.
-                const buy_sell_error_block = blocks_to_connect.trade_definition_restartbuysell;
-                const buy_sell_error_input = buy_sell_error_block.getInput('TIME_MACHINE_ENABLED');
-                const buy_sell_error_bool = this.workspace.newBlock('logic_boolean');
-    
-                buy_sell_error_bool.setShadow(true);
-                buy_sell_error_bool.setFieldValue(this.getFieldValue(block_node, 'TIME_MACHINE_ENABLED') || 'TRUE', 'BOOL');
-                buy_sell_error_input.connection.connect(buy_sell_error_bool.outputConnection);
     
                 Object.values(blocks_to_connect).forEach(child_block => {
                     const last_connection = block.getLastConnectionInStatement('TRADE_OPTIONS');

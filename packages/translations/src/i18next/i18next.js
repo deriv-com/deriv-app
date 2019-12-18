@@ -43,7 +43,7 @@ const getInitialLanguage = () => {
             .substr(1).split('&')
             .find(query => query.includes('lang='))
             .split('=')[1]
-            .toUpperCase()
+            .toUpperCase();
         if (hasLanguage(query_lang)) {
             localStorage.setItem(LANGUAGE_KEY, query_lang);
             return query_lang;
@@ -100,7 +100,7 @@ const Localize = withI18n(i18n);
 const localize = (string, values) => {
     if (!string) return '';
 
-    return i18n.t(crc32(string), { defaultValue: string, ...values })
+    return i18n.t(crc32(string), { defaultValue: string, ...values });
 };
 
 const loadIncontextTranslation = () => {

@@ -231,7 +231,10 @@ class AccountSwitcher extends React.Component {
                                                             ? undefined
                                                             : this.doSwitch.bind(this, account.loginid)}
                                                         selected_loginid={this.props.account_loginid}
-                                                        setCurrency={this.setAccountCurrency}
+                                                        setCurrency={() => {
+                                                            this.props.toggleAccountsDialog();
+                                                            this.props.openRealAccountSignup();
+                                                        }}
                                                     />
                                                 ))}
                                         </div>

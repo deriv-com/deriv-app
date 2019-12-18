@@ -1,8 +1,8 @@
 import React                  from 'react';
-import PropTypes              from 'prop-types';
-import { localize }           from 'Components/i18next';
-import { secondsToTimer }     from 'Utils/date-time';
-import ServerTime             from 'Utils/server-time';
+import PropTypes          from 'prop-types';
+import { localize }       from 'Components/i18next';
+import { secondsToTimer } from 'Utils/date-time';
+import ServerTime         from 'Utils/server-time';
 
 const OrderDetailsTimerBlock = ({ order_details }) => {
     const [remaining_time, setRemainingTime] = React.useState();

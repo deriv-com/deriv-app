@@ -1,4 +1,4 @@
-import React                  from 'react';
+import React              from 'react';
 import PropTypes          from 'prop-types';
 import { localize }       from 'Components/i18next';
 import { secondsToTimer } from 'Utils/date-time';

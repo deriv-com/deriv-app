@@ -63,7 +63,7 @@ const AccountList = ({
                 }
             </span>
         </div>
-        {!currency &&
+        {(!currency && !is_virtual) &&
             <div
                 className={classNames(
                     'acc-switcher__account',

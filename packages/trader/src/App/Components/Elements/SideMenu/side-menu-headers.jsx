@@ -1,5 +1,5 @@
 import classNames         from 'classnames';
-import {
+import { 
     Icon,
     VerticalTabHeaders,
     VerticalTabHeader }   from 'deriv-components';

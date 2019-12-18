@@ -11,4 +11,4 @@ const VerticalTabLayout = ({ children, is_full_width }) => (
     </div>
 );
 
-export { VerticalTabLayout };
+export default VerticalTabLayout;

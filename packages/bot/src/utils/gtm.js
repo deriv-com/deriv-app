@@ -64,8 +64,8 @@ const GTM = (() => {
             const contract = contracts.length > 0 && contracts[0];
             if (contract && contract.is_completed) {
                 const data = {
-                    event      : 'dbot_run_transaction',
-                    refrence_id: contract.refrence_id,
+                    event       : 'dbot_run_transaction',
+                    reference_id: contract.refrence_id,
                 };
                 pushDataLayer(data);
             }

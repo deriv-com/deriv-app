@@ -1,5 +1,6 @@
-import { localize } from 'deriv-translations';
-import config       from '../../../../../constants';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../../../utils';
+import config                 from '../../../../../constants';
 
 Blockly.Blocks.notify = {
     init() {
@@ -38,6 +39,11 @@ Blockly.Blocks.notify = {
         return {
             'display_name': localize('Notify'),
             'description' : localize('This block displays a message. You can specify the color of the message and choose from 6 different sound options.'),
+        };
+    },
+    getRequiredValueInputs() {
+        return {
+            MESSAGE: emptyTextValidator,
         };
     },
 };

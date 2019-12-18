@@ -21,7 +21,7 @@ Blockly.Blocks.trade_definition_restartonerror = {
         this.setMovable(false);
         this.setDeletable(false);
     },
-    onchange() {
+    onchange(/* event */) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
@@ -29,5 +29,6 @@ Blockly.Blocks.trade_definition_restartonerror = {
         this.enforceLimitations();
     },
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
+    required_inputs   : ['RESTARTONERROR'],
 };
 Blockly.JavaScript.trade_definition_restartonerror = () => {};

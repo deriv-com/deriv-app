@@ -43,6 +43,11 @@ Blockly.Blocks.read_ohlc = {
             'description' : localize('This block gives you the specified candle value for a selected time interval.'),
         };
     },
+    getRequiredValueInputs() {
+        return {
+            CANDLEINDEX: null,
+        };
+    },
 };
 
 Blockly.JavaScript.read_ohlc = block => {

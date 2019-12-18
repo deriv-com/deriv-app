@@ -20,9 +20,8 @@ const CancelDeal = ({
                 // reset deal cancellation price
                 deal_cancellation_price: 0,
             } : {
-                // unchecked Take profit & Stop loss
-                has_stop_loss  : false,
-                has_take_profit: false,
+                // unchecked Stop loss
+                has_stop_loss: false,
             }),
         });
     };

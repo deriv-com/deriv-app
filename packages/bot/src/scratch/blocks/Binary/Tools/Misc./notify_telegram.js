@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../../../utils';
 
 Blockly.Blocks.notify_telegram = {
     init() {
@@ -37,6 +38,13 @@ Blockly.Blocks.notify_telegram = {
         return {
             'display_name': localize('Notify Telegram'),
             'description' : localize('This block sends a message to a Telegram channel.'),
+        };
+    },
+    getRequiredValueInputs() {
+        return {
+            TELEGRAM_ACCESS_TOKEN: emptyTextValidator,
+            TELEGRAM_CHAT_ID     : emptyTextValidator,
+            TELEGRAM_MESSAGE     : emptyTextValidator,
         };
     },
 };

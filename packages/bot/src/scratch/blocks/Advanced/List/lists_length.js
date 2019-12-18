@@ -28,6 +28,11 @@ Blockly.Blocks.lists_length = {
             'description' : localize('This block gives you the total number of items in a given list.'),
         };
     },
+    getRequiredValueInputs() {
+        return {
+            VALUE: null,
+        };
+    },
 };
 
 Blockly.JavaScript.lists_length = block => {

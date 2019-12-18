@@ -5,7 +5,7 @@
 .run-panel {
     height: var(--bot-content-height) !important;
     top: 104px !important;
-    z-index: 9;
+    // Mahboobeh, don't re-add z-index plz.
 
     &__footer {
         text-align: center;

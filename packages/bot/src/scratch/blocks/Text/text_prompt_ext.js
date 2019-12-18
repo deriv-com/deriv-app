@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_prompt_ext = {
     init() {
@@ -42,6 +43,11 @@ Blockly.Blocks.text_prompt_ext = {
         return {
             'display_name': localize('Request an input'),
             'description' : localize('This block creates a dialog box that uses a customised message to prompt for an input. The input can be either a string of text or a number.'),
+        };
+    },
+    getRequiredValueInputs() {
+        return {
+            TEXT: emptyTextValidator,
         };
     },
 };

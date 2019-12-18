@@ -4,7 +4,7 @@ import { spy, stub }                 from 'sinon';
 import { configure, shallow, mount } from 'enzyme';
 import Adapter                       from 'enzyme-adapter-react-16';
 import { ToggleFullScreen }          from '../toggle-fullscreen.jsx';
-import Icon                          from 'Assets/icon.jsx';
+import { Icon }                      from 'deriv-components';
 
 configure({ adapter: new Adapter() });
 spy(ToggleFullScreen.prototype, 'componentDidMount');
@@ -31,9 +31,9 @@ describe('ToggleFullScreen', () => {
         wrapper.setState({ is_full_screen: true });
         expect(wrapper.find('.ic-fullscreen--active').exists()).to.be.true;
     });
-    it('should contain <Icon icon=\'IconMaximize\' />', () => {
+    it('should contain <Icon icon=\'IcFullScreen\' />', () => {
         const wrapper = shallow(<ToggleFullScreen />);
-        expect(wrapper.contains(<Icon icon='IconMaximize' className='footer__icon' />)).to.be.true;
+        expect(wrapper.contains(<Icon icon='IcFullScreen' className='footer__icon' />)).to.be.true;
     });
     it('should have onclick property as an instance of a Function', () => {
         const wrapper = shallow(<ToggleFullScreen />);

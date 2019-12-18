@@ -29,6 +29,11 @@ Blockly.Blocks.lists_isEmpty = {
             'description' : localize('This block checks if a given list is empty. It returns “True” if the list is empty, “False” if otherwise.'),
         };
     },
+    getRequiredValueInputs() {
+        return {
+            VALUE: null,
+        };
+    },
 };
 
 Blockly.JavaScript.lists_isEmpty = block => {

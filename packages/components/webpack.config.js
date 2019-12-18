@@ -22,6 +22,8 @@ module.exports = {
         dropdown           : path.resolve(__dirname, 'src', 'components/dropdown/index.js'),
         'field-error'      : path.resolve(__dirname, 'src', 'components/field-error/index.js'),
         'file-dropzone'    : path.resolve(__dirname, 'src', 'components/file-dropzone/index.js'),
+        icon               : path.resolve(__dirname, 'src', 'components/icon/index.js'),
+        'icon/js/icons'    : path.resolve(__dirname, 'src', 'components/icon/icons.js'),
         input              : path.resolve(__dirname, 'src', 'components/input/index.js'),
         label              : path.resolve(__dirname, 'src', 'components/label/index.js'),
         loading            : path.resolve(__dirname, 'src', 'components/loading/index.js'),
@@ -35,7 +37,6 @@ module.exports = {
         tabs               : path.resolve(__dirname, 'src', 'components/tabs/index.js'),
         'themed-scrollbars': path.resolve(__dirname, 'src', 'components/themed-scrollbars/index.js'),
         'toggle-switch'    : path.resolve(__dirname, 'src', 'components/toggle-switch/index.js'),
-        'underlying-icon'  : path.resolve(__dirname, 'src', 'components/underlying-icon/index.js'),
     },
     output: {
         path         : path.resolve(__dirname, 'lib'),
@@ -86,11 +87,32 @@ module.exports = {
             {
                 test: /\.svg$/,
                 use : [
-                    {
+                   {
                         loader : 'svg-sprite-loader',
                         options: {
                             extract       : true,
-                            spriteFilename: 'bot-sprite.svg',
+                            spriteFilename: svgPath => {
+                                if (svgPath.includes('components/icon/common')) {
+                                    return 'common.svg';
+                                }
+                                if (svgPath.includes('components/icon/currency')) {
+                                    return 'currency.svg';
+                                }
+                                if (svgPath.includes('components/icon/flag')) {
+                                    return 'flag.svg';
+                                }
+                                if (svgPath.includes('components/icon/mt5')) {
+                                    return 'mt5.svg';
+                                }
+                                if (svgPath.includes('components/icon/tradetype')) {
+                                    return 'tradetype.svg';
+                                }
+                                if (svgPath.includes('components/icon/underlying')) {
+                                    return 'underlying.svg';
+                                }
+                                return 'common.svg';
+                            },
+                            publicPath: '/icon/sprite/',
                         },
                     },
                     {
@@ -124,7 +146,7 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({ filename: '[name].css' }),
         new StyleLintPlugin({ fix: true }),
-        new SpriteLoaderPlugin(),
+        new SpriteLoaderPlugin({ plainSprite: true }),
         // ...(!is_release ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
     ],
     externals: [

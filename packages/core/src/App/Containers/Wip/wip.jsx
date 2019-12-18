@@ -1,9 +1,8 @@
-import { Button }             from 'deriv-components';
+import { Button, Icon }       from 'deriv-components';
 import React                  from 'react';
 import BinarySocket           from '_common/base/socket_base';
 import { urlFor }             from '_common/url';
 import { localize, Localize } from 'deriv-translations';
-import Icon                   from 'Assets/icon.jsx';
 import { connect }            from 'Stores/connect';
 import 'Sass/app/_common/components/wip.scss';
 
@@ -20,7 +19,7 @@ const Wip = ({ is_dark_mode, pushDataLayer }) => {
     return (
         <div className='work-in-progress'>
             <div className='work-in-progress__content'>
-                <Icon icon='IconWip' theme={is_dark_mode ? 'dark' : 'light'} />
+                <Icon icon='IcWip' theme={is_dark_mode ? 'dark' : 'light'} width={96} height={124} />
                 <div className='work-in-progress__header'>
                     <Localize i18n_default_text='Work in progress!' />
                 </div>

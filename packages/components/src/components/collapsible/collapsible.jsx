@@ -4,7 +4,9 @@ import React, {
     useState,
     Children,
 }                 from 'react';
-import IconArrow  from 'Components/icon-arrow.jsx';
+import Icon from '../icon/icon.jsx';
+
+const IconArrow = (props) => <Icon icon='IcChevronDownBold' {...props} />;
 
 const ArrowButton = ({ position, onClick, is_open }) => {
     let icon_arrow;

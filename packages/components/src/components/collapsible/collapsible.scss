@@ -1,6 +1,6 @@
 /** Slideout Animation */
 @keyframes SlideIn {
-    from  {
+    from {
         opacity: 0;
         max-height: 0;
     }
@@ -16,7 +16,7 @@
         opacity: 1;
         max-height: 100vh;
     }
-    to  {
+    to {
         opacity: 0;
         max-height: 0;
     }
@@ -34,6 +34,8 @@
         height: 40px;
     }
     &__icon {
+        transition: transform 0.3s ease-in-out;
+
         &--top {
             transform: rotate(180deg);
 

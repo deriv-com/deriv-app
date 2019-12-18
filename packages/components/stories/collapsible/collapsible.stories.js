@@ -2,7 +2,7 @@ import React         from 'react';
 import { storiesOf } from '@storybook/react';
 import Collapsible   from 'Components/collapsible';
 // import 'Components/dropdown/dropdown.scss';
-import Theme         from '../shared/theme';
+import notes         from './README.md';
 
 const items = [
     {
@@ -36,12 +36,7 @@ storiesOf('Collapsible', module)
                 <div>Item 1</div>
             </Collapsible>
         ), {
-            notes: `
-            To Use Collapsible component, you need to wrap your children with <Collapsible /> component. and then, 
-            pass "collapsible" as prop to each children of the component to mark it as "collapsible/expandable".
-            
-            Use 'is_collapsed' prop to set the default as collapsed. 
-            `,
+            notes,
         },
     ).add(
         'Bottom',

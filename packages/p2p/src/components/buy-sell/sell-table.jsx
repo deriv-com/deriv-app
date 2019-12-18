@@ -3,7 +3,7 @@ import PropTypes              from 'prop-types';
 import { Loading }            from 'deriv-components';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError }         from 'Components/table/table-error.jsx';
-import { WS }                 from 'Utils/websocket';
+import { requestWS }                 from 'Utils/websocket';
 import {
     RowComponent,
     BuySellRowLoader }        from './row.jsx';
@@ -23,7 +23,7 @@ export class SellTable extends React.Component {
     componentDidMount() {
         this.is_mounted = true;
 
-        WS({ p2p_offer_list: 1, type: 'sell' }).then((response) => {
+        requestWS({ p2p_offer_list: 1, type: 'sell' }).then((response) => {
             if (this.is_mounted) {
                 if (!response.error) {
                     this.setState({ items: response, is_loading: false });

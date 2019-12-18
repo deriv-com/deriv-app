@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
 import { Tabs }             from 'deriv-components';
 import ServerTime           from 'Utils/server-time';
-import { init, WS }         from 'Utils/websocket';
+import { init, requestWS }         from 'Utils/websocket';
 import { AgentProvider }    from 'Components/context/agent-context';
 import {
     localize,
@@ -46,8 +46,9 @@ class App extends Component {
     }
 
     setIsAgent = async () => {
-        const agent_info = await WS({ p2p_agent_info: 1 });
+        const agent_info = await requestWS({ p2p_agent_info: 1 });
 
+        /* if there is no error means its an agent else its a client */
         if (!agent_info.error) {
             this.setState({ is_agent: true });
         }

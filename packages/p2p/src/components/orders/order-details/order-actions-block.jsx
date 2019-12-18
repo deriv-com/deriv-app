@@ -1,6 +1,6 @@
 import React        from 'react';
 import PropTypes    from 'prop-types';
-import { WS }       from 'Utils/websocket';
+import { requestWS }       from 'Utils/websocket';
 import { Button }   from 'deriv-components';
 import { localize } from 'Components/i18next';
 import AgentContext from 'Components/context/agent-context';
@@ -23,7 +23,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     const cancelOrder = () => {
         const cancel = async (setFormStatus) => {
             setFormStatus({ error_message: '' });
-            const cancel_response = await WS({ p2p_order_cancel: 1, order_id });
+            const cancel_response = await requestWS({ p2p_order_cancel: 1, order_id });
 
             if (!cancel_response.error) {
                 setStatus(cancel_response.p2p_order_cancel.status);
@@ -45,7 +45,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         const payOrder = async (setFormStatus) => {
             setFormStatus({ error_message: '' });
 
-            const update_response = await WS({
+            const update_response = await requestWS({
                 p2p_order_confirm: 1,
                 order_id,
             });
@@ -71,7 +71,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         const receive = async (setFormStatus) => {
             setFormStatus({ error_message: '' });
 
-            const update_response = await WS({
+            const update_response = await requestWS({
                 p2p_order_confirm: 1,
                 order_id,
             });

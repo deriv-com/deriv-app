@@ -26,7 +26,6 @@ BuySellRowLoader.propTypes = {
     width: PropTypes.number,
 };
 
-// TODO: [p2p-cleanup] cleanup repetition of rows
 export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) => {
     const is_agent = React.useContext(AgentContext);
 

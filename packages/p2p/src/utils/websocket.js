@@ -102,7 +102,7 @@ const getModifiedP2POrderList = (response) => {
     return modified_response;
 };
 
-export const WS = async (request) => {
+export const requestWS = async (request) => {
     await populateInitialResponses();
 
     const response = await ws.send(request);

@@ -60,6 +60,7 @@ import './common/ic-cross-circle.svg';
 import './common/ic-cross.svg';
 import './common/ic-demo.svg';
 import './common/ic-desktop.svg';
+import './common/ic-dp2p.svg';
 import './common/ic-driving-license.svg';
 import './common/ic-edit.svg';
 import './common/ic-email-firewall.svg';

@@ -1,17 +1,19 @@
+@import '../icon/icon.scss';
+
 .dc-popover {
     &__target {
         &__icon .info {
-            @extend %inline-icon.secondary;
+            @extend .dc-icon--secondary;
 
             &:hover {
-                @extend %inline-icon.white;
+                @extend .dc-icon;
             }
         }
         &__icon--disabled .info {
-            @extend %inline-icon.disabled;
+            @extend .dc-icon--disabled;
 
             &:hover {
-                @extend %inline-icon.disabled;
+                @extend .dc-icon--disabled;
             }
         }
         &__icon .counter {

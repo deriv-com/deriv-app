@@ -1,6 +1,6 @@
 import React                 from 'react';
 import PropTypes             from 'prop-types';
-import Icon                  from 'Assets/icon.jsx';
+import { Icon }              from 'deriv-components';
 import PositionsDrawerDialog from './positions-drawer-dialog.jsx';
 import ContractUpdateForm    from './contract-update-form.jsx';
 
@@ -48,7 +48,7 @@ class TogglePositionsDrawerDialog extends React.PureComponent {
                     className='positions-drawer-dialog-toggle'
                     onClick={this.toggleDialog}
                 >
-                    <Icon icon='IconSettings' />
+                    <Icon icon='IcGear' />
                 </div>
                 <PositionsDrawerDialog
                     ref={this.dialog_ref}

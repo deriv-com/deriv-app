@@ -1,10 +1,9 @@
 import classNames            from 'classnames';
-import { Money, Popover }    from 'deriv-components';
+import { Icon, Money, Popover } from 'deriv-components';
 import PropTypes             from 'prop-types';
 import React                 from 'react';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
 import { localize }          from 'deriv-translations';
-import Icon                  from 'Assets/icon.jsx';
 
 const BasisInfo = ({
     basis,
@@ -24,9 +23,7 @@ const BasisInfo = ({
                 }
             </div>
             <div className='trade-container__price-info-movement'>
-                {(!error && has_increased !== null) &&
-                <Icon icon='IconPriceMove' type={has_increased ? 'profit' : 'loss'} />
-                }
+                {(!error && has_increased !== null) && <Icon icon={has_increased ? 'IcProfit' : 'IcLoss'} />}
             </div>
         </React.Fragment>
     );

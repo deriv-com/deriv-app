@@ -3,7 +3,7 @@ import { observer }      from 'mobx-react';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
-import Icon              from 'Assets/icon.jsx';
+import { Icon }          from 'deriv-components';
 import Dialog            from './dialog.jsx';
 import InputField        from '../InputField';
 
@@ -90,7 +90,7 @@ class TimePicker extends React.Component {
                                     name={name}
                                     placeholder={placeholder}
                                 />
-                                <Icon icon='IconClock' className={`${prefix_class}__icon`} />
+                                <Icon icon='IcClockOutline' className={`${prefix_class}__icon`} />
                                 <CSSTransition
                                     in={ this.state.is_open }
                                     classNames={{

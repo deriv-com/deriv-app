@@ -1,7 +1,8 @@
 import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
-import Icon                from 'Assets/icon.jsx';
+import { Icon }            from 'deriv-components';
+import IconTradeCategory   from 'Assets/Trading/Categories/icon-trade-categories.jsx';
 import ContractTypeDialog  from './contract-type-dialog.jsx';
 import ContractTypeList    from './contract-type-list.jsx';
 import TradeTypeInfoDialog from '../TradeTypeInfo/trade-type-info-dialog.jsx';
@@ -174,8 +175,7 @@ class ContractTypeWidget extends React.PureComponent {
                     })}
                     onClick={this.onWidgetClick}
                 >
-                    <Icon
-                        icon='IconTradeCategory'
+                    <IconTradeCategory
                         category={value}
                         className='contract-type-widget__icon-wrapper'
                     />
@@ -183,7 +183,7 @@ class ContractTypeWidget extends React.PureComponent {
                         {this.getDisplayText()}
                     </span>
                     <Icon
-                        icon='IconArrow'
+                        icon='IcChevronDown'
                         className={classNames(
                           'contract-type-widget__select-arrow',
                           'contract-type-widget__select-arrow--left')}

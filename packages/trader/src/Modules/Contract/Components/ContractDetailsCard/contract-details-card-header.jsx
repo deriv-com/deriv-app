@@ -1,7 +1,7 @@
 import classNames               from 'classnames';
 import PropTypes                from 'prop-types';
 import React                    from 'react';
-import { UnderlyingIcon }       from 'deriv-components';
+import { Icon }                 from 'deriv-components';
 import ContractTypeCell         from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
 import ProgressSlider           from 'App/Components/Elements/PositionsDrawer/ProgressSlider';
 import Shortcode                from 'Modules/Reports/Helpers/shortcode';
@@ -29,7 +29,7 @@ const ContractDetailsCardHeader = ({
             )}
             >
                 <div id='dt_underlying_label' className='contract-card__underlying-name'>
-                    <UnderlyingIcon market={contract_info.underlying} />
+                    <Icon icon={contract_info.underlying ? `IcUnderlying${contract_info.underlying}` : 'IcUnknown'} />
                     <span className='contract-card__symbol'>
                         {contract_info.display_name}
                     </span>

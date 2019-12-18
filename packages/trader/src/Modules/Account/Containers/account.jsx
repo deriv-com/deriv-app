@@ -92,7 +92,7 @@ class Account extends React.Component {
                 onClick: () => {
                     this.props.history.push(AppRoutes.trade);
                 },
-                icon : 'ModalIconClose',
+                icon : 'IcCross',
                 title: localize('Close'),
             },
         ];

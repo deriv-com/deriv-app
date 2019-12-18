@@ -1,11 +1,10 @@
 import classNames               from 'classnames';
 import PropTypes                from 'prop-types';
 import React                    from 'react';
-import { Money }                from 'deriv-components';
+import { Icon, Money }          from 'deriv-components';
 import CurrencyUtils            from 'deriv-shared/utils/currency';
 import ContractCardItem         from 'App/Components/Elements/ContractDrawer/contract-card-item.jsx';
 import { localize }             from 'deriv-translations';
-import Icon                     from 'Assets/icon.jsx';
 import { getLimitOrderAmount }  from 'Stores/Modules/Contract/Helpers/limit-orders';
 import { getIndicativePrice }   from 'Stores/Modules/Contract/Helpers/logic';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
@@ -36,10 +35,8 @@ const ContractDetailsCardBody = ({
                     },
                 )}
                 >
-                    <Icon
-                        icon='IconPriceMove'
-                        type={(!is_sold) ? status : null}
-                    />
+                    {status === 'profit' && <Icon icon='IcProfit' />}
+                    {status === 'loss'   && <Icon icon='IcLoss' />}
                 </div>
             </ContractCardItem>
             {is_multiplier ?
@@ -63,10 +60,8 @@ const ContractDetailsCardBody = ({
                         },
                     )}
                     >
-                        <Icon
-                            icon='IconPriceMove'
-                            type={(!is_sold) ? status : null}
-                        />
+                        {status === 'profit' && <Icon icon='IcProfit' />}
+                        {status === 'loss'   && <Icon icon='IcLoss' />}
                     </div>
                 </ContractCardItem>
             }

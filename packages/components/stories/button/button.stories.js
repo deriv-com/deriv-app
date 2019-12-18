@@ -20,53 +20,53 @@ stories.addDecorator(withKnobs).addDecorator(withInfo);
 const getButtonObject = (type) => ({
     small: [
         {
-            text: `${type} small`,
+            text       : `${type} small`,
             is_disabled: false,
-            has_effect: false,
+            has_effect : false,
         },
         {
-            text: `${type} small disabled`,
+            text       : `${type} small disabled`,
             is_disabled: true,
-            has_effect: false,
+            has_effect : false,
         },
         {
-            text: `${type} small effect`,
+            text       : `${type} small effect`,
             is_disabled: false,
-            has_effect: true,
+            has_effect : true,
         },
     ],
     medium: [
         {
-            text: `${type} medium`,
+            text       : `${type} medium`,
             is_disabled: false,
-            has_effect: false,
+            has_effect : false,
         },
         {
-            text: `${type} medium disabled`,
+            text       : `${type} medium disabled`,
             is_disabled: true,
-            has_effect: false,
+            has_effect : false,
         },
         {
-            text: `${type} medium effect`,
+            text       : `${type} medium effect`,
             is_disabled: false,
-            has_effect: true,
+            has_effect : true,
         },
     ],
     large: [
         {
-            text: `${type} large`,
+            text       : `${type} large`,
             is_disabled: false,
-            has_effect: false,
+            has_effect : false,
         },
         {
-            text: `${type} large disabled`,
+            text       : `${type} large disabled`,
             is_disabled: true,
-            has_effect: false,
+            has_effect : false,
         },
         {
-            text: `${type} large effect`,
+            text       : `${type} large effect`,
             is_disabled: false,
-            has_effect: true,
+            has_effect : true,
         },
     ],
 });

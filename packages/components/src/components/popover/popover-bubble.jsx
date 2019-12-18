@@ -3,7 +3,7 @@ import PropTypes            from 'prop-types';
 import React                from 'react';
 import ReactDOM             from 'react-dom';
 import posed, { PoseGroup } from 'react-pose';
-import IconInfoBlue         from '../icon-info-blue.jsx';
+import Icon                 from 'Components/icon';
 
 const FadeIn = posed.span({
     enter: {
@@ -83,7 +83,7 @@ class PopoverBubble extends React.PureComponent {
                     >
                         { icon === 'info' &&
                             <i className='dc-popover__bubble__icon'>
-                                <IconInfoBlue />
+                                <Icon icon='IcInfoBlue' />
                             </i>
                         }
 

@@ -1,7 +1,7 @@
 import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
-import Icon              from 'Assets/icon.jsx';
+import { Icon }          from 'deriv-components';
 import { month_headers } from 'Constants/date-time';
 import {
     addMonths,
@@ -73,7 +73,7 @@ const CalendarHeader = ({
                 })}
                 onClick={onClickPrevYear}
             >
-                <Icon icon='IconChevronDoubleLeft' className='calendar__icon' />
+                <Icon icon='IcChevronDoubleLeft' className='calendar__icon' />
             </CalendarButton>
             <CalendarButton
                 className={classNames('calendar__nav calendar__nav--prev-month', {
@@ -83,7 +83,7 @@ const CalendarHeader = ({
                 is_hidden={!is_date_view}
                 onClick={onClickPrevMonth}
             >
-                <Icon icon='IconChevronLeft' className='calendar__icon' />
+                <Icon icon='IcChevronLeft' className='calendar__icon' />
             </CalendarButton>
 
             <React.Fragment>
@@ -125,7 +125,7 @@ const CalendarHeader = ({
                 is_hidden={!is_date_view}
                 onClick={onClickNextMonth}
             >
-                <Icon icon='IconChevronRight' className='calendar__icon' />
+                <Icon icon='IcChevronRight' className='calendar__icon' />
             </CalendarButton>
             <CalendarButton
                 className={classNames('calendar__nav calendar__nav--next-year', {
@@ -134,7 +134,7 @@ const CalendarHeader = ({
                 })}
                 onClick={onClickNextYear}
             >
-                <Icon icon='IconChevronDoubleRight' className='calendar__icon' />
+                <Icon icon='IcChevronDoubleRight' className='calendar__icon' />
             </CalendarButton>
         </div>
     );

@@ -200,9 +200,11 @@ const drawLine = ({
     start,
     end,
 }) => {
-    ctx.strokeStyle = color + opacity;
+    if (color && opacity) {
+        ctx.strokeStyle = color + opacity;
+    }
     ctx.beginPath();
-    ctx.setLineDash([1, 1]);
+    ctx.setLineDash([3, 3]);
     ctx.moveTo(start.x, start.y);
     ctx.lineTo(end.x, end.y);
     ctx.stroke();
@@ -271,11 +273,12 @@ const TickContract = RawMarkerMaker(({
             tick: { zom: start.zoom, left: start.left - 1 * scale,  top: canvas_height - 50 },
             icon: ICONS.BUY_SELL_TIME,
         });
-        ctx.beginPath();
-        ctx.setLineDash([3, 3]);
-        ctx.moveTo(start.left - 1 * scale, 0);
-        ctx.lineTo(start.left - 1 * scale, ctx.canvas.height);
-        ctx.stroke();
+
+        drawLine({
+            ctx,
+            start: { x: start.left, y: 0 },
+            end  : { x: start.left, y: ctx.canvas.height },
+        });
     }
 
     const has_reset_time = reset_time && reset_time.epoch;
@@ -286,11 +289,12 @@ const TickContract = RawMarkerMaker(({
             tick: { zom: reset_time.zoom, left: reset_time.left - 1 * scale,  top: canvas_height - 50 },
             icon: ICONS.RESET,
         });
-        ctx.beginPath();
-        ctx.setLineDash([3, 3]);
-        ctx.moveTo(reset_time.left - 1 * scale, 0);
-        ctx.lineTo(reset_time.left - 1 * scale, ctx.canvas.height);
-        ctx.stroke();
+
+        drawLine({
+            ctx,
+            start: { x: reset_time.left, y: 0 },
+            end  : { x: reset_time.left, y: ctx.canvas.height },
+        });
     }
 
     if (!ticks.length || !barrier) {
@@ -313,7 +317,7 @@ const TickContract = RawMarkerMaker(({
     });
 
     if (has_reset_time) {
-        drawLine({ ctx, start: { x: reset_time.left, entry_tick_top }, end: { x: reset_time.left, y: barrier } });
+        drawLine({ ctx, start: { x: reset_time.left, y: entry_tick_top }, end: { x: reset_time.left, y: barrier } });
 
         drawTickBarrier({
             start: reset_time,
@@ -346,7 +350,7 @@ const TickContract = RawMarkerMaker(({
             if (tick && tick.visible) {
                 // Draw a line from barrier to icon.
                 if (tick === exit) {
-                    drawLine({ ctx, start: { x: tick.left, y: tick.top }, end: { x: tick.left, y: barrier } });
+                    drawLine({ ctx, start: { x: tick.left, y: barrier }, end: { x: tick.left, y: tick.top } });
                 }
 
                 const icon = tick === entry ? ICONS.ENTRY_SPOT : ICONS.END;
@@ -355,7 +359,7 @@ const TickContract = RawMarkerMaker(({
                     left: tick.left,
                     zoom: tick.zoom,
                     icon: icon.with_color(
-                        color + (is_sold ? opacity : ''),
+                        color,
                         get_color({ status: 'bg', is_dark_theme }) + (is_sold ? opacity : '')
                     ),
                 });

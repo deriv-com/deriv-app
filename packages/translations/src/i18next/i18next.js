@@ -89,16 +89,6 @@ const initializeTranslations = async () => {
     await loadLanguageJson(initial_language);
 };
 
-const changeLanguage = async (lang, cb) => {
-    if (hasLanguage(lang)) {
-        await loadLanguageJson(lang);
-        i18n.changeLanguage(lang, () => {
-            localStorage.setItem(LANGUAGE_KEY, lang);
-            cb();
-        });
-    }
-};
-
 const getLanguage = () => {
     const lang = i18n.language || initial_language;
     return lang;
@@ -129,7 +119,6 @@ const loadIncontextTranslation = () => {
 };
 
 export default {
-    changeLanguage,
     getAllLanguages,
     getLanguage,
     initializeTranslations,

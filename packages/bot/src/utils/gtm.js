@@ -43,15 +43,15 @@ const GTM = (() => {
             const counters =
                 `tr:${summary.number_of_runs},\
                 ts:${summary.total_stake},\
-                py${summary.total_payout},\
-                lc${summary.lost_contracts},\
-                wc${summary.won_contracts},\
-                pr${summary.total_profit}`;
+                py:${summary.total_payout},\
+                lc:${summary.lost_contracts},\
+                wc:${summary.won_contracts},\
+                pr:${summary.total_profit}`;
 
             const data = {
-                event: 'dbot_run',
+                counters: counters.replace(/\s/g,''),
+                event   : 'dbot_run',
                 run_id,
-                counters : counters.replace(/\s/g,''),
             };
             pushDataLayer(data);
         } catch (error) {

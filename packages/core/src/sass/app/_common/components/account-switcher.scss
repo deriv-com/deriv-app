@@ -242,6 +242,25 @@
             &:last-child {
                 margin-bottom: 16px;
             }
+            &-set-currency {
+                justify-content: flex-end;
+                padding: 0.8rem 0.4rem;
+
+                &-link {
+                    font-size: 1.2rem;
+                    color: var(--button-primary-default);
+                    font-weight: bold;
+
+                    &:hover {
+                        text-decoration: underline;
+                        cursor: pointer;
+                    }
+                }
+                &:hover {
+                    background: var(--general-main-2) !important;
+                    cursor: initial;
+                }
+            }
         }
         &--has-add-account:not(:empty) {
             margin-bottom: -16px;

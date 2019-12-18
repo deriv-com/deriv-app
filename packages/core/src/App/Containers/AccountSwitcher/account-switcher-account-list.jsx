@@ -2,7 +2,7 @@ import classNames               from 'classnames';
 import React                    from 'react';
 import { Money }                from 'deriv-components';
 import CurrencyUtils            from 'deriv-shared/utils/currency';
-import { Localize }             from 'deriv-translations';
+import { Localize, localize }   from 'deriv-translations';
 import Icon                     from 'Assets/icon.jsx';
 import { getMT5AccountDisplay } from 'Stores/Helpers/client';
 
@@ -17,51 +17,69 @@ const AccountList = ({
     is_virtual,
     loginid,
     onClickAccount,
+    setCurrency,
     selected_loginid,
 }) => (
-    <div
-        id={`dt_${loginid}`}
-        className={classNames('acc-switcher__account', {
-            'acc-switcher__account--selected': loginid === selected_loginid,
-            'acc-switcher__account--disabled': is_disabled,
-        })}
-        onClick={is_disabled ? undefined : onClickAccount}
-    >
-        <span className={'acc-switcher__id'}>
-            <Icon
-                icon='IconAccountsCurrency'
-                className={`acc-switcher__id-icon acc-switcher__id-icon--${currency_icon}`}
-                type={currency_icon}
-            />
-            <span>
-                {display_type === 'currency'
-                    ? <CurrencyDisplay is_virtual={is_virtual} currency={currency_icon} />
-                    : <AccountDisplay account_type={account_type} />
-                }
-                <div className='acc-switcher__loginid-text'>
-                    {loginid}
-                </div>
-            </span>
-            {has_balance &&
-            <span className={classNames('acc-switcher__balance', {
-                'acc-switcher__balance--virtual': is_virtual })}
-            >
-                {currency &&
-                <Money
-                    currency={currency}
-                    amount={CurrencyUtils.formatMoney(currency, balance, true)}
-                    should_format={false}
+    <>
+        <div
+            id={`dt_${loginid}`}
+            className={classNames('acc-switcher__account', {
+                'acc-switcher__account--selected': loginid === selected_loginid,
+                'acc-switcher__account--disabled': is_disabled,
+            })}
+            onClick={is_disabled ? undefined : onClickAccount}
+        >
+            <span className={'acc-switcher__id'}>
+                <Icon
+                    icon='IconAccountsCurrency'
+                    className={`acc-switcher__id-icon acc-switcher__id-icon--${currency_icon}`}
+                    type={currency_icon}
                 />
-                }
-                {!currency &&
-                <span className='no-currency'>
-                    <Localize i18n_default_text='No currency selected' />
+                <span>
+                    {display_type === 'currency'
+                        ? <CurrencyDisplay is_virtual={is_virtual} currency={currency_icon} />
+                        : <AccountDisplay account_type={account_type} />
+                    }
+                    <div className='acc-switcher__loginid-text'>
+                        {loginid}
+                    </div>
+                </span>
+                {has_balance &&
+                <span className={classNames('acc-switcher__balance', {
+                    'acc-switcher__balance--virtual': is_virtual })}
+                >
+                    {currency &&
+                    <Money
+                        currency={currency}
+                        amount={CurrencyUtils.formatMoney(currency, balance, true)}
+                        should_format={false}
+                    />
+                    }
+                    {!currency &&
+                    <span className='no-currency'>
+                        <Localize i18n_default_text='No currency selected' />
+                    </span>
+                    }
                 </span>
                 }
             </span>
-            }
-        </span>
-    </div>
+        </div>
+        {!currency &&
+            <div
+                className={classNames(
+                    'acc-switcher__account',
+                    'acc-switcher__account-set-currency',
+                )}
+            >
+                <div
+                    className='acc-switcher__account-set-currency-link'
+                    onClick={setCurrency}
+                >
+                    <span>{localize('Select currency')}</span>
+                </div>
+            </div>
+        }
+    </>
 );
 
 const CurrencyDisplay = ({

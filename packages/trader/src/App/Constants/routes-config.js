@@ -38,9 +38,9 @@ const initRoutesConfig = () => ([
         is_authenticated: true,
         title           : localize('Reports'),
         routes          : [
-            { path: routes.positions, component: OpenPositions, title: localize('Open Positions'), icon_component: 'IconOpenPositions', default: true },
-            { path: routes.profit,    component: ProfitTable,   title: localize('Profit Table'),   icon_component: 'IconProfitTable' },
-            { path: routes.statement, component: Statement,     title: localize('Statement'),      icon_component: 'IconStatement' },
+            { path: routes.positions, component: OpenPositions, title: localize('Open Positions'), icon_component: 'IcOpenPositions', default: true },
+            { path: routes.profit,    component: ProfitTable,   title: localize('Profit Table'),   icon_component: 'IcProfitTable' },
+            { path: routes.statement, component: Statement,     title: localize('Statement'),      icon_component: 'IcStatement' },
         ],
     },
     {
@@ -51,7 +51,7 @@ const initRoutesConfig = () => ([
         routes          : [
             {
                 title    : localize('Profile'),
-                icon     : 'IconUser',
+                icon     : 'IcUserOutline',
                 subroutes: [
                     { path: routes.personal_details,     component: PersonalDetails,     title: localize('Personal details'), default: true },
                     { path: routes.financial_assessment, component: FinancialAssessment, title: localize('Financial assessment') },
@@ -59,7 +59,7 @@ const initRoutesConfig = () => ([
             },
             {
                 title    : localize('Verification'),
-                icon     : 'IconVerification',
+                icon     : 'IcVerification',
                 subroutes: [
                     { path: routes.proof_of_identity, component: ProofOfIdentity, title: localize('Proof of identity') },
                     { path: routes.proof_of_address,  component: ProofOfAddress,  title: localize('Proof of address') },
@@ -67,7 +67,7 @@ const initRoutesConfig = () => ([
             },
             {
                 title    : localize('Security and safety'),
-                icon     : 'IconSecurity',
+                icon     : 'IcSecurity',
                 subroutes: [
                     { path: routes.deriv_password, component: DerivPassword, title: localize('Deriv password') },
                     { path: routes.account_limits, component: AccountLimits, title: localize('Account limits') },

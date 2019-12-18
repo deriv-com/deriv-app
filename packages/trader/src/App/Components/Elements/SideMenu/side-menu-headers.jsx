@@ -1,7 +1,7 @@
 import classNames         from 'classnames';
 import React              from 'react';
 import { withRouter }     from 'react-router-dom';
-import Icon               from 'Assets/icon.jsx';
+import { Icon }           from 'deriv-components';
 import {
     VerticalTabHeaders,
     VerticalTabHeader }   from '../VerticalTabs';
@@ -25,7 +25,7 @@ const MainHeaders = ({ items, handleSubroute, active_title }) => (
                         onChange={handleSubroute}
                     >
                         <Icon
-                            icon='IconChevronRight'
+                            icon='IcChevronRight'
                             className='side-menu__icon'
                         />
                     </VerticalTabHeader>

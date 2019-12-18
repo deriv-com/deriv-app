@@ -60,7 +60,7 @@ class Cashier extends React.Component {
                 onClick: () => {
                     this.props.history.push(routes.trade);
                 },
-                icon : 'ModalIconClose',
+                icon : 'IcCross',
                 title: localize('Close'),
             },
             {

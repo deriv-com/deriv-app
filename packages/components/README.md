@@ -25,10 +25,17 @@ test  :
   ```
 
 storybook: 
-```shell script
+  ```shell script
   npm run storybook
-```
-
+  ```
+storybook:build:
+  ```
+  npm run storybook:build
+  ```
+storybook:deploy:
+  ```
+  npm run storybook:deploy br_storybook
+  ```
 ## Usage
 You can import individual components on demand and import style manually:
 ```jsx

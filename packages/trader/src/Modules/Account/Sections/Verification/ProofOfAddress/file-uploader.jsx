@@ -1,11 +1,11 @@
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import classNames       from 'classnames';
 import React            from 'react';
-import { FileDropzone } from 'deriv-components';
+import {
+    FileDropzone,
+    Icon }              from 'deriv-components';
 import { WS }           from 'Services/ws-methods';
 import { localize }     from 'deriv-translations';
-import IconCloudUpload  from 'Assets/AccountManagement/ProofOfAddress/icon-cloud-uploading.svg';
-import IconRemoveFile   from 'Assets/AccountManagement/icon-remove-file.svg';
 import {
     compressImageFiles,
     readFiles,
@@ -15,7 +15,7 @@ import {
 
 const UploadMessage = (
     <>
-        <IconCloudUpload className='dc-file-dropzone__message-icon' />
+        <Icon icon='IcCloudUpload' className='dc-file-dropzone__message-icon' size={50} />
         <div className='dc-file-dropzone__message-subtitle' >
             {localize('Drop file (JPEG  JPG  PNG  PDF  GIF) or click here to upload')}
         </div>
@@ -125,11 +125,13 @@ class FileUploader extends React.PureComponent {
                 />
                 {(document_file.length > 0 || !!file_error_message) &&
                 <div className='account-poa__upload-remove-btn-container'>
-                    <IconRemoveFile
+                    <Icon
+                        icon='IcCloseCircle'
                         className={classNames('account-poa__upload-remove-btn', {
                             'account-poa__upload-remove-btn--error': !!file_error_message,
                         })}
                         onClick={this.removeFile}
+                        color='secondary'
                     />
                 </div>
                 }

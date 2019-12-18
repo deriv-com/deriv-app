@@ -1,18 +1,7 @@
 import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
-
-// TODO: use-from-shared - Use this icon from icons' shared package
-const IconCheckmark = ({ className, classNamePath }) => (
-    <svg className={classNames('inline-icon', className)} width='16' height='16'>
-        <path
-            className={classNames(classNamePath, 'color1-fill')}
-            d='M6 10.0857864L3.70710678 7.79289322c-.39052429-.39052429-1.02368927-.39052429-1.41421356 0-.39052429.39052429-.39052429 1.02368927 0 1.41421356l3 3.00000002c.39052429.3905243 1.02368927.3905243 1.41421356 0l7.00000002-7.00000002c.3905243-.39052429.3905243-1.02368927 0-1.41421356-.3905243-.39052429-1.0236893-.39052429-1.4142136 0L6 10.0857864z'
-            fill='#FFF'
-            fillRule='evenodd'
-        />
-    </svg>
-);
+import Icon       from '../icon';
 
 class Checkbox extends React.PureComponent {
     constructor(props) {
@@ -53,7 +42,7 @@ class Checkbox extends React.PureComponent {
                     }) }
                 >
                     { !!this.state.checked &&
-                        <IconCheckmark />
+                        <Icon icon='IcCheckmark' color='active' />
                     }
                 </span>
                 <span className={classNames('dc-checkbox__label', classNameLabel)}>

@@ -18,7 +18,7 @@ Blockly.Blocks.text_getSubstring = {
         this.updateAt(1, true);
         this.updateAt(2, true);
     },
-    get definition() {
+    definition() {
         return {
             message0: localize('in text %1 get substring from %2 %3 to %4 %5'),
             args0   : [
@@ -54,7 +54,7 @@ Blockly.Blocks.text_getSubstring = {
             category       : Blockly.Categories.Text,
         };
     },
-    get meta() {
+    meta() {
         return {
             display_name: localize('Get substring'),
             description : localize('Returns a specific portion of a given string of text.'),

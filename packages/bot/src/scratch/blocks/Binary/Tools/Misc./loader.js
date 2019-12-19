@@ -1,7 +1,7 @@
 import { localize }                   from 'deriv-translations';
 import {
     loadBlocksFromRemote,
-    executeIrreversibleWsLogic }      from '../../../../utils';
+    runIrreversibleEvents }           from '../../../../utils';
 import { observer as globalObserver } from '../../../../../utils/observer';
 
 Blockly.Blocks.loader = {
@@ -67,7 +67,7 @@ Blockly.Blocks.loader = {
     loadBlocksFromCurrentUrl() {
         this.current_url = this.getFieldValue('URL');
         
-        executeIrreversibleWsLogic(() => {
+        runIrreversibleEvents(() => {
             // Remove blocks previously loaded by this block.
             this.blocks_added_by_me.forEach(block => block.dispose());
         });

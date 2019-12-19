@@ -85,28 +85,15 @@ Blockly.Blocks.trade_definition = {
         };
     },
     onchange(event) {
-        // TODO: incomment this when the dark mode is done
-        // if (!ScratchStore.instance.root_store.core.ui.is_dark_mode_on) {
-        setBlockTextColor(this);
-        // }
+        setBlockTextColor(this, event);
 
         // We don't add "this.workspace.isDragging()" condition here as we want to immediately remove
         // other instances of this block when dragged out of the workspace.
-        if (!this.workspace || this.isInFlyout) {
+        if (!this.workspace || this.workspace.isDragging() || this.isInFlyout) {
             return;
         }
 
-        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
-            // Maintain single instance of this block, dispose of older ones.
-            this.workspace.getTopBlocks().forEach(top_block => {
-                if (top_block.type === this.type && top_block.id !== this.id) {
-                    runIrreversibleEvents(() => {
-                        top_block.dispose();
-                    });
-                }
-            });
-        } else if (
-            !this.workspace.isDragging() &&
+        if (
             event.type === Blockly.Events.BLOCK_CHANGE ||
             event.type === Blockly.Events.END_DRAG
         ) {

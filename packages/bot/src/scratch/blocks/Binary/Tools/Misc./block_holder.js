@@ -32,12 +32,8 @@ Blockly.Blocks.block_holder = {
             'description' : localize('Use this block if you want some instructions to be ignored when your bot runs. Instructions within this block won’t be executed.'),
         };
     },
-    onchange(/* event */) {
-        // TODO: incomment this when the dark mode is done
-        //        if (!ScratchStore.instance.root_store.core.ui.is_dark_mode_on) {
-        setBlockTextColor(this);
-        //        }
-
+    onchange(event) {
+        setBlockTextColor(this, event);
     },
 };
 

@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
-import PropTypes            from 'prop-types';
-import { Dialog }           from 'deriv-components';
+import PropTypes                from 'prop-types';
+import { Dialog, ButtonToggle } from 'deriv-components';
+import { localize }         from 'Components/i18next';
 import { BuySellTable }     from './buy-sell-table.jsx';
 import Popup                from './popup.jsx';
 import                           './buy-sell.scss';
 
-/* TODO: [p2p-uncomment] uncomment this when sell is ready */
-// const buy_sell_filters = [
-//     {
-//         text : localize('Buy'),
-//         value: 'buy',
-//     },
-//     {
-//         text : localize('Sell'),
-//         value: 'sell',
-//     },
-// ];
+const buy_sell_filters = [
+    {
+        text : localize('Buy'),
+        value: 'buy',
+    },
+    {
+        text : localize('Sell'),
+        value: 'sell',
+    },
+];
 
 class BuySell extends Component {
     state = {
@@ -45,17 +45,16 @@ class BuySell extends Component {
 
         return (
             <div className='buy-sell'>
-                {/* TODO [p2p-uncomment] uncomment this when sell is ready */}
-                {/* <div className='buy-sell__header'> */}
-                {/*    <ButtonToggle */}
-                {/*        buttons_arr={buy_sell_filters} */}
-                {/*        className='buy-sell__header__filters' */}
-                {/*        is_animated */}
-                {/*        name='filter' */}
-                {/*        onChange={this.onChangeTableType} */}
-                {/*        value={table_type} */}
-                {/*    /> */}
-                {/* </div> */}
+                <div className='buy-sell__header'>
+                   <ButtonToggle
+                        buttons_arr={buy_sell_filters}
+                        className='buy-sell__header__filters'
+                        is_animated
+                        name='filter'
+                        onChange={this.onChangeTableType}
+                        value={table_type}
+                    />
+                 </div>
                 <BuySellTable
                     table_type={table_type}
                     setSelectedAd={this.setSelectedAd}

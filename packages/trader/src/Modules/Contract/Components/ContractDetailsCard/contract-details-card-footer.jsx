@@ -22,7 +22,7 @@ const ContractDetailsCardFooter = ({
 
     return (
         <CSSTransition
-            in={!!(isValidToSell(contract_info) || is_multiplier)}
+            in={!!(isValidToSell(contract_info) || (is_multiplier && !contract_info.is_sold))}
             timeout={250}
             classNames={{
                 enter    : 'contract-card__sell-button--enter',

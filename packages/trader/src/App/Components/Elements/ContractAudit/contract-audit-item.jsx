@@ -1,13 +1,18 @@
 import PropTypes from 'prop-types';
 import React     from 'react';
+import {
+    formatDate,
+    formatTime } from 'Utils/Date';
 
 const ContractAuditItem = ({
     icon,
+    id,
     label,
+    timestamp,
     value,
     value2,
 }) => (
-    <React.Fragment>
+    <div id={id} className='contract-audit__grid'>
         {icon &&
         <div className='contract-audit__icon'>
             {icon}
@@ -28,7 +33,13 @@ const ContractAuditItem = ({
                 }
             </div>
         </div>
-    </React.Fragment>
+        {timestamp &&
+            <div className='contract-audit__timestamp'>
+                <span>{formatDate(timestamp)}</span>
+                <span>{formatTime(timestamp)}</span>
+            </div>
+        }
+    </div>
 );
 
 ContractAuditItem.propTypes = {

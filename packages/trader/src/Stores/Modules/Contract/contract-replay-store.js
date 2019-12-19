@@ -248,7 +248,7 @@ export default class ContractReplayStore extends BaseStore {
         const {
             stop_loss  : contract_info_stop_loss,
             take_profit: contract_info_take_profit,
-        } = getLimitOrderAmount(contract_info);
+        } = getLimitOrderAmount(contract_info.limit_order);
 
         const isValid = (val) => !(val === undefined || val === null);
 

@@ -55,8 +55,9 @@ export const convertToUnix = (epoch, time) => setTime(toMoment(epoch), time).uni
 
 export const toGMTFormat = (time) => moment(time || undefined).utc().format('YYYY-MM-DD HH:mm:ss [GMT]');
 
-export const formatDate = (date, date_format = 'YYYY-MM-DD') => toMoment(date).format(date_format);
+export const formatDate = (epoch, date_format = 'YYYY-MM-DD') => toMoment(epoch).format(date_format);
 
+export const formatTime = (epoch, time_format = 'HH:mm:ss [GMT]') => toMoment(epoch).format(time_format);
 /**
  * return the number of days from today to date specified
  * @param  {String} date   the date to calculate number of days from today

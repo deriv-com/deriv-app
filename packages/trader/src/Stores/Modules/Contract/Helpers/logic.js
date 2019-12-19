@@ -143,8 +143,8 @@ export const getProfitLossFromStore = (modules_store) => {
  * Set contract_update initial values
  * @param {object} contract_info - proposal_open_contract response
  */
-export const getContractUpdate = (contract_info) => {
-    const { stop_loss, take_profit } = getLimitOrderAmount(contract_info);
+export const getContractUpdate = ({ limit_order }) => {
+    const { stop_loss, take_profit } = getLimitOrderAmount(limit_order);
 
     return {
         // convert stop_loss, take_profit value to string for validation to work

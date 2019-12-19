@@ -276,7 +276,7 @@ const PositionsDrawerCard = ({
                 </NavLink>
             }
             <CSSTransition
-                in={!!(is_valid_to_sell || is_multiplier)}
+                in={!!(is_valid_to_sell || (is_multiplier && !contract_info.is_sold))}
                 timeout={250}
                 classNames={{
                     enter    : 'positions-drawer-card__sell-button--enter',

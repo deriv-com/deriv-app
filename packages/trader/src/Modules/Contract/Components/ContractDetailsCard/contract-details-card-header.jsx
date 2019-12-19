@@ -29,7 +29,7 @@ const ContractDetailsCardHeader = ({
             )}
             >
                 <div id='dt_underlying_label' className='contract-card__underlying-name'>
-                    <Icon icon={contract_info.underlying ? `IcUnderlying${contract_info.underlying}` : 'IcUnknown'} />
+                    <Icon icon={contract_info.underlying ? `IcUnderlying${contract_info.underlying}` : 'IcUnknown'} size={36} />
                     <span className='contract-card__symbol'>
                         {contract_info.display_name}
                     </span>

@@ -7,7 +7,7 @@ class HighlightWrapper extends React.PureComponent {
     state = {
         left : 0,
         width: 0,
-    }
+    };
 
     componentDidMount() {
         const active_button_el = [...this.node.getElementsByClassName('dc-button-menu__button--active')][0];
@@ -19,7 +19,7 @@ class HighlightWrapper extends React.PureComponent {
         const active_button_el = [...this.node.getElementsByClassName('dc-button-menu__button--active')][0];
         if (active_button_el) {
             this.updateHighlightPosition(active_button_el);
-        } else if (this.state.left !== 0 || this.state.width !== 0) {
+        } else if (this.state.left !== 0) {
             this.resetHighlight(); // clear highlight when active element doesn't exist
         }
     }
@@ -37,40 +37,35 @@ class HighlightWrapper extends React.PureComponent {
     };
 
     resetHighlight = () => {
-        this.setState({
-            left : 0,
-            width: 0,
-        });
+        this.setState({ left: 0 });
     };
 
     updateHighlightPosition = (el) => {
         if (!el) return;
-        const { offsetLeft: left, offsetWidth: width } = el;
-        if (this.state.width !== width) {
-            this.setState({ width });
-        }
+        const { offsetLeft: left } = el;
         if (this.state.left !== left) {
             this.setState({ left });
         }
     };
 
     render() {
-        const { className, ...other_props } = this.props;
+        const { children, className, ...other_props } = this.props;
         const props = {
             className: classnames('dc-button-menu__wrapper', className),
             ...other_props,
         };
+        const button_width = (100 / children.length).toFixed(2);
 
         return (
             <div ref={(node) => this.node = node} {...props}>
                 {
-                    React.Children.map(this.props.children, child => (
+                    React.Children.map(children, child => (
                         React.cloneElement(child, {
                             onClick: (e) => this.onClick(e, child.props.onClick),
                         })
                     ))
                 }
-                <Highlight left={this.state.left} width={this.state.width} />
+                <Highlight left={this.state.left} width={`${button_width}%`} />
             </div>
         );
     }

@@ -1,8 +1,9 @@
+import classNames           from 'classnames';
 import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
 import { Tabs }             from 'deriv-components';
 import ServerTime           from 'Utils/server-time';
-import { init, requestWS }         from 'Utils/websocket';
+import { init, requestWS }  from 'Utils/websocket';
 import { AgentProvider }    from 'Components/context/agent-context';
 import {
     localize,
@@ -60,7 +61,7 @@ class App extends Component {
 
     render() {
         const { active_index, parameters } = this.state;
-        const { currency, is_virtual } = this.props.client;
+        const { className, client: { currency, is_virtual } } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
         if (is_virtual || currency !== allowed_currency) {
@@ -69,7 +70,7 @@ class App extends Component {
 
         return (
             <AgentProvider value={this.state.is_agent}>
-                <main className='deriv-p2p'>
+                <main className={classNames('deriv-p2p', className)}>
                     <Tabs onTabItemClick={this.handleTabClick} active_index={active_index} top>
                         {/* TODO [p2p-uncomment] uncomment this when sell is ready */}
                         {/* <div label={localize('Buy / Sell')}> */}

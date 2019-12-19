@@ -7,6 +7,6 @@ export const getMainContentWidth = () => {
 };
 
 export const setMainContentWidth = (is_run_panel_open) => {
-    const width = is_run_panel_open ? 'calc(100vw - 366px)' : '100vw';
+    const width = is_run_panel_open ? 'calc(100vw - 366px)' : 'calc(100vw - 16px)';
     return document.getElementsByClassName('bot')[0].style.setProperty('--bot-content-width', width);
 };

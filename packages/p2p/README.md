@@ -1,5 +1,5 @@
 <h1 align="center">
-  deriv-p2p
+  @deriv/p2p
 </h1>
 
 ## Index
@@ -35,7 +35,7 @@
 3.  **Libary usage:**
 
     ```js
-    import P2P from 'deriv-p2p'
+    import P2P from '@deriv/p2p';
 
     <P2P />
     ```

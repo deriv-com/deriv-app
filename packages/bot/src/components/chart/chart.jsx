@@ -9,9 +9,9 @@ import ControlWidgets from './control-widgets.jsx';
 
 import                     'Assets/sass/chart.scss';
 
-// import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
-// import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
-// import Lazy                  from 'App/Containers/Lazy';
+// import ChartLoader           from 'Components/Elements/chart-loader.jsx';
+// import MarketIsClosedOverlay from 'Components/Elements/market-is-closed-overlay.jsx';
+// import Lazy                  from 'Containers/Lazy';
 // import Digits                from 'Modules/Contract/Components/Digits';
 // import FormLayout            from '../Components/Form/form-layout.jsx';
 // import { symbolChange }      from '../../SmartChart/Helpers/symbol';

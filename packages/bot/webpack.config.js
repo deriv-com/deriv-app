@@ -30,9 +30,10 @@ module.exports = {
     },
     resolve : {
         alias: {
-            Api      : path.resolve(__dirname , 'src', 'services', 'api'),
-            Assets   : path.resolve(__dirname , 'src', 'assets'),
-            Stores   : path.resolve(__dirname , 'src', 'stores'),
+            Api       : path.resolve(__dirname , 'src', 'services', 'api'),
+            Assets    : path.resolve(__dirname , 'src', 'assets'),
+            Components: path.resolve(__dirname , 'src', 'components'),
+            Stores    : path.resolve(__dirname , 'src', 'stores'),
         },
     },
     mode: is_release ? 'production' : 'development',

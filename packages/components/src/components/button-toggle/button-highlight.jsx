@@ -20,7 +20,7 @@ const Highlight = ({ left, width }) => {
 
 Highlight.propTypes = {
     left : PropTypes.number,
-    width: PropTypes.number,
+    width: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
 };
 
 export { Highlight };

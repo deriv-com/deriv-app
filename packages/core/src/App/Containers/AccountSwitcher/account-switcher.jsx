@@ -190,6 +190,19 @@ class AccountSwitcher extends React.Component {
     render() {
         if (!this.props.is_logged_in) return false;
 
+        const total_assets_message_demo = this.props.is_mt5_allowed ?
+            localize('Total assets in your Deriv and DMT5 demo accounts.')
+            : localize('Total assets in your Deriv demo accounts.');
+
+        const total_assets_message_real =
+            (this.props.is_mt5_allowed && this.props.has_any_real_account) ?
+                localize('Total assets in your Deriv and DMT5 real accounts.')
+                : localize('Total assets in your Deriv real accounts.');
+
+        const total_assets_message = this.is_real_account_tab ?
+            total_assets_message_real
+            : total_assets_message_demo;
+
         return (
             <div className='acc-switcher__list' ref={this.setWrapperRef}>
                 <Tabs
@@ -416,10 +429,7 @@ class AccountSwitcher extends React.Component {
                 </div>
                 <div className='acc-switcher__total-subtitle'>
                     <span>
-                        {this.is_real_account_tab
-                            ? localize('Total assets in your Deriv and DMT5 real accounts.')
-                            : localize('Total assets in your Deriv and DMT5 demo accounts.')
-                        }
+                        {total_assets_message}
                     </span>
                 </div>
                 <div className='acc-switcher__separator' />

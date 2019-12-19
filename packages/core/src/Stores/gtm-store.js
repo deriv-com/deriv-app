@@ -13,7 +13,7 @@ import { getMT5AccountType }  from './Helpers/client';
 import { getAppId }           from '../config';
 
 export default class GTMStore extends BaseStore {
-    is_gtm_applicable = /^(16303|16929)$/.test(getAppId());
+    is_gtm_applicable = /^(16303|16929|19111|19112)$/.test(getAppId());
 
     constructor(root_store) {
         super({ root_store });
@@ -33,6 +33,21 @@ export default class GTMStore extends BaseStore {
      */
     @computed
     get common_variables() {
+        const platform = () => {
+            const url    = new URL(window.location.href);
+            const domain = url.hostname;
+            const path   = url.pathname;
+            
+            if (/^(deriv.app|staging.deriv.app|localhost.binary.sx)$/.test(domain)) {
+                if (path === 'bot') {
+                    return 'DBot';
+                } else if (path === 'mt5') {
+                    return 'MT5';
+                }
+                return 'DTrader';
+            }
+            return 'undefined';
+        };
         return {
             language: getLanguage(),
             ...this.root_store.client.is_logged_in && {
@@ -43,6 +58,7 @@ export default class GTMStore extends BaseStore {
             ...this.root_store.ui.is_dark_mode_on && {
                 theme: this.root_store.ui.is_dark_mode_on ? 'dark' : 'light',
             },
+            platform: platform(),
         };
     }
 

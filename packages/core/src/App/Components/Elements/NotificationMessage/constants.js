@@ -3,11 +3,11 @@ export const default_delay = 3000;
 export const max_display_notifications = 3;
 
 export const icon_types = {
-    danger       : 'IconDanger',
-    info         : 'IconInfoBlue',
-    success      : 'IconSuccess',
-    warning      : 'IconWarning',
-    contract_sold: 'IconInfoBlue',
+    danger       : 'IcAlertDanger',
+    info         : 'IcAlertInfo',
+    success      : 'IcAlertSuccess',
+    warning      : 'IcAlertWarning',
+    contract_sold: 'IcAlertInfo',
 };
 
 export const types = {

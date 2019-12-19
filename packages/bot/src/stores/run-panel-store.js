@@ -2,20 +2,13 @@ import {
     observable,
     action,
     reaction,
-    computed,
-}                                     from 'mobx';
-import { localize }                   from 'deriv-translations';
-import { contract_stages }            from '../constants/contract-stage';
+    computed }                         from 'mobx';
+import { localize }                    from 'deriv-translations' ;
+import { contract_stages }             from '../constants/contract-stage';
 import {
     error_types,
-    unrecoverable_errors,
-}                                      from '../constants/messages';
-import {
-    runBot,
-    stopBot,
-    terminateBot,
-}                                      from '../scratch';
-import { hasAllRequiredBlocks }        from '../scratch/utils/workspace';
+    unrecoverable_errors }             from '../constants/messages';
+import DBot                            from '../scratch';
 import { isEnded }                     from '../utils/contract';
 import { observer }                    from '../utils/observer';
 import { setMainContentWidth }         from '../utils/window-size';
@@ -26,6 +19,8 @@ export default class RunPanelStore {
         this.root_store = root_store;
         this.registerCoreReactions();
     }
+
+    run_id = '';
 
     @observable active_index      = 0;
     @observable contract_stage    = contract_stages.NOT_RUNNING;
@@ -69,25 +64,18 @@ export default class RunPanelStore {
 
         this.registerBotListeners();
 
-        if (!hasAllRequiredBlocks()) {
-            this.showErrorMessage(
-                new Error(localize('One or more mandatory blocks are missing from your workspace. ' +
-                'Please add the required block(s) and then try again.'))
-            );
-            return;
-        }
-
         this.is_running = true;
         this.toggleDrawer(true);
+        this.run_id         = `run-${Date.now()}`;
+        
         contract_card.clear();
         this.setContractStage(contract_stages.STARTING);
-
-        runBot();
+        DBot.runBot();
     }
 
     @action.bound
     onStopButtonClick() {
-        stopBot();
+        DBot.stopBot();
 
         this.is_running = false;
 
@@ -251,6 +239,9 @@ export default class RunPanelStore {
             }
             case ('contract.purchase_received'): {
                 this.setContractStage(contract_stages.PURCHASE_RECEIVED);
+
+                // Close transaction-specific popover, if any.
+                this.root_store.transactions.setActiveTransactionId(null);
                 break;
             }
             case ('contract.sold'): {
@@ -284,9 +275,9 @@ export default class RunPanelStore {
         this.showErrorMessage(data);
     }
 
+    @action.bound
     showErrorMessage(data) {
         const { journal } = this.root_store;
-
         journal.onError(data);
         this.setActiveTabIndex(2);
     }
@@ -317,7 +308,7 @@ export default class RunPanelStore {
                         if (loginid && this.is_running) {
                             ui.addNotificationMessage(switch_account_notification);
                         }
-                        terminateBot();
+                        DBot.terminateBot();
                         RunPanelStore.unregisterBotListeners();
                         this.clearStat();
                     },
@@ -342,6 +333,7 @@ export default class RunPanelStore {
         );
     }
 
+    @action.bound
     setContractStage(value) {
         this.contract_stage = value;
     }

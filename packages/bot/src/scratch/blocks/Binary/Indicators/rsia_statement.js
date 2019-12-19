@@ -1,5 +1,4 @@
-import { localize }    from 'deriv-translations';
-import { expectValue } from '../../../shared';
+import { localize } from 'deriv-translations';
 
 Blockly.Blocks.rsia_statement = {
     protected_statements : ['STATEMENT'],
@@ -48,13 +47,10 @@ Blockly.Blocks.rsia_statement = {
 
 Blockly.JavaScript.rsia_statement = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const varName = Blockly.JavaScript.variableDB_.getName(
-        block.getFieldValue('VARIABLE'),
-        Blockly.Variables.NAME_TYPE
-    );
-    const input = expectValue(block.getChildByType('input_list'), 'INPUT_LIST');
-    const period = block.childValueToCode('period', 'PERIOD') || '10';
-
-    const code = `${varName} = Bot.rsia(${input}, ${period});\n`;
+    const var_name = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VARIABLE'), Blockly.Variables.NAME_TYPE);
+    const input    = block.childValueToCode('input_list', 'INPUT_LIST');
+    const period   = block.childValueToCode('period', 'PERIOD');
+    const code     = `${var_name} = Bot.rsia(${input}, ${period});\n`;
+    
     return code;
 };

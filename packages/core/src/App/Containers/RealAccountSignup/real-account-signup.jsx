@@ -1,12 +1,12 @@
 import classNames             from 'classnames';
 import {
+    Icon,
     Button,
     Modal,
     Loading }                 from 'deriv-components';
 import React, { Component }   from 'react';
 import { withRouter }         from 'react-router-dom';
 import { localize, Localize } from 'deriv-translations';
-import Icon                   from 'Assets/icon.jsx';
 import routes                 from 'Constants/routes';
 import { connect }            from 'Stores/connect';
 import AccountWizard          from './account-wizard.jsx';
@@ -20,7 +20,8 @@ const ErrorModal = ({ message, code, openPersonalDetails }) => {
     return (
         <div className='account-wizard--error'>
             <Icon
-                icon='IconDuplicate'
+                icon='IcAccountError'
+                size={115}
             />
             <h1><Localize i18n_default_text='Whoops!' /></h1>
             <p>
@@ -96,7 +97,7 @@ class RealAccountSignup extends Component {
                             onCancel={this.closeModalWithHooks}
                             onSubmit={this.closeModalThenOpenCashier}
                             message={this.props.state_value.success_message}
-                            icon={<Icon type={this.props.state_value.current_currency.toLowerCase()} icon='IconAccountsCurrency' />}
+                            icon={<Icon icon={`IcCurrency-${this.props.state_value.current_currency.toLowerCase()}`} size={120} />}
                             text_submit={localize('Deposit now')}
                             text_cancel={ RealAccountSignup.text_cancel() }
                         />

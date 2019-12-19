@@ -36,8 +36,13 @@ class ProfitTable extends React.Component {
                             website_name,
                         }}
                         components={[
-                            <a key={0} className='link link--orange' rel='noopener noreferrer' target='_blank'
-                               href={urlFor('user/profit_tablews', undefined, undefined, true)} />,
+                            <a
+                                key={0}
+                                className='link link--orange'
+                                rel='noopener noreferrer'
+                                target='_blank'
+                                href={urlFor('user/profit_tablews', undefined, undefined, true)}
+                            />,
                         ]}
                     />
                 ),
@@ -46,19 +51,19 @@ class ProfitTable extends React.Component {
 
     render() {
         const {
-                  component_icon,
-                  currency,
-                  data,
-                  date_from,
-                  date_to,
-                  is_empty,
-                  is_loading,
-                  error,
-                  handleDateChange,
-                  handleScroll,
-                  has_selected_date,
-                  totals,
-              } = this.props;
+            component_icon,
+            currency,
+            data,
+            date_from,
+            date_to,
+            is_empty,
+            is_loading,
+            error,
+            handleDateChange,
+            handleScroll,
+            has_selected_date,
+            totals,
+        } = this.props;
         if (error) return <p>{error}</p>;
 
         const filter_component = (

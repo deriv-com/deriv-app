@@ -19,12 +19,17 @@ import AccountWrapper           from './account-switcher-account-wrapper.jsx';
 import ButtonAddAccount         from './account-switcher-add-account-button.jsx';
 
 class AccountSwitcher extends React.Component {
-    state = {
-        is_demo_deriv_visible: true,
-        is_demo_dmt5_visible : true,
-        is_real_deriv_visible: true,
-        is_real_dmt5_visible : true,
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            active_tab_index     : props.is_virtual ? 1 : 0,
+            is_demo_deriv_visible: true,
+            is_demo_dmt5_visible : true,
+            is_real_deriv_visible: true,
+            is_real_dmt5_visible : true,
+        };
+    }
 
     toggleVisibility = (section) => {
         this.setState({ [`is_${section}_visible`]: !this.state[`is_${section}_visible`] });
@@ -33,6 +38,10 @@ class AccountSwitcher extends React.Component {
     setWrapperRef = (node) => {
         this.wrapper_ref = node;
     };
+
+    updateAccountTabIndex = (index) => {
+        this.setState({ active_tab_index: index });
+    }
 
     handleClickOutside = (event) => {
         const accounts_toggle_btn = !(event.target.classList.contains('acc-info'));
@@ -206,9 +215,9 @@ class AccountSwitcher extends React.Component {
         return (
             <div className='acc-switcher__list' ref={this.setWrapperRef}>
                 <Tabs
-                    active_index={this.props.active_tab_index}
+                    active_index={this.state.active_tab_index}
                     className='acc-switcher__list-tabs'
-                    onTabItemClick={this.props.updateAccountTabIndex}
+                    onTabItemClick={this.updateAccountTabIndex}
                     top
                 >
                     {/* TODO: De-couple and refactor demo and real accounts groups
@@ -446,7 +455,6 @@ AccountSwitcher.propTypes = {
     account_list          : PropTypes.array,
     account_loginid       : PropTypes.string,
     accounts              : PropTypes.object,
-    active_tab_index      : PropTypes.number,
     display               : PropTypes.string,
     has_any_real_account  : PropTypes.bool,
     has_fiat              : PropTypes.bool,
@@ -463,7 +471,6 @@ AccountSwitcher.propTypes = {
     toggleAccountsDialog  : PropTypes.func,
     togglePositionsDrawer : PropTypes.func,
     toggleSetCurrencyModal: PropTypes.func,
-    updateAccountTabIndex : PropTypes.func,
     updateMt5LoginList    : PropTypes.func,
 };
 
@@ -488,10 +495,8 @@ const account_switcher = withRouter(connect(
         switchAccount            : client.switchAccount,
         logoutClient             : client.logout,
         updateMt5LoginList       : client.updateMt5LoginList,
-        active_tab_index         : ui.account_switcher_tab_index,
         is_positions_drawer_on   : ui.is_positions_drawer_on,
         openRealAccountSignup    : ui.openRealAccountSignup,
-        updateAccountTabIndex    : ui.setAccountSwitcherTabIndex,
         toggleAccountsDialog     : ui.toggleAccountsDialog,
         togglePositionsDrawer    : ui.togglePositionsDrawer,
         toggleSetCurrencyModal   : ui.toggleSetCurrencyModal,

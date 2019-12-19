@@ -103,9 +103,6 @@ export default class UIStore extends BaseStore {
         error_message     : '',
     };
 
-    // account switcher tab states
-    @observable account_switcher_tab_index = 0;
-
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -211,11 +208,6 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleAccountsDialog() {
         this.is_accounts_switcher_on = !this.is_accounts_switcher_on;
-    }
-
-    @action.bound
-    setAccountSwitcherTabIndex(index) {
-        this.account_switcher_tab_index = index;
     }
 
     @action.bound

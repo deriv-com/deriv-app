@@ -109,12 +109,13 @@ export default class FlyoutStore {
         block.moveBy(1,1);
 
         // Use original Blockly flyout functionality to create block on drag.
-        const blockly_flyout = Blockly.derivWorkspace.toolbox_.flyout_;
+        const blockly_flyout = Blockly.derivWorkspace.getToolbox().flyout_;
+        const block_svg_root = block.getSvgRoot();
 
         this.block_listeners.push(
-            Blockly.bindEventWithChecks_(block.getSvgRoot(), 'mousedown', null, (event) => {
-                blockly_flyout.blockMouseDown_(block)(event);
-            })
+            Blockly.bindEventWithChecks_(block_svg_root, 'mousedown', null, (event) => blockly_flyout.blockMouseDown_(block)(event)),
+            Blockly.bindEvent_(block_svg_root, 'mouseout', block, block.removeSelect),
+            Blockly.bindEvent_(block_svg_root, 'mouseover', block, block.addSelect),
         );
 
         this.block_workspaces.push(workspace);

@@ -7,16 +7,16 @@ import { expectInitArg, expectTradeOptions } from 'TradeEngine/utils/sanitize';
 import createError                           from 'Utils/error';
 import { durationToSecond }                  from 'Utils/tools';
 import { observer as globalObserver }        from 'Utils/observer';
-import Balance                               from './Balance';
-import OpenContract                          from './OpenContract';
-import Proposal                              from './Proposal';
-import Purchase                              from './Purchase';
-import Sell                                  from './Sell';
-import { start }                             from './state/actions';
-import * as constants                        from './state/constants';
-import rootReducer                           from './state/reducers';
-import Ticks                                 from './Ticks';
-import Total                                 from './Total';
+import Balance                               from 'TradeEngine/trade/Balance';
+import OpenContract                          from 'TradeEngine/trade/OpenContract';
+import Proposal                              from 'TradeEngine/trade/Proposal';
+import Purchase                              from 'TradeEngine/trade/Purchase';
+import Sell                                  from 'TradeEngine/trade/Sell';
+import { start }                             from 'TradeEngine/trade/state/actions';
+import * as constants                        from 'TradeEngine/trade/state/constants';
+import rootReducer                           from 'TradeEngine/trade/state/reducers';
+import Ticks                                 from 'TradeEngine/trade/Ticks';
+import Total                                 from 'TradeEngine/trade/Total';
 
 const watchBefore = store =>
     watchScope({

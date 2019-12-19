@@ -3,8 +3,8 @@ import {
     observable,
     reaction,
 }                            from 'mobx';
+import { onWorkspaceResize } from 'Scratch/utils/workspace';
 import { tabs_title }        from 'Constants/bot-contents';
-import { onWorkspaceResize } from '../scratch/utils/workspace';
 
 export default class MainContentStore {
     constructor(root_store) {

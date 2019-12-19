@@ -1,5 +1,5 @@
 import { expect }                     from 'chai';
-import { runAndGetResult }            from '../../tools';
+import { runAndGetResult }            from 'TradeEngine/__tests__/tools';
 import { observer as globalObserver } from 'Utils/observer';
 
 describe('Misc. tools', () => {

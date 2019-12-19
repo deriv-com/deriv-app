@@ -1,17 +1,17 @@
-import ChartStore         from './chart-store';
-import ContractCardStore  from './contract-card-store';
-import FlyoutStore        from './flyout-store';
-import FlyoutHelpStore    from './flyout-help-store';
-import GoogleDriveStore   from './google-drive-store';
-import JournalStore       from './journal-store';
-import RunPanelStore      from './run-panel-store';
-import SaveLoadModalStore from './saveload-modal-store';
-import ScratchStore       from './scratch-store';
-import SummaryStore       from './summary-store';
-import ToolbarStore       from './toolbar-store';
-import TransactionsStore  from './transactions-store';
-import QuickStrategyStore from './quick-strategy-store';
-import MainContentStore   from './main-content-store';
+import ChartStore         from 'Stores/chart-store';
+import ContractCardStore  from 'Stores/contract-card-store';
+import FlyoutStore        from 'Stores/flyout-store';
+import FlyoutHelpStore    from 'Stores/flyout-help-store';
+import GoogleDriveStore   from 'Stores/google-drive-store';
+import JournalStore       from 'Stores/journal-store';
+import RunPanelStore      from 'Stores/run-panel-store';
+import SaveLoadModalStore from 'Stores/saveload-modal-store';
+import ScratchStore       from 'Stores/scratch-store';
+import SummaryStore       from 'Stores/summary-store';
+import ToolbarStore       from 'Stores/toolbar-store';
+import TransactionsStore  from 'Stores/transactions-store';
+import QuickStrategyStore from 'Stores/quick-strategy-store';
+import MainContentStore   from 'Stores/main-content-store';
 
 export default class RootStore {
     constructor(core, ws) {

@@ -1,9 +1,9 @@
 import { localize }                     from 'deriv-translations';
-import { getLanguage }                  from '../lang/lang';
-import { observer as globalObserver }   from '../observer';
-import { trackAndEmitError }            from '../tools';
+import { getLanguage }                  from 'Utils/lang/lang';
+import { observer as globalObserver }   from 'Utils/observer';
+import { trackAndEmitError }            from 'Utils/tools';
 import config                           from 'Constants';
-import { loadWorkspace, loadBlocks }    from '../../scratch';
+import { loadWorkspace, loadBlocks }    from 'Scratch';
 
 /* eslint-disable */
 class GoogleDrive {

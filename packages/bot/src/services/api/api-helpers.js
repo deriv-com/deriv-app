@@ -1,7 +1,7 @@
 import { reaction }   from 'mobx';
-import TradingTimes  from './trading-times';
-import ContractsFor  from './contracts-for';
-import ActiveSymbols from './active-symbols';
+import TradingTimes  from 'Api/trading-times';
+import ContractsFor  from 'Api/contracts-for';
+import ActiveSymbols from 'Api/active-symbols';
 
 class ApiHelpers {
     static singleton = null;

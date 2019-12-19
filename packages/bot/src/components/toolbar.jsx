@@ -3,20 +3,20 @@ import {
     Icon,
     Input,
     Popover,
-}                    from 'deriv-components';
+}                     from 'deriv-components';
 import {
     Field,
     Formik,
     Form,
-}                    from 'formik';
-import PropTypes     from 'prop-types';
-import React         from 'react';
-import { localize }  from 'deriv-translations';
+}                     from 'formik';
+import PropTypes      from 'prop-types';
+import React          from 'react';
+import { localize }   from 'deriv-translations';
 import { connect }    from 'Stores/connect';
 import { tabs_title } from 'Constants/bot-contents';
-import Dialog        from './dialog.jsx';
-import SaveLoadModal  from './saveload-modal.jsx';
-import TradeAnimation from './trade-animation.jsx';
+import Dialog         from 'Components/dialog.jsx';
+import SaveLoadModal  from 'Components/saveload-modal.jsx';
+import TradeAnimation from 'Components/trade-animation.jsx';
 import                'Assets/sass/scratch/toolbar.scss';
 
 const SearchBox = ({

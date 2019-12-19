@@ -2,7 +2,7 @@ import { getLast }                    from 'binary-utils';
 import { localize }                   from 'deriv-translations';
 import { getDirection, getLastDigit } from 'TradeEngine/utils/helpers';
 import { expectPositiveInteger }      from 'TradeEngine/utils/sanitize';
-import * as constants                 from './state/constants';
+import * as constants                 from 'TradeEngine/trade/state/constants';
 
 let tickListenerKey;
 

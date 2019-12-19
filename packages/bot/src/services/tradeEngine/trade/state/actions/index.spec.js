@@ -1,4 +1,4 @@
-import * as constants from '../constants';
+import * as constants from 'TradeEngine/trade/state/constants';
 import * as actions from '.';
 
 const getDispatchFromAction = ({ action, state }) => {

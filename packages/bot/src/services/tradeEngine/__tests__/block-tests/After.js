@@ -1,4 +1,4 @@
-import { runAndGetResult, expectResultTypes, parts } from '../tools';
+import { runAndGetResult, expectResultTypes, parts } from 'TradeEngine/__tests__/tools';
 
 describe('After Purchase Blocks', () => {
     let result;

@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { generateLiveApiInstance } from './appId';
+import { generateLiveApiInstance } from 'Api/appId';
 
 export default async function isEuCountry() {
     const api = generateLiveApiInstance();

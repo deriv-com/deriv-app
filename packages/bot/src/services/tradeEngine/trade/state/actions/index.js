@@ -1,4 +1,4 @@
-import * as constants from '../constants';
+import * as constants from 'TradeEngine/trade/state/constants';
 
 const dispatchIfScopeIs = ({ dispatch, getState, data, scope }) => {
     const { scope: currentScope } = getState();

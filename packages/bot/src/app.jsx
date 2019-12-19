@@ -1,7 +1,9 @@
 import { Provider }         from 'mobx-react';
 import React                from 'react';
 /* eslint import/first: 0 */
-import                           './public-path'; // Leave this here! OK boss!
+import                           'Src/public-path'; // Leave this here! OK boss!
+import DBot                 from 'Scratch';
+import GTM                  from 'Utils/gtm';
 import ApiHelpers           from 'Api/api-helpers';
 import ServerTime           from 'Api/server_time';
 import RootStore            from 'Stores';
@@ -12,8 +14,6 @@ import NotificationMessages from 'Components/notification-messages.jsx';
 import QuickStrategy        from 'Components/quick-strategy.jsx';
 import RunPanel             from 'Components/run-panel.jsx';
 import Toolbar              from 'Components/toolbar.jsx';
-import DBot                 from './scratch';
-import GTM                  from './utils/gtm';
 import                      'Assets/sass/app.scss';
 
 class App extends React.Component {

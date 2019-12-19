@@ -1,3 +1,3 @@
-import Bot from './app.jsx';
+import Bot from 'Src/app.jsx';
 
 export default Bot;

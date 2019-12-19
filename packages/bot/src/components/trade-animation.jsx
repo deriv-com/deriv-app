@@ -2,7 +2,7 @@ import classNames            from 'classnames';
 import React                 from 'react';
 import PropTypes             from 'prop-types';
 import { connect }           from 'Stores/connect';
-import ContractResultOverlay from './contract-result-overlay.jsx';
+import ContractResultOverlay from 'Components/contract-result-overlay.jsx';
 import 'Assets/sass/trade-animation.scss';
 
 const CircularWrapper = ({ className }) => (

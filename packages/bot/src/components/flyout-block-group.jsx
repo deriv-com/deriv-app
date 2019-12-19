@@ -3,7 +3,7 @@ import { Button }           from 'deriv-components';
 import React                from 'react';
 import { PropTypes }        from 'prop-types';
 import { localize }         from 'deriv-translations';
-import FlyoutBlock          from './flyout-block.jsx';
+import FlyoutBlock          from 'Components/flyout-block.jsx';
 
 const FlyoutBlockGroup = ({
     onInfoClick,

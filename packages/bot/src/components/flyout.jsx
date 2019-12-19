@@ -2,10 +2,10 @@ import classNames           from 'classnames';
 import React                from 'react';
 import PropTypes            from 'prop-types';
 import { localize }         from 'deriv-translations';
+import HelpBase             from 'Scratch/help-content/flyout-help-base.jsx';
+import { config }           from 'Scratch/help-content/help-content.config';
 import { connect }          from 'Stores/connect';
-import FlyoutBlockGroup     from './flyout-block-group.jsx';
-import HelpBase             from '../scratch/help-content/flyout-help-base.jsx';
-import { config }           from '../scratch/help-content/help-content.config';
+import FlyoutBlockGroup     from 'Components/flyout-block-group.jsx';
 import                           'Assets/sass/scratch/flyout.scss';
 
 class Flyout extends React.PureComponent {

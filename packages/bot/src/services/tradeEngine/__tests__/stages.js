@@ -1,4 +1,4 @@
-import { expectReturnTrue, parts } from './tools';
+import { expectReturnTrue, parts } from 'TradeEngine/__tests__/tools';
 
 expectReturnTrue(
     'Stage 1 - Before Purchase',

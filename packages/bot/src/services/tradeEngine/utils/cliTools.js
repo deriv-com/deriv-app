@@ -1,6 +1,6 @@
 import TicksService                from 'Api/ticksService';
 import { generateLiveApiInstance } from 'Api/appId';
-import Interpreter                 from './interpreter';
+import Interpreter                 from 'TradeEngine/utils/interpreter';
 import Observer                    from 'Utils/observer';
 
 export const createScope = () => {

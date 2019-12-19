@@ -3,8 +3,8 @@ import {
     action }                 from 'mobx';
 import { localize }          from 'deriv-translations';
 import { delayCallbackByMs } from 'Utils/tools';
+import { scrollWorkspace }   from 'Scratch/utils';
 import { tabs_title }        from 'Constants/bot-contents';
-import { scrollWorkspace }   from '../scratch/utils';
 
 export default class ToolbarStore {
     constructor(root_store) {

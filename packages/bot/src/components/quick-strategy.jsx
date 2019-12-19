@@ -17,7 +17,7 @@ import {
 import { localize }  from 'deriv-translations';
 import { connect }   from 'Stores/connect';
 import config        from 'Constants/index';
-import IconTradeType from './icon-trade-types.jsx';
+import IconTradeType from 'Components/icon-trade-types.jsx';
 import               'Assets/sass/quick-strategy.scss';
 
 const MarketOption = ({ symbol }) => (

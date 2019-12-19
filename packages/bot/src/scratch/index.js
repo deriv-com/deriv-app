@@ -1,8 +1,8 @@
 import { localize }                   from 'deriv-translations';
+import config                         from 'Constants';
 import ScratchStore                   from 'Stores/scratch-store';
 import                                    './blocks';
 import                                    './hooks';
-import config                         from 'Constants';
 import {
     hasAllRequiredBlocks,
     updateDisabledBlocks }            from './utils';

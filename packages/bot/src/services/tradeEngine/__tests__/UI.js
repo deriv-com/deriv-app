@@ -1,4 +1,4 @@
-import { expectReturnTrue } from './tools';
+import { expectReturnTrue } from 'TradeEngine/__tests__/tools';
 
 expectReturnTrue(
     'UI Generated Code',

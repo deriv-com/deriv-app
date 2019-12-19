@@ -8,11 +8,11 @@ import { isEnded }                     from 'Utils/contract';
 import { observer }                    from 'Utils/observer';
 import { setMainContentWidth }         from 'Utils/window-size';
 import { switch_account_notification } from 'Utils/notifications/bot-notifications';
+import DBot                            from 'Scratch';
 import {
     error_types,
     unrecoverable_errors }             from 'Constants/messages';
 import { contract_stages }             from 'Constants/contract-stage';
-import DBot                            from '../scratch';
 
 export default class RunPanelStore {
     constructor(root_store) {

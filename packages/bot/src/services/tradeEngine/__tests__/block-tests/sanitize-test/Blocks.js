@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { run } from '../../tools';
+import { run } from 'TradeEngine/__tests__/tools';
 
 describe('Index handling', () => {
     let error;

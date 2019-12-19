@@ -6,7 +6,7 @@ import ema, { exponentialMovingAverageArray as emaa } from '@binary-com/binary-i
 import sma, { simpleMovingAverageArray as smaa } from '@binary-com/binary-indicators/lib/simpleMovingAverage';
 import macda from '@binary-com/binary-indicators/lib/macd';
 
-import { runAndGetResult } from '../tools';
+import { runAndGetResult } from 'TradeEngine/__tests__/tools';
 
 const periods = 12;
 

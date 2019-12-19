@@ -1,4 +1,4 @@
-import { expectReturnTrue, parts, init, start } from './tools';
+import { expectReturnTrue, parts, init, start } from 'TradeEngine/__tests__/tools';
 
 expectReturnTrue(
     'Main Blocks - Restart On Error',

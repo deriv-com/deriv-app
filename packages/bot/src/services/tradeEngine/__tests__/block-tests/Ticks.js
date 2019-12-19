@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { runAndGetResult, expectResultTypes } from '../tools';
+import { runAndGetResult, expectResultTypes } from 'TradeEngine/__tests__/tools';
 
 describe('Many getTicks in a row', () => {
     let result;

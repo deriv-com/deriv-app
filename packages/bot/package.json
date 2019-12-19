@@ -15,11 +15,13 @@
     "moduleNameMapper": {
       "^Api(.*)$"        : "<rootDir>/src/services/api$1",
       "^TradeEngine(.*)$": "<rootDir>/src/services/tradeEngine$1",
-      "^Assets(.*)$": "<rootDir>/src/assets$1",
-      "^Components(.*)$": "<rootDir>/src/components$1",
-      "^Constants(.*)$": "<rootDir>/src/constants$1",
-      "^Stores(.*)$": "<rootDir>/src/Stores$1",
-      "^Utils(.*)$": "<rootDir>/src/utils$1"
+      "^Assets(.*)$"     : "<rootDir>/src/assets$1",
+      "^Components(.*)$" : "<rootDir>/src/components$1",
+      "^Constants(.*)$"  : "<rootDir>/src/constants$1",
+      "^Scratch(.*)$"    : "<rootDir>/src/scratch$1",
+      "^Stores(.*)$"     : "<rootDir>/src/stores$1",
+      "^Utils(.*)$"      : "<rootDir>/src/utils$1",
+      "^Src(.*)$"        : "<rootDir>/src/"
     }
   },
   "scripts": {

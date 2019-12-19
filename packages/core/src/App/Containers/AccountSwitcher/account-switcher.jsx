@@ -244,7 +244,11 @@ class AccountSwitcher extends React.Component {
                                         </div>
                                         {this.has_add_button &&
                                         <ButtonAddAccount
-                                            has_set_currency={this.has_set_currency}
+                                            has_set_currency={
+                                                !this.props.has_any_real_account ?
+                                                    true
+                                                    : this.has_set_currency
+                                            }
                                             onClick={
                                                 this.can_upgrade ?
                                                     this.onClickUpgrade
@@ -257,7 +261,7 @@ class AccountSwitcher extends React.Component {
                                         }
                                     </AccountWrapper>
                                 </div>
-                                {this.props.is_mt5_allowed &&
+                                {(this.props.is_mt5_allowed && this.props.has_any_real_account) &&
                                     <div>
                                         <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                                         <AccountWrapper
@@ -434,6 +438,7 @@ AccountSwitcher.propTypes = {
     accounts              : PropTypes.object,
     active_tab_index      : PropTypes.number,
     display               : PropTypes.string,
+    has_any_real_account  : PropTypes.bool,
     has_fiat              : PropTypes.bool,
     has_mt5_login         : PropTypes.bool,
     is_loading_mt5        : PropTypes.bool,
@@ -466,6 +471,7 @@ const account_switcher = withRouter(connect(
         is_logged_in             : client.is_logged_in,
         is_mt5_allowed           : client.is_mt5_allowed,
         is_virtual               : client.is_virtual,
+        has_any_real_account     : client.has_any_real_account,
         landing_company_shortcode: client.landing_company_shortcode,
         mt5_login_list           : client.mt5_login_list,
         obj_total_balance        : client.obj_total_balance,

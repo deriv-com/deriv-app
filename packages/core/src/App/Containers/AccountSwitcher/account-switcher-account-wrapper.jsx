@@ -17,7 +17,7 @@ const AccountWrapper = ({
             <span className='acc-switcher__list-title'>
                 {header}
             </span>
-            <Icon icon='IcChevronDown' className='acc-info__select-arrow' />
+            <Icon icon='IcChevronDown' className='acc-info__select-arrow acc-info__select-arrow--invert' />
         </div>
         {is_visible &&
             <React.Fragment>

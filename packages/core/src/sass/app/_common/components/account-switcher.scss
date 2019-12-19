@@ -73,6 +73,10 @@
         transform-origin: 50% 45%;
         transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
         @extend %inline-icon;
+
+        &--invert {
+            transform: rotate(180deg);
+        }
     }
     &:hover:not(.show) {
         background: var(--state-hover);
@@ -89,6 +93,9 @@
     &--show {
         .acc-info__select-arrow {
             transform: rotate(180deg);
+        }
+        .acc-info__select-arrow--invert {
+            transform: rotate(0deg);
         }
     }
     &__button {

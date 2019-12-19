@@ -3,14 +3,18 @@ import PropTypes                from 'prop-types';
 import React                    from 'react';
 import { Icon, Money }          from 'deriv-components';
 import CurrencyUtils            from 'deriv-shared/utils/currency';
-import ContractCardItem         from 'App/Components/Elements/ContractDrawer/contract-card-item.jsx';
+import ContractCardBody         from 'App/Components/Elements/ContractCard/contract-card-body.jsx';
+import ContractCardItem         from 'App/Components/Elements/ContractCard/contract-card-item.jsx';
 import { localize }             from 'deriv-translations';
 import { getLimitOrderAmount }  from 'Stores/Modules/Contract/Helpers/limit-orders';
 import { getIndicativePrice }   from 'Stores/Modules/Contract/Helpers/logic';
-import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 
-export const MultiplierContractCard = ({
-    contract_info: {
+const MultiplierCardBody = ({
+    contract_info,
+    currency,
+    status,
+}) => {
+    const {
         buy_price,
         deal_cancellation: {
             ask_price: deal_cancellation_price,
@@ -19,14 +23,12 @@ export const MultiplierContractCard = ({
         profit,
         multiplier,
         limit_order,
-    },
-    currency,
-    status,
-}) => {
+    } = contract_info;
+
     const { take_profit, stop_loss } = getLimitOrderAmount(limit_order);
 
     return (
-        <>
+        <ContractCardBody>
             <ContractCardItem header={localize('Stake:')}>
                 <Money amount={buy_price - deal_cancellation_price} currency={currency} />
             </ContractCardItem>
@@ -75,23 +77,22 @@ export const MultiplierContractCard = ({
                     <strong>-</strong>
                 }
             </ContractCardItem>
-        </>
+        </ContractCardBody>
     );
 };
 
-const ContractDetailsCardBody = ({
+const CardBody = ({
     contract_info,
     currency,
+    is_multiplier,
     status,
 }) => {
     const indicative = getIndicativePrice(contract_info);
     const { buy_price, is_sold, sell_price, payout, profit } = contract_info;
 
-    const is_multiplier = isMultiplierContract(contract_info.contract_type);
-
     if (is_multiplier) {
         return (
-            <MultiplierContractCard
+            <MultiplierCardBody
                 contract_info={contract_info}
                 currency={currency}
                 status={status}
@@ -100,7 +101,7 @@ const ContractDetailsCardBody = ({
     }
 
     return (
-        <>
+        <ContractCardBody>
             <ContractCardItem
                 header={is_sold ? localize('Profit/Loss') : localize('Potential profit/loss:')}
                 is_crypto={CurrencyUtils.isCryptocurrency(currency)}
@@ -136,14 +137,15 @@ const ContractDetailsCardBody = ({
             <ContractCardItem header={localize('Potential payout:')}>
                 <Money currency={currency} amount={payout} />
             </ContractCardItem>
-        </>
+        </ContractCardBody>
     );
 };
 
-ContractDetailsCardBody.propTypes = {
+CardBody.propTypes = {
     contract_info: PropTypes.object,
     currency     : PropTypes.string,
+    is_multiplier: PropTypes.bool,
     status       : PropTypes.string,
 };
 
-export default ContractDetailsCardBody;
+export default CardBody;

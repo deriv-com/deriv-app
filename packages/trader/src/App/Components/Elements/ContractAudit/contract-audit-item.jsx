@@ -35,8 +35,8 @@ const ContractAuditItem = ({
         </div>
         {timestamp &&
             <div className='contract-audit__timestamp'>
-                <span>{formatDate(timestamp)}</span>
-                <span>{formatTime(timestamp)}</span>
+                <span className='contract-audit__timestamp-value'>{formatDate(timestamp)}</span>
+                <span className='contract-audit__timestamp-value'>{formatTime(timestamp)}</span>
             </div>
         }
     </div>

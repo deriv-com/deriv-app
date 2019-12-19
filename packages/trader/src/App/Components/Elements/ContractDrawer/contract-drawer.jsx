@@ -8,10 +8,6 @@ import routes                   from 'Constants/routes';
 import ContractAudit            from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader }  from 'App/Components/Elements/ContentLoader';
 import {
-    ContractDetailsCardBody,
-    ContractDetailsCardFooter,
-    ContractDetailsCardHeader } from 'Modules/Contract/Components/ContractDetailsCard';
-import {
     getDurationPeriod,
     getDurationTime,
     getDurationUnitText }       from 'Stores/Modules/Portfolio/Helpers/details';
@@ -19,10 +15,7 @@ import {
     getEndTime,
     isUserSold     }            from 'Stores/Modules/Contract/Helpers/logic';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
-import ContractCardBody         from './contract-card-body.jsx';
-import ContractCardFooter       from './contract-card-footer.jsx';
-import ContractCardHeader       from './contract-card-header.jsx';
-import ContractCard             from './contract-card.jsx';
+import ContractDrawerCard       from './contract-drawer-card.jsx';
 
 class ContractDrawer extends Component {
     state = {
@@ -41,50 +34,35 @@ class ContractDrawer extends Component {
             currency,
             exit_tick_display_value,
             is_sold,
-            profit,
         } = this.props.contract_info;
+    
         const {
             contract_info,
             is_dark_theme,
             is_sell_requested,
-            is_valid_to_cancel,
             onClickCancel,
             onClickSell,
         } = this.props;
-        const exit_spot = isUserSold(contract_info) && !isMultiplierContract(contract_type) ? '-' : exit_tick_display_value;
+
+        const is_multiplier = isMultiplierContract(contract_type);
+        const exit_spot     = isUserSold(contract_info) && !is_multiplier ? '-' : exit_tick_display_value;
 
         return (
             <React.Fragment>
-                <ContractCard
+                <ContractDrawerCard
                     contract_info={contract_info}
-                    profit_loss={+profit}
-                    is_sold={!!(is_sold)}
-                >
-                    <ContractCardHeader>
-                        <ContractDetailsCardHeader contract_info={contract_info} />
-                    </ContractCardHeader>
-                    <ContractCardBody>
-                        <ContractDetailsCardBody
-                            currency={currency}
-                            contract_info={contract_info}
-                            status={this.props.status}
-                        />
-                    </ContractCardBody>
-                    <ContractCardFooter>
-                        <ContractDetailsCardFooter
-                            contract_info={contract_info}
-                            is_sell_requested={is_sell_requested}
-                            is_valid_to_cancel={is_valid_to_cancel}
-                            onClickCancel={onClickCancel}
-                            onClickSell={onClickSell}
-                        />
-                    </ContractCardFooter>
-                </ContractCard>
+                    currency={currency}
+                    is_multiplier={is_multiplier}
+                    is_sell_requested={is_sell_requested}
+                    onClickCancel={onClickCancel}
+                    onClickSell={onClickSell}
+                    status={status}
+                />
                 {!!(is_sold) &&
                 <ContractAudit
                     contract_info={contract_info}
                     contract_end_time={getEndTime(contract_info)}
-                    is_dark_theme={is_dark_theme}
+                    is_multiplier={is_multiplier}
                     is_open={true}
                     is_shade_visible={this.handleShade}
                     duration={getDurationTime(contract_info)}
@@ -149,7 +127,6 @@ class ContractDrawer extends Component {
 
 ContractDrawer.propTypes = {
     contract_info    : PropTypes.object,
-    is_dark_theme    : PropTypes.bool,
     is_from_reports  : PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickSell      : PropTypes.func,

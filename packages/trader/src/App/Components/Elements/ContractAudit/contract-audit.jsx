@@ -9,12 +9,19 @@ class ContractAudit extends React.PureComponent {
     onClick = (index) => {
         if (index) {
             // TODO: add history API call
-            console.log('hello', index);
         }
     }
 
     render() {
         if (!this.props.has_result) return null;
+
+        if (!this.props.is_multiplier) {
+            return (
+                <div className='contract-audit__wrapper'>
+                    <ContractDetails {...this.props} />
+                </div>
+            );
+        }
 
         return (
             <div className='contract-audit__wrapper'>

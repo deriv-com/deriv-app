@@ -1,6 +1,6 @@
 import classNames                     from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
-import { VariableSizeList as List }      from 'react-window';
+import { VariableSizeList as List }   from 'react-window';
 import { ThemedScrollbars }           from 'deriv-components';
 import PropTypes                      from 'prop-types';
 import React, { useCallback }         from 'react';

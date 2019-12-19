@@ -178,10 +178,10 @@ const ModalContent = () => (
 );
 
 const CompareAccountsModal = ({
-    toggleCompareAccounts,
     disableApp,
     enableApp,
     is_compare_accounts_visible,
+    toggleCompareAccounts,
 }) => (
     <div className='mt5-compare-accounts-modal__wrapper'>
         <Button

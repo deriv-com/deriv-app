@@ -75,7 +75,8 @@ class ProfitTable extends React.Component {
                 />
             </React.Fragment>
         );
-        const columns          = getProfitTableColumnsTemplate(currency, data.length);
+
+        const columns = getProfitTableColumnsTemplate(currency, data.length);
 
         return (
             <React.Fragment>

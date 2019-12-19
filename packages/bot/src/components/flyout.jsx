@@ -19,6 +19,7 @@ class Flyout extends React.PureComponent {
 
     render() {
         const {
+            pushDataLayer,
             is_help_content,
             is_search_flyout,
             flyout_content,
@@ -28,6 +29,8 @@ class Flyout extends React.PureComponent {
             setHelpContent } = this.props;
         const total_result   = Object.keys(flyout_content).length;
         const is_empty       = total_result === 0;
+        
+        if (is_visible && is_search_flyout) pushDataLayer({ event: 'dbot_search_results', value: true });
 
         return (
             <div
@@ -159,7 +162,8 @@ Flyout.propTypes = {
     setHelpContent  : PropTypes.func,
 };
 
-export default connect(({ flyout, flyout_help }) => ({
+export default connect(({ flyout, flyout_help, gtm }) => ({
+    pushDataLayer   : gtm.pushDataLayer,
     flyout_content  : flyout.flyout_content,
     flyout_width    : flyout.flyout_width,
     is_help_content : flyout.is_help_content,

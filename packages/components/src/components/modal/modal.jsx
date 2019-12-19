@@ -164,15 +164,16 @@ Modal.defaultProps = {
 };
 
 Modal.propTypes = {
-    children      : PropTypes.node,
-    className     : PropTypes.string,
-    has_close_icon: PropTypes.bool,
-    header        : PropTypes.node,
-    height        : PropTypes.string,
-    id            : PropTypes.string,
-    is_open       : PropTypes.bool,
-    small         : PropTypes.bool,
-    title         : PropTypes.oneOfType([
+    children                  : PropTypes.node,
+    className                 : PropTypes.string,
+    has_close_icon            : PropTypes.bool,
+    header                    : PropTypes.node,
+    height                    : PropTypes.string,
+    id                        : PropTypes.string,
+    is_closed_on_outside_click: PropTypes.bool,
+    is_open                   : PropTypes.bool,
+    small                     : PropTypes.bool,
+    title                     : PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
     ]),

@@ -28,8 +28,11 @@ const AccountWrapper = ({
 );
 
 AccountWrapper.propTypes = {
-    children        : PropTypes.node,
-    header          : PropTypes.string,
+    children: PropTypes.node,
+    header  : PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.string,
+    ]),
     is_visible      : PropTypes.bool,
     toggleVisibility: PropTypes.func,
 };

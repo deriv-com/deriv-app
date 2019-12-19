@@ -13,7 +13,8 @@
       "Misc.js"
     ],
     "moduleNameMapper": {
-      "^Api(.*)$": "<rootDir>/src/services/api$1"
+      "^Api(.*)$"   : "<rootDir>/src/services/api$1",
+      "^Stores(.*)$": "<rootDir>/src/Stores$1"
     }
   },
   "scripts": {

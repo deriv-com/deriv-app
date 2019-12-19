@@ -1,7 +1,7 @@
 import { localize }          from 'deriv-translations';
 import { setBlockTextColor } from '../../../utils';
 
-// import ScratchStore          from '../../../../stores/scratch-store';
+// import ScratchStore          from 'Stores/scratch-store';
 
 Blockly.Blocks.tick_analysis = {
     init() {

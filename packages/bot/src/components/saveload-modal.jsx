@@ -14,7 +14,7 @@ import {
     Field,
 }                       from 'formik';
 import { localize }     from 'deriv-translations';
-import { connect }      from '../stores/connect';
+import { connect }      from 'Stores/connect';
 import '../assets/sass/google-drive.scss';
 import '../assets/sass/saveload-modal.scss';
 

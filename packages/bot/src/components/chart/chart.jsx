@@ -4,8 +4,8 @@ import {
     ChartTitle,
     SmartChart,
 }                     from 'smartcharts-beta';
+import { connect }    from 'Stores/connect';
 import ControlWidgets from './control-widgets.jsx';
-import { connect }    from '../../stores/connect';
 
 import                     '../../assets/sass/chart.scss';
 

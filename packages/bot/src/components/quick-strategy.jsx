@@ -15,8 +15,8 @@ import {
     Field,
 }                           from 'formik';
 import { localize }         from 'deriv-translations';
+import { connect }          from 'Stores/connect';
 import IconTradeType        from './icon-trade-types.jsx';
-import { connect }          from '../stores/connect';
 import config               from '../constants/index';
 import '../assets/sass/quick-strategy.scss';
 

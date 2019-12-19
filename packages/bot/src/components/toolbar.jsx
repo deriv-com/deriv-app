@@ -12,11 +12,11 @@ import {
 import PropTypes     from 'prop-types';
 import React         from 'react';
 import { localize }  from 'deriv-translations';
+import { connect }    from 'Stores/connect';
 import Dialog        from './dialog.jsx';
 import SaveLoadModal  from './saveload-modal.jsx';
 import TradeAnimation from './trade-animation.jsx';
 import { tabs_title } from '../constants/bot-contents';
-import { connect }    from '../stores/connect';
 import                '../assets/sass/scratch/toolbar.scss';
 
 const SearchBox = ({

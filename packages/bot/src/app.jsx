@@ -4,6 +4,8 @@ import React                from 'react';
 import                           './public-path'; // Leave this here! OK boss!
 import ApiHelpers           from 'Api/api-helpers';
 import ServerTime           from 'Api/server_time';
+import RootStore            from 'Stores';
+import ScratchStore         from 'Stores/scratch-store';
 import FooterExtension      from './components/footer-extension.jsx';
 import MainContent          from './components/main-content.jsx';
 import NotificationMessages from './components/notification-messages.jsx';
@@ -11,8 +13,6 @@ import QuickStrategy        from './components/quick-strategy.jsx';
 import RunPanel             from './components/run-panel.jsx';
 import Toolbar              from './components/toolbar.jsx';
 import DBot                 from './scratch';
-import RootStore            from './stores';
-import ScratchStore         from './stores/scratch-store';
 import GTM                  from './utils/gtm';
 import                      './assets/sass/app.scss';
 

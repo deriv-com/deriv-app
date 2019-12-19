@@ -2,8 +2,8 @@ import classNames     from 'classnames';
 import PropTypes      from 'prop-types';
 import React          from 'react';
 import { localize }   from 'deriv-translations';
+import { connect }    from 'Stores/connect';
 import { tabs_title } from '../constants/bot-contents';
-import { connect }    from '../stores/connect';
 import '../assets/sass/footer-extensions.scss';
 
 class FooterExtension extends React.Component {

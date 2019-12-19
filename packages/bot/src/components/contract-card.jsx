@@ -6,10 +6,10 @@ import React                 from 'react';
 import PropTypes             from 'prop-types';
 import CurrencyUtils         from 'deriv-shared/utils/currency';
 import { localize }          from 'deriv-translations';
+import { connect }           from 'Stores/connect';
 import ContractCardLoader    from './contract-card-loading.jsx';
 import ContractResultOverlay from './contract-result-overlay.jsx';
 import IconTradeType         from './icon-trade-types.jsx';
-import { connect }           from '../stores/connect';
 import {
     getIndicativePrice,
     isEnded,

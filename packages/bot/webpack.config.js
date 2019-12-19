@@ -31,6 +31,7 @@ module.exports = {
     resolve : {
         alias: {
             Api      : path.resolve(__dirname , 'src', 'services', 'api'),
+            Stores   : path.resolve(__dirname , 'src', 'stores'),
         },
     },
     mode: is_release ? 'production' : 'development',

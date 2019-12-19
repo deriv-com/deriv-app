@@ -1,8 +1,8 @@
 import { localize }          from 'deriv-translations';
+import ScratchStore          from 'Stores/scratch-store';
 import { defineContract }    from '../../images';
 import { setBlockTextColor } from '../../../utils';
 import config                from '../../../../constants';
-import ScratchStore          from '../../../../stores/scratch-store';
 
 Blockly.Blocks.trade_definition = {
     init() {

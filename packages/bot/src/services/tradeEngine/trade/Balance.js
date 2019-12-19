@@ -1,6 +1,6 @@
 import { getFormattedText } from 'deriv-shared/utils/currency';
-import { info }            from '../utils/broadcast';
-import ScratchStore        from '../../../stores/scratch-store';
+import ScratchStore         from 'Stores/scratch-store';
+import { info }             from '../utils/broadcast';
 
 let balanceStr = '';
 

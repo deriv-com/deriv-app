@@ -7,12 +7,12 @@ import {
 import PropTypes      from 'prop-types';
 import React          from 'react';
 import { localize }   from 'deriv-translations';
+import { connect }    from 'Stores/connect';
 import Dialog         from './dialog.jsx';
 import Journal        from './journal.jsx';
 import Summary        from './summary.jsx';
 import TradeAnimation from './trade-animation.jsx';
 import Transactions   from './transactions.jsx';
-import { connect }    from '../stores/connect';
 import                     '../assets/sass/run-panel.scss';
 
 const drawerContent = ({

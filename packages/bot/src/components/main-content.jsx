@@ -1,9 +1,9 @@
 import React          from 'react';
 import PropTypes      from 'prop-types';
+import { connect }    from 'Stores/connect';
 import Flyout         from './flyout.jsx';
 import Chart          from './chart/chart.jsx';
 import { tabs_title } from '../constants/bot-contents';
-import { connect }    from '../stores/connect';
 import                '../assets/sass/main-content.scss';
 import                '../assets/sass/scratch/workspace.scss';
 import                '../assets/sass/scratch/toolbox.scss';

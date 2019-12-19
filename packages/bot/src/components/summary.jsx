@@ -6,8 +6,8 @@ import {
 import PropTypes     from 'prop-types';
 import React         from 'react';
 import { localize }  from 'deriv-translations';
+import { connect }   from 'Stores/connect';
 import ContractCard  from './contract-card.jsx';
-import { connect }   from '../stores/connect';
 import                    '../assets/sass/summary.scss';
 
 const SummaryTile = (props) => (

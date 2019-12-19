@@ -2,7 +2,7 @@ import { localize }          from 'deriv-translations';
 import { purchase }          from '../../images';
 import { setBlockTextColor } from '../../../utils';
 
-// import ScratchStore          from '../../../../stores/scratch-store';
+// import ScratchStore          from 'Stores/scratch-store';
 
 Blockly.Blocks.before_purchase = {
     init() {

@@ -2,7 +2,7 @@ import React                from 'react';
 import ReactDOM             from 'react-dom';
 import { Icon }             from 'deriv-components';
 import { localize }         from 'deriv-translations';
-import ScratchStore         from '../../stores/scratch-store';
+import ScratchStore         from 'Stores/scratch-store';
 
 /**
  * Width of the toolbox, which changes only in vertical layout.

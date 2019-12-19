@@ -1,7 +1,7 @@
 import classNames    from 'classnames';
 import React         from 'react';
 import { PropTypes } from 'prop-types';
-import { connect }   from '../stores/connect';
+import { connect }   from 'Stores/connect';
 import                    '../assets/sass/notification-messages.scss';
 
 const NotificationMessages = ({

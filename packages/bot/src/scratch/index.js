@@ -1,4 +1,5 @@
 import { localize }                   from 'deriv-translations';
+import ScratchStore                   from 'Stores/scratch-store';
 import                                    './blocks';
 import                                    './hooks';
 import {
@@ -7,7 +8,6 @@ import {
 import { onWorkspaceResize }          from './utils/workspace';
 import config                         from '../constants';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
-import ScratchStore                   from '../stores/scratch-store';
 import { observer as globalObserver } from '../utils/observer';
 
 class DBot {

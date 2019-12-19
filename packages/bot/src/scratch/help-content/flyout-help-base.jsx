@@ -2,13 +2,13 @@ import { Button , Icon } from 'deriv-components';
 import React             from 'react';
 import PropTypes         from 'prop-types';
 import { localize }      from 'deriv-translations';
+import { connect }       from 'Stores/connect';
 import FlyoutVideo       from './help-components/flyout-video.jsx';
 import FlyoutText        from './help-components/flyout-text.jsx';
 import FlyoutImage       from './help-components/flyout-img.jsx';
 import { config }        from './help-content.config';
 import FlyoutBlock       from '../../components/flyout-block.jsx';
 import constant          from '../../constants';
-import { connect }       from '../../stores/connect';
 
 const HelpBase = ({
     block_node,

@@ -6,14 +6,14 @@ import React                 from 'react';
 import PropTypes             from 'prop-types';
 import CurrencyUtils         from 'deriv-shared/utils/currency';
 import { localize }          from 'deriv-translations';
-import { connect }           from 'Stores/connect';
-import ContractCardLoader    from './contract-card-loading.jsx';
-import ContractResultOverlay from './contract-result-overlay.jsx';
-import IconTradeType         from './icon-trade-types.jsx';
 import {
     getIndicativePrice,
     isEnded,
-    getContractTypeName }    from '../utils/contract';
+    getContractTypeName }    from 'Utils/contract';
+import { connect }           from 'Stores/connect';
+import ContractCardLoader    from 'Components/contract-card-loading.jsx';
+import ContractResultOverlay from 'Components/contract-result-overlay.jsx';
+import IconTradeType         from 'Components/icon-trade-types.jsx';
 import                            'Assets/sass/contract-card.scss';
 
 const ContractCard = ({

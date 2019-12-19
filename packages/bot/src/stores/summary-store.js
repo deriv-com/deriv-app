@@ -2,7 +2,7 @@ import {
     observable,
     action,
 }                    from 'mobx';
-import { observer }  from '../utils/observer';
+import { observer }  from 'Utils/observer';
 
 export default class SummaryStore {
     @observable summary = {

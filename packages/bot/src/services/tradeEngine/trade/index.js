@@ -2,6 +2,11 @@ import { Map }                               from 'immutable';
 import { createStore, applyMiddleware }      from 'redux';
 import thunk                                 from 'redux-thunk';
 import { localize }                          from 'deriv-translations';
+import { doUntilDone }                       from 'TradeEngine/utils/helpers';
+import { expectInitArg, expectTradeOptions } from 'TradeEngine/utils/sanitize';
+import createError                           from 'Utils/error';
+import { durationToSecond }                  from 'Utils/tools';
+import { observer as globalObserver }        from 'Utils/observer';
 import Balance                               from './Balance';
 import OpenContract                          from './OpenContract';
 import Proposal                              from './Proposal';
@@ -12,11 +17,6 @@ import * as constants                        from './state/constants';
 import rootReducer                           from './state/reducers';
 import Ticks                                 from './Ticks';
 import Total                                 from './Total';
-import { doUntilDone }                       from '../utils/helpers';
-import { expectInitArg, expectTradeOptions } from '../utils/sanitize';
-import createError                           from '../../../utils/error';
-import { durationToSecond }                  from '../../../utils/tools';
-import { observer as globalObserver }        from '../../../utils/observer';
 
 const watchBefore = store =>
     watchScope({

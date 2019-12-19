@@ -1,6 +1,6 @@
 import { expect }            from 'chai';
 import { parts }             from './tools';
-import { createInterpreter } from '../utils/cliTools';
+import { createInterpreter } from 'TradeEngine/utils/cliTools';
 
 describe('Run Interpreter over bot', () => {
     let value;

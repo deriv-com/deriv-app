@@ -1,4 +1,4 @@
-import { expectCandle, expectCandles } from '../utils/sanitize';
+import { expectCandle, expectCandles } from 'TradeEngine/utils/sanitize';
 
 export default Interface =>
     class extends Interface {

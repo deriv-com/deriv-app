@@ -1,5 +1,5 @@
 import { expect }  from 'chai';
-import Interpreter from '../utils/interpreter';
+import Interpreter from 'TradeEngine/utils/interpreter';
 
 const interpreter = new Interpreter();
 

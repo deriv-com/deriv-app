@@ -1,8 +1,8 @@
 import JSInterpreter                  from 'js-interpreter';
-import { createScope }                from './cliTools';
-import Interface                      from '../Interface';
+import { createScope }                from 'TradeEngine/utils/cliTools';
+import Interface                      from 'TradeEngine/Interface';
 import { unrecoverable_errors }       from 'Constants/messages';
-import { observer as globalObserver } from '../../../utils/observer';
+import { observer as globalObserver } from 'Utils/observer';
 
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;

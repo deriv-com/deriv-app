@@ -1,12 +1,12 @@
 import { LiveApi }     from 'binary-live-api';
 import { getLanguage } from 'deriv-translations';
-import AppIds          from './appIdResolver';
 import {
     addToken,
     removeToken,
     getTokenList,
     removeAllTokens,
-}                      from '../../utils/tokenHelper';
+}                      from 'Utils/tokenHelper';
+import AppIds          from 'Api/appIdResolver';
 
 export const getCustomEndpoint = () => ({
     url  : localStorage.getItem('config.server_url'),

@@ -1,5 +1,5 @@
+import PendingPromise from 'Utils/pending-promise';
 import config         from 'Constants';
-import PendingPromise from '../../utils/pending-promise';
 
 export default class ContractsFor {
     constructor(root_store) {

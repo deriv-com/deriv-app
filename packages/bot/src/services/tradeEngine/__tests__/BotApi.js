@@ -1,6 +1,6 @@
 import { expect }      from 'chai';
-import Interface       from '../Interface';
-import { createScope } from '../utils/cliTools';
+import Interface       from 'TradeEngine/Interface';
+import { createScope } from 'TradeEngine/utils/cliTools';
 
 const $scope = createScope();
 

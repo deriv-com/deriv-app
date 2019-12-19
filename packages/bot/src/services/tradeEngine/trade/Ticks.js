@@ -1,8 +1,8 @@
 import { getLast }                    from 'binary-utils';
 import { localize }                   from 'deriv-translations';
+import { getDirection, getLastDigit } from 'TradeEngine/utils/helpers';
+import { expectPositiveInteger }      from 'TradeEngine/utils/sanitize';
 import * as constants                 from './state/constants';
-import { getDirection, getLastDigit } from '../utils/helpers';
-import { expectPositiveInteger }      from '../utils/sanitize';
 
 let tickListenerKey;
 

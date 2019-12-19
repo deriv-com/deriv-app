@@ -1,8 +1,8 @@
 import { getRoundedNumber }           from 'deriv-shared/utils/currency';
 import { localize }                   from 'deriv-translations';
-import { info, notify }               from '../utils/broadcast';
-import createError                    from '../../../utils/error';
-import { observer as globalObserver } from '../../../utils/observer';
+import { info, notify }               from 'TradeEngine/utils/broadcast';
+import createError                    from 'Utils/error';
+import { observer as globalObserver } from 'Utils/observer';
 
 const skeleton = {
     totalProfit: 0,

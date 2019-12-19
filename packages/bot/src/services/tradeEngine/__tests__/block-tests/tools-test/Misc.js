@@ -1,6 +1,6 @@
 import { expect }                     from 'chai';
 import { runAndGetResult }            from '../../tools';
-import { observer as globalObserver } from '../../../../../utils/observer';
+import { observer as globalObserver } from 'Utils/observer';
 
 describe('Misc. tools', () => {
     let result;

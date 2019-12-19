@@ -1,7 +1,7 @@
 import { action, observable }   from 'mobx';
 import { formatDate }           from 'deriv-shared/utils/date';
+import { isEnded }              from 'Utils/contract';
 import { transaction_elements } from 'Constants/transactions';
-import { isEnded }              from '../utils/contract';
 
 export default class TransactionsStore {
     constructor(root_store) {

@@ -2,9 +2,9 @@ import {
     observable,
     action }                 from 'mobx';
 import { localize }          from 'deriv-translations';
+import { delayCallbackByMs } from 'Utils/tools';
 import { tabs_title }        from 'Constants/bot-contents';
 import { scrollWorkspace }   from '../scratch/utils';
-import { delayCallbackByMs } from '../utils/tools';
 
 export default class ToolbarStore {
     constructor(root_store) {

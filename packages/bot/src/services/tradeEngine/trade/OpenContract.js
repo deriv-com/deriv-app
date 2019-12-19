@@ -1,12 +1,12 @@
 import { getRoundedNumber } from 'deriv-shared/utils/currency';
-import { sell, openContractReceived } from './state/actions';
 import {
     contractStatus,
     contractSettled,
     contract as
     broadcastContract,
-}                      from '../utils/broadcast';
-import { doUntilDone } from '../utils/helpers';
+}                      from 'TradeEngine/utils/broadcast';
+import { doUntilDone } from 'TradeEngine/utils/helpers';
+import { sell, openContractReceived } from './state/actions';
 
 const AFTER_FINISH_TIMEOUT = 5;
 

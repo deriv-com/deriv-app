@@ -4,15 +4,15 @@ import {
     reaction,
     computed }                         from 'mobx';
 import { localize }                    from 'deriv-translations' ;
-import { contract_stages }             from 'Constants/contract-stage';
+import { isEnded }                     from 'Utils/contract';
+import { observer }                    from 'Utils/observer';
+import { setMainContentWidth }         from 'Utils/window-size';
+import { switch_account_notification } from 'Utils/notifications/bot-notifications';
 import {
     error_types,
     unrecoverable_errors }             from 'Constants/messages';
+import { contract_stages }             from 'Constants/contract-stage';
 import DBot                            from '../scratch';
-import { isEnded }                     from '../utils/contract';
-import { observer }                    from '../utils/observer';
-import { setMainContentWidth }         from '../utils/window-size';
-import { switch_account_notification } from '../utils/notifications/bot-notifications';
 
 export default class RunPanelStore {
     constructor(root_store) {

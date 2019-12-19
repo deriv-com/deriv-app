@@ -35,8 +35,7 @@ class ModalElement extends React.PureComponent {
     };
 
     render() {
-        const {
-            id, title, className, header, children, has_close_icon, height, toggleModal, width } = this.props;
+        const { id, title, className, header, children, has_close_icon, height, toggleModal, width } = this.props;
 
         return ReactDOM.createPortal(
             <div

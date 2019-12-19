@@ -86,6 +86,5 @@
     "webpack": "^4.34.0",
     "webpack-bundle-analyzer": "^3.6.0",
     "webpack-cli": "^3.3.4"
-  },
-  "gitHead": "e17fcaa75fd7f16e5ed74f2db09c4ac9473f9fe8"
+  }
 }

@@ -19,6 +19,25 @@ export default class ToolbarStore {
     @observable file_name = localize('Untitled Bot');
 
     @action.bound
+    async initToolbox() {
+        const workspace = Blockly.derivWorkspace;
+        const toolbox   = workspace.getToolbox();
+
+        if (!toolbox.is_chunk_loaded) {
+            this.setIsToolboxLoading(true);
+            await toolbox.loadChunk();
+            this.setIsToolboxLoading(false);
+        }
+
+        return true;
+    }
+
+    @action.bound
+    setIsToolboxLoading(is_loading) {
+        this.is_toolbox_loading = is_loading;
+    }
+
+    @action.bound
     async onToolboxToggle() {
         const workspace = Blockly.derivWorkspace;
         const toolbox   = workspace.getToolbox();
@@ -45,20 +64,6 @@ export default class ToolbarStore {
 
         this.is_toolbox_open = !this.is_toolbox_open;
         toolbox.toggle();
-    }
-
-    @action.bound
-    async initToolbox() {
-        const workspace = Blockly.derivWorkspace;
-        const toolbox   = workspace.getToolbox();
-
-        if (!toolbox.is_chunk_loaded) {
-            this.is_toolbox_loading = true;
-            await toolbox.loadChunk();
-            this.is_toolbox_loading = false;
-        }
-
-        return true;
     }
 
     @action.bound

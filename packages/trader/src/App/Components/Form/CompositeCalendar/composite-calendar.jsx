@@ -1,9 +1,9 @@
 import PropTypes    from 'prop-types';
 import React        from 'react';
+import { Icon }     from 'deriv-components';
 import { localize } from 'deriv-translations';
 import InputField   from 'App/Components/Form/InputField/input-field.jsx';
 import Lazy         from 'App/Containers/Lazy';
-import IconCalendar from 'Assets/Reports/icon-calendar.jsx';
 import {
     daysFromTodayTo,
     epochToMoment,
@@ -125,8 +125,8 @@ class CompositeCalendar extends React.PureComponent {
             // eslint-disable-next-line react/no-children-prop
             <React.Fragment>
                 <div id='dt_composite_calendar_inputs' className='composite-calendar__input-fields'>
-                    <InputField id='dt_calendar_input_from' is_read_only={true} placeholder={localize('Date from')} icon={IconCalendar} onClick={this.showCalendar.bind(this, 'from')} value={this.from_date_label} />
-                    <InputField id='dt_calendar_input_to' is_read_only={true} placeholder={localize('Date to')} icon={IconCalendar} onClick={this.showCalendar.bind(this, 'to')} value={this.to_date_label} />
+                    <InputField id='dt_calendar_input_from' is_read_only={true} placeholder={localize('Date from')} icon={() => <Icon icon='IcCalendarDatefrom' className='inline-icon' />} onClick={this.showCalendar.bind(this, 'from')} value={this.from_date_label} />
+                    <InputField id='dt_calendar_input_to' is_read_only={true} placeholder={localize('Date to')} icon={() => <Icon icon='IcCalendarDateto' className='inline-icon' />} onClick={this.showCalendar.bind(this, 'to')} value={this.to_date_label} />
                 </div>
                 {show_to &&
                 <div className='composite-calendar' ref={this.setWrapperRef}>

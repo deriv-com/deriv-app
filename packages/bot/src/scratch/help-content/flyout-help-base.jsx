@@ -1,15 +1,14 @@
-import { Button }       from 'deriv-components';
-import React            from 'react';
-import PropTypes        from 'prop-types';
-import { localize }     from 'deriv-translations';
-import FlyoutVideo      from './help-components/flyout-video.jsx';
-import FlyoutText       from './help-components/flyout-text.jsx';
-import FlyoutImage      from './help-components/flyout-img.jsx';
-import { config }       from './help-content.config';
-import FlyoutBlock      from '../../components/flyout-block.jsx';
-import constant         from '../../constants';
-import { Arrow2Icon }   from '../../components/Icons.jsx';
-import { connect }      from '../../stores/connect';
+import { Button , Icon } from 'deriv-components';
+import React             from 'react';
+import PropTypes         from 'prop-types';
+import { localize }      from 'deriv-translations';
+import FlyoutVideo       from './help-components/flyout-video.jsx';
+import FlyoutText        from './help-components/flyout-text.jsx';
+import FlyoutImage       from './help-components/flyout-img.jsx';
+import { config }        from './help-content.config';
+import FlyoutBlock       from '../../components/flyout-block.jsx';
+import constant          from '../../constants';
+import { connect }       from '../../stores/connect';
 
 const HelpBase = ({
     block_node,
@@ -28,7 +27,7 @@ const HelpBase = ({
         <React.Fragment>
             <div className='flyout__help-header'>
                 <button className='btn flyout__button-back' onClick={onBackClick}>
-                    <Arrow2Icon />
+                    <Icon icon='IcArrowLeft' />
                 </button>
                 <span className='flyout__help-title'>{title}</span>
                 <div className='flyout__item-buttons'>

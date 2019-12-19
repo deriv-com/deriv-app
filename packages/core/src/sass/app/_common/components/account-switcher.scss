@@ -302,17 +302,19 @@
             background: var(--state-active);
             border-radius: 4px;
 
-            .acc-switcher__id {
-                @include typeface(--paragraph-left-bold-active);
+            .acc-switcher {
+                &__id {
+                    @include typeface(--paragraph-left-bold-active);
 
-                &--virtual:before {
-                    color: var(--text-prominent);
-                    border: 1px solid var(--text-prominent);
+                    &--virtual:before {
+                        color: var(--text-prominent);
+                        border: 1px solid var(--text-prominent);
+                    }
                 }
-            }
-            .acc-switcher__loginid-text {
-                color: var(--text-prominent);
-                font-weight: normal;
+                &__loginid-text {
+                    color: var(--text-prominent);
+                    font-weight: normal;
+                }
             }
             .no-currency {
                 color: var(--text-prominent);

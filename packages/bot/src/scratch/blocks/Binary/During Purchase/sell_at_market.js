@@ -22,21 +22,7 @@ Blockly.Blocks.sell_at_market = {
             'description' : localize('Use this block to sell your contract at the market price.'),
         };
     },
-    onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
-            return;
-        }
-
-        if (event.type === Blockly.Events.BLOCK_CREATE || event.type === Blockly.Events.END_DRAG) {
-            if (this.isDescendantOf('during_purchase')) {
-                if (this.disabled) {
-                    this.setDisabled(false);
-                }
-            } else if (!this.disabled) {
-                this.setDisabled(true);
-            }
-        }
-    },
+    restricted_parents: ['during_purchase'],
 };
 
 Blockly.JavaScript.sell_at_market = () => 'Bot.sellAtMarket();\n';

@@ -36,14 +36,6 @@
         margin: auto 12px;
         height: 16px;
         width: 16px;
-
-        &-stop, &-undo, &-redo {
-            stroke: var(--text-prominent);
-        }
-        &--disabled {
-            stroke: var(--border-normal);
-            pointer-events: none;
-        }
     }
     &__group {
         display: flex;

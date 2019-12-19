@@ -30,7 +30,18 @@ const getUrlBase = (path = '') => {
 
 const hasLanguage = (lang) => {
     if (!lang) return false;
-    return Object.keys(ALL_LANGUAGES).includes(lang.toUpperCase());
+
+    const selected_language = lang.toUpperCase();
+    const is_staging = /staging\.deriv\.app/i.test(window.location.hostname);
+    const is_ach = selected_language === 'ACH';
+
+    if (is_ach && is_staging) return true;
+    if (is_ach) return false;
+
+    // TODO: remove when translations are ready
+    if (selected_language !== DEFAULT_LANGUAGE) return false;
+
+    return Object.keys(ALL_LANGUAGES).includes(selected_language);
 };
 
 const getAllLanguages = () => ALL_LANGUAGES;
@@ -86,12 +97,15 @@ i18n
     .init(i18n_config);
 
 const initializeTranslations = async () => {
+    const is_staging = /staging\.deriv\.app/i.test(window.location.hostname);
+    if (is_staging) {
+        loadIncontextTranslation();
+    }
     await loadLanguageJson(initial_language);
 };
 
 const getLanguage = () => {
-    const lang = i18n.language || initial_language;
-    return lang;
+    return i18n.language || initial_language;
 };
 
 // <Localize /> component wrapped with i18n
@@ -104,7 +118,7 @@ const localize = (string, values) => {
 };
 
 const loadIncontextTranslation = () => {
-    const is_ach = i18n.language === 'ACH';
+    const is_ach = getLanguage() === 'ACH';
     if (is_ach) {
         const jipt = document.createElement('script');
         jipt.type = 'text/javascript';
@@ -122,7 +136,6 @@ export default {
     getAllLanguages,
     getLanguage,
     initializeTranslations,
-    loadIncontextTranslation,
     localize,
     Localize,
 };

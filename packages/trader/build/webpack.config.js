@@ -67,11 +67,13 @@ module.exports = function (env, argv) {
                 'mobx': 'mobx',
                 'mobx-react': 'mobx-react',
                 'deriv-shared': 'deriv-shared',
+                'deriv-translations': 'deriv-translations',
                 'deriv-components': 'deriv-components',
                 'smartcharts-beta': 'smartcharts-beta',
             },
             /^deriv-shared\/.+$/,
-            /^deriv-components\/.+$/
+            /^deriv-components\/.+$/,
+            /^deriv-translations\/.+$/
         ],
         target: 'web',
         plugins     : plugins(base, false),

@@ -112,6 +112,7 @@ export default class ToolbarStore {
     @action.bound
     onUndoClick(is_redo) {
         Blockly.derivWorkspace.undo(is_redo);
+        Blockly.svgResize(Blockly.derivWorkspace); // Called for CommentDelete event.
         this.setHasRedoStack();
         this.setHasUndoStack();
     }

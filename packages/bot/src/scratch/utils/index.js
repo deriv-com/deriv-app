@@ -29,7 +29,7 @@ export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
 };
 
 export const setBlockTextColor = (block, event) => {
-    const is_legal_event = 
+    const is_legal_event =
         event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(block.id) ||
         event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === block.id;
 

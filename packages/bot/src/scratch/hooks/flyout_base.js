@@ -102,7 +102,9 @@ Blockly.Flyout.prototype.placeNewBlock_ = function(event, old_block) {
         // The position of the old block in pixels relative to the flyout workspace's origin.
         const toolbar_height       = 56;
         const header_height        = 48;
-        const old_block_pos_pixels = new goog.math.Coordinate(event.clientX, event.clientY - toolbar_height - header_height);
+        const old_block_pos_pixels = new goog.math.Coordinate(
+            event.clientX, event.clientY - toolbar_height - header_height
+        );
     
         // The position of the old block in pixels relative to the origin of the main workspace.
         const final_offset_pixels = goog.math.Coordinate.difference(old_block_pos_pixels, main_offset_pixels);

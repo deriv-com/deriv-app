@@ -1,6 +1,5 @@
 import { localize } from 'deriv-translations';
 import { save }     from '../utils';
-import ScratchStore from '../../stores/scratch-store';
 
 /**
  * Select this block.  Highlight it visually.

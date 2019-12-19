@@ -11,6 +11,7 @@ import ServerTime           from './services/api/server_time';
 import DBot                 from './scratch';
 import ApiHelpers           from './services/api/api-helpers';
 import RootStore            from './stores';
+import ScratchStore         from './stores/scratch-store';
 import GTM                  from './utils/gtm';
 import                      './assets/sass/app.scss';
 
@@ -30,10 +31,12 @@ class App extends React.Component {
     }
 
     componentWillUnmount() {
-        ApiHelpers.instance.disposeOnAccountSwitch();
         if (Blockly.derivWorkspace) {
             Blockly.derivWorkspace.dispose();
         }
+
+        ApiHelpers.instance.disposeOnAccountSwitch();
+        ScratchStore.instance.disposeReactions();
     }
 
     render() {

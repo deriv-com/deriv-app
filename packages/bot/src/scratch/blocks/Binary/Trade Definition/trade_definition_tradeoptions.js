@@ -2,6 +2,7 @@ import { localize }  from 'deriv-translations';
 import CurrencyUtils from 'deriv-shared/utils/currency';
 import config        from '../../../../constants';
 import ApiHelpers    from '../../../../services/api/api-helpers';
+import ScratchStore  from '../../../../stores/scratch-store';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
     init() {
@@ -66,6 +67,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
         const market_block     = trade_definition_block.getChildByType('trade_definition_market');
         const trade_type_block = trade_definition_block.getChildByType('trade_definition_tradetype');
+
         if (!market_block || !trade_type_block) {
             return;
         }
@@ -88,10 +90,13 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.updateDurationInput(false, false);
                 this.updatePredictionInput(false);
             } else {
+                const { client } = ScratchStore.instance.root_store.core;
+
                 this.updateBarrierInputs(true, true);
                 this.enforceSingleBarrierType('BARRIEROFFSETTYPE_LIST', true);
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
+                this.setCurrency(client.currency);
             }
         } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
             if (is_load_event) {
@@ -298,6 +303,14 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             }
         }
     },
+    setCurrency(currency) {
+        const currency_field   = this.getField('CURRENCY_LIST');
+        const dropdown_options = currency_field.menuGenerator_.map(o => o[1]); // eslint-disable-line
+
+        if (dropdown_options.includes(currency)) {
+            currency_field.setValue(currency);
+        }
+    },
     domToMutation(xmlElement) {
         const has_first_barrier  = xmlElement.getAttribute('has_first_barrier') === 'true';
         const has_second_barrier = xmlElement.getAttribute('has_second_barrier') === 'true';
@@ -320,6 +333,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         
         return container;
     },
+    restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {
         return {
             AMOUNT  : null,

@@ -1,6 +1,6 @@
 import { localize }               from 'deriv-translations';
 import config                     from 'Constants';
-import { getContractTypeOptions } from '../../../shared';
+import { getContractTypeOptions } from 'Scratch/shared';
 
 Blockly.Blocks.trade_definition_contracttype = {
     init() {

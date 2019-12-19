@@ -1,5 +1,5 @@
 import { localize }      from 'deriv-translations';
-import { plusIconLight } from '../../images';
+import { plusIconLight } from 'Scratch/blocks/images';
 
 Blockly.Blocks.procedures_defnoreturn = {
     init() {

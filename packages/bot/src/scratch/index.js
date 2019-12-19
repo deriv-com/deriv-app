@@ -3,12 +3,12 @@ import config                         from 'Constants';
 import ScratchStore                   from 'Stores/scratch-store';
 import                                    './blocks';
 import                                    './hooks';
+import Interpreter                    from 'TradeEngine/utils/interpreter';
+import { observer as globalObserver } from 'Scratch/utils/observer';
 import {
     hasAllRequiredBlocks,
     updateDisabledBlocks }            from './utils';
 import { onWorkspaceResize }          from './utils/workspace';
-import Interpreter                    from '../services/tradeEngine/utils/interpreter';
-import { observer as globalObserver } from '../utils/observer';
 
 class DBot {
     constructor() {

@@ -1,5 +1,5 @@
 import { localize }  from 'deriv-translations';
-import { setBlockTextColor } from '../../../../utils';
+import { setBlockTextColor } from 'Scratch/utils';
 
 Blockly.Blocks.useless_block = {
     init() {

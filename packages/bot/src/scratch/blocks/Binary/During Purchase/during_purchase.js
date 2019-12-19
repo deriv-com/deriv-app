@@ -1,7 +1,7 @@
 // import ScratchStore          from 'Stores/scratch-store';
 import { localize }          from 'deriv-translations';
-import { sellContract }      from '../../images';
-import { setBlockTextColor } from '../../../utils';
+import { sellContract }      from 'Scratch/block/images';
+import { setBlockTextColor } from 'Scratch/utils';
 
 Blockly.Blocks.during_purchase = {
     init() {

@@ -1,5 +1,5 @@
 import { localize }     from 'deriv-translations';
-import { plusIconDark } from '../images';
+import { plusIconDark } from 'Scratch/block/images';
 
 Blockly.Blocks.text_join = {
     protected_statements: ['STACK'],

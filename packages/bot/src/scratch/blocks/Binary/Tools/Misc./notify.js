@@ -1,6 +1,6 @@
 import { localize }           from 'deriv-translations';
 import config                 from 'Constants';
-import { emptyTextValidator } from '../../../../utils';
+import { emptyTextValidator } from 'Scratch/utils';
 
 Blockly.Blocks.notify = {
     init() {

@@ -1,5 +1,5 @@
 import { localize }           from 'deriv-translations';
-import { emptyTextValidator } from '../../utils';
+import { emptyTextValidator } from 'Scratch/utils';
 
 Blockly.Blocks.text_append = {
     init() {

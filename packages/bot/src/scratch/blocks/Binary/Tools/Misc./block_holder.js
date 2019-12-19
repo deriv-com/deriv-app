@@ -1,6 +1,6 @@
 // import ScratchStore          from 'Stores/scratch-store';
 import { localize }          from 'deriv-translations';
-import { setBlockTextColor } from '../../../../utils';
+import { setBlockTextColor } from 'Scratch/utils';
 
 Blockly.Blocks.block_holder = {
     init() {

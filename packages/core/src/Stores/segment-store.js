@@ -10,22 +10,10 @@ import { getAppId }             from '../config';
 export default class SegmentStore extends BaseStore {
     // only available on production (bot and deriv)
     is_applicable = /^(16929|19111)$/.test(getAppId());
+    has_identified = false;
 
     constructor(root_store) {
         super({ root_store });
-    }
-
-    /**
-     * Contains event traits that will be passed to segment
-     *
-     * @returns {object}
-     */
-    @computed
-    get common_traits() {
-        return {
-            user_id : this.root_store.client.user_id,
-            language: getLanguage().toLowerCase(),
-        };
     }
 
     /**
@@ -36,11 +24,14 @@ export default class SegmentStore extends BaseStore {
     @action.bound
     async identifyEvent(data) {
         if (this.is_applicable && !isLoginPages()) {
-            BinarySocket.wait('authorize').then(() => {
-                window.analytics.identify(this.common_traits.user_id, {
-                    language: this.common_traits.language,
-                    ...data,
-                });
+            BinarySocket.wait('authorize').then((response) => {
+                if (response.authorize.user_id) {
+                    window.analytics.identify(response.authorize.user_id, {
+                        language: getLanguage().toLowerCase(),
+                        ...data,
+                    });
+                    this.has_identified = true;
+                }
             });
         }
     }
@@ -50,8 +41,20 @@ export default class SegmentStore extends BaseStore {
      */
     @action.bound
     pageView() {
-        if (this.is_applicable && !isLoginPages() && this.root_store.client.is_logged_in) {
+        if (this.is_applicable && !isLoginPages() && this.root_store.client.is_logged_in && this.has_identified) {
             window.analytics.page();
+        }
+    }
+    @action.bound
+    reset() {
+        if (this.is_applicable) {
+            window.analytics.reset();
+        }
+    }
+    @action.bound
+    track(event_name, options = {}) {
+        if (this.is_applicable && this.has_identified) {
+            window.analytics.track(event_name, ...options);
         }
     }
 }

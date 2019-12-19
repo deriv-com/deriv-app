@@ -611,6 +611,7 @@ export default class ClientStore extends BaseStore {
 
                 // Client comes back from oauth and logs in
                 this.root_store.segment.identifyEvent();
+                this.root_store.segment.track('login');
                 this.root_store.segment.pageView();
                 this.root_store.gtm.pushDataLayer({ event: 'login' });
             } else { // So it will send an authorize with the accepted token, to be handled by socket-general
@@ -901,6 +902,7 @@ export default class ClientStore extends BaseStore {
 
         if (response.logout === 1) {
             this.cleanUp();
+            this.root_store.segment.reset();
             this.setLogout(true);
         }
 

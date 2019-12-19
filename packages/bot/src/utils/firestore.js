@@ -118,7 +118,7 @@ const Firestore = (() => {
                     buy_price    : contract.buy_price,
                     contract_type: contract.contract_type,
                     currency     : contract.currency,
-                    refrence_id  : contract.refrence_id,
+                    reference_id : contract.reference_id,
                     entry_spot   : contract.entry_spot,
                     exit_spot    : contract.exit_spot,
                     profit       : contract.profit,

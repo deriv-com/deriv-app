@@ -45,7 +45,7 @@ class Popover extends React.PureComponent {
                 position={alignment}
                 transitionDuration={0.25}
                 padding={margin + 8}
-                containerStyle={{ zIndex: 999 }}
+                containerStyle={{ zIndex: 99999 }}
                 content={({ position, targetRect, popoverRect }) => (
                     <ArrowContainer
                         position={position}

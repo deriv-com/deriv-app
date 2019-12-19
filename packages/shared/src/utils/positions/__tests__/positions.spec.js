@@ -1,5 +1,5 @@
 import { expect }           from 'chai';
-import * as PositionsHelper from '../positions-helper';
+import * as PositionsHelper from '../positions';
 
 describe('positions-helper', () => {
     describe('addCommaToNumber', () => {

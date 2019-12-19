@@ -7,10 +7,10 @@ const isServe = process.env.BUILD_MODE === 'serve';
 module.exports = {
     target: 'web',
     entry : {
-        date              : path.resolve(__dirname, 'src', 'utils/date/index.js'),
-        currency          : path.resolve(__dirname, 'src', 'utils/currency/index.js'),
-        object            : path.resolve(__dirname, 'src', 'utils/object/index.js'),
-        'positions-helper': path.resolve(__dirname, 'src', 'utils/positions-helper/index.js'),
+        date     : path.resolve(__dirname, 'src', 'utils/date/index.js'),
+        currency : path.resolve(__dirname, 'src', 'utils/currency/index.js'),
+        object   : path.resolve(__dirname, 'src', 'utils/object/index.js'),
+        positions: path.resolve(__dirname, 'src', 'utils/positions/index.js'),
     },
     output: {
         path         : path.resolve(__dirname, 'utils'),

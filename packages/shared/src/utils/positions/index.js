@@ -4,7 +4,7 @@ import {
     getBarrierLabel,
     getBarrierValue,
     isDigitType,
-} from './positions-helper';
+} from './positions';
 
 export default {
     addCommaToNumber,

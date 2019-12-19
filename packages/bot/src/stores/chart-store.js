@@ -5,7 +5,7 @@ import {
     observable,
     reaction,
 }                     from 'mobx';
-// import { tabs_title } from '../constants/bot-contents';
+// import { tabs_title } from 'Constants/bot-contents';
 import ServerTime     from 'Api/server_time';
 
 const g_subscribers_map = {};

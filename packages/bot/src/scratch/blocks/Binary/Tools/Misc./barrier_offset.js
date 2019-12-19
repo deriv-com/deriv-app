@@ -1,5 +1,5 @@
 import { localize }  from 'deriv-translations';
-import config        from '../../../../../constants';
+import config        from 'Constants';
 
 // This block is a remnant of a very old Binary Bot version.
 // needs to be here for backward compatibility.

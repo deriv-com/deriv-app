@@ -4,7 +4,7 @@ import React                from 'react';
 import { ThemedScrollbars } from 'deriv-components';
 import { localize }         from 'deriv-translations';
 import { connect }          from 'Stores/connect';
-import { message_types }    from '../constants/messages';
+import { message_types }    from 'Constants/messages';
 import                      'Assets/sass/journal.scss';
 
 const DateItem = ({

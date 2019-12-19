@@ -13,10 +13,7 @@ import                     'Assets/sass/chart.scss';
 // import MarketIsClosedOverlay from 'Components/Elements/market-is-closed-overlay.jsx';
 // import Lazy                  from 'Containers/Lazy';
 // import Digits                from 'Modules/Contract/Components/Digits';
-// import FormLayout            from '../Components/Form/form-layout.jsx';
-// import { symbolChange }      from '../../SmartChart/Helpers/symbol';
-// import AllMarkers            from '../../SmartChart/Components/all-markers.jsx';
-
+// import FormLayout            from 'Components/Form/form-layout.jsx';
 class Chart extends React.Component {
 
     chartTopWidgets = () => (

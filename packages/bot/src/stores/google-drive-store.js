@@ -3,7 +3,7 @@ import {
     action,
 }                                from 'mobx';
 import { localize, getLanguage } from 'deriv-translations';
-import config                    from '../constants';
+import config                    from 'Constants';
 import { importExternal }        from '../utils/tools';
 
 export default class GoogleDriveStore {

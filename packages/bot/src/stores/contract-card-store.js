@@ -2,7 +2,7 @@ import {
     observable,
     action,
     computed }                from 'mobx';
-import { contract_stages }    from '../constants/contract-stage';
+import { contract_stages }    from 'Constants/contract-stage';
 import { isEnded ,
     getIndicativePrice }      from '../utils/contract';
 

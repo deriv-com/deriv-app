@@ -3,7 +3,7 @@ import {
     action,
     runInAction,
 }                   from 'mobx';
-import config       from '../constants';
+import config       from 'Constants';
 
 export default class FlyoutHelpStore {
     constructor(root_store) {

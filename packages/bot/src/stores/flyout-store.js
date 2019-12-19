@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { observable, action }   from 'mobx';
-import config                   from '../constants';
+import config                   from 'Constants';
 
 export default class FlyoutStore {
     block_listeners  = [];

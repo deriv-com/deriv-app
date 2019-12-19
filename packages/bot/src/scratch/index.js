@@ -2,11 +2,11 @@ import { localize }                   from 'deriv-translations';
 import ScratchStore                   from 'Stores/scratch-store';
 import                                    './blocks';
 import                                    './hooks';
+import config                         from 'Constants';
 import {
     hasAllRequiredBlocks,
     updateDisabledBlocks }            from './utils';
 import { onWorkspaceResize }          from './utils/workspace';
-import config                         from '../constants';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import { observer as globalObserver } from '../utils/observer';
 

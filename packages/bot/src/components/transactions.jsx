@@ -3,8 +3,8 @@ import { localize }             from 'deriv-translations';
 import { PropTypes }            from 'prop-types';
 import React                    from 'react';
 import { connect }              from 'Stores/connect';
+import { transaction_elements } from 'Constants/transactions';
 import Transaction              from './transaction.jsx';
-import { transaction_elements } from '../constants/transactions';
 import                           'Assets/sass/transactions.scss';
 
 class Transactions extends React.PureComponent {

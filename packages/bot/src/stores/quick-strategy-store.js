@@ -6,7 +6,7 @@ import {
 }                    from 'mobx';
 import { localize }  from 'deriv-translations';
 import ApiHelpers     from 'Api//api-helpers';
-import config        from '../constants/index';
+import config        from 'Constants/index';
 import { load }      from '../scratch/utils';
 
 export default class QuickStrategyStore {

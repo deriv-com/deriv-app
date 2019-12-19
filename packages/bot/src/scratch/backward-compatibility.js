@@ -1,7 +1,7 @@
 import { localize }  from 'deriv-translations';
 import ApiHelpers    from 'Api/api-helpers';
 import ScratchStore  from 'Stores/scratch-store';
-import config        from '../constants';
+import config        from 'Constants';
 
 /* eslint-disable no-underscore-dangle */
 export default class BlockConversion {

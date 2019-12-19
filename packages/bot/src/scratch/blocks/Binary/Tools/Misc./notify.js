@@ -1,6 +1,6 @@
 import { localize }           from 'deriv-translations';
+import config                 from 'Constants';
 import { emptyTextValidator } from '../../../../utils';
-import config                 from '../../../../../constants';
 
 Blockly.Blocks.notify = {
     init() {

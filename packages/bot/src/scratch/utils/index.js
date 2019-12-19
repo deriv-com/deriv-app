@@ -2,7 +2,7 @@ import { localize }    from 'deriv-translations';
 import ScratchStore    from 'Stores/scratch-store';
 import BlockConversion from '../backward-compatibility';
 import { saveAs }      from '../shared';
-import config          from '../../constants';
+import config          from 'Constants';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 

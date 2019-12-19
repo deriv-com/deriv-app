@@ -3,7 +3,7 @@ import PropTypes      from 'prop-types';
 import React          from 'react';
 import { localize }   from 'deriv-translations';
 import { connect }    from 'Stores/connect';
-import { tabs_title } from '../constants/bot-contents';
+import { tabs_title } from 'Constants/bot-contents';
 import                'Assets/sass/footer-extensions.scss';
 
 class FooterExtension extends React.Component {

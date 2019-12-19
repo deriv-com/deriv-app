@@ -4,10 +4,10 @@ import {
     reaction,
     computed }                         from 'mobx';
 import { localize }                    from 'deriv-translations' ;
-import { contract_stages }             from '../constants/contract-stage';
+import { contract_stages }             from 'Constants/contract-stage';
 import {
     error_types,
-    unrecoverable_errors }             from '../constants/messages';
+    unrecoverable_errors }             from 'Constants/messages';
 import DBot                            from '../scratch';
 import { isEnded }                     from '../utils/contract';
 import { observer }                    from '../utils/observer';

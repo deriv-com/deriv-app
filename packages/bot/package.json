@@ -16,6 +16,7 @@
       "^Api(.*)$"   : "<rootDir>/src/services/api$1",
       "^Assets(.*)$": "<rootDir>/src/assets$1",
       "^Components(.*)$": "<rootDir>/src/components$1",
+      "^Constants(.*)$": "<rootDir>/src/constants$1",
       "^Stores(.*)$": "<rootDir>/src/Stores$1"
     }
   },

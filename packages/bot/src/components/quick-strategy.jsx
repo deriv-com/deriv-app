@@ -16,8 +16,8 @@ import {
 }                    from 'formik';
 import { localize }  from 'deriv-translations';
 import { connect }   from 'Stores/connect';
+import config        from 'Constants/index';
 import IconTradeType from './icon-trade-types.jsx';
-import config        from '../constants/index';
 import               'Assets/sass/quick-strategy.scss';
 
 const MarketOption = ({ symbol }) => (

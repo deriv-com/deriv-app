@@ -51,7 +51,7 @@ Blockly.Blocks.trade_definition_market = {
         const submarket          = submarket_dropdown.getValue();
         const symbol             = symbol_dropdown.getValue();
 
-        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+        const populateMarketDropdown = () => {
             active_symbols.getMarketDropdownOptions().then(market_options => {
                 market_dropdown.updateOptions(market_options, {
                     default_value: market,
@@ -59,6 +59,10 @@ Blockly.Blocks.trade_definition_market = {
                     event_group: event.group,
                 });
             });
+        }
+
+        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+            populateMarketDropdown();
         } else if (event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === this.id) {
             if (event.name === 'MARKET_LIST') {
                 active_symbols.getSubmarketDropdownOptions(market).then(submarket_options => {
@@ -78,10 +82,8 @@ Blockly.Blocks.trade_definition_market = {
                 });
             }
         } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.getRootBlock().id) {
-            if (market_dropdown.isEmpty() || submarket_dropdown.isEmpty() || symbol_dropdown.isEmpty()) {
-                const fake_creation_event = new Blockly.Events.Create(this);
-                fake_creation_event.recordUndo = true;
-                Blockly.Events.fire(fake_creation_event);
+            if (market_dropdown.isEmpty() || submarket_dropdown.isEmpty() || symbol_dropdown.isEmpty()) {;
+                populateMarketDropdown();
             }
         }
     },

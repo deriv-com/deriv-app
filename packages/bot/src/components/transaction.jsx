@@ -1,15 +1,12 @@
 import classNames               from 'classnames';
 import {
+    Icon,
     Money,
     Popover }                  from 'deriv-components';
 import { localize }            from 'deriv-translations';
 import React                   from 'react';
 import ContentLoader           from 'react-content-loader';
 import PropTypes               from 'prop-types';
-import {
-    BuyPriceIcon,
-    ExitSpotIcon,
-    EntrySpotIcon }            from './Icons.jsx';
 import IconTradeType           from './icon-trade-types.jsx';
 import { connect }             from '../stores/connect';
 import { getContractTypeName } from '../utils/contract';
@@ -151,7 +148,7 @@ const Transaction = ({
         </div> */}
             <div className='transactions__cell transactions__trade-type'>
                 <TransactionIconWithText
-                    icon={<IconTradeType trade_type={contract.contract_type} />}
+                    icon={<IconTradeType type={contract.contract_type} />}
                     title={getContractTypeName(contract)}
                 />
             </div>
@@ -162,7 +159,7 @@ const Transaction = ({
                         alignment='left'
                         message={localize('Entry spot')}
                     >
-                        <EntrySpotIcon />
+                        <Icon icon='IcContractEntrySpot' />
                     </Popover>
                     { contract.entry_tick || <TransactionFieldLoader /> }
                 </React.Fragment>
@@ -174,14 +171,14 @@ const Transaction = ({
                         alignment='left'
                         message={localize('Exit spot')}
                     >
-                        <ExitSpotIcon />
+                        <Icon icon='IcContractExitSpot' />
                     </Popover>
                     { contract.exit_tick || <TransactionFieldLoader /> }
                 </React.Fragment>
             </div>
             <div className='transactions__cell transactions__stake'>
                 <TransactionIconWithText
-                    icon={<BuyPriceIcon />}
+                    icon={<Icon icon='IcContractBuyPrice' />}
                     title={localize('Buy price')}
                     message={<Money amount={contract.buy_price} currency={contract.currency} />}
                 />

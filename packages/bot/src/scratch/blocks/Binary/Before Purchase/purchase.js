@@ -73,6 +73,19 @@ Blockly.Blocks.purchase = {
             });
         }
     },
+    enforceLimitations() {
+        const top_parent = this.getTopParent();
+
+        if (top_parent) {
+            if (this.isDescendantOf('before_purchase')) {
+                if (this.disabled) {
+                    this.setDisabled(false);
+                }
+            } else if (!this.disabled) {
+                this.setDisabled(true);
+            }
+        }
+    },
     restricted_parents: ['before_purchase'],
 };
 

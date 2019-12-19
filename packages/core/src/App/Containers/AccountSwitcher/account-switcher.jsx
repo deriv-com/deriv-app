@@ -111,7 +111,7 @@ class AccountSwitcher extends React.Component {
 
     get is_real_account_tab() {
         // Real accounts is always the first tab index based on design
-        return this.props.active_tab_index === 0;
+        return this.state.active_tab_index === 0;
     }
 
     get sorted_account_list() {

@@ -139,16 +139,20 @@ const Transaction = ({
             className='transactions__item'
             onClick={() => setActiveTransactionId(contract.transaction_ids.buy)}
         >
-            {/* TODO: Re-enable when <Icon> is shared.
-        <div className='transactions__cell transactions__symbol'>
-            <TransactionIconWithText
-                icon={<UnderlyingIcon market={contract.underlying} />}
-                title={contract.display_name}
-            />
-        </div> */}
+            <div className='transactions__cell transactions__symbol'>
+                <TransactionIconWithText
+                    icon={
+                        <Icon
+                            icon={contract.underlying ? `IcUnderlying${contract.underlying}` : 'IcUnknown'}
+                            size={16}
+                        />
+                    }
+                    title={contract.display_name}
+                />
+            </div>
             <div className='transactions__cell transactions__trade-type'>
                 <TransactionIconWithText
-                    icon={<IconTradeType type={contract.contract_type} />}
+                    icon={<IconTradeType type={contract.contract_type} size={16} />}
                     title={getContractTypeName(contract)}
                 />
             </div>

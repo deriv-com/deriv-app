@@ -3,6 +3,7 @@
   "name": "deriv-bot",
   "description": "Visual automation for deriv.app",
   "main": "dist/bot.main.js",
+  "private": true,
   "jest": {
     "setupFilesAfterEnv": [
       "<rootDir>/.jest"

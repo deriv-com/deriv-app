@@ -54,6 +54,7 @@
             position: absolute;
             bottom: 0;
             height: 8rem;
+            overflow: hidden;
         }
         &-error {
             flex: 1;
@@ -64,7 +65,11 @@
 
             &-icon {
                 position: absolute;
-                left: 0;
+                left: -10px;
+                bottom: -15px;
+                pointer-events: none;
+                opacity: 0.07;
+                z-index: 0;
             }
             &-small-icon {
                 margin: 2rem 1.6rem 4.4rem 2.4rem;

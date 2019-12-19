@@ -2,8 +2,8 @@ import classNames                 from 'classnames';
 import PropTypes                  from 'prop-types';
 import React                      from 'react';
 import { localize }               from 'deriv-translations';
-import Icon                       from 'Assets/icon.jsx';
 import { getContractTypeDisplay } from 'Constants/contract';
+import IconTradeType              from 'Assets/Trading/Types/icon-trade-types.jsx';
 
 const PurchaseButton = ({
     buy_info,
@@ -48,10 +48,10 @@ const PurchaseButton = ({
                 <div className='btn-purchase__info btn-purchase__info--left'>
                     <div className='btn-purchase__type-wrapper'>
                         <div className='btn-purchase__icon_wrapper'>
-                            <Icon
-                                icon='IconTradeType'
-                                className='btn-purchase__icon'
+                            <IconTradeType
                                 type={getIconType()}
+                                className='btn-purchase__icon'
+                                color='active'
                             />
                         </div>
                         <div className='btn-purchase__text_wrapper'>

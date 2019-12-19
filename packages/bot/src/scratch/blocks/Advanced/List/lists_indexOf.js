@@ -37,6 +37,12 @@ Blockly.Blocks.lists_indexOf = {
             'description' : localize('This block gives you the position of an item in a given list.'),
         };
     },
+    getRequiredValueInputs() {
+        return {
+            VALUE: null,
+            FIND : null,
+        };
+    },
 };
 
 Blockly.JavaScript.lists_indexOf = block => {

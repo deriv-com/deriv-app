@@ -1,18 +1,19 @@
-import { Button,
+import {
+    Button,
     Drawer,
+    Icon,
     Popover,
-    Tabs }                                    from 'deriv-components';
-import PropTypes                              from 'prop-types';
-import React                                  from 'react';
-import { localize }                           from 'deriv-translations';
-import Dialog                                 from './dialog.jsx';
-import { InfoOutlineIcon, RunIcon, StopIcon } from './Icons.jsx';
-import Journal                                from './journal.jsx';
-import Summary                                from './summary.jsx';
-import TradeAnimation                         from './trade-animation.jsx';
-import Transactions                           from './transactions.jsx';
-import { connect }                            from '../stores/connect';
-import                                             '../assets/sass/run-panel.scss';
+    Tabs }            from 'deriv-components';
+import PropTypes      from 'prop-types';
+import React          from 'react';
+import { localize }   from 'deriv-translations';
+import Dialog         from './dialog.jsx';
+import Journal        from './journal.jsx';
+import Summary        from './summary.jsx';
+import TradeAnimation from './trade-animation.jsx';
+import Transactions   from './transactions.jsx';
+import { connect }    from '../stores/connect';
+import                     '../assets/sass/run-panel.scss';
 
 const drawerContent = ({
     active_index,
@@ -66,15 +67,17 @@ const drawerFooter = ({
                     (is_stop_button_visible) ?
                         <Button
                             is_disabled={is_stop_button_disabled}
+                            id='gtm-stop-bot'
                             text={localize('Stop bot')}
-                            icon={<StopIcon className='run-panel__button--icon' />}
+                            icon={<Icon icon='IcPause' className='run-panel__button--icon' color='active' />}
                             onClick={onStopButtonClick}
                             has_effect
                             primary
                         /> :
                         <Button
+                            id='gtm-run-bot'
                             text={localize('Run bot')}
-                            icon={<RunIcon className='run-panel__button--icon' />}
+                            icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
                             onClick={onRunButtonClick}
                             has_effect
                             green
@@ -90,7 +93,7 @@ const drawerFooter = ({
                      in the transaction table if the bot is stopped while placing trades. You may refer to
                      the statement page for details of all completed transactions.`)}
                 >
-                    <InfoOutlineIcon className='run-panel__icon-info' />
+                    <Icon icon='IcInfoOutline' className='run-panel__icon-info' />
                 </Popover>
             </div>
             {is_dialog_open &&

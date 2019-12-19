@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_append = {
     init() {
@@ -31,6 +32,11 @@ Blockly.Blocks.text_append = {
         return {
             'display_name': localize('Text Append'),
             'description' : localize('Appends a given text to a variable.'),
+        };
+    },
+    getRequiredValueInputs() {
+        return {
+            TEXT: emptyTextValidator,
         };
     },
 };

@@ -2,10 +2,9 @@ import classNames             from 'classnames';
 import PropTypes              from 'prop-types';
 import React                  from 'react';
 import { withRouter }         from 'react-router';
-import { Button }             from 'deriv-components';
+import { Button, Icon }       from 'deriv-components';
 import CurrencyUtils          from 'deriv-shared/utils/currency';
 import { localize, Localize } from 'deriv-translations';
-import Icon                   from 'Assets/icon.jsx';
 import routes                 from 'Constants/routes';
 import { connect }            from 'Stores/connect';
 
@@ -31,18 +30,15 @@ class PaymentAgentTransferReceipt extends React.Component {
                     <div className='cashier__transferred-details-wrapper'>
                         <span className='account-transfer__transfer-details-from'>
                             <Icon
-                                icon='IconAccountsCurrency'
-                                type={this.props.currency.toLowerCase()}
-                                height={16}
-                                width={16}
+                                icon={`IcCurrency-${this.props.currency.toLowerCase()}`}
                             />
                             <span className='cashier__transferred-details'>
                                 <span className='cashier__text--bold'>{this.props.currency.toUpperCase()}</span>&nbsp;({this.props.loginid})
                             </span>
                         </span>
-                        <Icon className='cashier__transferred-icon' icon='IconBack' />
+                        <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
                         <span className='account-transfer__transfer-details-to'>
-                            <Icon icon='IconUser' />
+                            <Icon icon='IcUserOutline' />
                             <span className='cashier__transferred-details'>
                                 <span className='cashier__text--bold'>{this.props.receipt.client_name}</span>&nbsp;({this.props.receipt.client_id})
                             </span>

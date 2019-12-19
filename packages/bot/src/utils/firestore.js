@@ -22,11 +22,6 @@ const Firestore = (() => {
                     apiKey   : 'AIzaSyA52MX2l8p75-w7nvab7fU6Lk6KwLqnyEI',
                     projectId: 'derivbot-248506',
                 });
-
-                const token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTU3NTk0NzkxNSwiZXhwIjoxNTc1OTUxNTE1LCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1ndms2ZUBkZXJpdmJvdC0yNDg1MDYuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1ndms2ZUBkZXJpdmJvdC0yNDg1MDYuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJ1aWQiOiJhbmFseXRpY3MifQ.FEHZHILg2mQzdKXr7NpFroahusvrIh1rI7a7f0i-rbALj32UAt66jL_oIrB_n26JDooip6kc6nW2MjJ8dOVDKi1rgaDtBXsXk5scAd61x6v7xH7c9gzD1Dt7HfdB4JmiZEF1k4EWljL081VPc8wwqCxAex5kciig71SG0_uzlQ1vc4tb8IHLS8ZG-hQ4WdrkpBx1TtMkW0uRd1NiKKKsF-jOTggn8iDJpheR3g5A_ULXhO6grKppgOdd9PASx4pn-y8t4JEdRUFHEkWNumsM2vFO_C_bEUNXxO8xi-i0cxkDLNBlpO7fpL2SIVmGrCD1VSM8RPg9R8iJwvX40drbNw';
-                firebase.auth().signInWithCustomToken(token).catch(function(error) {
-                    console.log('error happened while authenticating firestore' , error); // eslint-disable-line no-console
-                });
             }
 
             const { core: { client }, run_panel, transactions, journal, summary: s } = root_store;
@@ -123,7 +118,7 @@ const Firestore = (() => {
                     buy_price    : contract.buy_price,
                     contract_type: contract.contract_type,
                     currency     : contract.currency,
-                    refrence_id  : contract.refrence_id,
+                    reference_id : contract.reference_id,
                     entry_spot   : contract.entry_spot,
                     exit_spot    : contract.exit_spot,
                     profit       : contract.profit,

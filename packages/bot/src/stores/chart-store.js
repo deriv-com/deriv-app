@@ -5,7 +5,7 @@ import {
     observable,
     reaction,
 }                     from 'mobx';
-import { tabs_title } from '../constants/bot-contents';
+// import { tabs_title } from '../constants/bot-contents';
 import ServerTime     from '../services/api/server_time';
 
 const g_subscribers_map = {};
@@ -42,14 +42,15 @@ export default class ChartStore {
     onStartBot() {
         this.updateSymbol();
 
-        const { main_content } = this.root_store;
-        main_content.setActiveTab(tabs_title.CHART);
+        // const { main_content } = this.root_store;
+        // main_content.setActiveTab(tabs_title.CHART);
     }
 
     @action.bound
+    // eslint-disable-next-line
     onStopBot() {
-        const { main_content } = this.root_store;
-        main_content.setActiveTab(tabs_title.WORKSPACE);
+        // const { main_content } = this.root_store;
+        // main_content.setActiveTab(tabs_title.WORKSPACE);
     }
 
     @action.bound

@@ -3,12 +3,13 @@
 /** @define mobile-widget */
 .mobile-widget {
     border-radius: 4px;
-    padding: 1em 0.5em;
+    padding: 1em 0.8rem;
     height: 4rem;
     background-color: var(--general-main-1);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 0 0 .8rem;
 
     &__amount {
         @include typeface(--paragraph-center-bold-black);

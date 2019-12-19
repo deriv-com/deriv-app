@@ -54,10 +54,9 @@ const PurchaseButton = ({
 
     const IconComponentWrapper = () => (
         <div className='btn-purchase__icon_wrapper'>
-            <Icon
-                icon='IconTradeType'
-                className='btn-purchase__icon'
+            <IconTradeType
                 type={getIconType()}
+                className='btn-purchase__icon'
                 color='active'
             />
         </div>

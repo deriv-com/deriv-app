@@ -17,7 +17,7 @@ const AllowEquals = ({
     };
 
     return (
-        <div className={classNames('allow-equals', className)}>
+        <div className={classNames('allow-equals', 'mobile-widget', className)}>
             <Checkbox
                 label={localize('Allow Equal')}
                 value={is_allow_equal}

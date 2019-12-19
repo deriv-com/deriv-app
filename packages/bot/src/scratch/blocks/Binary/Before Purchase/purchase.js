@@ -86,6 +86,7 @@ Blockly.Blocks.purchase = {
             }
         }
     },
+    restricted_parents: ['before_purchase'],
 };
 
 Blockly.JavaScript.purchase = block => {

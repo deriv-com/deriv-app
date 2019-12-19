@@ -153,7 +153,7 @@ const compareAccountsData = [
                 name={localize('Trading instruments')}
             />
         ),
-        standard : localize('FX-majors, FX-minors, Commodities, Cryptocurrencies'),
+        standard : localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
         advanced : localize('FX-majors, FX-minors, FX-exotics'),
         synthetic: localize('Synthetics'),
     },

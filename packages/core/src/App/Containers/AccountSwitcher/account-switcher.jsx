@@ -159,6 +159,10 @@ class AccountSwitcher extends React.Component {
         return demo_mt5_accounts.length < 2;
     }
 
+    get has_set_currency() {
+        return this.props.account_list.filter(account => !account.is_virtual).some((account)=> account.title !== 'Real');
+    }
+
     get can_upgrade() {
         return !!(this.props.is_upgrade_enabled && this.props.is_virtual && this.props.can_upgrade_to);
     }
@@ -240,11 +244,7 @@ class AccountSwitcher extends React.Component {
                                         </div>
                                         {this.has_add_button &&
                                         <ButtonAddAccount
-                                            currency={
-                                                this.props.accounts ?
-                                                    this.props.accounts[this.props.account_loginid].currency
-                                                    : false
-                                            }
+                                            has_set_currency={this.has_set_currency}
                                             onClick={
                                                 this.can_upgrade ?
                                                     this.onClickUpgrade
@@ -273,7 +273,7 @@ class AccountSwitcher extends React.Component {
                                                 <React.Fragment>
                                                     {this.props.has_mt5_login &&
                                                         <div className={classNames('acc-switcher__accounts', {
-                                                            'acc-switcher__accounts--has-add-account': this.has_mt5_upgrade_button,
+                                                            'acc-switcher__accounts--has-add-account': this.has_real_mt5_upgrade_button,
                                                         })}
                                                         >
                                                             {this.sorted_mt5_list.filter((account)=> !(/^demo/.test(account.group))).map((account) => (
@@ -292,11 +292,7 @@ class AccountSwitcher extends React.Component {
                                                     }
                                                     {(this.has_real_mt5_upgrade_button) &&
                                                     <ButtonAddAccount
-                                                        currency={
-                                                            this.props.accounts ?
-                                                                this.props.accounts[this.props.account_loginid].currency
-                                                                : false
-                                                        }
+                                                        has_set_currency={this.has_set_currency}
                                                         toggleSetCurrency={this.setAccountCurrency}
                                                         onClick={this.redirectToMt5Real}
                                                         text={<Localize i18n_default_text='Add DMT5 account' />}
@@ -363,7 +359,7 @@ class AccountSwitcher extends React.Component {
                                                 <React.Fragment>
                                                     {this.props.has_mt5_login &&
                                                         <div className={classNames('acc-switcher__accounts', {
-                                                            'acc-switcher__accounts--has-add-account': this.has_mt5_upgrade_button,
+                                                            'acc-switcher__accounts--has-add-account': this.has_demo_mt5_upgrade_button,
                                                         })}
                                                         >
                                                             {this.sorted_mt5_list.filter((account)=> /^demo/.test(account.group)).map((account) => (
@@ -383,12 +379,7 @@ class AccountSwitcher extends React.Component {
                                                     }
                                                     {(this.has_demo_mt5_upgrade_button) &&
                                                     <ButtonAddAccount
-                                                        currency={
-                                                            this.props.accounts ?
-                                                                this.props.accounts[this.props.account_loginid].currency
-                                                                : false
-                                                        }
-                                                        toggleSetCurrency={this.setAccountCurrency}
+                                                        is_currency_required={false}
                                                         onClick={this.redirectToMt5Demo}
                                                         text={<Localize i18n_default_text='Add DMT5 account' />}
                                                     />

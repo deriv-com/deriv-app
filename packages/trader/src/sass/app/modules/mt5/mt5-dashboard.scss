@@ -209,13 +209,10 @@
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
+    border: solid 1px var(--border-normal);
 
-    &:not(:hover) {
-        border: solid 1px var(--border-normal);
-    }
     &:hover {
-        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.16);
-        border: solid 1px var(--general-main-1);
+        box-shadow: 0 2px 8px 0 var(--shadow-menu);
     }
     &--heading {
         @include typeface(--title-left-bold-black, none);

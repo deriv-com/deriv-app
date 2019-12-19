@@ -351,6 +351,28 @@ export const runInvisibleEvents = (callbackFn) => {
     Blockly.Events.enable();
 };
 
+export const updateDisabledBlocks = (workspace, event) => {
+    if (event.type !== Blockly.Events.END_DRAG) {
+        return;
+    }
+
+    workspace.getAllBlocks().forEach(block => {
+        if (!block.getParent()) {
+            return;
+        }
+
+        const restricted_parents = block.restricted_parents || [];
+        const should_disable     = !(
+            restricted_parents.length === 0 ||
+            restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent))
+        );
+
+        if (block.disabled !== should_disable) {
+            block.setDisabled(should_disable);
+        }
+    });
+};
+
 export const emptyTextValidator = (input) => {
     return !input || input === '\'\'';
 };

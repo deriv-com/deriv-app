@@ -10,7 +10,7 @@
             display: flex;
             justify-content: center;
             margin: 0 4px;
-            height: calc(56px - 18px);
+            height: calc(56px - 17px) !important;
 
             > * {
                 align-self: center;

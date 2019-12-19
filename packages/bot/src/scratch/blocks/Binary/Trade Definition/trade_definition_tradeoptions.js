@@ -1,7 +1,9 @@
 import { localize }              from 'deriv-translations';
+import CurrencyUtils             from 'deriv-shared/utils/currency';
 import { runIrreversibleEvents } from '../../../utils';
 import config                    from '../../../../constants';
 import ApiHelpers                from '../../../../services/api/api-helpers';
+import ScratchStore              from '../../../../stores/scratch-store';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
     init() {
@@ -66,6 +68,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
         const market_block     = trade_definition_block.getChildByType('trade_definition_market');
         const trade_type_block = trade_definition_block.getChildByType('trade_definition_tradetype');
+
         if (!market_block || !trade_type_block) {
             return;
         }
@@ -88,10 +91,13 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.updateDurationInput(false, false);
                 this.updatePredictionInput(false);
             } else {
+                const { client } = ScratchStore.instance.root_store.core;
+
                 this.updateBarrierInputs(true, true);
                 this.enforceSingleBarrierType('BARRIEROFFSETTYPE_LIST', true);
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
+                this.setCurrency(client.currency);
             }
         } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
             if (is_load_event) {
@@ -312,6 +318,14 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             });
         }
     },
+    setCurrency(currency) {
+        const currency_field   = this.getField('CURRENCY_LIST');
+        const dropdown_options = currency_field.menuGenerator_.map(o => o[1]); // eslint-disable-line
+
+        if (dropdown_options.includes(currency)) {
+            currency_field.setValue(currency);
+        }
+    },
     domToMutation(xmlElement) {
         const has_first_barrier  = xmlElement.getAttribute('has_first_barrier') === 'true';
         const has_second_barrier = xmlElement.getAttribute('has_second_barrier') === 'true';
@@ -334,6 +348,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         
         return container;
     },
+    restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {
         return {
             AMOUNT  : null,
@@ -349,6 +364,11 @@ Blockly.JavaScript.trade_definition_tradeoptions = block => {
     const currency         = block.getFieldValue('CURRENCY_LIST');
     const duration_type    = block.getFieldValue('DURATIONTYPE_LIST') || '0';
     const duration_value   = Blockly.JavaScript.valueToCode(block, 'DURATION') || '0';
+
+    // Determine decimal places for rounding the stake, this is done so Martingale multipliers
+    // are not affected by fractional values e.g. USD 12.232323 will become 12.23.
+    const decimal_places = CurrencyUtils.getDecimalPlaces(currency);
+    const stake_amount   = `+(Number(${amount}).toFixed(${decimal_places}))`;
 
     const getBarrierValue = (barrier_offset_type, value) => {
         // Variables should not be encapsulated in quotes
@@ -379,10 +399,10 @@ Blockly.JavaScript.trade_definition_tradeoptions = block => {
     const code = `
         Bot.start({
             limitations        : BinaryBotPrivateLimitations,
-            duration           : ${duration_value || '0'},
-            duration_unit      : '${duration_type || '0'}',
+            duration           : ${duration_value},
+            duration_unit      : '${duration_type}',
             currency           : '${currency}',
-            amount             : ${amount || '0'},
+            amount             : ${stake_amount},
             prediction         : ${prediction_value || 'undefined'},
             barrierOffset      : ${barrier_offset_value || 'undefined'},
             secondBarrierOffset: ${second_barrier_offset_value || 'undefined'},

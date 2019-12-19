@@ -144,26 +144,22 @@ const WorkspaceGroup = ({
             alignment='bottom'
             message={localize('Undo')}
         >
-            <Icon 
-                className={classNames(
-                    'toolbar__icon',
-                    'toolbar__icon-undo',
-                    { 'toolbar__icon--disabled': !has_undo_stack })}
-                icon='IcUndo' 
-                onClick={onUndoClick(/* redo */ false)} 
+            <Icon
+                className='toolbar__icon'
+                color={has_undo_stack ? undefined : 'disabled'}
+                icon='IcUndo'
+                onClick={() => onUndoClick(/* redo */ false)}
             />️
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Redo')}
         >
-            <Icon 
-                className={classNames(
-                    'toolbar__icon',
-                    'toolbar__icon-redo',
-                    { 'toolbar__icon--disabled': !has_redo_stack })}
+            <Icon
+                className='toolbar__icon'
+                color={has_redo_stack ? undefined : 'disabled'}
                 icon='IcRedo'
-                onClick={onRedoClick} 
+                onClick={() => onUndoClick(/* redo */ true)}
             />
         </Popover>
         <Popover

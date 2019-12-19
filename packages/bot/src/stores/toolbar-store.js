@@ -43,10 +43,7 @@ export default class ToolbarStore {
             this.root_store.core.gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
         }
 
-        runInAction(() => {
-            this.is_toolbox_open = !this.is_toolbox_open;
-        });
-
+        this.is_toolbox_open = !this.is_toolbox_open;
         toolbox.toggle();
     }
 
@@ -56,15 +53,9 @@ export default class ToolbarStore {
         const toolbox   = workspace.getToolbox();
 
         if (!toolbox.is_chunk_loaded) {
-            runInAction(() => {
-                this.is_toolbox_loading = true;
-            });
-
+            this.is_toolbox_loading = true;
             await toolbox.loadChunk();
-            
-            runInAction(() => {
-                this.is_toolbox_loading = false;
-            });
+            this.is_toolbox_loading = false;
         }
 
         return true;

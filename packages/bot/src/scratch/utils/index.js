@@ -28,7 +28,15 @@ export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
     Blockly.derivWorkspace.cleanUp(cursor_x, cursor_y, blocks_to_clean);
 };
 
-export const setBlockTextColor = block => {
+export const setBlockTextColor = (block, event) => {
+    const is_legal_event = 
+        event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(block.id) ||
+        event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === block.id;
+
+    if (!is_legal_event) {
+        return;
+    }
+
     const addClassAttribute = (field) => {
         const el_svg = field.getSvgRoot();
         if (el_svg) {

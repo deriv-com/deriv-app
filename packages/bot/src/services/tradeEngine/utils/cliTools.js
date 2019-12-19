@@ -1,6 +1,6 @@
+import TicksService                from 'Api/ticksService';
+import { generateLiveApiInstance } from 'Api/appId';
 import Interpreter                 from './interpreter';
-import TicksService                from '../../api/ticksService';
-import { generateLiveApiInstance } from '../../api/appId';
 import Observer                    from '../../../utils/observer';
 
 export const createScope = () => {

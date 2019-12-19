@@ -11,7 +11,10 @@
       "/node_modules/",
       "tools.js",
       "Misc.js"
-    ]
+    ],
+    "moduleNameMapper": {
+      "^Api(.*)$": "<rootDir>/src/services/api$1"
+    }
   },
   "scripts": {
     "start": "npm run test && npm run serve",

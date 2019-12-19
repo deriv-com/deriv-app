@@ -1,6 +1,6 @@
 import { localize }  from 'deriv-translations';
+import ApiHelpers    from 'Api/api-helpers';
 import config        from '../constants';
-import ApiHelpers    from '../services/api/api-helpers';
 import ScratchStore  from '../stores/scratch-store';
 
 /* eslint-disable no-underscore-dangle */

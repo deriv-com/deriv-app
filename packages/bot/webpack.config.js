@@ -28,6 +28,11 @@ module.exports = {
         publicPath: '/dist/',
         disableHostCheck: true,
     },
+    resolve : {
+        alias: {
+            Api      : path.resolve(__dirname , 'src', 'services', 'api'),
+        },
+    },
     mode: is_release ? 'production' : 'development',
     devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
     target: 'web',

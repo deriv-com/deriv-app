@@ -1,7 +1,7 @@
 import { localize }  from 'deriv-translations';
 import CurrencyUtils from 'deriv-shared/utils/currency';
+import ApiHelpers    from 'Api/api-helpers';
 import config        from '../../../../constants';
-import ApiHelpers    from '../../../../services/api/api-helpers';
 import ScratchStore  from '../../../../stores/scratch-store';
 
 Blockly.Blocks.trade_definition_tradeoptions = {

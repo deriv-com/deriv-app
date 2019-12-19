@@ -1,4 +1,4 @@
-import ApiHelpers from '../../../../services/api/api-helpers';
+import ApiHelpers from 'Api/api-helpers';
 
 /* eslint-disable */
 Blockly.Blocks.trade_definition_market = {

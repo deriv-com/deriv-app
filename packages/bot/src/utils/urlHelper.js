@@ -1,5 +1,5 @@
 
-import AppIds          from '../services/api/appIdResolver';
+import AppIds          from 'Api/appIdResolver';
 
 export const isProduction = () =>
     // Check if the hostname is one of the production domains

@@ -3,9 +3,9 @@ import React                from 'react';
 import {
     Button,
     Dropdown,
+    Icon,
     Input,
     Modal,
-    UnderlyingIcon,
     Popover,
     Tabs,
 }                           from 'deriv-components';
@@ -16,22 +16,21 @@ import {
 }                           from 'formik';
 import { localize }         from 'deriv-translations';
 import IconTradeType        from './icon-trade-types.jsx';
-import { InfoOutlineIcon }  from './Icons.jsx';
 import { connect }          from '../stores/connect';
 import config               from '../constants/index';
 import '../assets/sass/quick-strategy.scss';
 
 const MarketOption = ({ symbol }) => (
     <div key={symbol.value} className='quick-strategy__option'>
-        <UnderlyingIcon market={symbol.value} />
+        <Icon icon={`IcUnderlying${symbol.value}`} size={32} />
         <span className='quick-strategy__symbol'>{symbol.name}</span>
     </div>
 );
 
 const TradetypeOption = ({ type }) => (
     <div key={type.value} className='quick-strategy__option'>
-        <IconTradeType trade_type={type.icon[0]} className='quick-strategy__icon' />
-        <IconTradeType trade_type={type.icon[1]} className='quick-strategy__icon' />
+        <IconTradeType type={type.icon[0]} className='quick-strategy__icon' />
+        <IconTradeType type={type.icon[1]} className='quick-strategy__icon' />
         <span className='quick-strategy__symbol'>{type.name}</span>
     </div>
 );
@@ -133,7 +132,7 @@ const QuickStrategyForm = ({
                                                     localize('The trade length of your purchased contract.')
                                                 }
                                             >
-                                                <InfoOutlineIcon />
+                                                <Icon icon='IcInfoOutline' />
                                             </Popover>
                                         }
                                     />
@@ -157,7 +156,7 @@ const QuickStrategyForm = ({
                                                     localize('The amount that you pay to enter a trade.')
                                                 }
                                             >
-                                                <InfoOutlineIcon />
+                                                <Icon icon='IcInfoOutline' />
                                             </Popover>
                                         }
                                     />
@@ -179,7 +178,7 @@ const QuickStrategyForm = ({
                                                     localize('The bot will stop trading if your total loss exceeds this amount.')
                                                 }
                                             >
-                                                <InfoOutlineIcon />
+                                                <Icon icon='IcInfoOutline' />
                                             </Popover>
                                         }
                                     />
@@ -203,7 +202,7 @@ const QuickStrategyForm = ({
                                                     getSizeDesc(active_index)
                                                 }
                                             >
-                                                <InfoOutlineIcon />
+                                                <Icon icon='IcInfoOutline' />
                                             </Popover>
                                         }
                                     />
@@ -223,7 +222,7 @@ const QuickStrategyForm = ({
                                                 alignment='bottom'
                                                 message={localize('The bot will stop trading if your total profit exceeds this amount.')}
                                             >
-                                                <InfoOutlineIcon />
+                                                <Icon icon='IcInfoOutline' />
                                             </Popover>
                                         }
                                     />

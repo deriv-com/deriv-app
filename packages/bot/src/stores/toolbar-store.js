@@ -40,6 +40,7 @@ export default class ToolbarStore {
                 const scroll_distance = toolbox_width - block_canvas_rect.left + toolbox.width;
                 scrollWorkspace(workspace, scroll_distance, true, false);
             }
+            this.root_store.core.gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
         }
 
         runInAction(() => {

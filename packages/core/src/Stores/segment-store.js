@@ -16,7 +16,8 @@ export default class SegmentStore extends BaseStore {
 
     /**
      * Pushes identify event to segment
-     *
+     * identify event will store userid in localstorage to be used by
+     * other segment call
      * @param {object} data
      */
     @action.bound
@@ -43,12 +44,21 @@ export default class SegmentStore extends BaseStore {
             window.analytics.page();
         }
     }
+
+    /**
+     * Pushes reset event to segment
+     * segment will remove userId from localstorage when logout
+     */
     @action.bound
     reset() {
         if (this.is_applicable) {
             window.analytics.reset();
         }
     }
+
+    /**
+     * Pushes track event to segment
+     */
     @action.bound
     track(event_name, options = {}) {
         if (this.is_applicable && this.has_identified) {

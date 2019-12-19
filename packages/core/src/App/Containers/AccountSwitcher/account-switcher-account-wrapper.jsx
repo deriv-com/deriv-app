@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React      from 'react';
+import PropTypes  from 'prop-types';
 import { Icon }   from 'deriv-components';
 
 const AccountWrapper = ({
@@ -25,5 +26,12 @@ const AccountWrapper = ({
         }
     </React.Fragment>
 );
+
+AccountWrapper.propTypes = {
+    children        : PropTypes.node,
+    header          : PropTypes.string,
+    is_visible      : PropTypes.bool,
+    toggleVisibility: PropTypes.func,
+};
 
 export default AccountWrapper;

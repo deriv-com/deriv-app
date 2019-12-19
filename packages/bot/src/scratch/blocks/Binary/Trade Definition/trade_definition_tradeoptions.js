@@ -1,6 +1,7 @@
-import { localize } from 'deriv-translations';
-import config       from '../../../../constants';
-import ApiHelpers   from '../../../../services/api/api-helpers';
+import { localize }  from 'deriv-translations';
+import CurrencyUtils from 'deriv-shared/utils/currency';
+import config        from '../../../../constants';
+import ApiHelpers    from '../../../../services/api/api-helpers';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
     init() {
@@ -335,6 +336,11 @@ Blockly.JavaScript.trade_definition_tradeoptions = block => {
     const duration_type    = block.getFieldValue('DURATIONTYPE_LIST') || '0';
     const duration_value   = Blockly.JavaScript.valueToCode(block, 'DURATION') || '0';
 
+    // Determine decimal places for rounding the stake, this is done so Martingale multipliers
+    // are not affected by fractional values e.g. USD 12.232323 will become 12.23.
+    const decimal_places = CurrencyUtils.getDecimalPlaces(currency);
+    const stake_amount   = `+(Number(${amount}).toFixed(${decimal_places}))`;
+
     const getBarrierValue = (barrier_offset_type, value) => {
         // Variables should not be encapsulated in quotes
         if (/^(\d+(\.\d+)?)$/.test(value)) {
@@ -364,10 +370,10 @@ Blockly.JavaScript.trade_definition_tradeoptions = block => {
     const code = `
         Bot.start({
             limitations        : BinaryBotPrivateLimitations,
-            duration           : ${duration_value || '0'},
-            duration_unit      : '${duration_type || '0'}',
+            duration           : ${duration_value},
+            duration_unit      : '${duration_type}',
             currency           : '${currency}',
-            amount             : ${amount || '0'},
+            amount             : ${stake_amount},
             prediction         : ${prediction_value || 'undefined'},
             barrierOffset      : ${barrier_offset_value || 'undefined'},
             secondBarrierOffset: ${second_barrier_offset_value || 'undefined'},

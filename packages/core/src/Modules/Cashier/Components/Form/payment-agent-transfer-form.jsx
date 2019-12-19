@@ -3,6 +3,7 @@ import PropTypes              from 'prop-types';
 import React                  from 'react';
 import {
     Button,
+    Icon,
     Input }                   from 'deriv-components';
 import {
     Field,
@@ -10,7 +11,6 @@ import {
     Form }                    from 'formik';
 import CurrencyUtils          from 'deriv-shared/utils/currency';
 import { localize, Localize } from 'deriv-translations';
-import Icon                   from 'Assets/icon.jsx';
 import { connect }            from 'Stores/connect';
 import {
     getPreBuildDVRs,
@@ -144,8 +144,8 @@ class PaymentAgentTransferForm extends React.Component {
                                 <div className='cashier__form-submit'>
                                     {this.props.error_message &&
                                     <React.Fragment>
-                                        <Icon icon='IconEmergency' className='cashier__form-error-icon' />
-                                        <Icon icon='IconError' className='cashier__form-error-small-icon' />
+                                        <Icon icon='IcAlertDanger' className='cashier__form-error-icon' size={128} />
+                                        <Icon icon='IcAlertDanger' className='cashier__form-error-small-icon' />
                                         <p className='cashier__form-error'>
                                             {this.props.error_message}
                                         </p>

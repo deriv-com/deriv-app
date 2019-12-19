@@ -1,9 +1,8 @@
 import PropTypes              from 'prop-types';
 import React                  from 'react';
-import { Button }             from 'deriv-components';
+import { Button, Icon }       from 'deriv-components';
 import { BinaryLink }         from 'App/Components/Routes';
 import { localize, Localize } from 'deriv-translations';
-import Icon                   from 'Assets/icon.jsx';
 import { connect }            from 'Stores/connect';
 
 class EmailSent extends React.Component {
@@ -12,7 +11,7 @@ class EmailSent extends React.Component {
     render() {
         return (
             <div className='withdraw__email-sent'>
-                <Icon icon='IconEmailSent' className='withdraw__icon' />
+                <Icon icon='IcEmailSent' className='withdraw__icon' size={128} />
                 <p className='withdraw__email-sent-title'><Localize i18n_default_text={'We\'ve sent you an email.'} /></p>
                 <p className='withdraw__email-sent-text'><Localize i18n_default_text='Please click on the link in the email to access withdrawal.' /></p>
                 <div className='withdraw__email-resend'>

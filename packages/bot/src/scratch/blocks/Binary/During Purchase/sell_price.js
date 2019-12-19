@@ -22,21 +22,7 @@ Blockly.Blocks.sell_price = {
             'description' : localize('This block gives you the potential profit or loss if you decide to sell your contract.'),
         };
     },
-    onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
-            return;
-        }
-
-        if (event.type === Blockly.Events.BLOCK_CREATE || event.type === Blockly.Events.END_DRAG) {
-            if (this.isDescendantOf('during_purchase')) {
-                if (this.disabled) {
-                    this.setDisabled(false);
-                }
-            } else if (!this.disabled) {
-                this.setDisabled(true);
-            }
-        }
-    },
+    restricted_parents: ['during_purchase'],
 };
 
 Blockly.JavaScript.sell_price = () => {

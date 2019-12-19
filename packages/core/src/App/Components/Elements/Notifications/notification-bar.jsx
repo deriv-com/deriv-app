@@ -2,7 +2,7 @@ import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
-import Icon              from 'Assets/icon.jsx';
+import { Icon }          from 'deriv-components';
 
 class NotificationBar extends React.Component {
     state = {};
@@ -63,7 +63,7 @@ class NotificationBar extends React.Component {
                             onClick={this.onClose.bind(this)}
                             className='notification-bar__button'
                         >
-                            <Icon icon='IconClose' className='notification-bar__icon' />
+                            <Icon icon='IcCross' className='notification-bar__icon' />
                         </div>
                     }
                 </div>

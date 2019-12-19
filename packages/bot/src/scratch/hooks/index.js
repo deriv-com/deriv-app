@@ -18,6 +18,7 @@ import './toolbox';
 import './trashcan';
 import './variable_map';
 import './variables';
+import './workspace';
 import './workspace_audio';
 import './workspace_svg';
 import './xml';

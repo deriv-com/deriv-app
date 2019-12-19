@@ -9,6 +9,7 @@ export const unrecoverable_errors = [
     'FinancialAssessmentRequired',
     'PositiveNumberExpected',
     'OptionError',
+    'NoMFProfessionalClient',
 ];
 
 export const message_types = Object.freeze({

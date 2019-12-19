@@ -20,6 +20,8 @@ export default class RunPanelStore {
         this.registerCoreReactions();
     }
 
+    run_id = '';
+
     @observable active_index      = 0;
     @observable contract_stage    = contract_stages.NOT_RUNNING;
     @observable dialog_options    = {};
@@ -64,9 +66,10 @@ export default class RunPanelStore {
 
         this.is_running = true;
         this.toggleDrawer(true);
+        this.run_id         = `run-${Date.now()}`;
+        
         contract_card.clear();
         this.setContractStage(contract_stages.STARTING);
-
         DBot.runBot();
     }
 
@@ -236,6 +239,9 @@ export default class RunPanelStore {
             }
             case ('contract.purchase_received'): {
                 this.setContractStage(contract_stages.PURCHASE_RECEIVED);
+
+                // Close transaction-specific popover, if any.
+                this.root_store.transactions.setActiveTransactionId(null);
                 break;
             }
             case ('contract.sold'): {
@@ -327,6 +333,7 @@ export default class RunPanelStore {
         );
     }
 
+    @action.bound
     setContractStage(value) {
         this.contract_stage = value;
     }

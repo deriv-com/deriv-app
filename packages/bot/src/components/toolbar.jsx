@@ -1,5 +1,6 @@
 import {
     Button,
+    Icon,
     Input,
     Popover,
 }                    from 'deriv-components';
@@ -12,22 +13,6 @@ import PropTypes     from 'prop-types';
 import React         from 'react';
 import { localize }  from 'deriv-translations';
 import Dialog        from './dialog.jsx';
-import {
-    StopIcon,
-    RunIcon,
-    ToolbarCloseIcon,
-    ToolbarNewFileIcon,
-    ToolbarOpenIcon,
-    ToolbarReaarangeIcon,
-    ToolbarRedoIcon,
-    ToolbarRenameIcon,
-    ToolbarSaveIcon,
-    ToolbarSearchIcon,
-    ToolbarStartIcon,
-    ToolbarUndoIcon,
-    ToolbarZoomInIcon,
-    ToolbarZoomOutIcon,
-}                     from './Icons.jsx';
 import SaveLoadModal  from './saveload-modal.jsx';
 import TradeAnimation from './trade-animation.jsx';
 import { tabs_title } from '../constants/bot-contents';
@@ -62,15 +47,17 @@ const SearchBox = ({
                                     onBlur={onSearchBlur}
                                     trailing_icon={
                                         (search &&
-                                                (is_search_loading ?
-                                                    <div className='loader' />
-                                                    :
-                                                    <ToolbarCloseIcon
-                                                        className='toolbar__btn--icon'
-                                                        onClick={() => onSearchClear(setFieldValue)}
-                                                    />
-                                                )) ||
-                                            (!search && <ToolbarSearchIcon />)
+                                            (is_search_loading ?
+                                                <div className='loader' />
+                                                :
+                                                <Icon
+                                                    icon='IcCloseCircle'
+                                                    className='toolbar__btn--icon'
+                                                    onClick={() => onSearchClear(setFieldValue)}
+                                                    color='secondary'
+                                                />
+                                            )) ||
+                                        (!search && <Icon icon='IcSearch' color='disabled' />)
                                     }
                                 />
                             )}
@@ -106,7 +93,7 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
                                         label={localize('Bot name')}
                                         placeholder={localize('Untitled Bot')}
                                         trailing_icon={
-                                            <ToolbarRenameIcon />
+                                            <Icon icon='IcEdit' />
                                         }
                                     />
                                 )}
@@ -132,19 +119,20 @@ const WorkspaceGroup = ({
             alignment='bottom'
             message={localize('Import')}
         >
-            <ToolbarOpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
+            <Icon icon='IcFolderOpen' className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Reset')}
         >
-            <ToolbarNewFileIcon className='toolbar__icon' onClick={onResetClick} />
+            <Icon icon='IcNewFile' className='toolbar__icon' onClick={onResetClick} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Save')}
         >
-            <ToolbarSaveIcon
+            <Icon
+                icon='IcSave'
                 className='toolbar__icon'
                 onClick={() => toggleSaveLoadModal(true)}
             />
@@ -154,31 +142,31 @@ const WorkspaceGroup = ({
             alignment='bottom'
             message={localize('Undo')}
         >
-            <ToolbarUndoIcon className='toolbar__icon' onClick={onUndoClick} />️
+            <Icon icon='IcUndo' className='toolbar__icon' onClick={onUndoClick} />️
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Redo')}
         >
-            <ToolbarRedoIcon className='toolbar__icon' onClick={onRedoClick} />
+            <Icon icon='IcRedo' className='toolbar__icon' onClick={onRedoClick} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Sort')}
         >
-            <ToolbarReaarangeIcon className='toolbar__icon' onClick={onSortClick} />
+            <Icon icon='IcSort' className='toolbar__icon' onClick={onSortClick} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Zoom in')}
         >
-            <ToolbarZoomInIcon className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
+            <Icon icon='IcZoomIn' className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Zoom out')}
         >
-            <ToolbarZoomOutIcon className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
+            <Icon icon='IcZoomOut' className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
         </Popover>
     </div>
 );
@@ -220,7 +208,7 @@ const Toolbar = ({
                     className='toolbar__btn--icon toolbar__btn--start'
                     has_effect
                     onClick={onToolboxToggle}
-                    icon={<ToolbarStartIcon />}
+                    icon={<Icon icon='IcPuzzle' color='active' />}
                     green
                 >
                     {localize('Get started')}
@@ -258,7 +246,7 @@ const Toolbar = ({
                         className='toolbar__btn'
                         is_disabled={is_stop_button_disabled}
                         text={localize('Stop bot')}
-                        icon={<StopIcon className='run-panel__button--icon' />}
+                        icon={<Icon icon='IcPause' className='run-panel__button--icon' color='active' />}
                         onClick={onStopButtonClick}
                         has_effect
                         primary
@@ -266,7 +254,7 @@ const Toolbar = ({
                     <Button
                         className='toolbar__btn'
                         text={localize('Run bot')}
-                        icon={<RunIcon className='run-panel__button--icon' />}
+                        icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
                         onClick={onRunButtonClick}
                         has_effect
                         green

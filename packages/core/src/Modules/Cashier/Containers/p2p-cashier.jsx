@@ -1,6 +1,6 @@
 import React           from 'react';
 import { WS }          from 'Services';
-import P2P             from 'deriv-p2p';
+import P2P             from '@deriv/p2p';
 import { getLanguage } from 'deriv-translations';
 import { connect }     from 'Stores/connect';
 

@@ -1,163 +1,77 @@
-import classNames      from 'classnames';
-import {
-    Icon,
-    Money,
-    Popover,
-    ThemedScrollbars } from 'deriv-components';
-import { PropTypes }   from 'prop-types';
-import React           from 'react';
-import { localize }    from 'deriv-translations';
-import IconTradeType   from './icon-trade-types.jsx';
-import { connect }     from '../stores/connect';
-import                      '../assets/sass/transactions.scss';
+import { ThemedScrollbars }     from 'deriv-components';
+import { localize }             from 'deriv-translations';
+import { PropTypes }            from 'prop-types';
+import React                    from 'react';
+import Transaction              from './transaction.jsx';
+import { transaction_elements } from '../constants/transactions';
+import { connect }              from '../stores/connect';
+import                           '../assets/sass/transactions.scss';
 
-const Transaction = ({ contract }) => {
-    return (
-        <table className='transactions__item'>
-            <tbody>
-                <tr className='transactions__row'>
-                    <td className='transactions__middle transactions__col'>
-                        <Popover
-                            className='transactions__inline transactions__top'
-                            alignment='left'
-                            message={contract.contract_type}
-                        >
-                            <IconTradeType
-                                type={contract.contract_type}
-                            />
-                        </Popover>
-                        <div className='transactions__inline transactions__middle'>
-                            <div className='transactions__margin-bottom'>
-                                <Popover
-                                    className='transactions__inline transactions__middle'
-                                    alignment='left'
-                                    message={localize('Reference ID')}
-                                >
-                                    <Icon icon='IcContractId' className='transactions__middle' />
-                                </Popover>
-                                <div className='transactions__inline transactions__middle'>
-                                    {contract.refrence_id}
-                                </div>
-                            </div>
-                            <div>
-                                <Popover
-                                    className='transactions__inline transactions__middle'
-                                    alignment='left'
-                                    message={localize('Buy price')}
-                                >
-                                    <Icon icon='IcContractBuyPrice' className='transactions__middle' />
-                                </Popover>
+class Transactions extends React.PureComponent {
+    componentDidMount() {
+        this.props.onMount();
+    }
+    
+    componentWillUnmount() {
+        this.props.onUnmount();
+    }
 
-                                <Money
-                                    amount={contract.buy_price}
-                                    currency={contract.currency}
-                                />
-                            </div>
-                        </div>
-                    </td>
-                    <td className='transactions__middle transactions__col'>
-                        <div className='transactions__margin-bottom'>
-                            <Popover
-                                className='transactions__inline transactions__middle'
-                                alignment='left'
-                                message={localize('Entry spot')}
-                            >
-                                <Icon icon='IcContractEntrySpot' className='transactions__middle' />
-                            </Popover>
-                            <div className='transactions__inline transactions__middle'>
-                                {contract.entry_spot}
-                            </div>
-                        </div>
-                        <div>
-                            <Popover
-                                className='transactions__inline transactions__middle'
-                                alignment='left'
-                                message={localize('Exit spot')}
-                            >
-                                <Icon icon='IcContractExitSpot' className='transactions__middle' />
-                            </Popover>
-                            <div className='transactions__inline transactions__middle'>
-                                {contract.exit_spot}
-                            </div>
-                        </div>
-                    </td>
-                    <td className='transactions__col'>
-                        {contract.profit ?
-                            <div
-                                className={classNames(
-                                    'transactions__inline',
-                                    'transactions__middle',
-                                    {
-                                        'transactions__green': contract.profit > 0,
-                                        'transactions__red'  : contract.profit < 0,
-                                    })}
-                            >
-                                <Money
-                                    amount={Math.abs(contract.profit)}
-                                    currency={contract.currency}
-                                />
-                            </div>
-                            :
-                            null
-                        }
-                    </td>
-                    <td className='transactions__col'>
-                        {
-                            contract.is_completed ?
-                                <Popover
-                                    className='transactions__inline transactions__middle'
-                                    alignment='left'
-                                    message={localize('Completed')}
-                                >
-                                    <Icon icon='IcCheckmarkOutline' className='transactions__middle' color='green' />
-                                </Popover> :
-                                <Popover
-                                    className='transactions__inline transactions__middle'
-                                    alignment='left'
-                                    message={localize('Pending')}
-                                >
-                                    <Icon icon='IcClockOutline' className='transactions__middle' color='secondary' />
-                                </Popover>}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    );
-};
-
-const Transactions = ({
-    contracts }) => {
-
-    return (
-        <div className='transactions'>
-            <div className='transactions__header'>
-                <span className='transactions__header--col'>{localize('Trade information')}</span>
-                <span className='transactions__header--col'>{localize('Entry/Exit spot')}</span>
-                <span className='transactions__header--col'>{localize('Profit/Loss')}</span>
+    render() {
+        const { elements } = this.props;
+        return (
+            <div className='transactions'>
+                <div className='transactions__header'>
+                    <span className='transactions__header-column transactions__header-spot'>
+                        {localize('Entry/Exit spot')}
+                    </span>
+                    <span className='transactions__header-column transaction__header-profit'>
+                        {localize('Buy price and P/L')}
+                    </span>
+                </div>
+                <div className='transactions__content'>
+                    <ThemedScrollbars
+                        autoHide
+                        style={{ height: 'var(--drawer-scroll-height)' }}
+                    >
+                        { elements.map((element, index) => {
+                            switch (element.type) {
+                                case (transaction_elements.CONTRACT): {
+                                    const contract = element.data;
+                                    return (
+                                        <Transaction
+                                            key={`${contract.reference_id}${index}`}
+                                            contract={contract}
+                                        />
+                                    );
+                                }
+                                case (transaction_elements.DIVIDER): {
+                                    const run_id = element.data;
+                                    return (
+                                        <div key={run_id} className='transactions__divider'>
+                                            <div className='transactions__divider-line' />
+                                        </div>
+                                    );
+                                }
+                                default: {
+                                    return null;
+                                }
+                            }
+                        }) }
+                    </ThemedScrollbars>
+                </div>
             </div>
-            <div className='transactions__content'>
-                <ThemedScrollbars
-                    autoHide
-                    style={{ height: 'calc(100vh - 365px)' }}
-                >
-                    {
-                        contracts.map((contract, index) => {
-                            return <Transaction
-                                key={`${contract.refrence_id}${index}`}
-                                contract={contract}
-                            />;
-                        })
-                    }
-                </ThemedScrollbars>
-            </div>
-        </div>
-    );
-};
+        );
+    }
+}
 
 Transactions.propTypes = {
-    contracts: PropTypes.array,
+    elements : PropTypes.array,
+    onMount  : PropTypes.func,
+    onUnmount: PropTypes.func,
 };
 
 export default connect(({ transactions }) => ({
-    contracts: transactions.contracts,
+    elements : transactions.elements,
+    onMount  : transactions.onMount,
+    onUnmount: transactions.onUnmount,
 }))(Transactions);

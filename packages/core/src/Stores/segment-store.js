@@ -1,9 +1,9 @@
-import { action }             from 'mobx';
-import BinarySocket           from '_common/base/socket_base';
-import { isLoginPages }       from '_common/base/login';
-import { get as getLanguage } from '_common/language';
-import BaseStore              from './base-store';
-import { getAppId }           from '../config';
+import { action }       from 'mobx';
+import { getLanguage }  from 'deriv-translations';
+import BinarySocket     from '_common/base/socket_base';
+import { isLoginPages } from '_common/base/login';
+import BaseStore        from './base-store';
+import { getAppId }     from '../config';
 
 export default class SegmentStore extends BaseStore {
     // only available on production (bot and deriv)
@@ -22,7 +22,7 @@ export default class SegmentStore extends BaseStore {
      */
     @action.bound
     async identifyEvent(data) {
-        if (this.is_applicable && !isLoginPages()) {
+        if (this.is_applicable && !isLoginPages() && !this.has_identified) {
             BinarySocket.wait('authorize').then((response) => {
                 if (response.authorize.user_id) {
                     window.analytics.identify(response.authorize.user_id, {
@@ -30,6 +30,7 @@ export default class SegmentStore extends BaseStore {
                         ...data,
                     });
                     this.has_identified = true;
+                    this.pageView();
                 }
             });
         }

@@ -164,7 +164,7 @@ const render_label = ({
 const shadowed_text = ({ ctx, is_dark_theme, text, left, top, scale }) => {
     ctx.textAlign = 'center';
     const size = Math.floor(scale * 12);
-    ctx.font = `bold ${size}px BinarySymbols, Roboto`;
+    ctx.font = `bold ${size}px Roboto`;
     if (!is_firefox) {
         ctx.shadowColor = is_dark_theme ? 'rgba(16,19,31,1)' : 'rgba(255,255,255,1)';
         ctx.shadowBlur = 12;
@@ -245,7 +245,6 @@ const TickContract = RawMarkerMaker(({
         status,
         profit,
         is_sold,
-        is_expired,
         // tick_stream,
         tick_count,
     },
@@ -354,25 +353,17 @@ const TickContract = RawMarkerMaker(({
             });
         ctx.fillStyle = foreground_color;
     }
-    // entry & expiry markers
-    if (granularity === 0) {
-        [entry, is_expired ? exit : null].forEach(tick => {
-            if (tick && tick.visible) {
-                if (tick === entry) {
-                    draw_path(ctx, {
-                        top : tick.top,
-                        left: tick.left,
-                        zoom: tick.zoom,
-                        icon: ICONS.ENTRY_SPOT.with_color(
-                            foreground_color,
-                            background_color + (is_sold ? opacity : '')
-                        ),
-                    });
-                }
-            }
+    // entry markers
+    if (granularity === 0 && entry && entry.visible) {
+        draw_path(ctx, {
+            top : entry.top,
+            left: entry.left,
+            zoom: entry.zoom,
+            icon: ICONS.ENTRY_SPOT.with_color(
+                foreground_color,
+                background_color + (is_sold ? opacity : '')
+            ),
         });
-        ctx.strokeStyle = foreground_color;
-        ctx.fillStyle = foreground_color;
     }
     // count down
     if (start.visible && !is_sold) {
@@ -382,7 +373,7 @@ const TickContract = RawMarkerMaker(({
             is_dark_theme,
             text: `${ticks.length - 1}/${tick_count}`,
             left: start.left,
-            top : barrier - 27 * scale,
+            top : start.top + 5,
         });
     }
     // start-time marker

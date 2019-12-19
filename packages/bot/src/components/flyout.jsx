@@ -30,7 +30,7 @@ class Flyout extends React.PureComponent {
         const total_result   = Object.keys(flyout_content).length;
         const is_empty       = total_result === 0;
         
-        if (is_visible) pushDataLayer({ event: 'DBot - Search results', value: true });
+        if (is_visible && is_search_flyout) pushDataLayer({ event: 'DBot - Search results', value: true });
 
         return (
             <div

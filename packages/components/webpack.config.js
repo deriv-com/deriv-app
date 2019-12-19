@@ -16,6 +16,7 @@ module.exports = {
         button             : path.resolve(__dirname, 'src', 'components/button/index.js'),
         'button-toggle'    : path.resolve(__dirname, 'src', 'components/button-toggle/index.js'),
         checkbox           : path.resolve(__dirname, 'src', 'components/checkbox/index.js'),
+        'contract-audit'   : path.resolve(__dirname, 'src', 'components/contract-audit/index.js'),
         counter            : path.resolve(__dirname, 'src', 'components/counter/index.js'),
         dialog             : path.resolve(__dirname, 'src', 'components/dialog/index.js'),
         drawer             : path.resolve(__dirname, 'src', 'components/drawer/index.js'),
@@ -129,7 +130,7 @@ module.exports = {
             (!is_serve ? {
                 enforce: 'pre',
                 test   : /\.(js|jsx)$/,
-                exclude: /node_modules|lib|shared\/utils/,
+                exclude: /node_modules|lib|shared\/utils|translations/,
                 include: /src/,
                 loader : 'eslint-loader',
                 options: {

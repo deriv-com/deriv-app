@@ -1,17 +1,16 @@
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import {
-    Icon,
-    ThemedScrollbars }      from 'deriv-components';
-import { localize }         from 'deriv-translations';
-import {
-    epochToMoment,
-    toGMTFormat }           from 'Utils/Date';
+import PropTypes         from 'prop-types';
+import React             from 'react';
 import {
     getBarrierLabel,
     getBarrierValue,
-    isDigitType }           from 'App/Components/Elements/PositionsDrawer/helpers';
-import ContractAuditItem    from './contract-audit-item.jsx';
+    isDigitType }        from 'deriv-shared/utils/positions-helper';
+import {
+    epochToMoment,
+    toGMTFormat }        from 'deriv-shared/utils/date';
+import { localize }      from 'deriv-translations';
+import ContractAuditItem from './contract-audit-item.jsx';
+import Icon              from '../icon';
+import ThemedScrollbars  from '../themed-scrollbars';
 
 class ContractAudit extends React.PureComponent {
     render() {
@@ -22,8 +21,13 @@ class ContractAudit extends React.PureComponent {
             duration_unit,
             exit_spot,
             has_result,
+            is_allow_partial_load,
         } = this.props;
-        if (!has_result) return null;
+
+        if (!has_result && !is_allow_partial_load) {
+            return null;
+        }
+
         const is_profit    = (contract_info.profit >= 0);
         const IconExitTime = <Icon icon='IcContractExitTime' color={is_profit ? 'green' : 'red'} size={24} />;
         return (

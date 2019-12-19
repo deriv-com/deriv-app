@@ -22,7 +22,7 @@ const ContractDetailsCardFooter = ({
 
     return (
         <CSSTransition
-            in={!!(isValidToSell(contract_info))}
+            in={!!(isValidToSell(contract_info) || is_multiplier)}
             timeout={250}
             classNames={{
                 enter    : 'contract-card__sell-button--enter',
@@ -42,7 +42,7 @@ const ContractDetailsCardFooter = ({
                             'btn--sell', {
                                 'btn--loading': is_sell_requested,
                             })}
-                        is_disabled={!(isValidToSell(contract_info)) || is_sell_requested}
+                        is_disabled={is_sell_requested || +contract_info.profit <= 0 && is_valid_to_cancel}
                         text={localize('Close')}
                         onClick={() => onClickSell(contract_info.contract_id, true)}
                         secondary

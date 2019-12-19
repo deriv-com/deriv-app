@@ -276,7 +276,7 @@ const PositionsDrawerCard = ({
                 </NavLink>
             }
             <CSSTransition
-                in={!!(is_valid_to_sell)}
+                in={!!(is_valid_to_sell || is_multiplier)}
                 timeout={250}
                 classNames={{
                     enter    : 'positions-drawer-card__sell-button--enter',
@@ -296,7 +296,7 @@ const PositionsDrawerCard = ({
                                 'btn--sell', {
                                     'btn--loading': is_sell_requested,
                                 })}
-                            is_disabled={!is_valid_to_sell || is_sell_requested}
+                            is_disabled={is_sell_requested || (profit_loss <= 0 && is_valid_to_cancel)}
                             text={localize('Close')}
                             onClick={() => onClickSell(id, true)}
                             secondary

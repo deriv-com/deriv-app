@@ -5,6 +5,7 @@
   "author": "Deriv",
   "license": "Apache-2.0",
   "main": "lib/main.js",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/binary-com/deriv-app.git"

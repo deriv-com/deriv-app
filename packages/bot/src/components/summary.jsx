@@ -8,7 +8,7 @@ import React         from 'react';
 import { localize }  from 'deriv-translations';
 import { connect }   from 'Stores/connect';
 import ContractCard  from './contract-card.jsx';
-import                    '../assets/sass/summary.scss';
+import                    'Assets/sass/summary.scss';
 
 const SummaryTile = (props) => (
     <div className={'summary__tile'}>

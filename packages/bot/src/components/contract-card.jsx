@@ -14,7 +14,7 @@ import {
     getIndicativePrice,
     isEnded,
     getContractTypeName }    from '../utils/contract';
-import                            '../assets/sass/contract-card.scss';
+import                            'Assets/sass/contract-card.scss';
 
 const ContractCard = ({
     contract,

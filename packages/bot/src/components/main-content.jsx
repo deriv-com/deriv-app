@@ -4,9 +4,9 @@ import { connect }    from 'Stores/connect';
 import Flyout         from './flyout.jsx';
 import Chart          from './chart/chart.jsx';
 import { tabs_title } from '../constants/bot-contents';
-import                '../assets/sass/main-content.scss';
-import                '../assets/sass/scratch/workspace.scss';
-import                '../assets/sass/scratch/toolbox.scss';
+import                'Assets/sass/main-content.scss';
+import                'Assets/sass/scratch/workspace.scss';
+import                'Assets/sass/scratch/toolbox.scss';
 
 class MainContent extends React.Component {
     componentDidMount() {

@@ -14,7 +14,7 @@ import RunPanel             from './components/run-panel.jsx';
 import Toolbar              from './components/toolbar.jsx';
 import DBot                 from './scratch';
 import GTM                  from './utils/gtm';
-import                      './assets/sass/app.scss';
+import                      'Assets/sass/app.scss';
 
 class App extends React.Component {
     constructor(props) {

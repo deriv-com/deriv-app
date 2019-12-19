@@ -5,7 +5,7 @@ import React                    from 'react';
 import { connect }              from 'Stores/connect';
 import Transaction              from './transaction.jsx';
 import { transaction_elements } from '../constants/transactions';
-import                           '../assets/sass/transactions.scss';
+import                           'Assets/sass/transactions.scss';
 
 class Transactions extends React.PureComponent {
     componentDidMount() {

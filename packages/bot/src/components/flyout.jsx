@@ -6,7 +6,7 @@ import { connect }          from 'Stores/connect';
 import FlyoutBlockGroup     from './flyout-block-group.jsx';
 import HelpBase             from '../scratch/help-content/flyout-help-base.jsx';
 import { config }           from '../scratch/help-content/help-content.config';
-import                           '../assets/sass/scratch/flyout.scss';
+import                           'Assets/sass/scratch/flyout.scss';
 
 class Flyout extends React.PureComponent {
     componentDidMount() {

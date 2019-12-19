@@ -5,7 +5,7 @@ import { ThemedScrollbars } from 'deriv-components';
 import { localize }         from 'deriv-translations';
 import { connect }          from 'Stores/connect';
 import { message_types }    from '../constants/messages';
-import '../assets/sass/journal.scss';
+import                      'Assets/sass/journal.scss';
 
 const DateItem = ({
     date, time,

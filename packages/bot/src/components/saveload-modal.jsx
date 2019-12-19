@@ -1,22 +1,22 @@
-import classNames       from 'classnames';
-import PropTypes        from 'prop-types';
-import React            from 'react';
+import classNames   from 'classnames';
+import PropTypes    from 'prop-types';
+import React        from 'react';
 import {
     Button,
     Checkbox,
     Icon,
     Modal,
     RadioGroup,
-}                       from 'deriv-components';
+}                   from 'deriv-components';
 import {
     Formik,
     Form,
     Field,
-}                       from 'formik';
-import { localize }     from 'deriv-translations';
-import { connect }      from 'Stores/connect';
-import '../assets/sass/google-drive.scss';
-import '../assets/sass/saveload-modal.scss';
+}                   from 'formik';
+import { localize } from 'deriv-translations';
+import { connect }  from 'Stores/connect';
+import              'Assets/sass/google-drive.scss';
+import              'Assets/sass/saveload-modal.scss';
 
 const initial_option = { is_local: true, save_as_collection: false };
 

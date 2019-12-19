@@ -14,6 +14,7 @@
     ],
     "moduleNameMapper": {
       "^Api(.*)$"   : "<rootDir>/src/services/api$1",
+      "^Assets(.*)$": "<rootDir>/src/assets$1",
       "^Stores(.*)$": "<rootDir>/src/Stores$1"
     }
   },
@@ -22,7 +23,7 @@
     "serve": "echo \"Serving...\" && webpack --progress --watch",
     "build": "webpack --optimize-minimize --progress",
     "build:travis": "echo \"No build:travis specified\"",
-    "test": "npm run test:eslint && npm run test:mocha",
+    "test": "npm run test:mocha",
     "test:mocha": "jest --w=4 --coverage",
     "test:eslint": "eslint ./src",
     "test:stylelint": "stylelint \"./src/**/*.s?(a|c)ss\"",

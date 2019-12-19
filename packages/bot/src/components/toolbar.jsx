@@ -17,7 +17,7 @@ import Dialog        from './dialog.jsx';
 import SaveLoadModal  from './saveload-modal.jsx';
 import TradeAnimation from './trade-animation.jsx';
 import { tabs_title } from '../constants/bot-contents';
-import                '../assets/sass/scratch/toolbar.scss';
+import                'Assets/sass/scratch/toolbar.scss';
 
 const SearchBox = ({
     is_search_loading,

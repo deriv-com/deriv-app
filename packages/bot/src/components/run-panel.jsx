@@ -13,7 +13,7 @@ import Journal        from './journal.jsx';
 import Summary        from './summary.jsx';
 import TradeAnimation from './trade-animation.jsx';
 import Transactions   from './transactions.jsx';
-import                     '../assets/sass/run-panel.scss';
+import                     'Assets/sass/run-panel.scss';
 
 const drawerContent = ({
     active_index,

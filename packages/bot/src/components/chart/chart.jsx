@@ -7,7 +7,7 @@ import {
 import { connect }    from 'Stores/connect';
 import ControlWidgets from './control-widgets.jsx';
 
-import                     '../../assets/sass/chart.scss';
+import                     'Assets/sass/chart.scss';
 
 // import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
 // import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';

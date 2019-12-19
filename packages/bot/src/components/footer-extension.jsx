@@ -4,7 +4,7 @@ import React          from 'react';
 import { localize }   from 'deriv-translations';
 import { connect }    from 'Stores/connect';
 import { tabs_title } from '../constants/bot-contents';
-import '../assets/sass/footer-extensions.scss';
+import                'Assets/sass/footer-extensions.scss';
 
 class FooterExtension extends React.Component {
     populateFooter = () => {

@@ -1,9 +1,9 @@
 import classNames            from 'classnames';
 import PropTypes             from 'prop-types';
 import React                 from 'react';
+import { getTimePercentage } from 'deriv-shared/utils/positions-helper';
 import { connect }           from 'Stores/connect';
 import ProgressTicks         from './positions-progress-ticks.jsx';
-import { getTimePercentage } from '../helpers';
 import RemainingTime         from '../../../../Containers/remaining-time.jsx';
 
 const ProgressSlider = ({

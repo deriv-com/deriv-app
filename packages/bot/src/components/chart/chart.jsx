@@ -111,7 +111,7 @@ export default connect(({ chart_store, common, ui }) => ({
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI,
         lang                        : common.current_language,
         position                    : ui.is_chart_layout_default ? 'bottom' : 'left',
-        theme                       : ui.is_dark_mode_on ? 'dark' : 'light',
+        theme                       : 'light',
     },
     last_contract: {
         is_digit_contract: false,

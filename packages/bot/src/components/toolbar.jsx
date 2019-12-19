@@ -22,8 +22,8 @@ import                '../assets/sass/scratch/toolbar.scss';
 const SearchBox = ({
     is_search_loading,
     onSearch,
-    onSearchClear,
     onSearchBlur,
+    onSearchClear,
     onSearchKeyUp,
 }) => (
     <div className='toolbar__form'>

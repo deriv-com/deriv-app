@@ -26,7 +26,8 @@ const AppModals = ({
         default:
             if (is_denial_of_service_modal_visible) {
                 const denialOfServiceOnCancel = () => {
-                    const link_to = isBot() ? 'bot' : isMT5() ? 'user/metatrader' : 'trading';
+                    const trade_link = isMT5() ? 'user/metatrader' : 'trading';
+                    const link_to = isBot() ? 'bot' : trade_link;
                     window.open(urlFor(link_to, undefined, undefined, true));
                 };
 

@@ -1,14 +1,11 @@
 import {
     observable,
-    action,
-}                            from 'mobx';
-import { localize }          from 'deriv-translations';
-import { tabs_title }        from '../constants/bot-contents';
+    action }           from 'mobx';
+import { localize }    from 'deriv-translations';
+import { tabs_title }  from '../constants/bot-contents';
 import {
     scrollWorkspace,
-    runGroupedEvents,
-}                            from '../scratch/utils';
-import { delayCallbackByMs } from '../utils/tools';
+    runGroupedEvents } from '../scratch/utils';
 
 export default class ToolbarStore {
     constructor(root_store) {
@@ -17,10 +14,13 @@ export default class ToolbarStore {
 
     @observable is_dialog_open    = false;
     @observable is_toolbox_open   = false;
+    @observable is_search_focus   = false;
     @observable is_search_loading = false;
     @observable file_name         = localize('Untitled Bot');
     @observable has_undo_stack    = false;
     @observable has_redo_stack    = false;
+    
+    typing_timer;
 
     @action.bound
     onToolboxToggle() {
@@ -49,16 +49,14 @@ export default class ToolbarStore {
 
     @action.bound
     onSearchKeyUp(submitForm) {
+        const typing_interval = 1000;
         this.is_search_loading = true;
-        delayCallbackByMs(submitForm, 1000).then(action(timer => {
-            clearTimeout(timer);
-            this.is_search_loading = false;
-        }));
-    }
 
-    @action.bound
-    onSearchBlur() {
-        this.on_search_focus = false;
+        clearTimeout(this.typing_timer);
+        this.typing_timer = setTimeout(action(() => {
+            submitForm();
+            this.is_search_loading = false;
+        }), typing_interval);
     }
 
     @action.bound
@@ -69,6 +67,11 @@ export default class ToolbarStore {
 
         const toolbox = Blockly.derivWorkspace.getToolbox();
         toolbox.showSearch(search);
+    }
+
+    @action.bound
+    onSearchBlur() {
+        this.is_search_focus = false;
     }
 
     onSearchClear = (setFieldValue) => {

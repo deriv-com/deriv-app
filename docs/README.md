@@ -7,7 +7,7 @@ Each package in the `packages` folder is a dependency that eventually up to Core
 
 There are 2 types of dependencies:
 
-1. Reusable code/libraries - These are packages that are meant to be loaded anywhere for use, and they enhance the application and/or development. At the time of writing, this includes: `deriv-components`, `deriv-shared`, `deriv-p2p`, `deriv-translations`.
+1. Reusable code/libraries - These are packages that are meant to be loaded anywhere for use, and they enhance the application and/or development. At the time of writing, this includes: `deriv-components`, `deriv-shared`, `@deriv/p2p`, `deriv-translations`.
 2. Platforms/Modules/Apps - These can be viewed as applications of their own. According to business logic, these are different domains/sections, and most likely have their own route. At the time of writing, this includes: `deriv-bot`, `deriv-trader`.
 
 The `deriv-core` package is the "app instance". It contains singleton services (such as the WS, and base/common stores), as well as singleton UI components (header, footer, modals management, cashier).

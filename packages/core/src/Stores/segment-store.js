@@ -25,7 +25,7 @@ export default class SegmentStore extends BaseStore {
     identifyEvent = async (data) => new Promise((resolve) => {
         if (this.is_applicable && !isLoginPages() && !this.has_identified) {
             BinarySocket.wait('authorize').then(() => {
-                const user_id = this.root_store.client.user_id
+                const user_id = this.root_store.client.user_id;
                 if (user_id) {
                     window.analytics.identify(user_id, {
                         language: getLanguage().toLowerCase(),

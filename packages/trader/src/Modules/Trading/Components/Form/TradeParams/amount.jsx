@@ -70,6 +70,11 @@ const Amount = ({
         <Fieldset
             className='trade-container__fieldset center-text'
             header={is_multiplier ? localize('Stake') : undefined}
+            header_tooltip={is_multiplier ?
+                localize('To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to {{amount}}.', { amount })
+                :
+                undefined
+            }
         >
             {basis_list.length > 1 &&
                 <ButtonToggleMenu

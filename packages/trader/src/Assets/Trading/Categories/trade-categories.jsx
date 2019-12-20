@@ -97,15 +97,16 @@ const TradeCategories = ({ category }) => {
             case 'mult':
                 TradeTypeTemplate = (
                     <React.Fragment>
-                        <p>{ localize('Predict the market direction and select either "Up" or "Down" to open a position. A commission is charged when you open a position.')}</p>
-                        <p>{ localize('If you select "Up", you will earn a profit by closing your position when the market price is higher than the entry spot.') }</p>
-                        <p>{ localize('If you select "Down", you will earn a profit by closing your position when the market price is lower than the entry spot.') }</p>
-                        <p>{ localize('Your profit is the percentage change in market price times the multiplier of your choice. ') }</p>
-                        <p>{ localize('These are optional for each position that you open:')}</p>
+                        <p>{ localize('Predict the market direction and select either “Up” or “Down” to open a position. We will charge a commission when you open a position.')}</p>
+                        <p>{ localize('If you select “Up”, you will earn a profit by closing your position when the market price is higher than the entry spot.') }</p>
+                        <p>{ localize('If you select “Down”, you will earn a profit by closing your position when the market price is lower than the entry spot.') }</p>
+                        <p>{ localize('Your profit is the percentage change in market price times your stake and the multiplier of your choice.') }</p>
+                        <p>{ localize('The Stop-out level on the chart indicates the price at which your potential loss equals your entire stake. When the market price reaches this level, your position will be closed automatically. This ensures that your loss does not exceed the amount you paid to purchase the contract.')}</p>
+                        <p>{ localize('These are optional parameters for each position that you open:')}</p>
                         <ul>
-                            <li>{ localize('If you select "Take profit" and specify an amount that you’d like to earn, your position will be closed automatically (at the market price) when your profit exceeds this amount.') }</li>
-                            <li>{ localize('If you select "Stop loss" and specify an amount to limit your loss, your position will be closed automatically (at the market price) when your loss exceeds this amount.') }</li>
-                            <li>{ localize('If you select "Cancel deal", you’ll be able to cancel the contract within 1 hour if you find that the market is not moving in your favour. A small fee is charged for this, but your stake amount will be returned with no loss incurred.') }</li>
+                            <li>{ localize('If you select “Take profit” and specify an amount that you’d like to earn, your position will be closed automatically when your profit is more than or equals to this amount. Your profit may be more than the amount you entered depending on the market price at closing.') }</li>
+                            <li>{ localize('If you select “Stop loss” and specify an amount to limit your loss, your position will be closed automatically when your loss is more than or equals to this amount. Your loss may be more than the amount you entered depending on the market price at closing.') }</li>
+                            <li>{ localize('If you select “Deal cancellation”, you’ll be able to cancel your position within 1 hour if you find that the market is not moving in your favour. We’ll charge a small fee for this, but we’ll return your stake amount without profit or loss. If the stop-out amount is reached before the deal cancellation expires, your position will be cancelled automatically and we’ll return your stake amount without profit or loss. When “Deal cancellation” is selected, “Stop loss” is deactivated and will only be available when “Deal cancellation” expires.') }</li>
                         </ul>
                     </React.Fragment>
                 );

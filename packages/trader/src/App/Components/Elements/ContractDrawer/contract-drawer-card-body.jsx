@@ -60,7 +60,7 @@ const MultiplierCardBody = ({
                     <strong>-</strong>
                 }
             </ContractCardItem>
-            <ContractCardItem header={localize('Deal cancel fee:')}>
+            <ContractCardItem header={localize('Deal cancel. fee:')}>
                 {deal_cancellation_price ?
                     <Money amount={deal_cancellation_price} currency={currency} />
                     :

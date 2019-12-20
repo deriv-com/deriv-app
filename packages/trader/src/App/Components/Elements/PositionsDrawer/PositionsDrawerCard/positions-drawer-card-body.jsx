@@ -81,7 +81,7 @@ const MultiplierCardBody = ({
                 </div>
                 <div className='positions-drawer-card__purchase-price'>
                     <span className='positions-drawer-card__purchase-label'>
-                        {localize('Deal cancel fee:')}
+                        {localize('Deal cancel. fee:')}
                     </span>
                     <span className='positions-drawer-card__purchase-value'>
                         {deal_cancellation_price ?

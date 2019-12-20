@@ -37,7 +37,7 @@ const CancelDealInfo = ({
     return (
         <React.Fragment>
             <div className='trade-container__price-info-basis'>
-                {localize('Cancel deal fee')}
+                {localize('Deal cancel. fee')}
             </div>
             <div className='trade-container__price-info-value'>
                 {!error &&

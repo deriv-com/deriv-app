@@ -33,7 +33,7 @@ const CancelDeal = ({
                     id='dt_deal_cancellation-checkbox_input'
                     onChange={changeValue}
                     name='has_deal_cancellation'
-                    label={localize('Cancel deal')}
+                    label={localize('Deal cancellation')}
                     defaultChecked={has_deal_cancellation}
                 />
                 <Popover

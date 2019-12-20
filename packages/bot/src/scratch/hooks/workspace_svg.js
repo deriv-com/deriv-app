@@ -112,7 +112,7 @@ Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
  */
 Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean = []) {
     this.setResizesEnabled(false);
-    Blockly.Events.setGroup(true);
+    Blockly.Events.setGroup(Blockly.Events.getGroup() || true);
 
     const is_import = blocks_to_clean.length !== 0;
     const top_blocks = is_import ? blocks_to_clean : this.getTopBlocks(true);

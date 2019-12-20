@@ -17,13 +17,17 @@ class ModalElement extends React.PureComponent {
     }
 
     componentDidMount = () => {
-        if (this.props.is_closed_on_outside_click) document.addEventListener('mousedown', this.handleClickOutside);
+        if (this.props.has_close_icon) {
+            document.addEventListener('mousedown', this.handleClickOutside);
+        }
         this.el.classList.add('dc-modal');
         this.state.modal_root.appendChild(this.el);
     };
 
     componentWillUnmount = () => {
-        if (this.props.is_closed_on_outside_click) document.removeEventListener('mousedown', this.handleClickOutside);
+        if (this.props.has_close_icon) {
+            document.removeEventListener('mousedown', this.handleClickOutside);
+        }
         this.state.modal_root.removeChild(this.el);
     };
 
@@ -159,21 +163,19 @@ Modal.Body = Body;
 Modal.Footer = Footer;
 
 Modal.defaultProps = {
-    has_close_icon            : true,
-    is_closed_on_outside_click: true,
+    has_close_icon: true,
 };
 
 Modal.propTypes = {
-    children                  : PropTypes.node,
-    className                 : PropTypes.string,
-    has_close_icon            : PropTypes.bool,
-    header                    : PropTypes.node,
-    height                    : PropTypes.string,
-    id                        : PropTypes.string,
-    is_closed_on_outside_click: PropTypes.bool,
-    is_open                   : PropTypes.bool,
-    small                     : PropTypes.bool,
-    title                     : PropTypes.oneOfType([
+    children      : PropTypes.node,
+    className     : PropTypes.string,
+    has_close_icon: PropTypes.bool,
+    header        : PropTypes.node,
+    height        : PropTypes.string,
+    id            : PropTypes.string,
+    is_open       : PropTypes.bool,
+    small         : PropTypes.bool,
+    title         : PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
     ]),

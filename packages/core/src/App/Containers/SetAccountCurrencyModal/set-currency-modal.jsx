@@ -12,7 +12,7 @@ const SetAccountCurrencyModal = ({
 }) => (
     <Modal
         id='dt_set_account_currency_modal'
-        is_closed_on_outside_click={false}
+        has_close_icon={false}
         is_open={is_visible}
         small
         toggleModal={toggleModal}

@@ -1,12 +1,7 @@
 import React        from 'react';
 import PropTypes    from 'prop-types';
-<<<<<<< HEAD
 import { localize } from 'deriv-translations';
 import StringUtils  from '../../utils/string';
-=======
-import { localize } from 'Components/i18next';
-import StringUtils  from 'Utils/string';
->>>>>>> 99ea547a82ff8fa215c362810feb1b7fe2eb602e
 import                   './my-profile.scss';
 
 // TODO: This is just mockup data. it will be removed after Adding BE API.

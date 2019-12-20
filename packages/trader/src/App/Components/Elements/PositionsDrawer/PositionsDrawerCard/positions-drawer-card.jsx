@@ -66,6 +66,7 @@ const PositionsDrawerCard = ({
             <ResultOverlay
                 contract_id={contract_info.contract_id}
                 is_unsupported={is_unsupported}
+                is_multiplier={is_multiplier}
                 is_visible={!!(contract_info.is_sold)}
                 onClickRemove={onClickRemove}
                 onClick={() => toggleUnsupportedContractModal(true)}

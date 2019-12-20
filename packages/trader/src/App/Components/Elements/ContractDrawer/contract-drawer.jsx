@@ -38,7 +38,6 @@ class ContractDrawer extends Component {
     
         const {
             contract_info,
-            is_dark_theme,
             is_sell_requested,
             onClickCancel,
             onClickSell,

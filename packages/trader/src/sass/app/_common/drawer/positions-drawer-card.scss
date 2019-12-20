@@ -29,6 +29,9 @@
         &--lost, &--lost:after {
             background-image: var(--gradient-danger);
         }
+        &--lg {
+            max-height: 160px;
+        }
         &:hover {
             background: 0 !important;
 

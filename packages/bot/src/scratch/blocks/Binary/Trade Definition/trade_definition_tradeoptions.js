@@ -1,9 +1,11 @@
-import { localize }              from 'deriv-translations';
-import CurrencyUtils             from 'deriv-shared/utils/currency';
-import { runIrreversibleEvents } from '../../../utils';
-import config                    from '../../../../constants';
-import ApiHelpers                from '../../../../services/api/api-helpers';
-import ScratchStore              from '../../../../stores/scratch-store';
+import { localize }        from 'deriv-translations';
+import CurrencyUtils       from 'deriv-shared/utils/currency';
+import {
+    runIrreversibleEvents,
+    runInvisibleEvents }   from '../../../utils';
+import config              from '../../../../constants';
+import ApiHelpers          from '../../../../services/api/api-helpers';
+import ScratchStore        from '../../../../stores/scratch-store';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
     init() {
@@ -323,7 +325,9 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         const dropdown_options = currency_field.menuGenerator_.map(o => o[1]); // eslint-disable-line
 
         if (dropdown_options.includes(currency)) {
-            currency_field.setValue(currency);
+            runInvisibleEvents(() => {
+                currency_field.setValue(currency);
+            });
         }
     },
     domToMutation(xmlElement) {

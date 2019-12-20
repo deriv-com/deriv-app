@@ -1,49 +1,81 @@
-import { getTokenList }     from './tokenHelper';
-import { getAppIdFallback } from '../services/api/appId';
-import AppIds             from '../services/api/appIdResolver';
+import { reaction } from 'mobx';
 
 const GTM = (() => {
-    const isGtmApplicable = () => Object.values(AppIds).includes(`${getAppIdFallback()}`);
 
-    const init = () => {
-        if (isGtmApplicable()) {
-            const gtmTag =
-                '(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({\'gtm.start\': new Date().getTime(),event:\'gtm.js\'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!=\'dataLayer\'?\'&l=\'+l:\'\';j.async=true;j.src= \'https://www.googletagmanager.com/gtm.js?id=\'+i+dl;f.parentNode.insertBefore(j,f); })(window,document,\'script\',\'dataLayer\',\'GTM-P97C2DZ\');';
+    let root_store;
 
-            const script = document.createElement('script');
-            script.innerHTML = gtmTag;
-            document.body.appendChild(script);
+    const getLoginId = () => {
+        return root_store.core.client.loginid;
+    };
 
-            const interval = setInterval(() => {
-                if (dataLayer) {
-                    setVisitorId();
-                    clearInterval(interval);
-                }
-            }, 500);
+    const getServerTime = () => {
+        return root_store.core.common.server_time.unix();
+    };
+
+    const pushDataLayer = (data) => {
+        return root_store.core.gtm.pushDataLayer(data);
+    };
+
+    const init = (_root_store) => {
+        try {
+            root_store = _root_store;
+
+            const { run_panel, transactions, summary: s } = root_store;
+
+            reaction(
+                () => run_panel.is_running,
+                () => run_panel.is_running && onRunBot(s.summary)
+            );
+
+            reaction(
+                () => transactions.contracts,
+                () => onTransactionClosed(transactions.contracts)
+            );
+
+        } catch (error) {
+            console.warn('Error initializing GTM reactions ', error); // eslint-disable-line no-console
         }
     };
 
-    const pushDataLayer = data => {
-        if (isGtmApplicable() && dataLayer) {
-            dataLayer.push({
-                ...data,
-            });
+    const onRunBot = (summary) => {
+        try {
+            const run_id = `${getLoginId()}-${getServerTime()}`;
+            const counters =
+                `tr:${summary.number_of_runs},\
+                ts:${summary.total_stake},\
+                py:${summary.total_payout},\
+                lc:${summary.lost_contracts},\
+                wc:${summary.won_contracts},\
+                pr:${summary.total_profit}`;
+
+            const data = {
+                counters: counters.replace(/\s/g,''),
+                event   : 'dbot_run',
+                run_id,
+            };
+            pushDataLayer(data);
+        } catch (error) {
+            console.warn('Error pushing run data to datalayer', error); // eslint-disable-line no-console
         }
     };
 
-    const setVisitorId = () => {
-        const tokenList = getTokenList();
-        if (tokenList.length > 0) {
-            pushDataLayer({ visitorId: tokenList[0].loginInfo.loginid });
-        } else {
-            pushDataLayer({ visitorId: undefined });
+    const onTransactionClosed = (contracts) => {
+        try {
+            const contract = contracts.length > 0 && contracts[0];
+            if (contract && contract.is_completed) {
+                const data = {
+                    event       : 'dbot_run_transaction',
+                    reference_id: contract.refrence_id,
+                };
+                pushDataLayer(data);
+            }
+        } catch (error) {
+            console.warn('Error pushing transaction to datalayer', error); // eslint-disable-line no-console
         }
     };
 
     return {
         init,
-        pushDataLayer,
-        setVisitorId,
     };
 })();
 

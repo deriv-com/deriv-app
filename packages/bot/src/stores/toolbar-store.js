@@ -4,7 +4,6 @@ import {
 import { localize }          from 'deriv-translations';
 import { tabs_title }        from '../constants/bot-contents';
 import { scrollWorkspace }   from '../scratch/utils';
-import { delayCallbackByMs } from '../utils/tools';
 
 export default class ToolbarStore {
     constructor(root_store) {
@@ -14,7 +13,10 @@ export default class ToolbarStore {
     @observable is_dialog_open = false;
     @observable is_toolbox_open = false;
     @observable is_search_loading = false;
+    @observable is_search_focus = false;
     @observable file_name = localize('Untitled Bot');
+
+    typing_timer;
 
     @action.bound
     onToolboxToggle() {
@@ -36,22 +38,21 @@ export default class ToolbarStore {
                 const scroll_distance = toolbox_width - block_canvas_rect.left + toolbox.width;
                 scrollWorkspace(workspace, scroll_distance, true, false);
             }
+            this.root_store.core.gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
         }
         
     }
 
     @action.bound
     onSearchKeyUp(submitForm) {
+        const typing_interval = 1000;
         this.is_search_loading = true;
-        delayCallbackByMs(submitForm, 1000).then(action(timer => {
-            clearTimeout(timer);
-            this.is_search_loading = false;
-        }));
-    }
 
-    @action.bound
-    onSearchBlur() {
-        this.on_search_focus = false;
+        clearTimeout(this.typing_timer);
+        this.typing_timer = setTimeout(action(() => {
+            submitForm();
+            this.is_search_loading = false;
+        }), typing_interval);
     }
 
     @action.bound
@@ -60,8 +61,14 @@ export default class ToolbarStore {
             this.onToolboxToggle();
         }
 
+        this.is_search_focus = true;
         // eslint-disable-next-line no-underscore-dangle
         Blockly.derivWorkspace.toolbox_.showSearch(search);
+    }
+
+    @action.bound
+    onSearchBlur() {
+        this.is_search_focus = false;
     }
 
     onSearchClear = (setFieldValue) => {

@@ -3,6 +3,7 @@
   "version": "3.8.0",
   "description": "Deriv content",
   "main": "dist/js/trader.main.js",
+  "private": true,
   "scripts": {
     "start": "npm run test && npm run serve",
     "serve": "echo \"Serving...\" && webpack --progress --watch --config \"./build/webpack.config.js\"",

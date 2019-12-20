@@ -370,7 +370,7 @@ const TickContract = RawMarkerMaker(({
             left: entry.left,
             zoom: entry.zoom,
             icon: ICONS.ENTRY_SPOT.with_color(
-                foreground_color,
+                is_reset_barrier_expired ? foreground_color : color_based_on_status,
                 background_color + (is_sold ? opacity : '')
             ),
         });

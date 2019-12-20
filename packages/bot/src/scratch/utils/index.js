@@ -118,7 +118,7 @@ export const load = (block_string, drop_event) => {
     }
 
     try {
-        const event_group = 'load';
+        const event_group = `dbot-load${Date.now()}`;
 
         Blockly.Events.setGroup(event_group);
         removeLimitedBlocks(Blockly.derivWorkspace, Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type')));

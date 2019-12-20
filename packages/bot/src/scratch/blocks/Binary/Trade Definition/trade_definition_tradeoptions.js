@@ -84,7 +84,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             this.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST') || config.BARRIER_TYPES[1][1],
         ];
 
-        const is_load_event = event.group === 'load';
+        const is_load_event = /^dbot-load/.test(event.group);
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             if (is_load_event) {

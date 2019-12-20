@@ -67,7 +67,10 @@ class Popover extends React.PureComponent {
                                     <Icon icon='IcInfoBlue' />
                                 </i>
                             }
-                            <span className='dc-popover__bubble__text'>
+                            <span className={classNames('dc-popover__bubble__text',{
+                                'dc-popover__bubble__text--error': has_error,
+                            })}
+                            >
                                 { message }
                             </span>
                         </div>

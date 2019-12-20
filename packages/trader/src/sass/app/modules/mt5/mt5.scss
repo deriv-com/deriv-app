@@ -37,6 +37,17 @@
     .dc-modal-header {
         display: none;
     }
+    .dc-input {
+        &__label {
+            top: 1.2rem;
+            background-color: var(--general-main-2);
+        }
+    }
+    .dc-password-meter {
+        &__bg {
+            background: var(--general-section-2);
+        }
+    }
     .success-change {
         margin-top: 3em;
     }

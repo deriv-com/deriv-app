@@ -309,11 +309,8 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
-    getPositionIndexById(contract_id, is_active) {
-        return is_active ?
-            this.active_positions.findIndex(pos => +pos.id === +contract_id)
-            :
-            this.positions.findIndex(pos => +pos.id === +contract_id);
+    getPositionIndexById(contract_id) {
+        return this.positions.findIndex(pos => +pos.id === +contract_id);
     }
 
     @computed

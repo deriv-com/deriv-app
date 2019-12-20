@@ -9,6 +9,7 @@ export default class SegmentStore extends BaseStore {
     // only available on production (bot and deriv)
     is_applicable = /^(16929|19111)$/.test(getAppId());
     has_identified = false;
+    current_page = '';
 
     constructor(root_store) {
         super({ root_store });
@@ -21,28 +22,41 @@ export default class SegmentStore extends BaseStore {
      * @param {object} data
      */
     @action.bound
-    async identifyEvent(data) {
+    identifyEvent = async (data) => new Promise((resolve) => {
         if (this.is_applicable && !isLoginPages() && !this.has_identified) {
-            BinarySocket.wait('authorize').then((response) => {
-                if (response.authorize.user_id) {
-                    window.analytics.identify(response.authorize.user_id, {
+            BinarySocket.wait('authorize').then(() => {
+                const user_id = this.root_store.client.user_id
+                if (user_id) {
+                    window.analytics.identify(user_id, {
                         language: getLanguage().toLowerCase(),
                         ...data,
                     });
                     this.has_identified = true;
                     this.pageView();
+
+                    return resolve();
                 }
+                return resolve();
             });
         }
-    }
+    })
 
     /**
      * Pushes page view track event to segment
      */
     @action.bound
     pageView() {
-        if (this.is_applicable && !isLoginPages() && this.root_store.client.is_logged_in && this.has_identified) {
+        const current_page = window.location.href;
+
+        if (
+            this.is_applicable &&
+            !isLoginPages() &&
+            this.root_store.client.is_logged_in &&
+            this.has_identified &&
+            current_page !== this.current_page
+        ) {
             window.analytics.page();
+            this.current_page = current_page;
         }
     }
 
@@ -54,6 +68,7 @@ export default class SegmentStore extends BaseStore {
     reset() {
         if (this.is_applicable) {
             window.analytics.reset();
+            this.has_identified = false;
         }
     }
 
@@ -61,9 +76,9 @@ export default class SegmentStore extends BaseStore {
      * Pushes track event to segment
      */
     @action.bound
-    track(event_name, options = {}) {
+    track(event_name, options) {
         if (this.is_applicable && this.has_identified) {
-            window.analytics.track(event_name, ...options);
+            window.analytics.track(event_name, options);
         }
     }
 }

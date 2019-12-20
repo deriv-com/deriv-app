@@ -129,7 +129,6 @@ export default class PortfolioStore extends BaseStore {
         const portfolio_position = this.positions.find((position) => +position.id === +proposal.contract_id);
 
         if (!portfolio_position) return;
-        this.updateContractTradeStore(response);
 
         const formatted_position = formatPortfolioPosition(
             proposal,
@@ -309,8 +308,11 @@ export default class PortfolioStore extends BaseStore {
         }
     }
 
-    getPositionIndexById(contract_id) {
-        return this.positions.findIndex(pos => +pos.id === +contract_id);
+    getPositionIndexById(contract_id, is_active) {
+        return is_active ?
+            this.active_positions.findIndex(pos => +pos.id === +contract_id)
+            :
+            this.positions.findIndex(pos => +pos.id === +contract_id);
     }
 
     @computed

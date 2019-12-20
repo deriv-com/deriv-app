@@ -85,13 +85,3 @@ export const importExternal = url => {
         document.body.appendChild(script);
     });
 };
-
-export const delayCallbackByMs = (callback, ms) => {
-    let timer = 0;
-    return new Promise(resolve => {
-        timer = setTimeout(() => {
-            callback();
-            resolve(timer);
-        }, ms || 0);
-    });
-};

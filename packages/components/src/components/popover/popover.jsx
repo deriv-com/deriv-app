@@ -32,14 +32,16 @@ class Popover extends React.PureComponent {
             has_error,
             icon,
             id,
+            is_open,
             margin,
             message,
         } = this.props;
 
-        const icon_class_name = classNames(classNameTargetIcon, icon);
+        const has_external_open_state = is_open !== undefined;
+        const icon_class_name         = classNames(classNameTargetIcon, icon);
         return (
             <TinyPopover
-                isOpen={this.state.is_open}
+                isOpen={has_external_open_state ? is_open : this.state.is_open}
                 position={alignment}
                 transitionDuration={0.25}
                 padding={margin + 8}
@@ -75,8 +77,8 @@ class Popover extends React.PureComponent {
                 <div
                     className={classNames('dc-popover', className)}
                     id={id}
-                    onMouseEnter={this.toggleOpen}
-                    onMouseLeave={this.toggleClose}
+                    onMouseEnter={has_external_open_state ? undefined : this.toggleOpen}
+                    onMouseLeave={has_external_open_state ? undefined : this.toggleClose}
                 >
                     <div className={classNames(classNameTarget, 'dc-popover__target')}>
                         {!disable_target_icon &&
@@ -114,8 +116,9 @@ Popover.propTypes = {
     has_error           : PropTypes.bool,
     icon                : PropTypes.oneOf(['info', 'question', 'dot', 'counter']),
     id                  : PropTypes.string,
+    is_open             : PropTypes.bool,
     margin              : PropTypes.number,
-    message             : PropTypes.string,
+    message             : PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     portal_container    : PropTypes.string,
 };
 

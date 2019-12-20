@@ -22,8 +22,8 @@ import                '../assets/sass/scratch/toolbar.scss';
 const SearchBox = ({
     is_search_loading,
     onSearch,
-    onSearchClear,
     onSearchBlur,
+    onSearchClear,
     onSearchKeyUp,
 }) => (
     <div className='toolbar__form'>
@@ -199,13 +199,13 @@ const Toolbar = ({
     <div className='toolbar'>
         <div className='toolbar__section'>
             <Popover
+                id='gtm-get-started'
                 alignment='bottom'
                 classNameBubble='toolbar__bubble'
                 message={localize('Click here to start building your DBot.')}
             >
                 <Button
-                    id='gtm-get-started'
-                    className='toolbar__btn--icon toolbar__btn--start'
+                    className='toolbar__btn--icon'
                     has_effect
                     onClick={onToolboxToggle}
                     icon={<Icon icon='IcPuzzle' color='active' />}

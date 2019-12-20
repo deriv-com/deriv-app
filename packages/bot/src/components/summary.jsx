@@ -74,7 +74,6 @@ const Summary = ({
                     <SummaryTile
                         title={localize('Profit/Loss')}
                         content={Money({ amount: total_profit, currency, has_sign: true })}
-                        tooltip={localize('A sum of all stakes you made')}
                         contentClassName={classNames(
                             'summary__tile-content',
                             'summary__amount', {

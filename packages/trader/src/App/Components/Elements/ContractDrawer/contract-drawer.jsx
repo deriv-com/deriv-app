@@ -57,7 +57,6 @@ class ContractDrawer extends Component {
                     onClickSell={onClickSell}
                     status={status}
                 />
-                {!!(is_sold) &&
                 <ContractAudit
                     contract_info={contract_info}
                     contract_end_time={getEndTime(contract_info)}
@@ -67,8 +66,8 @@ class ContractDrawer extends Component {
                     duration={getDurationTime(contract_info)}
                     duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                     exit_spot={exit_spot}
-                    has_result={!!(is_sold)}
-                />}
+                    has_result={!!(is_sold) || is_multiplier}
+                />
             </React.Fragment>
         );
     }

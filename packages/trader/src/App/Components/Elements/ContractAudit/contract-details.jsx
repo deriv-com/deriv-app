@@ -29,10 +29,10 @@ const ContractDetails = ({
 
     return (
         <ThemedScrollbars
-            style={{ width: '100%', height: 'calc(100vh - 404px)'  }}
+            style={{ width: '100%', height: '100%'  }}
             autoHide
         >
-            <div style={{ padding: '0.8rem' }}>
+            <div style={{ padding: '0.8rem 1.6rem' }}>
                 <ContractAuditItem
                     id='dt_id_label'
                     icon={<Icon icon='IcContractId' size={24} />}
@@ -115,12 +115,15 @@ const ContractDetails = ({
                             value2={toGMTFormat(epochToMoment(contract_info.exit_tick_time)) || ' - '}
                         />
                 }
-                <ContractAuditItem
-                    id='dt_exit_time_label'
-                    icon={<Icon icon='IcContractExitTime' color={is_profit ? 'green' : 'red'} size={24} />}
-                    label={localize('Exit Time')}
-                    value={toGMTFormat(epochToMoment(contract_end_time)) || ' - '}
-                />
+                {
+                    !isNaN(contract_end_time) &&
+                        <ContractAuditItem
+                            id='dt_exit_time_label'
+                            icon={<Icon icon='IcContractExitTime' color={is_profit ? 'green' : 'red'} size={24} />}
+                            label={localize('Exit Time')}
+                            value={toGMTFormat(epochToMoment(contract_end_time)) || ' - '}
+                        />
+                }
             </div>
         </ThemedScrollbars>
     );

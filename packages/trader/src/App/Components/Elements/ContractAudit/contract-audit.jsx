@@ -1,3 +1,4 @@
+import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { Tabs }          from 'deriv-components';
@@ -24,8 +25,12 @@ class ContractAudit extends React.PureComponent {
         }
 
         return (
-            <div className='contract-audit__wrapper'>
-                <Tabs top onTabItemClick={this.onClick}>
+            <div className={classNames('contract-audit__wrapper', {
+                'contract-audit__wrapper-tabs--active' : !this.props.contract_info.is_sold,
+                'contract-audit__wrapper-tabs--expired': this.props.contract_info.is_sold,
+            })}
+            >
+                <Tabs top onTabItemClick={this.onClick} className='contract-audit__wrapper-tabs'>
                     <div label={localize('Details')}>
                         <ContractDetails {...this.props} />
                     </div>

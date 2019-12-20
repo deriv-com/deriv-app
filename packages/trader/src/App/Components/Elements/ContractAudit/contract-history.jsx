@@ -10,10 +10,10 @@ const ContractHistory = ({
     currency,
 }) => (
     <ThemedScrollbars
-        style={{ width: '100%', height: 'calc(100vh - 404px)' }}
+        style={{ width: '100%', height: '100%' }}
         autoHide
     >
-        <div style={{ padding: '0.8rem' }}>
+        <div style={{ padding: '0.8rem 1.6rem' }}>
             {
                 audit.map((item, key) => (
                     <ContractAuditItem

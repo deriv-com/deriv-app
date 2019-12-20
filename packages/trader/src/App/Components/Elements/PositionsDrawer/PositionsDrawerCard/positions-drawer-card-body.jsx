@@ -27,17 +27,17 @@ const MultiplierCardBody = ({
 
     return (
         <>
-            <div className='positions-drawer-card__grid positions-drawer-card__grid-profit-payout'>
-                <div className='positions-drawer-card__purchase-price'>
-                    <span className='positions-drawer-card__purchase-label'>
+            <div className='positions-drawer-card__grid positions-drawer-card__grid-items'>
+                <div className='positions-drawer-card__item'>
+                    <span className='positions-drawer-card__item-label'>
                         {localize('Stake:')}
                     </span>
-                    <span className='positions-drawer-card__purchase-value'>
+                    <span className='positions-drawer-card__item-value'>
                         <Money amount={buy_price - deal_cancellation_price} currency={currency} />
                     </span>
                 </div>
-                <div className='positions-drawer-card__purchase-price'>
-                    <span className='positions-drawer-card__purchase-label'>
+                <div className='positions-drawer-card__item'>
+                    <span className='positions-drawer-card__item-label'>
                         {is_sold ? localize('Profit/Loss:') : localize('Potential profit/loss:')}
                     </span>
                     <div className={classNames(
@@ -59,19 +59,19 @@ const MultiplierCardBody = ({
                         </div>
                     </div>
                 </div>
-                <div className='positions-drawer-card__purchase-price'>
-                    <span className='positions-drawer-card__purchase-label'>
+                <div className='positions-drawer-card__item'>
+                    <span className='positions-drawer-card__item-label'>
                         {localize('Multiplier:')}
                     </span>
-                    <span className='positions-drawer-card__purchase-value'>
+                    <span className='positions-drawer-card__item-value'>
                         x{multiplier}
                     </span>
                 </div>
-                <div className='positions-drawer-card__purchase-price'>
-                    <span className='positions-drawer-card__purchase-label'>
+                <div className='positions-drawer-card__item'>
+                    <span className='positions-drawer-card__item-label'>
                         {localize('Take profit:')}
                     </span>
-                    <span className='positions-drawer-card__purchase-value'>
+                    <span className='positions-drawer-card__item-value'>
                         {take_profit ?
                             <Money amount={take_profit} currency={currency} />
                             :
@@ -79,11 +79,11 @@ const MultiplierCardBody = ({
                         }
                     </span>
                 </div>
-                <div className='positions-drawer-card__purchase-price'>
-                    <span className='positions-drawer-card__purchase-label'>
+                <div className='positions-drawer-card__item'>
+                    <span className='positions-drawer-card__item-label'>
                         {localize('Deal cancel. fee:')}
                     </span>
-                    <span className='positions-drawer-card__purchase-value'>
+                    <span className='positions-drawer-card__item-value'>
                         {deal_cancellation_price ?
                             <Money amount={deal_cancellation_price} currency={currency} />
                             :
@@ -91,11 +91,11 @@ const MultiplierCardBody = ({
                         }
                     </span>
                 </div>
-                <div className='positions-drawer-card__purchase-price'>
-                    <span className='positions-drawer-card__purchase-label'>
+                <div className='positions-drawer-card__item'>
+                    <span className='positions-drawer-card__item-label'>
                         {localize('Stop loss:')}
                     </span>
-                    <span className='positions-drawer-card__purchase-value'>
+                    <span className='positions-drawer-card__item-value'>
                         {stop_loss ?
                             <React.Fragment>
                                 <strong>-</strong>

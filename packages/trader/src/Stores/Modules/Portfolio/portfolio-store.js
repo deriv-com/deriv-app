@@ -129,6 +129,7 @@ export default class PortfolioStore extends BaseStore {
         const portfolio_position = this.positions.find((position) => +position.id === +proposal.contract_id);
 
         if (!portfolio_position) return;
+        this.updateContractTradeStore(response);
 
         const formatted_position = formatPortfolioPosition(
             proposal,

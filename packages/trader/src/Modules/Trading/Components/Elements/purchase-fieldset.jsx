@@ -29,7 +29,6 @@ class PurchaseFieldset extends React.PureComponent {
             is_loading,
             is_proposal_empty,
             is_proposal_error,
-            is_same_error,
             purchased_states_arr,
             // is_purchase_confirm_on,
             // is_purchase_locked,
@@ -99,7 +98,7 @@ class PurchaseFieldset extends React.PureComponent {
                         }}
                     >
                         <div className='btn-purchase__box-shadow' />
-                        {(is_proposal_error && (is_same_error ? index === 0 : true)) ?
+                        {is_proposal_error ?
                             <Popover
                                 has_error
                                 is_open

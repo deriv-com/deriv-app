@@ -30,23 +30,6 @@ const Purchase = ({
     };
     const is_proposal_empty = ObjectUtils.isEmptyObject(proposal_info);
 
-    const isSameError = () => {
-        if (is_proposal_empty || proposal_info.length < 2) return false;
-
-        const first_type  = Object.keys(proposal_info)[0];
-        const second_type = Object.keys(proposal_info)[1];
-        const first_proposal = proposal_info[first_type];
-        const second_proposal = proposal_info[second_type];
-
-        if (!first_proposal || !second_proposal) return false;
-        if (first_proposal.has_error && second_proposal.has_error) {
-            if (first_proposal.message === second_proposal.message) {
-                return true;
-            }
-        }
-        return false;
-    };
-
     const components = [];
     Object.keys(trade_types).map((type, index) => {
         const getSortedIndex = () => {
@@ -71,7 +54,6 @@ const Purchase = ({
                 // is_purchase_confirm_on={is_purchase_confirm_on}
                 is_proposal_empty={is_proposal_empty}
                 is_proposal_error={is_proposal_error}
-                is_same_error={isSameError()}
                 purchased_states_arr={purchased_states_arr}
                 // is_purchase_locked={is_purchase_locked}
                 // togglePurchaseLock={togglePurchaseLock}

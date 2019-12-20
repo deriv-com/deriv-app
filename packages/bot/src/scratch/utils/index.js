@@ -3,6 +3,7 @@ import BlockConversion from '../backward-compatibility';
 import { saveAs }      from '../shared';
 import config          from '../../constants';
 import ScratchStore    from '../../stores/scratch-store';
+import { removeLimitedBlocks } from './workspace';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 
@@ -117,24 +118,30 @@ export const load = (block_string, drop_event) => {
     }
 
     try {
+        const event_group = 'load';
+
+        Blockly.Events.setGroup(event_group);
+        removeLimitedBlocks(Blockly.derivWorkspace, Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type')));
+
         if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-            loadBlocks(xml, drop_event);
+            loadBlocks(xml, drop_event, event_group);
         } else {
-            loadWorkspace(xml);
+            loadWorkspace(xml, event_group);
         }
 
         // Dispatch resize event for comments.
         window.dispatchEvent(new Event('resize'));
         journal.onLogSuccess(localize('Blocks are loaded successfully'));
     } catch (e) {
+        console.log(e); // eslint-disable-line
         return showInvalidStrategyError();
     }
 
     return true;
 };
 
-const loadBlocks = (xml, drop_event) => {
-    Blockly.Events.setGroup('load');
+const loadBlocks = (xml, drop_event, event_group) => {
+    Blockly.Events.setGroup(event_group);
 
     const workspace    = Blockly.derivWorkspace;
     const block_ids    = Blockly.Xml.domToWorkspace(xml, workspace);
@@ -149,10 +156,10 @@ const loadBlocks = (xml, drop_event) => {
     Blockly.Events.setGroup(false);
 };
 
-const loadWorkspace = (xml) => {
+const loadWorkspace = (xml, event_group) => {
     const workspace = Blockly.derivWorkspace;
 
-    Blockly.Events.setGroup('load');
+    Blockly.Events.setGroup(event_group);
     workspace.clear();
 
     Blockly.Xml.domToWorkspace(xml, workspace);
@@ -268,13 +275,7 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
         }
     });
 
-    if (config.mainBlocks.includes(block_type)) {
-        Blockly.derivWorkspace.getTopBlocks().forEach(top_block => {
-            if (top_block.type === block_type) {
-                top_block.dispose();
-            }
-        });
-    }
+    removeLimitedBlocks(Blockly.derivWorkspace, block_type);
 
     const block = Blockly.Xml.domToBlock(block_xml, Blockly.derivWorkspace);
 
@@ -294,6 +295,7 @@ export const hasAllRequiredBlocks = (workspace) => {
 
     return has_all_required_blocks;
 };
+
 export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chronological) => {
     const ws_metrics = workspace.getMetrics();
 

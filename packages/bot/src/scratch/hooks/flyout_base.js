@@ -1,5 +1,4 @@
-import { runGroupedEvents } from '../utils';
-import config               from '../../constants';
+import config from '../../constants';
 
 /**
  * Create a copy of this block on the workspace.
@@ -31,19 +30,15 @@ Blockly.Flyout.prototype.createBlock = function(event, original_block) {
     if (Blockly.Events.isEnabled()) {
         Blockly.Events.setGroup(true);
 
-        // Delete existing instances of main blocks if creating a new block. This needs to happen
-        // before we emit a creation event so our undo stack doesn't get mixed up. The dipose function
-        // on the block emits a delete event.
-        if (config.mainBlocks.includes(new_block.type)) {
-            const existing_block = main_workspace.getAllBlocks().find(ws_block =>
-                ws_block.type === new_block.type && ws_block.id !== new_block.id
-            );
-    
-            if (existing_block) {
-                runGroupedEvents(true, () => {
-                    existing_block.dispose();
-                });
-            }
+        // Delete blocks of which we can only have a single instance. Dispose emits a BlockDelete
+        // event that respects the current Blockly.Events group, this is required to maintain
+        // a working undo/redo stack.
+        if (config.single_instance_blocks.includes(new_block.type)) {
+            main_workspace.getAllBlocks().forEach(ws_block => {
+                if (ws_block.type === new_block.type && ws_block.id !== new_block.id) {
+                    ws_block.dispose();
+                }
+            });
         }
 
         // Fire a VarCreate event for each (if any) new variable created.

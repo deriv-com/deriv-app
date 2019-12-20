@@ -10,7 +10,7 @@ import { localize }                   from 'deriv-translations';
 import routes                         from 'Constants/routes';
 import EmptyPortfolioMessage          from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import { connect }                    from 'Stores/connect';
-import PositionsDrawerCard            from './positions-drawer-card.jsx';
+import PositionsDrawerCard            from './PositionsDrawerCard';
 
 class PositionsDrawer extends React.Component {
     componentDidMount()    {

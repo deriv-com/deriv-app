@@ -1,14 +1,14 @@
 import { localize }                   from 'deriv-translations';
 import config                         from 'Constants';
 import ScratchStore                   from 'Stores/scratch-store';
-import                                    './blocks';
-import                                    './hooks';
+import                                     'Scratch/blocks';
+import                                     'Scratch/hooks';
 import Interpreter                    from 'TradeEngine/utils/interpreter';
-import { observer as globalObserver } from 'Scratch/utils/observer';
+import { observer as globalObserver } from 'Utils/observer';
 import {
     hasAllRequiredBlocks,
-    updateDisabledBlocks }            from './utils';
-import { onWorkspaceResize }          from './utils/workspace';
+    updateDisabledBlocks }            from 'Scratch/utils';
+import { onWorkspaceResize }          from 'Scratch/utils/workspace';
 
 class DBot {
     constructor() {

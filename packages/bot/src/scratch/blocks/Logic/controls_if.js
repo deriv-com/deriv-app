@@ -2,7 +2,7 @@ import { localize } from 'deriv-translations';
 import {
     plusIconDark,
     minusIconDark,
-}                   from 'Scratch/block/images';
+}                   from 'Scratch/blocks/images';
 
 Blockly.Blocks.controls_if = {
     init() {

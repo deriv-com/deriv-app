@@ -1,5 +1,5 @@
 import { localize }          from 'deriv-translations';
-import { defineContract }    from 'Scratch/block/images';
+import { defineContract }    from 'Scratch/blocks/images';
 import ScratchStore          from 'Stores/scratch-store';
 import config                from 'Constants';
 import { setBlockTextColor } from 'Scratch/utils';

@@ -1,5 +1,5 @@
-import ActiveSymbols                     from 'Api/sympolApi/activeSymbols';
 import { getTokenList, removeAllTokens } from 'Utils/tokenHelper';
+import ActiveSymbols                     from './activeSymbols';
 
 const noop = () => {};
 

@@ -32,7 +32,7 @@
     "build:travis": "echo \"No build:travis specified\"",
     "test": "npm run test:eslint && npm run test:mocha",
     "test:mocha": "jest --w=4 --coverage",
-    "test:eslint": "eslint ./src",
+    "test:eslint": "eslint ./src --fix",
     "test:stylelint": "stylelint \"./src/**/*.s?(a|c)ss\"",
     "deploy": "echo \"No deploy specified\"",
     "deploy:clean": "echo \"No deploy:clean specified\"",

@@ -1,5 +1,5 @@
 import { localize }      from 'deriv-translations';
-import { minusIconDark } from 'Scratch/block/images';
+import { minusIconDark } from 'Scratch/blocks/images';
 
 Blockly.Blocks.text_statement = {
     init() {

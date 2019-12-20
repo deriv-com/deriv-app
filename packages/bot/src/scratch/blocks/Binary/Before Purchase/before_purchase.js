@@ -1,5 +1,5 @@
 import { localize }          from 'deriv-translations';
-import { purchase }          from 'Scratch/block/images';
+import { purchase }          from 'Scratch/blocks/images';
 import { setBlockTextColor } from 'Scratch/utils';
 
 // import ScratchStore          from 'Stores/scratch-store';

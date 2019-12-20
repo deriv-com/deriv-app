@@ -2,9 +2,9 @@ import classNames     from 'classnames';
 import PropTypes      from 'prop-types';
 import React          from 'react';
 import ReactDOM       from 'react-dom';
+import { Icon }       from 'deriv-components';
 import { BinaryLink } from 'App/Components/Routes';
 import routes         from 'Constants/routes';
-import Icon           from 'Assets/icon.jsx';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 
 class PlatformDropdown extends React.PureComponent {
@@ -45,7 +45,7 @@ class PlatformDropdown extends React.PureComponent {
                             )}
                         >
                             <div className='platform_dropdown__list__platform__background' />
-                            <Icon className='platform_dropdown__list__platform__icon' icon={platform.icon} />
+                            <Icon className='platform_dropdown__list__platform__icon' icon={platform.icon} size={32} />
 
                             <div className='platform_dropdown__list__platform__details'>
                                 <p className='platform_dropdown__list__platform__title'>{platform.title}</p>

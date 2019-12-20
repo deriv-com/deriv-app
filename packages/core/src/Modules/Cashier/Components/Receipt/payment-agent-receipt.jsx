@@ -4,9 +4,9 @@ import React                  from 'react';
 import { withRouter }         from 'react-router';
 import {
     Button,
+    Icon,
     ThemedScrollbars }        from 'deriv-components';
 import { localize, Localize } from 'deriv-translations';
-import Icon                   from 'Assets/icon.jsx';
 import routes                 from 'Constants/routes';
 import { connect }            from 'Stores/connect';
 import PaymentAgentDetails    from '../payment-agent-details.jsx';
@@ -45,12 +45,12 @@ class PaymentAgentReceipt extends React.Component {
                             {this.props.receipt.amount_transferred}
                         </div>
                         <div className='cashier__transferred-details-wrapper'>
-                            <Icon icon='IconAccountsCurrency' type={this.props.currency.toLowerCase()} />
+                            <Icon icon={`IcCurrency-${this.props.currency.toLowerCase()}`} />
                             <span className='cashier__transferred-details'>
                                 <span className='cashier__text--bold'>{this.props.currency}</span>&nbsp;({this.props.loginid})
                             </span>
-                            <Icon className='cashier__transferred-icon' icon='IconBack' />
-                            <Icon icon='IconPaymentAgent' />
+                            <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
+                            <Icon icon='IcPaymentAgent' />
                             <span className='cashier__transferred-details'>
                                 {this.props.receipt.payment_agent_name && <span className='cashier__text--bold'>{this.props.receipt.payment_agent_name}&nbsp;</span>}({this.props.receipt.payment_agent_id})
                             </span>

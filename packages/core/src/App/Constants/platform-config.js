@@ -3,19 +3,19 @@ import { routes }   from 'Constants/index';
 
 const platform_config = [
     {
-        icon       : 'IconDeriv',
+        icon       : 'IcBrandDtrader',
         title      : localize('DTrader'),
         description: localize('Start trading now with a powerful, yet easy-to-use platform.'),
         link_to    : routes.trade,
     },
     {
-        icon       : 'IconDBot',
+        icon       : 'IcBrandDbot',
         title      : localize('DBot'),
         description: localize('Automate your trading ideas without coding.'),
         link_to    : routes.bot,
     },
     {
-        icon       : 'IconMT5',
+        icon       : 'IcBrandDmt5',
         title      : localize('DMT5'),
         description: localize('Trade with the platform of choice for professionals.'),
         link_to    : routes.mt5,

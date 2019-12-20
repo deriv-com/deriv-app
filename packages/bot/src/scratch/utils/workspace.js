@@ -32,4 +32,4 @@ export const removeLimitedBlocks = (workspace, block_types) => {
             });
         }
     });
-}
+};

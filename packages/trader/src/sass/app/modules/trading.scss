@@ -149,12 +149,14 @@
                 width: 100%;
                 justify-content: space-between;
                 align-items: center;
+
                 &-wrapper {
                     display: flex;
                     justify-content: flex-end;
                     align-items: center;
                 }
             }
+
             &--slide {
                 width: 92px;
                 height: 8px;
@@ -301,7 +303,7 @@
 
     @include mobile {
         display: grid;
-        grid-template-areas: "a b";
+        grid-template-areas: 'a b';
         grid-column-gap: 0.5rem;
     }
 

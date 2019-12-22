@@ -29,7 +29,7 @@ const ValueMovement = ({
         </div>
         <div className='trade-container__price-info-movement'>
             {(!has_error_or_not_loaded && has_increased !== null) &&
-            has_increased ?<Icon icon='IcProfit' /> : <Icon icon='IcLoss' />
+            has_increased ? <Icon icon='IcProfit' /> : <Icon icon='IcLoss' />
             }
         </div>
     </React.Fragment>

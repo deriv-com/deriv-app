@@ -106,7 +106,7 @@ class PurchaseFieldset extends React.PureComponent {
                             {is_proposal_error ?
                                 <Popover
                                     has_error
-                                is_openalignment='left'
+                                    is_openalignment='left'
 
                                     message={info.message}
                                 >

@@ -8,7 +8,7 @@
     background: var(--fill-normal);
     border: 1px solid var(--fill-normal);
     @include mobile {
-        margin-bottom: .8rem;
+        margin-bottom: 0.8rem;
         height: 4rem;
     }
 
@@ -18,7 +18,7 @@
         align-items: center;
         justify-content: flex-start;
         flex-direction: row;
-        padding: .8rem;
+        padding: 0.8rem;
 
         /* postcss-bem-linter: ignore */
         span[name=contract_type] {

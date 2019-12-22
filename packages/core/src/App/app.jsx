@@ -24,7 +24,7 @@ import initStore                   from './app.js';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 // Check if device is touch capable
-const isTouchDevice = 'ontouchstart' in document.documentElement;
+// const isTouchDevice = 'ontouchstart' in document.documentElement;
 
 const App = ({ root_store }) => {
     const l = window.location;

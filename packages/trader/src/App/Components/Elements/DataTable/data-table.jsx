@@ -1,6 +1,6 @@
 import classNames                     from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
-import { FixedSizeList as List }      from 'react-window';
+import { VariableSizeList as List }   from 'react-window';
 import { ThemedScrollbars }           from 'deriv-components';
 import PropTypes                      from 'prop-types';
 import React, { useCallback }         from 'react';
@@ -101,8 +101,8 @@ class DataTable extends React.PureComponent {
             columns,
             data_source,
             footer,
+            getRowSize,
             is_empty,
-            item_size,
             onScroll,
         } = this.props;
 
@@ -112,7 +112,7 @@ class DataTable extends React.PureComponent {
                     className={className}
                     height={this.state.height}
                     itemCount={data_source.length}
-                    itemSize={item_size || 63}
+                    itemSize={getRowSize}
                     width={this.state.width}
                     outerElementType={is_empty ? null : ListScrollbar}
                 >
@@ -164,6 +164,7 @@ DataTable.propTypes = {
     data_source : MobxPropTypes.arrayOrObservableArray,
     footer      : PropTypes.object,
     getRowAction: PropTypes.func,
+    getRowSize  : PropTypes.func,
     onScroll    : PropTypes.func,
 };
 

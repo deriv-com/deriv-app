@@ -112,7 +112,7 @@ const App = () => (
             spriteFilename: svgPath => {
                 ...
                 if (svgPath.includes('components/icon/new_category')) {
-                    return 'new_category.svg'; // Webpack will add new_category.svg to public/sprite
+                    return 'new_category.svg'; // Webpack will add new_category.svg to public/images/sprite
                 }
                 ...
             },

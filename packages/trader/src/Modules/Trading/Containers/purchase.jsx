@@ -42,7 +42,7 @@ const Purchase = ({
     Object.keys(trade_types).map((type, index) => {
         const info              = proposal_info[type] || {};
         const is_disabled       = !is_trade_enabled || !info.id || !is_client_allowed_to_visit;
-        const is_proposal_error = info.has_error && !info.has_error_details;
+        const is_proposal_error = info.has_error;
         const purchase_fieldset = (
             <PurchaseFieldset
                 basis={basis}

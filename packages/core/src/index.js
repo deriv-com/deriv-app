@@ -4,7 +4,7 @@ import registerServiceWorker from 'Utils/pwa';
 
 import 'event-source-polyfill';
 
-if (!window.location.hostname.startsWith('localhost')) {
+if (!window.location.hostname.startsWith('localhost') && !/binary\.sx/.test(window.location.hostname)) {
     registerServiceWorker();
 }
 

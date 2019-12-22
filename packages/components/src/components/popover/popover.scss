@@ -47,6 +47,10 @@
         &__text {
             flex-grow: 2;
             text-align: left;
+
+            &--error {
+                color: var(--text-colored-background);
+            }
         }
         &--error {
             background-color: var(--status-danger);

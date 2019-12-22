@@ -96,7 +96,7 @@ const initPreBuildDVRs = () => ({
     letter_symbol: { func: validLetterSymbol, message: localize('Only letters, space, hyphen, period, and apostrophe are allowed.') },
     min          : { func: validMin,          message: localize('Minimum of {{value}} characters required.', { value: '{{value}}' }) },
     not_equal    : { func: validNotEqual,     message: localize('{{value_one}} and {{value_two}} cannot be the same.', { value_one: '{{value_one}}', value_two: '{{value_two}}' }) },
-    number       : { func: validNumber,       message: '' }, // TODO: i18n_issue
+    number       : { func: validNumber,       message: '' },
     password     : { func: validPassword,     message: localize('Password should have lower and uppercase letters with numbers.') },
     phone        : { func: validPhone,        message: localize('Only numbers and spaces are allowed.') },
     postcode     : { func: validPostCode,     message: localize('Only letters, numbers, space, and hyphen are allowed.') },

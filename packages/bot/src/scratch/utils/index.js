@@ -129,6 +129,14 @@ export const load = (block_string, drop_event) => {
             loadWorkspace(xml, event_group);
         }
 
+        // Set user disabled state on all disabled blocks. This ensures we don't change the disabled 
+        // state through code, which was implemented for user experience.
+        Blockly.derivWorkspace.getAllBlocks().forEach(block => {
+            if (block.disabled) {
+                block.is_user_disabled_state = true;
+            }
+        });
+
         // Dispatch resize event for comments.
         window.dispatchEvent(new Event('resize'));
         journal.onLogSuccess(localize('Blocks are loaded successfully'));
@@ -152,8 +160,6 @@ const loadBlocks = (xml, drop_event, event_group) => {
     } else {
         workspace.cleanUp();
     }
-
-    Blockly.Events.setGroup(false);
 };
 
 const loadWorkspace = (xml, event_group) => {
@@ -163,7 +169,6 @@ const loadWorkspace = (xml, event_group) => {
     workspace.clear();
 
     Blockly.Xml.domToWorkspace(xml, workspace);
-    Blockly.Events.setGroup(false);
 };
 
 const loadBlocksFromHeader = (xml_string, block) => {
@@ -354,25 +359,26 @@ export const runInvisibleEvents = (callbackFn) => {
 };
 
 export const updateDisabledBlocks = (workspace, event) => {
-    if (event.type !== Blockly.Events.END_DRAG) {
-        return;
+    if (event.type === Blockly.Events.END_DRAG) {
+        workspace.getAllBlocks().forEach(block => {
+            if (!block.getParent() || block.is_user_disabled_state) {
+                return;
+            }
+
+            const restricted_parents = block.restricted_parents || [];
+            if (restricted_parents.length === 0) {
+                return;
+            }
+    
+            const should_disable = !(restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent)));
+    
+            runGroupedEvents(true, () => {
+                block.setDisabled(should_disable);
+            }, event.group);
+
+            Blockly.Events.setGroup(false);
+        });
     }
-
-    workspace.getAllBlocks().forEach(block => {
-        if (!block.getParent()) {
-            return;
-        }
-
-        const restricted_parents = block.restricted_parents || [];
-        const should_disable     = !(
-            restricted_parents.length === 0 ||
-            restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent))
-        );
-
-        if (block.disabled !== should_disable) {
-            block.setDisabled(should_disable);
-        }
-    });
 };
 
 export const emptyTextValidator = (input) => {

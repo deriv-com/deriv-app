@@ -52,5 +52,7 @@ storiesOf('Collapsible', module)
                 <li>Item 5</li>
                 <li>Item 1</li>
             </Collapsible>
-        ),
+        ), {
+            notes,
+        },
     );

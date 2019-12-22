@@ -108,6 +108,7 @@ class Statement extends React.Component {
                         getRowAction={(row) => this.getRowAction(row)}
                         is_empty={is_empty}
                         custom_width={'100%'}
+                        getRowSize={() => 63}
                     >
                         <PlaceholderComponent
                             is_loading={is_loading}

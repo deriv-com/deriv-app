@@ -22,7 +22,7 @@ export default Engine =>
         getBalance(type) {
             const { client } = ScratchStore.instance.root_store.core;
             const { scope }  = this.store.getState();
-            const balance    = this.balance || client.balance || 0;
+            const balance    = client.balance || 0;
             let value        = balance;
 
             if (scope === 'BEFORE_PURCHASE') {

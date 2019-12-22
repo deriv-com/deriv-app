@@ -129,7 +129,7 @@ export const load = (block_string, drop_event) => {
             loadWorkspace(xml, event_group);
         }
 
-        // Set user disabled state on all disabled blocks. This ensures we don't change the disabled 
+        // Set user disabled state on all disabled blocks. This ensures we don't change the disabled
         // state through code, which was implemented for user experience.
         Blockly.derivWorkspace.getAllBlocks().forEach(block => {
             if (block.disabled) {
@@ -370,7 +370,9 @@ export const updateDisabledBlocks = (workspace, event) => {
                 return;
             }
     
-            const should_disable = !(restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent)));
+            const should_disable = !(restricted_parents.some(restricted_parent =>
+                block.isDescendantOf(restricted_parent)
+            ));
     
             runGroupedEvents(true, () => {
                 block.setDisabled(should_disable);

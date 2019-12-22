@@ -30,4 +30,4 @@ FormLayout.propTypes = {
     is_trade_enabled: PropTypes.bool,
 };
 
-export default FormLayout;
+export default React.memo(FormLayout);

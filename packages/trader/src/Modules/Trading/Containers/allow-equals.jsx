@@ -2,7 +2,9 @@ import classNames   from 'classnames';
 import PropTypes    from 'prop-types';
 import React        from 'react';
 import { Checkbox } from 'deriv-components';
-import { localize } from 'deriv-translations';
+import {
+    Localize,
+    localize }      from 'deriv-translations';
 import { connect }  from 'Stores/connect';
 
 const AllowEquals = ({
@@ -24,7 +26,11 @@ const AllowEquals = ({
                 name='is_equal'
                 onChange={handleOnChange}
             />
-            <p>Allow equals description</p>
+            <p>
+                <Localize
+                    i18n_default_text='Win payout if exit spot is also equal to entry spot.'
+                />
+            </p>
         </div>
     );
 };

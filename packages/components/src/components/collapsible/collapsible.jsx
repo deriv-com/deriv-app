@@ -4,7 +4,7 @@ import React, {
     useState,
     Children,
 }                 from 'react';
-import Icon from '../icon/icon.jsx';
+import Icon       from '../icon/icon.jsx';
 
 const IconArrow = (props) => <Icon icon='IcChevronDownBold' {...props} />;
 
@@ -60,9 +60,9 @@ const Collapsible = ({
     children,
 }) => {
     const [is_open, expand] = useState(is_collapsed && !is_collapsed);
-    const toggleExpand = () => expand(!is_open);
-    const arrow_button = <ArrowButton is_open={is_open} position={position} onClick={toggleExpand} />;
-    const CustomTag = as || 'div';
+    const toggleExpand      = () => expand(!is_open);
+    const arrow_button      = <ArrowButton is_open={is_open} position={position} onClick={toggleExpand} />;
+    const CustomTag         = as || 'div';
     return (
         <CustomTag className='dc-collapsible'>
             {position === 'top' && arrow_button}
@@ -96,4 +96,6 @@ Collapsible.propTypes = {
     ...positionPropType,
 };
 
-export default Collapsible;
+Collapsible.displayName = 'Collapsible';
+
+export default React.memo(Collapsible, ['position']);

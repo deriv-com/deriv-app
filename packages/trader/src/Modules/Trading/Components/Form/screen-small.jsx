@@ -1,4 +1,3 @@
-import PropTypes         from 'prop-types';
 import React             from 'react';
 import { Collapsible }   from 'deriv-components';
 import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals.jsx';
@@ -21,8 +20,4 @@ const ScreenSmall = () => (
     </Collapsible>
 );
 
-ScreenSmall.propTypes = {
-    is_trade_enabled: PropTypes.bool,
-};
-
-export default ScreenSmall;
+export default React.memo(ScreenSmall);

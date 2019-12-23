@@ -37,10 +37,8 @@ class MT5Dashboard extends React.Component {
 
     componentDidUpdate(prev_props) {
         this.updateActiveIndex();
-        if (prev_props.is_mt5_allowed !== this.props.is_mt5_allowed) {
-            if (!this.props.is_mt5_allowed) {
-                this.history.push(routes.trade);
-            }
+        if (prev_props.is_mt5_allowed !== this.props.is_mt5_allowed && !this.props.is_mt5_allowed) {
+            this.history.push(routes.trade);
         }
     }
 

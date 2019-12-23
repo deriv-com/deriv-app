@@ -128,6 +128,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.enforceSingleBarrierType(true);
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
+            } else if (event.name === 'NUM') {
+                this.validateDurationInput();
             }
         }
     },
@@ -209,6 +211,18 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     }
                 }
             }
+        });
+    },
+    validateDurationInput() {
+        const { contracts_for } = ApiHelpers.instance;
+
+        contracts_for.getDurations(this.selected_symbol, this.selected_trade_type).then(durations => {
+            const duration_block    = this.getInputTargetBlock('DURATION');
+            const duration_input    = duration_block.getFieldValue('NUM');
+            const { min, max }      = durations.find(d => d.unit === this.selected_duration);
+
+            const is_valid_duration = duration_input >= min && duration_input <= max;
+            duration_block.setErrorHighlighted(!is_valid_duration);
         });
     },
     updateBarrierInputs(should_use_default_type, should_use_default_values) {

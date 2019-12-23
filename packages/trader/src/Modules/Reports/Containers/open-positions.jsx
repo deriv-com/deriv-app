@@ -1,21 +1,74 @@
-import { PropTypes as MobxPropTypes }      from 'mobx-react';
-import PropTypes                           from 'prop-types';
-import React                               from 'react';
-import { withRouter }                      from 'react-router-dom';
-import { localize, Localize }              from 'deriv-translations';
-import { urlFor }                          from '_common/url';
-import DataTable                           from 'App/Components/Elements/DataTable';
-import { website_name }                    from 'App/Constants/app-config';
-import { getContractPath }                 from 'App/Components/Routes/helpers';
-import EmptyTradeHistoryMessage            from 'Modules/Reports/Components/empty-trade-history-message.jsx';
-import { ReportsMeta }                     from 'Modules/Reports/Components/reports-meta.jsx';
-import { getOpenPositionsColumnsTemplate } from 'Modules/Reports/Constants/data-table-constants';
-import PlaceholderComponent                from 'Modules/Reports/Components/placeholder-component.jsx';
-import { connect }                         from 'Stores/connect';
+import classNames                               from 'classnames';
+import { PropTypes as MobxPropTypes }           from 'mobx-react';
+import PropTypes                                from 'prop-types';
+import React                                    from 'react';
+import { withRouter }                           from 'react-router-dom';
+import { Button, Tabs }                         from 'deriv-components';
+import { localize, Localize }                   from 'deriv-translations';
+import { urlFor }                               from '_common/url';
+import DataTable                                from 'App/Components/Elements/DataTable';
+import { website_name }                         from 'App/Constants/app-config';
+import { getContractPath }                      from 'App/Components/Routes/helpers';
+import RemainingTime                            from 'App/Containers/remaining-time.jsx';
+import EmptyTradeHistoryMessage                 from 'Modules/Reports/Components/empty-trade-history-message.jsx';
+import { getOpenPositionsColumnsTemplate,
+    getMultiplierOpenPositionsColumnsTemplate } from 'Modules/Reports/Constants/data-table-constants';
+import PlaceholderComponent                     from 'Modules/Reports/Components/placeholder-component.jsx';
+import { connect }                              from 'Stores/connect';
+import { isValidToCancel }                      from 'Stores/Modules/Contract/Helpers/logic';
+import { isMultiplierContract }                 from 'Stores/Modules/Contract/Helpers/multiplier';
+
+const getActionColumns = ({ onClickCancel, onClickSell, getPositionById }) => ({ row_obj, is_header, is_footer }) => {
+    if (is_header || is_footer) { return <div className='open-positions__row-action' />; }
+
+    const { contract_info } = row_obj;
+    const is_valid_to_cancel = isValidToCancel(contract_info);
+    const position = getPositionById(contract_info.contract_id);
+    const { is_sell_requested } = position || {};
+
+    return (
+        <div className='open-positions__row-action'>
+            <Button
+                id={`dt_drawer_card_${contract_info.contract_id}_button`}
+                className={classNames({
+                    'btn--loading': is_sell_requested,
+                })}
+                is_disabled={is_sell_requested || (+contract_info.profit <= 0 && is_valid_to_cancel)}
+                text={localize('Close')}
+                onClick={() => onClickSell(contract_info.contract_id, true)}
+                secondary
+            />
+            { is_valid_to_cancel &&
+                <Button
+                    id={`dt_drawer_card_${contract_info.contract_id}_cancel_button`}
+                    className='btn--cancel'
+                    onClick={() => onClickCancel(contract_info.contract_id, true)}
+                    secondary
+                >
+                    {localize('Cancel')}
+                    <RemainingTime
+                        end_time={contract_info.deal_cancellation.date_expiry}
+                        format='mm:ss'
+                    />
+                </Button>
+            }
+        </div>
+    );
+};
 
 class OpenPositions extends React.Component {
+    state = {
+        active_index: 0,
+    };
+    
     componentDidMount() {
         this.props.onMount();
+
+        const { getPositionById, onClickCancel, onClickSell } = this.props;
+        this.getActionColumns = getActionColumns({ getPositionById, onClickCancel, onClickSell });
+
+        const { is_multiplier } = this.props;
+        this.setState({ active_index: is_multiplier ? 1 : 0 });
     }
 
     componentWillUnmount() {
@@ -45,6 +98,56 @@ class OpenPositions extends React.Component {
     // So we set it to true in these cases to show a preloader for the data-table-row until the correct value is set.
     isPurchaseReceived = (item) => isNaN(item.purchase) || !item.purchase;
 
+    getTotals = (active_positions_filtered, is_multiplier_selected) => {
+        let totals;
+
+        if (is_multiplier_selected) {
+            let ask_price = 0;
+            let profit = 0;
+            let purchase = 0;
+
+            active_positions_filtered.forEach((portfolio_pos) => {
+                purchase   += (+portfolio_pos.purchase);
+                if (portfolio_pos.contract_info) {
+                    profit += portfolio_pos.contract_info.profit;
+
+                    if (portfolio_pos.contract_info.deal_cancellation) {
+                        ask_price += portfolio_pos.contract_info.deal_cancellation.ask_price || 0;
+                    }
+                }
+            });
+            totals = {
+                contract_info: {
+                    profit,
+                },
+                purchase,
+            };
+
+            if (ask_price > 0) {
+                totals.contract_info.deal_cancellation = {
+                    ask_price,
+                };
+            }
+        } else {
+            let indicative = 0;
+            let purchase   = 0;
+
+            active_positions_filtered.forEach((portfolio_pos) => {
+                indicative += (+portfolio_pos.indicative);
+                purchase   += (+portfolio_pos.purchase);
+            });
+            totals = {
+                indicative,
+                purchase,
+            };
+        }
+        return totals;
+    };
+
+    setActiveTabIndex = (index) => {
+        this.setState({ active_index: index });
+    };
+
     render() {
         const {
             active_positions,
@@ -53,19 +156,28 @@ class OpenPositions extends React.Component {
             error,
             is_empty,
             currency,
-            totals,
+            NotificationMessages,
         } = this.props;
 
         if (error) {
             return <p>{error}</p>;
         }
 
+        const is_multiplier_selected = this.state.active_index === 1 ;
+
+        const active_positions_filtered = active_positions.filter((p) => {
+            if (p.contract_info) {
+                return is_multiplier_selected ? isMultiplierContract(p.contract_info.contract_type)
+                    : !isMultiplierContract(p.contract_info.contract_type);
+            }
+            return true;
+        });
+
+        const active_positions_filtered_totals = this.getTotals(active_positions_filtered, is_multiplier_selected);
+
         return (
             <React.Fragment>
-                <ReportsMeta
-                    i18n_heading={localize('Open positions')}
-                    i18n_message={localize('View all active trades on your account that can still incur a profit or a loss.')}
-                />
+                <NotificationMessages />
                 {(is_loading && active_positions.length === 0) || is_empty ?
                     <PlaceholderComponent
                         is_loading={is_loading || !active_positions}
@@ -76,20 +188,47 @@ class OpenPositions extends React.Component {
                     />
                     :
                     currency && active_positions.length > 0 &&
-                    <DataTable
+                    <Tabs
+                        active_index={ this.state.active_index }
                         className='open-positions'
-                        columns={getOpenPositionsColumnsTemplate(currency)}
-                        preloaderCheck={this.isPurchaseReceived}
-                        footer={totals}
-                        data_source={active_positions}
-                        getRowAction={this.getRowAction}
-                        getRowSize={() => 63}
-                        custom_width={'100%'}
+                        onTabItemClick={this.setActiveTabIndex}
+                        top
+                        header_fit_content
                     >
-                        <PlaceholderComponent
-                            is_loading={is_loading}
-                        />
-                    </DataTable>
+                        <div label={ localize('Classic options') }>
+                            <DataTable
+                                className='open-positions'
+                                columns={getOpenPositionsColumnsTemplate(currency)}
+                                preloaderCheck={this.isPurchaseReceived}
+                                footer={active_positions_filtered_totals}
+                                data_source={active_positions_filtered}
+                                getRowAction={this.getRowAction}
+                                getRowSize={() => 63}
+                                custom_width={'100%'}
+                            >
+                                <PlaceholderComponent
+                                    is_loading={is_loading}
+                                />
+                            </DataTable>
+                        </div>
+                        <div label={ localize('Multiplier options') }>
+                            <DataTable
+                                className='open-positions'
+                                columns={getMultiplierOpenPositionsColumnsTemplate(currency)}
+                                preloaderCheck={this.isPurchaseReceived}
+                                footer={active_positions_filtered_totals}
+                                data_source={active_positions_filtered}
+                                getRowAction={this.getRowAction}
+                                getRowSize={() => 63}
+                                custom_width={'100%'}
+                                getActionColumns={this.getActionColumns}
+                            >
+                                <PlaceholderComponent
+                                    is_loading={is_loading}
+                                />
+                            </DataTable>
+                        </div>
+                    </Tabs>
                 }
             </React.Fragment>
 
@@ -113,14 +252,18 @@ OpenPositions.propTypes = {
 };
 
 export default connect(
-    ({ modules, client }) => ({
-        currency        : client.currency,
-        active_positions: modules.portfolio.active_positions,
-        error           : modules.portfolio.error,
-        is_empty        : modules.portfolio.is_active_empty,
-        is_loading      : modules.portfolio.is_loading,
-        onMount         : modules.portfolio.onMount,
-        onUnmount       : modules.portfolio.onUnmount,
-        totals          : modules.portfolio.active_positions_totals,
+    ({ modules, client, ui }) => ({
+        currency            : client.currency,
+        active_positions    : modules.portfolio.active_positions,
+        error               : modules.portfolio.error,
+        getPositionById     : modules.portfolio.getPositionById,
+        is_empty            : modules.portfolio.is_active_empty,
+        is_loading          : modules.portfolio.is_loading,
+        is_multiplier       : modules.trade.is_multiplier,
+        NotificationMessages: ui.notification_messages_ui,
+        onClickCancel       : modules.portfolio.onClickCancel,
+        onClickSell         : modules.portfolio.onClickSell,
+        onMount             : modules.portfolio.onMount,
+        onUnmount           : modules.portfolio.onUnmount,
     })
 )(withRouter(OpenPositions));

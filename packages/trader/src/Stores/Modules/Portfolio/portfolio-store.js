@@ -36,7 +36,6 @@ export default class PortfolioStore extends BaseStore {
     subscribers = {};
 
     @observable active_positions = [];
-    @observable active_positions_totals = {};
     @observable active_positions_drawer_dialog_id = null;
 
     @action.bound
@@ -405,24 +404,9 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     setActivePositions() {
         this.active_positions = this.positions.filter(portfolio_pos => !getEndTime(portfolio_pos.contract_info));
-        this.active_positions_totals = this.get_active_positions_totals();
     }
 
     throttledSetActivePositions = throttle(this.setActivePositions, 300);
-
-    get_active_positions_totals() {
-        let indicative = 0;
-        let purchase   = 0;
-
-        this.active_positions.forEach((portfolio_pos) => {
-            indicative += (+portfolio_pos.indicative);
-            purchase   += (+portfolio_pos.purchase);
-        });
-        return {
-            indicative,
-            purchase,
-        };
-    }
 
     @computed
     get all_positions() {

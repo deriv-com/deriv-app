@@ -11,22 +11,26 @@ class Tab extends Component {
 
     render() {
         const {
+            active_tab_ref,
             count,
             is_active,
             label,
             top,
             bottom,
+            header_fit_content,
         } = this.props;
 
         const classes = classNames('dc-tabs__item', {
-            'dc-tabs__active'      : is_active,
-            'dc-tabs__item--top'   : top,
-            'dc-tabs__item--bottom': bottom,
+            'dc-tabs__active'                  : is_active,
+            'dc-tabs__item--top'               : top,
+            'dc-tabs__item--bottom'            : bottom,
+            'dc-tabs__item--header-fit-content': header_fit_content,
         });
         return (
             <li
                 className={classes}
                 onClick={this.onClick}
+                ref={active_tab_ref}
             >
                 {label}
                 {!!count &&

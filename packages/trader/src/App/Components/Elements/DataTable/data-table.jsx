@@ -68,7 +68,8 @@ class DataTable extends React.PureComponent {
             getRowAction,
             columns,
             preloaderCheck,
-            id } = this.props;
+            id,
+            getActionColumns } = this.props;
         const item = data[index];
         const action = getRowAction && getRowAction(item);
         const contract_id = data[index].contract_id || data[index].id;
@@ -84,6 +85,7 @@ class DataTable extends React.PureComponent {
                 to={typeof action === 'string' ? action : undefined}
                 show_preloader={(typeof preloaderCheck === 'function') ? preloaderCheck(item) : null}
                 replace={typeof action === 'object' ? action : undefined}
+                getActionColumns={getActionColumns}
             />
         );
 
@@ -101,6 +103,7 @@ class DataTable extends React.PureComponent {
             columns,
             data_source,
             footer,
+            getActionColumns,
             getRowSize,
             is_empty,
             onScroll,
@@ -130,7 +133,7 @@ class DataTable extends React.PureComponent {
             })}
             >
                 <div className='table__head' ref={el => { this.el_table_head = el; }}>
-                    <TableRow className={className} columns={columns} is_header />
+                    <TableRow className={className} columns={columns} is_header getActionColumns={getActionColumns} />
                 </div>
                 <div
                     className='table__body'
@@ -147,6 +150,7 @@ class DataTable extends React.PureComponent {
                             row_obj={footer}
                             columns={columns}
                             is_footer
+                            getActionColumns={getActionColumns}
                         />
                     </div>
                 }

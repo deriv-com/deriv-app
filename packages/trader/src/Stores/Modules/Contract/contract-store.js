@@ -197,7 +197,7 @@ export default class ContractStore {
 }
 
 function calculate_marker(contract_info) {
-    if (!contract_info) { return null; }
+    if (!contract_info || isMultiplierContract(contract_info.contract_type)) { return null; }
     const {
         transaction_ids,
         tick_stream,
@@ -279,24 +279,7 @@ function calculate_marker(contract_info) {
             key          : `${contract_id}-date_start`,
             epoch_array,
             price_array,
-            config       : getConfig(contract_info),
         };
     }
     return null;
-}
-
-function getConfig(contract_info) {
-    const { contract_type } = contract_info;
-    if (isMultiplierContract(contract_type)) {
-        return {
-            color                          : BARRIER_COLORS.ORANGE,
-            hide_barrier                   : true,
-            hide_profit                    : true,
-            hide_start_line                : true,
-            start_time_marker_top_index    : 1,
-            use_entry_time_for_start_marker: true,
-        };
-    }
-
-    return { };
 }

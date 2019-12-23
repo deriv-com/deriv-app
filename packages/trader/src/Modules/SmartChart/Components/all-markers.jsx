@@ -344,7 +344,7 @@ const TickContract = RawMarkerMaker(({
             entry         : reset_time,
             exit,
             barrier,
-            draw_left_arc : false,
+            draw_left_arc : is_reset_barrier_expired,
             draw_right_arc: true,
         });
     }

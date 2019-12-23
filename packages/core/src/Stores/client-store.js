@@ -287,6 +287,12 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_logged_in() {
+        console.log(!!(
+            !ObjectUtils.isEmptyObject(this.accounts) &&
+            Object.keys(this.accounts).length > 0 &&
+            this.loginid &&
+            this.accounts[this.loginid].token
+        ))
         return !!(
             !ObjectUtils.isEmptyObject(this.accounts) &&
             Object.keys(this.accounts).length > 0 &&
@@ -332,7 +338,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_mt5_allowed() {
-        if (!this.landing_companies) return false;
+        if (!Object.keys(this.landing_companies).length) return false;
         // TODO revert this when all landing companies are accepted.
         // return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
         if ('mt_financial_company' in this.landing_companies ||  'mt_gaming_company' in this.landing_companies) {

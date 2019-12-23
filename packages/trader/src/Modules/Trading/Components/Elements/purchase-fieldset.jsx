@@ -98,10 +98,11 @@ class PurchaseFieldset extends React.PureComponent {
                         }}
                     >
                         <div className='btn-purchase__box-shadow' />
-                        {(is_proposal_error) ?
+                        {is_proposal_error ?
                             <Popover
+                                has_error
+                                is_open
                                 alignment='left'
-                                classNameBubble='purchase-container__popover-bubble'
                                 message={info.message}
                             >
                                 { purchase_button }

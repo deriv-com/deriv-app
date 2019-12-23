@@ -166,6 +166,9 @@ const MT5PasswordModal = ({
                                     !values.password ||
                                     Object.keys(errors).length > 0
                                 }
+                                has_cancel
+                                cancel_label={localize('Cancel')}
+                                onCancel={closeModal}
                                 is_loading={ isSubmitting }
                                 label={ localize('Add account') }
                                 form_error={form_error}

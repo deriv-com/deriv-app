@@ -36,12 +36,16 @@
 
 /** @define positions-drawer-dialog-toggle; */
 .positions-drawer-dialog-toggle {
-    min-width: 16px;
-    min-height: 16px;
-    margin-left: 4px;
-    @extend %inline-icon;
+    position: absolute;
+    width: 108px;
+    height: 80px;
+    right: 8px;
+    bottom: 54px;
+    border: 1px solid var(--general-section-1);
+    border-radius: 4px;
 
     &:hover {
         cursor: pointer;
+        border-color: var(--button-secondary-default);
     }
 }

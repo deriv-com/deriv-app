@@ -47,7 +47,9 @@ const InputWithCheckbox = ({
             onChange({ target: { name: checkboxName, value: true } });
 
             const input = e.target.querySelector('input.input-wrapper__input');
-            setTimeout(() => input.focus());
+            if (input) {
+                setTimeout(() => input.focus());
+            }
         }
     };
 

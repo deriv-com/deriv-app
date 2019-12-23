@@ -223,11 +223,9 @@ $header-height: 4em;
             transform: translateY(-8px);
         }
         &--has-cancel-btn {
-            .btn--sell {
-                max-width: 64px;
-            }
+            justify-content: space-between;
+
             .btn--cancel {
-                max-width: 112px;
                 margin-left: 0.8rem;
             }
         }

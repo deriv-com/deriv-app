@@ -1,6 +1,5 @@
 import React                 from 'react';
 import PropTypes             from 'prop-types';
-import { Icon }              from 'deriv-components';
 import PositionsDrawerDialog from './positions-drawer-dialog.jsx';
 import ContractUpdateForm    from './contract-update-form.jsx';
 
@@ -26,7 +25,7 @@ class TogglePositionsDrawerDialog extends React.PureComponent {
                 const bodyBound = document.body.getBoundingClientRect();
 
                 let { top } = iconBound;
-                const { left } = iconBound;
+                const { right } = iconBound;
 
                 if (iconBound.top + targetBound.height > bodyBound.height) {
                     top -= targetBound.height - iconBound.height;
@@ -34,7 +33,7 @@ class TogglePositionsDrawerDialog extends React.PureComponent {
 
                 this.setState({
                     top,
-                    left,
+                    left: right - 16,
                 });
             }
         });
@@ -47,9 +46,7 @@ class TogglePositionsDrawerDialog extends React.PureComponent {
                     ref={this.toggle_ref}
                     className='positions-drawer-dialog-toggle'
                     onClick={this.toggleDialog}
-                >
-                    <Icon icon='IcGear' />
-                </div>
+                />
                 <PositionsDrawerDialog
                     ref={this.dialog_ref}
                     is_visible={this.state.is_visible}

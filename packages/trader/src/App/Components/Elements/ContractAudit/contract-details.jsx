@@ -46,7 +46,11 @@ const ContractDetails = ({
                     icon={<Icon icon='IcContractId' size={24} />}
                     label={localize('Reference ID')}
                     value={localize('{{buy_value}} (Buy)', { buy_value: contract_info.transaction_ids.buy })}
-                    value2={localize('{{sell_value}} (Sell)', { sell_value: contract_info.transaction_ids.sell })}
+                    value2={contract_info.transaction_ids.sell ?
+                        localize('{{sell_value}} (Sell)', { sell_value: contract_info.transaction_ids.sell })
+                        :
+                        undefined
+                    }
                 />
                 {
                     isMultiplierContract(contract_info.contract_type) ?

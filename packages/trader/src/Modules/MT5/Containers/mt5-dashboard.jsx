@@ -80,7 +80,7 @@ class MT5Dashboard extends React.Component {
             history,
             NotificationMessages,
         } = this.props;
-        const logged_in = typeof is_logged_in !== 'undefined' ? is_logged_in : false;
+        const logged_in = is_logged_in || false;
         const is_allowed = is_mt5_allowed || false;
 
         if (logged_in && !is_allowed) {

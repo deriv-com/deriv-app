@@ -61,6 +61,7 @@ class RangeSlider extends React.PureComponent {
         } = this.props;
 
         const display_value = this.state.hover_value || value;
+        const steps = !isNaN(max_value - min_value) ? (max_value - min_value) : 10;
         return (
             <div className={classNames('range-slider', className, { 'range-slider__error': ((value < min_value) || (value > max_value)) })}>
                 <label className='range-slider__label' htmlFor='range'>
@@ -75,7 +76,7 @@ class RangeSlider extends React.PureComponent {
                         onChange={this.handleChange}
                         tabIndex='0'
                         type='range'
-                        steps={max_value - min_value}
+                        steps={steps}
                         value={value}
                     />
                     {/* this element to be placed before <TickSteps /> to prevent overlapping colors */}

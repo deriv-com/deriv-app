@@ -3,7 +3,6 @@ import {
     Tabs }                       from 'deriv-components';
 import React                     from 'react';
 import { withRouter }            from 'react-router';
-import { Redirect }              from 'react-router-dom';
 import { localize, Localize }    from 'deriv-translations';
 import routes                    from 'Constants/routes';
 import MT5PasswordModal          from 'Modules/MT5/Containers/mt5-password-modal.jsx';
@@ -27,8 +26,17 @@ class MT5Dashboard extends React.Component {
     };
 
     componentDidMount() {
+        const {
+            history,
+            is_logged_in,
+            is_mt5_allowed,
+            onMount } = this.props;
         this.updateActiveIndex();
-        this.props.onMount();
+        onMount();
+
+        if (is_logged_in && !is_mt5_allowed) {
+            history.push(routes.trade);
+        }
     }
 
     componentWillUnmount() {
@@ -72,16 +80,10 @@ class MT5Dashboard extends React.Component {
             beginRealSignupForMt5,
             createMT5Account,
             is_loading,
-            is_logged_in,
-            is_mt5_allowed,
             has_mt5_account,
             has_real_account,
             NotificationMessages,
         } = this.props;
-
-        if (is_logged_in && !is_mt5_allowed) {
-            return <Redirect to={routes.trade} />;
-        }
 
         return (
             <div className='mt5-dashboard__container'>

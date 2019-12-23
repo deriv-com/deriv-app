@@ -287,12 +287,6 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_logged_in() {
-        console.log(!!(
-            !ObjectUtils.isEmptyObject(this.accounts) &&
-            Object.keys(this.accounts).length > 0 &&
-            this.loginid &&
-            this.accounts[this.loginid].token
-        ))
         return !!(
             !ObjectUtils.isEmptyObject(this.accounts) &&
             Object.keys(this.accounts).length > 0 &&

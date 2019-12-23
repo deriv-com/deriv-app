@@ -139,7 +139,7 @@ const Markers = ({
     currency,
     config,
 }) => (
-    markers_array.slice(-5).map(marker => {
+    markers_array.map(marker => {
         const Marker = AllMarkers[marker.type];
         return (
             <Marker

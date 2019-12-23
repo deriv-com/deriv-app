@@ -345,7 +345,6 @@ const NonTickContract = RawMarkerMaker(({
         status,
         profit,
     },
-    config = {},
 }) => {
     /** @type {CanvasRenderingContext2D} */
     const ctx = context;
@@ -356,14 +355,14 @@ const NonTickContract = RawMarkerMaker(({
         if (exit) { exit.top = exit_tick_top; }
     }
 
-    const color = config.color || get_color({ status, profit, is_dark_theme });
+    const color = get_color({ status, profit, is_dark_theme });
 
     ctx.save();
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
 
-    const draw_start_line = is_last_contract && start.visible && !is_sold && !config.hide_start_line;
-    const show_profit = is_last_contract && !is_sold && profit && start.visible && barrier && !config.hide_profit;
+    const draw_start_line = is_last_contract && start.visible && !is_sold;
+    const show_profit = is_last_contract && !is_sold && profit && start.visible && barrier;
     const scale = calc_scale(start.zoom);
     const opacity = is_sold ? calc_opacity(start.left, expiry.left) : '';
 
@@ -393,7 +392,7 @@ const NonTickContract = RawMarkerMaker(({
         ctx.stroke();
     }
     // barrier line
-    if (!config.hide_barrier && (barrier && entry) && (
+    if ((barrier && entry) && (
         start.visible
         || expiry.visible
         || Math.sign(start.left) !== Math.sign(expiry.left)
@@ -440,12 +439,11 @@ const NonTickContract = RawMarkerMaker(({
     });
     
     // start-time marker
-    const marker_start_time = config.use_entry_time_for_start_marker ? entry : start;
-    if (marker_start_time && marker_start_time.visible && barrier) {
+    if (start && start.visible && barrier) {
         draw_path(ctx, {
             top : barrier - 9 * scale,
-            left: marker_start_time.left - 1 * scale,
-            zoom: marker_start_time.zoom,
+            left: start.left - 1 * scale,
+            zoom: start.zoom,
             icon: ICONS.START.with_color(color + opacity),
         });
     }

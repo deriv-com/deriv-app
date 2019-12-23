@@ -29,6 +29,7 @@ module.exports = {
         loading            : path.resolve(__dirname, 'src', 'components/loading/index.js'),
         modal              : path.resolve(__dirname, 'src', 'components/modal/index.js'),
         money              : path.resolve(__dirname, 'src', 'components/money/index.js'),
+        numpad             : path.resolve(__dirname, 'src', 'components/numpad/index.js'),
         'password-input'   : path.resolve(__dirname, 'src', 'components/password-input/index.js'),
         'password-meter'   : path.resolve(__dirname, 'src', 'components/password-meter/index.js'),
         popover            : path.resolve(__dirname, 'src', 'components/popover/index.js'),

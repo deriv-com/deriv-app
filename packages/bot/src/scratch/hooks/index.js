@@ -13,7 +13,6 @@ import './field_image';
 import './flyout_base';
 import './gesture';
 import './icon';
-import './input';
 import './procedures';
 import './toolbox';
 import './trashcan';

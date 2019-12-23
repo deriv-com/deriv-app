@@ -85,7 +85,9 @@
     }
     &__duration {
         &-dropdown {
-            width: 194px !important;
+            width: 196px !important;
+            margin-top: 10px !important;
+            height: 40px;
         }
     }
 }

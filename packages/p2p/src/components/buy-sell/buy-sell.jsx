@@ -46,7 +46,7 @@ class BuySell extends Component {
         return (
             <div className='buy-sell'>
                 <div className='buy-sell__header'>
-                   <ButtonToggle
+                    <ButtonToggle
                         buttons_arr={buy_sell_filters}
                         className='buy-sell__header__filters'
                         is_animated
@@ -54,7 +54,7 @@ class BuySell extends Component {
                         onChange={this.onChangeTableType}
                         value={table_type}
                     />
-                 </div>
+                </div>
                 <BuySellTable
                     table_type={table_type}
                     setSelectedAd={this.setSelectedAd}

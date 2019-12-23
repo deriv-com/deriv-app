@@ -18,7 +18,7 @@ const OrderTable = ({ showDetails }) => {
             const modified_list = list_response.map(list => new OrderInfo(list));
             setOrderList(modified_list);
             if (!modified_list.length) {
-                setNoOrders(true)
+                setNoOrders(true);
             }
         });
     }, []);

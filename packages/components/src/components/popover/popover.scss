@@ -51,6 +51,9 @@
             .bold {
                 font-weight: bold;
             }
+            &--error {
+                color: var(--text-colored-background);
+            }
         }
         &--error {
             background-color: var(--status-danger);

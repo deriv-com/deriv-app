@@ -17,7 +17,7 @@ const MultiplierCardBody = ({
     const {
         buy_price,
         deal_cancellation: {
-            ask_price: deal_cancellation_price,
+            ask_price: deal_cancellation_price = 0,
         } = {},
         is_sold,
         profit,

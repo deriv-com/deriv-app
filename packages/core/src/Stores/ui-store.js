@@ -82,6 +82,9 @@ export default class UIStore extends BaseStore {
     @observable is_real_acc_signup_on         = false;
     @observable has_real_account_signup_ended = false;
 
+    // set currency modal
+    @observable is_set_currency_modal_visible = false;
+
     // position states
     @observable show_positions_toggle = true;
 
@@ -271,6 +274,11 @@ export default class UIStore extends BaseStore {
         }
 
         return this.is_dark_mode_on;
+    }
+
+    @action.bound
+    toggleSetCurrencyModal() {
+        this.is_set_currency_modal_visible = !this.is_set_currency_modal_visible;
     }
 
     @action.bound

@@ -12,7 +12,10 @@ import {
     getBarrierLabel,
     getBarrierValue,
     isDigitType }               from 'App/Components/Elements/PositionsDrawer/helpers';
-import { isUserCancelled }      from 'Stores/Modules/Contract/Helpers/logic';
+import {
+    isDealCancellationExpired,
+    isUserCancelled,
+    isUserSold }                from 'Stores/Modules/Contract/Helpers/logic';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import ContractAuditItem        from './contract-audit-item.jsx';
 
@@ -23,9 +26,14 @@ const ContractDetails = ({
     duration_unit,
     exit_spot,
 }) => {
-    const is_profit     = (contract_info.profit >= 0);
-    const is_cancelled  = isUserCancelled(contract_info);
-    const has_deal_cancellation = contract_info.deal_cancellation;
+    const is_profit = (contract_info.profit >= 0);
+
+    const getLabel = () => {
+        if (isUserCancelled(contract_info))           return localize('Deal cancellation (executed)');
+        if (isDealCancellationExpired(contract_info)) return localize('Deal cancellation (expired)');
+        if (isUserSold(contract_info))                return localize('Deal cancellation');
+        return localize('Deal cancellation (active)');
+    };
 
     return (
         <ThemedScrollbars
@@ -53,11 +61,11 @@ const ContractDetails = ({
                                 />
                                 }
                             />
-                            {has_deal_cancellation &&
+                            {contract_info.deal_cancellation &&
                                 <ContractAuditItem
                                     id='dt_deal_cancellation_label'
                                     icon={<Icon icon='IcContractSafeguard' size={24} />}
-                                    label={is_cancelled ? localize('Cancel deal (used)') : localize('Cancel deal (expired)')}
+                                    label={getLabel()}
                                     value={<Money
                                         amount={contract_info.deal_cancellation.ask_price}
                                         currency={contract_info.currency}

@@ -102,6 +102,10 @@ export const isValidToCancel = (contract_info) => (
     !!contract_info.is_valid_to_cancel
 );
 
+export const isDealCancellationExpired = (contract_info) => (
+    !!(contract_info.deal_cancellation.date_expiry < ServerTime.get().unix())
+);
+
 export const isValidToSell = (contract_info) => (
     !isEnded(contract_info) && !isUserSold(contract_info) && +contract_info.is_valid_to_sell === 1
 );

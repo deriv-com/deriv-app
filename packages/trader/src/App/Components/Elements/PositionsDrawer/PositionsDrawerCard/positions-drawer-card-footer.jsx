@@ -51,6 +51,7 @@ const CardFooter = ({
                     <Button
                         id={`dt_drawer_card_${contract_info.contract_id}_cancel_button`}
                         className='btn--cancel'
+                        is_disabled={+contract_info.profit >= 0}
                         onClick={() => onClickCancel(contract_info.contract_id, true)}
                         secondary
                     >

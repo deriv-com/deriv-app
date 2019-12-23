@@ -42,7 +42,12 @@ class Checkbox extends React.Component {
         } = this.props;
 
         return (
-            <label htmlFor={ id } className={ classNames('dc-checkbox', className) }>
+            <label
+                htmlFor={ id }
+                className={ classNames('dc-checkbox', className, {
+                    'dc-checkbox--disabled': this.props.disabled,
+                }) }
+            >
                 <input
                     className='dc-checkbox__input'
                     type='checkbox'
@@ -53,7 +58,8 @@ class Checkbox extends React.Component {
                 />
                 <span
                     className={ classNames('dc-checkbox__box', {
-                        'dc-checkbox__box--active': this.state.checked,
+                        'dc-checkbox__box--active'  : this.state.checked,
+                        'dc-checkbox__box--disabled': this.props.disabled,
                     }) }
                 >
                     { !!this.state.checked &&
@@ -71,6 +77,7 @@ class Checkbox extends React.Component {
 Checkbox.propTypes = {
     className     : PropTypes.string,
     classNameLabel: PropTypes.string,
+    disabled      : PropTypes.bool,
     id            : PropTypes.string,
     label         : PropTypes.oneOfType([
         PropTypes.string,

@@ -140,7 +140,6 @@ ContractReplay.propTypes = {
     onUnmount        : PropTypes.func,
     removeError      : PropTypes.func,
     routes           : PropTypes.arrayOf(PropTypes.object),
-    server_time      : PropTypes.object,
 };
 
 export default withRouter(connect(

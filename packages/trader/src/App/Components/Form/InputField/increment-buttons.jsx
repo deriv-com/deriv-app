@@ -19,7 +19,7 @@ const IncrementButtons = ({
             onClick={incrementValue}
             tabIndex='-1'
         >
-            <Icon icon='IcAdd' className={'input-wrapper__icon input-wrapper__icon--plus' } is_disabled={max_is_disabled} />
+            <Icon icon='IcAdd' className={'input-wrapper__icon input-wrapper__icon--plus' } color={max_is_disabled ? 'disabled' : undefined} />
         </Button>
         <Button
             id={`${id}_sub`}
@@ -28,7 +28,7 @@ const IncrementButtons = ({
             onClick={decrementValue}
             tabIndex='-1'
         >
-            <Icon icon='IcMinus' className={'input-wrapper__icon input-wrapper__icon--minus'} is_disabled={min_is_disabled} />
+            <Icon icon='IcMinus' className={'input-wrapper__icon input-wrapper__icon--minus'} color={min_is_disabled ? 'disabled' : undefined}  />
         </Button>
     </React.Fragment>
 );

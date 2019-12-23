@@ -18,6 +18,7 @@ const InputWithCheckbox = ({
     currency,
     defaultChecked,
     error_messages,
+    is_disabled,
     is_single_currency,
     is_negative_disabled,
     label,
@@ -57,7 +58,7 @@ const InputWithCheckbox = ({
             classNameInput={classNameInput}
             currency={currency}
             error_messages={error_messages}
-            is_disabled={!is_checked ? 'disabled' : undefined}
+            is_disabled={is_disabled ? 'disabled' : undefined}
             fractional_digits={CurrencyUtils.getDecimalPlaces(currency)}
             id={`dt_${name}_input`}
             inline_prefix={is_single_currency ? currency : null}
@@ -69,7 +70,7 @@ const InputWithCheckbox = ({
             max_length={10}
             name={name}
             onChange={onChange}
-            onClickInputWrapper={enableInputOnClick}
+            onClickInputWrapper={is_disabled ? undefined : enableInputOnClick}
             type='tel'
             value={value}
         />;
@@ -86,6 +87,7 @@ const InputWithCheckbox = ({
                     label={label}
                     classNameLabel={`${name}-checkbox__label`}
                     defaultChecked={defaultChecked}
+                    disabled={is_disabled}
                 />
                 {tooltip_label &&
                     <Popover

@@ -5,7 +5,6 @@ import ObjectUtils             from 'deriv-shared/utils/object';
 import { localize }            from 'deriv-translations';
 import { WS }                  from 'Services/ws-methods';
 import ContractStore           from './contract-store';
-import { getLimitOrderAmount } from './Helpers/limit-orders';
 import { getContractUpdate }   from './Helpers/logic';
 import {
     contractCancelled,
@@ -230,32 +229,6 @@ export default class ContractReplayStore extends BaseStore {
             // user is on the contract details page
             || this.root_store.modules.contract_replay.contract_store
         );
-    }
-
-    @action.bound
-    isValidContractUpdate(contract_id) {
-        const contract = this.getContractById(contract_id);
-
-        const { contract_info, contract_update } = contract;
-
-        const {
-            has_stop_loss,
-            has_take_profit,
-            stop_loss,
-            take_profit,
-        } = contract_update;
-
-        const {
-            stop_loss  : contract_info_stop_loss,
-            take_profit: contract_info_take_profit,
-        } = getLimitOrderAmount(contract_info.limit_order);
-
-        const isValid = (val) => !(val === undefined || val === null);
-
-        const is_take_profit_valid = (has_take_profit ? take_profit > 0 : isValid(contract_info_take_profit));
-        const is_stop_loss_valid   = (has_stop_loss ? stop_loss > 0 : isValid(contract_info_stop_loss));
-
-        return !!(is_take_profit_valid || is_stop_loss_valid);
     }
 
     @action.bound

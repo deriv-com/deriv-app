@@ -1,25 +1,60 @@
-import React             from 'react';
-import PropTypes         from 'prop-types';
-import { Button }        from 'deriv-components';
-import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
-import { localize }      from 'deriv-translations';
-import { connect }       from 'Stores/connect';
+import React                   from 'react';
+import PropTypes               from 'prop-types';
+import { Button }              from 'deriv-components';
+import InputWithCheckbox       from 'App/Components/Form/InputField/input-with-checkbox.jsx';
+import { localize }            from 'deriv-translations';
+import { connect }             from 'Stores/connect';
+import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-orders';
 
 class ContractUpdateForm extends React.Component {
     componentWillUnmount() {
         this.props.resetContractUpdate(this.props.contract_id);
     }
 
+    get is_valid_contract_update() {
+        const contract = this.props.getContractById(this.props.contract_id);
+
+        const {
+            contract_info: {
+                is_valid_to_cancel,
+                limit_order,
+            },
+            contract_update: {
+                has_stop_loss,
+                has_take_profit,
+                stop_loss,
+                take_profit,
+            },
+        } = contract;
+
+        const {
+            stop_loss  : contract_info_stop_loss,
+            take_profit: contract_info_take_profit,
+        } = getLimitOrderAmount(limit_order);
+
+        const isValid = (val) => !(val === undefined || val === null);
+
+        const is_take_profit_valid = (has_take_profit ? take_profit > 0 : isValid(contract_info_take_profit));
+        const is_stop_loss_valid   = (has_stop_loss ? stop_loss > 0 : isValid(contract_info_stop_loss));
+
+        return (is_valid_to_cancel ? is_take_profit_valid : !!(is_take_profit_valid || is_stop_loss_valid));
+    }
+    
     render() {
         const {
-            currency,
-            has_stop_loss,
-            has_take_profit,
-            onClickContractUpdate,
-            onChangeContractUpdate,
-            stop_loss,
-            take_profit,
-        } = this.props.getContractById(this.props.contract_id).contract_update;
+            contract_info: {
+                is_valid_to_cancel,
+            },
+            contract_update: {
+                currency,
+                has_stop_loss,
+                has_take_profit,
+                onClickContractUpdate,
+                onChangeContractUpdate,
+                stop_loss,
+                take_profit,
+            },
+        } = this.props.getContractById(this.props.contract_id);
 
         const onChange = (e) => {
             const { name, value } = e.target;
@@ -85,6 +120,7 @@ class ContractUpdateForm extends React.Component {
                         name='contract_update_stop_loss'
                         onChange={onChange}
                         value={stop_loss}
+                        is_disabled={!!is_valid_to_cancel}
                     />
                 </div>
                 <div className='positions-drawer-dialog__button'>
@@ -92,7 +128,7 @@ class ContractUpdateForm extends React.Component {
                         text={localize('Apply')}
                         onClick={onClick}
                         primary
-                        is_disabled={has_error || !this.props.isValidContractUpdate(this.props.contract_id)}
+                        is_disabled={has_error || !this.is_valid_contract_update}
                     />
                 </div>
             </React.Fragment>
@@ -101,19 +137,17 @@ class ContractUpdateForm extends React.Component {
 }
 
 ContractUpdateForm.propTypes = {
-    contract_id          : PropTypes.number,
-    getContractById      : PropTypes.func,
-    isValidContractUpdate: PropTypes.func,
-    resetContractUpdate  : PropTypes.func,
-    toggleDialog         : PropTypes.func,
-    validation_errors    : PropTypes.object,
+    contract_id        : PropTypes.number,
+    getContractById    : PropTypes.func,
+    resetContractUpdate: PropTypes.func,
+    toggleDialog       : PropTypes.func,
+    validation_errors  : PropTypes.object,
 };
 
 export default connect(
     ({ modules }) => ({
-        getContractById      : modules.contract_replay.getContractById,
-        isValidContractUpdate: modules.contract_replay.isValidContractUpdate,
-        resetContractUpdate  : modules.contract_replay.resetContractUpdate,
-        validation_errors    : modules.contract_trade.validation_errors,
+        getContractById    : modules.contract_replay.getContractById,
+        resetContractUpdate: modules.contract_replay.resetContractUpdate,
+        validation_errors  : modules.contract_trade.validation_errors,
     })
 )(ContractUpdateForm);

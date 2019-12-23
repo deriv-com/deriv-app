@@ -8,7 +8,6 @@ import routes                    from 'Constants/routes';
 import MT5PasswordModal          from 'Modules/MT5/Containers/mt5-password-modal.jsx';
 import MT5ServerErrorDialog      from 'Modules/MT5/Containers/mt5-server-error-dialog.jsx';
 import Mt5TopUpDemoModal         from 'Modules/MT5/Containers/mt5-top-up-demo-modal.jsx';
-import { WS }              from 'Services/ws-methods';
 import { connect }               from 'Stores/connect';
 import CompareAccountsModal      from './mt5-compare-accounts-modal.jsx';
 import MT5PasswordManagerModal   from './mt5-password-manager-modal.jsx';

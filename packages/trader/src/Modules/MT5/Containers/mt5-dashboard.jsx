@@ -8,11 +8,13 @@ import routes                    from 'Constants/routes';
 import MT5PasswordModal          from 'Modules/MT5/Containers/mt5-password-modal.jsx';
 import MT5ServerErrorDialog      from 'Modules/MT5/Containers/mt5-server-error-dialog.jsx';
 import Mt5TopUpDemoModal         from 'Modules/MT5/Containers/mt5-top-up-demo-modal.jsx';
+import { WS }              from 'Services/ws-methods';
 import { connect }               from 'Stores/connect';
 import CompareAccountsModal      from './mt5-compare-accounts-modal.jsx';
 import MT5PasswordManagerModal   from './mt5-password-manager-modal.jsx';
 import { MT5DemoAccountDisplay } from '../Components/mt5-demo-account-display.jsx';
 import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
+
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
 class MT5Dashboard extends React.Component {
@@ -26,17 +28,8 @@ class MT5Dashboard extends React.Component {
     };
 
     componentDidMount() {
-        const {
-            history,
-            is_logged_in,
-            is_mt5_allowed,
-            onMount } = this.props;
         this.updateActiveIndex();
-        onMount();
-
-        if (is_logged_in && !is_mt5_allowed) {
-            history.push(routes.trade);
-        }
+        this.props.onMount();
     }
 
     componentWillUnmount() {
@@ -80,10 +73,19 @@ class MT5Dashboard extends React.Component {
             beginRealSignupForMt5,
             createMT5Account,
             is_loading,
+            is_logged_in,
+            is_mt5_allowed,
             has_mt5_account,
             has_real_account,
+            history,
             NotificationMessages,
         } = this.props;
+        const logged_in = typeof is_logged_in !== 'undefined' ? is_logged_in : false;
+        const is_allowed = typeof is_mt5_allowed !== 'undefined' ? is_mt5_allowed : false;
+
+        if (logged_in && !is_allowed) {
+            history.push(routes.trade);
+        }
 
         return (
             <div className='mt5-dashboard__container'>

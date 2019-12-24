@@ -158,7 +158,10 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
  * Set whether the block is error highlighted or not.
  * @param {boolean} highlighted True if highlighted for error.
  */
-Blockly.BlockSvg.prototype.setErrorHighlighted = function(should_be_error_highlighted) {
+Blockly.BlockSvg.prototype.setErrorHighlighted = function(
+    should_be_error_highlighted,
+    error_message = localize('The block(s) highlighted in red are missing input values. Please update them and click "Run bot".')
+) {
     if (this.is_error_highlighted === should_be_error_highlighted) {
         return;
     }
@@ -173,6 +176,7 @@ Blockly.BlockSvg.prototype.setErrorHighlighted = function(should_be_error_highli
     }
 
     this.is_error_highlighted = should_be_error_highlighted;
+    this.error_message = error_message;
 };
 
 /**

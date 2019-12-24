@@ -222,7 +222,10 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             const { min, max }      = durations.find(d => d.unit === this.selected_duration);
 
             const is_valid_duration = duration_input >= min && duration_input <= max;
-            duration_block.setErrorHighlighted(!is_valid_duration);
+            duration_block.setErrorHighlighted(
+                !is_valid_duration,
+                localize('The duration out of range. Please update them and click "Run bot".')
+            );
         });
     },
     updateBarrierInputs(should_use_default_type, should_use_default_values) {

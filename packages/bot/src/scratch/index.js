@@ -209,13 +209,17 @@ class DBot {
         this.valueInputLimitationsListener({}, true);
 
         const all_blocks  = this.workspace.getAllBlocks(true);
-        const error_block = all_blocks.find(block => block.is_error_highlighted && !block.disabled);
+        const error_blocks = all_blocks
+            .filter(block => block.is_error_highlighted && !block.disabled)
+            .filter((block, index, self) => index === self.findIndex(b => b.error_message === block.error_message));
 
-        if (error_block) {
-            const { run_panel } = ScratchStore.instance.root_store;
-            const message       = localize('The block(s) highlighted in red are missing input values. Please update them and click "Run bot".');
-            this.workspace.centerOnBlock(error_block.id);
-            run_panel.showErrorMessage(message);
+        if (error_blocks.length) {
+            error_blocks.forEach(block => {
+                const { run_panel } = ScratchStore.instance.root_store;
+                const message       = block.error_message;
+                this.workspace.centerOnBlock(block.id);
+                run_panel.showErrorMessage(message);
+            });
 
             return false;
         }

@@ -10,7 +10,7 @@
         grid-template-areas: '. spot profit .';
         margin: 0 16px -1px;
         padding: 13px 8px; // Equal l+r with transaction__item padding.
-        height: 41px;
+        height: 42px;
 
         $header-grid-items: (
             unquote('spot'),

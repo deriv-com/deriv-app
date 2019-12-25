@@ -2,10 +2,9 @@ import classNames               from 'classnames';
 import {
     Icon,
     Label,
-    Money,
-    Popover }                   from 'deriv-components';
+    Money }                     from 'deriv-components';
 import React                    from 'react';
-import { localize, Localize }   from 'deriv-translations';
+import { localize }             from 'deriv-translations';
 import ProgressSliderStream     from 'App/Containers/ProgressSliderStream';
 import { getProfitOrLoss }      from 'Modules/Reports/Helpers/profit-loss';
 import IndicativeCell           from '../Components/indicative-cell.jsx';
@@ -207,10 +206,14 @@ export const getMultiplierOpenPositionsColumnsTemplate = (currency) => [
         },
     }, {
         title            : localize('Stake'),
-        col_index        : 'purchase',
-        renderCellContent: ({ cell_value }) => (
-            <Money amount={cell_value} currency={currency} />
-        ),
+        col_index        : 'buy_price',
+        renderCellContent: ({ row_obj }) => {
+            if (row_obj.contract_info) {
+                const { ask_price: deal_cancellation_price = 0 } = row_obj.contract_info.deal_cancellation || {};
+                return <Money amount={row_obj.contract_info.buy_price - deal_cancellation_price} currency={currency} />;
+            }
+            return '';
+        },
     }, {
         title            : localize('Multiplier'),
         col_index        : 'multiplier',

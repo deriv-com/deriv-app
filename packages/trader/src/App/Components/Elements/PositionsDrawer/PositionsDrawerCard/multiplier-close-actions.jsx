@@ -23,7 +23,7 @@ const MultiplierCloseActions  = ({
                     className, {
                         'btn--loading': is_sell_requested,
                     })}
-                is_disabled={is_sell_requested || (+contract_info.profit <= 0 && is_valid_to_cancel)}
+                is_disabled={is_sell_requested || (+contract_info.profit < 0 && is_valid_to_cancel)}
                 text={localize('Close')}
                 onClick={() => onClickSell(contract_info.contract_id, true)}
                 secondary

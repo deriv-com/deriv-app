@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes }           from 'mobx-react';
 import PropTypes                                from 'prop-types';
 import React                                    from 'react';
 import { withRouter }                           from 'react-router-dom';
-import { Tabs }                         from 'deriv-components';
+import { Tabs }                                 from 'deriv-components';
 import { localize, Localize }                   from 'deriv-translations';
 import { urlFor }                               from '_common/url';
 import DataTable                                from 'App/Components/Elements/DataTable';
@@ -262,11 +262,11 @@ export default connect(
         getPositionById     : modules.portfolio.getPositionById,
         is_empty            : modules.portfolio.is_active_empty,
         is_loading          : modules.portfolio.is_loading,
-        is_multiplier       : modules.trade.is_multiplier,
-        NotificationMessages: ui.notification_messages_ui,
         onClickCancel       : modules.portfolio.onClickCancel,
         onClickSell         : modules.portfolio.onClickSell,
         onMount             : modules.portfolio.onMount,
         onUnmount           : modules.portfolio.onUnmount,
+        is_multiplier       : modules.trade.is_multiplier,
+        NotificationMessages: ui.notification_messages_ui,
     })
 )(withRouter(OpenPositions));

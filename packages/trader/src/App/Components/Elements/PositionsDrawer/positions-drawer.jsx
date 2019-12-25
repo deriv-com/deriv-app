@@ -10,6 +10,7 @@ import { localize }                   from 'deriv-translations';
 import routes                         from 'Constants/routes';
 import EmptyPortfolioMessage          from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import { connect }                    from 'Stores/connect';
+import { isMultiplierContract }       from 'Stores/Modules/Contract/Helpers/multiplier';
 import PositionsDrawerCard            from './PositionsDrawerCard';
 
 class PositionsDrawer extends React.Component {
@@ -27,20 +28,36 @@ class PositionsDrawer extends React.Component {
             error,
             currency,
             is_empty,
+            is_multiplier,
             is_positions_drawer_on,
             onClickCancel,
             onClickSell,
             onClickRemove,
+            onHoverPosition,
+            symbol,
+            symbol_display_name,
             toggleDrawer,
             toggleUnsupportedContractModal,
-            onHoverPosition,
         } = this.props;
+
+        let positions;
+
+        if (is_multiplier) {
+            positions = all_positions.filter((p) => {
+                if (p.contract_info) {
+                    return isMultiplierContract(p.contract_info.contract_type) && symbol === p.contract_info.underlying;
+                }
+                return true;
+            });
+        } else {
+            positions = all_positions.slice(0, 5);
+        }
 
         // Show only 5 most recent open contracts
         const body_content = (
             <React.Fragment>
                 <TransitionGroup component='div'>
-                    {all_positions.slice(0, 5).map((portfolio_position) => (
+                    {positions.map((portfolio_position) => (
                         <CSSTransition
                             appear
                             key={portfolio_position.id}
@@ -90,7 +107,7 @@ class PositionsDrawer extends React.Component {
                         })}
                 >
                     <div className='positions-drawer__header'>
-                        <span className='positions-drawer__title'>{localize('Recent Positions')}</span>
+                        <span className='positions-drawer__title'>{ is_multiplier ? localize('Multiplier options on ') + symbol_display_name :  localize('Recent Positions')}</span>
                         <div
                             id='dt_positions_drawer_close_icon'
                             className='positions-drawer__icon-close'
@@ -104,7 +121,11 @@ class PositionsDrawer extends React.Component {
                             style={{ width: '100%', height: '100%' }}
                             autoHide
                         >
-                            {(is_empty || error) ? <EmptyPortfolioMessage error={error} />  : body_content}
+                            {(positions.length === 0 || error) ?
+                                <EmptyPortfolioMessage error={error} />
+                                :
+                                body_content
+                            }
                         </ThemedScrollbars>
                     </div>
                     <div className='positions-drawer__footer'>
@@ -127,6 +148,7 @@ PositionsDrawer.propTypes = {
     error                 : PropTypes.string,
     is_empty              : PropTypes.bool,
     is_loading            : PropTypes.bool,
+    is_multiplier         : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     onChangeContractUpdate: PropTypes.func,
     onClickContractUpdate : PropTypes.func,
@@ -135,6 +157,8 @@ PositionsDrawer.propTypes = {
     onHoverPosition       : PropTypes.func,
     onMount               : PropTypes.func,
     onUnmount             : PropTypes.func,
+    symbol                : PropTypes.string,
+    symbol_display_name   : PropTypes.string,
     toggleDrawer          : PropTypes.func,
 };
 
@@ -151,6 +175,9 @@ export default connect(
         onHoverPosition               : modules.portfolio.onHoverPosition,
         onMount                       : modules.portfolio.onMount,
         onUnmount                     : modules.portfolio.onUnmount,
+        is_multiplier                 : modules.trade.is_multiplier,
+        symbol                        : modules.trade.symbol,
+        symbol_display_name           : modules.trade.symbol_display_name,
         is_positions_drawer_on        : ui.is_positions_drawer_on,
         toggleDrawer                  : ui.togglePositionsDrawer,
         toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,

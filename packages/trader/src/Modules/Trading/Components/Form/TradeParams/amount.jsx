@@ -19,6 +19,7 @@ const Amount = ({
     contract_types_list,
     currencies_list,
     currency,
+    current_focus,
     duration_unit,
     expiry_type,
     is_equal,
@@ -26,6 +27,7 @@ const Amount = ({
     is_nativepicker,
     is_single_currency,
     onChange,
+    setCurrentFocus,
     validation_errors,
 }) => {
     if (is_minimized) {
@@ -45,6 +47,7 @@ const Amount = ({
             classNameInlinePrefix='trade-container__currency'
             classNameInput='trade-container__input'
             currency={currency}
+            current_focus={current_focus}
             error_messages={validation_errors.amount}
             fractional_digits={CurrencyUtils.getDecimalPlaces(currency)}
             id='dt_amount_input'
@@ -58,6 +61,7 @@ const Amount = ({
             max_length={10}
             name='amount'
             onChange={onChange}
+            setCurrentFocus={setCurrentFocus}
             type='tel'
             value={amount}
         />
@@ -87,7 +91,6 @@ const Amount = ({
                         no_border={true}
                         value={currency}
                         onChange={onChange}
-
                     />
                     <Input />
                 </div>
@@ -132,7 +135,7 @@ Amount.propTypes = {
     validation_errors : PropTypes.object,
 };
 
-export default connect(({ modules, client }) => ({
+export default connect(({ ui, modules, client }) => ({
     amount             : modules.trade.amount,
     basis              : modules.trade.basis,
     basis_list         : modules.trade.basis_list,
@@ -141,10 +144,12 @@ export default connect(({ modules, client }) => ({
     contract_types_list: modules.trade.contract_types_list,
     currencies_list    : client.currencies_list,
     currency           : modules.trade.currency,
+    current_focus      : ui.current_focus,
     duration_unit      : modules.trade.duration_unit,
     expiry_type        : modules.trade.expiry_type,
     is_equal           : modules.trade.is_equal,
     is_single_currency : client.is_single_currency,
     onChange           : modules.trade.onChange,
+    setCurrentFocus    : ui.setCurrentFocus,
     validation_errors  : modules.trade.validation_errors,
 }))(Amount);

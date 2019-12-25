@@ -18,6 +18,7 @@ class InputField extends React.Component {
             classNameInput,
             classNamePrefix,
             currency,
+            current_focus,
             data_tip,
             data_value,
             error_messages,
@@ -44,10 +45,12 @@ class InputField extends React.Component {
             placeholder,
             prefix,
             required,
+            setCurrentFocus,
             type,
             unit,
             value,
         } = this.props;
+
         const Icon = this.props.icon;
         const has_error       = error_messages && !!error_messages.length;
         let has_valid_length  = true;
@@ -159,6 +162,7 @@ class InputField extends React.Component {
             <Input
                 changeValue={changeValue}
                 checked={checked}
+                current_focus={current_focus}
                 className={classNames(is_increment_input ? 'input-wrapper__input' : '', inline_prefix ? 'input--has-inline-prefix' : '', 'input', { 'input--error': has_error }, classNameInput)}
                 classNameInlinePrefix={classNameInlinePrefix}
                 data_tip={data_tip}
@@ -179,6 +183,7 @@ class InputField extends React.Component {
                 onKeyPressed={onKeyPressed}
                 placeholder={placeholder}
                 required={required}
+                setCurrentFocus={setCurrentFocus}
                 type={type}
             />;
 

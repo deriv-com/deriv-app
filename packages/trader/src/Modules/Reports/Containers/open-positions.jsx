@@ -1,16 +1,14 @@
-import classNames                               from 'classnames';
 import { PropTypes as MobxPropTypes }           from 'mobx-react';
 import PropTypes                                from 'prop-types';
 import React                                    from 'react';
 import { withRouter }                           from 'react-router-dom';
-import { Button, Tabs }                         from 'deriv-components';
+import { Tabs }                         from 'deriv-components';
 import { localize, Localize }                   from 'deriv-translations';
 import { urlFor }                               from '_common/url';
 import DataTable                                from 'App/Components/Elements/DataTable';
 import MultiplierCloseActions                   from 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard/multiplier-close-actions.jsx';
 import { website_name }                         from 'App/Constants/app-config';
 import { getContractPath }                      from 'App/Components/Routes/helpers';
-import RemainingTime                            from 'App/Containers/remaining-time.jsx';
 import EmptyTradeHistoryMessage                 from 'Modules/Reports/Components/empty-trade-history-message.jsx';
 import { getOpenPositionsColumnsTemplate,
     getMultiplierOpenPositionsColumnsTemplate } from 'Modules/Reports/Constants/data-table-constants';
@@ -35,6 +33,20 @@ const getActionColumns = ({ onClickCancel, onClickSell, getPositionById }) => ({
             />
         </div>
     );
+};
+
+const EmptyPlaceholderWrapper = (props) => {
+    return (
+        <React.Fragment>
+            { props.is_empty ?
+                <PlaceholderComponent
+                    is_empty={props.is_empty}
+                    empty_message_component={EmptyTradeHistoryMessage}
+                    component_icon={props.component_icon}
+                    localized_message={localize('You have no open positions yet.')}
+                /> : props.children
+            }
+        </React.Fragment>);
 };
 
 class OpenPositions extends React.Component {
@@ -177,37 +189,47 @@ class OpenPositions extends React.Component {
                         header_fit_content
                     >
                         <div label={ localize('Classic options') }>
-                            <DataTable
-                                className='open-positions'
-                                columns={getOpenPositionsColumnsTemplate(currency)}
-                                preloaderCheck={this.isPurchaseReceived}
-                                footer={active_positions_filtered_totals}
-                                data_source={active_positions_filtered}
-                                getRowAction={this.getRowAction}
-                                getRowSize={() => 63}
-                                custom_width={'100%'}
+                            <EmptyPlaceholderWrapper
+                                component_icon={component_icon}
+                                is_empty={active_positions_filtered.length === 0}
                             >
-                                <PlaceholderComponent
-                                    is_loading={is_loading}
-                                />
-                            </DataTable>
+                                <DataTable
+                                    className='open-positions'
+                                    columns={getOpenPositionsColumnsTemplate(currency)}
+                                    preloaderCheck={this.isPurchaseReceived}
+                                    footer={active_positions_filtered_totals}
+                                    data_source={active_positions_filtered}
+                                    getRowAction={this.getRowAction}
+                                    getRowSize={() => 63}
+                                    custom_width={'100%'}
+                                >
+                                    <PlaceholderComponent
+                                        is_loading={is_loading}
+                                    />
+                                </DataTable>
+                            </EmptyPlaceholderWrapper>
                         </div>
                         <div label={ localize('Multiplier options') }>
-                            <DataTable
-                                className='open-positions-multiplier open-positions'
-                                columns={getMultiplierOpenPositionsColumnsTemplate(currency)}
-                                preloaderCheck={this.isPurchaseReceived}
-                                footer={active_positions_filtered_totals}
-                                data_source={active_positions_filtered}
-                                getRowAction={this.getRowAction}
-                                getRowSize={() => 63}
-                                custom_width={'100%'}
-                                getActionColumns={this.getActionColumns}
+                            <EmptyPlaceholderWrapper
+                                component_icon={component_icon}
+                                is_empty={active_positions_filtered.length === 0}
                             >
-                                <PlaceholderComponent
-                                    is_loading={is_loading}
-                                />
-                            </DataTable>
+                                <DataTable
+                                    className='open-positions-multiplier open-positions'
+                                    columns={getMultiplierOpenPositionsColumnsTemplate(currency)}
+                                    preloaderCheck={this.isPurchaseReceived}
+                                    footer={active_positions_filtered_totals}
+                                    data_source={active_positions_filtered}
+                                    getRowAction={this.getRowAction}
+                                    getRowSize={() => 63}
+                                    custom_width={'100%'}
+                                    getActionColumns={this.getActionColumns}
+                                >
+                                    <PlaceholderComponent
+                                        is_loading={is_loading}
+                                    />
+                                </DataTable>
+                            </EmptyPlaceholderWrapper>
                         </div>
                     </Tabs>
                 }

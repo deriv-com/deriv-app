@@ -7,6 +7,7 @@ import './brand/ic-brand-dtrader.svg';
 import './brand/ic-google-drive.svg';
 import './cashier/ic-cashier-authenticate.svg';
 import './cashier/ic-cashier-deposit.svg';
+import './cashier/ic-cashier-dp2p.svg';
 import './cashier/ic-cashier-error.svg';
 import './cashier/ic-cashier-no-balance.svg';
 import './cashier/ic-cashier-transfer-done.svg';

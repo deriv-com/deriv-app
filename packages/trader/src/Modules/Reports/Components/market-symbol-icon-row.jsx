@@ -50,22 +50,12 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                 </div>
             </div>
         );
-    } else if (['deposit', 'withdrawal'].includes(payload.action_type)) {
+    } else if (['deposit', 'withdrawal', 'escrow'].includes(payload.action_type)) {
         return (
             <div className='market-symbol-icon'>
-                {
-                    payload.action_type === 'deposit' ? (
-                        <Icon icon='IcCashierDeposit' size={32} />
-                    ) : (
-                        <Icon icon='IcCashierWithdrawal' size={32} />
-                    )
-                }
-            </div>
-        );
-    } else if (payload.action_type === 'escrow') {
-        return (
-            <div className='market-symbol-icon'>
-                <Icon icon='IcDp2p' size={32} />
+                {payload.action_type === 'deposit' && <Icon icon='IcCashierDeposit' size={32} />}
+                {payload.action_type === 'withdrawal' && <Icon icon='IcCashierWithdrawal' size={32} />}
+                {payload.action_type === 'escrow' && <Icon icon='IcCashierDp2p' size={32} />}
             </div>
         );
     }

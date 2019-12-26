@@ -1,39 +1,12 @@
-import PropTypes  from 'prop-types';
-import React      from 'react';
-import classNames from 'classnames';
-import Button     from 'Components/button';
-import StepInput  from './step-input.jsx';
+import PropTypes    from 'prop-types';
+import React        from 'react';
+import classNames   from 'classnames';
+import { Localize } from 'deriv-translation';
+import Button       from 'Components/button';
+import NumberGrid   from './number-grid.jsx';
+import StepInput    from './step-input.jsx';
 
-const getFormattedValue = (v, pip = 0) => {
-    if (!pip) {
-        return Number(v);
-    }
-    return Number(v).toFixed(pip);
-};
-
-const concatenate = ({
-    value,
-    num,
-    onChange,
-    max,
-    min,
-}) => {
-    const is_float = Number(value) === value && value % 1 !== 0;
-    const is_gt_max = value.toString().concat(num) > max;
-    const is_lt_min = value.toString().concat(num) < min;
-    let output = min;
-    console.log(value.toString().concat(num), max, min, is_gt_max, is_lt_min)
-    if (is_gt_max || is_lt_min) {
-        console.log('no change')
-        output = value;
-    } else if (Number(value) === 0 && num !== '.') {
-        output = Number(num);
-    } else if (!is_float || (is_float && num !== '.')) {
-        output = value.toString().concat(num);
-    }
-
-    onChange(output);
-};
+const concatenate = (number, default_value) => default_value.toString().concat(number);
 
 const Numpad = ({
     className,
@@ -42,29 +15,60 @@ const Numpad = ({
     max = 9999999,
     min = 0,
     pip_size,
-    onChange,
     onSubmit,
     value,
 }) => {
-    const concatNumber = (num) => concatenate({
-        value,
-        max,
-        min,
-        num,
-        onChange,
-    });
-    const chop               = () => onChange(getFormattedValue(value.toString().slice(0, -1)));
+    const [is_float, setFloat] = React.useState(false);
+    const [default_value, onChange] = React.useState(value);
+
+    const onSelect = (num) => {
+        switch (num) {
+            case -1:
+                chop();
+                break;
+            case '.':
+                if (is_float) {
+                    break;
+                }
+                setFloat(true);
+                onChange(concatenate(num, default_value));
+                break;
+            default:
+                if (default_value === 0) {
+                    onChange(concatenate(num, ''));
+                } else {
+                    const regex   = /(?:\d+\.)(\d+)$/;
+                    const matches = regex.exec(default_value);
+
+                    if (matches !== null && is_float) {
+                        matches.forEach((match, groupIndex) => {
+                            if (groupIndex === 1 && match.length < pip_size && is_float) {
+                                onChange(concatenate(num, default_value));
+                            }
+                        });
+                    } else {
+                        onChange(concatenate(num, default_value));
+                    }
+                }
+
+                break;
+        }
+    };
+
+    const chop = () => {
+        if (default_value.toString().slice(-1) === '.') {
+            setFloat(false);
+        }
+        onChange(default_value.toString().slice(0, -1));
+    };
+
     const is_default_enabled = ![!!is_regular, !!is_currency].includes(true);
     React.useEffect(() => {
-        if (value < min) onChange(min);
-        if (value > max) onChange(max);
+        if (is_currency && typeof pip_size === 'undefined') {
+            // eslint-disable-next-line no-console
+            console.error('Warning: property pip_size is required when using currency type <Numpad pip_size=\'2\' />');
+        }
     });
-
-    if (is_currency && typeof pip_size === 'undefined') {
-        // eslint-disable-next-line no-console
-        console.error('Warning: property pip_size is required when using currency type <Numpad pip_size=\'2\' />');
-    }
-
     return (
         <div className={
             classNames('dc-numpad', className, {
@@ -74,39 +78,18 @@ const Numpad = ({
         >
             <StepInput
                 pip_size={pip_size}
-                value={value}
+                value={default_value}
                 onChange={onChange}
                 min={min}
                 max={max}
             />
-            {(Array.from(new Array(9), (val, index) => index)).map(n => {
-                const number = n + 1;
-                return (
-                    <Button
-                        type='secondary'
-                        className='dc-numpad__number'
-                        has_effect
-                        key={number}
-                        onClick={() => concatNumber(number)}
-                    >{number}
-                    </Button>
-                );
-            })}
-            <Button
-                className='dc-numpad__number dc-numpad__number--zero'
-                type='secondary'
-                classNameSpan='dc-numpad__number--is-left-aligned'
-                has_effect
-                onClick={() => concatNumber(0)}
-            >
-                0
-            </Button>
+            <NumberGrid onSelect={onSelect} />
             {is_currency &&
             <Button
                 type='secondary'
                 className='dc-numpad__number'
                 has_effect
-                onClick={() => concatNumber('.')}
+                onClick={() => onSelect('.')}
             >.
             </Button>}
             <div
@@ -116,7 +99,7 @@ const Numpad = ({
                     type='secondary'
                     has_effect
                     className='dc-numpad__number'
-                    onClick={chop}
+                    onClick={() => onSelect(-1)}
                 >
                     ⌫
                 </Button>
@@ -128,9 +111,13 @@ const Numpad = ({
                     type='secondary'
                     has_effect
                     className='dc-numpad__number'
-                    onClick={onSubmit}
+                    onClick={() => {
+                        onSubmit(default_value);
+                    }}
                 >
-                    OK
+                    <Localize
+                        i18n_default_text='OK'
+                    />
                 </Button>
             </div>
         </div>
@@ -143,7 +130,6 @@ Numpad.propTypes = {
     is_regular : PropTypes.bool,
     max        : PropTypes.number,
     min        : PropTypes.number,
-    onChange   : PropTypes.func,
     onSubmit   : PropTypes.func,
     pip_size   : PropTypes.number,
     value      : PropTypes.oneOfType([

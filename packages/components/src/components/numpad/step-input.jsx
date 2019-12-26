@@ -15,8 +15,8 @@ const StepInput = ({
     const is_gt_max = parseFloat(value) + 1 > max;
     const is_lt_min = (parseFloat(value) - 1) < min;
 
-    const increment = () => !is_gt_max ? onChange(formatNumber(parseFloat(value) + 1, pip_size)) : undefined;
-    const decrement = () => !is_lt_min ? onChange(formatNumber(parseFloat(value) - 1, pip_size)) : undefined;
+    const increment = () => !is_gt_max ? onChange(parseFloat(value) + 1, pip_size) : undefined;
+    const decrement = () => !is_lt_min ? onChange(parseFloat(value) - 1, pip_size) : undefined;
 
     return (
         <div className='dc-numpad__input-area'>
@@ -29,7 +29,7 @@ const StepInput = ({
                 className='dc-numpad__input-field'
                 name='amount'
                 value={value}
-                onChange={onChange}
+                readOnly
             />
             <Button
                 text='-'

@@ -26,7 +26,6 @@ NumberButton.propTypes = {
         PropTypes.string,
         PropTypes.object,
     ]),
-    key     : PropTypes.number,
     number  : PropTypes.number,
     onSelect: PropTypes.func,
 };

@@ -1,7 +1,7 @@
 import PropTypes    from 'prop-types';
 import React        from 'react';
 import classNames   from 'classnames';
-import { Localize } from 'deriv-translation';
+import { Localize } from 'deriv-translations';
 import Button       from 'Components/button';
 import NumberGrid   from './number-grid.jsx';
 import StepInput    from './step-input.jsx';
@@ -19,7 +19,8 @@ const Numpad = ({
     value,
 }) => {
     const [is_float, setFloat] = React.useState(false);
-    const [default_value, onChange] = React.useState(value);
+    const [default_value, setValue] = React.useState(value);
+    const isFloat = (v) => v % 1 !== 0;
 
     const onSelect = (num) => {
         switch (num) {
@@ -31,11 +32,11 @@ const Numpad = ({
                     break;
                 }
                 setFloat(true);
-                onChange(concatenate(num, default_value));
+                setValue(concatenate(num, default_value));
                 break;
             default:
                 if (default_value === 0) {
-                    onChange(concatenate(num, ''));
+                    setValue(concatenate(num, ''));
                 } else {
                     const regex   = /(?:\d+\.)(\d+)$/;
                     const matches = regex.exec(default_value);
@@ -43,11 +44,11 @@ const Numpad = ({
                     if (matches !== null && is_float) {
                         matches.forEach((match, groupIndex) => {
                             if (groupIndex === 1 && match.length < pip_size && is_float) {
-                                onChange(concatenate(num, default_value));
+                                setValue(concatenate(num, default_value));
                             }
                         });
                     } else {
-                        onChange(concatenate(num, default_value));
+                        setValue(concatenate(num, default_value));
                     }
                 }
 
@@ -59,7 +60,7 @@ const Numpad = ({
         if (default_value.toString().slice(-1) === '.') {
             setFloat(false);
         }
-        onChange(default_value.toString().slice(0, -1));
+        setValue(default_value.toString().slice(0, -1));
     };
 
     const is_default_enabled = ![!!is_regular, !!is_currency].includes(true);
@@ -79,7 +80,12 @@ const Numpad = ({
             <StepInput
                 pip_size={pip_size}
                 value={default_value}
-                onChange={onChange}
+                onChange={(v) => {
+                    if (!isFloat(v)) {
+                        setFloat(false);
+                    }
+                    setValue(v);
+                }}
                 min={min}
                 max={max}
             />

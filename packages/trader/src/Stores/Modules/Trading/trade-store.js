@@ -158,6 +158,8 @@ export default class TradeStore extends BaseStore {
             'duration_unit',
             'expiry_date',
             'expiry_type',
+            'has_take_profit',
+            'has_stop_loss',
             'is_equal',
             'last_digit',
             'multiplier',

@@ -1,9 +1,9 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
 import { Table }              from 'deriv-components';
-import { requestWS }                 from 'Utils/websocket';
 import { localize }           from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
+import { requestWS }          from 'Utils/websocket';
 import { MyAdsLoader }        from './my-ads-loader.jsx';
 
 const headers = [

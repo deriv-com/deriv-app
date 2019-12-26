@@ -1,8 +1,8 @@
-import React        from 'react';
+import React         from 'react';
 import PropTypes     from 'prop-types';
 import { Button }    from 'deriv-components';
-import { localize }  from 'Components/i18next';
 import AgentContext  from 'Components/context/agent-context';
+import { localize }  from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 
 const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {

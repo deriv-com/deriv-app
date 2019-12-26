@@ -1,10 +1,10 @@
 import { Table }              from 'deriv-components';
 import React                  from 'react';
 import PropTypes              from 'prop-types';
-import { requestWS }          from 'Utils/websocket';
 import { BuySellRowLoader }   from 'Components/buy-sell/row.jsx';
 import { localize }           from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
+import { requestWS }          from 'Utils/websocket';
 import BuyOrderRowComponent   from './order-table-buy-row.jsx';
 import SellOrderRowComponent  from './order-table-sell-row.jsx';
 import OrderInfo              from '../order-info';

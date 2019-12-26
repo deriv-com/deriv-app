@@ -9,8 +9,8 @@ import {
     Button,
     ThemedScrollbars }      from 'deriv-components';
 import FormError            from '../form/error.jsx';
-import IconClose            from '../../assets/icon-close.jsx';
 import { localize }         from '../i18next';
+import IconClose            from '../../assets/icon-close.jsx';
 
 class Popup extends Component {
     state = {

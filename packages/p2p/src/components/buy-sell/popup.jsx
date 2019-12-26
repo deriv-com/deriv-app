@@ -13,7 +13,7 @@ import {
 import IconBack        from 'Assets/icon-back.jsx';
 import IconClose       from 'Assets/icon-close.jsx';
 import { localize }    from 'Components/i18next';
-import { requestWS }          from 'Utils/websocket';
+import { requestWS }   from 'Utils/websocket';
 import FormError       from '../form/error.jsx';
 
 class Popup extends Component {

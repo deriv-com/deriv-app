@@ -1,4 +1,4 @@
-import { localize }            from 'Components/i18next';
+import { localize } from 'Components/i18next';
 
 export default class OrderInfo {
     order_id = '';

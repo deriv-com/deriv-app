@@ -1,8 +1,8 @@
 import React         from 'react';
 import PropTypes     from 'prop-types';
 import { Table }     from 'deriv-components';
-import { localize }  from 'Components/i18next';
 import AgentContext  from 'Components/context/agent-context';
+import { localize }  from 'Components/i18next';
 import { BuyTable }  from './buy-table.jsx';
 import { SellTable } from './sell-table.jsx';
 

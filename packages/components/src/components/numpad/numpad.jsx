@@ -12,15 +12,19 @@ const Numpad = ({
     className,
     is_regular,
     is_currency,
+    label,
     max = 9999999,
     min = 0,
     pip_size,
     onSubmit,
+    render,
     value,
+    format,
 }) => {
-    const [is_float, setFloat] = React.useState(false);
+    const [is_float, setFloat]      = React.useState(false);
     const [default_value, setValue] = React.useState(value);
-    const isFloat = (v) => v % 1 !== 0;
+    const isFloat                   = (v) => v % 1 !== 0;
+    const formatNumber              = (v) => typeof format === 'function' ? format(v) : v;
 
     const onSelect = (num) => {
         switch (num) {
@@ -85,6 +89,7 @@ const Numpad = ({
             <StepInput
                 pip_size={pip_size}
                 value={default_value}
+                render={render}
                 onChange={(v) => {
                     if (!isFloat(v)) {
                         setFloat(false);
@@ -93,6 +98,7 @@ const Numpad = ({
                 }}
                 min={min}
                 max={max}
+                label={label}
             />
             <NumberGrid onSelect={onSelect} />
             {is_currency &&
@@ -124,7 +130,7 @@ const Numpad = ({
                     has_effect
                     className='dc-numpad__number'
                     onClick={() => {
-                        onSubmit(default_value);
+                        onSubmit(formatNumber(default_value));
                     }}
                     is_disabled={!default_value.toString().length}
                 >
@@ -139,12 +145,14 @@ const Numpad = ({
 
 Numpad.propTypes = {
     currency   : PropTypes.string,
+    format     : PropTypes.func,
     is_currency: PropTypes.bool,
     is_regular : PropTypes.bool,
     max        : PropTypes.number,
     min        : PropTypes.number,
     onSubmit   : PropTypes.func,
     pip_size   : PropTypes.number,
+    render     : PropTypes.func,
     value      : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,

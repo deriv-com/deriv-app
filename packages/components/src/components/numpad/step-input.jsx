@@ -3,13 +3,12 @@ import React     from 'react';
 import Input     from 'Components/input';
 import Button    from 'Components/button';
 
-const formatNumber = (v, pip_size = 0) => pip_size !== 0 ? v.toFixed(pip_size) : v;
-
 const StepInput = ({
     max,
     min,
     value,
     onChange,
+    render,
     pip_size = 0,
 }) => {
     const is_gt_max = parseFloat(value) + 1 > max;
@@ -26,12 +25,19 @@ const StepInput = ({
                 onClick={increment}
                 is_disabled={is_gt_max}
             />
+            <React.Fragment>
+                {render && render({
+                    value,
+                    className: 'dc-numpad__input-field',
+                })}
+            </React.Fragment>
+            {!render &&
             <Input
                 className='dc-numpad__input-field'
                 name='amount'
                 value={value}
                 readOnly
-            />
+            />}
             <Button
                 text='-'
                 className='dc-numpad__decrement'
@@ -46,6 +52,7 @@ StepInput.propTypes = {
     max     : PropTypes.number,
     min     : PropTypes.number,
     onChange: PropTypes.func,
+    render  : PropTypes.func,
     value   : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,

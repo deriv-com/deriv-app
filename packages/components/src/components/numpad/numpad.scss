@@ -39,7 +39,7 @@ $SQUARE_SIZE: 48px;
         display: grid;
         grid-area: np;
         grid-template-areas: 'dc inp inp nc';
-        grid-template-columns: min-content minmax(1fr, 40px) minmax(1fr, 40px) min-content;
+        grid-template-columns: min-content 1fr 1fr min-content;
     }
     &__decrement {
         grid-area: dc;
@@ -66,6 +66,11 @@ $SQUARE_SIZE: 48px;
         margin: 0 !important;
         border: none;
         border-radius: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include typeface(--title-center-bold-black);
+        color: var(--text-prominent);
 
         input {
             padding: 0;

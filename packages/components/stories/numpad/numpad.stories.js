@@ -26,6 +26,11 @@ storiesOf('Numpad', module)
                             onSubmit={setValue}
                             min={number('min', 100)}
                             max={number('max', 124)}
+                            render={({ value: v, className }) => {
+                                return (
+                                    <div className={className}>{v}</div>
+                                );
+                            }}
                         />
                     </Theme>
                 </div>
@@ -49,6 +54,11 @@ storiesOf('Numpad', module)
                             value={value}
                             onSubmit={setValue}
                             is_currency
+                            render={({ value: v, className }) => {
+                                return (
+                                    <div className={className}>{v}</div>
+                                );
+                            }}
                             pip_size={number('pip_size', 2)}
                             currency='USD'
                             min={number('min', 100)}

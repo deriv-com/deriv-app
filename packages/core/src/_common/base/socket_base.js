@@ -253,6 +253,9 @@ const BinarySocketBase = (() => {
     const p2pOfferList = (type) =>
         deriv_api.send({ p2p_offer_list: 1, type });
 
+    const p2pAgentInfo = () =>
+        deriv_api.send({ p2p_agent_info: 1 });
+
     return {
         init,
         forgetStream,
@@ -278,6 +281,7 @@ const BinarySocketBase = (() => {
         mt5PasswordChange,
         newAccountVirtual,
         newAccountReal,
+        p2pAgentInfo,
         p2pOfferList,
         profitTable,
         statement,

@@ -152,13 +152,23 @@ export default class CashierStore extends BaseStore {
             this.sortAccountsTransfer();
         }
 
+        // for non-virtual clients, show dp2p if:
+        // 1. they are an agent, or
+        // 2. there is at least one buy offer available to them, or
+        // 3. there is at least one sell offer available to them
         if (!this.root_store.client.is_virtual && !this.is_dp2p_visible &&
             ObjectUtils.isEmptyObject(this.p2p_offer_list)) {
 
-            await this.checkHasDp2pOffer('buy');
+            const is_agent = !(await WS.p2pAgentInfo()).error;
 
-            if (!this.is_dp2p_visible) {
-                await this.checkHasDp2pOffer('sell');
+            if (is_agent) {
+                this.setIsDp2pVisible(true);
+            } else {
+                await this.checkHasDp2pOffer('buy');
+
+                if (!this.is_dp2p_visible) {
+                    await this.checkHasDp2pOffer('sell');
+                }
             }
         }
     }

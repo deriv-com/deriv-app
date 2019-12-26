@@ -98,6 +98,7 @@ Input.propTypes = {
     ]),
     className            : PropTypes.string,
     classNameInlinePrefix: PropTypes.string,
+    current_focus        : PropTypes.string,
     data_tip             : PropTypes.string,
     data_value           : PropTypes.oneOfType([
         PropTypes.number,
@@ -121,6 +122,7 @@ Input.propTypes = {
     onKeyPressed            : PropTypes.func,
     placeholder             : PropTypes.string,
     required                : PropTypes.bool,
+    setCurrentFocus         : PropTypes.func,
     type                    : PropTypes.string,
     value                   : PropTypes.oneOfType([
         PropTypes.number,

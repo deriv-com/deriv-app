@@ -1,13 +1,12 @@
-import classNames                from 'classnames';
-import {
-    observer,
-    PropTypes as MobxPropTypes } from 'mobx-react';
-import PropTypes                 from 'prop-types';
-import React                     from 'react';
-import CurrencyUtils             from 'deriv-shared/utils/currency';
-import Tooltip                   from 'App/Components/Elements/tooltip.jsx';
-import IncrementButtons          from './increment-buttons.jsx';
-import Input                     from './input.jsx';
+import classNames                     from 'classnames';
+import { PropTypes as MobxPropTypes } from 'mobx-react';
+import PropTypes                      from 'prop-types';
+import React                          from 'react';
+import CurrencyUtils                  from 'deriv-shared/utils/currency';
+import Tooltip                        from 'App/Components/Elements/tooltip.jsx';
+import { connect }                    from 'Stores/connect';
+import IncrementButtons               from './increment-buttons.jsx';
+import Input                          from './input.jsx';
 
 class InputField extends React.Component {
     render () {
@@ -253,6 +252,7 @@ InputField.propTypes = {
     classNameInput       : PropTypes.string,
     classNamePrefix      : PropTypes.string,
     currency             : PropTypes.string,
+    current_focus        : PropTypes.string,
     error_messages       : MobxPropTypes.arrayOrObservableArray,
     fractional_digits    : PropTypes.number,
     helper               : PropTypes.string,
@@ -279,6 +279,7 @@ InputField.propTypes = {
     placeholder             : PropTypes.string,
     prefix                  : PropTypes.string,
     required                : PropTypes.bool,
+    setCurrentFocus         : PropTypes.func,
     type                    : PropTypes.string,
     unit                    : PropTypes.string,
     value                   : PropTypes.oneOfType([
@@ -287,4 +288,7 @@ InputField.propTypes = {
     ]),
 };
 
-export default observer(InputField);
+export default connect(({ ui }) => ({
+    current_focus  : ui.current_focus,
+    setCurrentFocus: ui.setCurrentFocus,
+}))(InputField);

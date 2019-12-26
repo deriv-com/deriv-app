@@ -250,6 +250,9 @@ const BinarySocketBase = (() => {
     const tncApproval = () =>
         deriv_api.send({ tnc_approval: '1' });
 
+    const p2pOfferList = (type) =>
+        deriv_api.send({ p2p_offer_list: 1, type });
+
     return {
         init,
         forgetStream,
@@ -275,6 +278,7 @@ const BinarySocketBase = (() => {
         mt5PasswordChange,
         newAccountVirtual,
         newAccountReal,
+        p2pOfferList,
         profitTable,
         statement,
         verifyEmail,

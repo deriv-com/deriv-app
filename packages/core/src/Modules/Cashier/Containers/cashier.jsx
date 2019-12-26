@@ -39,7 +39,8 @@ class Cashier extends React.Component {
 
             this.props.routes.forEach(route => {
                 if ((route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
-                    (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible)) {
+                    (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible) &&
+                    (route.path !== routes.cashier_dp2p || this.props.is_dp2p_visible)) {
                     options.push({
                         // TODO: [p2p-replace-with-api] You can pass 'count' for having notification counter in the tab, like this:
                         // count  : 1,
@@ -97,6 +98,7 @@ Cashier.propTypes = {
     disableRouteMode                 : PropTypes.func,
     enableRouteMode                  : PropTypes.func,
     history                          : PropTypes.object,
+    is_dp2p_visible                  : PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
     is_payment_agent_visible         : PropTypes.bool,
     is_visible                       : PropTypes.bool,
@@ -110,6 +112,7 @@ export default connect(
     ({ modules, ui }) => ({
         disableRouteMode        : ui.disableRouteModal,
         enableRouteMode         : ui.setRouteModal,
+        is_dp2p_visible         : modules.cashier.is_dp2p_visible,
         is_visible              : ui.is_cashier_visible,
         is_payment_agent_visible: !!(modules.cashier.config.payment_agent.filtered_list.length
             || modules.cashier.config.payment_agent.agents.length),

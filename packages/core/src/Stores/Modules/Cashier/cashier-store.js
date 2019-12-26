@@ -85,7 +85,8 @@ class ConfigVerification {
 }
 
 export default class CashierStore extends BaseStore {
-    @observable is_loading = false;
+    @observable is_loading      = false;
+    @observable is_dp2p_visible = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -105,6 +106,7 @@ export default class CashierStore extends BaseStore {
     active_container = this.config.deposit.container;
     current_client;
     is_populating_values = false;
+    p2p_offer_list = {};
 
     containers = [
         this.config.deposit.container,
@@ -149,6 +151,29 @@ export default class CashierStore extends BaseStore {
         if (!this.config.account_transfer.accounts_list.length) {
             this.sortAccountsTransfer();
         }
+
+        if (!this.root_store.client.is_virtual && !this.is_dp2p_visible &&
+            ObjectUtils.isEmptyObject(this.p2p_offer_list)) {
+
+            await this.checkHasDp2pOffer('buy');
+
+            if (!this.is_dp2p_visible) {
+                await this.checkHasDp2pOffer('sell');
+            }
+        }
+    }
+
+    @action.bound
+    async checkHasDp2pOffer (offer_type) {
+        this.p2p_offer_list[offer_type] = await WS.p2pOfferList(offer_type);
+        if (ObjectUtils.getPropertyValue(this.p2p_offer_list[offer_type], ['p2p_offer_list', 'list']).length) {
+            this.setIsDp2pVisible(true);
+        }
+    }
+
+    @action.bound
+    setIsDp2pVisible(is_dp2p_visible) {
+        this.is_dp2p_visible = is_dp2p_visible;
     }
 
     @action.bound
@@ -895,5 +920,7 @@ export default class CashierStore extends BaseStore {
         this.config.account_transfer = new ConfigAccountTransfer();
         this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
         this.is_populating_values = false;
+        this.setIsDp2pVisible(false);
+        this.p2p_offer_list = {};
     }
 }

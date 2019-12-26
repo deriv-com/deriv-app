@@ -31,9 +31,9 @@ const Input = ({
     const ref = React.createRef();
     React.useEffect(() => {
         if (current_focus === name) {
-            ref.current.focus()
+            ref.current.focus();
         }
-    })
+    });
 
     const onBlur  = () => setCurrentFocus(null);
     const onFocus = () => setCurrentFocus(name);

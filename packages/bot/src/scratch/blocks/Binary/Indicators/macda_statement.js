@@ -1,6 +1,5 @@
-import { localize }    from 'deriv-translations';
-import { expectValue } from '../../../shared';
-import config          from '../../../../constants';
+import { localize } from 'deriv-translations';
+import config       from '../../../../constants';
 
 Blockly.Blocks.macda_statement = {
     protected_statements : ['STATEMENT'],
@@ -55,20 +54,17 @@ Blockly.Blocks.macda_statement = {
 
 Blockly.JavaScript.macda_statement = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const varName = Blockly.JavaScript.variableDB_.getName(
-        block.getFieldValue('VARIABLE'),
-        Blockly.Variables.NAME_TYPE
-    );
-    const macdField = block.getFieldValue('MACDFIELDS_LIST');
-    const input = expectValue(block.getChildByType('input_list'), 'INPUT_LIST');
-    const fastEmaPeriod = block.childValueToCode('fast_ema_period', 'FAST_EMA_PERIOD') || '12';
-    const slowEmaPeriod = block.childValueToCode('slow_ema_period', 'SLOW_EMA_PERIOD') || '26';
-    const signalEmaPeriod = block.childValueToCode('signal_ema_period', 'SIGNAL_EMA_PERIOD') || '9';
+    const var_name          = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VARIABLE'), Blockly.Variables.NAME_TYPE);
+    const macd_field        = block.getFieldValue('MACDFIELDS_LIST');
+    const input             = block.childValueToCode('input_list', 'INPUT_LIST');
+    const fast_ema_period   = block.childValueToCode('fast_ema_period', 'FAST_EMA_PERIOD');
+    const slow_ema_period   = block.childValueToCode('slow_ema_period', 'SLOW_EMA_PERIOD');
+    const signal_ema_period = block.childValueToCode('signal_ema_period', 'SIGNAL_EMA_PERIOD');
+    const code              = `${var_name} = Bot.macda(${input}, { 
+        fastEmaPeriod: ${fast_ema_period},
+        slowEmaPeriod: ${slow_ema_period},
+        signalEmaPeriod: ${signal_ema_period},
+    }, ${macd_field});\n`;
 
-    const code = `${varName} = Bot.macda(${input}, { 
-        fastEmaPeriod: ${fastEmaPeriod},
-        slowEmaPeriod: ${slowEmaPeriod},
-        signalEmaPeriod: ${signalEmaPeriod},
-    }, ${macdField});\n`;
     return code;
 };

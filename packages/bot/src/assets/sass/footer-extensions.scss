@@ -1,0 +1,15 @@
+.footer_extensions {
+    display: inline;
+
+    &__button {
+        font-size: 14px;
+        padding: 8px;
+        cursor: pointer;
+
+        &--active {
+            border-bottom: 2px solid var(--brand-red-coral);
+            font-weight: 700;
+            padding-bottom: 6px;
+        }
+    }
+}

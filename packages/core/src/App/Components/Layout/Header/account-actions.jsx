@@ -1,9 +1,8 @@
-import { Button, Popover }  from 'deriv-components';
+import { Button, Icon, Popover } from 'deriv-components';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
 import { localize }         from 'deriv-translations';
 import CurrencyUtils        from 'deriv-shared/utils/currency';
-import Icon                 from 'Assets/icon.jsx';
 import routes               from 'Constants/routes';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';
@@ -62,7 +61,7 @@ export class AccountActions extends Component {
                             className='account-settings-toggle'
                             to={ routes.personal_details }
                         >
-                            <Icon icon='IconUser' />
+                            <Icon icon='IcUserOutline' />
                         </BinaryLink>
                     </Popover>
                     <React.Suspense fallback={<div />}>

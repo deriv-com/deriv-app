@@ -1,17 +1,19 @@
+@import '../icon/icon.scss';
+
 .dc-popover {
     &__target {
         &__icon .info {
-            @extend %inline-icon.secondary;
+            @extend .dc-icon--secondary;
 
             &:hover {
-                @extend %inline-icon.white;
+                @extend .dc-icon;
             }
         }
         &__icon--disabled .info {
-            @extend %inline-icon.disabled;
+            @extend .dc-icon--disabled;
 
             &:hover {
-                @extend %inline-icon.disabled;
+                @extend .dc-icon--disabled;
             }
         }
         &__icon .counter {
@@ -35,7 +37,7 @@
         flex-direction: row;
         background: var(--general-active);
         color: var(--text-prominent);
-        z-index: 999;
+        z-index: 1;
 
         &__icon {
             flex-grow: 1;
@@ -45,6 +47,10 @@
         &__text {
             flex-grow: 2;
             text-align: left;
+
+            &--error {
+                color: var(--text-colored-background);
+            }
         }
         &--error {
             background-color: var(--status-danger);

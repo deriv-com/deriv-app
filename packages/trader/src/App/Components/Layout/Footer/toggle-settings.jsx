@@ -1,11 +1,10 @@
 import classNames     from 'classnames';
-import { Modal }      from 'deriv-components';
+import { Icon, Modal } from 'deriv-components';
 import PropTypes      from 'prop-types';
 import React          from 'react';
 import UILoader       from 'App/Components/Elements/ui-loader.jsx';
 import Lazy           from 'App/Containers/Lazy';
 import { localize }   from 'deriv-translations';
-import Icon           from 'Assets/icon.jsx';
 import VerticalTab    from 'App/Components/Elements/VerticalTabs';
 
 import 'Sass/app/modules/settings.scss';
@@ -38,16 +37,16 @@ ThemeSetting.displayName             = 'ThemeSettingContainer';
 const ModalContent = () => {
     const content = [
         {
-            icon : 'IconTheme',
+            icon : 'IcTheme',
             label: localize('Themes'),
             // eslint-disable-next-line react/display-name
             value: ThemeSetting,
         }, {
-            icon : 'IconLanguage',
+            icon : 'IcLanguage',
             label: localize('Language'),
             value: LanguageSettingContainer,
         }, {
-            icon : 'IconCharts',
+            icon : 'IcChart',
             label: localize('Charts'),
             value: ChartSettingContainer,
             // uncomment below lines to bring back purchase lock and purchase confirmation}
@@ -83,7 +82,7 @@ const ToggleSettings = ({
                 onClick={toggleSettings}
                 className={toggle_settings_class}
             >
-                <Icon icon='IconSettings' className='footer__icon ic-settings__icon' />
+                <Icon icon='IcGear' className='footer__icon ic-settings__icon' />
             </a>
             <React.Suspense fallback={<UILoader />}>
                 <Modal

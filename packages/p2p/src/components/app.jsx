@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, {
     Fragment,
     Component }   from 'react';
@@ -30,29 +31,18 @@ class App extends Component {
         init(this.props.websocket_api, this.props.client.currency);
 
         this.state = {
-            activeIndex: 0,
-            parameters : null,
+            active_index: 0,
+            parameters  : null,
         };
-    }
-
-    componentDidMount() {
-        // TODO: [p2p-fix-index-set] Fix issues with unresolved index to set in tabs
-        if (typeof window !== 'undefined') {
-            const index_to_set = /orders/.test(window.location.pathname) ? 1 : 0;
-
-            if (this.state.active_index !== index_to_set) {
-                this.setState({ active_index: index_to_set });
-            }
-        }
     }
 
     redirectTo = (path_name, params) => {
         this.setState({ active_index: path[path_name], parameters: params });
-    }
+    };
 
     render() {
         const { active_index, parameters } = this.state;
-        const { currency, is_virtual } = this.props.client;
+        const { className, client: { currency, is_virtual } } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
         if (is_virtual || currency !== allowed_currency) {
@@ -65,8 +55,8 @@ class App extends Component {
                     App can overwrite the styles by passing css variables to className deriv-api
                     you can refer to deriv-shared/themes for the css variables that are used in deriv-app as well as p2p
                 */}
-                <main className='deriv-p2p'>
-                    <Tabs active_index={active_index}>
+                <main className={ classNames('deriv-p2p', className) }>
+                    <Tabs active_index={active_index} top>
                         {/* TODO [p2p-uncomment] uncomment this when sell is ready */}
                         {/* <div label={localize('Buy / Sell')}> */}
                         <div label={localize('Buy')}>

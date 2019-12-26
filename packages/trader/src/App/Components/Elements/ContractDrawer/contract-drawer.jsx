@@ -5,10 +5,9 @@ import { withRouter }          from 'react-router';
 import { CSSTransition }       from 'react-transition-group';
 import {
     Button,
-    Money,
-    UnderlyingIcon }           from 'deriv-components';
+    Icon,
+    Money }                    from 'deriv-components';
 import { localize, Localize }  from 'deriv-translations';
-import Icon                    from 'Assets/icon.jsx';
 import routes                  from 'Constants/routes';
 import ContractAudit           from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
@@ -80,7 +79,7 @@ class ContractDrawer extends Component {
                         )}
                         >
                             <div id='dt_underlying_label' className='contract-card__underlying-name'>
-                                <UnderlyingIcon market={contract_info.underlying} />
+                                <Icon icon={contract_info.underlying ? `IcUnderlying${contract_info.underlying}` : 'IcUnknown'} width={40} height={34} />
                                 <span className='contract-card__symbol'>
                                     {contract_info.display_name}
                                 </span>
@@ -216,7 +215,7 @@ class ContractDrawer extends Component {
                             onClick={this.redirectBackToReports}
                         >
                             <Icon
-                                icon='IconBack'
+                                icon='IcArrowLeftBold'
                             />
                         </div>
                     }

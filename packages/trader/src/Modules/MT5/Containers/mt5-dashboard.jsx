@@ -1,19 +1,9 @@
 import {
+    Icon,
     Tabs }                       from 'deriv-components';
 import React                     from 'react';
 import { withRouter }            from 'react-router';
-import { Redirect }              from 'react-router-dom';
 import { localize, Localize }    from 'deriv-translations';
-import IconDeviceLaptop          from 'Assets/SvgComponents/mt5/download-center/icon-device-laptop.svg';
-import IconDeviceDesktop         from 'Assets/SvgComponents/mt5/download-center/icon-device-desktop.svg';
-import IconDevicePhone           from 'Assets/SvgComponents/mt5/download-center/icon-device-phone.svg';
-import IconDeviceTablet          from 'Assets/SvgComponents/mt5/download-center/icon-device-tablet.svg';
-import IconInstallationApple     from 'Assets/SvgComponents/mt5/download-center/icon-installation-apple.svg';
-import IconInstallationGoogle    from 'Assets/SvgComponents/mt5/download-center/icon-installation-google.svg';
-import IconInstallationLinux     from 'Assets/SvgComponents/mt5/download-center/icon-installation-linux.svg';
-import IconInstallationMac       from 'Assets/SvgComponents/mt5/download-center/icon-installation-mac.svg';
-import IconInstallationWeb       from 'Assets/SvgComponents/mt5/download-center/icon-installation-web.svg';
-import IconInstallationWindows   from 'Assets/SvgComponents/mt5/download-center/icon-installation-windows.svg';
 import routes                    from 'Constants/routes';
 import MT5PasswordModal          from 'Modules/MT5/Containers/mt5-password-modal.jsx';
 import MT5ServerErrorDialog      from 'Modules/MT5/Containers/mt5-server-error-dialog.jsx';
@@ -23,6 +13,7 @@ import CompareAccountsModal      from './mt5-compare-accounts-modal.jsx';
 import MT5PasswordManagerModal   from './mt5-password-manager-modal.jsx';
 import { MT5DemoAccountDisplay } from '../Components/mt5-demo-account-display.jsx';
 import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
+
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
 class MT5Dashboard extends React.Component {
@@ -44,8 +35,11 @@ class MT5Dashboard extends React.Component {
         this.props.onUnmount();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prev_props) {
         this.updateActiveIndex();
+        if (prev_props.is_mt5_allowed !== this.props.is_mt5_allowed && !this.props.is_mt5_allowed) {
+            this.history.push(routes.trade);
+        }
     }
 
     updateActiveIndex = () => {
@@ -81,16 +75,10 @@ class MT5Dashboard extends React.Component {
             beginRealSignupForMt5,
             createMT5Account,
             is_loading,
-            is_logged_in,
-            is_mt5_allowed,
             has_mt5_account,
             has_real_account,
             NotificationMessages,
         } = this.props;
-
-        if (is_logged_in && !is_mt5_allowed) {
-            return <Redirect to={routes.trade} />;
-        }
 
         return (
             <div className='mt5-dashboard__container'>
@@ -118,7 +106,7 @@ class MT5Dashboard extends React.Component {
                             selected_account={ this.state.password_manager.selected_account }
                             toggleModal={ this.togglePasswordManagerModal }
                         />
-                        <Tabs active_index={this.state.active_index}>
+                        <Tabs active_index={this.state.active_index} top>
                             <div label={localize('Real account')}>
                                 <MT5RealAccountDisplay
                                     is_loading={ is_loading }
@@ -155,24 +143,24 @@ class MT5Dashboard extends React.Component {
                         <div className='mt5-dashboard__download-center-options'>
                             <div className='mt5-dashboard__download-center-options--desktop'>
                                 <div className='mt5-dashboard__download-center-options--desktop-devices'>
-                                    <IconDeviceDesktop />
-                                    <IconDeviceLaptop />
-                                    <a href='https://trade.mql5.com/trade?servers=Binary.com-Server&trade_server=Binary.com-Server' target='_blank' rel='noopener noreferrer'><IconInstallationWeb /></a>
+                                    <Icon icon='IcMt5DeviceDesktop' width={118} height={85} />
+                                    <Icon icon='IcMt5DeviceLaptop' width={75} height={51} />
+                                    <a href='https://trade.mql5.com/trade?servers=Binary.com-Server&trade_server=Binary.com-Server' target='_blank' rel='noopener noreferrer'><Icon icon='IcInstallationWeb' width={196} height={28} /></a>
                                 </div>
                                 <div className='mt5-dashboard__download-center-options--desktop-links'>
-                                    <a href='https://s3.amazonaws.com/binary-mt5/binarycom_mt5.exe' target='_blank' rel='noopener noreferrer'><IconInstallationWindows /></a>
-                                    <a href='https://deriv.s3-ap-southeast-1.amazonaws.com/deriv-mt5.dmg' target='_blank' rel='noopener noreferrer'><IconInstallationMac /></a>
-                                    <a href='https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux' target='_blank' rel='noopener noreferrer'><IconInstallationLinux /></a>
+                                    <a href='https://s3.amazonaws.com/binary-mt5/binarycom_mt5.exe' target='_blank' rel='noopener noreferrer'><Icon icon='IcInstallationWindows' width={138} height={40} /></a>
+                                    <a href='https://deriv.s3-ap-southeast-1.amazonaws.com/deriv-mt5.dmg' target='_blank' rel='noopener noreferrer'><Icon icon='IcInstallationMac' width={125} height={40} /></a>
+                                    <a href='https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux' target='_blank' rel='noopener noreferrer'><Icon icon='IcInstallationLinux' width={138} height={40} /></a>
                                 </div>
                             </div>
                             <div className='mt5-dashboard__download-center-options--mobile'>
                                 <div className='mt5-dashboard__download-center-options--mobile-devices'>
-                                    <IconDeviceTablet />
-                                    <IconDevicePhone />
+                                    <Icon icon='IcMt5DeviceTablet' width={133} height={106} />
+                                    <Icon icon='IcMt5DevicePhone' width={48} height={74} />
                                 </div>
                                 <div className='mt5-dashboard__download-center-options--mobile-links'>
-                                    <a href='https://download.mql5.com/cdn/mobile/mt5/ios?server=Binary.com-Server' target='_blank' rel='noopener noreferrer'><IconInstallationApple /></a>
-                                    <a href='https://download.mql5.com/cdn/mobile/mt5/android?server=Binary.com-Server' target='_blank' rel='noopener noreferrer'><IconInstallationGoogle /></a>
+                                    <a href='https://download.mql5.com/cdn/mobile/mt5/ios?server=Binary.com-Server' target='_blank' rel='noopener noreferrer'><Icon icon='IcInstallationApple' width={135} height={40} /></a>
+                                    <a href='https://download.mql5.com/cdn/mobile/mt5/android?server=Binary.com-Server' target='_blank' rel='noopener noreferrer'><Icon icon='IcInstallationGoogle' width={135} height={40} /></a>
                                 </div>
                             </div>
                         </div>

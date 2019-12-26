@@ -1,7 +1,7 @@
 <xml id="toolbox" 
     xmlns="http://www.w3.org/1999/xhtml">
     <!-- Trade Parameters -->
-    <category id="trade_parameters" name="Set up your trade" description="Choose the market, contract type, stake, duration, and barrier." iconURI="ic-stage-1">
+    <category id="trade_parameters" name="Set up your trade" description="Choose the market, contract type, stake, duration, and barrier." iconURI="IcStage1">
         <block type="trade_definition">
             <statement name="TRADE_OPTIONS">
                 <block type="trade_definition_market" deletable="false" movable="false">
@@ -20,18 +20,10 @@
                                             <field name="CANDLEINTERVAL_LIST">60</field>
                                             <next>
                                                 <block type="trade_definition_restartbuysell" deletable="false" movable="false">
-                                                    <value name="TIME_MACHINE_ENABLED">
-                                                        <shadow type="logic_boolean">
-                                                            <field name="BOOL">FALSE</field>
-                                                        </shadow>
-                                                    </value>
+                                                    <field name="TIME_MACHINE_ENABLED">FALSE</field>
                                                     <next>
                                                         <block type="trade_definition_restartonerror" deletable="false" movable="false">
-                                                            <value name="RESTARTONERROR">
-                                                                <shadow type="logic_boolean">
-                                                                    <field name="BOOL">FALSE</field>
-                                                                </shadow>
-                                                            </value>
+                                                            <field name="RESTARTONERROR">TRUE</field>
                                                         </block>
                                                     </next>
                                                 </block>
@@ -62,17 +54,17 @@
         </block>
     </category>
     <!-- Purchase Conditions -->
-    <category id="purchase_conditions" name="Purchase contract" description="Define your purchase conditions." iconURI="ic-stage-2">
+    <category id="purchase_conditions" name="Purchase contract" description="Define your purchase conditions." iconURI="IcStage2">
         <block type="before_purchase"></block>
         <block type="purchase"></block>
     </category>
     <!-- Sell Conditions -->
-    <category id="sell_conditions" name="Sell contract (optional)" description="Sell your contract at the market price." iconURI="ic-stage-3">
+    <category id="sell_conditions" name="Sell contract (optional)" description="Sell your contract at the market price." iconURI="IcStage3">
         <block type="during_purchase"></block>
         <block type="sell_at_market"></block>
     </category>
     <!-- Trade Results -->
-    <category id="trade_results" name="Trade again" description="Check your trade results and trade again." iconURI="ic-stage-4">
+    <category id="trade_results" name="Trade again" description="Check your trade results and trade again." iconURI="IcStage4">
         <block type="after_purchase"></block>
         <block type="trade_again"></block>
     </category>

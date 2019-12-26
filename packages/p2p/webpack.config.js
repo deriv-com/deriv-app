@@ -1,7 +1,12 @@
-const path = require('path');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserPlugin            = require('terser-webpack-plugin');
+// const BundleAnalyzerPlugin    = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const MiniCssExtractPlugin    = require('mini-css-extract-plugin');
+const path                    = require('path');
 
-const is_serve   = process.env.BUILD_MODE === 'serve';
-const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
+const is_serve      = process.env.BUILD_MODE === 'serve';
+const is_release    = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
+const is_publishing = process.env.NPM_PUBLISHING_MODE === '1';
 
 module.exports = {
     entry: {
@@ -12,7 +17,7 @@ module.exports = {
         path         : path.resolve(__dirname, 'lib'),
         filename     : 'index.js',
         libraryExport: 'default',
-        library      : 'deriv-p2p',
+        library      : '@deriv/p2p',
         libraryTarget: 'umd',
     },
     resolve: {
@@ -22,6 +27,7 @@ module.exports = {
             Translations: path.resolve(__dirname, 'src/translations'),
             Utils       : path.resolve(__dirname, 'src/utils'),
         },
+        symlinks: false,
     },
     module : {
         rules: [
@@ -45,9 +51,18 @@ module.exports = {
                 ]
             },
             {
-                test: /\.scss$/,
+                test: /\.(sc|sa|c)ss$/,
                 use: [
                     'style-loader',
+                    ...(is_publishing ? [
+                        {
+                            loader : MiniCssExtractPlugin.loader,
+                            options: {
+                                sourceMap: !is_release,
+                            }
+                        },
+                        path.resolve(__dirname, 'scripts', 'dp2p-css-unit-loader.js'),
+                    ] : []),
                     'css-loader',
                     'sass-loader',
                     {
@@ -61,8 +76,20 @@ module.exports = {
             }
         ],
     },
+    plugins: [
+        ...(is_publishing ? [ new MiniCssExtractPlugin({ filename: 'main.css' }) ] : []),
+        // ...(is_release ? [] : [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ]),
+    ],
     optimization: {
         minimize: is_release,
+        minimizer: is_release ? [
+            new TerserPlugin({
+                test     : /\.js/,
+                parallel : true,
+                sourceMap: true,
+            }),
+            new OptimizeCssAssetsPlugin(),
+        ] : [],
     },
     devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
     externals: [
@@ -71,11 +98,12 @@ module.exports = {
             'react-dom'         : 'react-dom',
             'babel-polyfill'    : 'babel-polyfill',
             'prop-types'        : 'prop-types',
-            'deriv-shared'      : 'deriv-shared',
-            'deriv-components'  : 'deriv-components',
-            'formik'            : 'formik',
+            ...(is_publishing ? {} : {
+                'deriv-shared'      : 'deriv-shared',
+                'deriv-components'  : 'deriv-components',
+                'formik'            : 'formik',
+            })
         },
-        /^deriv-components\/.+$/,
-        /^deriv-shared\/.+$/,
+        ...(is_publishing ? [] : [ /^deriv-components\/.+$/, /^deriv-shared\/.+$/ ])
     ]
 };

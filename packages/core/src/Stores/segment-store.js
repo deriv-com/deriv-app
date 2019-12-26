@@ -34,10 +34,12 @@ export default class SegmentStore extends BaseStore {
                     this.has_identified = true;
                     this.pageView();
 
-                    return resolve();
+                    resolve();
                 }
-                return resolve();
+                resolve();
             });
+        } else {
+            resolve();
         }
     })
 

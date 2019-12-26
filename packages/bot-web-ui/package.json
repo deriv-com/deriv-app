@@ -1,0 +1,26 @@
+{
+  "name": "bot-web-ui",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "mahboobeh-binary <mahboub.meng@gmail.com>",
+  "homepage": "https://github.com/Mahboobeh-binary/deriv-app#readme",
+  "license": "ISC",
+  "main": "lib/bot-web-ui.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mahboobeh-binary/deriv-app.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/Mahboobeh-binary/deriv-app/issues"
+  }
+}

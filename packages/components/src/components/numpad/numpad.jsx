@@ -32,7 +32,12 @@ const Numpad = ({
                     break;
                 }
                 setFloat(true);
-                setValue(concatenate(num, default_value));
+                if (default_value.length === 0) {
+                    setValue(concatenate(num, '0'));
+                } else {
+                    setValue(concatenate(num, default_value));
+                }
+
                 break;
             default:
                 if (default_value === 0) {
@@ -106,6 +111,7 @@ const Numpad = ({
                     has_effect
                     className='dc-numpad__number'
                     onClick={() => onSelect(-1)}
+                    is_disabled={!default_value.toString().length}
                 >
                     ⌫
                 </Button>
@@ -120,6 +126,7 @@ const Numpad = ({
                     onClick={() => {
                         onSubmit(default_value);
                     }}
+                    is_disabled={!default_value.toString().length}
                 >
                     <Localize
                         i18n_default_text='OK'

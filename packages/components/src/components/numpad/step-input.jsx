@@ -24,6 +24,7 @@ const StepInput = ({
                 text='+'
                 className='dc-numpad__increment'
                 onClick={increment}
+                is_disabled={is_gt_max}
             />
             <Input
                 className='dc-numpad__input-field'
@@ -35,6 +36,7 @@ const StepInput = ({
                 text='-'
                 className='dc-numpad__decrement'
                 onClick={decrement}
+                is_disabled={is_lt_min}
             />
         </div>
     );

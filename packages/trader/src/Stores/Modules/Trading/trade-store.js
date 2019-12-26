@@ -386,8 +386,20 @@ export default class TradeStore extends BaseStore {
     @action.bound
     setPurchaseSpotBarrier(is_over, position) {
         const key = 'PURCHASE_SPOT_BARRIER';
-        if (is_over) {
-            const purchaseSpotBarrier = new ChartBarrierStore(
+        if (!is_over) {
+            removeBarrier(this.barriers, key);
+            return;
+        }
+
+        let purchaseSpotBarrier  = this.barriers.find((b)=> b.key === key);
+        if (purchaseSpotBarrier) {
+            if (purchaseSpotBarrier.high !== +position.contract_info.entry_spot) {
+                purchaseSpotBarrier.onChange({
+                    high: position.contract_info.entry_spot,
+                });
+            }
+        } else {
+            purchaseSpotBarrier = new ChartBarrierStore(
                 position.contract_info.entry_spot
             );
             purchaseSpotBarrier.key = key;
@@ -396,8 +408,6 @@ export default class TradeStore extends BaseStore {
             purchaseSpotBarrier.isSingleBarrier = true;
             purchaseSpotBarrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
             this.barriers.push(purchaseSpotBarrier);
-        } else {
-            removeBarrier(this.barriers, key);
         }
     }
 

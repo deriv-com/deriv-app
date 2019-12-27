@@ -14,6 +14,13 @@ export default class JournalStore {
     }
 
     @observable messages = [];
+    @observable checked_filter = [message_types.ERROR, message_types.NOTIFY, message_types.SUCCESS];
+    unfilter_messages = [];
+    filter_list = [
+        { id: message_types.ERROR, label: 'Error', onChange: this.filterMessage },
+        { id: message_types.NOTIFY, label: 'Notify', onChange: this.filterMessage },
+        { id: message_types.SUCCESS, label: 'Log', onChange: this.filterMessage },
+    ];
 
     @action.bound
     onLogSuccess(data) {
@@ -42,7 +49,15 @@ export default class JournalStore {
         }
 
         this.messages.unshift({ date, time , message: error_message, message_type });
-        this.messages = this.messages.slice(0);  // force array update
+        this.unfilter_messages = [...this.messages];
+        this.filterMessage(this.checked_filter);
+    }
+
+    @action.bound
+    filterMessage(checked) {
+        this.checked_filter = checked;
+        this.messages = this.unfilter_messages.filter(message => checked.indexOf(message.message_type) >= 0);
+        this.messages.slice(0);
     }
 
     @action.bound

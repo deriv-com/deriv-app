@@ -2,6 +2,40 @@
  * @define journal
  */
 .journal {
+    &-empty {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+
+        &__container {
+            -webkit-box-flex: 1;
+            flex-grow: 1;
+            display: -webkit-box;
+            display: flex;
+            flex-direction: column;
+            -webkit-box-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            width: 345px;
+            margin-top: 50%;
+        }
+        &__header {
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: center;
+            color: var(--text-less-prominent);
+            padding: 8px;
+        }
+        &__icon {
+            align-self: center;
+        }
+        &__message {
+            line-height: 1.5;
+            font-size: 1.2rem;
+            text-align: center;
+            color: var(--text-less-prominent);
+        }
+    }
     &__table {
         display: block;
         font-size: 10px;
@@ -31,7 +65,15 @@
                 width: 30%;
             }
             &:nth-child(2) {
-                width: 70%;
+                width: 90%;
+            }
+            &-icon {
+                display: flex;
+                justify-content: space-between;
+
+                > * {
+                    align-self: center;
+                }
             }
         }
         &--tr {
@@ -72,5 +114,33 @@
         &--blue {
             color: var(--status-info);
         }
+    }
+}
+
+.filter {
+    &__dropdown {
+        position: absolute;
+        display: none;
+
+        &--active {
+            display: block;
+            margin-left: -120px;
+            width: 150px;
+            border-radius: $BORDER_RADIUS;
+            background-color: var(--text-colored-background);
+            box-shadow: 0 8px 16px 0 var(--shadow-menu);
+        }
+        &-text {
+            font-weight: normal;
+        }
+        &-item {
+            padding: 0 15px;
+        }
+        &-item:hover {
+            background-color: var(--general-hover);
+        }
+    }
+    &__icon {
+        cursor: pointer;
     }
 }

@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_length = {
     init() {
@@ -26,6 +27,11 @@ Blockly.Blocks.text_length = {
         return {
             'display_name': localize('Text String Length'),
             'description' : localize('Returns the number of characters of a given string of text, including numbers, spaces, punctuation marks, and symbols.'),
+        };
+    },
+    getRequiredValueInputs() {
+        return {
+            VALUE: emptyTextValidator,
         };
     },
 };

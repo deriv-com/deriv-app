@@ -1,12 +1,12 @@
 import React              from 'react';
-import IconLimitedAccess  from 'Assets/AccountManagement/icon-limited-access.svg';
+import { Icon }           from 'deriv-components';
 import { localize }       from 'deriv-translations';
 import IconMessageContent from '../../../Components/icon-message-content.jsx';
 
 const DemoMessage = () => (
     <IconMessageContent
         message={localize('This feature is not available for demo accounts.')}
-        icon={<IconLimitedAccess />}
+        icon={<Icon icon='IcPoaLock' size={128} />}
     />
 );
 

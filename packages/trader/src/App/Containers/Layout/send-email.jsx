@@ -1,8 +1,9 @@
 import PropTypes      from 'prop-types';
 import React          from 'react';
-import { Button }     from 'deriv-components';
+import {
+    Button,
+    Icon }            from 'deriv-components';
 import { localize }   from 'deriv-translations';
-import Icon           from 'Assets/icon.jsx';
 
 class SendEmailTemplate extends React.Component {
     resend_interval = null;
@@ -53,7 +54,7 @@ class SendEmailTemplate extends React.Component {
         return (
             <div className='send-email-template'>
                 <div className='send-email-template__sent'>
-                    <Icon icon='IconEmailSent' className='send-email-template__icon' />
+                    <Icon icon='IcEmailSent' className='send-email-template__icon' size={128} />
                     <h1 className='send-email-template__title'>{localize('We\'ve sent you an email')}</h1>
                     <p className='send-email-template__subtitle'>{this.props.subtitle}</p>
                     <Button

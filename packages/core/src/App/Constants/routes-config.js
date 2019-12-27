@@ -41,7 +41,7 @@ const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404
 const Trader = lazy(() => {
     const el_head = document.querySelector('head');
     const el_main_css = document.createElement('link');
-    el_main_css.href = '/css/trader.main.css';
+    el_main_css.href = getUrlBase('/css/trader.main.css');
     el_main_css.rel = 'stylesheet';
     el_main_css.type = 'text/css';
     el_head.appendChild(el_main_css);
@@ -52,7 +52,7 @@ const Trader = lazy(() => {
 const Bot = lazy(() => {
     const el_head = document.querySelector('head');
     const el_scratch_js = document.createElement('script');
-    el_scratch_js.src = '/js/bot/scratch.min.js';
+    el_scratch_js.src = getUrlBase('/js/bot/scratch.min.js');
     el_head.appendChild(el_scratch_js);
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "bot" */ 'deriv-bot');
@@ -86,11 +86,11 @@ const initRoutesConfig = () => ([
         is_authenticated: true,
         title           : localize('Cashier'),
         routes          : [
-            { path: routes.cashier_deposit,      component: Deposit,              title: localize('Deposit'),                   icon_component: 'IconDepositSmall',   default: true },
-            { path: routes.cashier_withdrawal,   component: Withdrawal,           title: localize('Withdrawal'),                icon_component: 'IconWithdrawalSmall' },
-            { path: routes.cashier_pa,           component: PaymentAgent,         title: localize('Payment agent'),             icon_component: 'IconPaymentAgent' },
-            { path: routes.cashier_acc_transfer, component: AccountTransfer,      title: localize('Transfer between accounts'), icon_component: 'IconAccountTransfer' },
-            { path: routes.cashier_pa_transfer,  component: PaymentAgentTransfer, title: localize('Transfer to client'),        icon_component: 'IconAccountTransfer' },
+            { path: routes.cashier_deposit,      component: Deposit,              title: localize('Deposit'),                   icon_component: 'IcWalletAdd',   default: true },
+            { path: routes.cashier_withdrawal,   component: Withdrawal,           title: localize('Withdrawal'),                icon_component: 'IcWalletMinus' },
+            { path: routes.cashier_pa,           component: PaymentAgent,         title: localize('Payment agent'),             icon_component: 'IcPaymentAgent' },
+            { path: routes.cashier_acc_transfer, component: AccountTransfer,      title: localize('Transfer between accounts'), icon_component: 'IcAccountTransfer' },
+            { path: routes.cashier_pa_transfer,  component: PaymentAgentTransfer, title: localize('Transfer to client'),        icon_component: 'IcAccountTransfer' },
             // To work with P2P please uncomment this line
             // { path: routes.cashier_p2p,          component: P2PCashier,           title: localize('DP2P'),                       icon_component: 'IconP2PCashier' },
         ],

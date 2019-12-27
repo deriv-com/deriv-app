@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
-import Icon       from 'Assets/icon.jsx';
+import { Icon }   from 'deriv-components';
 
 const TogglePositions = ({
     positions_count,
@@ -22,7 +22,7 @@ const TogglePositions = ({
             onClick={togglePositionsDrawer}
             data-count={positions_count}
         >
-            <Icon icon='IconPositions' className='footer__icon ic-positions__icon' />
+            <Icon icon='IcPortfolio' className='footer__icon ic-positions__icon' />
         </a>
     );
 };

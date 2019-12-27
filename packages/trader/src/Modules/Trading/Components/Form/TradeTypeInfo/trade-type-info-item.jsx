@@ -3,9 +3,11 @@ import PropTypes       from 'prop-types';
 import React           from 'react';
 import {
     Button,
-    ThemedScrollbars } from 'deriv-components';
-import Icon            from 'Assets/icon.jsx';
-import { localize }    from 'deriv-translations';
+    Icon,
+    ThemedScrollbars }    from 'deriv-components';
+import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif.jsx';
+import TradeCategories    from 'Assets/Trading/Categories/trade-categories.jsx';
+import { localize }       from 'deriv-translations';
 
 const TradeTypeInfoItem = ({
     handleNavigationClick,
@@ -24,7 +26,7 @@ const TradeTypeInfoItem = ({
         {!is_mobile &&
         <div className='trade-type-info-dialog__header'>
             <span id='dt_contract_info_back_nav' onClick={() => onBackButtonClick()}>
-                <Icon icon='IconBack' />
+                <Icon icon='IcArrowLeftBold' />
             </span>
             <span className='title'>{item.text}</span>
         </div>
@@ -39,8 +41,7 @@ const TradeTypeInfoItem = ({
                     itemList.map((type, idx) => (
                         <div className='trade-type-info-dialog__card' key={idx}>
                             <div className='trade-type-info-dialog__gif'>
-                                <Icon
-                                    icon='TradeCategoriesGIF'
+                                <TradeCategoriesGIF
                                     category={type.value}
                                     className='trade-type-info-dialog__gif-image'
                                     is_dark_theme={is_dark_theme}
@@ -51,7 +52,7 @@ const TradeTypeInfoItem = ({
                                     autoHide
                                     style={{ height: '100%' }}
                                 >
-                                    <Icon icon='TradeCategories' category={type.value} />
+                                    <TradeCategories category={type.value} />
                                 </ThemedScrollbars>
                             </div>
                             {itemListLength > 1 &&
@@ -73,7 +74,7 @@ const TradeTypeInfoItem = ({
         {itemListLength > 1 &&
         <div className='trade-type-info-navigation'>
             <div id='dt_contract_info_left_nav' className='trade-type-info-navigation__icon' onClick={() => handlePrevClick(itemList)} >
-                <Icon icon='IconChevronLeft' />
+                <Icon icon='IcChevronLeft' />
             </div>
             <div className='trade-type-info-navigation__list'>
                 <i
@@ -95,7 +96,7 @@ const TradeTypeInfoItem = ({
                 }
             </div>
             <div id='dt_contract_info_right_nav' className='trade-type-info-navigation__icon' onClick={() => handleNextClick(itemList)} >
-                <Icon icon='IconChevronRight' />
+                <Icon icon='IcChevronRight' />
             </div>
         </div>
         }

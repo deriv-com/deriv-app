@@ -39,6 +39,11 @@ Blockly.Blocks.math_round = {
             'description' : localize('This block rounds a given number according to the selection: round, round up, round down.'),
         };
     },
+    getRequiredValueInputs() {
+        return {
+            NUM: null,
+        };
+    },
 };
 
 Blockly.JavaScript.math_round = block => {

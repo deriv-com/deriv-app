@@ -1,7 +1,6 @@
-import { Label, Money }       from 'deriv-components';
+import { Icon, Label, Money } from 'deriv-components';
 import PropTypes              from 'prop-types';
 import React                  from 'react';
-import Icon                   from 'Assets/icon.jsx';
 import { localize, Localize } from 'deriv-translations';
 import { connect }            from 'Stores/connect';
 
@@ -24,7 +23,7 @@ const WalletInformation = ({
 }) => {
     return (
         <div className='account-wallet'>
-            <Icon icon='IconAccountsCurrency' type={is_virtual ? 'virtual' : currency.toLowerCase()} />
+            <Icon icon={`IcCurrency-${is_virtual ? 'virtual' : currency.toLowerCase()}`} size={24} />
             <span className='description'>
                 { has_description ?
                     <Description currency={currency} is_virtual={is_virtual} />

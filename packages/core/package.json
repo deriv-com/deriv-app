@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Deriv Core",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "start": "npm run test && npm run serve",
     "serve": "echo \"Serving...\" && sudo ./node_modules/.bin/webpack-dev-server --config \"./build/webpack.config.js\"",
@@ -99,6 +100,7 @@
     "@babel/polyfill": "^7.4.4",
     "@binary-com/binary-document-uploader": "^2.4.4",
     "@deriv/deriv-api": "^1.0.1",
+    "@deriv/p2p": "^0.1.0",
     "acorn": "^6.1.1",
     "babel-polyfill": "^6.26.0",
     "canvas-toBlob": "^1.0.0",
@@ -106,7 +108,6 @@
     "crc-32": "^1.2.0",
     "deriv-bot": "^1.0.0",
     "deriv-components": "^1.0.0",
-    "deriv-p2p": "^1.0.7",
     "deriv-shared": "^1.0.0",
     "deriv-trader": "^3.8.0",
     "deriv-translations": "^1.0.0",
@@ -132,6 +133,7 @@
     "react-tiny-popover": "^4.0.0",
     "react-transition-group": "^2.5.0",
     "react-window": "^1.8.4",
+    "smartcharts-beta": "^0.6.2",
     "url-polyfill": "^1.1.5",
     "web-push-notifications": "^3.2.15"
   }

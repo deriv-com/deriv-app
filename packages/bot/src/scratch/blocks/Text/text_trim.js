@@ -1,4 +1,5 @@
-import { localize } from 'deriv-translations';
+import { localize }           from 'deriv-translations';
+import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_trim = {
     init() {
@@ -35,6 +36,11 @@ Blockly.Blocks.text_trim = {
         return {
             'display_name': localize('Trim spaces'),
             'description' : localize('Trims the spaces within a given string or text.'),
+        };
+    },
+    getRequiredValueInputs() {
+        return {
+            TEXT: emptyTextValidator,
         };
     },
 };

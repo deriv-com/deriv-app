@@ -1,44 +1,29 @@
-import classNames         from 'classnames';
 import {
     Button,
+    Icon,
     Input,
     Popover,
-}                         from 'deriv-components';
+}                    from 'deriv-components';
 import {
     Field,
     Formik,
     Form,
-}                         from 'formik';
-import PropTypes          from 'prop-types';
-import React              from 'react';
-import { localize }       from 'deriv-translations';
-import Dialog             from './dialog.jsx';
-import {
-    ToolbarCloseIcon,
-    ToolbarNewFileIcon,
-    ToolbarOpenIcon,
-    ToolbarReaarangeIcon,
-    ToolbarRedoIcon,
-    ToolbarRenameIcon,
-    ToolbarRunIcon,
-    ToolbarSaveIcon,
-    ToolbarSearchIcon,
-    ToolbarStartIcon,
-    ToolbarStopIcon,
-    ToolbarUndoIcon,
-    ToolbarZoomInIcon,
-    ToolbarZoomOutIcon,
-}                          from './Icons.jsx';
-import SaveLoadModal       from './saveload-modal.jsx';
-import TradeAnimation      from './trade-animation.jsx';
-import { connect }         from '../stores/connect';
-import                          '../assets/sass/scratch/toolbar.scss';
+}                    from 'formik';
+import PropTypes     from 'prop-types';
+import React         from 'react';
+import { localize }  from 'deriv-translations';
+import Dialog        from './dialog.jsx';
+import SaveLoadModal  from './saveload-modal.jsx';
+import TradeAnimation from './trade-animation.jsx';
+import { tabs_title } from '../constants/bot-contents';
+import { connect }    from '../stores/connect';
+import                '../assets/sass/scratch/toolbar.scss';
 
 const SearchBox = ({
     is_search_loading,
     onSearch,
-    onSearchClear,
     onSearchBlur,
+    onSearchClear,
     onSearchKeyUp,
 }) => (
     <div className='toolbar__form'>
@@ -61,15 +46,18 @@ const SearchBox = ({
                                     onFocus={submitForm}
                                     onBlur={onSearchBlur}
                                     trailing_icon={
-                                        search ?
+                                        (search &&
                                             (is_search_loading ?
-                                                <div className='loader' /> :
-                                                <ToolbarCloseIcon
+                                                <div className='loader' />
+                                                :
+                                                <Icon
+                                                    icon='IcCloseCircle'
                                                     className='toolbar__btn--icon'
                                                     onClick={() => onSearchClear(setFieldValue)}
+                                                    color='secondary'
                                                 />
-                                            )
-                                            : <ToolbarSearchIcon />
+                                            )) ||
+                                        (!search && <Icon icon='IcSearch' color='disabled' />)
                                     }
                                 />
                             )}
@@ -105,7 +93,7 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
                                         label={localize('Bot name')}
                                         placeholder={localize('Untitled Bot')}
                                         trailing_icon={
-                                            <ToolbarRenameIcon />
+                                            <Icon icon='IcEdit' />
                                         }
                                     />
                                 )}
@@ -118,16 +106,12 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
     </div>
 );
 
-const ButtonGroup = ({
-    is_stop_button_disabled,
-    is_stop_button_visible,
+const WorkspaceGroup = ({
     onResetClick,
     onUndoClick,
     onRedoClick,
-    onRunClick,
     onSortClick,
     onZoomInOutClick,
-    onStopClick,
     toggleSaveLoadModal,
 }) => (
     <div className='toolbar__group toolbar__group-btn'>
@@ -135,19 +119,20 @@ const ButtonGroup = ({
             alignment='bottom'
             message={localize('Import')}
         >
-            <ToolbarOpenIcon className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
+            <Icon icon='IcFolderOpen' className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Reset')}
         >
-            <ToolbarNewFileIcon className='toolbar__icon' onClick={onResetClick} />
+            <Icon icon='IcNewFile' className='toolbar__icon' onClick={onResetClick} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Save')}
         >
-            <ToolbarSaveIcon
+            <Icon
+                icon='IcSave'
                 className='toolbar__icon'
                 onClick={() => toggleSaveLoadModal(true)}
             />
@@ -157,58 +142,37 @@ const ButtonGroup = ({
             alignment='bottom'
             message={localize('Undo')}
         >
-            <ToolbarUndoIcon className='toolbar__icon' onClick={onUndoClick} />️
+            <Icon icon='IcUndo' className='toolbar__icon' onClick={onUndoClick} />️
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Redo')}
         >
-            <ToolbarRedoIcon className='toolbar__icon' onClick={onRedoClick} />
+            <Icon icon='IcRedo' className='toolbar__icon' onClick={onRedoClick} />
         </Popover>
-        <div className='vertical-divider' />
-        {is_stop_button_visible ?
-            <Popover
-                alignment='bottom'
-                message={localize('Stop')}
-            >
-                <ToolbarStopIcon
-                    className={classNames(
-                        'toolbar__icon',
-                        'toolbar__icon--stop',
-                        { 'toolbar__icon--disabled': is_stop_button_disabled })}
-                    onClick={onStopClick}
-                />
-            </Popover>
-            :
-            <Popover
-                alignment='bottom'
-                message={localize('Run')}
-            >
-                <ToolbarRunIcon className='toolbar__icon' onClick={onRunClick} />
-            </Popover>
-        }
         <Popover
             alignment='bottom'
             message={localize('Sort')}
         >
-            <ToolbarReaarangeIcon className='toolbar__icon' onClick={onSortClick} />
+            <Icon icon='IcSort' className='toolbar__icon' onClick={onSortClick} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Zoom in')}
         >
-            <ToolbarZoomInIcon className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
+            <Icon icon='IcZoomIn' className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Zoom out')}
         >
-            <ToolbarZoomOutIcon className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
+            <Icon icon='IcZoomOut' className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
         </Popover>
     </div>
 );
 
 const Toolbar = ({
+    active_tab,
     file_name,
     is_dialog_open,
     is_drawer_open,
@@ -220,13 +184,13 @@ const Toolbar = ({
     onCancelButtonClick,
     onRedoClick,
     onResetClick,
-    onRunClick,
+    onRunButtonClick,
     onSearch,
     onSearchBlur,
     onSearchClear,
     onSearchKeyUp,
     onSortClick,
-    onStopClick,
+    onStopButtonClick,
     onToolboxToggle,
     onUndoClick,
     onZoomInOutClick,
@@ -235,21 +199,22 @@ const Toolbar = ({
     <div className='toolbar'>
         <div className='toolbar__section'>
             <Popover
+                id='gtm-get-started'
                 alignment='bottom'
                 classNameBubble='toolbar__bubble'
                 message={localize('Click here to start building your DBot.')}
             >
                 <Button
-                    id='start'
-                    className='toolbar__btn--icon toolbar__btn--start'
+                    className='toolbar__btn--icon'
                     has_effect
                     onClick={onToolboxToggle}
-                    icon={<ToolbarStartIcon />}
+                    icon={<Icon icon='IcPuzzle' color='active' />}
                     green
                 >
                     {localize('Get started')}
                 </Button>
             </Popover>
+            {active_tab === tabs_title.WORKSPACE &&
             <SearchBox
                 is_search_loading={is_search_loading}
                 onSearch={onSearch}
@@ -257,33 +222,50 @@ const Toolbar = ({
                 onSearchBlur={onSearchBlur}
                 onSearchKeyUp={onSearchKeyUp}
             />
+            }
             <BotNameBox
                 file_name={file_name}
                 onBotNameTyped={onBotNameTyped}
             />
-            <ButtonGroup
-                is_stop_button_disabled={is_stop_button_disabled}
-                is_stop_button_visible={is_stop_button_visible}
+            {active_tab === tabs_title.WORKSPACE &&
+            <WorkspaceGroup
                 onRedoClick={onRedoClick}
                 onResetClick={onResetClick}
-                onRunClick={onRunClick}
                 onSortClick={onSortClick}
-                onStopClick={onStopClick}
                 onUndoClick={onUndoClick}
                 onZoomInOutClick={onZoomInOutClick}
                 toggleSaveLoadModal={toggleSaveLoadModal}
             />
+            }
         </div>
+        {!is_drawer_open &&
         <div className='toolbar__section'>
+            {
+                (is_stop_button_visible) ?
+                    <Button
+                        className='toolbar__btn'
+                        is_disabled={is_stop_button_disabled}
+                        text={localize('Stop bot')}
+                        icon={<Icon icon='IcPause' className='run-panel__button--icon' color='active' />}
+                        onClick={onStopButtonClick}
+                        has_effect
+                        primary
+                    /> :
+                    <Button
+                        className='toolbar__btn'
+                        text={localize('Run bot')}
+                        icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
+                        onClick={onRunButtonClick}
+                        has_effect
+                        green
+                    />
+            }
             <TradeAnimation
-                className={classNames(
-                    'toolbar__animation',
-                    { 'animation--hidden': is_drawer_open }
-                )}
+                className='toolbar__animation'
                 should_show_overlay={true}
             />
-
         </div>
+        }
         <SaveLoadModal />
         {is_dialog_open &&
         <Dialog
@@ -299,6 +281,7 @@ const Toolbar = ({
 );
 
 Toolbar.propTypes = {
+    active_tab             : PropTypes.string,
     file_name              : PropTypes.string,
     is_dialog_open         : PropTypes.bool,
     is_drawer_open         : PropTypes.bool,
@@ -311,20 +294,21 @@ Toolbar.propTypes = {
     onOkButtonClick        : PropTypes.func,
     onRedoClick            : PropTypes.func,
     onResetClick           : PropTypes.func,
-    onRunClick             : PropTypes.func,
+    onRunButtonClick       : PropTypes.func,
     onSearch               : PropTypes.func,
     onSearchBlur           : PropTypes.func,
     onSearchClear          : PropTypes.func,
     onSearchKeyUp          : PropTypes.func,
     onSortClick            : PropTypes.func,
-    onStopClick            : PropTypes.func,
+    onStopButtonClick      : PropTypes.func,
     onToolboxToggle        : PropTypes.func,
     onUndoClick            : PropTypes.func,
     onZoomInOutClick       : PropTypes.func,
     toggleSaveLoadModal    : PropTypes.func,
 };
 
-export default connect(({ run_panel, saveload, toolbar }) => ({
+export default connect(({ main_content, run_panel, saveload, toolbar }) => ({
+    active_tab             : main_content.active_tab,
     file_name              : toolbar.file_name,
     is_dialog_open         : toolbar.is_dialog_open,
     is_drawer_open         : run_panel.is_drawer_open,
@@ -337,13 +321,13 @@ export default connect(({ run_panel, saveload, toolbar }) => ({
     onOkButtonClick        : toolbar.onResetOkButtonClick,
     onRedoClick            : toolbar.onRedoClick,
     onResetClick           : toolbar.onResetClick,
-    onRunClick             : toolbar.onRunClick,
+    onRunButtonClick       : run_panel.onRunButtonClick,
     onSearch               : toolbar.onSearch,
     onSearchBlur           : toolbar.onSearchBlur,
     onSearchClear          : toolbar.onSearchClear,
     onSearchKeyUp          : toolbar.onSearchKeyUp,
     onSortClick            : toolbar.onSortClick,
-    onStopClick            : toolbar.onStopClick,
+    onStopButtonClick      : run_panel.onStopButtonClick,
     onToolboxToggle        : toolbar.onToolboxToggle,
     onUndoClick            : toolbar.onUndoClick,
     onZoomInOutClick       : toolbar.onZoomInOutClick,

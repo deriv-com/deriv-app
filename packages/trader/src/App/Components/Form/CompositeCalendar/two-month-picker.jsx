@@ -1,7 +1,7 @@
 import PropTypes                from 'prop-types';
 import moment                   from 'moment';
 import React                    from 'react';
-import CalendarBody            from 'App/Components/Elements/Calendar/calendar-body.jsx';
+import CalendarBody             from 'App/Components/Elements/Calendar/calendar-body.jsx';
 import CalendarHeader           from 'App/Components/Elements/Calendar/calendar-header.jsx';
 import CalendarFooter           from 'App/Components/Elements/Calendar/calendar-footer.jsx';
 import {
@@ -125,7 +125,7 @@ class TwoMonthPicker extends React.PureComponent {
                         hide_others={true}
                         updateSelected={this.updateSelectedDate.bind(this)}
                     />
-                    <CalendarFooter use_icon='IconCalendarForwardToday' has_today_btn={true} onClick={this.jumpToCurrentMonth.bind(this)} />
+                    <CalendarFooter use_icon='IcCalendarForwardToday' has_today_btn={true} onClick={this.jumpToCurrentMonth.bind(this)} />
                 </div>
             </React.Fragment>
         );

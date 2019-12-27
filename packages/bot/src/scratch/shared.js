@@ -1,6 +1,5 @@
-import filesaver     from 'file-saver';
-import { localize }  from 'deriv-translations';
-import config        from '../constants';
+import filesaver from 'file-saver';
+import config    from '../constants';
 
 export const saveAs = ({ data, filename, type }) => {
     const blob = new Blob([data], { type });
@@ -24,10 +23,3 @@ export const getContractTypeOptions = (contract_type, trade_type) => {
     return contract_options;
 };
 
-export const expectValue = (block, field) => {
-    const value = Blockly.JavaScript.valueToCode(block, field, Blockly.JavaScript.ORDER_ATOMIC);
-    if (!value) {
-        throw Error(localize(`${field} cannot be empty`));
-    }
-    return value;
-};

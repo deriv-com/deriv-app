@@ -10,7 +10,7 @@
             display: flex;
             justify-content: center;
             margin: 0 4px;
-            height: calc(56px - 18px);
+            height: calc(56px - 17px) !important;
 
             > * {
                 align-self: center;
@@ -19,10 +19,8 @@
                 @include typeface(--title-center-bold-active, none);
             }
         }
-        &--start {
-            height: 40px !important;
-            margin-right: 0px !important;
-        }
+        height: 39px !important;
+        margin-right: 0px !important;
     }
     &__section {
         display: flex;

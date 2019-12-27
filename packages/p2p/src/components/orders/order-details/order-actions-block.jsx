@@ -34,7 +34,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         };
         const options = {
             title         : localize('Cancel this order?'),
-            message       : localize('There will be no refund after cancelling the order. If you have paid, please do not cancel the order.'),
+            message       : localize('If you have paid, please do not cancel the order.'),
             confirm_text  : localize('Cancel this order'),
             onClickConfirm: cancel,
         };

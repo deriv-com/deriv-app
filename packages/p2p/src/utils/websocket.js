@@ -1,5 +1,6 @@
 import CurrencyUtils         from 'deriv-shared/utils/currency';
 import ObjectUtils           from 'deriv-shared/utils/object';
+import { localize }          from 'Components/i18next';
 import {
     convertToMillis,
     getFormattedDateString } from 'Utils/date-time';
@@ -27,6 +28,10 @@ const populateInitialResponses = async () => {
     }
 };
 
+const map_payment_method = {
+    bank_transfer: localize('Bank transfer'),
+};
+
 const getModifiedP2POfferList = (response) => {
     const length = response.list.length;
     const modified_response = [];
@@ -47,11 +52,14 @@ const getModifiedP2POfferList = (response) => {
         modified_response[i].min_transaction         = +response.list[i].min_amount;
         // TODO: [p2p-replace-with-api] use display value from API when formatting works
         modified_response[i].display_min_transaction = formatMoney(offer_currency, response.list[i].min_amount);
+        modified_response[i].display_max_transaction = formatMoney(offer_currency, response.list[i].amount);
         modified_response[i].price_rate              = +response.list[i].rate;
         // TODO: [p2p-replace-with-api] use display value from API when formatting works
         modified_response[i].display_price_rate      = formatMoney(transaction_currency, response.list[i].rate);
         modified_response[i].type                    = response.list[i].type;
         modified_response[i].advertiser              = response.list[i].agent_name;
+
+        modified_response[i].payment_method = map_payment_method[response.list[i].method] || response.list[i].method;
 
         // TOOD: [p2p-api-request] API should give us the allowed decimal places of local currency
         modified_response[i].transaction_currency_decimals = 2;

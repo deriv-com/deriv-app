@@ -9,9 +9,9 @@ import {
     localize,
     setLanguage }           from './i18next';
 import BuySell              from './buy-sell/buy-sell.jsx';
-import Orders               from './orders/orders.jsx';
-// import MyAds      from './my-ads/my-ads.jsx';
+// import MyAds                from './my-ads/my-ads.jsx';
 // import MyProfile  from './my-profile/my-profile.jsx';
+import Orders               from './orders/orders.jsx';
 import './app.scss';
 
 const allowed_currency = 'USD';
@@ -71,25 +71,39 @@ class App extends Component {
         return (
             <AgentProvider value={this.state.is_agent}>
                 <main className={classNames('deriv-p2p', className)}>
-                    <Tabs onTabItemClick={this.handleTabClick} active_index={active_index} top>
-                        {/* TODO [p2p-uncomment] uncomment this when sell is ready */}
-                        {/* <div label={localize('Buy / Sell')}> */}
-                        <div label={localize('Buy')}>
-                            <BuySell navigate={this.redirectTo} params={parameters} />
-                        </div>
-                        {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
-                        <div label={this.state.is_agent ? localize('Incoming orders') : localize('My Orders')}>
-                            <Orders navigate={this.redirectTo} params={parameters} />
-                        </div>
-                        {/* TODO [p2p-uncomment] uncomment this when my ads is ready */}
-                        {/* <div label={localize('My ads')}> */}
-                        {/*    <MyAds navigate={this.redirectTo} params={parameters} /> */}
-                        {/* </div> */}
-                        {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
-                        {/* <div label={localize('My profile')}>
-                            <MyProfile navigate={this.redirectTo} params={parameters} />
-                        </div> */}
-                    </Tabs>
+                    {this.state.is_agent ?
+                        <Tabs onTabItemClick={this.handleTabClick} active_index={active_index} top>
+                            <div label={localize('Buy/Sell')}>
+                                <BuySell navigate={this.redirectTo} params={parameters} />
+                            </div>
+                            {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
+                            <div label={localize('Incoming orders')}>
+                                <Orders navigate={this.redirectTo} params={parameters} />
+                            </div>
+                            {/* TODO [p2p-uncomment] uncomment this when ads is ready */}
+                            {/* <div label={localize('My ads')}> */}
+                            {/*    <MyAds navigate={this.redirectTo} params={parameters} /> */}
+                            {/* </div> */}
+                            {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
+                            {/* <div label={localize('My profile')}>
+                                <MyProfile navigate={this.redirectTo} params={parameters} />
+                            </div> */}
+                        </Tabs>
+                        :
+                        <Tabs onTabItemClick={this.handleTabClick} active_index={active_index} top>
+                            <div label={localize('Buy/Sell')}>
+                                <BuySell navigate={this.redirectTo} params={parameters} />
+                            </div>
+                            {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
+                            <div label={localize('My Orders')}>
+                                <Orders navigate={this.redirectTo} params={parameters} />
+                            </div>
+                            {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
+                            {/* <div label={localize('My profile')}>
+                                <MyProfile navigate={this.redirectTo} params={parameters} />
+                            </div> */}
+                        </Tabs>
+                    }
                 </main>
             </AgentProvider>
         );

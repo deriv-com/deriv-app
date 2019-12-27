@@ -27,7 +27,6 @@ export class SellTable extends React.Component {
             if (this.is_mounted) {
                 if (!response.error) {
                     this.setState({ items: response, is_loading: false });
-                    this.props.setOfferCurrency(response[0].offer_currency);
                 } else {
                     this.setState({ is_loading: false, api_error_message: response.error.message });
                 }

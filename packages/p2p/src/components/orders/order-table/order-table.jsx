@@ -35,10 +35,10 @@ const OrderTable = ({ showDetails }) => {
             <Table.Header>
                 <Table.Row>
                     <Table.Head>{ localize('Order ID') }</Table.Head>
+                    <Table.Head>{ localize('Time') }</Table.Head>
                     <Table.Head>{ localize('Status') }</Table.Head>
                     <Table.Head>{ localize('Send') }</Table.Head>
                     <Table.Head>{ localize('Receive') }</Table.Head>
-                    <Table.Head>{ localize('Time') }</Table.Head>
                 </Table.Row>
             </Table.Header>
             <Table.Body>

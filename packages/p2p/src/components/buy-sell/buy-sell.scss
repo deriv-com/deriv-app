@@ -11,6 +11,10 @@
             width: 12rem;
         }
     }
+    &__price {
+        color: var(--text-profit-success);
+        font-weight: bold;
+    }
     &__dialog {
         position: absolute;
         height: 100%;

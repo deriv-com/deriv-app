@@ -28,11 +28,12 @@
             height: auto;
             padding: 0;
             max-height: initial;
-            min-width: 44rem;
+            min-width: 47rem;
         }
         & .dc-dialog__content {
             margin-bottom: 0;
             width: 100%;
+            max-width: 47rem;
         }
     }
     &__popup {

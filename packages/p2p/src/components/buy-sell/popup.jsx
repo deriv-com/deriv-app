@@ -10,6 +10,7 @@ import {
     Input,
     Button,
     ThemedScrollbars } from 'deriv-components';
+import CurrencyUtils   from 'deriv-shared/utils/currency';
 import IconBack        from 'Assets/icon-back.jsx';
 import IconClose       from 'Assets/icon-close.jsx';
 import { localize }    from 'Components/i18next';
@@ -39,10 +40,13 @@ class Popup extends Component {
         const { ad } = this.props;
 
         const amount_asset = +((ad.min_transaction * ad.price_rate).toFixed(ad.transaction_currency_decimals));
+        const max_amount = +((ad.offer_amount * ad.price_rate).toFixed(ad.transaction_currency_decimals));
 
         const buy_initial_values = {
             initial_receive : ad.min_transaction,
             initial_send    : amount_asset,
+            max_receive     : ad.offer_amount,
+            max_send        : max_amount,
             receive_currency: ad.offer_currency,
             receive_decimals: ad.offer_currency_decimals,
             send_currency   : ad.transaction_currency,
@@ -51,6 +55,8 @@ class Popup extends Component {
         const sell_initial_values = {
             initial_receive : amount_asset,
             initial_send    : ad.min_transaction,
+            max_receive     : max_amount,
+            max_send        : ad.offer_amount,
             receive_currency: ad.transaction_currency,
             receive_decimals: ad.transaction_currency_decimals,
             send_currency   : ad.offer_currency,
@@ -80,8 +86,8 @@ class Popup extends Component {
         const { ad, handleClose } = this.props;
         const is_buy = ad.type === 'buy';
         const {
-            initial_send,
             initial_receive,
+            initial_send,
             send_currency,
             receive_currency,
         } = this.getInitialValues(is_buy);
@@ -193,7 +199,11 @@ class Popup extends Component {
         const {
             initial_send,
             initial_receive,
+            max_receive,
+            max_send,
             receive_decimals,
+            receive_currency,
+            send_currency,
             send_decimals,
         } = this.getInitialValues(is_buy);
 
@@ -201,24 +211,36 @@ class Popup extends Component {
             send: [
                 v => !!v,
                 v => v >= initial_send,
+                v => v <= max_send,
                 v => (((v.toString().split('.') || [])[1]) || []).length <= send_decimals,
             ],
             receive: [
                 v => !!v,
                 v => v >= initial_receive,
+                v => v <= max_receive,
                 v => (((v.toString().split('.') || [])[1]) || []).length <= receive_decimals,
             ],
         };
 
-        const mappedKey = {
-            send   : localize('Send'),
-            receive: localize('Receive'),
-        };
-
-        const common_messages  = (field_name, decimals) => ([
-            localize('{{field_name}} is required', { field_name }),
-            localize('{{field_name}} below minimum value', { field_name }),
-            localize('{{field_name}} is above {{decimals}} decimals', { field_name, decimals }),
+        const common_messages  = (field) => ([
+            localize('Enter a valid amount'),
+            localize('Minimum is {{currency}} {{value}}',
+                {
+                    currency: field === 'send' ? send_currency : receive_currency,
+                    value   : field === 'send' ?
+                        CurrencyUtils.formatMoney(send_currency, initial_send, true, send_decimals)
+                        :
+                        CurrencyUtils.formatMoney(receive_currency, initial_receive, true, receive_decimals),
+                }),
+            localize('Maximum is {{currency}} {{value}}',
+                {
+                    currency: field === 'send' ? send_currency : receive_currency,
+                    value   : field === 'send' ?
+                        CurrencyUtils.formatMoney(send_currency, max_send, true, send_decimals)
+                        :
+                        CurrencyUtils.formatMoney(receive_currency, max_receive, true, receive_decimals),
+                }),
+            localize('Enter a valid amount'),
         ]);
 
         const errors    = {};
@@ -232,8 +254,7 @@ class Popup extends Component {
                 if (error_index !== -1) {
                     switch (key) {
                         default: {
-                            const decimals = key === 'send' ? send_decimals : receive_decimals;
-                            errors[key] = common_messages(mappedKey[key], decimals)[error_index];
+                            errors[key] = common_messages(key)[error_index];
                             break;
                         }
                     }

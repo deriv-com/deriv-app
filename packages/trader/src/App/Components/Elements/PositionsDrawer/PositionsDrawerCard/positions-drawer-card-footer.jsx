@@ -43,7 +43,8 @@ const CardFooter = ({
                         onClickCancel={onClickCancel}
                         onClickSell={onClickSell}
                     />
-                    <TogglePositionsDrawerDialog contract_id={contract_info.contract_id} />
+                    {(is_valid_to_sell || is_valid_to_cancel)
+                    && <TogglePositionsDrawerDialog contract_id={contract_info.contract_id} /> }
                 </div>
                 :
                 <div className='positions-drawer-card__sell-button'>

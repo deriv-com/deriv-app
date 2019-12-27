@@ -101,6 +101,8 @@ const getModifiedP2POrder = (response) => {
     modified_response.display_transaction_amount = formatMoney(response.local_currency, response.price);
     modified_response.order_expiry_millis         = convertToMillis(response.expiry_time);
 
+    // TODO: [p2p-replace-with-api] add payment method to order details once API has it
+
     return modified_response;
 };
 

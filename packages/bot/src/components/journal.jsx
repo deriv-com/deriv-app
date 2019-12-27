@@ -124,7 +124,7 @@ class Filter extends React.Component {
                     message={localize('Filter')}
                 >
                     <Icon
-                        icon='IcChevronDown'
+                        icon='IcTrade'
                         className='filter__icon'
                         onClick={() => this.setState({ dropdown_open: !this.state.dropdown_open })}
                     />

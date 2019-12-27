@@ -1,3 +1,4 @@
+import { Icon }              from 'deriv-components';
 import React                 from 'react';
 import PropTypes             from 'prop-types';
 import PositionsDrawerDialog from './positions-drawer-dialog.jsx';
@@ -46,7 +47,9 @@ class TogglePositionsDrawerDialog extends React.PureComponent {
                     ref={this.toggle_ref}
                     className='positions-drawer-dialog-toggle'
                     onClick={this.toggleDialog}
-                />
+                >
+                    <Icon className='positions-drawer-dialog-toggle__icon' icon={'IcEdit'} size={16} />
+                </div>
                 <PositionsDrawerDialog
                     ref={this.dialog_ref}
                     is_visible={this.state.is_visible}

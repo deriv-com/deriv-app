@@ -48,8 +48,7 @@ export default class JournalStore {
             error_message = error && error.error ? error.error.message : message;
         }
 
-        this.messages.unshift({ date, time , message: error_message, message_type });
-        this.unfilter_messages = [...this.messages];
+        this.unfilter_messages.unshift({ date, time , message: error_message, message_type });
         this.filterMessage(this.checked_filter);
     }
 

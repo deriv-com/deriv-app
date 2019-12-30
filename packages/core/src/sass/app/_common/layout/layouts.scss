@@ -160,6 +160,7 @@
     }
     @media (max-width: 768px) {
         flex-direction: column;
+        min-height: calc(100vh - 48px);
     }
 }
 

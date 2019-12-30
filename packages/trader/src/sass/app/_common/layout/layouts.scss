@@ -160,7 +160,16 @@
     }
     @media (max-width: 768px) {
         flex-direction: column;
+        min-height: calc(100vh - 48px);
+        padding: 0;
     }
+}
+
+/** @define mobile-wrapper; weak */
+.mobile-wrapper {
+    padding: 0 0.8rem;
+    display: flex;
+    flex-direction: column;
 }
 
 /** @define chart-container; weak */
@@ -281,12 +290,18 @@
         min-height: 100%;
     }
     @media (max-width: 768px) {
-        height: 400px;
+        // screen height - header height - trade params toolbar height - padding
+        height: calc(100vh - #{$HEADER_HEIGHT} - 214px - 8px);
         // smartchart library style fixes
         .cq-context {
             div.cq-chart-controls {
                 border: 1px solid $COLOR_LIGHT_BLACK_4;
             }
+        }
+        .cq-menu-btn {
+            max-width: 326px;
+            padding: 2px;
+            margin: 0.6rem;
         }
         .cq-modal-dropdown {
             &.stxMenuActive {
@@ -310,9 +325,6 @@
                     left: -0.1em;
                 }
             }
-        }
-        .smartcharts-mobile .cq-modal-dropdown .cq-menu-overlay .cq-menu-dropdown {
-            bottom: 4.8em;
         }
     }
 }

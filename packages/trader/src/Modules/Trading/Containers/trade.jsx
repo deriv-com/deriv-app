@@ -25,7 +25,7 @@ class Trade extends React.Component {
         const is_trade_enabled = (this.props.form_components.length > 0) && this.props.is_trade_enabled;
         return (
             <div id='trade_container' className='trade-container'>
-                <PositionsDrawer />
+                {!this.props.is_mobile && <PositionsDrawer />}
                 <div className='chart-container'>
                     <NotificationMessages />
                     <React.Suspense
@@ -49,6 +49,7 @@ class Trade extends React.Component {
                         is_dark_theme={this.props.is_dark_theme}
                         is_market_closed={this.props.is_market_closed}
                         is_mobile={this.props.is_mobile}
+                        is_tablet={this.props.is_tablet}
                         is_trade_enabled={is_trade_enabled}
                     />
                 </div>
@@ -68,6 +69,7 @@ export default connect(
         purchase_info       : modules.trade.purchase_info,
         is_dark_theme       : ui.is_dark_mode_on,
         is_mobile           : ui.is_mobile,
+        is_tablet           : ui.is_tablet,
         NotificationMessages: ui.notification_messages_ui,
     })
 )(Trade);
@@ -192,8 +194,8 @@ class ChartTradeClass extends React.Component {
         return (
             <SmartChart
                 barriers={barriers}
-                bottomWidgets={ show_digits_stats ? this.bottomWidgets : null}
-                showLastDigitStats={show_digits_stats}
+                bottomWidgets={(show_digits_stats && !this.props.is_mobile) ? this.bottomWidgets : null}
+                showLastDigitStats={!this.props.is_mobile ? show_digits_stats : false}
                 chartControlsWidgets={this.chartControlsWidgets}
                 chartStatusListener={(v) => this.props.setChartStatus(!v)}
                 chartType={this.props.chart_type}

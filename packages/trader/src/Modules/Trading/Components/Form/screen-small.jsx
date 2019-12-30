@@ -11,7 +11,7 @@ const ScreenSmall = (/* { is_trade_enabled } */) => (
         <div className='mobile-only'>
             <MobileWidget />
         </div>
-        <div className='purchase-container'>
+        <div className='purchase-container purchase-container--is-mobile'>
             <Purchase />
         </div>
     </React.Fragment>

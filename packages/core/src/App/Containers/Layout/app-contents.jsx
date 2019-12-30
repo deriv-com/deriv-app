@@ -12,6 +12,7 @@ const AppContents = ({
     is_app_disabled,
     is_positions_drawer_on,
     is_route_modal_on,
+    is_mobile,
     pageView,
     // setPWAPromptEvent,
 }) => {
@@ -33,7 +34,7 @@ const AppContents = ({
     //     });
     // });
     // }
-
+    const content_height = is_mobile ? 48 : 83;
     return (
         <div
             id='app_contents'
@@ -46,7 +47,7 @@ const AppContents = ({
             {/* Calculate height of user screen and offset height of header and footer */}
             <ThemedScrollbars
                 autoHide
-                style={{ height: 'calc(100vh - 83px)' }}
+                style={{ height: `calc(100vh - ${content_height}px)` }}
             >
                 {children}
             </ThemedScrollbars>
@@ -59,6 +60,7 @@ AppContents.propTypes = {
     children              : PropTypes.any,
     is_app_disabled       : PropTypes.bool,
     is_logged_in          : PropTypes.bool,
+    is_mobile             : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_route_modal_on     : PropTypes.bool,
     pwa_prompt_event      : PropTypes.object,
@@ -70,6 +72,7 @@ export default withRouter(connect(
         // is_logged_in          : client.is_logged_in,
         // addNotificationBar    : ui.addNotificationBar,
         is_app_disabled       : ui.is_app_disabled,
+        is_mobile             : ui.is_mobile,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         is_route_modal_on     : ui.is_route_modal_on,
         pageView              : segment.pageView,

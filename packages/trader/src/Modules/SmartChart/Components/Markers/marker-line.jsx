@@ -22,6 +22,14 @@ const MarkerLine = ({
                     size={24}
                 />
             }
+            { label === marker_config.LINE_RESET.content_config.label &&
+                <Icon
+                    icon='IcContractResetTime'
+                    className='chart-marker-line__icon'
+                    color='secondary'
+                    size={24}
+                />
+            }
             { label === marker_config.LINE_START.content_config.label &&
                 <Icon
                     icon='IcContractStartTimeCircle'
@@ -43,4 +51,5 @@ MarkerLine.propTypes = {
     marker_config: PropTypes.object,
     status       : PropTypes.oneOf(['won', 'lost']),
 };
+
 export default observer(MarkerLine);

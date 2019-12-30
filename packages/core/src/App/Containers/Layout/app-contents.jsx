@@ -9,6 +9,7 @@ import { connect }          from 'Stores/connect';
 const AppContents = ({
     // addNotificationBar,
     children,
+    identifyEvent,
     is_app_disabled,
     is_positions_drawer_on,
     is_route_modal_on,
@@ -17,6 +18,7 @@ const AppContents = ({
     // setPWAPromptEvent,
 }) => {
     // Segment page view trigger
+    identifyEvent();
     pageView();
 
     // if (is_logged_in) {
@@ -71,6 +73,7 @@ export default withRouter(connect(
     ({ ui, segment }) => ({
         // is_logged_in          : client.is_logged_in,
         // addNotificationBar    : ui.addNotificationBar,
+        identifyEvent         : segment.identifyEvent,
         is_app_disabled       : ui.is_app_disabled,
         is_mobile             : ui.is_mobile,
         is_positions_drawer_on: ui.is_positions_drawer_on,

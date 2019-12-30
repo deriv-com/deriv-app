@@ -83,6 +83,7 @@ class OpenPositions extends React.Component {
                         footer={totals}
                         data_source={active_positions}
                         getRowAction={this.getRowAction}
+                        getRowSize={() => 63}
                         custom_width={'100%'}
                     >
                         <PlaceholderComponent

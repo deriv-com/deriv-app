@@ -41,7 +41,7 @@ export const MARKER_TYPES_CONFIG = {
         marker_config: {
             ContentComponent: MarkerSpot,
         },
-        content_config: { className: 'chart-spot__entry' },
+        content_config: { className: 'chart-spot__entry', icon: 'IcContractEntrySpot' },
     },
     SPOT_SELL: {
         type         : 'SPOT_SELL',

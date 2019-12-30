@@ -14,6 +14,9 @@
         color: var(--text-prominent);
         background-color: var(--general-main-1);
         border: 1px solid var(--text-less-prominent);
+        border-radius: 50%;
+        width: 5px;
+        height: 5px;
 
         &--lost {
             border-color: var(--text-loss-danger);
@@ -28,16 +31,11 @@
         }
     }
     &__entry {
+        width: 24px;
+        height: 24px;
+        position: relative;
         left: -12px;
         top: -12px;
-        position: relative;
-        border: 6px solid var(--brand-red-coral);
-        background-color: var(--general-main-2);
-    }
-    &__spot, &__entry {
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
     }
     &__sell {
         border-radius: 50%;

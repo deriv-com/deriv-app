@@ -17,11 +17,10 @@ const ChartMarker = ({
         if (ref) {
             // NOTE: null price means vertical line.
             if (!marker_props.y) {
-                const margin =
-                    (is_bottom_widget_visible ? 115 : 0) + // digit contracts have a widget at the bottom
-                    24;                                    // height of line marker icon
+                const margin = is_bottom_widget_visible ? 115 : 0; // digit contracts have a widget at the bottom
 
                 ref.div.style.height =  `calc(100% - ${margin}px)`;
+                ref.div.style.left   = '-0.7px'; // To position the vertical line as center as possible.
                 ref.div.style.zIndex = '-1';
             }
             ref.setPosition({

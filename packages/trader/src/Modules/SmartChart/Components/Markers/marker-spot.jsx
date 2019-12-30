@@ -1,21 +1,16 @@
-import classNames   from 'classnames';
-import { observer } from 'mobx-react';
-import PropTypes    from 'prop-types';
-import React        from 'react';
+import classNames         from 'classnames';
+import { observer }       from 'mobx-react';
+import PropTypes          from 'prop-types';
+import React              from 'react';
 
 const MarkerSpot = ({
     className,
-    spot_count,
 }) => (
-    <div
-        className={classNames('chart-spot', className)}
-    >{spot_count}
-    </div>
+    <div className={classNames('chart-spot', className)} />
 );
 
 MarkerSpot.propTypes = {
-    className : PropTypes.string,
-    spot_count: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
+    className: PropTypes.string,
 };
 
 export default observer(MarkerSpot);

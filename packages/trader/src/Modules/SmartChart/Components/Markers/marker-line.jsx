@@ -30,6 +30,9 @@ const MarkerLine = ({
                     size={24}
                 />
             }
+            { label &&
+                <p className='chart-marker-line__label'>{ label }</p>
+            }
         </div>
     );
 };

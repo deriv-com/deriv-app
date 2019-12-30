@@ -10,7 +10,7 @@ export const MARKER_TYPES_CONFIG = {
             ContentComponent: MarkerLine,
             className       : 'chart-marker-line',
         },
-        content_config: { line_style: 'dash',  label: localize('End Time') },
+        content_config: { line_style: 'dash',  label: localize('Sell time') },
     },
     LINE_PURCHASE: {
         type         : 'LINE_PURCHASE',
@@ -20,20 +20,28 @@ export const MARKER_TYPES_CONFIG = {
         },
         content_config: { line_style: 'solid', label: localize('Purchase Time') },
     },
+    LINE_RESET: {
+        type         : 'LINE_RESET',
+        marker_config: {
+            ContentComponent: MarkerLine,
+            className       : 'char-marker-line',
+        },
+        content_config: { line_style: 'dash', label: localize('Reset time') },
+    },
     LINE_START: {
         type         : 'LINE_START',
         marker_config: {
             ContentComponent: MarkerLine,
             className       : 'chart-marker-line',
         },
-        content_config: { line_style: 'solid', label: localize('Start Time') },
+        content_config: { line_style: 'dash', label: localize('Buy time') },
     },
     SPOT_ENTRY: {
         type         : 'SPOT_ENTRY',
         marker_config: {
             ContentComponent: MarkerSpot,
         },
-        content_config: { className: 'chart-spot__entry' },
+        content_config: { className: 'chart-spot__entry', icon: 'reset_time' },
     },
     SPOT_SELL: {
         type         : 'SPOT_SELL',

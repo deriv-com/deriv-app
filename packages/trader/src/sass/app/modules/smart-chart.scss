@@ -5,15 +5,15 @@
 
     &__spot {
         position: absolute;
-        bottom: -11px;
-        margin-left: -11.5px;
+        bottom: -2.5px;
+        margin-left: -3px;
         display: flex;
         justify-content: center;
         align-items: center;
         font-weight: bold;
         color: var(--text-prominent);
         background-color: var(--general-main-1);
-        border: 2px solid var(--text-less-prominent);
+        border: 1px solid var(--text-less-prominent);
 
         &--lost {
             border-color: var(--text-loss-danger);
@@ -35,8 +35,8 @@
         background-color: var(--general-main-2);
     }
     &__spot, &__entry {
-        width: 24px;
-        height: 24px;
+        width: 5px;
+        height: 5px;
         border-radius: 50%;
     }
     &__sell {
@@ -132,15 +132,26 @@
     transition: none;
 
     &__wrapper {
-        border-left-width: 2px;
+        border-left-width: 1px;
         padding-left: 0.5em;
         height: 100%;
         border-color: var(--text-less-prominent);
     }
+    &__label {
+        position: absolute;
+        bottom: 8px;
+        left: -25px;
+        font-size: 8px;
+        text-align: right;
+        height: 20px;
+        width: 20px;
+    }
     &__icon {
         position: absolute;
-        bottom: -23px;
-        left: -11px;
+        width: 16px;
+        height: 16px;
+        bottom: 31px;
+        left: -20px;
         white-space: nowrap;
 
         &--time {

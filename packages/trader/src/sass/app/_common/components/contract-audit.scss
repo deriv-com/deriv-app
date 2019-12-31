@@ -19,15 +19,19 @@
             border-top: 1px solid var(--general-section-2);
         }
     }
-    &__icon {
+    &__icon_wrapper {
         display: flex;
         align-items: flex-start;
         margin-right: 8px;
-
-        svg {
-            background-color: var(--general-section-1);
-            border-radius: 4px;
-        }
+    }
+    &__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        background-color: var(--general-section-1);
+        border-radius: 4px;
     }
     &__item {
         display: flex;

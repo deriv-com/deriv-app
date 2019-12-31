@@ -24,21 +24,21 @@ const MarkerLine = ({
                     icon='IcContractBuySellTimeCircle'
                     className='chart-marker-line__icon'
                     color={status === 'lost' ? 'red' : 'green'}
-                    size={24}
+                    size={16}
                 />
             }
             { label === marker_config.LINE_RESET.content_config.label &&
                 <Icon
                     icon='IcContractResetTimeCircle'
                     className='chart-marker-line__icon'
-                    size={24}
+                    size={16}
                 />
             }
             { label === marker_config.LINE_START.content_config.label &&
                 <Icon
                     icon='IcContractBuySellTimeCircle'
                     className='chart-marker-line__icon chart-marker-line__icon--time'
-                    size={24}
+                    size={16}
                 />
             }
             { label &&

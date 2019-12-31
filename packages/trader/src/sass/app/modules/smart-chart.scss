@@ -5,18 +5,13 @@
 
     &__spot {
         position: absolute;
-        bottom: -2.5px;
-        margin-left: -3px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: bold;
-        color: var(--text-prominent);
+        bottom: -3px;
+        left: -3px;
         background-color: var(--general-main-1);
-        border: 1px solid var(--text-less-prominent);
+        border: 1px solid var(--text-prominent);
         border-radius: 50%;
-        width: 5px;
-        height: 5px;
+        width: 6px;
+        height: 6px;
 
         &--lost {
             border-color: var(--text-loss-danger);
@@ -31,11 +26,15 @@
         }
     }
     &__icon {
-        width: 24px;
-        height: 24px;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
         position: relative;
-        left: -12px;
-        top: -12px;
+        left: -8px;
+        top: -8px;
+    }
+    &__icon:hover, &__spot:hover {
+        box-shadow: 0 0 0 2px var(--general-active);
     }
     &__sell {
         border-radius: 50%;
@@ -153,10 +152,10 @@
     }
     &__icon {
         position: absolute;
-        width: 24px;
-        height: 24px;
+        width: 16px;
+        height: 16px;
         bottom: 31px;
-        left: -24px;
+        left: -20px;
         white-space: nowrap;
 
         &--time {

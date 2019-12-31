@@ -147,7 +147,7 @@ class ContractAudit extends React.PureComponent {
                         const contract_audit_item = (
                             <div key={index} id={contract_audit_item_config.containerId} className='contract-audit__grid'>
                                 <ContractAuditItem
-                                    icon={<Icon icon={icon} color={iconColor} size={24} />}
+                                    icon={<Icon icon={icon} color={iconColor} size={16} />}
                                     label={label}
                                     value={value}
                                     value2={value2}

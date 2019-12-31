@@ -16,7 +16,7 @@ const MarkerSpot = ({
     
     return (
         <div className={classNames('chart-spot', className)}>
-            { icon && <Icon icon={icon} color={color} size={24} /> }
+            { icon && <Icon icon={icon} color={color} size={16} /> }
         </div>
     );
 };

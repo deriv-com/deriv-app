@@ -10,8 +10,10 @@ const ContractAuditItem = ({
 }) => (
     <React.Fragment>
         {icon &&
-        <div className='contract-audit__icon'>
-            {icon}
+        <div className='contract-audit__icon_wrapper'>
+            <div className='contract-audit__icon'>
+                {icon}
+            </div>
         </div>
         }
         <div className='contract-audit__item'>

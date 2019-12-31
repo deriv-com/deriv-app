@@ -10,7 +10,7 @@ export const MARKER_TYPES_CONFIG = {
             ContentComponent: MarkerLine,
             className       : 'chart-marker-line',
         },
-        content_config: { line_style: 'dash',  label: localize('Sell time') },
+        content_config: { line_style: 'solid',  label: localize('Sell time') },
     },
     LINE_PURCHASE: {
         type         : 'LINE_PURCHASE',

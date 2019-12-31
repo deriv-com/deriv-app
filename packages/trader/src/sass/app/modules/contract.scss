@@ -20,7 +20,7 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
         position: relative;
         border-radius: $BORDER_RADIUS;
         padding: $CONTRACT_INFO_BOX_PADDING;
-        background: transparentize($color-black-1, 0.9);
+        background: var(--general-section-1);
         font-weight: 300;
 
         &-longcode {

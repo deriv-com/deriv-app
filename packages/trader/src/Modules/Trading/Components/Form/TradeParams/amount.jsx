@@ -87,7 +87,6 @@ const Amount = ({
                         no_border={true}
                         value={currency}
                         onChange={onChange}
-
                     />
                     <Input />
                 </div>

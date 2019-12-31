@@ -103,6 +103,9 @@ export default class UIStore extends BaseStore {
         error_message     : '',
     };
 
+    // UI Focus retention
+    @observable current_focus = null;
+
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -509,5 +512,10 @@ export default class UIStore extends BaseStore {
             success_message   : '',
             error_message     : '',
         };
+    }
+
+    @action.bound
+    setCurrentFocus(value) {
+        this.current_focus = value;
     }
 }

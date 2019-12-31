@@ -52,7 +52,6 @@ export class AccountActions extends Component {
                             count={notifications_count}
                             is_visible={is_notifications_visible}
                             toggleDialog={toggleNotifications}
-                            tooltip_message={localize('View notifications')}
                         />
                         <React.Suspense fallback={<div />}>
                             <AccountInfo

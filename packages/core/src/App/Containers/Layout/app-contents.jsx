@@ -36,6 +36,8 @@ const AppContents = ({
     //     });
     // });
     // }
+    // TODO: Find a solution to make content height calculation unnecessary for scrollbars
+    // content height for desktop is 100vh - (footer + header), while mobile is only 100vh - header
     const content_height = is_mobile ? 48 : 83;
     return (
         <div

@@ -30,7 +30,7 @@
             color: $COLOR_WHITE;
         }
     }
-    &__entry {
+    &__icon {
         width: 24px;
         height: 24px;
         position: relative;
@@ -134,6 +134,13 @@
         padding-left: 0.5em;
         height: 100%;
         border-color: var(--text-less-prominent);
+
+        &--won {
+            border-color: var(--text-profit-success);
+        }
+        &--loss {
+            border-color: var(--text-loss-danger);
+        }
     }
     &__label {
         position: absolute;
@@ -146,10 +153,10 @@
     }
     &__icon {
         position: absolute;
-        width: 16px;
-        height: 16px;
+        width: 24px;
+        height: 24px;
         bottom: 31px;
-        left: -20px;
+        left: -24px;
         white-space: nowrap;
 
         &--time {

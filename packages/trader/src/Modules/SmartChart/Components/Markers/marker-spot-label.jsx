@@ -23,6 +23,8 @@ class MarkerSpotLabel extends React.Component {
         let marker_spot =
             <MarkerSpot
                 className={this.props.spot_className}
+                icon={this.props.icon}
+                status={this.props.status}
                 spot_count={this.props.spot_count}
             />;
 
@@ -66,6 +68,7 @@ MarkerSpotLabel.defaultProps = {
 MarkerSpotLabel.propTypes = {
     align_label     : PropTypes.oneOf(['top', 'bottom']),
     has_hover_toggle: PropTypes.bool,
+    icon            : PropTypes.string,
     spot_className  : PropTypes.string,
     spot_count      : PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
     spot_epoch      : PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),

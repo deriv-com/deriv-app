@@ -13,10 +13,15 @@ const MarkerLine = ({
     // TODO: Find a more elegant solution
     if (!marker_config) return <div />;
     return (
-        <div className={classNames('chart-marker-line__wrapper', `chart-marker-line--${line_style}`)}>
+        <div className={classNames(
+            'chart-marker-line__wrapper',
+            `chart-marker-line__wrapper--${status}`,
+            `chart-marker-line--${line_style}`
+        )}
+        >
             { label === marker_config.LINE_END.content_config.label &&
                 <Icon
-                    icon='IcContractExitTimeCircle'
+                    icon='IcContractBuySellTimeCircle'
                     className='chart-marker-line__icon'
                     color={status === 'lost' ? 'red' : 'green'}
                     size={24}
@@ -24,17 +29,15 @@ const MarkerLine = ({
             }
             { label === marker_config.LINE_RESET.content_config.label &&
                 <Icon
-                    icon='IcContractResetTime'
+                    icon='IcContractResetTimeCircle'
                     className='chart-marker-line__icon'
-                    color='secondary'
                     size={24}
                 />
             }
             { label === marker_config.LINE_START.content_config.label &&
                 <Icon
-                    icon='IcContractStartTimeCircle'
+                    icon='IcContractBuySellTimeCircle'
                     className='chart-marker-line__icon chart-marker-line__icon--time'
-                    color='secondary'
                     size={24}
                 />
             }

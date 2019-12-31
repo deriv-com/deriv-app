@@ -152,15 +152,20 @@ export const icons =
         'IcZoomOut'
     ],
     'contract': [
+        'IcContractBarrierDotted',
+        'IcContractBarrierSolid',
         'IcContractBarrier',
         'IcContractBuyPrice',
+        'IcContractBuySellTimeCircle',
+        'IcContractDurationCircle',
         'IcContractDuration',
-        'IcContractEntrySpot',
-        'IcContractExitSpot',
+        'IcContractEntrySpotCircle',
+        'IcContractExitSpotCircle',
         'IcContractExitTimeCircle',
         'IcContractExitTime',
         'IcContractFlag',
         'IcContractId',
+        'IcContractResetTimeCircle',
         'IcContractStartTimeCircle',
         'IcContractStartTime',
         'IcContractTarget'

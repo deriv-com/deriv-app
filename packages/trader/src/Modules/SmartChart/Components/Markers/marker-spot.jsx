@@ -6,21 +6,24 @@ import { Icon }     from 'deriv-components';
 
 const MarkerSpot = ({
     className,
+    status,
     icon,
-}) => (
-    <div className={classNames('chart-spot', className)}>
-        { icon &&
-            <Icon
-                icon={icon}
-                color='secondary'
-                size={24}
-            />
-        }
-    </div>
-);
+}) => {
+    let color;
+    if (status) {
+        color = status === 'won' ? 'green' : 'red';
+    }
+    
+    return (
+        <div className={classNames('chart-spot', className)}>
+            { icon && <Icon icon={icon} color={color} size={24} /> }
+        </div>
+    );
+};
 
 MarkerSpot.propTypes = {
     className: PropTypes.string,
+    icon     : PropTypes.string,
 };
 
 export default observer(MarkerSpot);

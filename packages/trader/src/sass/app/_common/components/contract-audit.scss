@@ -23,6 +23,11 @@
         display: flex;
         align-items: flex-start;
         margin-right: 8px;
+
+        svg {
+            background-color: var(--general-section-1);
+            border-radius: 4px;
+        }
     }
     &__item {
         display: flex;

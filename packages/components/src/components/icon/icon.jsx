@@ -49,8 +49,8 @@ const Icon = ({
             className={classNames('dc-icon', className, {
                 'dc-icon--active'   : color === 'active',
                 'dc-icon--disabled' : color === 'disabled',
-                'dc-icon--green'    : color === 'green' || icon === 'IcProfit',
-                'dc-icon--red'      : color === 'red' || icon === 'IcLoss',
+                'dc-icon--green'    : color === 'green',
+                'dc-icon--red'      : color === 'red',
                 'dc-icon--secondary': color === 'secondary',
                 'dc-icon--brand'    : color === 'brand',
             })}

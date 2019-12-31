@@ -153,6 +153,6 @@ There is a 4th type of release: releasing npm registry packages (currently `@der
 
     **A.** This issue happens when your `node-sass` has its `binding.node` set to a version of node different from the current projects' one. Please try the following in order:
     
-    1. First run `npm rebuild node-sass` and try building your packages again.
+    1. First run `npx lerna exec -- npm rebuild node-sass` and try building your packages again.
     2. If that doesn't work, try `npm cache clean --force`, followed by `npm run clean`, and then `npm run bootstrap`.
     3. And finally, if that doesn't work then you can read deeper into this [StackOverflow post](https://stackoverflow.com/questions/37986800). 

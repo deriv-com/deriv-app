@@ -7,6 +7,7 @@ const Input = ({
     checked,
     className,
     classNameInlinePrefix,
+    current_focus,
     data_value,
     data_tip,
     display_value,
@@ -24,8 +25,19 @@ const Input = ({
     onKeyPressed,
     placeholder,
     required,
+    setCurrentFocus,
     type,
 }) => {
+    const ref = React.createRef();
+    React.useEffect(() => {
+        if (current_focus === name) {
+            ref.current.focus();
+        }
+    });
+
+    const onBlur  = () => setCurrentFocus(null);
+    const onFocus = () => setCurrentFocus(name);
+
     const onChange = (e) => {
         /**
          * fix for Safari
@@ -62,11 +74,14 @@ const Input = ({
                 id={id}
                 maxLength={fractional_digits ? max_length + fractional_digits + 1 : max_length}
                 name={name}
+                onBlur={onBlur}
                 onChange={onChange}
                 onClick={onClick}
+                onFocus={onFocus}
                 onKeyDown={is_incrementable ? onKeyPressed : undefined}
                 placeholder={placeholder || undefined}
                 readOnly={is_read_only}
+                ref={ref}
                 required={required || undefined}
                 type={type === 'number' ? 'text' : type}
                 value={display_value || ''}
@@ -83,6 +98,7 @@ Input.propTypes = {
     ]),
     className            : PropTypes.string,
     classNameInlinePrefix: PropTypes.string,
+    current_focus        : PropTypes.string,
     data_tip             : PropTypes.string,
     data_value           : PropTypes.oneOfType([
         PropTypes.number,
@@ -106,6 +122,7 @@ Input.propTypes = {
     onKeyPressed            : PropTypes.func,
     placeholder             : PropTypes.string,
     required                : PropTypes.bool,
+    setCurrentFocus         : PropTypes.func,
     type                    : PropTypes.string,
     value                   : PropTypes.oneOfType([
         PropTypes.number,

@@ -43,7 +43,7 @@ const AppContents = ({
         <div
             id='app_contents'
             className={classNames('app-contents', {
-                'app-contents--show-positions-drawer': is_positions_drawer_on,
+                'app-contents--show-positions-drawer': !is_mobile && is_positions_drawer_on,
                 'app-contents--is-disabled'          : is_app_disabled,
                 'app-contents--is-route-modal'       : is_route_modal_on,
             })}

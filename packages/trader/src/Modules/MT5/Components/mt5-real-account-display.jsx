@@ -57,9 +57,7 @@ const MT5RealAccountDisplay = ({
                 </h1>
                 <Button
                     className='mt5-dashboard__missing-real--button'
-                    onClick={() => {
-                        beginRealSignupForMt5();
-                    }}
+                    onClick={beginRealSignupForMt5}
                     type='button'
                     primary
                 >
@@ -71,6 +69,7 @@ const MT5RealAccountDisplay = ({
             <div className='mt5-real-accounts-display'>
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
+                    is_disabled={has_real_account}
                     icon={() => (<Icon icon='IcMt5Standard' size={64} />)}
                     title={localize('Standard')}
                     type={{

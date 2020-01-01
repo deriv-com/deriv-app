@@ -3,12 +3,12 @@ import PropTypes              from 'prop-types';
 import React, { Component }   from 'react';
 import { connect }            from 'Stores/connect';
 import { localize, Localize } from 'deriv-translations';
+import { FormSubmitButton }   from 'deriv-components';
 import {
     Hr,
     RadioButtonGroup,
     RadioButton,
 }                             from './currency-selector.jsx';
-import FormSubmitButton       from './form-submit-button.jsx';
 
 const messages = [
     'Choose your preferred cryptocurrency',

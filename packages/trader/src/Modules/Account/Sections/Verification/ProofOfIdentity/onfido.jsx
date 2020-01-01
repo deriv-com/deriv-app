@@ -70,23 +70,23 @@ class Onfido extends React.Component {
     }
 
     render() {
-        const { status, has_poa } = this.props;
+        const { status, has_poa, is_description_enabled } = this.props;
 
         if (status === onfido_status_codes.onfido) return <OnfidoContainer />;
 
         switch (status) {
             case onfido_status_codes.unsupported:
-                return <Unsupported />;
+                return <Unsupported is_description_enabled={is_description_enabled} />;
             case onfido_status_codes.pending:
-                return <UploadComplete has_poa={has_poa} />;
+                return <UploadComplete has_poa={has_poa} is_description_enabled={is_description_enabled} />;
             case onfido_status_codes.rejected:
-                return <OnfidoFailed />;
+                return <OnfidoFailed is_description_enabled={is_description_enabled} />;
             case onfido_status_codes.verified:
-                return <Verified has_poa={has_poa} />;
+                return <Verified has_poa={has_poa} is_description_enabled={is_description_enabled} />;
             case onfido_status_codes.expired:
-                return <Expired />;
+                return <Expired is_description_enabled={is_description_enabled} />;
             case onfido_status_codes.suspected:
-                return <OnfidoFailed />;
+                return <OnfidoFailed is_description_enabled={is_description_enabled} />;
             default:
                 return null;
         }
@@ -94,10 +94,11 @@ class Onfido extends React.Component {
 }
 
 Onfido.propTypes = {
-    handleComplete      : PropTypes.func,
-    has_poa             : PropTypes.bool,
-    onfido_service_token: PropTypes.string,
-    status              : PropTypes.oneOf(Object.keys(onfido_status_codes)),
+    handleComplete        : PropTypes.func,
+    has_poa               : PropTypes.bool,
+    is_description_enabled: PropTypes.bool,
+    onfido_service_token  : PropTypes.string,
+    status                : PropTypes.oneOf(Object.keys(onfido_status_codes)),
 };
 
 export default Onfido;

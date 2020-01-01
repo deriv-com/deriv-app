@@ -21,7 +21,8 @@ class FormProgress extends React.PureComponent {
             offsetLeft : 0,
             clientWidth: 1,
         };
-        this.el_completed_bar.current.style.width     = `${(this.props.current_step) * 25}%`;
+        const each = 100 / this.props.steps.length;
+        this.el_completed_bar.current.style.width     = `${(this.props.current_step) * each}%`;
         this.el_completed_bar.current.style.transform =
             `translateX(${el_first_identifier.offsetLeft + (el_first_identifier.clientWidth / 2)}px)`;
     }
@@ -32,18 +33,23 @@ class FormProgress extends React.PureComponent {
             steps,
         } = this.props;
         return (
-            <div className='form-progress'>
-                <div className='form-progress__header'>
+            <div className='dc-form-progress'>
+                <div className='dc-form-progress__header'>
                     <h2>{steps[current_step].header.active_title}</h2>
-                    <div className='form-progress__steps'>
-                        <div className='form-progress__steps--before' />
+                    <div className='dc-form-progress__steps'>
+                        <div
+                            className='dc-form-progress__steps--before'
+                            style={{
+                                width: `calc(100% * ${steps.length - 1} / ${steps.length})`,
+                            }}
+                        />
                         {
                             steps.map((item, idx) => (
                                 <div
                                     key={idx + 1}
-                                    className={classNames('form-progress__step', {
-                                        'form-progress__step--active' : (idx) <= current_step,
-                                        'form-progress__step--current': (idx) === current_step,
+                                    className={classNames('dc-form-progress__step', {
+                                        'dc-form-progress__step--active' : (idx) <= current_step,
+                                        'dc-form-progress__step--current': (idx) === current_step,
                                     })}
                                 >
                                     <span className='identifier'>{idx + 1}</span>
@@ -51,7 +57,7 @@ class FormProgress extends React.PureComponent {
                                 </div>
                             ))
                         }
-                        <div ref={this.el_completed_bar} className='form-progress__steps--after' />
+                        <div ref={this.el_completed_bar} className='dc-form-progress__steps--after' />
                     </div>
                 </div>
             </div>

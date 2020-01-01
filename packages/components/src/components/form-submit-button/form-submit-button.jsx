@@ -1,7 +1,7 @@
 import classNames   from 'classnames';
-import { Button }   from 'deriv-components';
 import PropTypes    from 'prop-types';
 import React        from 'react';
+import Button       from '../button/button.jsx';
 
 const FormSubmitButton = ({
     cancel_label,
@@ -15,14 +15,14 @@ const FormSubmitButton = ({
     onCancel,
 }) => {
     return (
-        <div className={classNames('account-wizard__btn-area', {
-            'account-wizard__btn-area--absolute': is_absolute,
-            'account-wizard__btn-area--center'  : !!is_center,
-            'account-wizard__btn-area--relative': !is_absolute,
+        <div className={classNames('dc-form-submit-button', {
+            'dc-form-submit-button--absolute': is_absolute,
+            'dc-form-submit-button--center'  : !!is_center,
+            'dc-form-submit-button--relative': !is_absolute,
         })}
         >
             {!!form_error &&
-            <p className='account-wizard__btn-area--error'>
+            <p className='dc-form-submit-button--error'>
                 {form_error}
             </p>
             }

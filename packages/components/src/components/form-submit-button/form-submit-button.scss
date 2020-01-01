@@ -1,0 +1,35 @@
+.dc-form-submit-button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    align-self: flex-end;
+    padding-top: 2.4em;
+    width: 100%;
+
+    .btn:not(:last-child) {
+        margin: 0 1em;
+    }
+    .btn:last-child {
+        margin: 0;
+    }
+    &--absolute {
+        bottom: 0;
+        position: absolute;
+        left: 0;
+        padding: 2.4em;
+        border-top: 1px solid var(--general-section-1);
+    }
+    &--center {
+        justify-content: center;
+        width: 100%;
+
+        & .btn {
+            min-width: 9em;
+        }
+    }
+    &--error {
+        @include typeface(--paragraph-left-normal-black);
+        text-transform: none;
+        color: var(--brand-red-coral) !important;
+    }
+}

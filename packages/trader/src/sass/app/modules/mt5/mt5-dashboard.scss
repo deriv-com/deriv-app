@@ -309,6 +309,11 @@
                 background-color: var(--button-secondary-hover);
             }
         }
+        &--disabled {
+            background-color: var(--brand-red-coral);
+            opacity: 0.32;
+            cursor: initial;
+        }
     }
     &__login {
         @include typeface(--paragraph-center-normal-black);

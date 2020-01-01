@@ -32,7 +32,10 @@ const MT5DemoAccountDisplay = ({
                     components={[<span key={0} className='mt5-dashboard--hint' />]}
                 />
             }
-            onSelectAccount={onSelectAccount}
+            onSelectAccount={() => onSelectAccount({
+                category: 'demo',
+                type    : 'standard',
+            })}
             onPasswordManager={openPasswordManager}
             onClickFund={() => openAccountTransfer(current_list['demo.standard'], {
                 category: 'demo',
@@ -46,8 +49,7 @@ const MT5DemoAccountDisplay = ({
                 [localize('Number of assets')]: localize('50+'),
             }}
         />
-        {/* TODO Bring this back when Real Advanced is implemented */}
-        {/* <MT5AccountCard
+        <MT5AccountCard
             has_mt5_account={has_mt5_account}
             icon={() => (<Icon icon='IcMt5Advanced' size={64} />)}
             title={localize('Advanced')}
@@ -57,7 +59,10 @@ const MT5DemoAccountDisplay = ({
             }}
             existing_data={current_list['demo.advanced']}
             commission_message={<Localize i18n_default_text='No commission' />}
-            onSelectAccount={onSelectAccount}
+            onSelectAccount={() => onSelectAccount({
+                category: 'demo',
+                type    : 'advanced',
+            })}
             onPasswordManager={openPasswordManager}
             onClickFund={() => openAccountTransfer(current_list['demo.advanced'], {
                 category: 'demo',
@@ -70,7 +75,7 @@ const MT5DemoAccountDisplay = ({
                 [localize('Stop out level')]  : localize('75%'),
                 [localize('Number of assets')]: localize('50+'),
             }}
-        /> */}
+        />
         <MT5AccountCard
             has_mt5_account={has_mt5_account}
             icon={() => (<Icon icon='IcMt5SyntheticIndices' size={64} />)}
@@ -81,7 +86,10 @@ const MT5DemoAccountDisplay = ({
             }}
             existing_data={current_list['demo.synthetic_indices']}
             commission_message={<Localize i18n_default_text='No commission' />}
-            onSelectAccount={onSelectAccount}
+            onSelectAccount={() => onSelectAccount({
+                category: 'demo',
+                type    : 'synthetic_indices',
+            })}
             onPasswordManager={openPasswordManager}
             onClickFund={() => openAccountTransfer(current_list['demo.synthetic_indices'], {
                 category: 'demo',

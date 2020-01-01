@@ -19,7 +19,10 @@ module.exports = function(source, map) {
         if (!matches || !matches[1]) {
             return line; // do nothing;
         }
-        const components = matches[1].replace(/\s+/g, '').split(',');
+        const components = matches[1]
+            .replace(/\sas\s\w+/, '') // Remove aliasing from imports.
+            .replace(/\s+/g, '')
+            .split(',');
         const replace = components.map(c => `
 import ${c} from 'deriv-components/lib/${getKebabCase(c)}';
 import 'deriv-components/lib/${getKebabCase(c)}.css';

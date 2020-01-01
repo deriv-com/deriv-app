@@ -63,7 +63,7 @@ export const Unsupported = () => {
         />);
 };
 
-export const UploadComplete = ({ has_poa }) => {
+export const UploadComplete = ({ has_poa, is_description_enabled }) => {
     const message = localize('Your proof of identity was submitted successfully');
     if (has_poa) {
         return (
@@ -72,7 +72,9 @@ export const UploadComplete = ({ has_poa }) => {
                 text={localize('Your document is being reviewed, please check back in 1-3 days.')}
                 icon={<Icon icon='IcPoiVerified' size={128} />}
             >
+                {is_description_enabled &&
                 <ContinueTradingButton />
+                }
             </IconMessageContent>
         );
     }
@@ -81,19 +83,23 @@ export const UploadComplete = ({ has_poa }) => {
             message={message}
             icon={<Icon icon='IcPoiVerified' size={128} />}
         >
-            <div className='account-management__text-container'>
-                <p className='account-management__text'>{localize('Your document is being reviewed, please check back in 1-3 days.')}</p>
-                <p className='account-management__text'>{localize('You must also submit a proof of address.')}</p>
-            </div>
-            <PoaButton />
+            {is_description_enabled &&
+            <React.Fragment>
+                <div className='account-management__text-container'>
+                    <p className='account-management__text'>{localize('Your document is being reviewed, please check back in 1-3 days.')}</p>
+                    <p className='account-management__text'>{localize('You must also submit a proof of address.')}</p>
+                </div>
+                <PoaButton />
+            </React.Fragment>
+            }
         </IconMessageContent>
     );
 };
 
-export const Unverified = () => (
+export const Unverified = ({ is_description_enabled }) => (
     <IconMessageContent
         message={localize('We could not verify your proof of identity')}
-        text={
+        text={is_description_enabled ?
             <Localize
                 i18n_default_text='Please check your email for details.'
                 // TODO: enable link to Help Center when POI help content is ready
@@ -101,7 +107,7 @@ export const Unverified = () => (
                 // components={[
                 //     <a key={0} className='link link--orange' rel='noopener noreferrer' target='_blank' href='https://www.deriv.com/help-centre/' />,
                 // ]}
-            />}
+            /> : null}
         icon={<Icon icon='IcPoiError' size={128} />}
     />
 );
@@ -120,7 +126,7 @@ export const Expired = () => (
     />
 );
 
-export const Verified = ({ has_poa }) => {
+export const Verified = ({ has_poa, is_description_enabled }) => {
     const message = localize('Your proof of identity is verified');
     if (has_poa) {
         return (
@@ -128,7 +134,9 @@ export const Verified = ({ has_poa }) => {
                 message={message}
                 icon={<Icon icon='IcPoiVerified' size={128} />}
             >
+                {is_description_enabled &&
                 <ContinueTradingButton />
+                }
             </IconMessageContent>
         );
     }
@@ -138,7 +146,9 @@ export const Verified = ({ has_poa }) => {
             icon={<Icon icon='IcPoiVerified' size={128} />}
             text={localize('To continue trading, you must also submit a proof of address.')}
         >
+            {is_description_enabled &&
             <PoaButton />
+            }
         </IconMessageContent>
     );
 };

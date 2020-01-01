@@ -81,6 +81,7 @@ export default class UIStore extends BaseStore {
     // real account signup
     @observable is_real_acc_signup_on         = false;
     @observable has_real_account_signup_ended = false;
+    @observable is_real_advanced_password_modal_open = false;
 
     // set currency modal
     @observable is_set_currency_modal_visible = false;
@@ -468,6 +469,16 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleSetResidenceModal(state_change = !this.is_set_residence_modal_visible) {
         this.is_set_residence_modal_visible = state_change;
+    }
+
+    @action.bound
+    openRealAdvancedPasswordModal() {
+        this.is_real_advanced_password_modal_open = true;
+    }
+
+    @action.bound
+    closeRealAdvancedPasswordModal() {
+        this.is_real_advanced_password_modal_open = false;
     }
 
     @action.bound

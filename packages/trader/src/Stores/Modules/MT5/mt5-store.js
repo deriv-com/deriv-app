@@ -160,31 +160,36 @@ export default class MT5Store extends BaseStore {
     @action.bound
     beginRealSignupForMt5() {
         sessionStorage.setItem('post_real_account_signup', JSON.stringify(this.account_type));
-        this.root_store.ui.is_real_acc_signup_on = true;
+        this.root_store.ui.openRealAccountSignup();
     }
 
     realMt5Signup() {
-        // Check if the user has real account
-        if (!this.root_store.client.has_active_real_account
-            || !this.root_store.client.currency
-        ) {
-            this.beginRealSignupForMt5();
-        } else {
-            switch (this.account_type.type) {
-                case 'standard':
-                    this.enableMt5PasswordModal();
-                    break;
-                case 'advanced':
-                    // eslint-disable-next-line no-console
-                    console.log('Open Real advanced account for user');
-                    break;
-                case 'synthetic_indices':
-                    // eslint-disable-next-line no-console
-                    this.enableMt5PasswordModal();
-                    break;
-                default:
-                    throw new Error('Cannot determine mt5 account signup.');
-            }
+        switch (this.account_type.type) {
+            case 'standard':
+                this.enableMt5PasswordModal();
+                break;
+            case 'advanced':
+                this.root_store.client.fetchResidenceList();
+                this.root_store.client.fetchStatesList();
+                this.root_store.client.fetchAccountSettings();
+                this.enableMt5AdvancedModal();
+                break;
+            case 'synthetic_indices':
+                // eslint-disable-next-line no-console
+                this.enableMt5PasswordModal();
+                break;
+            default:
+                throw new Error('Cannot determine mt5 account signup.');
+        }
+    }
+
+    @action.bound
+    enableMt5AdvancedModal() {
+        if (this.account_type.category === 'real' && this.account_type.type === 'advanced') {
+            this.root_store.ui.setRealAccountSignupParams({
+                active_modal_index: 6, // Real MT5 Advanced Modal wizard
+            });
+            this.root_store.ui.is_real_acc_signup_on = true;
         }
     }
 
@@ -215,6 +220,44 @@ export default class MT5Store extends BaseStore {
     @action.bound
     setMt5SuccessDialog(value) {
         this.is_mt5_success_dialog_enabled = !!value;
+    }
+
+    @action.bound
+    storeProofOfAddress (file_uploader_ref, values, { setStatus }) {
+        return new Promise((resolve, reject) => {
+            setStatus({ msg: '' });
+            this.setState({ is_btn_loading: true });
+
+            WS.setSettings(values).then((data) => {
+                if (data.error) {
+                    setStatus({ msg: data.error.message });
+                    reject(data);
+                } else {
+                    this.root_store.fetchAccountSettings();
+                    // force request to update settings cache since settings have been updated
+                    file_uploader_ref.current.upload().then((api_response) => {
+                        if (api_response.warning) {
+                            setStatus({ msg: api_response.message });
+                            reject(api_response);
+                            // this.setState({ is_btn_loading: false });
+                        } else {
+                            WS.authorized.storage.getAccountStatus().then(({ error, get_account_status }) => {
+                                if (error) {
+                                    reject(error);
+                                }
+                                const { identity } = get_account_status.authentication;
+                                const has_poi      = !(identity && identity.status === 'none');
+                                resolve({
+                                    identity,
+                                    has_poi,
+                                });
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
     }
 
     @action.bound

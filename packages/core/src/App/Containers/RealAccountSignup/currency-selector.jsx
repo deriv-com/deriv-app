@@ -5,9 +5,9 @@ import {
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import { Field, Formik }    from 'formik';
+import { FormSubmitButton }   from 'deriv-components';
 import { connect }          from 'Stores/connect';
 import { localize }         from 'deriv-translations';
-import FormSubmitButton     from './form-submit-button.jsx';
 import 'Sass/currency-select-radio.scss';
 
 // Radio input

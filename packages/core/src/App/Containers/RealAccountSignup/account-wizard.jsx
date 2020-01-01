@@ -1,12 +1,12 @@
 import PropTypes              from 'prop-types';
 import fromEntries            from 'object.fromentries';
 import React                  from 'react';
+import { FormProgress }       from 'deriv-components';
 import { localize, Localize } from 'deriv-translations';
 import { connect }            from 'Stores/connect';
 import { toMoment }           from 'Utils/Date';
 import AddressDetails         from './address-details.jsx';
 import CurrencySelector       from './currency-selector.jsx';
-import FormProgress           from './form-progress.jsx';
 import PersonalDetails        from './personal-details.jsx';
 import TermsOfUse             from './terms-of-use.jsx';
 
@@ -19,7 +19,7 @@ class AccountWizard extends React.Component {
             form_error: '',
             items     : [
                 {
-                    header: {
+                    header    : {
                         active_title: localize('Please choose your currency'),
                         title       : localize('Account currency'),
                     },
@@ -29,12 +29,12 @@ class AccountWizard extends React.Component {
                     },
                 },
                 {
-                    header: {
+                    header     : {
                         active_title: localize('Complete your personal details'),
                         title       : localize('Personal details'),
                     },
-                    body      : PersonalDetails,
-                    form_value: {
+                    body       : PersonalDetails,
+                    form_value : {
                         first_name   : '',
                         last_name    : '',
                         date_of_birth: '',
@@ -43,7 +43,7 @@ class AccountWizard extends React.Component {
                     passthrough: ['residence_list'],
                 },
                 {
-                    header: {
+                    header    : {
                         active_title: localize('Complete your address details'),
                         title       : localize('Address details'),
                     },
@@ -57,7 +57,7 @@ class AccountWizard extends React.Component {
                     },
                 },
                 {
-                    header: {
+                    header    : {
                         active_title: localize('Terms of use'),
                         title       : localize('Terms of use'),
                     },
@@ -98,7 +98,7 @@ class AccountWizard extends React.Component {
         } catch (e) {
             localStorage.removeItem('real_account_signup_wizard');
         }
-    }
+    };
 
     get form_values() {
         return this.state.items.map(item => item.form_value)
@@ -198,7 +198,7 @@ class AccountWizard extends React.Component {
                 .then((response) => {
                     setSubmitting(false);
                     this.props.onSuccessAddCurrency(
-                        response.echo_req.set_account_currency.toLowerCase()
+                        response.echo_req.set_account_currency.toLowerCase(),
                     );
                 })
                 .catch(error_message => {

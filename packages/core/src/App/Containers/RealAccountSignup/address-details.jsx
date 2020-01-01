@@ -4,9 +4,9 @@ import {
     ThemedScrollbars }        from 'deriv-components';
 import { Formik, Field }      from 'formik';
 import React, { Component }   from 'react';
+import { FormSubmitButton }   from 'deriv-components';
 import { connect }            from 'Stores/connect';
 import { localize, Localize } from 'deriv-translations';
-import FormSubmitButton       from './form-submit-button.jsx';
 
 const InputField = (props) => {
     return (

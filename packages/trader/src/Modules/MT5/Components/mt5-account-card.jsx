@@ -1,3 +1,4 @@
+import classNames                     from 'classnames';
 import { Money, Button }              from 'deriv-components';
 import React                          from 'react';
 import { Localize }                   from 'deriv-translations';
@@ -5,11 +6,13 @@ import { Mt5AccountCopy }             from './mt5-account-copy.jsx';
 import { getPlatformMt5DownloadLink } from '../Helpers/constants';
 
 const MT5AccountCard = ({
+    button_label,
     commission_message,
     descriptor,
     existing_data,
-    icon,
     has_mt5_account,
+    icon,
+    is_disabled,
     specs,
     title,
     type,
@@ -18,10 +21,11 @@ const MT5AccountCard = ({
     onPasswordManager,
 }) => {
     const IconComponent = icon || (() => null);
+    const cta_label = button_label || <Localize i18n_default_text='Create account' />;
 
     return (
         <div className='mt5-account-card'>
-            <div className='mt5-account-card__type'>
+            <div className='mt5-account-card__type' id={`mt5_${type.category}_${type.type}`}>
                 {icon &&
                 <IconComponent />
                 }
@@ -103,7 +107,7 @@ const MT5AccountCard = ({
                         }
                     </Button>
                     <Button
-                        onClick={ () => { onPasswordManager(existing_data.login, title); } }
+                        onClick={() => { onPasswordManager(existing_data.login, title); }}
                         type='button'
                         secondary
                     >
@@ -115,7 +119,7 @@ const MT5AccountCard = ({
                 {!existing_data && has_mt5_account &&
                 <Button
                     className='mt5-account-card__account-selection'
-                    onClick={() => { onSelectAccount(type); }}
+                    onClick={onSelectAccount}
                     type='button'
                 >
                     <Localize i18n_default_text='Select' />
@@ -125,7 +129,7 @@ const MT5AccountCard = ({
                 <a
                     className='btn mt5-account-card__account-selection mt5-account-card__account-selection--primary'
                     type='button'
-                    href={ getPlatformMt5DownloadLink() }
+                    href={getPlatformMt5DownloadLink()}
                     target='_blank'
                     rel='noopener noreferrer'
                 >
@@ -134,12 +138,14 @@ const MT5AccountCard = ({
                 }
                 {!existing_data && !has_mt5_account &&
                 <Button
-                    className='mt5-account-card__account-selection mt5-account-card__account-selection--primary'
-                    onClick={() => { onSelectAccount(type); }}
+                    className={classNames('mt5-account-card__account-selection mt5-account-card__account-selection--primary', {
+                        'mt5-account-card__account-selection--disabled': is_disabled,
+                    })}
+                    onClick={onSelectAccount}
                     type='button'
                     primary
                 >
-                    <Localize i18n_default_text='Create account' />
+                    {cta_label}
                 </Button>
                 }
             </div>

@@ -1,14 +1,14 @@
 import classNames             from 'classnames';
 import {
+    FormInputField as InputField,
+    FormSubmitButton,
     Icon,
-    Input,
     ThemedScrollbars }        from 'deriv-components';
 import { Formik, Field }      from 'formik';
 import React                  from 'react';
 import { CSSTransition }      from 'react-transition-group';
 import { localize, Localize } from 'deriv-translations';
 import { toMoment }           from 'Utils/Date';
-import FormSubmitButton       from './form-submit-button.jsx';
 import DatePickerCalendar     from './date-picker-calendar.jsx';
 import 'Sass/details-form.scss';
 
@@ -123,31 +123,6 @@ export class DateOfBirth extends React.Component {
         );
     }
 }
-
-const InputField = (props) => {
-    return (
-        <Field name={props.name}>
-            {
-                ({
-                    field,
-                    form: { errors, touched },
-                }) => (
-                    <React.Fragment>
-                        <Input
-                            type='text'
-                            required
-                            autoComplete='off'
-                            maxLength='30'
-                            error={touched[field.name] && errors[field.name]}
-                            {...field}
-                            {...props}
-                        />
-                    </React.Fragment>
-                )
-            }
-        </Field>
-    );
-};
 
 class PersonalDetails extends React.Component {
     constructor(props) {

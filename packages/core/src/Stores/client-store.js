@@ -266,6 +266,12 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_pending_authentication() {
+        if (!this.account_status.status) return false;
+        return this.account_status.status.some(status => status === 'document_under_review');
+    }
+
+    @computed
     get landing_company_shortcode() {
         if (this.accounts[this.loginid]) {
             return this.accounts[this.loginid].landing_company_shortcode;
@@ -1096,6 +1102,17 @@ export default class ClientStore extends BaseStore {
             curr1 : currency,
         };
         await this.init(new_user_login);
+    }
+
+    @action.bound
+    fetchAccountSettings() {
+        return new Promise((resolve) => {
+            WS.authorized.storage.getSettings()
+                .then(response => {
+                    this.setAccountSettings(response.get_settings);
+                    resolve(response);
+                });
+        });
     }
 
     @action.bound

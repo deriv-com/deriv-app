@@ -9,8 +9,8 @@ import {
     Button,
     ThemedScrollbars }      from 'deriv-components';
 import FormError            from '../form/error.jsx';
-import IconClose            from '../../assets/icon-close.jsx';
 import { localize }         from '../i18next';
+import IconClose            from '../../assets/icon-close.jsx';
 
 class Popup extends Component {
     state = {
@@ -18,7 +18,7 @@ class Popup extends Component {
     }
 
     handleSubmit = (values, { setStatus, setSubmitting }) => {
-        // TODO [p2p-remove-console] this console is to avoid unused variable eslint linter
+        // TODO: [p2p-remove-console] this console is to avoid unused variable eslint linter
         // eslint-disable-next-line no-console
         console.log(values);
         this.props.onClickConfirm(setStatus);
@@ -37,7 +37,7 @@ class Popup extends Component {
             has_cancel,
             message,
             need_confirmation,
-            offer,
+            order,
             onCancel,
             title,
         } = this.props;
@@ -64,7 +64,7 @@ class Popup extends Component {
                         >
                             {({ isSubmitting, setFieldValue, values, status }) => (
                                 <Form noValidate>
-                                    <ThemedScrollbars autoHide style={{ height: '124px' }}>
+                                    <ThemedScrollbars autoHide style={{ height: '128px' }}>
                                         <div className='orders__popup-content'>
                                             {message}
                                             <div className='orders__popup-field'>
@@ -81,9 +81,9 @@ class Popup extends Component {
                                                             defaultChecked={
                                                                 values.need_confirmation
                                                             }
-                                                            label={localize('I have received {{offer}} {{price}}', {
-                                                                offer: offer.currency,
-                                                                price: offer.fix_price,
+                                                            label={localize('I have received {{currency}} {{amount}}', {
+                                                                amount  : order.display_transaction_amount,
+                                                                currency: order.transaction_currency,
                                                             })}
                                                             classNameLabel='orders__popup-field_text'
                                                         />
@@ -98,7 +98,10 @@ class Popup extends Component {
                                             is_disabled={isSubmitting || !values.need_confirmation}
                                             primary
                                         >
-                                            {localize(`Release ${offer.asset} ${offer.amount}`)}
+                                            {localize('Release {{currency}} {{amount}}', {
+                                                currency: order.offer_currency,
+                                                amount  : order.display_offer_amount,
+                                            })}
                                         </Button>
                                     </div>
                                 </Form>
@@ -106,7 +109,7 @@ class Popup extends Component {
                         </Formik>
                     ) : (
                         <>
-                            <ThemedScrollbars autoHide style={{ height: '88px' }}>
+                            <ThemedScrollbars autoHide style={{ height: '92px' }}>
                                 <div className='orders__popup-content'>
                                     {message}
                                 </div>
@@ -130,9 +133,9 @@ Popup.propTypes = {
     has_cancel       : PropTypes.bool,
     message          : PropTypes.string,
     need_confirmation: PropTypes.bool,
-    offer            : PropTypes.object,
     onCancel         : PropTypes.func,
     onClickConfirm   : PropTypes.func,
+    order            : PropTypes.object,
     title            : PropTypes.string,
 };
  

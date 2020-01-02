@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 
 const Row = ({ children, className, has_hover }) => {
-    const columns_in_row = React.Children.count(children);
+    const columns_in_row = React.Children.toArray(children).length; // toArray doesn't count null as a child
 
     return (
         <div

@@ -3,10 +3,11 @@
   "version": "3.8.0",
   "description": "Deriv content",
   "main": "dist/js/trader.main.js",
+  "private": true,
   "scripts": {
     "start": "npm run test && npm run serve",
     "serve": "echo \"Serving...\" && webpack --progress --watch --config \"./build/webpack.config.js\"",
-    "build": "webpack --config \"./build/webpack.config.js\"",
+    "build": "f () { webpack --config \"./build/webpack.config.js\" --env.base $1;}; f",
     "build:travis": "echo \"No build:travis specified\"",
     "test": "npm run test:stylelint && npm run test:eslint",
     "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",

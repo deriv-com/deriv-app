@@ -15,11 +15,10 @@ Blockly.Blocks.text_getSubstring = {
         ];
 
         this.jsonInit(this.definition());
-
         this.updateAt(1, true);
         this.updateAt(2, true);
     },
-    definition(){
+    definition() {
         return {
             message0: localize('in text %1 get substring from %2 %3 to %4 %5'),
             args0   : [
@@ -55,10 +54,10 @@ Blockly.Blocks.text_getSubstring = {
             category       : Blockly.Categories.Text,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Get substring'),
-            'description' : localize('Returns a specific portion of a given string of text.'),
+            display_name: localize('Get substring'),
+            description : localize('Returns a specific portion of a given string of text.'),
         };
     },
     mutationToDom() {
@@ -115,6 +114,7 @@ Blockly.Blocks.text_getSubstring = {
         });
 
         this.getInput(`AT${n}`).appendField(menu, `WHERE${n}`);
+        
         if (n === 1) {
             this.moveInputBefore('AT1', 'AT2');
         }
@@ -132,7 +132,7 @@ Blockly.Blocks.text_getSubstring = {
 };
 
 Blockly.JavaScript.text_getSubstring = block => {
-    const text = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_FUNCTION_CALL) || '\'\'';
+    const text   = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_FUNCTION_CALL) || '\'\'';
     const where1 = block.getFieldValue('WHERE1');
     const where2 = block.getFieldValue('WHERE2');
 
@@ -146,39 +146,58 @@ Blockly.JavaScript.text_getSubstring = block => {
         text.match(/^'?\w+'?$/) ||
         (where1 !== 'FROM_END' && where1 !== 'LAST' && where2 !== 'FROM_END' && where2 !== 'LAST')
     ) {
-        if (where1 === 'FROM_START') {
-            at1 = Blockly.JavaScript.getAdjusted(block, 'AT1');
-        } else if (where1 === 'FROM_END') {
-            at1 = Blockly.JavaScript.getAdjusted(block, 'AT1', 1, false, Blockly.JavaScript.ORDER_SUBTRACTION);
-            at1 = `${text}.length - ${at1}`;
-        } else if (where1 === 'FIRST') {
-            at1 = '0';
+        switch (where1) {
+            case ('FROM_START'): {
+                at1 = Blockly.JavaScript.getAdjusted(block, 'AT1');
+                break;
+            }
+            case ('FROM_END'): {
+                at1 = Blockly.JavaScript.getAdjusted(block, 'AT1', 1, false, Blockly.JavaScript.ORDER_SUBTRACTION);
+                at1 = `${text}.length - ${at1}`;
+                break;
+            }
+            case ('FIRST'): {
+                at1 = '0';
+                break;
+            }
+            default:
+                break;
         }
 
-        if (where2 === 'FROM_START') {
-            at2 = Blockly.JavaScript.getAdjusted(block, 'AT2');
-        } else if (where2 === 'FROM_END') {
-            at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 0, false, Blockly.JavaScript.ORDER_SUBTRACTION);
-            at2 = `${text}.length - ${at2}`;
-        } else if (where2 === 'LAST') {
-            at2 = `${text}.length`;
+        switch (where2) {
+            case ('FROM_START'): {
+                at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 1);
+                break;
+            }
+            case ('FROM_END'): {
+                at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 0, false, Blockly.JavaScript.ORDER_SUBTRACTION);
+                at2 = `${text}.length - ${at2}`;
+                break;
+            }
+            case ('LAST'): {
+                at2 = `${text}.length`;
+                break;
+            }
+            default:
+                break;
         }
+
+        code = `${text}.slice(${at1}, ${at2})`;
     } else {
         at1 = Blockly.JavaScript.getAdjusted(block, 'AT1');
         at2 = Blockly.JavaScript.getAdjusted(block, 'AT2');
 
-        // binary-bot: Blockly.JavaScript.text.getIndex_ (Blockly)
-        const getIndex = (stringName, where, optAt) => {
+        const getIndex = (string_name, where, opt_at) => {
             if (where === 'FIRST') {
                 return '0';
             } else if (where === 'FROM_END') {
-                return `${stringName}.length - 1 - ${optAt}`;
+                return `${string_name}.length - 1 - ${opt_at}`;
             } else if (where === 'LAST') {
-                return `${stringName}.length - 1`;
+                return `${string_name}.length - 1`;
             }
-            return optAt;
+            return opt_at;
         };
-        const wherePascalCase = {
+        const where_pascal_case = {
             FIRST     : 'First',
             LAST      : 'Last',
             FROM_START: 'FromStart',
@@ -186,7 +205,7 @@ Blockly.JavaScript.text_getSubstring = block => {
         };
         // eslint-disable-next-line no-underscore-dangle
         const functionName = Blockly.JavaScript.provideFunction_(
-            `subsequence${wherePascalCase[where1]}${wherePascalCase[where2]}`,
+            `subsequence${where_pascal_case[where1]}${where_pascal_case[where2]}`,
             [
                 // eslint-disable-next-line no-underscore-dangle
                 `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(
@@ -195,7 +214,8 @@ Blockly.JavaScript.text_getSubstring = block => {
                     ${where2 === 'FROM_END' || where2 === 'FROM_START' ? ', at2' : ''}
                 ) {
                     var start = ${getIndex('sequence', where1, 'at1')};
-                    var end = ${getIndex('sequence', where2, 'at2')};
+                    var end   = ${getIndex('sequence', where2, 'at2')} + 1;
+                    
                     return sequence.slice(start, end);
                 }`,
             ]
@@ -208,6 +228,5 @@ Blockly.JavaScript.text_getSubstring = block => {
         )`;
     }
 
-    code = `${text}.slice(${at1}, ${at2})`;
     return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };

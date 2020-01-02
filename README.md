@@ -18,6 +18,7 @@ This repository contains the various platforms of the Deriv application.
   - [Starting a Development Server](#starting-a-dev-server)
   - [How to Clean Packages](#how-to-clean-packages)
   - [Examples of Script Usage](#examples-of-script-usage)
+  - [Release](#release)
 - [PR Guidelines](#pr-guidelines)
 - [FAQ](#faq)
 
@@ -115,6 +116,12 @@ There are 3 types of release:
     1. `git tag production_v20191205 -m 'release production'`
     2. `git push origin production_v20191205`
 
+There is a 4th type of release: releasing npm registry packages (currently `@deriv/p2p`). This a WIP, but the current method is:
+
+1. Acquire membership to `@deriv` npm organization namespace.
+2. Ensure you have a new (bumped) version of publishable packages (currently `@deriv/p2p`).
+3. Run `npm run publish:p2p`. The command publishes all bumped packages. However, right now the name includes the word `p2p` to signal the WIP status and that P2P is the only published package under this repo.
+
 ## PR Guidelines
 1. Use the `developer 1|developer 2/task_name` format for PR titles. (e.g.: `dev1|dev2/fixed_emoji_issue`, `dev1/added_superfast_jellyfish`)
 2. Use the appropriate package labels available on the repo to indicate which packages your PR modifies.
@@ -146,6 +153,6 @@ There are 3 types of release:
 
     **A.** This issue happens when your `node-sass` has its `binding.node` set to a version of node different from the current projects' one. Please try the following in order:
     
-    1. First run `npm rebuild node-sass` and try building your packages again.
+    1. First run `npx lerna exec -- npm rebuild node-sass` and try building your packages again.
     2. If that doesn't work, try `npm cache clean --force`, followed by `npm run clean`, and then `npm run bootstrap`.
     3. And finally, if that doesn't work then you can read deeper into this [StackOverflow post](https://stackoverflow.com/questions/37986800). 

@@ -211,6 +211,11 @@
         }
     }
     // smartchart library style fixes
+    .smartcharts-mobile {
+        .cq-categorical-display {
+            height: calc(100% - 8px) !important;
+        }
+    }
     .cq-context {
         top: 0;
         left: 0;
@@ -290,18 +295,11 @@
         min-height: 100%;
     }
     @media (max-width: 768px) {
-        // screen height - header height - trade params toolbar height - padding
-        height: calc(100vh - #{$HEADER_HEIGHT} - 214px - 8px);
         // smartchart library style fixes
         .cq-context {
             div.cq-chart-controls {
                 border: 1px solid $COLOR_LIGHT_BLACK_4;
             }
-        }
-        .cq-menu-btn {
-            max-width: 326px;
-            padding: 2px;
-            margin: 0.6rem;
         }
         .cq-modal-dropdown {
             &.stxMenuActive {
@@ -325,6 +323,9 @@
                     left: -0.1em;
                 }
             }
+        }
+        .smartcharts-mobile .cq-modal-dropdown .cq-menu-overlay .cq-menu-dropdown {
+            bottom: 4em;
         }
     }
 }

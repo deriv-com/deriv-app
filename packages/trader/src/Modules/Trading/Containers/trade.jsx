@@ -1,4 +1,5 @@
 import React                 from 'react';
+import Div100vh              from 'react-div-100vh';
 import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
 import { connect }           from 'Stores/connect';
 import PositionsDrawer       from 'App/Components/Elements/PositionsDrawer';
@@ -23,10 +24,13 @@ class Trade extends React.Component {
         const { NotificationMessages } = this.props;
         const form_wrapper_class = this.props.is_mobile ? 'mobile-wrapper' : 'sidebar__container desktop-only';
         const is_trade_enabled = (this.props.form_components.length > 0) && this.props.is_trade_enabled;
+        const chart_height = this.props.is_mobile ? 'calc(100rvh - 270px)' : 'unset';
         return (
             <div id='trade_container' className='trade-container'>
                 {!this.props.is_mobile && <PositionsDrawer />}
-                <div className='chart-container'>
+                {/* Div100vh is workaround for iPhone without bezels,
+                    using css vh is not returning correct screen height */}
+                <Div100vh className='chart-container' style={{ height: chart_height }}>
                     <NotificationMessages />
                     <React.Suspense
                         fallback={
@@ -42,7 +46,7 @@ class Trade extends React.Component {
 
                     {/* Remove Test component for debugging below for production release */}
                     <Test />
-                </div>
+                </Div100vh>
                 <div className={form_wrapper_class}>
                     { this.props.is_market_closed && <MarketIsClosedOverlay />}
                     <FormLayout
@@ -167,6 +171,7 @@ class ChartTradeClass extends React.Component {
 
     chartControlsWidgets = () => (
         <ControlWidgets
+            is_mobile={this.props.is_mobile}
             updateChartType={this.props.updateChartType}
             updateGranularity={this.props.updateGranularity}
         />

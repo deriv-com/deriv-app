@@ -36,25 +36,27 @@ const AppContents = ({
     //     });
     // });
     // }
-    // TODO: Find a solution to make content height calculation unnecessary for scrollbars
-    // content height for desktop is 100vh - (footer + header), while mobile is only 100vh - header
-    const content_height = is_mobile ? 48 : 83;
     return (
         <div
             id='app_contents'
             className={classNames('app-contents', {
-                'app-contents--show-positions-drawer': !is_mobile && is_positions_drawer_on,
+                'app-contents--show-positions-drawer': is_positions_drawer_on,
                 'app-contents--is-disabled'          : is_app_disabled,
                 'app-contents--is-route-modal'       : is_route_modal_on,
             })}
         >
             {/* Calculate height of user screen and offset height of header and footer */}
-            <ThemedScrollbars
-                autoHide
-                style={{ height: `calc(100vh - ${content_height}px)` }}
-            >
-                {children}
-            </ThemedScrollbars>
+            {is_mobile ?
+
+                children
+                :
+                <ThemedScrollbars
+                    autoHide
+                    style={{ height: 'calc(100vh - 83px)' }}
+                >
+                    {children}
+                </ThemedScrollbars>
+            }
         </div>
     );
 };
@@ -78,7 +80,7 @@ export default withRouter(connect(
         identifyEvent         : segment.identifyEvent,
         is_app_disabled       : ui.is_app_disabled,
         is_mobile             : ui.is_mobile,
-        is_positions_drawer_on: ui.is_positions_drawer_on,
+        is_positions_drawer_on: (ui.is_positions_drawer_on && !ui.is_mobile),
         is_route_modal_on     : ui.is_route_modal_on,
         pageView              : segment.pageView,
         pwa_prompt_event      : ui.pwa_prompt_event,

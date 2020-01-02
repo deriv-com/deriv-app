@@ -1,7 +1,7 @@
 import PropTypes              from 'prop-types';
 import React                  from 'react';
-import { Icon }               from 'deriv-components';
-import { localize, Localize } from 'deriv-translations';
+import { Icon }               from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
 
 const currency_name_map = {
     BTC: localize('Bitcoin'),

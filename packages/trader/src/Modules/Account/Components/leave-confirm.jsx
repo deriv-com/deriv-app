@@ -1,8 +1,8 @@
 import React                  from 'react';
 import { withRouter }         from 'react-router-dom';
 import { FormikConsumer }     from 'formik';
-import { Button, Icon }       from 'deriv-components';
-import { localize }           from 'deriv-translations';
+import { Button, Icon }       from '@deriv/components';
+import { localize }           from '@deriv/translations';
 import IconMessageContent     from './icon-message-content.jsx';
 
 /**

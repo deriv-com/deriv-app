@@ -4,9 +4,9 @@ import { Formik }             from 'formik';
 import {
     Button,
     PasswordInput,
-    PasswordMeter }           from 'deriv-components';
+    PasswordMeter }           from '@deriv/components';
 import { withRouter }         from 'react-router-dom';
-import { localize }           from 'deriv-translations';
+import { localize }           from '@deriv/translations';
 import AppRoutes              from 'Constants/routes';
 import { WS }                 from 'Services/ws-methods';
 import { connect }            from 'Stores/connect';

@@ -1,6 +1,6 @@
 import React             from 'react';
-import { Icon }          from 'deriv-components';
-import { localize }      from 'deriv-translations';
+import { Icon }          from '@deriv/components';
+import { localize }      from '@deriv/translations';
 import SendEmailTemplate from 'App/Containers/Layout/send-email.jsx';
 import { ScrollbarsContainer } from '../../../Components/layout-components.jsx';
 

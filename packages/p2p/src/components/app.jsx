@@ -1,7 +1,7 @@
 import classNames           from 'classnames';
 import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
-import { Tabs }             from 'deriv-components';
+import { Tabs }             from '@deriv/components';
 import ServerTime           from 'Utils/server-time';
 import { init, requestWS }  from 'Utils/websocket';
 import { AgentProvider }    from 'Components/context/agent-context';

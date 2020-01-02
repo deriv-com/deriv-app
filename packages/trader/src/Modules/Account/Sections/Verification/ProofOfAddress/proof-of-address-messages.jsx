@@ -1,7 +1,7 @@
 import React                  from 'react';
-import { Button, Icon }       from 'deriv-components';
+import { Button, Icon }       from '@deriv/components';
 import ButtonLink             from 'App/Components/Routes/button-link.jsx';
-import { localize, Localize } from 'deriv-translations';
+import { localize, Localize } from '@deriv/translations';
 import IconMessageContent     from '../../../Components/icon-message-content.jsx';
 
 const ContinueTradingButton = () => (

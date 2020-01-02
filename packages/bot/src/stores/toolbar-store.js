@@ -1,7 +1,7 @@
 import {
     observable,
     action }                 from 'mobx';
-import { localize }          from 'deriv-translations';
+import { localize }          from '@deriv/translations';
 import { tabs_title }        from '../constants/bot-contents';
 import { scrollWorkspace }   from '../scratch/utils';
 
@@ -28,19 +28,19 @@ export default class ToolbarStore {
         if (main_content.active_tab !== tabs_title.WORKSPACE) {
             main_content.setActiveTab(tabs_title.WORKSPACE);
         }
-        
+
         toolbox.toggle();
         if (this.is_toolbox_open) {
             const toolbox_width     = toolbox.HtmlDiv.clientWidth;
             const block_canvas_rect = workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
-            
+
             if (block_canvas_rect.left < toolbox_width) {
                 const scroll_distance = toolbox_width - block_canvas_rect.left + toolbox.width;
                 scrollWorkspace(workspace, scroll_distance, true, false);
             }
             this.root_store.core.gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
         }
-        
+
     }
 
     @action.bound

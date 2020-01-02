@@ -23,7 +23,7 @@ module.exports = {
       semi                                : ['error', 'always'],
       'array-callback-return'             : 0,
       'brace-style'                       : ['error', '1tbs', { allowSingleLine: true }],
-      'class-methods-use-this'            : ["error", { 'exceptMethods': ['render', 'getInitialState', 'getDefaultProps', 'getChildContext', 'componentWillMount', 'componentDidMount', 'componentWillReceiveProps', 'shouldComponentUpdate', 'componentWillUpdate', 'componentDidUpdate', 'componentWillUnmount'] }], 
+      'class-methods-use-this'            : ["error", { 'exceptMethods': ['render', 'getInitialState', 'getDefaultProps', 'getChildContext', 'componentWillMount', 'componentDidMount', 'componentWillReceiveProps', 'shouldComponentUpdate', 'componentWillUpdate', 'componentDidUpdate', 'componentWillUnmount'] }],
       'eol-last'                          : ['error', 'always'],
       'func-names'                        : ['error', 'never'],
       'keyword-spacing'                   : ['error', { after: true , before: true }],
@@ -50,7 +50,7 @@ module.exports = {
       'import/order'                      : ['error', { groups: [['builtin', 'external'], 'internal', 'sibling', 'parent'], 'newlines-between': 'ignore' }],
       'import/prefer-default-export'      : 0,
       'import/extensions'                 : ['error', 'never', { 'jsx': 'always', 'json': 'always' }],
-      "import/no-unresolved"              : [2, { ignore: ['deriv-components' , 'deriv-shared'] }],
+      "import/no-unresolved"              : [2, { ignore: ['@deriv/components' , '@deriv/shared'] }],
 
       // react rules
       'jsx-quotes'                        : ['error', 'prefer-single'],

@@ -5,7 +5,7 @@ import {
     reaction,
     toJS,
     when }              from 'mobx';
-import ObjectUtils      from 'deriv-shared/utils/object';
+import ObjectUtils      from '@deriv/shared/utils/object';
 import Validator        from 'Utils/Validator';
 import { isProduction } from '../config';
 

@@ -2,14 +2,14 @@ import classNames             from 'classnames';
 import {
     Button,
     Dialog,
-    PasswordInput }           from 'deriv-components';
+    PasswordInput }           from '@deriv/components';
 import {
     Field,
     Formik,
     Form }                    from 'formik';
 import PropTypes              from 'prop-types';
 import React                  from 'react';
-import { localize, Localize } from 'deriv-translations';
+import { localize, Localize } from '@deriv/translations';
 import { connect }            from 'Stores/connect';
 import { validPassword }      from 'Utils/Validator/declarative-validation-rules';
 import { website_name }       from 'App/Constants/app-config';

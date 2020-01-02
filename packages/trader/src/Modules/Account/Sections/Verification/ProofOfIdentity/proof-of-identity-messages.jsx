@@ -1,6 +1,6 @@
 import React                  from 'react';
-import { Icon }               from 'deriv-components';
-import { localize, Localize } from 'deriv-translations';
+import { Icon }               from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
 import ButtonLink             from 'App/Components/Routes/button-link.jsx';
 import IconMessageContent     from '../../../Components/icon-message-content.jsx';
 

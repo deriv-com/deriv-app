@@ -120,6 +120,20 @@ export default class ContractStore {
 
                 main_barrier.updateBarrierShade(true, contract_type);
                 result = [ main_barrier ];
+
+                if (/RESET(CALL|PUT)/.test(contract_type)) {
+                    const entry_barrier = new ChartBarrierStore(
+                        contract_info.entry_spot,
+                        null,
+                        null,
+                        {   color        : is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
+                            line_style   : BARRIER_LINE_STYLES.DASHED,
+                            not_draggable: true,
+                        }
+                    );
+
+                    result.push(entry_barrier);
+                }
             }
         }
         return result;

@@ -4,7 +4,6 @@ import {
     action,
 }                                       from 'mobx';
 import { localize }                     from 'deriv-translations';
-import { observer as globalObserver }   from '../utils/observer';
 import { load }                         from '../scratch/utils';
 
 export default class SaveLoadModalStore {

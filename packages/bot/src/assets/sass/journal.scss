@@ -117,32 +117,23 @@
     }
 }
 
-.filter {
-    &__dropdown {
-        position: absolute;
-        opacity: 0;
+.tools {
+    &__container {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px;
 
-        &--active {
-            opacity: 1;
-            transform: translate3d(0, 0, 0);
-            margin-left: -120px;
-            width: 150px;
-            border-radius: $BORDER_RADIUS;
-            background-color: var(--text-colored-background);
-            box-shadow: 0 8px 16px 0 var(--shadow-menu);
-            transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
+        &-filter {
+            display: flex;
+            justify-content: space-between;
+            width: 85%;
+
+            .dc-checkbox__label {
+                font-size: var(--text-size--xxs);
+            }
         }
-        &-text {
-            font-weight: normal;
+        &-download {
+            cursor: pointer;
         }
-        &-item {
-            padding: 0 15px;
-        }
-        &-item:hover {
-            background-color: var(--general-hover);
-        }
-    }
-    &__icon {
-        cursor: pointer;
     }
 }

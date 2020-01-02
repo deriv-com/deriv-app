@@ -17,9 +17,9 @@ export default class JournalStore {
     @observable checked_filter = [message_types.ERROR, message_types.NOTIFY, message_types.SUCCESS];
     unfilter_messages = [];
     filter_list = [
-        { id: message_types.ERROR, label: 'Error', onChange: this.filterMessage },
-        { id: message_types.NOTIFY, label: 'Notify', onChange: this.filterMessage },
-        { id: message_types.SUCCESS, label: 'Log', onChange: this.filterMessage },
+        { id: message_types.ERROR, label: 'Error messages', onChange: this.filterMessage },
+        { id: message_types.NOTIFY, label: 'Notifications', onChange: this.filterMessage },
+        { id: message_types.SUCCESS, label: 'System log', onChange: this.filterMessage },
     ];
 
     @action.bound

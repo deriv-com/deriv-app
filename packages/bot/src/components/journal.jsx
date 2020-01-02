@@ -4,7 +4,6 @@ import React                from 'react';
 import {
     Checkbox,
     Icon,
-    Popover,
     ThemedScrollbars,
 }                           from 'deriv-components';
 import { localize }         from 'deriv-translations';
@@ -94,12 +93,11 @@ const MessageItem = ({
     );
 };
 
-class Filter extends React.Component {
+class Tools extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dropdown_open: false,
-            checked      : this.props.defaultChecked,
+            checked: this.props.defaultChecked,
         };
     }
 
@@ -118,22 +116,8 @@ class Filter extends React.Component {
 
     render() {
         return (
-            <div className='filter__container'>
-                <Popover
-                    alignment='bottom'
-                    message={localize('Filter')}
-                >
-                    <Icon
-                        icon='IcTrade'
-                        className='filter__icon'
-                        onClick={() => this.setState({ dropdown_open: !this.state.dropdown_open })}
-                    />
-                </Popover>
-                <div className={classnames(
-                    'filter__dropdown',
-                    { 'filter__dropdown--active': this.state.dropdown_open },
-                )}
-                >
+            <div className='tools__container'>
+                <div className='tools__container-filter'>
                     {
                         this.props.items.map(item => {
                             return (
@@ -148,6 +132,9 @@ class Filter extends React.Component {
                             );
                         })
                     }
+                </div>
+                <div className='tools__container-download'>
+                    <Icon icon='IcDownload' />
                 </div>
             </div>
         );
@@ -165,13 +152,13 @@ const Journal = ({
             autoHide
             style={{ height: 'calc(var(--drawer-scroll-height) + 41px)' }}
         >
+            <Tools items={filter_list} defaultChecked={checked_filter} />
             <table className='journal__table'>
                 <thead className='journal__table--header'>
                     <tr>
                         <th className='journal__table--th'>{localize('Date')}</th>
                         <th className='journal__table--th journal__table--th-icon'>
                             <div>{localize('Message')}</div>
-                            <Filter items={filter_list} defaultChecked={checked_filter} />
                         </th>
                     </tr>
                 </thead>

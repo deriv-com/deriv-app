@@ -96,4 +96,17 @@
             fill: var(--text-general);
         }
     }
+    &__table {
+        &_row {
+            cursor: pointer;
+
+            &:hover {
+                background: var(--general-hover);
+            }
+        }
+        &_link {
+            color: var(--brand-red-coral);
+            padding-left: 1rem;
+        }
+    }
 }

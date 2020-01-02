@@ -67,6 +67,7 @@ export const icons =
         'IcCross',
         'IcDemo',
         'IcDesktop',
+        'IcDownload',
         'IcDrivingLicense',
         'IcEdit',
         'IcEmailFirewall',

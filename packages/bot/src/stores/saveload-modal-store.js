@@ -3,6 +3,8 @@ import {
     observable,
     action,
 }                                       from 'mobx';
+import { localize }                     from 'deriv-translations';
+import { observer as globalObserver }   from '../utils/observer';
 import { load }                         from '../scratch/utils';
 
 export default class SaveLoadModalStore {
@@ -92,7 +94,8 @@ export default class SaveLoadModalStore {
     @action.bound
     handleFileChange(event) {
         this.setButtonStatus(1);
-        const { onBotNameTyped } = this.root_store.toolbar;
+        const { toolbar, journal } = this.root_store;
+        const { onBotNameTyped } = toolbar;
         let files, drop_event;
         
         if (event.type === 'drop') {
@@ -115,6 +118,8 @@ export default class SaveLoadModalStore {
 
             if (file.type.match('text/xml')) {
                 this.readFile(file, drop_event);
+            } else {
+                journal.onError(`${localize('Unrecognized file format')}`);
             }
         });
         event.target.value = '';

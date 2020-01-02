@@ -1,7 +1,7 @@
 import { localize }                      from 'deriv-translations';
 import { purchaseSuccessful }            from './state/actions';
 import { BEFORE_PURCHASE }               from './state/constants';
-import { contractStatus, info, notify }  from '../utils/broadcast';
+import { contractStatus, info, log }     from '../utils/broadcast';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
 
 let delayIndex = 0;
@@ -28,7 +28,7 @@ export default Engine =>
                 this.store.dispatch(purchaseSuccessful());
                 this.renewProposalsOnPurchase();
                 delayIndex = 0;
-                notify('info', `${localize('Bought')}: ${buy.longcode} (${localize('ID')}: ${buy.transaction_id})`);
+                log(`${localize('Bought')}: ${buy.longcode} (${localize('ID')}: ${buy.transaction_id})`);
                 info({
                     accountID      : this.accountInfo.loginid,
                     totalRuns      : this.updateAndReturnTotalRuns(),

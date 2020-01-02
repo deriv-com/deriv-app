@@ -9,4 +9,8 @@ export const contractSettled = c => globalObserver.emit('contract.settled', c);
 export const info = i => globalObserver.emit('bot.info', i);
 
 // TODO use api time
-export const notify = (className, message) => globalObserver.emit('Notify', { className, message, position: 'right' });
+export const notify = (className, message) => globalObserver.emit('ui.log.notify', { className, message });
+
+export const log = (message) => globalObserver.emit('ui.log.success', {message });
+
+export const error = (message) => globalObserver.emit('ui.log.success', {message });

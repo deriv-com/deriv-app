@@ -1,6 +1,6 @@
 import { getRoundedNumber }           from 'deriv-shared/utils/currency';
 import { localize }                   from 'deriv-translations';
-import { info, notify }               from '../utils/broadcast';
+import { info, log }                  from '../utils/broadcast';
 import createError                    from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
 
@@ -66,9 +66,9 @@ export default Engine =>
             });
 
             if (win) {
-                notify('success', `${localize('Profit amount')}: ${profit}`);
+                log(`${localize('Profit amount')}: ${profit}`);
             } else {
-                notify('warn', `${localize('Loss amount')}: ${profit}`);
+                log(`${localize('Loss amount')}: ${profit}`);
             }
         }
 

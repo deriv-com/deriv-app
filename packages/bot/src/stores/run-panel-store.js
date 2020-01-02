@@ -195,7 +195,7 @@ export default class RunPanelStore {
         observer.register('ui.log.success', journal.onLogSuccess);
         observer.register('ui.log.error', this.onError);
         observer.register('Error', this.onError);
-        observer.register('Notify', journal.onNotify);
+        observer.register('ui.log.notify', journal.onNotify);
     }
 
     @action.bound
@@ -291,7 +291,7 @@ export default class RunPanelStore {
         observer.unregisterAll('ui.log.success');
         observer.unregisterAll('ui.log.error');
         observer.unregisterAll('Error');
-        observer.unregisterAll('Notify');
+        observer.unregisterAll('ui.log.notify');
     }
 
     // #endregion

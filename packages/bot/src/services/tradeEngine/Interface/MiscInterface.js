@@ -6,7 +6,7 @@ export default Interface =>
     class extends Interface {
         getMiscInterface() {
             return {
-                notify        : args => globalObserver.emit('Notify', args),
+                notify        : args => globalObserver.emit('ui.log.notify', args),
                 notifyTelegram: (access_token, chat_id, text) => {
                     const url = `https://api.telegram.org/bot${access_token}/sendMessage`;
                     const onError = () => notify('warn', localize('The Telegram notification could not be sent'));

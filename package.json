@@ -6,7 +6,7 @@
     "lerna": "^3.15.0"
   },
   "scripts": {
-    "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --scope=@deriv/${1:-'*'} && lerna link && npm run build:travis ;}; f",
+    "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --scope=@deriv/${1:-'*'} && lerna link && npm run build:travis ;}; f",
     "build": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build $2 ;}; f",
     "build:local": "f () { lerna exec --scope @deriv/trader --scope @deriv/bot --parallel -- npm run build $1 ;}; f",
     "build:travis": "lerna exec --scope @deriv/shared --scope @deriv/components --scope @deriv/translations --scope @deriv/p2p -- npm run build:travis",

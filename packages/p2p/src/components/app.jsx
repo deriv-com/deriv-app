@@ -69,7 +69,7 @@ class App extends Component {
         }
 
         return (
-            <AgentProvider value={this.state.is_agent}>
+            <AgentProvider value={{ is_agent: this.state.is_agent }}>
                 <main className={classNames('deriv-p2p', className)}>
                     {this.state.is_agent ?
                         <Tabs onTabItemClick={this.handleTabClick} active_index={active_index} top>

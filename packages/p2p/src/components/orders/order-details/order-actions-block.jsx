@@ -6,7 +6,7 @@ import { localize }  from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 
 const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
-    const is_agent = React.useContext(AgentContext);
+    const { is_agent } = React.useContext(AgentContext);
     const {
         display_offer_amount,
         display_transaction_amount,

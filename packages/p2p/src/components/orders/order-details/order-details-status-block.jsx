@@ -4,7 +4,7 @@ import AgentContext from 'Components/context/agent-context';
 import { localize } from 'Components/i18next';
 
 const OrderDetailsStatusBlock = ({ order_details }) => {
-    const is_agent = React.useContext(AgentContext);
+    const { is_agent } = React.useContext(AgentContext);
     const {
         is_buyer,
         is_buyer_cancelled,

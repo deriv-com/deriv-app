@@ -4,7 +4,7 @@ import AgentContext from 'Components/context/agent-context';
 import { localize } from 'Components/i18next';
 
 const OrderDetailsResultMessage = ({ order_details }) => {
-    const is_agent = React.useContext(AgentContext);
+    const { is_agent } = React.useContext(AgentContext);
     const {
         is_seller_confirmed,
         is_completed,

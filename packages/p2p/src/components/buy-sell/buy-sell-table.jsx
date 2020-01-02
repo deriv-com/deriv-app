@@ -8,7 +8,7 @@ import { SellTable } from './sell-table.jsx';
 
 export const BuySellTable = ({ setSelectedAd, table_type }) => {
     const is_buy = table_type === 'buy';
-    const is_agent = React.useContext(AgentContext);
+    const { is_agent } = React.useContext(AgentContext);
 
     // TODO: [p2p-cleanup] cleanup repetition of header
     return (

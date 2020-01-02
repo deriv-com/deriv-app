@@ -27,7 +27,7 @@ BuySellRowLoader.propTypes = {
 };
 
 export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) => {
-    const is_agent = React.useContext(AgentContext);
+    const { is_agent } = React.useContext(AgentContext);
 
     return (
         <div style={style}>

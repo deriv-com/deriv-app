@@ -34,7 +34,7 @@ const OrderDetails = ({
     const [show_popup, setShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
 
-    const is_agent = React.useContext(AgentContext);
+    const { is_agent } = React.useContext(AgentContext);
     const onCancelClick = () => setShowPopup(false);
 
     const handleShowPopup = (options) => {

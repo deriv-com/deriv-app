@@ -99,6 +99,7 @@
     &__table {
         &_row {
             cursor: pointer;
+            padding-left: 1rem;
 
             &:hover {
                 background: var(--general-hover);
@@ -106,7 +107,7 @@
         }
         &_link {
             color: var(--brand-red-coral);
-            padding-left: 1rem;
+            font-weight: bold;
         }
     }
 }

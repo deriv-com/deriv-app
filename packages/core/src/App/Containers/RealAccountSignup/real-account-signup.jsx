@@ -241,7 +241,6 @@ export default connect(({ ui, client, modules }) => ({
     is_real_acc_signup_on    : ui.is_real_acc_signup_on,
     closeRealAccountSignup   : ui.closeRealAccountSignup,
     closeSignupAndOpenCashier: ui.closeSignupAndOpenCashier,
-    enableMt5PasswordModal   : modules.mt5.enableMt5PasswordModal,
     setParams                : ui.setRealAccountSignupParams,
     state_value              : ui.real_account_signup,
 }))(withRouter(RealAccountSignup));

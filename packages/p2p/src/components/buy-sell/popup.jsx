@@ -22,7 +22,11 @@ class Popup extends Component {
         const { ad } = this.props;
         setStatus({ error_message: '' });
 
-        const order = await requestWS({ p2p_order_create: 1, amount: values.receive, offer_id: ad.offer_id });
+        const order = await requestWS({
+            p2p_order_create: 1,
+            amount          : ad.type === 'buy' ? values.receive : values.send,
+            offer_id        : ad.offer_id,
+        });
 
         if (!order.error) {
             const order_info = await requestWS({ p2p_order_info: 1, order_id: order.p2p_order_create.order_id });

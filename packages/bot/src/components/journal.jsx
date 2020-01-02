@@ -96,7 +96,7 @@ const Journal = ({
         <ThemedScrollbars
             className='journal'
             autoHide
-            style={{ height: 'var(--drawer-scroll-height)' }}
+            style={{ height: 'calc(var(--drawer-scroll-height) + 41px)' }}
         >
             <table className='journal__table'>
                 <thead className='journal__table--header'>

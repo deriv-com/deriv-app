@@ -24,6 +24,8 @@ export default class UIStore extends BaseStore {
     @observable is_positions_drawer_on      = false;
     @observable is_reports_visible          = false;
     @observable is_cashier_visible          = false;
+    @observable should_show_stop_loss_warning = true;
+    @observable should_show_deal_cancellation_warning = true;
 
     // Extensions
     @observable footer_extension         = undefined;
@@ -468,6 +470,16 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleSetResidenceModal(state_change = !this.is_set_residence_modal_visible) {
         this.is_set_residence_modal_visible = state_change;
+    }
+
+    @action.bound
+    toggleStopLossWarning() {
+        this.should_show_stop_loss_warning = !this.should_show_stop_loss_warning;
+    }
+
+    @action.bound
+    toggleDealCancellationWarning() {
+        this.should_show_deal_cancellation_warning = !this.should_show_deal_cancellation_warning;
     }
 
     @action.bound

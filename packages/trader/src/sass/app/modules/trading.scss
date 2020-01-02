@@ -308,6 +308,17 @@
             align-self: flex-end;
         }
     }
+    &__popover {
+        /* postcss-bem-linter: ignore */
+        .dc-checkbox {
+            margin-top: 0.8rem;
+
+            /* postcss-bem-linter: ignore */
+            &__label {
+                font-size: inherit;
+            }
+        }
+    }
     /* postcss-bem-linter: ignore */
     .symbols.disabled {
         color: var(--text-disabled);

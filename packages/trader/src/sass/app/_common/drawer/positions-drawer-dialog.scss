@@ -1,4 +1,3 @@
-
 /** @define positions-drawer-dialog; weak */
 .positions-drawer-dialog {
     position: fixed;
@@ -48,7 +47,6 @@
         float: right;
         margin: 3px;
     }
-
     &:hover {
         cursor: pointer;
         border-color: var(--button-secondary-default);

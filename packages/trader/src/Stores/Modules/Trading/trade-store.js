@@ -204,6 +204,12 @@ export default class TradeStore extends BaseStore {
                 this.contract_expiry_type = this.duration_unit === 't' ? 'tick' : 'intraday';
             }
         );
+        reaction(
+            () => this.has_deal_cancellation,
+            () => {
+                this.validation_errors = {};
+            }
+        );
     }
 
     @computed

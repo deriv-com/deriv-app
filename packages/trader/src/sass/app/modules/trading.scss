@@ -284,6 +284,14 @@
 
         .purchase-container__option {
             flex-grow: 1;
+
+            // remove selector below when new button design is implemented
+            &:not(:only-child):nth-last-child(1) {
+                // remove selector below when new button design is implemented
+                .trade-container__price {
+                    margin-top: unset;
+                }
+            }
         }
     }
     &__option {

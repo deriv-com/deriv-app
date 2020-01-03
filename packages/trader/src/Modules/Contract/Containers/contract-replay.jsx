@@ -48,6 +48,7 @@ class ContractReplay extends React.Component {
     render() {
         const {
             contract_info,
+            contract_update_history,
             digits_info,
             display_status,
             error_message,
@@ -59,6 +60,7 @@ class ContractReplay extends React.Component {
             is_valid_to_cancel,
             location,
             onClickCancel,
+            onClickContractUpdate,
             NotificationMessages,
             onClickSell,
             removeError,
@@ -70,11 +72,13 @@ class ContractReplay extends React.Component {
             <div id='dt_contract_replay_container' className='trade-container__replay' ref={this.setWrapperRef}>
                 <ContractDrawer
                     contract_info={contract_info}
+                    contract_update_history={contract_update_history}
                     is_dark_theme={is_dark_theme}
                     is_from_reports={is_from_table_row}
                     is_sell_requested={is_sell_requested}
                     is_valid_to_cancel={is_valid_to_cancel}
                     onClickCancel={onClickCancel}
+                    onClickContractUpdate={onClickContractUpdate}
                     onClickSell={onClickSell}
                     status={indicative_status}
                 />
@@ -147,24 +151,26 @@ export default withRouter(connect(
         const contract_replay = modules.contract_replay;
         const contract_store  = contract_replay.contract_store;
         return ({
-            contract_info       : contract_store.contract_info,
-            digits_info         : contract_store.digits_info,
-            display_status      : contract_store.display_status,
-            error_message       : contract_replay.error_message,
-            is_digit_contract   : contract_store.is_digit_contract,
-            is_ended            : contract_store.is_ended,
-            is_sell_requested   : contract_replay.is_sell_requested,
-            is_valid_to_cancel  : contract_replay.is_valid_to_cancel,
-            onClickCancel       : contract_replay.onClickCancel,
-            onClickSell         : contract_replay.onClickSell,
-            onMount             : contract_replay.onMount,
-            onUnmount           : contract_replay.onUnmount,
-            removeError         : contract_replay.removeErrorMessage,
-            indicative_status   : contract_replay.indicative_status,
-            is_chart_loading    : contract_replay.is_chart_loading,
-            is_dark_theme       : ui.is_dark_mode_on,
-            has_service_error   : ui.is_services_error_visible,
-            NotificationMessages: ui.notification_messages_ui,
+            contract_info          : contract_store.contract_info,
+            contract_update_history: contract_store.contract_update_history,
+            digits_info            : contract_store.digits_info,
+            display_status         : contract_store.display_status,
+            error_message          : contract_replay.error_message,
+            is_digit_contract      : contract_store.is_digit_contract,
+            is_ended               : contract_store.is_ended,
+            is_sell_requested      : contract_replay.is_sell_requested,
+            is_valid_to_cancel     : contract_replay.is_valid_to_cancel,
+            onClickCancel          : contract_replay.onClickCancel,
+            onClickContractUpdate  : contract_store.onClickContractUpdate,
+            onClickSell            : contract_replay.onClickSell,
+            onMount                : contract_replay.onMount,
+            onUnmount              : contract_replay.onUnmount,
+            removeError            : contract_replay.removeErrorMessage,
+            indicative_status      : contract_replay.indicative_status,
+            is_chart_loading       : contract_replay.is_chart_loading,
+            is_dark_theme          : ui.is_dark_mode_on,
+            has_service_error      : ui.is_services_error_visible,
+            NotificationMessages   : ui.notification_messages_ui,
         });
     }
 )(ContractReplay));

@@ -3,6 +3,7 @@ import {
     extendObservable,
     observable,
     toJS,
+    runInAction,
 } from 'mobx';
 import { WS }                 from 'Services/ws-methods';
 import { createChartMarkers } from './Helpers/chart-markers';
@@ -126,18 +127,26 @@ export default class ContractStore {
     }
 
     @action.bound
-    onClickContractUpdate() {
+    onClickContractUpdate(update_limit_order = true) {
         const limit_order = getLimitOrder(this.contract_update);
-
-        WS.contractUpdate(this.contract_id, limit_order).then(response => {
+        const req = {
+            history: 1,
+            ...(update_limit_order ? { limit_order } : {}),
+        };
+        WS.contractUpdate(this.contract_id, req).then(response => {
             if (response.error) {
                 this.root_store.common.setServicesError({
                     type: response.msg_type,
                     ...response.error,
                 });
                 this.root_store.ui.toggleServicesErrorModal(true);
-            } else {
-                this.contract_update.has_limit_order = false;
+            } else if (response.contract_update.history) {
+                runInAction(() =>
+                    this.root_store.modules
+                        .contract_replay
+                        .contract_store
+                        .contract_update_history = response.contract_update.history
+                );
             }
         });
     }

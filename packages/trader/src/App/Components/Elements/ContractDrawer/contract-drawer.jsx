@@ -38,8 +38,10 @@ class ContractDrawer extends Component {
     
         const {
             contract_info,
+            contract_update_history,
             is_sell_requested,
             onClickCancel,
+            onClickContractUpdate,
             onClickSell,
         } = this.props;
 
@@ -59,6 +61,7 @@ class ContractDrawer extends Component {
                 />
                 <ContractAudit
                     contract_info={contract_info}
+                    contract_update_history={contract_update_history}
                     contract_end_time={getEndTime(contract_info)}
                     is_multiplier={is_multiplier}
                     is_open={true}
@@ -67,6 +70,7 @@ class ContractDrawer extends Component {
                     duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                     exit_spot={exit_spot}
                     has_result={!!(is_sold) || is_multiplier}
+                    onClickContractUpdate={onClickContractUpdate}
                 />
             </React.Fragment>
         );
@@ -124,11 +128,13 @@ class ContractDrawer extends Component {
 }
 
 ContractDrawer.propTypes = {
-    contract_info    : PropTypes.object,
-    is_from_reports  : PropTypes.bool,
-    is_sell_requested: PropTypes.bool,
-    onClickSell      : PropTypes.func,
-    status           : PropTypes.string,
+    contract_info        : PropTypes.object,
+    is_from_reports      : PropTypes.bool,
+    is_sell_requested    : PropTypes.bool,
+    onClickCancel        : PropTypes.func,
+    onClickContractUpdate: PropTypes.func,
+    onClickSell          : PropTypes.func,
+    status               : PropTypes.string,
 };
 
 export default withRouter(ContractDrawer);

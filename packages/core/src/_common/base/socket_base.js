@@ -250,10 +250,10 @@ const BinarySocketBase = (() => {
     const tncApproval = () =>
         deriv_api.send({ tnc_approval: '1' });
     
-    const contractUpdate = (contract_id, limit_order) => deriv_api.send({
+    const contractUpdate = (contract_id, req) => deriv_api.send({
         contract_update: 1,
         contract_id,
-        limit_order,
+        ...req,
     });
 
     const cancel = (contract_id) => deriv_api.send({

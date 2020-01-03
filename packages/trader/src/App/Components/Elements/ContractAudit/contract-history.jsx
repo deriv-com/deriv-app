@@ -3,11 +3,12 @@ import React             from 'react';
 import {
     Money,
     ThemedScrollbars }   from 'deriv-components';
+import { localize }      from 'deriv-translations';
 import ContractAuditItem from './contract-audit-item.jsx';
 
 const ContractHistory = ({
-    audit = [],
     currency,
+    history = [],
 }) => (
     <ThemedScrollbars
         style={{ width: '100%', height: '100%' }}
@@ -15,16 +16,22 @@ const ContractHistory = ({
     >
         <div style={{ padding: '0.8rem 1.6rem' }}>
             {
-                audit.map((item, key) => (
+                history.map((item, key) => (
                     <ContractAuditItem
                         key={key}
                         id={`dt_history_label_${key}`}
                         label={item.display_name}
                         timestamp={item.order_date}
-                        value={<Money
-                            amount={item.order_amount}
-                            currency={currency}
-                        />
+                        value={Math.abs(+item.order_amount) !== 0 ?
+                            <React.Fragment>
+                                {+item.order_amount < 0 && <strong>-</strong>}
+                                <Money
+                                    amount={item.order_amount}
+                                    currency={currency}
+                                />
+                            </React.Fragment>
+                            :
+                            localize('Cancelled')
                         }
                     />)
                 )
@@ -34,8 +41,8 @@ const ContractHistory = ({
 );
 
 ContractHistory.propTypes = {
-    audit   : PropTypes.array,
     currency: PropTypes.string,
+    history : PropTypes.array,
 };
 
 export default ContractHistory;

@@ -1,6 +1,6 @@
 import React                   from 'react';
 import PropTypes               from 'prop-types';
-import { Button }              from 'deriv-components';
+import { Button, Popover }     from 'deriv-components';
 import InputWithCheckbox       from 'App/Components/Form/InputField/input-with-checkbox.jsx';
 import { localize }            from 'deriv-translations';
 import { connect }             from 'Stores/connect';
@@ -92,6 +92,22 @@ class ContractUpdateForm extends React.Component {
             || (has_take_profit && take_profit_error_messages && take_profit_error_messages.length)
         );
 
+        const stop_loss_input = (
+            <InputWithCheckbox
+                classNameInlinePrefix='trade-container__currency'
+                currency={currency}
+                defaultChecked={has_stop_loss}
+                error_messages={has_stop_loss ? stop_loss_error_messages : undefined}
+                is_single_currency={true}
+                is_negative_disabled={true}
+                label={localize('Stop loss')}
+                name='contract_update_stop_loss'
+                onChange={onChange}
+                value={stop_loss}
+                is_disabled={!!is_valid_to_cancel}
+            />
+        );
+
         return (
             <React.Fragment>
                 <div className='positions-drawer-dialog__input'>
@@ -109,19 +125,19 @@ class ContractUpdateForm extends React.Component {
                     />
                 </div>
                 <div className='positions-drawer-dialog__input'>
-                    <InputWithCheckbox
-                        classNameInlinePrefix='trade-container__currency'
-                        currency={currency}
-                        defaultChecked={has_stop_loss}
-                        error_messages={has_stop_loss ? stop_loss_error_messages : undefined}
-                        is_single_currency={true}
-                        is_negative_disabled={true}
-                        label={localize('Stop loss')}
-                        name='contract_update_stop_loss'
-                        onChange={onChange}
-                        value={stop_loss}
-                        is_disabled={!!is_valid_to_cancel}
-                    />
+                    {is_valid_to_cancel ?
+                        <Popover
+                            alignment='right'
+                            margin={4}
+                            message={localize('You can update stop loss once deal cancellation is expired.')}
+                        >
+                            {stop_loss_input}
+                        </Popover>
+                        :
+                        <React.Fragment>
+                            {stop_loss_input}
+                        </React.Fragment>
+                    }
                 </div>
                 <div className='positions-drawer-dialog__button'>
                     <Button

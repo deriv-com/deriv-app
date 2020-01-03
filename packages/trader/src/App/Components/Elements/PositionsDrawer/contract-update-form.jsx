@@ -129,7 +129,7 @@ class ContractUpdateForm extends React.Component {
                         <Popover
                             alignment='right'
                             margin={4}
-                            message={localize('You can update stop loss once deal cancellation is expired.')}
+                            message={localize('You may set a stop loss amount after deal cancellation has expired.')}
                         >
                             {stop_loss_input}
                         </Popover>

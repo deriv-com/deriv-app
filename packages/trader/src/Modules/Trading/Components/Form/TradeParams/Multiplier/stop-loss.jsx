@@ -1,4 +1,3 @@
-import { Popover }            from 'deriv-components';
 import PropTypes              from 'prop-types';
 import React                  from 'react';
 import { localize }           from 'deriv-translations';
@@ -33,36 +32,33 @@ const StopLoss = ({
 
     const should_show_popover = has_deal_cancellation && should_show_stop_loss_warning;
 
+    const checkbox_tooltip_label = (
+        <PopoverMessageCheckbox
+            defaultChecked={!should_show_stop_loss_warning}
+            message={localize('You may choose either stop loss or deal cancellation. You may set a stop loss amount after deal cancellation has expired.')}
+            name='should_show_stop_loss_warning'
+            onChange={toggleStopLossWarning}
+        />
+    );
+
     return (
         <Fieldset className='trade-container__fieldset'>
-            <Popover
-                alignment='left'
-                classNameBubble='trade-container__popover'
-                is_open={should_show_popover}
-                margin={2}
-                message={<PopoverMessageCheckbox
-                    defaultChecked={!should_show_stop_loss_warning}
-                    message={localize('You may choose either stop loss or deal cancellation. You may set a stop loss amount after deal cancellation has expired.')}
-                    name='should_show_stop_loss_warning'
-                    onChange={toggleStopLossWarning}
-                />}
-            >
-                <InputWithCheckbox
-                    className='trade-container__amount'
-                    classNameInlinePrefix='trade-container__currency'
-                    classNameInput='trade-container__input'
-                    currency={currency}
-                    defaultChecked={has_stop_loss}
-                    error_messages={has_stop_loss ? validation_errors.stop_loss : undefined}
-                    is_single_currency={is_single_currency}
-                    is_negative_disabled={true}
-                    label={localize('Stop loss')}
-                    name='stop_loss'
-                    onChange={changeValue}
-                    tooltip_label={localize('Your contract is closed automatically when your loss is more than or equals to this amount.')}
-                    value={stop_loss}
-                />
-            </Popover>
+            <InputWithCheckbox
+                className='trade-container__amount'
+                classNameInlinePrefix='trade-container__currency'
+                classNameInput='trade-container__input'
+                currency={currency}
+                defaultChecked={has_stop_loss}
+                error_messages={has_stop_loss ? validation_errors.stop_loss : undefined}
+                is_single_currency={is_single_currency}
+                is_negative_disabled={true}
+                label={localize('Stop loss')}
+                name='stop_loss'
+                onChange={changeValue}
+                checkbox_tooltip_label={should_show_popover ? checkbox_tooltip_label : undefined}
+                tooltip_label={localize('Your contract is closed automatically when your loss is more than or equals to this amount.')}
+                value={stop_loss}
+            />
         </Fieldset>
     );
 };

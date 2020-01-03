@@ -24,6 +24,7 @@ const InputWithCheckbox = ({
     label,
     name,
     onChange,
+    checkbox_tooltip_label,
     tooltip_label,
     value,
 }) => {
@@ -53,7 +54,7 @@ const InputWithCheckbox = ({
         }
     };
 
-    const input =
+    const input = (
         <InputField
             className={className}
             classNameInlinePrefix={classNameInlinePrefix}
@@ -75,22 +76,41 @@ const InputWithCheckbox = ({
             onClickInputWrapper={is_disabled ? undefined : enableInputOnClick}
             type='tel'
             value={value}
-        />;
+        />
+    );
+
+    const checkbox = (
+        <Checkbox
+            className={`${name}-checkbox__input`}
+            ref={checkboxRef}
+            id={`dt_${name}-checkbox_input`}
+            onChange={changeValue}
+            name={checkboxName}
+            label={label}
+            classNameLabel={`${name}-checkbox__label`}
+            defaultChecked={defaultChecked}
+            disabled={is_disabled}
+        />
+    );
 
     return (
         <React.Fragment>
             <div className='input-wrapper--inline'>
-                <Checkbox
-                    className={`${name}-checkbox__input`}
-                    ref={checkboxRef}
-                    id={`dt_${name}-checkbox_input`}
-                    onChange={changeValue}
-                    name={checkboxName}
-                    label={label}
-                    classNameLabel={`${name}-checkbox__label`}
-                    defaultChecked={defaultChecked}
-                    disabled={is_disabled}
-                />
+                {checkbox_tooltip_label ?
+                    <Popover
+                        alignment='left'
+                        classNameBubble='trade-container__popover'
+                        is_bubble_hover_enabled
+                        margin={2}
+                        message={checkbox_tooltip_label}
+                    >
+                        {checkbox}
+                    </Popover>
+                    :
+                    <React.Fragment>
+                        {checkbox}
+                    </React.Fragment>
+                }
                 {tooltip_label &&
                     <Popover
                         alignment='left'
@@ -107,6 +127,11 @@ const InputWithCheckbox = ({
 };
 
 InputWithCheckbox.propTypes = {
+    checkbox_tooltip_label: PropTypes.oneOfType([
+        PropTypes.node,
+        PropTypes.object,
+        PropTypes.string,
+    ]),
     className            : PropTypes.string,
     classNameInlinePrefix: PropTypes.string,
     classNameInput       : PropTypes.string,

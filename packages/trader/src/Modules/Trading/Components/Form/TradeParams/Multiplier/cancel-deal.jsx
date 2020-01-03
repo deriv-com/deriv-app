@@ -32,29 +32,43 @@ const CancelDeal = ({
 
     const should_show_popover = has_stop_loss && should_show_deal_cancellation_warning;
 
+    const onMouseEnter = e => {
+        console.log(e);
+    };
+    const input = (
+        <Checkbox
+            id='dt_deal_cancellation-checkbox_input'
+            onChange={changeValue}
+            name='has_deal_cancellation'
+            label={localize('Deal cancellation')}
+            defaultChecked={has_deal_cancellation}
+            onMouseEnter={onMouseEnter}
+        />
+    );
+
     return (
         <Fieldset className='trade-container__fieldset'>
             <div className='input-wrapper--inline'>
-                <Popover
-                    alignment='left'
-                    classNameBubble='trade-container__popover'
-                    is_open={should_show_popover}
-                    margin={2}
-                    message={<PopoverMessageCheckbox
-                        defaultChecked={!should_show_deal_cancellation_warning}
-                        message={localize('You may choose either stop loss or deal cancellation.')}
-                        name='should_show_deal_cancellation_warning'
-                        onChange={toggleDealCancellationWarning}
-                    />}
-                >
-                    <Checkbox
-                        id='dt_deal_cancellation-checkbox_input'
-                        onChange={changeValue}
-                        name='has_deal_cancellation'
-                        label={localize('Deal cancellation')}
-                        defaultChecked={has_deal_cancellation}
-                    />
-                </Popover>
+                {should_show_popover ?
+                    <Popover
+                        alignment='left'
+                        classNameBubble='trade-container__popover'
+                        is_bubble_hover_enabled
+                        margin={2}
+                        message={<PopoverMessageCheckbox
+                            defaultChecked={!should_show_deal_cancellation_warning}
+                            message={localize('You may choose either stop loss or deal cancellation.')}
+                            name='should_show_deal_cancellation_warning'
+                            onChange={toggleDealCancellationWarning}
+                        />}
+                    >
+                        {input}
+                    </Popover>
+                    :
+                    <React.Fragment>
+                        {input}
+                    </React.Fragment>
+                }
                 <Popover
                     alignment='left'
                     icon='info'

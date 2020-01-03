@@ -17,7 +17,7 @@ const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
     } = data;
 
     return (
-        <div onClick={() => onOpenDetails(data)} style={style} className='orders__table_row'>
+        <div onClick={() => onOpenDetails(data)} style={style} className='orders__table-row'>
             <Table.Row>
                 <Table.Cell>
                     <span>

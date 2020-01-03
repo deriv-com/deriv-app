@@ -1,6 +1,6 @@
 import {
     Icon,
-    Popover }          from 'deriv-components';
+    Popover }          from '@deriv/components';
 import PropTypes       from 'prop-types';
 import React           from 'react';
 import IconTradeType   from 'Assets/Trading/Types/icon-trade-types.jsx';

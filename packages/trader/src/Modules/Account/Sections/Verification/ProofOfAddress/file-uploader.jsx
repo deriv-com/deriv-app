@@ -3,9 +3,9 @@ import classNames       from 'classnames';
 import React            from 'react';
 import {
     FileDropzone,
-    Icon }              from 'deriv-components';
+    Icon }              from '@deriv/components';
 import { WS }           from 'Services/ws-methods';
-import { localize }     from 'deriv-translations';
+import { localize }     from '@deriv/translations';
 import {
     compressImageFiles,
     readFiles,

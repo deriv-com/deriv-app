@@ -1,4 +1,4 @@
-import { localize }      from 'deriv-translations';
+import { localize }      from '@deriv/translations';
 import { plusIconLight } from '../../images';
 
 Blockly.Blocks.procedures_defnoreturn = {
@@ -75,7 +75,7 @@ Blockly.Blocks.procedures_defnoreturn = {
         if (this.isInFlyout) {
             return;
         }
-        
+
         // Wrap in setTimeout so block doesn't stick to mouse (Blockly.Events.END_DRAG event isn't blocked).
         setTimeout(() => {
             const promptMessage = localize('Specify a parameter name:');

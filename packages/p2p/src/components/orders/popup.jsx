@@ -7,7 +7,7 @@ import {
 import {
     Checkbox,
     Button,
-    ThemedScrollbars }      from 'deriv-components';
+    ThemedScrollbars }      from '@deriv/components';
 import FormError            from '../form/error.jsx';
 import { localize }         from '../i18next';
 import IconClose            from '../../assets/icon-close.jsx';
@@ -138,5 +138,5 @@ Popup.propTypes = {
     order            : PropTypes.object,
     title            : PropTypes.string,
 };
- 
+
 export default Popup;

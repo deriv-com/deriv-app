@@ -3,7 +3,7 @@ import { observer }         from 'mobx-react';
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import { CSSTransition }    from 'react-transition-group';
-import { Icon }             from 'deriv-components';
+import { Icon }             from '@deriv/components';
 import InputField           from 'App/Components/Form/InputField';
 import {
     addDays,
@@ -12,7 +12,7 @@ import {
     getStartOfMonth,
     isDateValid,
     toMoment }              from 'Utils/Date';
-import { localize }         from 'deriv-translations';
+import { localize }         from '@deriv/translations';
 import { getTradingEvents } from './helpers';
 import Calendar             from '../../Elements/Calendar';
 

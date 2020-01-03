@@ -7,9 +7,9 @@ import {
     runInAction,
     toJS,
 }                                     from 'mobx';
-import CurrencyUtils                  from 'deriv-shared/utils/currency';
-import ObjectUtils                    from 'deriv-shared/utils/object';
-import { localize }                   from 'deriv-translations';
+import CurrencyUtils                  from '@deriv/shared/utils/currency';
+import ObjectUtils                    from '@deriv/shared/utils/object';
+import { localize }                   from '@deriv/translations';
 import { WS }                         from 'Services/ws-methods';
 import {
     isDigitContractType,

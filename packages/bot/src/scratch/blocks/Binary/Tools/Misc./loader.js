@@ -1,4 +1,4 @@
-import { localize }                   from 'deriv-translations';
+import { localize }                   from '@deriv/translations';
 import { loadBlocksFromRemote }       from '../../../../utils';
 import { observer as globalObserver } from '../../../../../utils/observer';
 

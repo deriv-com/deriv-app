@@ -1,5 +1,5 @@
 const expect   = require('chai').expect;
-const Currency = require('deriv-shared/utils/currency');
+const Currency = require('@deriv/shared/utils/currency');
 
 describe('Currency', () => {
     const currencies_config = {

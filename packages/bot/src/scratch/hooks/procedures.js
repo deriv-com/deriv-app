@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 
 /**
  * Construct the blocks required by the flyout for the procedure category.
@@ -72,7 +72,7 @@ Blockly.Procedures.populateDynamicProcedures = function(tuple) {
         for (let i = 0; i < procedureList.length; i++) {
             const name = procedureList[i][0];
             const args = procedureList[i][1];
-    
+
             // <block type="procedures_callnoreturn" gap="16">
             //   <mutation name="do something">
             //     <arg name="x"></arg>
@@ -85,13 +85,13 @@ Blockly.Procedures.populateDynamicProcedures = function(tuple) {
             const mutation = document.createElement('mutation');
             mutation.setAttribute('name', name);
             block.appendChild(mutation);
-    
+
             args.forEach(argumentName => {
                 const arg = document.createElement('arg');
                 arg.setAttribute('name', argumentName);
                 mutation.appendChild(arg);
             });
-    
+
             xml.push(block);
         }
 

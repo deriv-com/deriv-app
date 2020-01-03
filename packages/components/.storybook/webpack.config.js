@@ -18,7 +18,7 @@ module.exports = async ({ config, mode }) => {
                 loader: 'sass-resources-loader',
                 options: {
                     // Provide path to the file with resources
-                    resources: require('deriv-shared/utils/index.js'),
+                    resources: require('@deriv/shared/utils/index.js'),
                 },
             },
         ],
@@ -55,7 +55,7 @@ module.exports = async ({ config, mode }) => {
         new CopyPlugin([
             { from: path.resolve(__dirname, '../lib/icon/sprite'), to: 'public/images/sprite', toType: 'dir' },
 		])
-    )
+    );
     // Return the altered config
     return config;
 };

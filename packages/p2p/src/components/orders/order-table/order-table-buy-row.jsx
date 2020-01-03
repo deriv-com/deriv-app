@@ -22,11 +22,11 @@ const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
                 <Table.Cell>
                     <span>
                         { localize('Buy') }<br />
-                        <a
-                            className='orders__table_link'
+                        <span
+                            className='orders__table-id'
                         >
                             { order_id }
-                        </a>
+                        </span>
                     </span>
                 </Table.Cell>
                 <Table.Cell>{ order_purchase_datetime }</Table.Cell>

@@ -4,6 +4,7 @@
     &__button {
         font-size: 14px;
         padding: 8px;
+        cursor: pointer;
 
         &--active {
             border-bottom: 2px solid var(--brand-red-coral);

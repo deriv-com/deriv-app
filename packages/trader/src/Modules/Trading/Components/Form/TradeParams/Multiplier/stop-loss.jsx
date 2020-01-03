@@ -7,6 +7,7 @@ import { connect }            from 'Stores/connect';
 import PopoverMessageCheckbox from 'Modules/Trading/Components/Elements/popover-message-checkbox.jsx';
 
 const StopLoss = ({
+    amount,
     currency,
     has_deal_cancellation,
     has_stop_loss,
@@ -53,6 +54,7 @@ const StopLoss = ({
                 is_single_currency={is_single_currency}
                 is_negative_disabled={true}
                 label={localize('Stop loss')}
+                max_value={+amount}
                 name='stop_loss'
                 onChange={changeValue}
                 checkbox_tooltip_label={should_show_popover ? checkbox_tooltip_label : undefined}
@@ -64,6 +66,7 @@ const StopLoss = ({
 };
 
 StopLoss.propTypes = {
+    amount                       : PropTypes.string,
     currency                     : PropTypes.string,
     has_stop_loss                : PropTypes.bool,
     is_single_currency           : PropTypes.bool,
@@ -80,6 +83,7 @@ StopLoss.propTypes = {
 
 export default connect(({ modules, client, ui }) => ({
     is_single_currency           : client.is_single_currency,
+    amount                       : modules.trade.amount,
     currency                     : modules.trade.currency,
     has_deal_cancellation        : modules.trade.has_deal_cancellation,
     has_stop_loss                : modules.trade.has_stop_loss,

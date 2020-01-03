@@ -23,6 +23,7 @@ const InputWithCheckbox = ({
     is_negative_disabled,
     label,
     name,
+    max_value,
     onChange,
     checkbox_tooltip_label,
     tooltip_label,
@@ -71,6 +72,7 @@ const InputWithCheckbox = ({
             is_incrementable
             is_negative_disabled={is_negative_disabled}
             max_length={10}
+            max_value={max_value}
             name={name}
             onChange={onChange}
             onClickInputWrapper={is_disabled ? undefined : enableInputOnClick}
@@ -142,6 +144,7 @@ InputWithCheckbox.propTypes = {
     is_negative_disabled : PropTypes.bool,
     is_single_currency   : PropTypes.bool,
     label                : PropTypes.string,
+    max_value            : PropTypes.number,
     name                 : PropTypes.string,
     onChange             : PropTypes.func,
     tooltip_label        : PropTypes.string,

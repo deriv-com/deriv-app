@@ -135,12 +135,27 @@ export const getEndTime = (contract_info) => {
     return (date_expiry > exit_tick_time && !(+is_path_dependent)) ? date_expiry : exit_tick_time;
 };
 
-export const getProfitLossFromStore = (modules_store) => {
+export const getProfit = (modules_store) => {
     const { contract_replay, portfolio } = modules_store;
     const contract_id   = portfolio.active_positions_drawer_dialog_id;
     const contract_info = contract_replay.getContractById(contract_id).contract_info;
 
     return contract_info.profit;
+};
+
+export const getBuyPrice = (modules_store) => {
+    const { contract_replay, portfolio } = modules_store;
+    const contract_id   = portfolio.active_positions_drawer_dialog_id;
+    const contract_info = contract_replay.getContractById(contract_id).contract_info;
+
+    const  {
+        buy_price,
+        deal_cancellation: {
+            ask_price: deal_cancellation_price = 0,
+        } = {},
+    } = contract_info;
+
+    return buy_price - deal_cancellation_price;
 };
 
 /**

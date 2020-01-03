@@ -43,6 +43,10 @@ class ContractUpdateForm extends React.Component {
     render() {
         const {
             contract_info: {
+                buy_price,
+                deal_cancellation: {
+                    ask_price: deal_cancellation_price = 0,
+                } = {},
                 is_valid_to_cancel,
             },
             contract_update: {
@@ -101,6 +105,7 @@ class ContractUpdateForm extends React.Component {
                 is_single_currency={true}
                 is_negative_disabled={true}
                 label={localize('Stop loss')}
+                max_value={buy_price - deal_cancellation_price}
                 name='contract_update_stop_loss'
                 onChange={onChange}
                 value={stop_loss}

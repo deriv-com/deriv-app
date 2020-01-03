@@ -30,9 +30,9 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             ],
             args1: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'CURRENCY_LIST',
-                    options: config.lists.CURRENCY,
+                    type: 'field_label',
+                    name: 'CURRENCY_LIST',
+                    text: config.lists.CURRENCY[0],
                 },
                 {
                     type : 'input_value',
@@ -305,11 +305,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     },
     setCurrency(currency) {
         const currency_field   = this.getField('CURRENCY_LIST');
-        const dropdown_options = currency_field.menuGenerator_.map(o => o[1]); // eslint-disable-line
 
-        if (dropdown_options.includes(currency)) {
-            currency_field.setValue(currency);
-        }
+        currency_field.setText(currency);
     },
     domToMutation(xmlElement) {
         const has_first_barrier  = xmlElement.getAttribute('has_first_barrier') === 'true';

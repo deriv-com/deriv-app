@@ -3,7 +3,7 @@
         width: 0%;
     }
     100% {
-        width: calc(50% - 3.5px);
+        width: 51%;
     }
 }
 
@@ -12,7 +12,7 @@
         width: 50%;
     }
     100% {
-        width: calc(100% - 5px);
+        width: 100%;
     }
 }
 
@@ -50,7 +50,7 @@
 }
 
 .animation {
-    $static-circle-diameter: 6px;
+    $static-circle-diameter: 2px;
     $dynamic-circle-diameter: 10px;
     $animation: &;
 
@@ -75,16 +75,18 @@
         display: flex;
         justify-content: space-between;
         position: relative;
+        height: 6px;
 
         .circular-wrapper {
             width: $static-circle-diameter;
             height: $static-circle-diameter;
+            align-self: center;
             display: flex;
 
             .static-circle {
                 width: $static-circle-diameter;
                 height: $static-circle-diameter;
-                background-color: var(--border-normal);
+                background-color: $color-black-7;
                 border-radius: 100%;
                 align-self: center;
                 z-index: 1;
@@ -93,21 +95,28 @@
                 border-radius: 100%;
                 height: $dynamic-circle-diameter;
                 width: $dynamic-circle-diameter;
-                margin-left: -2px;
-                margin-top: -2px;
+                margin-left: -4px;
+                margin-top: -4px;
                 opacity: 0.32;
                 position: absolute;
+            }
+            &:nth-child(2) {
+                margin-left: 3px;
+            }
+            &:last-child {
+                margin-right: 3px;
             }
         }
         &-line {
             background-color: var(--border-normal);
-            height: 2px;
+            height: 100%;
             width: 100%;
-            top: 30%;
+            border-radius: $BORDER_RADIUS;
             position: absolute;
         }
         &-bar {
             background-color: var(--status-success);
+            border-radius: $BORDER_RADIUS;
             width: 0;
             height: 100%;
         }
@@ -116,7 +125,8 @@
             animation-fill-mode: forwards;
         }
         &-4 {
-            width: calc(50% - 3.5px);
+            width: 51%;
+            border-radius: 5px 0 0 5px;
         }
         &-5 {
             animation: animate-progress-complete 0.5s 1;
@@ -128,9 +138,7 @@
             .circular-wrapper {
                 &.completed, &.active {
                     .static-circle {
-                        background-color: var(--status-success);
-                        border: 2px solid var(--status-success);
-                        transform: scale(1.2);
+                        background-color: $color-green-2;
                     }
                 }
                 &.active {
@@ -144,11 +152,11 @@
                 }
                 .static-circle {
                     animation: animate-circle-appear 1s;
-                    background-color: var(--status-warning);
+                    background-color: $COLOR_CORAL_RED;
                 }
                 .dynamic-circle {
                     animation: animate-circle 1s;
-                    background-color: var(--status-warning);
+                    background-color: $COLOR_CORAL_RED;
                     transform: scale(0);
                 }
             }

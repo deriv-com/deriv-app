@@ -27,7 +27,6 @@ class PositionsDrawer extends React.Component {
             all_positions,
             error,
             currency,
-            is_empty,
             is_multiplier,
             is_positions_drawer_on,
             onClickCancel,
@@ -107,7 +106,16 @@ class PositionsDrawer extends React.Component {
                         })}
                 >
                     <div className='positions-drawer__header'>
-                        <span className='positions-drawer__title'>{ is_multiplier ? localize('Multiplier options on ') + symbol_display_name :  localize('Recent Positions')}</span>
+                        {is_multiplier ?
+                            <div className='positions-drawer__title'>
+                                <p>{localize('Multiplier options on')}</p>
+                                <p>{symbol_display_name}</p>
+                            </div>
+                            :
+                            <span className='positions-drawer__title'>
+                                {localize('Recent Positions')}
+                            </span>
+                        }
                         <div
                             id='dt_positions_drawer_close_icon'
                             className='positions-drawer__icon-close'

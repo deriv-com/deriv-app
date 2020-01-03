@@ -188,7 +188,7 @@ class OpenPositions extends React.Component {
                         top
                         header_fit_content
                     >
-                        <div label={ localize('Classic options') }>
+                        <div label={ localize('Exotic options') }>
                             <EmptyPlaceholderWrapper
                                 component_icon={component_icon}
                                 is_empty={active_positions_filtered.length === 0}

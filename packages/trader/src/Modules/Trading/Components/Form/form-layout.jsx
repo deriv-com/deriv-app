@@ -18,6 +18,8 @@ const FormLayout = ({
             ctor={() => import(/* webpackChunkName: "screen-small" */'./screen-small.jsx')}
             should_load={is_mobile}
             is_trade_enabled={is_trade_enabled}
+            is_dark_theme={is_dark_theme}
+            
         />
         :
         <ScreenLarge

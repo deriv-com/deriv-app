@@ -1,9 +1,9 @@
 import { isMobile } from 'deriv-shared/utils/screen';
 
-const Mobile = ({ children }) => {
+const MobileWrapper = ({ children }) => {
     if (!isMobile()) return null;
 
     return children;
 };
 
-export default Mobile;
+export default MobileWrapper;

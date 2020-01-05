@@ -2,8 +2,8 @@ import classNames                 from 'classnames';
 import PropTypes                  from 'prop-types';
 import React                      from 'react';
 import {
-    Desktop,
-    Mobile,
+    DesktopWrapper,
+    MobileWrapper,
 }                                 from 'deriv-components';
 import { localize }               from 'deriv-translations';
 import { getContractTypeDisplay } from 'Constants/contract';
@@ -82,7 +82,7 @@ const PurchaseButton = ({
                 onClickPurchase(info.id, info.stake, type);
             }}
         >
-            <Desktop>
+            <DesktopWrapper>
                 <div className='btn-purchase__info btn-purchase__info--left'>
                     <div className='btn-purchase__type-wrapper'>
                         <IconComponentWrapper />
@@ -101,8 +101,8 @@ const PurchaseButton = ({
                         <span className='btn-purchase__text'>{!(is_loading || is_disabled) ? info.returns : ''}</span>
                     </div>
                 </div>
-            </Desktop>
-            <Mobile>
+            </DesktopWrapper>
+            <MobileWrapper>
                 <div className='btn-purchase__top'>
                     <IconComponentWrapper />
                     <ButtonTextWrapper
@@ -123,7 +123,7 @@ const PurchaseButton = ({
                         type={type}
                     />
                 </div>
-            </Mobile>
+            </MobileWrapper>
         </button>
     );
 };

@@ -1,7 +1,7 @@
 import classNames     from 'classnames';
 import {
-    Desktop,
-    Mobile,
+    DesktopWrapper,
+    MobileWrapper,
     Popover }    from 'deriv-components';
 import React          from 'react';
 import PropTypes      from 'prop-types';
@@ -68,7 +68,7 @@ class PurchaseFieldset extends React.PureComponent {
                 {/* {(is_purchase_locked && index === 0) && */}
                 {/* <PurchaseLock onClick={togglePurchaseLock} /> */}
                 {/* } */}
-                <Desktop>
+                <DesktopWrapper>
                     <div
                         className={classNames(
                             'trade-container__fieldset-wrapper', {
@@ -130,10 +130,10 @@ class PurchaseFieldset extends React.PureComponent {
                             }
                         </div>
                     </div>
-                </Desktop>
-                <Mobile>
+                </DesktopWrapper>
+                <MobileWrapper>
                     {purchase_button}
-                </Mobile>
+                </MobileWrapper>
             </Fieldset>
         );
     }

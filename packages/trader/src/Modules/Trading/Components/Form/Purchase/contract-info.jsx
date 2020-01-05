@@ -1,9 +1,9 @@
 import classNames            from 'classnames';
 import {
     Icon,
-    Desktop,
+    DesktopWrapper,
     Money,
-    Mobile,
+    MobileWrapper,
     Popover,
 }                            from 'deriv-components';
 import PropTypes             from 'prop-types';
@@ -76,15 +76,15 @@ const ContractInfo     = ({
                         : localize('{{value}}', { value: proposal_info.obj_contract_basis.text })
                     }
                 </div>
-                <Desktop>
+                <DesktopWrapper>
                     <ValueMovement
                         has_error_or_not_loaded={has_error_or_not_loaded}
                         proposal_info={proposal_info}
                         currency={currency}
                         has_increased={has_increased}
                     />
-                </Desktop>
-                <Mobile>
+                </DesktopWrapper>
+                <MobileWrapper>
                     <div className='trade-container__price-info-wrapper'>
                         <ValueMovement
                             has_error_or_not_loaded={has_error_or_not_loaded}
@@ -93,9 +93,9 @@ const ContractInfo     = ({
                             has_increased={has_increased}
                         />
                     </div>
-                </Mobile>
+                </MobileWrapper>
             </div>
-            <Desktop>
+            <DesktopWrapper>
                 <Popover
                     alignment='left'
                     icon='info'
@@ -103,7 +103,7 @@ const ContractInfo     = ({
                     margin={210}
                     message={has_error_or_not_loaded ? '' : proposal_info.message}
                 />
-            </Desktop>
+            </DesktopWrapper>
         </div>
     );
 };

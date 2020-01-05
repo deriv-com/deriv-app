@@ -5,8 +5,8 @@ import Chart          from './chart/chart.jsx';
 import { tabs_title } from '../constants/bot-contents';
 import { connect }    from '../stores/connect';
 import                '../assets/sass/main-content.scss';
-import                '../assets/sass/scratch/workspace.scss';
-import                '../assets/sass/scratch/toolbox.scss';
+import                '../assets/sassgit/workspace.scss';
+import                '../assets/sass/toolbox.scss';
 
 class MainContent extends React.Component {
     componentDidMount() {

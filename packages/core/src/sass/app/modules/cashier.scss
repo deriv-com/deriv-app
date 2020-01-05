@@ -469,8 +469,8 @@
         }
     }
     &__drop-down {
-        min-width: calc(calc(100% - calc(16px + 1.6rem)) / 2);
-        width: auto;
+        min-width: calc(calc(100% - calc(16px + 1.6rem)) / 2) !important;
+        width: auto !important;
         margin-bottom: 3.4rem;
     }
     &__currency, &__balance {
@@ -519,6 +519,7 @@ div.payment-agent-transfer {
         width: 29.6rem;
         display: inline-flex;
         margin-bottom: 3.1rem;
+        float: left;
 
         &:not(:first-child) {
             margin-left: 2.4rem;

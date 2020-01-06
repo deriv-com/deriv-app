@@ -1,15 +1,15 @@
 import {
     action,
-    observable }               from 'mobx';
-import ObjectUtils             from 'deriv-shared/utils/object';
-import { localize }            from 'deriv-translations';
-import { WS }                  from 'Services/ws-methods';
-import ContractStore           from './contract-store';
-import { getContractUpdate }   from './Helpers/logic';
+    observable }             from 'mobx';
+import ObjectUtils           from '@deriv/shared/utils/object';
+import { localize }          from '@deriv/translations';
+import { WS }                from 'Services/ws-methods';
+import ContractStore         from './contract-store';
+import { getContractUpdate } from './Helpers/logic';
 import {
     contractCancelled,
-    contractSold }             from '../Portfolio/Helpers/portfolio-notifications';
-import BaseStore               from '../../base-store';
+    contractSold }           from '../Portfolio/Helpers/portfolio-notifications';
+import BaseStore             from '../../base-store';
 
 export default class ContractReplayStore extends BaseStore {
     @observable is_chart_ready = false;

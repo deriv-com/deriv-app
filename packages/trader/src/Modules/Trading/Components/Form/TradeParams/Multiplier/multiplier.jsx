@@ -1,8 +1,8 @@
-import { Dropdown, Money, Popover }   from 'deriv-components';
+import { Dropdown, Money, Popover }   from '@deriv/components';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
-import { localize, Localize }         from 'deriv-translations';
+import { localize, Localize }         from '@deriv/translations';
 import Fieldset                       from 'App/Components/Form/fieldset.jsx';
 import { connect }                    from 'Stores/connect';
 

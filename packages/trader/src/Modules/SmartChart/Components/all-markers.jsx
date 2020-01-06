@@ -3,7 +3,7 @@
 // 2- Please read RawMarker.jsx in https://github.com/binary-com/SmartCharts
 // 3- Please read contract-store.js & trade.jsx carefully
 import React         from 'react';
-import CurrencyUtils from 'deriv-shared/utils/currency';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import { RawMarker } from 'Modules/SmartChart';
 import * as ICONS    from './icons';
 

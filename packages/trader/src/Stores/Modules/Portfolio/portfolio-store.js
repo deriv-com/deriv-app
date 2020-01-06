@@ -6,7 +6,7 @@ import {
     reaction }                     from 'mobx';
 import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services/ws-methods';
-import ObjectUtils                 from 'deriv-shared/utils/object';
+import ObjectUtils                 from '@deriv/shared/utils/object';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import {
     contractCancelled,

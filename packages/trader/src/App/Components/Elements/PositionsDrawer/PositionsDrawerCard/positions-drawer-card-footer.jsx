@@ -1,9 +1,9 @@
 import classNames                  from 'classnames';
 import PropTypes                   from 'prop-types';
 import React                       from 'react';
-import { Button }                  from 'deriv-components';
+import { Button }                  from '@deriv/components';
 import TogglePositionsDrawerDialog from 'App/Components/Elements/PositionsDrawer/toggle-positions-drawer-dialog.jsx';
-import { localize }                from 'deriv-translations';
+import { localize }                from '@deriv/translations';
 import {
     isValidToCancel,
     isValidToSell }                from 'Stores/Modules/Contract/Helpers/logic';

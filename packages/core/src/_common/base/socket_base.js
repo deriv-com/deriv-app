@@ -1,6 +1,6 @@
 const DerivAPIBasic    = require('@deriv/deriv-api/dist/DerivAPIBasic');
-const ObjectUtils      = require('deriv-shared/utils/object');
-const { getLanguage }  = require('deriv-translations');
+const ObjectUtils      = require('@deriv/shared/utils/object');
+const { getLanguage }  = require('@deriv/translations');
 const website_name     = require('App/Constants/app-config').website_name;
 const ClientBase       = require('./client_base');
 const SocketCache      = require('./socket_cache');
@@ -260,6 +260,12 @@ const BinarySocketBase = (() => {
         cancel: contract_id,
     });
 
+    const p2pOfferList = (type) =>
+        deriv_api.send({ p2p_offer_list: 1, type });
+
+    const p2pAgentInfo = () =>
+        deriv_api.send({ p2p_agent_info: 1 });
+
     return {
         init,
         forgetStream,
@@ -287,6 +293,8 @@ const BinarySocketBase = (() => {
         mt5PasswordChange,
         newAccountVirtual,
         newAccountReal,
+        p2pAgentInfo,
+        p2pOfferList,
         profitTable,
         statement,
         verifyEmail,

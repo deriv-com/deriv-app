@@ -12,6 +12,7 @@ export const icons =
     'cashier': [
         'IcCashierAuthenticate',
         'IcCashierDeposit',
+        'IcCashierDp2p',
         'IcCashierError',
         'IcCashierNoBalance',
         'IcCashierTransferDone',
@@ -67,6 +68,7 @@ export const icons =
         'IcCross',
         'IcDemo',
         'IcDesktop',
+        'IcDp2p',
         'IcDrivingLicense',
         'IcEdit',
         'IcEmailFirewall',

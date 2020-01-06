@@ -1,7 +1,7 @@
 import classNames         from 'classnames';
 import PropTypes          from 'prop-types';
 import React              from 'react';
-import { Icon }           from 'deriv-components';
+import { Icon }           from '@deriv/components';
 import ContractCardHeader from 'App/Components/Elements/ContractCard/contract-card-header.jsx';
 import ContractTypeCell   from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
 import ProgressSlider     from 'App/Components/Elements/PositionsDrawer/ProgressSlider';

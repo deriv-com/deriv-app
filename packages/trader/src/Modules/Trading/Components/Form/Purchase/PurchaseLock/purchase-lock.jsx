@@ -1,7 +1,7 @@
 // import React           from 'react';
 // import PropTypes       from 'prop-types';
-// import { localize }    from 'deriv-translations';
-// import { Button }      from 'deriv-components';
+// import { localize }    from '@deriv/translations';
+// import { Button }      from '@deriv/components';
 // import { Icon }        from 'Assets/Common/icon.jsx';
 // import { IconLock }    from 'Assets/Trading/icon-lock.jsx';
 //

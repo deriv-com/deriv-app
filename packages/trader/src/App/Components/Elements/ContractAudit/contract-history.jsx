@@ -2,8 +2,8 @@ import PropTypes         from 'prop-types';
 import React             from 'react';
 import {
     Money,
-    ThemedScrollbars }   from 'deriv-components';
-import { localize }      from 'deriv-translations';
+    ThemedScrollbars }   from '@deriv/components';
+import { localize }      from '@deriv/translations';
 import ContractAuditItem from './contract-audit-item.jsx';
 
 const ContractHistory = ({

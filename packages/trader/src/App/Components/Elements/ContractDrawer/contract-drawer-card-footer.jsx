@@ -2,10 +2,10 @@ import classNames                  from 'classnames';
 import PropTypes                   from 'prop-types';
 import { CSSTransition }           from 'react-transition-group';
 import React                       from 'react';
-import { Button }                  from 'deriv-components';
+import { Button }                  from '@deriv/components';
 import ContractCardFooter          from 'App/Components/Elements/ContractCard/contract-card-footer.jsx';
 import TogglePositionsDrawerDialog from 'App/Components/Elements/PositionsDrawer/toggle-positions-drawer-dialog.jsx';
-import { localize }                from 'deriv-translations';
+import { localize }                from '@deriv/translations';
 import {
     isValidToCancel,
     isValidToSell }                from 'Stores/Modules/Contract/Helpers/logic';

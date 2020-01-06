@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 import {
     getBuyPrice,
     getProfit }     from 'Stores/Modules/Contract/Helpers/logic';

@@ -2,15 +2,16 @@ import { PropTypes as MobxPropTypes }           from 'mobx-react';
 import PropTypes                                from 'prop-types';
 import React                                    from 'react';
 import { withRouter }                           from 'react-router-dom';
-import { Tabs }                                 from 'deriv-components';
-import { localize, Localize }                   from 'deriv-translations';
+import { Tabs }                                 from '@deriv/components';
+import { localize, Localize }                   from '@deriv/translations';
 import { urlFor }                               from '_common/url';
 import DataTable                                from 'App/Components/Elements/DataTable';
 import MultiplierCloseActions                   from 'App/Components/Elements/PositionsDrawer/PositionsDrawerCard/multiplier-close-actions.jsx';
 import { website_name }                         from 'App/Constants/app-config';
 import { getContractPath }                      from 'App/Components/Routes/helpers';
 import EmptyTradeHistoryMessage                 from 'Modules/Reports/Components/empty-trade-history-message.jsx';
-import { getOpenPositionsColumnsTemplate,
+import {
+    getOpenPositionsColumnsTemplate,
     getMultiplierOpenPositionsColumnsTemplate } from 'Modules/Reports/Constants/data-table-constants';
 import PlaceholderComponent                     from 'Modules/Reports/Components/placeholder-component.jsx';
 import { connect }                              from 'Stores/connect';

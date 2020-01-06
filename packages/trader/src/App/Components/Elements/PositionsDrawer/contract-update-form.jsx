@@ -1,8 +1,8 @@
 import React                   from 'react';
 import PropTypes               from 'prop-types';
-import { Button, Popover }     from 'deriv-components';
+import { Button, Popover }     from '@deriv/components';
 import InputWithCheckbox       from 'App/Components/Form/InputField/input-with-checkbox.jsx';
-import { localize }            from 'deriv-translations';
+import { localize }            from '@deriv/translations';
 import { connect }             from 'Stores/connect';
 import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-orders';
 

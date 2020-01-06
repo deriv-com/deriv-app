@@ -2,8 +2,8 @@ import PropTypes              from 'prop-types';
 import React                  from 'react';
 import {
     Checkbox,
-    Popover }                 from 'deriv-components';
-import { localize }           from 'deriv-translations';
+    Popover }                 from '@deriv/components';
+import { localize }           from '@deriv/translations';
 import Fieldset               from 'App/Components/Form/fieldset.jsx';
 import { connect }            from 'Stores/connect';
 import PopoverMessageCheckbox from 'Modules/Trading/Components/Elements/popover-message-checkbox.jsx';

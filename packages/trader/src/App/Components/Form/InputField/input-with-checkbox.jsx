@@ -7,7 +7,7 @@ import React, {
     useRef,
     useState,
 }                            from 'react';
-import { Checkbox, Popover } from 'deriv-components';
+import { Checkbox, Popover } from '@deriv/components';
 import CurrencyUtils         from 'deriv-shared/utils/currency';
 import InputField            from './input-field.jsx';
 

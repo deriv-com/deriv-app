@@ -1,8 +1,8 @@
 import classNames                 from 'classnames';
 import PropTypes                  from 'prop-types';
 import React                      from 'react';
-import { Money }                  from 'deriv-components';
-import { localize }               from 'deriv-translations';
+import { Money }                  from '@deriv/components';
+import { localize }               from '@deriv/translations';
 import { getContractTypeDisplay } from 'Constants/contract';
 import IconTradeType              from 'Assets/Trading/Types/icon-trade-types.jsx';
 

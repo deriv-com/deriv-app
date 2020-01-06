@@ -1,4 +1,4 @@
-import { Icon }              from 'deriv-components';
+import { Icon }              from '@deriv/components';
 import React                 from 'react';
 import PropTypes             from 'prop-types';
 import PositionsDrawerDialog from './positions-drawer-dialog.jsx';

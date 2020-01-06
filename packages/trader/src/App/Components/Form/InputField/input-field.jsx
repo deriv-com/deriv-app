@@ -2,7 +2,7 @@ import classNames                     from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
-import CurrencyUtils                  from 'deriv-shared/utils/currency';
+import CurrencyUtils                  from '@deriv/shared/utils/currency';
 import Tooltip                        from 'App/Components/Elements/tooltip.jsx';
 import { connect }                    from 'Stores/connect';
 import IncrementButtons               from './increment-buttons.jsx';

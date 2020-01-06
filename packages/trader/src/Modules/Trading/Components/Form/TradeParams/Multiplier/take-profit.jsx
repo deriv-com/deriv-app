@@ -1,6 +1,6 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
-import { localize }      from 'deriv-translations';
+import { localize }      from '@deriv/translations';
 import Fieldset          from 'App/Components/Form/fieldset.jsx';
 import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
 import { connect }       from 'Stores/connect';

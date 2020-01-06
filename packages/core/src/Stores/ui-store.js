@@ -3,7 +3,7 @@ import {
     autorun,
     computed,
     observable }             from 'mobx';
-import ObjectUtils           from 'deriv-shared/utils/object';
+import ObjectUtils           from '@deriv/shared/utils/object';
 import {
     MAX_MOBILE_WIDTH,
     MAX_TABLET_WIDTH }       from 'Constants/ui';

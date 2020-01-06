@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 
 export const switch_account_notification = {
     key          : 'bot_switch_account',

@@ -1,8 +1,8 @@
 import classNames      from 'classnames';
 import PropTypes       from 'prop-types';
 import React           from 'react';
-import { Tabs }        from 'deriv-components';
-import { localize }    from 'deriv-translations';
+import { Tabs }        from '@deriv/components';
+import { localize }    from '@deriv/translations';
 import ContractDetails from './contract-details.jsx';
 import ContractHistory from './contract-history.jsx';
 

@@ -43,6 +43,7 @@ class ContractDrawer extends Component {
             onClickCancel,
             onClickContractUpdate,
             onClickSell,
+            status,
         } = this.props;
 
         const is_multiplier = isMultiplierContract(contract_type);

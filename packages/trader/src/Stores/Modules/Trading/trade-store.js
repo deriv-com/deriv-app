@@ -399,23 +399,23 @@ export default class TradeStore extends BaseStore {
             return;
         }
 
-        let purchaseSpotBarrier  = this.barriers.find((b)=> b.key === key);
-        if (purchaseSpotBarrier) {
-            if (purchaseSpotBarrier.high !== +position.contract_info.entry_spot) {
-                purchaseSpotBarrier.onChange({
+        let purchase_spot_barrier = this.barriers.find((b) => b.key === key);
+        if (purchase_spot_barrier) {
+            if (purchase_spot_barrier.high !== +position.contract_info.entry_spot) {
+                purchase_spot_barrier.onChange({
                     high: position.contract_info.entry_spot,
                 });
             }
         } else {
-            purchaseSpotBarrier = new ChartBarrierStore(
+            purchase_spot_barrier = new ChartBarrierStore(
                 position.contract_info.entry_spot
             );
-            purchaseSpotBarrier.key = key;
-            purchaseSpotBarrier.draggable = false;
-            purchaseSpotBarrier.hideOffscreenBarrier = true;
-            purchaseSpotBarrier.isSingleBarrier = true;
-            purchaseSpotBarrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
-            this.barriers.push(purchaseSpotBarrier);
+            purchase_spot_barrier.key = key;
+            purchase_spot_barrier.draggable = false;
+            purchase_spot_barrier.hideOffscreenBarrier = true;
+            purchase_spot_barrier.isSingleBarrier = true;
+            purchase_spot_barrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
+            this.barriers.push(purchase_spot_barrier);
         }
     }
 

@@ -132,6 +132,7 @@ class ContractTypeWidget extends React.PureComponent {
         return itemList;
     };
 
+    // TODO: remove this once new tradetype menu is ready
     groupBinaryAndNonBinaryOptions = (contract_types) => {
         let binary_opts_list     = {};
         let non_binary_opts_list = {};

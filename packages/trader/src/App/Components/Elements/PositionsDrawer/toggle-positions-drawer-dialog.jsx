@@ -20,16 +20,16 @@ class TogglePositionsDrawerDialog extends React.PureComponent {
         this.setState(state => ({ is_visible: !state.is_visible }), () => {
             if (this.state.is_visible && this.toggle_ref && this.toggle_ref.current
                 && this.dialog_ref && this.dialog_ref.current) {
-                const iconBound = this.toggle_ref.current.getBoundingClientRect();
+                const icon_bound         = this.toggle_ref.current.getBoundingClientRect();
                 const { ref: portalRef } = this.dialog_ref.current;
-                const targetBound = portalRef.current.getBoundingClientRect();
-                const bodyBound = document.body.getBoundingClientRect();
+                const target_bound       = portalRef.current.getBoundingClientRect();
+                const body_bound         = document.body.getBoundingClientRect();
 
-                let { top } = iconBound;
-                const { right } = iconBound;
+                let { top } = icon_bound;
+                const { right } = icon_bound;
 
-                if (iconBound.top + targetBound.height > bodyBound.height) {
-                    top -= targetBound.height - iconBound.height;
+                if (icon_bound.top + target_bound.height > body_bound.height) {
+                    top -= target_bound.height - icon_bound.height;
                 }
 
                 this.setState({
@@ -48,7 +48,7 @@ class TogglePositionsDrawerDialog extends React.PureComponent {
                     className='positions-drawer-dialog-toggle'
                     onClick={this.toggleDialog}
                 >
-                    <Icon className='positions-drawer-dialog-toggle__icon' icon={'IcEdit'} size={16} />
+                    <Icon className='positions-drawer-dialog-toggle__icon' icon='IcEdit' size={16} />
                 </div>
                 <PositionsDrawerDialog
                     ref={this.dialog_ref}

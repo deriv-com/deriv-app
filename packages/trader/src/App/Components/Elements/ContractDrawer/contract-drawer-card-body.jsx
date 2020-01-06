@@ -1,13 +1,15 @@
-import classNames               from 'classnames';
-import PropTypes                from 'prop-types';
-import React                    from 'react';
-import { Icon, Money }          from '@deriv/components';
-import CurrencyUtils            from 'deriv-shared/utils/currency';
-import ContractCardBody         from 'App/Components/Elements/ContractCard/contract-card-body.jsx';
-import ContractCardItem         from 'App/Components/Elements/ContractCard/contract-card-item.jsx';
-import { localize }             from '@deriv/translations';
-import { getLimitOrderAmount }  from 'Stores/Modules/Contract/Helpers/limit-orders';
-import { getIndicativePrice }   from 'Stores/Modules/Contract/Helpers/logic';
+import classNames              from 'classnames';
+import PropTypes               from 'prop-types';
+import React                   from 'react';
+import { Icon, Money }         from '@deriv/components';
+import CurrencyUtils           from '@deriv/shared/utils/currency';
+import ContractCardBody        from 'App/Components/Elements/ContractCard/contract-card-body.jsx';
+import ContractCardItem        from 'App/Components/Elements/ContractCard/contract-card-item.jsx';
+import { localize }            from 'deriv-translations';
+import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-orders';
+import {
+    getDealCancellationPrice,
+    getIndicativePrice }       from 'Stores/Modules/Contract/Helpers/logic';
 
 const MultiplierCardBody = ({
     contract_info,
@@ -16,9 +18,6 @@ const MultiplierCardBody = ({
 }) => {
     const {
         buy_price,
-        deal_cancellation: {
-            ask_price: deal_cancellation_price = 0,
-        } = {},
         is_sold,
         profit,
         multiplier,
@@ -26,7 +25,8 @@ const MultiplierCardBody = ({
     } = contract_info;
 
     const { take_profit, stop_loss } = getLimitOrderAmount(limit_order);
-
+    const deal_cancellation_price    = getDealCancellationPrice(contract_info);
+    
     return (
         <ContractCardBody>
             <ContractCardItem header={localize('Stake:')}>

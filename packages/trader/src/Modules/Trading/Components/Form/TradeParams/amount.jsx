@@ -10,7 +10,6 @@ import InputField                     from 'App/Components/Form/InputField';
 import { connect }                    from 'Stores/connect';
 import { localize }                   from '@deriv/translations';
 import AllowEquals                    from './allow-equals.jsx';
-// import MultiplierDropdown             from './Multiplier/dropdown.jsx';
 
 const Amount = ({
     amount,

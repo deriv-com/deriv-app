@@ -45,7 +45,7 @@ const TableRow = ({
     }
     return (
         to ?
-            <div className={`${className}__row__wrapper`}>
+            <div className={`${className}__row_wrapper`}>
                 <NavLink
                     id={`dt_reports_contract_${id}`}
                     className={row_class_name}
@@ -61,7 +61,7 @@ const TableRow = ({
                 {action_columns}
             </div>
             :
-            <div className={`${className}__row__wrapper`}>
+            <div className={`${className}__row_wrapper`}>
                 <TableRowInfo
                     className={row_class_name}
                     cells={cells}

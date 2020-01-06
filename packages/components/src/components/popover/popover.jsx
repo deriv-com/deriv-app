@@ -55,7 +55,6 @@ class Popover extends React.PureComponent {
             icon,
             id,
             is_open,
-            // keep_open = true,
             margin,
             message,
         } = this.props;

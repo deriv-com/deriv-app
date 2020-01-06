@@ -72,6 +72,15 @@ export const getIndicativePrice = (contract_info) => (
         (+contract_info.bid_price || null)
 );
 
+export const getDealCancellationPrice = (contract_info) => {
+    const {
+        deal_cancellation: {
+            ask_price: deal_cancellation_price = 0,
+        } = {},
+    } = contract_info;
+    return deal_cancellation_price;
+};
+
 export const getLastTickFromTickStream = (tick_stream = []) => (
     tick_stream[tick_stream.length - 1] || {}
 );
@@ -147,15 +156,9 @@ export const getBuyPrice = (modules_store) => {
     const { contract_replay, portfolio } = modules_store;
     const contract_id   = portfolio.active_positions_drawer_dialog_id;
     const contract_info = contract_replay.getContractById(contract_id).contract_info;
+    const deal_cancellation_price = getDealCancellationPrice(contract_info);
 
-    const  {
-        buy_price,
-        deal_cancellation: {
-            ask_price: deal_cancellation_price = 0,
-        } = {},
-    } = contract_info;
-
-    return buy_price - deal_cancellation_price;
+    return contract_info.buy_price - deal_cancellation_price;
 };
 
 /**

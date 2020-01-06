@@ -215,7 +215,10 @@ class InputField extends React.Component {
                 <span className='input-field__helper'>{helper}</span>
                 }
                 {is_increment_input ?
-                    <div className={classNames('input-wrapper', { 'input-wrapper--disabled': !!is_disabled })}>
+                    <div className={classNames('input-wrapper', {
+                        'input-wrapper--disabled': !!is_disabled,
+                    })}
+                    >
                         {increment_buttons}
                         {input}
                     </div>

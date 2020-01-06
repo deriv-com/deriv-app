@@ -1,10 +1,10 @@
-import classNames                  from 'classnames';
-import PropTypes                   from 'prop-types';
-import React                       from 'react';
-import { Button }                  from '@deriv/components';
-import { localize }                from '@deriv/translations';
-import RemainingTime               from 'App/Containers/remaining-time.jsx';
-import { isValidToCancel }         from 'Stores/Modules/Contract/Helpers/logic';
+import classNames          from 'classnames';
+import PropTypes           from 'prop-types';
+import React               from 'react';
+import { Button }          from '@deriv/components';
+import { localize }        from '@deriv/translations';
+import RemainingTime       from 'App/Containers/remaining-time.jsx';
+import { isValidToCancel } from 'Stores/Modules/Contract/Helpers/logic';
 
 const MultiplierCloseActions  = ({
     className,

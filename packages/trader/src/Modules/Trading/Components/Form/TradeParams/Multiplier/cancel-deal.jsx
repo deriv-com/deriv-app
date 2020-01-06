@@ -32,9 +32,6 @@ const CancelDeal = ({
 
     const should_show_popover = has_stop_loss && should_show_deal_cancellation_warning;
 
-    const onMouseEnter = e => {
-        console.log(e);
-    };
     const input = (
         <Checkbox
             id='dt_deal_cancellation-checkbox_input'
@@ -42,7 +39,6 @@ const CancelDeal = ({
             name='has_deal_cancellation'
             label={localize('Deal cancellation')}
             defaultChecked={has_deal_cancellation}
-            onMouseEnter={onMouseEnter}
         />
     );
 

@@ -66,7 +66,10 @@ const StopLoss = ({
 };
 
 StopLoss.propTypes = {
-    amount                       : PropTypes.string,
+    amount: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+    ]),
     currency                     : PropTypes.string,
     has_stop_loss                : PropTypes.bool,
     is_single_currency           : PropTypes.bool,

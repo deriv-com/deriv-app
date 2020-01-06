@@ -75,7 +75,8 @@ export const createProposalRequests = (store) => {
 
 const setProposalMultiplier = (store, obj_multiplier) => {
     obj_multiplier.multiplier = store.multiplier;
-    obj_multiplier.deal_cancellation = Number(store.has_deal_cancellation); // TODO: change to '1h'
+    // TODO: add support for different deal_cancellation time once API is ready
+    obj_multiplier.deal_cancellation = store.has_deal_cancellation ? '1h' : 0;
 
     obj_multiplier.limit_order = {};
 

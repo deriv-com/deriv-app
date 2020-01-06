@@ -75,14 +75,10 @@ export default class ContractStore {
         );
         this.markers_array = createChartMarkers(this.contract_info);
         const marker = calculate_marker(this.contract_info);
-        if (marker) {
-            this.marker  = observable.object(marker, {}, { deep: false });
-        }
+        this.marker = marker ? observable.object(marker, {}, { deep: false }) : null;
         
         const contract_config = getChartConfig(this.contract_info);
-        if (contract_config) {
-            this.contract_config  = observable.object(contract_config, {}, { deep: false });
-        }
+        this.contract_config = contract_config ? observable.object(contract_config, {}, { deep: false }) : null;
         this.display_status = getDisplayStatus(this.contract_info);
         this.is_ended = isEnded(this.contract_info);
         this.is_digit_contract = isDigitContract(this.contract_info.contract_type);

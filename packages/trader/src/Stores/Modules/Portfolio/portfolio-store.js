@@ -90,7 +90,7 @@ export default class PortfolioStore extends BaseStore {
         };
         this.pushNewPosition(new_pos);
         this.subscribers[contract_id] =
-            WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractHandler);
+            WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractQueueHandler);
     }
 
     @action.bound
@@ -423,7 +423,7 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     setActivePositions() {
         this.active_positions = this.positions.filter(portfolio_pos => !getEndTime(portfolio_pos.contract_info));
-        this.all_positions = this.positions.map(p => p);
+        this.all_positions = [...this.positions];
     }
 
     updatePositions = () => {

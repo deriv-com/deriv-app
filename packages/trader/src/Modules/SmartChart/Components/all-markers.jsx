@@ -274,7 +274,10 @@ const TickContract = RawMarkerMaker(({
             ctx,
             text: 'Buy\nTime',
             tick: { zom: start.zoom, left: start.left - 1 * scale,  top: canvas_height - 50 },
-            icon: ICONS.BUY_SELL_TIME.with_color(foreground_color, background_color),
+            icon: ICONS.BUY_SELL.with_color_on_specific_paths({
+                0: { fill: background_color },
+                1: { fill: foreground_color },
+            }),
         });
 
         drawLine({
@@ -369,10 +372,10 @@ const TickContract = RawMarkerMaker(({
             top : entry.top,
             left: entry.left,
             zoom: entry.zoom,
-            icon: ICONS.ENTRY_SPOT.with_color(
-                is_reset_barrier_expired ? foreground_color : color_based_on_status,
-                background_color + (is_sold ? opacity : '')
-            ),
+            icon: ICONS.ENTRY_SPOT.with_color_on_specific_paths({
+                0: { fill: background_color },
+                1: { fill: is_reset_barrier_expired ? foreground_color : color_based_on_status },
+            }),
         });
     }
     // count down
@@ -407,10 +410,10 @@ const TickContract = RawMarkerMaker(({
             top : exit.top ,
             left: exit.left,
             zoom: exit.zoom,
-            icon: ICONS.END.with_color(
-                color_based_on_status,
-                background_color + (is_sold ? opacity : '')
-            ),
+            icon: ICONS.END.with_color_on_specific_paths({
+                0: { fill: background_color + (is_sold ? opacity : '') },
+                1: { fill: color_based_on_status },
+            }),
         });
     }
     ctx.restore();
@@ -481,7 +484,7 @@ const NonTickContract = RawMarkerMaker(({
                 left: start.left - 1 * scale,
                 top : canvas_height - 50,
             },
-            icon: ICONS.BUY_SELL_TIME,
+            icon: ICONS.BUY_SELL,
         });
         ctx.beginPath();
         ctx.setLineDash([3, 3]);
@@ -546,7 +549,7 @@ const NonTickContract = RawMarkerMaker(({
             top : barrier - 9 * scale,
             left: start.left - 1 * scale,
             zoom: start.zoom,
-            icon: ICONS.START.with_color(color + opacity),
+            icon: ICONS.END.with_color_on_specific_paths({ 1: { fill: color + opacity } }),
         });
     }
     // show the profit
@@ -570,7 +573,10 @@ const NonTickContract = RawMarkerMaker(({
             top : barrier - 9 * scale,
             left: expiry.left + 8 * scale,
             zoom: expiry.zoom,
-            icon: ICONS.END.with_color(color, get_color({ status: 'bg', is_dark_theme })),
+            icon: ICONS.END.with_color_on_specific_paths({
+                0: { fill: get_color({ status: 'bg', is_dark_theme }) },
+                1: { fill: color },
+            }),
         });
     }
     ctx.restore();
@@ -647,7 +653,10 @@ const DigitContract = RawMarkerMaker(({
             top : start.top - 9 * scale,
             left: start.left - 1 * scale,
             zoom: start.zoom,
-            icon: ICONS.START.with_color(color + opacity, get_color({ status: 'bg', is_dark_theme }) + opacity),
+            icon: ICONS.END.with_color_on_specific_paths({
+                0: { fill: get_color({ status: 'bg', is_dark_theme }) + opacity },
+                1: { fill: color + opacity },
+            }),
         });
     }
     // remaining ticks
@@ -683,7 +692,10 @@ const DigitContract = RawMarkerMaker(({
             top : expiry.top - 16 * scale,
             left: expiry.left + 8 * scale,
             zoom: expiry.zoom,
-            icon: ICONS.END.with_color(color, get_color({ status: 'bg', is_dark_theme })),
+            icon: ICONS.END.with_color_on_specific_paths({
+                0: { fill: get_color({ status: 'bg', is_dark_theme }) },
+                1: { fill: color },
+            }),
         });
     }
     ctx.restore();

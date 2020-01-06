@@ -17,12 +17,87 @@ import { localize }    from 'Components/i18next';
 import { requestWS }   from 'Utils/websocket';
 import FormError       from '../form/error.jsx';
 
+const SendField = ({
+    calculateReceiveAmount,
+    error,
+    handleChange,
+    is_buy,
+    send_currency,
+    setFieldValue,
+}) => {
+    return (
+        <Field name='send'>
+            {({ field }) => (
+                <Input
+                    {...field}
+                    data-lpignore='true'
+                    type='number'
+                    error={error}
+                    label={localize('Send')}
+                    className='buy-sell__popup-field'
+                    placeholder={localize('Send amount')}
+                    trailing_icon={<span className='buy-sell__popup-field--trailing'>{send_currency}</span>}
+                    onChange={(e) => {
+                        const send = isNaN(e.target.value) ? 0 : e.target.value;
+                        const receive_amount =
+                            calculateReceiveAmount(send, is_buy);
+
+                        setFieldValue('receive', receive_amount);
+                        handleChange(e);
+                    }}
+                    required
+                />
+            )}
+        </Field>
+    );
+};
+
+const ReceiveField = ({
+    calculateSendAmount,
+    error,
+    handleChange,
+    is_buy,
+    receive_currency,
+    setFieldValue,
+}) => {
+    return (
+        <Field name='receive'>
+            {({ field }) => (
+                <Input
+                    {...field}
+                    data-lpignore='true'
+                    type='number'
+                    error={error}
+                    label={localize('Receive')}
+                    className='buy-sell__popup-field'
+                    placeholder={localize('Receive amount')}
+                    trailing_icon={<span className='buy-sell__popup-field--trailing'>{receive_currency}</span>}
+                    onChange={(e) => {
+                        const receive =
+                            isNaN(e.target.value) ? 0 : e.target.value;
+                        const send_amount =
+                            calculateSendAmount(receive, is_buy);
+
+                        setFieldValue('send', send_amount);
+                        handleChange(e);
+                    }}
+                    required
+                />
+            )}
+        </Field>
+    );
+};
+
 class Popup extends Component {
     handleSubmit = async (values, { setStatus, setSubmitting }) => {
         const { ad } = this.props;
         setStatus({ error_message: '' });
 
-        const order = await requestWS({ p2p_order_create: 1, amount: values.receive, offer_id: ad.offer_id });
+        const order = await requestWS({
+            p2p_order_create: 1,
+            amount          : ad.type === 'buy' ? values.receive : values.send,
+            offer_id        : ad.offer_id,
+        });
 
         if (!order.error) {
             const order_info = await requestWS({ p2p_order_info: 1, order_id: order.p2p_order_create.order_id });
@@ -120,54 +195,45 @@ class Popup extends Component {
                                 >
                                     <div className='buy-sell__popup-content'>
                                         <div className='buy-sell__popup-field_wrapper'>
-                                            <Field name='send'>
-                                                {({ field }) => (
-                                                    <Input
-                                                        {...field}
-                                                        data-lpignore='true'
-                                                        type='number'
-                                                        error={errors.send}
-                                                        label={localize('Send')}
-                                                        className='buy-sell__popup-field'
-                                                        placeholder={localize('Send amount')}
-                                                        trailing_icon={<span className='buy-sell__popup-field--trailing'>{send_currency}</span>}
-                                                        onChange={(e) => {
-                                                            const send = isNaN(e.target.value) ? 0 : e.target.value;
-                                                            const receive_amount =
-                                                                this.calculateReceiveAmount(send, is_buy);
-
-                                                            setFieldValue('receive', receive_amount);
-                                                            handleChange(e);
-                                                        }}
-                                                        required
-                                                    />
-                                                )}
-                                            </Field>
+                                            {is_buy ?
+                                                <SendField
+                                                    calculateReceiveAmount={this.calculateReceiveAmount}
+                                                    error={errors.send}
+                                                    handleChange={handleChange}
+                                                    is_buy={is_buy}
+                                                    send_currency={send_currency}
+                                                    setFieldValue={setFieldValue}
+                                                />
+                                                :
+                                                <ReceiveField
+                                                    calculateSendAmount={this.calculateSendAmount}
+                                                    error={errors.recieve}
+                                                    handleChange={handleChange}
+                                                    is_buy={is_buy}
+                                                    receive_currency={receive_currency}
+                                                    setFieldValue={setFieldValue}
+                                                />
+                                            }
                                             <IconBack className='buy-sell__popup-field--icon' />
-                                            <Field name='receive'>
-                                                {({ field }) => (
-                                                    <Input
-                                                        {...field}
-                                                        data-lpignore='true'
-                                                        type='number'
-                                                        error={errors.receive}
-                                                        label={localize('Receive')}
-                                                        className='buy-sell__popup-field'
-                                                        placeholder={localize('Receive amount')}
-                                                        trailing_icon={<span className='buy-sell__popup-field--trailing'>{receive_currency}</span>}
-                                                        onChange={(e) => {
-                                                            const receive =
-                                                                isNaN(e.target.value) ? 0 : e.target.value;
-                                                            const send_amount =
-                                                                this.calculateSendAmount(receive, is_buy);
-
-                                                            setFieldValue('send', send_amount);
-                                                            handleChange(e);
-                                                        }}
-                                                        required
-                                                    />
-                                                )}
-                                            </Field>
+                                            {is_buy ?
+                                                <ReceiveField
+                                                    calculateSendAmount={this.calculateSendAmount}
+                                                    error={errors.recieve}
+                                                    handleChange={handleChange}
+                                                    is_buy={is_buy}
+                                                    receive_currency={receive_currency}
+                                                    setFieldValue={setFieldValue}
+                                                />
+                                                :
+                                                <SendField
+                                                    calculateReceiveAmount={this.calculateReceiveAmount}
+                                                    error={errors.send}
+                                                    handleChange={handleChange}
+                                                    is_buy={is_buy}
+                                                    send_currency={send_currency}
+                                                    setFieldValue={setFieldValue}
+                                                />
+                                            }
                                         </div>
                                         <div className='buy-sell__popup-info'>
                                             <span className='buy-sell__popup-info--title'>{ad.type === 'buy' ? localize('Seller') : localize('Buyer')}</span>

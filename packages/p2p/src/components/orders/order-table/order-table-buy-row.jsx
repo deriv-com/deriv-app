@@ -17,17 +17,16 @@ const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
     } = data;
 
     return (
-        <div style={ style }>
+        <div onClick={() => onOpenDetails(data)} style={style} className='orders__table-row'>
             <Table.Row>
                 <Table.Cell>
                     <span>
                         { localize('Buy') }<br />
-                        <a
-                            onClick={() => onOpenDetails(data)}
-                            className='link'
+                        <span
+                            className='orders__table-id'
                         >
                             { order_id }
-                        </a>
+                        </span>
                     </span>
                 </Table.Cell>
                 <Table.Cell>{ order_purchase_datetime }</Table.Cell>

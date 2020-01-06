@@ -4,8 +4,9 @@
 
     &__header {
         background: var(--general-section-1);
-        padding: 0.8rem;
-        width: 100%;
+        padding: 0.4rem;
+        width: fit-content;
+        border-radius: 4px;
 
         &__filters {
             width: 12rem;

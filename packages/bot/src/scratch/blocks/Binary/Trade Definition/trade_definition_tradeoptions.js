@@ -62,6 +62,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
         const trade_definition_block = this.workspace.getAllBlocks(true).find(block => block.type === 'trade_definition');
         if (!trade_definition_block) {
+            this.setDisabled(true);
             return;
         }
 
@@ -83,20 +84,24 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
         const is_load_event = event.group === 'load';
 
-        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+        if (event.type === Blockly.Events.END_DRAG) {
+            this.setCurrency();
+            this.updateBarrierInputs(true, true);
+            this.enforceSingleBarrierType('BARRIEROFFSETTYPE_LIST', true);
+            this.updateDurationInput(true, true);
+            this.updatePredictionInput(true);
+        } else if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+            this.setCurrency();
             if (is_load_event) {
                 // Do NOT touch any values when a strategy is being loaded.
                 this.updateBarrierInputs(false, false);
                 this.updateDurationInput(false, false);
                 this.updatePredictionInput(false);
             } else {
-                const { client } = ScratchStore.instance.root_store.core;
-
                 this.updateBarrierInputs(true, true);
                 this.enforceSingleBarrierType('BARRIEROFFSETTYPE_LIST', true);
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
-                this.setCurrency(client.currency);
             }
         } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
             if (is_load_event) {
@@ -303,10 +308,11 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             }
         }
     },
-    setCurrency(currency) {
+    setCurrency() {
+        const { client } = ScratchStore.instance.root_store.core;
         const currency_field   = this.getField('CURRENCY_LIST');
 
-        currency_field.setText(currency);
+        currency_field.setText(client.currency);
     },
     domToMutation(xmlElement) {
         const has_first_barrier  = xmlElement.getAttribute('has_first_barrier') === 'true';

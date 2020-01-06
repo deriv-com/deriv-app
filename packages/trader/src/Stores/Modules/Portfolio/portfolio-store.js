@@ -335,6 +335,7 @@ export default class PortfolioStore extends BaseStore {
 
         this.positions.splice(contract_idx, 1);
         delete this.positionsMap[contract_id];
+        this.updatePositions();
         this.root_store.modules.contract_trade.removeContract({ contract_id });
     }
 

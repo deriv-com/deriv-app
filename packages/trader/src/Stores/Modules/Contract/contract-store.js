@@ -37,7 +37,7 @@ export default class ContractStore {
     @observable digits_info = observable.object({});
     @observable sell_info   = observable.object({});
 
-    contract_config = {};
+    @observable contract_config = {};
     @observable display_status = 'purchased';
     @observable is_ended = false;
     @observable is_digit_contract = false;
@@ -57,7 +57,7 @@ export default class ContractStore {
     @observable margin;
     @observable.shallow barriers_array = [];
     @observable.shallow markers_array = [];
-    marker = null;
+    @observable marker = null;
 
     // ---- Normal properties ---
     is_ongoing_contract = false;

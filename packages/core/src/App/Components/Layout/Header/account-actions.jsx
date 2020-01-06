@@ -35,6 +35,7 @@ export class AccountActions extends Component {
             currency,
             is_acc_switcher_on,
             is_logged_in,
+            is_mobile,
             is_notifications_visible,
             is_virtual,
             notifications_count,
@@ -45,56 +46,76 @@ export class AccountActions extends Component {
         } = this.props;
         if (is_logged_in) {
             return (
-                <React.Fragment>
-                    <ToggleNotifications
-                        count={notifications_count}
-                        is_visible={is_notifications_visible}
-                        toggleDialog={toggleNotifications}
-                        tooltip_message={localize('View notifications')}
-                    />
-                    <Popover
-                        classNameBubble='account-settings-toggle__tooltip'
-                        alignment='bottom'
-                        message={localize('Manage account settings')}
-                    >
-                        <BinaryLink
-                            className='account-settings-toggle'
-                            to={ routes.personal_details }
-                        >
-                            <Icon icon='IcUserOutline' />
-                        </BinaryLink>
-                    </Popover>
-                    <React.Suspense fallback={<div />}>
-                        <AccountInfo
-                            balance={typeof balance === 'undefined' ? balance : CurrencyUtils.formatMoney(currency, balance, true)}
-                            is_upgrade_enabled={can_upgrade}
-                            is_virtual={is_virtual}
-                            currency={currency}
-                            is_dialog_on={is_acc_switcher_on}
-                            toggleDialog={toggleAccountsDialog}
+                is_mobile ?
+                    <React.Fragment>
+                        <ToggleNotifications
+                            count={notifications_count}
+                            is_visible={is_notifications_visible}
+                            toggleDialog={toggleNotifications}
                         />
-                    </React.Suspense>
-                    {!is_virtual && !currency &&
-                        <div className='set-currency'>
-                            <Button
-                                onClick={openRealAccountSignup}
-                                has_effect
-                                type='button'
-                                text={localize('Set currency')}
-                                primary
+                        <React.Suspense fallback={<div />}>
+                            <AccountInfo
+                                balance={typeof balance === 'undefined' ? balance : CurrencyUtils.formatMoney(currency, balance, true)}
+                                is_upgrade_enabled={can_upgrade}
+                                is_virtual={is_virtual}
+                                currency={currency}
+                                is_dialog_on={is_acc_switcher_on}
+                                toggleDialog={toggleAccountsDialog}
                             />
-                        </div>
-                    }
-                    {currency &&
-                    <Button
-                        className='acc-info__button'
-                        has_effect
-                        text={localize('Deposit')}
-                        onClick={onClickDeposit}
-                        primary
-                    />
-                    }
-                </React.Fragment>
+                        </React.Suspense>
+                    </React.Fragment>
+                    :
+                    <React.Fragment>
+                        <ToggleNotifications
+                            count={notifications_count}
+                            is_visible={is_notifications_visible}
+                            toggleDialog={toggleNotifications}
+                            tooltip_message={localize('View notifications')}
+                        />
+                        <Popover
+                            classNameBubble='account-settings-toggle__tooltip'
+                            alignment='bottom'
+                            message={localize('Manage account settings')}
+                        >
+                            <BinaryLink
+                                className='account-settings-toggle'
+                                to={ routes.personal_details }
+                            >
+                                <Icon icon='IcUserOutline' />
+                            </BinaryLink>
+                        </Popover>
+                        <React.Suspense fallback={<div />}>
+                            <AccountInfo
+                                balance={typeof balance === 'undefined' ? balance : CurrencyUtils.formatMoney(currency, balance, true)}
+                                is_mobile={is_mobile}
+                                is_upgrade_enabled={can_upgrade}
+                                is_virtual={is_virtual}
+                                currency={currency}
+                                is_dialog_on={is_acc_switcher_on}
+                                toggleDialog={toggleAccountsDialog}
+                            />
+                        </React.Suspense>
+                        {!is_virtual && !currency &&
+                            <div className='set-currency'>
+                                <Button
+                                    onClick={openRealAccountSignup}
+                                    has_effect
+                                    type='button'
+                                    text={localize('Set currency')}
+                                    primary
+                                />
+                            </div>
+                        }
+                        {currency &&
+                        <Button
+                            className='acc-info__button'
+                            has_effect
+                            text={localize('Deposit')}
+                            onClick={onClickDeposit}
+                            primary
+                        />
+                        }
+                    </React.Fragment>
             );
         }
         return (
@@ -113,6 +134,7 @@ AccountActions.propTypes = {
     currency                : PropTypes.any,
     is_acc_switcher_on      : PropTypes.any,
     is_logged_in            : PropTypes.any,
+    is_mobile               : PropTypes.any,
     is_notifications_visible: PropTypes.any,
     is_virtual              : PropTypes.any,
     notifications_count     : PropTypes.any,

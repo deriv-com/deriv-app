@@ -1,4 +1,5 @@
 import React                 from 'react';
+import Div100vh              from 'react-div-100vh';
 import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
 import { connect }           from 'Stores/connect';
 import PositionsDrawer       from 'App/Components/Elements/PositionsDrawer';
@@ -23,10 +24,13 @@ class Trade extends React.Component {
         const { NotificationMessages } = this.props;
         const form_wrapper_class = this.props.is_mobile ? 'mobile-wrapper' : 'sidebar__container desktop-only';
         const is_trade_enabled = (this.props.form_components.length > 0) && this.props.is_trade_enabled;
+        const chart_height = this.props.is_mobile ? 'calc(100rvh - 270px)' : 'unset';
         return (
             <div id='trade_container' className='trade-container'>
-                <PositionsDrawer />
-                <div className='chart-container'>
+                {!this.props.is_mobile && <PositionsDrawer />}
+                {/* Div100vh is workaround for iPhone without bezels,
+                    using css vh is not returning correct screen height */}
+                <Div100vh className='chart-container' style={{ height: chart_height }}>
                     <NotificationMessages />
                     <React.Suspense
                         fallback={
@@ -42,13 +46,14 @@ class Trade extends React.Component {
 
                     {/* Remove Test component for debugging below for production release */}
                     <Test />
-                </div>
+                </Div100vh>
                 <div className={form_wrapper_class}>
                     { this.props.is_market_closed && <MarketIsClosedOverlay />}
                     <FormLayout
                         is_dark_theme={this.props.is_dark_theme}
                         is_market_closed={this.props.is_market_closed}
                         is_mobile={this.props.is_mobile}
+                        is_tablet={this.props.is_tablet}
                         is_trade_enabled={is_trade_enabled}
                     />
                 </div>
@@ -68,6 +73,7 @@ export default connect(
         purchase_info       : modules.trade.purchase_info,
         is_dark_theme       : ui.is_dark_mode_on,
         is_mobile           : ui.is_mobile,
+        is_tablet           : ui.is_tablet,
         NotificationMessages: ui.notification_messages_ui,
     })
 )(Trade);
@@ -165,6 +171,7 @@ class ChartTradeClass extends React.Component {
 
     chartControlsWidgets = () => (
         <ControlWidgets
+            is_mobile={this.props.is_mobile}
             updateChartType={this.props.updateChartType}
             updateGranularity={this.props.updateGranularity}
         />
@@ -192,8 +199,8 @@ class ChartTradeClass extends React.Component {
         return (
             <SmartChart
                 barriers={barriers}
-                bottomWidgets={ show_digits_stats ? this.bottomWidgets : null}
-                showLastDigitStats={show_digits_stats}
+                bottomWidgets={(show_digits_stats && !this.props.is_mobile) ? this.bottomWidgets : null}
+                showLastDigitStats={!this.props.is_mobile ? show_digits_stats : false}
                 chartControlsWidgets={this.chartControlsWidgets}
                 chartStatusListener={(v) => this.props.setChartStatus(!v)}
                 chartType={this.props.chart_type}

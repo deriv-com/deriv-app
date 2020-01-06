@@ -273,10 +273,27 @@
     }
 }
 
-/** @define purchase-container */
+/** @define purchase-container; weak */
 .purchase-container {
     position: relative;
 
+    &--is-mobile {
+        display: flex;
+        flex-direction: row;
+        margin-top: 8px;
+
+        .purchase-container__option {
+            flex-grow: 1;
+
+            // remove selector below when new button design is implemented
+            &:not(:only-child):nth-last-child(1) {
+                // remove selector below when new button design is implemented
+                .trade-container__price {
+                    margin-top: unset;
+                }
+            }
+        }
+    }
     &__option {
         padding-top: 8px;
         padding-bottom: 8px;

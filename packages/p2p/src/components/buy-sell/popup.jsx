@@ -210,7 +210,7 @@ class Popup extends Component {
                                                     error={errors.recieve}
                                                     handleChange={handleChange}
                                                     is_buy={is_buy}
-                                                    send_currency={receive_currency}
+                                                    receive_currency={receive_currency}
                                                     setFieldValue={setFieldValue}
                                                 />
                                             }
@@ -221,7 +221,7 @@ class Popup extends Component {
                                                     error={errors.recieve}
                                                     handleChange={handleChange}
                                                     is_buy={is_buy}
-                                                    send_currency={receive_currency}
+                                                    receive_currency={receive_currency}
                                                     setFieldValue={setFieldValue}
                                                 />
                                                 :

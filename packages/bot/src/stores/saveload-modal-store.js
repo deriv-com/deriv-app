@@ -3,7 +3,7 @@ import {
     observable,
     action,
 }                                       from 'mobx';
-import { localize }                     from 'deriv-translations';
+import { localize }                     from '@deriv/translations';
 import { load }                         from '../scratch/utils';
 
 export default class SaveLoadModalStore {

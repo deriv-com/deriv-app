@@ -1,10 +1,9 @@
 import classNames                     from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
-import React                          from 'react';
+import React, { useCallback }         from 'react';
 import { NavLink }                    from 'react-router-dom';
-import { TransitionGroup,
-    CSSTransition }                   from 'react-transition-group';
+import { VariableSizeList as List }   from 'react-window';
 import { Icon, ThemedScrollbars }     from 'deriv-components';
 import { localize }                   from 'deriv-translations';
 import routes                         from 'Constants/routes';
@@ -13,7 +12,38 @@ import { connect }                    from 'Stores/connect';
 import { isMultiplierContract }       from 'Stores/Modules/Contract/Helpers/multiplier';
 import PositionsDrawerCard            from './PositionsDrawerCard';
 
+const ListScrollbar = React.forwardRef((props, ref) => (
+    <ExtendedScrollbars {...props} forwardedRef={ref} />
+));
+
+// Display name is required by Developer Tools to give a name to the components we use.
+// If a component doesn't have a displayName is will be shown as <Unknown />. Hence, name is set.
+ListScrollbar.displayName = 'ListScrollbar';
+
+const ExtendedScrollbars = ({ onScroll, forwardedRef, style, children }) => {
+    const refSetter = useCallback(scrollbarsRef => {
+        if (scrollbarsRef) {
+            forwardedRef(scrollbarsRef.view);
+        } else {
+            forwardedRef(null);
+        }
+    }, []);
+
+    return (
+        <ThemedScrollbars
+            ref={refSetter}
+            style={{ ...style, overflow: 'hidden' }}
+            onScroll={onScroll}
+            autoHide
+        >
+            {children}
+        </ThemedScrollbars>
+    );
+};
+
 class PositionsDrawer extends React.Component {
+    state = {}
+    
     componentDidMount()    {
         this.props.onMount();
     }
@@ -22,21 +52,63 @@ class PositionsDrawer extends React.Component {
         this.props.onUnmount();
     }
 
-    render() {
+    setBodyRef = (elem) => {
+        if (elem) {
+            // Todo: Handle Resizing
+            this.setState({
+                body_height: elem.clientHeight,
+            });
+        }
+    }
+
+    itemRender = ({
+        data,
+        index,       // Index of row
+        style,
+    }) => {
         const {
-            all_positions,
-            error,
             currency,
-            is_multiplier,
-            is_positions_drawer_on,
             onClickCancel,
             onClickSell,
             onClickRemove,
             onHoverPosition,
+            toggleUnsupportedContractModal,
+        } = this.props;
+        const portfolio_position = data[index];
+        return (
+            <div
+                key={portfolio_position.id}
+                style={style}
+            >
+                <PositionsDrawerCard
+                    onClickCancel={onClickCancel}
+                    onClickSell={onClickSell}
+                    onClickRemove={onClickRemove}
+                    onMouseEnter={() => {
+                        onHoverPosition(true, portfolio_position);
+                    }}
+                    onMouseLeave={() => {
+                        onHoverPosition(false, portfolio_position);
+                    }}
+                    key={portfolio_position.id}
+                    currency={currency}
+                    toggleUnsupportedContractModal={toggleUnsupportedContractModal}
+                    {...portfolio_position}
+                />
+            </div>
+        );
+    }
+
+    render() {
+        const {
+            all_positions,
+            error,
+            is_empty,
+            is_multiplier,
+            is_positions_drawer_on,
             symbol,
             symbol_display_name,
             toggleDrawer,
-            toggleUnsupportedContractModal,
         } = this.props;
 
         let positions;
@@ -55,39 +127,19 @@ class PositionsDrawer extends React.Component {
         // Show only 5 most recent open contracts
         const body_content = (
             <React.Fragment>
-                <TransitionGroup component='div'>
-                    {positions.map((portfolio_position) => (
-                        <CSSTransition
-                            appear
-                            key={portfolio_position.id}
-                            in={true}
-                            timeout={150}
-                            classNames={{
-                                appear   : 'positions-drawer-card__wrapper--enter',
-                                enter    : 'positions-drawer-card__wrapper--enter',
-                                enterDone: 'positions-drawer-card__wrapper--enter-done',
-                                exit     : 'positions-drawer-card__wrapper--exit',
-                            }}
-                            unmountOnExit
+                <div style={{ 'height': '100%' }} ref={this.setBodyRef}>
+                    {this.state.body_height > 0 &&
+                        <List
+                            itemCount={positions.length}
+                            itemData={positions}
+                            itemSize={() => 240}
+                            height={this.state.body_height}
+                            outerElementType={is_empty ? null : ListScrollbar}
                         >
-                            <PositionsDrawerCard
-                                onClickCancel={onClickCancel}
-                                onClickSell={onClickSell}
-                                onClickRemove={onClickRemove}
-                                onMouseEnter={() => {
-                                    onHoverPosition(true, portfolio_position);
-                                }}
-                                onMouseLeave={() => {
-                                    onHoverPosition(false, portfolio_position);
-                                }}
-                                key={portfolio_position.id}
-                                currency={currency}
-                                toggleUnsupportedContractModal={toggleUnsupportedContractModal}
-                                {...portfolio_position}
-                            />
-                        </CSSTransition>
-                    ))}
-                </TransitionGroup>
+                            {this.itemRender}
+                        </List>
+                    }
+                </div>
             </React.Fragment>
         );
 
@@ -125,16 +177,7 @@ class PositionsDrawer extends React.Component {
                         </div>
                     </div>
                     <div className='positions-drawer__body'>
-                        <ThemedScrollbars
-                            style={{ width: '100%', height: '100%' }}
-                            autoHide
-                        >
-                            {(positions.length === 0 || error) ?
-                                <EmptyPortfolioMessage error={error} />
-                                :
-                                body_content
-                            }
-                        </ThemedScrollbars>
+                        {(positions.length === 0 || error) ? <EmptyPortfolioMessage error={error} />  : body_content}
                     </div>
                     <div className='positions-drawer__footer'>
                         <NavLink id='dt_positions_drawer_report_button' className='btn btn--secondary btn__large' to={routes.reports}>

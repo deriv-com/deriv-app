@@ -28,14 +28,16 @@ import {
 import BaseStore                   from '../../base-store';
 
 export default class PortfolioStore extends BaseStore {
-    @observable positions  = [];
+    @observable.shallow positions  = [];
+    @observable.shallow all_positions = [];
+    positionsMap = {};
     @observable is_loading = false;
     @observable error      = '';
     getPositionById        = createTransformer((id) => this.positions.find((position) => +position.id === +id));
 
     subscribers = {};
 
-    @observable active_positions = [];
+    @observable.shallow active_positions = [];
     @observable active_positions_drawer_dialog_id = null;
 
     @action.bound
@@ -43,13 +45,14 @@ export default class PortfolioStore extends BaseStore {
         this.is_loading = true;
         await WS.wait('authorize');
         WS.portfolio().then(this.portfolioHandler);
-        WS.subscribeProposalOpenContract(null, this.proposalOpenContractHandler);
+        WS.subscribeProposalOpenContract(null, this.proposalOpenContractQueueHandler);
         WS.subscribeTransaction(this.transactionHandler);
     };
 
     @action.bound
     clearTable() {
         this.positions  = [];
+        this.positionsMap = {};
         this.is_loading = false;
         this.error      = '';
         WS.forgetAll('proposal_open_contract', 'transaction');
@@ -65,8 +68,13 @@ export default class PortfolioStore extends BaseStore {
         this.error = '';
         if (response.portfolio.contracts) {
             this.positions = response.portfolio.contracts
-                .map(pos => formatPortfolioPosition(pos, this.root_store.modules.trade.active_symbols))
+                .map(pos => formatPortfolioPosition(pos,
+                    this.root_store.modules.trade.active_symbols))
                 .sort((pos1, pos2) => pos2.reference - pos1.reference); // new contracts first
+            
+            this.positions.forEach((p)=>{
+                this.positionsMap[p.id] = p;
+            });
         }
     }
 
@@ -139,6 +147,13 @@ export default class PortfolioStore extends BaseStore {
         trade.updateLimitOrderBarriers(is_over, portfolio_position);
     }
 
+    responseQueue = [];
+
+    proposalOpenContractQueueHandler = (response) => {
+        this.responseQueue.push(response);
+        this.throttledUpdatePositions();
+    }
+
     @action.bound
     proposalOpenContractHandler(response) {
         if ('error' in response) {
@@ -147,7 +162,7 @@ export default class PortfolioStore extends BaseStore {
         }
 
         const proposal = response.proposal_open_contract;
-        const portfolio_position = this.positions.find((position) => +position.id === +proposal.contract_id);
+        const portfolio_position = this.positionsMap[proposal.contract_id];
 
         if (!portfolio_position) return;
         this.updateContractTradeStore(response);
@@ -197,8 +212,6 @@ export default class PortfolioStore extends BaseStore {
                 this.updateTradeStore(true, portfolio_position, true);
             }
         }
-
-        this.throttledSetActivePositions();
     }
 
     @action.bound
@@ -309,7 +322,11 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     pushNewPosition(new_pos) {
-        this.positions.unshift(formatPortfolioPosition(new_pos, this.root_store.modules.trade.active_symbols));
+        const position = formatPortfolioPosition(new_pos,
+            this.root_store.modules.trade.active_symbols);
+        this.positions.unshift(position);
+        this.positionsMap[position.id] = position;
+        this.updatePositions();
     }
 
     @action.bound
@@ -317,6 +334,7 @@ export default class PortfolioStore extends BaseStore {
         const contract_idx = this.getPositionIndexById(contract_id);
 
         this.positions.splice(contract_idx, 1);
+        delete this.positionsMap[contract_id];
         this.root_store.modules.contract_trade.removeContract({ contract_id });
     }
 
@@ -404,14 +422,16 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     setActivePositions() {
         this.active_positions = this.positions.filter(portfolio_pos => !getEndTime(portfolio_pos.contract_info));
+        this.all_positions = this.positions.map(p => p);
     }
 
-    throttledSetActivePositions = throttle(this.setActivePositions, 300);
-
-    @computed
-    get all_positions() {
-        return this.positions;
+    updatePositions = () => {
+        this.responseQueue.forEach(res => this.proposalOpenContractHandler(res));
+        this.responseQueue = [];
+        this.setActivePositions();
     }
+
+    throttledUpdatePositions = throttle(this.updatePositions, 500);
 
     @computed
     get is_active_empty() {

@@ -14,7 +14,8 @@ import { getContractTypesConfig } from '../Trading/Constants/contract';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
-    @observable contracts = [];
+    @observable.shallow contracts = [];
+    contractsMap = {};
     @observable has_error     = false;
     @observable error_message = '';
 
@@ -124,13 +125,13 @@ export default class ContractTradeStore extends BaseStore {
         is_tick_contract,
         limit_order = {},
     }) {
-        const contract_exists = this.contracts.filter(c => c.contract_id === contract_id).length;
+        const contract_exists = this.contractsMap[contract_id];
         if (contract_exists) {
             // buy response doesn't have limit_order info so here we update contract limit_order
             // on the first poc response right after buy response, if any
             const has_limit_order = Object.keys(limit_order).length;
             if (has_limit_order) {
-                const contract = this.contracts.filter(c => c.contract_id === contract_id)[0];
+                const contract = this.contractsMap[contract_id];
                 contract.populateConfig({
                     date_start: start_time,
                     barrier,
@@ -154,6 +155,7 @@ export default class ContractTradeStore extends BaseStore {
         });
 
         this.contracts.push(contract);
+        this.contractsMap[contract_id] = contract;
 
         if (is_tick_contract && this.granularity !== 0) {
             this.root_store.ui.addNotificationMessage(switch_to_tick_chart);
@@ -163,6 +165,7 @@ export default class ContractTradeStore extends BaseStore {
     @action.bound
     removeContract({ contract_id }) {
         this.contracts = this.contracts.filter(c => c.contract_id !== contract_id);
+        delete this.contractsMap[contract_id];
     }
 
     @action.bound
@@ -191,14 +194,11 @@ export default class ContractTradeStore extends BaseStore {
         // Update the contract-store corresponding to this POC
         if (response.proposal_open_contract) {
             const contract_id = +response.proposal_open_contract.contract_id;
-            this.contracts.forEach(contract =>  {
-                if (contract.contract_id === contract_id) {
-                    contract.populateConfig(response.proposal_open_contract);
-                    if (response.proposal_open_contract.is_sold) {
-                        this.root_store.ui.removeNotificationMessage(switch_to_tick_chart);
-                    }
-                }
-            });
+            const contract = this.contractsMap[contract_id];
+            contract.populateConfig(response.proposal_open_contract);
+            if (response.proposal_open_contract.is_sold) {
+                this.root_store.ui.removeNotificationMessage(switch_to_tick_chart);
+            }
         }
     }
 
@@ -217,6 +217,6 @@ export default class ContractTradeStore extends BaseStore {
 
     @action.bound
     getContractById(contract_id) {
-        return this.contracts.filter(contract => contract.contract_id === contract_id)[0];
+        return this.contractsMap[contract_id];
     }
 }

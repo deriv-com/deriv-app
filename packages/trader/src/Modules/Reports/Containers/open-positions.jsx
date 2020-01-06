@@ -98,15 +98,16 @@ class OpenPositions extends React.Component {
         if (is_multiplier_selected) {
             let ask_price = 0;
             let profit = 0;
-            let purchase = 0;
+            let buy_price = 0;
 
             active_positions_filtered.forEach((portfolio_pos) => {
-                purchase   += (+portfolio_pos.purchase);
+                buy_price   += (+portfolio_pos.purchase);
                 if (portfolio_pos.contract_info) {
                     profit += portfolio_pos.contract_info.profit;
 
                     if (portfolio_pos.contract_info.deal_cancellation) {
                         ask_price += portfolio_pos.contract_info.deal_cancellation.ask_price || 0;
+                        buy_price -= portfolio_pos.contract_info.deal_cancellation.ask_price;
                     }
                 }
             });
@@ -114,7 +115,7 @@ class OpenPositions extends React.Component {
                 contract_info: {
                     profit,
                 },
-                purchase,
+                buy_price,
             };
 
             if (ask_price > 0) {

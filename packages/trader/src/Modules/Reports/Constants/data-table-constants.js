@@ -208,7 +208,10 @@ export const getMultiplierOpenPositionsColumnsTemplate = (currency) => [
     }, {
         title            : localize('Stake'),
         col_index        : 'buy_price',
-        renderCellContent: ({ row_obj }) => {
+        renderCellContent: ({ cell_value, row_obj, is_footer }) => {
+            if (is_footer) {
+                return <Money amount={cell_value} currency={currency} />;
+            }
             if (row_obj.contract_info) {
                 const { ask_price: deal_cancellation_price = 0 } = row_obj.contract_info.deal_cancellation || {};
                 return <Money amount={row_obj.contract_info.buy_price - deal_cancellation_price} currency={currency} />;

@@ -2,7 +2,7 @@ import React                     from 'react';
 import PropTypes                 from 'prop-types';
 import { Dialog }                from '@deriv/components';
 import { localize, Localize }    from 'Components/i18next';
-import AgentContext              from 'Components/context/agent-context';
+import Dp2pContext               from 'Components/context/dp2p-context';
 import FooterActions             from 'Components/footer-actions/footer-actions.jsx';
 import OrderDetailsStatusBlock   from './order-details-status-block.jsx';
 import OrderInfoBlock            from './order-info-block.jsx';
@@ -34,7 +34,7 @@ const OrderDetails = ({
     const [show_popup, setShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
 
-    const { is_agent } = React.useContext(AgentContext);
+    const { is_agent } = React.useContext(Dp2pContext);
     const onCancelClick = () => setShowPopup(false);
 
     const handleShowPopup = (options) => {

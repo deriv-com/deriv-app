@@ -2,7 +2,7 @@ import React             from 'react';
 import PropTypes         from 'prop-types';
 import ContentLoader     from 'react-content-loader';
 import { Table, Button } from '@deriv/components';
-import AgentContext      from 'Components/context/agent-context';
+import Dp2pContext       from 'Components/context/dp2p-context';
 import { localize }      from 'Components/i18next';
 
 export const BuySellRowLoader = () => (
@@ -27,7 +27,7 @@ BuySellRowLoader.propTypes = {
 };
 
 export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) => {
-    const { is_agent } = React.useContext(AgentContext);
+    const { is_agent } = React.useContext(Dp2pContext);
 
     return (
         <div style={style}>

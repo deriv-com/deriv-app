@@ -8,46 +8,35 @@ import {
     Input,
     Button,
     ThemedScrollbars }                from '@deriv/components';
+import ObjectUtils                    from '@deriv/shared/utils/object';
+import Dp2pContext                    from 'Components/context/dp2p-context';
 import FooterActions                  from 'Components/footer-actions/footer-actions.jsx';
 import { localize }                   from 'Components/i18next';
 import PageReturn                     from 'Components/page-return/page-return.jsx';
+import { requestWS }                  from 'Utils/websocket';
 
 class FormAds extends Component {
     state = {
-        initial_values: {
-            country        : '',
-            currency       : '',
-            type           : '',
-            asset          : '',
-            fix_price      : '',
-            amount         : '',
-            min_transaction: '',
-            max_transaction: '',
-            advertiser_note: '',
-        },
+        country   : '',
         is_loading: true,
     };
 
-    componentDidMount() {
-        // TODO: [p2p-fix-api] call get offer detail api and populate state
-        const new_initial_values = {
-            country        : 'Indonesia',
-            currency       : 'IDR',
-            type           : 'buy',
-            asset          : 'USD',
-            fix_price      : 10000,
-            amount         : 50,
-            min_transaction: 1000,
-        };
-        this.setState({
-            initial_values: new_initial_values,
-        });
+    async componentDidMount() {
+        const residence_response = await requestWS({ residence_list: 1 });
+        const current_residence = residence_response.residence_list.find(
+            (residence) => residence.value === this.context.residence
+        );
+        const display_residence = ObjectUtils.getPropertyValue(current_residence, 'text') || '';
 
+        // TODO: [p2p-fix-api] call get offer detail api and populate state
         if (this.props.ad_id) {
             // call the api, get the file based on id
             // populate the state from the respnose
+            this.setState({
+                country: display_residence,
+            });
         } else {
-            this.setState({ is_loading: false });
+            this.setState({ is_loading: false, country: display_residence });
         }
     }
 
@@ -69,7 +58,17 @@ class FormAds extends Component {
                 />
                 {this.state.is_loading ? <Loading is_fullscreen={false} /> : (
                     <Formik
-                        initialValues={{ ...this.state.initial_values }}
+                        initialValues={{
+                            country        : this.state.country,
+                            currency       : 'IDR',
+                            type           : 'buy',
+                            asset          : this.context.currency,
+                            fix_price      : '',
+                            amount         : '',
+                            min_transaction: '',
+                            max_transaction: '',
+                            advertiser_note: '',
+                        }}
                         onSubmit={this.handleSubmit}
                         validate={this.validateFormAds}
                     >
@@ -194,11 +193,12 @@ class FormAds extends Component {
                                                     />
                                                 )}
                                             </Field>
+                                        </div>
+                                        <div className='p2p-my-ads__form--container'>
                                             <Field name='max_transaction'>
                                                 {({ field }) => (
                                                     <Input
                                                         {...field}
-                                                        data-lpignore='true'
                                                         type='number'
                                                         error={touched.max_transaction && errors.max_transaction}
                                                         label={localize('Max. transaction')}
@@ -227,7 +227,7 @@ class FormAds extends Component {
                                         </Field>
                                     </ThemedScrollbars>
                                     <FooterActions has_border>
-                                        <Button className='p2p-my-ads__form-button' secondary large type='reset'>{localize('Cancel')}</Button>
+                                        <Button className='p2p-my-ads__form-button' secondary large onClick={ () => this.props.handleShowForm(false) }>{localize('Cancel')}</Button>
                                         <Button className='p2p-my-ads__form-button' primary large is_disabled={isSubmitting || !isValid}>{localize('Post ad')}</Button>
                                     </FooterActions>
                                 </Form>
@@ -307,5 +307,7 @@ FormAds.propTypes = {
     ad_id         : PropTypes.string,
     handleShowForm: PropTypes.func,
 };
+
+FormAds.contextType = Dp2pContext;
 
 export default FormAds;

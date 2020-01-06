@@ -13,6 +13,7 @@
         &-container {
             display: flex;
             width: 41rem;
+            height: 7rem;
         }
         &-field {
             margin-top: 1rem;
@@ -22,8 +23,8 @@
             &:not(&--single) {
                 margin-bottom: 1.8rem;
             }
-            & .dc-autocomplete__field {
-                margin-bottom: 0;
+            &.dc-dropdown-container {
+                margin-bottom: 3.2rem;
             }
             & .dc-input__label {
                 top: 1.2rem;

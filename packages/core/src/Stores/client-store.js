@@ -6,15 +6,15 @@ import {
     runInAction,
     when,
     reaction }                       from 'mobx';
-import CurrencyUtils                 from 'deriv-shared/utils/currency';
-import ObjectUtils                   from 'deriv-shared/utils/object';
+import CurrencyUtils                 from '@deriv/shared/utils/currency';
+import ObjectUtils                   from '@deriv/shared/utils/object';
 import {
     requestLogout,
     WS }                             from 'Services';
 import ClientBase                    from '_common/base/client_base';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
-import { localize }                  from 'deriv-translations';
+import { localize }                  from '@deriv/translations';
 import {
     LocalStore,
     State }                          from '_common/storage';

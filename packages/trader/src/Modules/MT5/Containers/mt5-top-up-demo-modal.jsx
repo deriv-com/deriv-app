@@ -2,11 +2,11 @@ import {
     Icon,
     Modal,
     Button,
-    Money }                   from 'deriv-components';
+    Money }                   from '@deriv/components';
 import PropTypes              from 'prop-types';
 import React                  from 'react';
 import SuccessDialog          from 'App/Containers/Modals/success-dialog.jsx';
-import { localize, Localize } from 'deriv-translations';
+import { localize, Localize } from '@deriv/translations';
 import { connect }            from 'Stores/connect';
 
 class Mt5TopUpDemoModal extends React.Component {

@@ -1,5 +1,5 @@
-import CurrencyUtils         from 'deriv-shared/utils/currency';
-import ObjectUtils           from 'deriv-shared/utils/object';
+import CurrencyUtils         from '@deriv/shared/utils/currency';
+import ObjectUtils           from '@deriv/shared/utils/object';
 import { localize }          from 'Components/i18next';
 import {
     convertToMillis,

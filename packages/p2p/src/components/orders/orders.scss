@@ -96,4 +96,18 @@
             fill: var(--text-general);
         }
     }
+    &__table {
+        &-row {
+            cursor: pointer;
+            padding-left: 1rem;
+
+            &:hover {
+                background: var(--general-hover);
+            }
+        }
+        &-id {
+            color: var(--brand-red-coral);
+            font-weight: bold;
+        }
+    }
 }

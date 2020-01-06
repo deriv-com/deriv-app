@@ -26,13 +26,12 @@ export default class OrderInfo {
     }
 
     static status_map = {
-        'pending'         : localize('Unpaid'),
-        'client-confirmed': localize('Paid'),
-        'cancelled'       : localize('Cancelled'),
-        'timed-out'       : localize('Cancelled'),
-        'refunded'        : localize('Refunded'),
-        'agent-confirmed' : localize('Complete'),
-        'completed'       : localize('Complete'),
+        'pending'        : localize('Unpaid'),
+        'buyer-confirmed': localize('Paid'),
+        'cancelled'      : localize('Cancelled'),
+        'timed-out'      : localize('Cancelled'),
+        'refunded'       : localize('Refunded'),
+        'completed'      : localize('Complete'),
     };
 
     get display_status() {
@@ -48,7 +47,7 @@ export default class OrderInfo {
     }
 
     get is_buyer_confirmed() {
-        return this.status === 'client-confirmed';
+        return this.status === 'buyer-confirmed';
     }
 
     get is_buyer_cancelled() {
@@ -61,10 +60,6 @@ export default class OrderInfo {
 
     get is_refunded() {
         return this.status === 'refunded';
-    }
-
-    get is_seller_confirmed() {
-        return this.status === 'agent-confirmed';
     }
 
     get is_completed() {

@@ -2,7 +2,7 @@ import React               from 'react';
 import {
     Redirect,
     Route }                from 'react-router-dom';
-import ObjectUtils         from 'deriv-shared/utils/object';
+import ObjectUtils         from '@deriv/shared/utils/object';
 import {
     redirectToLogin,
     redirectToSignUp }     from '_common/base/login';

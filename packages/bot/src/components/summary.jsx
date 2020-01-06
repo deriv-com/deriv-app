@@ -2,10 +2,10 @@ import classNames    from 'classnames';
 import {
     Money,
     ThemedScrollbars,
-}                    from 'deriv-components';
+}                    from '@deriv/components';
 import PropTypes     from 'prop-types';
 import React         from 'react';
-import { localize }  from 'deriv-translations';
+import { localize }  from '@deriv/translations';
 import ContractCard  from './contract-card.jsx';
 import { connect }   from '../stores/connect';
 import                    '../assets/sass/summary.scss';

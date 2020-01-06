@@ -1,7 +1,7 @@
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { Icon }     from 'deriv-components';
-import { localize } from 'deriv-translations';
+import { Icon }     from '@deriv/components';
+import { localize } from '@deriv/translations';
 
 const FooterIcon = (use_icon) => use_icon || 'IcCalendarToday';
 

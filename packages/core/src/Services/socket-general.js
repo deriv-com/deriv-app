@@ -1,10 +1,10 @@
 import { action, flow }  from 'mobx';
-import ObjectUtils       from 'deriv-shared/utils/object';
+import ObjectUtils       from '@deriv/shared/utils/object';
 import Login             from '_common/base/login';
 import ServerTime        from '_common/base/server_time';
 import BinarySocket      from '_common/base/socket_base';
 import { State }         from '_common/storage';
-import { localize }      from 'deriv-translations';
+import { localize }      from '@deriv/translations';
 import WS                from './ws-methods';
 
 let client_store,

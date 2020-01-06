@@ -1,5 +1,5 @@
-import { getRoundedNumber } from 'deriv-shared/utils/currency';
-import { localize }         from 'deriv-translations';
+import { getRoundedNumber } from '@deriv/shared/utils/currency';
+import { localize }         from '@deriv/translations';
 import { log }              from './broadcast';
 import { getUTCTime }       from '../../../utils/tools';
 

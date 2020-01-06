@@ -1,6 +1,6 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
-import { Table }              from 'deriv-components';
+import { Table }              from '@deriv/components';
 import { localize }           from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS }          from 'Utils/websocket';

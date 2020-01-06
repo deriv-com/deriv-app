@@ -1,4 +1,4 @@
-import { localize }                     from 'deriv-translations';
+import { localize }                     from '@deriv/translations';
 import { getLanguage }                  from '../lang/lang';
 import { observer as globalObserver }   from '../observer';
 import { trackAndEmitError }            from '../tools';
@@ -27,17 +27,17 @@ class GoogleDrive {
                 script.onload = null;
                 script.onreadystatechange = null;
                 script = undefined;
-    
+
                 if (!isAbort && callback) setTimeout(callback, 0);
             }
         };
-    
+
         script.src = source;
         prior.parentNode.insertBefore(script, prior);
     }
 
     init() {
-        gapi.load('client:auth2', 
+        gapi.load('client:auth2',
             () => {
                 gapi.client
                     .init({

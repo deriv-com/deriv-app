@@ -1,9 +1,9 @@
 import {
     Icon,
-    Tabs }                       from 'deriv-components';
+    Tabs }                       from '@deriv/components';
 import React                     from 'react';
 import { withRouter }            from 'react-router';
-import { localize, Localize }    from 'deriv-translations';
+import { localize, Localize }    from '@deriv/translations';
 import routes                    from 'Constants/routes';
 import MT5PasswordModal          from 'Modules/MT5/Containers/mt5-password-modal.jsx';
 import MT5ServerErrorDialog      from 'Modules/MT5/Containers/mt5-server-error-dialog.jsx';

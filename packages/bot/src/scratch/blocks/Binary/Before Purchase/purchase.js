@@ -1,4 +1,4 @@
-import { localize }               from 'deriv-translations';
+import { localize }               from '@deriv/translations';
 import { getContractTypeOptions } from '../../../shared';
 
 Blockly.Blocks.purchase = {
@@ -56,7 +56,7 @@ Blockly.Blocks.purchase = {
     },
     populatePurchaseList(event) {
         const trade_definition_block = this.workspace.getTradeDefinitionBlock();
-        
+
         if (trade_definition_block) {
             const trade_type_block      = trade_definition_block.getChildByType('trade_definition_tradetype');
             const trade_type            = trade_type_block.getFieldValue('TRADETYPE_LIST');

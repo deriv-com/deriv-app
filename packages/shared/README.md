@@ -1,4 +1,4 @@
-# `deriv-shared`
+# `@deriv/shared`
 > Responsible for the shared utilities and styles for all packages.
 
 ## Index
@@ -34,22 +34,22 @@ Run `npm i sass-resources-loader --save-dev` and add the following in your webpa
 ```js {
     loader: 'sass-resources-loader',
     options: {
-        resources: require('deriv-shared/utils/index.js'),
+        resources: require('@deriv/shared/utils/index.js'),
     }
 }
 ```
 
 #### Browser css reset:
 ```scss
-@import deriv-shared/src/styles/reset.scss
+@import @deriv/shared/src/styles/reset.scss
 ```
 
 #### Google fonts:
 ```scss
-@import deriv-shared/src/styles/google-fonts.scss
+@import @deriv/shared/src/styles/google-fonts.scss
 ```
 
 ### Utility functions
 ```js
-import { toMomemt } 'deriv-shared/utils/date'
+import { toMomemt } '@deriv/shared/utils/date'
 ```

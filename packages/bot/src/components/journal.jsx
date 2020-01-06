@@ -5,8 +5,8 @@ import {
     Checkbox,
     Icon,
     ThemedScrollbars,
-}                           from 'deriv-components';
-import { localize }         from 'deriv-translations';
+}                           from '@deriv/components';
+import { localize }         from '@deriv/translations';
 import { message_types }    from '../constants/messages';
 import { connect }          from '../stores/connect';
 import '../assets/sass/journal.scss';

@@ -55,7 +55,7 @@ module.exports = function (env, argv) {
             path: path.resolve(__dirname, '../dist'),
             chunkFilename: 'js/trader.[name].[contenthash].js',
             libraryExport: 'default',
-            library: 'deriv-trader',
+            library: '@deriv/trader',
             libraryTarget: 'umd',
         },
         externals: [
@@ -66,12 +66,12 @@ module.exports = function (env, argv) {
                 'react-router': 'react-router',
                 'mobx': 'mobx',
                 'mobx-react': 'mobx-react',
-                'deriv-shared': 'deriv-shared',
-                'deriv-components': 'deriv-components',
+                '@deriv/shared': '@deriv/shared',
+                '@deriv/components': '@deriv/components',
                 'smartcharts-beta': 'smartcharts-beta',
             },
-            /^deriv-shared\/.+$/,
-            /^deriv-components\/.+$/
+            /^@deriv\/shared\/.+$/,
+            /^@deriv\/components\/.+$/
         ],
         target: 'web',
         plugins     : plugins(base, false),

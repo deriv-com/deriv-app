@@ -4,13 +4,13 @@ import React                  from 'react';
 import {
     Button,
     Icon,
-    Input }                   from 'deriv-components';
+    Input }                   from '@deriv/components';
 import {
     Field,
     Formik,
     Form }                    from 'formik';
-import CurrencyUtils          from 'deriv-shared/utils/currency';
-import { localize, Localize } from 'deriv-translations';
+import CurrencyUtils          from '@deriv/shared/utils/currency';
+import { localize, Localize } from '@deriv/translations';
 import { connect }            from 'Stores/connect';
 import {
     getPreBuildDVRs,

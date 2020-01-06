@@ -1,7 +1,7 @@
 import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React, { Fragment } from 'react';
-import { Icon }            from 'deriv-components';
+import { Icon }            from '@deriv/components';
 
 const DurationToggle = ({
     name,

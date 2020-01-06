@@ -1,6 +1,6 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
-import { Loading }            from 'deriv-components';
+import { Loading }            from '@deriv/components';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError }         from 'Components/table/table-error.jsx';
 import { requestWS }          from 'Utils/websocket';

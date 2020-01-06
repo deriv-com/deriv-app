@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Button }                     from 'deriv-components';
+import { Button }                     from '@deriv/components';
 import { localize }                   from 'Components/i18next';
 import FormAds                        from './form-ads.jsx';
 import { MyAdsTable }                 from './my-ads-table.jsx';

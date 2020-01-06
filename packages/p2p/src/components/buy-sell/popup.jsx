@@ -9,8 +9,8 @@ import {
 import {
     Input,
     Button,
-    ThemedScrollbars } from 'deriv-components';
-import CurrencyUtils   from 'deriv-shared/utils/currency';
+    ThemedScrollbars } from '@deriv/components';
+import CurrencyUtils   from '@deriv/shared/utils/currency';
 import IconBack        from 'Assets/icon-back.jsx';
 import IconClose       from 'Assets/icon-close.jsx';
 import { localize }    from 'Components/i18next';

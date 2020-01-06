@@ -1,4 +1,4 @@
-import { Table }    from 'deriv-components';
+import { Table }    from '@deriv/components';
 import PropTypes    from 'prop-types';
 import React        from 'react';
 import { localize } from 'Components/i18next';

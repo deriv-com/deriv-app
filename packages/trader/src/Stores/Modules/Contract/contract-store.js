@@ -63,7 +63,7 @@ export default class ContractStore {
     is_ongoing_contract = false;
 
     @action.bound
-    populateConfig(contract_info) {
+    populateConfig(contract_info, has_limit_order) {
         const prev_contract_info = this.contract_info;
         this.contract_info = contract_info;
         this.end_time = getEndTime(this.contract_info);
@@ -95,7 +95,7 @@ export default class ContractStore {
         }
 
         this.is_multiplier_contract = isMultiplierContract(this.contract_info.contract_type);
-        if (this.is_multiplier_contract && !this.contract_update.has_contract_update) {
+        if (this.is_multiplier_contract && !this.contract_update.has_contract_update && has_limit_order) {
             this.contract_update = getContractUpdate(this.contract_info);
             this.contract_update.onChangeContractUpdate = this.onChangeContractUpdate;
             this.contract_update.onClickContractUpdate  = this.onClickContractUpdate;

@@ -139,7 +139,7 @@ export default class ContractTradeStore extends BaseStore {
                     longcode,
                     underlying,
                     limit_order,
-                });
+                }, true);
             }
             return;
         }

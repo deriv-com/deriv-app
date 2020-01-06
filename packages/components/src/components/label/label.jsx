@@ -8,6 +8,7 @@ const available_modes = [
     'warn',
     'danger',
     'info',
+    'default-invert',
     'success-invert',
     'warn-invert',
 ];

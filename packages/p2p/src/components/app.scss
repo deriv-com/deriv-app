@@ -1,5 +1,5 @@
-@import '~deriv-shared/utils/styles/reset.scss';
-@import '~deriv-shared/utils/styles/themes.scss';
+@import '~@deriv/shared/utils/styles/reset.scss';
+@import '~@deriv/shared/utils/styles/themes.scss';
 
 .deriv-p2p {
     background: transparent;
@@ -24,4 +24,5 @@
     justify-content: center;
     align-items: center;
     font-size: 1.4rem;
+    color: var(--text-general);
 }

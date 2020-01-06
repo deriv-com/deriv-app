@@ -1,4 +1,4 @@
-import { localize }                                    from 'deriv-translations';
+import { localize }                                    from '@deriv/translations';
 import { proposalsReady, clearProposals }              from './state/actions';
 import { tradeOptionToProposal, doUntilDone, getUUID } from '../utils/helpers';
 

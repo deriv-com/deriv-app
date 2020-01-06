@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 
 Blockly.Blocks.input_list = {
     init() {
@@ -45,7 +45,7 @@ Blockly.Blocks.input_list = {
             if (!has_parent || is_illegal_parent) {
                 const { recordUndo }      = Blockly.Events;
                 Blockly.Events.recordUndo = false;
-                
+
                 this.unplug(true);
 
                 // Attempt to re-connect this child to its original parent.

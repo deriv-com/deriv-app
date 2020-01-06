@@ -8,8 +8,8 @@ import {
     Button,
     Dialog,
     PasswordInput,
-    PasswordMeter }           from 'deriv-components';
-import { localize, Localize } from 'deriv-translations';
+    PasswordMeter }           from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
 import { connect }            from 'Stores/connect';
 import { validPassword }      from 'Utils/Validator/declarative-validation-rules';
 import { redirectToLogin }    from '_common/base/login';

@@ -2,9 +2,9 @@
 import React                  from 'react';
 import {
     Button,
-    Input }                   from 'deriv-components';
+    Input }                   from '@deriv/components';
 import { Formik }             from 'formik';
-import { localize }           from 'deriv-translations';
+import { localize }           from '@deriv/translations';
 import { WS }                 from 'Services/ws-methods';
 import { connect }            from 'Stores/connect';
 import {

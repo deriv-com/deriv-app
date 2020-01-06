@@ -1,4 +1,4 @@
-import { localize }                   from 'deriv-translations';
+import { localize }                   from '@deriv/translations';
 import { notify }                     from '../utils/broadcast';
 import { observer as globalObserver } from '../../../utils/observer';
 

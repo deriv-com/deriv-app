@@ -1,4 +1,4 @@
-import { localize }      from 'deriv-translations';
+import { localize }      from '@deriv/translations';
 import { minusIconDark } from '../../images';
 
 Blockly.Blocks.lists_statement = {
@@ -65,7 +65,7 @@ Blockly.Blocks.lists_statement = {
                 Blockly.Events.recordUndo = false;
 
                 this.unplug(false);
-                
+
                 const all_blocks   = this.workspace.getAllBlocks();
                 const parent_block = all_blocks.find(block => block.id === this.requiredParentId);
 

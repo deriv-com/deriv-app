@@ -1,6 +1,6 @@
-import ObjectUtils             from 'deriv-shared/utils/object';
+import ObjectUtils             from '@deriv/shared/utils/object';
 import ServerTime              from '_common/base/server_time';
-import { localize }            from 'deriv-translations';
+import { localize }            from '@deriv/translations';
 import { WS }                  from 'Services/ws-methods';
 import {
     isTimeValid,

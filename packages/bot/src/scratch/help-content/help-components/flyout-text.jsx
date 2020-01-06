@@ -1,6 +1,6 @@
 import React         from 'react';
 import { PropTypes } from 'prop-types';
-import { localize }  from 'deriv-translations';
+import { localize }  from '@deriv/translations';
 
 const FlyoutText = props => {
     const { text } = props;

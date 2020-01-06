@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
-import { ToggleSwitch }     from 'deriv-components';
+import { ToggleSwitch }     from '@deriv/components';
 import classNames           from 'classnames';
 import { localize }         from 'Components/i18next';
 import './my-ads.scss';

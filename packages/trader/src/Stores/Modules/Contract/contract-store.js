@@ -74,9 +74,15 @@ export default class ContractStore {
             this.root_store.ui.is_dark_mode_on
         );
         this.markers_array = createChartMarkers(this.contract_info);
-        this.marker  = observable.object(calculate_marker(this.contract_info) || {}, {}, { deep: false });
-
-        this.contract_config  = observable.object(getChartConfig(this.contract_info) || {}, {}, { deep: false });
+        const marker = calculate_marker(this.contract_info);
+        if (marker) {
+            this.marker  = observable.object(marker, {}, { deep: false });
+        }
+        
+        const contract_config = getChartConfig(this.contract_info);
+        if (contract_config) {
+            this.contract_config  = observable.object(contract_config, {}, { deep: false });
+        }
         this.display_status = getDisplayStatus(this.contract_info);
         this.is_ended = isEnded(this.contract_info);
         this.is_digit_contract = isDigitContract(this.contract_info.contract_type);

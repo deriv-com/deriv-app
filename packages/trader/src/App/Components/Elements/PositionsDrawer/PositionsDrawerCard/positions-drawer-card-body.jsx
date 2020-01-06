@@ -2,7 +2,7 @@ import classNames               from 'classnames';
 import PropTypes                from 'prop-types';
 import React                    from 'react';
 import { Icon, Money }          from '@deriv/components';
-import CurrencyUtils            from 'deriv-shared/utils/currency';
+import CurrencyUtils            from '@deriv/shared/utils/currency';
 import { localize }             from '@deriv/translations';
 import { getLimitOrderAmount }  from 'Stores/Modules/Contract/Helpers/limit-orders';
 import {

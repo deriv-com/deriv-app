@@ -3,9 +3,9 @@ import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { Icon, Money }         from '@deriv/components';
 import CurrencyUtils           from '@deriv/shared/utils/currency';
+import { localize }            from '@deriv/translations';
 import ContractCardBody        from 'App/Components/Elements/ContractCard/contract-card-body.jsx';
 import ContractCardItem        from 'App/Components/Elements/ContractCard/contract-card-item.jsx';
-import { localize }            from 'deriv-translations';
 import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-orders';
 import {
     getDealCancellationPrice,

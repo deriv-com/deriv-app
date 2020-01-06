@@ -8,7 +8,7 @@ import React, {
     useState,
 }                            from 'react';
 import { Checkbox, Popover } from '@deriv/components';
-import CurrencyUtils         from 'deriv-shared/utils/currency';
+import CurrencyUtils         from '@deriv/shared/utils/currency';
 import InputField            from './input-field.jsx';
 
 const InputWithCheckbox = ({

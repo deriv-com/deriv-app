@@ -130,6 +130,8 @@ export default class UIStore extends BaseStore {
             'is_reports_visible',
             // 'is_purchase_confirm_on',
             // 'is_purchase_lock_on',
+            'should_show_stop_loss_warning',
+            'should_show_deal_cancellation_warning',
         ];
 
         super({ root_store, local_storage_properties, store_name });

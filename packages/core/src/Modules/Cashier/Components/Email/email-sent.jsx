@@ -1,8 +1,8 @@
 import PropTypes              from 'prop-types';
 import React                  from 'react';
-import { Button, Icon }       from 'deriv-components';
+import { Button, Icon }       from '@deriv/components';
 import { BinaryLink }         from 'App/Components/Routes';
-import { localize, Localize } from 'deriv-translations';
+import { localize, Localize } from '@deriv/translations';
 import { connect }            from 'Stores/connect';
 
 class EmailSent extends React.Component {

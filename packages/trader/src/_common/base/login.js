@@ -1,4 +1,4 @@
-const { getLanguage }     = require('deriv-translations');
+const { getLanguage }     = require('@deriv/translations');
 const website_name        = require('App/Constants/app-config').website_name;
 const getElementById      = require('../common_functions').getElementById;
 const isMobile            = require('../os_detect').isMobile;

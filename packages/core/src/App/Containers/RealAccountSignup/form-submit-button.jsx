@@ -1,5 +1,5 @@
 import classNames   from 'classnames';
-import { Button }   from 'deriv-components';
+import { Button }   from '@deriv/components';
 import PropTypes    from 'prop-types';
 import React        from 'react';
 

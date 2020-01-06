@@ -1,5 +1,5 @@
-import { localize }  from 'deriv-translations';
-import CurrencyUtils from 'deriv-shared/utils/currency';
+import { localize }  from '@deriv/translations';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import config        from '../../../../constants';
 import ApiHelpers    from '../../../../services/api/api-helpers';
 import ScratchStore  from '../../../../stores/scratch-store';
@@ -199,7 +199,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             duration_field_dropdown.updateOptions(duration_options, {
                 default_value: should_use_default_unit ? undefined : duration_field_dropdown.getValue(),
             });
-            
+
             if (should_update_value && duration_input.connection) {
                 const target_block = duration_input.connection.targetBlock();
 
@@ -239,7 +239,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             this.selected_barrier_types
         ).then(barriers => {
             this.createBarrierInputs(barriers);
-            
+
             const input_names = ['BARRIEROFFSET', 'SECONDBARRIEROFFSET'];
 
             for (let i = 0; i < barriers.values.length; i++) {
@@ -248,7 +248,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 const barrier_field_value =  should_use_default_type ?
                     BARRIER_TYPES[i][1] :
                     barrier_field_dropdown.getValue();
-                
+
                 if (this.selected_duration === 'd') {
                     // Only absolute types are allowed.
                     barrier_field_dropdown.updateOptions(ABSOLUTE_BARRIER_DROPDOWN_OPTION, {
@@ -347,7 +347,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         container.setAttribute('has_first_barrier', !!this.getInput('BARRIEROFFSET'));
         container.setAttribute('has_second_barrier', !!this.getInput('SECONDBARRIEROFFSET'));
         container.setAttribute('has_prediction', !!this.getInput('PREDICTION'));
-        
+
         return container;
     },
     restricted_parents: ['trade_definition'],

@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 import { save }     from '../utils';
 import ScratchStore from '../../stores/scratch-store';
 
@@ -16,7 +16,7 @@ Blockly.BlockSvg.prototype.addSelect = function() {
 /**
  * Set whether the block is disabled or not.
  * @param {boolean} disabled True if disabled.
- * deriv-bot: Call updateDisabled() when setDisabled is called.
+ * @deriv/bot: Call updateDisabled() when setDisabled is called.
  */
 Blockly.BlockSvg.prototype.setDisabled = function(disabled) {
     if (this.disabled !== disabled) {
@@ -29,12 +29,12 @@ Blockly.BlockSvg.prototype.setDisabled = function(disabled) {
 
 /**
  * Enable or disable a block.
- * deriv-bot: Update fill path if it doesn't match the disabledPatternId.
+ * @deriv/bot: Update fill path if it doesn't match the disabledPatternId.
  */
 Blockly.BlockSvg.prototype.updateDisabled = function() {
     if (this.disabled || this.getInheritedDisabled()) {
         Blockly.utils.addClass(this.svgGroup_, 'blocklyDisabled');
-        
+
         const fill = `url(#${this.workspace.options.disabledPatternId})`;
         if (this.svgPath_.getAttribute('fill') !== fill) {
             this.svgPath_.setAttribute('fill', fill);
@@ -54,13 +54,13 @@ Blockly.BlockSvg.prototype.updateDisabled = function() {
  * Show the context menu for this block.
  * @param {!Event} e Mouse event.
  * @private
- * deriv-bot: Restore contextMenu options from Blockly unavailable in Scratch
+ * @deriv/bot: Restore contextMenu options from Blockly unavailable in Scratch
  */
 Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
     if (this.workspace.options.readOnly || !this.contextMenu) {
         return;
     }
-    
+
     // Save the current block in a variable for use in closures.
     const block        = this;
     const menu_options = [];
@@ -143,7 +143,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
                 callback: () => downloadBlock(false),
             });
         }
-        
+
     }
     // Allow the block to add or modify menu_options.
     if (this.customContextMenu) {
@@ -206,7 +206,7 @@ Blockly.BlockSvg.prototype.setCollapsed = function(collapsed) {
     }
 
     Blockly.BlockSvg.superClass_.setCollapsed.call(this, collapsed);
-  
+
     if (!render_list.length) {
         render_list.push(this); // No child blocks, just render this block.
     }

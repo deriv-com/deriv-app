@@ -1,4 +1,4 @@
-const { getLanguage }     = require('deriv-translations');
+const { getLanguage }     = require('@deriv/translations');
 const website_name        = require('App/Constants/app-config').website_name;
 const Client              = require('./client_base');
 const getElementById      = require('../common_functions').getElementById;
@@ -20,7 +20,7 @@ const Login = (() => {
     const redirectToSignUp = () => {
         window.open('https://deriv.com?action=signup');
     };
-    
+
     const loginUrl = () => {
         const server_url         = localStorage.getItem('config.server_url');
         const language           = getLanguage();

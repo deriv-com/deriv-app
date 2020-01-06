@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 import { toMoment } from 'Utils/Date';
 
 const getDurationMaps = () => ({

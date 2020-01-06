@@ -1,4 +1,4 @@
-import { localize }               from 'deriv-translations';
+import { localize }               from '@deriv/translations';
 import config                     from '../../../../constants';
 import { getContractTypeOptions } from '../../../shared';
 
@@ -36,7 +36,7 @@ Blockly.Blocks.trade_definition_contracttype = {
                 const contract_type_options = [];
 
                 const trade_types = getContractTypeOptions('both', trade_type);
-                
+
                 if (trade_types.length > 1) {
                     contract_type_options.push([localize('Both'), 'both']);
                 }

@@ -36,6 +36,7 @@ export default class PortfolioStore extends BaseStore {
     getPositionById        = createTransformer((id) => this.positions.find((position) => +position.id === +id));
 
     subscribers = {};
+    responseQueue = [];
 
     @observable.shallow active_positions = [];
     @observable active_positions_drawer_dialog_id = null;
@@ -146,8 +147,6 @@ export default class PortfolioStore extends BaseStore {
         }
         trade.updateLimitOrderBarriers(is_over, portfolio_position);
     }
-
-    responseQueue = [];
 
     proposalOpenContractQueueHandler = (response) => {
         this.responseQueue.push(response);

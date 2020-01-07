@@ -41,6 +41,12 @@ const ContractHistory = ({
                                         amount={item.order_amount}
                                         currency={currency}
                                     />
+                                    {item.value &&
+                                        <React.Fragment>
+                                            <br />
+                                            <span>({item.value})</span>
+                                        </React.Fragment>
+                                    }
                                 </React.Fragment>
                                 :
                                 localize('Cancelled')

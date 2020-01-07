@@ -108,6 +108,7 @@ const TradeCategories = ({ category }) => {
                             <li>{ localize('If you select “Stop loss” and specify an amount to limit your loss, your position will be closed automatically when your loss is more than or equals to this amount. Your loss may be more than the amount you entered depending on the market price at closing.') }</li>
                             <li>{ localize('If you select “Deal cancellation”, you’ll be able to cancel your position within 1 hour if you find that the market is not moving in your favour. We’ll charge a small fee for this, but we’ll return your stake amount without profit or loss. If the stop-out amount is reached before the deal cancellation expires, your position will be cancelled automatically and we’ll return your stake amount without profit or loss. When “Deal cancellation” is selected, “Stop loss” is deactivated and will only be available when “Deal cancellation” expires.') }</li>
                         </ul>
+                        <p>{ localize('The entry spot is the market price when your contract is processed by our servers. The exit spot is the market price when the contract is closed.') }</p>
                     </React.Fragment>
                 );
                 break;

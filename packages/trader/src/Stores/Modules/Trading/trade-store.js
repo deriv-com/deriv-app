@@ -1048,11 +1048,6 @@ export default class TradeStore extends BaseStore {
     }
 
     @computed
-    get symbol_display_name() {
-        return (this.active_symbols.find((s) => s.symbol === this.symbol) || {}).display_name;
-    }
-
-    @computed
     get is_multiplier() {
         return this.contract_type === 'mult';
     }

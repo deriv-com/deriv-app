@@ -9,7 +9,6 @@ import { localize }                   from '@deriv/translations';
 import routes                         from 'Constants/routes';
 import EmptyPortfolioMessage          from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import { connect }                    from 'Stores/connect';
-import { isMultiplierContract }       from 'Stores/Modules/Contract/Helpers/multiplier';
 import PositionsDrawerCard            from './PositionsDrawerCard';
 
 const ListScrollbar = React.forwardRef((props, ref) => (
@@ -104,25 +103,14 @@ class PositionsDrawer extends React.Component {
             all_positions,
             error,
             is_empty,
-            is_multiplier,
             is_positions_drawer_on,
             symbol,
-            symbol_display_name,
             toggleDrawer,
         } = this.props;
 
-        let positions;
-
-        if (is_multiplier) {
-            positions = all_positions.filter((p) => {
-                if (p.contract_info) {
-                    return isMultiplierContract(p.contract_info.contract_type) && symbol === p.contract_info.underlying;
-                }
-                return true;
-            });
-        } else {
-            positions = all_positions.slice(0, 5);
-        }
+        const positions = all_positions.filter((p) =>
+            (p.contract_info && symbol === p.contract_info.underlying)
+        );
 
         // Show only 5 most recent open contracts
         const body_content = (
@@ -158,16 +146,9 @@ class PositionsDrawer extends React.Component {
                         })}
                 >
                     <div className='positions-drawer__header'>
-                        {is_multiplier ?
-                            <div className='positions-drawer__title'>
-                                <p>{localize('Multiplier options on')}</p>
-                                <p>{symbol_display_name}</p>
-                            </div>
-                            :
-                            <span className='positions-drawer__title'>
-                                {localize('Recent Positions')}
-                            </span>
-                        }
+                        <span className='positions-drawer__title'>
+                            {localize('Recent Positions')}
+                        </span>
                         <div
                             id='dt_positions_drawer_close_icon'
                             className='positions-drawer__icon-close'
@@ -198,7 +179,6 @@ PositionsDrawer.propTypes = {
     currency              : PropTypes.string,
     error                 : PropTypes.string,
     is_loading            : PropTypes.bool,
-    is_multiplier         : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     onChangeContractUpdate: PropTypes.func,
     onClickContractUpdate : PropTypes.func,
@@ -208,7 +188,6 @@ PositionsDrawer.propTypes = {
     onMount               : PropTypes.func,
     onUnmount             : PropTypes.func,
     symbol                : PropTypes.string,
-    symbol_display_name   : PropTypes.string,
     toggleDrawer          : PropTypes.func,
 };
 
@@ -224,9 +203,7 @@ export default connect(
         onHoverPosition               : modules.portfolio.onHoverPosition,
         onMount                       : modules.portfolio.onMount,
         onUnmount                     : modules.portfolio.onUnmount,
-        is_multiplier                 : modules.trade.is_multiplier,
         symbol                        : modules.trade.symbol,
-        symbol_display_name           : modules.trade.symbol_display_name,
         is_positions_drawer_on        : ui.is_positions_drawer_on,
         toggleDrawer                  : ui.togglePositionsDrawer,
         toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,

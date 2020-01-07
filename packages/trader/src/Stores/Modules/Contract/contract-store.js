@@ -45,7 +45,7 @@ export default class ContractStore {
     // TODO: see how to handle errors.
     @observable error_message = '';
 
-    contract_info = {};
+    @observable contract_info = observable.object({});
 
     @observable is_static_chart = false;
     @observable end_time = null;

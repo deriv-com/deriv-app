@@ -63,7 +63,7 @@ export default class ContractStore {
     is_ongoing_contract = false;
 
     @action.bound
-    populateConfig(contract_info, has_limit_order) {
+    populateConfig(contract_info, has_limit_order = false) {
         const prev_contract_info = this.contract_info;
         this.contract_info = contract_info;
         this.end_time = getEndTime(this.contract_info);

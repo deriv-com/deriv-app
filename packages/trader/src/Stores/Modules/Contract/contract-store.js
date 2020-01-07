@@ -37,7 +37,7 @@ export default class ContractStore {
     @observable digits_info = observable.object({});
     @observable sell_info   = observable.object({});
 
-    @observable contract_config = {};
+    @observable.ref contract_config = {};
     @observable display_status = 'purchased';
     @observable is_ended = false;
     @observable is_digit_contract = false;
@@ -45,7 +45,7 @@ export default class ContractStore {
     // TODO: see how to handle errors.
     @observable error_message = '';
 
-    @observable contract_info = observable.object({});
+    @observable.ref contract_info = observable.object({});
 
     @observable is_static_chart = false;
     @observable end_time = null;
@@ -57,7 +57,7 @@ export default class ContractStore {
     @observable margin;
     @observable.shallow barriers_array = [];
     @observable.shallow markers_array = [];
-    @observable marker = null;
+    @observable.ref marker = null;
 
     // ---- Normal properties ---
     is_ongoing_contract = false;
@@ -74,11 +74,9 @@ export default class ContractStore {
             this.root_store.ui.is_dark_mode_on
         );
         this.markers_array = createChartMarkers(this.contract_info);
-        const marker = calculate_marker(this.contract_info);
-        this.marker = marker ? observable.object(marker, {}, { deep: false }) : null;
+        this.marker = calculate_marker(this.contract_info);
         
-        const contract_config = getChartConfig(this.contract_info);
-        this.contract_config = contract_config ? observable.object(contract_config, {}, { deep: false }) : null;
+        this.contract_config = getChartConfig(this.contract_info);
         this.display_status = getDisplayStatus(this.contract_info);
         this.is_ended = isEnded(this.contract_info);
         this.is_digit_contract = isDigitContract(this.contract_info.contract_type);

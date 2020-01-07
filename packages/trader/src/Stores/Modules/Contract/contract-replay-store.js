@@ -25,7 +25,7 @@ export default class ContractReplayStore extends BaseStore {
     // ---- Replay Contract Config ----
     @observable contract_id;
     @observable indicative_status;
-    @observable contract_info   = observable.object({});
+    @observable.ref contract_info = observable.object({});
     @observable is_static_chart = false;
 
     // ---- Normal properties ---

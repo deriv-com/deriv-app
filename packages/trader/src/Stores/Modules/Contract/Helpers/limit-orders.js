@@ -55,12 +55,12 @@ export const setLimitOrderBarriers = ({
                         BARRIER_LINE_STYLES.DOTTED
                         :
                         BARRIER_LINE_STYLES.SOLID,
-                    hideBarrierLine     : hide_stop_out_barrier && key === LIMIT_ORDER_TYPES.STOP_OUT,
-                    hideOffscreenBarrier: has_stop_loss && key === LIMIT_ORDER_TYPES.STOP_OUT,
-                    hideOffscreenLine   : true,
-                    showOffscreenArrows : true,
-                    isSingleBarrier     : true,
-                    opacityOnOverlap    : key === LIMIT_ORDER_TYPES.STOP_OUT && 0.15,
+                    hideBarrierLine    : hide_stop_out_barrier && key === LIMIT_ORDER_TYPES.STOP_OUT,
+                    hidePriceLines     : has_stop_loss && key === LIMIT_ORDER_TYPES.STOP_OUT,
+                    hideOffscreenLine  : true,
+                    showOffscreenArrows: true,
+                    isSingleBarrier    : true,
+                    opacityOnOverlap   : key === LIMIT_ORDER_TYPES.STOP_OUT && 0.15,
                 };
                 barrier = new ChartBarrierStore(
                     obj_limit_order.value

@@ -350,11 +350,6 @@ $side-padding: 1.2em;
     .open-positions__row {
         /*                     icon   stake multiplier deal_cancellation take_profit  stop_loss potential_profit_loss */
         grid-template-columns: 0.8fr  1.2fr 1fr        1.3fr              1fr         1fr       1.3fr;
-
-        /* postcss-bem-linter: ignore */
-        .multiplier {
-            color: var(--text-less-prominent);
-        }
     }
 }
 

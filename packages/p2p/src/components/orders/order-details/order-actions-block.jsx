@@ -1,6 +1,6 @@
 import React         from 'react';
 import PropTypes     from 'prop-types';
-import { Button }    from 'deriv-components';
+import { Button }    from '@deriv/components';
 import AgentContext  from 'Components/context/agent-context';
 import { localize }  from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
@@ -97,7 +97,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         showPopup(options);
     };
 
-    if (is_agent && (is_pending || is_buyer_confirmed) && is_buyer) {
+    if (is_agent && is_buyer_confirmed && is_buyer) {
         buttons_to_render = (
             <Button className='order-details__actions-button' large primary onClick={receivedFunds}>{ localize('I\'ve received funds') }</Button>
         );
@@ -121,7 +121,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         );
     }
 
-    if (!is_agent && (is_pending || is_buyer_confirmed) && !is_buyer) {
+    if (!is_agent && is_buyer_confirmed && !is_buyer) {
         buttons_to_render = (
             <Button className='order-details__actions-button' large primary onClick={receivedFunds}>{ localize('I\'ve received funds') }</Button>
         );

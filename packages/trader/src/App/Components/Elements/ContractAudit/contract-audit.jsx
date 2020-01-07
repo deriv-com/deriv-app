@@ -2,8 +2,8 @@ import PropTypes            from 'prop-types';
 import React                from 'react';
 import {
     Icon,
-    ThemedScrollbars }      from 'deriv-components';
-import { localize }         from 'deriv-translations';
+    ThemedScrollbars }      from '@deriv/components';
+import { localize }         from '@deriv/translations';
 import {
     epochToMoment,
     toGMTFormat }           from 'Utils/Date';

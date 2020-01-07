@@ -1,6 +1,6 @@
 import React                     from 'react';
 import PropTypes                 from 'prop-types';
-import { Dialog }                from 'deriv-components';
+import { Dialog }                from '@deriv/components';
 import { localize, Localize }    from 'Components/i18next';
 import AgentContext              from 'Components/context/agent-context';
 import FooterActions             from 'Components/footer-actions/footer-actions.jsx';

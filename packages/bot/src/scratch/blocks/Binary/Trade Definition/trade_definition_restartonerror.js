@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 
 Blockly.Blocks.trade_definition_restartonerror = {
     init() {
@@ -25,7 +25,7 @@ Blockly.Blocks.trade_definition_restartonerror = {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
-        
+
         this.enforceLimitations();
     },
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,

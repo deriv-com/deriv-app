@@ -1,8 +1,7 @@
-import classNames    from 'classnames';
-import PropTypes     from 'prop-types';
-import React         from 'react';
-import { Icon }      from 'deriv-components';
-import IconTradeType from 'Assets/Trading/Types/icon-trade-types.jsx';
+import classNames from 'classnames';
+import PropTypes  from 'prop-types';
+import React      from 'react';
+import { Icon }   from '@deriv/components';
 
 const IconTradeCategory = ({ category, className }) => {
     let IconCategory;

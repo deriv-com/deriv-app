@@ -1,5 +1,5 @@
 import { lazy }                       from 'react';
-import { localize }                   from 'deriv-translations';
+import { localize }                   from '@deriv/translations';
 import { routes }                     from 'Constants';
 
 import PersonalDetails     from 'Modules/Account/Sections/Profile/PersonalDetails';

@@ -1,7 +1,7 @@
-import { Checkbox, RadioGroup }          from 'deriv-components';
+import { Checkbox, RadioGroup }          from '@deriv/components';
 import PropTypes                         from 'prop-types';
 import React                             from 'react';
-import { localize, Localize }            from 'deriv-translations';
+import { localize, Localize }            from '@deriv/translations';
 import { connect }                       from 'Stores/connect';
 import MediaItem, {
     MediaHeading,

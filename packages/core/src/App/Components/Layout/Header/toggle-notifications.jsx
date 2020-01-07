@@ -3,7 +3,7 @@ import React               from 'react';
 import {
     Counter,
     Icon,
-    Popover }              from 'deriv-components';
+    Popover }              from '@deriv/components';
 import NotificationsDialog from 'App/Containers/NotificationsDialog';
 import                          'Sass/app/modules/notifications-dialog.scss';
 

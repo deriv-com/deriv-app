@@ -1,4 +1,4 @@
-import { localize }    from 'deriv-translations';
+import { localize }    from '@deriv/translations';
 import MarkerLine      from 'Modules/SmartChart/Components/Markers/marker-line.jsx';
 import MarkerSpotLabel from 'Modules/SmartChart/Components/Markers/marker-spot-label.jsx';
 import MarkerSpot      from 'Modules/SmartChart/Components/Markers/marker-spot.jsx';

@@ -6,14 +6,14 @@ import {
     Dropdown,
     Icon,
     Input,
-    Money }                   from 'deriv-components';
+    Money }                   from '@deriv/components';
 import {
     Field,
     Formik,
     Form }                    from 'formik';
-import CurrencyUtils          from 'deriv-shared/utils/currency';
+import CurrencyUtils          from '@deriv/shared/utils/currency';
 import { website_name }       from 'App/Constants/app-config';
-import { localize, Localize } from 'deriv-translations';
+import { localize, Localize } from '@deriv/translations';
 import { connect }            from 'Stores/connect';
 import {
     getPreBuildDVRs,

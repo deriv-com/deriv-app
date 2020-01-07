@@ -2,8 +2,8 @@ import classNames    from 'classnames';
 import { observer }  from 'mobx-react';
 import PropTypes     from 'prop-types';
 import React         from 'react';
-import { Icon }      from 'deriv-components';
-import CurrencyUtils from 'deriv-shared/utils/currency';
+import { Icon }      from '@deriv/components';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import { toMoment }  from 'Utils/Date';
 import MarkerSpot    from './marker-spot.jsx';
 

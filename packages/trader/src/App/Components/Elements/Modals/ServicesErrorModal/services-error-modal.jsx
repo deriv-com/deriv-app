@@ -1,7 +1,7 @@
-import { Button, Modal }          from 'deriv-components';
+import { Button, Modal }          from '@deriv/components';
 import PropTypes                  from 'prop-types';
 import React                      from 'react';
-import { localize }               from 'deriv-translations';
+import { localize }               from '@deriv/translations';
 import { title }                  from './constants';
 import AuthorizationRequiredModal from './authorization-required-modal.jsx';
 import InsufficientBalanceModal   from './insufficient-balance-modal.jsx';

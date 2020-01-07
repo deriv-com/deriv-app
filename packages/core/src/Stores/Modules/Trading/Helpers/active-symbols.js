@@ -1,6 +1,6 @@
 import { flow }            from 'mobx';
 import BinarySocket        from '_common/base/socket_base';
-import { localize }        from 'deriv-translations';
+import { localize }        from '@deriv/translations';
 import { LocalStore }      from '_common/storage';
 import { redirectToLogin } from '_common/base/login';
 import { WS }              from 'Services';

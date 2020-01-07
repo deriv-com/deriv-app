@@ -12,7 +12,6 @@ import AddOrManageAccounts    from './add-or-manage-accounts.jsx';
 import ErrorModal             from './error-modal.jsx';
 import LoadingModal           from './loading-modal.jsx';
 import FinishedSetCurrency    from './finished-set-currency.jsx';
-import RealMT5AdvancedSignup from '../../../../../trader/src/Modules/MT5/Containers/mt5-account-opening-real-advanced-modal.jsx';
 import SuccessDialog          from '../Modals/success-dialog.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
@@ -72,15 +71,6 @@ class RealAccountSignup extends Component {
                             message={this.props.state_value.error_message}
                             code={this.props.state_value.error_code }
                             onClick={this.openPersonalDetails}
-                        />
-                    ),
-                },
-                {
-                    value: () => (
-                        <RealMT5AdvancedSignup
-                            onLoading={this.showLoadingModal}
-                            onError={this.showErrorModal}
-                            toggleModal={this.closeModal}
                         />
                     ),
                 },

@@ -1,7 +1,7 @@
 import classNames             from 'classnames';
 import {
-    FormInputField as InputField,
     FormSubmitButton,
+    Input,
     Icon,
     ThemedScrollbars }        from 'deriv-components';
 import { Formik, Field }      from 'formik';
@@ -78,7 +78,7 @@ export class DateOfBirth extends React.Component {
                     form : { setFieldValue, handleBlur },
                 }) => (
                     <div className='datepicker'>
-                        <InputField
+                        <FormInputField
                             {...this.props}
                             onFocus={this.handleFocus}
                             className={classNames(this.props.className, {
@@ -123,6 +123,28 @@ export class DateOfBirth extends React.Component {
         );
     }
 }
+
+const FormInputField = ({ name, optional = false, ...props }) => (
+    <Field name={name}>
+        {
+            ({
+                field,
+                form: { errors, touched },
+            }) => (
+                <Input
+                    type='text'
+                    required={!optional}
+                    name={name}
+                    autoComplete='off'
+                    maxLength='30'
+                    error={touched[field.name] && errors[field.name]}
+                    {...field}
+                    {...props}
+                />
+            )
+        }
+    </Field>
+);
 
 class PersonalDetails extends React.Component {
     constructor(props) {
@@ -185,12 +207,12 @@ class PersonalDetails extends React.Component {
                                         }}
                                     >
                                         <div className='details-form__elements' style={{ paddingBottom: this.state.paddingBottom }}>
-                                            <InputField
+                                            <FormInputField
                                                 name='first_name'
                                                 label={localize('First name*')}
                                                 placeholder={localize('John')}
                                             />
-                                            <InputField
+                                            <FormInputField
                                                 name='last_name'
                                                 label={localize('Last name*')}
                                                 placeholder={localize('Doe')}
@@ -201,7 +223,7 @@ class PersonalDetails extends React.Component {
                                                 placeholder={localize('01-07-1999')}
                                                 onFocus={this.onFocus}
                                             />
-                                            <InputField
+                                            <FormInputField
                                                 name='phone'
                                                 label={localize('Phone number*')}
                                                 placeholder={localize('Phone number')}

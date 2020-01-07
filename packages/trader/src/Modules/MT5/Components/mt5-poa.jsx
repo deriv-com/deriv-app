@@ -8,7 +8,7 @@ import {
 import { Formik }            from 'formik';
 import PropTypes             from 'prop-types';
 import React, { Component }  from 'react';
-import { WS }                from 'Services';
+import { WS }                from 'Services/ws-methods';
 import {
     Localize,
     localize,

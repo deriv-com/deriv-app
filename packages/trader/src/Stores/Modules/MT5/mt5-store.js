@@ -2,13 +2,15 @@ import {
     action,
     computed,
     observable,
-    runInAction }         from 'mobx';
-import { WS }             from 'Services/ws-methods';
-import BaseStore          from 'Stores/base-store';
+    runInAction,
+}                from 'mobx';
+import { WS }    from 'Services/ws-methods';
+import BaseStore from 'Stores/base-store';
 import {
     getMt5GroupConfig,
     getAccountTypeFields,
-    getMtCompanies }      from './Helpers/mt5-config';
+    getMtCompanies,
+}                from './Helpers/mt5-config';
 
 export default class MT5Store extends BaseStore {
     @observable is_compare_accounts_visible = false;
@@ -23,6 +25,7 @@ export default class MT5Store extends BaseStore {
     @observable error_message        = '';
 
     @observable is_mt5_success_dialog_enabled = false;
+    @observable is_mt5_advanced_modal_open    = false;
     @observable is_mt5_password_modal_enabled = false;
 
     @observable current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
@@ -136,10 +139,10 @@ export default class MT5Store extends BaseStore {
     @action.bound
     getName() {
         const { first_name } = (this.root_store.client.account_settings && this.root_store.client.account_settings);
-        const title = this.mt5_companies[this.account_type.category][this.account_type.type].title;
+        const title          = this.mt5_companies[this.account_type.category][this.account_type.type].title;
 
         // First name is not set when user has no real account
-        return first_name ? [ first_name, title ].join(' ') : title;
+        return first_name ? [first_name, title].join(' ') : title;
     }
 
     @action.bound
@@ -186,10 +189,11 @@ export default class MT5Store extends BaseStore {
     @action.bound
     enableMt5AdvancedModal() {
         if (this.account_type.category === 'real' && this.account_type.type === 'advanced') {
-            this.root_store.ui.setRealAccountSignupParams({
-                active_modal_index: 6, // Real MT5 Advanced Modal wizard
-            });
-            this.root_store.ui.is_real_acc_signup_on = true;
+            this.is_mt5_advanced_modal_open = true;
+            // this.root_store.ui.setRealAccountSignupParams({
+            //     active_modal_index: 6, // Real MT5 Advanced Modal wizard
+            // });
+            // this.root_store.ui.is_real_acc_signup_on = true;
         }
     }
 
@@ -223,7 +227,7 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
-    storeProofOfAddress (file_uploader_ref, values, { setStatus }) {
+    storeProofOfAddress(file_uploader_ref, values, { setStatus }) {
         return new Promise((resolve, reject) => {
             setStatus({ msg: '' });
             this.setState({ is_btn_loading: true });
@@ -257,7 +261,6 @@ export default class MT5Store extends BaseStore {
                 }
             });
         });
-
     }
 
     @action.bound
@@ -282,6 +285,11 @@ export default class MT5Store extends BaseStore {
     @action.bound
     toggleCompareAccountsModal() {
         this.is_compare_accounts_visible = !this.is_compare_accounts_visible;
+    }
+
+    @action.bound
+    setMT5AdvancedModalState(state = false) {
+        this.is_mt5_advanced_modal_open = state;
     }
 
     @action.bound

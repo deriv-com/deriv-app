@@ -1,7 +1,8 @@
-import { Modal }            from 'deriv-components';
-import React, { Component } from 'react';
-import Mt5Password          from '../Components/mt5-password.jsx';
-import { connect }          from 'Stores/connect';
+import { Modal }                    from 'deriv-components';
+import React, { Component }         from 'react';
+import Mt5Password                  from '../Components/mt5-password.jsx';
+import { connect }                  from 'Stores/connect';
+import MT5AdvancedRealAccountSignup from 'Modules/MT5/Containers/mt5-advanced-real-account-signup.jsx';
 
 class MT5AccountOpeningRealAdvancedModal extends Component {
     state = {
@@ -26,36 +27,33 @@ class MT5AccountOpeningRealAdvancedModal extends Component {
         const {
             disableApp,
             enableApp,
-            is_real_advanced_password_modal_open,
-            closeRealAdvancedPasswordModal,
+            is_mt5_advanced_modal_open,
+            setMT5AdvancedModalState,
         } = this.props;
+
         return (
             <Modal
-                className='mt5-advanced-password-modal'
+                id='mt5_advanced_signup_modal'
+                className='mt5-advanced-signup-modal'
                 disableApp={disableApp}
                 enableApp={enableApp}
-                is_open={is_real_advanced_password_modal_open}
+                is_open={is_mt5_advanced_modal_open}
                 has_close_icon={false}
-                toggleModal={closeRealAdvancedPasswordModal}
-                type='button'
-                height='519px'
-                width='384px'
+                toggleModal={setMT5AdvancedModalState}
             >
-                <Mt5Password
-                    onSave={this.onSave}
-                    onCancel={console.log}
-                    onSubmit={this.onSubmit}
-                />
+                <MT5AdvancedRealAccountSignup />
             </Modal>
         );
     }
 }
 
-export default connect(({ ui, modules: { mt5 } }) => ({
+export default connect(({ ui, modules }) => ({
     disableApp                          : ui.disableApp,
     enableApp                           : ui.enableApp,
     is_real_advanced_password_modal_open: ui.is_real_advanced_password_modal_open,
-    closeRealAdvancedPasswordModal      : ui.closeRealAdvancedPasswordModal,
-    openAccount                         : mt5.openAccount,
-    setAccountType                      : mt5.setAccountType,
+    is_mt5_advanced_modal_open          : modules.mt5.is_mt5_advanced_modal_open,
+    setMT5AdvancedModalState            : modules.mt5.setMT5AdvancedModalState,
+    account_type                        : modules.mt5.account_type,
+    openAccount                         : modules.mt5.openAccount,
+    setAccountType                      : modules.mt5.setAccountType,
 }))(MT5AccountOpeningRealAdvancedModal);

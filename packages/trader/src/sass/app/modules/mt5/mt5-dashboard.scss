@@ -386,6 +386,19 @@
     }
 }
 
+.mt5-advanced-modal {
+    flex-grow: 1;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+
+    &__body {
+        flex-grow: 1;
+        flex: 1 1 auto;
+        height: 400px;
+    }
+}
+
 .dc-modal {
     &__container {
         &_mt5-dashboard__compare-accounts {

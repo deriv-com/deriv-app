@@ -1,4 +1,4 @@
-import { Checkbox } from 'deriv-components';
+import { Checkbox } from '@deriv/components';
 import React        from 'react';
 
 /*

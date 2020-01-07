@@ -1,5 +1,5 @@
 import React    from 'react';
-import { Icon } from 'deriv-components';
+import { Icon } from '@deriv/components';
 
 const FormSubmitErrorMessage = ({ message }) => (
     <div className='form-submit-error-message'>

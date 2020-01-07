@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import classNames                     from 'classnames';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
-import { Icon }                       from 'deriv-components';
+import { Icon }                       from '@deriv/components';
 import IconTradeCategory              from 'Assets/Trading/Categories/icon-trade-categories.jsx';
 
 const ContractTypeItem = ({

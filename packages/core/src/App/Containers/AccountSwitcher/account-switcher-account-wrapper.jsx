@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React      from 'react';
 import PropTypes  from 'prop-types';
-import { Icon }   from 'deriv-components';
+import { Icon }   from '@deriv/components';
 
 const AccountWrapper = ({
     children,

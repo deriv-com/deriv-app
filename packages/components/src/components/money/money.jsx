@@ -1,7 +1,7 @@
 import classNames    from 'classnames';
 import PropTypes     from 'prop-types';
 import React         from 'react';
-import CurrencyUtils from 'deriv-shared/utils/currency';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 
 const Money = ({
     amount,

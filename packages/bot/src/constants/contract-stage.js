@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 
 export const contract_stages = Object.freeze({
     NOT_RUNNING      : { index: 0 , text: localize('Bot is not running') },

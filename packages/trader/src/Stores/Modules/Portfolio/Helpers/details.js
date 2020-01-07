@@ -1,5 +1,5 @@
-import ObjectUtils         from 'deriv-shared/utils/object';
-import { localize }        from 'deriv-translations';
+import ObjectUtils         from '@deriv/shared/utils/object';
+import { localize }        from '@deriv/translations';
 import {
     epochToMoment,
     formatMiliseconds,

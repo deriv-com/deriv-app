@@ -1,8 +1,8 @@
-import { Button, Icon, Popover } from 'deriv-components';
+import { Button, Icon, Popover } from '@deriv/components';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
-import { localize }         from 'deriv-translations';
-import CurrencyUtils        from 'deriv-shared/utils/currency';
+import { localize }         from '@deriv/translations';
+import CurrencyUtils        from '@deriv/shared/utils/currency';
 import routes               from 'Constants/routes';
 import { LoginButton }      from './login-button.jsx';
 import { SignupButton }     from './signup-button.jsx';

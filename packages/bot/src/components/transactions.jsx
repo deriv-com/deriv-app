@@ -1,5 +1,5 @@
-import { ThemedScrollbars }     from 'deriv-components';
-import { localize }             from 'deriv-translations';
+import { ThemedScrollbars }     from '@deriv/components';
+import { localize }             from '@deriv/translations';
 import { PropTypes }            from 'prop-types';
 import React                    from 'react';
 import Transaction              from './transaction.jsx';
@@ -11,7 +11,7 @@ class Transactions extends React.PureComponent {
     componentDidMount() {
         this.props.onMount();
     }
-    
+
     componentWillUnmount() {
         this.props.onUnmount();
     }

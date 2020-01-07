@@ -3,7 +3,7 @@ import PropTypes           from 'prop-types';
 import React               from 'react';
 import {
     Icon,
-    DesktopWrapper }       from 'deriv-components';
+    DesktopWrapper }       from '@deriv/components';
 import IconTradeCategory   from 'Assets/Trading/Categories/icon-trade-categories.jsx';
 import ContractTypeDialog  from './contract-type-dialog.jsx';
 import ContractTypeList    from './contract-type-list.jsx';

@@ -6,7 +6,7 @@ import { BrowserRouter as Router }  from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import { i18n,
-    loadIncontextTranslation }      from 'deriv-translations';
+    loadIncontextTranslation }      from '@deriv/translations';
 import Client                       from '_common/base/client_base';
 import WS                           from 'Services/ws-methods';
 import { MobxProvider }             from 'Stores/connect';

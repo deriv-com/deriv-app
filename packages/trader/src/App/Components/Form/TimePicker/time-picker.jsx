@@ -3,7 +3,7 @@ import { observer }      from 'mobx-react';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Icon }          from 'deriv-components';
+import { Icon }          from '@deriv/components';
 import Dialog            from './dialog.jsx';
 import InputField        from '../InputField';
 

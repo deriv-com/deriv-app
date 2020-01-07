@@ -16,7 +16,7 @@ module.exports = {
         path         : path.resolve(__dirname, 'utils'),
         filename     : '[name].js',
         libraryExport: 'default',
-        library      : ['deriv-shared', '[name]'],
+        library      : '@deriv/shared',
         libraryTarget: 'umd',
     },
     optimization: {
@@ -52,8 +52,8 @@ module.exports = {
         {
             'babel-polyfill'  : 'babel-polyfill',
             'moment'          : 'moment',
-            'deriv-components': 'deriv-components',
+            '@deriv/components': '@deriv/components',
         },
-        /^deriv-components\/.+$/,
+        /^@deriv\/components\/.+$/,
     ],
 };

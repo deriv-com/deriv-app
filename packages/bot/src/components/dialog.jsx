@@ -1,8 +1,8 @@
 
-import { Button, Modal }  from 'deriv-components';
+import { Button, Modal }  from '@deriv/components';
 import PropTypes          from 'prop-types';
 import React              from 'react';
-import { localize }       from 'deriv-translations';
+import { localize }       from '@deriv/translations';
 import '../assets/sass/dialog.scss';
 
 const Dialog = ({

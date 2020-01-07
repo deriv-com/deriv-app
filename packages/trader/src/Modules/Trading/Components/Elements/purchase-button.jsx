@@ -5,7 +5,7 @@ import {
     DesktopWrapper,
     MobileWrapper,
 }                                 from 'deriv-components';
-import { localize }               from 'deriv-translations';
+import { localize }               from '@deriv/translations';
 import { getContractTypeDisplay } from 'Constants/contract';
 import IconTradeType              from 'Assets/Trading/Types/icon-trade-types.jsx';
 import ContractInfo               from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';

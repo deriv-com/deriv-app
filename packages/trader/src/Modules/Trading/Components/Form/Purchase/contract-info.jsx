@@ -5,11 +5,11 @@ import {
     Money,
     MobileWrapper,
     Popover,
-}                            from 'deriv-components';
+}                            from '@deriv/components';
 import PropTypes             from 'prop-types';
 import React                 from 'react';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
-import { localize }          from 'deriv-translations';
+import { localize }          from '@deriv/translations';
 
 const ValueMovement = ({
     has_error_or_not_loaded,
@@ -45,7 +45,7 @@ const ContractInfo     = ({
     type,
 }) => {
     const localized_basis = getLocalizedBasis();
-    const stakeOrPayout   = () => {
+    const stakeOrPayout = () => {
         switch (basis) {
             case 'stake':
                 return localized_basis.payout;
@@ -67,8 +67,7 @@ const ContractInfo     = ({
                         'trade-container__price-info--disabled': has_error_or_not_loaded,
                         'trade-container__price-info--slide'   : is_loading && !should_fade,
                         'trade-container__price-info--fade'    : is_loading && should_fade,
-                    },
-                )}
+                    })}
             >
                 <div className='trade-container__price-info-basis'>
                     {has_error_or_not_loaded

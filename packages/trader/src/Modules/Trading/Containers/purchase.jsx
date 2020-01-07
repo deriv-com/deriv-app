@@ -1,8 +1,9 @@
 import PropTypes                   from 'prop-types';
 import React                       from 'react';
-import ObjectUtils                 from 'deriv-shared/utils/object';
+import ObjectUtils                 from '@deriv/shared/utils/object';
 import PurchaseFieldset            from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
+import { measurePerformance }      from 'Services/performance-checker';
 import { connect }                 from 'Stores/connect';
 
 const getSortedIndex = (index, type) => {
@@ -26,6 +27,7 @@ const Purchase = ({
     onHoverPurchase,
     // togglePurchaseLock,
     purchase_info,
+    pushLoadPerformance,
     proposal_info,
     setPurchaseState,
     trade_types,
@@ -81,6 +83,13 @@ const Purchase = ({
         }
     });
 
+    if (components &&
+        components.length === 2 &&
+        !components[0].props.is_disabled &&
+        !components[1].props.is_disabled) {
+        // the moment that both purchase buttons are enabled
+        measurePerformance(pushLoadPerformance);
+    }
     return components;
 };
 
@@ -97,6 +106,7 @@ Purchase.propTypes = {
     proposal_info             : PropTypes.object,
     purchase_info             : PropTypes.object,
     purchased_states_arr      : PropTypes.array,
+    pushLoadPerformance       : PropTypes.func,
     setPurchaseState          : PropTypes.func,
     // togglePurchaseLock        : PropTypes.func,
     trade_types               : PropTypes.object,
@@ -104,12 +114,13 @@ Purchase.propTypes = {
 };
 
 export default connect(
-    ({ client, modules, ui }) => ({
+    ({ client, modules, ui, gtm }) => ({
         currency                  : client.currency,
         is_client_allowed_to_visit: client.is_client_allowed_to_visit,
         is_mobile                 : ui.is_mobile,
         basis                     : modules.trade.basis,
         contract_type             : modules.trade.contract_type,
+        pushLoadPerformance       : gtm.pushLoadPerformance,
         is_trade_enabled          : modules.trade.is_trade_enabled,
         onClickPurchase           : modules.trade.onPurchase,
         onHoverPurchase           : modules.trade.onHoverPurchase,

@@ -1,5 +1,5 @@
 {
-  "name": "deriv-components",
+  "name": "@deriv/components",
   "version": "1.0.0",
   "description": "deriv components",
   "main": "lib/index.js",
@@ -95,7 +95,7 @@
     "@storybook/addon-knobs": "^5.2.4",
     "@wapps/storybook-addon-state": "0.0.4",
     "classnames": "^2.2.6",
-    "deriv-shared": "^1.0.0",
+    "@deriv/shared": "^1.0.0",
     "formik": "^1.5.8",
     "gh-pages": "^2.1.1",
     "prop-types": "^15.7.2",

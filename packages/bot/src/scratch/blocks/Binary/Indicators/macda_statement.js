@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 import config       from '../../../../constants';
 
 Blockly.Blocks.macda_statement = {
@@ -48,7 +48,7 @@ Blockly.Blocks.macda_statement = {
             'description' : localize('MACD is calculated by subtracting the long-term EMA (26 periods) from the short-term EMA (12 periods). If the short-term EMA is greater or lower than the long-term EMA than there’s a possibility of a trend reversal.'),
         };
     },
-    
+
     onchange: Blockly.Blocks.bb_statement.onchange,
 };
 

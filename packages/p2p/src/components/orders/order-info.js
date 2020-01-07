@@ -1,5 +1,4 @@
-import { localize }            from 'Components/i18next';
-import { millisecondsToTimer } from 'Utils/date-time';
+import { localize } from 'Components/i18next';
 
 export default class OrderInfo {
     order_id = '';
@@ -7,7 +6,7 @@ export default class OrderInfo {
     type = '';
     advertiser_name = '';
     advertiser_notes = '';
-    order_purchase_datetime = new Date();
+    order_purchase_datetime = '';
     price_rate = 0;
     display_price_rate = '';
     offer_currency = ''; // The currency that is being purchased
@@ -16,8 +15,7 @@ export default class OrderInfo {
     display_transaction_amount = '';
     offer_amount = 0;
     transaction_amount = 0;
-    remaining_time = 0; // 60 * 60 * 1000
-    remainingTimeInterval = null;
+    order_expiry_millis = 0;
 
     constructor(order_info = null) {
         if (order_info) {
@@ -25,26 +23,15 @@ export default class OrderInfo {
                 this[detail] = order_info[detail];
             });
         }
-
-        this.remainingTimeInterval = setInterval(() => {
-            if (this.remaining_time !== 0) {
-                this.remaining_time -= 1000;
-            } else {
-                // TODO: [p2p-timeout-status-check] - Check if order has timed out; add timeout message to `OrderDetails`
-                clearInterval(this.remainingTimeInterval);
-                this.remainingTimeInterval = null;
-            }
-        }, 1000);
     }
 
     static status_map = {
-        'pending'         : localize('Unpaid'),
-        'client-confirmed': localize('Paid'),
-        'cancelled'       : localize('Cancelled'),
-        'timed-out'       : localize('Cancelled'),
-        'refunded'        : localize('Refunded'),
-        'agent-confirmed' : localize('Complete'),
-        'completed'       : localize('Complete'),
+        'pending'        : localize('Unpaid'),
+        'buyer-confirmed': localize('Paid'),
+        'cancelled'      : localize('Cancelled'),
+        'timed-out'      : localize('Cancelled'),
+        'refunded'       : localize('Refunded'),
+        'completed'      : localize('Complete'),
     };
 
     get display_status() {
@@ -60,7 +47,7 @@ export default class OrderInfo {
     }
 
     get is_buyer_confirmed() {
-        return this.status === 'client-confirmed';
+        return this.status === 'buyer-confirmed';
     }
 
     get is_buyer_cancelled() {
@@ -75,16 +62,8 @@ export default class OrderInfo {
         return this.status === 'refunded';
     }
 
-    get is_seller_confirmed() {
-        return this.status === 'agent-confirmed';
-    }
-
     get is_completed() {
         return this.status === 'completed';
-    }
-
-    get display_remaining_time() {
-        return millisecondsToTimer(this.remaining_time);
     }
 
     setStatus = (value) => {

@@ -7,13 +7,13 @@ import {
     Icon,
     Modal,
     RadioGroup,
-}                       from 'deriv-components';
+}                       from '@deriv/components';
 import {
     Formik,
     Form,
     Field,
 }                       from 'formik';
-import { localize }     from 'deriv-translations';
+import { localize }     from '@deriv/translations';
 import { connect }      from '../stores/connect';
 import '../assets/sass/google-drive.scss';
 import '../assets/sass/saveload-modal.scss';

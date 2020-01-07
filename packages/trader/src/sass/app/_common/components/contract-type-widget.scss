@@ -7,6 +7,10 @@
     color: var(--text-prominent);
     background: var(--fill-normal);
     border: 1px solid var(--fill-normal);
+    @include mobile {
+        margin-bottom: 0.8rem;
+        height: 4rem;
+    }
 
     &--mobile {
         border: 1px solid var(--border-normal);
@@ -18,7 +22,7 @@
         align-items: center;
         justify-content: flex-start;
         flex-direction: row;
-        padding: 1.6em;
+        padding: 0.8rem;
 
         /* postcss-bem-linter: ignore */
         span[name=contract_type] {

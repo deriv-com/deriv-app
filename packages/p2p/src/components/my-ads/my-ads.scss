@@ -43,6 +43,20 @@
         &-button {
             margin-left: 0.8rem;
         }
+        &-error {
+            display: flex;
+            align-items: center;
+            margin-right: auto;
+            font-size: var(--text-size-xxs);
+            font-weight: bold;
+            flex: 1;
+            color: var(--text-prominent);
+            padding-left: 24px;
+
+            p {
+                padding-left: 16px;
+            }
+        }
     }
     &__price {
         color: var(--text-profit-success);

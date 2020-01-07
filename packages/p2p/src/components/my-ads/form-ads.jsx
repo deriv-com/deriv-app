@@ -5,6 +5,7 @@ import {
     Autocomplete,
     Dropdown,
     Loading,
+    Icon,
     Input,
     Button,
     ThemedScrollbars }                from '@deriv/components';
@@ -17,8 +18,9 @@ import { requestWS }                  from 'Utils/websocket';
 
 class FormAds extends Component {
     state = {
-        country   : '',
-        is_loading: true,
+        country      : '',
+        error_message: '',
+        is_loading   : true,
     };
 
     async componentDidMount() {
@@ -41,6 +43,8 @@ class FormAds extends Component {
     }
 
     handleSubmit = (values, { setSubmitting }) => {
+        this.setState({ error_message: '' });
+
         requestWS({
             p2p_offer_create : 1,
             type             : values.type,
@@ -51,8 +55,14 @@ class FormAds extends Component {
             min_amount       : values.min_transaction,
             offer_description: values.advertiser_notes,
             rate             : values.price_rate,
+        }).then((response) => {
+            if (response.error) {
+                this.setState({ error_message: response.error.message });
+                setSubmitting(false);
+            } else {
+                this.props.handleShowForm(false);
+            }
         });
-        setSubmitting(false);
     };
 
     render() {
@@ -242,6 +252,12 @@ class FormAds extends Component {
                                         </Field>
                                     </ThemedScrollbars>
                                     <FooterActions has_border>
+                                        {this.state.error_message &&
+                                        <div className='p2p-my-ads__form-error'>
+                                            <Icon icon='IcAlertDanger' />
+                                            <p>{this.state.error_message}</p>
+                                        </div>
+                                        }
                                         <Button className='p2p-my-ads__form-button' secondary large onClick={ () => this.props.handleShowForm(false) }>{localize('Cancel')}</Button>
                                         <Button className='p2p-my-ads__form-button' primary large is_disabled={isSubmitting || !isValid}>{localize('Post ad')}</Button>
                                     </FooterActions>
@@ -294,7 +310,7 @@ class FormAds extends Component {
             localize('{{field_name}} has exceed maximum length', { field_name }),
         ]);
 
-        const errors    = {};
+        const errors = {};
 
         Object.entries(validations)
             .forEach(([key, rules]) => {

@@ -1,10 +1,10 @@
 // import PropTypes      from 'prop-types';
 import classNames             from 'classnames';
 import React                  from 'react';
-import { Popover }            from 'deriv-components';
-import CurrencyUtils          from 'deriv-shared/utils/currency';
+import { Popover }            from '@deriv/components';
+import CurrencyUtils          from '@deriv/shared/utils/currency';
 import { connect }            from 'Stores/connect';
-import { localize, Localize } from 'deriv-translations';
+import { localize, Localize } from '@deriv/translations';
 import { WS }                 from 'Services/ws-methods';
 import Loading                from '../../../../../templates/app/components/loading.jsx';
 import {

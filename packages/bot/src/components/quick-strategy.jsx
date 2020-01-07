@@ -8,13 +8,13 @@ import {
     Modal,
     Popover,
     Tabs,
-}                           from 'deriv-components';
+}                           from '@deriv/components';
 import {
     Formik,
     Form,
     Field,
 }                           from 'formik';
-import { localize }         from 'deriv-translations';
+import { localize }         from '@deriv/translations';
 import IconTradeType        from './icon-trade-types.jsx';
 import { connect }          from '../stores/connect';
 import config               from '../constants/index';
@@ -266,7 +266,7 @@ const QuickStrategy = ({
     const asset_dropdown_options  = {};
 
     Object.assign(asset_dropdown_options, market_dropdown);
-        
+
     if (asset_dropdown_options) {
         Object.keys(asset_dropdown_options).forEach(key => {
             const submarket = asset_dropdown_options[key];
@@ -290,7 +290,7 @@ const QuickStrategy = ({
             });
         });
     }
-        
+
     const duration_dropdown_options = Object.keys(duration_dropdown).map(key => {
         const duration = duration_dropdown[key];
         return { text: duration.display, value: duration.unit };

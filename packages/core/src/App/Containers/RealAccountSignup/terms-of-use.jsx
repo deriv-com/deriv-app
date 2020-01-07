@@ -1,10 +1,10 @@
 import { Field, Formik }      from 'formik';
 import React                  from 'react';
+import CheckboxField          from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
 import {
     ThemedScrollbars,
-    FormSubmitButton }        from 'deriv-components';
-import CheckboxField          from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
-import { localize, Localize } from 'deriv-translations';
+    FormSubmitButton }        from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
 import { Hr }                 from './currency-selector.jsx';
 import 'Sass/terms-of-use.scss';
 

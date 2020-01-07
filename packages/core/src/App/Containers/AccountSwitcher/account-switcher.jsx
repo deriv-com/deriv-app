@@ -6,9 +6,9 @@ import {
     Icon,
     Money,
     Tabs,
-    ThemedScrollbars }          from 'deriv-components';
-import CurrencyUtils            from 'deriv-shared/utils/currency';
-import { localize, Localize }   from 'deriv-translations';
+    ThemedScrollbars }          from '@deriv/components';
+import CurrencyUtils            from '@deriv/shared/utils/currency';
+import { localize, Localize }   from '@deriv/translations';
 import { urlFor }               from '_common/url';
 import { connect }              from 'Stores/connect';
 import routes                   from 'Constants/routes';

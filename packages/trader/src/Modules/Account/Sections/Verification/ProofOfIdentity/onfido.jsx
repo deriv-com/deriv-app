@@ -1,5 +1,5 @@
 
-import { ThemedScrollbars }    from 'deriv-components';
+import { ThemedScrollbars }    from '@deriv/components';
 import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { init }                from 'onfido-sdk-ui';

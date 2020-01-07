@@ -64,7 +64,7 @@ All packages must contain the following scripts to perform the stated actions:
 **Please follow the README of each package you intend to work with on how to get set up and their custom scripts.** However, the above scripts can be run from the root directory in the following manner.
 
 ### Package names
-Each package is named with the `deriv-` prefix, however for the scripts above, you do not need to add the `deriv-` prefix as the scripts already prefix the 1st argument of the script with `deriv-`. **However**, if you do use the `lerna` CLI directly, then you will need to use the full package name including the `deriv-` prefix.
+Each package is named with the `@deriv/` prefix, however for the scripts above, you do not need to add the `@deriv/` prefix as the scripts already prefix the 1st argument of the script with `@deriv/`. **However**, if you do use the `lerna` CLI directly, then you will need to use the full package name including the `@deriv/` prefix.
 
 You can find the names of packages by first navigating to the `packages` folder. Each subfolder is a package, and contains a `package.json` file. The value of the `name` key in `package.json` is the package name.
 
@@ -130,11 +130,11 @@ There is a 4th type of release: releasing npm registry packages (currently `@der
 ## FAQ
 1. How do I **install** an npm package in one of our packages?
 
-    **A.** You can simply `cd` into the package you wish to install to, then run `npm i package-name` as usual. Or simply run a `lerna exec` like `lerna exec --scope=local-package -- npm i npm-package-name`, e.g.: `lerna exec --scope=deriv-translations -- npm i i18next`. _Please note that for direct `lerna` CLI use, you need the full package name including the `deriv-` prefix._
+    **A.** You can simply `cd` into the package you wish to install to, then run `npm i package-name` as usual. Or simply run a `lerna exec` like `lerna exec --scope=local-package -- npm i npm-package-name`, e.g.: `lerna exec --scope=@deriv/translations -- npm i i18next`. _Please note that for direct `lerna` CLI use, you need the full package name including the `@deriv/` prefix._
 
 2. How do I **uninstall** an npm package from one of our packages?
 
-    **A.** Just as installing, except the `npm` command you'd run would be `npm uninstall` (shortened to `npm un`). e.g.: `lerna exec --scope=deriv-translations -- npm un i18next`.
+    **A.** Just as installing, except the `npm` command you'd run would be `npm uninstall` (shortened to `npm un`). e.g.: `lerna exec --scope=@deriv/translations -- npm un i18next`.
 
 3. How do I run `npm ci` or equivalent (to add dependencies based on `package-lock.json`?
 

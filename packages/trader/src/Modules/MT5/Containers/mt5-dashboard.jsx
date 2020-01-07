@@ -1,9 +1,9 @@
 import {
     Icon,
-    Tabs }                                from 'deriv-components';
+    Tabs }                                from '@deriv/components';
 import React                              from 'react';
 import { withRouter }                     from 'react-router';
-import { localize, Localize }             from 'deriv-translations';
+import { localize, Localize }             from '@deriv/translations';
 import routes                             from 'Constants/routes';
 import MT5PasswordModal                   from 'Modules/MT5/Containers/mt5-password-modal.jsx';
 import MT5ServerErrorDialog               from 'Modules/MT5/Containers/mt5-server-error-dialog.jsx';
@@ -12,8 +12,8 @@ import MT5AccountOpeningRealAdvancedModal from 'Modules/MT5/Containers/mt5-accou
 import { connect }                        from 'Stores/connect';
 import CompareAccountsModal               from './mt5-compare-accounts-modal.jsx';
 import MT5PasswordManagerModal            from './mt5-password-manager-modal.jsx';
-import { MT5DemoAccountDisplay } from '../Components/mt5-demo-account-display.jsx';
-import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
+import { MT5DemoAccountDisplay }          from '../Components/mt5-demo-account-display.jsx';
+import { MT5RealAccountDisplay }          from '../Components/mt5-real-account-display.jsx';
 
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 

@@ -2,7 +2,7 @@ import PropTypes     from 'prop-types';
 import React         from 'react';
 import PageError     from 'Modules/PageError';
 import { routes }    from 'Constants/index';
-import { Localize }  from 'deriv-translations';
+import { Localize }  from '@deriv/translations';
 
 const ErrorComponent = ({
     header,

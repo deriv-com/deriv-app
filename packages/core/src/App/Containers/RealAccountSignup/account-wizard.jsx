@@ -1,8 +1,8 @@
 import PropTypes              from 'prop-types';
 import fromEntries            from 'object.fromentries';
 import React                  from 'react';
-import { FormProgress }       from 'deriv-components';
-import { localize, Localize } from 'deriv-translations';
+import { FormProgress }       from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
 import { connect }            from 'Stores/connect';
 import { toMoment }           from 'Utils/Date';
 import AddressDetails         from './address-details.jsx';

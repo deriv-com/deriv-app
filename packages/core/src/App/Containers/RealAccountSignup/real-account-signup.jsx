@@ -1,10 +1,10 @@
 import classNames             from 'classnames';
-import {
-    Icon,
-    Modal }                   from 'deriv-components';
 import React, { Component }   from 'react';
 import { withRouter }         from 'react-router-dom';
-import { localize, Localize } from 'deriv-translations';
+import {
+    Icon,
+    Modal }                   from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
 import routes                 from 'Constants/routes';
 import { connect }            from 'Stores/connect';
 import AccountWizard          from './account-wizard.jsx';

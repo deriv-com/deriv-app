@@ -1,7 +1,7 @@
 import classNames           from 'classnames';
 import PropTypes            from 'prop-types';
 import React                from 'react';
-import { ThemedScrollbars } from 'deriv-components';
+import { ThemedScrollbars } from '@deriv/components';
 
 export default class TableRowInfo extends React.Component {
     constructor(props) {

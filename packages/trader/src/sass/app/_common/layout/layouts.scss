@@ -160,7 +160,16 @@
     }
     @media (max-width: 768px) {
         flex-direction: column;
+        min-height: calc(100vh - 48px);
+        padding: 0;
     }
+}
+
+/** @define mobile-wrapper; weak */
+.mobile-wrapper {
+    padding: 0 0.8rem;
+    display: flex;
+    flex-direction: column;
 }
 
 /** @define chart-container; weak */
@@ -202,6 +211,11 @@
         }
     }
     // smartchart library style fixes
+    .smartcharts-mobile {
+        .cq-categorical-display {
+            height: calc(100% - 8px) !important;
+        }
+    }
     .cq-context {
         top: 0;
         left: 0;
@@ -281,7 +295,6 @@
         min-height: 100%;
     }
     @media (max-width: 768px) {
-        height: 400px;
         // smartchart library style fixes
         .cq-context {
             div.cq-chart-controls {
@@ -312,7 +325,7 @@
             }
         }
         .smartcharts-mobile .cq-modal-dropdown .cq-menu-overlay .cq-menu-dropdown {
-            bottom: 4.8em;
+            bottom: 4em;
         }
     }
 }

@@ -12,16 +12,21 @@ import {
     Views }           from 'Modules/SmartChart';
 
 const ControlWidgets = ({
+    is_mobile,
     updateChartType,
     updateGranularity,
 }) => (
     <React.Fragment>
-        <CrosshairToggle />
+        <CrosshairToggle enabled={!is_mobile} />
         <ChartTypes onChange={updateChartType} />
-        <StudyLegend searchInputClassName='data-hj-whitelist' />
-        <Comparison searchInputClassName='data-hj-whitelist' />
-        <DrawTools />
-        <Views searchInputClassName='data-hj-whitelist' />
+        {!is_mobile &&
+            <>
+                <StudyLegend searchInputClassName='data-hj-whitelist' />
+                <Comparison searchInputClassName='data-hj-whitelist' />
+                <DrawTools />
+                <Views searchInputClassName='data-hj-whitelist' />
+            </>
+        }
         <Share />
         <Timeperiod onChange={updateGranularity} />
         <ChartSize />
@@ -29,6 +34,7 @@ const ControlWidgets = ({
 );
 
 ControlWidgets.propTypes = {
+    is_mobile        : PropTypes.bool,
     updateChartType  : PropTypes.func,
     updateGranularity: PropTypes.func,
 };

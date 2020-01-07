@@ -12,6 +12,10 @@
         height: 4rem;
     }
 
+    &--mobile {
+        border: 1px solid var(--border-normal);
+        margin-bottom: 8px;
+    }
     &__display {
         cursor: pointer;
         display: flex;

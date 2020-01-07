@@ -23,8 +23,6 @@ import { interceptAcrossBot }       from './Constants/routes-config';
 import initStore                   from './app.js';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
-// Check if device is touch capable
-// const isTouchDevice = 'ontouchstart' in document.documentElement;
 
 const App = ({ root_store }) => {
     const l = window.location;
@@ -60,7 +58,7 @@ const App = ({ root_store }) => {
                             />
                         </AppContents>
                     </ErrorBoundary>
-                    <Footer />
+                    {!root_store.ui.is_mobile && <Footer />}
                     <AppModals url_action_param={ url_params.get('action') } />
                 </React.Fragment>
             </MobxProvider>

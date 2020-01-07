@@ -1,4 +1,4 @@
-/** @define header */
+/** @define header; weak */
 .header {
     position: fixed;
     z-index: 99;
@@ -62,6 +62,15 @@
         display: inline-flex;
         height: #{$HEADER_HEIGHT - 1px};
         position: relative;
+
+        &--mobile {
+            .acc-info__separator {
+                display: none;
+            }
+            .notifications-toggle {
+                margin-right: 0;
+            }
+        }
     }
     &__menu-toggle {
         align-self: center;

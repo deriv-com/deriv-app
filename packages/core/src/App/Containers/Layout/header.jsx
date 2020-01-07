@@ -60,18 +60,23 @@ class Header extends React.Component {
             >
                 <div className='header__menu-items'>
                     <div className='header__menu-left'>
-                        <PlatformSwitcher platform_config={filterPlatformsForClients(platform_config)} />
                         <Lazy
                             has_progress={false}
                             ctor={() => import(/* webpackChunkName: "toggle-menu-drawer", webpackPreload: true */'App/Components/Layout/Header/toggle-menu-drawer.jsx')}
                             should_load={is_mobile}
                         />
+                        {!this.props.is_mobile &&
+                            <PlatformSwitcher platform_config={filterPlatformsForClients(platform_config)} />
+                        }
                         <MenuLinks
                             is_logged_in={is_logged_in}
                             items={header_links}
                         />
                     </div>
-                    <div className='header__menu-right'>
+                    <div className={classNames('header__menu-right', {
+                        'header__menu-right--mobile': is_mobile,
+                    })}
+                    >
                         {is_logging_in &&
                         <div className={classNames('acc-info__preloader', {
                             'acc-info__preloader--no-currency': !currency,
@@ -89,6 +94,7 @@ class Header extends React.Component {
                                 disableApp={disableApp}
                                 enableApp={enableApp}
                                 is_acc_switcher_on={is_acc_switcher_on}
+                                is_mobile={is_mobile}
                                 is_notifications_visible={is_notifications_visible}
                                 is_logged_in={is_logged_in}
                                 is_virtual={is_virtual}

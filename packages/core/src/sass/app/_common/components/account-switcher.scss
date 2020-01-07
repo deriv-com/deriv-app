@@ -28,6 +28,13 @@
             top: 0;
             background: var(--general-main-1);
         }
+        &--is-mobile {
+            width: 216px;
+
+            &:before {
+                display: none;
+            }
+        }
         &--no-currency:before {
             left: -140px;
             width: 140px;

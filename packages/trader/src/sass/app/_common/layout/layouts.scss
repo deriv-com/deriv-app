@@ -25,7 +25,7 @@
     &--is-route-modal {
         background-color: var(--overlay-outside-dialog);
     }
-    &--show-positions-drawer {
+    &--show-positions-drawer:not(&--is-mobile) {
         .trade-container {
             .chart-container {
                 width: 100%;

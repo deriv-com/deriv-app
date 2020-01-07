@@ -55,6 +55,11 @@
         flex: 1;
         height: #{$HEADER_HEIGHT - 1px};
 
+        &-extensions {
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
     }
     &__menu-right {
         justify-content: flex-end;

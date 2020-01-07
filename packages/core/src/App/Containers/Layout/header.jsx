@@ -27,6 +27,7 @@ class Header extends React.Component {
             can_upgrade_to,
             currency,
             enableApp,
+            header_extension,
             is_acc_switcher_on,
             is_app_disabled,
             is_logged_in,
@@ -65,8 +66,13 @@ class Header extends React.Component {
                             ctor={() => import(/* webpackChunkName: "toggle-menu-drawer", webpackPreload: true */'App/Components/Layout/Header/toggle-menu-drawer.jsx')}
                             should_load={is_mobile}
                         />
-                        {!this.props.is_mobile &&
+                        {!this.props.is_mobile ?
                             <PlatformSwitcher platform_config={filterPlatformsForClients(platform_config)} />
+                            :
+                            (header_extension && is_logged_in) &&
+                                <div className='header__menu-left-extensions'>
+                                    { header_extension }
+                                </div>
                         }
                         <MenuLinks
                             is_logged_in={is_logged_in}
@@ -80,9 +86,14 @@ class Header extends React.Component {
                         {is_logging_in &&
                         <div className={classNames('acc-info__preloader', {
                             'acc-info__preloader--no-currency': !currency,
+                            'acc-info__preloader--is-mobile'  : is_mobile,
                         })}
                         >
-                            <AccountsInfoLoader is_logged_in={is_logged_in} speed={3} />
+                            <AccountsInfoLoader
+                                is_logged_in={is_logged_in}
+                                is_mobile={is_mobile}
+                                speed={3}
+                            />
                         </div>
                         }
                         <div className='acc-info__container'>
@@ -145,6 +156,7 @@ export default connect(
         is_logging_in           : client.is_logging_in,
         is_virtual              : client.is_virtual,
         enableApp               : ui.enableApp,
+        header_extension        : ui.header_extension,
         is_acc_switcher_on      : ui.is_accounts_switcher_on,
         is_dark_mode            : ui.is_dark_mode_on,
         is_app_disabled         : ui.is_app_disabled,

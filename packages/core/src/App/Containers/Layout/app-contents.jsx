@@ -42,6 +42,7 @@ const AppContents = ({
             className={classNames('app-contents', {
                 'app-contents--show-positions-drawer': is_positions_drawer_on,
                 'app-contents--is-disabled'          : is_app_disabled,
+                'app-contents--is-mobile'            : is_mobile,
                 'app-contents--is-route-modal'       : is_route_modal_on,
             })}
         >
@@ -80,7 +81,7 @@ export default withRouter(connect(
         identifyEvent         : segment.identifyEvent,
         is_app_disabled       : ui.is_app_disabled,
         is_mobile             : ui.is_mobile,
-        is_positions_drawer_on: (ui.is_positions_drawer_on && !ui.is_mobile),
+        is_positions_drawer_on: ui.is_positions_drawer_on,
         is_route_modal_on     : ui.is_route_modal_on,
         pageView              : segment.pageView,
         pwa_prompt_event      : ui.pwa_prompt_event,

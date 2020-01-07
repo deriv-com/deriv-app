@@ -69,4 +69,26 @@ $HEIGHT: calc(100vh - 32.6em);
             line-height: 1.2;
         }
     }
+    &__empty {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 16px;
+
+        &__header {
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: center;
+            color: var(--text-less-prominent);
+            padding: 8px;
+        }
+        &__message {
+            color: var(--text-less-prominent);
+            font-size: 1.2rem;
+            text-align: center;
+        }
+    }
 }

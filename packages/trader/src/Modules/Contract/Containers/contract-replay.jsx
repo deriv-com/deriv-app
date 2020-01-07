@@ -60,7 +60,6 @@ class ContractReplay extends React.Component {
             is_valid_to_cancel,
             location,
             onClickCancel,
-            onClickContractUpdate,
             NotificationMessages,
             onClickSell,
             removeError,
@@ -78,7 +77,6 @@ class ContractReplay extends React.Component {
                     is_sell_requested={is_sell_requested}
                     is_valid_to_cancel={is_valid_to_cancel}
                     onClickCancel={onClickCancel}
-                    onClickContractUpdate={onClickContractUpdate}
                     onClickSell={onClickSell}
                     status={indicative_status}
                 />
@@ -161,7 +159,6 @@ export default withRouter(connect(
             is_sell_requested      : contract_replay.is_sell_requested,
             is_valid_to_cancel     : contract_replay.is_valid_to_cancel,
             onClickCancel          : contract_replay.onClickCancel,
-            onClickContractUpdate  : contract_store.onClickContractUpdate,
             onClickSell            : contract_replay.onClickSell,
             onMount                : contract_replay.onMount,
             onUnmount              : contract_replay.onUnmount,

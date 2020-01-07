@@ -225,7 +225,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = (currency) => [
             row_obj.contract_info && row_obj.contract_info.multiplier ? `x${row_obj.contract_info.multiplier}` : ''
         ),
     }, {
-        title            : localize('Deal Cancellation'),
+        title            : localize('Deal cancellation'),
         col_index        : 'deal_cancellation',
         renderCellContent: ({ row_obj }) => {
             if (row_obj.contract_info && row_obj.contract_info.deal_cancellation) {
@@ -234,7 +234,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = (currency) => [
             return '-';
         },
     }, {
-        title            : localize('Take Profit'),
+        title            : localize('Take profit'),
         col_index        : 'take_profit',
         renderCellContent: ({ row_obj, is_footer }) => {
             if (is_footer) { return ''; }
@@ -250,7 +250,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = (currency) => [
             return '-';
         },
     }, {
-        title            : localize('Stop Loss'),
+        title            : localize('Stop loss'),
         col_index        : 'stop_loss',
         renderCellContent: ({ row_obj, is_footer }) => {
             if (is_footer) { return ''; }

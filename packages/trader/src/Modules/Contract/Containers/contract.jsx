@@ -10,12 +10,7 @@ import ContractReplay    from './contract-replay.jsx';
 
 class Contract extends React.Component {
     componentWillUnmount() {
-        this.props.disableRouteMode();
         this.props.removeErrorMessage();
-    }
-
-    componentDidMount() {
-        this.props.enableRouteMode();
     }
 
     render () {
@@ -52,8 +47,6 @@ class Contract extends React.Component {
 }
 
 Contract.propTypes = {
-    disableRouteMode  : PropTypes.func,
-    enableRouteMode   : PropTypes.func,
     error_message     : PropTypes.string,
     has_error         : PropTypes.bool,
     history           : PropTypes.object,
@@ -65,8 +58,6 @@ Contract.propTypes = {
 
 export default withRouter(connect(
     ({ modules, ui }) => ({
-        disableRouteMode  : ui.disableRouteModal,
-        enableRouteMode   : ui.setRouteModal,
         error_message     : modules.contract_replay.error_message,
         has_error         : modules.contract_replay.has_error,
         removeErrorMessage: modules.contract_replay.removeErrorMessage,

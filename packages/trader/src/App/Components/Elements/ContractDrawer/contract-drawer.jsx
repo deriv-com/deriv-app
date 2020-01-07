@@ -207,20 +207,7 @@ class ContractDrawer extends Component {
         );
         return (
             <div id='dt_contract_drawer' className={classNames('contract-drawer', {})}>
-                <div className='contract-drawer__heading'>
-                    {
-                        this.props.is_from_reports &&
-                        <div
-                            className='contract-drawer__heading-btn'
-                            onClick={this.redirectBackToReports}
-                        >
-                            <Icon
-                                icon='IcArrowLeftBold'
-                            />
-                        </div>
-                    }
-                    <h2><Localize i18n_default_text='Contract details' /></h2>
-                </div>
+                {/* onClick={this.redirectBackToReports} */}
                 <div className='contract-drawer__body'>{body_content}</div>
             </div>
         );

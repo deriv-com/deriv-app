@@ -410,10 +410,11 @@ const TickContract = RawMarkerMaker(({
             top : exit.top ,
             left: exit.left,
             zoom: exit.zoom,
-            icon: ICONS.END.with_color_on_specific_paths({
-                0: { fill: background_color + (is_sold ? opacity : '') },
-                1: { fill: color_based_on_status },
-            }),
+            // icon: ICONS.END.with_color_on_specific_paths({
+            //     0: { fill: background_color + (is_sold ? opacity : '') },
+            //     1: { fill: color_based_on_status },
+            // }),
+            icon: ICONS.END.with_color('red', 'white'),
         });
     }
     ctx.restore();
@@ -573,10 +574,11 @@ const NonTickContract = RawMarkerMaker(({
             top : barrier - 9 * scale,
             left: expiry.left + 8 * scale,
             zoom: expiry.zoom,
-            icon: ICONS.END.with_color_on_specific_paths({
-                0: { fill: get_color({ status: 'bg', is_dark_theme }) },
-                1: { fill: color },
-            }),
+            icon: ICONS.END.with_color('red', 'white'),
+            // icon: ICONS.END.with_color_on_specific_paths({
+            //     0: { fill: 'red' },
+            //     1: { fill: color },
+            // }),
         });
     }
     ctx.restore();

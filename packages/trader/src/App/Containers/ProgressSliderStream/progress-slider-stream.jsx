@@ -2,37 +2,32 @@ import PropTypes             from 'prop-types';
 import React                 from 'react';
 import ProgressSlider        from 'App/Components/Elements/PositionsDrawer/ProgressSlider/positions-progress-slider.jsx';
 import { connect }           from 'Stores/connect';
+import { getCurrentTick }    from 'Stores/Modules/Portfolio/Helpers/details';
 
 const ProgressSliderStream = ({
-    id,
+    contract_info,
     is_loading,
-    getPositionById,
 }) => {
-    const position = getPositionById(id);
-    if (!position) {
+    if (!contract_info) {
         return <div />;
     }
-
-    const { contract_info } = position;
+    const current_tick = contract_info.tick_count && getCurrentTick(contract_info);
 
     return <ProgressSlider
         is_loading={is_loading}
         expiry_time={contract_info.date_expiry}
         has_result={false}
-        current_tick={position.current_tick}
+        current_tick={current_tick}
         start_time={contract_info.date_start}
         ticks_count={contract_info.tick_count}
     />;
 };
 
 ProgressSliderStream.propTypes = {
-    getPositionById: PropTypes.func,
-    id             : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    is_loading     : PropTypes.bool,
-    server_time    : PropTypes.object,
+    contract_info: PropTypes.object,
+    is_loading   : PropTypes.bool,
 };
 
 export default connect(({ modules }) => ({
-    is_loading     : modules.portfolio.is_loading,
-    getPositionById: modules.portfolio.getPositionById,
+    is_loading: modules.portfolio.is_loading,
 }))(ProgressSliderStream);

@@ -184,8 +184,8 @@ export const getOpenPositionsColumnsTemplate = (currency) => [
     }, {
         title            : localize('Remaining time'),
         col_index        : 'id',
-        renderCellContent: ({ cell_value }) => (
-            <ProgressSliderStream id={cell_value} />
+        renderCellContent: ({ row_obj }) => (
+            <ProgressSliderStream contract_info={row_obj.contract_info} />
         ),
     },
 ];

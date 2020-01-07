@@ -123,6 +123,7 @@ export default class PortfolioStore extends BaseStore {
                 subscriber.unsubscribe();
                 if (this.remove_position_after_sell) {
                     this.removePositionById(contract_id);
+                    this.remove_position_after_sell = false;
                 }
             });
         }

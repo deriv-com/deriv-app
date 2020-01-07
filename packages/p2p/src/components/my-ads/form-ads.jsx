@@ -31,6 +31,7 @@ class FormAds extends Component {
         const display_residence = ObjectUtils.getPropertyValue(current_residence, 'text') || '';
 
         // TODO: [p2p-fix-api] call get offer detail api and populate state
+        // this is pending offer edit enabled in the API
         if (this.props.ad_id) {
             // call the api, get the file based on id
             // populate the state from the respnose
@@ -77,7 +78,7 @@ class FormAds extends Component {
                         initialValues={{
                             advertiser_notes: '',
                             country         : this.state.country,
-                            currency        : 'IDR',
+                            currency        : 'IDR', // TODO: [p2p-replace-with-api] get this local_currency from API once provided
                             max_transaction : '',
                             min_transaction : '',
                             offer_amount    : '',

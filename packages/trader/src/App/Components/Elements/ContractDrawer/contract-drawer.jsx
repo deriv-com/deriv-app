@@ -41,7 +41,6 @@ class ContractDrawer extends Component {
             contract_update_history,
             is_sell_requested,
             onClickCancel,
-            onClickContractUpdate,
             onClickSell,
             status,
         } = this.props;
@@ -71,7 +70,6 @@ class ContractDrawer extends Component {
                     duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                     exit_spot={exit_spot}
                     has_result={!!(is_sold) || is_multiplier}
-                    onClickContractUpdate={onClickContractUpdate}
                 />
             </React.Fragment>
         );

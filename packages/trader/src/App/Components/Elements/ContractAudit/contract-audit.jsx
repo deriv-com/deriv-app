@@ -3,13 +3,32 @@ import PropTypes       from 'prop-types';
 import React           from 'react';
 import { Tabs }        from '@deriv/components';
 import { localize }    from '@deriv/translations';
+import { WS }          from 'Services/ws-methods';
 import ContractDetails from './contract-details.jsx';
 import ContractHistory from './contract-history.jsx';
 
 class ContractAudit extends React.Component {
+    state = {
+        history: [],
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (!props.is_multiplier) return state;
+        if (props.contract_update_history && props.contract_update_history.length !== state.history.length) {
+            return {
+                history: props.contract_update_history,
+            };
+        }
+        return state;
+    }
+
     onTabItemClick = (tab_index) => {
-        if (tab_index && !this.props.contract_update_history) {
-            this.props.onClickContractUpdate(false); // pass false to get history only
+        if (tab_index && !this.state.history.length) {
+            WS.contractUpdate(this.props.contract_info.contract_id, { history: 1 }).then(response => {
+                this.setState({
+                    history: response.contract_update.history,
+                });
+            });
         }
     }
 
@@ -18,7 +37,6 @@ class ContractAudit extends React.Component {
             has_result,
             is_multiplier,
             contract_info,
-            contract_update_history,
         } = this.props;
 
         if (!has_result) return null;
@@ -44,7 +62,7 @@ class ContractAudit extends React.Component {
                     <div label={localize('History')}>
                         <ContractHistory
                             currency={contract_info.currency}
-                            history={contract_update_history}
+                            history={this.state.history}
                         />
                     </div>
                 </Tabs>
@@ -65,7 +83,6 @@ ContractAudit.propTypes = {
     exit_spot              : PropTypes.string,
     has_result             : PropTypes.bool,
     is_multiplier          : PropTypes.bool,
-    onClickContractUpdate  : PropTypes.func,
 };
 
 export default ContractAudit;

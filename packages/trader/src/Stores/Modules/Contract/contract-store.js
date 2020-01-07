@@ -144,12 +144,12 @@ export default class ContractStore {
                 });
                 this.root_store.ui.toggleServicesErrorModal(true);
             } else if (response.contract_update.history) {
-                runInAction(() =>
+                runInAction(() => (
                     this.root_store.modules
                         .contract_replay
                         .contract_store
                         .contract_update_history = response.contract_update.history
-                );
+                ));
             }
         });
     }

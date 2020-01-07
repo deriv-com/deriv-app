@@ -9,6 +9,7 @@ class VerticalTabContentContainer extends React.PureComponent {
             action_bar,
             action_bar_classname,
             id,
+            is_floating,
             is_routed,
             items,
             selected,
@@ -18,8 +19,12 @@ class VerticalTabContentContainer extends React.PureComponent {
         const TabContent    = selected_item.value;
 
         return (
-            <div className='vertical-tab__content'>
-                { action_bar &&
+            <div
+                className={classNames('vertical-tab__content', {
+                    'vertical-tab__content--floating': is_floating,
+                })}
+            >
+                { !is_floating && action_bar &&
                     <div className={classNames('vertical-tab__action-bar', {
                         [action_bar_classname]: !!action_bar_classname,
                     })}

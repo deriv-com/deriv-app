@@ -1,14 +1,23 @@
-$BOTTOM_SPACING_REQUIRED: 31px; // Spacing between end of the container and Footer (including shadow)
-$MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING_REQUIRED});
+$MIN_HEIGHT_FULL_SCREEN: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT});
+
+$FLOATING_PADDING: 48px;
+$FLOATING_HEADER_HEIGHT: 41px;
+$MIN_HEIGHT_FLOATING: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT - $FLOATING_HEADER_HEIGHT - $FLOATING_PADDING});
 
 .vertical-tab {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     border-radius: $BORDER_RADIUS;
-    background-color: var(--general-section-1);
     height: 100%;
 
+    &:not(&--floating) {
+        background-color: var(--general-section-1);
+    }
+    &--floating {
+        justify-content: center;
+        min-height: $MIN_HEIGHT_FLOATING;
+    }
     &__content-container {
         position: relative;
         height: 100%;
@@ -18,7 +27,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         flex-grow: 1;
     }
     &--full-screen {
-        min-height: $MIN_HEIGHT;
+        min-height: $MIN_HEIGHT_FULL_SCREEN;
 
         // .vertical-tab__tab {
         //     min-width: 15%;
@@ -55,11 +64,16 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
     }
     &__tab {
         display: flex;
-        min-width: 28%;
+        min-width: 256px;
         height: 100%;
         flex-direction: column;
         border-radius: $BORDER_RADIUS 0 0 $BORDER_RADIUS;
         background-color: var(--general-section-1);
+
+        &--floating {
+            padding: 0.8rem;
+            border-radius: #{$BORDER_RADIUS * 2};
+        }
     }
     &__header-title {
         @include typeface(--title-center-bold-black, none);
@@ -103,7 +117,11 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
             &--active {
                 // make up for the border being 4px
                 margin-left: -4px;
+                margin-right: 20px;
             }
+        }
+        &--floating {
+            border-radius: $BORDER_RADIUS;
         }
     }
     &__content {
@@ -121,6 +139,9 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         &.vertical-tab:not(.vertical-tab--full-screen) {
             @include toEm(padding, 24px);
             height: 100%;
+        }
+        &--floating {
+            max-width: 952px;
         }
     }
 }

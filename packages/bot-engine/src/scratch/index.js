@@ -7,13 +7,13 @@ import {
 import { onWorkspaceResize }          from './utils/workspace';
 import config                         from '../constants';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
-import ScratchStore                   from '../stores/scratch-store';
 import { observer as globalObserver } from '../utils/observer';
 
 class DBot {
-    constructor() {
+    constructor(scratch_store) {
         this.interpreter      = null;
         this.workspace        = null;
+        this.scratch_store    = scratch_store;
         this.before_run_funcs = [];
     }
 
@@ -48,13 +48,16 @@ class DBot {
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), this.workspace);
             this.workspace.clearUndo();
 
-            const { saveload } = ScratchStore.instance;
+            const { saveload } = this.scratch_store;
             const drop_zone    = document.body;
     
             window.addEventListener('resize', () => onWorkspaceResize());
             window.dispatchEvent(new Event('resize'));
             drop_zone.addEventListener('dragover', DBot.handleDragOver);
-            drop_zone.addEventListener('drop', saveload.handleFileChange);
+
+            if (saveload) {
+                drop_zone.addEventListener('drop', saveload.handleFileChange);
+            }
     
             // disable overflow
             el_scratch_div.parentNode.style.overflow = 'hidden';
@@ -81,8 +84,10 @@ class DBot {
         const should_run_bot = this.before_run_funcs.every(func => !!func());
         
         if (!should_run_bot) {
-            const { run_panel } = ScratchStore.instance.root_store;
-            run_panel.onStopButtonClick();
+            const { run_panel } = this.scratch_store.root_store;
+            if (run_panel) {
+                run_panel.onStopButtonClick();
+            }
             return;
         }
 
@@ -212,10 +217,12 @@ class DBot {
         const error_block = all_blocks.find(block => block.is_error_highlighted && !block.disabled);
 
         if (error_block) {
-            const { run_panel } = ScratchStore.instance.root_store;
+            const { run_panel } = this.scratch_store.instance.root_store;
             const message       = localize('The block(s) highlighted in red are missing input values. Please update them and click "Run bot".');
             this.workspace.centerOnBlock(error_block.id);
-            run_panel.showErrorMessage(message);
+            if (run_panel) {
+                run_panel.showErrorMessage(message);
+            }
 
             return false;
         }
@@ -228,12 +235,10 @@ class DBot {
      */
     checkForRequiredBlocks() {
         if (!hasAllRequiredBlocks(this.workspace)) {
-            const { run_panel } = ScratchStore.instance.root_store;
+            const error =  new Error(localize('One or more mandatory blocks are missing from your workspace. ' +
+            'Please add the required block(s) and then try again.'));
 
-            run_panel.showErrorMessage(
-                new Error(localize('One or more mandatory blocks are missing from your workspace. ' +
-                'Please add the required block(s) and then try again.'))
-            );
+            globalObserver.emit('Error', error);
 
             return false;
         }

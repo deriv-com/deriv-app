@@ -1,7 +1,6 @@
 import { localize }  from 'deriv-translations';
 import config        from '../constants';
 import ApiHelpers    from '../services/api/api-helpers';
-import ScratchStore  from '../stores/scratch-store';
 
 /* eslint-disable no-underscore-dangle */
 export default class BlockConversion {
@@ -362,7 +361,7 @@ export default class BlockConversion {
         return ws_variable;
     }
 
-    convertStrategy(strategy_node) {
+    convertStrategy(strategy_node, showIncompatibleStrategyDialog) {
         // Disable events (globally) to suppress block onchange listeners from firing.
         Blockly.Events.disable();
 
@@ -379,7 +378,9 @@ export default class BlockConversion {
         );
 
         if (has_illegal_block) {
-            ScratchStore.instance.root_store.run_panel.showIncompatibleStrategyDialog();
+            if (showIncompatibleStrategyDialog) {
+                showIncompatibleStrategyDialog();
+            }
             Blockly.Events.enable();
             return Blockly.Xml.textToDom('<xml />');
         }

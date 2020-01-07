@@ -2,7 +2,6 @@ import { localize }    from 'deriv-translations';
 import BlockConversion from '../backward-compatibility';
 import { saveAs }      from '../shared';
 import config          from '../../constants';
-import ScratchStore    from '../../stores/scratch-store';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 
@@ -60,14 +59,14 @@ export const save = (filename = 'deriv-bot', collection = false, xmlDom) => {
     saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
 };
 
-export const load = (block_string, drop_event) => {
+export const load = (block_string, drop_event, showIncompatibleStrategyDialog) => {
     const { journal, run_panel } = ScratchStore.instance.root_store;
 
     const showInvalidStrategyError = () => {
         const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
-        
-        journal.onError(error_message);
-        run_panel.setActiveTabIndex(2);
+        console.log(error_message); //eslint-disable-line no-console
+        // journal.onError(error_message);
+        // run_panel.setActiveTabIndex(2);
     };
 
     // Check if XML can be parsed correctly.
@@ -91,7 +90,7 @@ export const load = (block_string, drop_event) => {
     }
 
     const blockConversion = new BlockConversion();
-    xml = blockConversion.convertStrategy(xml);
+    xml = blockConversion.convertStrategy(xml, showIncompatibleStrategyDialog);
     
     const blockly_xml = xml.querySelectorAll('block');
 

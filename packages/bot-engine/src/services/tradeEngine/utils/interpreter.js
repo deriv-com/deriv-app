@@ -20,13 +20,14 @@ const shouldStopOnError = (bot, errorName = '') => {
 const timeMachineEnabled = bot => botInitialized(bot) && bot.tradeEngine.options.timeMachineEnabled;
 
 export default class Interpreter {
-    constructor() {
-        this.init();
+    constructor(scratch_store) {
+        this.init(scratch_store);
     }
 
-    init() {
+    init(scratch_store) {
         this.$scope = createScope();
         this.bot = new Interface(this.$scope);
+        this.scratch_store = scratch_store;
         this.stopped = false;
         this.$scope.observer.register('REVERT', watchName =>
             this.revert(watchName === 'before' ? this.beforeState : this.duringState)

@@ -55,7 +55,7 @@ const Bot = lazy(() => {
     el_scratch_js.src = getUrlBase('/js/bot/scratch.min.js');
     el_head.appendChild(el_scratch_js);
     // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "bot" */ 'deriv-bot');
+    return import(/* webpackChunkName: "bot" */ 'deriv-bot-web-ui');
 });
 
 const modules = [

@@ -1,8 +1,8 @@
 import { localize }          from 'deriv-translations';
 import { defineContract }    from '../../images';
 import { setBlockTextColor } from '../../../utils';
+import { client }            from '../../../../services/tradeEngine/utils/user';
 import config                from '../../../../constants';
-import ScratchStore          from '../../../../stores/scratch-store';
 
 Blockly.Blocks.trade_definition = {
     init() {
@@ -116,15 +116,13 @@ Blockly.Blocks.trade_definition = {
     },
 };
 
-Blockly.JavaScript.trade_definition = block => {
-    const { client } = ScratchStore.instance.root_store.core;
+Blockly.JavaScri = block => {
     
     if (!client.is_logged_in) {
-        throw new Error('Please login'); // TEMP.
+        throw new Error('Please login');
     }
 
-    const { loginid }                = client;
-    const account                    = client.getToken(loginid);
+    const { token: account }         = client;
     
     const market_block               = block.getChildByType('trade_definition_market');
     const trade_type_block           = block.getChildByType('trade_definition_tradetype');

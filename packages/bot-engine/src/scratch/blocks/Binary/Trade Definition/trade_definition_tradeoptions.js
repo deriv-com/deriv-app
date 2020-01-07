@@ -2,7 +2,7 @@ import { localize }  from 'deriv-translations';
 import CurrencyUtils from 'deriv-shared/utils/currency';
 import config        from '../../../../constants';
 import ApiHelpers    from '../../../../services/api/api-helpers';
-import ScratchStore  from '../../../../stores/scratch-store';
+import { client }    from '../../../../services/tradeEngine/utils/user';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
     init() {
@@ -90,8 +90,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.updateDurationInput(false, false);
                 this.updatePredictionInput(false);
             } else {
-                const { client } = ScratchStore.instance.root_store.core;
-
                 this.updateBarrierInputs(true, true);
                 this.enforceSingleBarrierType('BARRIEROFFSETTYPE_LIST', true);
                 this.updateDurationInput(true, true);

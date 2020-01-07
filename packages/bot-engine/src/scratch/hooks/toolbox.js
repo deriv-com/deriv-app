@@ -1,8 +1,8 @@
-import React                from 'react';
-import ReactDOM             from 'react-dom';
-import { Icon }             from 'deriv-components';
-import { localize }         from 'deriv-translations';
-import ScratchStore         from '../../stores/scratch-store';
+// import React        from 'react';
+// import ReactDOM     from 'react-dom';
+// import { Icon }     from 'deriv-components';
+import { localize } from 'deriv-translations';
+import ScratchStore from '../scratch-store';
 
 /**
  * Width of the toolbox, which changes only in vertical layout.
@@ -23,7 +23,7 @@ Blockly.Toolbox.prototype.init = function () {
      * @type {Element}
      */
     this.HtmlDiv = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox');
-    this.HtmlDiv.setAttribute('id','gtm-toolbox');
+    this.HtmlDiv.setAttribute('id', 'gtm-toolbox');
     this.HtmlDiv.setAttribute('dir', workspace.RTL ? 'RTL' : 'LTR');
 
     // deriv-bot: Create Toolbox header
@@ -72,15 +72,15 @@ Blockly.Toolbox.prototype.init = function () {
 Blockly.Toolbox.prototype.populate_ = function (newTree) {
     const parent = this.categoryMenu_.parentHtml_;
     parent.removeChild(parent.lastChild);
-    
+
     this.categoryMenu_.populate(newTree);
-    
-    const { quick_strategy } = ScratchStore.instance;
+
+    const { instance : { quick_strategy } } = ScratchStore;
     const quick_strat_btn = document.createElement('BUTTON');
     quick_strat_btn.innerHTML = localize('Quick Strategy');
     quick_strat_btn.className = 'toolbox__button btn effect btn--primary btn__medium';
     quick_strat_btn.id = 'gtm-quick-strategy';
-    quick_strat_btn.onclick = quick_strategy.toggleStrategyModal;
+    quick_strat_btn.onclick = quick_strategy.toggleQickStrategyModal;
 
     parent.appendChild(quick_strat_btn);
 };
@@ -88,10 +88,10 @@ Blockly.Toolbox.prototype.populate_ = function (newTree) {
 Blockly.Toolbox.prototype.showSearch = function (search) {
     const flyout_content = [];
     const workspace = Blockly.derivWorkspace;
-    const search_term = search.replace(/\s+/g,' ').trim().toUpperCase();
+    const search_term = search.replace(/\s+/g, ' ').trim().toUpperCase();
     const all_variables = workspace.getVariablesOfType('');
     const all_procedures = Blockly.Procedures.allProcedures(workspace);
-    const { flyout } = ScratchStore.instance;
+    const { instance : { flyout } } = ScratchStore;
 
     flyout.setVisibility(false);
 
@@ -144,14 +144,14 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         switch (priority) {
             case 'exact_block_name': {
                 if (search_regex.test(block_name.toUpperCase()) ||
-                search_regex.test(block_type.toUpperCase())) {
+                    search_regex.test(block_type.toUpperCase())) {
                     pushIfNotExists(flyout_content, block_content);
                 }
                 break;
             }
             case 'block_term': {
                 if (block_type_terms.some(term => search_regex.test(term)) ||
-                block_name_terms.some(term => search_regex.test(term))) {
+                    block_name_terms.some(term => search_regex.test(term))) {
                     pushIfNotExists(flyout_content, block_content);
                 }
                 break;
@@ -173,8 +173,8 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
                             const definition_strings = JSON.stringify(def).toUpperCase();
 
                             if (def.type === 'field_dropdown' &&
-                            search_term > 2 &&
-                            definition_strings.includes(search_term)) {
+                                search_term > 2 &&
+                                definition_strings.includes(search_term)) {
                                 has_dropdown_and_in_search = true;
                             }
                         });
@@ -201,7 +201,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
 
                 if (matched_meta && matched_meta.length) {
                     pushIfNotExists(flyout_content, block_content);
-                    
+
                 }
                 break;
             }
@@ -454,7 +454,7 @@ Blockly.Toolbox.Category.prototype.createDom = function () {
 
     if (this.is_category_return_) {
         const el_return_arrow = goog.dom.createDom('div', 'toolbox__category-arrow toolbox__category-arrow--back');
-        ReactDOM.render(<Icon icon='IcChevronDownBold' className='arrow' />, el_return_arrow);
+        // ReactDOM.render(<Icon icon='IcChevronDownBold' className='arrow' />, el_return_arrow);
         el_item.appendChild(el_return_arrow);
     } else {
         const el_colour = goog.dom.createDom('div', 'toolbox__category-colour');
@@ -476,12 +476,12 @@ Blockly.Toolbox.Category.prototype.createDom = function () {
 
     if (this.has_child_category_) {
         const el_category_arrow = goog.dom.createDom('div', 'toolbox__category-arrow toolbox__category-arrow--open');
-        ReactDOM.render(<Icon icon='IcChevronDownBold' className='arrow' />, el_category_arrow);
+        // ReactDOM.render(<Icon icon='IcChevronDownBold' className='arrow' />, el_category_arrow);
         el_item.appendChild(el_category_arrow);
     } else if (this.iconURI_) {
         // If category has iconURI attribute, it refers to an entry in our bot-sprite.svg
         const el_icon = goog.dom.createDom('div', { class: 'toolbox__icon' });
-        ReactDOM.render(<Icon icon={this.iconURI_} />, el_icon);
+        // ReactDOM.render(<Icon icon={this.iconURI_} />, el_icon);
         el_item.appendChild(el_icon);
     }
 
@@ -638,12 +638,12 @@ Blockly.Toolbox.prototype.refreshCategory = function () {
 };
 
 Blockly.Toolbox.prototype.toggle = function () {
-    const { toolbar, flyout } = ScratchStore.instance;
+    const { instance: { toolbar, flyout } } = ScratchStore;
     if (!toolbar.is_toolbox_open) {
         this.addStyle('hidden');
-    
+
         flyout.setVisibility(false);
-    
+
         if (this.selectedItem_) {
             this.selectedItem_.setSelected(false);
             this.selectedItem_ = null;

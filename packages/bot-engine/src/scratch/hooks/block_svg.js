@@ -1,14 +1,13 @@
 import { localize } from 'deriv-translations';
 import { save }     from '../utils';
-import ScratchStore from '../../stores/scratch-store';
+import ScratchStore from '../scratch-store';
 
 /**
  * Select this block.  Highlight it visually.
  */
 Blockly.BlockSvg.prototype.addSelect = function() {
     if (!this.isInFlyout) {
-        const { flyout } = ScratchStore.instance;
-        flyout.setVisibility(false);
+        ScratchStore.instance.setVisibility(false);
         Blockly.utils.addClass(/** @type {!Element} */ (this.svgGroup_), 'blocklySelected');
     }
 };

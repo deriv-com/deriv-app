@@ -1,6 +1,6 @@
 import { getFormattedText } from 'deriv-shared/utils/currency';
 import { info }            from '../utils/broadcast';
-import ScratchStore        from '../../../stores/scratch-store';
+import { client }          from '../utils/user';
 
 let balanceStr = '';
 
@@ -26,7 +26,7 @@ export default Engine =>
             // Deduct trade `amount` in this scope for correct value in `balance`-block
             if (scope === 'BEFORE_PURCHASE') {
                 const value = Number(balance) - this.tradeOptions.amount;
-                balanceStr = getFormattedText(value, ScratchStore.core.client.currency, false);
+                balanceStr = getFormattedText(value, client.currency, false);
             }
 
             return type === 'STR' ? balanceStr : Number(balance);

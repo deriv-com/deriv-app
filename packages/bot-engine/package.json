@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "name": "deriv-bot",
+  "name": "deriv-bot-engine",
   "description": "Visual automation for deriv.app",
-  "main": "dist/bot.main.js",
+  "main": "dist/bot-engine.main.js",
   "private": true,
   "jest": {
     "setupFilesAfterEnv": [
@@ -22,7 +22,7 @@
     "test": "npm run test:eslint && npm run test:mocha",
     "test:mocha": "jest --w=4 --coverage",
     "test:eslint": "eslint ./src",
-    "test:stylelint": "stylelint \"./src/**/*.s?(a|c)ss\"",
+    "test:stylelint": "echo \"No test:stylelint specified\"",
     "deploy": "echo \"No deploy specified\"",
     "deploy:clean": "echo \"No deploy:clean specified\"",
     "deploy:folder": "echo \"No deploy:folder specified\"",

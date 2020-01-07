@@ -8,8 +8,8 @@ import { TransitionGroup,
 import {
     Drawer,
     Icon,
-    ThemedScrollbars }                from 'deriv-components';
-import { localize }                   from 'deriv-translations';
+    ThemedScrollbars }                from '@deriv/components';
+import { localize }                   from '@deriv/translations';
 import routes                         from 'Constants/routes';
 import EmptyPortfolioMessage          from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import { connect }                    from 'Stores/connect';

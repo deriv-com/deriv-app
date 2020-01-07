@@ -1,8 +1,8 @@
-import { Modal }                    from 'deriv-components';
 import React, { Component }         from 'react';
-import Mt5Password                  from '../Components/mt5-password.jsx';
+import { Modal }                    from '@deriv/components';
 import { connect }                  from 'Stores/connect';
 import MT5AdvancedRealAccountSignup from 'Modules/MT5/Containers/mt5-advanced-real-account-signup.jsx';
+// import Mt5Password                  from '../Components/mt5-password.jsx';
 
 class MT5AccountOpeningRealAdvancedModal extends Component {
     state = {

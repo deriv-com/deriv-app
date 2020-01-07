@@ -1,8 +1,7 @@
 import React                  from 'react';
-import { Button, Icon }       from '@deriv/components';
+import { Icon }               from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { MT5AccountCard }     from './mt5-account-card.jsx';
-import Loading                from '../../../templates/_common/components/loading.jsx';
 
 const getRealAdvancedButtonLabel = (is_fully_authenticated, is_pending_authentication) => {
     if (is_fully_authenticated) {
@@ -27,9 +26,7 @@ const getRealAdvancedButtonLabel = (is_fully_authenticated, is_pending_authentic
 };
 
 const MT5RealAccountDisplay = ({
-    beginRealSignupForMt5,
     has_real_account,
-    is_loading,
     is_fully_authenticated,
     is_pending_authentication,
     onSelectAccount,
@@ -41,30 +38,20 @@ const MT5RealAccountDisplay = ({
 }) => {
     const button_label = getRealAdvancedButtonLabel(is_fully_authenticated, is_pending_authentication);
     const is_real_advanced_disabled = !has_real_account || is_pending_authentication;
+    const onSelectRealAdvanced = () => {
+        if (is_fully_authenticated) {
+            openRealAdvancedPasswordModal();
+        } else if (!is_fully_authenticated && !is_real_advanced_disabled) {
+            onSelectAccount({
+                category: 'real',
+                type    : 'advanced',
+            });
+        }
+    };
 
-    return (is_loading ? (
-        <div className='mt5-real-accounts-display'>
-            <Loading />
-        </div>
-    ) : (
+    return (
         <React.Fragment>
-            {!has_real_account &&
-            <div className='mt5-dashboard__missing-real'>
-                <h1 className='mt5-dashboard__missing-real--heading'>
-                    <Localize
-                        i18n_default_text='You need a real account (fiat currency or cryptocurrency) in Deriv to create a real DMT5 account.'
-                    />
-                </h1>
-                <Button
-                    className='mt5-dashboard__missing-real--button'
-                    onClick={beginRealSignupForMt5}
-                    type='button'
-                    primary
-                >
-                    <span className='btn__text'><Localize i18n_default_text='Create a Deriv account' /></span>
-                </Button>
-            </div>
-            }
+
 
             <div className='mt5-real-accounts-display'>
                 <MT5AccountCard
@@ -107,17 +94,7 @@ const MT5RealAccountDisplay = ({
                     }}
                     existing_data={current_list['real.advanced']}
                     commission_message={<Localize i18n_default_text='No commission' />}
-                    onSelectAccount={() => {
-                        if (is_fully_authenticated) {
-                            openRealAdvancedPasswordModal();
-                        }
-                        if (!is_fully_authenticated && !is_real_advanced_disabled) {
-                            onSelectAccount({
-                                category: 'real',
-                                type    : 'advanced',
-                            });
-                        }
-                    }}
+                    onSelectAccount={onSelectRealAdvanced}
                     button_label={button_label}
                     onPasswordManager={openPasswordManager}
                     onClickFund={() => openAccountTransfer(current_list['real.advanced'], {
@@ -159,7 +136,7 @@ const MT5RealAccountDisplay = ({
                 />
             </div>
         </React.Fragment>
-    ));
+    );
 };
 
 export { MT5RealAccountDisplay };

@@ -1,11 +1,11 @@
+import { Formik, Field }      from 'formik';
+import React, { Component }   from 'react';
 import {
     Autocomplete,
-    FormSubmitButton
+    FormSubmitButton,
     Input,
     ThemedScrollbars }        from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { Formik, Field }      from 'formik';
-import React, { Component }   from 'react';
 import { connect }            from 'Stores/connect';
 
 const InputField = (props) => {

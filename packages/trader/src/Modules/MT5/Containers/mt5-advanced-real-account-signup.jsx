@@ -1,11 +1,9 @@
 import PropTypes                   from 'prop-types';
 import React, { Component }        from 'react';
-import {
-    FormProgress,
-}                                  from 'deriv-components';
-import { WS }                      from 'Services/ws-methods';
-import { localize }                from 'deriv-translations';
+import { FormProgress }            from '@deriv/components';
+import { localize }                from '@deriv/translations';
 import { connect }                 from 'Stores/connect';
+import { WS }                      from 'Services/ws-methods';
 import MT5POA                      from '../Components/mt5-poa.jsx';
 import MT5PersonalDetailsForm      from '../Components/mt5-personal-details-form.jsx';
 import MT5POI                      from '../Components/mt5-poi.jsx';

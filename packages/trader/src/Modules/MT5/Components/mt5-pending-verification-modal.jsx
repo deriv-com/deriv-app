@@ -1,7 +1,7 @@
-import { Button }   from 'deriv-components';
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { Localize } from 'deriv-translations';
+import { Button }   from '@deriv/components';
+import { Localize } from '@deriv/translations';
 
 const MT5PendingVerificationModal = ({ toggleModal }) => (
     <div className='mt5-pending-verification'>

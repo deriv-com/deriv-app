@@ -1,7 +1,7 @@
 import PropTypes              from 'prop-types';
 import React                  from 'react';
-import { Button, Icon }       from 'deriv-components';
-import { localize, Localize } from 'deriv-translations';
+import { Button, Icon }       from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
 
 const ErrorModal = ({ message, code, onClick }) => {
     return (

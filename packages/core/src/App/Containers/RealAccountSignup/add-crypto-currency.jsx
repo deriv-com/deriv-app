@@ -3,7 +3,7 @@ import PropTypes              from 'prop-types';
 import React, { Component }   from 'react';
 import { connect }            from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
-import { FormSubmitButton }   from 'deriv-components';
+import { FormSubmitButton }   from '@deriv/components';
 import {
     Hr,
     RadioButtonGroup,

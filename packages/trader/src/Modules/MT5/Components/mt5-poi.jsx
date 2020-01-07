@@ -1,10 +1,10 @@
-import {
-    ThemedScrollbars,
-    FormSubmitButton }          from 'deriv-components';
 import { Formik }               from 'formik';
 import PropTypes                from 'prop-types';
 import React, { PureComponent } from 'react';
-import { localize }             from 'deriv-translations';
+import {
+    ThemedScrollbars,
+    FormSubmitButton }          from '@deriv/components';
+import { localize }             from '@deriv/translations';
 import ProofOfIdentityContainer from 'Modules/Account/Sections/Verification/ProofOfIdentity/proof-of-identity-container.jsx';
 
 const form = React.createRef();

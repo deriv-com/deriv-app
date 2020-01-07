@@ -1,8 +1,9 @@
-import {
-    Icon,
-    Tabs }                                from '@deriv/components';
 import React                              from 'react';
 import { withRouter }                     from 'react-router';
+import {
+    Button,
+    Icon,
+    Tabs }                                from '@deriv/components';
 import { localize, Localize }             from '@deriv/translations';
 import routes                             from 'Constants/routes';
 import MT5PasswordModal                   from 'Modules/MT5/Containers/mt5-password-modal.jsx';
@@ -14,6 +15,7 @@ import CompareAccountsModal               from './mt5-compare-accounts-modal.jsx
 import MT5PasswordManagerModal            from './mt5-password-manager-modal.jsx';
 import { MT5DemoAccountDisplay }          from '../Components/mt5-demo-account-display.jsx';
 import { MT5RealAccountDisplay }          from '../Components/mt5-real-account-display.jsx';
+import Loading                            from '../../../templates/_common/components/loading.jsx';
 
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
@@ -109,16 +111,39 @@ class MT5Dashboard extends React.Component {
                         />
                         <Tabs active_index={this.state.active_index} top>
                             <div label={localize('Real account')}>
-                                <MT5RealAccountDisplay
-                                    is_loading={ is_loading }
-                                    current_list={this.props.current_list}
-                                    has_mt5_account={has_mt5_account}
-                                    onSelectAccount={createMT5Account}
-                                    openAccountTransfer={this.openAccountTransfer}
-                                    openPasswordManager={ this.togglePasswordManagerModal }
-                                    beginRealSignupForMt5={ beginRealSignupForMt5 }
-                                    has_real_account={ has_real_account }
-                                />
+                                {is_loading && (
+                                    <div className='mt5-real-accounts-display'>
+                                        <Loading />
+                                    </div>
+                                )}
+                                {!is_loading &&
+                                <>
+                                    {!has_real_account &&
+                                    <div className='mt5-dashboard__missing-real'>
+                                        <h1 className='mt5-dashboard__missing-real--heading'>
+                                            <Localize
+                                                i18n_default_text='You need a real account (fiat currency or cryptocurrency) in Deriv to create a real DMT5 account.'
+                                            />
+                                        </h1>
+                                        <Button
+                                            className='mt5-dashboard__missing-real--button'
+                                            onClick={beginRealSignupForMt5}
+                                            type='button'
+                                            primary
+                                        >
+                                            <span className='btn__text'><Localize i18n_default_text='Create a Deriv account' /></span>
+                                        </Button>
+                                    </div>
+                                    }
+                                    <MT5RealAccountDisplay
+                                        current_list={this.props.current_list}
+                                        has_mt5_account={has_mt5_account}
+                                        onSelectAccount={createMT5Account}
+                                        openAccountTransfer={this.openAccountTransfer}
+                                        openPasswordManager={ this.togglePasswordManagerModal }
+                                        has_real_account={ has_real_account }
+                                    />
+                                </>}
                             </div>
                             <div label={localize('Demo account')}>
                                 <MT5DemoAccountDisplay

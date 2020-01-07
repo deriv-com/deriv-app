@@ -1,14 +1,14 @@
-import {
-    ThemedScrollbars,
-    Autocomplete,
-    Input,
-    FormSubmitButton }      from 'deriv-components';
 import { Field, Formik }    from 'formik';
 import PropTypes            from 'prop-types';
 import React, { Component } from 'react';
 import {
+    ThemedScrollbars,
+    Autocomplete,
+    Input,
+    FormSubmitButton }      from '@deriv/components';
+import {
     Localize,
-    localize }              from 'deriv-translations';
+    localize }              from '@deriv/translations';
 import { FormSubHeader }    from 'Modules/Account/Components/layout-components.jsx';
 
 const form = React.createRef();

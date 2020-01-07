@@ -1,18 +1,17 @@
+import { Formik }            from 'formik';
+import PropTypes             from 'prop-types';
+import React, { Component }  from 'react';
 import {
-    FormInputField as InputField,
+    FormInputField,
     FormSubmitButton,
     ThemedScrollbars,
     Dropdown,
     Loading,
-}                            from 'deriv-components';
-import { Formik }            from 'formik';
-import PropTypes             from 'prop-types';
-import React, { Component }  from 'react';
-import { WS }                from 'Services/ws-methods';
+}                            from '@deriv/components';
 import {
     Localize,
-    localize,
-}                            from 'deriv-translations';
+    localize }               from '@deriv/translations';
+import { WS }                from 'Services/ws-methods';
 import { FormSubHeader }     from 'Modules/Account/Components/layout-components.jsx';
 import FileUploaderContainer from 'Modules/Account/Sections/Verification/ProofOfAddress/file-uploader-container.jsx';
 import { poa_status_codes }  from 'Modules/Account/Sections/Verification/ProofOfAddress/proof-of-address-container.jsx';
@@ -328,20 +327,20 @@ class MT5POA extends Component {
                                                         subtitle={localize('(All fields are required)')}
                                                         title={localize('Financial information')}
                                                     />
-                                                    <InputField
+                                                    <FormInputField
                                                         name='address_line_1'
                                                         required
                                                         label={localize('First line of address*')}
                                                         placeholder={localize('First line of address')}
                                                     />
-                                                    <InputField
+                                                    <FormInputField
                                                         name='address_line_2'
                                                         label={localize('Second line of address')}
                                                         optional
                                                         placeholder={localize('Second line of address')}
                                                     />
                                                     <div className='mt5-proof-of-address__inline-fields'>
-                                                        <InputField
+                                                        <FormInputField
                                                             name='address_city'
                                                             required
                                                             label={localize('Town/City*')}
@@ -360,7 +359,7 @@ class MT5POA extends Component {
                                                                 placeholder={localize('State/Province')}
                                                             />
                                                         </fieldset>
-                                                        <InputField
+                                                        <FormInputField
                                                             name='address_postcode'
                                                             required
                                                             label={localize('Postal/ZIP Code*')}

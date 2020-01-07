@@ -1,10 +1,10 @@
 import classNames   from 'classnames';
 import PropTypes    from 'prop-types';
 import React        from 'react';
-import { Checkbox } from 'deriv-components';
+import { Checkbox } from '@deriv/components';
 import {
     Localize,
-    localize }      from 'deriv-translations';
+    localize }      from '@deriv/translations';
 import { connect }  from 'Stores/connect';
 
 const AllowEquals = ({

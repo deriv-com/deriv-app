@@ -1,6 +1,6 @@
 import React                 from 'react';
-import { Money }             from 'deriv-components';
-import { Localize }          from 'deriv-translations';
+import { Money }             from '@deriv/components';
+import { Localize }          from '@deriv/translations';
 import { connect }           from 'Stores/connect';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
 import MobileDialog          from './mobile-dialog.jsx';

@@ -7,7 +7,7 @@ import {
     Button,
     Icon,
     Money }                    from '@deriv/components';
-import { localize, Localize }  from '@deriv/translations';
+import { localize }            from '@deriv/translations';
 import routes                  from 'Constants/routes';
 import ContractAudit           from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
@@ -38,8 +38,6 @@ class ContractDrawer extends Component {
     handleShade = (shade) => {
         this.setState({ is_shade_on: shade });
     };
-
-    redirectBackToReports = () => this.props.history.push(routes.reports);
 
     getBodyContent () {
         const {
@@ -207,7 +205,6 @@ class ContractDrawer extends Component {
         );
         return (
             <div id='dt_contract_drawer' className={classNames('contract-drawer', {})}>
-                {/* onClick={this.redirectBackToReports} */}
                 <div className='contract-drawer__body'>{body_content}</div>
             </div>
         );
@@ -217,7 +214,6 @@ class ContractDrawer extends Component {
 ContractDrawer.propTypes = {
     contract_info    : PropTypes.object,
     is_dark_theme    : PropTypes.bool,
-    is_from_reports  : PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickSell      : PropTypes.func,
     status           : PropTypes.string,

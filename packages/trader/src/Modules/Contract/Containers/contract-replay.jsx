@@ -25,7 +25,12 @@ class ContractReplay extends React.Component {
         this.props.onUnmount();
     }
 
-    goBackToTrade = () => this.props.history.push(AppRoutes.trade);
+    // TODO: [history-routing] handle going back as per user actions
+    onClickClose = () => {
+        const is_from_table_row = !ObjectUtils.isEmptyObject(this.props.location.state) ?
+            this.props.location.state.from_table_row : false;
+        return this.props.history.push(is_from_table_row ? AppRoutes.reports : AppRoutes.trade);
+    }
 
     render() {
         const {
@@ -38,24 +43,21 @@ class ContractReplay extends React.Component {
             is_digit_contract,
             is_ended,
             is_sell_requested,
-            location,
             NotificationMessages,
             onClickSell,
             removeError,
             indicative_status,
         } = this.props;
 
-        const is_from_table_row = !ObjectUtils.isEmptyObject(location.state) ? location.state.from_table_row : false;
         return (
             <PageOverlay
                 header={localize('Contract details')}
-                onClickClose={this.goBackToTrade}
+                onClickClose={this.onClickClose}
             >
                 <div id='dt_contract_replay_container' className='trade-container__replay'>
                     <ContractDrawer
                         contract_info={contract_info}
                         is_dark_theme={is_dark_theme}
-                        is_from_reports={is_from_table_row}
                         is_sell_requested={is_sell_requested}
                         onClickSell={onClickSell}
                         status={indicative_status}

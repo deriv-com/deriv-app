@@ -18,6 +18,7 @@ class Reports extends React.Component {
         this.props.toggleReports(false);
     }
 
+    // TODO: [history-routing] handle going back as per user actions
     onClickClose = () => {
         this.props.history.push(AppRoutes.trade);
         this.props.toggleReports(false);

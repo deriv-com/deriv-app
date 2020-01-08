@@ -19,6 +19,7 @@ class Cashier extends React.Component {
         this.props.toggleCashier();
     }
 
+    // TODO: [history-routing] handle going back as per user actions
     onClickClose = () => {
         this.props.history.push(routes.trade);
     };

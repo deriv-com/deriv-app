@@ -1,5 +1,5 @@
 import Interpreter                 from './interpreter';
-import TicksService                from '../../api/ticksService';
+import TicksService                from '../../api/ticks_service';
 import { generateLiveApiInstance } from '../../api/appId';
 import Observer                    from '../../../utils/observer';
 

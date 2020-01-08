@@ -1,9 +1,9 @@
-import filesaver                        from 'file-saver';
+import filesaver from 'file-saver';
 import {
     observable,
     action,
-}                                       from 'mobx';
-import { load }                         from '../scratch/utils';
+}                from 'mobx';
+import { load }  from 'deriv-bot-engine/dist/scratch';
 
 export default class SaveLoadModalStore {
 

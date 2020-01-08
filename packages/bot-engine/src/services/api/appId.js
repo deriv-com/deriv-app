@@ -6,7 +6,7 @@ import {
     removeToken,
     getTokenList,
     removeAllTokens,
-}                      from '../../utils/tokenHelper';
+}                      from '../../utils/token-helper';
 
 export const getCustomEndpoint = () => ({
     url  : localStorage.getItem('config.server_url'),

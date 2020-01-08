@@ -4,8 +4,8 @@ import Flyout         from './flyout.jsx';
 import Chart          from './chart/chart.jsx';
 import { tabs_title } from '../constants/bot-contents';
 import { connect }    from '../stores/connect';
-import                '../assets/sass/main-content.scss';
-import                '../assets/sassgit/workspace.scss';
+// import                '../assets/sass/main_content.scss';
+import                '../assets/sass/workspace.scss';
 import                '../assets/sass/toolbox.scss';
 
 class MainContent extends React.Component {

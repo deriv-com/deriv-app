@@ -1,3 +1,3 @@
-import DBot from './scratch';
+import DBot from './scratch/dbot';
 
 export default DBot;

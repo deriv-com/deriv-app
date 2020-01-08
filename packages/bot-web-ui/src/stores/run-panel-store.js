@@ -4,15 +4,15 @@ import {
     reaction,
     computed }                         from 'mobx';
 import { localize }                    from 'deriv-translations' ;
-import { contract_stages }             from '../constants/contract-stage';
 import {
     error_types,
-    unrecoverable_errors }             from '../constants/messages';
-import DBot                            from '../scratch';
-import { isEnded }                     from '../utils/contract';
-import { observer }                    from '../utils/observer';
-import { setMainContentWidth }         from '../utils/window-size';
-import { switch_account_notification } from '../utils/notifications/bot-notifications';
+    unrecoverable_errors }             from 'deriv-bot-engine/dist/constants';
+import { observer ,
+    setMainContentWidth ,
+    isEnded }                          from 'deriv-bot-engine/dist/utils';
+import DBot                            from 'deriv-bot-engine';
+import { contract_stages }             from '../constants/contract-stage';
+import { switch_account_notification } from '../utils/bot-notifications';
 
 export default class RunPanelStore {
     constructor(root_store) {

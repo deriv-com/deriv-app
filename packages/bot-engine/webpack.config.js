@@ -7,25 +7,24 @@ const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
 
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
-const output = {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bot-engine.main.js',
-    chunkFilename: 'bot.[name].[contenthash].js',
-    libraryExport: 'default',
-    library: 'deriv-bot-engine',
-    libraryTarget: 'umd',
-};
-
 module.exports = function (env, argv) {
-    const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
+    // const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
 
     return {
-        entry    : [
-            path.join(__dirname, 'src', 'app.js')
-        ],
+        entry    : {
+            'bot-engine'   :  path.join(__dirname, 'src', 'app.js'),
+            constants      :  path.join(__dirname, 'src', 'constants'),
+            'help-strings' :  path.join(__dirname, 'src', 'scratch/help-content/help-strings'),
+            scratch        :  path.join(__dirname, 'src', 'scratch'),
+            services       :  path.join(__dirname, 'src', 'services/api'),
+            utils          :  path.join(__dirname, 'src', 'utils')
+        },
         output: {
-            ...output,
-            publicPath: base
+            path         :  path.resolve(__dirname, 'dist'),
+            filename     :  '[name].js',
+            libraryExport:  'default',
+            library      :  'deriv-bot-engine',
+            libraryTarget:  'umd',
         },
         devServer: {
             publicPath      : '/dist/',

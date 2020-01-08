@@ -24,7 +24,7 @@ class ScratchStore {
         return this.singleton;
     }
 
-    /// move this to main-content jsx
+    // / move this to main-content jsx
     registerReactions() {
         // Syncs all trade options blocks' currency with the client's active currency.
         this.disposeCurrencyReaction = reaction(

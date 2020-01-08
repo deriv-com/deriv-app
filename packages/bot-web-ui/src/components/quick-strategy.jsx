@@ -1,5 +1,5 @@
-import proptypes            from 'prop-types';
-import React                from 'react';
+import proptypes     from 'prop-types';
+import React         from 'react';
 import {
     Button,
     Dropdown,
@@ -8,17 +8,17 @@ import {
     Modal,
     Popover,
     Tabs,
-}                           from 'deriv-components';
+}                    from 'deriv-components';
 import {
     Formik,
     Form,
     Field,
-}                           from 'formik';
-import { localize }         from 'deriv-translations';
-import IconTradeType        from './icon-trade-types.jsx';
-import { connect }          from '../stores/connect';
-import config               from '../constants/index';
-import '../assets/sass/quick-strategy.scss';
+}                    from 'formik';
+import { localize }  from 'deriv-translations';
+import config        from 'deriv-bot-engine/dist/constants';
+import IconTradeType from './icon-trade-types.jsx';
+import { connect }   from '../stores/connect';
+import               '../assets/sass/quick-strategy.scss';
 
 const MarketOption = ({ symbol }) => (
     <div key={symbol.value} className='quick-strategy__option'>

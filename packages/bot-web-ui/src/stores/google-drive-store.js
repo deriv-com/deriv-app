@@ -3,8 +3,8 @@ import {
     action,
 }                                from 'mobx';
 import { localize, getLanguage } from 'deriv-translations';
-import config                    from '../constants';
-import { importExternal }        from '../utils/tools';
+import { importExternal }        from 'deriv-bot-engine/dist/utils';
+import config                    from 'deriv-bot-engine/dist/constants';
 
 export default class GoogleDriveStore {
     constructor(root_store) {

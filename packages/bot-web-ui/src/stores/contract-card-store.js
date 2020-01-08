@@ -1,10 +1,10 @@
 import {
     observable,
     action,
-    computed }                from 'mobx';
-import { contract_stages }    from '../constants/contract-stage';
+    computed }             from 'mobx';
 import { isEnded ,
-    getIndicativePrice }      from '../utils/contract';
+    getIndicativePrice }   from 'deriv-bot-engine/dist/utils';
+import { contract_stages } from '../constants/contract-stage';
 
 export default class ContractCardStore {
     @observable contract            = null;

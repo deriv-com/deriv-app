@@ -1,5 +1,10 @@
 import { Provider }         from 'mobx-react';
 import React                from 'react';
+import GTM                  from 'deriv-bot-engine/dist/utils';
+import { ServerTime,
+    ApiHelpers }             from 'deriv-bot-engine/dist/services';
+
+import DBot                 from 'deriv-bot-engine';
 import                           './public-path'; // Leave this here! OK boss!
 import FooterExtension      from './components/footer-extension.jsx';
 import MainContent          from './components/main-content.jsx';
@@ -7,12 +12,8 @@ import NotificationMessages from './components/notification-messages.jsx';
 import QuickStrategy        from './components/quick-strategy.jsx';
 import RunPanel             from './components/run-panel.jsx';
 import Toolbar              from './components/toolbar.jsx';
-import ServerTime           from './services/api/server_time';
-import DBot                 from './scratch';
-import ApiHelpers           from './services/api/api-helpers';
 import RootStore            from './stores';
 import ScratchStore         from './stores/scratch-store';
-import GTM                  from './utils/gtm';
 import                      './assets/sass/app.scss';
 
 class App extends React.Component {

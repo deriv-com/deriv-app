@@ -3,7 +3,7 @@ import PropTypes            from 'prop-types';
 import React                from 'react';
 import { ThemedScrollbars } from 'deriv-components';
 import { localize }         from 'deriv-translations';
-import { message_types }    from '../constants/messages';
+import { message_types }    from 'deriv-bot-engine/dist/constants';
 import { connect }          from '../stores/connect';
 import '../assets/sass/journal.scss';
 

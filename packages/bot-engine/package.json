@@ -1,8 +1,8 @@
 {
-  "version": "1.0.0",
   "name": "deriv-bot-engine",
+  "version": "1.0.0",
   "description": "Visual automation for deriv.app",
-  "main": "dist/bot-engine.main.js",
+  "main": "dist/bot-engine.js",
   "private": true,
   "jest": {
     "setupFilesAfterEnv": [

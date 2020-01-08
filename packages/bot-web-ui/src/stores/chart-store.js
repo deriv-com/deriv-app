@@ -6,7 +6,7 @@ import {
     reaction,
 }                     from 'mobx';
 // import { tabs_title } from '../constants/bot-contents';
-import ServerTime     from '../services/api/server_time';
+import { ServerTime } from 'deriv-bot-engine/dist/services';
 
 const g_subscribers_map = {};
 let WS;

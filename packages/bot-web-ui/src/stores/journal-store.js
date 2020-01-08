@@ -2,7 +2,7 @@ import {
     observable,
     action }                from 'mobx';
 import { formatDate }       from 'deriv-shared/utils/date';
-import { message_types }    from '../constants/messages';
+import { message_types }    from 'deriv-bot-engine/dist/constants';
 
 export default class JournalStore {
     constructor(root_store) {

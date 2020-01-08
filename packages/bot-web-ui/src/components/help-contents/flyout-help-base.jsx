@@ -1,14 +1,14 @@
-import { Button , Icon } from 'deriv-components';
-import React             from 'react';
-import PropTypes         from 'prop-types';
-import { localize }      from 'deriv-translations';
-import FlyoutVideo       from './help-components/flyout-video.jsx';
-import FlyoutText        from './help-components/flyout-text.jsx';
-import FlyoutImage       from './help-components/flyout-img.jsx';
-import { config }        from './help-content.config';
-import FlyoutBlock       from '../../components/flyout-block.jsx';
-import constant          from '../../constants';
-import { connect }       from '../../stores/connect';
+import { Button , Icon }       from 'deriv-components';
+import React                   from 'react';
+import PropTypes               from 'prop-types';
+import { localize }            from 'deriv-translations';
+import { help_content_config } from 'deriv-bot-engine/dist/scratch';
+import constant                from 'deriv-bot-engine/src/constants';
+import FlyoutVideo             from './flyout-video.jsx';
+import FlyoutText              from './flyout-text.jsx';
+import FlyoutImage             from './flyout-img.jsx';
+import FlyoutBlock             from '../flyout-block.jsx';
+import { connect }             from '../../stores/connect';
 
 const HelpBase = ({
     block_node,
@@ -20,7 +20,7 @@ const HelpBase = ({
     title,
 }) => {
     const { display_name } = Blockly.Blocks[block_type].meta();
-    const block_help_component = help_string && config[block_type];
+    const block_help_component = help_string && help_content_config[block_type];
     let text_count = 0;
 
     return (

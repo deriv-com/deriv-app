@@ -14,8 +14,8 @@ import Ticks                                 from './Ticks';
 import Total                                 from './Total';
 import { doUntilDone }                       from '../utils/helpers';
 import { expectInitArg, expectTradeOptions } from '../utils/sanitize';
-import createError                           from '../../../utils/error';
-import { durationToSecond }                  from '../../../utils/tools';
+import { createError }                       from '../../../utils/error';
+import { durationToSecond }                  from '../../../utils/date-time-helper';
 import { observer as globalObserver }        from '../../../utils/observer';
 
 const watchBefore = store =>

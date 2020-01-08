@@ -1,11 +1,11 @@
-import classNames           from 'classnames';
-import React                from 'react';
-import PropTypes            from 'prop-types';
-import { localize }         from 'deriv-translations';
-import FlyoutBlockGroup     from './flyout-block-group.jsx';
-import HelpBase             from '../scratch/help-content/flyout-help-base.jsx';
-import { config }           from '../scratch/help-content/help-content.config';
-import { connect }          from '../stores/connect';
+import classNames              from 'classnames';
+import React                   from 'react';
+import PropTypes               from 'prop-types';
+import { localize }            from 'deriv-translations';
+import { help_content_config } from 'deriv-bot-engine/dist/scratch';
+import FlyoutBlockGroup        from './flyout-block-group.jsx';
+import HelpBase                from './help-contents/flyout-help-base.jsx';
+import { connect }             from '../stores/connect';
 import                           '../assets/sass/flyout.scss';
 
 class Flyout extends React.PureComponent {
@@ -88,7 +88,7 @@ class Flyout extends React.PureComponent {
                                                         id={`flyout__item-workspace--${index}`}
                                                         block_node={node}
                                                         onInfoClick={
-                                                            config[block_type]
+                                                            help_content_config[block_type]
                                                     && (() => setHelpContent(node))
                                                         }
                                                     />

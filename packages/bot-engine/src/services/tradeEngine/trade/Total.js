@@ -1,7 +1,7 @@
 import { getRoundedNumber }           from 'deriv-shared/utils/currency';
 import { localize }                   from 'deriv-translations';
 import { info, notify }               from '../utils/broadcast';
-import createError                    from '../../../utils/error';
+import { createError }                from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
 
 const skeleton = {

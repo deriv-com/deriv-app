@@ -1,5 +1,5 @@
-import { localize } from 'deriv-translations';
-import createError  from '../../../utils/error';
+import { localize }    from 'deriv-translations';
+import { createError } from '../../../utils/error';
 
 const isPositiveNumber = num => Number.isFinite(num) && num > 0;
 

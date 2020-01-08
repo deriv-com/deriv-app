@@ -7,9 +7,9 @@ import { localize }            from 'deriv-translations';
 import React                   from 'react';
 import ContentLoader           from 'react-content-loader';
 import PropTypes               from 'prop-types';
+import { getContractTypeName } from 'deriv-bot-engine/dist/utils';
 import IconTradeType           from './icon-trade-types.jsx';
 import { connect }             from '../stores/connect';
-import { getContractTypeName } from '../utils/contract';
 
 const TransactionIconWithText = ({
     icon,

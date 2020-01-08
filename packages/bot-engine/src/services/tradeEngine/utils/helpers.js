@@ -1,7 +1,7 @@
 import { getRoundedNumber } from 'deriv-shared/utils/currency';
 import { localize }         from 'deriv-translations';
 import { notify }           from './broadcast';
-import { getUTCTime }       from '../../../utils/tools';
+import { getUTCTime }       from '../../../utils/date-time-helper';
 
 export const noop = () => { };
 

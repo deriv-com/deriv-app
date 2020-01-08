@@ -60,7 +60,10 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             return;
         }
 
-        if ((event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) || event.type === Blockly.Events.END_DRAG) {
+        if (
+            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id))
+            || event.type === Blockly.Events.END_DRAG
+        ) {
             const { client } = ScratchStore.instance.root_store.core;
             const currency_field   = this.getField('CURRENCY_LIST');
 

@@ -10,6 +10,7 @@ import {
     Button,
     ThemedScrollbars }                from '@deriv/components';
 import ObjectUtils                    from '@deriv/shared/utils/object';
+import CurrencyUtils                  from '@deriv/shared/utils/currency';
 import Dp2pContext                    from 'Components/context/dp2p-context';
 import FooterActions                  from 'Components/footer-actions/footer-actions.jsx';
 import { localize }                   from 'Components/i18next';
@@ -57,6 +58,7 @@ class FormAds extends Component {
             offer_description: values.advertiser_notes,
             rate             : values.price_rate,
         }).then((response) => {
+            // If we get an error we should let the user submit the form again else we just go back to the list of ads
             if (response.error) {
                 this.setState({ error_message: response.error.message });
                 setSubmitting(false);
@@ -218,7 +220,12 @@ class FormAds extends Component {
                                                     error={touched.max_transaction && errors.max_transaction}
                                                     label={localize('Max. transaction')}
                                                     disabled
-                                                    value={(values.offer_amount * values.price_rate)}
+                                                    value={
+                                                        (values.offer_amount * values.price_rate)
+                                                            .toFixed(
+                                                                2 /* TODO: [p2p-calculate-decimals] - Dynamically get decimal places for transaction/local currency */
+                                                            )
+                                                    }
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--single'
                                                     trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.currency}</span>}
                                                     required
@@ -277,6 +284,7 @@ class FormAds extends Component {
             advertiser_notes: [
                 v => !!v,
                 v => v.length < 400,
+                v => /^[\p{L}\p{Nd}\s'.,:;()@#/-]{1,500}$/u.exec(v) !== null,
             ],
             min_transaction: [
                 v => !!v,
@@ -284,9 +292,11 @@ class FormAds extends Component {
             offer_amount: [
                 v => !!v,
                 v => v > available_price,
+                v => (((v.toString().split('.') || [])[1]) || []).length <= CurrencyUtils.getDecimalPlaces(values.offer_currency),
             ],
             price_rate: [
                 v => !!v,
+                v => (((v.toString().split('.') || [])[1]) || []).length <= 2, // TODO: [p2p-calculate-decimals] - Dynamically get decimal places for transaction/local currency
             ],
         };
 
@@ -304,11 +314,18 @@ class FormAds extends Component {
         const amount_messages  = (field_name) => ([
             localize('{{field_name}} is required', { field_name }),
             localize('{{field_name}} is too low', { field_name }),
+            localize('Enter a valid amount'),
+        ]);
+
+        const price_rate_messages  = (field_name) => ([
+            localize('{{field_name}} is required', { field_name }),
+            localize('Enter a valid amount'),
         ]);
 
         const note_messages  = (field_name) => ([
             localize('{{field_name}} is required', { field_name }),
             localize('{{field_name}} has exceed maximum length', { field_name }),
+            localize('{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -.,\'#@():;', { field_name }),
         ]);
 
         const errors = {};
@@ -321,6 +338,9 @@ class FormAds extends Component {
                     switch (key) {
                         case 'offer_amount':
                             errors[key] = amount_messages(mapped_key[key])[error_index];
+                            break;
+                        case 'price_rate':
+                            errors[key] = price_rate_messages(mapped_key[key])[error_index];
                             break;
                         case 'advertiser_notes':
                             errors[key] = note_messages(mapped_key[key])[error_index];

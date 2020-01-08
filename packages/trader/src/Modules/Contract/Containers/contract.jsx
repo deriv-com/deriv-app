@@ -9,8 +9,13 @@ import { connect }       from 'Stores/connect';
 import ContractReplay    from './contract-replay.jsx';
 
 class Contract extends React.Component {
+    componentDidMount() {
+        this.props.onMount(+this.props.match.params.contract_id, this.props.history);
+    }
+
     componentWillUnmount() {
         this.props.removeErrorMessage();
+        this.props.onUnmount();
     }
 
     render () {
@@ -52,6 +57,8 @@ Contract.propTypes = {
     history           : PropTypes.object,
     is_mobile         : PropTypes.bool,
     match             : PropTypes.object,
+    onMount           : PropTypes.func,
+    onUnmount         : PropTypes.func,
     removeErrorMessage: PropTypes.func,
     symbol            : PropTypes.string,
 };
@@ -60,6 +67,8 @@ export default withRouter(connect(
     ({ modules, ui }) => ({
         error_message     : modules.contract_replay.error_message,
         has_error         : modules.contract_replay.has_error,
+        onMount           : modules.contract_replay.setAccountSwitcherListener,
+        onUnmount         : modules.contract_replay.removeAccountSwitcherListener,
         removeErrorMessage: modules.contract_replay.removeErrorMessage,
         symbol            : modules.contract_replay.contract_info.underlying,
         is_mobile         : ui.is_mobile,

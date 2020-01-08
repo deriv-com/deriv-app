@@ -4,6 +4,7 @@ import {
 import ObjectUtils            from '@deriv/shared/utils/object';
 import { WS }                 from 'Services/ws-methods';
 import { localize }           from '@deriv/translations';
+import AppRoutes              from 'Constants/routes';
 import ContractStore          from './contract-store';
 import { contractSold }       from '../Portfolio/Helpers/portfolio-notifications';
 import BaseStore              from '../../base-store';
@@ -191,4 +192,25 @@ export default class ContractReplayStore extends BaseStore {
         this.error_message = '';
         this.has_error     = false;
     }
+
+    setAccountSwitcherListener = (contract_id, history) => {
+        this.onSwitchAccount(() => this.accountSwitcherListener(contract_id, history));
+    };
+
+    accountSwitcherListener = (contract_id, history) => {
+        // if contract had an error on the previous account
+        // try fetching it again for the new account
+        // in case it belongs to this account
+        if (this.has_error) {
+            this.removeErrorMessage();
+            this.onMount(contract_id);
+        } else {
+            history.push(AppRoutes.reports);
+        }
+        return Promise.resolve();
+    };
+
+    removeAccountSwitcherListener = () => {
+        this.disposeSwitchAccount();
+    };
 }

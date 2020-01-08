@@ -762,8 +762,9 @@ export default class TradeStore extends BaseStore {
         // Sometimes the API doesn't forget old 'proposal' response and returns them with new 'proposal' response, so here
         // we need to send 'forget' req for old proposal subscriptions and store the latest proposal req_id
         if (this.proposal_req_id[contract_type] < response.echo_req.req_id) {
-            // if an old proposal subscription exist, send 'forget'
-            if (this.proposal_info[contract_type] && this.proposal_info[contract_type].id) {
+            // if not the first proposal response and if an old proposal subscription exist, send 'forget'
+            if (this.proposal_req_id[contract_type] &&
+                (this.proposal_info[contract_type] && this.proposal_info[contract_type].id)) {
                 WS.forget(this.proposal_info[contract_type].id);
             }
             this.proposal_req_id[contract_type] = response.echo_req.req_id;

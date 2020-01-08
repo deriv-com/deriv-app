@@ -8,7 +8,9 @@ import { Icon, ThemedScrollbars }     from '@deriv/components';
 import { localize }                   from '@deriv/translations';
 import routes                         from 'Constants/routes';
 import EmptyPortfolioMessage          from 'Modules/Reports/Components/empty-portfolio-message.jsx';
+import Shortcode                      from 'Modules/Reports/Helpers/shortcode';
 import { connect }                    from 'Stores/connect';
+import { getContractTypesConfig }     from 'Stores/Modules/Trading/Constants/contract';
 import PositionsDrawerCard            from './PositionsDrawerCard';
 
 const ListScrollbar = React.forwardRef((props, ref) => (
@@ -98,6 +100,16 @@ class PositionsDrawer extends React.Component {
         );
     }
 
+    filterByContractType = ({ contract_type, shortcode }) => {
+        const is_callput  = /CALL|PUT/.test(contract_type);
+        const is_high_low = Shortcode.isHighLow({ shortcode });
+        let match = getContractTypesConfig()[this.props.trade_contract_type].trade_types.includes(contract_type);
+        if (is_callput) {
+            match = this.props.trade_contract_type === 'high_low' ? is_high_low : match && !is_high_low;
+        }
+        return match;
+    }
+
     render() {
         const {
             all_positions,
@@ -108,8 +120,9 @@ class PositionsDrawer extends React.Component {
             toggleDrawer,
         } = this.props;
 
-        const positions = all_positions.filter((p) =>
-            (p.contract_info && symbol === p.contract_info.underlying)
+        const positions = all_positions.filter((p) => (
+            p.contract_info && symbol === p.contract_info.underlying) &&
+            this.filterByContractType(p.contract_info)
         );
 
         // Show only 5 most recent open contracts
@@ -204,6 +217,7 @@ export default connect(
         onMount                       : modules.portfolio.onMount,
         onUnmount                     : modules.portfolio.onUnmount,
         symbol                        : modules.trade.symbol,
+        trade_contract_type           : modules.trade.contract_type,
         is_positions_drawer_on        : ui.is_positions_drawer_on,
         toggleDrawer                  : ui.togglePositionsDrawer,
         toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,

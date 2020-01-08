@@ -225,6 +225,9 @@ $side-padding: 1.2em;
     .sell_time, .purchase_time {
         text-align: left;
     }
+    .profit_loss {
+        font-weight: bold;
+    }
 }
 
 /** @define open-positions; weak */
@@ -256,6 +259,7 @@ $side-padding: 1.2em;
         display: flex;
         justify-content: center;
         align-items: center;
+        font-weight: bold;
 
         &--movement {
             width: 16px;
@@ -302,21 +306,25 @@ $side-padding: 1.2em;
         &-action {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 0px 3px;
-            min-width: 200px;
+            padding-right: 24px;
+            min-width: 194px;
 
             .remaining-time {
                 margin-left: 0.4rem;
+            }
+            .btn {
+                height: 2.4rem;
+                padding: 0 8px;
+
+                & + .btn {
+                    margin-left: 8px;
+                }
             }
         }
         &_wrapper {
             display: flex;
             flex-direction: row;
         }
-    }
-    .buy_price, .payout, .indicative, .profit, .id {
-        justify-content: flex-end;
     }
     .type {
         padding-right: 0;
@@ -349,7 +357,7 @@ $side-padding: 1.2em;
 .open-positions-multiplier {
     .open-positions__row {
         /*                     icon   stake multiplier deal_cancellation take_profit  stop_loss potential_profit_loss */
-        grid-template-columns: 0.8fr  1.2fr 1fr        1.3fr              1fr         1fr       1.3fr;
+        grid-template-columns: 0.7fr  1fr   0.7fr      1fr               1fr          1fr       1fr;
     }
 }
 

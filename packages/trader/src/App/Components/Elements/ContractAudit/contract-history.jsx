@@ -16,8 +16,8 @@ const ContractHistory = ({
         return (
             <div className='contract-audit__empty'>
                 <Icon icon='IcBox' size={48} color='secondary' />
-                <h4 className='contract-audit__empty__header'>{localize('No history')}</h4>
-                <span className='contract-audit__empty__message'>{localize('You have yet to update either take profit or stop loss')}</span>
+                <h4 className='contract-audit__empty-header'>{localize('No history')}</h4>
+                <span className='contract-audit__empty-message'>{localize('You have yet to update either take profit or stop loss')}</span>
             </div>
         );
     }

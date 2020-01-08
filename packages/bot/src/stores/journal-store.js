@@ -3,6 +3,10 @@ import {
     action }                from 'mobx';
 import { formatDate }       from '@deriv/shared/utils/date';
 import { message_types }    from '../constants/messages';
+import {
+    storeSetting,
+    getSetting,
+}                           from '../scratch/utils/settings';
 
 export default class JournalStore {
     constructor(root_store) {
@@ -13,14 +17,16 @@ export default class JournalStore {
         return this.root_store.core.common.server_time;
     }
 
-    @observable messages = [];
-    @observable checked_filter = [message_types.ERROR, message_types.NOTIFY, message_types.SUCCESS];
-    unfilter_messages = [];
     filter_list = [
         { id: message_types.ERROR, label: 'Error messages', onChange: this.filterMessage },
         { id: message_types.NOTIFY, label: 'Notifications', onChange: this.filterMessage },
         { id: message_types.SUCCESS, label: 'System log', onChange: this.filterMessage },
     ];
+
+    unfilter_messages = [];
+
+    @observable messages = [];
+    @observable checked_filter = getSetting('journal_filter') || this.filter_list.map(filter => filter.id);
 
     @action.bound
     onLogSuccess(data) {
@@ -53,14 +59,16 @@ export default class JournalStore {
     }
 
     @action.bound
-    filterMessage(checked) {
-        this.checked_filter = checked;
-        this.messages = this.unfilter_messages.filter(message => checked.indexOf(message.message_type) >= 0);
+    filterMessage(checked_items) {
+        storeSetting('journal_filter', checked_items);
+        this.checked_filter = checked_items;
+        this.messages = this.unfilter_messages.filter(message => checked_items.indexOf(message.message_type) >= 0);
         this.messages.slice(0);
     }
 
     @action.bound
     clear() {
-        this.messages = this.messages.slice(0, 0);  // force array update
+        this.unfilter_messages = [];
+        this.filterMessage(this.checked_filter);
     }
 }

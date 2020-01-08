@@ -97,21 +97,21 @@ class Tools extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            checked: this.props.defaultChecked,
+            checked_items: this.props.defaultChecked,
         };
     }
 
     onChange(checked, item_id, onChange) {
-        const checked_items = this.state.checked;
+        const checked_items = this.state.checked_items;
         if (checked) {
             checked_items.push(item_id);
         } else {
             checked_items.splice(checked_items.indexOf(item_id), 1);
         }
 
-        this.setState({ checked: checked_items });
+        this.setState({ checked_items });
 
-        onChange(this.state.checked);
+        onChange(this.state.checked_items);
     }
 
     render() {
@@ -125,7 +125,7 @@ class Tools extends React.Component {
                                     key={item.id}
                                     className='filter__dropdown-item'
                                     classNameLabel='filter__dropdown-text'
-                                    defaultChecked={this.state.checked.indexOf(item.id) >= 0}
+                                    defaultChecked={this.state.checked_items.includes(item.id)}
                                     label={item.label}
                                     onChange={e => this.onChange(e.target.checked, item.id, item.onChange)}
                                 />
@@ -147,57 +147,59 @@ const Journal = ({
     filter_list,
 }) => {
     return (
-        <ThemedScrollbars
-            className='journal'
-            autoHide
-            style={{ height: 'calc(var(--drawer-scroll-height) + 41px)' }}
-        >
+        <>
             <Tools items={filter_list} defaultChecked={checked_filter} />
-            <table className='journal__table'>
-                <thead className='journal__table--header'>
-                    <tr>
-                        <th className='journal__table--th'>{localize('Date')}</th>
-                        <th className='journal__table--th journal__table--th-icon'>
-                            <div>{localize('Message')}</div>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody className='journal__table--body'>
-                    {
-                        messages.length ?
-                            messages.map((item, index) => {
-                                const { date, time, message, message_type } = item;
-                                const date_el = DateItem({ date, time });
-                                const message_el = MessageItem({ message });
+            <ThemedScrollbars
+                className='journal'
+                autoHide
+                style={{ height: 'calc(var(--drawer-scroll-height) - 7px)' }}
+            >
+                <table className='journal__table'>
+                    <thead className='journal__table--header'>
+                        <tr>
+                            <th className='journal__table--th'>{localize('Date')}</th>
+                            <th className='journal__table--th journal__table--th-icon'>
+                                <div>{localize('Message')}</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody className='journal__table--body'>
+                        {
+                            messages.length ?
+                                messages.map((item, index) => {
+                                    const { date, time, message, message_type } = item;
+                                    const date_el = DateItem({ date, time });
+                                    const message_el = MessageItem({ message });
 
-                                return (
-                                    <tr className='journal__table--tr' key={`${item.date}-${index}`}>
-                                        <td className='journal__table--td'>{date_el}</td>
-                                        <td className={classnames(
-                                            'journal__table--td',
-                                            { 'journal__table--red': message_type === message_types.ERROR })}
-                                        >{message_el}
-                                        </td>
-                                    </tr>);
-                            })
-                            :
-                            <tr className='journal-empty__container'>
-                                <td className='journal-empty'>
-                                    <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
-                                    <div className='journal-empty__content'>
-                                        <h4 className='journal-empty__header'>
-                                            {localize('No messages')}
-                                        </h4>
-                                        <span className='journal-empty__message'>
-                                            {localize('You have not run the bot yet')}
-                                        </span>
-                                    </div>
-                                </td>
-                            </tr>
-                    }
-                </tbody>
-            </table>
-        </ThemedScrollbars>
+                                    return (
+                                        <tr className='journal__table--tr' key={`${item.date}-${index}`}>
+                                            <td className='journal__table--td'>{date_el}</td>
+                                            <td className={classnames(
+                                                'journal__table--td',
+                                                { 'journal__table--red': message_type === message_types.ERROR })}
+                                            >{message_el}
+                                            </td>
+                                        </tr>);
+                                })
+                                :
+                                <tr className='journal-empty__container'>
+                                    <td className='journal-empty'>
+                                        <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
+                                        <div className='journal-empty__content'>
+                                            <h4 className='journal-empty__header'>
+                                                {localize('No messages')}
+                                            </h4>
+                                            <span className='journal-empty__message'>
+                                                {localize('You have not run the bot yet')}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                        }
+                    </tbody>
+                </table>
+            </ThemedScrollbars>
+        </>
     );
 };
 

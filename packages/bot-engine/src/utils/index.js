@@ -1,23 +1,23 @@
-import { 
+import {
     isEnded,
-    getFinalPrice, 
-    getIndicativePrice, 
-    getContractTypeName 
+    getFinalPrice,
+    getIndicativePrice,
+    getContractTypeName,
 }                        from './contract';
 import gtm               from './gtm';
-import { 
+import {
     createError ,
-    trackAndEmitError 
+    trackAndEmitError,
 }                        from './error';
-import observer          from './observer';
+import { observer }      from './observer';
 
 export default {
     createError,
     trackAndEmitError,
     isEnded,
-    getFinalPrice, 
-    getIndicativePrice, 
+    getFinalPrice,
+    getIndicativePrice,
     getContractTypeName,
     gtm,
-    observer
-}
+    observer,
+};

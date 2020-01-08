@@ -60,11 +60,11 @@ export const save = (filename = 'deriv-bot', collection = false, xmlDom) => {
 };
 
 export const load = (block_string, drop_event, showIncompatibleStrategyDialog) => {
-    const { journal } = ScratchStore.instance.root_store;
+    // const { journal } = ScratchStore.instance.root_store;
 
     const showInvalidStrategyError = () => {
         const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
-        console.log(error_message); //eslint-disable-line no-console
+        console.log(error_message); // eslint-disable-line no-console
         // journal.onError(error_message);
         // run_panel.setActiveTabIndex(2);
     };
@@ -118,7 +118,7 @@ export const load = (block_string, drop_event, showIncompatibleStrategyDialog) =
 
         // Dispatch resize event for comments.
         window.dispatchEvent(new Event('resize'));
-        journal.onLogSuccess(localize('Blocks are loaded successfully'));
+        // journal.onLogSuccess(localize('Blocks are loaded successfully'));
     } catch (e) {
         return showInvalidStrategyError();
     }

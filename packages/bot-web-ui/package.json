@@ -20,7 +20,7 @@
     "build": "f () { webpack --optimize-minimize --progress --env.base $1;}; f",
     "build:travis": "echo \"No build:travis specified\"",
     "test": "npm run test:eslint && npm run test:mocha",
-    "test:mocha": "jest --w=4 --coverage",
+    "test:mocha": "echo \"No test:mocha specified\"",
     "test:eslint": "eslint ./src",
     "test:stylelint": "stylelint \"./src/**/*.s?(a|c)ss\"",
     "deploy": "echo \"No deploy specified\"",

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import { logoutAllTokens, addTokenIfValid, generateLiveApiInstance } from '../appId';
-import TicksService                                                  from '../ticksService';
+import TicksService                                                  from '../ticks_service';
  
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 

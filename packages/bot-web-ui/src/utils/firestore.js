@@ -2,8 +2,8 @@ import firebase            from 'firebase/app';
 import                     'firebase/auth';
 import                     'firebase/firestore';
 import { reaction }        from 'mobx';
+import { message_types }   from 'deriv-bot-engine/dist/constants';
 import { contract_stages } from '../constants/contract-stage';
-import { message_types }   from '../constants/messages';
 
 const Firestore = (() => {
 

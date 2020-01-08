@@ -60,6 +60,13 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             return;
         }
 
+        if ((event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) || event.type === Blockly.Events.END_DRAG) {
+            const { client } = ScratchStore.instance.root_store.core;
+            const currency_field   = this.getField('CURRENCY_LIST');
+
+            currency_field.setText(client.currency);
+        }
+
         const trade_definition_block = this.workspace.getAllBlocks(true).find(block => block.type === 'trade_definition');
         if (!trade_definition_block) {
             this.setDisabled(true);
@@ -84,14 +91,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
         const is_load_event = event.group === 'load';
 
-        if (event.type === Blockly.Events.END_DRAG) {
-            this.setCurrency();
-            this.updateBarrierInputs(true, true);
-            this.enforceSingleBarrierType('BARRIEROFFSETTYPE_LIST', true);
-            this.updateDurationInput(true, true);
-            this.updatePredictionInput(true);
-        } else if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
-            this.setCurrency();
+        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             if (is_load_event) {
                 // Do NOT touch any values when a strategy is being loaded.
                 this.updateBarrierInputs(false, false);
@@ -307,12 +307,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 other_barrier_field.setValue('absolute');
             }
         }
-    },
-    setCurrency() {
-        const { client } = ScratchStore.instance.root_store.core;
-        const currency_field   = this.getField('CURRENCY_LIST');
-
-        currency_field.setText(client.currency);
     },
     domToMutation(xmlElement) {
         const has_first_barrier  = xmlElement.getAttribute('has_first_barrier') === 'true';

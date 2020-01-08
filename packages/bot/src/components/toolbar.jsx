@@ -3,17 +3,18 @@ import {
     Icon,
     Input,
     Popover,
-}                    from '@deriv/components';
+}                     from '@deriv/components';
 import {
     Field,
     Formik,
     Form,
-}                    from 'formik';
-import PropTypes     from 'prop-types';
-import React         from 'react';
-import { localize }  from '@deriv/translations';
-import Dialog        from './dialog.jsx';
-import SaveLoadModal  from './saveload-modal.jsx';
+}                     from 'formik';
+import PropTypes      from 'prop-types';
+import React          from 'react';
+import { localize }   from '@deriv/translations';
+import Dialog         from './dialog.jsx';
+import LoadModal      from './load-modal.jsx';
+import SaveModal      from './save-modal.jsx';
 import TradeAnimation from './trade-animation.jsx';
 import { tabs_title } from '../constants/bot-contents';
 import { connect }    from '../stores/connect';
@@ -112,14 +113,15 @@ const WorkspaceGroup = ({
     onRedoClick,
     onSortClick,
     onZoomInOutClick,
-    toggleSaveLoadModal,
+    toggleLoadModal,
+    toggleSaveModal,
 }) => (
     <div className='toolbar__group toolbar__group-btn'>
         <Popover
             alignment='bottom'
             message={localize('Import')}
         >
-            <Icon icon='IcFolderOpen' className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
+            <Icon icon='IcFolderOpen' className='toolbar__icon' onClick={toggleLoadModal} />
         </Popover>
         <Popover
             alignment='bottom'
@@ -134,7 +136,7 @@ const WorkspaceGroup = ({
             <Icon
                 icon='IcSave'
                 className='toolbar__icon'
-                onClick={() => toggleSaveLoadModal(true)}
+                onClick={toggleSaveModal}
             />
         </Popover>
         <div className='vertical-divider' />
@@ -194,7 +196,8 @@ const Toolbar = ({
     onToolboxToggle,
     onUndoClick,
     onZoomInOutClick,
-    toggleSaveLoadModal,
+    toggleLoadModal,
+    toggleSaveModal,
 }) => (
     <div className='toolbar'>
         <div className='toolbar__section'>
@@ -234,7 +237,8 @@ const Toolbar = ({
                 onSortClick={onSortClick}
                 onUndoClick={onUndoClick}
                 onZoomInOutClick={onZoomInOutClick}
-                toggleSaveLoadModal={toggleSaveLoadModal}
+                toggleLoadModal={toggleLoadModal}
+                toggleSaveModal={toggleSaveModal}
             />
             }
         </div>
@@ -266,7 +270,8 @@ const Toolbar = ({
             />
         </div>
         }
-        <SaveLoadModal />
+        <SaveModal />
+        <LoadModal />
         {is_dialog_open &&
         <Dialog
             title={localize('Are you sure?')}
@@ -307,7 +312,7 @@ Toolbar.propTypes = {
     toggleSaveLoadModal    : PropTypes.func,
 };
 
-export default connect(({ main_content, run_panel, saveload, toolbar }) => ({
+export default connect(({ main_content, run_panel, save_modal, load_modal, toolbar }) => ({
     active_tab             : main_content.active_tab,
     file_name              : toolbar.file_name,
     is_dialog_open         : toolbar.is_dialog_open,
@@ -331,5 +336,6 @@ export default connect(({ main_content, run_panel, saveload, toolbar }) => ({
     onToolboxToggle        : toolbar.onToolboxToggle,
     onUndoClick            : toolbar.onUndoClick,
     onZoomInOutClick       : toolbar.onZoomInOutClick,
-    toggleSaveLoadModal    : saveload.toggleSaveLoadModal,
+    toggleLoadModal        : load_modal.toggleLoadModal,
+    toggleSaveModal        : save_modal.toggleSaveModal,
 }))(Toolbar);

@@ -16,38 +16,29 @@ import {
 import { localize }     from '@deriv/translations';
 import { connect }      from '../stores/connect';
 import '../assets/sass/google-drive.scss';
-import '../assets/sass/saveload-modal.scss';
+import '../assets/sass/save-modal.scss';
 
 const initial_option = { is_local: true, save_as_collection: false };
 
-const SaveLoadModal = ({
+const SaveModal = ({
     button_status,
-    handleFileChange,
     is_authorised,
-    is_save_modal,
-    is_saveload_modal_open,
+    is_save_modal_open,
     onConfirmSave,
     onDriveConnect,
-    onLoadClick,
-    toggleSaveLoadModal,
+    toggleSaveModal,
 }) => {
-    const title = localize(is_save_modal ? 'Save Bot' : 'Load Bot');
-
     return (
         <Modal
-            title={title}
-            className='modal--saveload'
+            title={'Save Strategy'}
+            className='modal--save'
             width='384px'
-            is_open={is_saveload_modal_open}
-            toggleModal={() => toggleSaveLoadModal()}
+            is_open={is_save_modal_open}
+            toggleModal={toggleSaveModal}
         >
             <Formik
                 initialValues={initial_option}
-                onSubmit={
-                    is_save_modal ?
-                        (values => onConfirmSave(values)) :
-                        (values => onLoadClick(values))
-                }
+                onSubmit={onConfirmSave}
             >
                 {
                     ({ values: { is_local, save_as_collection }, setFieldValue }) => (
@@ -55,7 +46,7 @@ const SaveLoadModal = ({
                             <div className='modal__content'>
                                 <div className='modal__content-row'>
                                     <RadioGroup
-                                        className='radio-group__saveload-type'
+                                        className='radio-group__save-type'
                                         name='is_local'
                                         items={[
                                             {
@@ -85,41 +76,32 @@ const SaveLoadModal = ({
                                         onToggle={() => setFieldValue('is_local', !is_local)}
                                     />
                                 </div>
-                                {
-                                    is_save_modal ?
-                                        <>
-                                            <Field name='save_as_collection'>
-                                                {({ field }) => (
-                                                    <Checkbox
-                                                        {...field}
-                                                        onChange={() =>
-                                                            setFieldValue('save_as_collection', !save_as_collection)
-                                                        }
-                                                        defaultChecked={save_as_collection}
-                                                        label={localize('Save as collection')}
-                                                        classNameLabel='saveload-type__checkbox-text'
-                                                    />
-                                                )}
-                                            </Field>
-                                            <div className='saveload-type__checkbox-description'>
-                                                {localize('This option allows you to save your strategy as a collection of individual blocks which you can add to other strategies.')}
-                                            </div>
-                                        </>
-                                        : <input
-                                            type='file'
-                                            id='files'
-                                            accept='.xml'
-                                            style={{ display: 'none' }}
-                                            onChange={handleFileChange}
-                                        />
-                                }
+                                
+                                <>
+                                    <Field name='save_as_collection'>
+                                        {({ field }) => (
+                                            <Checkbox
+                                                {...field}
+                                                onChange={() =>
+                                                    setFieldValue('save_as_collection', !save_as_collection)
+                                                }
+                                                defaultChecked={save_as_collection}
+                                                label={localize('Save as collection')}
+                                                classNameLabel='save-type__checkbox-text'
+                                            />
+                                        )}
+                                    </Field>
+                                    <div className='save-type__checkbox-description'>
+                                        {localize('This option allows you to save your strategy as a collection of individual blocks which you can add to other strategies.')}
+                                    </div>
+                                </>
                             </div>
                             <div className='modal__footer'>
                                 <Button
                                     type='button'
                                     className='modal__footer--button'
                                     text={localize('Cancel')}
-                                    onClick={() => toggleSaveLoadModal(is_save_modal)}
+                                    onClick={toggleSaveModal}
                                     secondary
                                 />
                                 <Button
@@ -148,19 +130,19 @@ const IconRadio = ({
     const is_drive_radio = text === 'Google Drive';
 
     return (
-        <div className='saveload-type__container'>
-            <div className='saveload-type__radio'>
+        <div className='save-type__container'>
+            <div className='save-type__radio'>
                 {
                     icon &&
                     React.cloneElement(
                         icon,
-                        { className: classNames('saveload-type__icon', icon.props.className) },
+                        { className: classNames('save-type__icon', icon.props.className) },
                     )
                 }
                 <p className={classNames(
-                    'saveload-type__radio-text',
+                    'save-type__radio-text',
                     {
-                        'saveload-type__radio-text--disabled':
+                        'save-type__radio-text--disabled':
                             is_drive_radio
                             &&
                             !google_drive_connected,
@@ -172,7 +154,7 @@ const IconRadio = ({
             {
                 is_drive_radio &&
                 <p
-                    className='saveload-type__drive-status'
+                    className='save-type__drive-status'
                     onClick={onDriveConnect}
                 >
                     {
@@ -187,26 +169,20 @@ const IconRadio = ({
     );
 };
 
-SaveLoadModal.propTypes = {
-    button_status         : PropTypes.number,
-    handleFileChange      : PropTypes.func,
-    is_authorised         : PropTypes.bool,
-    is_save_modal         : PropTypes.bool,
-    is_saveload_modal_open: PropTypes.bool,
-    onConfirmSave         : PropTypes.func,
-    onDriveConnect        : PropTypes.func,
-    onLoadClick           : PropTypes.func,
-    toggleSaveLoadModal   : PropTypes.func,
+SaveModal.propTypes = {
+    button_status     : PropTypes.number,
+    is_authorised     : PropTypes.bool,
+    is_save_modal_open: PropTypes.bool,
+    onConfirmSave     : PropTypes.func,
+    onDriveConnect    : PropTypes.func,
+    toggleSaveModal   : PropTypes.func,
 };
 
-export default connect(({ saveload, google_drive }) => ({
-    button_status         : saveload.button_status,
-    handleFileChange      : saveload.handleFileChange,
-    is_authorised         : google_drive.is_authorised,
-    is_save_modal         : saveload.is_save_modal,
-    is_saveload_modal_open: saveload.is_saveload_modal_open,
-    onConfirmSave         : saveload.onConfirmSave,
-    onDriveConnect        : saveload.onDriveConnect,
-    onLoadClick           : saveload.onLoadClick,
-    toggleSaveLoadModal   : saveload.toggleSaveLoadModal,
-}))(SaveLoadModal);
+export default connect(({ save_modal, google_drive }) => ({
+    button_status     : save_modal.button_status,
+    is_authorised     : google_drive.is_authorised,
+    is_save_modal_open: save_modal.is_save_modal_open,
+    onConfirmSave     : save_modal.onConfirmSave,
+    onDriveConnect    : save_modal.onDriveConnect,
+    toggleSaveModal   : save_modal.toggleSaveModal,
+}))(SaveModal);

@@ -19,6 +19,7 @@ class MT5POI extends PureComponent {
     };
 
     onStateChange = ({ status }) => {
+        console.log(status);
         this.setState({
             poi_state: status,
         });
@@ -45,8 +46,7 @@ class MT5POI extends PureComponent {
                         this.props.index,
                         { poi_state: this.state.poi_state },
                         actions.setSubmitting,
-                    )
-                    }
+                    )}
                     ref={form}
                 >
                     {

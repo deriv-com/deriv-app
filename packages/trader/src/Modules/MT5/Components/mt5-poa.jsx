@@ -2,7 +2,6 @@ import { Formik }            from 'formik';
 import PropTypes             from 'prop-types';
 import React, { Component }  from 'react';
 import {
-    FormInputField,
     FormSubmitButton,
     ThemedScrollbars,
     Dropdown,
@@ -10,7 +9,8 @@ import {
 }                            from '@deriv/components';
 import {
     Localize,
-    localize }               from '@deriv/translations';
+    localize,
+}                            from '@deriv/translations';
 import { WS }                from 'Services/ws-methods';
 import { FormSubHeader }     from 'Modules/Account/Components/layout-components.jsx';
 import FileUploaderContainer from 'Modules/Account/Sections/Verification/ProofOfAddress/file-uploader-container.jsx';
@@ -25,7 +25,9 @@ import {
 import {
     validAddress,
     validLength,
-    validPostCode }          from 'Utils/Validator/declarative-validation-rules';
+    validPostCode,
+}                            from 'Utils/Validator/declarative-validation-rules';
+import { InputField }        from './mt5-personal-details-form.jsx';
 
 const form = React.createRef();
 
@@ -284,7 +286,7 @@ class MT5POA extends Component {
         } = this.state;
 
         return (
-            <div id='real_mt5_personal_details' className='details-form mt5-details-form'>
+            <div id='real_mt5_personal_details' className='mt5-details-form'>
                 <Formik
                     initialValues={{
                         address_line_1,
@@ -319,7 +321,7 @@ class MT5POA extends Component {
                                             <ThemedScrollbars
                                                 autohide
                                                 style={{
-                                                    maxHeight: '420px',
+                                                    height: '420px',
                                                 }}
                                             >
                                                 <div className='mt5-proof-of-address__field-area'>
@@ -327,20 +329,20 @@ class MT5POA extends Component {
                                                         subtitle={localize('(All fields are required)')}
                                                         title={localize('Financial information')}
                                                     />
-                                                    <FormInputField
+                                                    <InputField
                                                         name='address_line_1'
                                                         required
                                                         label={localize('First line of address*')}
                                                         placeholder={localize('First line of address')}
                                                     />
-                                                    <FormInputField
+                                                    <InputField
                                                         name='address_line_2'
                                                         label={localize('Second line of address')}
                                                         optional
                                                         placeholder={localize('Second line of address')}
                                                     />
                                                     <div className='mt5-proof-of-address__inline-fields'>
-                                                        <FormInputField
+                                                        <InputField
                                                             name='address_city'
                                                             required
                                                             label={localize('Town/City*')}
@@ -359,7 +361,7 @@ class MT5POA extends Component {
                                                                 placeholder={localize('State/Province')}
                                                             />
                                                         </fieldset>
-                                                        <FormInputField
+                                                        <InputField
                                                             name='address_postcode'
                                                             required
                                                             label={localize('Postal/ZIP Code*')}
@@ -372,6 +374,7 @@ class MT5POA extends Component {
                                                     <div className='mt5-proof-of-address__file-upload'>
                                                         <FileUploaderContainer
                                                             onRef={ref => this.setFileUploadRef(ref)}
+                                                            is_description_disabled
                                                             onFileDrop={
                                                                 ({ document_file: df, file_error_message }) =>
                                                                     this.onFileDrop(
@@ -390,15 +393,18 @@ class MT5POA extends Component {
                                     <ThemedScrollbars
                                         autohide
                                         style={{
-                                            maxHeight: '420px',
+                                            height: '420px',
                                         }}
                                     >
-                                        {submitted_poa && <Submitted has_poi={this.state.has_poi} />}
+                                        {submitted_poa && <Submitted
+                                            is_description_disabled={true}
+                                            has_poi={this.state.has_poi}
+                                        />}
                                         {this.state.poa_status === poa_status_codes.pending &&
-                                        <NeedsReview />
+                                        <NeedsReview is_description_disabled={true} />
                                         }
                                         {this.state.poa_status === poa_status_codes.verified &&
-                                        <Verified has_poi={this.state.has_poi} />
+                                        <Verified is_description_disabled={true} has_poi={this.state.has_poi} />
                                         }
                                         {this.state.poa_status === poa_status_codes.expired &&
                                         <Expired onClick={this.handleResubmit} />

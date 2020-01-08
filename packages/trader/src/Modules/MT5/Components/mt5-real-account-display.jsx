@@ -38,6 +38,7 @@ const MT5RealAccountDisplay = ({
 }) => {
     const button_label = getRealAdvancedButtonLabel(is_fully_authenticated, is_pending_authentication);
     const is_real_advanced_disabled = !has_real_account || is_pending_authentication;
+
     const onSelectRealAdvanced = () => {
         if (is_fully_authenticated) {
             openRealAdvancedPasswordModal();
@@ -51,12 +52,10 @@ const MT5RealAccountDisplay = ({
 
     return (
         <React.Fragment>
-
-
             <div className='mt5-real-accounts-display'>
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
-                    is_disabled={has_real_account}
+                    is_disabled={!has_real_account}
                     icon={() => (<Icon icon='IcMt5Standard' size={64} />)}
                     title={localize('Standard')}
                     type={{

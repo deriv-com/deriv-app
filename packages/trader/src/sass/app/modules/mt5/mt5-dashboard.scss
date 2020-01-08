@@ -10,22 +10,22 @@
 /* stylelint-disable */
 /** @define mt5-dashboard; */
 .mt5-dashboard {
-    position: relative;
     margin: 4.8em auto;
     max-width: 960px;
+    position: relative;
 
     &--hint {
         //@include typeface(--xsmall-left-normal-black, none);
-        font-size: 10px;
         color: var(--text-less-prominent);
+        font-size: 10px;
     }
     &__container {
         position: relative;
 
         .notification-messages {
             position: fixed;
-            top: 64px;
             right: 16px;
+            top: 64px;
         }
     }
     &__welcome-message {
@@ -49,20 +49,20 @@
             color: var(--text-less-prominent);
         }
         &--button {
-            margin: 0;
             background-color: transparent;
+            color: var(--text-prominent);
             font-weight: bold;
             height: 4em;
-            color: var(--text-prominent);
+            margin: 0;
         }
     }
     &__missing-real {
+        align-items: center;
+        background-color: var(--general-section-1);
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        padding-left: 1.6rem;
-        background-color: var(--general-section-1);
         margin: 2.4em 0;
+        padding-left: 1.6rem;
 
         &--heading {
             @include typeface(--title-left-bold-black, none);
@@ -77,33 +77,33 @@
         margin-bottom: 2.4em;
     }
     &__download-center {
-        border-radius: 4px;
         border: solid 1px var(--border-normal);
-        padding-top: 1.6em;
+        border-radius: 4px;
         padding-bottom: 1.6em;
+        padding-top: 1.6em;
 
         &-options {
             display: flex;
             justify-content: space-between;
 
             &--desktop, &--mobile {
+                align-items: center;
                 display: flex;
                 flex-flow: column nowrap;
-                align-items: center;
             }
             &--desktop {
-                margin-left: 7em;
+                align-items: flex-start;
                 display: flex;
                 flex-flow: row nowrap;
-                align-items: flex-start;
+                margin-left: 7em;
 
                 &-devices {
-                    width: 200px;
-                    display: flex;
-                    justify-content: space-between;
                     align-items: flex-end;
-                    margin-right: 1.6em;
+                    display: flex;
                     flex-wrap: wrap;
+                    justify-content: space-between;
+                    margin-right: 1.6em;
+                    width: 200px;
                     svg:first-child {
                         margin-right: 0.4em;
                     }
@@ -112,9 +112,9 @@
                     }
                 }
                 &-links {
-                    height: 142px;
                     display: flex;
                     flex-flow: column nowrap;
+                    height: 142px;
                     justify-content: space-between;
                 }
             }
@@ -128,9 +128,9 @@
                     }
                 }
                 &-links {
-                    width: 27.1em;
                     display: flex;
                     justify-content: space-between;
+                    width: 27.1em;
                 }
             }
         }
@@ -138,8 +138,8 @@
             @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
             line-height: 1.5em;
-            margin-left: 1.3em;
             margin-bottom: 1.5em;
+            margin-left: 1.3em;
         }
         &--hint {
             @include typeface(--xsmall-left-normal-black, none);
@@ -153,9 +153,9 @@
 
 .mt5-attribute-describer {
     @include typeface(--paragraph-left-bold-black, none);
+    color: var(--text-general);
     font-size: 14px;
     font-weight: bold;
-    color: var(--text-general);
 }
 
 .mt5-compare-accounts {
@@ -164,7 +164,7 @@
     flex-grow: 1;
 
     &__data {
-    //height: 50vh;
+        //height: 50vh;
 
         &__table {
             //height: 50vh;
@@ -173,19 +173,19 @@
         }
         &__row {
             /*                     attribute   standard advanced synthetic */
-            grid-template-columns: 1.7fr       1fr      1fr      1fr;
+            grid-template-columns: 1.7fr 1fr 1fr 1fr;
         }
         .attribute, .standard, .advanced, .synthetic {
-            justify-content: flex-start;
             align-items: flex-start;
+            justify-content: flex-start;
             text-align: left;
         }
     }
     &-modal {
         &__wrapper {
-            margin-top: 1.6rem;
             display: flex;
             justify-content: center;
+            margin-top: 1.6rem;
         }
     }
 
@@ -193,25 +193,25 @@
         color: var(--text-less-prominent);
         font-size: 12px;
         line-height: 1.5em;
-        width: 100%;
         padding: 1.6em 6.4em 2.4em 6.4em;
+        width: 100%;
     }
 }
 
 .mt5-real-accounts-display, .mt5-demo-accounts-display {
-    margin-top: 2.4em;
     display: flex;
     justify-content: space-around;
+    margin-top: 2.4em;
 }
 
 .mt5-account-card {
-    min-height: 32em;
-    width: 30.4em;
+    border: solid 1px var(--border-normal);
     border-radius: 4px;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
-    border: solid 1px var(--border-normal);
+    min-height: 32em;
+    width: 30.4em;
 
     &:hover {
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
@@ -231,13 +231,13 @@
         color: var(--text-profit-success);
     }
     &__type {
-        padding: 1.6em 1.6em 0;
         display: flex;
+        padding: 1.6em 1.6em 0;
 
         &--description {
-            max-width: 19.2em;
             display: inline-block;
             margin-left: 1.6em;
+            max-width: 19.2em;
 
             .mt5-account-card--heading {
                 margin-bottom: 0.5em;
@@ -252,9 +252,9 @@
         margin-left: 1em;
     }
     &__cta {
+        align-items: center;
         display: flex;
         flex-direction: column;
-        align-items: center;
     }
     &__specs {
         padding: 0 1.6em 1.6em;
@@ -263,9 +263,9 @@
         width: 100%;
 
         &-attribute {
-            width: 14.8em;
             display: inline-block;
             white-space: nowrap;
+            width: 14.8em;
 
             .mt5-account-card--paragraph {
                 color: var(--text-general);
@@ -286,14 +286,14 @@
         }
     }
     &__account-selection {
-        height: 4rem;
-        width: 27rem;
-        display: flex;
         align-items: center;
+        display: flex;
+        height: 4rem;
         justify-content: center;
-        text-decoration: none;
-        padding: 0;
         margin: 1.6rem;
+        padding: 0;
+        text-decoration: none;
+        width: 27rem;
         @include typeface(--paragraph-center-bold-black, none);
 
         &--primary {
@@ -311,21 +311,21 @@
         }
         &--disabled {
             background-color: var(--brand-red-coral);
-            opacity: 0.32;
             cursor: initial;
+            opacity: 0.32;
         }
     }
     &__login {
         @include typeface(--paragraph-center-normal-black);
-        width: 272px;
-        height: 40px;
-        display: flex;
-        justify-content: center;
         align-items: center;
-        border-radius: 4px;
         background-color: var(--general-section-1);
+        border-radius: 4px;
         color: var(--text-general);
+        display: flex;
+        height: 40px;
+        justify-content: center;
         margin: 1.6em 0 0.8em;
+        width: 272px;
 
         strong {
             font-weight: bold;
@@ -337,10 +337,10 @@
 
         .btn {
             @include typeface(--small-center-bold-black, none);
+            color: var(--text-prominent);
+            height: 32px;
             margin: 0 1em;
             width: 122px;
-            height: 32px;
-            color: var(--text-prominent);
         }
     }
 }
@@ -360,8 +360,8 @@
     }
     &--hint {
         //@include typeface(--xsmall-left-normal-black, none);
-        font-size: 12px;
         color: var(--text-less-prominent);
+        font-size: 12px;
         padding: 1.333em 0;
     }
     &__main-form, &__investor-wrapper {
@@ -373,13 +373,13 @@
         }
     }
     &__investor-form {
-        width: 300px;
         margin: 2.4em auto 0;
+        width: 300px;
     }
     &__actions {
+        align-items: center;
         display: flex;
         flex-flow: column nowrap;
-        align-items: center;
     }
     &--button {
         margin-top: 1.6rem;
@@ -387,15 +387,61 @@
 }
 
 .mt5-advanced-modal {
-    flex-grow: 1;
-    flex-shrink: 0;
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 0;
 
+    &__heading {
+        padding: 2em 2em 0 2em;
+    }
     &__body {
-        flex-grow: 1;
         flex: 1 1 auto;
-        height: 400px;
+        flex-grow: 1;
+    }
+    .dc-form-submit-button {
+        padding: 0 2em 2em 2em;
+    }
+}
+
+.account-management {
+    &__message-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    &__message-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        height: 24em;
+        padding: 0 3em;
+    }
+    &__message {
+        @include typeface(--title-center-bold-black);
+        color: var(--text-prominent);
+    }
+    &__text {
+        @include typeface(--paragraph-center-normal-black);
+        color: var(--text-prominent);
+    }
+}
+
+.mt5-pending-verification {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 26rem;
+
+    &__heading {
+        @include typeface(--title-left-bold-black);
+        color: var(--text-prominent);
+    }
+    &__description {
+        @include typeface(--paragraph-center-normal-black);
+        color: var(--text-prominent);
     }
 }
 
@@ -405,9 +451,90 @@
             width: 904px;
         }
         &_mt5-password-manager__modal {
-            width: 904px;
             height: 688px;
+            width: 904px;
         }
+    }
+}
+
+.mt5-details-form {
+    & .mt5-tax-identification-number {
+        margin-top: 1em;
+    }
+    & .dc-autocomplete {
+        margin-bottom: 2.4em;
+        &__input-field {
+            .dc-input {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+.account-form {
+    &__header {
+        font-size: var(--text-size-xs);
+        font-weight: bold;
+        margin-bottom: 1.6em;
+        position: relative;
+        height: 1.6em;
+    }
+    &__header:not(:first-child) {
+        margin-top: 1.6em;
+    }
+    &__header:before {
+        border-top: 1px solid var(--general-section-1);
+        content: '';
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0.5em;
+        width: 100%;
+    }
+    &__title {
+        background: var(--general-main-1);
+        color: var(--text-prominent);
+        padding-right: 8px;
+        position: absolute;
+    }
+    &__subtitle {
+        color: var(--text-prominent);
+        font-weight: normal;
+        padding-left: 8px;
+    }
+}
+.mt5-proof-of-address {
+    &__field-area {
+        padding: 0 2rem;
+    }
+    &__file-upload {
+        margin: 0 0 1em;
+    }
+    &__inline-fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 1em;
+
+        .dc-dropdown-container {
+            margin-top: 0;
+        }
+    }
+    p, li {
+        @include typeface(--paragraph-left-normal-black);
+        color: var(--text-prominent);
+        margin: 0 0 1em;
+
+        strong {
+            font-weight: bold;
+        }
+    }
+    ul {
+        list-style: initial;
+        margin: 0 0 1em;
+    }
+    li {
+        margin: 0 0 0 1.6em;
+
     }
 }
 /* stylelint-enable */

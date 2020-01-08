@@ -13,7 +13,7 @@ import { FormSubHeader }    from 'Modules/Account/Components/layout-components.j
 
 const form = React.createRef();
 
-const InputField = ({ name, optional = false, ...props }) => (
+export const InputField = ({ name, optional = false, ...props }) => (
     <Field name={name}>
         {
             ({
@@ -109,6 +109,7 @@ class MT5PersonalDetailsForm extends Component {
             residence_list,
             value,
         } = this.props;
+
         return (
             <div id='real_mt5_personal_details' className='details-form mt5-details-form'>
                 <Formik
@@ -137,10 +138,7 @@ class MT5PersonalDetailsForm extends Component {
                                     <div className='details-form__elements-container'>
                                         <ThemedScrollbars
                                             autoHide
-                                            style={{
-                                                // height: 'calc(100% - 16px)',
-                                                height: 300
-                                            }}
+                                            style={{ height: 320 }}
                                         >
                                             <div className='details-form__elements' style={{ paddingBottom: '18rem' }}>
                                                 <FormSubHeader title={localize('Details')} />

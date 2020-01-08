@@ -20,6 +20,7 @@ class FileUploaderContainer extends React.Component {
     render() {
         return (
             <div className='account-poa__upload-section'>
+                {!this.props.is_description_disabled &&
                 <ul className='account-poa__upload-list'>
                     <li className='account-poa__upload-box'>
                         <Icon icon='IcUtility' className='account-poa__upload-icon' size={20} />
@@ -57,7 +58,7 @@ class FileUploaderContainer extends React.Component {
                             {localize('A clear colour photo or scanned image')}
                         </div>
                     </li>
-                </ul>
+                </ul>}
                 <div className='account-poa__upload-file'>
                     <FileUploader
                         ref={this.ref}
@@ -68,5 +69,9 @@ class FileUploaderContainer extends React.Component {
         );
     }
 }
+
+FileUploaderContainer.defaultProps = {
+    is_description_disabled: false,
+};
 
 export default FileUploaderContainer;

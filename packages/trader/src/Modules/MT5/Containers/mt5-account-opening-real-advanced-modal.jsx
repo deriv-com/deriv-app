@@ -38,8 +38,8 @@ class MT5AccountOpeningRealAdvancedModal extends Component {
                 disableApp={disableApp}
                 enableApp={enableApp}
                 is_open={is_mt5_advanced_modal_open}
-                has_close_icon={false}
-                toggleModal={setMT5AdvancedModalState}
+                has_close_icon={true}
+                toggleModal={() => setMT5AdvancedModalState(false)}
             >
                 <MT5AdvancedRealAccountSignup />
             </Modal>

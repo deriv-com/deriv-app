@@ -336,31 +336,30 @@ export const emptyTextValidator = (input) => {
 };
 
 export const saveWorkspaceToLocal = location => {
-    let workspaces = JSON.parse(localStorage.getItem('saved_workspace')) || [];
+    const workspaces = JSON.parse(localStorage.getItem('saved_workspace')) || [];
     const current_xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.derivWorkspace));
     const current_timestamp = Math.floor(Date.now() / 1000);
     const current_workspace_index = workspaces.findIndex(workspace => workspace.id === `${Blockly.derivWorkspace.id}_${location}`);
 
-    if(current_workspace_index >= 0) {
+    if (current_workspace_index >= 0) {
         const current_workspace = workspaces[current_workspace_index];
         current_workspace.xml = current_xml;
         current_workspace.timestamp = current_timestamp;
         current_workspace.location = location;
     } else {
         workspaces.push({
-            id: `${Blockly.derivWorkspace.id}_${location}`,
+            id       : `${Blockly.derivWorkspace.id}_${location}`,
             timestamp: current_timestamp,
-            xml: current_xml,
+            xml      : current_xml,
             location,
         });
     }
 
-    workspaces.sort((a, b) => { return new Date(a.timestamp) - new Date(b.timestamp) }).reverse();
-    console.log(workspaces);
+    workspaces.sort((a, b) => { return new Date(a.timestamp) - new Date(b.timestamp); }).reverse();
 
-    if(workspaces.length > 10) {
+    if (workspaces.length > 10) {
         workspaces.pop();
     }
 
     localStorage.setItem('saved_workspace', JSON.stringify(workspaces));
-}
+};

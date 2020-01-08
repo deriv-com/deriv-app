@@ -13,14 +13,16 @@
             cursor: pointer;
         }
         &-wrapper {
-            max-width: 1232px;
             width: 100%;
             display: flex;
             align-items: center;
-            margin: auto;
         }
     }
     &__content {
         padding: 2.4rem 2.4rem 0;
+    }
+    &__header-wrapper, &__content {
+        max-width: 1232px;
+        margin: auto;
     }
 }

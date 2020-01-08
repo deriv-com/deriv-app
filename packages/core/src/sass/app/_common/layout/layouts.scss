@@ -84,13 +84,12 @@ $FLOATING_HEADER_HEIGHT: 41px;
         padding-bottom: 2.4rem;
 
         .contract-drawer {
-            top: 48px;
-            left: 16px;
             height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - (#{$POSITIONS_DRAWER_MARGIN} * 6));
             border-bottom-right-radius: 0;
             border-top-right-radius: 0;
             z-index: 1;
             overflow: hidden;
+            min-width: 240px;
 
             &-wrapper {
                 z-index: 4;
@@ -102,11 +101,10 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .replay-chart__container {
             width: 100%;
             position: relative;
-            margin-left: 242px;
+            margin-left: 24px;
 
             .smartcharts {
                 left: 0;
-                width: calc(100vw - 286px);
                 border-radius: $BORDER_RADIUS;
 
                 .ciq-chart {
@@ -356,16 +354,14 @@ $FLOATING_HEADER_HEIGHT: 41px;
 /** @define contract */
 .contract {
     &__wrapper {
-        position: absolute;
         width: $SIDEBAR_WIDTH;
         min-height: 460px;
         height: 100%;
         z-index: 2;
-        top: 0;
-        right: 0;
         transition: transform 0.4s ease, opacity 0.2s linear;
         opacity: 1;
         transform: none;
+        min-width: 240px;
     }
     &--enter {
         transform: translate3d(calc(100% + 1.6em), 0, 0);

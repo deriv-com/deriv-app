@@ -18,7 +18,6 @@ export const setLimitOrderBarriers = ({
     barriers,
     contract_type,
     contract_info = {},
-    hide_stop_out_barrier = false,
     is_over,
 }) => {
     if (is_over && isLimitOrderBarrierSupported(contract_type, contract_info)) {
@@ -55,7 +54,6 @@ export const setLimitOrderBarriers = ({
                         BARRIER_LINE_STYLES.DOTTED
                         :
                         BARRIER_LINE_STYLES.SOLID,
-                    hideBarrierLine    : hide_stop_out_barrier && key === LIMIT_ORDER_TYPES.STOP_OUT,
                     hidePriceLines     : has_stop_loss && key === LIMIT_ORDER_TYPES.STOP_OUT,
                     hideOffscreenLine  : true,
                     showOffscreenArrows: true,

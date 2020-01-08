@@ -426,9 +426,8 @@ export default class TradeStore extends BaseStore {
         setLimitOrderBarriers({
             barriers,
             contract_info,
-            contract_type        : contract_info.contract_type,
+            contract_type: contract_info.contract_type,
             is_over,
-            hide_stop_out_barrier: true,
         });
     }
 
@@ -791,11 +790,10 @@ export default class TradeStore extends BaseStore {
         if (this.hovered_contract_type === contract_type) {
             this.addTickByProposal(response);
             setLimitOrderBarriers({
-                barriers             : this.barriers,
-                contract_info        : this.proposal_info[this.hovered_contract_type],
+                barriers     : this.barriers,
+                contract_info: this.proposal_info[this.hovered_contract_type],
                 contract_type,
-                is_over              : true,
-                hide_stop_out_barrier: true,
+                is_over      : true,
             });
         }
 

@@ -3,7 +3,8 @@ import {
     observable,
     action,
 }                                       from 'mobx';
-import { load }                         from '../scratch/utils';
+import { load, saveWorkspaceToLocal }                         from '../scratch/utils';
+import { save_types } from '../constants/save-type';
 
 export default class SaveLoadModalStore {
 
@@ -50,6 +51,7 @@ export default class SaveLoadModalStore {
 
             this.setButtonStatus(2);
         }
+        saveWorkspaceToLocal(is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
         this.toggleSaveLoadModal();
     }
 

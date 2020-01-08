@@ -3,9 +3,12 @@ import                                    './blocks';
 import                                    './hooks';
 import {
     hasAllRequiredBlocks,
-    updateDisabledBlocks }            from './utils';
+    updateDisabledBlocks,
+    saveWorkspaceToLocal,
+}                                     from './utils';
 import { onWorkspaceResize }          from './utils/workspace';
 import config                         from '../constants';
+import { save_types }                 from '../constants/save-type';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import ScratchStore                   from '../stores/scratch-store';
 import { observer as globalObserver } from '../utils/observer';
@@ -37,6 +40,7 @@ class DBot {
             this.workspace.toolboxXmlStr = toolbox_xml;
             Blockly.derivWorkspace       = this.workspace;
 
+            this.workspace.addChangeListener(() => saveWorkspaceToLocal(save_types.UNSAVED));
             this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
             this.workspace.addChangeListener((event) => updateDisabledBlocks(this.workspace, event));
             this.addBeforeRunFunction(this.unselectBlocks.bind(this));

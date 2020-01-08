@@ -76,6 +76,7 @@ export default class PortfolioStore extends BaseStore {
             this.positions.forEach((p)=>{
                 this.positionsMap[p.id] = p;
             });
+            this.updatePositions();
         }
     }
 

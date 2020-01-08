@@ -58,15 +58,20 @@ export default class ContractReplayStore extends BaseStore {
         }
     };
 
+    subscribeProposalOpenContract = () => {
+        WS.wait('authorize').then(() => {
+            this.handleSubscribeProposalOpenContract(this.contract_id, this.populateConfig);
+        });
+    }
+
     @action.bound
     onMount(contract_id) {
         if (contract_id) {
             this.contract_id = contract_id;
             this.contract_store = new ContractStore(this.root_store, { contract_id });
-            WS.wait('authorize').then(() => {
-                this.handleSubscribeProposalOpenContract(this.contract_id, this.populateConfig);
-            });
+            this.subscribeProposalOpenContract();
             WS.storage.activeSymbols('brief');
+            WS.setOnReconnect(this.subscribeProposalOpenContract);
         }
     }
 
@@ -80,6 +85,7 @@ export default class ContractReplayStore extends BaseStore {
         this.contract_info       = {};
         this.indicative_status   = null;
         this.prev_indicative     = 0;
+        WS.removeOnReconnect();
     }
 
     @action.bound

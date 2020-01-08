@@ -1,6 +1,8 @@
 import PropTypes             from 'prop-types';
 import React                 from 'react';
+import { Collapsible }       from '@deriv/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
+import AllowEqualsMobile     from 'Modules/Trading/Containers/allow-equals.jsx';
 import MobileWidget          from '../Elements/mobile-widget.jsx';
 import ContractType          from '../../Containers/contract-type.jsx';
 import Purchase              from '../../Containers/purchase.jsx';
@@ -10,19 +12,20 @@ const ScreenSmall = ({ is_dark_theme, is_trade_enabled }) => (
     !is_trade_enabled ?
         <TradeParamsLoader
             is_dark_theme={is_dark_theme}
-            is_mobile
             speed={2}
         />
         :
-        <React.Fragment>
+        <Collapsible
+            position='top'
+            is_collapsed
+        >
             <ContractType />
-            <div className='mobile-only'>
-                <MobileWidget />
-            </div>
-            <div className='purchase-container purchase-container--is-mobile'>
+            <MobileWidget />
+            <AllowEqualsMobile collapsible />
+            <div className='purchase-container'>
                 <Purchase />
             </div>
-        </React.Fragment>
+        </Collapsible>
 );
 
 ScreenSmall.propTypes = {

@@ -1,10 +1,13 @@
 import ContentLoader from 'react-content-loader';
 import React         from 'react';
 import PropTypes     from 'prop-types';
+import {
+    DesktopWrapper,
+    MobileWrapper }  from '@deriv/components';
 
-const TradeParamsLoader = ({ is_mobile, speed }) => (
+const TradeParamsLoader = ({ speed }) => (
     <>
-        {is_mobile ?
+        <MobileWrapper>
             <ContentLoader
                 height={214}
                 width={344}
@@ -19,7 +22,8 @@ const TradeParamsLoader = ({ is_mobile, speed }) => (
                 <rect x='8' y='114' rx='4' ry='4' width='160' height='70' />
                 <rect x='176' y='114' rx='4' ry='4' width='160' height='70' />
             </ContentLoader>
-            :
+        </MobileWrapper>
+        <DesktopWrapper>
             <ContentLoader
                 height={548}
                 width={240}
@@ -32,7 +36,7 @@ const TradeParamsLoader = ({ is_mobile, speed }) => (
                 <rect x='0' y='224' rx='4' ry='4' width='240' height='120' />
                 <rect x='0' y='352' rx='4' ry='4' width='240' height='194' />
             </ContentLoader>
-        }
+        </DesktopWrapper>
     </>
 );
 

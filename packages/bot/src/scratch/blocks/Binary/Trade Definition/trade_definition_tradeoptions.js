@@ -72,7 +72,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
         const trade_definition_block = this.workspace.getAllBlocks(true).find(block => block.type === 'trade_definition');
         if (!trade_definition_block) {
-            this.setDisabled(true);
             return;
         }
 

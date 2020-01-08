@@ -85,9 +85,6 @@ export default class UIStore extends BaseStore {
     // set currency modal
     @observable is_set_currency_modal_visible = false;
 
-    // position states
-    @observable show_positions_toggle = true;
-
     @observable modal_index = 0;
 
     // Mt5 topup

@@ -41,13 +41,15 @@ const Amount = ({
         );
     }
 
+    const error_messages = validation_errors.amount;
+
     const Input = () => (
         <InputField
             className='trade-container__amount'
             classNameInlinePrefix='trade-container__currency'
             classNameInput='trade-container__input'
             currency={currency}
-            error_messages={validation_errors.amount}
+            error_messages={error_messages}
             fractional_digits={CurrencyUtils.getDecimalPlaces(currency)}
             id='dt_amount_input'
             inline_prefix={is_single_currency ? currency : null}

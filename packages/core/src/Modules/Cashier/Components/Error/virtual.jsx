@@ -3,8 +3,8 @@ import React                  from 'react';
 import { withRouter }         from 'react-router-dom';
 import {
     Button,
-    ThemedScrollbars }        from 'deriv-components';
-import { localize, Localize } from 'deriv-translations';
+    ThemedScrollbars }        from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
 import routes                 from 'Constants/routes';
 import { connect }            from 'Stores/connect';
 

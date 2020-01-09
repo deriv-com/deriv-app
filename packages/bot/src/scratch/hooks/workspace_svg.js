@@ -106,7 +106,7 @@ Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
 };
 
 /**
- * Clean up the workspace by ordering all the blocks in a column. For deriv-bot
+ * Clean up the workspace by ordering all the blocks in a column. For @deriv/bot
  * root-blocks are sorted in columns first, then all other blocks are positioned below
  * the lowest hanging root-block.
  */
@@ -145,7 +145,7 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean 
                 const fat_neighbour_block = root_blocks
                     .slice(start, start + blocks_per_column)
                     .reduce((a, b) => a.getHeightWidth().width > b.getHeightWidth().width ? a : b);
-        
+
                 let position_x = cursor_x +
                             fat_neighbour_block.getHeightWidth().width +
                             Blockly.BlockSvg.MIN_BLOCK_X;
@@ -157,7 +157,7 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean 
             }
 
             block.snapToGrid();
-            
+
             original_cursor_y =
               block.getRelativeToSurfaceXY().y +
               block.getHeightWidth().height +
@@ -249,7 +249,7 @@ Blockly.WorkspaceSvg.getTopLevelWorkspaceMetrics_ = function() {
     let absolute_top = 0;
 
     if (this.toolbox_ && this.toolboxPosition === Blockly.TOOLBOX_AT_LEFT) {
-        absolute_top = 50; // deriv-bot: Add some spacing for Core header.
+        absolute_top = 50; // @deriv/bot: Add some spacing for Core header.
         absolute_left = toolbox_dimensions.width;
     }
 

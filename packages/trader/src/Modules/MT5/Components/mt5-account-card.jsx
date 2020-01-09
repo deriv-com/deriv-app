@@ -1,6 +1,6 @@
-import { Money, Button }              from 'deriv-components';
+import { Money, Button }              from '@deriv/components';
 import React                          from 'react';
-import { Localize }                   from 'deriv-translations';
+import { Localize }                   from '@deriv/translations';
 import { Mt5AccountCopy }             from './mt5-account-copy.jsx';
 import { getPlatformMt5DownloadLink } from '../Helpers/constants';
 

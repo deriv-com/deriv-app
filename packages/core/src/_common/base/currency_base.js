@@ -1,4 +1,4 @@
-const { getLanguage, localize } = require('deriv-translations');
+const { getLanguage, localize } = require('@deriv/translations');
 const getPropertyValue          = require('../utility').getPropertyValue;
 
 let currencies_config = {};

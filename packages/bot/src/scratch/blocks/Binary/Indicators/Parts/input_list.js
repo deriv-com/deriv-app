@@ -1,4 +1,4 @@
-import { localize }              from 'deriv-translations';
+import { localize }              from '@deriv/translations';
 import { runIrreversibleEvents } from '../../../../utils';
 
 Blockly.Blocks.input_list = {

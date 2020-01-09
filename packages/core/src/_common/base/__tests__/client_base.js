@@ -1,4 +1,4 @@
-const CurrencyUtils           = require('deriv-shared/utils/currency');
+const CurrencyUtils           = require('@deriv/shared/utils/currency');
 const Client                  = require('../client_base');
 const { api, expect, setURL } = require('../../__tests__/tests_common');
 const State                   = require('../../storage').State;

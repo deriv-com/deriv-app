@@ -1,6 +1,6 @@
 import React         from 'react';
 import PropTypes     from 'prop-types';
-import { Icon }      from 'deriv-components';
+import { Icon }      from '@deriv/components';
 import UpgradeButton from 'App/Containers/RealAccountSignup/upgrade-button.jsx';
 
 const ButtonAddAccount = ({

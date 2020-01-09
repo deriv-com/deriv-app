@@ -1,8 +1,8 @@
-import { Button, Modal } from 'deriv-components';
+import { Button, Modal } from '@deriv/components';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { withRouter }    from 'react-router-dom';
-import { localize }      from 'deriv-translations';
+import { localize }      from '@deriv/translations';
 import routes            from 'Constants/routes';
 
 const InsufficientBalanceModal = ({

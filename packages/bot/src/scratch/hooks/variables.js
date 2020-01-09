@@ -3,7 +3,7 @@
  * For use by generators.
  * To get a list of all variables on a workspace, including unused variables,
  * call Workspace.getAllVariables.
- * deriv-bot: Required for JS generator to work.
+ * @deriv/bot: Required for JS generator to work.
  * @param {!Blockly.Workspace} ws The workspace to search for variables.
  * @return {!Array.<!Blockly.VariableModel>} Array of variable models.
  */

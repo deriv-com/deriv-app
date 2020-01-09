@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 
 /**
  * Custom checkbox implementation.
@@ -29,7 +29,7 @@ const FieldCheckbox = () => {
 
         if (el_field_group) {
             Array.from(el_field_group.children).forEach(child_node => el_field_group.removeChild(child_node));
-    
+
             // Draw a rectangle which is coloured based on the host-block's colour.
             Blockly.utils.createSvgElement('rect', {
                 fill       : this.sourceBlock_.getColourSecondary(), // eslint-disable-line
@@ -39,7 +39,7 @@ const FieldCheckbox = () => {
                 rx         : 2,
                 stroke     : '#FFF',
             }, el_field_group);
-    
+
             if (is_checked) {
                 // Draw checkmark.
                 Blockly.utils.createSvgElement('path', {
@@ -56,7 +56,7 @@ const FieldCheckbox = () => {
             );
         }
     };
-    
+
     return icon;
 };
 

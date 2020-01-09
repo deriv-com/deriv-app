@@ -1,4 +1,4 @@
-import { localize }            from 'deriv-translations';
+import { localize }            from '@deriv/translations';
 import { removeLimitedBlocks } from './workspace';
 import BlockConversion         from '../backward-compatibility';
 import { saveAs }              from '../shared';
@@ -25,7 +25,7 @@ export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
     const blockly_top        = document.body.offsetHeight - blockly_metrics.viewHeight - blockly_metrics.viewTop;
     const cursor_x           = clientX ? (clientX - blockly_left) * scale_cancellation : 0;
     const cursor_y           = clientY ? (clientY - blockly_top - toolbar_height) * scale_cancellation : 0;
-    
+
     Blockly.derivWorkspace.cleanUp(cursor_x, cursor_y, blocks_to_clean);
 };
 
@@ -59,10 +59,10 @@ export const setBlockTextColor = (block, event) => {
     }
 };
 
-export const save = (filename = 'deriv-bot', collection = false, xmlDom) => {
+export const save = (filename = '@deriv/bot', collection = false, xmlDom) => {
     xmlDom.setAttribute('is_dbot', 'true');
     xmlDom.setAttribute('collection', collection ? 'true' : 'false');
-    
+
     const data = Blockly.Xml.domToPrettyText(xmlDom);
     saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
 };
@@ -72,7 +72,7 @@ export const load = (block_string, drop_event) => {
 
     const showInvalidStrategyError = () => {
         const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
-        
+
         journal.onError(error_message);
         run_panel.setActiveTabIndex(2);
     };
@@ -99,7 +99,7 @@ export const load = (block_string, drop_event) => {
 
     const blockConversion = new BlockConversion();
     xml = blockConversion.convertStrategy(xml);
-    
+
     const blockly_xml = xml.querySelectorAll('block');
 
     // Check if there are any blocks in this strategy.
@@ -248,7 +248,7 @@ export const addLoaderBlocksFirst = (xml) => {
 
         Array.from(xml.children).forEach(el_block => {
             const block_type = el_block.getAttribute('type');
-    
+
             if (block_type === 'loader') {
                 el_block.remove();
                 const loader = Blockly.Xml.domToBlock(el_block, Blockly.derivWorkspace);

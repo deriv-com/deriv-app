@@ -1,4 +1,4 @@
-import { localize }         from 'deriv-translations';
+import { localize }          from '@deriv/translations';
 import { defineContract }   from '../../images';
 import {
     setBlockTextColor,
@@ -119,14 +119,14 @@ Blockly.Blocks.trade_definition = {
 
 Blockly.JavaScript.trade_definition = block => {
     const { client } = ScratchStore.instance.root_store.core;
-    
+
     if (!client.is_logged_in) {
         throw new Error('Please login'); // TEMP.
     }
 
     const { loginid }                = client;
     const account                    = client.getToken(loginid);
-    
+
     const market_block               = block.getChildByType('trade_definition_market');
     const trade_type_block           = block.getChildByType('trade_definition_tradetype');
     const contract_type_block        = block.getChildByType('trade_definition_contracttype');

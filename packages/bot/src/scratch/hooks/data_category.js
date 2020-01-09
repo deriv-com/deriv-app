@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 
 /**
  * Construct the blocks required by the flyout for the variable category.
@@ -8,7 +8,7 @@ import { localize } from 'deriv-translations';
 Blockly.DataCategory = function(workspace) {
     const variableModelList = workspace.getVariablesOfType('');
     let xmlList = [];
-    
+
     // `Create Variable`-button
     Blockly.DataCategory.addCreateButton(xmlList, workspace);
 
@@ -73,7 +73,7 @@ Blockly.DataCategory.search = function(variableModelList){
  * Construct a create variable button and push it to the xmlList.
  * @param {!Array.<!Element>} xmlList Array of XML block elements.
  * @param {Blockly.Workspace} workspace Workspace to register callback to.
- * deriv-bot: We only use a single type of variable, so `type` arg was removed.
+ * @deriv/bot: We only use a single type of variable, so `type` arg was removed.
  */
 Blockly.DataCategory.addCreateButton = function(xmlList, workspace) {
     const buttonXml = goog.dom.createDom('button');

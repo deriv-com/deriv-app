@@ -2,8 +2,8 @@ import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
 import { CSSTransition }   from 'react-transition-group';
-import { Icon }            from 'deriv-components';
-import { Localize }        from 'deriv-translations';
+import { Icon }            from '@deriv/components';
+import { Localize }        from '@deriv/translations';
 import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
 
 const AccountInfo = ({

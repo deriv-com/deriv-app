@@ -1,5 +1,5 @@
-import { localize } from 'deriv-translations';
-import config from '../../constants';
+import { localize } from '@deriv/translations';
+import config       from '../../constants';
 
 /**
  * Make a context menu option for duplicating the current block.

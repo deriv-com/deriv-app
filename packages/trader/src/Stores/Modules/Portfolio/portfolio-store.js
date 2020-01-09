@@ -56,6 +56,7 @@ export default class PortfolioStore extends BaseStore {
         this.positionsMap = {};
         this.is_loading = false;
         this.error      = '';
+        this.updatePositions();
         WS.forgetAll('proposal_open_contract', 'transaction');
     }
 

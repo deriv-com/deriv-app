@@ -96,4 +96,4 @@ Icon.propTypes = {
     ]),
 };
 
-export default Icon;
+export default React.memo(Icon);

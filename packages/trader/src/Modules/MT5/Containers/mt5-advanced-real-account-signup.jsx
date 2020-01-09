@@ -104,7 +104,6 @@ class MT5AdvancedRealAccountSignup extends Component {
         if (this.hasMoreSteps()) {
             this.goNext();
         } else {
-            this.props.onLoading();
             this.createMT5AdvancedAccount(setSubmitting);
         }
     };
@@ -169,8 +168,7 @@ class MT5AdvancedRealAccountSignup extends Component {
         }
         this.setState({
             items: cloned,
-        });
-        this.props.refreshNotifications();
+        }, this.props.refreshNotifications);
     };
 
     transform = (value) => {
@@ -240,8 +238,6 @@ class MT5AdvancedRealAccountSignup extends Component {
 }
 
 MT5AdvancedRealAccountSignup.propTypes = {
-    onError    : PropTypes.func,
-    onLoading  : PropTypes.func,
     toggleModal: PropTypes.func,
 };
 

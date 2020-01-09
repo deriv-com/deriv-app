@@ -18,12 +18,9 @@ class MT5POI extends PureComponent {
         this.props.onCancel();
     };
 
-    onStateChange = ({ status }) => {
-        console.log(status);
-        this.setState({
-            poi_state: status,
-        });
-    };
+    onStateChange = ({ status }) => this.setState({
+        poi_state: status,
+    });;
 
     validateForm = () => {
         const errors = {};

@@ -90,7 +90,7 @@ export const Verified = ({ needs_poi, is_description_disabled = false }) => {
             message={message}
             icon={<Icon icon='IcPoaVerified' size={128} />}
         >
-            {! is_description_disabled && <ContinueTradingButton /> }
+            {!is_description_disabled && <ContinueTradingButton /> }
         </IconMessageContent>
     );
 };

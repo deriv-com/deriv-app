@@ -421,15 +421,17 @@ class MT5POA extends Component {
                                         }
                                     </ThemedScrollbars>
                                     }
-                                    <FormSubmitButton
-                                        has_cancel
-                                        cancel_label={localize('Previous')}
-                                        is_disabled={!!Object.keys(errors).length || isSubmitting}
-                                        label={localize('Next')}
-                                        is_loading={isSubmitting}
-                                        form_error={this.state.form_error}
-                                        onCancel={() => this.handleCancel(values)}
-                                    />
+                                    {is_form_visible && (
+                                        <FormSubmitButton
+                                            has_cancel
+                                            cancel_label={localize('Previous')}
+                                            is_disabled={!!Object.keys(errors).length || isSubmitting}
+                                            label={localize('Next')}
+                                            is_loading={isSubmitting}
+                                            form_error={this.state.form_error}
+                                            onCancel={() => this.handleCancel(values)}
+                                        />
+                                    )}
                                 </form>
                             );
                         }

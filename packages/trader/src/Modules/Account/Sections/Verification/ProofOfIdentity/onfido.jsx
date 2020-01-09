@@ -40,18 +40,16 @@ class Onfido extends React.Component {
                 language   : {
                     locale: getLanguage().toLowerCase() || 'en',
                 },
-                token      : this.props.onfido_service_token,
-                useModal   : false,
-                onComplete : this.handleComplete,
-                steps      : [
+                token     : this.props.onfido_service_token,
+                useModal  : false,
+                onComplete: this.handleComplete,
+                steps     : [
                     'document',
                     'face',
                 ],
             });
             this.setState({ onfido });
         } catch (err) {
-            console.error(err);
-            debugger;
             this.setState({ onfido_init_error: true });
         }
     };

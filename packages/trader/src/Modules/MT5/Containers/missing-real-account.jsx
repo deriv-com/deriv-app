@@ -27,4 +27,4 @@ MissingRealAccount.propTypes = {
     onClick: PropTypes.func,
 };
 
-export default MissingRealAccount
+export default MissingRealAccount;

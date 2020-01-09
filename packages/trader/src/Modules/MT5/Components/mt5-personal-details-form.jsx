@@ -110,6 +110,8 @@ class MT5PersonalDetailsForm extends Component {
             value,
         } = this.props;
 
+        const onSubmitForm = (values, actions) => this.submitForm(values, actions, index, onSubmit);
+
         return (
             <div id='real_mt5_personal_details' className='details-form mt5-details-form'>
                 <Formik
@@ -121,7 +123,7 @@ class MT5PersonalDetailsForm extends Component {
                     enableReinitialize={true}
                     isInitialValid={({ initialValues }) => this.validatePersonalDetails(initialValues)}
                     validate={this.validatePersonalDetails}
-                    onSubmit={(values, actions) => this.submitForm(values, actions, index, onSubmit)}
+                    onSubmit={onSubmitForm}
                     ref={form}
                 >
                     {
@@ -176,7 +178,10 @@ class MT5PersonalDetailsForm extends Component {
                                                                 type='text'
                                                                 label={localize('Tax residence')}
                                                                 error={touched.tax_residence && errors.tax_residence}
-                                                                disabled={values.tax_residence && is_fully_authenticated}
+                                                                disabled={
+                                                                    values.tax_residence &&
+                                                                    is_fully_authenticated
+                                                                }
                                                                 list_items={residence_list}
                                                                 onItemSelection={(item) => setFieldValue(
                                                                     'tax_residence',

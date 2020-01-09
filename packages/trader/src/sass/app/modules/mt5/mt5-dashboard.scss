@@ -447,6 +447,17 @@
 
 .dc-modal {
     &__container {
+        min-width: initial;
+        &_mt5-password-modal {
+            &__description {
+                max-width: 300px;
+                @include typeface(--small-left-normal-black);
+                &--advanced {
+                    margin: 1em 0 0;
+                    color: var(--text-less-prominent);
+                }
+            }
+        }
         &_mt5-dashboard__compare-accounts {
             width: 904px;
         }

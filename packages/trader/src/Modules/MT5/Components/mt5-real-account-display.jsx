@@ -31,7 +31,7 @@ const MT5RealAccountDisplay = ({
     is_pending_authentication,
     onSelectAccount,
     openAccountTransfer,
-    openRealAdvancedPasswordModal,
+    openPasswordModal,
     current_list,
     has_mt5_account,
     openPasswordManager,
@@ -40,13 +40,14 @@ const MT5RealAccountDisplay = ({
     const is_real_advanced_disabled = !has_real_account || is_pending_authentication;
 
     const onSelectRealAdvanced = () => {
+        const account_type = {
+            category: 'real',
+            type    : 'advanced',
+        };
         if (is_fully_authenticated) {
-            openRealAdvancedPasswordModal();
+            openPasswordModal(account_type);
         } else if (!is_fully_authenticated && !is_real_advanced_disabled) {
-            onSelectAccount({
-                category: 'real',
-                type    : 'advanced',
-            });
+            onSelectAccount(account_type);
         }
     };
 

@@ -139,7 +139,8 @@ export default class MT5Store extends BaseStore {
     @action.bound
     getName() {
         const { first_name } = (this.root_store.client.account_settings && this.root_store.client.account_settings);
-        const title          = this.mt5_companies[this.account_type.category][this.account_type.type].title;
+
+        const title = this.mt5_companies[this.account_type.category][this.account_type.type].title;
 
         // First name is not set when user has no real account
         return first_name ? [first_name, title].join(' ') : title;
@@ -270,8 +271,8 @@ export default class MT5Store extends BaseStore {
             WS.authorized.storage.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
             runInAction(() => {
                 this.setMt5Account(response.mt5_new_account);
-                this.root_store.ui.is_mt5_password_modal_enabled = false;
-                this.has_mt5_error                               = false;
+                this.is_mt5_password_modal_enabled = false;
+                this.has_mt5_error                 = false;
                 setTimeout(() => this.setMt5SuccessDialog(true), 300);
             });
         } else {

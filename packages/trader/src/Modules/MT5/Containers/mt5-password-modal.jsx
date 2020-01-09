@@ -86,6 +86,7 @@ const MT5PasswordModal = ({
     const should_show_password = is_mt5_password_modal_enabled && !has_mt5_error &&
         !is_mt5_success_dialog_enabled;
     const should_show_success  = !has_mt5_error && is_mt5_success_dialog_enabled;
+    const is_real_advanced = [account_type.category, account_type.type].join('_') === 'real_advanced';
 
     return (
         <React.Fragment>
@@ -93,6 +94,7 @@ const MT5PasswordModal = ({
                 className='mt5-password-modal'
                 is_open={should_show_password}
                 toggleModal={closeModal}
+                width={is_real_advanced ? '360px' : 'auto'}
                 has_close_icon
             >
                 <Formik
@@ -158,15 +160,21 @@ const MT5PasswordModal = ({
                                             i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters with numbers'
                                         />
                                     </p>
+                                    <p className='dc-modal__container_mt5-password-modal__description--advanced'>
+                                        <Localize
+                                            i18n_default_text='Your MT5 advanced account will be opened through Binary (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA). All other accounts, including your Deriv account, are not subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA).'
+                                        />
+                                    </p>
                                 </div>
                             </div>
                             <FormSubmitButton
+                                is_center={is_real_advanced}
                                 is_disabled={
                                     isSubmitting ||
                                     !values.password ||
                                     Object.keys(errors).length > 0
                                 }
-                                has_cancel
+                                has_cancel={!is_real_advanced }
                                 cancel_label={localize('Cancel')}
                                 onCancel={closeModal}
                                 is_loading={ isSubmitting }

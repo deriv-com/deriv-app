@@ -163,7 +163,6 @@ export const icons =
         'IcContractDuration',
         'IcContractEntrySpotCircle',
         'IcContractExitSpotCircle',
-        'IcContractExitTimeCircle',
         'IcContractExitTime',
         'IcContractFlag',
         'IcContractId',

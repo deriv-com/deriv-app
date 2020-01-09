@@ -154,7 +154,6 @@ import './contract/ic-contract-duration-circle.svg';
 import './contract/ic-contract-duration.svg';
 import './contract/ic-contract-entry-spot-circle.svg';
 import './contract/ic-contract-exit-spot-circle.svg';
-import './contract/ic-contract-exit-time-circle.svg';
 import './contract/ic-contract-exit-time.svg';
 import './contract/ic-contract-flag.svg';
 import './contract/ic-contract-id.svg';

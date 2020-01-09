@@ -19,7 +19,7 @@ class AccountWizard extends React.Component {
             form_error: '',
             items     : [
                 {
-                    header    : {
+                    header: {
                         active_title: localize('Please choose your currency'),
                         title       : localize('Account currency'),
                     },
@@ -29,12 +29,12 @@ class AccountWizard extends React.Component {
                     },
                 },
                 {
-                    header     : {
+                    header: {
                         active_title: localize('Complete your personal details'),
                         title       : localize('Personal details'),
                     },
-                    body       : PersonalDetails,
-                    form_value : {
+                    body      : PersonalDetails,
+                    form_value: {
                         first_name   : '',
                         last_name    : '',
                         date_of_birth: '',
@@ -43,7 +43,7 @@ class AccountWizard extends React.Component {
                     passthrough: ['residence_list'],
                 },
                 {
-                    header    : {
+                    header: {
                         active_title: localize('Complete your address details'),
                         title       : localize('Address details'),
                     },
@@ -57,7 +57,7 @@ class AccountWizard extends React.Component {
                     },
                 },
                 {
-                    header    : {
+                    header: {
                         active_title: localize('Terms of use'),
                         title       : localize('Terms of use'),
                     },

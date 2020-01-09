@@ -1,9 +1,9 @@
 import { Field, Formik }      from 'formik';
 import PropTypes              from 'prop-types';
 import React, { Component }   from 'react';
-import { connect }            from 'Stores/connect';
-import { localize, Localize } from '@deriv/translations';
 import { FormSubmitButton }   from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
+import { connect }            from 'Stores/connect';
 import {
     Hr,
     RadioButtonGroup,

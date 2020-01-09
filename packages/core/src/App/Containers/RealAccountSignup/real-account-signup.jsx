@@ -69,7 +69,7 @@ class RealAccountSignup extends Component {
                     value: () => (
                         <ErrorModal
                             message={this.props.state_value.error_message}
-                            code={this.props.state_value.error_code }
+                            code={this.props.state_value.error_code}
                             onClick={this.openPersonalDetails}
                         />
                     ),
@@ -225,7 +225,7 @@ class RealAccountSignup extends Component {
     }
 }
 
-export default connect(({ ui, client, modules }) => ({
+export default connect(({ ui, client }) => ({
     has_real_account         : client.has_active_real_account,
     currency                 : client.currency,
     is_real_acc_signup_on    : ui.is_real_acc_signup_on,

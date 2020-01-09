@@ -45,8 +45,8 @@ const ErrorModal = ({ message, code, onClick }) => {
 };
 
 ErrorModal.propTypes = {
-    code               : PropTypes.string,
-    message            : PropTypes.string,
+    code   : PropTypes.string,
+    message: PropTypes.string,
     onClick: PropTypes.func,
 };
 export default ErrorModal;

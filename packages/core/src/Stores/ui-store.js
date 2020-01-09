@@ -470,7 +470,6 @@ export default class UIStore extends BaseStore {
         this.is_set_residence_modal_visible = state_change;
     }
 
-
     @action.bound
     closeTopUpModal() {
         this.is_top_up_virtual_open = false;

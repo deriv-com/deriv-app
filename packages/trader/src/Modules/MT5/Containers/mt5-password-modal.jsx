@@ -122,7 +122,7 @@ const MT5PasswordModal = ({
                         <form onSubmit={handleSubmit}>
                             <h2>
                                 <Localize
-                                    i18n_default_text='Choose a password for your DMT5 {{ account_type }}'
+                                    i18n_default_text='Choose a password for your DMT5 {{ account_type }} account'
                                     values={{
                                         account_type: account_title,
                                     }}

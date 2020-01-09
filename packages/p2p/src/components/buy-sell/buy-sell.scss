@@ -4,12 +4,17 @@
 
     &__header {
         background: var(--general-section-1);
-        padding: 0.8rem;
-        width: 100%;
+        padding: 0.4rem;
+        width: fit-content;
+        border-radius: 4px;
 
         &__filters {
             width: 12rem;
         }
+    }
+    &__price {
+        color: var(--text-profit-success);
+        font-weight: bold;
     }
     &__dialog {
         position: absolute;
@@ -24,11 +29,12 @@
             height: auto;
             padding: 0;
             max-height: initial;
-            min-width: 44rem;
+            min-width: 50rem;
         }
         & .dc-dialog__content {
             margin-bottom: 0;
             width: 100%;
+            max-width: 50rem;
         }
     }
     &__popup {
@@ -41,6 +47,7 @@
                 align-items: center;
                 width: 100%;
                 justify-content: space-between;
+                box-sizing: border-box;
             }
             &--title {
                 font-weight: bold;

@@ -1,6 +1,6 @@
 /**
  * Class for an image on a block.
- * deriv-bot: Blockly implementation vs. Scratch for click handlers
+ * @deriv/bot: Blockly implementation vs. Scratch for click handlers
  * @param {string} src The URL of the image.
  * @param {number} width Width of the image.
  * @param {number} height Height of the image.

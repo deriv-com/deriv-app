@@ -1,8 +1,8 @@
 import classNames     from 'classnames';
-import { Popover }    from 'deriv-components';
+import { Popover }    from '@deriv/components';
 import React          from 'react';
 import PropTypes      from 'prop-types';
-// import { localize }   from 'deriv-translations';
+// import { localize }   from '@deriv/translations';
 // import { PopConfirm } from 'App/Components/Elements/PopConfirm';
 import Fieldset       from 'App/Components/Form/fieldset.jsx';
 import ContractInfo   from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
@@ -98,10 +98,11 @@ class PurchaseFieldset extends React.PureComponent {
                         }}
                     >
                         <div className='btn-purchase__box-shadow' />
-                        {(is_proposal_error) ?
+                        {is_proposal_error ?
                             <Popover
+                                has_error
+                                is_open
                                 alignment='left'
-                                classNameBubble='purchase-container__popover-bubble'
                                 message={info.message}
                             >
                                 { purchase_button }

@@ -4,10 +4,10 @@ import React           from 'react';
 import {
     Button,
     Icon,
-    ThemedScrollbars }    from 'deriv-components';
+    ThemedScrollbars }    from '@deriv/components';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif.jsx';
 import TradeCategories    from 'Assets/Trading/Categories/trade-categories.jsx';
-import { localize }       from 'deriv-translations';
+import { localize }       from '@deriv/translations';
 
 const TradeTypeInfoItem = ({
     handleNavigationClick,

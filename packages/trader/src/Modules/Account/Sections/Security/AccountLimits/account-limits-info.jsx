@@ -1,7 +1,7 @@
 import PropTypes              from 'prop-types';
 import React                  from 'react';
-import { Icon }               from 'deriv-components';
-import { localize, Localize } from 'deriv-translations';
+import { Icon }               from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
 
 const currency_name_map = {
     BTC: localize('Bitcoin'),
@@ -26,16 +26,22 @@ const AccountLimitsInfo = ({
             <>
                 <Icon
                     className='account__inset_header-icon'
-                    icon={`IcCurrency-${currency}`}
+                    icon={currency ? `IcCurrency-${currency}` : 'IcCurrencyUnknown'}
                 />
                 <p className='account__inset_header-subheading'>
-                    <Localize
-                        i18n_default_text='For your {{currency_name}} ({{currency}}) account'
-                        values={{
-                            currency_name: currency_name_map[currency.toUpperCase()],
-                            currency     : currency.toUpperCase(),
-                        }}
-                    />
+                    {currency ?
+                        <Localize
+                            i18n_default_text='For your {{currency_name}} ({{currency}}) account'
+                            values={{
+                                currency_name: currency_name_map[currency.toUpperCase()],
+                                currency     : currency.toUpperCase(),
+                            }}
+                        />
+                        :
+                        <Localize
+                            i18n_default_text='No currency has been set for this account'
+                        />
+                    }
                 </p>
 
             </>

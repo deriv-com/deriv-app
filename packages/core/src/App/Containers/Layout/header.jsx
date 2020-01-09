@@ -1,18 +1,19 @@
-import classNames             from 'classnames';
-import PropTypes              from 'prop-types';
-import React                  from 'react';
-import { withRouter }         from 'react-router-dom';
+import classNames              from 'classnames';
+import PropTypes               from 'prop-types';
+import React                   from 'react';
+import { withRouter }          from 'react-router-dom';
 import {
     AccountActions,
     MenuLinks,
-    PlatformSwitcher }        from 'App/Components/Layout/Header';
-import platform_config        from 'App/Constants/platform-config';
-import Lazy                   from 'App/Containers/Lazy';
-import RealAccountSignup      from 'App/Containers/RealAccountSignup';
-import { connect }            from 'Stores/connect';
-import { header_links }       from 'App/Constants/header-links';
-import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
-import routes                 from 'Constants/routes';
+    PlatformSwitcher }         from 'App/Components/Layout/Header';
+import platform_config         from 'App/Constants/platform-config';
+import Lazy                    from 'App/Containers/Lazy';
+import RealAccountSignup       from 'App/Containers/RealAccountSignup';
+import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
+import { connect }             from 'Stores/connect';
+import { header_links }        from 'App/Constants/header-links';
+import { AccountsInfoLoader }  from 'App/Components/Layout/Header/Components/Preloader';
+import routes                  from 'Constants/routes';
 
 class Header extends React.Component {
     onClickDeposit = () => {
@@ -72,7 +73,10 @@ class Header extends React.Component {
                     </div>
                     <div className='header__menu-right'>
                         {is_logging_in &&
-                        <div className='acc-info__preloader'>
+                        <div className={classNames('acc-info__preloader', {
+                            'acc-info__preloader--no-currency': !currency,
+                        })}
+                        >
                             <AccountsInfoLoader is_logged_in={is_logged_in} speed={3} />
                         </div>
                         }
@@ -98,6 +102,7 @@ class Header extends React.Component {
                     </div>
                 </div>
                 <RealAccountSignup />
+                <SetAccountCurrencyModal />
             </header>
         );
     }

@@ -1,6 +1,6 @@
 import React        from 'react';
 import { routes }   from 'Constants/index';
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 import PageError    from 'Modules/PageError';
 
 const Page404 = () => (

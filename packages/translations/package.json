@@ -1,10 +1,11 @@
 {
-  "name": "deriv-translations",
+  "name": "@deriv/translations",
   "version": "1.0.0",
   "description": "Deriv translations",
   "author": "Deriv",
   "license": "Apache-2.0",
   "main": "lib/main.js",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/binary-com/deriv-app.git"

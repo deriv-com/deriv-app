@@ -4,7 +4,7 @@ import {
     action,
     runInAction,
 }                    from 'mobx';
-import { localize }  from 'deriv-translations';
+import { localize }  from '@deriv/translations';
 import config        from '../constants/index';
 import { load }      from '../scratch/utils';
 import ApiHelpers     from '../services/api/api-helpers';
@@ -141,10 +141,10 @@ export default class QuickStrategyStore {
     validateQuickStrategy = values => {
         const errors = {};
         const number_field = ['duration', 'stake', 'size', 'profit', 'loss'];
-    
+
         Object.keys(values).forEach(key => {
             const value = values[key];
-    
+
             if (number_field.includes(key)){
                 if (isNaN(value)) {
                     errors[key] = localize('Must be a number');
@@ -154,7 +154,7 @@ export default class QuickStrategyStore {
                     errors[key] = localize('Invalid number format');
                 }
             }
-    
+
             if (value === '') {
                 errors[key] = localize('Field cannot be empty');
             }
@@ -166,7 +166,7 @@ export default class QuickStrategyStore {
         } else if (values.duration > max) {
             errors.duration = `${localize('Maximum duration:')} ${max}`;
         }
-    
+
         return errors;
     };
 
@@ -178,7 +178,7 @@ export default class QuickStrategyStore {
         await this.updateTradetypeDropdown();
         await this.updateDurationDropdown();
         await this.updateDurationValue();
-            
+
         runInAction(() => {
             this.market_dropdown = market_options;
         });
@@ -205,7 +205,7 @@ export default class QuickStrategyStore {
 
         if (setFieldValue) {
             setFieldValue('trade_type', first_trade_type_option);
-    
+
             await this.updateDurationDropdown(setFieldValue, symbol, first_trade_type_option);
         }
     }
@@ -232,7 +232,7 @@ export default class QuickStrategyStore {
 
         if (setFieldValue) {
             setFieldValue('duration_type', first_duration_option);
-    
+
             this.updateDurationValue(setFieldValue, first_duration_option);
         }
     }

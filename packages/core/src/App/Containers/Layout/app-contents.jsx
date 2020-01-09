@@ -2,13 +2,14 @@ import classNames           from 'classnames';
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import { withRouter }       from 'react-router';
-import { ThemedScrollbars } from 'deriv-components';
+import { ThemedScrollbars } from '@deriv/components';
 import { connect }          from 'Stores/connect';
 // import InstallPWA    from './install-pwa.jsx';
 
 const AppContents = ({
     // addNotificationBar,
     children,
+    identifyEvent,
     is_app_disabled,
     is_positions_drawer_on,
     is_route_modal_on,
@@ -16,6 +17,7 @@ const AppContents = ({
     // setPWAPromptEvent,
 }) => {
     // Segment page view trigger
+    identifyEvent();
     pageView();
 
     // if (is_logged_in) {
@@ -69,6 +71,7 @@ export default withRouter(connect(
     ({ ui, segment }) => ({
         // is_logged_in          : client.is_logged_in,
         // addNotificationBar    : ui.addNotificationBar,
+        identifyEvent         : segment.identifyEvent,
         is_app_disabled       : ui.is_app_disabled,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         is_route_modal_on     : ui.is_route_modal_on,

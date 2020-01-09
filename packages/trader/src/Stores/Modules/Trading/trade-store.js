@@ -284,6 +284,11 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async prepareTradeStore() {
+        // Revert to 'rise_fall' if client is not logged in and current contract_type is 'mult'
+        if (!this.root_store.client.is_logged_in && this.is_multiplier) {
+            this.processNewValuesAsync({ contract_type: 'rise_fall' });
+        }
+
         this.currency         = this.root_store.client.currency;
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
 
@@ -859,6 +864,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     accountSwitcherListener() {
         this.resetErrorServices();
+        this.setContractTypes();
         return this.processNewValuesAsync(
             { currency: this.root_store.client.currency },
             true,
@@ -872,6 +878,9 @@ export default class TradeStore extends BaseStore {
     @action.bound
     preSwitchAccountListener() {
         this.clearContracts();
+        // current contract_type may not be available in new contracts_for response
+        // so we need to clear the value
+        this.processNewValuesAsync({ contract_type: '' });
         this.is_trade_enabled = false;
         return Promise.resolve();
     }

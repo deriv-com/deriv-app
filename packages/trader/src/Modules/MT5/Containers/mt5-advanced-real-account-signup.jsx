@@ -126,7 +126,7 @@ class MT5AdvancedRealAccountSignup extends Component {
     };
 
     updateValue = async (index, value, setSubmitting) => {
-        if (index_lookup.MT5PersonalDetails === index) {
+        if (index_lookup.MT5PersonalDetailsForm === index) {
             // Set account settings
             const data = await WS.setSettings(value);
             if (data.error) {
@@ -156,15 +156,15 @@ class MT5AdvancedRealAccountSignup extends Component {
 
         const cloned = Object.assign([], this.state.items);
         if (response.get_settings.citizen) {
-            cloned[index_lookup.MT5PersonalDetails].form_value.citizen =
+            cloned[index_lookup.MT5PersonalDetailsForm].form_value.citizen =
                 this.transform(response.get_settings.citizen);
         }
         if (response.get_settings.tax_residence) {
-            cloned[index_lookup.MT5PersonalDetails].form_value.tax_residence =
+            cloned[index_lookup.MT5PersonalDetailsForm].form_value.tax_residence =
                 this.transform(response.get_settings.tax_residence);
         }
         if (response.get_settings.tax_identification_number) {
-            cloned[index_lookup.MT5PersonalDetails].form_value.tax_identification_number =
+            cloned[index_lookup.MT5PersonalDetailsForm].form_value.tax_identification_number =
                 response.get_settings.tax_identification_number;
         }
         this.setState({
@@ -197,11 +197,11 @@ class MT5AdvancedRealAccountSignup extends Component {
     saveFormData = (index, value) => {
         const cloned_items             = Object.assign([], this.state.items);
         cloned_items[index].form_value = value;
-        if (this.state_index === index_lookup.MT5PersonalDetails) {
-            cloned_items[index_lookup.MT5PersonalDetails].form_value.citizen =
+        if (this.state_index === index_lookup.MT5PersonalDetailsForm) {
+            cloned_items[index_lookup.MT5PersonalDetailsForm].form_value.citizen =
                 this.transform(value.citizen);
 
-            cloned_items[index_lookup.MT5PersonalDetails].form_value.tax_residence =
+            cloned_items[index_lookup.MT5PersonalDetailsForm].form_value.tax_residence =
                 this.transform(value.tax_residence);
         }
         this.setState({

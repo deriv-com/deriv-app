@@ -515,12 +515,89 @@
     }
 }
 
+.account-poa {
+    &__upload {
+        &-icon {
+            width: 25px;
+        }
+        &-section {
+            margin-top: 1em;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        &-list {
+            width: 100%;
+            flex: 1;
+            margin-right: 16px;
+        }
+        &-file {
+            width: 100%;
+            flex: 1;
+            height: 240px;
+            position: relative;
+
+            .dc-file-dropzone {
+                max-width: 400px;
+            }
+        }
+        &-remove-btn {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 8px;
+            right: 8px;
+            cursor: pointer;
+            transition: transform 0.25s linear;
+
+            &:hover {
+                transform: scale(1.25, 1.25);
+            }
+            &--error {
+                circle {
+                    fill: var(--status-danger);
+                }
+            }
+            &-container {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+        &-box {
+            display: flex;
+            margin-bottom: 2em;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        &-item {
+            min-width: 238px;
+            width: 100%;
+            margin-left: 1em;
+            font-size: var(--text-size-xxs);
+            line-height: 1.5;
+            color: var(--text-prominent);
+        }
+    }
+}
+
 .mt5-proof-of-address {
-    &__field-area {
-        padding: 0 2rem;
+    &__file-area {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    &__description {
+        width: 50%;
     }
     &__file-upload {
-        margin: 0 0 1em;
+        width: 50%;
+    }
+    &__field-area {
+        padding: 0 2rem;
+        max-width: 556px;
+        margin: 0 auto;
     }
     &__inline-fields {
         display: grid;

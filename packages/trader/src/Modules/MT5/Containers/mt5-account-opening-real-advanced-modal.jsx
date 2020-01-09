@@ -32,6 +32,8 @@ class MT5AccountOpeningRealAdvancedModal extends Component {
             setMT5AdvancedModalState,
         } = this.props;
 
+        const toggleModal = () => setMT5AdvancedModalState(false);
+
         return (
             <Modal
                 id='mt5_advanced_signup_modal'
@@ -43,9 +45,11 @@ class MT5AccountOpeningRealAdvancedModal extends Component {
                 enableApp={enableApp}
                 is_open={is_mt5_advanced_modal_open}
                 has_close_icon={true}
-                toggleModal={() => setMT5AdvancedModalState(false)}
+                toggleModal={toggleModal}
             >
-                <MT5AdvancedRealAccountSignup />
+                <MT5AdvancedRealAccountSignup
+                    toggleModal={toggleModal}
+                />
             </Modal>
         );
     }

@@ -285,6 +285,8 @@ class MT5POA extends Component {
             submitted_poa,
         } = this.state;
 
+        const is_form_visible = !is_loading && (resubmit_poa || this.state.poa_status === poa_status_codes.none);
+
         return (
             <div id='real_mt5_personal_details' className='mt5-details-form'>
                 <Formik
@@ -316,7 +318,7 @@ class MT5POA extends Component {
                                 <form onSubmit={handleSubmit}>
                                     {is_loading &&
                                     <Loading is_fullscreen={false} className='account___intial-loader' />}
-                                    {(resubmit_poa || this.state.poa_status === poa_status_codes.none) && (
+                                    {is_form_visible && (
                                         <div className='account-form mt5-proof-of-address'>
                                             <ThemedScrollbars
                                                 autohide
@@ -368,22 +370,24 @@ class MT5POA extends Component {
                                                             placeholder={localize('Postal/ZIP Code')}
                                                         />
                                                     </div>
-                                                    <div className='mt5-proof-of-address__description'>
-                                                        <Description />
-                                                    </div>
-                                                    <div className='mt5-proof-of-address__file-upload'>
-                                                        <FileUploaderContainer
-                                                            onRef={ref => this.setFileUploadRef(ref)}
-                                                            is_description_disabled
-                                                            onFileDrop={
-                                                                ({ document_file: df, file_error_message }) =>
-                                                                    this.onFileDrop(
-                                                                        df,
-                                                                        file_error_message,
-                                                                        setFieldTouched,
-                                                                        setFieldValue,
-                                                                    )}
-                                                        />
+                                                    <div className='mt5-proof-of-address__file-area'>
+                                                        <div className='mt5-proof-of-address__description'>
+                                                            <Description />
+                                                        </div>
+                                                        <div className='mt5-proof-of-address__file-upload'>
+                                                            <FileUploaderContainer
+                                                                onRef={ref => this.setFileUploadRef(ref)}
+                                                                is_description_disabled
+                                                                onFileDrop={
+                                                                    ({ document_file: df, file_error_message }) =>
+                                                                        this.onFileDrop(
+                                                                            df,
+                                                                            file_error_message,
+                                                                            setFieldTouched,
+                                                                            setFieldValue,
+                                                                        )}
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </ThemedScrollbars>

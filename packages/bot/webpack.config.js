@@ -96,6 +96,11 @@ module.exports = function (env, argv) {
                     loader : [ '@deriv/shared/utils/deriv-components-loader.js',
                         'babel-loader' ],
                 },
+                {
+                    test : /\.xml$/,
+                    exclude: /node_modules/,
+                    use: 'raw-loader'
+                },
             ],
         },
         plugins  : [

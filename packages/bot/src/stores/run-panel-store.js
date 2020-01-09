@@ -3,7 +3,7 @@ import {
     action,
     reaction,
     computed }                         from 'mobx';
-import { localize }                    from 'deriv-translations' ;
+import { localize }                    from '@deriv/translations' ;
 import { contract_stages }             from '../constants/contract-stage';
 import {
     error_types,
@@ -19,6 +19,8 @@ export default class RunPanelStore {
         this.root_store = root_store;
         this.registerCoreReactions();
     }
+
+    run_id = '';
 
     @observable active_index      = 0;
     @observable contract_stage    = contract_stages.NOT_RUNNING;
@@ -64,9 +66,10 @@ export default class RunPanelStore {
 
         this.is_running = true;
         this.toggleDrawer(true);
+        this.run_id         = `run-${Date.now()}`;
+
         contract_card.clear();
         this.setContractStage(contract_stages.STARTING);
-
         DBot.runBot();
     }
 
@@ -236,6 +239,9 @@ export default class RunPanelStore {
             }
             case ('contract.purchase_received'): {
                 this.setContractStage(contract_stages.PURCHASE_RECEIVED);
+
+                // Close transaction-specific popover, if any.
+                this.root_store.transactions.setActiveTransactionId(null);
                 break;
             }
             case ('contract.sold'): {
@@ -265,7 +271,7 @@ export default class RunPanelStore {
         } else {
             this.error_type = error_types.RECOVERABLE_ERRORS;
         }
-        
+
         this.showErrorMessage(data);
     }
 
@@ -293,7 +299,7 @@ export default class RunPanelStore {
     @action.bound
     registerCoreReactions() {
         const { client, common, ui } = this.root_store.core;
-        
+
         const register = () => {
             if (common.is_socket_opened) {
                 this.disposeIsSocketOpenedListener = reaction(
@@ -327,6 +333,7 @@ export default class RunPanelStore {
         );
     }
 
+    @action.bound
     setContractStage(value) {
         this.contract_stage = value;
     }

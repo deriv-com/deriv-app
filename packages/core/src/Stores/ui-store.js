@@ -3,7 +3,7 @@ import {
     autorun,
     computed,
     observable }             from 'mobx';
-import ObjectUtils           from 'deriv-shared/utils/object';
+import ObjectUtils           from '@deriv/shared/utils/object';
 import {
     MAX_MOBILE_WIDTH,
     MAX_TABLET_WIDTH }       from 'Constants/ui';
@@ -82,6 +82,9 @@ export default class UIStore extends BaseStore {
     @observable is_real_acc_signup_on         = false;
     @observable has_real_account_signup_ended = false;
 
+    // set currency modal
+    @observable is_set_currency_modal_visible = false;
+
     // position states
     @observable show_positions_toggle = true;
 
@@ -99,6 +102,9 @@ export default class UIStore extends BaseStore {
         success_message   : '',
         error_message     : '',
     };
+
+    // UI Focus retention
+    @observable current_focus = null;
 
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
@@ -271,6 +277,11 @@ export default class UIStore extends BaseStore {
         }
 
         return this.is_dark_mode_on;
+    }
+
+    @action.bound
+    toggleSetCurrencyModal() {
+        this.is_set_currency_modal_visible = !this.is_set_currency_modal_visible;
     }
 
     @action.bound
@@ -501,5 +512,10 @@ export default class UIStore extends BaseStore {
             success_message   : '',
             error_message     : '',
         };
+    }
+
+    @action.bound
+    setCurrentFocus(value) {
+        this.current_focus = value;
     }
 }

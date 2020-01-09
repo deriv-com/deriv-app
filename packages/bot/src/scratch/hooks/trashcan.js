@@ -1,4 +1,4 @@
-const trashcan_margin    = 40;
+const trashcan_margin    = 16;
 const core_footer_height = 36;
 
 /**
@@ -6,7 +6,7 @@ const core_footer_height = 36;
  * @type {number}
  * @private
  */
-Blockly.Trashcan.prototype.MARGIN_BOTTOM_ = trashcan_margin + core_footer_height; // eslint-disable-line
+Blockly.Trashcan.prototype.MARGIN_BOTTOM_ = (trashcan_margin * 2) + core_footer_height; // eslint-disable-line
 
 /**
  * Distance between trashcan and right edge of workspace.
@@ -17,7 +17,6 @@ Blockly.Trashcan.prototype.MARGIN_SIDE_ = trashcan_margin; // eslint-disable-lin
 
 /**
  * Inspect the contents of the trash.
- * deriv-bot: Noop for us, restore original functionality when trashcan can be inspected.
+ * @deriv/bot: Noop for us, restore original functionality when trashcan can be inspected.
  */
 Blockly.Trashcan.prototype.click = function() {};
-  

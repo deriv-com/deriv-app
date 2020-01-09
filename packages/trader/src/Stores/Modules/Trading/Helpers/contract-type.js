@@ -1,6 +1,6 @@
-import ObjectUtils             from 'deriv-shared/utils/object';
+import ObjectUtils             from '@deriv/shared/utils/object';
 import ServerTime              from '_common/base/server_time';
-import { localize }            from 'deriv-translations';
+import { localize }            from '@deriv/translations';
 import { WS }                  from 'Services/ws-methods';
 import {
     isTimeValid,
@@ -133,6 +133,8 @@ const ContractType = (() => {
     );
 
     const getContractValues = (store) => {
+        if (ObjectUtils.isEmptyObject(contract_types)) return {};
+
         const { contract_expiry_type, contract_type, basis, duration_unit, start_date } = store;
         const form_components   = getComponents(contract_type);
         const obj_basis         = getBasis(contract_type, basis);

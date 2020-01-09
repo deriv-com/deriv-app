@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes }       from 'mobx-react';
 import PropTypes                            from 'prop-types';
 import React                                from 'react';
 import { withRouter }                       from 'react-router-dom';
-import { localize, Localize }               from 'deriv-translations';
+import { localize, Localize }               from '@deriv/translations';
 import { urlFor }                           from '_common/url';
 import DataTable                            from 'App/Components/Elements/DataTable';
 import CompositeCalendar                    from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
@@ -108,6 +108,7 @@ class Statement extends React.Component {
                         getRowAction={(row) => this.getRowAction(row)}
                         is_empty={is_empty}
                         custom_width={'100%'}
+                        getRowSize={() => 63}
                     >
                         <PlaceholderComponent
                             is_loading={is_loading}

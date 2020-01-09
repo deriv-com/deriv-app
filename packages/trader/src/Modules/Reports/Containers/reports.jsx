@@ -1,8 +1,8 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { withRouter }    from 'react-router-dom';
-import { VerticalTab }   from 'deriv-components';
-import { localize }      from 'deriv-translations';
+import { VerticalTab }   from '@deriv/components';
+import { localize }      from '@deriv/translations';
 import { FadeWrapper }   from 'App/Components/Animations';
 import AppRoutes         from 'Constants/routes';
 import { connect }       from 'Stores/connect';

@@ -1,8 +1,8 @@
 import PropTypes            from 'prop-types';
 import React                from 'react';
-import { Button }           from 'deriv-components';
+import { Button }           from '@deriv/components';
 import { redirectToSignUp } from '_common/base/login';
-import { localize }         from 'deriv-translations';
+import { localize }         from '@deriv/translations';
 
 const SignupButton = ({ className }) => (
     <Button

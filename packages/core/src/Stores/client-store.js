@@ -6,15 +6,15 @@ import {
     runInAction,
     when,
     reaction }                       from 'mobx';
-import CurrencyUtils                 from 'deriv-shared/utils/currency';
-import ObjectUtils                   from 'deriv-shared/utils/object';
+import CurrencyUtils                 from '@deriv/shared/utils/currency';
+import ObjectUtils                   from '@deriv/shared/utils/object';
 import {
     requestLogout,
     WS }                             from 'Services';
 import ClientBase                    from '_common/base/client_base';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
-import { localize }                  from 'deriv-translations';
+import { localize }                  from '@deriv/translations';
 import {
     LocalStore,
     State }                          from '_common/storage';
@@ -332,7 +332,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_mt5_allowed() {
-        if (!this.landing_companies) return false;
+        if (!Object.keys(this.landing_companies).length) return false;
         // TODO revert this when all landing companies are accepted.
         // return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
         if ('mt_financial_company' in this.landing_companies ||  'mt_gaming_company' in this.landing_companies) {
@@ -610,8 +610,8 @@ export default class ClientStore extends BaseStore {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
 
                 // Client comes back from oauth and logs in
-                this.root_store.segment.identifyEvent();
-                this.root_store.segment.pageView();
+                await this.root_store.segment.identifyEvent();
+
                 this.root_store.gtm.pushDataLayer({ event: 'login' });
             } else { // So it will send an authorize with the accepted token, to be handled by socket-general
                 await BinarySocket.authorize(client.token);
@@ -885,6 +885,7 @@ export default class ClientStore extends BaseStore {
     cleanUp() {
         this.root_store.gtm.pushDataLayer({ event: 'log_out' });
         this.loginid      = null;
+        this.user_id      = null;
         this.upgrade_info = undefined;
         this.accounts     = {};
         runInAction(async () => {
@@ -901,6 +902,8 @@ export default class ClientStore extends BaseStore {
 
         if (response.logout === 1) {
             this.cleanUp();
+
+            this.root_store.segment.reset();
             this.setLogout(true);
         }
 

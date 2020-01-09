@@ -1,9 +1,15 @@
-import { action, observable } from 'mobx';
-import { isEnded }            from '../utils/contract';
+import { action, observable }   from 'mobx';
+import { formatDate }           from '@deriv/shared/utils/date';
+import { transaction_elements } from '../constants/transactions';
+import { isEnded }              from '../utils/contract';
 
 export default class TransactionsStore {
+    constructor(root_store) {
+        this.root_store = root_store;
+    }
 
-    @observable contracts = [];
+    @observable elements              = [];
+    @observable active_transaction_id = null;
 
     @action.bound
     onBotContractEvent(data) {
@@ -12,26 +18,95 @@ export default class TransactionsStore {
 
     @action.bound
     pushTransaction(data) {
-        const is_completed  = isEnded(data);
-        const contract = {
-            buy_price    : data.buy_price,
-            contract_type: data.contract_type,
-            currency     : data.currency,
-            refrence_id  : data.transaction_ids.buy,
-            entry_spot   : data.entry_tick_display_value,
-            exit_spot    : data.exit_tick_display_value,
-            profit       : is_completed && data.profit,
+        const is_completed = isEnded(data);
+        const { run_id }   = this.root_store.run_panel;
+        const contract     = {
+            barrier        : data.barrier,
+            buy_price      : data.buy_price,
+            contract_type  : data.contract_type,
+            currency       : data.currency,
+            display_name   : data.display_name,
+            date_start     : formatDate(data.date_start, 'YYYY-M-D HH:mm:ss [GMT]'),
+            entry_tick     : data.entry_tick_display_value,
+            entry_tick_time: data.entry_tick_time && formatDate(data.entry_tick_time, 'YYYY-M-D HH:mm:ss [GMT]'),
+            exit_tick      : data.exit_tick_display_value,
+            exit_tick_time : data.exit_tick_time && formatDate(data.exit_tick_time, 'YYYY-M-D HH:mm:ss [GMT]'),
+            high_barrier   : data.high_barrier,
             is_completed,
+            low_barrier    : data.low_barrier,
+            profit         : is_completed && data.profit,
+            run_id,
+            shortcode      : data.shortcode,
+            tick_count     : data.tick_count,
+            transaction_ids: data.transaction_ids,
+            underlying     : data.underlying,
         };
-        if (this.contracts.some(e => e.refrence_id === data.transaction_ids.buy)) {
-            this.contracts.shift();
+
+        const same_contract_index = this.elements.findIndex(c =>
+            c.type === transaction_elements.CONTRACT &&
+            c.data.transaction_ids &&  c.data.transaction_ids.buy === data.transaction_ids.buy
+        );
+
+        if (same_contract_index === -1) {
+            // Render a divider if the "run_id" for this contract is different.
+            if (this.elements.length > 0) {
+                const is_new_run =
+                    this.elements[0].type === transaction_elements.CONTRACT &&
+                    contract.run_id !== this.elements[0].data.run_id;
+
+                if (is_new_run) {
+                    this.elements.unshift({
+                        type: transaction_elements.DIVIDER,
+                        data: contract.run_id,
+                    });
+                }
+            }
+
+            this.elements.unshift({
+                type: transaction_elements.CONTRACT,
+                data: contract,
+            });
+        } else {
+            // If data belongs to existing contract in memory, update it.
+            this.elements.splice(same_contract_index, 1, {
+                type: transaction_elements.CONTRACT,
+                data: contract,
+            });
         }
-        this.contracts.unshift(contract);
-        this.contracts = this.contracts.slice(0);  // force array update
+
+        this.elements = this.elements.slice(); // force array update
     }
 
     @action.bound
-    clear(){
-        this.contracts = this.contracts.slice(0,0);  // force array update
+    setActiveTransactionId(transaction_id) {
+        // Toggle transaction popover if passed transaction_id is the same.
+        if (transaction_id && this.active_transaction_id === transaction_id) {
+            this.active_transaction_id = null;
+        } else {
+            this.active_transaction_id = transaction_id;
+        }
+    }
+
+    @action.bound
+    onClickOutsideTransaction(event) {
+        const is_transaction_click = event.path.some(el => el.classList && el.classList.contains('transactions__item-wrapper'));
+        if (!is_transaction_click) {
+            this.setActiveTransactionId(null);
+        }
+    }
+
+    @action.bound
+    onMount() {
+        window.addEventListener('click', this.onClickOutsideTransaction);
+    }
+
+    @action.bound
+    onUnmount() {
+        window.removeEventListener('click', this.onClickOutsideTransaction);
+    }
+
+    @action.bound
+    clear() {
+        this.elements = this.elements.slice(0, 0); // force array update
     }
 }

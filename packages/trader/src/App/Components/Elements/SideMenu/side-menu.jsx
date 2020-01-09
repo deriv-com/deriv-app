@@ -1,6 +1,6 @@
 import {
     VerticalTabContentContainer,
-    VerticalTabLayout }          from 'deriv-components';
+    VerticalTabLayout }          from '@deriv/components';
 import PropTypes                 from 'prop-types';
 import React                     from 'react';
 import { SideMenuHeaders }       from './side-menu-headers.jsx';

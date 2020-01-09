@@ -1,4 +1,4 @@
-import { localize }    from 'deriv-translations';
+import { localize }    from '@deriv/translations';
 import BlockConversion from '../backward-compatibility';
 import { saveAs }      from '../shared';
 import config          from '../../constants';
@@ -24,7 +24,7 @@ export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
     const blockly_top        = document.body.offsetHeight - blockly_metrics.viewHeight - blockly_metrics.viewTop;
     const cursor_x           = clientX ? (clientX - blockly_left) * scale_cancellation : 0;
     const cursor_y           = clientY ? (clientY - blockly_top - toolbar_height) * scale_cancellation : 0;
-    
+
     Blockly.derivWorkspace.cleanUp(cursor_x, cursor_y, blocks_to_clean);
 };
 
@@ -52,10 +52,10 @@ export const setBlockTextColor = block => {
     Blockly.Events.recordUndo = true;
 };
 
-export const save = (filename = 'deriv-bot', collection = false, xmlDom) => {
+export const save = (filename = '@deriv/bot', collection = false, xmlDom) => {
     xmlDom.setAttribute('is_dbot', 'true');
     xmlDom.setAttribute('collection', collection ? 'true' : 'false');
-    
+
     const data = Blockly.Xml.domToPrettyText(xmlDom);
     saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
 };
@@ -65,7 +65,7 @@ export const load = (block_string, drop_event) => {
 
     const showInvalidStrategyError = () => {
         const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
-        
+
         journal.onError(error_message);
         run_panel.setActiveTabIndex(2);
     };
@@ -92,7 +92,7 @@ export const load = (block_string, drop_event) => {
 
     const blockConversion = new BlockConversion();
     xml = blockConversion.convertStrategy(xml);
-    
+
     const blockly_xml = xml.querySelectorAll('block');
 
     // Check if there are any blocks in this strategy.
@@ -236,7 +236,7 @@ export const addLoaderBlocksFirst = (xml) => {
 
         Array.from(xml.children).forEach(el_block => {
             const block_type = el_block.getAttribute('type');
-    
+
             if (block_type === 'loader') {
                 el_block.remove();
                 const loader = Blockly.Xml.domToBlock(el_block, Blockly.derivWorkspace);
@@ -307,6 +307,28 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
     }
 
     workspace.scrollbar.set(scroll_x, scroll_y);
+};
+
+export const updateDisabledBlocks = (workspace, event) => {
+    if (event.type !== Blockly.Events.END_DRAG) {
+        return;
+    }
+
+    workspace.getAllBlocks().forEach(block => {
+        if (!block.getParent()) {
+            return;
+        }
+
+        const restricted_parents = block.restricted_parents || [];
+        const should_disable     = !(
+            restricted_parents.length === 0 ||
+            restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent))
+        );
+
+        if (block.disabled !== should_disable) {
+            block.setDisabled(should_disable);
+        }
+    });
 };
 
 export const emptyTextValidator = (input) => {

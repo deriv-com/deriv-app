@@ -2,6 +2,23 @@ import classNames from 'classnames';
 import PropTypes  from 'prop-types';
 import React      from 'react';
 
+// TODO: use-from-shared - Use this icon from icons' shared package
+const IconDrawer = () => (
+    <svg
+        className='dc-drawer__toggle-icon'
+        xmlns='http://www.w3.org/2000/svg'
+        width='16'
+        height='16'
+        viewBox='0 0 16 16'
+    >
+        <path
+            fill='var(--text-less-prominent)'
+            fillRule='nonzero'
+            d='M8.87 2.164l5 5.5a.5.5 0 0 1 0 .672l-5 5.5a.5.5 0 0 1-.74-.672L12.824 8 8.13 2.836a.5.5 0 0 1 .74-.672zm-5 0l5 5.5a.5.5 0 0 1 0 .672l-5 5.5a.5.5 0 0 1-.74-.672L7.824 8 3.13 2.836a.5.5 0 1 1 .74-.672z'
+        />
+    </svg>
+);
+
 class Drawer extends React.PureComponent {
 
     constructor(props) {
@@ -60,9 +77,7 @@ class Drawer extends React.PureComponent {
                         { 'dc-drawer__toggle--open': this.state.is_open })}
                     onClick={this.toggleDrawer}
                 >
-                    <div className='dc-drawer__toggle-icon-wraper'>
-                        <div className='dc-drawer__toggle-icon' />
-                    </div>
+                    <IconDrawer />
                 </div>
             </div>
         );

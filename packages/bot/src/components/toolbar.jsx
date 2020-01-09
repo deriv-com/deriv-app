@@ -3,7 +3,7 @@ import {
     Icon,
     Input,
     Popover,
-}                    from 'deriv-components';
+}                    from '@deriv/components';
 import {
     Field,
     Formik,
@@ -11,7 +11,7 @@ import {
 }                    from 'formik';
 import PropTypes     from 'prop-types';
 import React         from 'react';
-import { localize }  from 'deriv-translations';
+import { localize }  from '@deriv/translations';
 import Dialog        from './dialog.jsx';
 import SaveLoadModal  from './saveload-modal.jsx';
 import TradeAnimation from './trade-animation.jsx';
@@ -22,8 +22,8 @@ import                '../assets/sass/scratch/toolbar.scss';
 const SearchBox = ({
     is_search_loading,
     onSearch,
-    onSearchClear,
     onSearchBlur,
+    onSearchClear,
     onSearchKeyUp,
 }) => (
     <div className='toolbar__form'>
@@ -199,13 +199,13 @@ const Toolbar = ({
     <div className='toolbar'>
         <div className='toolbar__section'>
             <Popover
+                id='gtm-get-started'
                 alignment='bottom'
                 classNameBubble='toolbar__bubble'
                 message={localize('Click here to start building your DBot.')}
             >
                 <Button
-                    id='gtm-get-started'
-                    className='toolbar__btn--icon toolbar__btn--start'
+                    className='toolbar__btn--icon'
                     has_effect
                     onClick={onToolboxToggle}
                     icon={<Icon icon='IcPuzzle' color='active' />}

@@ -1,6 +1,6 @@
 import React        from 'react';
-import { Icon }     from 'deriv-components';
-import { localize } from 'deriv-translations';
+import { Icon }     from '@deriv/components';
+import { localize } from '@deriv/translations';
 
 const EmptyNotification = () => (
     <div className='notifications-empty__container'>

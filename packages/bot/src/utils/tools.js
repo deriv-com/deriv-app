@@ -1,5 +1,5 @@
 import RenderHTML                       from 'react-render-html';
-import { localize }                     from 'deriv-translations';
+import { localize }                     from '@deriv/translations';
 import { observer as globalObserver }   from './observer';
 
 export const getObjectValue = obj => obj[Object.keys(obj)[0]];
@@ -83,15 +83,5 @@ export const importExternal = url => {
         script.onerror = reject;
 
         document.body.appendChild(script);
-    });
-};
-
-export const delayCallbackByMs = (callback, ms) => {
-    let timer = 0;
-    return new Promise(resolve => {
-        timer = setTimeout(() => {
-            callback();
-            resolve(timer);
-        }, ms || 0);
     });
 };

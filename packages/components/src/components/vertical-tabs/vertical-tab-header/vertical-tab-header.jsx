@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom';
 import Counter     from 'Components/counter';
 import Icon        from 'Components/icon';
 
-
 const HeaderIcon = ({ icon, is_active }) => (
     <Icon
         icon={icon}

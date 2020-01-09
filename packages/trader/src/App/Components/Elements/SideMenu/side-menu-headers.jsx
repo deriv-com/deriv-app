@@ -1,8 +1,8 @@
-import classNames         from 'classnames';
-import { 
+import {
     Icon,
     VerticalTabHeaders,
-    VerticalTabHeader }   from 'deriv-components';
+    VerticalTabHeader }   from '@deriv/components';
+import classNames         from 'classnames';
 import React              from 'react';
 import { withRouter }     from 'react-router-dom';
 

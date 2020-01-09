@@ -1,11 +1,11 @@
 import classNames            from 'classnames';
 import {
     Icon,
-    Money }                  from 'deriv-components';
+    Money }                  from '@deriv/components';
 import React                 from 'react';
 import PropTypes             from 'prop-types';
-import CurrencyUtils         from 'deriv-shared/utils/currency';
-import { localize }          from 'deriv-translations';
+import CurrencyUtils         from '@deriv/shared/utils/currency';
+import { localize }          from '@deriv/translations';
 import ContractCardLoader    from './contract-card-loading.jsx';
 import ContractResultOverlay from './contract-result-overlay.jsx';
 import IconTradeType         from './icon-trade-types.jsx';

@@ -1,8 +1,11 @@
 import classNames    from 'classnames';
-import { Money }     from 'deriv-components';
+import {
+    Money,
+    ThemedScrollbars,
+}                    from '@deriv/components';
 import PropTypes     from 'prop-types';
 import React         from 'react';
-import { localize }  from 'deriv-translations';
+import { localize }  from '@deriv/translations';
 import ContractCard  from './contract-card.jsx';
 import { connect }   from '../stores/connect';
 import                    '../assets/sass/summary.scss';
@@ -28,39 +31,44 @@ const Summary = ({
 
     return (
         <div className='summary'>
-            <ContractCard />
-            <div className='summary__tiles'>
-                <SummaryTile
-                    title={localize('Total stake')}
-                    content={ Money({ amount: total_stake, currency }) }
-                />
-                <SummaryTile
-                    title={localize('Total payout')}
-                    content={ Money({ amount: total_payout, currency }) }
-                />
-                <SummaryTile
-                    title={localize('No. of runs')}
-                    content={number_of_runs}
-                />
-                <SummaryTile
-                    title={localize('Loss contracts')}
-                    content={lost_contracts}
-                />
-                <SummaryTile
-                    title={localize('Win contracts')}
-                    content={won_contracts}
-                />
-                <SummaryTile
-                    title={localize('Profit/Loss')}
-                    content={Money({ amount: total_profit, currency, has_sign: true })}
-                    contentClassName={classNames(
-                        'summary__tile-content',
-                        'summary__amount', {
-                            'summary__amount--positive': total_profit > 0,
-                            'summary__amount--negative': total_profit < 0,
-                        })}
-                />
-            </div>
+            <ThemedScrollbars
+                autoHide
+                style={{ height: 'var(--drawer-scroll-height)' }}
+            >
+                <ContractCard />
+                <div className='summary__tiles'>
+                    <SummaryTile
+                        title={localize('Total stake')}
+                        content={ Money({ amount: total_stake, currency }) }
+                    />
+                    <SummaryTile
+                        title={localize('Total payout')}
+                        content={ Money({ amount: total_payout, currency }) }
+                    />
+                    <SummaryTile
+                        title={localize('No. of runs')}
+                        content={number_of_runs}
+                    />
+                    <SummaryTile
+                        title={localize('Loss contracts')}
+                        content={lost_contracts}
+                    />
+                    <SummaryTile
+                        title={localize('Win contracts')}
+                        content={won_contracts}
+                    />
+                    <SummaryTile
+                        title={localize('Profit/Loss')}
+                        content={Money({ amount: total_profit, currency, has_sign: true })}
+                        contentClassName={classNames(
+                            'summary__tile-content',
+                            'summary__amount', {
+                                'summary__amount--positive': total_profit > 0,
+                                'summary__amount--negative': total_profit < 0,
+                            })}
+                    />
+                </div>
+            </ThemedScrollbars>
         </div>
     );
 };

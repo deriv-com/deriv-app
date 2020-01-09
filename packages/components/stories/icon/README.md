@@ -12,7 +12,7 @@
 2. Using icons as a UI component library (in Trader or Bot)
 
     ```jsx
-    import { Icon } from 'deriv-components';
+    import { Icon } from '@deriv/components';
 
     const App = () => (
         <Icon icon='IcBrandDbot' />
@@ -37,7 +37,7 @@
 #### Example:
 
 ```jsx
-import { Icon } from 'deriv-components';
+import { Icon } from '@deriv/components';
 
 const App = () => (
     <>
@@ -112,7 +112,7 @@ const App = () => (
             spriteFilename: svgPath => {
                 ...
                 if (svgPath.includes('components/icon/new_category')) {
-                    return 'new_category.svg'; // Webpack will add new_category.svg to public/sprite
+                    return 'new_category.svg'; // Webpack will add new_category.svg to public/images/sprite
                 }
                 ...
             },

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React      from 'react';
-import { Icon }   from 'deriv-components';
+import { Icon }   from '@deriv/components';
 
 class ToggleFullScreen extends React.Component {
     constructor(props) {

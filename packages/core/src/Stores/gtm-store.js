@@ -2,7 +2,7 @@ import * as Cookies           from 'js-cookie';
 import {
     action,
     computed }                from 'mobx';
-import { getLanguage }        from 'deriv-translations';
+import { getLanguage }        from '@deriv/translations';
 import BinarySocket           from '_common/base/socket_base';
 import { isLoginPages }       from '_common/base/login';
 import {
@@ -37,7 +37,7 @@ export default class GTMStore extends BaseStore {
             const url    = new URL(window.location.href);
             const domain = url.hostname;
             const path   = url.pathname;
-            
+
             if (/^(deriv.app|staging.deriv.app|localhost.binary.sx)$/.test(domain)) {
                 if (path === 'bot') {
                     return 'DBot';
@@ -186,5 +186,17 @@ export default class GTMStore extends BaseStore {
         if (this.is_gtm_applicable) {
             localStorage.setItem('GTM_login', event_name);
         }
+    }
+
+    @action.bound
+    pushLoadPerformance(performance_metric, duration) {
+        const data = {
+            'event': performance_metric,
+            duration,
+        };
+        dataLayer.push({
+            ...this.common_variables,
+            ...data,
+        });
     }
 }

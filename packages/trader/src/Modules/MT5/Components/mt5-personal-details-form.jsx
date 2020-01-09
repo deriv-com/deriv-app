@@ -138,7 +138,7 @@ class MT5PersonalDetailsForm extends Component {
                                     <div className='details-form__elements-container'>
                                         <ThemedScrollbars
                                             autoHide
-                                            style={{ height: 320 }}
+                                            style={{ height: 432 }}
                                         >
                                             <div className='details-form__elements' style={{ paddingBottom: '18rem' }}>
                                                 <FormSubHeader title={localize('Details')} />

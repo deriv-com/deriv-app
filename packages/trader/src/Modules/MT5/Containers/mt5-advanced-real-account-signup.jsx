@@ -28,7 +28,7 @@ class MT5AdvancedRealAccountSignup extends Component {
             form_error: '',
             items     : [
                 {
-                    header    : {
+                    header: {
                         active_title: localize('Complete your personal details'),
                         title       : localize('Personal details'),
                     },
@@ -38,10 +38,10 @@ class MT5AdvancedRealAccountSignup extends Component {
                         tax_residence            : '',
                         tax_identification_number: '',
                     },
-                    props     : ['residence_list', 'is_fully_authenticated'],
+                    props: ['residence_list', 'is_fully_authenticated'],
                 },
                 {
-                    header    : {
+                    header: {
                         active_title: localize('Complete your personal details'),
                         title       : localize('Proof of identity'),
                     },
@@ -49,7 +49,7 @@ class MT5AdvancedRealAccountSignup extends Component {
                     form_value: {
                         poi_state: 'unknown',
                     },
-                    props     : [
+                    props: [
                         'addNotificationsByKey',
                         'refreshNotifications',
                         'removeNotificationMessage',
@@ -57,7 +57,7 @@ class MT5AdvancedRealAccountSignup extends Component {
                     ],
                 },
                 {
-                    header    : {
+                    header: {
                         active_title: localize('Complete your personal details'),
                         title       : localize('Proof of address'),
                     },
@@ -70,7 +70,7 @@ class MT5AdvancedRealAccountSignup extends Component {
                         address_postcode: props.get_settings.address_postcode,
                         upload_file     : '',
                     },
-                    props     : ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications'],
+                    props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications'],
                 },
                 {
                     body      : MT5PendingVerificationModal,
@@ -79,7 +79,7 @@ class MT5AdvancedRealAccountSignup extends Component {
                         active_title: localize('Account password'),
                         title       : localize('Account password'),
                     },
-                    props     : ['toggleModal'],
+                    props: ['toggleModal'],
                 },
             ],
         };
@@ -126,7 +126,6 @@ class MT5AdvancedRealAccountSignup extends Component {
     };
 
     updateValue = async (index, value, setSubmitting) => {
-        debugger;
         if (index_lookup.MT5PersonalDetails === index) {
             // Set account settings
             const data = await WS.setSettings(value);

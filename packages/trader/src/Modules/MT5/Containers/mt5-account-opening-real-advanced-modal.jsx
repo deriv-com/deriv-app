@@ -1,5 +1,6 @@
 import React, { Component }         from 'react';
 import { Modal }                    from '@deriv/components';
+import { localize }                 from '@deriv/translations';
 import { connect }                  from 'Stores/connect';
 import MT5AdvancedRealAccountSignup from 'Modules/MT5/Containers/mt5-advanced-real-account-signup.jsx';
 // import Mt5Password                  from '../Components/mt5-password.jsx';
@@ -36,6 +37,9 @@ class MT5AccountOpeningRealAdvancedModal extends Component {
                 id='mt5_advanced_signup_modal'
                 className='mt5-advanced-signup-modal'
                 disableApp={disableApp}
+                width='904px'
+                height='688px'
+                title={localize('Create a DMT5 real Advanced account')}
                 enableApp={enableApp}
                 is_open={is_mt5_advanced_modal_open}
                 has_close_icon={true}

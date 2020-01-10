@@ -190,18 +190,7 @@ function calculate_marker(contract_info) {
         };
     }
 
-    if (tick_count >= 1) {
-        if (!isDigitContract(contract_type)) {
-            // TickContract
-            return {
-                contract_info: toJS(contract_info),
-                type         : 'TickContract',
-                key          : `${contract_id}-date_start`,
-                epoch_array  : [date_start, reset_time || 0, ...ticks_epoch_array],
-                price_array,
-            };
-        }
-        // DigitContract
+    if (tick_count >= 1 && isDigitContract(contract_type)) { // Digits Contract
         return {
             contract_info: toJS(contract_info),
             type         : 'DigitContract',
@@ -209,15 +198,21 @@ function calculate_marker(contract_info) {
             epoch_array  : [date_start, ...ticks_epoch_array],
             price_array,
         };
-    }
-    // NonTickContract
-    if (!tick_count) {
+    } else if (tick_count >= 1) { // Tick Contract
+        return {
+            contract_info: toJS(contract_info),
+            type         : 'TickContract',
+            key          : `${contract_id}-date_start`,
+            epoch_array  : [date_start, reset_time || 0, ...ticks_epoch_array],
+            price_array,
+        };
+    } else if (!tick_count) { // NonTick Contract
         // getEndTime returns undefined when contract is running.
         const end_time = getEndTime(contract_info) || date_expiry;
-        // the order of items in epoch_array matches the NonTickContract params.
+
         const epoch_array = [date_start, end_time];
-        if (entry_tick_time) { epoch_array.push(entry_tick_time); }
-        if (exit_tick_time) { epoch_array.push(exit_tick_time); }
+        epoch_array.push(...[entry_tick_time, reset_time, exit_tick_time].filter(epoch => epoch));
+
         return {
             contract_info: toJS(contract_info),
             type         : 'NonTickContract',
@@ -226,5 +221,6 @@ function calculate_marker(contract_info) {
             price_array,
         };
     }
+
     return null;
 }

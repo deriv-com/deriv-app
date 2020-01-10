@@ -1,8 +1,10 @@
 import classNames                     from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
-import React, { useCallback }         from 'react';
+import React                          from 'react';
 import { NavLink }                    from 'react-router-dom';
+import { TransitionGroup,
+    CSSTransition }                   from 'react-transition-group';
 import { VariableSizeList as List }   from 'react-window';
 import { Icon, ThemedScrollbars }     from '@deriv/components';
 import { localize }                   from '@deriv/translations';
@@ -10,43 +12,27 @@ import routes                         from 'Constants/routes';
 import EmptyPortfolioMessage          from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import Shortcode                      from 'Modules/Reports/Helpers/shortcode';
 import { connect }                    from 'Stores/connect';
+import { isEnded, isValidToSell }     from 'Stores/Modules/Contract/Helpers/logic';
+import { isMultiplierContract }       from 'Stores/Modules/Contract/Helpers/multiplier';
 import { getContractTypesConfig }     from 'Stores/Modules/Trading/Constants/contract';
 import PositionsDrawerCard            from './PositionsDrawerCard';
-
-const ListScrollbar = React.forwardRef((props, ref) => (
-    <ExtendedScrollbars {...props} forwardedRef={ref} />
-));
-
-// Display name is required by Developer Tools to give a name to the components we use.
-// If a component doesn't have a displayName is will be shown as <Unknown />. Hence, name is set.
-ListScrollbar.displayName = 'ListScrollbar';
-
-const ExtendedScrollbars = ({ onScroll, forwardedRef, style, children }) => {
-    const refSetter = useCallback(scrollbarsRef => {
-        if (scrollbarsRef) {
-            forwardedRef(scrollbarsRef.view);
-        } else {
-            forwardedRef(null);
-        }
-    }, []);
-
-    return (
-        <ThemedScrollbars
-            ref={refSetter}
-            style={{ ...style, overflow: 'hidden' }}
-            onScroll={onScroll}
-            autoHide
-        >
-            {children}
-        </ThemedScrollbars>
-    );
-};
 
 class PositionsDrawer extends React.Component {
     state = {}
     
     componentDidMount()    {
         this.props.onMount();
+        this.ListScrollbar = this.getListScrollbar();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if ((this.props.symbol && nextProps.symbol !== this.props.symbol) ||
+            (this.props.trade_contract_type && nextProps.trade_contract_type !== this.props.trade_contract_type)) {
+            if (this.list_ref && this.scrollbar_ref) {
+                this.list_ref.scrollTo(0);
+                this.scrollbar_ref.scrollToTop();
+            }
+        }
     }
 
     componentWillUnmount() {
@@ -66,6 +52,7 @@ class PositionsDrawer extends React.Component {
         data,
         index,       // Index of row
         style,
+        isScrolling,
     }) => {
         const {
             currency,
@@ -76,26 +63,40 @@ class PositionsDrawer extends React.Component {
             toggleUnsupportedContractModal,
         } = this.props;
         const portfolio_position = data[index];
+
         return (
             <div
                 key={portfolio_position.id}
                 style={style}
             >
-                <PositionsDrawerCard
-                    onClickCancel={onClickCancel}
-                    onClickSell={onClickSell}
-                    onClickRemove={onClickRemove}
-                    onMouseEnter={() => {
-                        onHoverPosition(true, portfolio_position);
+                <CSSTransition
+                    appear
+                    key={portfolio_position.key}
+                    in={true}
+                    timeout={isScrolling ? 0 : 150}
+                    classNames={isScrolling ? {} : {
+                        appear   : 'positions-drawer-card__wrapper--enter',
+                        enter    : 'positions-drawer-card__wrapper--enter',
+                        enterDone: 'positions-drawer-card__wrapper--enter-done',
+                        exit     : 'positions-drawer-card__wrapper--exit',
                     }}
-                    onMouseLeave={() => {
-                        onHoverPosition(false, portfolio_position);
-                    }}
-                    key={portfolio_position.id}
-                    currency={currency}
-                    toggleUnsupportedContractModal={toggleUnsupportedContractModal}
-                    {...portfolio_position}
-                />
+                >
+                    <PositionsDrawerCard
+                        onClickCancel={onClickCancel}
+                        onClickSell={onClickSell}
+                        onClickRemove={onClickRemove}
+                        onMouseEnter={() => {
+                            onHoverPosition(true, portfolio_position);
+                        }}
+                        onMouseLeave={() => {
+                            onHoverPosition(false, portfolio_position);
+                        }}
+                        key={portfolio_position.id}
+                        currency={currency}
+                        toggleUnsupportedContractModal={toggleUnsupportedContractModal}
+                        {...portfolio_position}
+                    />
+                </CSSTransition>
             </div>
         );
     }
@@ -110,6 +111,75 @@ class PositionsDrawer extends React.Component {
         return match;
     }
 
+    hasPositionsHeightChanged = (newPositionsHeight, oldPositionsHeight) => {
+        if (newPositionsHeight.length !== oldPositionsHeight.length) { return true; }
+        for (let i = 0; i < newPositionsHeight.length; i++) {
+            if (newPositionsHeight[i] !== oldPositionsHeight[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    calculatePositionsHeight() {
+        const newPositionsHeight = this.positions.map((position) => this.getPositionHeight(position));
+        if (this.list_ref && this.hasPositionsHeightChanged(newPositionsHeight, this.positionsHeight)) {
+            // When there is a change in height of an item, this recalculates scroll height of the list and reapplies styles.
+            this.list_ref.resetAfterIndex(0);
+        }
+
+        this.positionsHeight = newPositionsHeight;
+    }
+
+    getCachedPositionHeight = (index) => {
+        return this.positionsHeight[index];
+    }
+
+    getPositionHeight = (position) => {
+        // React window doesn't work with dynamic height. This is a work around to get height of a position based on different combinations.
+        const { contract_info } = position;
+        const has_ended = isEnded(contract_info);
+        const is_valid_to_sell   = isValidToSell(contract_info);
+        const is_multiplier_contract = isMultiplierContract(contract_info.contract_type);
+        const is_tick_contract = contract_info.tick_count > 0;
+
+        if (has_ended) {
+            return is_multiplier_contract ? 198 : 158;
+        } else if (is_tick_contract) {
+            return 202;
+        }
+        
+        const classic_contract_height = is_valid_to_sell ? 228 : 188;
+        return is_multiplier_contract ? 238 : classic_contract_height;
+    }
+
+    getListScrollbar() {
+        const ListScrollbar = React.forwardRef((props, ref) => {
+            const { children, style, onScroll } = props;
+
+            const refCallback = (forwardRef) => {
+                this.scrollbar_ref = forwardRef;
+                ref.call(this, forwardRef);
+            };
+
+            return (
+                <ThemedScrollbars
+                    list_ref={refCallback}
+                    style={{ ...style, overflow: 'hidden' }}
+                    onScroll={onScroll}
+                    autoHide
+                >
+                    {children}
+                </ThemedScrollbars>
+            );
+        });
+        // Display name is required by Developer Tools to give a name to the components we use.
+        // If a component doesn't have a displayName is will be shown as <Unknown />. Hence, name is set.
+        ListScrollbar.displayName = 'ListScrollbar';
+
+        return ListScrollbar;
+    }
+
     render() {
         const {
             all_positions,
@@ -120,25 +190,30 @@ class PositionsDrawer extends React.Component {
             toggleDrawer,
         } = this.props;
 
-        const positions = all_positions.filter((p) => (
+        this.positions = all_positions.filter((p) => (
             p.contract_info && symbol === p.contract_info.underlying) &&
             this.filterByContractType(p.contract_info)
         );
 
-        // Show only 5 most recent open contracts
+        this.calculatePositionsHeight();
+        
         const body_content = (
             <React.Fragment>
                 <div style={{ 'height': '100%' }} ref={this.setBodyRef}>
                     {this.state.body_height > 0 &&
-                        <List
-                            itemCount={positions.length}
-                            itemData={positions}
-                            itemSize={() => 240}
-                            height={this.state.body_height}
-                            outerElementType={is_empty ? null : ListScrollbar}
-                        >
-                            {this.itemRender}
-                        </List>
+                        <TransitionGroup component='div'>
+                            <List
+                                itemCount={this.positions.length}
+                                itemData={this.positions}
+                                itemSize={this.getCachedPositionHeight}
+                                height={this.state.body_height}
+                                outerElementType={is_empty ? null : this.ListScrollbar}
+                                ref={ref => (this.list_ref = ref)}
+                                useIsScrolling
+                            >
+                                {this.itemRender}
+                            </List>
+                        </TransitionGroup>
                     }
                 </div>
             </React.Fragment>
@@ -171,7 +246,8 @@ class PositionsDrawer extends React.Component {
                         </div>
                     </div>
                     <div className='positions-drawer__body'>
-                        {(positions.length === 0 || error) ? <EmptyPortfolioMessage error={error} />  : body_content}
+                        {(this.positions.length === 0 || error) ?
+                            <EmptyPortfolioMessage error={error} />  : body_content}
                     </div>
                     <div className='positions-drawer__footer'>
                         <NavLink id='dt_positions_drawer_report_button' className='btn btn--secondary btn__large' to={routes.reports}>

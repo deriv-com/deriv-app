@@ -1,6 +1,7 @@
 import classNames                  from 'classnames';
 import PropTypes                   from 'prop-types';
 import React                       from 'react';
+import { CSSTransition }           from 'react-transition-group';
 import { Button }                  from '@deriv/components';
 import TogglePositionsDrawerDialog from 'App/Components/Elements/PositionsDrawer/toggle-positions-drawer-dialog.jsx';
 import { localize }                from '@deriv/translations';
@@ -23,7 +24,16 @@ const CardFooter = ({
     if (!show_sell) return (null);
 
     return (
-        <React.Fragment>
+        <CSSTransition
+            in={!!(is_valid_to_sell)}
+            timeout={250}
+            classNames={{
+                enter    : 'positions-drawer-card__sell-button--enter',
+                enterDone: 'positions-drawer-card__sell-button--enter-done',
+                exit     : 'positions-drawer-card__sell-button--exit',
+            }}
+            unmountOnExit
+        >
             {is_multiplier ?
                 <div className={classNames('positions-drawer-card__sell-button', {
                     'positions-drawer-card__sell-button--has-cancel-btn': is_valid_to_cancel,
@@ -54,7 +64,7 @@ const CardFooter = ({
                     />
                 </div>
             }
-        </React.Fragment>
+        </CSSTransition>
     );
 };
 

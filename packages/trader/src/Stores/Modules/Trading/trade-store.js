@@ -108,8 +108,8 @@ export default class TradeStore extends BaseStore {
     @observable last_digit = 5;
 
     // Purchase
-    @observable proposal_info = {};
-    @observable purchase_info = {};
+    @observable.ref proposal_info = {};
+    @observable.ref purchase_info = {};
 
     // Chart loader observables
     @observable is_chart_loading;

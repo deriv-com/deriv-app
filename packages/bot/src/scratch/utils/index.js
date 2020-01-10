@@ -1,8 +1,9 @@
-import { localize }    from '@deriv/translations';
-import BlockConversion from '../backward-compatibility';
-import { saveAs }      from '../shared';
-import config          from '../../constants';
-import ScratchStore    from '../../stores/scratch-store';
+import { localize }            from '@deriv/translations';
+import { removeLimitedBlocks } from './workspace';
+import BlockConversion         from '../backward-compatibility';
+import { saveAs }              from '../shared';
+import config                  from '../../constants';
+import ScratchStore            from '../../stores/scratch-store';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 
@@ -28,28 +29,34 @@ export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
     Blockly.derivWorkspace.cleanUp(cursor_x, cursor_y, blocks_to_clean);
 };
 
-export const setBlockTextColor = block => {
-    Blockly.Events.recordUndo = false;
-    if (block.inputList instanceof Array) {
-        Array.from(block.inputList).forEach(inp =>
-            inp.fieldRow.forEach(field => {
-                if (field instanceof Blockly.FieldLabel) {
-                    const svgElement = field.getSvgRoot();
-                    if (svgElement) {
-                        svgElement.setAttribute('class', 'blocklyTextRootBlockHeader');
-                    }
-                }
-            })
-        );
+export const setBlockTextColor = (block, event) => {
+    const is_legal_event =
+        event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(block.id) ||
+        event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === block.id;
+
+    if (!is_legal_event) {
+        return;
     }
+
+    const addClassAttribute = (field) => {
+        const el_svg = field.getSvgRoot();
+        if (el_svg) {
+            el_svg.setAttribute('class', 'blocklyTextRootBlockHeader');
+        }
+    };
+
+    block.inputList.forEach(input => {
+        input.fieldRow.forEach(field => {
+            if (field instanceof Blockly.FieldLabel) {
+                addClassAttribute(field);
+            }
+        });
+    });
+
     const field = block.getField();
     if (field) {
-        const svgElement = field.getSvgRoot();
-        if (svgElement) {
-            svgElement.setAttribute('class', 'blocklyTextRootBlockHeader');
-        }
+        addClassAttribute(field);
     }
-    Blockly.Events.recordUndo = true;
 };
 
 export const save = (filename = '@deriv/bot', collection = false, xmlDom) => {
@@ -111,24 +118,38 @@ export const load = (block_string, drop_event) => {
     }
 
     try {
+        const event_group = `dbot-load${Date.now()}`;
+
+        Blockly.Events.setGroup(event_group);
+        removeLimitedBlocks(Blockly.derivWorkspace, Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type')));
+
         if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-            loadBlocks(xml, drop_event);
+            loadBlocks(xml, drop_event, event_group);
         } else {
-            loadWorkspace(xml);
+            loadWorkspace(xml, event_group);
         }
+
+        // Set user disabled state on all disabled blocks. This ensures we don't change the disabled
+        // state through code, which was implemented for user experience.
+        Blockly.derivWorkspace.getAllBlocks().forEach(block => {
+            if (block.disabled) {
+                block.is_user_disabled_state = true;
+            }
+        });
 
         // Dispatch resize event for comments.
         window.dispatchEvent(new Event('resize'));
         journal.onLogSuccess(localize('Blocks are loaded successfully'));
     } catch (e) {
+        console.log(e); // eslint-disable-line
         return showInvalidStrategyError();
     }
 
     return true;
 };
 
-const loadBlocks = (xml, drop_event) => {
-    Blockly.Events.setGroup('load');
+const loadBlocks = (xml, drop_event, event_group) => {
+    Blockly.Events.setGroup(event_group);
 
     const workspace    = Blockly.derivWorkspace;
     const block_ids    = Blockly.Xml.domToWorkspace(xml, workspace);
@@ -139,18 +160,15 @@ const loadBlocks = (xml, drop_event) => {
     } else {
         workspace.cleanUp();
     }
-
-    Blockly.Events.setGroup(false);
 };
 
-const loadWorkspace = (xml) => {
+const loadWorkspace = (xml, event_group) => {
     const workspace = Blockly.derivWorkspace;
 
-    Blockly.Events.setGroup('load');
+    Blockly.Events.setGroup(event_group);
     workspace.clear();
 
     Blockly.Xml.domToWorkspace(xml, workspace);
-    Blockly.Events.setGroup(false);
 };
 
 const loadBlocksFromHeader = (xml_string, block) => {
@@ -171,16 +189,10 @@ const loadBlocksFromHeader = (xml_string, block) => {
                 reject(localize('Remote blocks to load must be a collection.'));
             }
 
-            const { recordUndo } = Blockly.Events;
-
-            Blockly.Events.recordUndo = false;
-
             addLoaderBlocksFirst(xml).then(() => {
                 Array.from(xml.children).forEach(el_block => addDomAsBlock(el_block, block));
-                Blockly.Events.recordUndo = recordUndo;
                 resolve();
             }).catch(() => {
-                Blockly.Events.recordUndo = recordUndo;
                 reject();
             });
         } catch (e) {
@@ -268,13 +280,7 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
         }
     });
 
-    if (config.mainBlocks.includes(block_type)) {
-        Blockly.derivWorkspace.getTopBlocks().forEach(top_block => {
-            if (top_block.type === block_type) {
-                top_block.dispose();
-            }
-        });
-    }
+    removeLimitedBlocks(Blockly.derivWorkspace, block_type);
 
     const block = Blockly.Xml.domToBlock(block_xml, Blockly.derivWorkspace);
 
@@ -294,6 +300,7 @@ export const hasAllRequiredBlocks = (workspace) => {
 
     return has_all_required_blocks;
 };
+
 export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chronological) => {
     const ws_metrics = workspace.getMetrics();
 
@@ -309,26 +316,71 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
     workspace.scrollbar.set(scroll_x, scroll_y);
 };
 
-export const updateDisabledBlocks = (workspace, event) => {
-    if (event.type !== Blockly.Events.END_DRAG) {
-        return;
+/**
+ * Sets the Blockly.Events.group_ and executes the passed callBackFn. Mainly
+ * used to ensure undo/redo actions are executed correctly.
+ * @param {Boolean} use_existing_group Uses the existing event group if true.
+ * @param {Function} callbackFn Logic to execute as part of this event group.
+ */
+export const runGroupedEvents = (use_existing_group, callbackFn, opt_group_name) => {
+    const group = use_existing_group && Blockly.Events.getGroup() || opt_group_name || true;
+
+    Blockly.Events.setGroup(group);
+    callbackFn();
+
+    if (!use_existing_group) {
+        Blockly.Events.setGroup(false);
     }
+};
 
-    workspace.getAllBlocks().forEach(block => {
-        if (!block.getParent()) {
-            return;
-        }
+/**
+ * Sets the recordUndo flag to "false" globally, this will ensure any events
+ * happening as part of the callbackFn logic cannot be undone.
+ * @param {*} callbackFn Logic to execute as part of this event group.
+ */
+export const runIrreversibleEvents = (callbackFn) => {
+    const { recordUndo }      = Blockly.Events;
+    Blockly.Events.recordUndo = false;
 
-        const restricted_parents = block.restricted_parents || [];
-        const should_disable     = !(
-            restricted_parents.length === 0 ||
-            restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent))
-        );
+    callbackFn();
 
-        if (block.disabled !== should_disable) {
-            block.setDisabled(should_disable);
-        }
-    });
+    Blockly.Events.recordUndo = recordUndo;
+};
+
+/**
+ * Disables Blockly Events globally and runs the passed callbackFn.
+ * (Preference should be given to runIrreversibleEvents).
+ * @param {*} callbackFn Logic to completely hide from Blockly
+ */
+export const runInvisibleEvents = (callbackFn) => {
+    Blockly.Events.disable();
+    callbackFn();
+    Blockly.Events.enable();
+};
+
+export const updateDisabledBlocks = (workspace, event) => {
+    if (event.type === Blockly.Events.END_DRAG) {
+        workspace.getAllBlocks().forEach(block => {
+            if (!block.getParent() || block.is_user_disabled_state) {
+                return;
+            }
+
+            const restricted_parents = block.restricted_parents || [];
+            if (restricted_parents.length === 0) {
+                return;
+            }
+    
+            const should_disable = !(restricted_parents.some(restricted_parent =>
+                block.isDescendantOf(restricted_parent)
+            ));
+    
+            runGroupedEvents(true, () => {
+                block.setDisabled(should_disable);
+            }, event.group);
+
+            Blockly.Events.setGroup(false);
+        });
+    }
 };
 
 export const emptyTextValidator = (input) => {

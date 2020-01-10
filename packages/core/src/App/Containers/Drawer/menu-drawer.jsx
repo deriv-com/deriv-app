@@ -1,23 +1,20 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
-import { Icon }          from '@deriv/components';
-import { localize }      from '@deriv/translations';
-import {
-    DrawerItem,
-    DrawerToggle }       from 'App/Components/Elements/Drawer';
-import routes            from 'Constants/routes';
+// import { Icon }          from '@deriv/components';
+// import { localize }      from '@deriv/translations';
+// import routes            from 'Constants/routes';
 import { connect }       from 'Stores/connect';
 
 const MenuDrawer = ({
-    is_dark_mode,
+    // is_dark_mode,
     is_logged_in,
     is_mobile,
-    is_positions_drawer_on,
+    // is_positions_drawer_on,
     // is_purchase_confirmed,
     // is_purchase_locked,
-    logoutClient,
-    toggleDarkMode,
-    togglePositionsDrawer,
+    // logoutClient,
+    // toggleDarkMode,
+    // togglePositionsDrawer,
     // togglePurchaseLock,
     // togglePurchaseConfirmation,
 }) => (
@@ -25,6 +22,7 @@ const MenuDrawer = ({
         <div className='list-items-container'>
             {is_mobile &&
             <React.Fragment>
+                {/*
                 <DrawerItem
                     text={localize('Trade')}
                     icon={<Icon icon='IcTrade' className='drawer__icon' />}
@@ -46,6 +44,7 @@ const MenuDrawer = ({
                     toggle={toggleDarkMode}
                     to_toggle={is_dark_mode}
                 />
+                */}
                 {/* Disabled until design is ready
                 <DrawerToggle
                     text={localize('Purchase Confirmation')}
@@ -62,7 +61,7 @@ const MenuDrawer = ({
         </div>
         {!!(is_logged_in && is_mobile) &&
         <div className='drawer__footer'>
-            <DrawerItem
+            {/* <DrawerItem
                 icon={<Icon icon='IcLogout' className='drawer__icon' />}
                 text={localize('Logout')}
                 custom_action={() => {
@@ -72,6 +71,7 @@ const MenuDrawer = ({
                     logoutClient();
                 }}
             />
+            */}
         </div>
         }
     </div>

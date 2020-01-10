@@ -7,11 +7,11 @@ import {
     MenuLinks,
     PlatformSwitcher }         from 'App/Components/Layout/Header';
 import platform_config         from 'App/Constants/platform-config';
-import Lazy                    from 'App/Containers/Lazy';
 import RealAccountSignup       from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import { connect }             from 'Stores/connect';
 import { header_links }        from 'App/Constants/header-links';
+import ToggleMenuDrawer        from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader }  from 'App/Components/Layout/Header/Components/Preloader';
 import routes                  from 'Constants/routes';
 
@@ -56,23 +56,32 @@ class Header extends React.Component {
 
         return (
             <header className={classNames('header', {
+                'header--is-mobile'  : is_mobile,
                 'header--is-disabled': (is_app_disabled || is_route_modal_on),
             })}
             >
                 <div className='header__menu-items'>
                     <div className='header__menu-left'>
-                        <Lazy
-                            has_progress={false}
-                            ctor={() => import(/* webpackChunkName: "toggle-menu-drawer", webpackPreload: true */'App/Components/Layout/Header/toggle-menu-drawer.jsx')}
-                            should_load={is_mobile}
-                        />
+
                         {!this.props.is_mobile ?
                             <PlatformSwitcher platform_config={filterPlatformsForClients(platform_config)} />
                             :
-                            (header_extension && is_logged_in) &&
-                                <div className='header__menu-left-extensions'>
-                                    { header_extension }
-                                </div>
+                            <>
+                                <ToggleMenuDrawer
+                                    enableApp={enableApp}
+                                    disableApp={disableApp}
+                                    platform_switcher={
+                                        <PlatformSwitcher
+                                            is_mobile={is_mobile}
+                                            platform_config={filterPlatformsForClients(platform_config)}
+                                        />}
+                                />
+                                {(header_extension && is_logged_in) &&
+                                    <div className='header__menu-left-extensions'>
+                                        { header_extension }
+                                    </div>
+                                }
+                            </>
                         }
                         <MenuLinks
                             is_logged_in={is_logged_in}

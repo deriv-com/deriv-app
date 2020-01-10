@@ -30,6 +30,8 @@
         }
         &--is-mobile {
             width: 216px;
+            height: 38px;
+            top: -3px;
 
             &:before {
                 display: none;

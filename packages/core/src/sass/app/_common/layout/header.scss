@@ -23,9 +23,22 @@
         content: '';
         background-color: var(--overlay-outside-dialog);
     }
+    &--is-mobile {
+        height: $MOBILE_HEADER_HEIGHT;
+
+        .header__menu-left, .header__menu-right {
+            height: #{$MOBILE_HEADER_HEIGHT - 1px};
+        }
+    }
     &--is-disabled:after {
         opacity: 1;
         pointer-events: auto;
+    }
+    &__menu-mobile-platform-switcher {
+        position: absolute;
+        height: 100%;
+        top: -48px;
+        left: 0;
     }
     &__menu-items {
         display: flex;
@@ -150,6 +163,19 @@
         text-align: center;
         width: 50px;
         margin-left: 8px;
+    }
+    &__mobile-drawer {
+        &-icon {
+            width: 16px;
+            height: 16px;
+        }
+        &-toggle {
+            padding: 0 1.2rem;
+            border-right: 1px solid var(--general-section-1);
+            display: flex;
+            align-items: center;
+            height: inherit;
+        }
     }
     &__title {
         display: inline-block;

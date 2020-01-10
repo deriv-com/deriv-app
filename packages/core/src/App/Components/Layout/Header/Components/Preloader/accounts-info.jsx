@@ -4,7 +4,7 @@ import PropTypes     from 'prop-types';
 
 const AccountsInfoLoader = ({ is_mobile, is_logged_in, speed }) => (
     <ContentLoader
-        height={46}
+        height={is_mobile ? 38 : 46}
         width={is_mobile ? 216 : 350}
         speed={speed}
         primaryColor={'var(--general-section-1)'}
@@ -14,8 +14,8 @@ const AccountsInfoLoader = ({ is_mobile, is_logged_in, speed }) => (
             <LoggedInPreloader is_mobile={is_mobile} />
             :
             <React.Fragment>
-                <rect x='166' y='8' rx='4' ry='4' width='66' height='32' />
-                <rect x='250' y='8' rx='4' ry='4' width='80' height='32' />
+                <rect x={`${is_mobile ? 126 : 166}`} y='8' rx='4' ry='4' width='66' height='32' />
+                <rect x={`${is_mobile ? 210 : 250}`} y='8' rx='4' ry='4' width='80' height='32' />
             </React.Fragment>
         }
     </ContentLoader>

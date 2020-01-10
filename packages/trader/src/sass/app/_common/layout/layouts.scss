@@ -1,30 +1,5 @@
 /** @define app-contents; weak */
 .app-contents {
-    margin: $HEADER_HEIGHT 0 $FOOTER_HEIGHT;
-    height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
-    overflow: hidden;
-    backface-visibility: hidden;
-    background-color: var(--general-main-1);
-
-    &:after {
-        z-index: 1;
-        position: absolute;
-        opacity: 0;
-        pointer-events: none;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        content: '';
-        background-color: var(--overlay-outside-dialog);
-    }
-    &--is-disabled:after {
-        opacity: 1;
-        pointer-events: auto;
-    }
-    &--is-route-modal {
-        background-color: var(--overlay-outside-dialog);
-    }
     &--show-positions-drawer:not(&--is-mobile) {
         .trade-container {
             .chart-container {

@@ -5,11 +5,15 @@
     height: 100%;
     display: inline-flex;
     align-items: center;
-    padding: 0 0.8em;
+    padding: 0 0.8rem;
 
     &--is-mobile {
-        max-height: 32px;
+        padding: 0 1.2rem;
+        height: inherit;
 
+        .positions-toggle__icon {
+            margin: 0;
+        }
         &:before {
             display: none;
         }
@@ -21,12 +25,12 @@
     }
     &:not(&--is-mobile):before {
         content: '';
-        width: 0.2em;
-        height: 0.2em;
+        width: 0.2rem;
+        height: 0.2rem;
         border-radius: 50%;
         position: absolute;
-        margin-top: 1em;
-        right: 1.5em;
+        margin-top: 1rem;
+        right: 1.5rem;
         display: block;
         transition: transform 0.25s ease;
         transform: translate3d(0, 0, 0);

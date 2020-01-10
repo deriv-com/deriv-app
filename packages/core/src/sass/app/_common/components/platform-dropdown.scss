@@ -1,4 +1,5 @@
-.platform_dropdown {
+/* @define platform-dropdown */
+.platform-dropdown {
     z-index: 5;
     background-color: var(--overlay-outside-dialog);
     width: 100%;
@@ -8,10 +9,24 @@
     opacity: 0;
     transition: opacity 0.25s ease;
 
+    &--is-mobile {
+        position: absolute;
+
+        .platform-dropdown__list {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: calc(295px - 16px);
+
+            &__platform {
+                width: calc(100% - 16px);
+            }
+        }
+    }
     &-enter-done {
         opacity: 1;
 
-        .platform_dropdown__list {
+        .platform-dropdown__list {
             transform: translateY(48px);
         }
     }

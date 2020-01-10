@@ -36,19 +36,53 @@ const getActionColumns = ({ onClickCancel, onClickSell, getPositionById }) => ({
     );
 };
 
-const EmptyPlaceholderWrapper = (props) => {
-    return (
-        <React.Fragment>
-            { props.is_empty ?
-                <PlaceholderComponent
-                    is_empty={props.is_empty}
-                    empty_message_component={EmptyTradeHistoryMessage}
-                    component_icon={props.component_icon}
-                    localized_message={localize('You have no open positions yet.')}
-                /> : props.children
-            }
-        </React.Fragment>);
-};
+const EmptyPlaceholderWrapper = (props) =>  (
+    <React.Fragment>
+        { props.is_empty ?
+            <PlaceholderComponent
+                is_empty={props.is_empty}
+                empty_message_component={EmptyTradeHistoryMessage}
+                component_icon={props.component_icon}
+                localized_message={localize('You have no open positions yet.')}
+            />
+            :
+            props.children
+        }
+    </React.Fragment>
+);
+
+const OpenPositionsTable = ({
+    className,
+    columns,
+    component_icon,
+    data_source,
+    footer,
+    is_loading,
+    getRowAction,
+    preloaderCheck,
+    action_column,
+}) => (
+    <EmptyPlaceholderWrapper
+        component_icon={component_icon}
+        is_empty={data_source.length === 0}
+    >
+        <DataTable
+            className={className}
+            columns={columns}
+            preloaderCheck={preloaderCheck}
+            footer={footer}
+            data_source={data_source}
+            getRowAction={getRowAction}
+            getRowSize={() => 63}
+            custom_width={'100%'}
+            getActionColumns={action_column}
+        >
+            <PlaceholderComponent
+                is_loading={is_loading}
+            />
+        </DataTable>
+    </EmptyPlaceholderWrapper>
+);
 
 class OpenPositions extends React.Component {
     state = {
@@ -149,7 +183,7 @@ class OpenPositions extends React.Component {
             component_icon,
             is_loading,
             error,
-            is_empty,
+            is_virtual,
             currency,
             NotificationMessages,
         } = this.props;
@@ -170,73 +204,51 @@ class OpenPositions extends React.Component {
 
         const active_positions_filtered_totals = this.getTotals(active_positions_filtered, is_multiplier_selected);
 
+        const shared_props = {
+            component_icon,
+            data_source   : active_positions_filtered,
+            footer        : active_positions_filtered_totals,
+            getRowAction  : this.getRowAction,
+            is_loading,
+            preloaderCheck: this.isPurchaseReceived,
+        };
+
         return (
             <React.Fragment>
                 <NotificationMessages />
-                {(is_loading && active_positions.length === 0) || is_empty ?
-                    <PlaceholderComponent
-                        is_loading={is_loading || !active_positions}
-                        is_empty={is_empty}
-                        empty_message_component={EmptyTradeHistoryMessage}
-                        component_icon={component_icon}
-                        localized_message={localize('You have no open positions yet.')}
-                    />
-                    :
-                    currency && active_positions.length > 0 &&
-                    <Tabs
-                        active_index={ this.state.active_index }
-                        className='open-positions'
-                        onTabItemClick={this.setActiveTabIndex}
-                        top
-                        header_fit_content
-                    >
-                        <div label={ localize('Options') }>
-                            <EmptyPlaceholderWrapper
-                                component_icon={component_icon}
-                                is_empty={active_positions_filtered.length === 0}
-                            >
-                                <DataTable
+                {   // TODO: remove is_virtual check once Multiplier is available for real accounts
+                    !is_virtual ?
+                        <OpenPositionsTable
+                            className='open-positions'
+                            columns={getOpenPositionsColumnsTemplate(currency)}
+                            {...shared_props}
+                        />
+                        :
+                        <Tabs
+                            active_index={ this.state.active_index }
+                            className='open-positions'
+                            onTabItemClick={this.setActiveTabIndex}
+                            top
+                            header_fit_content
+                        >
+                            <div label={ localize('Options') }>
+                                <OpenPositionsTable
                                     className='open-positions'
                                     columns={getOpenPositionsColumnsTemplate(currency)}
-                                    preloaderCheck={this.isPurchaseReceived}
-                                    footer={active_positions_filtered_totals}
-                                    data_source={active_positions_filtered}
-                                    getRowAction={this.getRowAction}
-                                    getRowSize={() => 63}
-                                    custom_width={'100%'}
-                                >
-                                    <PlaceholderComponent
-                                        is_loading={is_loading}
-                                    />
-                                </DataTable>
-                            </EmptyPlaceholderWrapper>
-                        </div>
-                        <div label={ localize('Multiplier options') }>
-                            <EmptyPlaceholderWrapper
-                                component_icon={component_icon}
-                                is_empty={active_positions_filtered.length === 0}
-                            >
-                                <DataTable
+                                    {...shared_props}
+                                />
+                            </div>
+                            <div label={ localize('Multiplier options') }>
+                                <OpenPositionsTable
                                     className='open-positions-multiplier open-positions'
                                     columns={getMultiplierOpenPositionsColumnsTemplate(currency)}
-                                    preloaderCheck={this.isPurchaseReceived}
-                                    footer={active_positions_filtered_totals}
-                                    data_source={active_positions_filtered}
-                                    getRowAction={this.getRowAction}
-                                    getRowSize={() => 63}
-                                    custom_width={'100%'}
-                                    getActionColumns={this.getActionColumns}
-                                >
-                                    <PlaceholderComponent
-                                        is_loading={is_loading}
-                                    />
-                                </DataTable>
-                            </EmptyPlaceholderWrapper>
-                        </div>
-                    </Tabs>
+                                    action_column={this.getActionColumns}
+                                    {...shared_props}
+                                />
+                            </div>
+                        </Tabs>
                 }
             </React.Fragment>
-
         );
     }
 }
@@ -259,6 +271,7 @@ OpenPositions.propTypes = {
 export default connect(
     ({ modules, client, ui }) => ({
         currency            : client.currency,
+        is_virtual          : client.is_virtual,
         active_positions    : modules.portfolio.active_positions,
         error               : modules.portfolio.error,
         getPositionById     : modules.portfolio.getPositionById,

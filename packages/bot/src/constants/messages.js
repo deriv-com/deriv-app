@@ -9,6 +9,8 @@ export const unrecoverable_errors = [
     'FinancialAssessmentRequired',
     'PositiveNumberExpected',
     'OptionError',
+    'IncorrectPayoutDecimals',
+    'IncorrectStakeDecimals',
     'NoMFProfessionalClient',
 ];
 

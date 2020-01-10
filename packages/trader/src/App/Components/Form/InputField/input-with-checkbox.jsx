@@ -36,7 +36,7 @@ const InputWithCheckbox = ({
 
     useEffect(() => {
         setChecked(defaultChecked);
-    });
+    }, [defaultChecked]);
 
     const changeValue = (e) => {
         // e.target.checked is not reliable, we have to toggle its previous value
@@ -155,4 +155,3 @@ InputWithCheckbox.propTypes = {
 };
 
 export default InputWithCheckbox;
-

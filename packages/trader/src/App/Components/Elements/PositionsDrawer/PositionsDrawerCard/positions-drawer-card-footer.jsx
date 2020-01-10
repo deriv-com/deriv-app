@@ -25,7 +25,7 @@ const CardFooter = ({
 
     return (
         <CSSTransition
-            in={!!(is_valid_to_sell)}
+            in={show_sell}
             timeout={250}
             classNames={{
                 enter    : 'positions-drawer-card__sell-button--enter',

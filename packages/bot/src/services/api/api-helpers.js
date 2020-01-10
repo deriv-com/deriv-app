@@ -46,8 +46,9 @@ class ApiHelpers {
                         workspace.getAllBlocks()
                             .filter(block => block.type === 'trade_definition_market')
                             .forEach(block => {
-                                const fake_create_event = new Blockly.Events.Create(block);
-                                Blockly.Events.fire(fake_create_event);
+                                const fake_creation_event = new Blockly.Events.Create(block);
+                                fake_creation_event.recordUndo = false;
+                                Blockly.Events.fire(fake_creation_event);
                             });
                     });
                 }

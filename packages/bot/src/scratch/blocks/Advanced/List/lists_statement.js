@@ -1,15 +1,17 @@
 import { localize }      from '@deriv/translations';
 import { minusIconDark } from '../../images';
+import {
+    runIrreversibleEvents,
+    runGroupedEvents,
+}                        from '../../../utils';
 
 Blockly.Blocks.lists_statement = {
+    required_parent_type: 'lists_create_with',
     init() {
-        this.requiredParentId = '';
-
+        this.required_parent_id = '';
+        const field_image       = new Blockly.FieldImage(minusIconDark, 25, 25, '', () => this.onIconClick());
         this.jsonInit(this.definition());
-
-        // Render a ➖-icon for removing self
-        const fieldImage = new Blockly.FieldImage(minusIconDark, 25, 25, '', () => this.onIconClick());
-        this.appendDummyInput('REMOVE_ICON').appendField(fieldImage);
+        this.appendDummyInput('REMOVE_ICON').appendField(field_image);
     },
     definition(){
         return {
@@ -40,8 +42,10 @@ Blockly.Blocks.lists_statement = {
             return;
         }
 
-        this.unplug(true);
-        this.dispose();
+        runGroupedEvents(false, () => {
+            this.unplug(true);
+            this.dispose();
+        });
     },
     onchange(event) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
@@ -49,38 +53,38 @@ Blockly.Blocks.lists_statement = {
         }
 
         if (event.type === Blockly.Events.END_DRAG) {
-            const { recordUndo }  = Blockly.Events;
             const surround_parent = this.getSurroundParent();
 
             if (!surround_parent) {
-                // No parent, dispose.
-                Blockly.Events.recordUndo = false;
-                this.dispose(true);
-                Blockly.Events.recordUndo = recordUndo;
-            } else if (!this.requiredParentId && surround_parent.type === this.required_parent_type) {
-                // Legal parent, but not yet related, set connection.
-                this.requiredParentId = surround_parent.id;
-            } else if (surround_parent.id !== this.requiredParentId) {
-                // Illegal parent, dispose.
-                Blockly.Events.recordUndo = false;
+                runIrreversibleEvents(() => {
+                    this.dispose();
+                });
+            } else if (!this.required_parent_id && surround_parent.type === this.required_parent_type) {
+                // Create connection between parent and orphaned child.
+                this.required_parent_id = surround_parent.id;
+            } else if (surround_parent.id !== this.required_parent_id) {
+                // Someone pretending to be this child's parent. Find original parent and reconnect.
+                // Happens when someone tries to connect a statement block and Blockly automagically
+                // reconnects the children to this foreign statement block.
+                const all_blocks      = this.workspace.getAllBlocks();
+                const original_parent = all_blocks.find(block => block.id === this.required_parent_id);
 
-                this.unplug(false);
+                if (original_parent) {
+                    const last_connection = original_parent.getLastConnectionInStatement('STACK');
 
-                const all_blocks   = this.workspace.getAllBlocks();
-                const parent_block = all_blocks.find(block => block.id === this.requiredParentId);
-
-                if (parent_block) {
-                    const parent_connection = parent_block.getLastConnectionInStatement('STACK');
-                    parent_connection.connect(this.previousConnection);
+                    runIrreversibleEvents(() => {
+                        last_connection.connect(this.previousConnection);
+                    });
                 } else {
-                    this.dispose(true);
+                    // Dispose child if it became a child of an illegal parent and original parent
+                    // is nowhere to be found.
+                    runIrreversibleEvents(() => {
+                        this.dispose(/* healStack */ true);
+                    });
                 }
-
-                Blockly.Events.recordUndo = recordUndo;
             }
         }
     },
-    required_parent_type: 'lists_create_with',
 };
 
 Blockly.JavaScript.lists_statement = block => {

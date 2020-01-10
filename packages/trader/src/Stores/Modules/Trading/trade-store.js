@@ -205,7 +205,7 @@ export default class TradeStore extends BaseStore {
             }
         );
         reaction(
-            () => this.has_deal_cancellation,
+            () => [this.has_deal_cancellation, this.has_stop_loss, this.has_take_profit],
             () => {
                 this.validation_errors = {};
             }

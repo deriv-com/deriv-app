@@ -101,28 +101,12 @@ module.exports = function (env, argv) {
             new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({ filename: 'bot-web-ui.main.css' }),
             new StyleLintPlugin({ fix: true }),
-            // new CopyWebpackPlugin([
-            //     { from: './src/scratch/xml', to: 'xml' },
-            //     { from: './node_modules/scratch-blocks/media', to: 'media' },
-            //     { from: './src/assets/images', to: 'media' },
-            // ]),
+            new CopyWebpackPlugin([
+                { from: 'node_modules/deriv-bot-engine/dist/scratch.min.js'},
+                { from: 'node_modules/deriv-bot-engine/dist/xml' , to : 'xml'},
+                { from: 'node_modules/deriv-bot-engine/dist//media' , to : 'media'},
+            ]),
             new SpriteLoaderPlugin(),
-            // new MergeIntoSingleFilePlugin({
-            //     files    : {
-            //         'scratch.min.js': [
-            //             'node_modules/scratch-blocks/blockly_compressed_vertical.js',
-            //             'node_modules/scratch-blocks/msg/messages.js',
-            //             'node_modules/blockly/generators/javascript.js',
-            //         ],
-            //     },
-            //     transform: {
-            //         'scratch.min.js': (code) => {
-            //             const uglifyjs = require('uglify-js');
-            //             return uglifyjs.minify(code).code;
-            //         },
-            //     },
-            // }),
-            // ...(!is_release ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
         ],
         externals: [
             {

@@ -12,12 +12,12 @@ module.exports = function (env, argv) {
 
     return {
         entry    : {
-            'bot-engine'   :  path.join(__dirname, 'src', 'app.js'),
             constants      :  path.join(__dirname, 'src', 'constants'),
             'help-strings' :  path.join(__dirname, 'src', 'scratch/help-content/help-strings'),
             scratch        :  path.join(__dirname, 'src', 'scratch'),
             services       :  path.join(__dirname, 'src', 'services/api'),
-            utils          :  path.join(__dirname, 'src', 'utils')
+            utils          :  path.join(__dirname, 'src', 'utils'),
+            'bot-engine'   :  path.join(__dirname, 'src', 'app.js'),
         },
         output: {
             path         :  path.resolve(__dirname, 'dist'),
@@ -30,6 +30,7 @@ module.exports = function (env, argv) {
             publicPath      : '/dist/',
             disableHostCheck: true,
         },
+        optimization: { concatenateModules: false, providedExports: false, usedExports: false },
         mode     : is_release ? 'production' : 'development',
         devtool  : is_release ? 'source-map' : 'cheap-module-eval-source-map',
         target   : 'web',

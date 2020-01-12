@@ -2,7 +2,7 @@
   "name": "deriv-bot-web-ui",
   "version": "1.0.0",
   "description": "Visual automation for deriv.app",
-  "main": "dist/bot-ui.main.js",
+  "main": "dist/bot-web-ui.main.js",
   "private": true,
   "jest": {
     "setupFilesAfterEnv": [

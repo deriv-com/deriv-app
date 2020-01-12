@@ -10,7 +10,7 @@ import {
 import { observer ,
     setMainContentWidth ,
     isEnded }                          from 'deriv-bot-engine/dist/utils';
-import DBot                            from 'deriv-bot-engine';
+// import DBot                            from 'deriv-bot-engine';
 import { contract_stages }             from '../constants/contract-stage';
 import { switch_account_notification } from '../utils/bot-notifications';
 
@@ -70,12 +70,12 @@ export default class RunPanelStore {
         
         contract_card.clear();
         this.setContractStage(contract_stages.STARTING);
-        DBot.runBot();
+        // DBot.runBot();
     }
 
     @action.bound
     onStopButtonClick() {
-        DBot.stopBot();
+        // DBot.stopBot();
 
         this.is_running = false;
 
@@ -308,7 +308,7 @@ export default class RunPanelStore {
                         if (loginid && this.is_running) {
                             ui.addNotificationMessage(switch_account_notification);
                         }
-                        DBot.terminateBot();
+                        // DBot.terminateBot();
                         RunPanelStore.unregisterBotListeners();
                         this.clearStat();
                     },

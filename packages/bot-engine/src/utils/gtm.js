@@ -1,6 +1,6 @@
 import { reaction } from 'mobx';
 
-const GTM = (() => {
+export const gtm = (() => {
 
     let root_store;
 
@@ -78,5 +78,3 @@ const GTM = (() => {
         init,
     };
 })();
-
-export default GTM;

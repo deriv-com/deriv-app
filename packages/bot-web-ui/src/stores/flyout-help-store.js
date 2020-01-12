@@ -3,7 +3,7 @@ import {
     action,
     runInAction,
 }                   from 'mobx';
-import config       from 'deriv-bot-engine/dist/constants';
+import { config }   from 'deriv-bot-engine/dist/constants';
 
 export default class FlyoutHelpStore {
     constructor(root_store) {

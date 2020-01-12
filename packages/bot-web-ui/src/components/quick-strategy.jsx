@@ -15,7 +15,7 @@ import {
     Field,
 }                    from 'formik';
 import { localize }  from 'deriv-translations';
-import config        from 'deriv-bot-engine/dist/constants';
+import { config }    from 'deriv-bot-engine/dist/constants';
 import IconTradeType from './icon-trade-types.jsx';
 import { connect }   from '../stores/connect';
 import               '../assets/sass/quick-strategy.scss';

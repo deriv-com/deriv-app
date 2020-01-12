@@ -1,10 +1,10 @@
 import { Provider }         from 'mobx-react';
 import React                from 'react';
-import GTM                  from 'deriv-bot-engine/dist/utils';
+import { gtm }              from 'deriv-bot-engine/dist/utils';
 import { ServerTime,
-    ApiHelpers }             from 'deriv-bot-engine/dist/services';
+    ApiHelpers }            from 'deriv-bot-engine/dist/services';
 
-import DBot                 from 'deriv-bot-engine';
+// import DBot                 from 'deriv-bot-engine';
 import                           './public-path'; // Leave this here! OK boss!
 import FooterExtension      from './components/footer-extension.jsx';
 import MainContent          from './components/main-content.jsx';
@@ -22,12 +22,12 @@ class App extends React.Component {
         const { passthrough: { WS, root_store } } = props;
         this.root_store = new RootStore(root_store, WS);
         ApiHelpers.setInstance(this.root_store);
-        GTM.init(this.root_store);
+        gtm.init(this.root_store);
         ServerTime.init(root_store.common);
     }
 
     componentDidMount() {
-        DBot.initWorkspace();
+        // DBot.initWorkspace();
         ApiHelpers.instance.registerOnAccountSwitch();
     }
 

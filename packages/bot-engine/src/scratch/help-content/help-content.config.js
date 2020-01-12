@@ -1,4 +1,4 @@
-import constant from '../../constants';
+import constant from '../../constants/config';
 
 const { help: { TEXT, IMAGE, BLOCK } } = constant;
 

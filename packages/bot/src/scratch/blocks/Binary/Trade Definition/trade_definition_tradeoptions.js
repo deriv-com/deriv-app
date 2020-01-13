@@ -2,7 +2,7 @@ import { localize }        from '@deriv/translations';
 import CurrencyUtils       from '@deriv/shared/utils/currency';
 import {
     runIrreversibleEvents,
-    runInvisibleEvents }   from '../../../utils';
+}                          from '../../../utils';
 import config              from '../../../../constants';
 import ApiHelpers          from '../../../../services/api/api-helpers';
 import ScratchStore        from '../../../../stores/scratch-store';

@@ -35,13 +35,13 @@ class ScratchStore {
                     return;
                 }
 
-                const trade_options_blocks = workspace.getAllBlocks().find(b => b.type === 'trade_definition_tradeoptions');
+                const trade_options_blocks = workspace.getAllBlocks().filter(b => b.type === 'trade_definition_tradeoptions');
 
-                if (!trade_options_blocks) {
+                if (!trade_options_blocks.length) {
                     return;
                 }
 
-                trade_options_blocks.setCurrency();
+                trade_options_blocks.forEach(block => block.setCurrency());
             },
         );
     }

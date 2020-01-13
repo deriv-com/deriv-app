@@ -52,7 +52,7 @@ class FormAds extends Component {
             type             : values.type,
             amount           : values.offer_amount,
             local_currency   : values.transaction_currency,
-            max_amount       : (values.offer_amount * values.price_rate),
+            max_amount       : values.max_transaction,
             method           : values.payment_method,
             min_amount       : values.min_transaction,
             offer_description: values.advertiser_notes,
@@ -198,40 +198,35 @@ class FormAds extends Component {
                                                 )}
                                             </Field>
                                         </div>
-                                        <Field name='min_transaction'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    data-lpignore='true'
-                                                    type='number'
-                                                    error={touched.min_transaction && errors.min_transaction}
-                                                    label={localize('Min. transaction')}
-                                                    className='p2p-my-ads__form-field p2p-my-ads__form-field--single'
-                                                    trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.currency}</span>}
-                                                    required
-                                                />
-                                            )}
-                                        </Field>
-                                        <Field name='max_transaction'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    type='number'
-                                                    error={touched.max_transaction && errors.max_transaction}
-                                                    label={localize('Max. transaction')}
-                                                    disabled
-                                                    value={
-                                                        (values.offer_amount * values.price_rate)
-                                                            .toFixed(
-                                                                2 /* TODO: [p2p-calculate-decimals] - Dynamically get decimal places for transaction/local currency */
-                                                            )
-                                                    }
-                                                    className='p2p-my-ads__form-field p2p-my-ads__form-field--single'
-                                                    trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.currency}</span>}
-                                                    required
-                                                />
-                                            )}
-                                        </Field>
+                                        <div className='p2p-my-ads__form-container'>
+                                            <Field name='min_transaction'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='number'
+                                                        error={touched.min_transaction && errors.min_transaction}
+                                                        label={localize('Min. limit')}
+                                                        className='p2p-my-ads__form-field'
+                                                        trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.offer_currency}</span>}
+                                                        required
+                                                    />
+                                                )}
+                                            </Field>
+                                            <Field name='max_transaction'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        type='number'
+                                                        error={touched.max_transaction && errors.max_transaction}
+                                                        label={localize('Max. limit')}
+                                                        className='p2p-my-ads__form-field'
+                                                        trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.offer_currency}</span>}
+                                                        required
+                                                    />
+                                                )}
+                                            </Field>
+                                        </div>
                                         <Field name='payment_method'>
                                             {({ field }) => (
                                                 <Dropdown
@@ -302,7 +297,7 @@ class FormAds extends Component {
 
         const mapped_key = {
             advertiser_notes: localize('Advertiser notes'),
-            min_transaction : localize('Min. transaction'),
+            min_transaction : localize('Min. limit'),
             offer_amount    : localize('Amount'),
             price_rate      : localize('Fixed price'),
         };

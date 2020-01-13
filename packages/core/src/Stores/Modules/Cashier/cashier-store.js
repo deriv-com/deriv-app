@@ -171,7 +171,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async hasP2pOffer() {
         this.p2p_offer_list = await WS.p2pOfferList();
-        return ObjectUtils.getPropertyValue(this.p2p_offer_list, ['p2p_offer_list', 'list']).length;
+        return (ObjectUtils.getPropertyValue(this.p2p_offer_list, ['p2p_offer_list', 'list']) || []).length;
     }
 
     @action.bound

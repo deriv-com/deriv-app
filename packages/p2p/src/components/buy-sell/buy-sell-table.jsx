@@ -16,8 +16,7 @@ export const BuySellTable = ({ setSelectedAd, table_type }) => {
             <Table.Header>
                 <Table.Row>
                     <Table.Head>{localize('Advertisers')}</Table.Head>
-                    <Table.Head>{localize('Available')}</Table.Head>
-                    <Table.Head>{localize('Minimum limit') }</Table.Head>
+                    <Table.Head>{localize('Limits')}</Table.Head>
                     <Table.Head>{localize('Price')}</Table.Head>
                     <Table.Head>{localize('Payment method')}</Table.Head>
                     {!is_agent ? <Table.Head>{localize('Trade')}</Table.Head> : null}

@@ -10,7 +10,7 @@ import { MyAdsLoader }        from './my-ads-loader.jsx';
 const headers = [
     { text: localize('Ad ID')  },
     { text: localize('Available') },
-    { text: localize('Minimum limit') },
+    { text: localize('Limits') },
     { text: localize('Price') },
     { text: localize('Payment method') },
 ];
@@ -24,8 +24,8 @@ const RowComponent = React.memo(({ data, style }) => (
     <div style={style}>
         <Table.Row>
             <Table.Cell>{type[data.type]}<br />{data.offer_id}</Table.Cell>
-            <Table.Cell>{data.display_offer_amount}{' '}{data.offer_currency}</Table.Cell>
-            <Table.Cell>{data.display_min_transaction}{' '}{data.offer_currency}</Table.Cell>
+            <Table.Cell>{data.display_available_amount}{' '}{data.offer_currency}</Table.Cell>
+            <Table.Cell>{data.display_min_transaction}-{data.display_max_transaction}{' '}{data.offer_currency}</Table.Cell>
             <Table.Cell className='p2p-my-ads__price'>{data.display_price_rate}{' '}{data.transaction_currency}</Table.Cell>
             <Table.Cell>{data.payment_method}</Table.Cell>
         </Table.Row>

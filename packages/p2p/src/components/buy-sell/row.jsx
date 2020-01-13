@@ -33,8 +33,7 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) 
         <div style={style}>
             <Table.Row>
                 <Table.Cell>{data.advertiser}</Table.Cell>
-                <Table.Cell>{data.display_offer_amount}{' '}{data.offer_currency}</Table.Cell>
-                <Table.Cell>{data.display_min_transaction}{' '}{data.offer_currency}</Table.Cell>
+                <Table.Cell>{data.display_min_transaction}-{data.display_max_transaction}{' '}{data.offer_currency}</Table.Cell>
                 <Table.Cell className='buy-sell__price'>{data.display_price_rate}{' '}{data.transaction_currency}</Table.Cell>
                 <Table.Cell>{data.payment_method}</Table.Cell>
                 {!is_agent ? (

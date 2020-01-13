@@ -41,18 +41,23 @@ const getModifiedP2POfferList = (response) => {
         const offer_currency       = response.list[i].account_currency;
         const transaction_currency = response.list[i].local_currency;
 
+        modified_response[i].available_amount         = +response.list[i].amount - +response.list[i].amount_used;
+        modified_response[i].display_available_amount =
+            formatMoney(offer_currency,+response.list[i].amount - +response.list[i].amount_used);
+
         modified_response[i].offer_currency          = offer_currency;
         modified_response[i].advertiser_id           = response.list[i].agent_id;
-        modified_response[i].offer_amount            = +response.list[i].max_amount;
+        modified_response[i].offer_amount            = +response.list[i].amount;
         // TODO: [p2p-replace-with-api] use display value from API when formatting works
-        modified_response[i].display_offer_amount    = formatMoney(offer_currency, response.list[i].max_amount);
+        modified_response[i].display_offer_amount    = formatMoney(offer_currency, response.list[i].amount);
         modified_response[i].advertiser_note         = response.list[i].offer_description;
         modified_response[i].offer_id                = response.list[i].offer_id;
         modified_response[i].transaction_currency    = transaction_currency;
         modified_response[i].min_transaction         = +response.list[i].min_amount;
         // TODO: [p2p-replace-with-api] use display value from API when formatting works
         modified_response[i].display_min_transaction = formatMoney(offer_currency, response.list[i].min_amount);
-        modified_response[i].display_max_transaction = formatMoney(offer_currency, response.list[i].amount);
+        modified_response[i].max_transaction         = response.list[i].max_amount;
+        modified_response[i].display_max_transaction = formatMoney(offer_currency, response.list[i].max_amount);
         modified_response[i].price_rate              = +response.list[i].rate;
         // TODO: [p2p-replace-with-api] use display value from API when formatting works
         modified_response[i].display_price_rate      = formatMoney(transaction_currency, response.list[i].rate);

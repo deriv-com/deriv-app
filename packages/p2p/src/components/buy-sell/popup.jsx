@@ -115,12 +115,12 @@ class Popup extends Component {
         const { ad } = this.props;
 
         const amount_asset = +((ad.min_transaction * ad.price_rate).toFixed(ad.transaction_currency_decimals));
-        const max_amount = +((ad.offer_amount * ad.price_rate).toFixed(ad.transaction_currency_decimals));
+        const max_amount = +((ad.max_transaction * ad.price_rate).toFixed(ad.transaction_currency_decimals));
 
         const buy_initial_values = {
             initial_receive : ad.min_transaction,
             initial_send    : amount_asset,
-            max_receive     : ad.offer_amount,
+            max_receive     : ad.max_transaction,
             max_send        : max_amount,
             receive_currency: ad.offer_currency,
             receive_decimals: ad.offer_currency_decimals,
@@ -131,7 +131,7 @@ class Popup extends Component {
             initial_receive : amount_asset,
             initial_send    : ad.min_transaction,
             max_receive     : max_amount,
-            max_send        : ad.offer_amount,
+            max_send        : ad.max_transaction,
             receive_currency: ad.transaction_currency,
             receive_decimals: ad.transaction_currency_decimals,
             send_currency   : ad.offer_currency,

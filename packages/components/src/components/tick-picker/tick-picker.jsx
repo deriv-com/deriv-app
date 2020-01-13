@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Button from '../button';
-import Icon from '../icon';
+import Button              from '../button';
+import Icon                from '../icon';
 
 const TickPicker = ({ min_value, max_value, onSubmit, label }) => {
     const normalizedTick = (tick) => ((parseInt(tick) < 10 ? '0' : '') + tick);
@@ -30,14 +30,14 @@ const TickPicker = ({ min_value, max_value, onSubmit, label }) => {
         <div className='tick-picker'>
             <div className='tick-picker--calculation'>
                 <Button curved className='operator' onClick={handleDecrease}>
-                    <Icon icon='IcMinus' color='active' />
+                    <Icon icon='IcMinus' custom_color='var(--text-prominent)' />
                 </Button>
                 <div className='tick-holder'>
                     <span className='tick-holder--counter'>{normalizedTick(tick_value)}</span>
                     <span className='tick-holder--text'>Ticks</span>
                 </div>
                 <Button curved className='operator' onClick={handleIncrease}>
-                    <Icon icon='IcAdd' color='active' />
+                    <Icon icon='IcAdd' custom_color='var(--text-prominent)' />
                 </Button>
             </div>
             <div className='tick-picker--submit-wrapper'>

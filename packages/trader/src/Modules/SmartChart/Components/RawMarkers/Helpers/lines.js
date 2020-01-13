@@ -45,7 +45,7 @@ export const draw_barrier_line = ({
     start,
     exit,
     barrier,
-    line_style = 'solid',
+    line_style,
 }) => {
     draw_line({
         ctx,
@@ -66,6 +66,7 @@ export const draw_vertical_labelled_line = ({
         left,
         top,
     },
+    line_style,
 }) => {
     // Render the label.
     const label_and_icon_offset = left - 5;
@@ -94,5 +95,6 @@ export const draw_vertical_labelled_line = ({
         ctx,
         start: { left, top: 0 },
         end  : { left, top: ctx.canvas.height },
+        line_style,
     });
 };

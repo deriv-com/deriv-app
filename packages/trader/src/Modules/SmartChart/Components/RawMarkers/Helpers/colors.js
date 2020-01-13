@@ -7,6 +7,6 @@ export const get_color = ({ status, profit, is_dark_theme }) => {
     if (status === 'open' && profit) {
         color = colors[profit > 0 ? 'won' : 'lost'];
     }
-
+    
     return color;
 };

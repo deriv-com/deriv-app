@@ -66,7 +66,8 @@ const NonTickContract = RawMarkerMaker(({
                 left: start.left,
                 top : canvas_height - 50,
             },
-            icon: ICONS.BUY_SELL.with_color_on_specific_paths({
+            line_style: 'dashed',
+            icon      : ICONS.BUY_SELL.with_color_on_specific_paths({
                 0: { fill: background_color },
                 1: { fill: foreground_color },
             }),
@@ -84,11 +85,31 @@ const NonTickContract = RawMarkerMaker(({
                 left: reset_time.left,
                 top : canvas_height - 50,
             },
-            icon: ICONS.RESET.with_color(foreground_color, background_color),
+            line_style: 'dashed',
+            icon      : ICONS.RESET.with_color(foreground_color, background_color),
         });
     }
 
-    const color_based_on_status = get_color({ status, is_dark_theme, profit: is_sold ? profit : null });
+    const color_based_on_status = get_color({ status, is_dark_theme, profit });
+    if (expiry.visible && !is_sold) {
+        // Draw vertical line for is sold.
+        ctx.strokeStyle = color_based_on_status;
+        draw_vertical_labelled_line({
+            ctx,
+            text    : 'Sell\nTime',
+            position: {
+                zoom: expiry.zoom,
+                left: expiry.left,
+                top : canvas_height - 50,
+            },
+            line_style: 'solid',
+            icon      : ICONS.BUY_SELL.with_color_on_specific_paths({
+                0: { fill: background_color },
+                1: { fill: color_based_on_status },
+            }),
+        });
+    }
+
     const is_reset_barrier_expired = has_reset_time && entry_tick_top !== barrier;
 
     // barrier line
@@ -109,7 +130,7 @@ const NonTickContract = RawMarkerMaker(({
         });
         draw_barrier_line({
             ctx,
-            start,
+            start     : entry,
             exit      : is_reset_barrier_expired ? reset_time : expiry,
             barrier   : is_reset_barrier_expired ? entry_tick_top : barrier,
             line_style: is_reset_barrier_expired ? 'dashed' : 'solid',

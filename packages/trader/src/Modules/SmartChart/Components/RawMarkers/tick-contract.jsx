@@ -58,7 +58,8 @@ const TickContract = RawMarkerMaker(({
                 left: start.left,
                 top : canvas_height - 50,
             },
-            icon: ICONS.BUY_SELL.with_color_on_specific_paths({
+            line_style: 'dashed',
+            icon      : ICONS.BUY_SELL.with_color_on_specific_paths({
                 0: { fill: background_color },
                 1: { fill: foreground_color },
             }),
@@ -77,7 +78,8 @@ const TickContract = RawMarkerMaker(({
                 left: reset_time.left,
                 top : canvas_height - 50,
             },
-            icon: ICONS.RESET.with_color(foreground_color, background_color),
+            line_style: 'dashed',
+            icon      : ICONS.RESET.with_color(foreground_color, background_color),
         });
     }
 
@@ -86,10 +88,10 @@ const TickContract = RawMarkerMaker(({
         return;
     }
 
-    const entry = ticks[0];
     const exit = ticks[ticks.length - 1];
+    const entry = ticks[0];
     const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
-    const color_based_on_status = get_color({ status, is_dark_theme, profit: is_sold ? profit : null });
+    const color_based_on_status = get_color({ status, is_dark_theme, profit });
 
     const is_reset_barrier_expired = has_reset_time && entry_tick_top !== barrier;
 
@@ -172,6 +174,26 @@ const TickContract = RawMarkerMaker(({
         ctx.arc(start.left - 1 * scale, barrier.top - 9 * scale, 3 * scale, 0, Math.PI * 2);
         ctx.fill();
     }
+
+    if (exit.visible && tick_count === (ticks.length - 1) && !is_sold) {
+        // Draw vertical line for is sold.
+        ctx.fillStyle = foreground_color;
+        draw_vertical_labelled_line({
+            ctx,
+            text    : 'Sell\nTime',
+            position: {
+                zoom: exit.zoom,
+                left: exit.left,
+                top : canvas_height - 50,
+            },
+            line_style: 'solid',
+            icon      : ICONS.BUY_SELL.with_color_on_specific_paths({
+                0: { fill: background_color },
+                1: { fill: color_based_on_status },
+            }),
+        });
+    }
+
     // status marker
     if (exit.visible && is_sold) {
         // Draw a line from barrier to icon.

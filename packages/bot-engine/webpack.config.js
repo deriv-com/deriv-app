@@ -1,7 +1,6 @@
 const { CleanWebpackPlugin }    = require('clean-webpack-plugin');
 const CopyWebpackPlugin         = require('copy-webpack-plugin');
 const path                      = require('path');
-const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
 const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
 // const BundleAnalyzerPlugin      = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
@@ -14,9 +13,10 @@ module.exports = function (env, argv) {
         entry    : {
             constants      :  path.join(__dirname, 'src', 'constants'),
             'help-strings' :  path.join(__dirname, 'src', 'scratch/help-content/help-strings'),
-            scratch        :  path.join(__dirname, 'src', 'scratch'),
             services       :  path.join(__dirname, 'src', 'services/api'),
             utils          :  path.join(__dirname, 'src', 'utils'),
+            hooks          :  path.join(__dirname , 'src', 'scratch/hooks'),
+            scratch        :  path.join(__dirname, 'src', 'scratch'),
             'bot-engine'   :  path.join(__dirname, 'src', 'app.js'),
         },
         output: {
@@ -30,7 +30,10 @@ module.exports = function (env, argv) {
             publicPath      : '/dist/',
             disableHostCheck: true,
         },
-        optimization: { concatenateModules: false, providedExports: false, usedExports: false },
+        resolve: {
+            extensions: ['.js'] // add your other extensions here
+          },
+        // optimization: { concatenateModules: false, providedExports: false, usedExports: false, sideEffects: false },
         mode     : is_release ? 'production' : 'development',
         devtool  : is_release ? 'source-map' : 'cheap-module-eval-source-map',
         target   : 'web',
@@ -59,7 +62,6 @@ module.exports = function (env, argv) {
                 { from: './node_modules/scratch-blocks/media', to: 'media' },
                 { from: './src/assets/images', to: 'media' },
             ]),
-            new SpriteLoaderPlugin(),
             new MergeIntoSingleFilePlugin({
                 files    : {
                     'scratch.min.js': [

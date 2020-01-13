@@ -4,7 +4,7 @@ import                                    './hooks';
 import {
     hasAllRequiredBlocks,
     updateDisabledBlocks }            from './utils';
-import { onWorkspaceResize }          from './utils/workspace';
+import { onWorkspaceResize }          from '../utils/workspace';
 import config                         from '../constants';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import { observer as globalObserver } from '../utils/observer';

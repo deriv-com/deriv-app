@@ -1,4 +1,4 @@
-import { reaction } from 'mobx';
+// import { reaction } from 'mobx';
 
 export const gtm = (() => {
 
@@ -20,17 +20,18 @@ export const gtm = (() => {
         try {
             root_store = _root_store;
 
-            const { run_panel, transactions, summary: s } = root_store;
+            //TODO 
+            // const { run_panel, transactions, summary: s } = root_store;
 
-            reaction(
-                () => run_panel.is_running,
-                () => run_panel.is_running && onRunBot(s.summary)
-            );
+            // reaction(
+            //     () => run_panel.is_running,
+            //     () => run_panel.is_running && onRunBot(s.summary)
+            // );
 
-            reaction(
-                () => transactions.contracts,
-                () => onTransactionClosed(transactions.contracts)
-            );
+            // reaction(
+            //     () => transactions.contracts,
+            //     () => onTransactionClosed(transactions.contracts)
+            // );
 
         } catch (error) {
             console.warn('Error initializing GTM reactions ', error); // eslint-disable-line no-console

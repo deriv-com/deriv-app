@@ -3,14 +3,15 @@ import {
     getFinalPrice,
     getIndicativePrice,
     getContractTypeName,
-}                         from './contract';
-import { gtm }            from './gtm';
+}                            from './contract';
+import { gtm }               from './gtm';
 import {
     createError ,
     trackAndEmitError,
-}                         from './error';
-import { observer }       from './observer';
-import { importExternal } from './html-helper';
+}                            from './error';
+import { observer }          from './observer';
+import { importExternal }    from './html-helper';
+import { onWorkspaceResize } from './workspace';
 
 export default {
     createError,
@@ -22,4 +23,5 @@ export default {
     getContractTypeName,
     gtm,
     observer,
+    onWorkspaceResize,
 };

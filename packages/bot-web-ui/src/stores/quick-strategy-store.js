@@ -5,9 +5,10 @@ import {
     runInAction,
 }                    from 'mobx';
 import { localize }  from 'deriv-translations';
-import { config }    from 'deriv-bot-engine/dist/constants';
-import { ApiHelpers} from 'deriv-bot-engine/dist/services';
-import { load }      from 'deriv-bot-engine/dist/scratch';
+import { ApiHelpers,
+    config,
+    load
+}                    from 'deriv-bot-engine';
 
 export default class QuickStrategyStore {
     constructor(root_store) {

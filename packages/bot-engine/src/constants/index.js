@@ -1,5 +1,4 @@
-import config             from './config';
-
+import { config }        from './config';
 import {
     error_types,
     message_types,

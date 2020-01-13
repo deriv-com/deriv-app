@@ -1,10 +1,9 @@
 import { Provider }         from 'mobx-react';
 import React                from 'react';
-import { gtm }              from 'deriv-bot-engine/dist/utils';
-import { ServerTime,
-    ApiHelpers }            from 'deriv-bot-engine/dist/services';
-
-// import DBot                 from 'deriv-bot-engine';
+import { 
+    DBot,
+    gtm,
+    ServerTime }            from 'deriv-bot-engine';
 import                           './public-path'; // Leave this here! OK boss!
 import FooterExtension      from './components/footer-extension.jsx';
 import MainContent          from './components/main-content.jsx';
@@ -21,14 +20,14 @@ class App extends React.Component {
         super(props);
         const { passthrough: { WS, root_store } } = props;
         this.root_store = new RootStore(root_store, WS);
-        ApiHelpers.setInstance(this.root_store);
+        // ApiHelpers.setInstance(this.root_store);
         gtm.init(this.root_store);
         ServerTime.init(root_store.common);
     }
 
     componentDidMount() {
-        // DBot.initWorkspace();
-        ApiHelpers.instance.registerOnAccountSwitch();
+        DBot.initWorkspace(__webpack_public_path__);
+        // ApiHelpers.instance.registerOnAccountSwitch();
     }
 
     componentWillUnmount() {
@@ -36,7 +35,7 @@ class App extends React.Component {
             Blockly.derivWorkspace.dispose();
         }
 
-        ApiHelpers.instance.disposeOnAccountSwitch();
+        // ApiHelpers.instance.disposeOnAccountSwitch();
         ScratchStore.instance.disposeReactions();
     }
 

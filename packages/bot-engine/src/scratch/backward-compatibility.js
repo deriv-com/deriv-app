@@ -1,5 +1,5 @@
 import { localize }  from 'deriv-translations';
-import config        from '../constants';
+import { config }    from '../constants/config';
 import ApiHelpers    from '../services/api/api-helpers';
 
 /* eslint-disable no-underscore-dangle */

@@ -1,8 +1,8 @@
 import {
     observable,
     action,
-}                    from 'mobx';
-import { observer }  from 'deriv-bot-engine/dist/utils';
+}                   from 'mobx';
+import { observer } from 'deriv-bot-engine';
 
 export default class SummaryStore {
     @observable summary = {

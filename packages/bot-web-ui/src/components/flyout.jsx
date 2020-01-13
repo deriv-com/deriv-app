@@ -2,7 +2,7 @@ import classNames              from 'classnames';
 import React                   from 'react';
 import PropTypes               from 'prop-types';
 import { localize }            from 'deriv-translations';
-import { help_content_config } from 'deriv-bot-engine/dist/scratch';
+import { help_content_config } from 'deriv-bot-engine';
 import FlyoutBlockGroup        from './flyout-block-group.jsx';
 import HelpBase                from './help-contents/flyout-help-base.jsx';
 import { connect }             from '../stores/connect';

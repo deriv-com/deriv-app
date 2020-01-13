@@ -6,10 +6,10 @@ import {
 import { localize }                    from 'deriv-translations' ;
 import {
     error_types,
-    unrecoverable_errors }             from 'deriv-bot-engine/dist/constants';
-import { observer ,
+    unrecoverable_errors,
+    observer ,
     setMainContentWidth ,
-    isEnded }                          from 'deriv-bot-engine/dist/utils';
+    isEnded }                          from 'deriv-bot-engine';
 // import DBot                            from 'deriv-bot-engine';
 import { contract_stages }             from '../constants/contract-stage';
 import { switch_account_notification } from '../utils/bot-notifications';

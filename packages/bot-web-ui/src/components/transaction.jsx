@@ -7,7 +7,7 @@ import { localize }            from 'deriv-translations';
 import React                   from 'react';
 import ContentLoader           from 'react-content-loader';
 import PropTypes               from 'prop-types';
-import { getContractTypeName } from 'deriv-bot-engine/dist/utils';
+import { getContractTypeName } from 'deriv-bot-engine';
 import IconTradeType           from './icon-trade-types.jsx';
 import { connect }             from '../stores/connect';
 

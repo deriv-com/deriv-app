@@ -3,7 +3,7 @@ import {
     observable,
     reaction,
 }                            from 'mobx';
-import { onWorkspaceResize } from 'deriv-bot-engine/dist/utils';
+import { onWorkspaceResize } from 'deriv-bot-engine';
 import { tabs_title }        from '../constants/bot-contents';
 
 export default class MainContentStore {

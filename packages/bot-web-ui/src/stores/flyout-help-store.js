@@ -3,7 +3,7 @@ import {
     action,
     runInAction,
 }                   from 'mobx';
-import { config }   from 'deriv-bot-engine/dist/constants';
+// import { config }   from 'deriv-bot-engine';
 
 export default class FlyoutHelpStore {
     constructor(root_store) {
@@ -14,7 +14,7 @@ export default class FlyoutHelpStore {
         css   : false,
         media : `${__webpack_public_path__}media/`,
         move  : { scrollbars: false, drag: true, wheel: false },
-        zoom  : { startScale: config.workspaces.flyoutWorkspacesStartScale },
+        zoom  : { startScale: 0.7 },
         sounds: false,
     };
 
@@ -28,8 +28,8 @@ export default class FlyoutHelpStore {
         const block_hw        = Blockly.Block.getDimensions(block_node);
         const block_type      = block_node.getAttribute('type');
         const title           = Blockly.Blocks[block_type].meta().display_name;
-        const help_string_obj = await import(/* webpackChunkName: `[request]` */ 'deriv-bot-engine/dist/help-strings');
-        const start_scale     = config.workspaces.flyoutWorkspacesStartScale;
+        const help_string_obj = await import(/* webpackChunkName: `[request]` */ 'deriv-bot-engine');
+        const start_scale     = 0.7;
 
         block_node.setAttribute('width', block_hw.width * start_scale);
         block_node.setAttribute('height', block_hw.height * start_scale);
@@ -85,7 +85,7 @@ export default class FlyoutHelpStore {
             }
 
             try {
-                await import(/* webpackChunkName: `[request]` */ 'deriv-bot-engine/dist/help-strings');
+                await import(/* webpackChunkName: `[request]` */ 'deriv-bot-engine');
                 return block_type;
             } catch (e) {
                 return getNextBlock(xml,next_index,direction);

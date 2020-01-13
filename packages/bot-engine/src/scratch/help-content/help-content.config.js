@@ -1,8 +1,8 @@
-import constant from '../../constants/config';
+import { config } from '../../constants/config';
 
-const { help: { TEXT, IMAGE, BLOCK } } = constant;
+const { help: { TEXT, IMAGE, BLOCK } } = config;
 
-export const config = {
+export const help_content_config = {
 //= ================= Functions ==================
     procedures_ifreturn: [
         { type: TEXT },

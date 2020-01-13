@@ -5,7 +5,7 @@ import {
     hasAllRequiredBlocks,
     updateDisabledBlocks }            from './utils';
 import { onWorkspaceResize }          from '../utils/workspace';
-import config                         from '../constants';
+import { config }                     from '../constants/config';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import { observer as globalObserver } from '../utils/observer';
 
@@ -20,8 +20,9 @@ class DBot {
     /**
      * Initialises the workspace and mounts it to a container element (app_contents).
      */
-    async initWorkspace() {
+    async initWorkspace(webpack_public_path) {
         try {
+            __webpack_public_path__ = webpack_public_path; // eslint-disable-line no-global-assign
             const el_scratch_div  = document.getElementById('scratch_div');
             const toolbox_xml     = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(r => r.text()); // eslint-disable-line
             const main_xml        = await fetch(`${__webpack_public_path__}xml/main.xml`).then(r => r.text()); // eslint-disable-line

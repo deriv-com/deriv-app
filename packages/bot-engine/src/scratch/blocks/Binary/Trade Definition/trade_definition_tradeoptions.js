@@ -1,6 +1,6 @@
 import { localize }  from 'deriv-translations';
 import CurrencyUtils from 'deriv-shared/utils/currency';
-import config        from '../../../../constants';
+import { config }    from '../../../../constants/config';
 import ApiHelpers    from '../../../../services/api/api-helpers';
 import { client }    from '../../../../services/tradeEngine/utils/user';
 

@@ -1,5 +1,4 @@
-import config from '../../constants';
-
+import { config } from '../../constants/config';
 /**
  * Handle a mouse-down on SVG drawing surface.
  * @param {!Event} e Mouse down event.

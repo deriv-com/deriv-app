@@ -1,4 +1,4 @@
-import config         from '../../constants';
+import { config }     from '../../constants/config';
 import PendingPromise from '../../utils/pending-promise';
 
 export default class ContractsFor {

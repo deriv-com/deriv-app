@@ -2,26 +2,15 @@ const { CleanWebpackPlugin }    = require('clean-webpack-plugin');
 const CopyWebpackPlugin         = require('copy-webpack-plugin');
 const path                      = require('path');
 const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
-// const BundleAnalyzerPlugin      = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 module.exports = function (env, argv) {
-    // const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
-
     return {
-        entry    : {
-            constants      :  path.join(__dirname, 'src', 'constants'),
-            'help-strings' :  path.join(__dirname, 'src', 'scratch/help-content/help-strings'),
-            services       :  path.join(__dirname, 'src', 'services/api'),
-            utils          :  path.join(__dirname, 'src', 'utils'),
-            hooks          :  path.join(__dirname , 'src', 'scratch/hooks'),
-            scratch        :  path.join(__dirname, 'src', 'scratch'),
-            'bot-engine'   :  path.join(__dirname, 'src', 'app.js'),
-        },
+        entry    :  path.join(__dirname, 'src', 'app.js'),
         output: {
             path         :  path.resolve(__dirname, 'dist'),
-            filename     :  '[name].js',
+            filename     :  'bot-engine.js',
             libraryExport:  'default',
             library      :  'deriv-bot-engine',
             libraryTarget:  'umd',
@@ -31,9 +20,8 @@ module.exports = function (env, argv) {
             disableHostCheck: true,
         },
         resolve: {
-            extensions: ['.js'] // add your other extensions here
+            extensions: ['.js']
           },
-        // optimization: { concatenateModules: false, providedExports: false, usedExports: false, sideEffects: false },
         mode     : is_release ? 'production' : 'development',
         devtool  : is_release ? 'source-map' : 'cheap-module-eval-source-map',
         target   : 'web',
@@ -77,7 +65,6 @@ module.exports = function (env, argv) {
                     },
                 },
             }),
-            // ...(!is_release ? [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ] : []),
         ],
         externals: [
             {

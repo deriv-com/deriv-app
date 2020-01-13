@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-import { observable, action }   from 'mobx';
-import { config }               from 'deriv-bot-engine/dist/constants';
+import { observable, action } from 'mobx';
+import { config }             from 'deriv-bot-engine';
 
 export default class FlyoutStore {
     block_listeners  = [];

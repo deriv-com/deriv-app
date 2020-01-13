@@ -2,7 +2,7 @@ import { localize } from 'deriv-translations';
 
 const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH', 'UST'];
 
-const config = {
+export const config = {
     lists: {
         PAYOUTTYPE: [
             // [localize('Payout'), 'payout'],
@@ -272,5 +272,3 @@ const config = {
         },
     },
 };
-
-export default config;

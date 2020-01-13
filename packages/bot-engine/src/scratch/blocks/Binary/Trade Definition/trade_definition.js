@@ -2,7 +2,7 @@ import { localize }          from 'deriv-translations';
 import { defineContract }    from '../../images';
 import { setBlockTextColor } from '../../../utils';
 import { client }            from '../../../../services/tradeEngine/utils/user';
-import config                from '../../../../constants';
+import { config }            from '../../../../constants/config';
 
 Blockly.Blocks.trade_definition = {
     init() {

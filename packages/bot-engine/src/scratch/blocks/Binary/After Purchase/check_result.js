@@ -1,5 +1,5 @@
 import { localize }  from 'deriv-translations';
-import config        from '../../../../constants';
+import { config }    from '../../../../constants/config';
 
 Blockly.Blocks.contract_check_result = {
     init() {

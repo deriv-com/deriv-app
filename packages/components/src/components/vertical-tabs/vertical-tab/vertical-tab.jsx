@@ -39,7 +39,6 @@ export default class VerticalTab extends React.Component {
     }
 
     render() {
-        console.log(this.props);
         const selected = this.props.list[this.props.modal_index] || this.props.list[0];
         return (
             <div
@@ -49,7 +48,7 @@ export default class VerticalTab extends React.Component {
             >
                 {this.props.is_sidebar_enabled &&
                 <VerticalTabHeaders
-                    className={this.props.classNameHeader}
+                    className={this.props.header_classname}
                     items={this.props.list}
                     onChange={this.changeSelected}
                     selected={selected}
@@ -83,7 +82,7 @@ VerticalTab.propTypes = {
         }),
     ),
     action_bar_classname: PropTypes.string,
-    classNameHeader     : PropTypes.string,
+    header_classname    : PropTypes.string,
     current_path        : PropTypes.string,
     header_title        : PropTypes.string,
     is_full_width       : PropTypes.bool,

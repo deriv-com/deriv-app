@@ -1,16 +1,11 @@
 import { localize } from '@deriv/translations';
 import { save }     from '../utils';
-import ScratchStore from '../../stores/scratch-store';
 
 /**
  * Select this block.  Highlight it visually.
  */
 Blockly.BlockSvg.prototype.addSelect = function() {
-    if (!this.isInFlyout) {
-        const { flyout } = ScratchStore.instance;
-        flyout.setVisibility(false);
-        Blockly.utils.addClass(/** @type {!Element} */ (this.svgGroup_), 'blocklySelected');
-    }
+    Blockly.utils.addClass(/** @type {!Element} */ (this.svgGroup_), 'blocklySelected');
 };
 
 /**
@@ -18,12 +13,17 @@ Blockly.BlockSvg.prototype.addSelect = function() {
  * @param {boolean} disabled True if disabled.
  * @deriv/bot: Call updateDisabled() when setDisabled is called.
  */
-Blockly.BlockSvg.prototype.setDisabled = function(disabled) {
+Blockly.BlockSvg.prototype.setDisabled = function(disabled, is_user_action = false) {
     if (this.disabled !== disabled) {
         Blockly.BlockSvg.superClass_.setDisabled.call(this, disabled);
+
         if (this.rendered) {
             this.updateDisabled();
         }
+
+        // Distinguish user + code disabled states. i.e. when user disabled a block, we
+        // shouldn't enable it through code, only enable when user re-enables it.
+        this.is_user_disabled_state = is_user_action;
     }
 };
 
@@ -95,16 +95,19 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
 
     // Option to disable/enable block.
     if (this.workspace.options.disable) {
+        const restricted_parents = block.restricted_parents || [];
         const disable_option = {
-            text    : this.disabled ? localize('Enable Block') : localize('Disable Block'),
-            enabled : !this.getInheritedDisabled(),
+            text   : this.disabled ? localize('Enable Block') : localize('Disable Block'),
+            enabled:
+                !this.getInheritedDisabled() &&
+                restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent)),
             callback: () => {
                 const group = Blockly.Events.getGroup();
                 if (!group) {
                     Blockly.Events.setGroup(true);
                 }
 
-                block.setDisabled(!block.disabled);
+                block.setDisabled(!block.disabled, true);
 
                 if (!group) {
                     Blockly.Events.setGroup(false);

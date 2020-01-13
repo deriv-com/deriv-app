@@ -1,5 +1,7 @@
 import { localize }                   from '@deriv/translations';
-import { loadBlocksFromRemote }       from '../../../../utils';
+import {
+    loadBlocksFromRemote,
+    runIrreversibleEvents }           from '../../../../utils';
 import { observer as globalObserver } from '../../../../../utils/observer';
 
 Blockly.Blocks.loader = {
@@ -64,19 +66,15 @@ Blockly.Blocks.loader = {
     },
     loadBlocksFromCurrentUrl() {
         this.current_url = this.getFieldValue('URL');
-        const { recordUndo } = Blockly.Events;
-        Blockly.Events.recordUndo = false;
-
-        // Remove blocks previously loaded by this block.
-        Blockly.Events.disable();
-        this.blocks_added_by_me.forEach(block => block.dispose());
-        Blockly.Events.enable();
+        
+        runIrreversibleEvents(() => {
+            // Remove blocks previously loaded by this block.
+            this.blocks_added_by_me.forEach(block => block.dispose());
+        });
 
         loadBlocksFromRemote(this).then(() => {
-            Blockly.Events.recordUndo = recordUndo;
             globalObserver.emit('ui.log.success', localize('Blocks are loaded successfully'));
         }).catch(error_msg => {
-            Blockly.Events.recordUndo = recordUndo;
             globalObserver.emit('ui.log.error', error_msg);
             this.setDisabled(true);
         });

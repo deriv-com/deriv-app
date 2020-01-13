@@ -1,14 +1,14 @@
-import classNames             from 'classnames';
-import React                  from 'react';
+import classNames        from 'classnames';
+import React             from 'react';
 import {
     Icon,
     MobileDrawer,
-    ToggleSwitch }            from '@deriv/components';
-import { localize }           from '@deriv/translations';
-import routes                 from 'Constants/routes';
-import { NetworkStatus }      from 'App/Components/Layout/Footer';
-import ServerTime             from 'App/Containers/server-time.jsx';
-import { BinaryLink }         from 'App/Components/Routes';
+    ToggleSwitch }       from '@deriv/components';
+import { localize }      from '@deriv/translations';
+import routes            from 'Constants/routes';
+import { NetworkStatus } from 'App/Components/Layout/Footer';
+import ServerTime        from 'App/Containers/server-time.jsx';
+import { BinaryLink }    from 'App/Components/Routes';
 
 const MenuLink = ({ link_to, icon, suffix_icon, text }) => (
     <React.Fragment>

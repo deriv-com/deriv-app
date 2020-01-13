@@ -17,7 +17,7 @@ class SubMenu extends React.PureComponent {
 
     render() {
         return (
-            <>
+            <React.Fragment>
                 <div
                     className={classNames(
                         'dc-mobile-drawer__submenu-toggle',
@@ -51,7 +51,7 @@ class SubMenu extends React.PureComponent {
                 >
                     {this.props.children}
                 </SubMenuList>
-            </>
+            </React.Fragment>
         );
     }
 }

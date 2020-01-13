@@ -4,8 +4,6 @@ const MiniCssExtractPlugin      = require('mini-css-extract-plugin');
 const path                      = require('path');
 const StyleLintPlugin           = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin        = require('svg-sprite-loader/plugin');
-// const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
-// const BundleAnalyzerPlugin      = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 

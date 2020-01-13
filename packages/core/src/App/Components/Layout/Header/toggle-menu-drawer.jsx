@@ -134,7 +134,12 @@ class ToggleMenuDrawer extends React.PureComponent {
                             </MobileDrawer.Item>
                         </MobileDrawer.SubMenu>
                         }
-                        <MobileDrawer.Item onClick={() => this.props.toggleTheme(!this.props.is_dark_mode)}>
+                        <MobileDrawer.Item
+                            onClick={(e) => {
+                                e.preventDefault();
+                                this.props.toggleTheme(!this.props.is_dark_mode);
+                            }}
+                        >
                             <div className={classNames('header__menu-mobile-link', {
                                 'header__menu-mobile-link--active': this.props.is_dark_mode,
                             })}

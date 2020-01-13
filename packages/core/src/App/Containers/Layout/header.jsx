@@ -75,6 +75,7 @@ class Header extends React.Component {
                                     disableApp={disableApp}
                                     logoutClient={logoutClient}
                                     is_dark_mode={is_dark_mode}
+                                    is_logged_in={is_logged_in}
                                     toggleTheme={setDarkMode}
                                     platform_switcher={
                                         <PlatformSwitcher

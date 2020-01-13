@@ -11,13 +11,7 @@ const CardHeader = ({
     contract_info,
     has_progress_slider,
 }) => {
-    const getTick = () => {
-        if (!contract_info.tick_count) return null;
-        let current_tick = getCurrentTick(contract_info);
-        current_tick = (current_tick > getCurrentTick(contract_info)) ?
-            current_tick : getCurrentTick(contract_info);
-        return current_tick;
-    };
+    const current_tick = contract_info.tick_count ? getCurrentTick(contract_info) : null;
 
     return (
         <>
@@ -45,7 +39,7 @@ const CardHeader = ({
                     is_loading={false}
                     start_time={contract_info.purchase_time}
                     expiry_time={contract_info.date_expiry}
-                    current_tick={getTick()}
+                    current_tick={current_tick}
                     ticks_count={contract_info.tick_count}
                 />
             }

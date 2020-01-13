@@ -2,7 +2,7 @@ import { expect }   from 'chai';
 import { shallow }  from 'enzyme';
 import React        from 'react';
 import { fake }     from 'sinon';
-import Button       from 'deriv-components/lib/button';
+import Button       from '@deriv/components/lib/button';
 import ToggleButton from '../toggle-button.jsx';
 
 describe('<ToggleButton />', () => {
@@ -70,7 +70,7 @@ describe('<ToggleButton />', () => {
         it('should not be called when the click is prevented', () => {
             const callback = fake();
             const wrapper = shallow(
-                <ToggleButton 
+                <ToggleButton
                     value='test'
                     onChange={callback}
                     onClick={(event) => event.preventDefault()}

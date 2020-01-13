@@ -1,7 +1,7 @@
 import classNames         from 'classnames';
 import React              from 'react';
 import { withRouter }     from 'react-router-dom';
-import { Icon }           from 'deriv-components';
+import { Icon }           from '@deriv/components';
 import {
     VerticalTabHeaders,
     VerticalTabHeader }   from '../VerticalTabs';

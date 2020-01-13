@@ -1,4 +1,4 @@
-const { getLanguage } = require('deriv-translations');
+const { getLanguage } = require('@deriv/translations');
 
 const Language = (() => {
     const urlForLanguage = (lang, url = window.location.href) =>

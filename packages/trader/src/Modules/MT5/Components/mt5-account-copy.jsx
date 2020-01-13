@@ -1,7 +1,7 @@
 import React               from 'react';
-import { Icon }            from 'deriv-components';
+import { Icon }            from '@deriv/components';
 import { copyToClipboard } from '_common/utility';
-import { localize }        from 'deriv-translations';
+import { localize }        from '@deriv/translations';
 import Tooltip             from '../Containers/tooltip.jsx';
 
 class Mt5AccountCopy extends React.PureComponent {

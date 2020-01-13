@@ -6,8 +6,8 @@ import {
     Autocomplete,
     Checkbox,
     Button,
-    Input }                                    from 'deriv-components';
-import { localize }                            from 'deriv-translations';
+    Input }                                    from '@deriv/components';
+import { localize }                            from '@deriv/translations';
 import { WS }                                  from 'Services/ws-methods';
 import { connect }                             from 'Stores/connect';
 import {

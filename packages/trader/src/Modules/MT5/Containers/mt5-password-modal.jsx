@@ -2,12 +2,12 @@ import {
     Icon,
     PasswordInput,
     Modal,
-    PasswordMeter }           from 'deriv-components';
+    PasswordMeter }           from '@deriv/components';
 import { Formik }             from 'formik';
 import PropTypes              from 'prop-types';
 import React                  from 'react';
 import { withRouter }         from 'react-router';
-import { localize, Localize } from 'deriv-translations';
+import { localize, Localize } from '@deriv/translations';
 import SuccessDialog          from 'App/Containers/Modals/success-dialog.jsx';
 
 import routes                 from 'Constants/routes';

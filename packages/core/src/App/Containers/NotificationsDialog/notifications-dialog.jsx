@@ -5,12 +5,12 @@ import { CSSTransition }     from 'react-transition-group';
 import {
     Button,
     Icon,
-    ThemedScrollbars }       from 'deriv-components';
+    ThemedScrollbars }       from '@deriv/components';
 import { BinaryLink }        from 'App/Components/Routes';
 import { connect }           from 'Stores/connect';
-import { localize }          from 'deriv-translations';
+import { localize }          from '@deriv/translations';
 import { toTitleCase }       from '_common/string_util';
-import ObjectUtils           from 'deriv-shared/utils/object';
+import ObjectUtils           from '@deriv/shared/utils/object';
 import { EmptyNotification } from 'App/Components/Elements/Notifications/empty-notification.jsx';
 
 class NotificationsDialog extends React.Component {

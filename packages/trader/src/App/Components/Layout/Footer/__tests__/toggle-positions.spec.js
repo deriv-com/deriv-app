@@ -4,7 +4,7 @@ import { fake }               from 'sinon';
 import { configure, shallow } from 'enzyme';
 import Adapter                from 'enzyme-adapter-react-16';
 import { TogglePositions }    from '../toggle-positions.jsx';
-import { Icon }               from 'deriv-components';
+import { Icon }               from '@deriv/components';
 
 configure({ adapter: new Adapter() });
 

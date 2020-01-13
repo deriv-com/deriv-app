@@ -14,7 +14,7 @@ const output = {
     filename: 'bot.main.js',
     chunkFilename: 'bot.[name].[contenthash].js',
     libraryExport: 'default',
-    library: 'deriv-bot',
+    library: '@deriv/bot',
     libraryTarget: 'umd',
 };
 
@@ -55,7 +55,7 @@ module.exports = function (env, argv) {
                         {
                             loader : "sass-resources-loader",
                             options: {
-                                resources: require(path.resolve(__dirname, 'node_modules/deriv-shared/utils/index.js')),
+                                resources: require(path.resolve(__dirname, 'node_modules/@deriv/shared/utils/index.js')),
                             }
                         }
                     ]
@@ -93,7 +93,7 @@ module.exports = function (env, argv) {
                 {
                     test   : /\.(js|jsx)$/,
                     exclude: /node_modules/,
-                    loader : [ 'deriv-shared/utils/deriv-components-loader.js',
+                    loader : [ '@deriv/shared/utils/deriv-components-loader.js',
                         'babel-loader' ],
                 },
             ],
@@ -129,17 +129,17 @@ module.exports = function (env, argv) {
             {
                 '@babel/polyfill'   : '@babel/polyfill',
                 'classnames'        : 'classnames',
-                'deriv-components'  : 'deriv-components',
-                'deriv-shared'      : 'deriv-shared',
-                'deriv-translations': 'deriv-translations',
+                '@deriv/components'  : '@deriv/components',
+                '@deriv/shared'      : '@deriv/shared',
+                '@deriv/translations': '@deriv/translations',
                 'formik'            : 'formik',
                 'react'             : 'react',
                 'react-dom'         : 'react-dom',
                 'smartcharts-beta'  : 'smartcharts-beta',
             },
-            /^deriv-shared\/.+$/,
-            /^deriv-components\/.+$/,
-            /^deriv-translations\/.+$/,
+            /^@deriv\/shared\/.+$/,
+            /^@deriv\/components\/.+$/,
+            /^@deriv\/translations\/.+$/,
         ],
     };
 }

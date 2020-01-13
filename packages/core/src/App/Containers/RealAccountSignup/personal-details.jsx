@@ -2,11 +2,11 @@ import classNames             from 'classnames';
 import {
     Icon,
     Input,
-    ThemedScrollbars }        from 'deriv-components';
+    ThemedScrollbars }        from '@deriv/components';
 import { Formik, Field }      from 'formik';
 import React                  from 'react';
 import { CSSTransition }      from 'react-transition-group';
-import { localize, Localize } from 'deriv-translations';
+import { localize, Localize } from '@deriv/translations';
 import { toMoment }           from 'Utils/Date';
 import FormSubmitButton       from './form-submit-button.jsx';
 import DatePickerCalendar     from './date-picker-calendar.jsx';

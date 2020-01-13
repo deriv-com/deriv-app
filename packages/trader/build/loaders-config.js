@@ -3,7 +3,7 @@ const path                 = require('path');
 
 const js_loaders = [
     {
-        loader: 'deriv-shared/utils/deriv-components-loader.js'
+        loader: '@deriv/shared/utils/deriv-components-loader.js'
     },
     {
         loader : 'babel-loader',
@@ -104,7 +104,7 @@ const css_loaders = [
     {
         loader: 'sass-resources-loader',
         options: {
-            resources: require('deriv-shared/utils/index.js'),
+            resources: require('@deriv/shared/utils/index.js'),
         }
     }
 ];

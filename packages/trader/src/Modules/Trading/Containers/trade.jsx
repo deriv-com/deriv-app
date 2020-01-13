@@ -174,6 +174,9 @@ class ChartTradeClass extends React.Component {
         <ChartBottomWidgets digits={digits} tick={tick} />
     );
 
+    componentDidMount() {
+        performance.mark('smart-charts-mounted');
+    }
     componentDidUpdate(prevProps) {
         if (prevProps.should_refresh) this.props.resetRefresh();
     }

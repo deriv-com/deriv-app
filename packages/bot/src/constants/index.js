@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 
 const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH', 'UST'];
 
@@ -187,6 +187,7 @@ const config = {
     mainBlocks                             : ['trade_definition', 'before_purchase', 'during_purchase', 'after_purchase'],
     mandatoryMainBlocks                    : ['trade_definition', 'before_purchase'],
     procedureDefinitionBlocks              : ['procedures_defnoreturn', 'procedures_defreturn'],
+    single_instance_blocks                 : ['trade_definition', 'before_purchase', 'during_purchase', 'after_purchase'],
     TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING: {
         callput: ['callput', 'higherlower'],
         asian  : ['asians'],

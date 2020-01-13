@@ -1,8 +1,8 @@
 import classNames               from 'classnames';
 import React                    from 'react';
-import { Icon, Money }          from 'deriv-components';
-import CurrencyUtils            from 'deriv-shared/utils/currency';
-import { Localize, localize }   from 'deriv-translations';
+import { Icon, Money }          from '@deriv/components';
+import CurrencyUtils            from '@deriv/shared/utils/currency';
+import { Localize, localize }   from '@deriv/translations';
 import { getMT5AccountDisplay } from 'Stores/Helpers/client';
 
 const AccountList = ({

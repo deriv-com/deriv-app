@@ -9,7 +9,7 @@ module.exports = {
         path         : path.resolve(__dirname, 'lib'),
         filename     : '[name].js',
         libraryExport: 'default',
-        library      : ['deriv-translations', '[name]'],
+        library      : '@deriv/translations',
         libraryTarget: 'umd',
     },
     optimization: {

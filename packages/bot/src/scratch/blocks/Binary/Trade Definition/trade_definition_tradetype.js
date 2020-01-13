@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 import ApiHelpers   from '../../../../services/api/api-helpers';
 
 Blockly.Blocks.trade_definition_tradetype = {
@@ -57,7 +57,7 @@ Blockly.Blocks.trade_definition_tradetype = {
                 } else if (event.name === 'TRADETYPECAT_LIST' && event.blockId === this.id) {
                     contracts_for.getTradeTypes(market, submarket, symbol, trade_type_cat).then(trade_types => {
                         const trade_type_field = this.getField('TRADETYPE_LIST');
-    
+
                         trade_type_field.updateOptions(trade_types, {
                             default_value       : trade_type,
                             should_pretend_empty: true,

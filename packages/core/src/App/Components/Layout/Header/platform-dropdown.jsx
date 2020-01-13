@@ -45,15 +45,15 @@ class PlatformDropdown extends React.PureComponent {
                             key={idx}
                             onClick={closeDrawer}
                             className={classNames(
-                                'platform-dropdown__list__platform',
+                                'platform-dropdown__list-platform',
                             )}
                         >
-                            <div className='platform-dropdown__list__platform__background' />
-                            <Icon className='platform-dropdown__list__platform__icon' icon={platform.icon} size={32} />
+                            <div className='platform-dropdown__list-platform-background' />
+                            <Icon className='platform-dropdown__list-platform-icon' icon={platform.icon} size={32} />
 
-                            <div className='platform-dropdown__list__platform__details'>
-                                <p className='platform-dropdown__list__platform__title'>{platform.title}</p>
-                                <p className='platform-dropdown__list__platform__description'>{platform.description}</p>
+                            <div className='platform-dropdown__list-platform-details'>
+                                <p className='platform-dropdown__list-platform-title'>{platform.title}</p>
+                                <p className='platform-dropdown__list-platform-description'>{platform.description}</p>
                             </div>
                         </BinaryLink>
                     ))}

@@ -15,15 +15,15 @@ const MenuLink = ({ link_to, icon, suffix_icon, text }) => (
         {!link_to ?
             <div className='header__menu-mobile-link'>
                 <Icon
-                    className='header__menu-mobile-link__icon'
+                    className='header__menu-mobile-link-icon'
                     icon={icon}
                 />
-                <span className='header__menu-mobile-link__text'>
+                <span className='header__menu-mobile-link-text'>
                     {text}
                 </span>
                 {suffix_icon &&
                 <Icon
-                    className='header__menu-mobile-link__suffix-icon'
+                    className='header__menu-mobile-link-suffix-icon'
                     icon={suffix_icon}
                 />}
             </div>
@@ -34,15 +34,15 @@ const MenuLink = ({ link_to, icon, suffix_icon, text }) => (
                 active_class='header__menu-mobile-link--active'
             >
                 <Icon
-                    className='header__menu-mobile-link__icon'
+                    className='header__menu-mobile-link-icon'
                     icon={icon}
                 />
-                <span className='header__menu-mobile-link__text'>
+                <span className='header__menu-mobile-link-text'>
                     {text}
                 </span>
                 {suffix_icon &&
                 <Icon
-                    className='header__menu-mobile-link__suffix-icon'
+                    className='header__menu-mobile-link-suffix-icon'
                     icon={suffix_icon}
                 />}
             </BinaryLink>
@@ -138,16 +138,16 @@ class ToggleMenuDrawer extends React.PureComponent {
                             })}
                             >
                                 <Icon
-                                    className='header__menu-mobile-link__icon'
+                                    className='header__menu-mobile-link-icon'
                                     icon={'IcTheme'}
                                 />
-                                <span className='header__menu-mobile-link__text'>
+                                <span className='header__menu-mobile-link-text'>
                                     {localize('Dark Theme')}
                                 </span>
                                 <ToggleSwitch
                                     id='dt_mobile_drawer_theme_toggler'
-                                    classNameLabel='header__menu-mobile-link__toggler-label'
-                                    classNameButton={classNames('header__menu-mobile-link__toggler-button', {
+                                    classNameLabel='header__menu-mobile-link-toggler-label'
+                                    classNameButton={classNames('header__menu-mobile-link-toggler-button', {
                                         'header__menu-mobile-link__toggler-button--active': this.props.is_dark_mode,
                                     })}
                                     handleToggle={() => this.props.toggleTheme(!this.props.is_dark_mode)}

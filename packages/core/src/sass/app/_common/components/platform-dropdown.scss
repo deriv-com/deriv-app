@@ -1,4 +1,4 @@
-/* @define platform-dropdown */
+/* @define platform-dropdown; weak */
 .platform-dropdown {
     z-index: 5;
     background-color: var(--overlay-outside-dialog);
@@ -17,13 +17,14 @@
             top: 0;
             left: 0;
             width: calc(295px - 16px);
+            background-color: var(--general-main-2);
 
-            &__platform {
+            &-platform {
                 width: calc(100% - 16px);
             }
         }
     }
-    &-enter-done {
+    &--enter-done {
         opacity: 1;
 
         .platform-dropdown__list {
@@ -38,7 +39,7 @@
         transform: translateY(0px);
         transition: transform 0.25s ease;
 
-        &__platform {
+        &-platform {
             position: relative;
             display: inline-flex;
             background-color: transparent;
@@ -49,22 +50,22 @@
             width: 302px;
             border-radius: 8px;
 
-            &__icon {
+            &-icon {
                 min-height: 32px;
                 min-width: 32px;
                 margin-right: 16px;
             }
-            &__title {
+            &-title {
                 font-size: 16px;
                 font-weight: bold;
                 line-height: 24px;
             }
-            &__description {
+            &-description {
                 font-size: 14px;
                 line-height: 20px;
                 margin-top: 8px;
             }
-            &__background {
+            &-background {
                 opacity: 0;
                 transition: opacity 0.25s ease;
                 background-color: var(--general-hover);
@@ -76,6 +77,7 @@
                 z-index: -1;
                 border-radius: inherit;
             }
+            /* postcss-bem-linter: ignore */
             &.active {
                 border: solid 2px var(--border-active);
             }

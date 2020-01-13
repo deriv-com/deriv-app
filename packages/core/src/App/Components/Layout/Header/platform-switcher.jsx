@@ -42,7 +42,9 @@ class PlatformSwitcher extends React.PureComponent {
             <CSSTransition
                 mountOnEnter
                 in={this.state.is_open}
-                classNames='platform-dropdown'
+                classNames={{
+                    enterDone: 'platform-dropdown--enter-done',
+                }}
                 timeout={this.state.is_open ? 0 : 250}
                 unmountOnExit
             >

@@ -46,27 +46,27 @@
         align-items: center;
 
         &--active {
-            .header__menu-mobile-link__text {
+            .header__menu-mobile-link-text {
                 font-weight: bold;
                 color: var(--text-prominent);
             }
         }
-        &__text {
+        &-text {
             font-size: 1.4rem;
             color: var(--text-general);
         }
-        &__icon {
+        &-icon {
             margin-right: 16px;
             width: 16px;
             height: 16px;
         }
-        &__suffix-icon {
+        &-suffix-icon {
             width: 16px;
             height: 16px;
             margin-right: auto;
             margin-left: auto;
         }
-        &__toggler {
+        &-toggler {
             &-label {
                 width: 48px;
                 height: 25.6px;

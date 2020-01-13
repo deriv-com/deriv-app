@@ -99,6 +99,14 @@ const NonTickContract = RawMarkerMaker(({
     )) {
         ctx.fillStyle = background_color;
         ctx.strokeStyle = is_reset_barrier_expired ? foreground_color : color_based_on_status;
+        
+        draw_barrier_line({
+            ctx,
+            start,
+            exit      : entry,
+            barrier   : is_reset_barrier_expired ? entry_tick_top : barrier,
+            line_style: 'dashed',
+        });
         draw_barrier_line({
             ctx,
             start,

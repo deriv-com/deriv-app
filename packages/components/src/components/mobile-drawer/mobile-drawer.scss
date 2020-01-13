@@ -1,4 +1,4 @@
-/* @define dc-mobile-drawer */
+/* @define dc-mobile-drawer; weak */
 .dc-mobile-drawer {
     position: absolute;
     top: 0;
@@ -79,16 +79,16 @@
             padding: 0 0 3.2rem 4.8rem;
             align-items: center;
 
-            &__text {
+            &-text {
                 font-size: 1.4rem;
                 color: var(--text-general);
             }
-            &__icon {
+            &-icon {
                 width: 16px;
                 height: 16px;
                 margin-right: 16px;
             }
-            &__suffix-icon {
+            &-suffix-icon {
                 width: 16px;
                 height: 16px;
                 margin-right: auto;
@@ -124,7 +124,7 @@
                 padding: 2rem 0 3.2rem 3.2rem;
                 align-items: center;
 
-                &__text {
+                &-text {
                     line-height: 1.5;
                     font-size: 1.6rem;
                     font-weight: bold;

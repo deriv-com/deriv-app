@@ -27,18 +27,18 @@ class SubMenu extends React.PureComponent {
                 >
                     {this.props.submenu_icon &&
                         <Icon
-                            className='dc-mobile-drawer__submenu-toggle__icon'
+                            className='dc-mobile-drawer__submenu-toggle-icon'
                             icon={this.props.submenu_icon}
                         />
                     }
                     {this.props.submenu_title &&
-                    <h3 className='dc-mobile-drawer__submenu-toggle__text'>
+                    <h3 className='dc-mobile-drawer__submenu-toggle-text'>
                         {this.props.submenu_title}
                     </h3>
                     }
                     {this.props.submenu_suffix_icon &&
                         <Icon
-                            className='dc-mobile-drawer__submenu-toggle__suffix-icon'
+                            className='dc-mobile-drawer__submenu-toggle-suffix-icon'
                             icon={this.props.submenu_suffix_icon}
                         />
                     }
@@ -80,7 +80,7 @@ const SubMenuList = ({ is_expanded, collapse, children, has_subheader, submenu_t
                     />
                 </div>
                 {submenu_title &&
-                <h3 className='dc-mobile-drawer__submenu-list-title__text'>
+                <h3 className='dc-mobile-drawer__submenu-list-title-text'>
                     {submenu_title}
                 </h3>
                 }

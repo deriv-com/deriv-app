@@ -8,6 +8,7 @@ const Button = ({
     children,
     className = '',
     classNameSpan,
+    curved,
     green,
     has_effect,
     icon,
@@ -36,6 +37,7 @@ const Button = ({
         'btn__large'    : large,
         'btn__medium'   : medium,
         'btn__small'    : small,
+        'btn__curved'   : curved,
     }, className);
     const button = (
         <button
@@ -76,6 +78,7 @@ Button.propTypes = {
     children         : PropTypes.node,
     className        : PropTypes.string,
     classNameSpan    : PropTypes.string,
+    curved           : PropTypes.bool,
     green            : PropTypes.bool,
     has_effect       : PropTypes.bool,
     icon             : PropTypes.node,

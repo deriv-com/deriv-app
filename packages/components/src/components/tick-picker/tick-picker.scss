@@ -1,0 +1,51 @@
+.tick-picker {
+    width: 100%;
+    max-width: 300px;
+    height: 328px;
+    background-color: var(--general-section-1);
+    opacity: 0.64;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    div {
+        display: flex;
+    }
+    .styled-button {
+        background-color: var(--general-section-2);
+        width: 100%;
+        max-width: 112px;
+
+        span {
+            color: var(--text-prominent);
+        }
+    }
+    &--calculation {
+        margin-bottom: 28px;
+        justify-content: space-evenly;
+        align-items: center;
+
+        .tick-holder {
+            color: var(--text-loss-danger);
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+
+            &--counter {
+                font-size: 96px;
+            }
+            &--text {
+                font-size: 16px;
+            }
+        }
+        .operator {
+            background-color: var(--general-section-2);
+            width: 48px;
+            height: 48px;
+        }
+    }
+    &--submit-wrapper {
+        margin-bottom: 16px;
+        justify-content: center;
+    }
+}

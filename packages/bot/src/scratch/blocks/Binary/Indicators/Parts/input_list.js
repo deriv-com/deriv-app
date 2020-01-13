@@ -1,4 +1,5 @@
-import { localize } from '@deriv/translations';
+import { localize }              from '@deriv/translations';
+import { runIrreversibleEvents } from '../../../../utils';
 
 Blockly.Blocks.input_list = {
     init() {
@@ -43,23 +44,20 @@ Blockly.Blocks.input_list = {
             const is_illegal_parent = !has_parent || surround_parent.id !== this.required_parent_id;
 
             if (!has_parent || is_illegal_parent) {
-                const { recordUndo }      = Blockly.Events;
-                Blockly.Events.recordUndo = false;
+                runIrreversibleEvents(() => {
+                    this.unplug(true);
 
-                this.unplug(true);
+                    // Attempt to re-connect this child to its original parent.
+                    const all_blocks   = this.workspace.getAllBlocks();
+                    const parent_block = all_blocks.find(block => block.id === this.required_parent_id);
 
-                // Attempt to re-connect this child to its original parent.
-                const all_blocks   = this.workspace.getAllBlocks();
-                const parent_block = all_blocks.find(block => block.id === this.required_parent_id);
-
-                if (parent_block) {
-                    const parent_connection = parent_block.getLastConnectionInStatement('STATEMENT');
-                    parent_connection.connect(this.previousConnection);
-                } else {
-                    this.dispose();
-                }
-
-                Blockly.Events.recordUndo = recordUndo;
+                    if (parent_block) {
+                        const parent_connection = parent_block.getLastConnectionInStatement('STATEMENT');
+                        parent_connection.connect(this.previousConnection);
+                    } else {
+                        this.dispose();
+                    }
+                });
             }
         }
     },

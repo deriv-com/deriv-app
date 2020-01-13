@@ -1,0 +1,23 @@
+.tick-picker {
+    width: 100%;
+    max-width: 300px;
+    height: 328px;
+    background-color: var(--general-section-1);
+    opacity: 0.64;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    div {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    &--calculation {
+        margin-bottom: 28px;
+    }
+    &--submit-wrapper {
+        margin-bottom: 16px;
+    }
+}

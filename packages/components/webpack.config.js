@@ -38,6 +38,7 @@ module.exports = {
         'radio-group'      : path.resolve(__dirname, 'src', 'components/radio-group/index.js'),
         table              : path.resolve(__dirname, 'src', 'components/table/index.js'),
         tabs               : path.resolve(__dirname, 'src', 'components/tabs/index.js'),
+        'tick-picker'      : path.resolve(__dirname, 'src', 'components/tick-picker/index.js'),
         'themed-scrollbars': path.resolve(__dirname, 'src', 'components/themed-scrollbars/index.js'),
         'toggle-switch'    : path.resolve(__dirname, 'src', 'components/toggle-switch/index.js'),
     },

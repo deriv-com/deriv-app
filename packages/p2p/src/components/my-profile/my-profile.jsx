@@ -1,6 +1,6 @@
 import React        from 'react';
 import PropTypes    from 'prop-types';
-import { localize } from 'Components/i18next';	
+import { localize } from 'Components/i18next';
 import StringUtils  from 'Utils/string';
 import                   './my-profile.scss';
 

@@ -3,7 +3,7 @@ import React        from 'react';
 import { Button }   from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
-const MissingRealAccount = ({ onClick }) => (
+const MissingRealAccount = ({ onClickSignup }) => (
     <div className='mt5-dashboard__missing-real'>
         <h1 className='mt5-dashboard__missing-real--heading'>
             <Localize
@@ -12,7 +12,7 @@ const MissingRealAccount = ({ onClick }) => (
         </h1>
         <Button
             className='mt5-dashboard__missing-real--button'
-            onClick={onClick}
+            onClick={onClickSignup}
             type='button'
             primary
         >
@@ -24,7 +24,7 @@ const MissingRealAccount = ({ onClick }) => (
 );
 
 MissingRealAccount.propTypes = {
-    onClick: PropTypes.func,
+    onClickSignup: PropTypes.func,
 };
 
 export default MissingRealAccount;

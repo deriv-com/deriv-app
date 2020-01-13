@@ -1,18 +1,19 @@
-import classNames             from 'classnames';
-import React, { Component }   from 'react';
-import { withRouter }         from 'react-router-dom';
+import classNames                  from 'classnames';
+import React, { Component }        from 'react';
+import { withRouter }              from 'react-router-dom';
 import {
     Icon,
-    Modal }                   from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
-import routes                 from 'Constants/routes';
-import { connect }            from 'Stores/connect';
-import AccountWizard          from './account-wizard.jsx';
-import AddOrManageAccounts    from './add-or-manage-accounts.jsx';
-import ErrorModal             from './error-modal.jsx';
-import LoadingModal           from './loading-modal.jsx';
-import FinishedSetCurrency    from './finished-set-currency.jsx';
-import SuccessDialog          from '../Modals/success-dialog.jsx';
+    Loading,
+    Modal,
+}                                  from '@deriv/components';
+import { localize, Localize }      from '@deriv/translations';
+import routes                      from 'Constants/routes';
+import { connect }                 from 'Stores/connect';
+import AccountWizard               from './account-wizard.jsx';
+import AddOrManageAccounts         from './add-or-manage-accounts.jsx';
+import FinishedSetCurrency         from './finished-set-currency.jsx';
+import SignupErrorContent          from './signup-error-content.jsx';
+import SuccessDialog               from '../Modals/success-dialog.jsx';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
 
@@ -54,20 +55,24 @@ class RealAccountSignup extends Component {
                             onCancel={this.closeModalWithHooks}
                             onSubmit={this.closeModalThenOpenCashier}
                             message={this.props.state_value.success_message}
-                            icon={<Icon icon={`IcCurrency-${this.props.state_value.current_currency.toLowerCase()}`} size={120} />}
+                            icon={
+                                <Icon
+                                    icon={`IcCurrency-${this.props.state_value.current_currency.toLowerCase()}`}
+                                    size={120}
+                                />}
                             text_submit={localize('Deposit now')}
-                            text_cancel={ RealAccountSignup.text_cancel() }
+                            text_cancel={RealAccountSignup.text_cancel()}
                         />
                     ),
                 },
                 {
                     value: () => (
-                        <LoadingModal />
+                        <Loading is_fullscreen={false} />
                     ),
                 },
                 {
                     value: () => (
-                        <ErrorModal
+                        <SignupErrorContent
                             message={this.props.state_value.error_message}
                             code={this.props.state_value.error_code}
                             onClick={this.openPersonalDetails}
@@ -80,12 +85,12 @@ class RealAccountSignup extends Component {
 
     get modal_height() {
         const { currency, has_real_account } = this.props;
-        if (!currency)                    return '688px'; // Set currency modal
+        if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) return '702px'; // Add or manage account modal
         return '740px'; // Account wizard modal
     }
 
-    get labels () {
+    get labels() {
         return [
             this.props.currency ? localize('Add a real account') : localize('Set a currency for your Real Account'),
             localize('Add or manage account'),
@@ -174,10 +179,10 @@ class RealAccountSignup extends Component {
         this.props.setParams({
             active_modal_index: 0,
         });
-    }
+    };
 
     get active_modal_index() {
-        const ACCOUNT_WIZARD = 1;
+        const ACCOUNT_WIZARD        = 1;
         const ADD_OR_MANAGE_ACCOUNT = 0;
 
         if (this.props.state_value.active_modal_index === -1) {
@@ -199,9 +204,9 @@ class RealAccountSignup extends Component {
 
     render() {
         const { is_real_acc_signup_on } = this.props;
-        const title = this.labels[this.active_modal_index];
-        const Body  = this.state.modal_content[this.active_modal_index].value;
-        const has_close_icon = this.active_modal_index < 2 ||
+        const title                     = this.labels[this.active_modal_index];
+        const Body                      = this.state.modal_content[this.active_modal_index].value;
+        const has_close_icon            = this.active_modal_index < 2 ||
             this.active_modal_index === 5 ||
             this.active_modal_index === 6;
 
@@ -210,7 +215,8 @@ class RealAccountSignup extends Component {
                 id='real_account_signup_modal'
                 className={classNames('real-account-signup-modal', {
                     'dc-modal__container_real-account-signup-modal--error'  : this.active_modal_index === 5,
-                    'dc-modal__container_real-account-signup-modal--success': this.active_modal_index >= 2 && this.active_modal_index < 5,
+                    'dc-modal__container_real-account-signup-modal--success': this.active_modal_index >= 2 &&
+                        this.active_modal_index < 5,
                 })}
                 is_open={is_real_acc_signup_on}
                 has_close_icon={has_close_icon}

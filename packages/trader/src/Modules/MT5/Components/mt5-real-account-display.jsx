@@ -4,8 +4,7 @@ import { localize, Localize } from '@deriv/translations';
 import {
     real_advanced_specs,
     real_standard_specs,
-    real_synthetic_specs,
-}                             from 'Modules/MT5/Constants/specs';
+    real_synthetic_specs }    from 'Modules/MT5/Constants/mt5-specifications';
 import { MT5AccountCard }     from './mt5-account-card.jsx';
 
 const getRealAdvancedButtonLabel = (is_fully_authenticated, is_pending_authentication) => {

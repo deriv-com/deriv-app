@@ -89,7 +89,7 @@ class MT5AdvancedRealAccountSignup extends Component {
         return this.state.step;
     }
 
-    hasMoreSteps() {
+    get has_more_steps() {
         return this.state.step + 1 < this.state.items.length;
     }
 
@@ -101,7 +101,7 @@ class MT5AdvancedRealAccountSignup extends Component {
 
     nextStep = (setSubmitting) => {
         this.clearError();
-        if (this.hasMoreSteps()) {
+        if (this.has_more_steps) {
             this.goNext();
         } else {
             this.createMT5AdvancedAccount(setSubmitting);
@@ -176,7 +176,7 @@ class MT5AdvancedRealAccountSignup extends Component {
         return result[0].text || value;
     };
 
-    goNext() {
+    goNext = () => {
         this.setState({
             step: this.state.step + 1,
         });

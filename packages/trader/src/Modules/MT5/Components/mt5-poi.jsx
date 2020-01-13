@@ -7,15 +7,9 @@ import {
 import { localize }             from '@deriv/translations';
 import ProofOfIdentityContainer from 'Modules/Account/Sections/Verification/ProofOfIdentity/proof-of-identity-container.jsx';
 
-const form = React.createRef();
-
 class MT5POI extends PureComponent {
     state = {
         poi_state: 'none',
-    };
-
-    handleCancel = () => {
-        this.props.onCancel();
     };
 
     onStateChange = ({ status }) => this.setState({
@@ -44,7 +38,6 @@ class MT5POI extends PureComponent {
                         { poi_state: this.state.poi_state },
                         actions.setSubmitting,
                     )}
-                    ref={form}
                 >
                     {
                         ({
@@ -77,7 +70,7 @@ class MT5POI extends PureComponent {
                                         cancel_label={localize('Previous')}
                                         is_disabled={!['pending', 'verified'].includes(this.state.poi_state)}
                                         label={localize('Next')}
-                                        onCancel={this.handleCancel}
+                                        onCancel={this.props.onCancel}
                                         form_error={this.props.form_error}
                                     />
                                 </form>

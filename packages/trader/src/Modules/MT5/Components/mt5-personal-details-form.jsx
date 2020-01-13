@@ -1,4 +1,5 @@
 import { Field, Formik }    from 'formik';
+import debounce             from 'lodash.debounce';
 import PropTypes            from 'prop-types';
 import React, { Component } from 'react';
 import {
@@ -89,16 +90,35 @@ class MT5PersonalDetailsForm extends Component {
         return errors;
     };
 
+    debouncedValidation = debounce(this.validatePersonalDetails, 300);
+
     submitForm = (values, actions, index, onSubmit) => {
         const { citizen: citizen_text, tax_residence: tax_residence_text, ...restOfValues } = values;
-        const [citizen] = this.props.residence_list.filter(item => item.text === citizen_text);
-        const [tax_residence] = this.props.residence_list.filter(item => item.text === tax_residence_text);
+        const { citizen, tax_residence } = this.findDefaultValuesInResidenceList(
+            citizen_text,
+            tax_residence_text,
+        );
+
         const payload = {
-            citizen      : citizen.value,
-            tax_residence: tax_residence.value,
+            citizen      : typeof citizen !== 'undefined' ? citizen.value : '',
+            tax_residence: typeof tax_residence !== 'undefined' ? tax_residence.value : '',
             ...restOfValues,
         };
         onSubmit(index, payload, actions.setSubmitting);
+    }
+
+    findDefaultValuesInResidenceList = (citizen_text, tax_residence_text) => {
+        let citizen,
+            tax_residence;
+        this.props.residence_list.forEach(item => {
+            if (item.text === citizen_text) {
+                citizen = item;
+            }
+            if (item.text === tax_residence_text) {
+                tax_residence = item;
+            }
+        });
+        return { citizen, tax_residence };
     }
 
     render() {
@@ -122,7 +142,7 @@ class MT5PersonalDetailsForm extends Component {
                     }}
                     enableReinitialize={true}
                     isInitialValid={({ initialValues }) => this.validatePersonalDetails(initialValues)}
-                    validate={this.validatePersonalDetails}
+                    validate={this.debouncedValidation}
                     onSubmit={onSubmitForm}
                     ref={form}
                 >

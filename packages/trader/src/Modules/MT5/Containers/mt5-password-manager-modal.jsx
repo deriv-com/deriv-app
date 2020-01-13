@@ -33,7 +33,7 @@ class MT5PasswordManagerModal extends React.Component {
         },
     };
 
-    componentDidUpdate(next_props, next_state) {
+    componentDidUpdate(next_props) {
         if (!next_props.is_visible && this.props.is_visible) {
             this.setState({
                 main: {
@@ -46,8 +46,6 @@ class MT5PasswordManagerModal extends React.Component {
                 },
             });
         }
-
-        return this.props !== next_props || this.state !== next_state;
     }
 
     showError = (section, error_message) => {

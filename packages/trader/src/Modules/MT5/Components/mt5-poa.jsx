@@ -413,10 +413,8 @@ class MT5POA extends Component {
                                         {this.state.poa_status === poa_status_codes.expired &&
                                         <Expired onClick={this.handleResubmit} />
                                         }
-                                        {this.state.poa_status === poa_status_codes.rejected &&
-                                        <Unverified />
-                                        }
-                                        {this.state.poa_status === poa_status_codes.suspected &&
+                                        {(this.state.poa_status === poa_status_codes.rejected ||
+                                        this.state.poa_status === poa_status_codes.suspected) &&
                                         <Unverified />
                                         }
                                     </ThemedScrollbars>

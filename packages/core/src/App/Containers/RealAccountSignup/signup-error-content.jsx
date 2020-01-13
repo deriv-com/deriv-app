@@ -1,9 +1,9 @@
 import PropTypes              from 'prop-types';
 import React                  from 'react';
 import { Button, Icon }       from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 
-const ErrorModal = ({ message, code, onClick }) => {
+const SignupErrorContent = ({ message, code, onConfirm }) => {
     return (
         <div className='account-wizard--error'>
             <Icon
@@ -12,7 +12,7 @@ const ErrorModal = ({ message, code, onClick }) => {
             />
             <h1><Localize i18n_default_text='Whoops!' /></h1>
             <p>
-                {localize(message)}
+                {message}
             </p>
             {code !== 'InvalidPhone' &&
             <a
@@ -33,7 +33,7 @@ const ErrorModal = ({ message, code, onClick }) => {
             {code === 'InvalidPhone' &&
             <Button
                 primary
-                onClick={onClick}
+                onClick={onConfirm}
             >
                 <Localize
                     i18n_default_text='Try again using a different number'
@@ -44,9 +44,10 @@ const ErrorModal = ({ message, code, onClick }) => {
     );
 };
 
-ErrorModal.propTypes = {
-    code   : PropTypes.string,
-    message: PropTypes.string,
-    onClick: PropTypes.func,
+SignupErrorContent.propTypes = {
+    code     : PropTypes.string,
+    message  : PropTypes.string,
+    onConfirm: PropTypes.func,
 };
-export default ErrorModal;
+
+export default SignupErrorContent;

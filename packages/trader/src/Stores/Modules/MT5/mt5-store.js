@@ -179,7 +179,6 @@ export default class MT5Store extends BaseStore {
                 this.enableMt5AdvancedModal();
                 break;
             case 'synthetic_indices':
-                // eslint-disable-next-line no-console
                 this.enableMt5PasswordModal();
                 break;
             default:
@@ -191,10 +190,6 @@ export default class MT5Store extends BaseStore {
     enableMt5AdvancedModal() {
         if (this.account_type.category === 'real' && this.account_type.type === 'advanced') {
             this.is_mt5_advanced_modal_open = true;
-            // this.root_store.ui.setRealAccountSignupParams({
-            //     active_modal_index: 6, // Real MT5 Advanced Modal wizard
-            // });
-            // this.root_store.ui.is_real_acc_signup_on = true;
         }
     }
 
@@ -244,7 +239,6 @@ export default class MT5Store extends BaseStore {
                         if (api_response.warning) {
                             setStatus({ msg: api_response.message });
                             reject(api_response);
-                            // this.setState({ is_btn_loading: false });
                         } else {
                             WS.authorized.storage.getAccountStatus().then(({ error, get_account_status }) => {
                                 if (error) {

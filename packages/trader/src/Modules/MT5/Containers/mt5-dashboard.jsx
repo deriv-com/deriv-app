@@ -102,7 +102,7 @@ class MT5Dashboard extends React.Component {
                         />
                         <Tabs active_index={this.state.active_index} top>
                             <div label={localize('Real account')}>
-                                <LoadingMT5RealAccountDisplay loading={is_loading} />
+                                {is_loading && <LoadingMT5RealAccountDisplay />}
                                 {!is_loading &&
                                 <>
                                     {!has_real_account && <MissingRealAccount onClick={beginRealSignupForMt5} />}

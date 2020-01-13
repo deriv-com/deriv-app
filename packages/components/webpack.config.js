@@ -22,7 +22,6 @@ module.exports = {
         dropdown             : path.resolve(__dirname, 'src', 'components/dropdown/index.js'),
         'field-error'        : path.resolve(__dirname, 'src', 'components/field-error/index.js'),
         'file-dropzone'      : path.resolve(__dirname, 'src', 'components/file-dropzone/index.js'),
-        'form-input-field'   : path.resolve(__dirname, 'src', 'components/form-input-field/index.js'),
         'form-progress'      : path.resolve(__dirname, 'src', 'components/form-progress/index.js'),
         'form-submit-button' : path.resolve(__dirname, 'src', 'components/form-submit-button/index.js'),
         icon                 : path.resolve(__dirname, 'src', 'components/icon/index.js'),

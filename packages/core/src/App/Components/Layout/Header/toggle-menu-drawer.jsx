@@ -150,7 +150,7 @@ class ToggleMenuDrawer extends React.PureComponent {
                                     id='dt_mobile_drawer_theme_toggler'
                                     classNameLabel='header__menu-mobile-link-toggler-label'
                                     classNameButton={classNames('header__menu-mobile-link-toggler-button', {
-                                        'header__menu-mobile-link__toggler-button--active': this.props.is_dark_mode,
+                                        'header__menu-mobile-link-toggler-button--active': this.props.is_dark_mode,
                                     })}
                                     handleToggle={() => this.props.toggleTheme(!this.props.is_dark_mode)}
                                     is_enabled={this.props.is_dark_mode}

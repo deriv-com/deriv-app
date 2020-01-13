@@ -8,6 +8,17 @@ import VerticalTab   from 'Components/vertical-tabs/vertical-tab';
 import                    'Components/vertical-tabs/vertical-tab/vertical-tab.scss';
 import Theme         from '../shared/theme';
 
+const TextComponent = (props) => (
+    <div style={{
+        margin: '16px',
+        fontSize: '14px',
+        lineHeight: '1.5',
+        color: 'var(--text-prominent)'
+    }}>
+        { props.children }
+    </div>
+);
+
 const action_bar_items = [
     {
         onClick: () => {},
@@ -39,38 +50,24 @@ const list = [
     {
         default: true,
         icon: 'IcBrandDtrader',
-        label: 'DTrader',
-        path: 'dtrader',
+        label: 'Option 1',
         value: () => (
-            <div style={{
-                margin: '16px',
-                fontSize: '14px',
-                lineHeight: '1.5',
-                color: 'var(--text-prominent)'
-            }}>
+            <TextComponent>
                 Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </div>
+            </TextComponent>
         )
     },
     {
         default: false,
         icon: 'IcBrandDbot',
-        label: 'DBot',
-        path: 'dbot',
+        label: 'Option 2',
         value: () => (
-            <div style={{
-                margin: '16px',
-                fontSize: '14px',
-                lineHeight: '1.5',
-                color: 'var(--text-prominent)',
-            }}>
+            <TextComponent>
                 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
-            </div>
+            </TextComponent>
         )
     },
-]
-
-const current_path = '/';
+];
 
 const stories = storiesOf('Vertical Tabs', module);
 stories.addDecorator(withKnobs);
@@ -88,8 +85,7 @@ stories.add('Basic usage', () => {
                     header_title='Header'
                     action_bar={action_bar_items}
                     alignment='center'
-                    id='vertical-tab-id'
-                    current_path={current_path}
+                    current_path='/'
                     is_routed={false}
                     is_full_width={boolean('Full screen?', true)}
                     list={list}

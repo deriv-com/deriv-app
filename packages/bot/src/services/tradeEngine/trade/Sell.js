@@ -59,7 +59,7 @@ export default Engine =>
 
             return recoverFromError(
                 action,
-                (error_code, make_delay) => make_delay().then(() => this.observer.emit('REVERT', 'during')),
+                (error_code, makeDelay) => makeDelay().then(() => this.observer.emit('REVERT', 'during')),
                 ['NoOpenPosition', 'InvalidSellContractProposal', 'UnrecognisedRequest'],
                 delay_index++
             ).then(onSuccess);

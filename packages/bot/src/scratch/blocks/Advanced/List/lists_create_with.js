@@ -1,14 +1,17 @@
 import { localize }     from '@deriv/translations';
 import { plusIconDark } from '../../images';
+import {
+    runIrreversibleEvents,
+    runGroupedEvents,
+}                       from '../../../utils';
 
 Blockly.Blocks.lists_create_with = {
     protected_statements: ['STACK'],
+    allowed_children    : ['lists_statement'],
     init() {
+        const field_image = new Blockly.FieldImage(plusIconDark, 25, 25, '', this.onIconClick.bind(this));
         this.jsonInit(this.definition());
-
-        // Render a ➕-icon for adding additional `lists_statement` blocks
-        const fieldImage = new Blockly.FieldImage(plusIconDark, 25, 25, '', () => this.onIconClick());
-        this.appendDummyInput('ADD_ICON').appendField(fieldImage);
+        this.appendDummyInput('ADD_ICON').appendField(field_image);
         this.moveInputBefore('ADD_ICON', 'STACK');
     },
     definition(){
@@ -48,14 +51,16 @@ Blockly.Blocks.lists_create_with = {
             return;
         }
 
-        const statementBlock = this.workspace.newBlock('lists_statement');
-        statementBlock.requiredParentId = this.id;
-        statementBlock.setMovable(false);
-        statementBlock.initSvg();
-        statementBlock.render();
-
-        const connection = this.getLastConnectionInStatement('STACK');
-        connection.connect(statementBlock.previousConnection);
+        runGroupedEvents(false, () => {
+            const statement_block = this.workspace.newBlock('lists_statement');
+            statement_block.required_parent_id = this.id;
+            statement_block.setMovable(false);
+            statement_block.initSvg();
+            statement_block.render();
+    
+            const connection = this.getLastConnectionInStatement('STACK');
+            connection.connect(statement_block.previousConnection);
+        });
     },
     onchange(event) {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
@@ -63,37 +68,32 @@ Blockly.Blocks.lists_create_with = {
         }
 
         if (event.type === Blockly.Events.END_DRAG) {
-            // Only allow `lists_statement` blocks to be part of the `STACK`
-            let currentBlock = this.getInputTargetBlock('STACK');
-            while (currentBlock !== null) {
-                if (currentBlock.type !== 'lists_statement') {
-                    currentBlock.unplug(false);
+            // Only allow "text_statement" type blocks
+            const blocks_in_stack = this.getBlocksInStatement('STACK');
+            blocks_in_stack.forEach(block => {
+                if (!this.allowed_children.includes(block.type)) {
+                    runIrreversibleEvents(() => {
+                        block.unplug(/* healStack */ false);
+                    });
                 }
-                currentBlock = currentBlock.getNextBlock();
-            }
+            });
         }
     },
 };
 
+// Head's up! This is also the code generation for the "text_join" block.
 Blockly.JavaScript.lists_create_with = block => {
-    const variable = block.getFieldValue('VARIABLE');
     // eslint-disable-next-line no-underscore-dangle
-    const varName = Blockly.JavaScript.variableDB_.getName(variable, Blockly.Variables.NAME_TYPE);
-    const elements = [];
+    const var_name        = Blockly.JavaScript.variableDB_.getName(
+        block.getFieldValue('VARIABLE'),
+        Blockly.Variables.NAME_TYPE
+    );
+    const blocks_in_stack = block.getBlocksInStatement('STACK');
+    const elements        = blocks_in_stack.map(b => {
+        const value = Blockly.JavaScript[b.type](b);
+        return Array.isArray(value) ? value[0] : value;
+    });
 
-    let currentBlock = block.getInputTargetBlock('STACK');
-    while (currentBlock !== null) {
-        const value = Blockly.JavaScript[currentBlock.type](currentBlock);
-
-        if (Array.isArray(value) && value.length === 2) {
-            elements.push(value[0]);
-        } else {
-            elements.push(value);
-        }
-
-        currentBlock = currentBlock.getNextBlock();
-    }
-
-    const code = `${varName} = [${elements.join(', ')}];\n`;
+    const code = `${var_name} = [${elements.join(', ')}];\n`;
     return code;
 };

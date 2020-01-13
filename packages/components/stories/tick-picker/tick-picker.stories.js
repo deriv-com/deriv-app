@@ -4,7 +4,7 @@ import {
     boolean,
     withKnobs
 } from '@storybook/addon-knobs';
-
+import { action }    from '@storybook/addon-actions';
 import { withInfo } from '@storybook/addon-info';
 import React from 'react';
 import TickPicker from 'Components/tick-picker';
@@ -23,7 +23,7 @@ stories
                 <TickPicker 
                     min_value={text('min value', '2')} 
                     max_value={text('max value', '7')} 
-                    onSubmit={(e) => console.log(e.target.value)} 
+                    onSubmit={action((e) => e.target.value)} 
                     label='OK'
                 />
             </Theme>

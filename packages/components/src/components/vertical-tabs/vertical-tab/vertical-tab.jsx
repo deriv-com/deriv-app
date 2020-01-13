@@ -39,6 +39,7 @@ export default class VerticalTab extends React.Component {
     }
 
     render() {
+        console.log(this.props);
         const selected = this.props.list[this.props.modal_index] || this.props.list[0];
         return (
             <div

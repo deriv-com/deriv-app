@@ -736,7 +736,6 @@ export default class TradeStore extends BaseStore {
             this.proposal_info = {};
             this.purchase_info = {};
             WS.forgetAll('proposal');
-            return;
         }
 
         if (!ObjectUtils.isEmptyObject(requests)) {

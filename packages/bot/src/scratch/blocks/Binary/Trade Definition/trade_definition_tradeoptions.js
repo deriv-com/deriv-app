@@ -64,10 +64,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id))
             || event.type === Blockly.Events.END_DRAG
         ) {
-            const { client } = ScratchStore.instance.root_store.core;
-            const currency_field   = this.getField('CURRENCY_LIST');
-
-            currency_field.setText(client.currency);
+            this.setCurrency();
         }
 
         const trade_definition_block = this.workspace.getAllBlocks(true).find(block => block.type === 'trade_definition');
@@ -331,6 +328,12 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         container.setAttribute('has_prediction', !!this.getInput('PREDICTION'));
 
         return container;
+    },
+    setCurrency() {
+        const { client } = ScratchStore.instance.root_store.core;
+        const currency_field   = this.getField('CURRENCY_LIST');
+
+        currency_field.setText(client.currency);
     },
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {

@@ -104,6 +104,7 @@ class ToggleMenuDrawer extends React.PureComponent {
                                 text={localize('Trade')}
                             />
                         </MobileDrawer.Item>
+                        {this.props.is_logged_in &&
                         <MobileDrawer.SubMenu
                             has_subheader
                             submenu_icon='IcReports'
@@ -132,6 +133,7 @@ class ToggleMenuDrawer extends React.PureComponent {
                                 />
                             </MobileDrawer.Item>
                         </MobileDrawer.SubMenu>
+                        }
                         <MobileDrawer.Item>
                             <div className={classNames('header__menu-mobile-link', {
                                 'header__menu-mobile-link--active': this.props.is_dark_mode,
@@ -155,12 +157,19 @@ class ToggleMenuDrawer extends React.PureComponent {
                                 />
                             </div>
                         </MobileDrawer.Item>
-                        <MobileDrawer.Item onClick={this.props.logoutClient}>
+                        {this.props.is_logged_in &&
+                        <MobileDrawer.Item
+                            onClick={() => {
+                                this.props.logoutClient();
+                                this.toggleDrawer();
+                            }}
+                        >
                             <MenuLink
                                 icon='IcLogout'
                                 text={localize('Log out')}
                             />
                         </MobileDrawer.Item>
+                        }
                     </MobileDrawer.Body>
                     <MobileDrawer.Footer>
                         <ServerTime is_mobile />

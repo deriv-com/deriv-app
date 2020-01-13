@@ -4,7 +4,7 @@ import { spy, stub }                 from 'sinon';
 import { configure, shallow, mount } from 'enzyme';
 import Adapter                       from 'enzyme-adapter-react-16';
 import { ToggleFullScreen }          from '../toggle-fullscreen.jsx';
-import { Icon }                      from 'deriv-components';
+import { Icon }                      from '@deriv/components';
 
 configure({ adapter: new Adapter() });
 spy(ToggleFullScreen.prototype, 'componentDidMount');

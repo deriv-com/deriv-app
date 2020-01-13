@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 import config       from '../../../../constants';
 
 Blockly.Blocks.bb_statement = {

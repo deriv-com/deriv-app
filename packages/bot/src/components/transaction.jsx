@@ -2,8 +2,8 @@ import classNames               from 'classnames';
 import {
     Icon,
     Money,
-    Popover }                  from 'deriv-components';
-import { localize }            from 'deriv-translations';
+    Popover }                  from '@deriv/components';
+import { localize }            from '@deriv/translations';
 import React                   from 'react';
 import ContentLoader           from 'react-content-loader';
 import PropTypes               from 'prop-types';

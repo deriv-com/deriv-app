@@ -1,6 +1,6 @@
 import PropTypes           from 'prop-types';
 import React               from 'react';
-import { localize }        from 'deriv-translations';
+import { localize }        from '@deriv/translations';
 import { connect }         from 'Stores/connect';
 import Lazy                from 'App/Containers/Lazy';
 

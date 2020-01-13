@@ -7,7 +7,7 @@ import {
     Loading,
     Input,
     Button,
-    ThemedScrollbars }                from 'deriv-components';
+    ThemedScrollbars }                from '@deriv/components';
 import FooterActions                  from 'Components/footer-actions/footer-actions.jsx';
 import { localize }                   from 'Components/i18next';
 import PageReturn                     from 'Components/page-return/page-return.jsx';

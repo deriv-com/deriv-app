@@ -2,9 +2,9 @@ import React                  from 'react';
 import { expect }             from 'chai';
 import { configure, shallow } from 'enzyme';
 import Adapter                from 'enzyme-adapter-react-16';
-import { Modal }              from 'deriv-components';
+import { Modal }              from '@deriv/components';
 import { ToggleSettings }     from '../toggle-settings.jsx';
-import { Icon }               from 'deriv-components';
+import { Icon }               from '@deriv/components';
 
 configure({ adapter: new Adapter() });
 

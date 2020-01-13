@@ -1,8 +1,8 @@
-import { Autocomplete } from 'deriv-components';
+import { Autocomplete } from '@deriv/components';
 import { Field }        from 'formik';
 import PropTypes        from 'prop-types';
 import React            from 'react';
-import { localize }     from 'deriv-translations';
+import { localize }     from '@deriv/translations';
 
 const SetResidenceForm = ({
     class_prefix = 'set-residence',

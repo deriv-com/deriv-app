@@ -1,6 +1,6 @@
 import PropTypes            from 'prop-types';
 import React                from 'react';
-import { ThemedScrollbars } from 'deriv-components';
+import { ThemedScrollbars } from '@deriv/components';
 import Loading              from '../../../templates/_common/components/loading.jsx';
 
 class CashierContainer extends React.Component {

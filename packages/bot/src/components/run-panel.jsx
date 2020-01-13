@@ -3,10 +3,10 @@ import {
     Drawer,
     Icon,
     Popover,
-    Tabs }            from 'deriv-components';
+    Tabs }            from '@deriv/components';
 import PropTypes      from 'prop-types';
 import React          from 'react';
-import { localize }   from 'deriv-translations';
+import { localize }   from '@deriv/translations';
 import Dialog         from './dialog.jsx';
 import Journal        from './journal.jsx';
 import Summary        from './summary.jsx';
@@ -62,7 +62,7 @@ const drawerFooter = ({
                     has_effect
                     secondary
                 />
-    
+
                 {
                     (is_stop_button_visible) ?
                         <Button

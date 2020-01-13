@@ -6,10 +6,10 @@ import { NavLink }             from 'react-router-dom';
 import {
     Button,
     Icon,
-    Money }                    from 'deriv-components';
-import CurrencyUtils           from 'deriv-shared/utils/currency';
+    Money }                    from '@deriv/components';
+import CurrencyUtils           from '@deriv/shared/utils/currency';
 import Shortcode               from 'Modules/Reports/Helpers/shortcode';
-import { localize }            from 'deriv-translations';
+import { localize }            from '@deriv/translations';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from './contract-type-cell.jsx';
 import ProgressSlider          from './ProgressSlider';

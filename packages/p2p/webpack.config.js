@@ -43,7 +43,7 @@ module.exports = {
                 exclude: /node_modules/,
                 use    : [
                     {
-                        loader: 'deriv-shared/utils/deriv-components-loader.js'
+                        loader: '@deriv/shared/utils/deriv-components-loader.js'
                     },
                     {
                         loader : 'babel-loader',
@@ -69,7 +69,7 @@ module.exports = {
                         loader: 'sass-resources-loader',
                         options: {
                             // Provide path to the file with resources
-                            resources: require('deriv-shared/utils/index.js'),
+                            resources: require('@deriv/shared/utils/index.js'),
                         },
                     },
                 ],
@@ -99,11 +99,11 @@ module.exports = {
             'babel-polyfill'    : 'babel-polyfill',
             'prop-types'        : 'prop-types',
             ...(is_publishing ? {} : {
-                'deriv-shared'      : 'deriv-shared',
-                'deriv-components'  : 'deriv-components',
+                '@deriv/shared'      : '@deriv/shared',
+                '@deriv/components'  : '@deriv/components',
                 'formik'            : 'formik',
             })
         },
-        ...(is_publishing ? [] : [ /^deriv-components\/.+$/, /^deriv-shared\/.+$/ ])
+        ...(is_publishing ? [] : [ /^@deriv\/components\/.+$/, /^@deriv\/shared\/.+$/ ])
     ]
 };

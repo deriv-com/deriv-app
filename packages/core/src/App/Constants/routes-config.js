@@ -1,7 +1,7 @@
 import { lazy }                       from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
 import { Redirect }                   from 'App/Containers/Redirect';
-import { localize }                   from 'deriv-translations';
+import { localize }                   from '@deriv/translations';
 import { routes }                     from 'Constants';
 import { isBot }                      from 'Utils/PlatformSwitcher';
 import { getUrlBase }                 from '_common/url';
@@ -46,7 +46,7 @@ const Trader = lazy(() => {
     el_main_css.type = 'text/css';
     el_head.appendChild(el_main_css);
     // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "trader" */ 'deriv-trader');
+    return import(/* webpackChunkName: "trader" */ '@deriv/trader');
 });
 
 const Bot = lazy(() => {
@@ -55,7 +55,7 @@ const Bot = lazy(() => {
     el_scratch_js.src = getUrlBase('/js/bot/scratch.min.js');
     el_head.appendChild(el_scratch_js);
     // eslint-disable-next-line import/no-unresolved
-    return import(/* webpackChunkName: "bot" */ 'deriv-bot');
+    return import(/* webpackChunkName: "bot" */ '@deriv/bot');
 });
 
 const modules = [

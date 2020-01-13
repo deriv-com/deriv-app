@@ -1,7 +1,7 @@
 
 import React        from 'react';
-import { Icon }     from 'deriv-components';
-import { localize } from 'deriv-translations';
+import { Icon }     from '@deriv/components';
+import { localize } from '@deriv/translations';
 
 class MultiStep extends React.Component {
     state = {

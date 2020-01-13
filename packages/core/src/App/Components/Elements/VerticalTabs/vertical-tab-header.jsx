@@ -1,7 +1,7 @@
 import classNames  from 'classnames';
 import {
     Counter,
-    Icon }         from 'deriv-components';
+    Icon }         from '@deriv/components';
 import React       from 'react';
 import { NavLink } from 'react-router-dom';
 

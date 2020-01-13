@@ -1,7 +1,7 @@
 import {
     observable,
     action }                from 'mobx';
-import { formatDate }       from 'deriv-shared/utils/date';
+import { formatDate }       from '@deriv/shared/utils/date';
 import { message_types }    from '../constants/messages';
 
 export default class JournalStore {
@@ -29,12 +29,12 @@ export default class JournalStore {
     onNotify(data) {
         this.pushMessage(data , message_types.NOTIFY);
     }
-    
+
     @action.bound
     pushMessage(data, message_type) {
         const date = formatDate(this.serverTime.get());
         const time = formatDate(this.serverTime.get(), 'HH:mm:ss [GMT]');
-        
+
         let error_message  = data;
         if (typeof data !== 'string') {
             const { error , message } = data;

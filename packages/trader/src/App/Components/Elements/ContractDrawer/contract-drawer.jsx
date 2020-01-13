@@ -6,8 +6,8 @@ import { CSSTransition }       from 'react-transition-group';
 import {
     Button,
     Icon,
-    Money }                    from 'deriv-components';
-import { localize, Localize }  from 'deriv-translations';
+    Money }                    from '@deriv/components';
+import { localize, Localize }  from '@deriv/translations';
 import routes                  from 'Constants/routes';
 import ContractAudit           from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';

@@ -2,7 +2,7 @@ import { localize }        from '@deriv/translations';
 import CurrencyUtils       from '@deriv/shared/utils/currency';
 import {
     runIrreversibleEvents,
-    runInvisibleEvents }   from '../../../utils';
+}                          from '../../../utils';
 import config              from '../../../../constants';
 import ApiHelpers          from '../../../../services/api/api-helpers';
 import ScratchStore        from '../../../../stores/scratch-store';
@@ -33,9 +33,9 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             ],
             args1: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'CURRENCY_LIST',
-                    options: config.lists.CURRENCY,
+                    type: 'field_label',
+                    name: 'CURRENCY_LIST',
+                    text: config.lists.CURRENCY[0],
                 },
                 {
                     type : 'input_value',
@@ -61,6 +61,13 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     onchange(event) {
         if (!this.workspace || this.workspace.isDragging() || this.isInFlyout) {
             return;
+        }
+
+        if (
+            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id))
+            || event.type === Blockly.Events.END_DRAG
+        ) {
+            this.setCurrency();
         }
 
         const trade_definition_block = this.workspace.getAllBlocks(true).find(block => block.type === 'trade_definition');
@@ -93,13 +100,10 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.updateDurationInput(false, false);
                 this.updatePredictionInput(false);
             } else {
-                const { client } = ScratchStore.instance.root_store.core;
-
                 this.updateBarrierInputs(true, true);
                 this.enforceSingleBarrierType('BARRIEROFFSETTYPE_LIST', true);
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
-                this.setCurrency(client.currency);
             }
         } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
             if (is_load_event) {
@@ -320,16 +324,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             });
         }
     },
-    setCurrency(currency) {
-        const currency_field   = this.getField('CURRENCY_LIST');
-        const dropdown_options = currency_field.menuGenerator_.map(o => o[1]); // eslint-disable-line
-
-        if (dropdown_options.includes(currency)) {
-            runInvisibleEvents(() => {
-                currency_field.setValue(currency);
-            });
-        }
-    },
     domToMutation(xmlElement) {
         const has_first_barrier  = xmlElement.getAttribute('has_first_barrier') === 'true';
         const has_second_barrier = xmlElement.getAttribute('has_second_barrier') === 'true';
@@ -351,6 +345,12 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         container.setAttribute('has_prediction', !!this.getInput('PREDICTION'));
 
         return container;
+    },
+    setCurrency() {
+        const { client } = ScratchStore.instance.root_store.core;
+        const currency_field   = this.getField('CURRENCY_LIST');
+
+        currency_field.setText(client.currency);
     },
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {

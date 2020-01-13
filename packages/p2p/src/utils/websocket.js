@@ -33,42 +33,45 @@ const map_payment_method = {
 };
 
 const getModifiedP2POfferList = (response) => {
-    const length = response.list.length;
+    // only show active offers
+    const filtered_list = response.list.filter((offer) => !!+offer.is_active);
+
+    const length = filtered_list.length;
     const modified_response = [];
     for (let i = 0; i < length; i++) {
         modified_response[i] = {};
 
-        const offer_currency       = response.list[i].account_currency;
-        const transaction_currency = response.list[i].local_currency;
+        const offer_currency       = filtered_list[i].account_currency;
+        const transaction_currency = filtered_list[i].local_currency;
 
-        modified_response[i].available_amount         = +response.list[i].amount - +response.list[i].amount_used;
+        modified_response[i].available_amount         = +filtered_list[i].amount - +filtered_list[i].amount_used;
         modified_response[i].display_available_amount =
-            formatMoney(offer_currency,+response.list[i].amount - +response.list[i].amount_used);
+            formatMoney(offer_currency,+filtered_list[i].amount - +filtered_list[i].amount_used);
 
         modified_response[i].offer_currency          = offer_currency;
-        modified_response[i].advertiser_id           = response.list[i].agent_id;
-        modified_response[i].offer_amount            = +response.list[i].amount;
+        modified_response[i].advertiser_id           = filtered_list[i].agent_id;
+        modified_response[i].offer_amount            = +filtered_list[i].amount;
         // TODO: [p2p-replace-with-api] use display value from API when formatting works
-        modified_response[i].display_offer_amount    = formatMoney(offer_currency, response.list[i].amount);
-        modified_response[i].advertiser_note         = response.list[i].offer_description;
-        modified_response[i].offer_id                = response.list[i].offer_id;
+        modified_response[i].display_offer_amount    = formatMoney(offer_currency, filtered_list[i].amount);
+        modified_response[i].advertiser_note         = filtered_list[i].offer_description;
+        modified_response[i].offer_id                = filtered_list[i].offer_id;
         modified_response[i].transaction_currency    = transaction_currency;
-        modified_response[i].min_transaction         = +response.list[i].min_amount;
+        modified_response[i].min_transaction         = +filtered_list[i].min_amount;
         // TODO: [p2p-replace-with-api] use display value from API when formatting works
-        modified_response[i].display_min_transaction = formatMoney(offer_currency, response.list[i].min_amount);
-        modified_response[i].max_transaction         = response.list[i].max_amount;
-        modified_response[i].display_max_transaction = formatMoney(offer_currency, response.list[i].max_amount);
-        modified_response[i].price_rate              = +response.list[i].rate;
+        modified_response[i].display_min_transaction = formatMoney(offer_currency, filtered_list[i].min_amount);
+        modified_response[i].max_transaction         = filtered_list[i].max_amount;
+        modified_response[i].display_max_transaction = formatMoney(offer_currency, filtered_list[i].max_amount);
+        modified_response[i].price_rate              = +filtered_list[i].rate;
         // TODO: [p2p-replace-with-api] use display value from API when formatting works
-        modified_response[i].display_price_rate      = formatMoney(transaction_currency, response.list[i].rate);
-        modified_response[i].type                    = response.list[i].type;
-        modified_response[i].advertiser              = response.list[i].agent_name;
+        modified_response[i].display_price_rate      = formatMoney(transaction_currency, filtered_list[i].rate);
+        modified_response[i].type                    = filtered_list[i].type;
+        modified_response[i].advertiser              = filtered_list[i].agent_name;
 
-        modified_response[i].payment_method = map_payment_method[response.list[i].method] || response.list[i].method;
+        modified_response[i].payment_method = map_payment_method[filtered_list[i].method] || filtered_list[i].method;
 
         // TOOD: [p2p-api-request] API should give us the allowed decimal places of local currency
         modified_response[i].transaction_currency_decimals = 2;
-        // (((response.list[i].rate_display.toString().split('.') || [])[1]) || []).length;
+        // (((filtered_list[i].rate_display.toString().split('.') || [])[1]) || []).length;
 
         modified_response[i].offer_currency_decimals =
             ObjectUtils.getPropertyValue(initial_responses, [

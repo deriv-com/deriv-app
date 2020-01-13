@@ -78,10 +78,10 @@ class DBot {
      * JavaScript code that's fed to the interpreter.
      */
     runBot() {
+        const { run_panel }  = ScratchStore.instance.root_store;
         const should_run_bot = this.before_run_funcs.every(func => !!func());
         
         if (!should_run_bot) {
-            const { run_panel } = ScratchStore.instance.root_store;
             run_panel.onStopButtonClick();
             return;
         }
@@ -96,13 +96,13 @@ class DBot {
             this.interpreter = new Interpreter();
             this.interpreter.run(code).catch(error => {
                 globalObserver.emit('Error', error);
-                this.stopBot();
+                run_panel.onStopButtonClick();
             });
         } catch (error) {
             globalObserver.emit('Error', error);
 
             if (this.interpreter) {
-                this.stopBot();
+                run_panel.onStopButtonClick();
             }
         }
     }

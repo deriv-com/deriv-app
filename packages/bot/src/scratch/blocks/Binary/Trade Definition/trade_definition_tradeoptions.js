@@ -1,8 +1,11 @@
-import { localize }  from '@deriv/translations';
-import CurrencyUtils from '@deriv/shared/utils/currency';
-import config        from '../../../../constants';
-import ApiHelpers    from '../../../../services/api/api-helpers';
-import ScratchStore  from '../../../../stores/scratch-store';
+import { localize }        from '@deriv/translations';
+import CurrencyUtils       from '@deriv/shared/utils/currency';
+import {
+    runIrreversibleEvents,
+    runInvisibleEvents }   from '../../../utils';
+import config              from '../../../../constants';
+import ApiHelpers          from '../../../../services/api/api-helpers';
+import ScratchStore        from '../../../../stores/scratch-store';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
     init() {
@@ -56,7 +59,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || this.workspace.isDragging() || this.isInFlyout) {
             return;
         }
 
@@ -88,7 +91,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             this.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST') || config.BARRIER_TYPES[1][1],
         ];
 
-        const is_load_event = event.group === 'load';
+        const is_load_event = /^dbot-load/.test(event.group);
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             if (is_load_event) {
@@ -127,68 +130,71 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     default:
                         break;
                 }
-            } else if (event.name === 'TRADETYPE_LIST') {
+            } else if (event.name === 'SYMBOL_LIST' || event.name === 'TRADETYPE_LIST') {
                 this.updateBarrierInputs(true, true);
                 this.enforceSingleBarrierType(true);
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
             }
+        } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.id) {
+            // Ensure this block is populated after initial drag from flyout.
+            if (!this.selected_duration) {
+                const fake_creation_event = new Blockly.Events.Create(this);
+                fake_creation_event.recordUndo = false;
+                Blockly.Events.fire(fake_creation_event);
+            }
         }
     },
     createPredictionInput(prediction_range) {
-        Blockly.Events.disable();
-
-        if (prediction_range.length === 0) {
-            this.removeInput('PREDICTION_LABEL', true);
-            this.removeInput('PREDICTION', true);
-        } else if (!this.getInput('PREDICTION')) {
-            this.appendDummyInput('PREDICTION_LABEL')
-                .appendField(localize('Prediction:'));
-
-            const prediction_input = this.appendValueInput('PREDICTION');
-            const shadow_block = this.workspace.newBlock('math_number');
-
-            shadow_block.setShadow(true);
-            shadow_block.setFieldValue(prediction_range[0], 'NUM');
-            shadow_block.outputConnection.connect(prediction_input.connection);
-            shadow_block.initSvg();
-            shadow_block.render(true);
-        }
-
-        Blockly.Events.enable();
-    },
-    createBarrierInputs(barriers) {
-        Blockly.Events.disable();
-
-        const input_names  = ['BARRIEROFFSET', 'SECONDBARRIEROFFSET'];
-
-        for (let i = 0; i < barriers.values.length; i++) {
-            const label = (barriers.values.length === 1 ? localize('Barrier') : config.BARRIER_LABELS[i]);
-            let input   = this.getInput(input_names[i]);
-
-            if (input) {
-                input.fieldRow[0].setText(label);
-            } else {
-                input = this.appendValueInput(input_names[i])
-                    .appendField(label, `${input_names[i]}_LABEL`)
-                    .appendField(new Blockly.FieldDropdown(config.BARRIER_TYPES), `${input_names[i]}TYPE_LIST`);
-
+        runIrreversibleEvents(() => {
+            if (prediction_range.length === 0) {
+                this.removeInput('PREDICTION_LABEL', true);
+                this.removeInput('PREDICTION', true);
+            } else if (!this.getInput('PREDICTION')) {
+                this.appendDummyInput('PREDICTION_LABEL')
+                    .appendField(localize('Prediction:'));
+    
+                const prediction_input = this.appendValueInput('PREDICTION');
                 const shadow_block = this.workspace.newBlock('math_number');
-
+    
                 shadow_block.setShadow(true);
-                shadow_block.setFieldValue(barriers.values[i], 'NUM');
-                shadow_block.outputConnection.connect(input.connection);
+                shadow_block.setFieldValue(prediction_range[0], 'NUM');
+                shadow_block.outputConnection.connect(prediction_input.connection);
                 shadow_block.initSvg();
                 shadow_block.render(true);
             }
-        }
+        });
+    },
+    createBarrierInputs(barriers) {
+        runIrreversibleEvents(() => {
+            const input_names  = ['BARRIEROFFSET', 'SECONDBARRIEROFFSET'];
 
-        // Remove any extra inputs (quietly) if not required
-        for (let i = input_names.length; i > barriers.values.length; i--) {
-            this.removeInput(input_names[i - 1], true);
-        }
-
-        Blockly.Events.enable();
+            for (let i = 0; i < barriers.values.length; i++) {
+                const label = (barriers.values.length === 1 ? localize('Barrier') : config.BARRIER_LABELS[i]);
+                let input   = this.getInput(input_names[i]);
+    
+                if (input) {
+                    input.fieldRow[0].setText(label);
+                } else {
+                    input = this.appendValueInput(input_names[i])
+                        .appendField(label, `${input_names[i]}_LABEL`)
+                        .appendField(new Blockly.FieldDropdown(config.BARRIER_TYPES), `${input_names[i]}TYPE_LIST`);
+    
+                    const shadow_block = this.workspace.newBlock('math_number');
+    
+                    shadow_block.setShadow(true);
+                    shadow_block.setFieldValue(barriers.values[i], 'NUM');
+                    shadow_block.outputConnection.connect(input.connection);
+                    shadow_block.initSvg();
+                    shadow_block.render(true);
+                }
+            }
+    
+            // Remove any extra inputs (quietly) if not required
+            for (let i = input_names.length; i > barriers.values.length; i--) {
+                this.removeInput(input_names[i - 1], true);
+            }
+        });
     },
     updateDurationInput(should_use_default_unit, should_update_value) {
         const { contracts_for } = ApiHelpers.instance;
@@ -209,7 +215,9 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     const min_duration = durations.find(d => d.unit === this.selected_duration);
 
                     if (min_duration) {
-                        target_block.setFieldValue(min_duration.min, 'NUM');
+                        runIrreversibleEvents(() => {
+                            target_block.setFieldValue(min_duration.min, 'NUM');
+                        });
                     }
                 }
             }
@@ -262,11 +270,15 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
                     if (target_block && target_block.isShadow()) {
                         const barrier_value = barriers.values[i] !== false ? barriers.values[i] : '';
-                        target_block.setFieldValue(barrier_value, 'NUM');
+
+                        runIrreversibleEvents(() => {
+                            target_block.setFieldValue(barrier_value, 'NUM');
+                        });
                     }
                 }
             }
         });
+        
     },
     updatePredictionInput(should_use_default_value) {
         const { contracts_for } = ApiHelpers.instance;
@@ -283,7 +295,10 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
                     if (target_block && target_block.isShadow()) {
                         const initial_prediction = Math.max(1, prediction_range[0]);
-                        target_block.setFieldValue(initial_prediction, 'NUM');
+
+                        runIrreversibleEvents(() => {
+                            target_block.setFieldValue(initial_prediction, 'NUM');
+                        });
                     }
                 }
             }
@@ -299,12 +314,14 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             const has_other_barrier  = BARRIER_TYPES.findIndex(type => type[1] === new_value) !== -1;
             const other_barrier_type = other_barrier_field.getValue();
 
-            if (has_other_barrier && (other_barrier_type === 'absolute' || should_force_distinct)) {
-                const other_barrier_value = BARRIER_TYPES.find(type => type[1] !== new_value);
-                other_barrier_field.setValue(other_barrier_value[1]);
-            } else if (new_value === 'absolute' && other_barrier_type !== 'absolute') {
-                other_barrier_field.setValue('absolute');
-            }
+            runIrreversibleEvents(() => {
+                if (has_other_barrier && (other_barrier_type === 'absolute' || should_force_distinct)) {
+                    const other_barrier_value = BARRIER_TYPES.find(type => type[1] !== new_value);
+                    other_barrier_field.setValue(other_barrier_value[1]);
+                } else if (new_value === 'absolute' && other_barrier_type !== 'absolute') {
+                    other_barrier_field.setValue('absolute');
+                }
+            });
         }
     },
     domToMutation(xmlElement) {

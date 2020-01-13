@@ -32,3 +32,25 @@ Blockly.Variables.allUsedVarModels = function(ws) {
 
     return variableList;
 };
+
+/**
+ * Generate DOM objects representing a variable field.
+ * @param {!Blockly.VariableModel} variableModel The variable model to
+ *     represent.
+ * @return {Element} The generated DOM.
+ * @public
+ */
+Blockly.Variables.generateVariableFieldDom = function(variableModel) {
+    /* Generates the following XML:
+     * <field name="VAR" id="goKTKmYJ8DhVHpruv" variabletype="int">foo</field>
+     */
+    const field = Blockly.utils.xml.createElement('field');
+    
+    field.setAttribute('name', 'VAR');
+    field.setAttribute('id', variableModel.getId());
+    field.setAttribute('variabletype', variableModel.type);
+
+    const name = Blockly.utils.xml.createTextNode(variableModel.name);
+    field.appendChild(name);
+    return field;
+};

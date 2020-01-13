@@ -3,29 +3,29 @@ import Button from '../button';
 import Icon from '../icon';
 
 const TickPicker = ({ min_value, max_value, onSubmit, label }) => {
-    const normalizedTick = (tick) => ((parseInt(tick) < 10 ? "0" : "") + tick)
+    const normalizedTick = (tick) => ((parseInt(tick) < 10 ? '0' : '') + tick);
     const [tick_value, setTickValue] = useState(parseInt(min_value));
 
     const handleDecrease = () => {
         if (tick_value - 1 >= min_value) {
-            setTickValue(tick_value - 1)
+            setTickValue(tick_value - 1);
         }
-        return
-    }
+        
+    };
     const handleIncrease = () => {
         if (tick_value + 1 <= max_value) {
-            setTickValue(tick_value + 1)
+            setTickValue(tick_value + 1);
         }
-        return
-    }
+        
+    };
     const handleClick = () => {
         onSubmit({
             target: {
                 value: tick_value,
-                name: 'submit'
-            }
-        })
-    }
+                name : 'submit',
+            },
+        });
+    };
     return (
         <div className='tick-picker'>
             <div className='tick-picker--calculation'>

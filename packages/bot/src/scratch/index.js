@@ -211,20 +211,21 @@ class DBot {
         const all_blocks  = this.workspace.getAllBlocks(true);
         const error_blocks = all_blocks
             .filter(block => block.is_error_highlighted && !block.disabled)
+            // filter out duplicated error message
             .filter((block, index, self) => index === self.findIndex(b => b.error_message === block.error_message));
 
-        if (error_blocks.length) {
-            error_blocks.forEach(block => {
-                const { run_panel } = ScratchStore.instance.root_store;
-                const message       = block.error_message;
-                this.workspace.centerOnBlock(block.id);
-                run_panel.showErrorMessage(message);
-            });
-
-            return false;
+        if (!error_blocks.length) {
+            return true;
         }
 
-        return true;
+        this.workspace.centerOnBlock(error_blocks[0].id);
+        error_blocks.forEach(block => {
+            const { run_panel } = ScratchStore.instance.root_store;
+            const message       = block.error_message;
+            run_panel.showErrorMessage(message);
+        });
+
+        return false;
     }
 
     /**

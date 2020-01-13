@@ -222,9 +222,9 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             const { min, max }      = durations.find(d => d.unit === this.selected_duration);
 
             const is_valid_duration = duration_input >= min && duration_input <= max;
-            let error_message = localize(`Duration value is not allowed. To run the bot, please enter a value between ${min} to ${max}.`);
+            let error_message = localize('Duration value is not allowed. To run the bot, please enter a value between {{min}} to {{max}}.', { min, max });
             if (max === min) {
-                error_message = localize(`Duration value is not allowed. To run the bot, please enter ${min}`);
+                error_message = localize('Duration value is not allowed. To run the bot, please enter {{min}}', { min });
             }
             duration_block.setErrorHighlighted(
                 !is_valid_duration,

@@ -40,6 +40,51 @@
         top: -48px;
         left: 0;
     }
+    &__menu-mobile-link {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+
+        &--active {
+            .header__menu-mobile-link__text {
+                font-weight: bold;
+                color: var(--text-prominent);
+            }
+        }
+        &__text {
+            font-size: 1.4rem;
+            color: var(--text-general);
+        }
+        &__icon {
+            margin-right: 16px;
+            width: 16px;
+            height: 16px;
+        }
+        &__suffix-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        &__toggler {
+            &-label {
+                width: 48px;
+                height: 25.6px;
+                margin-left: auto;
+                margin-right: 1.6rem;
+            }
+            &-button {
+                width: 19.2px;
+                height: 19.2px;
+                top: 3px;
+                left: 4px;
+
+                &--active {
+                    left: calc(100% - 4px) !important;
+                }
+            }
+        }
+    }
     &__menu-items {
         display: flex;
         position: relative;

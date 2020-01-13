@@ -1,7 +1,11 @@
-import React from 'react';
+import classNames from 'classnames';
+import React      from 'react';
 
-const Item = ({ children }) => (
-    <div className='dc-mobile-drawer__item'>
+const Item = ({ className, children, onClick }) => (
+    <div
+        className={classNames('dc-mobile-drawer__item', className)}
+        onClick={onClick}
+    >
         {children}
     </div>
 );

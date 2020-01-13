@@ -5,7 +5,7 @@ import ReactDOM          from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Body              from './mobile-drawer-body.jsx';
 import Footer            from './mobile-drawer-footer.jsx';
-import Header            from './mobile-drawer-subheader.jsx';
+import SubHeader         from './mobile-drawer-subheader.jsx';
 import Item              from './mobile-drawer-item.jsx';
 import SubMenu           from './mobile-drawer-submenu.jsx';
 import Icon              from '../icon';
@@ -38,7 +38,7 @@ class DrawerElement extends React.PureComponent {
     };
 
     render() {
-        const { id, title, className, header, children, has_close_icon, height, toggle, width } = this.props;
+        const { id, title, className, children, height, toggle, width } = this.props;
 
         return ReactDOM.createPortal(
             <div
@@ -59,30 +59,20 @@ class DrawerElement extends React.PureComponent {
                 }
                 )}
                 >
-                    { has_close_icon &&
                     <div
                         onClick={toggle}
                         className='dc-mobile-drawer__header-close'
                     >
                         <Icon icon='IcCross' />
                     </div>
-                    }
-                    {  title &&
+                    { title &&
                     <h3 className={classNames('dc-mobile-drawer__header-title', {
                         [`dc-mobile-drawer-header__title--${className}`]: className,
                     }
                     )}
-                    >{title}
-                    </h3>
-                    }
-                    { header &&
-                    <div className={classNames('dc-mobile-drawer__header-section', {
-                        [`dc-mobile-drawer-header__section--${className}`]: className,
-                    }
-                    )}
                     >
-                        {header}
-                    </div>
+                        {title}
+                    </h3>
                     }
                 </div>
                 {children}
@@ -96,18 +86,12 @@ class DrawerElement extends React.PureComponent {
     };
 }
 
-DrawerElement.defaultProps = {
-    has_close_icon: true,
-};
-
 DrawerElement.propTypes = {
-    children      : PropTypes.node,
-    className     : PropTypes.string,
-    has_close_icon: PropTypes.bool,
-    header        : PropTypes.node,
-    id            : PropTypes.string,
-    is_open       : PropTypes.bool,
-    title         : PropTypes.oneOfType([
+    children : PropTypes.node,
+    className: PropTypes.string,
+    id       : PropTypes.string,
+    is_open  : PropTypes.bool,
+    title    : PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
     ]),
@@ -117,10 +101,8 @@ DrawerElement.propTypes = {
 const MobileDrawer = ({
     children,
     className,
-    header,
     id,
     is_open,
-    has_close_icon,
     height,
     title,
     toggle,
@@ -140,12 +122,10 @@ const MobileDrawer = ({
     >
         <DrawerElement
             className={className}
-            header={header}
             id={id}
             is_open={is_open}
             title={title}
             toggle={toggle}
-            has_close_icon={has_close_icon}
             height={height}
             width={width}
         >
@@ -154,25 +134,19 @@ const MobileDrawer = ({
     </CSSTransition>
 );
 
-MobileDrawer.Header  = Header;
-MobileDrawer.Body    = Body;
-MobileDrawer.Footer  = Footer;
-MobileDrawer.Item    = Item;
-MobileDrawer.SubMenu = SubMenu;
-
-MobileDrawer.defaultProps = {
-    has_close_icon: true,
-};
+MobileDrawer.Body      = Body;
+MobileDrawer.Footer    = Footer;
+MobileDrawer.Item      = Item;
+MobileDrawer.SubHeader = SubHeader;
+MobileDrawer.SubMenu   = SubMenu;
 
 MobileDrawer.propTypes = {
-    children      : PropTypes.node,
-    className     : PropTypes.string,
-    has_close_icon: PropTypes.bool,
-    header        : PropTypes.node,
-    height        : PropTypes.string,
-    id            : PropTypes.string,
-    is_open       : PropTypes.bool,
-    title         : PropTypes.oneOfType([
+    children : PropTypes.node,
+    className: PropTypes.string,
+    height   : PropTypes.string,
+    id       : PropTypes.string,
+    is_open  : PropTypes.bool,
+    title    : PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
     ]),

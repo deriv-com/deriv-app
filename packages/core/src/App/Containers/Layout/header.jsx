@@ -30,6 +30,7 @@ class Header extends React.Component {
             header_extension,
             is_acc_switcher_on,
             is_app_disabled,
+            is_dark_mode,
             is_logged_in,
             is_logging_in,
             is_mobile,
@@ -38,7 +39,9 @@ class Header extends React.Component {
             is_route_modal_on,
             is_virtual,
             disableApp,
+            logoutClient,
             notifications_count,
+            setDarkMode,
             toggleAccountsDialog,
             toggleNotifications,
             openRealAccountSignup,
@@ -70,6 +73,9 @@ class Header extends React.Component {
                                 <ToggleMenuDrawer
                                     enableApp={enableApp}
                                     disableApp={disableApp}
+                                    logoutClient={logoutClient}
+                                    is_dark_mode={is_dark_mode}
+                                    toggleTheme={setDarkMode}
                                     platform_switcher={
                                         <PlatformSwitcher
                                             is_mobile={is_mobile}
@@ -150,7 +156,9 @@ Header.propTypes = {
     is_notifications_visible: PropTypes.bool,
     is_route_modal_on       : PropTypes.bool,
     is_virtual              : PropTypes.bool,
+    logoutClient            : PropTypes.func,
     notifications_count     : PropTypes.any,
+    setDarkMode             : PropTypes.func,
     toggleAccountsDialog    : PropTypes.func,
     toggleNotifications     : PropTypes.func,
 };
@@ -163,6 +171,7 @@ export default connect(
         currency                : client.currency,
         is_logged_in            : client.is_logged_in,
         is_logging_in           : client.is_logging_in,
+        logoutClient            : client.logout,
         is_virtual              : client.is_virtual,
         enableApp               : ui.enableApp,
         header_extension        : ui.header_extension,
@@ -178,6 +187,7 @@ export default connect(
         openRealAccountSignup   : ui.openRealAccountSignup,
         disableApp              : ui.disableApp,
         toggleAccountsDialog    : ui.toggleAccountsDialog,
+        setDarkMode             : ui.setDarkMode,
         toggleNotifications     : ui.toggleNotificationsModal,
     })
 )(withRouter(Header));

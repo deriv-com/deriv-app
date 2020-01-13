@@ -49,7 +49,7 @@ class PlatformDropdown extends React.PureComponent {
                             )}
                         >
                             <div className='platform-dropdown__list__platform__background' />
-                            <Icon className='platform_dropdown__list__platform__icon' icon={platform.icon} size={32} />
+                            <Icon className='platform-dropdown__list__platform__icon' icon={platform.icon} size={32} />
 
                             <div className='platform-dropdown__list__platform__details'>
                                 <p className='platform-dropdown__list__platform__title'>{platform.title}</p>
@@ -61,7 +61,7 @@ class PlatformDropdown extends React.PureComponent {
             </div>
         );
 
-        if (is_mobile) return ReactDOM.createPortal(platform_dropdown, document.getElementById('dc_mobile_platform_switcher'));
+        if (is_mobile) return ReactDOM.createPortal(platform_dropdown, document.getElementById('mobile_platform_switcher'));
         return ReactDOM.createPortal(platform_dropdown, document.getElementById('deriv_app'));
     }
 }

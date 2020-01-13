@@ -1,4 +1,4 @@
-/** @define footer */
+/** @define footer; weak */
 .footer {
     position: fixed;
     bottom: 0;
@@ -81,11 +81,17 @@
     }
 }
 
-/** @define network-status */
+/** @define network-status  */
 .network-status {
     &__wrapper {
         height: 1.4em;
         position: relative;
+
+        &--is-mobile {
+            .network-status__circle {
+                margin: 0.2em 0 0.2em -0.2em;
+            }
+        }
     }
     &__tooltip {
         left: unset;
@@ -119,6 +125,11 @@
     padding: 0 1em;
     @include typeface(--small-left-normal-black);
     color: var(--text-general);
+
+    &--is-mobile {
+        padding: 0 1em 0 0;
+        margin-right: 0;
+    }
 }
 
 /** @define ic-settings */

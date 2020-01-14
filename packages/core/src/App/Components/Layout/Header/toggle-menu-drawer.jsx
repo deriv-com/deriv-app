@@ -78,11 +78,11 @@ class ToggleMenuDrawer extends React.PureComponent {
                     />
                 </a>
                 <MobileDrawer
+                    alignment='left'
                     icon_class='header__menu-toggle'
                     is_open={this.state.is_open}
                     toggle={this.toggleDrawer}
                     id='dt_mobile_drawer'
-                    className='mobile-drawer'
                     enableApp={this.props.enableApp}
                     disableApp={this.props.disableApp}
                     title={localize('Menu')}

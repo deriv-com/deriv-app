@@ -182,6 +182,7 @@ class ContractTypeWidget extends React.PureComponent {
                         handleInfoClick={this.handleInfoClick}
                         handleSelect={this.handleSelect}
                         is_equal={is_equal}
+                        is_mobile={is_mobile}
                         list={list}
                         name={name}
                         value={value}

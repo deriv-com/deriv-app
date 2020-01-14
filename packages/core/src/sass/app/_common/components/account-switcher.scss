@@ -73,7 +73,6 @@
     &__balance {
         @include typeface(--title-center-bold-green, default);
         padding: 0.5em;
-        color: var(--text-profit-success);
         pointer-events: none;
     }
     &__select-arrow {

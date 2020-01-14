@@ -10,6 +10,7 @@ const ContractTypeItem = ({
     name,
     value,
     is_equal,
+    is_mobile,
     handleInfoClick,
     handleSelect,
 }) => (
@@ -29,9 +30,11 @@ const ContractTypeItem = ({
             <span className='contract-type-item__title'>
                 {contract.text}
             </span>
+            {!is_mobile &&
             <div id='info-icon' className='contract-type-item__icon' onClick={() => handleInfoClick(contract)}>
                 <Icon icon='IcInfoOutline' />
             </div>
+            }
         </div>
     ))
 );
@@ -44,8 +47,9 @@ ContractTypeItem.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
-    name : PropTypes.string,
-    value: PropTypes.string,
+    is_mobile: PropTypes.bool,
+    name     : PropTypes.string,
+    value    : PropTypes.string,
 };
 
 export default ContractTypeItem;

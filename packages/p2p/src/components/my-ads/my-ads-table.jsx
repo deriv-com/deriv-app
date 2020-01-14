@@ -23,10 +23,10 @@ const type = {
 const RowComponent = React.memo(({ data, style }) => (
     <div style={style}>
         <Table.Row>
-            <Table.Cell>{type[data.type]}<br />{data.offer_id}</Table.Cell>
+            <Table.Cell><div>{type[data.type]}<div className='p2p-my-ads__table-id'>{data.offer_id}</div></div></Table.Cell>
             <Table.Cell>{data.display_available_amount}{' '}{data.offer_currency}</Table.Cell>
             <Table.Cell>{data.display_min_transaction}-{data.display_max_transaction}{' '}{data.offer_currency}</Table.Cell>
-            <Table.Cell className='p2p-my-ads__price'>{data.display_price_rate}{' '}{data.transaction_currency}</Table.Cell>
+            <Table.Cell className='p2p-my-ads__table-price'>{data.display_price_rate}{' '}{data.transaction_currency}</Table.Cell>
             <Table.Cell>{data.payment_method}</Table.Cell>
         </Table.Row>
     </div>

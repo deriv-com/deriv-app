@@ -58,9 +58,15 @@
             }
         }
     }
-    &__price {
-        color: var(--text-profit-success);
-        font-weight: bold;
+    &__table {
+        &-id {
+            color: var(--brand-red-coral);
+            font-weight: bold;
+        }
+        &-price {
+            color: var(--text-profit-success);
+            font-weight: bold;
+        }
     }
 }
 

@@ -1,3 +1,8 @@
+@mixin combine($class1,$class2) {
+    #{$class1}#{$class2} {
+        @content;
+    }
+}
 /** @define positions-drawer-card; weak */
 
 .positions-drawer-card {
@@ -80,13 +85,15 @@
         &:last-child {
             margin-bottom: 10px;
         }
-        &--enter-done {
+        @include combine(#{& + '--transition'}, #{& + '--enter-done'}) {
             opacity: 1;
             transform: translateY(0);
         }
-        &--enter, &--exit {
-            opacity: 0;
-            transform: translateY(-16px);
+        @each $state in '--enter','--exit' {
+            @include combine(#{& + '--transition'}, #{& + $state}) {
+                opacity: 0;
+                transform: translateY(-16px);
+            }
         }
     }
     &--active {

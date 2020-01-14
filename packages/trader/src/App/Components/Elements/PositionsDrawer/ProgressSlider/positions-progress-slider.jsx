@@ -1,7 +1,7 @@
 import classNames            from 'classnames';
 import PropTypes             from 'prop-types';
 import React                 from 'react';
-import { getTimePercentage } from 'deriv-shared/utils/positions-helper';
+import PositionsUtils        from 'deriv-shared/utils/positions';
 import { connect }           from 'Stores/connect';
 import ProgressTicks         from './positions-progress-ticks.jsx';
 import RemainingTime         from '../../../../Containers/remaining-time.jsx';
@@ -15,7 +15,7 @@ const ProgressSlider = ({
     server_time,
     ticks_count,
 }) => {
-    const percentage = getTimePercentage(server_time, start_time, expiry_time);
+    const percentage = PositionsUtils.getTimePercentage(server_time, start_time, expiry_time);
     return (
         <div className={classNames('progress-slider', className)}>
             {(ticks_count) ?

@@ -3,7 +3,7 @@ import React                   from 'react';
 import { toJS }                from 'mobx';
 import { Popover }             from 'deriv-components';
 import { localize }            from 'deriv-translations';
-import { isContractElapsed }   from 'Stores/Modules/Contract/Helpers/logic';
+import ContractUtils           from 'deriv-shared/utils/contract';
 import { SlideIn }             from 'App/Components/Animations';
 import { getMarketNamesMap }   from 'Constants';
 import { LastDigitPrediction } from '../LastDigitPrediction';
@@ -36,7 +36,7 @@ class Digits extends React.PureComponent {
 
         const is_tick_ready       = is_trade_page ? !!(tick) : true;
         const is_contract_elapsed = (is_trade_page) ?
-            isContractElapsed(contract_info, tick) : false;
+            ContractUtils.isContractElapsed(contract_info, tick) : false;
 
         // tick from contract_info.tick_stream has totally different
         // format from the tick from tick_history api call.

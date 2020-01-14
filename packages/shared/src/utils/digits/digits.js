@@ -1,4 +1,4 @@
-import { getLastTickFromTickStream } from './logic';
+import { getLastTickFromTickStream } from '../contract';
 
 export const isDigitContract = (contract_type) => /digit/i.test(contract_type);
 

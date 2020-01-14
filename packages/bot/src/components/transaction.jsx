@@ -1,8 +1,11 @@
 import classNames               from 'classnames';
 import {
+    ContractAudit,
     Icon,
     Money,
     Popover }                  from 'deriv-components';
+import ContractUtils           from 'deriv-shared/utils/contract';
+import PortfolioUtils          from 'deriv-shared/utils/portfolio';
 import { localize }            from 'deriv-translations';
 import React                   from 'react';
 import ContentLoader           from 'react-content-loader';
@@ -29,7 +32,7 @@ const TransactionIconWithText = ({
     </React.Fragment>
 );
 
-const TransactionFieldLoader = () => (
+const TransactionFieldLoader = ({ width }) => (
     <ContentLoader
         className='transactions__loader'
         height={10}
@@ -38,90 +41,8 @@ const TransactionFieldLoader = () => (
         primaryColor={'var(--general-section-1)'}
         secondaryColor={'var(--general-hover)'}
     >
-        <rect x='0' y='0' rx='0' ry='0' width='100' height='12' />
+        <rect x='0' y='0' rx='0' ry='0' width={width || '100'} height='12' />
     </ContentLoader>
-);
-
-const PopoverItem = ({
-    icon,
-    title,
-    children,
-}) => (
-    <div className='transactions__popover-item'>
-        { icon &&
-            <div className='transaction__popover-icon'>
-                { icon }
-            </div>
-        }
-        <div className='transactions__popover-details'>
-            <div className='transactions__popover-title'>
-                { title }
-            </div>
-            { children }
-        </div>
-    </div>
-);
-
-const PopoverContent = ({ contract }) => (
-    <div className='transactions__popover-content'>
-        { contract.transaction_ids &&
-            <PopoverItem title={localize('Reference IDs')}>
-                { contract.transaction_ids.buy &&
-                    <div className='transactions__popover-value'>
-                        { `${contract.transaction_ids.buy} ${localize('(Buy)')}` }
-                    </div>
-                }
-                { contract.transaction_ids.sell &&
-                    <div className='transactions__popover-value'>
-                        { `${contract.transaction_ids.sell} ${localize('(Sell)')}` }
-                    </div>
-                }
-            </PopoverItem>
-        }
-        { contract.tick_count &&
-            <PopoverItem title={localize('Duration')}>
-                <div className='transactions__popover-value'>
-                    { `${contract.tick_count} ${localize('ticks')}` }
-                </div>
-            </PopoverItem>
-        }
-        { contract.barrier &&
-            <PopoverItem title={localize('Barrier')}>
-                <div className='transactions__popover-value'>{ contract.barrier }</div>
-            </PopoverItem>
-            ||
-            contract.high_barrier && contract.low_barrier &&
-                <PopoverItem title={localize('Barriers')}>
-                    <div className='transactions__popover-value'>{ `${contract.high_barrier} ${localize('(High)')}` }</div>
-                    <div className='transactions__popover-value'>{ `${contract.low_barrier} ${localize('(Low)')}` }</div>
-                </PopoverItem>
-        }
-        { contract.date_start &&
-            <PopoverItem title={localize('Start time')}>
-                <div className='transactions__popover-value'>{ contract.date_start }</div>
-            </PopoverItem>
-        }
-        { contract.entry_tick &&
-            <PopoverItem title={localize('Entry spot')}>
-                <div className='transactions__popover-value'>{ contract.entry_tick }</div>
-                { contract.entry_tick_time &&
-                    <div className='transactions__popover-value'>{ contract.entry_tick_time }</div>
-                }
-            </PopoverItem>
-            // TODO: Durations for non-tick contracts, requires helpers from Trader.
-        }
-        { contract.exit_tick && contract.exit_tick_time &&
-            <PopoverItem title={localize('Exit spot')}>
-                <div className='transactions__popover-value'>{ contract.exit_tick }</div>
-                <div className='transactions__popover-value'>{ contract.exit_tick_time }</div>
-            </PopoverItem>
-            ||
-            contract.exit_tick &&
-                <PopoverItem title={localize('Exit time')}>
-                    <div className='transactions__popover-value'>{ contract.exit_tick }</div>
-                </PopoverItem>
-        }
-    </div>
 );
 
 const Transaction = ({
@@ -133,7 +54,19 @@ const Transaction = ({
         alignment='left'
         className='transactions__item-wrapper'
         is_open={active_transaction_id === contract.transaction_ids.buy}
-        message={<PopoverContent contract={contract} />}
+        message={
+            <ContractAudit
+                contract_info={contract}
+                contract_end_time={ContractUtils.getEndTime(contract)}
+                is_dark_theme={false /* TODO: Dark theme for bot */ }
+                duration={PortfolioUtils.getDurationTime(contract)}
+                duration_unit={PortfolioUtils.getDurationUnitText(PortfolioUtils.getDurationPeriod(contract))}
+                exit_spot={contract.exit_spot}
+                has_result={!!(contract.is_sold)}
+                is_allow_partial_load={true}
+                content_loader={<TransactionFieldLoader width={150} />}
+            />
+        }
     >
         <div
             className='transactions__item'

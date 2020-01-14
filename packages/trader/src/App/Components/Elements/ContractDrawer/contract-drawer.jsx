@@ -9,22 +9,14 @@ import {
     Icon,
     Money }                    from 'deriv-components';
 import { localize, Localize }  from 'deriv-translations';
+import ContractUtils           from 'deriv-shared/utils/contract';
+import PortfolioUtils          from 'deriv-shared/utils/portfolio';
 import routes                  from 'Constants/routes';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
 import ProgressSlider          from 'App/Components/Elements/PositionsDrawer/ProgressSlider';
 import ProfitLossCardContent   from 'Modules/Reports/Components/profit-loss-card-content.jsx';
 import Shortcode               from 'Modules/Reports/Helpers/shortcode';
-import {
-    getCurrentTick,
-    getDurationPeriod,
-    getDurationTime,
-    getDurationUnitText }      from 'Stores/Modules/Portfolio/Helpers/details';
-import {
-    getIndicativePrice,
-    getEndTime,
-    isUserSold,
-    isValidToSell       }      from 'Stores/Modules/Contract/Helpers/logic';
 import ContractCardBody        from './contract-card-body.jsx';
 import ContractCardFooter      from './contract-card-footer.jsx';
 import ContractCardHeader      from './contract-card-header.jsx';
@@ -56,12 +48,12 @@ class ContractDrawer extends Component {
             is_sell_requested,
             onClickSell,
         } = this.props;
-        const exit_spot = isUserSold(contract_info) ? '-' : exit_tick_display_value;
+        const exit_spot = ContractUtils.isUserSold(contract_info) ? '-' : exit_tick_display_value;
         const getTick = () => {
             if (!contract_info.tick_count) return null;
-            let current_tick = getCurrentTick(contract_info);
-            current_tick = (current_tick > getCurrentTick(contract_info)) ?
-                current_tick : getCurrentTick(contract_info);
+            let current_tick = PortfolioUtils.getCurrentTick(contract_info);
+            current_tick = (current_tick > PortfolioUtils.getCurrentTick(contract_info)) ?
+                current_tick : PortfolioUtils.getCurrentTick(contract_info);
             return current_tick;
         };
 
@@ -106,7 +98,7 @@ class ContractDrawer extends Component {
                     <ContractCardBody>
                         <ProfitLossCardContent
                             pl_value={+profit}
-                            payout={getIndicativePrice(contract_info)}
+                            payout={ContractUtils.getIndicativePrice(contract_info)}
                             currency={currency}
                             is_sold={!!(is_sold)}
                             status={this.props.status}
@@ -138,7 +130,7 @@ class ContractDrawer extends Component {
                             </div>
                         </div>
                         <CSSTransition
-                            in={!!(isValidToSell(contract_info))}
+                            in={!!(ContractUtils.isValidToSell(contract_info))}
                             timeout={250}
                             classNames={{
                                 enter    : 'contract-card__sell-button--enter',
@@ -155,7 +147,7 @@ class ContractDrawer extends Component {
                                         'btn--sell', {
                                             'btn--loading': is_sell_requested,
                                         })}
-                                    is_disabled={!(isValidToSell(contract_info)) || is_sell_requested}
+                                    is_disabled={!(ContractUtils.isValidToSell(contract_info)) || is_sell_requested}
                                     text={localize('Sell contract')}
                                     onClick={() => onClickSell(contract_info.contract_id)}
                                     secondary
@@ -167,12 +159,12 @@ class ContractDrawer extends Component {
                 {!!(is_sold) &&
                 <ContractAudit
                     contract_info={contract_info}
-                    contract_end_time={getEndTime(contract_info)}
+                    contract_end_time={ContractUtils.getEndTime(contract_info)}
                     is_dark_theme={is_dark_theme}
                     is_open={true}
                     is_shade_visible={this.handleShade}
-                    duration={getDurationTime(contract_info)}
-                    duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
+                    duration={PortfolioUtils.getDurationTime(contract_info)}
+                    duration_unit={PortfolioUtils.getDurationUnitText(PortfolioUtils.getDurationPeriod(contract_info))}
                     exit_spot={exit_spot}
                     has_result={!!(is_sold)}
                 />}

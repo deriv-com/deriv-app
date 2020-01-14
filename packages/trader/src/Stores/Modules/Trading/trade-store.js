@@ -8,12 +8,10 @@ import {
     toJS,
 }                                     from 'mobx';
 import CurrencyUtils                  from 'deriv-shared/utils/currency';
+import DigitUtils                     from 'deriv-shared/utils/digits';
 import ObjectUtils                    from 'deriv-shared/utils/object';
 import { localize }                   from 'deriv-translations';
 import { WS }                         from 'Services/ws-methods';
-import {
-    isDigitContractType,
-    isDigitTradeType      }           from 'Modules/Trading/Helpers/digits';
 import ServerTime                     from '_common/base/server_time';
 import Shortcode                      from 'Modules/Reports/Helpers/shortcode';
 import { processPurchase }            from './Actions/purchase';
@@ -350,7 +348,7 @@ export default class TradeStore extends BaseStore {
 
     @computed
     get main_barrier_flattened() {
-        const is_digit_trade_type = isDigitTradeType(this.contract_type);
+        const is_digit_trade_type = DigitUtils.isDigitTradeType(this.contract_type);
         return is_digit_trade_type ? null : toJS(this.main_barrier);
     }
 
@@ -400,7 +398,7 @@ export default class TradeStore extends BaseStore {
                     if (contract_id) {
                         const shortcode = response.buy.shortcode;
                         const { category, underlying } = Shortcode.extractInfoFromShortcode(shortcode);
-                        const is_digit_contract = isDigitContractType(category.toUpperCase());
+                        const is_digit_contract = DigitUtils.isDigitContractType(category.toUpperCase());
                         const contract_type = category.toUpperCase();
                         this.root_store.modules.contract_trade.addContract({
                             contract_id,
@@ -546,7 +544,7 @@ export default class TradeStore extends BaseStore {
 
             // To prevent infinite loop when changing from advanced end_time to digit type contract
             if (obj_new_values.contract_type && this.root_store.ui.is_advanced_duration) {
-                if (isDigitTradeType(obj_new_values.contract_type)) {
+                if (DigitUtils.isDigitTradeType(obj_new_values.contract_type)) {
                     this.barrier_1     = '';
                     this.barrier_2     = '';
                     this.expiry_type = 'duration';
@@ -576,7 +574,7 @@ export default class TradeStore extends BaseStore {
 
     @computed
     get show_digits_stats() {
-        return isDigitTradeType(this.contract_type);
+        return DigitUtils.isDigitTradeType(this.contract_type);
     }
 
     @action.bound

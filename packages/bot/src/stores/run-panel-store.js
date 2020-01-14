@@ -3,13 +3,13 @@ import {
     action,
     reaction,
     computed }                         from 'mobx';
-import { localize }                    from 'deriv-translations' ;
+import { localize }                    from 'deriv-translations';
+import ContractUtils                   from 'deriv-shared/utils/contract';
 import { contract_stages }             from '../constants/contract-stage';
 import {
     error_types,
     unrecoverable_errors }             from '../constants/messages';
 import DBot                            from '../scratch';
-import { isEnded }                     from '../utils/contract';
 import { observer }                    from '../utils/observer';
 import { setMainContentWidth }         from '../utils/window-size';
 import { switch_account_notification } from '../utils/notifications/bot-notifications';
@@ -257,7 +257,7 @@ export default class RunPanelStore {
 
     @action.bound
     onBotContractEvent(data) {
-        const isClosed = isEnded(data);
+        const isClosed = ContractUtils.isEnded(data);
         if (isClosed) {
             this.setContractStage(contract_stages.CONTRACT_CLOSED);
         }

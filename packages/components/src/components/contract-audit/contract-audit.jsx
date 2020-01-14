@@ -1,12 +1,7 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
-import {
-    getBarrierLabel,
-    getBarrierValue,
-    isDigitType }        from 'deriv-shared/utils/positions-helper';
-import {
-    epochToMoment,
-    toGMTFormat }        from 'deriv-shared/utils/date';
+import DateTimeUtils     from 'deriv-shared/utils/date-time';
+import PositionsUtils    from 'deriv-shared/utils/positions';
 import { localize }      from 'deriv-translations';
 import ContractAuditItem from './contract-audit-item.jsx';
 import Icon              from '../icon';
@@ -22,6 +17,7 @@ class ContractAudit extends React.PureComponent {
             exit_spot,
             has_result,
             is_allow_partial_load,
+            content_loader,
         } = this.props;
 
         if (!has_result && !is_allow_partial_load) {
@@ -33,7 +29,7 @@ class ContractAudit extends React.PureComponent {
         return (
             <div className='contract-audit__wrapper'>
                 <ThemedScrollbars
-                    style={{ width: '100%', height: '100%' }}
+                    // style={{ width: '100%', height: '100%' }}
                     autoHide
                 >
                     <div id='dt_id_label' className='contract-audit__grid'>
@@ -57,28 +53,28 @@ class ContractAudit extends React.PureComponent {
                     <div id='dt_bt_label' className='contract-audit__grid'>
                         <ContractAuditItem
                             icon={
-                                isDigitType(contract_info.contract_type)
+                                PositionsUtils.isDigitType(contract_info.contract_type)
                                     ? <Icon icon='IcContractTarget' size={24} />
                                     : <Icon icon='IcContractBarrier' size={24} />
                             }
-                            label={getBarrierLabel(contract_info)}
-                            value={getBarrierValue(contract_info) || ' - '}
+                            label={PositionsUtils.getBarrierLabel(contract_info)}
+                            value={PositionsUtils.getBarrierValue(contract_info) || ' - '}
                         />
                     </div>
                     <div id='dt_start_time_label' className='contract-audit__grid'>
                         <ContractAuditItem
                             icon={<Icon icon='IcContractStartTime' size={24} />}
                             label={localize('Start time')}
-                            value={toGMTFormat(epochToMoment(contract_info.purchase_time)) || ' - '}
+                            value={DateTimeUtils.toGMTFormat(DateTimeUtils.epochToMoment(contract_info.purchase_time)) || ' - '}
                         />
                     </div>
-                    {!isDigitType(contract_info.contract_type) &&
+                    {!PositionsUtils.isDigitType(contract_info.contract_type) &&
                     <div id='dt_entry_spot_label' className='contract-audit__grid'>
                         <ContractAuditItem
                             icon={<Icon icon='IcContractEntrySpot' size={24} />}
                             label={localize('Entry spot')}
                             value={contract_info.entry_spot_display_value || ' - '}
-                            value2={toGMTFormat(epochToMoment(contract_info.entry_tick_time)) || ' - '}
+                            value2={DateTimeUtils.toGMTFormat(DateTimeUtils.epochToMoment(contract_info.entry_tick_time)) || ' - '}
                         />
                     </div>
                     }
@@ -89,7 +85,7 @@ class ContractAudit extends React.PureComponent {
                                 icon={<Icon icon='IcContractExitSpot' size={24} />}
                                 label={localize('Exit spot')}
                                 value={exit_spot || ' - '}
-                                value2={toGMTFormat(epochToMoment(contract_info.exit_tick_time)) || ' - '}
+                                value2={DateTimeUtils.toGMTFormat(DateTimeUtils.epochToMoment(contract_info.exit_tick_time)) || ' - '}
                             />
                         </div>
                     }
@@ -97,7 +93,11 @@ class ContractAudit extends React.PureComponent {
                         <ContractAuditItem
                             icon={IconExitTime}
                             label={localize('Exit Time')}
-                            value={toGMTFormat(epochToMoment(contract_end_time)) || ' - '}
+                            value={
+                                contract_end_time
+                                    ? DateTimeUtils.toGMTFormat(DateTimeUtils.epochToMoment(contract_end_time))
+                                    : content_loader
+                            }
                         />
                     </div>
                 </ThemedScrollbars>

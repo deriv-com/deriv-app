@@ -7,10 +7,13 @@ const isServe = process.env.BUILD_MODE === 'serve';
 module.exports = {
     target: 'web',
     entry : {
-        date     : path.resolve(__dirname, 'src', 'utils/date/index.js'),
-        currency : path.resolve(__dirname, 'src', 'utils/currency/index.js'),
-        object   : path.resolve(__dirname, 'src', 'utils/object/index.js'),
-        positions: path.resolve(__dirname, 'src', 'utils/positions/index.js'),
+        contract   : path.resolve(__dirname, 'src', 'utils/contract/index.js'),
+        currency   : path.resolve(__dirname, 'src', 'utils/currency/index.js'),
+        'date-time': path.resolve(__dirname, 'src', 'utils/date-time/index.js'),
+        digits     : path.resolve(__dirname, 'src', 'utils/digits/index.js'),
+        object     : path.resolve(__dirname, 'src', 'utils/object/index.js'),
+        positions  : path.resolve(__dirname, 'src', 'utils/positions/index.js'),
+        portfolio  : path.resolve(__dirname, 'src', 'utils/portfolio/index.js'),
     },
     output: {
         path         : path.resolve(__dirname, 'utils'),

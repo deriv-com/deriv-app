@@ -1,10 +1,9 @@
 import {
     observable,
     action,
-    computed }                from 'mobx';
-import { contract_stages }    from '../constants/contract-stage';
-import { isEnded ,
-    getIndicativePrice }      from '../utils/contract';
+    computed }             from 'mobx';
+import ContractUtils       from 'deriv-shared/utils/contract';
+import { contract_stages } from '../constants/contract-stage';
 
 export default class ContractCardStore {
     @observable contract            = null;
@@ -22,7 +21,7 @@ export default class ContractCardStore {
     @computed
     get is_contract_completed() {
         return this.contract &&
-        isEnded(this.contract) &&
+        ContractUtils.isEnded(this.contract) &&
         (this.root_store.run_panel.contract_stage.index !== contract_stages.PURCHASE_RECEIVED.index);
     }
 
@@ -52,7 +51,7 @@ export default class ContractCardStore {
     @action.bound
     onBotContractEvent(contract) {
         const { profit } = contract;
-        const indicative = getIndicativePrice(contract);
+        const indicative = ContractUtils.getIndicativePrice(contract);
 
         if (this.contract_id !== contract.id) {
             this.clear(false);

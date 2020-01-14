@@ -1,8 +1,6 @@
 import extend                  from 'extend';
-import { isDigitContract }     from 'Stores/Modules/Contract/Helpers/digits';
-import {
-    isUserSold,
-    getEndTime }               from 'Stores/Modules/Contract/Helpers/logic';
+import ContractUtils           from 'deriv-shared/utils/contract';
+import DigitUtils              from 'deriv-shared/utils/digits';
 import { MARKER_TYPES_CONFIG } from '../../SmartChart/Constants/markers';
 
 const createMarkerConfig = (marker_type, x, y, content_config) => (
@@ -16,11 +14,11 @@ const createMarkerConfig = (marker_type, x, y, content_config) => (
 );
 
 export const getSpotCount = (contract_info, spot_count) =>
-    isDigitContract(contract_info.contract_type) ? spot_count + 1 : spot_count;
+    DigitUtils.isDigitContract(contract_info.contract_type) ? spot_count + 1 : spot_count;
 
 // -------------------- Lines --------------------
 export const createMarkerEndTime = (contract_info) => {
-    const end_time = getEndTime(contract_info);
+    const end_time = ContractUtils.getEndTime(contract_info);
     if (!end_time) return false;
 
     return createMarkerConfig(
@@ -66,7 +64,7 @@ export const createMarkerSpotEntry = (contract_info) => {
 
     const entry_tick = contract_info.entry_tick_display_value;
 
-    const spot_has_label = isDigitContract(contract_info.contract_type);
+    const spot_has_label = DigitUtils.isDigitContract(contract_info.contract_type);
     if (spot_has_label) {
         marker_type = MARKER_TYPES_CONFIG.SPOT_MIDDLE.type;
 
@@ -87,7 +85,7 @@ export const createMarkerSpotEntry = (contract_info) => {
 
 export const createMarkerSpotExit = (contract_info, tick, idx) => {
     if (!contract_info.exit_tick_time) return false;
-    const is_user_sold = isUserSold(contract_info);
+    const is_user_sold = ContractUtils.isUserSold(contract_info);
 
     let spot_count, align_label;
     if (tick) {

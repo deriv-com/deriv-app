@@ -5,19 +5,11 @@ import {
     reaction }                     from 'mobx';
 import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services/ws-methods';
+import ContractUtils               from 'deriv-shared/utils/contract';
 import ObjectUtils                 from 'deriv-shared/utils/object';
+import PortfolioUtils              from 'deriv-shared/utils/portfolio';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractSold }            from './Helpers/portfolio-notifications';
-import {
-    getCurrentTick,
-    getDurationPeriod,
-    getDurationTime,
-    getDurationUnitText }          from './Helpers/details';
-import {
-    getDisplayStatus,
-    getEndTime,
-    isUserSold,
-    isValidToSell }                from '../Contract/Helpers/logic';
 import BaseStore                   from '../../base-store';
 
 export default class PortfolioStore extends BaseStore {
@@ -149,15 +141,15 @@ export default class PortfolioStore extends BaseStore {
         // store contract proposal details that require modifiers
         portfolio_position.indicative       = new_indicative;
         portfolio_position.profit_loss      = profit_loss;
-        portfolio_position.is_valid_to_sell = isValidToSell(proposal);
+        portfolio_position.is_valid_to_sell = ContractUtils.isValidToSell(proposal);
 
         // store contract proposal details that do not require modifiers
         portfolio_position.contract_info    = proposal;
 
         // for tick contracts
         if (proposal.tick_count) {
-            const current_tick = (portfolio_position.current_tick > getCurrentTick(proposal)) ?
-                portfolio_position.current_tick : getCurrentTick(proposal);
+            const current_tick = (portfolio_position.current_tick > PortfolioUtils.getCurrentTick(proposal)) ?
+                portfolio_position.current_tick : PortfolioUtils.getCurrentTick(proposal);
             portfolio_position.current_tick = current_tick;
         }
 
@@ -215,13 +207,16 @@ export default class PortfolioStore extends BaseStore {
         const i = this.getPositionIndexById(contract_response.contract_id);
 
         this.positions[i].contract_info    = contract_response;
-        this.positions[i].duration         = getDurationTime(contract_response);
-        this.positions[i].duration_unit    = getDurationUnitText(getDurationPeriod(contract_response));
+        this.positions[i].duration         = PortfolioUtils.getDurationTime(contract_response);
+        this.positions[i].duration_unit    = PortfolioUtils.getDurationUnitText(
+            PortfolioUtils.getDurationPeriod(contract_response)
+        );
         this.positions[i].exit_spot        = contract_response.exit_tick || contract_response.current_spot; // workaround if no exit_tick in proposal_open_contract, use latest spot
-        this.positions[i].is_valid_to_sell = isValidToSell(contract_response);
-        this.positions[i].result           = getDisplayStatus(contract_response);
+        this.positions[i].is_valid_to_sell = ContractUtils.isValidToSell(contract_response);
+        this.positions[i].result           = ContractUtils.ContractUtils.getEndTime(contract_response);
         this.positions[i].profit_loss      = +contract_response.profit;
-        this.positions[i].sell_time        = getEndTime(contract_response) || contract_response.current_spot_time; // same as exit_spot, use latest spot time if no exit_tick_time
+        this.positions[i].sell_time        =
+            ContractUtils.getEndTime(contract_response) || contract_response.current_spot_time; // same as exit_spot, use latest spot time if no exit_tick_time
         this.positions[i].sell_price       = contract_response.sell_price;
         this.positions[i].status           = 'complete';
 
@@ -232,11 +227,11 @@ export default class PortfolioStore extends BaseStore {
         }
 
         // remove exit_spot for manually sold contracts
-        if (isUserSold(contract_response)) this.positions[i].exit_spot = '-';
+        if (ContractUtils.isUserSold(contract_response)) this.positions[i].exit_spot = '-';
 
         this.positions[i].is_loading = false;
 
-        if (getEndTime(contract_response)) {
+        if (ContractUtils.getEndTime(contract_response)) {
             // also forget for buy
             [this.populateResultDetails, this.proposalOpenContractHandler].forEach(() => {
                 if (!(contract_response.contract_id in this.subscribers)) return;
@@ -348,7 +343,7 @@ export default class PortfolioStore extends BaseStore {
 
     @computed
     get active_positions() {
-        return this.positions.filter(portfolio_pos => !getEndTime(portfolio_pos.contract_info));
+        return this.positions.filter(portfolio_pos => !ContractUtils.getEndTime(portfolio_pos.contract_info));
     }
 
     @computed

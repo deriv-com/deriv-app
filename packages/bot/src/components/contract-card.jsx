@@ -1,20 +1,18 @@
-import classNames            from 'classnames';
+import classNames              from 'classnames';
 import {
     Icon,
-    Money }                  from 'deriv-components';
-import React                 from 'react';
-import PropTypes             from 'prop-types';
-import CurrencyUtils         from 'deriv-shared/utils/currency';
-import { localize }          from 'deriv-translations';
-import ContractCardLoader    from './contract-card-loading.jsx';
-import ContractResultOverlay from './contract-result-overlay.jsx';
-import IconTradeType         from './icon-trade-types.jsx';
-import { connect }           from '../stores/connect';
-import {
-    getIndicativePrice,
-    isEnded,
-    getContractTypeName }    from '../utils/contract';
-import                            '../assets/sass/contract-card.scss';
+    Money }                    from 'deriv-components';
+import React                   from 'react';
+import PropTypes               from 'prop-types';
+import ContractUtils           from 'deriv-shared/utils/contract';
+import CurrencyUtils           from 'deriv-shared/utils/currency';
+import { localize }            from 'deriv-translations';
+import ContractCardLoader      from './contract-card-loading.jsx';
+import ContractResultOverlay   from './contract-result-overlay.jsx';
+import IconTradeType           from './icon-trade-types.jsx';
+import { connect }             from '../stores/connect';
+import { getContractTypeName } from '../utils/contract';
+import                              '../assets/sass/contract-card.scss';
 
 const ContractCard = ({
     contract,
@@ -62,10 +60,10 @@ const ContractCard = ({
                 <div className='db-contract-card__stats'>
                     <div className='db-contract-card__grid'>
                         <div className='db-contract-card__profit-loss db-contract-card__profit-loss-label'>
-                            { isEnded(contract) ? localize('Profit/Loss:') : localize('Potential profit/loss:') }
+                            { ContractUtils.isEnded(contract) ? localize('Profit/Loss:') : localize('Potential profit/loss:') }
                         </div>
                         <div className='db-contract-card__indicative-price db-contract-card__indicative-price-label'>
-                            { isEnded(contract) ? localize('Payout:') : localize('Indicative price:') }
+                            { ContractUtils.isEnded(contract) ? localize('Payout:') : localize('Indicative price:') }
                         </div>
                         <div className={classNames(
                             'db-contract-card__profit-loss',
@@ -85,7 +83,7 @@ const ContractCard = ({
 
                         <div className='db-contract-card__indicative-price db-contract-card__indicative-price-amount'>
                             <Money
-                                amount={contract.sell_price || getIndicativePrice(contract)}
+                                amount={contract.sell_price || ContractUtils.getIndicativePrice(contract)}
                                 currency={contract.currency}
                             />
                             <div className='db-contract-card__indicative-movement'>

@@ -2,21 +2,16 @@ import {
     action,
     extendObservable,
     observable,
-    toJS,
-} from 'mobx';
+    toJS }                    from 'mobx';
+import ContractUtils          from 'deriv-shared/utils/contract';
+import DigitUtils             from 'deriv-shared/utils/digits';
 import { createChartMarkers } from './Helpers/chart-markers';
+import { getChartConfig }     from './Helpers/logic';
+import { ChartBarrierStore }  from '../SmartChart/chart-barrier-store';
 import {
-    getDigitInfo,
-    isDigitContract }         from './Helpers/digits';
-import {
-    getChartConfig,
-    getDisplayStatus,
-    getEndTime,
-    isEnded }                 from './Helpers/logic';
-
-import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
+    BARRIER_COLORS,
+    BARRIER_LINE_STYLES }     from '../SmartChart/Constants/barriers';
 import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
-import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 
 export default class ContractStore {
 
@@ -54,7 +49,7 @@ export default class ContractStore {
     populateConfig(contract_info) {
         const prev_contract_info = this.contract_info;
         this.contract_info = contract_info;
-        this.end_time = getEndTime(this.contract_info);
+        this.end_time = ContractUtils.getEndTime(this.contract_info);
 
         // TODO: don't update the barriers & markers if they are not changed
         this.updateBarriersArray(
@@ -65,9 +60,9 @@ export default class ContractStore {
         this.marker = calculate_marker(this.contract_info);
 
         this.contract_config = getChartConfig(this.contract_info);
-        this.display_status = getDisplayStatus(this.contract_info);
-        this.is_ended = isEnded(this.contract_info);
-        this.is_digit_contract = isDigitContract(this.contract_info.contract_type);
+        this.display_status = ContractUtils.getDisplayStatus(this.contract_info);
+        this.is_ended = ContractUtils.isEnded(this.contract_info);
+        this.is_digit_contract = DigitUtils.isDigitContract(this.contract_info.contract_type);
         // API doesn't return barrier for digit contracts (sometimes), remove this check once resolved
         if (!this.contract_info.barrier && prev_contract_info.barrier && this.is_digit_contract) {
             this.contract_info.barrier = prev_contract_info.barrier;
@@ -76,7 +71,7 @@ export default class ContractStore {
         if (this.is_digit_contract) {
             extendObservable(
                 this.digits_info,
-                getDigitInfo(this.digits_info, this.contract_info)
+                DigitUtils.getDigitInfo(this.digits_info, this.contract_info)
             );
         }
     }
@@ -146,7 +141,7 @@ function calculate_marker(contract_info) {
         low_barrier,
     } = contract_info;
     const ticks_epoch_array = tick_stream ? tick_stream.map(t => t.epoch) : [];
-    const is_digit_contract = isDigitContract(contract_type);
+    const is_digit_contract = DigitUtils.isDigitContract(contract_type);
 
     // window.ci = toJS(contract_info);
 
@@ -176,7 +171,7 @@ function calculate_marker(contract_info) {
     }
 
     if (tick_count >= 1) {
-        if (!isDigitContract(contract_type)) {
+        if (!DigitUtils.isDigitContract(contract_type)) {
             // TickContract
             return {
                 contract_info: toJS(contract_info),
@@ -198,7 +193,7 @@ function calculate_marker(contract_info) {
     // NonTickContract
     if (!tick_count) {
         // getEndTime returns undefined when contract is running.
-        const end_time = getEndTime(contract_info) || date_expiry;
+        const end_time = ContractUtils.getEndTime(contract_info) || date_expiry;
         // the order of items in epoch_array matches the NonTickContract params.
         const epoch_array = [date_start, end_time];
         if (entry_tick_time) { epoch_array.push(entry_tick_time); }

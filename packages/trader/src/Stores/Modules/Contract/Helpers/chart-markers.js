@@ -1,4 +1,5 @@
 import ObjectUtils             from 'deriv-shared/utils/object';
+import ContractUtils           from 'deriv-shared/utils/contract';
 import {
     createMarkerEndTime,
     createMarkerPurchaseTime,
@@ -7,16 +8,14 @@ import {
     createMarkerStartTime,
     createMarkerSpotMiddle,
     getSpotCount }             from './chart-marker-helpers';
-import {
-    getChartType,
-    getEndTime }               from './logic';
+import { getChartType }        from './logic';
 import { MARKER_TYPES_CONFIG } from '../../SmartChart/Constants/markers';
 
 export const createChartMarkers = (contract_info) => {
     let markers = [];
     if (contract_info) {
 
-        const end_time = getEndTime(contract_info);
+        const end_time = ContractUtils.getEndTime(contract_info);
         const chart_type = getChartType(contract_info.date_start, end_time);
 
         if (contract_info.tick_count) {

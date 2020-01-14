@@ -115,27 +115,39 @@
             font-weight: bold;
         }
     }
-    // TODO: For Popover--once <Icon> component is shared--mirror <ContractAudit>
     &__popover {
-        // &-content {
-        //     border-radius: $BORDER_RADIUS;
-        //     background-color: var(--general-main-1);
-        // }
+        &-content {
+            border-radius: $BORDER_RADIUS;
+            background-color: var(--general-main-1);
+        }
         &-title {
             @include typeface(--xsmall-left-normal-black, none);
         }
         &-item {
+            display: flex;
+            flex-wrap: nowrap;
             @include typeface(--small-left-bold-black, none);
-            // padding: 8px;
-            // margin: 0 4px;
+            padding: 8px;
+            margin: 0 4px;
 
             &:not(:last-of-type) {
-                // border-bottom: 1px solid var(--general-section-2);
-                margin-bottom: 8px;
+                border-bottom: 1px solid var(--general-section-2);
             }
-            // &:last-of-type {
-            //     padding: 0 inherit;
-            // }
+            &:last-of-type {
+                padding: 0 inherit;
+            }
         }
+        &-icon {
+            margin-right: 10px;
+        }
+    }
+}
+
+.contract-audit {
+    &__wrapper {
+        font-size: 10px;
+        height: 320px !important;
+        margin-top: 0 !important;
+        width: 220px !important;
     }
 }

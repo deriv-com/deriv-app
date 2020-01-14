@@ -222,7 +222,7 @@ export default class PortfolioStore extends BaseStore {
         this.remove_position_after_sell = remove_position_after_sell;
         this.positions[i].is_sell_requested = true;
         if (contract_id) {
-            WS.cancel(contract_id).then(response => {
+            WS.cancelContract(contract_id).then(response => {
                 if (response.error) {
                     this.root_store.common.setServicesError({
                         type: response.msg_type,

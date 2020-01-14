@@ -256,7 +256,7 @@ const BinarySocketBase = (() => {
         ...req,
     });
 
-    const cancel = (contract_id) => deriv_api.send({
+    const cancelContract = (contract_id) => deriv_api.send({
         cancel: contract_id,
     });
 
@@ -287,7 +287,7 @@ const BinarySocketBase = (() => {
         buyAndSubscribe,
         sell,
         cashier,
-        cancel,
+        cancelContract,
         contractUpdate,
         mt5NewAccount,
         mt5PasswordChange,

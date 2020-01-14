@@ -24,7 +24,9 @@ export default class UIStore extends BaseStore {
     @observable is_positions_drawer_on      = false;
     @observable is_reports_visible          = false;
     @observable is_cashier_visible          = false;
-    @observable should_show_stop_loss_warning = true;
+
+    // Stop loss & Deal cancellation checkbox
+    @observable should_show_stop_loss_warning         = true;
     @observable should_show_deal_cancellation_warning = true;
 
     // Extensions

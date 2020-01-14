@@ -161,7 +161,7 @@ export default class ContractReplayStore extends BaseStore {
     onClickCancel(contract_id, remove_position_after_sell = false) {
         this.root_store.modules.portfolio.remove_position_after_sell = remove_position_after_sell;
         if (contract_id) {
-            WS.cancel(contract_id).then(response => {
+            WS.cancelContract(contract_id).then(response => {
                 if (response.error) {
                     this.root_store.common.setServicesError({
                         type: response.msg_type,

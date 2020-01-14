@@ -59,14 +59,14 @@ const OrderDetails = ({
                         <OrderInfoBlock label={ localize('Advertiser notes') } value={ advertiser_notes } />
                         <div className='order-details__info-columns'>
                             <div className='order-details__info--left'>
-                                {is_agent && <OrderInfoBlock label={ is_buyer ? localize('Receive') : localize('Send') } value={ `${transaction_currency} ${display_transaction_amount}` } />}
-                                {!is_agent && <OrderInfoBlock label={ is_buyer ? localize('Send') : localize('Receive') } value={ `${transaction_currency} ${display_transaction_amount}` } />}
-                                <OrderInfoBlock label={ localize('Price') } value={ `${transaction_currency} ${display_price_rate}` } />
+                                {is_agent && <OrderInfoBlock label={ is_buyer ? localize('Receive') : localize('Send') } value={ `${display_transaction_amount} ${transaction_currency}` } />}
+                                {!is_agent && <OrderInfoBlock label={ is_buyer ? localize('Send') : localize('Receive') } value={ `${display_transaction_amount} ${transaction_currency}` } />}
+                                <OrderInfoBlock label={ localize('Price') } value={ `${display_price_rate} ${transaction_currency}` } />
                                 <OrderInfoBlock label={ localize('Order ID') } value={ order_id } />
                             </div>
                             <div className='order-details__info--right'>
-                                {is_agent && <OrderInfoBlock label={ is_buyer ? localize('Send') : localize('Receive') } value={ `${offer_currency} ${display_offer_amount}` } />}
-                                {!is_agent && <OrderInfoBlock label={ is_buyer ? localize('Receive') : localize('Send') } value={ `${offer_currency} ${display_offer_amount}` } />}
+                                {is_agent && <OrderInfoBlock label={ is_buyer ? localize('Send') : localize('Receive') } value={ `${display_offer_amount} ${offer_currency}` } />}
+                                {!is_agent && <OrderInfoBlock label={ is_buyer ? localize('Receive') : localize('Send') } value={ `${display_offer_amount} ${offer_currency}` } />}
                                 {is_agent && !is_buyer && <OrderInfoBlock label={localize('Seller')} value={ advertiser_name } />}
                                 {!is_agent && is_buyer && <OrderInfoBlock label={localize('Seller')} value={ advertiser_name } />}
                                 <OrderInfoBlock label={ localize('Time') } value={ order_purchase_datetime } />

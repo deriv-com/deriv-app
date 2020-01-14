@@ -10,7 +10,7 @@ import Item              from './mobile-drawer-item.jsx';
 import SubMenu           from './mobile-drawer-submenu.jsx';
 import Icon              from '../icon';
 
-class DrawerElement extends React.PureComponent {
+class MobileDrawerElement extends React.PureComponent {
     constructor(props) {
         super(props);
         this.el    = document.createElement('div');
@@ -22,6 +22,7 @@ class DrawerElement extends React.PureComponent {
     componentDidMount = () => {
         document.addEventListener('mousedown', this.handleClickOutside);
         this.el.classList.add('dc-mobile-drawer');
+        if (this.props.alignment === 'right') this.el.classList.add('dc-mobile-drawer--right');
         this.state.modal_root.appendChild(this.el);
     };
 
@@ -38,7 +39,15 @@ class DrawerElement extends React.PureComponent {
     };
 
     render() {
-        const { id, title, className, children, height, toggle, width } = this.props;
+        const {
+            alignment,
+            id,
+            title,
+            className,
+            children,
+            height,
+            toggle,
+            width } = this.props;
 
         return ReactDOM.createPortal(
             <div
@@ -55,7 +64,8 @@ class DrawerElement extends React.PureComponent {
                 }}
             >
                 <div className={classNames('dc-mobile-drawer__header', {
-                    [`dc-mobile-drawer-header--${className}`]: className,
+                    'dc-mobile-drawer__header--right'         : alignment === 'right',
+                    [`dc-mobile-drawer__header--${className}`]: className,
                 }
                 )}
                 >
@@ -86,7 +96,8 @@ class DrawerElement extends React.PureComponent {
     };
 }
 
-DrawerElement.propTypes = {
+MobileDrawerElement.propTypes = {
+    alignment: PropTypes.oneOf(['left', 'right']),
     children : PropTypes.node,
     className: PropTypes.string,
     id       : PropTypes.string,
@@ -99,6 +110,7 @@ DrawerElement.propTypes = {
 };
 
 const MobileDrawer = ({
+    alignment,
     children,
     className,
     id,
@@ -109,18 +121,21 @@ const MobileDrawer = ({
     width,
 }) => (
     <CSSTransition
-        appear
         in={is_open}
         timeout={250}
         classNames={{
-            appear   : 'dc-mobile-drawer__container--enter',
-            enter    : 'dc-mobile-drawer__container--enter',
+            enter: alignment === 'left' ?
+                'dc-mobile-drawer__container--enter'
+                : 'dc-mobile-drawer__container--enter-right',
             enterDone: 'dc-mobile-drawer__container--enter-done',
-            exit     : 'dc-mobile-drawer__container--exit',
+            exit     : alignment === 'left' ?
+                'dc-mobile-drawer__container--exit'
+                : 'dc-mobile-drawer__container--exit-right',
         }}
         unmountOnExit
     >
-        <DrawerElement
+        <MobileDrawerElement
+            alignment={alignment}
             className={className}
             id={id}
             is_open={is_open}
@@ -130,9 +145,13 @@ const MobileDrawer = ({
             width={width}
         >
             {children}
-        </DrawerElement>
+        </MobileDrawerElement>
     </CSSTransition>
 );
+
+MobileDrawer.defaultProps = {
+    alignment: 'left',
+};
 
 MobileDrawer.Body      = Body;
 MobileDrawer.Footer    = Footer;
@@ -141,6 +160,7 @@ MobileDrawer.SubHeader = SubHeader;
 MobileDrawer.SubMenu   = SubMenu;
 
 MobileDrawer.propTypes = {
+    alignment: PropTypes.oneOf(['left', 'right']),
     children : PropTypes.node,
     className: PropTypes.string,
     height   : PropTypes.string,

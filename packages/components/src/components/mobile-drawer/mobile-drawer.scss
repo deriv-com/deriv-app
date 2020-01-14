@@ -4,6 +4,10 @@
     top: 0;
     left: 0;
 
+    &--right {
+        left: unset;
+        right: 0;
+    }
     &__container {
         display: flex;
         flex-direction: column;
@@ -17,6 +21,10 @@
             transform: translateX(-100%);
             opacity: 0;
             pointer-events: none;
+
+            &-right {
+                transform: translateX(100%);
+            }
         }
         &--enter-done {
             transform: translateX(0);
@@ -32,6 +40,9 @@
         align-items: center;
         border-bottom: 1px solid var(--general-section-2);
 
+        &--right {
+            flex-direction: row-reverse;
+        }
         &-title {
             @include typeface(--title-left-bold-black);
             color: var(--text-prominent);

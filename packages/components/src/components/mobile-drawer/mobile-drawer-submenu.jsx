@@ -1,4 +1,5 @@
 import classNames        from 'classnames';
+import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
 import Icon              from '../icon';
@@ -56,6 +57,15 @@ class SubMenu extends React.PureComponent {
     }
 }
 
+SubMenu.propTypes = {
+    children            : PropTypes.node,
+    has_subheader       : PropTypes.bool,
+    submenu_icon        : PropTypes.string,
+    submenu_suffix_icon : PropTypes.string,
+    submenu_title       : PropTypes.string,
+    submenu_toggle_class: PropTypes.string,
+};
+
 const SubMenuList = ({ is_expanded, collapse, children, has_subheader, submenu_title }) => (
     <CSSTransition
         in={is_expanded}
@@ -89,5 +99,13 @@ const SubMenuList = ({ is_expanded, collapse, children, has_subheader, submenu_t
         </div>
     </CSSTransition>
 );
+
+SubMenuList.propTypes = {
+    children     : PropTypes.node,
+    collapse     : PropTypes.func,
+    has_subheader: PropTypes.bool,
+    is_expanded  : PropTypes.bool,
+    submenu_title: PropTypes.string,
+};
 
 export default SubMenu;

@@ -25,6 +25,10 @@
     &--is-route-modal {
         background-color: var(--overlay-outside-dialog);
     }
+    &--is-mobile {
+        margin: $MOBILE_HEADER_HEIGHT 0 $FOOTER_HEIGHT;
+        height: calc(100vh - #{$MOBILE_HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
+    }
     @media screen and (max-width: 768px) {
         // no footer:
         margin-bottom: 0;

@@ -303,10 +303,6 @@ export default class PortfolioStore extends BaseStore {
         this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
         this.disposeLogout();
-        // keep data and connections for portfolio drawer on desktop
-        if (this.root_store.ui.is_mobile) {
-            // this.clearTable();
-        }
     }
 
     getPositionIndexById(contract_id) {

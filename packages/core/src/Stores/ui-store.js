@@ -19,7 +19,6 @@ const store_name = 'ui_store';
 
 export default class UIStore extends BaseStore {
     @observable is_account_settings_visible = false;
-    @observable is_main_drawer_on           = false;
     @observable is_notifications_visible    = false;
     @observable is_positions_drawer_on      = false;
     @observable is_reports_visible          = false;
@@ -27,6 +26,7 @@ export default class UIStore extends BaseStore {
 
     // Extensions
     @observable footer_extension         = undefined;
+    @observable header_extension         = undefined;
     @observable settings_extension       = undefined;
     @observable notification_messages_ui = undefined;
 
@@ -155,6 +155,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     populateFooterExtensions(component) {
         this.footer_extension = component;
+    }
+
+    @action.bound
+    populateHeaderExtensions(component) {
+        this.header_extension = component;
     }
 
     @action.bound
@@ -342,16 +347,6 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleServicesErrorModal(is_visible) {
         this.is_services_error_visible = is_visible;
-    }
-
-    @action.bound
-    showMainDrawer() {
-        this.is_main_drawer_on = true;
-    }
-
-    @action.bound
-    hideDrawers() {
-        this.is_main_drawer_on = false;
     }
 
     @action.bound

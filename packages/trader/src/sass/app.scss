@@ -16,12 +16,11 @@
 // Layout
 @import 'app/_common/layout/layouts';
 // @import 'app/_common/layout/header'; Moved to core
-@import 'app/_common/layout/footer';
+// @import 'app/_common/layout/footer'; Moved to core
 @import 'app/_common/layout/multistep';
 @import 'app/_common/layout/send-email-template';
 
-// Drawer
-@import 'app/_common/drawer/drawer';
+// Drawers
 @import 'app/_common/drawer/contract-drawer';
 @import 'app/_common/drawer/positions-drawer';
 @import 'app/_common/drawer/positions-drawer-card';

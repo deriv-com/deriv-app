@@ -1,11 +1,11 @@
-.platform_switcher {
+.platform-switcher {
     display: flex;
     align-items: center;
     padding: 8px;
     transition: background-color 0.3s;
     cursor: pointer;
 
-    &:hover {
+    &:not(&--is-mobile):hover {
         background-color: var(--general-hover);
     }
     & svg:first-child, p, h1 {

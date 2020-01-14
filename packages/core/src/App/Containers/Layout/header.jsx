@@ -7,11 +7,11 @@ import {
     MenuLinks,
     PlatformSwitcher }         from 'App/Components/Layout/Header';
 import platform_config         from 'App/Constants/platform-config';
-import Lazy                    from 'App/Containers/Lazy';
 import RealAccountSignup       from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import { connect }             from 'Stores/connect';
 import { header_links }        from 'App/Constants/header-links';
+import ToggleMenuDrawer        from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader }  from 'App/Components/Layout/Header/Components/Preloader';
 import routes                  from 'Constants/routes';
 
@@ -27,8 +27,10 @@ class Header extends React.Component {
             can_upgrade_to,
             currency,
             enableApp,
+            header_extension,
             is_acc_switcher_on,
             is_app_disabled,
+            is_dark_mode,
             is_logged_in,
             is_logging_in,
             is_mobile,
@@ -37,7 +39,9 @@ class Header extends React.Component {
             is_route_modal_on,
             is_virtual,
             disableApp,
+            logoutClient,
             notifications_count,
+            setDarkMode,
             toggleAccountsDialog,
             toggleNotifications,
             openRealAccountSignup,
@@ -55,18 +59,36 @@ class Header extends React.Component {
 
         return (
             <header className={classNames('header', {
+                'header--is-mobile'  : is_mobile,
                 'header--is-disabled': (is_app_disabled || is_route_modal_on),
             })}
             >
                 <div className='header__menu-items'>
                     <div className='header__menu-left'>
-                        <Lazy
-                            has_progress={false}
-                            ctor={() => import(/* webpackChunkName: "toggle-menu-drawer", webpackPreload: true */'App/Components/Layout/Header/toggle-menu-drawer.jsx')}
-                            should_load={is_mobile}
-                        />
-                        {!this.props.is_mobile &&
+
+                        {!this.props.is_mobile ?
                             <PlatformSwitcher platform_config={filterPlatformsForClients(platform_config)} />
+                            :
+                            <>
+                                <ToggleMenuDrawer
+                                    enableApp={enableApp}
+                                    disableApp={disableApp}
+                                    logoutClient={logoutClient}
+                                    is_dark_mode={is_dark_mode}
+                                    is_logged_in={is_logged_in}
+                                    toggleTheme={setDarkMode}
+                                    platform_switcher={
+                                        <PlatformSwitcher
+                                            is_mobile={is_mobile}
+                                            platform_config={filterPlatformsForClients(platform_config)}
+                                        />}
+                                />
+                                {(header_extension && is_logged_in) &&
+                                    <div className='header__menu-left-extensions'>
+                                        { header_extension }
+                                    </div>
+                                }
+                            </>
                         }
                         <MenuLinks
                             is_logged_in={is_logged_in}
@@ -80,9 +102,14 @@ class Header extends React.Component {
                         {is_logging_in &&
                         <div className={classNames('acc-info__preloader', {
                             'acc-info__preloader--no-currency': !currency,
+                            'acc-info__preloader--is-mobile'  : is_mobile,
                         })}
                         >
-                            <AccountsInfoLoader is_logged_in={is_logged_in} speed={3} />
+                            <AccountsInfoLoader
+                                is_logged_in={is_logged_in}
+                                is_mobile={is_mobile}
+                                speed={3}
+                            />
                         </div>
                         }
                         <div className='acc-info__container'>
@@ -130,7 +157,9 @@ Header.propTypes = {
     is_notifications_visible: PropTypes.bool,
     is_route_modal_on       : PropTypes.bool,
     is_virtual              : PropTypes.bool,
+    logoutClient            : PropTypes.func,
     notifications_count     : PropTypes.any,
+    setDarkMode             : PropTypes.func,
     toggleAccountsDialog    : PropTypes.func,
     toggleNotifications     : PropTypes.func,
 };
@@ -143,8 +172,10 @@ export default connect(
         currency                : client.currency,
         is_logged_in            : client.is_logged_in,
         is_logging_in           : client.is_logging_in,
+        logoutClient            : client.logout,
         is_virtual              : client.is_virtual,
         enableApp               : ui.enableApp,
+        header_extension        : ui.header_extension,
         is_acc_switcher_on      : ui.is_accounts_switcher_on,
         is_dark_mode            : ui.is_dark_mode_on,
         is_app_disabled         : ui.is_app_disabled,
@@ -157,6 +188,7 @@ export default connect(
         openRealAccountSignup   : ui.openRealAccountSignup,
         disableApp              : ui.disableApp,
         toggleAccountsDialog    : ui.toggleAccountsDialog,
+        setDarkMode             : ui.setDarkMode,
         toggleNotifications     : ui.toggleNotificationsModal,
     })
 )(withRouter(Header));

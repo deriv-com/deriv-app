@@ -2,6 +2,7 @@ import PropTypes               from 'prop-types';
 import React                   from 'react';
 import Lazy                    from 'App/Containers/Lazy';
 import Routes                  from 'App/Containers/Routes/routes.jsx';
+import TradeHeaderExtensions   from 'App/Containers/trade-header-extensions.jsx';
 import TradeFooterExtensions   from 'App/Containers/trade-footer-extensions.jsx';
 import TradeSettingsExtensions from 'App/Containers/trade-settings-extensions.jsx';
 import { MobxProvider }        from 'Stores/connect';
@@ -26,6 +27,7 @@ class App extends React.Component {
                         should_load
                         has_progress={ false }
                     />
+                    <TradeHeaderExtensions />
                     <TradeFooterExtensions />
                     <TradeSettingsExtensions />
                 </React.Fragment>

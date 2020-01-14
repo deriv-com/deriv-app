@@ -37,10 +37,10 @@ const ContractDetails = ({
 
     return (
         <ThemedScrollbars
-            style={{ width: '100%', height: '100%'  }}
             autoHide
+            renderView={props => <div {...props} className='contract-audit__tabs-content' />}
         >
-            <div style={{ padding: '0.8rem 1.6rem' }}>
+            <div>
                 <ContractAuditItem
                     id='dt_id_label'
                     icon={<Icon icon='IcContractId' size={24} />}

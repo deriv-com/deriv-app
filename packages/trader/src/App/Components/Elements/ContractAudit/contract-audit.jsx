@@ -55,7 +55,7 @@ class ContractAudit extends React.Component {
                 'contract-audit__wrapper-tabs--expired': contract_info.is_sold,
             })}
             >
-                <Tabs top className='contract-audit__wrapper-tabs' onTabItemClick={this.onTabItemClick}>
+                <Tabs top className='contract-audit__tabs' onTabItemClick={this.onTabItemClick}>
                     <div label={localize('Details')}>
                         <ContractDetails {...this.props} />
                     </div>

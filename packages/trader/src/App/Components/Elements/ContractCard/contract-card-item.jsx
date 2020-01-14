@@ -10,14 +10,14 @@ const ContractCardItem = ({
     is_won,
 }) => {
     return (
-        <div className='contract-card__item'>
-            <div className='contract-card__item__header'>
+        <div className='contract-card-item'>
+            <div className='contract-card-item__header'>
                 { header }
             </div>
-            <div className={classNames('contract-card__item__body', {
-                'contract-card__item__body--crypto': is_crypto,
-                'contract-card__item__body--loss'  : is_loss,
-                'contract-card__item__body--profit': is_won,
+            <div className={classNames('contract-card-item__body', {
+                'contract-card-item__body--crypto': is_crypto,
+                'contract-card-item__body--loss'  : is_loss,
+                'contract-card-item__body--profit': is_won,
             })}
             >
                 { content }

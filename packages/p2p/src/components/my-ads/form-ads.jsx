@@ -276,7 +276,8 @@ class FormAds extends Component {
     }
 
     validateFormAds = (values) => {
-        const available_price = 0; // later get available amount from the api
+        // TODO: uncomment this when we have available_price
+        // const available_price = ;
         const validations = {
             advertiser_notes: [
                 v => !!v,
@@ -297,8 +298,10 @@ class FormAds extends Component {
             ],
             offer_amount: [
                 v => !!v,
-                v => v > available_price,
-                v => countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(values.offer_currency),
+                // TODO: uncomment this when we have available_price
+                // v => v > available_price,
+                // TODO: remove v > 0 check when we have available_price
+                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(values.offer_currency),
             ],
             price_rate: [
                 v => !!v,
@@ -320,7 +323,8 @@ class FormAds extends Component {
 
         const amount_messages  = (field_name) => ([
             localize('{{field_name}} is required', { field_name }),
-            localize('Min is {{value}}', { value: available_price }),
+            // TODO: uncomment this when we have available_price
+            // localize('Min is {{value}}', { value: available_price }),
             localize('Enter a valid amount'),
         ]);
 

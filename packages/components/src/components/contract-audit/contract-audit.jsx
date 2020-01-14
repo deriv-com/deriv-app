@@ -1,8 +1,8 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
-import { localize }      from '@deriv/translations';
 import DateTimeUtils     from '@deriv/shared/utils/date-time';
 import PositionsUtils    from '@deriv/shared/utils/positions';
+import { localize }      from '@deriv/translations';
 import ContractAuditItem from './contract-audit-item.jsx';
 import Icon              from '../icon';
 import ThemedScrollbars  from '../themed-scrollbars';

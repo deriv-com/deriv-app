@@ -43,7 +43,7 @@
     "cross-env": "^5.2.0",
     "css-hot-loader": "^1.4.4",
     "css-loader": "^3.1.0",
-    "deriv-translations": "^1.0.0",
+    "@deriv/translations": "^1.0.0",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^13.2.0",
     "eslint-config-binary": "^1.0.2",

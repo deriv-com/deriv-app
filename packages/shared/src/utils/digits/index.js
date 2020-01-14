@@ -1,9 +1,11 @@
 import {
-    isDigitContract,
+    isDigitTradeType,
+    isDigitContractType,
     getDigitInfo
 } from './digits';
 
 export default {
-    isDigitContract,
+    isDigitTradeType,
+    isDigitContractType,
     getDigitInfo
 };

@@ -6,7 +6,7 @@ import ObjectUtils   from '@deriv/shared/utils/object';
 export const getCurrentTick = (contract_info) => {
     const tick_stream = ObjectUtils.unique(contract_info.tick_stream, 'epoch');
     const current_tick =
-        DigitUtils.isDigitContract(contract_info.contract_type)
+        DigitUtils.isDigitContractType(contract_info.contract_type)
             ? tick_stream.length
             : tick_stream.length - 1;
     return (!current_tick || current_tick < 0) ? 0 : current_tick;

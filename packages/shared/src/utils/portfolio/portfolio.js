@@ -1,4 +1,4 @@
-import { localize }  from 'deriv-translations';
+import { localize }  from '@deriv/translations';
 import DateTimeUtils from '../date-time';
 import DigitUtils    from '../digits';
 import ObjectUtils   from '../object';

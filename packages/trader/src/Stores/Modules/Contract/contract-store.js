@@ -62,7 +62,7 @@ export default class ContractStore {
         this.contract_config = getChartConfig(this.contract_info);
         this.display_status = ContractUtils.getDisplayStatus(this.contract_info);
         this.is_ended = ContractUtils.isEnded(this.contract_info);
-        this.is_digit_contract = DigitUtils.isDigitContract(this.contract_info.contract_type);
+        this.is_digit_contract = DigitUtils.isDigitContractType(this.contract_info.contract_type);
         // API doesn't return barrier for digit contracts (sometimes), remove this check once resolved
         if (!this.contract_info.barrier && prev_contract_info.barrier && this.is_digit_contract) {
             this.contract_info.barrier = prev_contract_info.barrier;
@@ -141,7 +141,7 @@ function calculate_marker(contract_info) {
         low_barrier,
     } = contract_info;
     const ticks_epoch_array = tick_stream ? tick_stream.map(t => t.epoch) : [];
-    const is_digit_contract = DigitUtils.isDigitContract(contract_type);
+    const is_digit_contract = DigitUtils.isDigitContractType(contract_type);
 
     // window.ci = toJS(contract_info);
 
@@ -171,7 +171,7 @@ function calculate_marker(contract_info) {
     }
 
     if (tick_count >= 1) {
-        if (!DigitUtils.isDigitContract(contract_type)) {
+        if (!DigitUtils.isDigitContractType(contract_type)) {
             // TickContract
             return {
                 contract_info: toJS(contract_info),

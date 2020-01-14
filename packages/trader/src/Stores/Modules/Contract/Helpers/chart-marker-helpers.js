@@ -14,7 +14,7 @@ const createMarkerConfig = (marker_type, x, y, content_config) => (
 );
 
 export const getSpotCount = (contract_info, spot_count) =>
-    DigitUtils.isDigitContract(contract_info.contract_type) ? spot_count + 1 : spot_count;
+    DigitUtils.isDigitContractType(contract_info.contract_type) ? spot_count + 1 : spot_count;
 
 // -------------------- Lines --------------------
 export const createMarkerEndTime = (contract_info) => {
@@ -64,7 +64,7 @@ export const createMarkerSpotEntry = (contract_info) => {
 
     const entry_tick = contract_info.entry_tick_display_value;
 
-    const spot_has_label = DigitUtils.isDigitContract(contract_info.contract_type);
+    const spot_has_label = DigitUtils.isDigitContractType(contract_info.contract_type);
     if (spot_has_label) {
         marker_type = MARKER_TYPES_CONFIG.SPOT_MIDDLE.type;
 

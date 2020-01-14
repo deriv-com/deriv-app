@@ -13,7 +13,7 @@
         &-container {
             display: flex;
             width: 41rem;
-            height: 7rem;
+            height: 8rem;
         }
         &-field {
             margin-top: 1rem;
@@ -21,10 +21,10 @@
             margin-left: 0;
 
             &:not(&--single) {
-                margin-bottom: 1.8rem;
+                margin-bottom: 2.8rem;
             }
             &.dc-dropdown-container {
-                margin-bottom: 3.2rem;
+                margin-bottom: 4.2rem;
             }
             & .dc-input__label {
                 top: 1.2rem;

@@ -15,6 +15,7 @@ import Dp2pContext                    from 'Components/context/dp2p-context';
 import FooterActions                  from 'Components/footer-actions/footer-actions.jsx';
 import { localize }                   from 'Components/i18next';
 import PageReturn                     from 'Components/page-return/page-return.jsx';
+import { countDecimalPlaces }         from 'Utils/string';
 import { requestWS }                  from 'Utils/websocket';
 
 class FormAds extends Component {
@@ -104,7 +105,7 @@ class FormAds extends Component {
                                 <Form noValidate>
                                     <ThemedScrollbars
                                         autoHide
-                                        style={{ height: 'calc(520px - 70px)' }} // height of container minus height of modal footer container
+                                        style={{ height: '460px' }}
                                     >
                                         <div className='p2p-my-ads__form-container'>
                                             <Field name='country'>
@@ -206,7 +207,7 @@ class FormAds extends Component {
                                                         data-lpignore='true'
                                                         type='number'
                                                         error={touched.min_transaction && errors.min_transaction}
-                                                        label={localize('Min. limit')}
+                                                        label={localize('Min limit')}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.offer_currency}</span>}
                                                         required
@@ -219,7 +220,7 @@ class FormAds extends Component {
                                                         {...field}
                                                         type='number'
                                                         error={touched.max_transaction && errors.max_transaction}
-                                                        label={localize('Max. limit')}
+                                                        label={localize('Max limit')}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.offer_currency}</span>}
                                                         required
@@ -274,30 +275,40 @@ class FormAds extends Component {
     }
 
     validateFormAds = (values) => {
-        const available_price = 0.8; // later get available amount from the api
+        const available_price = 0; // later get available amount from the api
         const validations = {
             advertiser_notes: [
                 v => !!v,
                 v => v.length < 400,
                 v => /^[\p{L}\p{Nd}\s'.,:;()@#/-]{1,500}$/u.exec(v) !== null,
             ],
+            max_transaction: [
+                v => !!v,
+                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(values.offer_currency),
+                v => v <= values.offer_amount,
+                v => v >= values.min_transaction,
+            ],
             min_transaction: [
                 v => !!v,
+                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(values.offer_currency),
+                v => v <= values.offer_amount,
+                v => v <= values.max_transaction,
             ],
             offer_amount: [
                 v => !!v,
                 v => v > available_price,
-                v => (((v.toString().split('.') || [])[1]) || []).length <= CurrencyUtils.getDecimalPlaces(values.offer_currency),
+                v => countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(values.offer_currency),
             ],
             price_rate: [
                 v => !!v,
-                v => (((v.toString().split('.') || [])[1]) || []).length <= 2, // TODO: [p2p-calculate-decimals] - Dynamically get decimal places for transaction/local currency
+                v => v > 0 && countDecimalPlaces(v) <= 2, // TODO: [p2p-calculate-decimals] - Dynamically get decimal places for transaction/local currency
             ],
         };
 
         const mapped_key = {
             advertiser_notes: localize('Advertiser notes'),
-            min_transaction : localize('Min. limit'),
+            max_transaction : localize('Max limit'),
+            min_transaction : localize('Min limit'),
             offer_amount    : localize('Amount'),
             price_rate      : localize('Fixed price'),
         };
@@ -308,8 +319,22 @@ class FormAds extends Component {
 
         const amount_messages  = (field_name) => ([
             localize('{{field_name}} is required', { field_name }),
-            localize('{{field_name}} is too low', { field_name }),
+            localize('Min is {{value}}', { value: available_price }),
             localize('Enter a valid amount'),
+        ]);
+
+        const max_limit_messages  = (field_name) => ([
+            localize('{{field_name}} is required', { field_name }),
+            localize('Enter a valid amount'),
+            localize('{{field_name}} should not exceed Amount', { field_name }),
+            localize('{{field_name}} should not be below Min limit', { field_name }),
+        ]);
+
+        const min_limit_messages  = (field_name) => ([
+            localize('{{field_name}} is required', { field_name }),
+            localize('Enter a valid amount'),
+            localize('{{field_name}} should not exceed Amount', { field_name }),
+            localize('{{field_name}} should not exceed Max limit', { field_name }),
         ]);
 
         const price_rate_messages  = (field_name) => ([
@@ -319,7 +344,7 @@ class FormAds extends Component {
 
         const note_messages  = (field_name) => ([
             localize('{{field_name}} is required', { field_name }),
-            localize('{{field_name}} has exceed maximum length', { field_name }),
+            localize('{{field_name}} has exceeded maximum length', { field_name }),
             localize('{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -.,\'#@():;', { field_name }),
         ]);
 
@@ -333,6 +358,12 @@ class FormAds extends Component {
                     switch (key) {
                         case 'offer_amount':
                             errors[key] = amount_messages(mapped_key[key])[error_index];
+                            break;
+                        case 'max_transaction':
+                            errors[key] = max_limit_messages(mapped_key[key])[error_index];
+                            break;
+                        case 'min_transaction':
+                            errors[key] = min_limit_messages(mapped_key[key])[error_index];
                             break;
                         case 'price_rate':
                             errors[key] = price_rate_messages(mapped_key[key])[error_index];

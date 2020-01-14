@@ -1,21 +1,22 @@
 import React, {
     Fragment,
-    Component }        from 'react';
-import PropTypes       from 'prop-types';
+    Component }               from 'react';
+import PropTypes              from 'prop-types';
 import {
     Formik,
     Field,
-    Form }             from 'formik';
+    Form }                    from 'formik';
 import {
     Input,
     Button,
-    ThemedScrollbars } from '@deriv/components';
-import CurrencyUtils   from '@deriv/shared/utils/currency';
-import IconBack        from 'Assets/icon-back.jsx';
-import IconClose       from 'Assets/icon-close.jsx';
-import { localize }    from 'Components/i18next';
-import { requestWS }   from 'Utils/websocket';
-import FormError       from '../form/error.jsx';
+    ThemedScrollbars }        from '@deriv/components';
+import CurrencyUtils          from '@deriv/shared/utils/currency';
+import IconBack               from 'Assets/icon-back.jsx';
+import IconClose              from 'Assets/icon-close.jsx';
+import { localize }           from 'Components/i18next';
+import { countDecimalPlaces } from 'Utils/string';
+import { requestWS }          from 'Utils/websocket';
+import FormError              from '../form/error.jsx';
 
 const SendField = ({
     calculateReceiveAmount,
@@ -282,13 +283,13 @@ class Popup extends Component {
                 v => !!v,
                 v => v >= initial_send,
                 v => v <= max_send,
-                v => (((v.toString().split('.') || [])[1]) || []).length <= send_decimals,
+                v => countDecimalPlaces(v) <= send_decimals,
             ],
             receive: [
                 v => !!v,
                 v => v >= initial_receive,
                 v => v <= max_receive,
-                v => (((v.toString().split('.') || [])[1]) || []).length <= receive_decimals,
+                v => countDecimalPlaces(v) <= receive_decimals,
             ],
         };
 

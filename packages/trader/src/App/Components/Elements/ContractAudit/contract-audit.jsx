@@ -28,7 +28,7 @@ class ContractAudit extends React.PureComponent {
 
         // Contract type checks
         const is_digit          = /DIGIT/.test(contract_info.contract_type);
-        const is_reset_call_put = /RESET_(CALL|PUT)/.test(contract_info.contract_type);
+        const is_reset_call_put = /RESET(CALL|PUT)/.test(contract_info.contract_type);
 
         const is_profit = (contract_info.profit >= 0);
 

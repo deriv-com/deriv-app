@@ -156,20 +156,12 @@ export const icons =
     'contract': [
         'IcContractBarrierDotted',
         'IcContractBarrierSolid',
-        'IcContractBarrier',
-        'IcContractBuyPrice',
         'IcContractBuySellTimeCircle',
         'IcContractDurationCircle',
-        'IcContractDuration',
         'IcContractEntrySpotCircle',
         'IcContractExitSpotCircle',
-        'IcContractExitTime',
-        'IcContractFlag',
         'IcContractId',
-        'IcContractResetTimeCircle',
-        'IcContractStartTimeCircle',
-        'IcContractStartTime',
-        'IcContractTarget'
+        'IcContractResetTimeCircle'
     ],
     'currency': [
         'IcCurrencyAud',

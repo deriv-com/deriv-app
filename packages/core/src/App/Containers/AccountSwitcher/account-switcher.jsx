@@ -226,7 +226,7 @@ class AccountSwitcher extends React.Component {
                         <ThemedScrollbars
                             autoHeight
                             autoHide
-                            autoHeightMax={354}
+                            autoHeightMax={this.props.is_mobile ? '100%' : 354}
                             renderTrackHorizontal={props => <div {...props} className='track-horizontal' style={{ display: 'none' }} />}
                             renderThumbHorizontal={props => <div {...props} className='thumb-horizontal' style={{ display: 'none' }} />}
                         >
@@ -336,7 +336,7 @@ class AccountSwitcher extends React.Component {
                         <ThemedScrollbars
                             autoHeight
                             autoHide
-                            autoHeightMax={354}
+                            autoHeightMax={this.props.is_mobile ? '100%' : 354}
                             renderTrackHorizontal={props => <div {...props} className='track-horizontal' style={{ display: 'none' }} />}
                             renderThumbHorizontal={props => <div {...props} className='thumb-horizontal' style={{ display: 'none' }} />}
                         >
@@ -419,7 +419,10 @@ class AccountSwitcher extends React.Component {
                         </ThemedScrollbars>
                     </div>
                 </Tabs>
-                <div className='acc-switcher__separator' />
+                <div className={classNames('acc-switcher__separator', {
+                    'acc-switcher__separator--auto-margin': this.props.is_mobile,
+                })}
+                />
                 <div className='acc-switcher__total'>
                     <span>
                         <Localize i18n_default_text='Total assets' />

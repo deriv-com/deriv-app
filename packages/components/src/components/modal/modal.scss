@@ -28,6 +28,10 @@
             opacity: 1;
             pointer-events: auto;
         }
+        &--is-mobile {
+            min-width: unset;
+            top: -2rem;
+        }
         &--small {
             max-width: 440px;
 

@@ -20,6 +20,7 @@ export class AccountActions extends Component {
             nextProps.can_upgrade_to !== this.props.can_upgrade_to ||
             nextProps.currency !== this.props.currency ||
             nextProps.is_acc_switcher_on !== this.props.is_acc_switcher_on ||
+            nextProps.is_mobile !== this.props.is_mobile ||
             nextProps.is_notifications_visible !== this.props.is_notifications_visible ||
             nextProps.is_logged_in !== this.props.is_logged_in ||
             nextProps.is_virtual !== this.props.is_virtual ||
@@ -33,6 +34,8 @@ export class AccountActions extends Component {
             balance,
             can_upgrade,
             currency,
+            disableApp,
+            enableApp,
             is_acc_switcher_on,
             is_logged_in,
             is_mobile,
@@ -57,6 +60,9 @@ export class AccountActions extends Component {
                             <AccountInfo
                                 balance={typeof balance === 'undefined' ? balance : CurrencyUtils.formatMoney(currency, balance, true)}
                                 is_upgrade_enabled={can_upgrade}
+                                disableApp={disableApp}
+                                enableApp={enableApp}
+                                is_mobile
                                 is_virtual={is_virtual}
                                 currency={currency}
                                 is_dialog_on={is_acc_switcher_on}
@@ -87,7 +93,6 @@ export class AccountActions extends Component {
                         <React.Suspense fallback={<div />}>
                             <AccountInfo
                                 balance={typeof balance === 'undefined' ? balance : CurrencyUtils.formatMoney(currency, balance, true)}
-                                is_mobile={is_mobile}
                                 is_upgrade_enabled={can_upgrade}
                                 is_virtual={is_virtual}
                                 currency={currency}
@@ -132,6 +137,8 @@ AccountActions.propTypes = {
     can_upgrade             : PropTypes.any,
     can_upgrade_to          : PropTypes.any,
     currency                : PropTypes.any,
+    disableApp              : PropTypes.any,
+    enableApp               : PropTypes.any,
     is_acc_switcher_on      : PropTypes.any,
     is_logged_in            : PropTypes.any,
     is_mobile               : PropTypes.any,

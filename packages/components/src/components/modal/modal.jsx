@@ -49,6 +49,7 @@ class ModalElement extends React.PureComponent {
                     'dc-modal__container', {
                         [`dc-modal__container_${className}`]: className,
                         'dc-modal__container--small'        : this.props.small,
+                        'dc-modal__container--is-mobile'    : this.props.mobile,
                     }
                 )}
                 style={{
@@ -109,6 +110,7 @@ ModalElement.propTypes = {
     header        : PropTypes.node,
     id            : PropTypes.string,
     is_open       : PropTypes.bool,
+    mobile        : PropTypes.bool,
     small         : PropTypes.bool,
     title         : PropTypes.oneOfType([
         PropTypes.string,
@@ -125,6 +127,7 @@ const Modal = ({
     is_open,
     has_close_icon,
     height,
+    mobile,
     small,
     title,
     toggleModal,
@@ -151,6 +154,7 @@ const Modal = ({
             toggleModal={toggleModal}
             has_close_icon={has_close_icon}
             height={height}
+            mobile={mobile}
             small={small}
             width={width}
         >
@@ -174,6 +178,7 @@ Modal.propTypes = {
     height        : PropTypes.string,
     id            : PropTypes.string,
     is_open       : PropTypes.bool,
+    mobile        : PropTypes.bool,
     small         : PropTypes.bool,
     title         : PropTypes.oneOfType([
         PropTypes.string,

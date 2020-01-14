@@ -28,7 +28,7 @@ class App extends Component {
         super(props);
 
         setLanguage(this.props.lang);
-        init(this.props.websocket_api);
+        init(this.props.websocket_api, this.props.client.local_currency_config.decimal_places);
         ServerTime.init(this.props.server_time);
 
         this.state = {
@@ -61,7 +61,7 @@ class App extends Component {
 
     render() {
         const { active_index, parameters } = this.state;
-        const { className, client: { currency, is_virtual, residence } } = this.props;
+        const { className, client: { currency, local_currency_config, is_virtual, residence } } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
         if (is_virtual || currency !== allowed_currency) {
@@ -72,6 +72,7 @@ class App extends Component {
             <Dp2pProvider
                 value={{
                     currency,
+                    local_currency_config,
                     residence,
                     agent_id: this.state.agent_id,
                     is_agent: this.state.is_agent,
@@ -118,9 +119,13 @@ class App extends Component {
 
 App.propTypes = {
     client: PropTypes.shape({
-        currency  : PropTypes.string.isRequired,
-        is_virtual: PropTypes.bool.isRequired,
-        residence : PropTypes.string.isRequired,
+        currency             : PropTypes.string.isRequired,
+        is_virtual           : PropTypes.bool.isRequired,
+        local_currency_config: PropTypes.shape({
+            currency      : PropTypes.string.isRequired,
+            decimal_places: PropTypes.number.isRequired,
+        }).isRequired,
+        residence: PropTypes.string.isRequired,
     }),
     lang         : PropTypes.string,
     websocket_api: PropTypes.object.isRequired,

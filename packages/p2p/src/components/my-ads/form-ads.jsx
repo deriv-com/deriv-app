@@ -81,7 +81,7 @@ class FormAds extends Component {
                         initialValues={{
                             advertiser_notes: '',
                             country         : this.state.country,
-                            currency        : 'IDR', // TODO: [p2p-replace-with-api] get this local_currency from API once provided
+                            currency        : this.context.local_currency_config.currency,
                             max_transaction : '',
                             min_transaction : '',
                             offer_amount    : '',
@@ -104,8 +104,9 @@ class FormAds extends Component {
                             <div className='p2p-my-ads__form'>
                                 <Form noValidate>
                                     <ThemedScrollbars
+                                        style={{ position: 'absolute', height: 'calc(100% - 2.4rem - 72px - 92px)', width: 'calc(100% - 4.8rem)' }}
                                         autoHide
-                                        style={{ height: '440px' }}
+                                        autoHeightMax={440}
                                     >
                                         <div className='p2p-my-ads__form-container'>
                                             <Field name='country'>
@@ -301,7 +302,7 @@ class FormAds extends Component {
             ],
             price_rate: [
                 v => !!v,
-                v => v > 0 && countDecimalPlaces(v) <= 2, // TODO: [p2p-calculate-decimals] - Dynamically get decimal places for transaction/local currency
+                v => v > 0 && countDecimalPlaces(v) <= this.context.local_currency_config.decimal_places,
             ],
         };
 

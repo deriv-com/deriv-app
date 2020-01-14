@@ -5,12 +5,14 @@ import {
     convertToMillis,
     getFormattedDateString } from 'Utils/date-time';
 
-let ws;
+let ws,
+    transaction_currency_decimals;
 
 const initial_responses = {};
 
-export const init = (websocket) => {
+export const init = (websocket, local_currency_decimal_places) => {
     ws = websocket;
+    transaction_currency_decimals = local_currency_decimal_places;
 };
 
 const setCurrenciesConfig = (website_status_response) => {
@@ -51,27 +53,22 @@ const getModifiedP2POfferList = (response) => {
         modified_response[i].offer_currency          = offer_currency;
         modified_response[i].advertiser_id           = filtered_list[i].agent_id;
         modified_response[i].offer_amount            = +filtered_list[i].amount;
-        // TODO: [p2p-replace-with-api] use display value from API when formatting works
         modified_response[i].display_offer_amount    = formatMoney(offer_currency, filtered_list[i].amount);
         modified_response[i].advertiser_note         = filtered_list[i].offer_description;
         modified_response[i].offer_id                = filtered_list[i].offer_id;
         modified_response[i].transaction_currency    = transaction_currency;
         modified_response[i].min_transaction         = +filtered_list[i].min_amount;
-        // TODO: [p2p-replace-with-api] use display value from API when formatting works
         modified_response[i].display_min_transaction = formatMoney(offer_currency, filtered_list[i].min_amount);
         modified_response[i].max_transaction         = filtered_list[i].max_amount;
         modified_response[i].display_max_transaction = formatMoney(offer_currency, filtered_list[i].max_amount);
         modified_response[i].price_rate              = +filtered_list[i].rate;
-        // TODO: [p2p-replace-with-api] use display value from API when formatting works
         modified_response[i].display_price_rate      = formatMoney(transaction_currency, filtered_list[i].rate);
         modified_response[i].type                    = filtered_list[i].type;
         modified_response[i].advertiser              = filtered_list[i].agent_name;
 
         modified_response[i].payment_method = map_payment_method[filtered_list[i].method] || filtered_list[i].method;
 
-        // TOOD: [p2p-api-request] API should give us the allowed decimal places of local currency
-        modified_response[i].transaction_currency_decimals = 2;
-        // (((filtered_list[i].rate_display.toString().split('.') || [])[1]) || []).length;
+        modified_response[i].transaction_currency_decimals = transaction_currency_decimals;
 
         modified_response[i].offer_currency_decimals =
             ObjectUtils.getPropertyValue(initial_responses, [
@@ -90,7 +87,6 @@ const getModifiedP2POrder = (response) => {
 
     modified_response.type                       = response.type;
     modified_response.offer_amount               = +response.amount;
-    // TODO: [p2p-replace-with-api] use display value from API when formatting works
     modified_response.display_offer_amount       = formatMoney(response.local_currency, response.amount);
     modified_response.order_purchase_datetime    = getFormattedDateString(
         new Date(convertToMillis(response.created_time))
@@ -101,11 +97,9 @@ const getModifiedP2POrder = (response) => {
     modified_response.status                     = response.status;
     modified_response.advertiser_name            = response.agent_name;
     modified_response.price_rate                 = +response.rate;
-    // TODO: [p2p-replace-with-api] use display value from API when formatting works
     modified_response.display_price_rate         = formatMoney(response.local_currency, response.rate);
     modified_response.transaction_currency       = response.local_currency;
     modified_response.transaction_amount         = +response.price;
-    // TODO: [p2p-replace-with-api] use display value from API when formatting works
     modified_response.display_transaction_amount = formatMoney(response.local_currency, response.price);
     modified_response.order_expiry_millis         = convertToMillis(response.expiry_time);
 

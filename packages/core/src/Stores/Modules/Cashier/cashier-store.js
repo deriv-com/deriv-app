@@ -176,7 +176,8 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async checkHasDp2pOffer (offer_type) {
         this.p2p_offer_list[offer_type] = await WS.p2pOfferList(offer_type);
-        if (ObjectUtils.getPropertyValue(this.p2p_offer_list[offer_type], ['p2p_offer_list', 'list']).length) {
+        const list = ObjectUtils.getPropertyValue(this.p2p_offer_list[offer_type], ['p2p_offer_list', 'list']);
+        if (list && list.length) {
             this.setIsDp2pVisible(true);
         }
     }

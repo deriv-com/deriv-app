@@ -1,4 +1,4 @@
-/** @define contract-type-widget; */
+/** @define contract-type-widget; weak */
 .contract-type-widget {
     position: relative;
     z-index: 2;
@@ -15,6 +15,10 @@
     &--mobile {
         border: 1px solid var(--border-normal);
         margin-bottom: 8px;
+
+        .contract-type-widget__display {
+            padding: 0.8rem;
+        }
     }
     &__display {
         cursor: pointer;

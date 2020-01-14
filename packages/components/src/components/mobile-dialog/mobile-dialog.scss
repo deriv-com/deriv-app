@@ -36,6 +36,7 @@
         }
     }
     &__content {
+        margin-top: 0.4rem;
         box-sizing: border-box;
         position: relative;
         padding-top: 3.6rem;
@@ -64,7 +65,7 @@
     &__title {
         padding: 1.2rem 1.2rem 1.2rem 0.4rem;
         font-size: 1.4rem;
-        font-weight: 600;
+        font-weight: bold;
         color: var(--text-prominent);
         margin: 0;
     }
@@ -72,11 +73,5 @@
         margin: 1.2rem 0.4rem;
         width: 1.6rem;
         height: 1.6rem;
-    }
-    /* define contract-type-item; weak */
-    .contract-type-item {
-        &__icon-wrapper > .category-wrapper {
-            background-color: var(--general-section-2);
-        }
     }
 }

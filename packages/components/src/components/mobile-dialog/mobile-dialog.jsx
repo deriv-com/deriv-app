@@ -1,20 +1,20 @@
-// import classNames from 'classnames';
+import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import ReactDOM          from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import { Icon }          from '@deriv/components';
+import Icon              from '../icon';
 
 const MobileDialog = (props) => {
-    const { title, visible, children, wrapperClassName } = props;
+    const { title, visible, children, container_el, wrapper_classname } = props;
 
     const checkVisibility = () => {
         if (props.visible) {
-            document.body.classList.add('no-scroll');
-            document.getElementById('deriv_app').classList.add('no-scroll');
+            document.body.style.overflow = 'hidden';
+            document.getElementById(container_el).style.overflow = 'hidden';
         } else {
-            document.body.classList.remove('no-scroll');
-            document.getElementById('deriv_app').classList.remove('no-scroll');
+            document.body.style.overflow = null;
+            document.getElementById(container_el).style.overflow = null;
         }
     };
 
@@ -41,7 +41,7 @@ const MobileDialog = (props) => {
     };
 
     checkVisibility();
-    if (!document.getElementById('deriv_app')) return null;
+    if (!document.getElementById(container_el)) return null;
     return ReactDOM.createPortal(
         <CSSTransition
             in={visible}
@@ -69,22 +69,26 @@ const MobileDialog = (props) => {
                     </div>
                 </div>
                 <div className='mobile-dialog__content'>
-                    <div className={`mobile-dialog__${wrapperClassName || 'contracts-modal-list'}`}>
+                    <div className={classNames({
+                        [`mobile-dialog__${wrapper_classname}`]: wrapper_classname },
+                    )}
+                    >
                         {children}
                     </div>
                 </div>
             </div>
         </CSSTransition>,
-        document.getElementById('deriv_app')
+        document.getElementById(container_el)
     );
 };
 
 MobileDialog.propTypes = {
-    children        : PropTypes.any,
-    onClose         : PropTypes.func,
-    title           : PropTypes.string,
-    visible         : PropTypes.bool,
-    wrapperClassName: PropTypes.string,
+    children         : PropTypes.any,
+    container_el     : PropTypes.string.isRequired,
+    onClose          : PropTypes.func,
+    title            : PropTypes.string,
+    visible          : PropTypes.bool,
+    wrapper_classname: PropTypes.string,
 };
 
 export default MobileDialog;

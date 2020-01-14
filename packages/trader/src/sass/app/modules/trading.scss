@@ -41,6 +41,15 @@
     }
 }
 
+/** @define modal-dialog; weak */
+.mobile-dialog {
+    &__contracts-modal-list {
+        .category-wrapper {
+            background-color: var(--general-main-1) !important;
+        }
+    }
+}
+
 /** @define trade-container */
 .trade-container {
     background: var(--general-main-1);

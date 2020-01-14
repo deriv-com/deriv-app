@@ -1,10 +1,9 @@
-import React                 from 'react';
-import { Money }             from '@deriv/components';
-import { Localize }          from '@deriv/translations';
-import { connect }           from 'Stores/connect';
-import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
-import MobileDialog          from './mobile-dialog.jsx';
-import TradeParams           from '../../Containers/trade-params.jsx';
+import React                   from 'react';
+import { Money, MobileDialog } from '@deriv/components';
+import { Localize }            from '@deriv/translations';
+import { connect }             from 'Stores/connect';
+import { getLocalizedBasis }   from 'Stores/Modules/Trading/Constants/contract';
+import TradeParams             from '../../Containers/trade-params.jsx';
 
 class MobileWidget extends React.Component {
     constructor(props) {
@@ -87,6 +86,7 @@ class MobileWidget extends React.Component {
                 </div>
 
                 <MobileDialog
+                    container_el='deriv_app'
                     title='Set parameters'
                     visible={this.state.open}
                     onClose={this.handleDialogClose}

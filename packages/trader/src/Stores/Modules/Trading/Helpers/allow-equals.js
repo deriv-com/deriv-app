@@ -4,7 +4,7 @@ import ContractType from './contract-type';
 export const hasCallPutEqual = (contract_type_list) => {
     if (!contract_type_list) return false;
 
-    return ObjectUtils.getPropertyValue(contract_type_list, 'Up/Down')
+    return ObjectUtils.getPropertyValue(contract_type_list, 'Ups & Downs')
         .some(contract => contract.value === 'rise_fall_equal');
 };
 

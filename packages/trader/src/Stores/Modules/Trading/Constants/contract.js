@@ -16,25 +16,31 @@ export const getContractTypesConfig = () => (
         rise_fall_equal: { title: localize('Rise/Fall'),                  trade_types: ['CALLE', 'PUTE'],             basis: ['stake', 'payout'], components: ['start_date'], barrier_count: 0 },
         high_low       : { title: localize('Higher/Lower'),               trade_types: ['CALL', 'PUT'],               basis: ['stake', 'payout'], components: ['barrier'],    barrier_count: 1 },
         touch          : { title: localize('Touch/No Touch'),             trade_types: ['ONETOUCH', 'NOTOUCH'],       basis: ['stake', 'payout'], components: ['barrier'] },
-        end            : { title: localize('Ends Between/Ends Outside'),  trade_types: ['EXPIRYMISS', 'EXPIRYRANGE'], basis: ['stake', 'payout'], components: ['barrier'] },
-        stay           : { title: localize('Stays Between/Goes Outside'), trade_types: ['RANGE', 'UPORDOWN'],         basis: ['stake', 'payout'], components: ['barrier'] },
-        asian          : { title: localize('Asians'),                     trade_types: ['ASIANU', 'ASIAND'],          basis: ['stake', 'payout'], components: [] },
+        end            : { title: localize('Ends In/Ends Out'),           trade_types: ['EXPIRYMISS', 'EXPIRYRANGE'], basis: ['stake', 'payout'], components: ['barrier'] },
+        stay           : { title: localize('Stays In/Goes Out'),          trade_types: ['RANGE', 'UPORDOWN'],         basis: ['stake', 'payout'], components: ['barrier'] },
+        asian          : { title: localize('Asian Up/Asian Down'),        trade_types: ['ASIANU', 'ASIAND'],          basis: ['stake', 'payout'], components: [] },
         match_diff     : { title: localize('Matches/Differs'),            trade_types: ['DIGITMATCH', 'DIGITDIFF'],   basis: ['stake', 'payout'], components: ['last_digit'] },
         even_odd       : { title: localize('Even/Odd'),                   trade_types: ['DIGITODD', 'DIGITEVEN'],     basis: ['stake', 'payout'], components: [] },
         over_under     : { title: localize('Over/Under'),                 trade_types: ['DIGITOVER', 'DIGITUNDER'],   basis: ['stake', 'payout'], components: ['last_digit'] },
-        lb_call        : { title: localize('Close-Low'),                  trade_types: ['LBFLOATCALL'],               basis: ['multiplier'],      components: [] },
-        lb_put         : { title: localize('High-Close'),                 trade_types: ['LBFLOATPUT'],                basis: ['multiplier'],      components: [] },
-        lb_high_low    : { title: localize('High-Low'),                   trade_types: ['LBHIGHLOW'],                 basis: ['multiplier'],      components: [] },
+        // TODO: update the rest of these contracts config
+        lb_call        : { title: localize('Close-to-Low'),               trade_types: ['LBFLOATCALL'],               basis: ['multiplier'], components: [] },
+        lb_put         : { title: localize('High-to-Close'),              trade_types: ['LBFLOATPUT'],                basis: ['multiplier'], components: [] },
+        lb_high_low    : { title: localize('High-to-Low'),                trade_types: ['LBHIGHLOW'],                 basis: ['multiplier'], components: [] },
+        tick_high_low  : { title: localize('High Tick/Low Tick'),         trade_types: ['TICKHIGH', 'TICKLOW'],       basis: [],      components: [] },
+        run_high_low   : { title: localize('Only Ups/Only Downs'),        trade_types: ['RUNHIGH', 'RUNLOW'],         basis: [],      components: [] },
+        reset          : { title: localize('Reset Up/Reset Down'),        trade_types: ['RESETCALL', 'RESETPUT'],     basis: [],      components: [] },
+        multiplier     : { title: localize('Multiplier'),                 trade_types: ['MULTUP', 'MULTDOWN'],        basis: [],      components: [], config: { hide_duration: true } }, // hide Duration for Multiplier contracts for now
+        
     }
 );
 
 export const getContractCategoriesConfig = () => (
     {
-        [localize('Up/Down')]       : ['rise_fall', 'rise_fall_equal', 'high_low'],
-        [localize('Touch/No Touch')]: ['touch'],
-        [localize('In/Out')]        : ['end', 'stay'],
-        [localize('Asians')]        : ['asian'],
-        [localize('Digits')]        : ['match_diff', 'even_odd', 'over_under'],
-        // [localize('Lookback')]      : ['lb_call', 'lb_put', 'lb_high_low'],
+        [localize('Ups & Downs')]      : ['rise_fall', 'rise_fall_equal', 'run_high_low', 'reset', 'asian'],
+        [localize('Highs & Lows')]     : ['high_low', 'touch', 'tick_high_low'],
+        [localize('Ins & Outs')]       : ['end', 'stay'],
+        [localize('Look Backs')]       : ['lb_high_low', 'lb_put', 'lb_call'],
+        [localize('Digits')]           : ['match_diff', 'even_odd', 'over_under'],
+        [localize('Multiplier option')]: ['multiplier'],
     }
 );

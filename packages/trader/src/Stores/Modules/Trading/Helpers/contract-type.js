@@ -106,7 +106,7 @@ const ContractType = (() => {
 
             // set config values
             config.has_spot               = config.has_spot || contract.start_type === 'spot';
-            config.durations              = buildDurationConfig(contract, config.durations);
+            config.durations              = !config.hide_duration && buildDurationConfig(contract, config.durations);
             config.trade_types            = buildTradeTypesConfig(contract, config.trade_types);
             config.barriers               = buildBarriersConfig(contract, config.barriers);
             config.forward_starting_dates = buildForwardStartingConfig(contract, config.forward_starting_dates);
@@ -168,7 +168,13 @@ const ContractType = (() => {
         };
     };
 
-    const getComponents = (c_type) => ({ form_components: ['duration', 'amount', ...contract_types[c_type].components] });
+    const getComponents = (c_type) => ({
+        form_components: [
+            'duration',
+            'amount',
+            ...contract_types[c_type].components,
+        ].filter((component) => !(component === 'duration' && contract_types[c_type].config && contract_types[c_type].config.hide_duration)),
+    });
 
     const getDurationUnitsList = (contract_type, contract_start_type) => ({
         duration_units_list: ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'config', 'durations', 'units_display', contract_start_type]) || [],

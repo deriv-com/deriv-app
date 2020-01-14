@@ -60,6 +60,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         flex-direction: column;
         border-radius: $BORDER_RADIUS 0 0 $BORDER_RADIUS;
         background-color: var(--general-section-1);
+        position: relative;
     }
     &__header-title {
         @include typeface(--title-center-bold-black, none);
@@ -80,6 +81,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         align-items: center;
         transition: background-color 0.1s ease-in;
         text-decoration: none;
+        z-index: 1;
 
         &:hover:not(.vertical-tab__header--active) {
             background-color: var(--state-hover);
@@ -87,14 +89,14 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         &--active {
             @include typeface(--paragraph-left-bold-active, none);
             color: var(--text-prominent);
-            background-color: var(--state-normal);
-            border-left: 4px solid var(--brand-red-coral);
+            margin-left: 4px;
         }
         &__link {
             font-weight: normal;
         }
         &--active &__link {
             font-weight: bold;
+            margin-left: 4px !important;
         }
         &__icon {
             margin-right: 16px;
@@ -107,6 +109,28 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         }
         &__counter {
             margin-left: 1rem;
+        }
+        &--highlight {
+            position: absolute;
+            display: block;
+            content: '';
+            color: var(--text-prominent);
+            background-color: var(--state-normal);
+            border-left: 4px solid var(--brand-red-coral);
+            width: 100%;
+            height: 41px;
+            transform: translate3d(0, 0, 0);
+            z-index: 0;
+            transition: transform 0.25s ease;
+        }
+        &--new {
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 0 0.4rem;
+            margin: 0 0.4rem;
+            background-color: var(--text-loss-danger);
+            color: var(--general-main-1);
+            border-radius: 0.8rem;
         }
     }
     &__content {

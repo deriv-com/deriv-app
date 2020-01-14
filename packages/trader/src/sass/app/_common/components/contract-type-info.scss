@@ -1,43 +1,18 @@
-/** @define trade-type-info-dialog; */
-.trade-type-info-dialog {
-    right: 0.4em;
-    width: 100%;
-    pointer-events: none;
-    position: absolute;
-    transition: transform 0.25s ease, opacity 0.25s;
-    transform: translateX(50%);
-    user-select: none;
-    opacity: 0;
-    height: 0;
-    z-index: 999;
+/** @define contract-type-info; */
+.contract-type-info {
+    overflow: hidden;
 
-    &__body {
-        overflow: hidden;
-    }
     &__card {
-        width: 258px;
-        flex: none;
-        margin: 0 16px 0 0;
+        width: 272px;
+        margin-right: 24px;
 
         &-wrapper {
             display: flex;
             flex-direction: row;
             transition: transform 0.3s linear;
+            padding: 24px;
+            width: 100%;
         }
-    }
-    &__info-wrapper {
-        position: absolute;
-        width: 290px;
-        height: 544px;
-        right: calc(100% + 10px);
-        top: -66px;
-        z-index: 2;
-        border-radius: 4px;
-        padding: 1.6em 1.6em 1em;
-        box-shadow: 0 2px 8px 0 var(--shadow-menu);
-        display: flex;
-        flex-direction: column;
-        background: var(--general-main-2);
     }
     &__choose-button {
         margin: 1.6rem 0 1rem;
@@ -81,12 +56,12 @@
     &__header {
         display: flex;
         align-items: center;
-        margin-bottom: 0.8em;
+        justify-content: center;
 
         /* postcss-bem-linter: ignore */
         .title {
             @include typeface(--paragraph-left-bold-black);
-            @include toEm(margin-left, 8px, 1.4em);
+            margin-left: 0.8rem;
             color: var(--text-prominent);
             cursor: default;
         }
@@ -95,30 +70,16 @@
         span {
             cursor: pointer;
         }
-        /* postcss-bem-linter: ignore */
-        svg {
-            @extend %inline-icon;
-        }
-    }
-    &--enter, &--exit {
-        transform: translateX(50%);
-        pointer-events: none;
-        opacity: 0;
-        height: 0;
-    }
-    &--enterDone {
-        transform: translateX(0);
-        max-height: 100%;
-        opacity: 1;
-        pointer-events: auto;
     }
 }
 
-/** @define trade-type-info-navigation; */
-.trade-type-info-navigation {
+/** @define contract-type-info-navigation; */
+.contract-type-info-navigation {
     display: flex;
     align-items: center;
-    width: 100%;
+    width: 320px;
+    padding: 0 2.4rem;
+    overflow: hidden;
 
     &__list {
         display: inline-block;

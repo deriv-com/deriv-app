@@ -25,7 +25,7 @@ const Purchase = ({
     trade_types,
     validation_errors,
 }) => {
-    const is_high_low = /high_low/.test(contract_type.toLowerCase());
+    const is_high_low = /^high_low$/.test(contract_type.toLowerCase());
     const isLoading = info => {
         const has_validation_error = Object.values(validation_errors).some(e => e.length);
         return !has_validation_error && !info.has_error && !info.id;

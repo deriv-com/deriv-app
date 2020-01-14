@@ -21,6 +21,39 @@
         border-radius: 4px;
         background: var(--general-main-2);
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
+        min-width: 560px;
+        min-height: 680px;
+        overflow: hidden;
+
+        /* postcss-bem-linter: ignore */
+        .vertical-tab__action-bar {
+            flex-flow: row;
+            border-bottom: 2px solid var(--general-section-2);
+            height: 56px;
+
+            /* postcss-bem-linter: ignore */
+            .dc-input {
+                margin-bottom: 0;
+
+                /* postcss-bem-linter: ignore */
+                &__field {
+                    padding-left: 36px;
+                }
+            }
+        }
+        /* postcss-bem-linter: ignore */
+        .vertical-tab__content {
+            padding: 0 !important;
+        }
+        /* postcss-bem-linter: ignore */
+        .vertical-tab__tab {
+            min-width: 240px;
+
+            /* postcss-bem-linter: ignore */
+            .vertical-tab__header-title {
+                height: 56px;
+            }
+        }
     }
     &--enter, &--exit {
         transform: translate3d(20%, 0, 0);

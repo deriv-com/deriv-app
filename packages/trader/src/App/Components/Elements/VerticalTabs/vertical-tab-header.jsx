@@ -1,7 +1,8 @@
-import classNames  from 'classnames';
-import React       from 'react';
-import { NavLink } from 'react-router-dom';
-import { Icon }    from '@deriv/components';
+import classNames   from 'classnames';
+import React        from 'react';
+import { NavLink }  from 'react-router-dom';
+import { Icon }     from '@deriv/components';
+import { localize } from '@deriv/translations';
 
 const HeaderIcon = ({ icon, is_active }) => (
     <Icon
@@ -54,6 +55,9 @@ const VerticalTabHeader = ({ children, className, is_routed, item, onChange, sel
                 <HeaderIcon icon={item.icon} is_active={is_active} />
                 <Header text={label} />
                 {children}
+                {item.is_new &&
+                    <span className='vertical-tab__header--new'>{localize('NEW!')}</span>
+                }
             </div>
     );
 };

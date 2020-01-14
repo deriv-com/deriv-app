@@ -28,22 +28,18 @@ export const getTimePercentage = (server_time, start_time, expiry_time) => {
 };
 
 export const getBarrierLabel = (contract_info) => {
-    if (isDigitType(contract_info.contract_type)) {
+    if (/DIGIT/.test(contract_info.contract_type)) {
         return localize('Target');
     }
     return localize('Barrier');
 };
 
 export const getBarrierValue = (contract_info) => {
-    if (isDigitType(contract_info.contract_type)) {
+    if (/DIGIT/.test(contract_info.contract_type)) {
         return digitTypeMap(contract_info)[contract_info.contract_type];
     }
     return addCommaToNumber(contract_info.barrier);
 };
-
-export const isDigitType = (contract_type) => (/digit/.test(contract_type.toLowerCase()));
-
-export const isResetCallPutType = (contract_type) => (/reset(call|put)/.test(contract_type.toLowerCase()));
 
 const digitTypeMap = (contract_info) => ({
     DIGITDIFF : localize('Not {{barrier}}', { barrier: contract_info.barrier }),

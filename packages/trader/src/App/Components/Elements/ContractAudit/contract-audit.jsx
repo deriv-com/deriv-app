@@ -10,9 +10,7 @@ import {
 import {
     addCommaToNumber,
     getBarrierLabel,
-    getBarrierValue,
-    isDigitType,
-    isResetCallPutType }    from 'App/Components/Elements/PositionsDrawer/helpers';
+    getBarrierValue }       from 'App/Components/Elements/PositionsDrawer/helpers';
 import ContractAuditItem    from './contract-audit-item.jsx';
 
 class ContractAudit extends React.PureComponent {
@@ -29,8 +27,8 @@ class ContractAudit extends React.PureComponent {
         if (!has_result) return null;
 
         // Contract type checks
-        const is_digit          = isDigitType(contract_info.contract_type);
-        const is_reset_call_put = isResetCallPutType(contract_info.contract_type);
+        const is_digit          = /DIGIT/.test(contract_info.contract_type);
+        const is_reset_call_put = /RESET_(CALL|PUT)/.test(contract_info.contract_type);
 
         const is_profit = (contract_info.profit >= 0);
 

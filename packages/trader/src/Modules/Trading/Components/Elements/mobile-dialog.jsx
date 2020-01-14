@@ -1,7 +1,9 @@
-import classNames from 'classnames';
-import PropTypes  from 'prop-types';
-import React      from 'react';
-import { Icon }   from '@deriv/components';
+// import classNames from 'classnames';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import ReactDOM          from 'react-dom';
+import { CSSTransition } from 'react-transition-group';
+import { Icon }          from '@deriv/components';
 
 const MobileDialog = (props) => {
     const { title, visible, children, wrapperClassName } = props;
@@ -39,33 +41,41 @@ const MobileDialog = (props) => {
     };
 
     checkVisibility();
-
-    return (
-        <div
-            className={classNames('mobile-dialog', {
-                'mobile-dialog--open': visible,
-            })}
-            onClick={handleClick}
+    if (!document.getElementById('deriv_app')) return null;
+    return ReactDOM.createPortal(
+        <CSSTransition
+            in={visible}
+            timeout={250}
+            classNames={{
+                enter    : 'mobile-dialog--enter',
+                enterDone: 'mobile-dialog--enter-done',
+                exit     : 'mobile-dialog--exit',
+            }}
+            unmountOnExit
         >
-            <div className='mobile-dialog__header'>
-                <h2 className='mobile-dialog__title'>
-                    {title}
-                </h2>
-                <div
-                    className='icons btn-close mobile-dialog__close-btn'
-                    onClick={props.onClose}
-                >
-                    <Icon icon='IcCross' className='mobile-dialog__close-btn-icon' />
+            <div
+                className='mobile-dialog'
+                onClick={handleClick}
+            >
+                <div className='mobile-dialog__header'>
+                    <h2 className='mobile-dialog__title'>
+                        {title}
+                    </h2>
+                    <div
+                        className='icons btn-close mobile-dialog__close-btn'
+                        onClick={props.onClose}
+                    >
+                        <Icon icon='IcCross' className='mobile-dialog__close-btn-icon' />
+                    </div>
+                </div>
+                <div className='mobile-dialog__content'>
+                    <div className={`mobile-dialog__${wrapperClassName || 'contracts-modal-list'}`}>
+                        {children}
+                    </div>
                 </div>
             </div>
-            <div className='mobile-dialog__header-shadow-cover' />
-            <div className='mobile-dialog__header-shadow' />
-            <div className='mobile-dialog__content'>
-                <div className={`mobile-dialog__${wrapperClassName || 'contracts-modal-list'}`}>
-                    {children}
-                </div>
-            </div>
-        </div>
+        </CSSTransition>,
+        document.getElementById('deriv_app')
     );
 };
 

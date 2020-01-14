@@ -1,6 +1,7 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
+import { localize }      from '@deriv/translations';
 import MobileDialog      from '../../Elements/mobile-dialog.jsx';
 
 const ContractTypeDialog = ({
@@ -13,7 +14,7 @@ const ContractTypeDialog = ({
         <React.Fragment>
             <span className='contract-type-widget__select-arrow' />
             <MobileDialog
-                title='Select Trading Type'
+                title={localize('Trade type')}
                 visible={open}
                 onClose={onClose}
             >

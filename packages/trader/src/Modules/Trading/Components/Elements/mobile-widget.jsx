@@ -9,7 +9,7 @@ import TradeParams           from '../../Containers/trade-params.jsx';
 class MobileWidget extends React.Component {
     constructor(props) {
         super(props);
-        this.state             = {
+        this.state = {
             open: false,
         };
         this.handleDialogClose = this.handleDialogClose.bind(this);

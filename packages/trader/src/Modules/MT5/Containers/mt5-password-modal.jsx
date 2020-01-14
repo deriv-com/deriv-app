@@ -2,12 +2,12 @@ import {
     Icon,
     PasswordInput,
     Modal,
-    PasswordMeter }           from 'deriv-components';
+    PasswordMeter }           from '@deriv/components';
 import { Formik }             from 'formik';
 import PropTypes              from 'prop-types';
 import React                  from 'react';
 import { withRouter }         from 'react-router';
-import { localize, Localize } from 'deriv-translations';
+import { localize, Localize } from '@deriv/translations';
 import SuccessDialog          from 'App/Containers/Modals/success-dialog.jsx';
 
 import routes                 from 'Constants/routes';
@@ -166,6 +166,9 @@ const MT5PasswordModal = ({
                                     !values.password ||
                                     Object.keys(errors).length > 0
                                 }
+                                has_cancel
+                                cancel_label={localize('Cancel')}
+                                onCancel={closeModal}
                                 is_loading={ isSubmitting }
                                 label={ localize('Add account') }
                                 form_error={form_error}

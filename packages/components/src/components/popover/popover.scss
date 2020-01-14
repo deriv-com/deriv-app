@@ -37,7 +37,7 @@
         flex-direction: row;
         background: var(--general-active);
         color: var(--text-prominent);
-        z-index: 999;
+        z-index: 1;
 
         &__icon {
             flex-grow: 1;
@@ -47,6 +47,10 @@
         &__text {
             flex-grow: 2;
             text-align: left;
+
+            &--error {
+                color: var(--text-colored-background);
+            }
         }
         &--error {
             background-color: var(--status-danger);

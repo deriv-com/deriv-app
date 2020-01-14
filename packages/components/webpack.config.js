@@ -2,7 +2,7 @@ const StyleLintPlugin      = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin   = require('svg-sprite-loader/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path                 = require('path');
-const shared_utils         = require('deriv-shared/utils/index.js');
+const shared_utils         = require('@deriv/shared/utils/index.js');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const is_serve   = process.env.BUILD_MODE === 'serve';
@@ -17,6 +17,8 @@ module.exports = {
         'button-toggle'    : path.resolve(__dirname, 'src', 'components/button-toggle/index.js'),
         checkbox           : path.resolve(__dirname, 'src', 'components/checkbox/index.js'),
         counter            : path.resolve(__dirname, 'src', 'components/counter/index.js'),
+        'desktop-wrapper'  : path.resolve(__dirname, 'src', 'components/desktop-wrapper/index.js'),
+        collapsible        : path.resolve(__dirname, 'src', 'components/collapsible/index.js'),
         dialog             : path.resolve(__dirname, 'src', 'components/dialog/index.js'),
         drawer             : path.resolve(__dirname, 'src', 'components/drawer/index.js'),
         dropdown           : path.resolve(__dirname, 'src', 'components/dropdown/index.js'),
@@ -27,6 +29,8 @@ module.exports = {
         input              : path.resolve(__dirname, 'src', 'components/input/index.js'),
         label              : path.resolve(__dirname, 'src', 'components/label/index.js'),
         loading            : path.resolve(__dirname, 'src', 'components/loading/index.js'),
+        'mobile-drawer'    : path.resolve(__dirname, 'src', 'components/mobile-drawer/index.js'),
+        'mobile-wrapper'   : path.resolve(__dirname, 'src', 'components/mobile-wrapper/index.js'),
         modal              : path.resolve(__dirname, 'src', 'components/modal/index.js'),
         money              : path.resolve(__dirname, 'src', 'components/money/index.js'),
         numpad             : path.resolve(__dirname, 'src', 'components/numpad/index.js'),
@@ -43,7 +47,7 @@ module.exports = {
         path         : path.resolve(__dirname, 'lib'),
         filename     : '[name].js',
         libraryExport: 'default',
-        library      : ['deriv-component', '[name]'],
+        library      : '@deriv/component',
         libraryTarget: 'umd',
     },
     resolve: {
@@ -162,9 +166,9 @@ module.exports = {
             'tt-react-custom-scrollbars': 'tt-react-custom-scrollbars',
             'react'                     : 'react',
             'react-dom'                 : 'react-dom',
-            'deriv-shared'              : 'deriv-shared',
+            '@deriv/shared'              : '@deriv/shared',
             'react-tiny-popover'        : 'react-tiny-popover',
         },
-        /^deriv-shared\/.+$/,
+        /^@deriv\/shared\/.+$/,
     ],
 };

@@ -1,7 +1,9 @@
 import classNames          from 'classnames';
 import PropTypes           from 'prop-types';
 import React               from 'react';
-import { Icon }            from 'deriv-components';
+import {
+    Icon,
+    DesktopWrapper }       from '@deriv/components';
 import IconTradeCategory   from 'Assets/Trading/Categories/icon-trade-categories.jsx';
 import ContractTypeDialog  from './contract-type-dialog.jsx';
 import ContractTypeList    from './contract-type-list.jsx';
@@ -141,7 +143,9 @@ class ContractTypeWidget extends React.PureComponent {
         return (
             <div
                 id='dt_contract_dropdown'
-                className='contract-type-widget dropdown--left'
+                className={classNames('contract-type-widget', 'dropdown--left', {
+                    'contract-type-widget--mobile': is_mobile,
+                })}
                 ref={this.setWrapperRef}
                 tabIndex='0'
             >
@@ -158,12 +162,14 @@ class ContractTypeWidget extends React.PureComponent {
                     <span name={name} value={value}>
                         {this.getDisplayText()}
                     </span>
-                    <Icon
-                        icon='IcChevronDown'
-                        className={classNames(
-                          'contract-type-widget__select-arrow',
-                          'contract-type-widget__select-arrow--left')}
-                    />
+                    <DesktopWrapper>
+                        <Icon
+                            icon='IcChevronDown'
+                            className={classNames(
+                              'contract-type-widget__select-arrow',
+                              'contract-type-widget__select-arrow--left')}
+                        />
+                    </DesktopWrapper>
                 </div>
 
                 <ContractTypeDialog

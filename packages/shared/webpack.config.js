@@ -10,12 +10,13 @@ module.exports = {
         date    : path.resolve(__dirname, 'src', 'utils/date/index.js'),
         currency: path.resolve(__dirname, 'src', 'utils/currency/index.js'),
         object  : path.resolve(__dirname, 'src', 'utils/object/index.js'),
+        screen  : path.resolve(__dirname, 'src', 'utils/screen/index.js'),
     },
     output: {
         path         : path.resolve(__dirname, 'utils'),
         filename     : '[name].js',
         libraryExport: 'default',
-        library      : ['deriv-shared', '[name]'],
+        library      : '@deriv/shared',
         libraryTarget: 'umd',
     },
     optimization: {
@@ -51,8 +52,8 @@ module.exports = {
         {
             'babel-polyfill'  : 'babel-polyfill',
             'moment'          : 'moment',
-            'deriv-components': 'deriv-components',
+            '@deriv/components': '@deriv/components',
         },
-        /^deriv-components\/.+$/,
+        /^@deriv\/components\/.+$/,
     ],
 };

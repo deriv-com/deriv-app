@@ -1,4 +1,4 @@
-import { localize }          from 'deriv-translations';
+import { localize }          from '@deriv/translations';
 import { finishSign }        from '../../images';
 import { setBlockTextColor } from '../../../utils';
 
@@ -51,7 +51,7 @@ Blockly.Blocks.after_purchase = {
         // if (!ScratchStore.instance.root_store.core.ui.is_dark_mode_on) {
         setBlockTextColor(this);
         // }
-        
+
         if (!this.workspace || this.isInFlyout) {
             return;
         }

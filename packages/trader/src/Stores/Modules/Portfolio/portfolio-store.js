@@ -5,7 +5,7 @@ import {
     reaction }                     from 'mobx';
 import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services/ws-methods';
-import ObjectUtils                 from 'deriv-shared/utils/object';
+import ObjectUtils                 from '@deriv/shared/utils/object';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractSold }            from './Helpers/portfolio-notifications';
 import {
@@ -303,10 +303,6 @@ export default class PortfolioStore extends BaseStore {
         this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
         this.disposeLogout();
-        // keep data and connections for portfolio drawer on desktop
-        if (this.root_store.ui.is_mobile) {
-            // this.clearTable();
-        }
     }
 
     getPositionIndexById(contract_id) {

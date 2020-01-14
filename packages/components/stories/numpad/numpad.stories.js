@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react';
 import Numpad        from 'Components/numpad';
 import {
     boolean,
+    text,
     number,
     withKnobs }      from '@storybook/addon-knobs';
 import Theme         from '../shared/theme';
@@ -26,6 +27,7 @@ storiesOf('Numpad', module)
                             onSubmit={setValue}
                             min={number('min', 100)}
                             max={number('max', 124)}
+                            submit_label={text('Submit Label', 'OK!')}
                             render={({ value: v, className }) => {
                                 return (
                                     <div className={className}>{v}</div>
@@ -61,6 +63,7 @@ storiesOf('Numpad', module)
                             }}
                             pip_size={number('pip_size', 2)}
                             currency='USD'
+                            submit_label={text('Submit Label', 'OK!')}
                             min={number('min', 100)}
                             max={number('max', 124)}
                         />

@@ -7,9 +7,9 @@ import {
     runInAction,
     toJS,
 }                                     from 'mobx';
-import CurrencyUtils                  from 'deriv-shared/utils/currency';
-import ObjectUtils                    from 'deriv-shared/utils/object';
-import { localize }                   from 'deriv-translations';
+import CurrencyUtils                  from '@deriv/shared/utils/currency';
+import ObjectUtils                    from '@deriv/shared/utils/object';
+import { localize }                   from '@deriv/translations';
 import { WS }                         from 'Services/ws-methods';
 import {
     isDigitContractType,
@@ -326,6 +326,11 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    setAllowEqual (is_equal) {
+        this.is_equal = is_equal;
+    }
+
+    @action.bound
     async resetPreviousSymbol() {
         this.setMarketStatus(isMarketClosed(this.active_symbols, this.previous_symbol));
         await Symbol.onChangeSymbolAsync(this.previous_symbol);
@@ -376,6 +381,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     onPurchase(proposal_id, price, type) {
         if (!this.is_purchase_enabled) return;
+        performance.mark('purchase-started');
         if (proposal_id) {
             this.is_purchase_enabled = false;
             const is_tick_contract = this.duration_unit === 't';
@@ -428,6 +434,7 @@ export default class TradeStore extends BaseStore {
                         this.proposal_requests = {};
                         this.debouncedProposal();
                         this.pushPurchaseDataToGtm(contract_data);
+                        performance.mark('purchase-ended');
                         return;
                     }
                 } else if (response.error) {
@@ -684,6 +691,7 @@ export default class TradeStore extends BaseStore {
         }
 
         this.is_purchase_enabled = true;
+        performance.mark('purchase-enabled');
     }
 
     @action.bound
@@ -786,6 +794,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     onMount() {
+        performance.mark('trade-engine-started');
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onLogout(this.logoutListener);
@@ -796,6 +805,7 @@ export default class TradeStore extends BaseStore {
         runInAction(async() => {
             this.is_trade_component_mounted = true;
             this.prepareTradeStore();
+            performance.mark('trade-engine-enabled');
         });
     }
 

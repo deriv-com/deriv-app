@@ -1,5 +1,5 @@
 import classNames                     from 'classnames';
-import { Dropdown }                   from 'deriv-components';
+import { Dropdown }                   from '@deriv/components';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React, { Fragment }            from 'react';

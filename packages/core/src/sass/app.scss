@@ -2,14 +2,14 @@
 @import 'app/_common/base/index';
 
 // Fonts
-@import 'deriv-shared/src/styles/google-fonts.scss';
+@import '@deriv/shared/src/styles/google-fonts.scss';
 
 // Shared
-@import 'deriv-shared/src/styles/reset.scss';
-@import 'deriv-shared/src/styles/themes.scss';
+@import '@deriv/shared/src/styles/reset.scss';
+@import '@deriv/shared/src/styles/themes.scss';
 
 // General
-@import 'deriv-shared/src/styles/symbols.scss';
+@import '@deriv/shared/src/styles/symbols.scss';
 @import 'app/_common/tooltip';
 @import 'app/_common/loading';
 
@@ -21,8 +21,7 @@
 @import 'app/_common/layout/multistep';
 @import 'app/_common/layout/send-email-template';
 
-// Drawer
-@import 'app/_common/drawer/drawer';
+// Drawers
 @import 'app/_common/drawer/contract-drawer';
 @import 'app/_common/drawer/positions-drawer';
 @import 'app/_common/drawer/positions-drawer-card';

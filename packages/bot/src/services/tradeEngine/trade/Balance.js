@@ -1,4 +1,4 @@
-import { getFormattedText } from 'deriv-shared/utils/currency';
+import { getFormattedText } from '@deriv/shared/utils/currency';
 import { info }            from '../utils/broadcast';
 import ScratchStore        from '../../../stores/scratch-store';
 

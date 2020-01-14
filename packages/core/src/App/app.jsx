@@ -6,7 +6,7 @@ import { BrowserRouter as Router }  from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import { i18n,
-    loadIncontextTranslation }      from 'deriv-translations';
+    loadIncontextTranslation }      from '@deriv/translations';
 import Client                       from '_common/base/client_base';
 import WS                           from 'Services/ws-methods';
 import { MobxProvider }             from 'Stores/connect';
@@ -23,8 +23,6 @@ import { interceptAcrossBot }       from './Constants/routes-config';
 import initStore                   from './app.js';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
-// Check if device is touch capable
-const isTouchDevice = 'ontouchstart' in document.documentElement;
 
 const App = ({ root_store }) => {
     const l = window.location;
@@ -46,31 +44,23 @@ const App = ({ root_store }) => {
     return (
         <Router basename={ has_base ? `/${base}` : null}>
             <MobxProvider store={root_store}>
-                {
-                    root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice) ?
-                        <Lazy
-                            ctor={() => import(/* webpackChunkName: "work-in-progress" */'./Containers/Wip')}
-                            should_load={root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice)}
-                            has_progress={true}
-                        /> :
-                        <React.Fragment>
-                            <Header />
-                            <ErrorBoundary>
-                                <AppContents>
-                                    {/* TODO: [trader-remove-client-base] */}
-                                    <Routes passthrough={ platform_passthrough } />
-                                    <Prompt when={ true } message={ interceptAcrossBot } />
-                                    <Lazy
-                                        ctor={() => import(/* webpackChunkName: "push-notification" */'./Containers/push-notification.jsx')}
-                                        should_load={!root_store.ui.is_loading}
-                                        has_progress={false}
-                                    />
-                                </AppContents>
-                            </ErrorBoundary>
-                            <Footer />
-                            <AppModals url_action_param={ url_params.get('action') } />
-                        </React.Fragment>
-                }
+                <React.Fragment>
+                    <Header />
+                    <ErrorBoundary>
+                        <AppContents>
+                            {/* TODO: [trader-remove-client-base] */}
+                            <Routes passthrough={ platform_passthrough } />
+                            <Prompt when={ true } message={ interceptAcrossBot } />
+                            <Lazy
+                                ctor={() => import(/* webpackChunkName: "push-notification" */'./Containers/push-notification.jsx')}
+                                should_load={!root_store.ui.is_loading}
+                                has_progress={false}
+                            />
+                        </AppContents>
+                    </ErrorBoundary>
+                    {!root_store.ui.is_mobile && <Footer />}
+                    <AppModals url_action_param={ url_params.get('action') } />
+                </React.Fragment>
             </MobxProvider>
         </Router>
     );

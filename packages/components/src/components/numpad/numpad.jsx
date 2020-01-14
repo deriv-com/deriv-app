@@ -1,7 +1,6 @@
 import PropTypes    from 'prop-types';
 import React        from 'react';
 import classNames   from 'classnames';
-import { Localize } from 'deriv-translations';
 import Button       from 'Components/button';
 import NumberGrid   from './number-grid.jsx';
 import StepInput    from './step-input.jsx';
@@ -18,6 +17,7 @@ const Numpad = ({
     pip_size,
     onSubmit,
     render,
+    submit_label = 'OK',
     value,
     format,
 }) => {
@@ -134,9 +134,7 @@ const Numpad = ({
                     }}
                     is_disabled={!default_value.toString().length}
                 >
-                    <Localize
-                        i18n_default_text='OK'
-                    />
+	            {submit_label}
                 </Button>
             </div>
         </div>
@@ -144,16 +142,17 @@ const Numpad = ({
 };
 
 Numpad.propTypes = {
-    currency   : PropTypes.string,
-    format     : PropTypes.func,
-    is_currency: PropTypes.bool,
-    is_regular : PropTypes.bool,
-    max        : PropTypes.number,
-    min        : PropTypes.number,
-    onSubmit   : PropTypes.func,
-    pip_size   : PropTypes.number,
-    render     : PropTypes.func,
-    value      : PropTypes.oneOfType([
+    currency    : PropTypes.string,
+    format      : PropTypes.func,
+    is_currency : PropTypes.bool,
+    is_regular  : PropTypes.bool,
+    max         : PropTypes.number,
+    min         : PropTypes.number,
+    onSubmit    : PropTypes.func,
+    pip_size    : PropTypes.number,
+    render      : PropTypes.func,
+    submit_label: PropTypes.string,
+    value       : PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),

@@ -9,10 +9,13 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
     background-color: var(--general-section-1);
     height: 100%;
 
-    // &:not(.vertical-tab--full-screen) {
-    //     height: 600px;
-    // }
+    &:not(.vertical-tab--full-screen) {
+        // height: 600px;
 
+        .vertical-tab__content {
+            @include toEm(padding, 24px);
+        }
+    }
     &--full-screen {
         min-height: $MIN_HEIGHT;
     }

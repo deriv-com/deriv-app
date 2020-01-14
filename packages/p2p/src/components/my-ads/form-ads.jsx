@@ -105,7 +105,7 @@ class FormAds extends Component {
                                 <Form noValidate>
                                     <ThemedScrollbars
                                         autoHide
-                                        style={{ height: '460px' }}
+                                        style={{ height: '440px' }}
                                     >
                                         <div className='p2p-my-ads__form-container'>
                                             <Field name='country'>

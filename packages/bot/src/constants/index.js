@@ -39,12 +39,11 @@ const config = {
             [localize('Error'), 'error'],
             [localize('Severe error'), 'severe-error'],
         ],
-        CURRENCY: [
-            ['USD', 'USD'],
-            ['EUR', 'EUR'],
-            ['GBP', 'GBP'],
-            ['AUD', 'AUD'],
-            ...CRYPTO_CURRENCIES.map(c => [c, c]),
+        CURRENCY: ['USD',
+            'EUR',
+            'GBP',
+            'AUD',
+            ...CRYPTO_CURRENCIES,
         ],
     },
     opposites: {
@@ -187,6 +186,7 @@ const config = {
     mainBlocks                             : ['trade_definition', 'before_purchase', 'during_purchase', 'after_purchase'],
     mandatoryMainBlocks                    : ['trade_definition', 'before_purchase'],
     procedureDefinitionBlocks              : ['procedures_defnoreturn', 'procedures_defreturn'],
+    single_instance_blocks                 : ['trade_definition', 'before_purchase', 'during_purchase', 'after_purchase'],
     TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING: {
         callput: ['callput', 'higherlower'],
         asian  : ['asians'],

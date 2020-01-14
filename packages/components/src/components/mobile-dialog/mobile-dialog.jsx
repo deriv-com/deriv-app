@@ -47,30 +47,30 @@ const MobileDialog = (props) => {
             in={visible}
             timeout={250}
             classNames={{
-                enter    : 'mobile-dialog--enter',
-                enterDone: 'mobile-dialog--enter-done',
-                exit     : 'mobile-dialog--exit',
+                enter    : 'dc-mobile-dialog--enter',
+                enterDone: 'dc-mobile-dialog--enter-done',
+                exit     : 'dc-mobile-dialog--exit',
             }}
             unmountOnExit
         >
             <div
-                className='mobile-dialog'
+                className='dc-mobile-dialog'
                 onClick={handleClick}
             >
-                <div className='mobile-dialog__header'>
-                    <h2 className='mobile-dialog__title'>
+                <div className='dc-mobile-dialog__header'>
+                    <h2 className='dc-mobile-dialog__title'>
                         {title}
                     </h2>
                     <div
-                        className='icons btn-close mobile-dialog__close-btn'
+                        className='icons btn-close dc-mobile-dialog__close-btn'
                         onClick={props.onClose}
                     >
-                        <Icon icon='IcCross' className='mobile-dialog__close-btn-icon' />
+                        <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
                     </div>
                 </div>
-                <div className='mobile-dialog__content'>
+                <div className='dc-mobile-dialog__content'>
                     <div className={classNames({
-                        [`mobile-dialog__${wrapper_classname}`]: wrapper_classname },
+                        [`dc-mobile-dialog__${wrapper_classname}`]: wrapper_classname },
                     )}
                     >
                         {children}

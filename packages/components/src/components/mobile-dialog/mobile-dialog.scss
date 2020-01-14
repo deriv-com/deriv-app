@@ -1,5 +1,5 @@
-/** @define mobile-dialog; weak */
-.mobile-dialog {
+/** @define dc-mobile-dialog; weak */
+.dc-mobile-dialog {
     box-sizing: border-box;
     position: fixed;
     top: 0;
@@ -16,10 +16,10 @@
         opacity: 0;
         pointer-events: none;
 
-        & .mobile-dialog__content {
+        & .dc-mobile-dialog__content {
             transform: scale(0);
         }
-        & .mobile-dialog__header {
+        & .dc-mobile-dialog__header {
             transform: translateY(-100%);
         }
 
@@ -28,10 +28,10 @@
         opacity: 1;
         pointer-events: auto;
 
-        & .mobile-dialog__content {
+        & .dc-mobile-dialog__content {
             transform: scale(1);
         }
-        & .mobile-dialog__header {
+        & .dc-mobile-dialog__header {
             transform: translateY(0);
         }
     }

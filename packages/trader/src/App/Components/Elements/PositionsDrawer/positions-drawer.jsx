@@ -23,6 +23,11 @@ class PositionsDrawer extends React.Component {
     componentDidMount()    {
         this.props.onMount();
         this.ListScrollbar = this.getListScrollbar();
+
+        // Todo: Handle Resizing
+        this.setState({
+            drawer_height: this.drawer_ref.clientHeight,
+        });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -37,15 +42,6 @@ class PositionsDrawer extends React.Component {
 
     componentWillUnmount() {
         this.props.onUnmount();
-    }
-
-    setBodyRef = (elem) => {
-        if (elem) {
-            // Todo: Handle Resizing
-            this.setState({
-                body_height: elem.clientHeight,
-            });
-        }
     }
 
     itemRender = ({
@@ -71,7 +67,7 @@ class PositionsDrawer extends React.Component {
             >
                 <CSSTransition
                     appear
-                    key={portfolio_position.key}
+                    key={portfolio_position.id}
                     in={true}
                     timeout={isScrolling ? 0 : 150}
                     classNames={isScrolling ? {} : {
@@ -80,6 +76,7 @@ class PositionsDrawer extends React.Component {
                         enterDone: 'positions-drawer-card__wrapper--enter-done',
                         exit     : 'positions-drawer-card__wrapper--exit',
                     }}
+                    unmountOnExit
                 >
                     <PositionsDrawerCard
                         onClickCancel={onClickCancel}
@@ -125,7 +122,7 @@ class PositionsDrawer extends React.Component {
         const newPositionsHeight = this.positions.map((position) => this.getPositionHeight(position));
         if (this.list_ref && this.hasPositionsHeightChanged(newPositionsHeight, this.positionsHeight)) {
             // When there is a change in height of an item, this recalculates scroll height of the list and reapplies styles.
-            this.list_ref.resetAfterIndex(0);
+            setTimeout(() => this.list_ref.resetAfterIndex(0));
         }
 
         this.positionsHeight = newPositionsHeight;
@@ -194,21 +191,20 @@ class PositionsDrawer extends React.Component {
             p.contract_info && symbol === p.contract_info.underlying) &&
             this.filterByContractType(p.contract_info)
         );
-
         this.calculatePositionsHeight();
         
         const body_content = (
             <React.Fragment>
-                <div style={{ 'height': '100%' }} ref={this.setBodyRef}>
-                    {this.state.body_height > 0 &&
+                <div style={{ 'height': '100%' }}>
+                    {this.state.drawer_height > 0 &&
                         <TransitionGroup component='div'>
                             <List
                                 itemCount={this.positions.length}
                                 itemData={this.positions}
                                 itemSize={this.getCachedPositionHeight}
-                                height={this.state.body_height}
+                                height={this.state.drawer_height}
                                 outerElementType={is_empty ? null : this.ListScrollbar}
-                                ref={ref => (this.list_ref = ref)}
+                                ref={el => this.list_ref = el}
                                 useIsScrolling
                             >
                                 {this.itemRender}
@@ -245,7 +241,10 @@ class PositionsDrawer extends React.Component {
                             <Icon icon='IcMinusBold' />
                         </div>
                     </div>
-                    <div className='positions-drawer__body'>
+                    <div
+                        className='positions-drawer__body'
+                        ref={(el) => {this.drawer_ref = el;}}
+                    >
                         {(this.positions.length === 0 || error) ?
                             <EmptyPortfolioMessage error={error} />  : body_content}
                     </div>

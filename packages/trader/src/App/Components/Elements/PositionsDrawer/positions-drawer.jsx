@@ -90,6 +90,7 @@ class PositionsDrawer extends React.Component {
                         }}
                         key={portfolio_position.id}
                         currency={currency}
+                        show_transition={!isScrolling}
                         toggleUnsupportedContractModal={toggleUnsupportedContractModal}
                         {...portfolio_position}
                     />

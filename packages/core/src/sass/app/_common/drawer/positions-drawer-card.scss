@@ -80,11 +80,11 @@
         &:last-child {
             margin-bottom: 10px;
         }
-        &--enter-done {
+        #{&+'--transition'}#{&+'--enter-done'} {
             opacity: 1;
             transform: translateY(0);
         }
-        &--enter, &--exit {
+        #{&+'--transition'}#{&+'--enter'}, #{&+'--transition'}#{&+'--exit'} {
             opacity: 0;
             transform: translateY(-16px);
         }

@@ -20,6 +20,7 @@ const PositionsDrawerCard = ({
     onClickSell,
     onClickRemove,
     result,
+    show_transition,
     status,
     toggleUnsupportedContractModal,
     onMouseEnter,
@@ -48,11 +49,14 @@ const PositionsDrawerCard = ({
             />
         </React.Fragment>
     );
+    // When scrolling fast in react-window, sometimes card is stuck with enter transition class and it is not removed after timeout making the card to be invisible.
+    // So added a class based on isScrolling from react-window to show the transition.
+    const transition_class = show_transition && 'positions-drawer-card__wrapper--transition';
 
     return (
         <div
             id={`dt_drawer_card_${contract_info.contract_id}`}
-            className={classNames('positions-drawer-card__wrapper', className)}
+            className={classNames('positions-drawer-card__wrapper', transition_class, className)}
             onMouseEnter={() => {
                 onMouseEnter(true, contract_info);
             }}

@@ -39,8 +39,10 @@ const NonTickContract = RawMarkerMaker(({
         if (exit) { exit.top = exit_tick_top; }
     }
 
-    const foreground_color = get_color({ is_dark_theme, status: 'fg' });
+    const foreground_color = `${get_color({ is_dark_theme, status: 'fg' })}${is_last_contract ? '' : '66'}`;
     const background_color = get_color({ is_dark_theme, status: 'bg' });
+    const color_based_on_status = `${get_color({ status, is_dark_theme, profit })}${is_last_contract ? '' : '66'}`;
+
     const scale = calc_scale(start.zoom);
     const canvas_height = (ctx.canvas.height / window.devicePixelRatio);
 
@@ -55,59 +57,59 @@ const NonTickContract = RawMarkerMaker(({
         barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
     }
 
-    const draw_start_line = is_last_contract && start.visible && !is_sold;
-    if (draw_start_line) {
-        ctx.fillStyle = foreground_color;
-        draw_vertical_labelled_line({
-            ctx,
-            text    : 'Buy\nTime',
-            position: {
-                zoom: start.zoom,
-                left: start.left,
-                top : canvas_height - 50,
-            },
-            line_style: 'dashed',
-            icon      : ICONS.BUY_SELL.with_color_on_specific_paths({
-                0: { fill: background_color },
-                1: { fill: foreground_color },
-            }),
-        });
-    }
-
     const has_reset_time = reset_time && reset_time.epoch;
-    if (has_reset_time && !is_sold) {
-        ctx.fillStyle = foreground_color;
-        draw_vertical_labelled_line({
-            ctx,
-            text    : 'Reset\nTime',
-            position: {
-                zoom: reset_time.zoom,
-                left: reset_time.left,
-                top : canvas_height - 50,
-            },
-            line_style: 'dashed',
-            icon      : ICONS.RESET.with_color(foreground_color, background_color),
-        });
-    }
+    const should_draw_vertical_line = is_last_contract && !is_sold;
+    if (should_draw_vertical_line) {
+        if (start.visible) {
+            ctx.fillStyle = foreground_color;
+            draw_vertical_labelled_line({
+                ctx,
+                text    : 'Buy\nTime',
+                position: {
+                    zoom: start.zoom,
+                    left: start.left,
+                    top : canvas_height - 50,
+                },
+                line_style: 'dashed',
+                icon      : ICONS.BUY_SELL.with_color_on_specific_paths({
+                    0: { fill: background_color },
+                    1: { fill: foreground_color },
+                }),
+            });
+        }
 
-    const color_based_on_status = get_color({ status, is_dark_theme, profit });
-    if (expiry.visible && !is_sold) {
-        // Draw vertical line for is sold.
-        ctx.strokeStyle = color_based_on_status;
-        draw_vertical_labelled_line({
-            ctx,
-            text    : 'Sell\nTime',
-            position: {
-                zoom: expiry.zoom,
-                left: expiry.left,
-                top : canvas_height - 50,
-            },
-            line_style: 'solid',
-            icon      : ICONS.BUY_SELL.with_color_on_specific_paths({
-                0: { fill: background_color },
-                1: { fill: color_based_on_status },
-            }),
-        });
+        if (has_reset_time) {
+            ctx.fillStyle = foreground_color;
+            draw_vertical_labelled_line({
+                ctx,
+                text    : 'Reset\nTime',
+                position: {
+                    zoom: reset_time.zoom,
+                    left: reset_time.left,
+                    top : canvas_height - 50,
+                },
+                line_style: 'dashed',
+                icon      : ICONS.RESET.with_color(foreground_color, background_color),
+            });
+        }
+
+        if (expiry.visible) {
+            ctx.strokeStyle = color_based_on_status;
+            draw_vertical_labelled_line({
+                ctx,
+                text    : 'Sell\nTime',
+                position: {
+                    zoom: expiry.zoom,
+                    left: expiry.left,
+                    top : canvas_height - 50,
+                },
+                line_style: 'solid',
+                icon      : ICONS.BUY_SELL.with_color_on_specific_paths({
+                    0: { fill: background_color },
+                    1: { fill: color_based_on_status },
+                }),
+            });
+        }
     }
 
     const is_reset_barrier_expired = has_reset_time && entry_tick_top !== barrier;
@@ -119,24 +121,10 @@ const NonTickContract = RawMarkerMaker(({
         || Math.sign(start.left) !== Math.sign(expiry.left)
     )) {
         ctx.fillStyle = background_color;
-        ctx.strokeStyle = is_reset_barrier_expired ? foreground_color : color_based_on_status;
-        
-        draw_barrier_line({
-            ctx,
-            start,
-            exit      : entry,
-            barrier   : is_reset_barrier_expired ? entry_tick_top : barrier,
-            line_style: 'dashed',
-        });
-        draw_barrier_line({
-            ctx,
-            start     : entry,
-            exit      : is_reset_barrier_expired ? reset_time : expiry,
-            barrier   : is_reset_barrier_expired ? entry_tick_top : barrier,
-            line_style: is_reset_barrier_expired ? 'dashed' : 'solid',
-        });
-
         if (is_reset_barrier_expired) {
+            ctx.strokeStyle = foreground_color;
+            draw_barrier_line({ ctx, start, exit: reset_time, barrier: entry_tick_top, line_style: 'dashed' });
+
             draw_line({
                 ctx,
                 start     : { left: reset_time.left, top: entry_tick_top },
@@ -145,12 +133,11 @@ const NonTickContract = RawMarkerMaker(({
             });
 
             ctx.strokeStyle = color_based_on_status;
-            draw_barrier_line({
-                ctx,
-                start: reset_time,
-                exit : expiry,
-                barrier,
-            });
+            draw_barrier_line({ ctx, start: reset_time, exit: expiry, barrier });
+        } else {
+            ctx.strokeStyle = color_based_on_status;
+            draw_barrier_line({ ctx, start, exit: entry, barrier, line_style: 'dashed' });
+            draw_barrier_line({ ctx, start: entry, exit: expiry, barrier, line_style: 'solid' });
         }
     }
 

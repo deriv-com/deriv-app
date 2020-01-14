@@ -2,7 +2,7 @@ import classNames     from 'classnames';
 import PropTypes      from 'prop-types';
 import React          from 'react';
 import ReactDOM       from 'react-dom';
-import { Icon }       from 'deriv-components';
+import { Icon }       from '@deriv/components';
 import { BinaryLink } from 'App/Components/Routes';
 import routes         from 'Constants/routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';

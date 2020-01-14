@@ -1,10 +1,9 @@
 import {
     Icon,
-    Tabs }                       from 'deriv-components';
+    Tabs }                       from '@deriv/components';
 import React                     from 'react';
 import { withRouter }            from 'react-router';
-import { Redirect }              from 'react-router-dom';
-import { localize, Localize }    from 'deriv-translations';
+import { localize, Localize }    from '@deriv/translations';
 import routes                    from 'Constants/routes';
 import MT5PasswordModal          from 'Modules/MT5/Containers/mt5-password-modal.jsx';
 import MT5ServerErrorDialog      from 'Modules/MT5/Containers/mt5-server-error-dialog.jsx';
@@ -14,6 +13,7 @@ import CompareAccountsModal      from './mt5-compare-accounts-modal.jsx';
 import MT5PasswordManagerModal   from './mt5-password-manager-modal.jsx';
 import { MT5DemoAccountDisplay } from '../Components/mt5-demo-account-display.jsx';
 import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
+
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
 class MT5Dashboard extends React.Component {
@@ -35,8 +35,11 @@ class MT5Dashboard extends React.Component {
         this.props.onUnmount();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prev_props) {
         this.updateActiveIndex();
+        if (prev_props.is_mt5_allowed !== this.props.is_mt5_allowed && !this.props.is_mt5_allowed) {
+            this.history.push(routes.trade);
+        }
     }
 
     updateActiveIndex = () => {
@@ -72,16 +75,10 @@ class MT5Dashboard extends React.Component {
             beginRealSignupForMt5,
             createMT5Account,
             is_loading,
-            is_logged_in,
-            is_mt5_allowed,
             has_mt5_account,
             has_real_account,
             NotificationMessages,
         } = this.props;
-
-        if (is_logged_in && !is_mt5_allowed) {
-            return <Redirect to={routes.trade} />;
-        }
 
         return (
             <div className='mt5-dashboard__container'>

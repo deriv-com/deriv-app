@@ -7,10 +7,10 @@ import {
     Button,
     ContractAudit,
     Icon,
-    Money }                    from 'deriv-components';
-import { localize, Localize }  from 'deriv-translations';
-import ContractUtils           from 'deriv-shared/utils/contract';
-import PortfolioUtils          from 'deriv-shared/utils/portfolio';
+    Money }                    from '@deriv/components';
+import { localize, Localize }  from '@deriv/translations';
+import ContractUtils           from '@deriv/shared/utils/contract';
+import PortfolioUtils          from '@deriv/shared/utils/portfolio';
 import routes                  from 'Constants/routes';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';

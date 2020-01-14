@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 
 Blockly.Blocks.fast_ema_period = {
     init() {

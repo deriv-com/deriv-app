@@ -5,9 +5,9 @@ import {
     reaction }                     from 'mobx';
 import { createTransformer }       from 'mobx-utils';
 import { WS }                      from 'Services/ws-methods';
-import ContractUtils               from 'deriv-shared/utils/contract';
-import ObjectUtils                 from 'deriv-shared/utils/object';
-import PortfolioUtils              from 'deriv-shared/utils/portfolio';
+import ContractUtils               from '@deriv/shared/utils/contract';
+import ObjectUtils                 from '@deriv/shared/utils/object';
+import PortfolioUtils              from '@deriv/shared/utils/portfolio';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractSold }            from './Helpers/portfolio-notifications';
 import BaseStore                   from '../../base-store';

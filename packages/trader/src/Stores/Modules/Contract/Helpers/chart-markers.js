@@ -1,5 +1,5 @@
-import ObjectUtils             from 'deriv-shared/utils/object';
-import ContractUtils           from 'deriv-shared/utils/contract';
+import ObjectUtils             from '@deriv/shared/utils/object';
+import ContractUtils           from '@deriv/shared/utils/contract';
 import {
     createMarkerEndTime,
     createMarkerPurchaseTime,

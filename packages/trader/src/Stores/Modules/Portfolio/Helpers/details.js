@@ -1,10 +1,7 @@
-import DigitUtils      from 'deriv-shared/utils/digits';
-import ObjectUtils     from 'deriv-shared/utils/object';
-import { localize }    from 'deriv-translations';
-import {
-    epochToMoment,
-    formatMiliseconds,
-    getDiffDuration }  from 'Utils/Date';
+import { localize }  from '@deriv/translations';
+import DateTimeUtils from '@deriv/shared/utils/date-time';
+import DigitUtils    from '@deriv/shared/utils/digits';
+import ObjectUtils   from '@deriv/shared/utils/object';
 
 export const getCurrentTick = (contract_info) => {
     const tick_stream = ObjectUtils.unique(contract_info.tick_stream, 'epoch');
@@ -31,14 +28,14 @@ export const getDurationUnitValue = (obj_duration) => {
         const string_format = has_seconds ? 'HH[h] mm[m] ss[s]' : 'HH[h] mm[m]';
 
         return is_end_time ?
-            formatMiliseconds(duration_ms, string_format)
+            DateTimeUtils.formatMiliseconds(duration_ms, string_format)
             :
             Math.floor(duration_ms / (1000 * 60 * 60));
     } else if (duration_ms >= 60000 && duration_ms < 3600000) {
         const duration = duration_ms / (1000 * 60);
         const is_end_time = isEndTime(duration);
         return is_end_time ?
-            formatMiliseconds(duration_ms, 'mm[m] ss[s]')
+            DateTimeUtils.formatMiliseconds(duration_ms, 'mm[m] ss[s]')
             :
             Math.floor(duration_ms / (1000 * 60));
     } else if (duration_ms >= 1000 && duration_ms < 60000) {
@@ -77,9 +74,9 @@ export const getDurationUnitText = (obj_duration) => {
 };
 
 export const getDurationPeriod = (contract_info) => (
-    getDiffDuration(
-        epochToMoment(contract_info.purchase_time || contract_info.date_start),
-        epochToMoment(contract_info.date_expiry)
+    DateTimeUtils.getDiffDuration(
+        DateTimeUtils.epochToMoment(contract_info.purchase_time || contract_info.date_start),
+        DateTimeUtils.epochToMoment(contract_info.date_expiry)
     )
 );
 

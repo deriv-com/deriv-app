@@ -17,13 +17,17 @@ class ModalElement extends React.PureComponent {
     }
 
     componentDidMount = () => {
-        document.addEventListener('mousedown', this.handleClickOutside);
+        if (this.props.has_close_icon) {
+            document.addEventListener('mousedown', this.handleClickOutside);
+        }
         this.el.classList.add('dc-modal');
         this.state.modal_root.appendChild(this.el);
     };
 
     componentWillUnmount = () => {
-        document.removeEventListener('mousedown', this.handleClickOutside);
+        if (this.props.has_close_icon) {
+            document.removeEventListener('mousedown', this.handleClickOutside);
+        }
         this.state.modal_root.removeChild(this.el);
     };
 
@@ -36,7 +40,7 @@ class ModalElement extends React.PureComponent {
 
     render() {
         const { id, title, className, header, children, has_close_icon, height, toggleModal, width } = this.props;
-        
+
         return ReactDOM.createPortal(
             <div
                 ref={this.setWrapperRef}

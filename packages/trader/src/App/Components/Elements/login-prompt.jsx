@@ -1,7 +1,7 @@
 import PropTypes    from 'prop-types';
 import React        from 'react';
 import PageError    from 'Modules/PageError';
-import { Localize } from 'deriv-translations';
+import { Localize } from '@deriv/translations';
 
 const LoginPrompt = ({
     onLogin,

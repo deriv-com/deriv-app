@@ -1,11 +1,12 @@
 {
-  "name": "deriv-shared",
+  "name": "@deriv/shared",
   "version": "1.0.0",
   "description": "deriv shared",
   "author": "Deriv",
   "license": "Apache-2.0",
   "homepage": "https://github.com/binary-com/deriv-app#readme",
   "main": "index.js",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/binary-com/deriv-app.git"

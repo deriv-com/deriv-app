@@ -1,9 +1,9 @@
 import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { toJS }                from 'mobx';
-import { Popover }             from 'deriv-components';
-import { localize }            from 'deriv-translations';
-import ContractUtils           from 'deriv-shared/utils/contract';
+import { Popover }             from '@deriv/components';
+import { localize }            from '@deriv/translations';
+import ContractUtils           from '@deriv/shared/utils/contract';
 import { SlideIn }             from 'App/Components/Animations';
 import { getMarketNamesMap }   from 'Constants';
 import { LastDigitPrediction } from '../LastDigitPrediction';

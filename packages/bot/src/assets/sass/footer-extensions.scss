@@ -3,11 +3,13 @@
 
     &__button {
         font-size: 14px;
-        font-weight: 700;
         padding: 8px;
+        cursor: pointer;
 
         &--active {
-            border-top: 2px solid var(--brand-red-coral);
+            border-bottom: 2px solid var(--brand-red-coral);
+            font-weight: 700;
+            padding-bottom: 6px;
         }
     }
 }

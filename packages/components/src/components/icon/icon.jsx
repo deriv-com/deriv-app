@@ -63,7 +63,7 @@ const Icon = ({
                 '--fill-color1': custom_color,
             } : undefined}
         >
-            <use xlinkHref={`${(getUrlBase(`/public/sprite/${filename}.svg`))}#${id}`} />
+            <use xlinkHref={`${(getUrlBase(`/public/images/sprite/${filename}.svg`))}#${id}`} />
         </svg>
     );
 };

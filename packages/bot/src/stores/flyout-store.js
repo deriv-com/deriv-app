@@ -109,12 +109,13 @@ export default class FlyoutStore {
         block.moveBy(1,1);
 
         // Use original Blockly flyout functionality to create block on drag.
-        const blockly_flyout = Blockly.derivWorkspace.toolbox_.flyout_;
+        const blockly_flyout = Blockly.derivWorkspace.getToolbox().flyout_;
+        const block_svg_root = block.getSvgRoot();
 
         this.block_listeners.push(
-            Blockly.bindEventWithChecks_(block.getSvgRoot(), 'mousedown', null, (event) => {
-                blockly_flyout.blockMouseDown_(block)(event);
-            })
+            Blockly.bindEventWithChecks_(block_svg_root, 'mousedown', null, (event) => blockly_flyout.blockMouseDown_(block)(event)),
+            Blockly.bindEvent_(block_svg_root, 'mouseout', block, block.removeSelect),
+            Blockly.bindEvent_(block_svg_root, 'mouseover', block, block.addSelect),
         );
 
         this.block_workspaces.push(workspace);
@@ -159,9 +160,10 @@ export default class FlyoutStore {
 
         const toolbox         = Blockly.derivWorkspace.toolbox_; // eslint-disable-line
         const is_flyout_click = event.path.some(el => el.classList && el.classList.contains('flyout'));
+        const is_search_focus = this.root_store.toolbar.is_search_focus;
         const isToolboxClick  = () => toolbox.HtmlDiv.contains(event.target);
 
-        if (!is_flyout_click && !isToolboxClick()) {
+        if (!is_flyout_click && !isToolboxClick() && !is_search_focus) {
             toolbox.clearSelection();
         }
     }

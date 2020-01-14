@@ -1,15 +1,15 @@
 import classNames               from 'classnames';
+import React                   from 'react';
+import ContentLoader           from 'react-content-loader';
+import PropTypes               from 'prop-types';
 import {
     ContractAudit,
     Icon,
     Money,
-    Popover }                  from 'deriv-components';
-import ContractUtils           from 'deriv-shared/utils/contract';
-import PortfolioUtils          from 'deriv-shared/utils/portfolio';
-import { localize }            from 'deriv-translations';
-import React                   from 'react';
-import ContentLoader           from 'react-content-loader';
-import PropTypes               from 'prop-types';
+    Popover }                  from '@deriv/components';
+import { localize }            from '@deriv/translations';
+import ContractUtils           from '@deriv/shared/utils/contract';
+import PortfolioUtils          from '@deriv/shared/utils/portfolio';
 import IconTradeType           from './icon-trade-types.jsx';
 import { connect }             from '../stores/connect';
 import { getContractTypeName } from '../utils/contract';

@@ -1,5 +1,5 @@
 import moment       from 'moment';
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 
 export const addCommaToNumber = (num, decimal_places) => {
     if (!num || isNaN(num)) {

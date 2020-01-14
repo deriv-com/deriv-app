@@ -1,6 +1,5 @@
 import { action, observable }   from 'mobx';
-import ContractUtils            from 'deriv-shared/utils/contract';
-import { formatDate }           from 'deriv-shared/utils/date-time';
+import ContractUtils            from '@deriv/shared/utils/contract';
 import { transaction_elements } from '../constants/transactions';
 
 export default class TransactionsStore {

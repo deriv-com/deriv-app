@@ -107,10 +107,11 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
 );
 
 const WorkspaceGroup = ({
+    has_redo_stack,
+    has_undo_stack,
     onResetClick,
-    onUndoClick,
-    onRedoClick,
     onSortClick,
+    onUndoClick,
     onZoomInOutClick,
     toggleSaveLoadModal,
 }) => (
@@ -142,13 +143,23 @@ const WorkspaceGroup = ({
             alignment='bottom'
             message={localize('Undo')}
         >
-            <Icon icon='IcUndo' className='toolbar__icon' onClick={onUndoClick} />️
+            <Icon
+                className='toolbar__icon'
+                color={has_undo_stack ? undefined : 'disabled'}
+                icon='IcUndo'
+                onClick={() => onUndoClick(/* redo */ false)}
+            />️
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Redo')}
         >
-            <Icon icon='IcRedo' className='toolbar__icon' onClick={onRedoClick} />
+            <Icon
+                className='toolbar__icon'
+                color={has_redo_stack ? undefined : 'disabled'}
+                icon='IcRedo'
+                onClick={() => onUndoClick(/* redo */ true)}
+            />
         </Popover>
         <Popover
             alignment='bottom'
@@ -171,118 +182,95 @@ const WorkspaceGroup = ({
     </div>
 );
 
-const Toolbar = ({
-    active_tab,
-    file_name,
-    is_dialog_open,
-    is_drawer_open,
-    is_search_loading,
-    is_stop_button_disabled,
-    is_stop_button_visible,
-    onBotNameTyped,
-    onOkButtonClick,
-    onCancelButtonClick,
-    onRedoClick,
-    onResetClick,
-    onRunButtonClick,
-    onSearch,
-    onSearchBlur,
-    onSearchClear,
-    onSearchKeyUp,
-    onSortClick,
-    onStopButtonClick,
-    onToolboxToggle,
-    onUndoClick,
-    onZoomInOutClick,
-    toggleSaveLoadModal,
-}) => (
-    <div className='toolbar'>
-        <div className='toolbar__section'>
-            <Popover
-                id='gtm-get-started'
-                alignment='bottom'
-                classNameBubble='toolbar__bubble'
-                message={localize('Click here to start building your DBot.')}
-            >
-                <Button
-                    className='toolbar__btn--icon'
-                    has_effect
-                    onClick={onToolboxToggle}
-                    icon={<Icon icon='IcPuzzle' color='active' />}
-                    green
+const Toolbar = (props) => {
+    const {
+        active_tab,
+        is_dialog_open,
+        is_drawer_open,
+        is_stop_button_disabled,
+        is_stop_button_visible,
+        onOkButtonClick,
+        onCancelButtonClick,
+        onRunButtonClick,
+        onStopButtonClick,
+        onToolboxToggle,
+    } = props;
+
+    return (
+        <div className='toolbar'>
+            <div className='toolbar__section'>
+                <Popover
+                    alignment='bottom'
+                    classNameBubble='toolbar__bubble'
+                    message={localize('Click here to start building your DBot.')}
                 >
-                    {localize('Get started')}
-                </Button>
-            </Popover>
-            {active_tab === tabs_title.WORKSPACE &&
-            <SearchBox
-                is_search_loading={is_search_loading}
-                onSearch={onSearch}
-                onSearchClear={onSearchClear}
-                onSearchBlur={onSearchBlur}
-                onSearchKeyUp={onSearchKeyUp}
-            />
-            }
-            <BotNameBox
-                file_name={file_name}
-                onBotNameTyped={onBotNameTyped}
-            />
-            {active_tab === tabs_title.WORKSPACE &&
-            <WorkspaceGroup
-                onRedoClick={onRedoClick}
-                onResetClick={onResetClick}
-                onSortClick={onSortClick}
-                onUndoClick={onUndoClick}
-                onZoomInOutClick={onZoomInOutClick}
-                toggleSaveLoadModal={toggleSaveLoadModal}
-            />
-            }
-        </div>
-        {!is_drawer_open &&
-        <div className='toolbar__section'>
-            {
-                (is_stop_button_visible) ?
                     <Button
-                        className='toolbar__btn'
-                        is_disabled={is_stop_button_disabled}
-                        text={localize('Stop bot')}
-                        icon={<Icon icon='IcPause' className='run-panel__button--icon' color='active' />}
-                        onClick={onStopButtonClick}
+                        id='gtm-get-started'
+                        className='toolbar__btn--icon toolbar__btn--start'
                         has_effect
-                        primary
-                    /> :
-                    <Button
-                        className='toolbar__btn'
-                        text={localize('Run bot')}
-                        icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
-                        onClick={onRunButtonClick}
-                        has_effect
+                        onClick={onToolboxToggle}
+                        icon={<Icon icon='IcPuzzle' color='active' />}
                         green
-                    />
+                    >
+                        {localize('Get started')}
+                    </Button>
+                </Popover>
+                {active_tab === tabs_title.WORKSPACE &&
+                    <SearchBox {...props} />
+                }
+                <BotNameBox {...props} />
+                {active_tab === tabs_title.WORKSPACE &&
+                    <WorkspaceGroup {...props} />
+                }
+            </div>
+            {!is_drawer_open &&
+            <div className='toolbar__section'>
+                {
+                    (is_stop_button_visible) ?
+                        <Button
+                            className='toolbar__btn'
+                            is_disabled={is_stop_button_disabled}
+                            text={localize('Stop bot')}
+                            icon={<Icon icon='IcPause' className='run-panel__button--icon' color='active' />}
+                            onClick={onStopButtonClick}
+                            has_effect
+                            primary
+                        /> :
+                        <Button
+                            className='toolbar__btn'
+                            text={localize('Run bot')}
+                            icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
+                            onClick={onRunButtonClick}
+                            has_effect
+                            green
+                        />
+                }
+                <TradeAnimation
+                    className='toolbar__animation'
+                    should_show_overlay={true}
+                />
+            </div>
             }
-            <TradeAnimation
-                className='toolbar__animation'
-                should_show_overlay={true}
-            />
+            <SaveLoadModal />
+            {is_dialog_open &&
+            <Dialog
+                title={localize('Are you sure?')}
+                is_open={is_dialog_open}
+                onOkButtonClick={onOkButtonClick}
+                onCancelButtonClick={onCancelButtonClick}
+            >
+                {localize('Any unsaved changes will be lost.')}
+            </Dialog>
+            }
         </div>
-        }
-        <SaveLoadModal />
-        {is_dialog_open &&
-        <Dialog
-            title={localize('Are you sure?')}
-            is_open={is_dialog_open}
-            onOkButtonClick={onOkButtonClick}
-            onCancelButtonClick={onCancelButtonClick}
-        >
-            {localize('Any unsaved changes will be lost.')}
-        </Dialog>
-        }
-    </div>
-);
+    );
+};
 
 Toolbar.propTypes = {
     active_tab             : PropTypes.string,
     file_name              : PropTypes.string,
+    has_redo_stack         : PropTypes.bool,
+    has_undo_stack         : PropTypes.bool,
     is_dialog_open         : PropTypes.bool,
     is_drawer_open         : PropTypes.bool,
     is_search_loading      : PropTypes.bool,
@@ -292,7 +280,6 @@ Toolbar.propTypes = {
     onCancelButtonClick    : PropTypes.func,
     onGoogleDriveClick     : PropTypes.func,
     onOkButtonClick        : PropTypes.func,
-    onRedoClick            : PropTypes.func,
     onResetClick           : PropTypes.func,
     onRunButtonClick       : PropTypes.func,
     onSearch               : PropTypes.func,
@@ -310,6 +297,8 @@ Toolbar.propTypes = {
 export default connect(({ main_content, run_panel, saveload, toolbar }) => ({
     active_tab             : main_content.active_tab,
     file_name              : toolbar.file_name,
+    has_redo_stack         : toolbar.has_redo_stack,
+    has_undo_stack         : toolbar.has_undo_stack,
     is_dialog_open         : toolbar.is_dialog_open,
     is_drawer_open         : run_panel.is_drawer_open,
     is_search_loading      : toolbar.is_search_loading,
@@ -319,7 +308,6 @@ export default connect(({ main_content, run_panel, saveload, toolbar }) => ({
     onCancelButtonClick    : toolbar.onResetCancelButtonClick,
     onGoogleDriveClick     : toolbar.onGoogleDriveClick,
     onOkButtonClick        : toolbar.onResetOkButtonClick,
-    onRedoClick            : toolbar.onRedoClick,
     onResetClick           : toolbar.onResetClick,
     onRunButtonClick       : run_panel.onRunButtonClick,
     onSearch               : toolbar.onSearch,

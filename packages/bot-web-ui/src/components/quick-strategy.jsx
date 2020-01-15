@@ -1,5 +1,6 @@
 import proptypes     from 'prop-types';
 import React         from 'react';
+import { config }   from 'deriv-bot-engine';
 import {
     Button,
     Dropdown,
@@ -261,23 +262,8 @@ const QuickStrategy = ({
     trade_type_dropdown,
     validateQuickStrategy,
 }) => {
-    const { strategies }          = {
-        martingale: {
-            index      : 0,
-            label      : 'Martingale',
-            description: localize('The Martingale Strategy is a classic trading technique that has been used for more than a hundred years, popularised by the French mathematician Paul Pierre Levy in the 18th century.'),
-        },
-        dalembert: {
-            index      : 1,
-            label      : 'D\'Alembert',
-            description: localize('The concept of the D’Alembert Strategy is said to be similar to the Martingale Strategy where you will increase your contract size after a loss. With the D’Alembert Strategy, you will also decrease your contract size after a successful trade.'),
-        },
-        oscars_grind: {
-            index      : 2,
-            label      : 'Oscar\'s Grind',
-            description: localize('The Oscar\'s Grind Strategy is a low-risk positive progression strategy that first appeared in 1965. By using this strategy, you will increase the size of your contract after each successful trade, the size of your contract will increase after successful trades, and remain unchanged after unsuccessful trades.'),
-        },
-    };
+    const { strategies }          = config;
+
     const asset_dropdown_options  = {};
 
     Object.assign(asset_dropdown_options, market_dropdown);
@@ -327,7 +313,7 @@ const QuickStrategy = ({
                         top
                     >
                         {
-                            strategies && Object.keys(strategies).map(key => {
+                            Object.keys(strategies).map(key => {
                                 const { index, label, description } = strategies[key];
                                 return (
                                     <div key={index} label={label}>

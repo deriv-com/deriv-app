@@ -92,25 +92,25 @@ class DBot {
             this.stopBot();
         }
 
-        // try {
-        const code = this.generateCode();
+        try {
+            const code = this.generateCode();
 
-        if (this.interpreter !== null) {
-            this.stopBot();
-        }
+            if (this.interpreter !== null) {
+                this.stopBot();
+            }
 
-        this.interpreter = new Interpreter();
-        this.interpreter.run(code).catch(error => {
+            this.interpreter = new Interpreter();
+            this.interpreter.run(code).catch(error => {
+                globalObserver.emit('Error', error);
+                this.stopBot();
+            });
+        } catch (error) {
             globalObserver.emit('Error', error);
-            this.stopBot();
-        });
-        // } catch (error) {
-        //     globalObserver.emit('Error', error);
 
-        //     if (this.interpreter) {
-        //         this.stopBot();
-        //     }
-        // }
+            if (this.interpreter) {
+                this.stopBot();
+            }
+        }
     }
 
     /**

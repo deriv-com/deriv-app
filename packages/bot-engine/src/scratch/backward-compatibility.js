@@ -255,7 +255,7 @@ export default class BlockConversion {
         // Legacy symbol + trade_type blocks are special cases, they are turned into multiple blocks.
         // We don't convert these atm, as a workaround users can import to BBot, then export and load
         // into DBot.
-        const { active_symbols } = ApiHelpers.instance;
+        const { active_symbols } = ApiHelpers.instance.active_symbols;
         const { opposites }      = config;
 
         active_symbols.forEach(active_symbol => {

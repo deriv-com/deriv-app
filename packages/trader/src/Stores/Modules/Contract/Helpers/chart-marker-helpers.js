@@ -1,9 +1,10 @@
-import extend                  from 'extend';
-import { isDigitContract }     from 'Stores/Modules/Contract/Helpers/digits';
+import extend                   from 'extend';
+import { isDigitContract }      from 'Stores/Modules/Contract/Helpers/digits';
+import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import {
     isUserSold,
-    getEndTime }               from 'Stores/Modules/Contract/Helpers/logic';
-import { MARKER_TYPES_CONFIG } from '../../SmartChart/Constants/markers';
+    getEndTime }                from 'Stores/Modules/Contract/Helpers/logic';
+import { MARKER_TYPES_CONFIG }  from '../../SmartChart/Constants/markers';
 
 const createMarkerConfig = (marker_type, x, y, content_config) => (
     extend(true, {}, MARKER_TYPES_CONFIG[marker_type], {
@@ -97,18 +98,24 @@ export const createMarkerSpotExit = (contract_info, tick, idx) => {
 
     const exit_tick = contract_info.exit_tick_display_value;
 
+    const should_show_spot_exit = !is_user_sold || isMultiplierContract(contract_info.contract_type);
+
+    const marker_spot_type = should_show_spot_exit ?
+        MARKER_TYPES_CONFIG.SPOT_EXIT.type : MARKER_TYPES_CONFIG.SPOT_SELL.type;
+
+    const component_props  = should_show_spot_exit ? {
+        spot_value: `${exit_tick}`,
+        spot_epoch: `${contract_info.exit_tick_time}`,
+        status    : `${+contract_info.profit >= 0 ? 'won' : 'lost' }`,
+        align_label,
+        spot_count,
+    } : {};
+
     return createMarkerConfig(
-        !is_user_sold ? MARKER_TYPES_CONFIG.SPOT_EXIT.type : MARKER_TYPES_CONFIG.SPOT_SELL.type,
+        marker_spot_type,
         +contract_info.exit_tick_time,
         +exit_tick,
-        !is_user_sold ?
-            {
-                spot_value: `${exit_tick}`,
-                spot_epoch: `${contract_info.exit_tick_time}`,
-                status    : `${+contract_info.profit >= 0 ? 'won' : 'lost' }`,
-                align_label,
-                spot_count,
-            } : {},
+        component_props,
     );
 };
 

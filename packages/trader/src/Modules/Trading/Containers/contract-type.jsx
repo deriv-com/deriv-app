@@ -1,7 +1,7 @@
-import PropTypes          from 'prop-types';
-import React              from 'react';
-import { connect }        from 'Stores/connect';
-import ContractTypeWidget from '../Components/Form/ContractType';
+import PropTypes                      from 'prop-types';
+import React                          from 'react';
+import { connect }                    from 'Stores/connect';
+import ContractTypeWidget             from '../Components/Form/ContractType';
 import {
     getAvailableContractTypes,
     unsupported_contract_types_list } from '../Helpers/contract-type';

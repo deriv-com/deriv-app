@@ -215,7 +215,7 @@ const ContractTypeDialog = ({
 };
 
 ContractTypeDialog.propTypes = {
-    // children : PropTypes.element,
+    children : PropTypes.element,
     is_mobile: PropTypes.bool,
     onClose  : PropTypes.func,
     open     : PropTypes.bool,

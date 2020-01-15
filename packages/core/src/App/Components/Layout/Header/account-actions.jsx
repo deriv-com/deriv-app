@@ -55,7 +55,6 @@ export class AccountActions extends Component {
                 <React.Fragment>
                     <MobileWrapper>
                         <ToggleNotifications
-                            is_mobile
                             count={notifications_count}
                             is_visible={is_notifications_visible}
                             toggleDialog={toggleNotifications}

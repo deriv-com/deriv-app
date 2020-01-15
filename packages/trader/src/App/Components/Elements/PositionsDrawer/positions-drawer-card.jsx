@@ -25,6 +25,7 @@ const PositionsDrawerCard = ({
     is_loading,
     is_sell_requested,
     is_unsupported,
+    is_waiting,
     is_valid_to_sell,
     profit_loss,
     onClickSell,
@@ -160,6 +161,7 @@ const PositionsDrawerCard = ({
                 contract_id={id}
                 is_unsupported={is_unsupported}
                 is_visible={!!(contract_info.is_sold)}
+                is_waiting={is_waiting}
                 onClickRemove={onClickRemove}
                 onClick={() => toggleUnsupportedContractModal(true)}
                 result={(result || fallback_result)}

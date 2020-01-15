@@ -20,9 +20,40 @@ class ResultOverlay extends React.PureComponent {
         const {
             contract_id,
             is_visible,
+            is_waiting,
             onClickRemove,
-            result } = this.props;
-        const is_contract_won = (result === 'won');
+        } = this.props;
+        const result = is_waiting ? 'waiting' : this.props.result;
+
+        let contract_caption_text_and_icon;
+        switch (result) {
+            case 'won':
+                contract_caption_text_and_icon = (
+                    <React.Fragment>
+                        {localize('won')}
+                        <Icon icon='IcCheckmarkCircle' className='result__icon' color='green' />
+                    </React.Fragment>
+                );
+                break;
+            case 'lost':
+                contract_caption_text_and_icon = (
+                    <React.Fragment>
+                        {localize('lost')}
+                        <Icon icon='IcCrossCircle' className='result__icon' color='red' />
+                    </React.Fragment>
+                );
+                break;
+            case 'waiting':
+                contract_caption_text_and_icon = (
+                    <React.Fragment>
+                        {localize('waiting for exit spot')}
+                        <Icon icon='IcMoreCircle' className='result__icon' color='yellow' />
+                    </React.Fragment>
+                );
+                break;
+            default:
+                break;
+        }
         return (
             <React.Fragment>
                 <CSSTransition
@@ -38,8 +69,9 @@ class ResultOverlay extends React.PureComponent {
                     <div
                         id={`dt_drawer_${contract_id}_result`}
                         className={classNames('positions-drawer-card__result', {
-                            'positions-drawer-card__result--won' : is_contract_won,
-                            'positions-drawer-card__result--lost': !is_contract_won,
+                            'positions-drawer-card__result--won'    : result === 'won',
+                            'positions-drawer-card__result--lost'   : result === 'lost',
+                            'positions-drawer-card__result--waiting': result === 'waiting',
                         })}
                     >
                         <span
@@ -54,23 +86,13 @@ class ResultOverlay extends React.PureComponent {
                         >
                             <span
                                 className={classNames('result__caption', {
-                                    'result__caption--won' : is_contract_won,
-                                    'result__caption--lost': !is_contract_won,
+                                    'result__caption--won'    : result === 'won',
+                                    'result__caption--lost'   : result === 'lost',
+                                    'result__caption--waiting': result === 'waiting',
                                 }
                                 )}
                             >
-                                {
-                                    (is_contract_won) ?
-                                        <React.Fragment>
-                                            {localize('won')}
-                                            <Icon icon='IcCheckmarkCircle' className='result__icon' color='green' />
-                                        </React.Fragment>
-                                        :
-                                        <React.Fragment>
-                                            {localize('lost')}
-                                            <Icon icon='IcCrossCircle' className='result__icon' color='red' />
-                                        </React.Fragment>
-                                }
+                                { contract_caption_text_and_icon }
                             </span>
                         </NavLink>
                     </div>

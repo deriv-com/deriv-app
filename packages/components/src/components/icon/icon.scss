@@ -21,6 +21,11 @@
         --fill-color2: var(--text-loss-danger);
         --fill-color3: #{$color-white};
     }
+    &--yellow {
+        --fill-color1: var(--text-warning);
+        --fill-color2: var(--text-warning);
+        --fill-color3: #{$color-white};
+    }
     &--secondary {
         --fill-color1: var(--text-less-prominent);
         --fill-color2: var(--text-less-prominent);

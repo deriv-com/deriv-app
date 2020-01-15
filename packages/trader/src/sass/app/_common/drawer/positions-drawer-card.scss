@@ -29,6 +29,9 @@
         &--lost, &--lost:after {
             background-image: var(--gradient-danger);
         }
+        &--waiting, &--waiting:after {
+            background-image: var(--gradient-warning);
+        }
         &:hover {
             background: 0 !important;
 

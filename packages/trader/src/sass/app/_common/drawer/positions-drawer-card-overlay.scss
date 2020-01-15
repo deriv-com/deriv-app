@@ -18,6 +18,9 @@
         &--lost {
             color: var(--text-loss-danger);
         }
+        &--waiting {
+            color: var(--text-warning);
+        }
         &-wrapper {
             cursor: pointer;
             width: 100%;

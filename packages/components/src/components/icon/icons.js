@@ -94,6 +94,7 @@ import './common/ic-minus-bold.svg';
 import './common/ic-minus-rounded.svg';
 import './common/ic-minus.svg';
 import './common/ic-money-transfer.svg';
+import './common/ic-more-circle.svg';
 import './common/ic-new-file.svg';
 import './common/ic-open-positions.svg';
 import './common/ic-passport.svg';

@@ -57,6 +57,8 @@ $gradient-color-green-1: linear-gradient(to top, $color-white, transparentize($c
 $gradient-color-green-2: linear-gradient(to top, $color-black, transparentize($color-green-3, 0.84));
 $gradient-color-red-1: linear-gradient(to top, $color-white, transparentize($color-red, 0.84));
 $gradient-color-red-2: linear-gradient(to top, $color-black, transparentize($color-red, 0.84));
+$gradient-color-yellow-1: linear-gradient(to top, $color-white, transparentize($color-yellow, 0.84));
+$gradient-color-yellow-2: linear-gradient(to top, $color-black, transparentize($color-yellow, 0.84));
 
 /* Preserve legacy variables */
 /* Primary */
@@ -95,6 +97,7 @@ $COLOR_LIGHT_GRAY_5         : #c2c2c2;
 $COLOR_LIGHT_GREEN_GRADIENT : linear-gradient(to top, rgba(255, 255, 255, 0), rgba(0, 148, 117, 0.16));
 $COLOR_LIGHT_RED_GRADIENT   : linear-gradient(to top, rgba(255, 255, 255, 0), rgba(227, 28, 75, 0.16));
 $COLOR_LIGHT_WHITE_GRADIENT : linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+$COLOR_LIGHT_YELLOW_GRADIENT: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 173, 58, 0.16));
 // Dark theme
 $COLOR_DARK_BLACK_GRADIENT : linear-gradient(to right, rgba(16, 19, 32, 1), rgba(16, 19, 32, 0));
 $COLOR_DARK_BLUE_1         : #0b0e18;

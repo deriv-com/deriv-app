@@ -101,6 +101,7 @@ export const icons =
         'IcMinusRounded',
         'IcMinus',
         'IcMoneyTransfer',
+        'IcMoreCircle',
         'IcNewFile',
         'IcOpenPositions',
         'IcPassport',

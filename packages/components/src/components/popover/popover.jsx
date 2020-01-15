@@ -23,10 +23,7 @@ class Popover extends React.PureComponent {
 
     toggleClose = () => {
         if (this.props.is_bubble_hover_enabled) {
-            setTimeout(() => {
-                // add delay to check if mouse is hovered on popover bubble
-                this.setState({ is_open: this.props.is_bubble_hover_enabled ? this.state.is_bubble_open : false });
-            }, 50);
+            this.toggleIsOpenOnHoverPopoverBubble();
         } else {
             this.setState({ is_open: false });
         }
@@ -38,6 +35,13 @@ class Popover extends React.PureComponent {
 
     onMouseLeave = () => {
         this.setState({ is_bubble_open: false, is_open: false });
+    }
+
+    toggleIsOpenOnHoverPopoverBubble = () => {
+        setTimeout(() => {
+            // add delay to check if mouse is hovered on popover bubble
+            this.setState({ is_open: this.props.is_bubble_hover_enabled ? this.state.is_bubble_open : false });
+        }, 50);
     }
 
     render () {

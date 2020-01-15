@@ -1,7 +1,7 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
+import { MobileDialog }  from '@deriv/components';
 import { CSSTransition } from 'react-transition-group';
-import MobileDialog      from '../../Elements/mobile-dialog.jsx';
 
 const TradeTypeInfoDialog = ({
     children,
@@ -12,10 +12,11 @@ const TradeTypeInfoDialog = ({
 }) => (
     is_mobile ?
         <MobileDialog
+            container_el='deriv_app'
             visible={open}
             onClose={onClose}
             title={title}
-            wrapperClassName='trade-type-info-modal'
+            wrapper_classname='trade-type-info-modal'
         >
             {children}
         </MobileDialog>

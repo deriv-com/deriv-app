@@ -39,12 +39,11 @@ const config = {
             [localize('Error'), 'error'],
             [localize('Severe error'), 'severe-error'],
         ],
-        CURRENCY: [
-            ['USD', 'USD'],
-            ['EUR', 'EUR'],
-            ['GBP', 'GBP'],
-            ['AUD', 'AUD'],
-            ...CRYPTO_CURRENCIES.map(c => [c, c]),
+        CURRENCY: ['USD',
+            'EUR',
+            'GBP',
+            'AUD',
+            ...CRYPTO_CURRENCIES,
         ],
     },
     opposites: {

@@ -5,6 +5,7 @@
         &_#{$strategy-modal} {
             .modal__content {
                 padding: 15px 24px;
+                height: calc(100% - 200px);
             }
         }
     }
@@ -42,6 +43,9 @@
                 margin: 10px 0 0;
                 width: 196px;
 
+                input {
+                    width: 80%;
+                }
                 .dc-field-error {
                     padding: 0;
                     left: 0;
@@ -81,7 +85,17 @@
     }
     &__duration {
         &-dropdown {
-            width: 194px !important;
+            width: 196px !important;
+            margin-top: 10px !important;
+            height: 40px;
         }
     }
 }
+
+/* stylelint-disable */
+@media (max-resolution: 200dpi) {
+    .quick-strategy__tab-content {
+        height: 100%;
+    }
+}
+/* stylelint-enable */

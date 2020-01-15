@@ -1,9 +1,9 @@
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import classNames   from 'classnames';
-import Button       from 'Components/button';
-import NumberGrid   from './number-grid.jsx';
-import StepInput    from './step-input.jsx';
+import PropTypes  from 'prop-types';
+import React      from 'react';
+import classNames from 'classnames';
+import Button     from 'Components/button';
+import NumberGrid from './number-grid.jsx';
+import StepInput  from './step-input.jsx';
 
 const concatenate = (number, default_value) => default_value.toString().concat(number);
 
@@ -28,9 +28,11 @@ const Numpad = ({
 
     const onSelect = (num) => {
         switch (num) {
+            // backspace
             case -1:
                 chop();
                 break;
+            // detecting floating point
             case '.':
                 if (is_float) {
                     break;
@@ -52,16 +54,15 @@ const Numpad = ({
 
                     if (matches !== null && is_float) {
                         matches.forEach((match, groupIndex) => {
-                            if (groupIndex === 1 && match.length < pip_size && is_float) {
+                            const pip_size_allowed = groupIndex === 1 && match.length < pip_size && is_float;
+                            if (pip_size_allowed) {
                                 setValue(concatenate(num, default_value));
                             }
                         });
-                    } else {
+                    } else if (concatenate(num, default_value) <= max) {
                         setValue(concatenate(num, default_value));
                     }
                 }
-
-                break;
         }
     };
 
@@ -134,7 +135,7 @@ const Numpad = ({
                     }}
                     is_disabled={!default_value.toString().length}
                 >
-	            {submit_label}
+                    {submit_label}
                 </Button>
             </div>
         </div>

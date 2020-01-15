@@ -143,7 +143,6 @@ AccountActions.propTypes = {
     enableApp               : PropTypes.any,
     is_acc_switcher_on      : PropTypes.any,
     is_logged_in            : PropTypes.any,
-    is_mobile               : PropTypes.any,
     is_notifications_visible: PropTypes.any,
     is_virtual              : PropTypes.any,
     notifications_count     : PropTypes.any,

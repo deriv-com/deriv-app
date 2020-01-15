@@ -25,7 +25,7 @@ stories
                         min_value={text('min value', '2')}
                         max_value={text('max value', '7')}
                         onSubmit={action((e) => e.target.value)}
-                        label='OK'
+                        submit_label='OK'
                     />
                 </div>
             </Theme>

@@ -87,9 +87,16 @@ const CardBody = ({
     is_multiplier,
     status,
 }) => {
-    const indicative = getIndicativePrice(contract_info);
-    const { buy_price, is_sold, sell_price, payout, profit } = contract_info;
+    const {
+        buy_price,
+        is_sold,
+        sell_price,
+        payout,
+        profit,
+    } = contract_info;
 
+    const indicative = getIndicativePrice(contract_info);
+    
     if (is_multiplier) {
         return (
             <MultiplierCardBody

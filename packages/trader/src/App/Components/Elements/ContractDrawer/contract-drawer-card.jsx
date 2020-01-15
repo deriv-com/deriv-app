@@ -14,10 +14,15 @@ const ContractDrawerCard = ({
     onClickSell,
     status,
 }) => {
+    const {
+        is_sold,
+        profit,
+    } = contract_info;
+
     return (
         <ContractCard
-            profit_loss={contract_info.profit}
-            is_sold={!!contract_info.is_sold}
+            profit_loss={profit}
+            is_sold={!!is_sold}
         >
             <CardHeader
                 contract_info={contract_info}

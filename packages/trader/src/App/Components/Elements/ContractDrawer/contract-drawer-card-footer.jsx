@@ -18,12 +18,13 @@ const CardFooter = ({
     onClickCancel,
     onClickSell,
 }) => {
+    const { contract_id, is_sold } = contract_info;
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_valid_to_sell   = isValidToSell(contract_info);
     return (
         <ContractCardFooter>
             <CSSTransition
-                in={!!(isValidToSell(contract_info) || (is_multiplier && !contract_info.is_sold))}
+                in={!!(isValidToSell(contract_info) || (is_multiplier && !is_sold))}
                 timeout={250}
                 classNames={{
                     enter    : 'contract-card__sell-button--enter',
@@ -45,7 +46,7 @@ const CardFooter = ({
                             onClickSell={onClickSell}
                         />
                         {(is_valid_to_sell || is_valid_to_cancel)
-                        && <TogglePositionsDrawerDialog contract_id={contract_info.contract_id} /> }
+                        && <TogglePositionsDrawerDialog contract_id={contract_id} /> }
                     </div>
                     :
                     <div className='contract-card__sell-button'>
@@ -56,7 +57,7 @@ const CardFooter = ({
                                 })}
                             is_disabled={!(isValidToSell(contract_info)) || is_sell_requested}
                             text={localize('Sell contract')}
-                            onClick={() => onClickSell(contract_info.contract_id)}
+                            onClick={() => onClickSell(contract_id)}
                             secondary
                         />
                     </div>

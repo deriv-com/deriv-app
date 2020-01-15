@@ -12,7 +12,18 @@ const CardHeader = ({
     contract_info,
     has_progress_slider,
 }) => {
-    const current_tick = contract_info.tick_count ? getCurrentTick(contract_info) : null;
+    const {
+        contract_type,
+        date_expiry,
+        display_name,
+        is_sold,
+        purchase_time,
+        shortcode,
+        tick_count,
+        underlying,
+    } = contract_info;
+
+    const current_tick = tick_count ? getCurrentTick(contract_info) : null;
 
     return (
         <ContractCardHeader>
@@ -22,26 +33,26 @@ const CardHeader = ({
             )}
             >
                 <div id='dt_underlying_label' className='contract-card__underlying-name'>
-                    <Icon icon={contract_info.underlying ? `IcUnderlying${contract_info.underlying}` : 'IcUnknown'} size={32} />
+                    <Icon icon={underlying ? `IcUnderlying${underlying}` : 'IcUnknown'} size={32} />
                     <span className='contract-card__symbol'>
-                        {contract_info.display_name}
+                        {display_name}
                     </span>
                 </div>
                 <div id='dt_contract_type_label' className='contract-card__type'>
                     <ContractTypeCell
-                        type={contract_info.contract_type}
-                        is_high_low={Shortcode.isHighLow({ shortcode: contract_info.shortcode })}
+                        type={contract_type}
+                        is_high_low={Shortcode.isHighLow({ shortcode })}
                     />
                 </div>
             </div>
-            {(!has_progress_slider || !!contract_info.is_sold) && <div className='progress-slider--completed' />}
-            {has_progress_slider && !contract_info.is_sold &&
+            {(!has_progress_slider || !!is_sold) && <div className='progress-slider--completed' />}
+            {has_progress_slider && !is_sold &&
                 <ProgressSlider
                     is_loading={false}
-                    start_time={contract_info.purchase_time}
-                    expiry_time={contract_info.date_expiry}
+                    start_time={purchase_time}
+                    expiry_time={date_expiry}
                     current_tick={current_tick}
-                    ticks_count={contract_info.tick_count}
+                    ticks_count={tick_count}
                 />
             }
         </ContractCardHeader>

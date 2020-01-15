@@ -13,6 +13,7 @@ import {
     getBarrierValue,
     isDigitType }               from 'App/Components/Elements/PositionsDrawer/helpers';
 import {
+    getDealCancellationPrice,
     isDealCancellationExpired,
     isUserCancelled,
     isUserSold }                from 'Stores/Modules/Contract/Helpers/logic';
@@ -26,7 +27,25 @@ const ContractDetails = ({
     duration_unit,
     exit_spot,
 }) => {
-    const is_profit = (contract_info.profit >= 0);
+    const {
+        commission,
+        contract_type,
+        currency,
+        entry_spot_display_value,
+        entry_tick_time,
+        exit_tick_time,
+        profit,
+        purchase_time,
+        tick_count,
+        transaction_ids: {
+            buy,
+            sell,
+        } = {},
+    } = contract_info;
+
+    const is_profit = (profit >= 0);
+
+    const deal_cancellation_price = getDealCancellationPrice(contract_info);
 
     const getLabel = () => {
         if (isUserCancelled(contract_info))           return localize('Deal cancellation (executed)');
@@ -45,34 +64,34 @@ const ContractDetails = ({
                     id='dt_id_label'
                     icon={<Icon icon='IcContractId' size={24} />}
                     label={localize('Reference ID')}
-                    value={localize('{{buy_value}} (Buy)', { buy_value: contract_info.transaction_ids.buy })}
-                    value2={contract_info.transaction_ids.sell ?
-                        localize('{{sell_value}} (Sell)', { sell_value: contract_info.transaction_ids.sell })
+                    value={localize('{{buy_value}} (Buy)', { buy_value: buy })}
+                    value2={sell ?
+                        localize('{{sell_value}} (Sell)', { sell_value: sell })
                         :
                         undefined
                     }
                 />
                 {
-                    isMultiplierContract(contract_info.contract_type) ?
+                    isMultiplierContract(contract_type) ?
                         <React.Fragment>
                             <ContractAuditItem
                                 id='dt_commission_label'
                                 icon={<Icon icon='IcContractCommission' size={24} />}
                                 label={localize('Commission')}
                                 value={<Money
-                                    amount={contract_info.commission}
-                                    currency={contract_info.currency}
+                                    amount={commission}
+                                    currency={currency}
                                 />
                                 }
                             />
-                            {contract_info.deal_cancellation &&
+                            {!!deal_cancellation_price &&
                                 <ContractAuditItem
                                     id='dt_deal_cancellation_label'
                                     icon={<Icon icon='IcContractSafeguard' size={24} />}
                                     label={getLabel()}
                                     value={<Money
-                                        amount={contract_info.deal_cancellation.ask_price}
-                                        currency={contract_info.currency}
+                                        amount={deal_cancellation_price}
+                                        currency={currency}
                                     />
                                     }
                                 />
@@ -84,15 +103,15 @@ const ContractDetails = ({
                                 id='dt_duration_label'
                                 icon={<Icon icon='IcContractDuration' size={24} />}
                                 label={localize('Duration')}
-                                value={(contract_info.tick_count > 0) ?
-                                    `${contract_info.tick_count} ${(contract_info.tick_count < 2) ? localize('tick') : localize('ticks')}`
+                                value={(tick_count > 0) ?
+                                    `${tick_count} ${(tick_count < 2) ? localize('tick') : localize('ticks')}`
                                     :
                                     `${duration} ${duration_unit}`}
                             />
                             <ContractAuditItem
                                 id='dt_bt_label'
                                 icon={
-                                    isDigitType(contract_info.contract_type)
+                                    isDigitType(contract_type)
                                         ? <Icon icon='IcContractTarget' size={24} />
                                         : <Icon icon='IcContractBarrier' size={24} />
                                 }
@@ -105,16 +124,16 @@ const ContractDetails = ({
                     id='dt_start_time_label'
                     icon={<Icon icon='IcContractStartTime' size={24} />}
                     label={localize('Start time')}
-                    value={toGMTFormat(epochToMoment(contract_info.purchase_time)) || ' - '}
+                    value={toGMTFormat(epochToMoment(purchase_time)) || ' - '}
                 />
                 {
-                    !isDigitType(contract_info.contract_type) &&
+                    !isDigitType(contract_type) &&
                         <ContractAuditItem
                             id='dt_entry_spot_label'
                             icon={<Icon icon='IcContractEntrySpot' size={24} />}
                             label={localize('Entry spot')}
-                            value={contract_info.entry_spot_display_value || ' - '}
-                            value2={toGMTFormat(epochToMoment(contract_info.entry_tick_time)) || ' - '}
+                            value={entry_spot_display_value || ' - '}
+                            value2={toGMTFormat(epochToMoment(entry_tick_time)) || ' - '}
                         />
                 }
                 {
@@ -124,7 +143,7 @@ const ContractDetails = ({
                             icon={<Icon icon='IcContractExitSpot' size={24} />}
                             label={localize('Exit spot')}
                             value={exit_spot || ' - '}
-                            value2={toGMTFormat(epochToMoment(contract_info.exit_tick_time)) || ' - '}
+                            value2={toGMTFormat(epochToMoment(exit_tick_time)) || ' - '}
                         />
                 }
                 {

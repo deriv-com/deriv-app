@@ -104,11 +104,10 @@ class PositionsDrawer extends React.Component {
         const { trade_contract_type } = this.props;
         const is_call_put = isCallPut(trade_contract_type);
         const is_high_low = Shortcode.isHighLow({ shortcode });
-        let match = getContractTypesConfig()[this.props.trade_contract_type].trade_types.includes(contract_type);
-        if (is_call_put) {
-            match = trade_contract_type === 'high_low' ? is_high_low : !is_high_low;
-        }
-        return match;
+        const trade_types = is_call_put ? ['CALL', 'CALLE', 'PUT', 'PUTE'] : getContractTypesConfig()[trade_contract_type].trade_types;
+        const match       = trade_types.includes(contract_type);
+        if (trade_contract_type === 'high_low') return is_high_low;
+        return match && !is_high_low;
     }
 
     hasPositionsHeightChanged = (newPositionsHeight, oldPositionsHeight) => {

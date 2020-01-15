@@ -5,26 +5,26 @@ import {
     VerticalTabHeaderTitle }  from './vertical-tab-header.jsx';
 
 class VerticalTabHeaders extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.ref = React.createRef();
-        this.headers = [];
-        this.state = { top: 0 };
-    }
+    ref     = React.createRef();
+    headers = [];
+    state   = { top: 0 };
 
     componentDidMount() {
         this.headers = this.ref.current.querySelectorAll('.vertical-tab__header__link');
-        this.setState({ top: this.offsetTop });
+        this.setState({ top: this.offset_top });
     }
 
     componentDidUpdate() {
-        this.setState({ top: this.offsetTop });
+        this.setState({ top: this.offset_top });
     }
 
-    get offsetTop() {
+    get offset_top() {
         const { selected } = this.props;
-        return [...this.headers]
-            .filter(header => header.innerText === (selected.label || selected.title))[0].offsetTop - 10;
+
+        const selected_el = [...this.headers]
+            .filter(header => header.innerText === (selected.label || selected.title))[0];
+
+        return selected_el ? selected_el.offsetTop - 10 : 0;
     }
 
     render() {

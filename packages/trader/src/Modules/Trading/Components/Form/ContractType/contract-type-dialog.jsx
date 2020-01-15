@@ -69,7 +69,7 @@ class Dialog extends React.PureComponent {
         }
     }
 
-    onChange = (e) => {
+    onChangeInput = (e) => {
         this.scrollbar_ref.current.scrollTop(0);
         this.setState({
             input_value: e.target.value,
@@ -109,7 +109,7 @@ class Dialog extends React.PureComponent {
             />
             :
             <MemoizedSearchInput
-                onChange={this.onChange}
+                onChange={this.onChangeInput}
                 value={this.state.input_value}
             />;
 

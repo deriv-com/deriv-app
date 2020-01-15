@@ -157,13 +157,14 @@ ContractAudit.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
-    contract_info: PropTypes.object,
-    duration     : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    duration_unit: PropTypes.string,
-    exit_spot    : PropTypes.string,
-    has_result   : PropTypes.bool,
-    is_dark_theme: PropTypes.bool,
-    is_open      : PropTypes.bool,
+    contract_info        : PropTypes.object,
+    duration             : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    duration_unit        : PropTypes.string,
+    exit_spot            : PropTypes.string,
+    is_contract_sellable : PropTypes.bool,
+    is_dark_theme        : PropTypes.bool,
+    should_add_scrollbars: PropTypes.bool,
+
 };
 
 export default ContractAudit;

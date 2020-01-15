@@ -284,9 +284,9 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async prepareTradeStore() {
-        // Revert to 'rise_fall' if client is not logged in and current contract_type is 'mult'
+        // Revert to 'rise_fall' if client is not virtual and current contract_type is 'mult'
         // TODO: remove this, when multiplier is available for real account & logged-out
-        if (!this.root_store.client.is_logged_in && !this.root_store.client.is_virual && this.is_multiplier) {
+        if (!this.root_store.client.is_virual && this.is_multiplier) {
             this.processNewValuesAsync({ contract_type: 'rise_fall' });
         }
 
@@ -893,6 +893,7 @@ export default class TradeStore extends BaseStore {
         this.refresh();
         this.debouncedProposal();
         this.resetErrorServices();
+        this.setContractTypes();
         return Promise.resolve();
     }
 

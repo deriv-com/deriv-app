@@ -156,7 +156,6 @@ class ContractDrawer extends Component {
                         </CSSTransition>
                     </ContractCardFooter>
                 </ContractCard>
-                {!!(is_sold) &&
                 <ContractAudit
                     contract_info={contract_info}
                     contract_end_time={ContractUtils.getEndTime(contract_info)}
@@ -166,8 +165,9 @@ class ContractDrawer extends Component {
                     duration={PortfolioUtils.getDurationTime(contract_info)}
                     duration_unit={PortfolioUtils.getDurationUnitText(PortfolioUtils.getDurationPeriod(contract_info))}
                     exit_spot={exit_spot}
-                    has_result={!!(is_sold)}
-                />}
+                    should_add_scrollbars={true}
+                    is_contract_sellable={ContractUtils.isValidToSell(contract_info)}
+                />
             </React.Fragment>
         );
     }

@@ -35,7 +35,7 @@ const TradetypeOption = ({ type }) => (
     </div>
 );
 
-const popover_zindex = '{popover_zindex}';
+const popover_zindex = config.popover_zindex.quick_strategy;
 
 const QuickStrategyForm = ({
     active_index,

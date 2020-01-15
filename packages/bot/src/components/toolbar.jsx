@@ -18,6 +18,7 @@ import TradeAnimation from './trade-animation.jsx';
 import { tabs_title } from '../constants/bot-contents';
 import { connect }    from '../stores/connect';
 import                '../assets/sass/scratch/toolbar.scss';
+import config from '../constants/index.js';
 
 const SearchBox = ({
     is_search_loading,
@@ -106,7 +107,7 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
     </div>
 );
 
-const popover_zindex = '5';
+const popover_zindex = config.popover_zindex.toolbar;
 
 const WorkspaceGroup = ({
     has_redo_stack,

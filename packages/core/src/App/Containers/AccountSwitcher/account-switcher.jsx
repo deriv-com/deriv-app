@@ -226,7 +226,7 @@ class AccountSwitcher extends React.Component {
                         <ThemedScrollbars
                             autoHeight
                             autoHide
-                            autoHeightMax={this.props.is_mobile ? '100%' : 354}
+                            autoHeightMax={this.props.is_mobile ? 400 : 354}
                             renderTrackHorizontal={props => <div {...props} className='track-horizontal' style={{ display: 'none' }} />}
                             renderThumbHorizontal={props => <div {...props} className='thumb-horizontal' style={{ display: 'none' }} />}
                         >
@@ -336,7 +336,7 @@ class AccountSwitcher extends React.Component {
                         <ThemedScrollbars
                             autoHeight
                             autoHide
-                            autoHeightMax={this.props.is_mobile ? '100%' : 354}
+                            autoHeightMax={this.props.is_mobile ? 400 : 354}
                             renderTrackHorizontal={props => <div {...props} className='track-horizontal' style={{ display: 'none' }} />}
                             renderThumbHorizontal={props => <div {...props} className='thumb-horizontal' style={{ display: 'none' }} />}
                         >

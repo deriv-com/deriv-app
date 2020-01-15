@@ -21,7 +21,6 @@ export default class LoadModalStore {
 
     @action.bound
     onMount() {
-        this.recent_files = getRecentFiles() || [];
         if (this.recent_files.length) {
             this.selected_file = this.recent_files[0].id;
             this.previewWorkspace({ id: this.selected_file });
@@ -39,6 +38,10 @@ export default class LoadModalStore {
     @action.bound
     toggleLoadModal() {
         this.is_load_modal_open = !this.is_load_modal_open;
+
+        if (this.is_load_modal_open) {
+            this.recent_files = getRecentFiles() || [];
+        }
     }
 
     @action.bound

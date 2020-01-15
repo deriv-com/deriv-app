@@ -389,7 +389,7 @@ export const emptyTextValidator = (input) => {
 };
 
 export const saveWorkspaceToRecent = (location, event = {}) => {
-    if(event.recordUndo === false) {
+    if (event.recordUndo === false) {
         return;
     }
     
@@ -408,10 +408,10 @@ export const saveWorkspaceToRecent = (location, event = {}) => {
     } else {
         const unsaved_workspace_index = workspaces.findIndex(workspace => workspace.id === `${workspace_id}_${save_types.UNSAVED}`);
 
-        if(unsaved_workspace_index >= 0) {
+        if (unsaved_workspace_index >= 0) {
             workspaces.splice(unsaved_workspace_index, 1);
         }
-        
+
         workspaces.push({
             id       : `${workspace_id}_${location}`,
             timestamp: current_timestamp,
@@ -432,4 +432,4 @@ export const saveWorkspaceToRecent = (location, event = {}) => {
 
 export const getRecentFiles = () => {
     return JSON.parse(localStorage.getItem('saved_workspace'));
-}
+};

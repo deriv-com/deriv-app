@@ -14,7 +14,6 @@ class VerticalTabHeaders extends React.PureComponent {
 
     componentDidMount() {
         this.headers = this.ref.current.querySelectorAll('.vertical-tab__header__link');
-        this.setState({ top: this.offsetTop });
     }
 
     componentDidUpdate() {

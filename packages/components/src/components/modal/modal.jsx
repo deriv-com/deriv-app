@@ -21,6 +21,7 @@ class ModalElement extends React.PureComponent {
             document.addEventListener('mousedown', this.handleClickOutside);
         }
         this.el.classList.add('dc-modal');
+        if (this.props.mobile) this.el.classList.add('dc-modal--is-mobile');
         this.state.modal_root.appendChild(this.el);
     };
 
@@ -49,7 +50,6 @@ class ModalElement extends React.PureComponent {
                     'dc-modal__container', {
                         [`dc-modal__container_${className}`]: className,
                         'dc-modal__container--small'        : this.props.small,
-                        'dc-modal__container--is-mobile'    : this.props.mobile,
                     }
                 )}
                 style={{

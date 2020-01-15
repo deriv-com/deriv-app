@@ -15,7 +15,7 @@ const AccountSwitcherMobile = (props) => {
             disableApp={disableApp}
             has_close_icon={false}
             toggleModal={toggle}
-            height='calc(100vh - 160px)'
+            height='100%'
             width='calc(100vw - 42px)'
             mobile
         >

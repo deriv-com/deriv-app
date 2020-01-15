@@ -1,11 +1,11 @@
-import classNames          from 'classnames';
-import PropTypes           from 'prop-types';
-import React               from 'react';
-import { CSSTransition }   from 'react-transition-group';
-import { Icon }            from '@deriv/components';
-import { Localize }        from '@deriv/translations';
+import classNames            from 'classnames';
+import PropTypes             from 'prop-types';
+import React                 from 'react';
+import { CSSTransition }     from 'react-transition-group';
+import { Icon }              from '@deriv/components';
+import { Localize }          from '@deriv/translations';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile.jsx';
-import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
+import { AccountSwitcher }   from 'App/Containers/AccountSwitcher';
 
 const AccountInfo = ({
     balance,

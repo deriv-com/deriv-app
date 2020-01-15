@@ -1,5 +1,6 @@
 import classNames              from 'classnames';
 import PropTypes               from 'prop-types';
+import { toJS } from 'mobx';
 import React, { Component }    from 'react';
 import { withRouter }          from 'react-router';
 import { CSSTransition }       from 'react-transition-group';
@@ -54,6 +55,7 @@ class ContractDrawer extends Component {
             contract_info,
             is_dark_theme,
             is_sell_requested,
+            is_contract_waiting,
             onClickSell,
         } = this.props;
         const exit_spot = isUserSold(contract_info) ? '-' : exit_tick_display_value;
@@ -64,7 +66,7 @@ class ContractDrawer extends Component {
                 current_tick : getCurrentTick(contract_info);
             return current_tick;
         };
-
+        console.log(is_contract_waiting);
         return (
             <React.Fragment>
                 <ContractCard
@@ -137,6 +139,13 @@ class ContractDrawer extends Component {
                                 </span>
                             </div>
                         </div>
+                        { is_contract_waiting &&
+                            <div className='banner-message'>
+                                <Icon className='banner-message__icon' icon='IcMoreCircle' color='yellow' />
+                                <span className='banner-message__label'>{localize('Waiting for exit spot')}</span>
+                            </div>
+
+                        }
                         <CSSTransition
                             in={!!(isValidToSell(contract_info))}
                             timeout={250}

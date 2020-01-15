@@ -25,8 +25,8 @@ export const formatPortfolioPosition = (portfolio_pos, active_symbols = [], indi
         type          : portfolio_pos.contract_type,
         is_unsupported: !!getUnsupportedContracts()[portfolio_pos.contract_type],
         is_waiting    : portfolio_pos.validation_error
-            && portfolio_pos.is_expired
+            && portfolio_pos.is_expired === 1
             && portfolio_pos.status === 'open'
-            && portfolio_pos.is_sold,
+            && portfolio_pos.is_sold === 0,
     };
 };

@@ -198,6 +198,18 @@ $header-height: 4em;
             grid-template-columns: 1fr 1fr;
         }
     }
+    .banner-message {
+        display: flex;
+        align-items: center;
+        background-color: rgba(255, 172, 56, 0.16); // $color-yellow but with 0.16 opacity.
+        padding: 8px;
+        border-radius: $BORDER_RADIUS;
+        margin: 8px 0 -4px;
+
+        &__icon {
+            margin-right: 8px;
+        }
+    }
     &__sell-button {
         display: flex;
         align-items: center;

@@ -56,6 +56,7 @@ class ContractReplay extends React.Component {
             is_digit_contract,
             is_ended,
             is_sell_requested,
+            is_contract_waiting,
             location,
             NotificationMessages,
             onClickSell,
@@ -71,6 +72,7 @@ class ContractReplay extends React.Component {
                     is_dark_theme={is_dark_theme}
                     is_from_reports={is_from_table_row}
                     is_sell_requested={is_sell_requested}
+                    is_contract_waiting={is_contract_waiting}
                     onClickSell={onClickSell}
                     status={indicative_status}
                 />
@@ -150,6 +152,7 @@ export default withRouter(connect(
             error_message       : contract_replay.error_message,
             is_digit_contract   : contract_store.is_digit_contract,
             is_ended            : contract_store.is_ended,
+            is_contract_waiting : contract_store.is_contract_waiting,
             is_sell_requested   : contract_replay.is_sell_requested,
             onClickSell         : contract_replay.onClickSell,
             onMount             : contract_replay.onMount,

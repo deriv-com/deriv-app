@@ -42,7 +42,7 @@ class VerticalTabHeaders extends React.PureComponent {
                 ))}
                 <span
                     style={{
-                        transform: `translate3d(0, ${this.state.top}px, 0)`,
+                        transform: `translate3d(0, ${this.offset_top}px, 0)`,
                     }}
                     className='vertical-tab__header--highlight'
                 />

@@ -39,11 +39,11 @@ const Summary = ({
                 <div className='summary__tiles'>
                     <SummaryTile
                         title={localize('Total stake')}
-                        content={ Money({ amount: total_stake, currency }) }
+                        content={ <Money amount={total_stake} currency={currency} /> }
                     />
                     <SummaryTile
                         title={localize('Total payout')}
-                        content={ Money({ amount: total_payout, currency }) }
+                        content={ <Money amount={total_payout} currency={currency} />  }
                     />
                     <SummaryTile
                         title={localize('No. of runs')}
@@ -59,7 +59,7 @@ const Summary = ({
                     />
                     <SummaryTile
                         title={localize('Profit/Loss')}
-                        content={Money({ amount: total_profit, currency, has_sign: true })}
+                        content={ <Money amount={total_profit} currency={currency} has_sign={true} /> }
                         contentClassName={classNames(
                             'summary__tile-content',
                             'summary__amount', {

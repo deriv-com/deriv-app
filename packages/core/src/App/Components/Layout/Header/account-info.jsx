@@ -1,14 +1,20 @@
-import classNames          from 'classnames';
-import PropTypes           from 'prop-types';
-import React               from 'react';
-import { CSSTransition }   from 'react-transition-group';
-import { Icon }            from '@deriv/components';
-import { Localize }        from '@deriv/translations';
-import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
+import classNames            from 'classnames';
+import PropTypes             from 'prop-types';
+import React                 from 'react';
+import { CSSTransition }     from 'react-transition-group';
+import {
+    DesktopWrapper,
+    Icon,
+    MobileWrapper }          from '@deriv/components';
+import { Localize }          from '@deriv/translations';
+import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile.jsx';
+import { AccountSwitcher }   from 'App/Containers/AccountSwitcher';
 
 const AccountInfo = ({
     balance,
     currency,
+    disableApp,
+    enableApp,
     is_dialog_on,
     is_upgrade_enabled,
     is_virtual,
@@ -48,24 +54,35 @@ const AccountInfo = ({
             }
             <Icon icon='IcChevronDownBold' className='acc-info__select-arrow' />
         </div>
-        <CSSTransition
-            in={is_dialog_on}
-            timeout={200}
-            classNames={{
-                enter    : 'acc-switcher__wrapper--enter',
-                enterDone: 'acc-switcher__wrapper--enter-done',
-                exit     : 'acc-switcher__wrapper--exit',
-            }}
-            unmountOnExit
-        >
-            <div className='acc-switcher__wrapper'>
-                <AccountSwitcher
-                    is_visible={is_dialog_on}
-                    toggle={toggleDialog}
-                    is_upgrade_enabled={is_upgrade_enabled}
-                />
-            </div>
-        </CSSTransition>
+        <MobileWrapper>
+            <AccountSwitcherMobile
+                is_visible={is_dialog_on}
+                disableApp={disableApp}
+                enableApp={enableApp}
+                toggle={toggleDialog}
+                is_upgrade_enabled={is_upgrade_enabled}
+            />
+        </MobileWrapper>
+        <DesktopWrapper>
+            <CSSTransition
+                in={is_dialog_on}
+                timeout={200}
+                classNames={{
+                    enter    : 'acc-switcher__wrapper--enter',
+                    enterDone: 'acc-switcher__wrapper--enter-done',
+                    exit     : 'acc-switcher__wrapper--exit',
+                }}
+                unmountOnExit
+            >
+                <div className='acc-switcher__wrapper'>
+                    <AccountSwitcher
+                        is_visible={is_dialog_on}
+                        toggle={toggleDialog}
+                        is_upgrade_enabled={is_upgrade_enabled}
+                    />
+                </div>
+            </CSSTransition>
+        </DesktopWrapper>
     </div>
 );
 

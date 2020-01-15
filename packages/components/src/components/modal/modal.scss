@@ -1,6 +1,6 @@
 /** @define dc-modal; weak */
 .dc-modal {
-    &--is-mobile {
+    @include mobile {
         position: absolute;
         top: 0;
 
@@ -9,6 +9,7 @@
             top: 2rem;
         }
     }
+
     &__container {
         display: flex;
         flex-direction: column;

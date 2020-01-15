@@ -1,4 +1,9 @@
-import { Button, Icon, Popover } from '@deriv/components';
+import {
+    Button,
+    DesktopWrapper,
+    Icon,
+    Popover,
+    MobileWrapper }         from '@deriv/components';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
 import { localize }         from '@deriv/translations';
@@ -20,7 +25,6 @@ export class AccountActions extends Component {
             nextProps.can_upgrade_to !== this.props.can_upgrade_to ||
             nextProps.currency !== this.props.currency ||
             nextProps.is_acc_switcher_on !== this.props.is_acc_switcher_on ||
-            nextProps.is_mobile !== this.props.is_mobile ||
             nextProps.is_notifications_visible !== this.props.is_notifications_visible ||
             nextProps.is_logged_in !== this.props.is_logged_in ||
             nextProps.is_virtual !== this.props.is_virtual ||
@@ -38,7 +42,6 @@ export class AccountActions extends Component {
             enableApp,
             is_acc_switcher_on,
             is_logged_in,
-            is_mobile,
             is_notifications_visible,
             is_virtual,
             notifications_count,
@@ -49,8 +52,8 @@ export class AccountActions extends Component {
         } = this.props;
         if (is_logged_in) {
             return (
-                is_mobile ?
-                    <React.Fragment>
+                <React.Fragment>
+                    <MobileWrapper>
                         <ToggleNotifications
                             count={notifications_count}
                             is_visible={is_notifications_visible}
@@ -68,9 +71,8 @@ export class AccountActions extends Component {
                                 toggleDialog={toggleAccountsDialog}
                             />
                         </React.Suspense>
-                    </React.Fragment>
-                    :
-                    <React.Fragment>
+                    </MobileWrapper>
+                    <DesktopWrapper>
                         <ToggleNotifications
                             count={notifications_count}
                             is_visible={is_notifications_visible}
@@ -119,7 +121,8 @@ export class AccountActions extends Component {
                             primary
                         />
                         }
-                    </React.Fragment>
+                    </DesktopWrapper>
+                </React.Fragment>
             );
         }
         return (

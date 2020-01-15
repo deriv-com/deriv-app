@@ -3,7 +3,6 @@ import PropTypes         from 'prop-types';
 import React             from 'react';
 import ReactDOM          from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import { isMobile }      from '@deriv/shared/utils/screen';
 import Body              from './modal-body.jsx';
 import Footer            from './modal-footer.jsx';
 import Icon              from '../icon';
@@ -22,7 +21,6 @@ class ModalElement extends React.PureComponent {
             document.addEventListener('mousedown', this.handleClickOutside);
         }
         this.el.classList.add('dc-modal');
-        if (isMobile()) this.el.classList.add('dc-modal--is-mobile');
         this.state.modal_root.appendChild(this.el);
     };
 

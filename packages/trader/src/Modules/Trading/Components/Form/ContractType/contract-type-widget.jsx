@@ -78,6 +78,7 @@ class ContractTypeWidget extends React.PureComponent {
     };
 
     handleClickOutside = (event) => {
+        if (this.props.is_mobile) return;
         if (this.wrapper_ref && !this.wrapper_ref.contains(event.target) && this.state.is_dialog_open) {
             this.setState({ is_dialog_open: false });
         } else if (this.wrapper_ref && !this.wrapper_ref.contains(event.target) && this.state.is_info_dialog_open) {
@@ -181,6 +182,7 @@ class ContractTypeWidget extends React.PureComponent {
                         handleInfoClick={this.handleInfoClick}
                         handleSelect={this.handleSelect}
                         is_equal={is_equal}
+                        is_mobile={is_mobile}
                         list={list}
                         name={name}
                         value={value}

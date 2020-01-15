@@ -29,6 +29,7 @@ module.exports = {
         input              : path.resolve(__dirname, 'src', 'components/input/index.js'),
         label              : path.resolve(__dirname, 'src', 'components/label/index.js'),
         loading            : path.resolve(__dirname, 'src', 'components/loading/index.js'),
+        'mobile-dialog'    : path.resolve(__dirname, 'src', 'components/mobile-dialog/index.js'),
         'mobile-drawer'    : path.resolve(__dirname, 'src', 'components/mobile-drawer/index.js'),
         'mobile-wrapper'   : path.resolve(__dirname, 'src', 'components/mobile-wrapper/index.js'),
         modal              : path.resolve(__dirname, 'src', 'components/modal/index.js'),

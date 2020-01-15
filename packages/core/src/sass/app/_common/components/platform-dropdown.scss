@@ -16,11 +16,13 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: calc(295px - 16px);
+            width: calc(295px - 1.6rem);
             background-color: var(--general-main-2);
 
             &-platform {
-                width: calc(100% - 16px);
+                width: calc(100% - 1.6rem);
+                margin: 1.4rem 1.6rem;
+                padding: 1.4rem 1.6rem;
             }
         }
     }
@@ -45,25 +47,25 @@
             background-color: transparent;
             color: var(--text-general);
             text-decoration: none;
-            margin: 24px 16px;
-            padding: 24px 16px;
+            margin: 2.4rem 1.6rem;
+            padding: 2.4rem 1.6rem;
             width: 302px;
-            border-radius: 8px;
+            border-radius: 0.8rem;
 
             &-icon {
                 min-height: 32px;
                 min-width: 32px;
-                margin-right: 16px;
+                margin-right: 1.6rem;
             }
             &-title {
-                font-size: 16px;
+                font-size: 1.6rem;
                 font-weight: bold;
-                line-height: 24px;
+                line-height: 2.4rem;
             }
             &-description {
-                font-size: 14px;
-                line-height: 20px;
-                margin-top: 8px;
+                font-size: 1.4rem;
+                line-height: 2rem;
+                margin-top: 0.8rem;
             }
             &-background {
                 opacity: 0;

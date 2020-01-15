@@ -2,6 +2,7 @@ import classNames              from 'classnames';
 import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { withRouter }          from 'react-router-dom';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import {
     AccountActions,
     MenuLinks,
@@ -33,7 +34,6 @@ class Header extends React.Component {
             is_dark_mode,
             is_logged_in,
             is_logging_in,
-            is_mobile,
             is_mt5_allowed,
             is_notifications_visible,
             is_route_modal_on,
@@ -59,14 +59,14 @@ class Header extends React.Component {
 
         return (
             <header className={classNames('header', {
-                'header--is-mobile'  : is_mobile,
+                'header--is-mobile'  : isMobile(),
                 'header--is-disabled': (is_app_disabled || is_route_modal_on),
             })}
             >
                 <div className='header__menu-items'>
                     <div className='header__menu-left'>
 
-                        {!this.props.is_mobile ?
+                        {isDesktop() ?
                             <PlatformSwitcher platform_config={filterPlatformsForClients(platform_config)} />
                             :
                             <>
@@ -79,7 +79,7 @@ class Header extends React.Component {
                                     toggleTheme={setDarkMode}
                                     platform_switcher={
                                         <PlatformSwitcher
-                                            is_mobile={is_mobile}
+                                            is_mobile={isMobile()}
                                             platform_config={filterPlatformsForClients(platform_config)}
                                         />}
                                 />
@@ -96,18 +96,18 @@ class Header extends React.Component {
                         />
                     </div>
                     <div className={classNames('header__menu-right', {
-                        'header__menu-right--mobile': is_mobile,
+                        'header__menu-right--mobile': isMobile(),
                     })}
                     >
                         {is_logging_in &&
                         <div className={classNames('acc-info__preloader', {
                             'acc-info__preloader--no-currency': !currency,
-                            'acc-info__preloader--is-mobile'  : is_mobile,
+                            'acc-info__preloader--is-mobile'  : isMobile(),
                         })}
                         >
                             <AccountsInfoLoader
                                 is_logged_in={is_logged_in}
-                                is_mobile={is_mobile}
+                                is_mobile={isMobile()}
                                 speed={3}
                             />
                         </div>
@@ -121,7 +121,7 @@ class Header extends React.Component {
                                 disableApp={disableApp}
                                 enableApp={enableApp}
                                 is_acc_switcher_on={is_acc_switcher_on}
-                                is_mobile={is_mobile}
+                                is_mobile={isMobile()}
                                 is_notifications_visible={is_notifications_visible}
                                 is_logged_in={is_logged_in}
                                 is_virtual={is_virtual}
@@ -153,7 +153,6 @@ Header.propTypes = {
     is_dark_mode            : PropTypes.bool,
     is_logged_in            : PropTypes.bool,
     is_logging_in           : PropTypes.bool,
-    is_mobile               : PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
     is_route_modal_on       : PropTypes.bool,
     is_virtual              : PropTypes.bool,
@@ -184,7 +183,6 @@ export default connect(
         notifications_count     : ui.notifications.length,
         is_notifications_visible: ui.is_notifications_visible,
         is_route_modal_on       : ui.is_route_modal_on,
-        is_mobile               : ui.is_mobile,
         openRealAccountSignup   : ui.openRealAccountSignup,
         disableApp              : ui.disableApp,
         toggleAccountsDialog    : ui.toggleAccountsDialog,

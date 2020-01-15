@@ -207,7 +207,11 @@ class FormAds extends Component {
                                                         {...field}
                                                         data-lpignore='true'
                                                         type='number'
-                                                        error={touched.min_transaction && errors.min_transaction}
+                                                        error={
+                                                            touched.min_transaction
+                                                            && touched.max_transaction
+                                                            && errors.min_transaction
+                                                        }
                                                         label={localize('Min limit')}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.offer_currency}</span>}
@@ -220,7 +224,11 @@ class FormAds extends Component {
                                                     <Input
                                                         {...field}
                                                         type='number'
-                                                        error={touched.max_transaction && errors.max_transaction}
+                                                        error={
+                                                            touched.max_transaction
+                                                            && touched.min_transaction
+                                                            && errors.max_transaction
+                                                        }
                                                         label={localize('Max limit')}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.offer_currency}</span>}

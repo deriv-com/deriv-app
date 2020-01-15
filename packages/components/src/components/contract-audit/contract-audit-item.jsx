@@ -32,16 +32,10 @@ const ContractAuditItem = ({
 );
 
 ContractAuditItem.propTypes = {
-    icon : PropTypes.node,
-    label: PropTypes.string,
-    value: PropTypes.PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    value2: PropTypes.PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
+    icon  : PropTypes.node,
+    label : PropTypes.string,
+    value : PropTypes.node,
+    value2: PropTypes.node,
 };
 
 export default ContractAuditItem;

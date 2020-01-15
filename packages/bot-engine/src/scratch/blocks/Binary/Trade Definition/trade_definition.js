@@ -116,7 +116,7 @@ Blockly.Blocks.trade_definition = {
     },
 };
 
-Blockly.JavaScri = block => {
+Blockly.JavaScript.trade_definition = block => {
     
     if (!client.is_logged_in) {
         throw new Error('Please login');

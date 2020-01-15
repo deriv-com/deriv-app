@@ -42,16 +42,14 @@ class App extends React.Component {
     render() {
         return (
             <Provider {...this.root_store}>
-                <>
-                    <NotificationMessages />
-                    <div className='bot'>
-                        <Toolbar />
-                        <MainContent />
-                        <RunPanel />
-                        <QuickStrategy />
-                        <FooterExtension />
-                    </div>
-                </>
+                <div className='bot'>
+                    {/* <NotificationMessages /> */}
+                    <Toolbar />
+                    <MainContent />
+                    <RunPanel />
+                    <QuickStrategy />
+                    <FooterExtension />
+                </div>
             </Provider>
         );
     }

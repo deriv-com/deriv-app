@@ -77,6 +77,7 @@ export const icons =
         'IcEmailSpam',
         'IcEmailTypo',
         'IcEmail',
+        'IcEmptyFolder',
         'IcEye',
         'IcFolderOpen',
         'IcFullScreen',

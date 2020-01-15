@@ -85,3 +85,24 @@ export const importExternal = url => {
         document.body.appendChild(script);
     });
 };
+
+export const timeSince = timestamp => {
+    const now = new Date(),
+        second_past = (now.getTime() - timestamp) / 1000;
+    if (second_past < 60) {
+        return `${parseInt(second_past)}s ago`;
+    }
+    if (second_past < 3600) {
+        return `${parseInt(second_past / 60)}m ago`;
+    }
+    if (second_past <= 86400) {
+        return `${parseInt(second_past / 3600)}h ago`;
+    }
+    if (second_past > 86400) {
+        const timestamp_date = new Date(timestamp);
+        const day = timestamp_date.getDate();
+        const month = timestamp_date.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ", "");
+        const year = timestamp_date.getFullYear() == now.getFullYear() ? "" : " " + timestamp_date.getFullYear();
+        return `${day} ${month}${year}`;
+    }
+}

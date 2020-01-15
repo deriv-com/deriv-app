@@ -4,7 +4,7 @@ import {
     action,
 }                           from 'mobx';
 import {
-    saveWorkspaceToLocal,
+    saveWorkspaceToRecent,
 }                           from '../scratch/utils';
 import { save_types }       from '../constants/save-type';
 
@@ -51,7 +51,7 @@ export default class SaveModalStore {
 
             this.setButtonStatus(2);
         }
-        saveWorkspaceToLocal(is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
+        saveWorkspaceToRecent(is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
         this.toggleSaveModal();
     }
 

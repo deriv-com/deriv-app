@@ -126,7 +126,7 @@ export default class GoogleDriveStore {
     }
 
     createSaveFilePicker(mime_type, title, options) {
-        const { setButtonStatus } = this.root_store.saveload;
+        const { setButtonStatus } = this.root_store.save_modal;
         return new Promise(resolve => {
             const savePickerCallback = data => {
                 if (data.action === google.picker.Action.PICKED) {

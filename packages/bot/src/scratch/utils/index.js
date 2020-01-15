@@ -4,6 +4,7 @@ import BlockConversion         from '../backward-compatibility';
 import { saveAs }              from '../shared';
 import config                  from '../../constants';
 import ScratchStore            from '../../stores/scratch-store';
+import { save_types } from '../../constants/save-type';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 
@@ -387,11 +388,17 @@ export const emptyTextValidator = (input) => {
     return !input || input === '\'\'';
 };
 
-export const saveWorkspaceToLocal = location => {
+export const saveWorkspaceToRecent = (location, event = {}) => {
+    if(event.recordUndo === false) {
+        return;
+    }
+    
+    const { toolbar } = ScratchStore.instance.root_store;
+    const workspace_id = Blockly.derivWorkspace.id;
     const workspaces = JSON.parse(localStorage.getItem('saved_workspace')) || [];
     const current_xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.derivWorkspace));
-    const current_timestamp = Math.floor(Date.now() / 1000);
-    const current_workspace_index = workspaces.findIndex(workspace => workspace.id === `${Blockly.derivWorkspace.id}_${location}`);
+    const current_timestamp = new Date().getTime();
+    const current_workspace_index = workspaces.findIndex(workspace => workspace.id === `${workspace_id}_${location}`);
 
     if (current_workspace_index >= 0) {
         const current_workspace = workspaces[current_workspace_index];
@@ -399,9 +406,16 @@ export const saveWorkspaceToLocal = location => {
         current_workspace.timestamp = current_timestamp;
         current_workspace.location = location;
     } else {
+        const unsaved_workspace_index = workspaces.findIndex(workspace => workspace.id === `${workspace_id}_${save_types.UNSAVED}`);
+
+        if(unsaved_workspace_index >= 0) {
+            workspaces.splice(unsaved_workspace_index, 1);
+        }
+        
         workspaces.push({
-            id       : `${Blockly.derivWorkspace.id}_${location}`,
+            id       : `${workspace_id}_${location}`,
             timestamp: current_timestamp,
+            name     : toolbar.file_name,
             xml      : current_xml,
             location,
         });
@@ -415,3 +429,7 @@ export const saveWorkspaceToLocal = location => {
 
     localStorage.setItem('saved_workspace', JSON.stringify(workspaces));
 };
+
+export const getRecentFiles = () => {
+    return JSON.parse(localStorage.getItem('saved_workspace'));
+}

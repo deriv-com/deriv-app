@@ -30,7 +30,7 @@ const SearchBox = ({
     <div className='toolbar__form'>
         <Formik
             initialValues={{ search: '' }}
-            onSubmit={values => onSearch(values)}
+            onSubmit={onSearch}
         >
             {
                 ({ submitForm, values: { search }, setFieldValue }) => (

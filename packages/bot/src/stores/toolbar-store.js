@@ -61,6 +61,7 @@ export default class ToolbarStore {
 
     @action.bound
     onSearch({ search }) {
+        this.is_search_focus = true;
         if (this.is_toolbox_open && search !== '') {
             this.onToolboxToggle();
         }

@@ -4,7 +4,7 @@ import                                    './hooks';
 import {
     hasAllRequiredBlocks,
     updateDisabledBlocks,
-    saveWorkspaceToLocal,
+    saveWorkspaceToRecent,
 }                                     from './utils';
 import { onWorkspaceResize }          from './utils/workspace';
 import config                         from '../constants';
@@ -40,7 +40,7 @@ class DBot {
             this.workspace.toolboxXmlStr = toolbox_xml;
             Blockly.derivWorkspace       = this.workspace;
 
-            this.workspace.addChangeListener(() => saveWorkspaceToLocal(save_types.UNSAVED));
+            this.workspace.addChangeListener((event) => saveWorkspaceToRecent(save_types.UNSAVED, event));
             this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
             this.workspace.addChangeListener((event) => updateDisabledBlocks(this.workspace, event));
             this.addBeforeRunFunction(this.unselectBlocks.bind(this));

@@ -12,15 +12,15 @@ class Tabs extends Component {
 
     onTabItemClick = index => {
         this.setState({ active_index: index });
-
-        if (typeof this.props.onTabItemClick === 'function') {
-            this.props.onTabItemClick(index);
-        }
     };
 
     componentDidUpdate(prev_props, prev_state) {
-        if (this.props.active_index && prev_state.active_index !== this.props.active_index) {
-            this.setState({ active_index: this.props.active_index || 0 });
+        if (this.props.active_index !== -1 && prev_state.active_index !== this.state.active_index) {
+            this.setState({ active_index: this.state.active_index || 0 });
+
+            if (typeof this.props.onTabItemClick === 'function') {
+                this.props.onTabItemClick(this.state.active_index);
+            }
         }
     }
 

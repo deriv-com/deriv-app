@@ -53,6 +53,7 @@ const Transaction = ({
     <Popover
         alignment='left'
         className='transactions__item-wrapper'
+        classNameBubble='transactions__contract-audit'
         is_open={active_transaction_id === contract.transaction_ids.buy}
         message={
             <ContractAudit
@@ -62,9 +63,7 @@ const Transaction = ({
                 duration={PortfolioUtils.getDurationTime(contract)}
                 duration_unit={PortfolioUtils.getDurationUnitText(PortfolioUtils.getDurationPeriod(contract))}
                 exit_spot={contract.exit_spot}
-                has_result={!!(contract.is_sold)}
-                is_allow_partial_load={true}
-                content_loader={<TransactionFieldLoader width={150} />}
+                should_add_scrollbars={false}
             />
         }
     >

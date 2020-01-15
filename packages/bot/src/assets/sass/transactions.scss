@@ -142,13 +142,11 @@
             margin-right: 10px;
         }
     }
-}
+    &__contract-audit {
+        font-size: 1em !important;
 
-.contract-audit {
-    &__wrapper {
-        font-size: 10px;
-        height: 320px !important;
-        margin-top: 0 !important;
-        width: 220px !important;
+        & .contract-audit__wrapper {
+            margin-top: 0 !important;
+        }
     }
 }

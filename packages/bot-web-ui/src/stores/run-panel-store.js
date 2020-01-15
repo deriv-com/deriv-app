@@ -8,15 +8,15 @@ import {
     error_types,
     unrecoverable_errors,
     observer ,
-    setMainContentWidth ,
     isEnded }                          from 'deriv-bot-engine';
-// import DBot                            from 'deriv-bot-engine';
+import { setMainContentWidth }         from '../utils/window-size';
 import { contract_stages }             from '../constants/contract-stage';
 import { switch_account_notification } from '../utils/bot-notifications';
 
 export default class RunPanelStore {
     constructor(root_store) {
         this.root_store = root_store;
+        this.dbot       = this.root_store.dbot;
         this.registerCoreReactions();
     }
 
@@ -70,15 +70,13 @@ export default class RunPanelStore {
         
         contract_card.clear();
         this.setContractStage(contract_stages.STARTING);
-        // DBot.runBot();
+        this.dbot.runBot();
     }
 
     @action.bound
     onStopButtonClick() {
-        // DBot.stopBot();
-
+        this.dbot.stopBot();
         this.is_running = false;
-
         if (this.error_type) {
             // when user click stop button when there is a error but bot is retrying
             this.setContractStage(contract_stages.NOT_RUNNING);
@@ -308,7 +306,7 @@ export default class RunPanelStore {
                         if (loginid && this.is_running) {
                             ui.addNotificationMessage(switch_account_notification);
                         }
-                        // DBot.terminateBot();
+                        this.dbot.terminateBot();
                         RunPanelStore.unregisterBotListeners();
                         this.clearStat();
                     },

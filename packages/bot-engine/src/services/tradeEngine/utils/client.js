@@ -1,4 +1,4 @@
-export const client = () => {
+export const client = (() => {
     const accounts     = JSON.parse(localStorage.getItem('client.accounts'));
     const login_id     = localStorage.getItem('active_loginid');
     const current_user = accounts && accounts[login_id];
@@ -12,4 +12,4 @@ export const client = () => {
         is_logged_in,
         token,
     };
-};
+})();

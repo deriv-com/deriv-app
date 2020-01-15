@@ -1,7 +1,7 @@
 import { localize }          from 'deriv-translations';
 import { defineContract }    from '../../images';
 import { setBlockTextColor } from '../../../utils';
-import { client }            from '../../../../services/tradeEngine/utils/user';
+import { client }            from '../../../../services/tradeEngine/utils/client';
 import { config }            from '../../../../constants/config';
 
 Blockly.Blocks.trade_definition = {
@@ -123,7 +123,7 @@ Blockly.JavaScri = block => {
     }
 
     const { token: account }         = client;
-    
+
     const market_block               = block.getChildByType('trade_definition_market');
     const trade_type_block           = block.getChildByType('trade_definition_tradetype');
     const contract_type_block        = block.getChildByType('trade_definition_contracttype');

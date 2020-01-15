@@ -1,12 +1,12 @@
 import PendingPromise from '../../utils/pending-promise';
 
 export default class TradingTimes {
-    constructor(root_store) {
+    constructor({ ws, server_time }) {
         this.init_promise   = new PendingPromise();
         this.is_initialised = false;
         this.trading_times  = {};
-        this.root_store     = root_store;
-        this.ws             = this.root_store.ws;
+        this.ws             = ws;
+        this.server_time    = server_time;
     }
 
     async initialise() {
@@ -15,8 +15,8 @@ export default class TradingTimes {
         }
 
         this.is_initialised     = true;
-        const { server_time }   = this.root_store.core.common;
-        this.server_time        = server_time.clone();
+        // why clone here?
+        // this.server_time        = server_time.clone();
         this.last_update_moment = this.server_time.local();
 
         if (!Object.keys(this.trading_times).length) {

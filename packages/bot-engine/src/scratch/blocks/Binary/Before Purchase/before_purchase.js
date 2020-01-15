@@ -1,8 +1,7 @@
 import { localize }          from 'deriv-translations';
 import { purchase }          from '../../images';
 import { setBlockTextColor } from '../../../utils';
-
-// import ScratchStore          from '../../../../stores/scratch-store';
+// import DBotStore          from '../../../dbot-store';
 
 Blockly.Blocks.before_purchase = {
     init() {
@@ -46,7 +45,7 @@ Blockly.Blocks.before_purchase = {
     },
     onchange(event) {
         // TODO: incomment this when the dark mode is done
-        // if (!ScratchStore.instance.root_store.core.ui.is_dark_mode_on) {
+        // if (!DBotStore.instance.is_dark_mode_on) {
         setBlockTextColor(this);
         // }
 

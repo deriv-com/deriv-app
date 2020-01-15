@@ -1,10 +1,9 @@
 import {
     observable,
     action,
-}                                from 'mobx';
-import { localize, getLanguage } from 'deriv-translations';
-import { importExternal }        from 'deriv-bot-engine';
-import { config }                from 'deriv-bot-engine';
+}                                 from 'mobx';
+import { localize, getLanguage }  from 'deriv-translations';
+import { importExternal, config } from 'deriv-bot-engine';
 
 export default class GoogleDriveStore {
     constructor(root_store) {

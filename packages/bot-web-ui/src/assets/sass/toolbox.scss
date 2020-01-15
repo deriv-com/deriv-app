@@ -59,6 +59,7 @@ $category-colours: (
     &__category-arrow {
         display: flex;
         margin: auto;
+        background-image: url('/images/ic-chevron-down-bold.svg');
 
         &--back {
             margin-left: $category-text-spacing;

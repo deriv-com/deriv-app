@@ -2,7 +2,7 @@ import PendingPromise from '../../utils/pending-promise';
 import { config }     from '../../constants/config';
 
 export default class ActiveSymbols {
-    constructor(root_store, trading_times) {
+    constructor(ws, trading_times) {
         this.active_symbols      = [];
         this.disabled_markets    = [];
         this.disabled_symbols    = ['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK']; // These are only forward-starting.
@@ -11,8 +11,7 @@ export default class ActiveSymbols {
         this.is_initialised      = false;
         this.processed_symbols   = {};
         this.trading_times       = trading_times;
-        this.root_store          = root_store;
-        this.ws                  = this.root_store.ws;
+        this.ws                  = ws;
     }
 
     async retrieveActiveSymbols(is_forced_update = false) {

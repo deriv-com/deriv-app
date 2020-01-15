@@ -1,6 +1,6 @@
 import { getFormattedText } from 'deriv-shared/utils/currency';
-import { info }            from '../utils/broadcast';
-import { client }          from '../utils/user';
+import { info }             from '../utils/broadcast';
+import { client }           from '../utils/client';
 
 let balanceStr = '';
 

@@ -10,7 +10,7 @@ const Firestore = (() => {
     let db, users, doc_id, root_store;
 
     const getServerTime = ()=> {
-        return root_store.core.common.server_time.unix();
+        return root_store.server_time.unix();
     };
 
     const init = (_root_store) => {

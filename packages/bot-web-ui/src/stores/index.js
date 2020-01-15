@@ -6,7 +6,6 @@ import GoogleDriveStore   from './google-drive-store';
 import JournalStore       from './journal-store';
 import RunPanelStore      from './run-panel-store';
 import SaveLoadModalStore from './saveload-modal-store';
-import ScratchStore       from './scratch-store';
 import SummaryStore       from './summary-store';
 import ToolbarStore       from './toolbar-store';
 import TransactionsStore  from './transactions-store';
@@ -14,11 +13,13 @@ import QuickStrategyStore from './quick-strategy-store';
 import MainContentStore   from './main-content-store';
 
 export default class RootStore {
-    constructor(core, ws) {
+    constructor(core, ws, dbot) {
         this.core             = core;
         this.ui               = core.ui;
         this.common           = core.common;
         this.ws               = ws;
+        this.dbot             = dbot;
+        this.server_time      = core.common.server_time;
         this.contract_card    = new ContractCardStore(this);
         this.flyout           = new FlyoutStore(this);
         this.flyout_help      = new FlyoutHelpStore(this);
@@ -32,8 +33,5 @@ export default class RootStore {
         this.run_panel        = new RunPanelStore(this);
         this.chart_store      = new ChartStore(this);
         this.main_content     = new MainContentStore(this);
-
-        // Create a singleton class to share root_store with scratch
-        ScratchStore.setInstance(this);
     }
 }

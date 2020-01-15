@@ -7,7 +7,7 @@ import {
 import { localize }  from 'deriv-translations';
 import { ApiHelpers,
     config,
-    load
+    load,
 }                    from 'deriv-bot-engine';
 
 export default class QuickStrategyStore {

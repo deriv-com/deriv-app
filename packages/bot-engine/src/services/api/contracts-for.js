@@ -2,9 +2,11 @@ import { config }     from '../../constants/config';
 import PendingPromise from '../../utils/pending-promise';
 
 export default class ContractsFor {
-    constructor(root_store) {
-        this.cache_age_in_min          = 10;
-        this.contracts_for             = {};
+    constructor({ ws, server_time }) {
+        this.cache_age_in_min = 10;
+        this.contracts_for    = {};
+        this.ws               = ws;
+        this.server_time      = server_time;
         // Below you can disable specific trade types and trade type categories, you may specify
         // market, submarket, symbol, trade_type, and trade_type_category. If one of
         // the props is left omitted, the rule applies to each of the values of the omitted prop.
@@ -34,8 +36,6 @@ export default class ContractsFor {
             { trade_type_category: 'callputspread' },
         ];
         this.retrieving_contracts_for  = {};
-        this.root_store                = root_store;
-        this.ws                        = this.root_store.ws;
 
     }
 
@@ -186,8 +186,6 @@ export default class ContractsFor {
             return [];
         }
 
-        const { server_time } = this.root_store.core.common;
-
         const getContractsForFromApi = async () => {
             if (this.retrieving_contracts_for[symbol]) {
                 await this.retrieving_contracts_for[symbol];
@@ -208,7 +206,7 @@ export default class ContractsFor {
 
             this.contracts_for[symbol] = {
                 contracts: filtered_contracts,
-                timestamp: server_time.unix(),
+                timestamp: this.server_time.unix(),
             };
 
             this.retrieving_contracts_for[symbol].resolve();
@@ -219,7 +217,7 @@ export default class ContractsFor {
 
         if (this.contracts_for[symbol]) {
             const { contracts, timestamp } = this.contracts_for[symbol];
-            const is_expired = (server_time.unix() - timestamp > this.cache_age_in_min * 60);
+            const is_expired = (this.server_time.unix() - timestamp > this.cache_age_in_min * 60);
 
             if (is_expired) {
                 getContractsForFromApi();

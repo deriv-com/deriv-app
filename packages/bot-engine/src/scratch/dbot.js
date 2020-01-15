@@ -4,25 +4,29 @@ import                                    './hooks';
 import {
     hasAllRequiredBlocks,
     updateDisabledBlocks }            from './utils';
+import DBotStore                      from './dbot-store';
 import { onWorkspaceResize }          from '../utils/workspace';
 import { config }                     from '../constants/config';
+import ApiHelpers                     from '../services/api/api-helpers';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import { observer as globalObserver } from '../utils/observer';
 
 class DBot {
-    constructor(scratch_store) {
+    constructor() {
         this.interpreter      = null;
         this.workspace        = null;
-        this.scratch_store    = scratch_store;
         this.before_run_funcs = [];
     }
 
     /**
      * Initialises the workspace and mounts it to a container element (app_contents).
      */
-    async initWorkspace(webpack_public_path) {
+    async initWorkspace(_webpack_public_path, _store, _api_helper_store) {
         try {
-            __webpack_public_path__ = webpack_public_path; // eslint-disable-line no-global-assign
+            __webpack_public_path__ = _webpack_public_path; // eslint-disable-line no-global-assign
+            ApiHelpers.setInstance(_api_helper_store);
+            DBotStore.setInstance(_store);
+
             const el_scratch_div  = document.getElementById('scratch_div');
             const toolbox_xml     = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(r => r.text()); // eslint-disable-line
             const main_xml        = await fetch(`${__webpack_public_path__}xml/main.xml`).then(r => r.text()); // eslint-disable-line
@@ -49,7 +53,7 @@ class DBot {
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), this.workspace);
             this.workspace.clearUndo();
 
-            const { saveload } = this.scratch_store;
+            const { saveload } = DBotStore.instance;
             const drop_zone    = document.body;
     
             window.addEventListener('resize', () => onWorkspaceResize());
@@ -85,32 +89,28 @@ class DBot {
         const should_run_bot = this.before_run_funcs.every(func => !!func());
         
         if (!should_run_bot) {
-            const { run_panel } = this.scratch_store.root_store;
-            if (run_panel) {
-                run_panel.onStopButtonClick();
-            }
-            return;
+            this.stopBot();
         }
 
-        try {
-            const code = this.generateCode();
+        // try {
+        const code = this.generateCode();
 
-            if (this.interpreter !== null) {
-                this.stopBot();
-            }
+        if (this.interpreter !== null) {
+            this.stopBot();
+        }
 
-            this.interpreter = new Interpreter();
-            this.interpreter.run(code).catch(error => {
-                globalObserver.emit('Error', error);
-                this.stopBot();
-            });
-        } catch (error) {
+        this.interpreter = new Interpreter();
+        this.interpreter.run(code).catch(error => {
             globalObserver.emit('Error', error);
+            this.stopBot();
+        });
+        // } catch (error) {
+        //     globalObserver.emit('Error', error);
 
-            if (this.interpreter) {
-                this.stopBot();
-            }
-        }
+        //     if (this.interpreter) {
+        //         this.stopBot();
+        //     }
+        // }
     }
 
     /**
@@ -218,12 +218,9 @@ class DBot {
         const error_block = all_blocks.find(block => block.is_error_highlighted && !block.disabled);
 
         if (error_block) {
-            const { run_panel } = this.scratch_store.instance.root_store;
-            const message       = localize('The block(s) highlighted in red are missing input values. Please update them and click "Run bot".');
+            const message = localize('The block(s) highlighted in red are missing input values. Please update them and click "Run bot".');
             this.workspace.centerOnBlock(error_block.id);
-            if (run_panel) {
-                run_panel.showErrorMessage(message);
-            }
+            globalObserver.emit('Error', message);
 
             return false;
         }

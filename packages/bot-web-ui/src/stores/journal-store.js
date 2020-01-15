@@ -10,7 +10,7 @@ export default class JournalStore {
     }
 
     get serverTime () {
-        return this.root_store.core.common.server_time;
+        return this.root_store.server_time;
     }
 
     @observable messages = [];
@@ -34,7 +34,7 @@ export default class JournalStore {
     pushMessage(data, message_type) {
         const date = formatDate(this.serverTime.get());
         const time = formatDate(this.serverTime.get(), 'HH:mm:ss [GMT]');
-        
+
         let error_message  = data;
         if (typeof data !== 'string') {
             const { error , message } = data;

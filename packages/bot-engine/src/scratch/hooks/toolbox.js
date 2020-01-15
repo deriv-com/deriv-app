@@ -1,8 +1,5 @@
-// import React        from 'react';
-// import ReactDOM     from 'react-dom';
-// import { Icon }     from 'deriv-components';
 import { localize } from 'deriv-translations';
-import ScratchStore from '../scratch-store';
+import DBotStore    from '../dbot-store';
 
 /**
  * Width of the toolbox, which changes only in vertical layout.
@@ -23,7 +20,7 @@ Blockly.Toolbox.prototype.init = function () {
      * @type {Element}
      */
     this.HtmlDiv = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox');
-    this.HtmlDiv.setAttribute('id', 'gtm-toolbox');
+    this.HtmlDiv.setAttribute('id','gtm-toolbox');
     this.HtmlDiv.setAttribute('dir', workspace.RTL ? 'RTL' : 'LTR');
 
     // deriv-bot: Create Toolbox header
@@ -75,12 +72,12 @@ Blockly.Toolbox.prototype.populate_ = function (newTree) {
 
     this.categoryMenu_.populate(newTree);
 
-    const { instance : { quick_strategy } } = ScratchStore;
+    const { quick_strategy } = DBotStore.instance;
     const quick_strat_btn = document.createElement('BUTTON');
     quick_strat_btn.innerHTML = localize('Quick Strategy');
     quick_strat_btn.className = 'toolbox__button btn effect btn--primary btn__medium';
     quick_strat_btn.id = 'gtm-quick-strategy';
-    quick_strat_btn.onclick = quick_strategy.toggleQickStrategyModal;
+    quick_strat_btn.onclick = quick_strategy.toggleStrategyModal;
 
     parent.appendChild(quick_strat_btn);
 };
@@ -88,10 +85,10 @@ Blockly.Toolbox.prototype.populate_ = function (newTree) {
 Blockly.Toolbox.prototype.showSearch = function (search) {
     const flyout_content = [];
     const workspace = Blockly.derivWorkspace;
-    const search_term = search.replace(/\s+/g, ' ').trim().toUpperCase();
+    const search_term = search.replace(/\s+/g,' ').trim().toUpperCase();
     const all_variables = workspace.getVariablesOfType('');
     const all_procedures = Blockly.Procedures.allProcedures(workspace);
-    const { instance : { flyout } } = ScratchStore;
+    const { flyout } = DBotStore.instance;
 
     flyout.setVisibility(false);
 
@@ -144,14 +141,14 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
         switch (priority) {
             case 'exact_block_name': {
                 if (search_regex.test(block_name.toUpperCase()) ||
-                    search_regex.test(block_type.toUpperCase())) {
+                search_regex.test(block_type.toUpperCase())) {
                     pushIfNotExists(flyout_content, block_content);
                 }
                 break;
             }
             case 'block_term': {
                 if (block_type_terms.some(term => search_regex.test(term)) ||
-                    block_name_terms.some(term => search_regex.test(term))) {
+                block_name_terms.some(term => search_regex.test(term))) {
                     pushIfNotExists(flyout_content, block_content);
                 }
                 break;
@@ -173,8 +170,8 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
                             const definition_strings = JSON.stringify(def).toUpperCase();
 
                             if (def.type === 'field_dropdown' &&
-                                search_term > 2 &&
-                                definition_strings.includes(search_term)) {
+                            search_term > 2 &&
+                            definition_strings.includes(search_term)) {
                                 has_dropdown_and_in_search = true;
                             }
                         });
@@ -282,7 +279,7 @@ Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
         flyout_content = fnToApply(this.workspace_);
     }
 
-    const { instance: { flyout } } = ScratchStore;
+    const { instance: { flyout } } = DBotStore;
     flyout.setIsSearchFlyout(false);
     flyout.setContents(flyout_content);
 };
@@ -324,7 +321,7 @@ Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function (selected) {
  * @param {boolean} should_close_on_same_category Close when select the same category
  */
 Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same_category = true) {
-    const { instance: { flyout } } = ScratchStore;
+    const { instance: { flyout } } = DBotStore;
     if (this.selectedItem_) {
         // They selected a different category but one was already open.  Close it.
         this.selectedItem_.setSelected(false);
@@ -453,9 +450,8 @@ Blockly.Toolbox.Category.prototype.createDom = function () {
     this.item_ = el_item;
 
     if (this.is_category_return_) {
-        const el_return_arrow = goog.dom.createDom('div', 'toolbox__category-arrow toolbox__category-arrow--back');
-        // ReactDOM.render(<Icon icon='IcChevronDownBold' className='arrow' />, el_return_arrow);
-        el_item.appendChild(el_return_arrow);
+        const el_category_arrow = goog.dom.createDom('div', 'toolbox__category-arrow toolbox__category-arrow--open');
+        el_item.appendChild(el_category_arrow);
     } else {
         const el_colour = goog.dom.createDom('div', 'toolbox__category-colour');
         el_item.appendChild(el_colour);
@@ -476,13 +472,14 @@ Blockly.Toolbox.Category.prototype.createDom = function () {
 
     if (this.has_child_category_) {
         const el_category_arrow = goog.dom.createDom('div', 'toolbox__category-arrow toolbox__category-arrow--open');
-        // ReactDOM.render(<Icon icon='IcChevronDownBold' className='arrow' />, el_category_arrow);
         el_item.appendChild(el_category_arrow);
+
     } else if (this.iconURI_) {
         // If category has iconURI attribute, it refers to an entry in our bot-sprite.svg
-        const el_icon = goog.dom.createDom('div', { class: 'toolbox__icon' });
+        // const el_icon = goog.dom.createDom('div', { class: 'toolbox__icon' });
         // ReactDOM.render(<Icon icon={this.iconURI_} />, el_icon);
-        el_item.appendChild(el_icon);
+        // el_item.appendChild(el_icon);
+
     }
 
     this.parentHtml_.appendChild(el_item);
@@ -638,7 +635,7 @@ Blockly.Toolbox.prototype.refreshCategory = function () {
 };
 
 Blockly.Toolbox.prototype.toggle = function () {
-    const { instance: { toolbar, flyout } } = ScratchStore;
+    const { toolbar, flyout } = DBotStore.instance;
     if (!toolbar.is_toolbox_open) {
         this.addStyle('hidden');
 

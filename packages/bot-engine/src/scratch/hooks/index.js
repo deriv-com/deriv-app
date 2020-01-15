@@ -15,7 +15,7 @@ import './flyout_base.js';
 import './gesture.js';
 import './icon.js';
 import './procedures.js';
-// import './toolbox.js';
+import './toolbox.js';
 import './trashcan.js';
 import './variable_map.js';
 import './variables.js';

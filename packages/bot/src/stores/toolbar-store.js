@@ -1,21 +1,25 @@
 import {
     observable,
-    action }               from 'mobx';
-import { localize }        from '@deriv/translations';
-import { tabs_title }      from '../constants/bot-contents';
-import { scrollWorkspace } from '../scratch/utils';
+    action }           from 'mobx';
+import { localize }    from '@deriv/translations';
+import { tabs_title }  from '../constants/bot-contents';
+import {
+    scrollWorkspace,
+    runGroupedEvents } from '../scratch/utils';
 
 export default class ToolbarStore {
     constructor(root_store) {
         this.root_store = root_store;
     }
 
-    @observable is_dialog_open = false;
-    @observable is_toolbox_open = false;
-    @observable is_search_loading = false;
+    @observable is_dialog_open     = false;
+    @observable is_toolbox_open    = false;
+    @observable is_search_focus    = false;
+    @observable is_search_loading  = false;
     @observable is_toolbox_loading = false;
-    @observable is_search_focus = false;
-    @observable file_name = localize('Untitled Bot');
+    @observable has_undo_stack     = false;
+    @observable has_redo_stack     = false;
+    @observable file_name          = localize('Untitled Bot');
 
     typing_timer;
 
@@ -40,11 +44,11 @@ export default class ToolbarStore {
 
     @action.bound
     async onToolboxToggle() {
-        const workspace = Blockly.derivWorkspace;
-        const toolbox   = workspace.getToolbox();
+        const workspace        = Blockly.derivWorkspace;
+        const toolbox          = workspace.getToolbox();
 
         await this.initToolbox();
-
+        
         const { main_content } = this.root_store;
 
         if (main_content.active_tab !== tabs_title.WORKSPACE) {
@@ -99,9 +103,7 @@ export default class ToolbarStore {
     }
 
     onSearchClear = (setFieldValue) => {
-        // eslint-disable-next-line no-underscore-dangle
-        const toolbox = Blockly.derivWorkspace.toolbox_;
-
+        const toolbox = Blockly.derivWorkspace.getToolbox();
         setFieldValue('search', '');
         toolbox.showSearch('');
     }
@@ -124,33 +126,43 @@ export default class ToolbarStore {
     @action.bound
     onResetOkButtonClick() {
         const workspace = Blockly.derivWorkspace;
-        Blockly.Events.setGroup('reset');
-        workspace.clear();
-        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.cached_xml.main), workspace);
-        Blockly.Events.setGroup(false);
-        this.file_name = localize('Untitled Bot');
+
+        runGroupedEvents(false, () => {
+            workspace.clear();
+            Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.blocksXmlStr), workspace);
+        }, 'reset');
+
+        this.file_name      = localize('Untitled Bot');
         this.is_dialog_open = false;
-    }
-
-    @action.bound
-    onUndoClick = () => {
-        Blockly.Events.setGroup('undo');
-        Blockly.derivWorkspace.undo();
-        Blockly.Events.setGroup(false);
-    }
-
-    onRedoClick = () => {
-        Blockly.derivWorkspace.undo(true);
-    }
-
-    onZoomInOutClick = (is_zoom_in) => {
-        const metrics = Blockly.derivWorkspace.getMetrics();
-        const addition = is_zoom_in ? 1 : -1;
-
-        Blockly.derivWorkspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, addition);
     }
 
     onSortClick = () => {
         Blockly.derivWorkspace.cleanUp();
+    }
+
+    @action.bound
+    onUndoClick(is_redo) {
+        Blockly.derivWorkspace.undo(is_redo);
+        Blockly.svgResize(Blockly.derivWorkspace); // Called for CommentDelete event.
+        this.setHasRedoStack();
+        this.setHasUndoStack();
+    }
+
+    onZoomInOutClick = (is_zoom_in) => {
+        const workspace = Blockly.derivWorkspace;
+        const metrics   = workspace.getMetrics();
+        const addition  = is_zoom_in ? 1 : -1;
+
+        workspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, addition);
+    }
+
+    @action.bound
+    setHasUndoStack() {
+        this.has_undo_stack = Blockly.derivWorkspace.hasUndoStack();
+    }
+
+    @action.bound
+    setHasRedoStack() {
+        this.has_redo_stack = Blockly.derivWorkspace.hasRedoStack();
     }
 }

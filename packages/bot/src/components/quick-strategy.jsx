@@ -309,7 +309,6 @@ const QuickStrategy = ({
                     <Tabs
                         active_index={active_index}
                         onTabItemClick={setActiveTabIndex}
-                        top
                     >
                         {
                             Object.keys(strategies).map(key => {

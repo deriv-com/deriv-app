@@ -23,6 +23,7 @@ const FieldCheckbox = () => {
     // adding domToMutation and mutationToDom logic to each block consuming this checkbox.
     icon.setValue = function(value) {
         const is_checked     = value === true || value === 'TRUE';
+        const old_value      = this.getValue();
         this.src_            = is_checked ? 'TRUE' : 'FALSE';
         const el_field_group = this.fieldGroup_; // eslint-disable-line no-underscore-dangle
 
@@ -46,6 +47,13 @@ const FieldCheckbox = () => {
                     d   : 'M6 10.086L3.707 7.793a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l7-7a1 1 0 10-1.414-1.414L6 10.086z',
                 }, el_field_group);
             }
+        }
+
+        // Emit an event that can be redone/undone.
+        if (this.sourceBlock_ && Blockly.Events.isEnabled()) {
+            Blockly.Events.fire(new Blockly.Events.BlockChange(
+                this.sourceBlock_, 'field', this.name, old_value, this.getValue())
+            );
         }
     };
 

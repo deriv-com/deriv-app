@@ -1,4 +1,24 @@
 import { localize } from '@deriv/translations';
+import config       from '../../constants';
+
+/**
+ * Make a context menu option for duplicating the current block.
+ * deriv-bot: Use Blockly's implementation.
+ * @param {!Blockly.BlockSvg} block The block where the right-click originated.
+ * @return {!Object} A menu option, containing text, enabled, and a callback.
+ * @package
+ */
+Blockly.ContextMenu.blockDuplicateOption = function(block) {
+    const enabled = !config.single_instance_blocks.includes(block.type);
+    const duplicate_option = {
+        callback() {
+            Blockly.duplicate_(block);
+        },
+        enabled,
+        text: localize('Duplicate'),
+    };
+    return duplicate_option;
+};
 
 /**
  * Make a context menu option for cleaning up blocks on the workspace, by

@@ -54,6 +54,15 @@
         opacity: 0;
         transform: translate3d(0, -20px, 0);
 
+        @include mobile {
+            opacity: unset;
+            transform: none;
+            position: relative;
+            top: unset;
+            left: unset;
+            box-shadow: none;
+            width: 100%;
+        }
         &__header {
             display: flex;
             align-items: center;
@@ -66,12 +75,18 @@
                 margin: 1rem 0;
                 color: var(--text-prominent);
             }
+            @include mobile {
+                display: none;
+            }
         }
         &__content {
             padding: 8px 0;
             height: calc(100% - 37px);
             border-radius: $BORDER_RADIUS;
 
+            @include mobile {
+                height: calc(100vh - 40px);
+            }
             &--empty {
                 display: flex;
                 height: 100%;
@@ -146,6 +161,9 @@
             .btn__text {
                 font-size: 1.2rem;
             }
+            @include mobile {
+                margin: 8px 0 16px auto;
+            }
         }
         &__title {
             font-size: 1.4rem;
@@ -174,6 +192,16 @@
                 text-decoration: none;
                 font-weight: bold;
                 color: var(--text-prominent);
+            }
+        }
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+
+            &:after {
+                left: -1.8rem;
+                width: calc(100% + 1.4em);
+                height: 2px;
             }
         }
     }

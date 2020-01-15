@@ -12,7 +12,6 @@ import Withdrawal                     from 'Modules/Cashier/Containers/withdrawa
 import AccountTransfer                from 'Modules/Cashier/Containers/account-transfer.jsx';
 import PaymentAgent                   from 'Modules/Cashier/Containers/payment-agent.jsx';
 import PaymentAgentTransfer           from 'Modules/Cashier/Containers/payment-agent-transfer.jsx';
-// To work with P2P please uncomment this line
 import P2PCashier                     from 'Modules/Cashier/Containers/p2p-cashier.jsx';
 
 export const interceptAcrossBot = (route_to, action) => {
@@ -90,7 +89,6 @@ const initRoutesConfig = () => ([
             { path: routes.cashier_pa,           component: PaymentAgent,         title: localize('Payment agent'),             icon_component: 'IcPaymentAgent' },
             { path: routes.cashier_acc_transfer, component: AccountTransfer,      title: localize('Transfer between accounts'), icon_component: 'IcAccountTransfer' },
             { path: routes.cashier_pa_transfer,  component: PaymentAgentTransfer, title: localize('Transfer to client'),        icon_component: 'IcAccountTransfer' },
-            // To work with P2P please uncomment this line
             { path: routes.cashier_dp2p,         component: P2PCashier,           title: localize('DP2P'),                      icon_component: 'IcDp2p' },
         ],
     },

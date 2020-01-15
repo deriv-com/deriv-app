@@ -52,7 +52,7 @@ const AccountInfo = ({
             }
             <Icon icon='IcChevronDownBold' className='acc-info__select-arrow' />
         </div>
-        {isMobile ?
+        {isMobile() ?
             <AccountSwitcherMobile
                 is_visible={is_dialog_on}
                 disableApp={disableApp}

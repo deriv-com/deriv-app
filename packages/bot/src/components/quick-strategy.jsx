@@ -308,8 +308,7 @@ const QuickStrategy = ({
                 <div className='quick-strategy__tabs'>
                     <Tabs
                         active_index={active_index}
-                        onClickTabItem={setActiveTabIndex}
-                        top
+                        onTabItemClick={setActiveTabIndex}
                     >
                         {
                             Object.keys(strategies).map(key => {

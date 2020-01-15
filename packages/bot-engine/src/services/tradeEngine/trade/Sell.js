@@ -1,4 +1,4 @@
-import { localize }                      from 'deriv-translations';
+import { localize }                      from '@deriv/translations';
 import { DURING_PURCHASE }               from './state/constants';
 import { contractStatus, notify }        from '../utils/broadcast';
 import { recoverFromError, doUntilDone } from '../utils/helpers';

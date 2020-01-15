@@ -37,12 +37,11 @@
 
 #  aaron-binary
 #  ashkanx
-#  brandon-binary
 #  kelly-binary
 #  Mahboobeh-binary
 #  mahdipourziaei-binary
-#  morteza-binary
 #  mustofa-binary
+#  negar-binary
 #  negarn
 #  oskar-binary
 #  reza-fs
@@ -63,9 +62,9 @@
 #######################################################################################################
 
 
-# ===========================================================
-#  binary-com/deriv-bot
-# ===========================================================
+# ==============================================================
+#  binary-com/@deriv/bot-engine
+# ==============================================================
 #  Used for approving all relevant changes to Bot
 #
 #   - aaron-binary
@@ -73,40 +72,49 @@
 #   - sam-binary
 
 
-# ===========================================================
+# ==============================================================
 #  binary-com/deriv-core
-# ===========================================================
+# ==============================================================
 #  Used for approving all relevant changes to Core
 #
 #   - aaron-binary
 #   - mahdipourziaei-binary
+#   - negar-binary
 
 
-# ===========================================================
-#  binary-com/deriv-shared
-# ===========================================================
-#  Used for approving all relevant changes to Core
+# ==============================================================
+#  binary-com/deriv-p2p
+# ==============================================================
+#  Used for approving all relevant changes to P2P
 #
-#   - Mahboobeh-binary
-#   - reza-fs
-
-
-# ===========================================================
-#  binary-com/deriv-trader
-# ===========================================================
-#  Used for approving all relevant changes to Trader
-#
-#   - brandon-binary
-#   - kelly-binary
 #   - mahdipourziaei-binary
-#   - morteza-binary
 #   - mustofa-binary
 #   - negarn
+#   - oskar-binary
+
+
+# ==============================================================
+#  binary-com/@deriv/shared
+# ==============================================================
+#  Used for approving all relevant changes to Shared/Components
+#
+#   - Mahboobeh-binary
 #   - oskar-binary
 #   - reza-fs
 #   - zaki-binary
 
 
+# ==============================================================
+#  binary-com/deriv-trader
+# ==============================================================
+#  Used for approving all relevant changes to Trader
+#
+#   - kelly-binary
+#   - mahdipourziaei-binary
+#   - negarn
+#   - oskar-binary
+#   - reza-fs
+#   - zaki-binary
 
 
 ######################################################################################################
@@ -122,43 +130,51 @@
 ######################################################################################################
 
 
-# ================================================
+# ==============================================================
 #  Default Owners
 # (in case no pattern matches a path in a PR - this should be treated as a bug and result in adding the path to CODEOWNERS)
-# ================================================
+# ==============================================================
 
-*                                                 @ashkanx @negarn @morteza-binary @oskar-binary
+*                                                               @ashkanx @negarn @oskar-binary
 
 
 
-# ================================================
+# ==============================================================
 #  deriv-app/bot
-# ================================================
+# ==============================================================
 
-/packages/bot/**                                  @binary-com/deriv-bot
-
-
+/packages/bot/**/*                                              @binary-com/@deriv/bot-engine
 
 
-# ================================================
+
+
+# ==============================================================
 #  deriv-app/core
-# ================================================
+# ==============================================================
 
-/packages/core/**                                 @binary-com/deriv-core
+/packages/core/**/*                                             @binary-com/deriv-core
 
 
 
-# ================================================
+# ==============================================================
+#  deriv-app/p2p
+# ==============================================================
+
+/packages/p2p/**/*                                              @binary-com/deriv-p2p
+
+
+
+# ==============================================================
 #  deriv-app/shared
-# ================================================
+# ==============================================================
 
-/packages/shared/**                               @binary-com/deriv-shared
-/packages/components/**                           @binary-com/deriv-shared
+/packages/shared/**/*                                           @binary-com/@deriv/shared
+/packages/components/**/*                                       @binary-com/@deriv/shared
 
 
 
-# ================================================
+# ==============================================================
 #  deriv-app/trader
-# ================================================
+# ==============================================================
 
-/packages/trader/**                               @binary-com/deriv-trader
+/packages/trader/**/*                                           @binary-com/deriv-trader

@@ -1,9 +1,9 @@
-import { Button , Icon }       from 'deriv-components';
+import { Button , Icon }       from '@deriv/components';
 import React                   from 'react';
 import PropTypes               from 'prop-types';
-import { localize }            from 'deriv-translations';
-import { help_content_config } from 'deriv-bot-engine';
-import constant                from 'deriv-bot-engine';
+import { localize }            from '@deriv/translations';
+import { help_content_config } from '@deriv/bot-engine';
+import constant                from '@deriv/bot-engine';
 import FlyoutVideo             from './flyout-video.jsx';
 import FlyoutText              from './flyout-text.jsx';
 import FlyoutImage             from './flyout-img.jsx';

@@ -1,4 +1,4 @@
-import ObjectUtils from 'deriv-shared/utils/object';
+import ObjectUtils from '@deriv/shared/utils/object';
 import { WS }      from 'Services/ws-methods';
 
 const trading_events = {};

@@ -1,5 +1,5 @@
 import { LiveApi }     from 'binary-live-api';
-import { getLanguage } from 'deriv-translations';
+import { getLanguage } from '@deriv/translations';
 import AppIds          from './appIdResolver';
 import {
     addToken,

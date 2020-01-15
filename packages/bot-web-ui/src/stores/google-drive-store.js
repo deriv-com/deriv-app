@@ -2,8 +2,8 @@ import {
     observable,
     action,
 }                                 from 'mobx';
-import { localize, getLanguage }  from 'deriv-translations';
-import { importExternal, config } from 'deriv-bot-engine';
+import { localize, getLanguage }  from '@deriv/translations';
+import { importExternal, config } from '@deriv/bot-engine';
 
 export default class GoogleDriveStore {
     constructor(root_store) {
@@ -11,7 +11,7 @@ export default class GoogleDriveStore {
         this.bot_folder_name = `Binary Bot - ${localize('Strategies')}`;
         this.google_auth = null;
         this.setKey();
-        
+
         importExternal('https://apis.google.com/js/api.js')
             .then(() => this.initialise());
     }
@@ -55,7 +55,7 @@ export default class GoogleDriveStore {
     updateSigninStatus(is_signed_in) {
         this.is_authorised = is_signed_in;
     }
-    
+
     signIn() {
         if (this.is_authorised) {
             return Promise.resolve();
@@ -178,7 +178,7 @@ export default class GoogleDriveStore {
                         fileId,
                         mimeType: 'text/plain',
                     });
-                    
+
                     resolve({ xml_doc: response.body, file_name });
                 } else if (data.action === google.picker.Action.CANCEL) {
                     setButtonStatus(0);

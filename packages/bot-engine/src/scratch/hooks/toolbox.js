@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 import DBotStore    from '../dbot-store';
 
 /**
@@ -23,7 +23,7 @@ Blockly.Toolbox.prototype.init = function () {
     this.HtmlDiv.setAttribute('id','gtm-toolbox');
     this.HtmlDiv.setAttribute('dir', workspace.RTL ? 'RTL' : 'LTR');
 
-    // deriv-bot: Create Toolbox header
+    // @deriv/bot: Create Toolbox header
     const el_toolbox_header = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__header');
     const el_toolbox_title = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__title');
 
@@ -64,7 +64,7 @@ Blockly.Toolbox.prototype.init = function () {
  * Fill the toolbox with categories and blocks.
  * @param {!Node} newTree DOM tree of blocks.
  * @private
- * deriv-bot: We don't want to `showAll` or `setSelectedItem` here (like in Scratch)
+ * @deriv/bot: We don't want to `showAll` or `setSelectedItem` here (like in Scratch)
  */
 Blockly.Toolbox.prototype.populate_ = function (newTree) {
     const parent = this.categoryMenu_.parentHtml_;
@@ -266,7 +266,7 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
 };
 
 /**
- * deriv-bot: Show blocks for a specific category in flyout
+ * @deriv/bot: Show blocks for a specific category in flyout
  * @private
  */
 Blockly.Toolbox.prototype.showCategory_ = function (category_id) {
@@ -302,7 +302,7 @@ Blockly.Toolbox.prototype.getCategoryContents = function (selected_category) {
  * @private
  * @param {boolean=} selected Indication whether the category is currently selected.
  * @return {string} The css class names to be applied, space-separated.
- * deriv-bot: Custom class names
+ * @deriv/bot: Custom class names
  */
 Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function (selected) {
     const classNames = ['toolbox__item', `toolbox__category--${this.id_}`];
@@ -316,7 +316,7 @@ Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function (selected) {
 
 /**
  * Opens the selected category
- * deriv-bot: Category-specific flyouts + removed opt_shouldScroll
+ * @deriv/bot: Category-specific flyouts + removed opt_shouldScroll
  * @param {Blockly.Toolbox.Category} item The category to select.
  * @param {boolean} should_close_on_same_category Close when select the same category
  */
@@ -435,13 +435,13 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
  * Update the flyout's contents without closing it.  Should be used in response
  * to a change in one of the dynamic categories, such as variables or
  * procedures.
- * deriv-bot: Calls showAll() in Scratch, we don't want that.
+ * @deriv/bot: Calls showAll() in Scratch, we don't want that.
  */
 Blockly.Toolbox.prototype.refreshSelection = function () { };
 
 /**
  * Create the DOM for a category in the toolbox.
- * deriv-bot: Custom class names + injection of description
+ * @deriv/bot: Custom class names + injection of description
  */
 Blockly.Toolbox.Category.prototype.createDom = function () {
     const toolbox = this.parent_.parent_;
@@ -491,7 +491,7 @@ Blockly.Toolbox.Category.prototype.createDom = function () {
  * Get the contents of this category.
  * @return {!Array|string} xmlList List of blocks to show, or a string with the
  * name of a custom category.
- * deriv-bot: Use this.dynamic_ rather than this.custom_ for dynamic categories
+ * @deriv/bot: Use this.dynamic_ rather than this.custom_ for dynamic categories
  * if we specify this.custom_, parseContents() is never called (see core/toolbox.js),
  * so we don't get extra props we require. See parseContents_
  */
@@ -503,7 +503,7 @@ Blockly.Toolbox.Category.prototype.getContents = function () {
 * Set the contents of this category from DOM.
 * @param {Node} domTree DOM tree of blocks.
 * @constructor
-* deriv-bot: Set some extra properties on the Blockly.Toolbox.Category
+* @deriv/bot: Set some extra properties on the Blockly.Toolbox.Category
 */
 Blockly.Toolbox.Category.prototype.parseContents_ = function (domTree) {
     this.description_ = domTree.getAttribute('description');
@@ -539,7 +539,7 @@ Blockly.Toolbox.Category.prototype.parseContents_ = function (domTree) {
  * Set the colour of the category's background from a DOM node.
  * @param {Node} node DOM node with "colour" and "secondaryColour" attribute.
  *     Colours are a hex string or hue on a colour wheel (0-360).
- * deriv-bot: We don't need secondaryColour
+ * @deriv/bot: We don't need secondaryColour
  */
 Blockly.Toolbox.Category.prototype.setColour = function (node) {
     const colour = node.getAttribute('colour');
@@ -558,7 +558,7 @@ Blockly.Toolbox.Category.prototype.setColour = function (node) {
 
 /**
  * Create the DOM for the category menu.
- * deriv-bot: Custom class names
+ * @deriv/bot: Custom class names
  */
 Blockly.Toolbox.CategoryMenu.prototype.createDom = function () {
     const className = this.parent_.horizontalLayout_ ?

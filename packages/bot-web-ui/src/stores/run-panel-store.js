@@ -3,12 +3,12 @@ import {
     action,
     reaction,
     computed }                         from 'mobx';
-import { localize }                    from 'deriv-translations' ;
+import { localize }                    from '@deriv/translations' ;
 import {
     error_types,
     unrecoverable_errors,
     observer ,
-    isEnded }                          from 'deriv-bot-engine';
+    isEnded }                          from '@deriv/bot-engine';
 import { setMainContentWidth }         from '../utils/window-size';
 import { contract_stages }             from '../constants/contract-stage';
 import { switch_account_notification } from '../utils/bot-notifications';
@@ -67,7 +67,7 @@ export default class RunPanelStore {
         this.is_running = true;
         this.toggleDrawer(true);
         this.run_id         = `run-${Date.now()}`;
-        
+
         contract_card.clear();
         this.setContractStage(contract_stages.STARTING);
         this.dbot.runBot();
@@ -269,7 +269,7 @@ export default class RunPanelStore {
         } else {
             this.error_type = error_types.RECOVERABLE_ERRORS;
         }
-        
+
         this.showErrorMessage(data);
     }
 
@@ -297,7 +297,7 @@ export default class RunPanelStore {
     @action.bound
     registerCoreReactions() {
         const { client, common, ui } = this.root_store.core;
-        
+
         const register = () => {
             if (common.is_socket_opened) {
                 this.disposeIsSocketOpenedListener = reaction(

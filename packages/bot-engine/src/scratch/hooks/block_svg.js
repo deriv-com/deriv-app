@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 import { save }     from '../utils';
 import DBotStore    from '../dbot-store';
 
@@ -16,20 +16,25 @@ Blockly.BlockSvg.prototype.addSelect = function () {
 /**
  * Set whether the block is disabled or not.
  * @param {boolean} disabled True if disabled.
- * deriv-bot: Call updateDisabled() when setDisabled is called.
+ * @deriv/bot: Call updateDisabled() when setDisabled is called.
  */
-Blockly.BlockSvg.prototype.setDisabled = function (disabled) {
+Blockly.BlockSvg.prototype.setDisabled = function(disabled, is_user_action = false) {
     if (this.disabled !== disabled) {
         Blockly.BlockSvg.superClass_.setDisabled.call(this, disabled);
+
         if (this.rendered) {
             this.updateDisabled();
         }
+
+        // Distinguish user + code disabled states. i.e. when user disabled a block, we
+        // shouldn't enable it through code, only enable when user re-enables it.
+        this.is_user_disabled_state = is_user_action;
     }
 };
 
 /**
  * Enable or disable a block.
- * deriv-bot: Update fill path if it doesn't match the disabledPatternId.
+ * @deriv/bot: Update fill path if it doesn't match the disabledPatternId.
  */
 Blockly.BlockSvg.prototype.updateDisabled = function () {
     if (this.disabled || this.getInheritedDisabled()) {
@@ -54,7 +59,7 @@ Blockly.BlockSvg.prototype.updateDisabled = function () {
  * Show the context menu for this block.
  * @param {!Event} e Mouse event.
  * @private
- * deriv-bot: Restore contextMenu options from Blockly unavailable in Scratch
+ * @deriv/bot: Restore contextMenu options from Blockly unavailable in Scratch
  */
 Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
     if (this.workspace.options.readOnly || !this.contextMenu) {
@@ -95,16 +100,19 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
 
     // Option to disable/enable block.
     if (this.workspace.options.disable) {
+        const restricted_parents = block.restricted_parents || [];
         const disable_option = {
-            text    : this.disabled ? localize('Enable Block') : localize('Disable Block'),
-            enabled : !this.getInheritedDisabled(),
+            text   : this.disabled ? localize('Enable Block') : localize('Disable Block'),
+            enabled:
+                !this.getInheritedDisabled() &&
+                restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent)),
             callback: () => {
                 const group = Blockly.Events.getGroup();
                 if (!group) {
                     Blockly.Events.setGroup(true);
                 }
 
-                block.setDisabled(!block.disabled);
+                block.setDisabled(!block.disabled, true);
 
                 if (!group) {
                     Blockly.Events.setGroup(false);

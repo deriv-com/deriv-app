@@ -1,4 +1,4 @@
-import { localize }  from 'deriv-translations';
+import { localize }  from '@deriv/translations';
 import { config }    from '../constants/config';
 import ApiHelpers    from '../services/api/api-helpers';
 
@@ -138,7 +138,7 @@ export default class BlockConversion {
                     });
                 }
             });
-                
+
             // Return variable block instead of statement.
             const variable       = this.generateUniqueVariable(variable_name);
             const variable_block = this.workspace.newBlock('variables_get');
@@ -171,7 +171,7 @@ export default class BlockConversion {
                 .filter(block_child_node => block_child_node.tagName.toLowerCase() === 'value')
                 .forEach(block_child_node => {
                     const value_input_name = block_child_node.getAttribute('name');
-    
+
                     if (value_input_name === 'BARRIEROFFSET' || value_input_name === 'SECONDBARRIEROFFSET') {
                         barrier_inputs++;
                     } else if (value_input_name === 'PREDICTION') {
@@ -196,7 +196,7 @@ export default class BlockConversion {
                     field.setValue(this.getFieldValue(block_node_to_use, field_name));
                 }
             });
-            
+
             return { block_to_attach: block };
         };
         const conversions = {
@@ -222,24 +222,24 @@ export default class BlockConversion {
                     trade_definition_restartbuysell: ['TIME_MACHINE_ENABLED'],
                     trade_definition_restartonerror: ['RESTARTONERROR'],
                 };
-    
+
                 const blocks_to_connect = {};
-    
+
                 Object.keys(block_fields).forEach(child_block_name => {
                     const child_block = this.workspace.newBlock(child_block_name);
-    
+
                     block_fields[child_block_name].forEach(field_name => {
                         child_block.setFieldValue(this.getFieldValue(block_node, field_name), field_name);
                     });
-    
+
                     blocks_to_connect[child_block_name] = child_block;
                 });
-    
+
                 Object.values(blocks_to_connect).forEach(child_block => {
                     const last_connection = block.getLastConnectionInStatement('TRADE_OPTIONS');
                     last_connection.connect(child_block.previousConnection);
                 });
-    
+
                 return { block_to_attach: block };
             },
             tradeOptions,
@@ -299,7 +299,7 @@ export default class BlockConversion {
         if (!current_previous_connection) {
             return block;
         }
-        
+
         while (previous_block) {
             if (previous_block === block.getSurroundParent()) {
                 break;
@@ -354,10 +354,10 @@ export default class BlockConversion {
             counter++;
             current_name = variable_name + counter;
         }
-        
+
         const ws_variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, '', current_name, '');
         this.workspace_variables[ws_variable.id_] = current_name; // eslint-disable-line
-        
+
         return ws_variable;
     }
 
@@ -704,7 +704,7 @@ export default class BlockConversion {
                 const useless_block = this.workspace.newBlock('useless_block');
 
                 input.connection.connect(useless_block.previousConnection);
-                
+
                 return useless_block.previousConnection;
             }
 
@@ -737,7 +737,7 @@ export default class BlockConversion {
     isConnectedToProtectedStatementInput(block) {
         const first_block         = this.getFirstBlockInStack(block);
         const previous_connection = first_block.previousConnection;
-                        
+
         if (previous_connection) {
             const target_connection = previous_connection.targetConnection;
 

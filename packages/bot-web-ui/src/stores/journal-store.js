@@ -1,8 +1,8 @@
 import {
     observable,
     action }                from 'mobx';
-import { formatDate }       from 'deriv-shared/utils/date';
-import { message_types }    from 'deriv-bot-engine';
+import { formatDate }       from '@deriv/shared/utils/date';
+import { message_types }    from '@deriv/bot-engine';
 
 export default class JournalStore {
     constructor(root_store) {
@@ -29,7 +29,7 @@ export default class JournalStore {
     onNotify(data) {
         this.pushMessage(data , message_types.NOTIFY);
     }
-    
+
     @action.bound
     pushMessage(data, message_type) {
         const date = formatDate(this.serverTime.get());

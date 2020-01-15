@@ -1,6 +1,5 @@
-import { localize }          from 'deriv-translations';
+import { localize }          from '@deriv/translations';
 import { setBlockTextColor } from '../../../utils';
-// import DBotStore          from '../../../dbot-store';
 
 Blockly.Blocks.tick_analysis = {
     init() {
@@ -32,12 +31,8 @@ Blockly.Blocks.tick_analysis = {
             'description' : localize('The content of this block is called on every tick. Place this block outside of any root block.'),
         };
     },
-    onchange(/* event */) {
-        // TODO: incomment this when the dark mode is done
-        // if (!DBotStore.instance.is_dark_mode_on) {
-        setBlockTextColor(this);
-        // }
-
+    onchange(event) {
+        setBlockTextColor(this, event);
     },
 };
 

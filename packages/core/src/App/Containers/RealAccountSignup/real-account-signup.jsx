@@ -3,10 +3,10 @@ import {
     Icon,
     Button,
     Modal,
-    Loading }                 from 'deriv-components';
+    Loading }                 from '@deriv/components';
 import React, { Component }   from 'react';
 import { withRouter }         from 'react-router-dom';
-import { localize, Localize } from 'deriv-translations';
+import { localize, Localize } from '@deriv/translations';
 import routes                 from 'Constants/routes';
 import { connect }            from 'Stores/connect';
 import AccountWizard          from './account-wizard.jsx';

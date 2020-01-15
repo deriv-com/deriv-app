@@ -3,7 +3,7 @@ import {
     action,
     runInAction,
 }                   from 'mobx';
-import { config }   from 'deriv-bot-engine';
+import { config }   from '@deriv/bot-engine';
 
 export default class FlyoutHelpStore {
     constructor(root_store) {
@@ -28,7 +28,7 @@ export default class FlyoutHelpStore {
         const block_hw        = Blockly.Block.getDimensions(block_node);
         const block_type      = block_node.getAttribute('type');
         const title           = Blockly.Blocks[block_type].meta().display_name;
-        const help_string_obj = await import(/* webpackChunkName: `[request]` */ 'deriv-bot-engine');
+        const help_string_obj = await import(/* webpackChunkName: `[request]` */ '@deriv/bot-engine');
         const start_scale     = config.workspaces.flyoutWorkspacesStartScale;
 
         block_node.setAttribute('width', block_hw.width * start_scale);
@@ -85,7 +85,7 @@ export default class FlyoutHelpStore {
             }
 
             try {
-                await import(/* webpackChunkName: `[request]` */ 'deriv-bot-engine');
+                await import(/* webpackChunkName: `[request]` */ '@deriv/bot-engine');
                 return block_type;
             } catch (e) {
                 return getNextBlock(xml,next_index,direction);

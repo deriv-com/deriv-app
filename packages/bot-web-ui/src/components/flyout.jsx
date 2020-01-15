@@ -1,8 +1,8 @@
 import classNames              from 'classnames';
 import React                   from 'react';
 import PropTypes               from 'prop-types';
-import { localize }            from 'deriv-translations';
-import { help_content_config } from 'deriv-bot-engine';
+import { localize }            from '@deriv/translations';
+import { help_content_config } from '@deriv/bot-engine';
 import FlyoutBlockGroup        from './flyout-block-group.jsx';
 import HelpBase                from './help-contents/flyout-help-base.jsx';
 import { connect }             from '../stores/connect';
@@ -29,7 +29,7 @@ class Flyout extends React.PureComponent {
             setHelpContent } = this.props;
         const total_result   = Object.keys(flyout_content).length;
         const is_empty       = total_result === 0;
-        
+
         if (is_visible && is_search_flyout) pushDataLayer({ event: 'dbot_search_results', value: true });
 
         return (

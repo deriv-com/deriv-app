@@ -1,9 +1,9 @@
 import classnames           from 'classnames';
 import PropTypes            from 'prop-types';
 import React                from 'react';
-import { ThemedScrollbars } from 'deriv-components';
-import { localize }         from 'deriv-translations';
-import { message_types }    from 'deriv-bot-engine';
+import { ThemedScrollbars } from '@deriv/components';
+import { localize }         from '@deriv/translations';
+import { message_types }    from '@deriv/bot-engine';
 import { connect }          from '../stores/connect';
 import '../assets/sass/journal.scss';
 
@@ -96,7 +96,7 @@ const Journal = ({
         <ThemedScrollbars
             className='journal'
             autoHide
-            style={{ height: 'var(--drawer-scroll-height)' }}
+            style={{ height: 'calc(var(--drawer-scroll-height) + 41px)' }}
         >
             <table className='journal__table'>
                 <thead className='journal__table--header'>

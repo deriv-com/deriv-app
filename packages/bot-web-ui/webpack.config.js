@@ -12,7 +12,7 @@ const output = {
     filename: 'bot-web-ui.main.js',
     chunkFilename: 'bot.[name].[contenthash].js',
     libraryExport: 'default',
-    library: 'deriv-bot-web-ui',
+    library: '@deriv/bot-web-ui',
     libraryTarget: 'umd',
 };
 
@@ -52,7 +52,7 @@ module.exports = function (env, argv) {
                         {
                             loader : "sass-resources-loader",
                             options: {
-                                resources: require(path.resolve(__dirname, 'node_modules/deriv-shared/utils/index.js')),
+                                resources: require(path.resolve(__dirname, 'node_modules/@deriv/shared/utils/index.js')),
                             }
                         }
                     ]
@@ -90,7 +90,7 @@ module.exports = function (env, argv) {
                 {
                     test   : /\.(js|jsx)$/,
                     exclude: /node_modules/,
-                    loader : [ 'deriv-shared/utils/deriv-components-loader.js',
+                    loader : [ '@deriv/shared/utils/deriv-components-loader.js',
                         'babel-loader' ],
                 },
             ],
@@ -100,9 +100,9 @@ module.exports = function (env, argv) {
             new MiniCssExtractPlugin({ filename: 'bot-web-ui.main.css' }),
             new StyleLintPlugin({ fix: true }),
             new CopyWebpackPlugin([
-                { from: 'node_modules/deriv-bot-engine/dist/scratch.min.js'},
-                { from: 'node_modules/deriv-bot-engine/dist/xml' , to : 'xml'},
-                { from: 'node_modules/deriv-bot-engine/dist//media' , to : 'media'},
+                { from: 'node_modules/@deriv/bot-engine/dist/scratch.min.js'},
+                { from: 'node_modules/@deriv/bot-engine/dist/xml' , to : 'xml'},
+                { from: 'node_modules/@deriv/bot-engine/dist//media' , to : 'media'},
             ]),
             new SpriteLoaderPlugin(),
         ],
@@ -110,17 +110,17 @@ module.exports = function (env, argv) {
             {
                 '@babel/polyfill'   : '@babel/polyfill',
                 'classnames'        : 'classnames',
-                'deriv-components'  : 'deriv-components',
-                'deriv-shared'      : 'deriv-shared',
-                'deriv-translations': 'deriv-translations',
+                '@deriv/components'  : '@deriv/components',
+                '@deriv/shared'      : '@deriv/shared',
+                '@deriv/translations': '@deriv/translations',
                 'formik'            : 'formik',
                 'react'             : 'react',
                 'react-dom'         : 'react-dom',
                 'smartcharts-beta'  : 'smartcharts-beta',
             },
-            /^deriv-shared\/.+$/,
-            /^deriv-components\/.+$/,
-            /^deriv-translations\/.+$/,
+            /^@deriv\/shared\/.+$/,
+            /^@deriv\/components\/.+$/,
+            /^@deriv\/translations\/.+$/,
         ],
     };
 }

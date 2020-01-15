@@ -1,6 +1,5 @@
-import { localize }          from 'deriv-translations';
+import { localize }  from '@deriv/translations';
 import { setBlockTextColor } from '../../../../utils';
-// import DBotStore          from '../../../dbot-store';
 
 Blockly.Blocks.useless_block = {
     init() {
@@ -15,11 +14,8 @@ Blockly.Blocks.useless_block = {
             previousStatement: null,
         });
     },
-    onchange(/* event */) {
-        // TODO: uncomment this when the dark mode is done
-        // if (!DBotStore.instance.is_dark_mode_on) {
-        setBlockTextColor(this);
-        // }
+    onchange(event) {
+        setBlockTextColor(this, event);
     },
 };
 

@@ -1,6 +1,6 @@
 import { 
     DBot,
-    ServerTime }            from 'deriv-bot-engine';
+    ServerTime }            from '@deriv/bot-engine';
 import { reaction }         from 'mobx';
 import { Provider }         from 'mobx-react';
 import React                from 'react';

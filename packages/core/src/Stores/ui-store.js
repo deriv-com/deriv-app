@@ -3,7 +3,7 @@ import {
     autorun,
     computed,
     observable }             from 'mobx';
-import ObjectUtils           from 'deriv-shared/utils/object';
+import ObjectUtils           from '@deriv/shared/utils/object';
 import {
     MAX_MOBILE_WIDTH,
     MAX_TABLET_WIDTH }       from 'Constants/ui';
@@ -102,6 +102,9 @@ export default class UIStore extends BaseStore {
         success_message   : '',
         error_message     : '',
     };
+
+    // UI Focus retention
+    @observable current_focus = null;
 
     getDurationFromUnit = (unit) => this[`duration_${unit}`];
 
@@ -509,5 +512,10 @@ export default class UIStore extends BaseStore {
             success_message   : '',
             error_message     : '',
         };
+    }
+
+    @action.bound
+    setCurrentFocus(value) {
+        this.current_focus = value;
     }
 }

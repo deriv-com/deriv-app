@@ -1,4 +1,4 @@
-import { localize }                   from 'deriv-translations';
+import { localize }                   from '@deriv/translations';
 import                                    './blocks';
 import                                    './hooks';
 import {
@@ -90,6 +90,7 @@ class DBot {
         
         if (!should_run_bot) {
             this.stopBot();
+            return;
         }
 
         try {

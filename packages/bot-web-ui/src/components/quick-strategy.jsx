@@ -1,6 +1,6 @@
 import proptypes     from 'prop-types';
 import React         from 'react';
-import { config }   from 'deriv-bot-engine';
+import { config }    from '@deriv/bot-engine';
 import {
     Button,
     Dropdown,
@@ -9,13 +9,13 @@ import {
     Modal,
     Popover,
     Tabs,
-}                    from 'deriv-components';
+}                    from '@deriv/components';
 import {
     Formik,
     Form,
     Field,
 }                    from 'formik';
-import { localize }  from 'deriv-translations';
+import { localize }  from '@deriv/translations';
 import IconTradeType from './icon-trade-types.jsx';
 import { connect }   from '../stores/connect';
 import               '../assets/sass/quick-strategy.scss';
@@ -267,7 +267,7 @@ const QuickStrategy = ({
     const asset_dropdown_options  = {};
 
     Object.assign(asset_dropdown_options, market_dropdown);
-        
+
     if (asset_dropdown_options) {
         Object.keys(asset_dropdown_options).forEach(key => {
             const submarket = asset_dropdown_options[key];
@@ -291,7 +291,7 @@ const QuickStrategy = ({
             });
         });
     }
-        
+
     const duration_dropdown_options = Object.keys(duration_dropdown).map(key => {
         const duration = duration_dropdown[key];
         return { text: duration.display, value: duration.unit };
@@ -309,8 +309,7 @@ const QuickStrategy = ({
                 <div className='quick-strategy__tabs'>
                     <Tabs
                         active_index={active_index}
-                        onClickTabItem={setActiveTabIndex}
-                        top
+                        onTabItemClick={setActiveTabIndex}
                     >
                         {
                             Object.keys(strategies).map(key => {

@@ -1,7 +1,6 @@
-import { localize }          from 'deriv-translations';
+import { localize }          from '@deriv/translations';
 import { finishSign }        from '../../images';
 import { setBlockTextColor } from '../../../utils';
-// import DBotStore              from '../../../dbot-store';
 
 Blockly.Blocks.after_purchase = {
     init() {
@@ -46,25 +45,7 @@ Blockly.Blocks.after_purchase = {
         };
     },
     onchange(event) {
-        // TODO: incomment this when the dark mode is done
-        // if (!DBotStore.instance.is_dark_mode_on) {
-        setBlockTextColor(this);
-        // }
-        
-        if (!this.workspace || this.isInFlyout) {
-            return;
-        }
-
-        // Maintain single instance of this block
-        if (event.type === Blockly.Events.BLOCK_CREATE) {
-            if (event.ids && event.ids.includes(this.id)) {
-                this.workspace.getAllBlocks(true).forEach(block => {
-                    if (block.type === this.type && block.id !== this.id) {
-                        block.dispose();
-                    }
-                });
-            }
-        }
+        setBlockTextColor(this, event);
     },
 };
 

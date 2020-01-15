@@ -3,7 +3,7 @@ import {
     observable,
     action,
 }                from 'mobx';
-import { load }  from 'deriv-bot-engine';
+import { load }  from '@deriv/bot-engine';
 
 export default class SaveLoadModalStore {
 

@@ -1,8 +1,8 @@
-import { getFormattedText } from 'deriv-shared/utils/currency';
+import { getFormattedText } from '@deriv/shared/utils/currency';
 import { info }             from '../utils/broadcast';
 import { client }           from '../utils/client';
 
-let balanceStr = '';
+let balance_string = '';
 
 export default Engine =>
     class Balance extends Engine {
@@ -12,23 +12,24 @@ export default Engine =>
                     balance: { balance: b, currency },
                 } = r;
 
-                balanceStr = getFormattedText(b, currency);
+                balance_string = getFormattedText(b, currency);
 
-                info({ accountID: this.accountInfo.loginid, balance: balanceStr });
+                info({ accountID: this.accountInfo.loginid, balance: balance_string });
             });
         }
 
         // eslint-disable-next-line class-methods-use-this
         getBalance(type) {
-            const { scope } = this.store.getState();
-            const { balance } = this;
+            const { scope }  = this.store.getState();
+            const balance    = client.balance || 0;
+            let value        = balance;
 
-            // Deduct trade `amount` in this scope for correct value in `balance`-block
             if (scope === 'BEFORE_PURCHASE') {
-                const value = Number(balance) - this.tradeOptions.amount;
-                balanceStr = getFormattedText(value, client.currency, false);
+                // Deduct trade amount in this scope for correct (🤦) value in balance-block
+                value = Number(balance) - this.tradeOptions.amount;
             }
 
-            return type === 'STR' ? balanceStr : Number(balance);
+            balance_string = getFormattedText(value, client.currency, false);
+            return type === 'STR' ? balance_string : balance;
         }
     };

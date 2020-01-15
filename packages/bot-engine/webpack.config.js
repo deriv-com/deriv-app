@@ -12,7 +12,7 @@ module.exports = function (env, argv) {
             path         :  path.resolve(__dirname, 'dist'),
             filename     :  'bot-engine.js',
             libraryExport:  'default',
-            library      :  'deriv-bot-engine',
+            library      :  '@deriv/bot-engine',
             libraryTarget:  'umd',
         },
         devServer: {
@@ -70,15 +70,15 @@ module.exports = function (env, argv) {
             {
                 '@babel/polyfill'   : '@babel/polyfill',
                 'classnames'        : 'classnames',
-                'deriv-shared'      : 'deriv-shared',
-                'deriv-translations': 'deriv-translations',
+                '@deriv/shared'      : '@deriv/shared',
+                '@deriv/translations': '@deriv/translations',
                 'formik'            : 'formik',
                 'react'             : 'react',
                 'react-dom'         : 'react-dom',
                 'smartcharts-beta'  : 'smartcharts-beta',
             },
-            /^deriv-shared\/.+$/,
-            /^deriv-translations\/.+$/,
+            /^@deriv\/shared\/.+$/,
+            /^@deriv\/translations\/.+$/,
         ],
     };
 }

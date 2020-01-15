@@ -1,5 +1,5 @@
 {
-  "name": "deriv-bot-engine",
+  "name": "@deriv/bot-engine",
   "version": "1.0.0",
   "description": "Visual automation for deriv.app",
   "main": "dist/bot-engine.js",
@@ -84,8 +84,8 @@
     "commander": "^2.20.0",
     "concat-stream": "^2.0.0",
     "core-js": "^2.6.5",
-    "deriv-shared": "^1.0.0",
-    "deriv-translations": "^1.0.0",
+    "@deriv/shared": "^1.0.0",
+    "@deriv/translations": "^1.0.0",
     "file-saver": "^2.0.2",
     "firebase": "7.2.3",
     "formik": "^1.5.8",

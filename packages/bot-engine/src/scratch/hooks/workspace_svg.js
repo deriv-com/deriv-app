@@ -1,13 +1,12 @@
 import { config } from '../../constants/config';
 /**
  * Handle a mouse-down on SVG drawing surface.
+ * @deriv/bot-engine: We bubble the mousedown event for Core to be reactive.
  * @param {!Event} e Mouse down event.
  * @private
  */
 Blockly.WorkspaceSvg.prototype.onMouseDown_ = function(e) {
-    // Bubble mousedown event up for some Core elements to react correctly.
     Blockly.derivWorkspace.cachedParentSvg_.dispatchEvent(new e.constructor(e.type, e));
-
     const gesture = this.getGesture(e);
     if (gesture) {
         gesture.handleWsStart(e, this);
@@ -82,38 +81,37 @@ Blockly.WorkspaceSvg.prototype.centerOnBlock = function(id, hideChaff = true) {
  * @public
  */
 Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
-    const block = Blockly.Xml.domToBlock(block_node, this);
+    const toolbox    = this.getToolbox();
+    const flyout     = toolbox.flyout_;
+    const block      = Blockly.Xml.domToBlock(block_node, flyout.workspace_);
     const top_blocks = this.getTopBlocks(true);
+    const new_block  = flyout.createBlock(false, block);
 
     if (top_blocks.length) {
-        const last_block = top_blocks[top_blocks.length - 1];
+        const last_block    = top_blocks[top_blocks.length - 1];
         const last_block_xy = last_block.getRelativeToSurfaceXY();
         const extra_spacing = (last_block.startHat_ ? Blockly.BlockSvg.START_HAT_HEIGHT : 0);
-        const y = last_block_xy.y + last_block.getHeightWidth().height + extra_spacing + 30;
-
-        block.moveBy(last_block_xy.x, y);
+        const y             = last_block_xy.y + last_block.getHeightWidth().height + extra_spacing + 30;
+        new_block.moveBy(last_block_xy.x, y);
     }
 
     if (/^procedures_/.test(block_node.getAttribute('type'))) {
-        const toolbox = this.toolbox_;
         toolbox.refreshCategory();
     }
 
-    // Trigger a create event.
-    Blockly.Events.fire(new Blockly.Events.Create(block));
-
-    block.select();
-    this.centerOnBlock(block.id, false);
+    // Call svgResize to avoid glitching workspace.
+    Blockly.svgResize(new_block.workspace);
+    this.centerOnBlock(new_block.id, false);
 };
 
 /**
- * Clean up the workspace by ordering all the blocks in a column. For deriv-bot
+ * Clean up the workspace by ordering all the blocks in a column. For @deriv/bot
  * root-blocks are sorted in columns first, then all other blocks are positioned below
  * the lowest hanging root-block.
  */
 Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean = []) {
     this.setResizesEnabled(false);
-    Blockly.Events.setGroup(true);
+    Blockly.Events.setGroup(Blockly.Events.getGroup() || true);
 
     const is_import = blocks_to_clean.length !== 0;
     const top_blocks = is_import ? blocks_to_clean : this.getTopBlocks(true);
@@ -146,7 +144,7 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean 
                 const fat_neighbour_block = root_blocks
                     .slice(start, start + blocks_per_column)
                     .reduce((a, b) => a.getHeightWidth().width > b.getHeightWidth().width ? a : b);
-        
+
                 let position_x = cursor_x +
                             fat_neighbour_block.getHeightWidth().width +
                             Blockly.BlockSvg.MIN_BLOCK_X;
@@ -158,7 +156,7 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean 
             }
 
             block.snapToGrid();
-            
+
             original_cursor_y =
               block.getRelativeToSurfaceXY().y +
               block.getHeightWidth().height +
@@ -250,7 +248,7 @@ Blockly.WorkspaceSvg.getTopLevelWorkspaceMetrics_ = function() {
     let absolute_top = 0;
 
     if (this.toolbox_ && this.toolboxPosition === Blockly.TOOLBOX_AT_LEFT) {
-        absolute_top = 50; // deriv-bot: Add some spacing for Core header.
+        absolute_top = 50; // @deriv/bot: Add some spacing for Core header.
         absolute_left = toolbox_dimensions.width;
     }
 

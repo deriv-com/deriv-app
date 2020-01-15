@@ -2,7 +2,7 @@ const StyleLintPlugin      = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin   = require('svg-sprite-loader/plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path                 = require('path');
-const shared_utils         = require('deriv-shared/utils/index.js');
+const shared_utils         = require('@deriv/shared/utils/index.js');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const is_serve   = process.env.BUILD_MODE === 'serve';
@@ -42,7 +42,7 @@ module.exports = {
         path         : path.resolve(__dirname, 'lib'),
         filename     : '[name].js',
         libraryExport: 'default',
-        library      : ['deriv-component', '[name]'],
+        library      : '@deriv/component',
         libraryTarget: 'umd',
     },
     resolve: {
@@ -161,9 +161,9 @@ module.exports = {
             'tt-react-custom-scrollbars': 'tt-react-custom-scrollbars',
             'react'                     : 'react',
             'react-dom'                 : 'react-dom',
-            'deriv-shared'              : 'deriv-shared',
+            '@deriv/shared'              : '@deriv/shared',
             'react-tiny-popover'        : 'react-tiny-popover',
         },
-        /^deriv-shared\/.+$/,
+        /^@deriv\/shared\/.+$/,
     ],
 };

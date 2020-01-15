@@ -35,6 +35,8 @@ const TradetypeOption = ({ type }) => (
     </div>
 );
 
+const popover_zindex = '{popover_zindex}';
+
 const QuickStrategyForm = ({
     active_index,
     asset_dropdown_options,
@@ -131,7 +133,7 @@ const QuickStrategyForm = ({
                                                 message={
                                                     localize('The trade length of your purchased contract.')
                                                 }
-                                                zIndex='99999'
+                                                zIndex={popover_zindex}
                                             >
                                                 <Icon icon='IcInfoOutline' />
                                             </Popover>
@@ -156,7 +158,7 @@ const QuickStrategyForm = ({
                                                 message={
                                                     localize('The amount that you pay to enter a trade.')
                                                 }
-                                                zIndex='99999'
+                                                zIndex={popover_zindex}
                                             >
                                                 <Icon icon='IcInfoOutline' />
                                             </Popover>
@@ -179,7 +181,7 @@ const QuickStrategyForm = ({
                                                 message={
                                                     localize('The bot will stop trading if your total loss exceeds this amount.')
                                                 }
-                                                zIndex='99999'
+                                                zIndex='{popover_zindex}'
                                             >
                                                 <Icon icon='IcInfoOutline' />
                                             </Popover>
@@ -204,7 +206,7 @@ const QuickStrategyForm = ({
                                                 message={
                                                     getSizeDesc(active_index)
                                                 }
-                                                zIndex='99999'
+                                                zIndex='{popover_zindex}'
                                             >
                                                 <Icon icon='IcInfoOutline' />
                                             </Popover>
@@ -225,7 +227,7 @@ const QuickStrategyForm = ({
                                             <Popover
                                                 alignment='bottom'
                                                 message={localize('The bot will stop trading if your total profit exceeds this amount.')}
-                                                zIndex='99999'
+                                                zIndex='{popover_zindex}'
                                             >
                                                 <Icon icon='IcInfoOutline' />
                                             </Popover>

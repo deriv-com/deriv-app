@@ -5,11 +5,18 @@
         border-radius: $BORDER_RADIUS;
         padding: 2px 4px;
         opacity: 1;
-        height: calc(100vh - 32.6em);
-        max-height: calc(100vh - 32.6em);
         overflow: hidden;
         background-color: var(--general-main-1);
         color: var(--text-prominent);
+
+        &--scrollbars {
+            height: calc(100vh - 32.8em);
+            max-height: calc(100vh - 32.8em);
+        }
+        &--sellable {
+            height: calc(100vh - 40.3em);
+            max-height: calc(100vh - 40.3em);
+        }
     }
     &__grid {
         display: flex;
@@ -34,6 +41,9 @@
         white-space: nowrap;
         max-width: 90px;
         color: var(--text-general);
+    }
+    &__loader {
+        width: 150px;
     }
     &__value-wrapper {
         display: flex;

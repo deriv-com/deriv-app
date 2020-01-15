@@ -8,8 +8,10 @@ const ContractTypeInfoNav = ({
     handleNavigationClick,
 }) => {
     const handleNextClick = () => {
-        const next_idx = selected_item_index + 1;
-        if (next_idx < list.length) {
+        const next_idx       = selected_item_index + 1;
+        const is_reached_end = next_idx === list.length;
+
+        if (!is_reached_end) {
             handleNavigationClick(list[next_idx]);
         } else {
             handleNavigationClick(list[0]);
@@ -18,6 +20,7 @@ const ContractTypeInfoNav = ({
 
     const handlePrevClick = () => {
         const prev_idx = selected_item_index - 1;
+
         if (prev_idx > -1) {
             handleNavigationClick(list[prev_idx]);
         } else {

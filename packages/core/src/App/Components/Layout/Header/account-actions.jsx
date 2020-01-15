@@ -1,11 +1,11 @@
+import * as PropTypes       from 'prop-types';
+import React, { Component } from 'react';
 import {
     Button,
     DesktopWrapper,
     Icon,
-    Popover,
-    MobileWrapper }         from '@deriv/components';
-import * as PropTypes       from 'prop-types';
-import React, { Component } from 'react';
+    MobileWrapper,
+    Popover }               from '@deriv/components';
 import { localize }         from '@deriv/translations';
 import CurrencyUtils        from '@deriv/shared/utils/currency';
 import routes               from 'Constants/routes';

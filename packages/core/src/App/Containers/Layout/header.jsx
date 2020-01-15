@@ -2,7 +2,10 @@ import classNames              from 'classnames';
 import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { withRouter }          from 'react-router-dom';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import {
+    DesktopWrapper,
+    MobileWrapper }            from '@deriv/components';
+import { isMobile }            from '@deriv/shared/utils/screen';
 import {
     AccountActions,
     MenuLinks,
@@ -65,31 +68,29 @@ class Header extends React.Component {
             >
                 <div className='header__menu-items'>
                     <div className='header__menu-left'>
-
-                        {isDesktop() ?
+                        <DesktopWrapper>
                             <PlatformSwitcher platform_config={filterPlatformsForClients(platform_config)} />
-                            :
-                            <>
-                                <ToggleMenuDrawer
-                                    enableApp={enableApp}
-                                    disableApp={disableApp}
-                                    logoutClient={logoutClient}
-                                    is_dark_mode={is_dark_mode}
-                                    is_logged_in={is_logged_in}
-                                    toggleTheme={setDarkMode}
-                                    platform_switcher={
-                                        <PlatformSwitcher
-                                            is_mobile={isMobile()}
-                                            platform_config={filterPlatformsForClients(platform_config)}
-                                        />}
-                                />
-                                {(header_extension && is_logged_in) &&
-                                    <div className='header__menu-left-extensions'>
-                                        { header_extension }
-                                    </div>
-                                }
-                            </>
-                        }
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <ToggleMenuDrawer
+                                enableApp={enableApp}
+                                disableApp={disableApp}
+                                logoutClient={logoutClient}
+                                is_dark_mode={is_dark_mode}
+                                is_logged_in={is_logged_in}
+                                toggleTheme={setDarkMode}
+                                platform_switcher={
+                                    <PlatformSwitcher
+                                        is_mobile
+                                        platform_config={filterPlatformsForClients(platform_config)}
+                                    />}
+                            />
+                            {(header_extension && is_logged_in) &&
+                                <div className='header__menu-left-extensions'>
+                                    {header_extension}
+                                </div>
+                            }
+                        </MobileWrapper>
                         <MenuLinks
                             is_logged_in={is_logged_in}
                             items={header_links}
@@ -102,7 +103,6 @@ class Header extends React.Component {
                         {is_logging_in &&
                         <div className={classNames('acc-info__preloader', {
                             'acc-info__preloader--no-currency': !currency,
-                            'acc-info__preloader--is-mobile'  : isMobile(),
                         })}
                         >
                             <AccountsInfoLoader
@@ -121,7 +121,6 @@ class Header extends React.Component {
                                 disableApp={disableApp}
                                 enableApp={enableApp}
                                 is_acc_switcher_on={is_acc_switcher_on}
-                                is_mobile={isMobile()}
                                 is_notifications_visible={is_notifications_visible}
                                 is_logged_in={is_logged_in}
                                 is_virtual={is_virtual}

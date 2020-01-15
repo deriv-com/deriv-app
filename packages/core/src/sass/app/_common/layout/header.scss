@@ -23,7 +23,7 @@
         content: '';
         background-color: var(--overlay-outside-dialog);
     }
-    &--is-mobile {
+    @include mobile {
         height: $MOBILE_HEADER_HEIGHT;
 
         .header__menu-left, .header__menu-right {
@@ -126,7 +126,7 @@
         height: #{$HEADER_HEIGHT - 1px};
         position: relative;
 
-        &--mobile {
+        @include mobile {
             .acc-info__separator {
                 display: none;
             }

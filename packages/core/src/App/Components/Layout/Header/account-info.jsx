@@ -2,8 +2,10 @@ import classNames            from 'classnames';
 import PropTypes             from 'prop-types';
 import React                 from 'react';
 import { CSSTransition }     from 'react-transition-group';
-import { Icon }              from '@deriv/components';
-import { isMobile }          from '@deriv/shared/utils/screen';
+import {
+    DesktopWrapper,
+    Icon,
+    MobileWrapper }          from '@deriv/components';
 import { Localize }          from '@deriv/translations';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile.jsx';
 import { AccountSwitcher }   from 'App/Containers/AccountSwitcher';
@@ -52,7 +54,7 @@ const AccountInfo = ({
             }
             <Icon icon='IcChevronDownBold' className='acc-info__select-arrow' />
         </div>
-        {isMobile ?
+        <MobileWrapper>
             <AccountSwitcherMobile
                 is_visible={is_dialog_on}
                 disableApp={disableApp}
@@ -60,7 +62,8 @@ const AccountInfo = ({
                 toggle={toggleDialog}
                 is_upgrade_enabled={is_upgrade_enabled}
             />
-            :
+        </MobileWrapper>
+        <DesktopWrapper>
             <CSSTransition
                 in={is_dialog_on}
                 timeout={200}
@@ -79,7 +82,7 @@ const AccountInfo = ({
                     />
                 </div>
             </CSSTransition>
-        }
+        </DesktopWrapper>
     </div>
 );
 

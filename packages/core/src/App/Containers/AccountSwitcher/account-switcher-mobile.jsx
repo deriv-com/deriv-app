@@ -17,7 +17,6 @@ const AccountSwitcherMobile = (props) => {
             toggleModal={toggle}
             height='100%'
             width='calc(100vw - 42px)'
-            mobile
         >
             <div
                 className={classNames(

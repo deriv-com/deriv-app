@@ -62,7 +62,6 @@ export class AccountActions extends Component {
                                 is_upgrade_enabled={can_upgrade}
                                 disableApp={disableApp}
                                 enableApp={enableApp}
-                                is_mobile
                                 is_virtual={is_virtual}
                                 currency={currency}
                                 is_dialog_on={is_acc_switcher_on}

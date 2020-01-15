@@ -3,6 +3,7 @@ import PropTypes             from 'prop-types';
 import React                 from 'react';
 import { CSSTransition }     from 'react-transition-group';
 import { Icon }              from '@deriv/components';
+import { isMobile }          from '@deriv/shared/utils/screen';
 import { Localize }          from '@deriv/translations';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile.jsx';
 import { AccountSwitcher }   from 'App/Containers/AccountSwitcher';
@@ -13,7 +14,6 @@ const AccountInfo = ({
     disableApp,
     enableApp,
     is_dialog_on,
-    is_mobile,
     is_upgrade_enabled,
     is_virtual,
     toggleDialog,
@@ -52,7 +52,7 @@ const AccountInfo = ({
             }
             <Icon icon='IcChevronDownBold' className='acc-info__select-arrow' />
         </div>
-        {is_mobile ?
+        {isMobile ?
             <AccountSwitcherMobile
                 is_visible={is_dialog_on}
                 disableApp={disableApp}
@@ -88,7 +88,6 @@ AccountInfo.propTypes = {
     balance           : PropTypes.string,
     currency          : PropTypes.string,
     is_dialog_on      : PropTypes.bool,
-    is_mobile         : PropTypes.bool,
     is_upgrade_enabled: PropTypes.bool,
     is_virtual        : PropTypes.bool,
     loginid           : PropTypes.string,

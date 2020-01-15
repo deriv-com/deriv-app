@@ -3,6 +3,7 @@ import PropTypes         from 'prop-types';
 import React             from 'react';
 import ReactDOM          from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
+import { isMobile }      from '@deriv/shared/utils/screen';
 import Body              from './modal-body.jsx';
 import Footer            from './modal-footer.jsx';
 import Icon              from '../icon';
@@ -21,7 +22,7 @@ class ModalElement extends React.PureComponent {
             document.addEventListener('mousedown', this.handleClickOutside);
         }
         this.el.classList.add('dc-modal');
-        if (this.props.mobile) this.el.classList.add('dc-modal--is-mobile');
+        if (isMobile) this.el.classList.add('dc-modal--is-mobile');
         this.state.modal_root.appendChild(this.el);
     };
 
@@ -110,7 +111,6 @@ ModalElement.propTypes = {
     header        : PropTypes.node,
     id            : PropTypes.string,
     is_open       : PropTypes.bool,
-    mobile        : PropTypes.bool,
     small         : PropTypes.bool,
     title         : PropTypes.oneOfType([
         PropTypes.string,
@@ -127,7 +127,6 @@ const Modal = ({
     is_open,
     has_close_icon,
     height,
-    mobile,
     small,
     title,
     toggleModal,
@@ -154,7 +153,6 @@ const Modal = ({
             toggleModal={toggleModal}
             has_close_icon={has_close_icon}
             height={height}
-            mobile={mobile}
             small={small}
             width={width}
         >
@@ -178,7 +176,6 @@ Modal.propTypes = {
     height        : PropTypes.string,
     id            : PropTypes.string,
     is_open       : PropTypes.bool,
-    mobile        : PropTypes.bool,
     small         : PropTypes.bool,
     title         : PropTypes.oneOfType([
         PropTypes.string,

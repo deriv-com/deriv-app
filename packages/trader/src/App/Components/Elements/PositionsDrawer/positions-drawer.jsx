@@ -15,6 +15,7 @@ import { connect }                    from 'Stores/connect';
 import { isEnded, isValidToSell }     from 'Stores/Modules/Contract/Helpers/logic';
 import { isMultiplierContract }       from 'Stores/Modules/Contract/Helpers/multiplier';
 import { getContractTypesConfig }     from 'Stores/Modules/Trading/Constants/contract';
+import { isCallPut }                  from 'Stores/Modules/Contract/Helpers/contract-type';
 import PositionsDrawerCard            from './PositionsDrawerCard';
 
 class PositionsDrawer extends React.Component {
@@ -100,11 +101,12 @@ class PositionsDrawer extends React.Component {
     }
 
     filterByContractType = ({ contract_type, shortcode }) => {
-        const is_callput  = /CALL|PUT/.test(contract_type);
+        const { trade_contract_type } = this.props;
+        const is_call_put = isCallPut(trade_contract_type);
         const is_high_low = Shortcode.isHighLow({ shortcode });
         let match = getContractTypesConfig()[this.props.trade_contract_type].trade_types.includes(contract_type);
-        if (is_callput) {
-            match = this.props.trade_contract_type === 'high_low' ? is_high_low : match && !is_high_low;
+        if (is_call_put) {
+            match = trade_contract_type === 'high_low' ? is_high_low : !is_high_low;
         }
         return match;
     }
@@ -123,7 +125,7 @@ class PositionsDrawer extends React.Component {
         const newPositionsHeight = this.positions.map((position) => this.getPositionHeight(position));
         if (this.list_ref && this.hasPositionsHeightChanged(newPositionsHeight, this.positionsHeight)) {
             // When there is a change in height of an item, this recalculates scroll height of the list and reapplies styles.
-            setTimeout(() => this.list_ref.resetAfterIndex(0));
+            setTimeout(() => this.list_ref ? this.list_ref.resetAfterIndex(0) : undefined);
         }
 
         this.positionsHeight = newPositionsHeight;

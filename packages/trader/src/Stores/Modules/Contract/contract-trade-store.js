@@ -9,6 +9,7 @@ import ContractStore              from './contract-store';
 import getValidationRules         from './Constants/validation-rules';
 import { isEnded }                from './Helpers/logic';
 import { isMultiplierContract }   from './Helpers/multiplier';
+import { isCallPut }              from './Helpers/contract-type';
 import BaseStore                  from '../../base-store';
 import { getContractTypesConfig } from '../Trading/Constants/contract';
 
@@ -68,7 +69,7 @@ export default class ContractTradeStore extends BaseStore {
         const { symbol: underlying, contract_type: trade_type } = this.root_store.modules.trade;
         if (!trade_type || !underlying) { return []; }
         let { trade_types } = getContractTypesConfig()[trade_type];
-        const is_call_put = (trade_type === 'rise_fall') || (trade_type === 'rise_fall_equal') || (trade_type === 'high_low');
+        const is_call_put = isCallPut(trade_type);
         if (is_call_put) {
             // treat CALLE/PUTE and CALL/PUT the same
             trade_types = ['CALLE', 'PUTE', 'CALL', 'PUT'];

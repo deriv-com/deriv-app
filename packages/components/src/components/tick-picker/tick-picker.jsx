@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Button              from '../button';
 import Icon                from '../icon';
 
-const TickPicker = ({ min_value, max_value, onSubmit, submit_label }) => {
+const TickPicker = ({ min_value, max_value, onSubmit, submit_label, singular_label, plural_label }) => {
     const normalizedTick = (tick) => `${tick}`.padStart(2, 0);
     const [tick_value, setTickValue] = useState(parseInt(min_value));
 
@@ -34,14 +34,14 @@ const TickPicker = ({ min_value, max_value, onSubmit, submit_label }) => {
                 </Button>
                 <div className='tick-holder'>
                     <span className='tick-holder__counter'>{normalizedTick(tick_value)}</span>
-                    <span className='tick-holder__text'>Ticks</span>
+                    <span className='tick-holder__text'>{tick_value === 1 ? singular_label : plural_label}</span>
                 </div>
                 <Button circular className='operator' onClick={handleIncrease}>
                     <Icon icon='IcAdd' custom_color='var(--text-prominent)' />
                 </Button>
             </div>
             <div className='dc-tick-picker__submit-wrapper'>
-                <Button circular className='styled-button' onClick={handleClick}>{submit_label}</Button>
+                <Button circular onClick={handleClick}>{submit_label}</Button>
             </div>
         </div>
     );

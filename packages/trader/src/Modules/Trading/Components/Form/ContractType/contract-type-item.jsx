@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import classNames                     from 'classnames';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
-import { Icon }                       from '@deriv/components';
+import { Icon, DesktopWrapper }       from '@deriv/components';
 import IconTradeCategory              from 'Assets/Trading/Categories/icon-trade-categories.jsx';
 
 const ContractTypeItem = ({
@@ -10,7 +10,6 @@ const ContractTypeItem = ({
     name,
     value,
     is_equal,
-    is_mobile,
     handleInfoClick,
     handleSelect,
 }) => (
@@ -30,11 +29,11 @@ const ContractTypeItem = ({
             <span className='contract-type-item__title'>
                 {contract.text}
             </span>
-            {!is_mobile &&
-            <div id='info-icon' className='contract-type-item__icon' onClick={() => handleInfoClick(contract)}>
-                <Icon icon='IcInfoOutline' />
-            </div>
-            }
+            <DesktopWrapper>
+                <div id='info-icon' className='contract-type-item__icon' onClick={() => handleInfoClick(contract)}>
+                    <Icon icon='IcInfoOutline' />
+                </div>
+            </DesktopWrapper>
         </div>
     ))
 );
@@ -47,9 +46,8 @@ ContractTypeItem.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
-    is_mobile: PropTypes.bool,
-    name     : PropTypes.string,
-    value    : PropTypes.string,
+    name : PropTypes.string,
+    value: PropTypes.string,
 };
 
 export default ContractTypeItem;

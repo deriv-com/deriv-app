@@ -9,7 +9,7 @@
     z-index: 999;
     overflow: auto;
     transition: opacity 0.2s;
-    background: var(--general-section-1);
+    background: var(--general-section-2);
     // transform here would break fixed header
 
     &--enter, &--exit {
@@ -42,7 +42,7 @@
         padding-top: 3.6rem;
         padding-bottom: 7rem; // ios bottom bar fix
         z-index: 1;
-        background: var(--general-section-1);
+        background: var(--general-section-2);
         transition: all 0.2s ease-out;
     }
     &__header {
@@ -57,10 +57,10 @@
         padding: 1rem;
         height: $MOBILE_HEADER_HEIGHT;
         z-index: 4;
-        background: var(--general-section-1);
+        background: var(--general-section-2);
         transition: all 0.2s ease-out;
         transition-delay: 0.2s;
-        border-bottom: 1px solid var(--general-section-2);
+        border-bottom: 1px solid var(--border-disabled);
     }
     &__title {
         padding: 1.2rem 1.2rem 1.2rem 0.4rem;

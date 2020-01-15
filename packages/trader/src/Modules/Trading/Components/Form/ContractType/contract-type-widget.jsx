@@ -4,6 +4,7 @@ import React               from 'react';
 import {
     Icon,
     DesktopWrapper }       from '@deriv/components';
+import { isMobile }        from '@deriv/shared/utils/screen';
 import IconTradeCategory   from 'Assets/Trading/Categories/icon-trade-categories.jsx';
 import ContractTypeDialog  from './contract-type-dialog.jsx';
 import ContractTypeList    from './contract-type-list.jsx';
@@ -78,7 +79,7 @@ class ContractTypeWidget extends React.PureComponent {
     };
 
     handleClickOutside = (event) => {
-        if (this.props.is_mobile) return;
+        if (isMobile()) return;
         if (this.wrapper_ref && !this.wrapper_ref.contains(event.target) && this.state.is_dialog_open) {
             this.setState({ is_dialog_open: false });
         } else if (this.wrapper_ref && !this.wrapper_ref.contains(event.target) && this.state.is_info_dialog_open) {
@@ -136,7 +137,7 @@ class ContractTypeWidget extends React.PureComponent {
     };
 
     render() {
-        const { is_dark_theme, is_equal, is_mobile, list, name, value } = this.props;
+        const { is_dark_theme, is_equal, list, name, value } = this.props;
         const { is_dialog_open, is_info_dialog_open, item }             = this.state;
         const item_list        = this.getItemList();
         const item_index       = this.getItemIndex(item, item_list);
@@ -144,9 +145,7 @@ class ContractTypeWidget extends React.PureComponent {
         return (
             <div
                 id='dt_contract_dropdown'
-                className={classNames('contract-type-widget', 'dropdown--left', {
-                    'contract-type-widget--mobile': is_mobile,
-                })}
+                className={classNames('contract-type-widget', 'dropdown--left')}
                 ref={this.setWrapperRef}
                 tabIndex='0'
             >
@@ -174,7 +173,6 @@ class ContractTypeWidget extends React.PureComponent {
                 </div>
 
                 <ContractTypeDialog
-                    is_mobile={is_mobile}
                     onClose={this.handleVisibility}
                     open={is_dialog_open}
                 >
@@ -182,14 +180,12 @@ class ContractTypeWidget extends React.PureComponent {
                         handleInfoClick={this.handleInfoClick}
                         handleSelect={this.handleSelect}
                         is_equal={is_equal}
-                        is_mobile={is_mobile}
                         list={list}
                         name={name}
                         value={value}
                     />
                 </ContractTypeDialog>
                 <TradeTypeInfoDialog
-                    is_mobile={is_mobile}
                     onClose={this.handleInfoClick}
                     open={is_info_dialog_open}
                     title={item.text}
@@ -199,7 +195,6 @@ class ContractTypeWidget extends React.PureComponent {
                         handleNextClick={this.handleNextClick}
                         handlePrevClick={this.handlePrevClick}
                         is_dark_theme={is_dark_theme}
-                        is_mobile={is_mobile}
                         item={item}
                         item_index={item_index < 0 ? undefined : item_index}
                         itemList={item_list}
@@ -219,7 +214,6 @@ ContractTypeWidget.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
-    is_mobile: PropTypes.bool,
     list     : PropTypes.object,
     name     : PropTypes.string,
     onChange : PropTypes.func,

@@ -3,6 +3,9 @@
     padding: 1.6em 1.6em 0em;
     border-bottom: 4px solid var(--general-section-2);
 
+    @include mobile {
+        border-bottom: 4px solid var(--border-disabled)
+    }
     &__label {
         @include typeface(--paragraph-left-bold-black);
         color: var(--text-prominent);

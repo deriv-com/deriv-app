@@ -3,6 +3,7 @@ import PropTypes       from 'prop-types';
 import React           from 'react';
 import {
     Button,
+    DesktopWrapper,
     Icon,
     ThemedScrollbars }    from '@deriv/components';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif.jsx';
@@ -14,7 +15,6 @@ const TradeTypeInfoItem = ({
     handleNextClick,
     handlePrevClick,
     is_dark_theme,
-    is_mobile,
     item,
     item_index,
     itemList,
@@ -23,14 +23,14 @@ const TradeTypeInfoItem = ({
     onSubmitButtonClick,
 }) => (
     <div id={`dt_contract_info_${item.value}`}>
-        {!is_mobile &&
-        <div className='trade-type-info-dialog__header'>
-            <span id='dt_contract_info_back_nav' onClick={() => onBackButtonClick()}>
-                <Icon icon='IcArrowLeftBold' />
-            </span>
-            <span className='title'>{item.text}</span>
-        </div>
-        }
+        <DesktopWrapper>
+            <div className='trade-type-info-dialog__header'>
+                <span id='dt_contract_info_back_nav' onClick={() => onBackButtonClick()}>
+                    <Icon icon='IcArrowLeftBold' />
+                </span>
+                <span className='title'>{item.text}</span>
+            </div>
+        </DesktopWrapper>
         <div className='trade-type-info-dialog__body'>
             <div
                 className='trade-type-info-dialog__card-wrapper'
@@ -108,7 +108,6 @@ TradeTypeInfoItem.propTypes = {
     handleNextClick      : PropTypes.func,
     handlePrevClick      : PropTypes.func,
     is_dark_theme        : PropTypes.bool,
-    is_mobile            : PropTypes.bool,
     item                 : PropTypes.object,
     item_index           : PropTypes.number,
     itemList             : PropTypes.array,

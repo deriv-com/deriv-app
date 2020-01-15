@@ -7,7 +7,6 @@ const ContractTypeList = ({
     handleInfoClick,
     handleSelect,
     is_equal,
-    is_mobile,
     list,
     name,
     value,
@@ -27,7 +26,6 @@ const ContractTypeList = ({
                             handleSelect={handleSelect}
                             handleInfoClick={handleInfoClick}
                             is_equal={is_equal}
-                            is_mobile={is_mobile}
                         />
                     </div>
                 </div>
@@ -42,10 +40,9 @@ ContractTypeList.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
-    is_mobile: PropTypes.bool,
-    list     : MobxPropTypes.objectOrObservableObject,
-    name     : PropTypes.string,
-    value    : PropTypes.string,
+    list : MobxPropTypes.objectOrObservableObject,
+    name : PropTypes.string,
+    value: PropTypes.string,
 };
 
 export default ContractTypeList;

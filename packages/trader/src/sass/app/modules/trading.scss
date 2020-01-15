@@ -428,3 +428,16 @@
         margin-top: 0.8em;
     }
 }
+
+/** @define dc-collapsible */
+@include mobile {
+    .dc-collapsible {
+        position: absolute;
+        bottom: 0;
+        z-index: 99999;
+        margin: 0 auto;
+        left: 0;
+        width: calc(100vw - 1.6rem);
+        transform: translate(0.8rem, 0);
+    }
+}

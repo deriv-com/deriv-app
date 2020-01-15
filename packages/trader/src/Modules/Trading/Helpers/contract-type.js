@@ -1,3 +1,4 @@
+import React        from 'react';
 import { localize } from '@deriv/translations';
 
 export const unsupported_contract_types_list = [
@@ -38,7 +39,10 @@ export const getAvailableContractTypes = (contract_types_list, unsupported_list)
                     label         : key,
                     contract_types: available_contract_types,
                     icon          : contract_category_icon[key],
-                    is_new        : key === localize('Multiplier option'), // TODO: remove line to hide 'NEW' label besides contract names
+                    component     : key === localize('Multiplier option') ?
+                        <span className='vertical-tab__header--new'>{localize('NEW!')}</span>
+                        :
+                        null,
                 };
             }
             return undefined;

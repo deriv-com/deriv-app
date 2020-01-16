@@ -23,18 +23,18 @@ class Dialog extends React.PureComponent {
             value      : this.props.item.value,
             input_value: '',
         };
-        this.dialog_ref     = React.createRef();
-        this.scrollbar_ref  = React.createRef();
-        this.labels_list    = [];
-        this.scrollTop_list = [];
-        this.contracts_list = getContractsList(this.props.list, 'text');
+        this.dialog_ref      = React.createRef();
+        this.scrollbar_ref   = React.createRef();
+        this.labels_list     = [];
+        this.offset_top_list = [];
+        this.contracts_list  = getContractsList(this.props.list, 'text');
     }
 
     componentDidUpdate() {
         if (this.props.is_open && !this.labels_list.length) {
             const headers       = this.dialog_ref.current.querySelectorAll('.vertical-tab__header');
             this.labels_list    = this.dialog_ref.current.querySelectorAll('.contract-type-list__label');
-            this.scrollTop_list = this.labels.map((label, i) => label.offsetTop - headers[i].offsetTop + 40);
+            this.offset_top_list = this.labels.map((label, i) => label.offsetTop - headers[i].offsetTop + 40);
         }
         if (this.props.item.value !== this.state.value) {
             this.setState({
@@ -52,14 +52,14 @@ class Dialog extends React.PureComponent {
             this.props.onBackButtonClick();
         } else {
             const idx = this.labels.findIndex(n => n.innerText === e.label);
-            this.scrollbar_ref.current.scrollTop(this.scrollTop_list[idx]);
+            this.scrollbar_ref.current.scrollTop(this.offset_top_list[idx]);
         }
     }
 
     onScroll = (e) => {
-        const scrollTop = e.target.scrollTop + 20;
-        const closest   = this.scrollTop_list.reduce((prev, curr) =>  curr < scrollTop ? curr : prev);
-        const idx       = this.scrollTop_list.indexOf(closest);
+        const offset_top = e.target.scrollTop + 20; // add 20px of padding top and bottom
+        const closest    = this.offset_top_list.reduce((prev, curr) => curr < offset_top ? curr : prev);
+        const idx        = this.offset_top_list.indexOf(closest);
         if (idx !== -1) {
             this.setState({
                 selected: {

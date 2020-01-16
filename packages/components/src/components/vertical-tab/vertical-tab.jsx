@@ -1,10 +1,14 @@
 import classNames                  from 'classnames';
 import PropTypes                   from 'prop-types';
 import React                       from 'react';
-import VerticalTabContentContainer from 'Components/vertical-tabs/vertical-tab-content-container';
-import VerticalTabHeaders          from 'Components/vertical-tabs/vertical-tab-headers';
+import VerticalTabContentContainer from 'Components/vertical-tab/vertical-tab-content-container.jsx';
+import VerticalTabHeader           from 'Components/vertical-tab/vertical-tab-header.jsx';
+import VerticalTabHeaders          from 'Components/vertical-tab/vertical-tab-headers.jsx';
+import VerticalTabHeaderTitle      from 'Components/vertical-tab/vertical-tab-header-title.jsx';
+import VerticalTabLayout           from 'Components/vertical-tab/vertical-tab-layout.jsx';
+import VerticalTabWrapper          from 'Components/vertical-tab/vertical-tab-wrapper.jsx';
 
-export default class VerticalTab extends React.Component {
+class VerticalTab extends React.Component {
     constructor(props) {
         super(props);
         this.setSelectedIndex(props);
@@ -107,3 +111,12 @@ VerticalTab.propTypes = {
     selected_index: PropTypes.number,
     setModalIndex : PropTypes.func,
 };
+
+VerticalTab.ContentContainer = VerticalTabContentContainer;
+VerticalTab.Header           = VerticalTabHeader;
+VerticalTab.Headers          = VerticalTabHeaders;
+VerticalTab.HeaderTitle      = VerticalTabHeaderTitle;
+VerticalTab.Layout           = VerticalTabLayout;
+VerticalTab.Wrapper          = VerticalTabWrapper;
+
+export default VerticalTab;

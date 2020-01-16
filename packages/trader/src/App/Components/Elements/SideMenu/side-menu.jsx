@@ -1,10 +1,8 @@
-import {
-    VerticalTabContentContainer,
-    VerticalTabLayout }          from '@deriv/components';
-import PropTypes                 from 'prop-types';
-import React                     from 'react';
-import { SideMenuHeaders }       from './side-menu-headers.jsx';
-import Loading                   from '../../../../templates/app/components/loading.jsx';
+import { VerticalTab }     from '@deriv/components';
+import PropTypes           from 'prop-types';
+import React               from 'react';
+import { SideMenuHeaders } from './side-menu-headers.jsx';
+import Loading             from '../../../../templates/app/components/loading.jsx';
 
 const SideMenuTitle = ({ title }) => (<h1 className='side-menu__title'>{title}</h1>);
 
@@ -34,7 +32,7 @@ class SideMenu extends React.PureComponent {
         ];
 
         return (
-            <VerticalTabLayout is_full_width={is_full_width}>
+            <VerticalTab.Layout is_full_width={is_full_width}>
                 {is_loading ?
                     <Loading /> :
                     <>
@@ -46,7 +44,7 @@ class SideMenu extends React.PureComponent {
                             is_routed={is_routed}
                             onChange={()=>{}}
                         />
-                        <VerticalTabContentContainer
+                        <VerticalTab.ContentContainer
                             action_bar={action_bar_items}
                             action_bar_classname={action_bar_classname}
                             id={id}
@@ -57,7 +55,7 @@ class SideMenu extends React.PureComponent {
                         />
                     </>
                 }
-            </VerticalTabLayout>
+            </VerticalTab.Layout>
         );
     }
 }

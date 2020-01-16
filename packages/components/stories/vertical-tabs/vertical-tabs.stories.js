@@ -4,8 +4,8 @@ import {
     withKnobs }      from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react';
 import Icon          from 'Components/icon';
-import VerticalTab   from 'Components/vertical-tabs/vertical-tab';
-import                    'Components/vertical-tabs/vertical-tab/vertical-tab.scss';
+import VerticalTab   from 'Components/vertical-tab/vertical-tab';
+import                    'Components/vertical-tab/vertical-tab.scss';
 import Theme         from '../shared/theme';
 
 const TextComponent = (props) => (

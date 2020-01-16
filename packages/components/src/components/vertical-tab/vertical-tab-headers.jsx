@@ -1,7 +1,7 @@
 import React                  from 'react';
-import VerticalTabHeader      from 'Components/vertical-tabs/vertical-tab-header';
-import VerticalTabHeaderTitle from 'Components/vertical-tabs/vertical-tab-header-title';
-import VerticalTabWrapper     from 'Components/vertical-tabs/vertical-tab-wrapper';
+import VerticalTabWrapper     from 'Components/vertical-tab/vertical-tab-wrapper.jsx';
+import VerticalTabHeader      from 'Components/vertical-tab/vertical-tab-header.jsx';
+import VerticalTabHeaderTitle from 'Components/vertical-tab/vertical-tab-header-title.jsx';
 
 const VerticalTabHeaders = (props) => (
     <VerticalTabWrapper className={props.className}>

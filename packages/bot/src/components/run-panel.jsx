@@ -92,6 +92,7 @@ const drawerFooter = ({
                      by our system. Please be aware that some completed transactions may not be displayed
                      in the transaction table if the bot is stopped while placing trades. You may refer to
                      the statement page for details of all completed transactions.`)}
+                    zIndex='5'
                 >
                     <Icon icon='IcInfoOutline' className='run-panel__icon-info' />
                 </Popover>

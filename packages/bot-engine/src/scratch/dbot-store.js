@@ -1,22 +1,23 @@
 class DBotStoreInterface {
-    // TODO here we are suppose to implement fields of DBotStore.
+    // TODO here we are suppose to define an interface and implement fields of DBotStore.
 }
 
 class DBotStore extends DBotStoreInterface {
     static singleton = null;
 
-    constructor(_store) {
+    constructor(store) {
         super();
-        this.is_mobile       = _store.is_mobile || false;
-        this.is_dark_mode_on = _store.is_dark_mode_on || false;
-        this.flyout          = _store.flyout || {};
-        this.toolbar         = _store.toolbar || {};
-        this.quick_strategy  = _store.quick_strategy || {};
+        this.is_mobile       = store.is_mobile || false;
+        this.is_dark_mode_on = store.is_dark_mode_on || false;
+        this.client          = store.client;
+        this.flyout          = store.flyout || {};
+        this.toolbar         = store.toolbar || {};
+        this.quick_strategy  = store.quick_strategy || {};
     }
 
-    static setInstance(_store) {
+    static setInstance(store) {
         if (!this.singleton) {
-            this.singleton = new DBotStore(_store);
+            this.singleton = new DBotStore(store);
         }
 
         return this.instance;

@@ -24,9 +24,9 @@ class App extends React.Component {
         GTM.init(this.root_store);
         ServerTime.init(root_store.common);
         
-        const { flyout, toolbar, quick_strategy } = this.root_store;
+        const { core : { client }, flyout, toolbar, quick_strategy } = this.root_store;
         // dont pass the rootstore in, if you need a prop define it in dbot-engine-store ans pass it through
-        this.dbot_store = { is_mobile: false, flyout, toolbar, quick_strategy };
+        this.dbot_store = { is_mobile: false, client, flyout, toolbar, quick_strategy };
         this.api_helpers_store = { ws: this.root_store.ws, server_time: this.root_store.server_time };
     }
 

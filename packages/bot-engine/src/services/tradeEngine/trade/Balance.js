@@ -1,6 +1,6 @@
 import { getFormattedText } from '@deriv/shared/utils/currency';
 import { info }             from '../utils/broadcast';
-import { client }           from '../utils/client';
+import DBotStore            from '../../../scratch/dbot-store';
 
 let balance_string = '';
 
@@ -21,7 +21,8 @@ export default Engine =>
         // eslint-disable-next-line class-methods-use-this
         getBalance(type) {
             const { scope }  = this.store.getState();
-            const balance    = client.balance || 0;
+            const { client } = DBotStore.instance;
+            const balance    = client && client.balance || 0;
             let value        = balance;
 
             if (scope === 'BEFORE_PURCHASE') {

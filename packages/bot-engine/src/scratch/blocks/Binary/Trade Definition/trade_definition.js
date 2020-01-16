@@ -1,10 +1,10 @@
-import { localize }          from '@deriv/translations';
+import { localize }         from '@deriv/translations';
+import DBotStore            from '../../../dbot-store';
 import { defineContract }   from '../../images';
 import {
     setBlockTextColor,
     runIrreversibleEvents } from '../../../utils';
 import { config }           from '../../../../constants/config';
-import { client }           from '../../../../services/tradeEngine/utils/client';
 
 Blockly.Blocks.trade_definition = {
     init() {
@@ -118,12 +118,14 @@ Blockly.Blocks.trade_definition = {
 };
 
 Blockly.JavaScript.trade_definition = block => {
-    if (!client.is_logged_in) {
+    const { client } = DBotStore.instance;
+
+    if (!(client && client.is_logged_in)) {
         throw new Error('Please login');
     }
 
-    const { token: account }         = client;
-
+    const { loginid }                = client;
+    const account                    = client.getToken(loginid);
     const market_block               = block.getChildByType('trade_definition_market');
     const trade_type_block           = block.getChildByType('trade_definition_tradetype');
     const contract_type_block        = block.getChildByType('trade_definition_contracttype');

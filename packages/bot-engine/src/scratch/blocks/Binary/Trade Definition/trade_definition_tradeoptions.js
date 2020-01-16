@@ -1,11 +1,11 @@
 import { localize }        from '@deriv/translations';
 import CurrencyUtils       from '@deriv/shared/utils/currency';
+import DBotStore           from '../../../dbot-store';
 import {
     runIrreversibleEvents,
 }                          from '../../../utils';
 import { config }          from '../../../../constants/config';
 import ApiHelpers          from '../../../../services/api/api-helpers';
-import { client }          from '../../../../services/tradeEngine/utils/client';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
     init() {
@@ -368,9 +368,9 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         return container;
     },
     setCurrency() {
-        const currency_field   = this.getField('CURRENCY_LIST');
-
-        currency_field.setText(client.currency);
+        const currency_field = this.getField('CURRENCY_LIST');
+        const { client }     = DBotStore.instance;
+        currency_field.setText(client && client.currency || 'USD');
     },
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {

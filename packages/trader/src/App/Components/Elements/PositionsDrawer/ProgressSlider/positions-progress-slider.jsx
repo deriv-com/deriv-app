@@ -1,7 +1,7 @@
 import classNames            from 'classnames';
 import PropTypes             from 'prop-types';
 import React                 from 'react';
-import PositionsUtils        from 'deriv-shared/utils/positions';
+import PositionsUtils        from '@deriv/shared/utils/positions';
 import { connect }           from 'Stores/connect';
 import ProgressTicks         from './positions-progress-ticks.jsx';
 import RemainingTime         from '../../../../Containers/remaining-time.jsx';

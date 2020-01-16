@@ -3,8 +3,8 @@ import {
     extendObservable,
     observable,
     toJS }                    from 'mobx';
-import ContractUtils          from 'deriv-shared/utils/contract';
-import DigitUtils             from 'deriv-shared/utils/digits';
+import ContractUtils          from '@deriv/shared/utils/contract';
+import DigitUtils             from '@deriv/shared/utils/digits';
 import { createChartMarkers } from './Helpers/chart-markers';
 import { getChartConfig }     from './Helpers/logic';
 import { ChartBarrierStore }  from '../SmartChart/chart-barrier-store';

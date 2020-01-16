@@ -1,6 +1,6 @@
 import extend                  from 'extend';
-import ContractUtils           from 'deriv-shared/utils/contract';
-import DigitUtils              from 'deriv-shared/utils/digits';
+import ContractUtils           from '@deriv/shared/utils/contract';
+import DigitUtils              from '@deriv/shared/utils/digits';
 import { MARKER_TYPES_CONFIG } from '../../SmartChart/Constants/markers';
 
 const createMarkerConfig = (marker_type, x, y, content_config) => (

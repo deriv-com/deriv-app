@@ -1,8 +1,8 @@
 import PropTypes              from 'prop-types';
 import classNames             from 'classnames';
-import { Button, Icon }       from 'deriv-components';
+import { Button, Icon }       from '@deriv/components';
 import React                  from 'react';
-import { localize, Localize } from 'deriv-translations';
+import { localize, Localize } from '@deriv/translations';
 
 const SuccessDialog = ({
     has_cancel,

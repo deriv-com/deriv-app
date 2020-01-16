@@ -1,4 +1,4 @@
-import { localize }           from 'deriv-translations';
+import { localize }           from '@deriv/translations';
 import { emptyTextValidator } from '../../../utils';
 
 Blockly.Blocks.lists_repeat = {

@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 
 /**
  * Custom checkbox implementation.
@@ -23,12 +23,13 @@ const FieldCheckbox = () => {
     // adding domToMutation and mutationToDom logic to each block consuming this checkbox.
     icon.setValue = function(value) {
         const is_checked     = value === true || value === 'TRUE';
+        const old_value      = this.getValue();
         this.src_            = is_checked ? 'TRUE' : 'FALSE';
         const el_field_group = this.fieldGroup_; // eslint-disable-line no-underscore-dangle
 
         if (el_field_group) {
             Array.from(el_field_group.children).forEach(child_node => el_field_group.removeChild(child_node));
-    
+
             // Draw a rectangle which is coloured based on the host-block's colour.
             Blockly.utils.createSvgElement('rect', {
                 fill       : this.sourceBlock_.getColourSecondary(), // eslint-disable-line
@@ -38,7 +39,7 @@ const FieldCheckbox = () => {
                 rx         : 2,
                 stroke     : '#FFF',
             }, el_field_group);
-    
+
             if (is_checked) {
                 // Draw checkmark.
                 Blockly.utils.createSvgElement('path', {
@@ -47,8 +48,15 @@ const FieldCheckbox = () => {
                 }, el_field_group);
             }
         }
+
+        // Emit an event that can be redone/undone.
+        if (this.sourceBlock_ && Blockly.Events.isEnabled()) {
+            Blockly.Events.fire(new Blockly.Events.BlockChange(
+                this.sourceBlock_, 'field', this.name, old_value, this.getValue())
+            );
+        }
     };
-    
+
     return icon;
 };
 

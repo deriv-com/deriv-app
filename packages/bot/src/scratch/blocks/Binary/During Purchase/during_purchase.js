@@ -1,5 +1,5 @@
 // import ScratchStore          from '../../../../stores/scratch-store';
-import { localize }          from 'deriv-translations';
+import { localize }          from '@deriv/translations';
 import { sellContract }      from '../../images';
 import { setBlockTextColor } from '../../../utils';
 
@@ -46,25 +46,7 @@ Blockly.Blocks.during_purchase = {
         };
     },
     onchange(event) {
-        // TODO: incomment this when the dark mode is done
-        //        if (!ScratchStore.instance.root_store.core.ui.is_dark_mode_on) {
-        setBlockTextColor(this);
-        //        }
-
-        if (!this.workspace || this.isInFlyout) {
-            return;
-        }
-
-        // Maintain single instance of this block
-        if (event.type === Blockly.Events.BLOCK_CREATE) {
-            if (event.ids && event.ids.includes(this.id)) {
-                this.workspace.getAllBlocks(true).forEach(block => {
-                    if (block.type === this.type && block.id !== this.id) {
-                        block.dispose();
-                    }
-                });
-            }
-        }
+        setBlockTextColor(this, event);
     },
 };
 

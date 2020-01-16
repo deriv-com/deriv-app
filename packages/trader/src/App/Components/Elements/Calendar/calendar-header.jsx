@@ -1,7 +1,7 @@
 import classNames        from 'classnames';
 import PropTypes         from 'prop-types';
 import React             from 'react';
-import { Icon }          from 'deriv-components';
+import { Icon }          from '@deriv/components';
 import { month_headers } from 'Constants/date-time';
 import {
     addMonths,

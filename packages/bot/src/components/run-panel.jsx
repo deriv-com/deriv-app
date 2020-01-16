@@ -3,10 +3,10 @@ import {
     Drawer,
     Icon,
     Popover,
-    Tabs }            from 'deriv-components';
+    Tabs }            from '@deriv/components';
 import PropTypes      from 'prop-types';
 import React          from 'react';
-import { localize }   from 'deriv-translations';
+import { localize }   from '@deriv/translations';
 import Dialog         from './dialog.jsx';
 import Journal        from './journal.jsx';
 import Summary        from './summary.jsx';
@@ -62,7 +62,7 @@ const drawerFooter = ({
                     has_effect
                     secondary
                 />
-    
+
                 {
                     (is_stop_button_visible) ?
                         <Button
@@ -92,6 +92,7 @@ const drawerFooter = ({
                      by our system. Please be aware that some completed transactions may not be displayed
                      in the transaction table if the bot is stopped while placing trades. You may refer to
                      the statement page for details of all completed transactions.`)}
+                    zIndex='5'
                 >
                     <Icon icon='IcInfoOutline' className='run-panel__icon-info' />
                 </Popover>

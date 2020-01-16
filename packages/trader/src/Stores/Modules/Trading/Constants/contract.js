@@ -29,14 +29,14 @@ export const getContractTypesConfig = () => (
         tick_high_low  : { title: localize('High Tick/Low Tick'),         trade_types: ['TICKHIGH', 'TICKLOW'],       basis: [],      components: [] },
         run_high_low   : { title: localize('Only Ups/Only Downs'),        trade_types: ['RUNHIGH', 'RUNLOW'],         basis: [],      components: [] },
         reset          : { title: localize('Reset Up/Reset Down'),        trade_types: ['RESETCALL', 'RESETPUT'],     basis: [],      components: [] },
+        callputspread  : { title: localize('Spread Up/Spread Down'),      trade_types: ['CALLSPREAD', 'PUTSPREAD'],   basis: [],      components: [] },
         multiplier     : { title: localize('Multiplier'),                 trade_types: ['MULTUP', 'MULTDOWN'],        basis: [],      components: [], config: { hide_duration: true } }, // hide Duration for Multiplier contracts for now
-        
     }
 );
 
 export const getContractCategoriesConfig = () => (
     {
-        [localize('Ups & Downs')]      : ['rise_fall', 'rise_fall_equal', 'run_high_low', 'reset', 'asian'],
+        [localize('Ups & Downs')]      : ['rise_fall', 'rise_fall_equal', 'run_high_low', 'reset', 'asian', 'callputspread'],
         [localize('Highs & Lows')]     : ['high_low', 'touch', 'tick_high_low'],
         [localize('Ins & Outs')]       : ['end', 'stay'],
         [localize('Look Backs')]       : ['lb_high_low', 'lb_put', 'lb_call'],

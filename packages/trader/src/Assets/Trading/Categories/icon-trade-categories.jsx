@@ -300,6 +300,26 @@ const IconTradeCategory = ({ category, className }) => {
                     </React.Fragment>
                 );
                 break;
+            case 'callputspread':
+                IconCategory = (
+                    <React.Fragment>
+                        <div className='category-wrapper'>
+                            <Icon
+                                icon='IcTradetypeCallspread'
+                                className='category-type'
+                                color='brand'
+                            />
+                        </div>
+                        <div className='category-wrapper'>
+                            <Icon
+                                icon='IcTradetypePutspread'
+                                className='category-type'
+                                color='brand'
+                            />
+                        </div>
+                    </React.Fragment>
+                );
+                break;
             case 'multiplier':
                 IconCategory = (
                     <React.Fragment>

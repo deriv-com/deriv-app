@@ -10,7 +10,7 @@ const IconTradeType = ({ type, className, ...props }) => {
         case 'calle'       : return <Icon icon='IcTradetypeCall'        className={className} color='brand' {...props} />;
         case 'call'        : return <Icon icon='IcTradetypeCall'        className={className} color='brand' {...props} />;
         case 'callspread'  : return <Icon icon='IcTradetypeCallspread'  className={className} color='brand' {...props} />;
-        case 'putspread'   : return <Icon icon='IcTradetypePutsread'    className={className} color='brand' {...props} />;
+        case 'putspread'   : return <Icon icon='IcTradetypePutspread'   className={className} color='brand' {...props} />;
         case 'digitdiff'   : return <Icon icon='IcTradetypeDigitdiff'   className={className} color='brand' {...props} />;
         case 'digiteven'   : return <Icon icon='IcTradetypeDigiteven'   className={className} color='brand' {...props} />;
         case 'digitmatch'  : return <Icon icon='IcTradetypeDigitmatch'  className={className} color='brand' {...props} />;

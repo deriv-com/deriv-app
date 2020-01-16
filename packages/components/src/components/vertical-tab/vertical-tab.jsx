@@ -11,8 +11,8 @@ import VerticalTabWrapper          from 'Components/vertical-tab/vertical-tab-wr
 class VerticalTab extends React.Component {
     constructor(props) {
         super(props);
-        this.setSelectedIndex(props);
         this.state = { modal_index: props.modal_index || 0 };
+        this.setSelectedIndex(props);
     }
 
     setSelectedIndex = ({ list, selected_index, is_routed, current_path }) => {

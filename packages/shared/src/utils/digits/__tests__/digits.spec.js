@@ -1,21 +1,21 @@
-import { expect }                        from 'chai';
-import { isDigitContract, getDigitInfo } from '../digits';
+import { expect } from 'chai';
+import DigitUtils from '..';
 
 describe('Digits', () => {
-    describe('isDigitContract', () => {
+    describe('DigitUtils.isDigitContractType', () => {
         it('should return true if contract is digits', () => {
-            expect(isDigitContract('DIGITMATCH')).to.eql(true);
+            expect(DigitUtils.isDigitContractType('DIGITMATCH')).to.eql(true);
         });
 
         it('should return false if contract is not digits', () => {
-            expect(isDigitContract('CALLPUT')).to.eql(false);
+            expect(DigitUtils.isDigitContractType('CALLPUT')).to.eql(false);
         });
     });
 
-    describe('getDigitInfo', () => {
+    describe('DigitUtils.getDigitInfo', () => {
         it('should return an empty object when tick_stream is not in contract_info', () => {
             const contract_info = {};
-            expect(getDigitInfo({}, contract_info)).to.deep.eql({});
+            expect(DigitUtils.getDigitInfo({}, contract_info)).to.deep.eql({});
         });
         it('should return an empty object if tick_stream data is already in digits_info', () => {
             const contract_info = {
@@ -40,7 +40,7 @@ describe('Digits', () => {
                     spot: "123.456",
                 },
             };
-            expect(getDigitInfo(digits_info, contract_info)).to.deep.eql({});
+            expect(DigitUtils.getDigitInfo(digits_info, contract_info)).to.deep.eql({});
         });
         it('should return a digits_info object with the latest tick_stream array data', () => {
             const contract_info = {
@@ -63,7 +63,7 @@ describe('Digits', () => {
                     spot : "456.993",
                 },
             };
-            expect(getDigitInfo({}, contract_info)).to.deep.eql(digits_info);
+            expect(DigitUtils.getDigitInfo({}, contract_info)).to.deep.eql(digits_info);
         });
     });
 });

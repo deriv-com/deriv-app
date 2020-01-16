@@ -1,4 +1,4 @@
-import { getLastTickFromTickStream } from '../contract';
+import ContractUtils from '../contract';
 
 const digitCategoriesMap = [ 'even_odd', 'match_diff', 'over_under' ];
 const digitTypesMap      = [ 'DIGITDIFF', 'DIGITMATCH', 'DIGITOVER', 'DIGITUNDER', 'DIGITEVEN', 'DIGITODD' ];
@@ -8,7 +8,7 @@ export const isDigitContractType = (contract_type) => digitTypesMap.includes(con
 
 export const getDigitInfo = (digits_info, contract_info) => {
     const { tick_stream } = contract_info;
-    const { tick_display_value, epoch } = getLastTickFromTickStream(tick_stream);
+    const { tick_display_value, epoch } = ContractUtils.getLastTickFromTickStream(tick_stream);
 
     if (!tick_display_value || !epoch) return {}; // filter out empty responses
 

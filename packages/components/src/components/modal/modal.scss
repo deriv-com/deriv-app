@@ -1,7 +1,15 @@
-/**
- * @define dc-modal
- */
+/** @define dc-modal; weak */
 .dc-modal {
+    @include mobile {
+        position: absolute;
+        top: 0;
+
+        .dc-modal__container {
+            min-width: unset;
+            top: 2rem;
+        }
+    }
+
     &__container {
         display: flex;
         flex-direction: column;
@@ -31,15 +39,12 @@
         &--small {
             max-width: 440px;
 
-            /* postcss-bem-linter: ignore */
             .dc-modal-header {
                 border-bottom: none;
             }
         }
     }
-    /**
-     * @define dc-modal-header
-     */
+    /** @define dc-modal-header */
     &-header {
         display: flex;
         justify-content: space-between;
@@ -73,24 +78,19 @@
             margin: 1.2rem 1.6rem 1.2rem auto;
         }
     }
-    /**
-     * @define dc-modal-body
-     */
+    /** @define dc-modal-body */
     &-body {
         padding: 2.4rem;
         font-size: 1.4rem;
         line-height: 1.43;
         color: var(--text-prominent);
     }
-    /**
-     * @define dc-modal-footer
-     */
+    /** @define dc-modal-footer; weak */
     &-footer {
         display: flex;
         justify-content: flex-end;
         padding: 1.6rem;
 
-        /* postcss-bem-linter: ignore */
         .btn:nth-child(2) {
             margin-left: 0.8rem;
         }

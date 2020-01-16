@@ -1,6 +1,11 @@
-import { Button, Icon, Popover } from '@deriv/components';
 import * as PropTypes       from 'prop-types';
 import React, { Component } from 'react';
+import {
+    Button,
+    DesktopWrapper,
+    Icon,
+    MobileWrapper,
+    Popover }               from '@deriv/components';
 import { localize }         from '@deriv/translations';
 import CurrencyUtils        from '@deriv/shared/utils/currency';
 import routes               from 'Constants/routes';
@@ -33,9 +38,10 @@ export class AccountActions extends Component {
             balance,
             can_upgrade,
             currency,
+            disableApp,
+            enableApp,
             is_acc_switcher_on,
             is_logged_in,
-            is_mobile,
             is_notifications_visible,
             is_virtual,
             notifications_count,
@@ -46,8 +52,8 @@ export class AccountActions extends Component {
         } = this.props;
         if (is_logged_in) {
             return (
-                is_mobile ?
-                    <React.Fragment>
+                <React.Fragment>
+                    <MobileWrapper>
                         <ToggleNotifications
                             count={notifications_count}
                             is_visible={is_notifications_visible}
@@ -57,15 +63,16 @@ export class AccountActions extends Component {
                             <AccountInfo
                                 balance={typeof balance === 'undefined' ? balance : CurrencyUtils.formatMoney(currency, balance, true)}
                                 is_upgrade_enabled={can_upgrade}
+                                disableApp={disableApp}
+                                enableApp={enableApp}
                                 is_virtual={is_virtual}
                                 currency={currency}
                                 is_dialog_on={is_acc_switcher_on}
                                 toggleDialog={toggleAccountsDialog}
                             />
                         </React.Suspense>
-                    </React.Fragment>
-                    :
-                    <React.Fragment>
+                    </MobileWrapper>
+                    <DesktopWrapper>
                         <ToggleNotifications
                             count={notifications_count}
                             is_visible={is_notifications_visible}
@@ -87,7 +94,6 @@ export class AccountActions extends Component {
                         <React.Suspense fallback={<div />}>
                             <AccountInfo
                                 balance={typeof balance === 'undefined' ? balance : CurrencyUtils.formatMoney(currency, balance, true)}
-                                is_mobile={is_mobile}
                                 is_upgrade_enabled={can_upgrade}
                                 is_virtual={is_virtual}
                                 currency={currency}
@@ -115,7 +121,8 @@ export class AccountActions extends Component {
                             primary
                         />
                         }
-                    </React.Fragment>
+                    </DesktopWrapper>
+                </React.Fragment>
             );
         }
         return (
@@ -132,9 +139,10 @@ AccountActions.propTypes = {
     can_upgrade             : PropTypes.any,
     can_upgrade_to          : PropTypes.any,
     currency                : PropTypes.any,
+    disableApp              : PropTypes.any,
+    enableApp               : PropTypes.any,
     is_acc_switcher_on      : PropTypes.any,
     is_logged_in            : PropTypes.any,
-    is_mobile               : PropTypes.any,
     is_notifications_visible: PropTypes.any,
     is_virtual              : PropTypes.any,
     notifications_count     : PropTypes.any,

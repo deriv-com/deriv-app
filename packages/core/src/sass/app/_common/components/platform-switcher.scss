@@ -1,7 +1,7 @@
 .platform-switcher {
     display: flex;
     align-items: center;
-    padding: 8px;
+    padding: 0.8rem;
     transition: background-color 0.3s;
     cursor: pointer;
 
@@ -9,21 +9,21 @@
         background-color: var(--general-hover);
     }
     & svg:first-child, p, h1 {
-        margin: 0 0 0 8px;
+        margin: 0 0 0 0.8rem;
     }
     & svg:last-child {
-        margin: 0 8px;
+        margin: 0 0.8rem;
     }
     &__header {
-        font-size: 16px;
-        line-height: 24px;
+        font-size: 1.6rem;
+        line-height: 2.4rem;
         font-weight: bold;
         color: var(--text-general);
     }
     &__label {
-        font-size: 14px;
-        line-height: 20px;
-        border-radius: 10px;
+        font-size: 1.4rem;
+        line-height: 2rem;
+        border-radius: 1rem;
         background-color: var(--brand-secondary);
         color: var(--text-colored-background);
         width: 50px;

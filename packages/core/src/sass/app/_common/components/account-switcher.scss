@@ -73,7 +73,6 @@
     &__balance {
         @include typeface(--title-center-bold-green, default);
         padding: 0.5em;
-        color: var(--text-profit-success);
         pointer-events: none;
     }
     &__select-arrow {
@@ -116,7 +115,7 @@
     }
 }
 
-/** @define acc-switcher; weak */
+/* @define acc-switcher; weak */
 .acc-switcher {
     cursor: pointer;
     display: flex;
@@ -143,6 +142,17 @@
         width: 278px;
         background-color: var(--general-main-2);
 
+
+        &--is-mobile {
+            position: relative;
+            top: unset;
+            left: unset;
+            right: unset;
+            width: 100%;
+            box-shadow: none;
+            height: 100%;
+            border-radius: 0;
+        }
         &--enter-done {
             opacity: 1;
             transform: translate3d(0, 0, 0);
@@ -363,6 +373,9 @@
 
         &--no-padding {
             margin: 0 -8px;
+        }
+        &--auto-margin {
+            margin-top: auto;
         }
     }
     &__total {

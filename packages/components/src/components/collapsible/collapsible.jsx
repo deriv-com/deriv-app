@@ -17,7 +17,11 @@ const Collapsible = ({
     const arrow_button      = <ArrowButton is_open={is_open} position={position} onClick={toggleExpand} />;
     const CustomTag         = as || 'div';
     return (
-        <CustomTag className='dc-collapsible'>
+        <CustomTag className={classNames('dc-collapsible', {
+            'dc-collapsible--is-expanded' : is_open,
+            'dc-collapsible--is-collapsed': !is_open,
+        })}
+        >
             {position === 'top' && arrow_button}
             <div className='dc-collapsible__content'>
                 {

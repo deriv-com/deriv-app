@@ -8,7 +8,7 @@ import Test                  from './test.jsx';
 import TopWidgets            from '../../SmartChart/Components/top-widgets.jsx';
 import FormLayout            from '../Components/Form/form-layout.jsx';
 import { symbolChange }      from '../../SmartChart/Helpers/symbol';
-import AllMarkers            from '../../SmartChart/Components/all-markers.jsx';
+import AllMarkers            from '../../SmartChart/Components/AllMarkers';
 
 class Trade extends React.Component {
     componentDidMount() {

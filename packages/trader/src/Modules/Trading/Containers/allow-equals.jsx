@@ -26,7 +26,7 @@ const AllowEquals = ({
                 name='is_equal'
                 onChange={handleOnChange}
             />
-            <p>
+            <p className='allow-equals__subtitle'>
                 <Localize
                     i18n_default_text='Win payout if exit spot is also equal to entry spot.'
                 />

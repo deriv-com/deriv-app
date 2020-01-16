@@ -28,7 +28,7 @@ class Trade extends React.Component {
         const { NotificationMessages } = this.props;
         const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
         const is_trade_enabled = (this.props.form_components.length > 0) && this.props.is_trade_enabled;
-        const chart_height = isMobile() ? 'calc(100rvh - 270px)' : 'unset';
+        const chart_height = isMobile() ? 'calc(100rvh - 260px)' : 'unset';
         return (
             <div id='trade_container' className='trade-container'>
                 <DesktopWrapper>

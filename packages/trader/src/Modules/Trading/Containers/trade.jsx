@@ -204,12 +204,14 @@ class ChartTradeClass extends React.Component {
             <SmartChart
                 barriers={barriers}
                 bottomWidgets={(show_digits_stats && isDesktop()) ? this.bottomWidgets : null}
+                crosshairState={isMobile() ? 0 : undefined}
                 showLastDigitStats={isDesktop() ? show_digits_stats : false}
                 chartControlsWidgets={this.chartControlsWidgets}
                 chartStatusListener={(v) => this.props.setChartStatus(!v)}
                 chartType={this.props.chart_type}
                 id='trade'
                 isMobile={isMobile()}
+                maxTick={isMobile() ? 5 : undefined}
                 granularity={this.props.granularity}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}

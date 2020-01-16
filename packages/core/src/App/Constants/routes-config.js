@@ -5,14 +5,13 @@ import { localize }                   from '@deriv/translations';
 import { routes }                     from 'Constants';
 import { isBot }                      from 'Utils/PlatformSwitcher';
 import { getUrlBase }                 from '_common/url';
-// Cashier components
-import Cashier                        from 'Modules/Cashier/Containers/cashier.jsx';
-import Deposit                        from 'Modules/Cashier/Containers/deposit.jsx';
-import Withdrawal                     from 'Modules/Cashier/Containers/withdrawal.jsx';
-import AccountTransfer                from 'Modules/Cashier/Containers/account-transfer.jsx';
-import PaymentAgent                   from 'Modules/Cashier/Containers/payment-agent.jsx';
-import PaymentAgentTransfer           from 'Modules/Cashier/Containers/payment-agent-transfer.jsx';
-import P2PCashier                     from 'Modules/Cashier/Containers/p2p-cashier.jsx';
+import Cashier, {
+    Deposit,
+    Withdrawal,
+    PaymentAgent,
+    AccountTransfer,
+    PaymentAgentTransfer,
+    P2PCashier }                      from 'Modules/Cashier';
 
 export const interceptAcrossBot = (route_to, action) => {
     const is_routing_to_bot = route_to.pathname.startsWith(routes.bot);

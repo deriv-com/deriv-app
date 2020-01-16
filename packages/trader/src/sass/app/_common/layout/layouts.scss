@@ -252,7 +252,25 @@
 
             .cq-symbols-display {
                 z-index: 1;
+                @include mobile {
+                    top: 0.8rem;
+                    left: 0.8rem;
+                    max-width: 200px;
 
+                    .cq-menu-btn {
+                        padding: 0.2rem;
+                    }
+                    .cq-symbol-select-btn {
+                        padding: 0.3rem 0.9rem;
+
+                        .cq-symbol {
+                            font-size: 1.2rem;
+                        }
+                        .cq-chart-price {
+                            display: none;
+                        }
+                    }
+                }
                 &.ciq-disabled {
                     display: none;
                 }

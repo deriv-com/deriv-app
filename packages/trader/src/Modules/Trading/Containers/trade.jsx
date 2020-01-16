@@ -211,7 +211,7 @@ class ChartTradeClass extends React.Component {
                 chartType={this.props.chart_type}
                 id='trade'
                 isMobile={isMobile()}
-                maxTick={isMobile() ? 5 : undefined}
+                maxTick={isMobile() ? 8 : undefined}
                 granularity={this.props.granularity}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}

@@ -244,12 +244,6 @@ export const config = {
         aid: 'derivbot-248506',
         api: 'AIzaSyA52MX2l8p75-w7nvab7fU6Lk6KwLqnyEI',
     },
-    help: {
-        TEXT : 'text',
-        VIDEO: 'video',
-        IMAGE: 'image',
-        BLOCK: 'block',
-    },
     workspaces: {
         flyoutWorkspacesStartScale: 0.7,
         mainWorkspaceStartScale   : 0.9,

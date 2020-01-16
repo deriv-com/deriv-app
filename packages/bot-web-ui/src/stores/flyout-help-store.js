@@ -28,6 +28,7 @@ export default class FlyoutHelpStore {
         const block_hw        = Blockly.Block.getDimensions(block_node);
         const block_type      = block_node.getAttribute('type');
         const title           = Blockly.Blocks[block_type].meta().display_name;
+        // TODO break each help-string a separate chunk and load it on demand
         const help_string_obj = await import(/* webpackChunkName: `[request]` */ '@deriv/bot-engine');
         const start_scale     = config.workspaces.flyoutWorkspacesStartScale;
 
@@ -40,7 +41,7 @@ export default class FlyoutHelpStore {
             this.block_node        = block_node;
             this.block_type        = block_type;
             this.title             = title;
-            this.help_string       = help_string_obj.default;
+            this.help_string       = help_string_obj.default[block_type];
         });
     }
 

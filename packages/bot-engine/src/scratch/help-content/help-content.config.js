@@ -1,6 +1,11 @@
-import { config } from '../../constants/config';
+export const help_content_type   = {
+    TEXT : 'text',
+    VIDEO: 'video',
+    IMAGE: 'image',
+    BLOCK: 'block',
+};
 
-const { help: { TEXT, IMAGE, BLOCK } } = config;
+const { TEXT, IMAGE, BLOCK }     = help_content_type;
 
 export const help_content_config = {
 //= ================= Functions ==================

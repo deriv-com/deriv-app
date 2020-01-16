@@ -2,7 +2,7 @@ import { Button , Icon } from '@deriv/components';
 import React             from 'react';
 import PropTypes         from 'prop-types';
 import { localize }      from '@deriv/translations';
-import { help,
+import { help_content_type,
     help_content_config }    from '@deriv/bot-engine';
 
 import FlyoutVideo       from './flyout-video.jsx';
@@ -23,6 +23,8 @@ const HelpBase = ({
     const { display_name } = Blockly.Blocks[block_type].meta();
     const block_help_component = help_string && help_content_config[block_type];
     let text_count = 0;
+
+    console.log(help_content_type); // eslint-disable-line
 
     return (
         <React.Fragment>
@@ -49,21 +51,22 @@ const HelpBase = ({
                         block_help_component.map((component, index) => {
                             const { type, width, url } = component;
                             const { text } = help_string;
-
+                            console.log(type, help_content_type.VIDEO); //eslint-disable-line
+                            
                             switch (type) {
-                                case help.TEXT:
+                                case help_content_type.TEXT:
                                     return (
                                         <FlyoutText key={`${block_type}_${index}`} text={text[text_count++]} />
                                     );
-                                case help.VIDEO:
+                                case help_content_type.VIDEO:
                                     return (
                                         <FlyoutVideo key={`${block_type}_${index}`} url={url} />
                                     );
-                                case help.IMAGE:
+                                case help_content_type.IMAGE:
                                     return (
                                         <FlyoutImage key={`${block_type}_${index}`} width={width} url={url} />
                                     );
-                                case help.BLOCK:
+                                case help_content_type.BLOCK:
                                 {
                                     return (
                                         <FlyoutBlock

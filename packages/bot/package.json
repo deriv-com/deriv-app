@@ -21,7 +21,7 @@
     "build:travis": "echo \"No build:travis specified\"",
     "test": "npm run test:eslint && npm run test:mocha",
     "test:mocha": "",
-    "test:eslint": "eslint ./src",
+    "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
     "test:stylelint": "stylelint \"./src/**/*.s?(a|c)ss\"",
     "deploy": "echo \"No deploy specified\"",
     "deploy:clean": "echo \"No deploy:clean specified\"",

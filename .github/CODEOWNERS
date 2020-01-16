@@ -63,7 +63,7 @@
 
 
 # ==============================================================
-#  binary-com/@deriv/bot-engine
+#  binary-com/deriv-bot
 # ==============================================================
 #  Used for approving all relevant changes to Bot
 #
@@ -94,7 +94,7 @@
 
 
 # ==============================================================
-#  binary-com/@deriv/shared
+#  binary-com/deriv-shared
 # ==============================================================
 #  Used for approving all relevant changes to Shared/Components
 #
@@ -143,7 +143,8 @@
 #  deriv-app/bot
 # ==============================================================
 
-/packages/bot/**/*                                              @binary-com/@deriv/bot-engine
+/packages/bot-engine/**/*                                              @binary-com/deriv-bot
+/packages/bot-web-ui/**/*                                              @binary-com/deriv-bot
 
 
 
@@ -168,8 +169,8 @@
 #  deriv-app/shared
 # ==============================================================
 
-/packages/shared/**/*                                           @binary-com/@deriv/shared
-/packages/components/**/*                                       @binary-com/@deriv/shared
+/packages/shared/**/*                                           @binary-com/deriv-shared
+/packages/components/**/*                                       @binary-com/deriv-shared
 
 
 

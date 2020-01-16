@@ -1,9 +1,9 @@
-import { 
-    DBot,
-    ServerTime }            from '@deriv/bot-engine';
 import { reaction }         from 'mobx';
 import { Provider }         from 'mobx-react';
 import React                from 'react';
+import {
+    DBot,
+    ServerTime }            from '@deriv/bot-engine';
 import                           './public-path'; // Leave this here! OK boss!
 import FooterExtension      from './components/footer-extension.jsx';
 import MainContent          from './components/main-content.jsx';
@@ -27,12 +27,12 @@ class App extends React.Component {
         const { flyout, toolbar, quick_strategy } = this.root_store;
         // dont pass the rootstore in, if you need a prop define it in dbot-engine-store ans pass it through
         this.dbot_store = { is_mobile: false, flyout, toolbar, quick_strategy };
-        this.api_helper_store = { ws: this.root_store.ws, server_time : this.root_store.server_time}
+        this.api_helpers_store = { ws: this.root_store.ws, server_time: this.root_store.server_time };
     }
 
     componentDidMount() {
 
-        DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helper_store);
+        DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store);
         this.registerOnAccountSwitch();
     }
 

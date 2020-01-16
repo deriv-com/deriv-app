@@ -3,7 +3,7 @@ import { config }   from '../../constants/config';
 
 /**
  * Make a context menu option for duplicating the current block.
- * @deriv/bot-engine: Use Blockly's implementation.
+ * deriv-bot: Use Blockly's implementation.
  * @param {!Blockly.BlockSvg} block The block where the right-click originated.
  * @return {!Object} A menu option, containing text, enabled, and a callback.
  * @package

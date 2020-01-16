@@ -6,7 +6,7 @@ export default class TradingTimes {
         this.is_initialised = false;
         this.trading_times  = {};
         this.ws             = ws;
-        this.server_time    = server_time;
+        this.server_time    = server_time.clone();
     }
 
     async initialise() {
@@ -15,8 +15,6 @@ export default class TradingTimes {
         }
 
         this.is_initialised     = true;
-        // why clone here?
-        // this.server_time        = server_time.clone();
         this.last_update_moment = this.server_time.local();
 
         if (!Object.keys(this.trading_times).length) {

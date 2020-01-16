@@ -4,7 +4,6 @@ import {
     Input,
     Popover,
 }                     from '@deriv/components';
-import { config }     from '@deriv/bot-engine';
 import { localize }   from '@deriv/translations';
 import {
     Field,
@@ -13,6 +12,7 @@ import {
 }                     from 'formik';
 import PropTypes      from 'prop-types';
 import React          from 'react';
+import { config }     from '@deriv/bot-engine';
 import Dialog         from './dialog.jsx';
 import SaveLoadModal  from './saveload-modal.jsx';
 import TradeAnimation from './trade-animation.jsx';

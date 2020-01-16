@@ -1,6 +1,6 @@
-import proptypes      from 'prop-types';
-import React          from 'react';
-import { config }     from '@deriv/bot-engine';
+import proptypes    from 'prop-types';
+import React        from 'react';
+import { config }   from '@deriv/bot-engine';
 import {
     Button,
     Dropdown,
@@ -9,8 +9,8 @@ import {
     Modal,
     Popover,
     Tabs,
-}                     from '@deriv/components';
-import { localize }   from '@deriv/translations';
+}                    from '@deriv/components';
+import { localize }  from '@deriv/translations';
 import {
     Formik,
     Form,

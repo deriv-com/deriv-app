@@ -1,14 +1,15 @@
-import { Button , Icon }       from '@deriv/components';
-import React                   from 'react';
-import PropTypes               from 'prop-types';
-import { localize }            from '@deriv/translations';
-import { help_content_config } from '@deriv/bot-engine';
-import constant                from '@deriv/bot-engine';
-import FlyoutVideo             from './flyout-video.jsx';
-import FlyoutText              from './flyout-text.jsx';
-import FlyoutImage             from './flyout-img.jsx';
-import FlyoutBlock             from '../flyout-block.jsx';
-import { connect }             from '../../stores/connect';
+import { Button , Icon } from '@deriv/components';
+import React             from 'react';
+import PropTypes         from 'prop-types';
+import { localize }      from '@deriv/translations';
+import {help,
+help_content_config }    from '@deriv/bot-engine';
+
+import FlyoutVideo       from './flyout-video.jsx';
+import FlyoutText        from './flyout-text.jsx';
+import FlyoutImage       from './flyout-img.jsx';
+import FlyoutBlock       from '../flyout-block.jsx';
+import { connect }       from '../../stores/connect';
 
 const HelpBase = ({
     block_node,
@@ -50,19 +51,19 @@ const HelpBase = ({
                             const { text } = help_string;
 
                             switch (type) {
-                                case constant.help.TEXT:
+                                case help.TEXT:
                                     return (
                                         <FlyoutText key={`${block_type}_${index}`} text={text[text_count++]} />
                                     );
-                                case constant.help.VIDEO:
+                                case help.VIDEO:
                                     return (
                                         <FlyoutVideo key={`${block_type}_${index}`} url={url} />
                                     );
-                                case constant.help.IMAGE:
+                                case help.IMAGE:
                                     return (
                                         <FlyoutImage key={`${block_type}_${index}`} width={width} url={url} />
                                     );
-                                case constant.help.BLOCK:
+                                case help.BLOCK:
                                 {
                                     return (
                                         <FlyoutBlock

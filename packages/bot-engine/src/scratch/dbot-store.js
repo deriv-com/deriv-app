@@ -1,7 +1,5 @@
 class DBotStoreInterface {
-    toggleQickStrategyModal = () => {
-        throw new Error('Not Implemented.');
-    }
+    // TODO here we are suppose to implement fields of DBotStore.
 }
 
 class DBotStore extends DBotStoreInterface {

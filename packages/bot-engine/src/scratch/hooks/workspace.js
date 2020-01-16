@@ -2,7 +2,7 @@ import DBotStore from '../dbot-store';
 
 /**
  * Clear the undo/redo stacks.
- * @deriv/bot-engine: Sync undo/redo stack with our toolbar store.
+ * deriv-bot: Sync undo/redo stack with our toolbar store.
  */
 Blockly.Workspace.prototype.clearUndo = function() {
     this.undoStack_.length = 0;
@@ -19,7 +19,7 @@ Blockly.Workspace.prototype.clearUndo = function() {
 
 /**
  * Fire a change event.
- * @deriv/bot-engine: Sync undo/redo stack with our toolbar store.
+ * deriv-bot: Sync undo/redo stack with our toolbar store.
  * @param {!Blockly.Events.Abstract} event Event to fire.
  */
 Blockly.Workspace.prototype.fireChangeListener = function(event) {

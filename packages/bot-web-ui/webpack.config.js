@@ -78,15 +78,15 @@ module.exports = function (env, argv) {
                         },
                     ],
                 },
-                // {
-                //     enforce: "pre",
-                //     test   : /\.(js|jsx)$/,
-                //     exclude: [ /node_modules/, /lib/, /utils/, /dist/, /webpack.config.js/ ],
-                //     loader : "eslint-loader",
-                //     options: {
-                //         fix: true
-                //     },
-                // },
+                {
+                    enforce: "pre",
+                    test   : /\.(js|jsx)$/,
+                    exclude: [ /node_modules/, /lib/, /utils/, /dist/, /webpack.config.js/ ],
+                    loader : "eslint-loader",
+                    options: {
+                        fix: true
+                    },
+                },
                 {
                     test   : /\.(js|jsx)$/,
                     exclude: /node_modules/,

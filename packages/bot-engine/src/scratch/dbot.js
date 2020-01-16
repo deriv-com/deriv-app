@@ -21,11 +21,11 @@ class DBot {
     /**
      * Initialises the workspace and mounts it to a container element (app_contents).
      */
-    async initWorkspace(_webpack_public_path, _store, _api_helper_store) {
+    async initWorkspace(public_path, store, api_helpers_store) {
         try {
-            __webpack_public_path__ = _webpack_public_path; // eslint-disable-line no-global-assign
-            ApiHelpers.setInstance(_api_helper_store);
-            DBotStore.setInstance(_store);
+            __webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
+            ApiHelpers.setInstance(api_helpers_store);
+            DBotStore.setInstance(store);
 
             const el_scratch_div  = document.getElementById('scratch_div');
             const toolbox_xml     = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(r => r.text()); // eslint-disable-line

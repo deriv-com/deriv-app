@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import './block';
 import './block_render_svg_vertical';
 import './block_svg';

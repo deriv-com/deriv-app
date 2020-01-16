@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
-import { save }     from '../utils';
 import DBotStore    from '../dbot-store';
+import { save }     from '../utils';
 
 /**
  * Select this block.  Highlight it visually.
@@ -8,7 +8,9 @@ import DBotStore    from '../dbot-store';
 Blockly.BlockSvg.prototype.addSelect = function () {
     if (!this.isInFlyout) {
         const { flyout } = DBotStore.instance;
-        flyout && flyout.setVisibility(false);
+        if (flyout) {
+            flyout.setVisibility(false);
+        }
         Blockly.utils.addClass(/** @type {!Element} */(this.svgGroup_), 'blocklySelected');
     }
 };

@@ -1,11 +1,12 @@
 import { config } from '../../constants/config';
 /**
  * Handle a mouse-down on SVG drawing surface.
- * @deriv/bot-engine: We bubble the mousedown event for Core to be reactive.
+ * deriv-bot: We bubble the mousedown event for Core to be reactive.
  * @param {!Event} e Mouse down event.
  * @private
  */
 Blockly.WorkspaceSvg.prototype.onMouseDown_ = function(e) {
+    // Bubble mousedown event up for some Core elements to react correctly.
     Blockly.derivWorkspace.cachedParentSvg_.dispatchEvent(new e.constructor(e.type, e));
     const gesture = this.getGesture(e);
     if (gesture) {
@@ -105,7 +106,7 @@ Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
 };
 
 /**
- * Clean up the workspace by ordering all the blocks in a column. For @deriv/bot
+ * Clean up the workspace by ordering all the blocks in a column. For deriv-bot
  * root-blocks are sorted in columns first, then all other blocks are positioned below
  * the lowest hanging root-block.
  */
@@ -248,7 +249,7 @@ Blockly.WorkspaceSvg.getTopLevelWorkspaceMetrics_ = function() {
     let absolute_top = 0;
 
     if (this.toolbox_ && this.toolboxPosition === Blockly.TOOLBOX_AT_LEFT) {
-        absolute_top = 50; // @deriv/bot: Add some spacing for Core header.
+        absolute_top = 50; // deriv-bot: Add some spacing for Core header.
         absolute_left = toolbox_dimensions.width;
     }
 

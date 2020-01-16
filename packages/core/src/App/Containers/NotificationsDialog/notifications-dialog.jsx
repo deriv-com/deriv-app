@@ -116,7 +116,7 @@ class NotificationsDialog extends React.Component {
             <React.Fragment>
                 <MobileWrapper>
                     <MobileDialog
-                        container_el='deriv_app'
+                        portal_element_id='deriv_app'
                         title={localize('Notifications')}
                         wrapper_classname='notifications-mobile-dialog'
                         visible={this.props.is_visible}

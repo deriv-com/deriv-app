@@ -16,7 +16,7 @@ const ContractTypeDialog = ({
         <MobileWrapper>
             <span className='contract-type-widget__select-arrow' />
             <MobileDialog
-                container_el='deriv_app'
+                portal_element_id='deriv_app'
                 title={localize('Trade type')}
                 wrapper_classname='contracts-modal-list'
                 visible={open}

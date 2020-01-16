@@ -86,7 +86,7 @@ class MobileWidget extends React.Component {
                 </div>
 
                 <MobileDialog
-                    container_el='deriv_app'
+                    portal_element_id='deriv_app'
                     title='Set parameters'
                     visible={this.state.open}
                     onClose={this.handleDialogClose}

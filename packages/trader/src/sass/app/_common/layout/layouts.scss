@@ -253,6 +253,9 @@
             .cq-symbols-display {
                 z-index: 1;
 
+                &.ciq-disabled {
+                    display: none;
+                }
                 @include mobile {
                     top: 0.8rem;
                     left: 0.8rem;
@@ -271,9 +274,6 @@
                             display: none;
                         }
                     }
-                }
-                &.ciq-disabled {
-                    display: none;
                 }
             }
         }

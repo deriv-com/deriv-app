@@ -38,7 +38,7 @@ const StopLoss = ({
             defaultChecked={!should_show_stop_loss_warning}
             message={localize('You may choose either stop loss or deal cancellation. You may set a stop loss amount after deal cancellation has expired.')}
             name='should_show_stop_loss_warning'
-            onChange={toggleStopLossWarning}
+            onChange={() => toggleStopLossWarning()}
         />
     );
 

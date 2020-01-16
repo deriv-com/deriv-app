@@ -477,13 +477,13 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleStopLossWarning() {
-        this.should_show_stop_loss_warning = !this.should_show_stop_loss_warning;
+    toggleStopLossWarning(state_change = !this.should_show_stop_loss_warning) {
+        this.should_show_stop_loss_warning = state_change;
     }
 
     @action.bound
-    toggleDealCancellationWarning() {
-        this.should_show_deal_cancellation_warning = !this.should_show_deal_cancellation_warning;
+    toggleDealCancellationWarning(state_change = !this.should_show_deal_cancellation_warning) {
+        this.should_show_deal_cancellation_warning = state_change;
     }
 
     @action.bound

@@ -55,7 +55,7 @@ const CancelDeal = ({
                             defaultChecked={!should_show_deal_cancellation_warning}
                             message={localize('You may choose either stop loss or deal cancellation.')}
                             name='should_show_deal_cancellation_warning'
-                            onChange={toggleDealCancellationWarning}
+                            onChange={() => toggleDealCancellationWarning()}
                         />}
                     >
                         {input}

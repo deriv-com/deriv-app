@@ -288,7 +288,7 @@
         // smartchart library style fixes
         .cq-context {
             div.cq-chart-controls {
-                border: 1px solid $COLOR_LIGHT_BLACK_4;
+                border: 0;
                 width: calc(100% - 16px);
                 margin-left: 8px;
             }

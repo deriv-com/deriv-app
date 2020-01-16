@@ -30,10 +30,11 @@ const ProgressBar = ({
         status = 'normal';
     }
     return (
-            <div className={classNames('dc-progress-bar__container', `dc-progress-bar--${status}`, className)}>
+            <div className={classNames('dc-progress-bar__container', className)}>
                 <p className="dc-progress-bar__label">{label}</p>
                 <div
                     className={classNames(
+                        `dc-progress-bar--${status}`,
                         'dc-progress-bar__bar',
                     )}
                     style={{
@@ -43,6 +44,7 @@ const ProgressBar = ({
                 </div>
                 <div
                     className={classNames(
+                        `dc-progress-bar--${status}`,
                         'dc-progress-bar__empty',
                     )}
                 >

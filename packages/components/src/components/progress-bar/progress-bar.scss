@@ -10,38 +10,26 @@
         position: relative;
         overflow: hidden;
     }
-
     &--danger {
-        div {
-            background-color: var(--status-danger);
-        }
+        background-color: var(--status-danger);
     }
-
     &--warning {
-        div {
-            background-color: var(--status-warning);
-        }
+        background-color: var(--status-warning);
     }
-
     &--normal {
-        div {
-            background-color: var(--status-success);
-        }
+        background-color: var(--status-success);
     }
-
     &__bar {
         height: 100%;
         position: absolute;
         left: 0;
     }
-
     &__empty {
         width: 100%;
         position: absolute;
         opacity: 0.16;
-        height: 100%
+        height: 100%;
     }
-
     &__label {
         color: var(--text-prominent);
         text-align: center;

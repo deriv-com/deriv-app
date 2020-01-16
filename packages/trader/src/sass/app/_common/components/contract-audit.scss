@@ -12,6 +12,14 @@ $HEIGHT: calc(100vh - 32.6em);
         background-color: var(--general-main-1);
         color: var(--text-prominent);
 
+        &-tabs {
+            &--active {
+                max-height: calc(#{$HEIGHT} - 96px);
+            }
+            &--expired {
+                max-height: calc(#{$HEIGHT} - 48px);
+            }
+        }
         /* postcss-bem-linter: ignore */
         .dc-tabs {
             height: inherit;
@@ -87,12 +95,6 @@ $HEIGHT: calc(100vh - 32.6em);
         }
     }
     &__tabs {
-        &--active {
-            max-height: calc(#{$HEIGHT} - 96px);
-        }
-        &--expired {
-            max-height: calc(#{$HEIGHT} - 48px);
-        }
         &-content {
             padding: 0.8rem 1.6rem;
         }

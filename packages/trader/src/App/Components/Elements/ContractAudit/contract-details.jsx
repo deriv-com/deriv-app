@@ -59,103 +59,101 @@ const ContractDetails = ({
             autoHide
             renderView={props => <div {...props} className='contract-audit__tabs-content' />}
         >
-            <div>
-                <ContractAuditItem
-                    id='dt_id_label'
-                    icon={<Icon icon='IcContractId' size={24} />}
-                    label={localize('Reference ID')}
-                    value={localize('{{buy_value}} (Buy)', { buy_value: buy })}
-                    value2={sell ?
-                        localize('{{sell_value}} (Sell)', { sell_value: sell })
-                        :
-                        undefined
-                    }
-                />
-                {
-                    isMultiplierContract(contract_type) ?
-                        <React.Fragment>
-                            <ContractAuditItem
-                                id='dt_commission_label'
-                                icon={<Icon icon='IcContractCommission' size={24} />}
-                                label={localize('Commission')}
-                                value={<Money
-                                    amount={commission}
-                                    currency={currency}
-                                />
-                                }
+            <ContractAuditItem
+                id='dt_id_label'
+                icon={<Icon icon='IcContractId' size={24} />}
+                label={localize('Reference ID')}
+                value={localize('{{buy_value}} (Buy)', { buy_value: buy })}
+                value2={sell ?
+                    localize('{{sell_value}} (Sell)', { sell_value: sell })
+                    :
+                    undefined
+                }
+            />
+            {
+                isMultiplierContract(contract_type) ?
+                    <React.Fragment>
+                        <ContractAuditItem
+                            id='dt_commission_label'
+                            icon={<Icon icon='IcContractCommission' size={24} />}
+                            label={localize('Commission')}
+                            value={<Money
+                                amount={commission}
+                                currency={currency}
                             />
-                            {!!deal_cancellation_price &&
-                                <ContractAuditItem
-                                    id='dt_deal_cancellation_label'
-                                    icon={<Icon icon='IcContractSafeguard' size={24} />}
-                                    label={getLabel()}
-                                    value={<Money
-                                        amount={deal_cancellation_price}
-                                        currency={currency}
-                                    />
-                                    }
-                                />
                             }
-                        </React.Fragment>
-                        :
-                        <React.Fragment>
-                            <ContractAuditItem
-                                id='dt_duration_label'
-                                icon={<Icon icon='IcContractDuration' size={24} />}
-                                label={localize('Duration')}
-                                value={(tick_count > 0) ?
-                                    `${tick_count} ${(tick_count < 2) ? localize('tick') : localize('ticks')}`
-                                    :
-                                    `${duration} ${duration_unit}`}
+                        />
+                        {!!deal_cancellation_price &&
+                        <ContractAuditItem
+                            id='dt_deal_cancellation_label'
+                            icon={<Icon icon='IcContractSafeguard' size={24} />}
+                            label={getLabel()}
+                            value={<Money
+                                amount={deal_cancellation_price}
+                                currency={currency}
                             />
-                            <ContractAuditItem
-                                id='dt_bt_label'
-                                icon={
-                                    isDigitType(contract_type)
-                                        ? <Icon icon='IcContractTarget' size={24} />
-                                        : <Icon icon='IcContractBarrier' size={24} />
-                                }
-                                label={getBarrierLabel(contract_info)}
-                                value={getBarrierValue(contract_info) || ' - '}
-                            />
-                        </React.Fragment>
-                }
+                            }
+                        />
+                        }
+                    </React.Fragment>
+                    :
+                    <React.Fragment>
+                        <ContractAuditItem
+                            id='dt_duration_label'
+                            icon={<Icon icon='IcContractDuration' size={24} />}
+                            label={localize('Duration')}
+                            value={(tick_count > 0) ?
+                                `${tick_count} ${(tick_count < 2) ? localize('tick') : localize('ticks')}`
+                                :
+                                `${duration} ${duration_unit}`}
+                        />
+                        <ContractAuditItem
+                            id='dt_bt_label'
+                            icon={
+                                isDigitType(contract_type)
+                                    ? <Icon icon='IcContractTarget' size={24} />
+                                    : <Icon icon='IcContractBarrier' size={24} />
+                            }
+                            label={getBarrierLabel(contract_info)}
+                            value={getBarrierValue(contract_info) || ' - '}
+                        />
+                    </React.Fragment>
+            }
+            <ContractAuditItem
+                id='dt_start_time_label'
+                icon={<Icon icon='IcContractStartTime' size={24} />}
+                label={localize('Start time')}
+                value={toGMTFormat(epochToMoment(purchase_time)) || ' - '}
+            />
+            {
+                !isDigitType(contract_type) &&
                 <ContractAuditItem
-                    id='dt_start_time_label'
-                    icon={<Icon icon='IcContractStartTime' size={24} />}
-                    label={localize('Start time')}
-                    value={toGMTFormat(epochToMoment(purchase_time)) || ' - '}
+                    id='dt_entry_spot_label'
+                    icon={<Icon icon='IcContractEntrySpot' size={24} />}
+                    label={localize('Entry spot')}
+                    value={entry_spot_display_value || ' - '}
+                    value2={toGMTFormat(epochToMoment(entry_tick_time)) || ' - '}
                 />
-                {
-                    !isDigitType(contract_type) &&
-                        <ContractAuditItem
-                            id='dt_entry_spot_label'
-                            icon={<Icon icon='IcContractEntrySpot' size={24} />}
-                            label={localize('Entry spot')}
-                            value={entry_spot_display_value || ' - '}
-                            value2={toGMTFormat(epochToMoment(entry_tick_time)) || ' - '}
-                        />
-                }
-                {
-                    !isNaN(exit_spot) &&
-                        <ContractAuditItem
-                            id='dt_exit_spot_label'
-                            icon={<Icon icon='IcContractExitSpot' size={24} />}
-                            label={localize('Exit spot')}
-                            value={exit_spot || ' - '}
-                            value2={toGMTFormat(epochToMoment(exit_tick_time)) || ' - '}
-                        />
-                }
-                {
-                    !isNaN(contract_end_time) &&
-                        <ContractAuditItem
-                            id='dt_exit_time_label'
-                            icon={<Icon icon='IcContractExitTime' color={is_profit ? 'green' : 'red'} size={24} />}
-                            label={localize('Exit Time')}
-                            value={toGMTFormat(epochToMoment(contract_end_time)) || ' - '}
-                        />
-                }
-            </div>
+            }
+            {
+                !isNaN(exit_spot) &&
+                <ContractAuditItem
+                    id='dt_exit_spot_label'
+                    icon={<Icon icon='IcContractExitSpot' size={24} />}
+                    label={localize('Exit spot')}
+                    value={exit_spot || ' - '}
+                    value2={toGMTFormat(epochToMoment(exit_tick_time)) || ' - '}
+                />
+            }
+            {
+                !isNaN(contract_end_time) &&
+                <ContractAuditItem
+                    id='dt_exit_time_label'
+                    icon={<Icon icon='IcContractExitTime' color={is_profit ? 'green' : 'red'} size={24} />}
+                    label={localize('Exit Time')}
+                    value={toGMTFormat(epochToMoment(contract_end_time)) || ' - '}
+                />
+            }
         </ThemedScrollbars>
     );
 };

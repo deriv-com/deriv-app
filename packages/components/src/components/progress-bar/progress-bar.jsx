@@ -2,6 +2,18 @@ import classNames                      from 'classnames';
 import PropTypes                       from 'prop-types';
 import React                           from 'react';
 
+function withinZeroAndOne(props, propName, componentName) {
+    if (props[propName]) {
+        let value = props[propName];
+        if (typeof value === 'number') {
+            return (value >= 0 && value <= 1) ? null : new Error(`${propName} in ${componentName} is not within 0 to 1`);
+        } else {
+            return new Error(`${propName} in ${componentName} is not a number`)
+        }
+    }
+    return null;
+}
+
 const ProgressBar = ({
     className,
     danger_limit,
@@ -49,9 +61,9 @@ ProgressBar.defaultProps = {
 export default ProgressBar;
 
 ProgressBar.propTypes = {
-    className    : PropTypes.String,
-    danger_limit : PropTypes.Number,
+    className    : PropTypes.string,
+    danger_limit : withinZeroAndOne,
     label        : PropTypes.string,
-    value        : PropTypes.number,
-    warning_limit: PropTypes.number,
+    value        : withinZeroAndOne,
+    warning_limit: withinZeroAndOne,
 };

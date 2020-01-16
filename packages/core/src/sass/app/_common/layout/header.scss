@@ -23,13 +23,6 @@
         content: '';
         background-color: var(--overlay-outside-dialog);
     }
-    @include mobile {
-        height: $MOBILE_HEADER_HEIGHT;
-
-        .header__menu-left, .header__menu-right {
-            height: #{$MOBILE_HEADER_HEIGHT - 1px};
-        }
-    }
     &--is-disabled:after {
         opacity: 1;
         pointer-events: auto;
@@ -230,5 +223,12 @@
     &__icon {
         margin-right: 0.8rem;
         vertical-align: middle;
+    }
+    @include mobile {
+        height: $MOBILE_HEADER_HEIGHT;
+
+        .header__menu-left, .header__menu-right {
+            height: #{$MOBILE_HEADER_HEIGHT - 1px};
+        }
     }
 }

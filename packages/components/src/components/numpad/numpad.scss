@@ -19,19 +19,19 @@ $SQUARE_SIZE: 48px;
 
     &--is-regular {
         grid-template-areas: 'np np np np'
-            'n n n b'
-            'n n n b'
-            'n n n o'
-            'z z z o';
+        'n n n b'
+        'n n n b'
+        'n n n o'
+        'z z z o';
         grid-template-columns: min-content min-content min-content minmax($SQUARE_SIZE, 1fr);
         max-width: min-content;
     }
     &--is-currency {
         grid-template-areas: 'np np np np'
-            'n n n b'
-            'n n n b'
-            'n n n o'
-            'z z p o';
+        'n n n b'
+        'n n n b'
+        'n n n o'
+        'z z p o';
         grid-template-columns: min-content min-content min-content minmax($SQUARE_SIZE, 1fr);
         max-width: min-content;
     }
@@ -49,11 +49,14 @@ $SQUARE_SIZE: 48px;
         grid-area: nc;
         @include append-button(left);
     }
-    &__increment, &__decrement {
+    &__increment,
+    &__decrement {
         width: $SQUARE_SIZE;
         height: $SQUARE_SIZE;
     }
-    &__input-field, &__increment, &__decrement {
+    &__input-field,
+    &__increment,
+    &__decrement {
         background-color: var(--general-section-1);
         color: var(--text-prominent);
     }

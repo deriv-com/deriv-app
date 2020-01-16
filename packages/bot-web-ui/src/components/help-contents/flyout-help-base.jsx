@@ -24,8 +24,6 @@ const HelpBase = ({
     const block_help_component = help_string && help_content_config[block_type];
     let text_count = 0;
 
-    console.log(help_content_type); // eslint-disable-line
-
     return (
         <React.Fragment>
             <div className='flyout__help-header'>
@@ -51,8 +49,6 @@ const HelpBase = ({
                         block_help_component.map((component, index) => {
                             const { type, width, url } = component;
                             const { text } = help_string;
-                            console.log(type, help_content_type.VIDEO); //eslint-disable-line
-                            
                             switch (type) {
                                 case help_content_type.TEXT:
                                     return (

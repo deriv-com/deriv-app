@@ -2,6 +2,7 @@ import classNames    from 'classnames';
 import {
     Money,
     ThemedScrollbars,
+    Popover,
 }                    from '@deriv/components';
 import PropTypes     from 'prop-types';
 import React         from 'react';
@@ -9,6 +10,7 @@ import { localize }  from '@deriv/translations';
 import ContractCard  from './contract-card.jsx';
 import { connect }   from '../stores/connect';
 import                    '../assets/sass/summary.scss';
+import config        from '../constants';
 
 const SummaryTile = (props) => (
     <div className={'summary__tile'}>
@@ -17,6 +19,7 @@ const SummaryTile = (props) => (
             classNameBubble='run-panel__info--bubble'
             alignment='top'
             message={ props.tooltip }
+            zIndex={ config.popover_zindex.run_panel_tooltips }
         >
             {/* <Icon icon='IcInfoOutline' className='run-panel__icon-info' /> */}
             <div className='summary__tile-title'>{props.title}</div>
@@ -48,27 +51,27 @@ const Summary = ({
                     <SummaryTile
                         title={localize('Total stake')}
                         content={ Money({ amount: total_stake, currency }) }
-                        tooltip={localize('Your total stake. This is reset when you click on “Clear stat” or when you refresh this page.')}
+                        tooltip={localize('Total stake since you last cleared your stats. Refreshing the page will also clear your stats.')}
                     />
                     <SummaryTile
                         title={localize('Total payout')}
                         content={ Money({ amount: total_payout, currency }) }
-                        tooltip={localize('Your total payout. This is reset when you click on “Clear stat” or when you refresh this page.')}
+                        tooltip={localize('Total payout since you last cleared your stats. Refreshing the page will also clear your stats.')}
                     />
                     <SummaryTile
                         title={localize('No. of runs')}
                         content={number_of_runs}
-                        tooltip={localize('The number of times your bot has run. Each run includes the execution of all the root blocks. This is reset when you click on “Clear stat” or when you refresh this page.')}
+                        tooltip={localize('The number of times your bot has run since you last cleared your stats. Each run includes the execution of all the root blocks. Refreshing the page will also clear your stats.')}
                     />
                     <SummaryTile
-                        title={localize('Loss contracts')}
+                        title={localize('Contracts lost')}
                         content={lost_contracts}
-                        tooltip={localize('The number of contracts you have lost. This is reset when you click on “Clear stat” or when you refresh this page.')}
+                        tooltip={localize('The number of contracts you have lost since you last cleared your stats. Refreshing the page will also clear your stats.')}
                     />
                     <SummaryTile
-                        title={localize('Win contracts')}
+                        title={localize('Contracts won')}
                         content={won_contracts}
-                        tooltip={localize('The number of contracts you have won. This is reset when you click on “Clear stat” or when you refresh this page.')}
+                        tooltip={localize('The number of contracts you have won since you last cleared your stats. Refreshing the page will also clear your stats.')}
                     />
                     <SummaryTile
                         title={localize('Profit/Loss')}
@@ -79,7 +82,7 @@ const Summary = ({
                                 'summary__amount--positive': total_profit > 0,
                                 'summary__amount--negative': total_profit < 0,
                             })}
-                        tooltip={localize('Your total profit/loss, which is the difference between your total payout and your total stake. This is reset when you click on “Clear stat” or when you refresh this page.')}
+                        tooltip={localize('Your total profit/loss since you last cleared your stats. It is the difference between your total payout and your total stake. Refreshing the page will also clear your stats.')}
                     />
                 </div>
             </ThemedScrollbars>

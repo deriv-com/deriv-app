@@ -272,8 +272,9 @@ const config = {
         },
     },
     popover_zindex: {
-        quick_strategy: '99999',
-        toolbar       : '5',
+        quick_strategy    : '99999',
+        toolbar           : '5',
+        run_panel_tooltips: '5',
     },
 };
 

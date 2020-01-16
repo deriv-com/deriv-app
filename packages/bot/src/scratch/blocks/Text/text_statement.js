@@ -2,14 +2,12 @@ import { localize }      from '@deriv/translations';
 import { minusIconDark } from '../images';
 
 Blockly.Blocks.text_statement = {
+    required_parent_type: 'text_join',
     init() {
-        this.requiredParentId = '';
-
+        this.required_parent_id = '';
+        const field_image       = new Blockly.FieldImage(minusIconDark, 25, 25, '', this.onIconClick.bind(this));
         this.jsonInit(this.definition());
-
-        const fieldImage = new Blockly.FieldImage(minusIconDark, 25, 25, '', () => this.onIconClick());
-
-        this.appendDummyInput('REMOVE_ICON').appendField(fieldImage);
+        this.appendDummyInput('REMOVE_ICON').appendField(field_image);
     },
     definition(){
         return {
@@ -35,16 +33,8 @@ Blockly.Blocks.text_statement = {
             'description' : localize('Text Statement Description'),
         };
     },
-    onIconClick() {
-        if (!this.workspace || this.isInFlyout) {
-            return;
-        }
-
-        this.unplug(true);
-        this.dispose();
-    },
-    onchange            : Blockly.Blocks.lists_statement.onchange,
-    required_parent_type: 'text_join',
+    onIconClick: Blockly.Blocks.lists_statement.onIconClick,
+    onchange   : Blockly.Blocks.lists_statement.onchange,
 };
 
 Blockly.JavaScript.text_statement = block => {

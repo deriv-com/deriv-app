@@ -12,7 +12,6 @@ class VerticalTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = { modal_index: props.modal_index || 0 };
-        this.setSelectedIndex(props);
     }
 
     setSelectedIndex = ({ list, selected_index, is_routed, current_path }) => {
@@ -37,6 +36,10 @@ class VerticalTab extends React.Component {
             selected_index: e,
         });
     };
+
+    componentDidMount() {
+        this.setSelectedIndex(this.props);
+    }
 
     componentDidUpdate(prevProps) {
         if (this.props.list.length !== prevProps.list.length) {

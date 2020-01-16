@@ -8,7 +8,7 @@
   "scripts": {
     "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --scope=@deriv/${1:-'*'} && lerna link && npm run build:travis ;}; f",
     "build": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build $2 ;}; f",
-    "build:local": "f () { lerna exec --scope @deriv/trader --scope @deriv/bot-web-ui --parallel -- npm run build $1 ;}; f",
+    "build:local": "f () { lerna exec --scope @deriv/trader --scope @deriv/bot-engine --scope @deriv/bot-web-ui --parallel -- npm run build $1 ;}; f",
     "build:travis": "lerna exec --scope @deriv/shared --scope @deriv/components --scope @deriv/translations --scope @deriv/p2p -- npm run build:travis",
     "clean": "echo \"Remove $(git rev-parse --show-toplevel)/node_modules\" && lerna clean && rm -rf \"$(git rev-parse --show-toplevel)/node_modules\"",
     "deploy": "f () { npm run build:travis && npm run build:local && lerna exec --scope @deriv/core -- npm run deploy $@ ;}; f",

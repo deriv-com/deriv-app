@@ -17,7 +17,8 @@
   "scripts": {
     "start": "npm run test && npm run serve",
     "serve": "echo \"Serving...\" && webpack --progress --watch",
-    "build": "f () { webpack --optimize-minimize --progress --env.base $1;}; f",
+    "build": "f () { npm run build:engine && webpack --optimize-minimize --progress --env.base $1;}; f",
+    "build:engine": "lerna exec --scope @deriv/bot-engine -- npm run build",
     "build:travis": "echo \"No build:travis specified\"",
     "test": "npm run test:eslint && npm run test:mocha",
     "test:mocha": "",

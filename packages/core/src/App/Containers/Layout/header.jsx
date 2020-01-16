@@ -62,7 +62,6 @@ class Header extends React.Component {
 
         return (
             <header className={classNames('header', {
-                'header--is-mobile'  : isMobile(),
                 'header--is-disabled': (is_app_disabled || is_route_modal_on),
             })}
             >

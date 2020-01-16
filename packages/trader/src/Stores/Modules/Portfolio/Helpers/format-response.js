@@ -1,4 +1,5 @@
 import { getUnsupportedContracts } from 'Constants';
+import { isContractWaiting }       from 'Stores/Modules/Contract/Helpers/logic';
 import { getSymbolDisplayName }    from '../../Trading/Helpers/active-symbols';
 import { getMarketInformation }    from '../../../../Modules/Reports/Helpers/market-underlying';
 
@@ -24,9 +25,6 @@ export const formatPortfolioPosition = (portfolio_pos, active_symbols = [], indi
         reference     : +transaction_id,
         type          : portfolio_pos.contract_type,
         is_unsupported: !!getUnsupportedContracts()[portfolio_pos.contract_type],
-        is_waiting    : portfolio_pos.validation_error
-            && portfolio_pos.is_expired === 1
-            && portfolio_pos.status === 'open'
-            && portfolio_pos.is_sold === 0,
+        is_waiting    : isContractWaiting(portfolio_pos),
     };
 };

@@ -12,7 +12,8 @@ import {
     getChartConfig,
     getDisplayStatus,
     getEndTime,
-    isEnded }                 from './Helpers/logic';
+    isEnded,
+    isContractWaiting }                 from './Helpers/logic';
 
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
@@ -69,15 +70,8 @@ export default class ContractStore {
         this.display_status = getDisplayStatus(this.contract_info);
         this.is_ended = isEnded(this.contract_info);
         this.is_digit_contract = isDigitContract(this.contract_info.contract_type);
-
-        if (contract_info.validation_error
-            && contract_info.is_expired === 1
-            && contract_info.status === 'open'
-            && contract_info.is_sold === 0
-        ) {
-            this.is_contract_waiting = true;
-        }
-
+        this.is_contract_waiting = isContractWaiting(contract_info);
+       
         // API doesn't return barrier for digit contracts (sometimes), remove this check once resolved
         if (!this.contract_info.barrier && prev_contract_info.barrier && this.is_digit_contract) {
             this.contract_info.barrier = prev_contract_info.barrier;

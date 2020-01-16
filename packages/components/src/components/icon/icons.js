@@ -152,6 +152,7 @@ import './contract/ic-contract-buy-sell-time-circle.svg';
 import './contract/ic-contract-duration-circle.svg';
 import './contract/ic-contract-entry-spot-circle.svg';
 import './contract/ic-contract-exit-spot-circle.svg';
+import './contract/ic-contract-flag.svg';
 import './contract/ic-contract-id.svg';
 import './contract/ic-contract-reset-time-circle.svg';
 import './currency/ic-currency-aud.svg';

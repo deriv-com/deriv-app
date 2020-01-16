@@ -1,7 +1,9 @@
-import PropTypes       from 'prop-types';
-import React           from 'react';
-import TogglePositions from 'App/Components/Elements/TogglePositions';
-import { connect }     from 'Stores/connect';
+import PropTypes         from 'prop-types';
+import React             from 'react';
+import { MobileWrapper } from '@deriv/components';
+import { isMobile }      from '@deriv/shared/utils/screen';
+import TogglePositions   from 'App/Components/Elements/TogglePositions';
+import { connect }       from 'Stores/connect';
 
 class TradeHeaderExtensions extends React.Component {
     constructor(props) {
@@ -18,7 +20,6 @@ class TradeHeaderExtensions extends React.Component {
 
     populateHeader = () => {
         const {
-            is_mobile,
             is_logged_in,
             active_positions_count,
             show_positions_toggle,
@@ -27,19 +28,20 @@ class TradeHeaderExtensions extends React.Component {
 
         const header_items = (is_logged_in && show_positions_toggle) &&
             (
-                <TogglePositions
-                    is_mobile={is_mobile}
-                    is_open={this.state.is_visible}
-                    togglePositions={this.toggleDrawer}
-                    positions_count={active_positions_count}
-                />
+                <MobileWrapper>
+                    <TogglePositions
+                        is_open={this.state.is_visible}
+                        togglePositions={this.toggleDrawer}
+                        positions_count={active_positions_count}
+                    />
+                </MobileWrapper>
             );
 
         populateHeaderExtensions(header_items);
     };
 
     componentDidMount() {
-        this.props.onMount();
+        if (isMobile()) this.props.onMount();
         this.populateHeader();
     }
 
@@ -48,7 +50,7 @@ class TradeHeaderExtensions extends React.Component {
     }
 
     componentWillUnmount() {
-        this.props.onUnmount();
+        if (isMobile()) this.props.onUnmount();
         this.props.populateHeaderExtensions(null);
     }
 
@@ -60,7 +62,6 @@ class TradeHeaderExtensions extends React.Component {
 
 TradeHeaderExtensions.propTypes = {
     is_logged_in            : PropTypes.bool,
-    is_mobile               : PropTypes.bool,
     populateHeaderExtensions: PropTypes.func,
     show_positions_toggle   : PropTypes.bool,
 };
@@ -71,7 +72,6 @@ export default connect(
         onMount                 : modules.portfolio.onMount,
         onUnmount               : modules.portfolio.onUnmount,
         active_positions_count  : modules.portfolio.active_positions_count,
-        is_mobile               : ui.is_mobile,
         show_positions_toggle   : ui.show_positions_toggle,
         populateHeaderExtensions: ui.populateHeaderExtensions,
     })

@@ -311,29 +311,6 @@
 .purchase-container {
     position: relative;
 
-    @include mobile {
-        display: grid;
-        grid-template-areas: 'a b';
-        grid-column-gap: 0.5rem;
-    }
-
-    &--is-mobile {
-        display: flex;
-        flex-direction: row;
-        margin-top: 8px;
-
-        .purchase-container__option {
-            flex-grow: 1;
-
-            // remove selector below when new button design is implemented
-            &:not(:only-child):nth-last-child(1) {
-                // remove selector below when new button design is implemented
-                .trade-container__price {
-                    margin-top: unset;
-                }
-            }
-        }
-    }
     &__option {
         padding-top: 8px;
         padding-bottom: 8px;
@@ -366,6 +343,11 @@
         width: calc(100% + 2px);
         height: calc(100% + 2px);
         left: -2px;
+    }
+    @include mobile {
+        display: grid;
+        grid-template-areas: 'a b';
+        grid-column-gap: 0.5rem;
     }
     //&__lock {
     //    position: absolute;

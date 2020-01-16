@@ -36,6 +36,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         justify-content: space-between;
         align-items: center;
         padding: 16px;
+        box-sizing: border-box;
 
         &--icon {
             @include colorIcon(var(--text-general));

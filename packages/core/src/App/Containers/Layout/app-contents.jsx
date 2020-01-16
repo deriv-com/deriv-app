@@ -1,9 +1,13 @@
-import classNames           from 'classnames';
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import { withRouter }       from 'react-router';
-import { ThemedScrollbars } from '@deriv/components';
-import { connect }          from 'Stores/connect';
+import classNames      from 'classnames';
+import PropTypes       from 'prop-types';
+import React           from 'react';
+import { withRouter }  from 'react-router';
+import {
+    DesktopWrapper,
+    MobileWrapper,
+    ThemedScrollbars } from '@deriv/components';
+import { isMobile }    from '@deriv/shared/utils/screen';
+import { connect }     from 'Stores/connect';
 // import InstallPWA    from './install-pwa.jsx';
 
 const AppContents = ({
@@ -13,7 +17,6 @@ const AppContents = ({
     is_app_disabled,
     is_positions_drawer_on,
     is_route_modal_on,
-    is_mobile,
     pageView,
     // setPWAPromptEvent,
 }) => {
@@ -42,22 +45,22 @@ const AppContents = ({
             className={classNames('app-contents', {
                 'app-contents--show-positions-drawer': is_positions_drawer_on,
                 'app-contents--is-disabled'          : is_app_disabled,
-                'app-contents--is-mobile'            : is_mobile,
+                'app-contents--is-mobile'            : isMobile(),
                 'app-contents--is-route-modal'       : is_route_modal_on,
             })}
         >
-            {/* Calculate height of user screen and offset height of header and footer */}
-            {is_mobile ?
-
-                children
-                :
+            <MobileWrapper>
+                {children}
+            </MobileWrapper>
+            <DesktopWrapper>
+                {/* Calculate height of user screen and offset height of header and footer */}
                 <ThemedScrollbars
                     autoHide
                     style={{ height: 'calc(100vh - 83px)' }}
                 >
                     {children}
                 </ThemedScrollbars>
-            }
+            </DesktopWrapper>
         </div>
     );
 };
@@ -67,7 +70,6 @@ AppContents.propTypes = {
     children              : PropTypes.any,
     is_app_disabled       : PropTypes.bool,
     is_logged_in          : PropTypes.bool,
-    is_mobile             : PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_route_modal_on     : PropTypes.bool,
     pwa_prompt_event      : PropTypes.object,
@@ -80,7 +82,6 @@ export default withRouter(connect(
         // addNotificationBar    : ui.addNotificationBar,
         identifyEvent         : segment.identifyEvent,
         is_app_disabled       : ui.is_app_disabled,
-        is_mobile             : ui.is_mobile,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         is_route_modal_on     : ui.is_route_modal_on,
         pageView              : segment.pageView,

@@ -28,7 +28,11 @@
             top: 0;
             background: var(--general-main-1);
         }
-        &--is-mobile {
+        &--no-currency:before {
+            left: -140px;
+            width: 140px;
+        }
+        @include mobile {
             width: 216px;
             height: 40px;
             top: -3px;
@@ -36,10 +40,6 @@
             &:before {
                 display: none;
             }
-        }
-        &--no-currency:before {
-            left: -140px;
-            width: 140px;
         }
     }
     &__container {
@@ -142,17 +142,6 @@
         width: 278px;
         background-color: var(--general-main-2);
 
-
-        &--is-mobile {
-            position: relative;
-            top: unset;
-            left: unset;
-            right: unset;
-            width: 100%;
-            box-shadow: none;
-            height: 100%;
-            border-radius: 0;
-        }
         &--enter-done {
             opacity: 1;
             transform: translate3d(0, 0, 0);
@@ -165,6 +154,16 @@
             max-width: calc(100% - 1.6rem);
             margin: 0.2rem 0.8rem 0.8rem;
             height: 4rem;
+        }
+        @include mobile {
+            position: relative;
+            top: unset;
+            left: unset;
+            right: unset;
+            width: 100%;
+            box-shadow: none;
+            height: 100%;
+            border-radius: 0;
         }
     }
     &__new-account {

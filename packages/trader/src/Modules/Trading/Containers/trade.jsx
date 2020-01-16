@@ -1,5 +1,9 @@
 import React                 from 'react';
 import Div100vh              from 'react-div-100vh';
+import { DesktopWrapper }    from '@deriv/components';
+import {
+    isDesktop,
+    isMobile }               from '@deriv/shared/utils/screen';
 import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
 import { connect }           from 'Stores/connect';
 import PositionsDrawer       from 'App/Components/Elements/PositionsDrawer';
@@ -22,16 +26,20 @@ class Trade extends React.Component {
 
     render() {
         const { NotificationMessages } = this.props;
-        const form_wrapper_class = this.props.is_mobile ? 'mobile-wrapper' : 'sidebar__container desktop-only';
+        const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
         const is_trade_enabled = (this.props.form_components.length > 0) && this.props.is_trade_enabled;
-        const chart_height = this.props.is_mobile ? 'calc(100rvh - 270px)' : 'unset';
+        const chart_height = isMobile() ? 'calc(100rvh - 260px)' : 'unset';
         return (
             <div id='trade_container' className='trade-container'>
-                {!this.props.is_mobile && <PositionsDrawer />}
+                <DesktopWrapper>
+                    <PositionsDrawer />
+                </DesktopWrapper>
                 {/* Div100vh is workaround for iPhone without bezels,
                     using css vh is not returning correct screen height */}
                 <Div100vh className='chart-container' style={{ height: chart_height }}>
-                    <NotificationMessages />
+                    <DesktopWrapper>
+                        <NotificationMessages />
+                    </DesktopWrapper>
                     <React.Suspense
                         fallback={
                             <ChartLoader
@@ -48,12 +56,9 @@ class Trade extends React.Component {
                     <Test />
                 </Div100vh>
                 <div className={form_wrapper_class}>
-                    { this.props.is_market_closed && <MarketIsClosedOverlay />}
+                    {this.props.is_market_closed && <MarketIsClosedOverlay />}
                     <FormLayout
-                        is_dark_theme={this.props.is_dark_theme}
                         is_market_closed={this.props.is_market_closed}
-                        is_mobile={this.props.is_mobile}
-                        is_tablet={this.props.is_tablet}
                         is_trade_enabled={is_trade_enabled}
                     />
                 </div>
@@ -71,9 +76,6 @@ export default connect(
         onMount             : modules.trade.onMount,
         onUnmount           : modules.trade.onUnmount,
         purchase_info       : modules.trade.purchase_info,
-        is_dark_theme       : ui.is_dark_mode_on,
-        is_mobile           : ui.is_mobile,
-        is_tablet           : ui.is_tablet,
         NotificationMessages: ui.notification_messages_ui,
     })
 )(Trade);
@@ -81,7 +83,7 @@ export default connect(
 // CHART (ChartTrade)--------------------------------------------------------
 
 /* eslint-disable */
-import ControlWidgets          from '../../SmartChart/Components/control-widgets.jsx';
+import ControlWidgets from '../../SmartChart/Components/control-widgets.jsx';
 import { SmartChart } from 'Modules/SmartChart';
 
 // --- BottomWidgets for chart
@@ -171,7 +173,6 @@ class ChartTradeClass extends React.Component {
 
     chartControlsWidgets = () => (
         <ControlWidgets
-            is_mobile={this.props.is_mobile}
             updateChartType={this.props.updateChartType}
             updateGranularity={this.props.updateGranularity}
         />
@@ -202,13 +203,13 @@ class ChartTradeClass extends React.Component {
         return (
             <SmartChart
                 barriers={barriers}
-                bottomWidgets={(show_digits_stats && !this.props.is_mobile) ? this.bottomWidgets : null}
-                showLastDigitStats={!this.props.is_mobile ? show_digits_stats : false}
+                bottomWidgets={(show_digits_stats && isDesktop()) ? this.bottomWidgets : null}
+                showLastDigitStats={isDesktop() ? show_digits_stats : false}
                 chartControlsWidgets={this.chartControlsWidgets}
                 chartStatusListener={(v) => this.props.setChartStatus(!v)}
                 chartType={this.props.chart_type}
                 id='trade'
-                isMobile={this.props.is_mobile}
+                isMobile={isMobile()}
                 granularity={this.props.granularity}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}
@@ -232,7 +233,6 @@ class ChartTradeClass extends React.Component {
 
 const ChartTrade = connect(
     ({ modules, ui, common }) => ({
-        is_mobile        : ui.is_mobile,
         is_socket_opened : common.is_socket_opened,
         updateChartType  : modules.contract_trade.updateChartType,
         updateGranularity: modules.contract_trade.updateGranularity,

@@ -1,39 +1,35 @@
-import PropTypes   from 'prop-types';
-import React       from 'react';
-import Lazy        from 'App/Containers/Lazy';
-import ScreenLarge from './screen-large.jsx';
-
-// Check if device is touch capable
-const isTouchDevice = 'ontouchstart' in document.documentElement;
+import PropTypes    from 'prop-types';
+import React        from 'react';
+import {
+    DesktopWrapper,
+    MobileWrapper } from '@deriv/components';
+import Lazy         from 'App/Containers/Lazy';
+import ScreenLarge  from './screen-large.jsx';
 
 const FormLayout = ({
-    is_dark_theme,
     is_market_closed,
-    is_mobile,
-    is_tablet,
     is_trade_enabled,
 }) => (
-    (is_mobile || (is_tablet && isTouchDevice)) ?
-        <Lazy
-            ctor={() => import(/* webpackChunkName: "screen-small" */'./screen-small.jsx')}
-            should_load={is_mobile}
-            is_trade_enabled={is_trade_enabled}
-            is_dark_theme={is_dark_theme}
-            
-        />
-        :
-        <ScreenLarge
-            is_dark_theme={is_dark_theme}
-            is_trade_enabled={is_trade_enabled}
-            is_market_closed={is_market_closed}
-        />
+    <React.Fragment>
+        <MobileWrapper>
+            <Lazy
+                ctor={() => import(/* webpackChunkName: "screen-small" */'./screen-small.jsx')}
+                should_load={true}
+                is_trade_enabled={is_trade_enabled}
+
+            />
+        </MobileWrapper>
+        <DesktopWrapper>
+            <ScreenLarge
+                is_trade_enabled={is_trade_enabled}
+                is_market_closed={is_market_closed}
+            />
+        </DesktopWrapper>
+    </React.Fragment>
 );
 
 FormLayout.propTypes = {
-    is_dark_theme   : PropTypes.bool,
     is_market_closed: PropTypes.bool,
-    is_mobile       : PropTypes.bool,
-    is_tablet       : PropTypes.bool,
     is_trade_enabled: PropTypes.bool,
 };
 

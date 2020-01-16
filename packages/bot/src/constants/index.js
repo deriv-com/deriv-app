@@ -39,12 +39,11 @@ const config = {
             [localize('Error'), 'error'],
             [localize('Severe error'), 'severe-error'],
         ],
-        CURRENCY: [
-            ['USD', 'USD'],
-            ['EUR', 'EUR'],
-            ['GBP', 'GBP'],
-            ['AUD', 'AUD'],
-            ...CRYPTO_CURRENCIES.map(c => [c, c]),
+        CURRENCY: ['USD',
+            'EUR',
+            'GBP',
+            'AUD',
+            ...CRYPTO_CURRENCIES,
         ],
     },
     opposites: {
@@ -271,6 +270,10 @@ const config = {
             label      : 'Oscar\'s Grind',
             description: localize('The Oscar\'s Grind Strategy is a low-risk positive progression strategy that first appeared in 1965. By using this strategy, you will increase the size of your contract after each successful trade, the size of your contract will increase after successful trades, and remain unchanged after unsuccessful trades.'),
         },
+    },
+    popover_zindex: {
+        quick_strategy: '99999',
+        toolbar       : '5',
     },
 };
 

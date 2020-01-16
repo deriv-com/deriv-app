@@ -46,6 +46,7 @@ module.exports = {
       'template-curly-spacing'            : 'off', // https://github.com/babel/babel-eslint/issues/530
       'no-multiple-empty-lines'           : ['error', { 'max': 1, 'maxEOF': 1 }],
       'prefer-const'                      : ['error', {destructuring: 'all', ignoreReadBeforeAssign: false}],
+      'no-underscore-dangle'              : 0,
       // import rules
       'import/no-extraneous-dependencies' : [0, { extensions: ['.jsx'] }],
       'import/no-useless-path-segments'   : 'error',

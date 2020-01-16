@@ -235,12 +235,13 @@ class ContractDrawer extends Component {
 }
 
 ContractDrawer.propTypes = {
-    contract_info    : PropTypes.object,
-    is_dark_theme    : PropTypes.bool,
-    is_from_reports  : PropTypes.bool,
-    is_sell_requested: PropTypes.bool,
-    onClickSell      : PropTypes.func,
-    status           : PropTypes.string,
+    contract_info      : PropTypes.object,
+    is_contract_waiting: PropTypes.bool,
+    is_dark_theme      : PropTypes.bool,
+    is_from_reports    : PropTypes.bool,
+    is_sell_requested  : PropTypes.bool,
+    onClickSell        : PropTypes.func,
+    status             : PropTypes.string,
 };
 
 export default withRouter(ContractDrawer);

@@ -106,6 +106,7 @@ ResultOverlay.propTypes = {
     contract_id   : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     is_unsupported: PropTypes.bool,
     is_visible    : PropTypes.bool,
+    is_waiting    : PropTypes.bool,
     onClick       : PropTypes.func,
     onClickRemove : PropTypes.func,
     result        : PropTypes.string,

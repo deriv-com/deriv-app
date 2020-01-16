@@ -1,20 +1,20 @@
-import CurrencyUtils     from '@deriv/shared/utils/currency';
-import RawMarkerMaker    from './Helpers/raw-marker-maker.jsx';
-import Svg2Canvas        from './Helpers/svg2canvas';
-import { CURRENCY_SYMBOLS }  from './Constants/currency_symbols';
-import { get_color }     from './Helpers/colors';
-import { shadowed_text } from './Helpers/text';
+import CurrencyUtils        from '@deriv/shared/utils/currency';
+import RawMarkerMaker       from './Helpers/raw-marker-maker.jsx';
+import Svg2Canvas           from './Helpers/svg2canvas';
+import { CURRENCY_SYMBOLS } from './Constants/currency_symbols';
+import { get_color }        from './Helpers/colors';
+import { shadowed_text }    from './Helpers/text';
 import {
     draw_vertical_labelled_line,
     draw_barrier_line_to_icon,
     draw_barrier_line,
     draw_line,
-}                        from './Helpers/lines';
+}                           from './Helpers/lines';
 import {
     calc_scale,
     calc_opacity,
-}                        from './Helpers/calculations';
-import * as ICONS        from '../icons';
+}                           from './Helpers/calculations';
+import * as ICONS           from '../icons';
 
 const NonTickContract = RawMarkerMaker(({
     ctx: context,

@@ -12,9 +12,9 @@ import AppRoutes      from 'Constants/routes';
 import { SmartChart } from 'Modules/SmartChart';
 import { connect }    from 'Stores/connect';
 
-import BottomWidgets           from '../../SmartChart/Components/bottom-widgets.jsx';
-import ChartMarker             from '../../SmartChart/Components/Markers/marker.jsx';
-import TopWidgets              from '../../SmartChart/Components/top-widgets.jsx';
+import BottomWidgets  from '../../SmartChart/Components/bottom-widgets.jsx';
+import ChartMarker    from '../../SmartChart/Components/Markers/marker.jsx';
+import TopWidgets     from '../../SmartChart/Components/top-widgets.jsx';
 
 class ContractReplay extends React.Component {
     setWrapperRef = (node) => {
@@ -122,23 +122,24 @@ class ContractReplay extends React.Component {
 }
 
 ContractReplay.propTypes = {
-    contract_id      : PropTypes.number,
-    contract_info    : PropTypes.object,
-    digits_info      : PropTypes.object,
-    display_status   : PropTypes.string,
-    error_message    : PropTypes.string,
-    history          : PropTypes.object,
-    indicative_status: PropTypes.string,
-    is_chart_loading : PropTypes.bool,
-    is_dark_theme    : PropTypes.bool,
-    is_digit_contract: PropTypes.bool,
-    is_ended         : PropTypes.bool,
-    location         : PropTypes.object,
-    onMount          : PropTypes.func,
-    onUnmount        : PropTypes.func,
-    removeError      : PropTypes.func,
-    routes           : PropTypes.arrayOf(PropTypes.object),
-    server_time      : PropTypes.object,
+    contract_id        : PropTypes.number,
+    contract_info      : PropTypes.object,
+    digits_info        : PropTypes.object,
+    display_status     : PropTypes.string,
+    error_message      : PropTypes.string,
+    history            : PropTypes.object,
+    indicative_status  : PropTypes.string,
+    is_chart_loading   : PropTypes.bool,
+    is_contract_waiting: PropTypes.bool,
+    is_dark_theme      : PropTypes.bool,
+    is_digit_contract  : PropTypes.bool,
+    is_ended           : PropTypes.bool,
+    location           : PropTypes.object,
+    onMount            : PropTypes.func,
+    onUnmount          : PropTypes.func,
+    removeError        : PropTypes.func,
+    routes             : PropTypes.arrayOf(PropTypes.object),
+    server_time        : PropTypes.object,
 };
 
 export default withRouter(connect(

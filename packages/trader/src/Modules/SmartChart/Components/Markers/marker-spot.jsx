@@ -24,6 +24,7 @@ const MarkerSpot = ({
 MarkerSpot.propTypes = {
     className: PropTypes.string,
     icon     : PropTypes.string,
+    status   : PropTypes.oneOf(['won', 'lost']),
 };
 
 export default observer(MarkerSpot);

@@ -201,6 +201,7 @@ const Duration = ({
 Duration.propTypes = {
     advanced_duration_unit: PropTypes.string,
     advanced_expiry_type  : PropTypes.string,
+    contract_type         : PropTypes.string,
     duration              : PropTypes.number,
     duration_t            : PropTypes.number,
     duration_unit         : PropTypes.string,

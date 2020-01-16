@@ -143,8 +143,8 @@
 #  deriv-app/bot
 # ==============================================================
 
-/packages/bot-engine/**/*                                              @binary-com/deriv-bot
-/packages/bot-web-ui/**/*                                              @binary-com/deriv-bot
+/packages/bot-engine/**/*                                       @binary-com/deriv-bot
+/packages/bot-web-ui/**/*                                       @binary-com/deriv-bot
 
 
 

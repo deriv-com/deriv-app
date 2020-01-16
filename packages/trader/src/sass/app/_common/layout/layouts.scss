@@ -252,6 +252,7 @@
 
             .cq-symbols-display {
                 z-index: 1;
+
                 @include mobile {
                     top: 0.8rem;
                     left: 0.8rem;

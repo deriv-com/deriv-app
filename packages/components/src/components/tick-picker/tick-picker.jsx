@@ -32,9 +32,9 @@ const TickPicker = ({ min_value, max_value, onSubmit, submit_label, singular_lab
                 <Button rounded className='operator' onClick={handleDecrease}>
                     <Icon icon='IcMinus' custom_color='var(--text-prominent)' />
                 </Button>
-                <div className='tick-holder'>
-                    <span className='tick-holder__counter'>{normalizedTick(tick_value)}</span>
-                    <span className='tick-holder__text'>{tick_value === 1 ? singular_label : plural_label}</span>
+                <div className='dc-tick-picker__holder'>
+                    <span className='dc-tick-picker__holder--large'>{normalizedTick(tick_value)}</span>
+                    <span className='dc-tick-picker__holder--small'>{tick_value === 1 ? singular_label : plural_label}</span>
                 </div>
                 <Button rounded className='operator' onClick={handleIncrease}>
                     <Icon icon='IcAdd' custom_color='var(--text-prominent)' />

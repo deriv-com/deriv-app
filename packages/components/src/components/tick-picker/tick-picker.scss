@@ -25,16 +25,16 @@
         justify-content: space-evenly;
         align-items: center;
 
-        .tick-holder {
+        .dc-tick-picker__holder {
             color: var(--purchase-main-2);
             flex-direction: column;
             justify-content: center;
             text-align: center;
 
-            &__counter {
+            &--large {
                 font-size: 96px;
             }
-            &__text {
+            &--small {
                 font-size: 16px;
             }
         }

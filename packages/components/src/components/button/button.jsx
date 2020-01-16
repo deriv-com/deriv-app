@@ -76,7 +76,6 @@ const Button = ({
 
 Button.propTypes = {
     children         : PropTypes.node,
-    rounded         : PropTypes.bool,
     className        : PropTypes.string,
     classNameSpan    : PropTypes.string,
     green            : PropTypes.bool,
@@ -90,6 +89,7 @@ Button.propTypes = {
     medium           : PropTypes.bool,
     onClick          : PropTypes.func,
     primary          : PropTypes.bool,
+    rounded          : PropTypes.bool,
     secondary        : PropTypes.bool,
     small            : PropTypes.bool,
     tertiary         : PropTypes.bool,

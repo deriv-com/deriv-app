@@ -90,7 +90,7 @@ class ContractAudit extends React.PureComponent {
                                     : <Icon icon='IcContractBarrier' size={24} />
                             }
                             label={PositionsUtils.getBarrierLabel(contract_info)}
-                            value={contract_info.barrier 
+                            value={contract_info.barrier
                                 ? PositionsUtils.getBarrierValue(contract_info)
                                 : <ContractAuditLoader />
                             }

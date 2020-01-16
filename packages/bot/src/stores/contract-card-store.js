@@ -2,7 +2,7 @@ import {
     observable,
     action,
     computed }             from 'mobx';
-import ContractUtils       from 'deriv-shared/utils/contract';
+import ContractUtils       from '@deriv/shared/utils/contract';
 import { contract_stages } from '../constants/contract-stage';
 
 export default class ContractCardStore {

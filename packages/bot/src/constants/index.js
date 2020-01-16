@@ -273,6 +273,7 @@ const config = {
     },
     popover_zindex: {
         quick_strategy: '99999',
+        contract_audit: '100', // Needs to be higher than Core header.
         toolbar       : '5',
     },
 };

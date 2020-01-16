@@ -11,6 +11,7 @@ import { localize }            from '@deriv/translations';
 import ContractUtils           from '@deriv/shared/utils/contract';
 import PortfolioUtils          from '@deriv/shared/utils/portfolio';
 import IconTradeType           from './icon-trade-types.jsx';
+import config                  from '../constants';
 import { connect }             from '../stores/connect';
 import { getContractTypeName } from '../utils/contract';
 
@@ -66,6 +67,7 @@ const Transaction = ({
                 should_add_scrollbars={false}
             />
         }
+        zIndex={config.popover_zindex.contract_audit}
     >
         <div
             className='transactions__item'

@@ -28,7 +28,10 @@ export default class FlyoutHelpStore {
         const block_hw        = Blockly.Block.getDimensions(block_node);
         const block_type      = block_node.getAttribute('type');
         const title           = Blockly.Blocks[block_type].meta().display_name;
-        // TODO break each help-string a separate chunk and load it on demand
+       
+        /* TODO break each help-string a separate chunk and load it on demand, for this we need to loop
+        through the folder in bot-engine webpack and create entrypoint of each file. then import them as :
+        const help_string_obj = await import(/* webpackChunkName: `[request]` `@deriv/bot-engine/${block_type}`; */
         const help_string_obj = await import(/* webpackChunkName: `[request]` */ '@deriv/bot-engine');
         const start_scale     = config.workspaces.flyoutWorkspacesStartScale;
 

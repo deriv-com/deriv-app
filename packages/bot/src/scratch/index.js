@@ -365,6 +365,13 @@ class DBot {
                 if (should_highlight) {
                     // Remove select highlight in favour of error highlight.
                     block.removeSelect();
+
+                    let current_collapsed_block = block;
+                    while (current_collapsed_block) {
+                        console.log('Expanding', current_collapsed_block.type);
+                        current_collapsed_block.setCollapsed(false);
+                        current_collapsed_block = current_collapsed_block.getParent();
+                    }
                 }
 
                 block.setErrorHighlighted(should_highlight);

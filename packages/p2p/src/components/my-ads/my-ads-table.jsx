@@ -1,6 +1,7 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
 import { Table }              from '@deriv/components';
+import Dp2pContext            from 'Components/context/dp2p-context';
 import { localize }           from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS }          from 'Utils/websocket';
@@ -8,9 +9,10 @@ import { MyAdsLoader }        from './my-ads-loader.jsx';
 
 const headers = [
     { text: localize('Ad ID')  },
-    { text: localize('Amount') },
+    { text: localize('Available') },
+    { text: localize('Limits') },
     { text: localize('Price') },
-    { text: localize('Min transaction') },
+    { text: localize('Payment method') },
 ];
 
 const type = {
@@ -21,10 +23,11 @@ const type = {
 const RowComponent = React.memo(({ data, style }) => (
     <div style={style}>
         <Table.Row>
-            <Table.Cell>{type[data.type]}<br />{data.offer_id}</Table.Cell>
-            <Table.Cell>{data.amount}</Table.Cell>
-            <Table.Cell>{data.price}</Table.Cell>
-            <Table.Cell>{data.min_transaction}</Table.Cell>
+            <Table.Cell><div>{type[data.type]}<div className='p2p-my-ads__table-id'>{data.offer_id}</div></div></Table.Cell>
+            <Table.Cell>{data.display_available_amount}{' '}{data.offer_currency}</Table.Cell>
+            <Table.Cell>{data.display_min_transaction}-{data.display_max_transaction}{' '}{data.offer_currency}</Table.Cell>
+            <Table.Cell className='p2p-my-ads__table-price'>{data.display_price_rate}{' '}{data.transaction_currency}</Table.Cell>
+            <Table.Cell>{data.payment_method}</Table.Cell>
         </Table.Row>
     </div>
 ));
@@ -47,12 +50,9 @@ export class MyAdsTable extends React.Component {
     componentDidMount() {
         this.is_mounted = true;
 
-        requestWS({ p2p_offer_list: 1, type: 'buy' }).then((response) => {
-            // TODO [p2p-replace-api] p2p agent details should be the one retrieve the agent id
-            const filtered_response = response.filter(offer => offer.advertiser_id === 'ABC123');
-
+        requestWS({ p2p_offer_list: 1, agent_id: this.context.agent_id }).then((response) => {
             if (this.is_mounted) {
-                this.setState({ items: filtered_response, is_loading: false });
+                this.setState({ items: response, is_loading: false });
             }
         });
     }
@@ -85,3 +85,5 @@ export class MyAdsTable extends React.Component {
         );
     }
 }
+
+MyAdsTable.contextType = Dp2pContext;

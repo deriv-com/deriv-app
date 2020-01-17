@@ -6,18 +6,18 @@ const ContractTypeList = ({
     handleInfoClick,
     handleSelect,
     is_equal,
-    list = [],
+    list,
     name,
     value,
 }) => (
-    Object.keys(list).map(key => (
+    list.map((contract_category, key) => (
         <div key={key} className='contract-type-list' >
             <div className='contract-type-list__label'>
-                <span>{list[key].label}</span>
+                <span>{contract_category.label}</span>
             </div>
             <div className='contract-type-list__contracts-wrapper'>
                 <ContractTypeItem
-                    contracts={list[key].contract_types}
+                    contracts={contract_category.contract_types}
                     handleSelect={handleSelect}
                     handleInfoClick={handleInfoClick}
                     is_equal={is_equal}

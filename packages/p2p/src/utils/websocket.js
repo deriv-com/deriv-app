@@ -119,6 +119,10 @@ export const requestWS = async (request) => {
 
     const response = await ws.send(request);
 
+    return getModifiedResponse(response);
+};
+
+const getModifiedResponse = (response) => {
     let modified_response = response;
 
     if (response.p2p_offer_list) {
@@ -130,4 +134,11 @@ export const requestWS = async (request) => {
     }
 
     return modified_response;
+};
+
+// TODO: binary needs to also send a subscribe function in their websocket method
+export const subscribeWS = (request, cb) => {
+    ws.p2pSubscribe(request, (response) => {
+        cb(getModifiedResponse(response));
+    });
 };

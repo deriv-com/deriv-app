@@ -256,6 +256,11 @@ const BinarySocketBase = (() => {
     const p2pAgentInfo = () =>
         deriv_api.send({ p2p_agent_info: 1 });
 
+    // subscribe method export for P2P use only
+    // so that subscribe remains private
+    const p2pSubscribe = (request, cb) =>
+        subscribe(request, cb);
+
     return {
         init,
         forgetStream,
@@ -283,6 +288,7 @@ const BinarySocketBase = (() => {
         newAccountReal,
         p2pAgentInfo,
         p2pOfferList,
+        p2pSubscribe,
         profitTable,
         statement,
         verifyEmail,

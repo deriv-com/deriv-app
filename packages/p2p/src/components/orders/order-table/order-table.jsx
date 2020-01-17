@@ -4,24 +4,21 @@ import PropTypes              from 'prop-types';
 import { BuySellRowLoader }   from 'Components/buy-sell/row.jsx';
 import { localize }           from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
-import { requestWS }          from 'Utils/websocket';
 import BuyOrderRowComponent   from './order-table-buy-row.jsx';
 import SellOrderRowComponent  from './order-table-sell-row.jsx';
 import OrderInfo              from '../order-info';
 
-const OrderTable = ({ showDetails }) => {
+const OrderTable = ({ orders, showDetails }) => {
     const [order_list, setOrderList] = React.useState([]);
     const [has_no_orders, setNoOrders] = React.useState(false);
 
     React.useEffect(() => {
-        requestWS({ p2p_order_list: 1 }).then(list_response => {
-            const modified_list = list_response.map(list => new OrderInfo(list));
-            setOrderList(modified_list);
-            if (!modified_list.length) {
-                setNoOrders(true);
-            }
-        });
-    }, []);
+        const modified_list = orders.map(list => new OrderInfo(list));
+        setOrderList(modified_list);
+        if (!modified_list.length) {
+            setNoOrders(true);
+        }
+    }, [orders]);
 
     const Row = (row_props) => (
         row_props.data.is_buyer ?
@@ -61,6 +58,7 @@ const OrderTable = ({ showDetails }) => {
 };
 
 OrderTable.propTypes = {
+    orders     : PropTypes.array,
     showDetails: PropTypes.func,
 };
 

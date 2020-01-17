@@ -1,6 +1,9 @@
 import {
     observable,
-    action }                from 'mobx';
+    action,
+    computed,
+}                           from 'mobx';
+import { localize }         from '@deriv/translations';
 import { formatDate }       from '@deriv/shared/utils/date';
 import { message_types }    from '../constants/messages';
 import {
@@ -17,16 +20,14 @@ export default class JournalStore {
         return this.root_store.core.common.server_time;
     }
 
-    filter_list = [
-        { id: message_types.ERROR, label: 'Error messages', onChange: this.filterMessage },
-        { id: message_types.NOTIFY, label: 'Notifications', onChange: this.filterMessage },
-        { id: message_types.SUCCESS, label: 'System log', onChange: this.filterMessage },
+    filters = [
+        { id: message_types.ERROR, label: localize('Error messages') },
+        { id: message_types.NOTIFY, label: localize('Notifications') },
+        { id: message_types.SUCCESS, label: localize('System log') },
     ];
 
-    unfilter_messages = [];
-
-    @observable messages = [];
-    @observable checked_filter = getSetting('journal_filter') || this.filter_list.map(filter => filter.id);
+    @observable unfiltered_messages = [];
+    @observable checked_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
 
     @action.bound
     onLogSuccess(data) {
@@ -54,21 +55,32 @@ export default class JournalStore {
             error_message = error && error.error ? error.error.message : message;
         }
 
-        this.unfilter_messages.unshift({ date, time , message: error_message, message_type });
-        this.filterMessage(this.checked_filter);
+        this.unfiltered_messages.unshift({ date, time , message: error_message, message_type });
+        // this.filterMessage(this.checked_filters);
+    }
+
+    @computed
+    get filtered_message() {
+        // filter messages based on filtered-checkbox
+        return this.unfiltered_messages
+            .filter(message => !this.checked_filters.length
+                || this.checked_filters.some(filter => message.message_type === filter));
     }
 
     @action.bound
-    filterMessage(checked_items) {
-        storeSetting('journal_filter', checked_items);
-        this.checked_filter = checked_items;
-        this.messages = this.unfilter_messages.filter(message => checked_items.indexOf(message.message_type) >= 0);
-        this.messages.slice(0);
+    filterMessage(checked, item_id) {
+        if (checked) {
+            this.checked_filters.push(item_id);
+        } else {
+            this.checked_filters.splice(this.checked_filters.indexOf(item_id), 1);
+        }
+        
+        storeSetting('journal_filter', this.checked_filters);
     }
 
     @action.bound
     clear() {
-        this.unfilter_messages = [];
-        this.filterMessage(this.checked_filter);
+        this.unfiltered_messages = [];
+        this.filterMessage(this.checked_filters);
     }
 }

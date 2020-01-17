@@ -93,62 +93,41 @@ const MessageItem = ({
     );
 };
 
-class Tools extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            checked_items: this.props.defaultChecked,
-        };
-    }
-
-    onChange(checked, item_id, onChange) {
-        const checked_items = this.state.checked_items;
-        if (checked) {
-            checked_items.push(item_id);
-        } else {
-            checked_items.splice(checked_items.indexOf(item_id), 1);
-        }
-
-        this.setState({ checked_items });
-
-        onChange(this.state.checked_items);
-    }
-
-    render() {
-        return (
-            <div className='tools__container'>
-                <div className='tools__container-filter'>
-                    {
-                        this.props.items.map(item => {
-                            return (
-                                <Checkbox
-                                    key={item.id}
-                                    className='filter__dropdown-item'
-                                    classNameLabel='filter__dropdown-text'
-                                    defaultChecked={this.state.checked_items.includes(item.id)}
-                                    label={item.label}
-                                    onChange={e => this.onChange(e.target.checked, item.id, item.onChange)}
-                                />
-                            );
-                        })
-                    }
-                </div>
-                <div className='tools__container-download'>
-                    <Icon icon='IcDownload' />
-                </div>
-            </div>
-        );
-    }
-}
+const Tools = ({
+    checked_filters,
+    filters,
+    filterMessage,
+}) => (
+    <div className='tools__container'>
+        <div className='tools__container-filter'>
+            {
+                filters.map(item => {
+                    return (
+                        <Checkbox
+                            key={item.id}
+                            className='filter__dropdown-item'
+                            classNameLabel='filter__dropdown-text'
+                            defaultChecked={checked_filters.includes(item.id)}
+                            label={item.label}
+                            onChange={e => filterMessage(e.target.checked, item.id)}
+                        />
+                    );
+                })
+            }
+        </div>
+        <div className='tools__container-download'>
+            <Icon icon='IcDownload' />
+        </div>
+    </div>
+);
 
 const Journal = ({
-    checked_filter,
-    messages,
-    filter_list,
+    filtered_message,
+    ...props
 }) => {
     return (
         <>
-            <Tools items={filter_list} defaultChecked={checked_filter} />
+            <Tools {...props} />
             <ThemedScrollbars
                 className='journal'
                 autoHide
@@ -165,8 +144,8 @@ const Journal = ({
                     </thead>
                     <tbody className='journal__table--body'>
                         {
-                            messages.length ?
-                                messages.map((item, index) => {
+                            filtered_message.length ?
+                                filtered_message.map((item, index) => {
                                     const { date, time, message, message_type } = item;
                                     const date_el = DateItem({ date, time });
                                     const message_el = MessageItem({ message });
@@ -204,13 +183,15 @@ const Journal = ({
 };
 
 Journal.propTypes = {
-    checked_filter: PropTypes.array,
-    filter_list   : PropTypes.array,
-    messages      : PropTypes.array,
+    checked_filters : PropTypes.array,
+    filtered_message: PropTypes.array,
+    filterMessage   : PropTypes.func,
+    filters         : PropTypes.array,
 };
 
 export default connect(({ journal }) => ({
-    checked_filter: journal.checked_filter,
-    filter_list   : journal.filter_list,
-    messages      : journal.messages,
+    checked_filters : journal.checked_filters,
+    filterMessage   : journal.filterMessage,
+    filters         : journal.filters,
+    filtered_message: journal.filtered_message,
 }))(Journal);

@@ -1,9 +1,9 @@
-const getSettingFromLocal = () => {
+const getSettingsFromLocal = () => {
     return JSON.parse(localStorage.getItem('dbot_settings'));
 };
 
 export const getSetting = key => {
-    const settings = getSettingFromLocal();
+    const settings = getSettingsFromLocal();
 
     if (!settings) {
         return null;
@@ -13,7 +13,7 @@ export const getSetting = key => {
 };
 
 export const storeSetting = (key, value) => {
-    const settings = getSettingFromLocal() || {};
+    const settings = getSettingsFromLocal() || {};
 
     settings[key] = value;
     localStorage.setItem('dbot_settings', JSON.stringify(settings));

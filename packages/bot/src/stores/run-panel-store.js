@@ -49,7 +49,7 @@ export default class RunPanelStore {
     get is_clear_stat_disabled() {
         return this.is_running ||
             this.has_open_contract ||
-            this.root_store.journal.messages.length === 0;
+            this.root_store.journal.unfiltered_messages.length === 0;
     }
 
     @action.bound

@@ -18,6 +18,7 @@ import TradeAnimation from './trade-animation.jsx';
 import config         from '../constants';
 import { tabs_title } from '../constants/bot-contents';
 import { connect }    from '../stores/connect';
+import config         from '../constants';
 import                '../assets/sass/scratch/toolbar.scss';
 
 const SearchBox = ({

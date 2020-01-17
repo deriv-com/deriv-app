@@ -31,8 +31,9 @@
         &:before {
             transform: translate3d(0, 50px, 0);
         }
-    }
-    &--active {
+        &:after {
+            transform: translate3d(0, 4px, 0);
+        }
         .positions-toggle__icon {
             margin-bottom: 0;
         }
@@ -53,13 +54,13 @@
         color: $color-white;
     }
     @include mobile {
+        padding: 0 1.2rem;
+        height: inherit;
+
         &--has-count:after {
             top: -4px;
             right: 4px;
         }
-        padding: 0 1.2rem;
-        height: inherit;
-
         .positions-toggle__icon {
             margin: 0;
         }

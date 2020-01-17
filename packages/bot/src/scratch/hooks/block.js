@@ -1,5 +1,6 @@
 import config from '../../constants';
 
+// Structure is { '<outerHtml />': { height: 1, width: 1 } }
 Blockly.Block.Dimensions = {};
 
 Blockly.Block.prototype.getDisplayName = function() {
@@ -91,18 +92,12 @@ Blockly.Block.prototype.getTopParent = function() {
 
 Blockly.Block.getDimensions = function(block_node) {
     // Attempt to retrieve dimensions from memory rather than recalculating.
-    let known_dimensions = null;
+    const existing_dimensions_key = Object.keys(Blockly.Block.Dimensions).find(outer_html =>
+        block_node.outerHTML === outer_html
+    );
 
-    Object.keys(Blockly.Block.Dimensions).some(outer_html => {
-        if (block_node.outerHTML === outer_html) {
-            known_dimensions = Blockly.Block.Dimensions[outer_html];
-            return true;
-        }
-        return false;
-    });
-
-    if (known_dimensions) {
-        return known_dimensions;
+    if (existing_dimensions_key) {
+        return Blockly.Block.Dimensions[existing_dimensions_key];
     }
 
     const options          = new Blockly.Options({ media: `${__webpack_public_path__}media/` });

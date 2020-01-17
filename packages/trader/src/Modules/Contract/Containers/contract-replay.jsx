@@ -189,6 +189,7 @@ class Chart extends React.Component {
                 bottomWidgets={this.props.is_digit_contract ?  this.bottomWidgets : null}
                 chartControlsWidgets={null}
                 chartType={this.props.chart_type}
+                crosshairState={0} // prevent rendering Crosshair
                 endEpoch={this.props.end_epoch}
                 margin={this.props.margin || null}
                 isMobile={this.props.is_mobile}

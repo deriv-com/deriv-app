@@ -33,7 +33,7 @@ class DBot {
                 zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
             });
 
-            this.workspace.cached_xml = { main: main_xml };
+            this.workspace.cached_xml = { main: main_xml, toolbox: toolbox_xml };
             Blockly.derivWorkspace    = this.workspace;
 
             this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));

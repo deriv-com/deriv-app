@@ -368,7 +368,6 @@ class DBot {
 
                     let current_collapsed_block = block;
                     while (current_collapsed_block) {
-                        console.log('Expanding', current_collapsed_block.type);
                         current_collapsed_block.setCollapsed(false);
                         current_collapsed_block = current_collapsed_block.getParent();
                     }

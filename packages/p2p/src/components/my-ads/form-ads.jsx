@@ -130,7 +130,7 @@ class FormAds extends Component {
                                                         {...field}
                                                         type='text'
                                                         className='p2p-my-ads__form-field'
-                                                        label={localize('Currency')}
+                                                        label={localize('Local currency')}
                                                         list_items={[]}
                                                         disabled
                                                         onItemSelection={
@@ -161,6 +161,7 @@ class FormAds extends Component {
                                                         className='p2p-my-ads__form-field'
                                                         disabled
                                                         label={localize('Asset')}
+                                                        hint={values.type === 'buy' ? localize('The currency you are buying') : localize('The currency you are selling')}
                                                         list_items={[]}
                                                         required
                                                         onItemSelection={
@@ -179,6 +180,7 @@ class FormAds extends Component {
                                                         type='number'
                                                         error={touched.price_rate && errors.price_rate}
                                                         label={localize('Fixed price')}
+                                                        hint={localize('Price per 1 {{currency}}', { currency: values.offer_currency })}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{`${values.currency}/${values.offer_currency}`}</span>}
                                                         required
@@ -193,6 +195,7 @@ class FormAds extends Component {
                                                         type='number'
                                                         error={touched.offer_amount && errors.offer_amount}
                                                         label={localize('Amount')}
+                                                        hint={localize('Total asset offered')}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.offer_currency}</span>}
                                                         required
@@ -213,6 +216,7 @@ class FormAds extends Component {
                                                             && errors.min_transaction
                                                         }
                                                         label={localize('Min limit')}
+                                                        hint={localize('Minimum order from client')}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.offer_currency}</span>}
                                                         required
@@ -230,6 +234,7 @@ class FormAds extends Component {
                                                             && errors.max_transaction
                                                         }
                                                         label={localize('Max limit')}
+                                                        hint={localize('Maximum order from client')}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.offer_currency}</span>}
                                                         required

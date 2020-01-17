@@ -6,6 +6,7 @@ import {
     updateDisabledBlocks }            from './utils';
 import { onWorkspaceResize }          from './utils/workspace';
 import main_xml                       from './xml/main.xml';
+import toolbox_xml                    from './xml/toolbox.xml';
 import config                         from '../constants';
 import Interpreter                    from '../services/tradeEngine/utils/interpreter';
 import ScratchStore                   from '../stores/scratch-store';
@@ -27,9 +28,7 @@ class DBot {
             this.workspace        = Blockly.inject(el_scratch_div, {
                 grid    : { spacing: 40, length: 11, colour: '#f3f3f3' },
                 media   : `${__webpack_public_path__}media/`, // eslint-disable-line
-                // Load placeholder toolbox, replaced when user first opens it. Requires category!
-                // See: https://developers.google.com/blockly/guides/configure/web/toolbox#changing_the_toolbox
-                toolbox : '<xml id="toolbox"><category name="placeholder"><category></xml>',
+                toolbox : toolbox_xml,
                 trashcan: true,
                 zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
             });

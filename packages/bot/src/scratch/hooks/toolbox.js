@@ -12,11 +12,6 @@ import ScratchStore         from '../../stores/scratch-store';
 Blockly.Toolbox.prototype.width = 25;
 
 /**
- * deriv-bot: Keep track of whether the toolbox chunk is loaded.
- */
-Blockly.Toolbox.prototype.is_chunk_loaded = false;
-
-/**
  * Initializes the toolbox.
  */
 Blockly.Toolbox.prototype.init = function () {
@@ -59,26 +54,13 @@ Blockly.Toolbox.prototype.init = function () {
     this.createFlyout_();
     this.categoryMenu_ = new Blockly.Toolbox.CategoryMenu(this, this.HtmlDiv);
     this.populate_(workspace.options.languageTree);
-
     this.categoryMenu_.allCategories_ = [];
     this.categoryMenu_.categories_.forEach(category => {
-        all_categories.push({ ...category });
+        const clone_category = { ...category };
+        this.categoryMenu_.allCategories_.push(clone_category);
     });
-    
     this.position();
     this.toggle();
-};
-
-/**
- * Gets all categories, including nested ones.
- * @returns {Array} *
- */
-Blockly.Toolbox.prototype.getAllCategories = function() {
-    const all_categories = [];
-    this.categoryMenu_.categories_.forEach(category => {
-        all_categories.push({ ...category });
-    });
-    return all_categories;
 };
 
 /**
@@ -92,25 +74,24 @@ Blockly.Toolbox.prototype.populate_ = function (newTree) {
     parent.removeChild(parent.lastChild);
 
     this.categoryMenu_.populate(newTree);
-    const { quick_strategy }  = ScratchStore.instance;
-    const quick_strat_btn     = document.createElement('BUTTON');
+
+    const { quick_strategy } = ScratchStore.instance;
+    const quick_strat_btn = document.createElement('BUTTON');
     quick_strat_btn.innerHTML = localize('Quick Strategy');
     quick_strat_btn.className = 'toolbox__button btn effect btn--primary btn__medium';
-    quick_strat_btn.id        = 'gtm-quick-strategy';
-    quick_strat_btn.onclick   = quick_strategy.toggleStrategyModal;
+    quick_strat_btn.id = 'gtm-quick-strategy';
+    quick_strat_btn.onclick = quick_strategy.toggleStrategyModal;
+
     parent.appendChild(quick_strat_btn);
 };
 
-/**
- * deriv-bot: Shows search.
- */
 Blockly.Toolbox.prototype.showSearch = function (search) {
     const flyout_content = [];
-    const workspace      = this.workspace_;
-    const search_term    = search.replace(/\s+/g,' ').trim().toUpperCase();
-    const all_variables  = workspace.getVariablesOfType('');
+    const workspace = Blockly.derivWorkspace;
+    const search_term = search.replace(/\s+/g,' ').trim().toUpperCase();
+    const all_variables = workspace.getVariablesOfType('');
     const all_procedures = Blockly.Procedures.allProcedures(workspace);
-    const { flyout }     = ScratchStore.instance;
+    const { flyout } = ScratchStore.instance;
 
     flyout.setVisibility(false);
 
@@ -132,8 +113,8 @@ Blockly.Toolbox.prototype.showSearch = function (search) {
             let contents = category.contents_.length ? category.contents_ : category.dynamic_;
 
             if (typeof contents === 'string') {
-                const fnToApply = workspace.getToolboxCategoryCallback(contents);
-                contents = fnToApply(workspace);
+                const fnToApply = Blockly.derivWorkspace.getToolboxCategoryCallback(contents);
+                contents = fnToApply(Blockly.derivWorkspace);
             }
 
             const only_block_contents = contents.filter(content => content.tagName.toUpperCase() === 'BLOCK');
@@ -319,38 +300,22 @@ Blockly.Toolbox.prototype.getCategoryContents = function (selected_category) {
 };
 
 /**
- * deriv-bot: Lazy loads the toolbox.
- * @returns {Boolean} Whether the chunk is loaded or not.
+ * Used to determine the css classes for the menu item for this category
+ * based on its current state.
+ * @private
+ * @param {boolean=} selected Indication whether the category is currently selected.
+ * @return {string} The css class names to be applied, space-separated.
+ * @deriv/bot: Custom class names
  */
-Blockly.Toolbox.prototype.loadChunk = async function() {
-    const workspace = this.workspace_;
+Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function (selected) {
+    const classNames = ['toolbox__item', `toolbox__category--${this.id_}`];
 
-    if (!workspace.cached_xml.toolbox) {
-        try {
-            const toolbox_xml = await import(/* webpackChunkName: `[toolbox-xml]` */ '../xml/toolbox.xml');
-            workspace.cached_xml.toolbox = toolbox_xml.default;
-            workspace.updateToolbox(toolbox_xml.default);
-            this.is_chunk_loaded = true;
-        } catch {
-            // Noop.
-        }
+    if (selected) {
+        classNames.push('toolbox__category--selected');
     }
 
-    return this.is_chunk_loaded;
+    return classNames.join(' ');
 };
-
-Blockly.Toolbox.prototype.refreshCategory = function () {
-    const category = this.getSelectedItem();
-    this.setSelectedItem(category, false);
-};
-
-/**
- * Update the flyout's contents without closing it.  Should be used in response
- * to a change in one of the dynamic categories, such as variables or
- * procedures.
- * deriv-bot: Calls showAll() in Scratch, we don't want that.
- */
-Blockly.Toolbox.prototype.refreshSelection = function () {};
 
 /**
  * Opens the selected category
@@ -429,16 +394,16 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
                 return null;
             };
 
-            const toolbox_xml       = this.workspace_.cached_xml.toolbox;
-            const toolbox_dom       = Blockly.Xml.textToDom(toolbox_xml);
-            const selected_category = findCategory(toolbox_dom.children);
+            const { toolboxXmlStr } = this.workspace_;
+            const toolboxDom = Blockly.Xml.textToDom(toolboxXmlStr);
+            const selected_category = findCategory(toolboxDom.children);
 
             if (selected_category) {
                 const el_parent = selected_category.parentElement;
 
                 flyout.setVisibility(false);
                 if (el_parent.tagName === 'xml') {
-                    this.workspace_.updateToolbox(toolbox_xml);
+                    this.workspace_.updateToolbox(toolboxXmlStr);
                 } else {
                     const newTree = getCategoryTree(
                         el_parent.getAttribute('name'),
@@ -470,24 +435,12 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
 };
 
 /**
- * deriv-bot: Toggles the toolbox
+ * Update the flyout's contents without closing it.  Should be used in response
+ * to a change in one of the dynamic categories, such as variables or
+ * procedures.
+ * @deriv/bot: Calls showAll() in Scratch, we don't want that.
  */
-Blockly.Toolbox.prototype.toggle = function () {
-    const { toolbar, flyout } = ScratchStore.instance;
-    if (!toolbar.is_toolbox_open) {
-        this.addStyle('hidden');
-    
-        flyout.setVisibility(false);
-    
-        if (this.selectedItem_) {
-            this.selectedItem_.setSelected(false);
-            this.selectedItem_ = null;
-        }
-    } else {
-        flyout.setVisibility(false);
-        this.removeStyle('hidden');
-    }
-};
+Blockly.Toolbox.prototype.refreshSelection = function () { };
 
 /**
  * Create the DOM for a category in the toolbox.
@@ -620,24 +573,6 @@ Blockly.Toolbox.CategoryMenu.prototype.createDom = function () {
 };
 
 /**
- * Used to determine the css classes for the menu item for this category
- * based on its current state.
- * @private
- * @param {boolean=} selected Indication whether the category is currently selected.
- * @return {string} The css class names to be applied, space-separated.
- * deriv-bot: Custom class names
- */
-Blockly.Toolbox.Category.prototype.getMenuItemClassName_ = function (selected) {
-    const classNames = ['toolbox__item', `toolbox__category--${this.id_}`];
-
-    if (selected) {
-        classNames.push('toolbox__category--selected');
-    }
-
-    return classNames.join(' ');
-};
-
-/**
  * Fill the toolbox with categories and blocks by creating a new
  * {Blockly.Toolbox.Category} for every category tag in the toolbox xml.
  * @param {Node} domTree DOM tree of blocks, or null.
@@ -696,3 +631,25 @@ Blockly.Toolbox.CategoryMenu.prototype.populate = function (domTree, is_subcateg
     this.height_ = this.table.offsetHeight;
 };
 
+Blockly.Toolbox.prototype.refreshCategory = function () {
+    const category = this.getSelectedItem();
+
+    this.setSelectedItem(category, false);
+};
+
+Blockly.Toolbox.prototype.toggle = function () {
+    const { toolbar, flyout } = ScratchStore.instance;
+    if (!toolbar.is_toolbox_open) {
+        this.addStyle('hidden');
+
+        flyout.setVisibility(false);
+
+        if (this.selectedItem_) {
+            this.selectedItem_.setSelected(false);
+            this.selectedItem_ = null;
+        }
+    } else {
+        flyout.setVisibility(false);
+        this.removeStyle('hidden');
+    }
+};

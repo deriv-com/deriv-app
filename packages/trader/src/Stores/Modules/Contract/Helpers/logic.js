@@ -123,7 +123,6 @@ export const getEndTime = (contract_info) => {
 };
 
 export const isContractWaiting = (proposal_open_contract) =>
-    !!(/settlement/.test(proposal_open_contract.validation_error)
-    && proposal_open_contract.is_expired === 1
+    !!(/settlement|This market is presently closed/.test(proposal_open_contract.validation_error)
     && proposal_open_contract.status === 'open'
     && proposal_open_contract.is_sold === 0);

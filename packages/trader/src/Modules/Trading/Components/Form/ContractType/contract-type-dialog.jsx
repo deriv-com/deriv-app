@@ -79,6 +79,12 @@ class Dialog extends React.PureComponent {
         this.props.onChangeInput(filtered_list);
     }
 
+    onClickClearInput = () => {
+        this.setState({ input_value: '' });
+        const filtered_list  = getFilteredList(this.props.list, this.contracts_list);
+        this.props.onChangeInput(filtered_list);
+    }
+
     get labels() {
         return [...this.labels_list];
     }
@@ -110,6 +116,7 @@ class Dialog extends React.PureComponent {
             :
             <MemoizedSearchInput
                 onChange={this.onChangeInput}
+                onClickClearInput={this.onClickClearInput}
                 value={this.state.input_value}
             />;
 

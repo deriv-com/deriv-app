@@ -39,6 +39,10 @@
                 &__field {
                     padding-left: 36px;
                 }
+                /* postcss-bem-linter: ignore */
+                &__trailing-icon {
+                    cursor: pointer;
+                }
             }
         }
         /* postcss-bem-linter: ignore */

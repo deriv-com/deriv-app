@@ -17,6 +17,7 @@ export const ContractTypeInfoHeader = ({
 );
 
 const SearchInput = ({
+    onClickClearInput,
     onChange,
     value,
 }) => {
@@ -25,6 +26,7 @@ const SearchInput = ({
             autoFocus
             data-lpignore='true'
             leading_icon={<Icon icon='IcSearch' />}
+            trailing_icon={value ? <Icon icon='IcCloseCircle' onClick={onClickClearInput} /> : null}
             placeholder={localize('Search')}
             type='text'
             onChange={onChange}

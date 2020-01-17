@@ -101,10 +101,7 @@ Blockly.Block.getDimensions = function(block_node) {
     }
 
     const options          = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
-    const fragment         = document.createDocumentFragment();
     const el_injection_div = document.createElement('div');
-
-    fragment.appendChild(el_injection_div);
 
     // Create a headless workspace to calculate xmlList block dimensions
     const svg       = Blockly.createDom_(el_injection_div, options);

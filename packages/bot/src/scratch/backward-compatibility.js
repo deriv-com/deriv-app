@@ -275,11 +275,7 @@ export default class BlockConversion {
     // eslint-disable-next-line class-methods-use-this
     createWorkspace() {
         const options          = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
-        const fragment         = document.createDocumentFragment();
         const el_injection_div = document.createElement('div');
-
-        fragment.appendChild(el_injection_div);
-
         const svg              = Blockly.createDom_(el_injection_div, options);
         const workspace        = Blockly.createMainWorkspace_(svg, options, false, false);
 

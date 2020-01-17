@@ -59,24 +59,30 @@ class App extends Component {
         }
     }
 
+    // API will send p2p_order_list first as a list of all orders
+    // then each subscription response for a single updated order will come as p2p_order_info
+    handleOrderListResponse = (order_response) => {
+        if (Array.isArray(order_response)) { // it's an array of orders from p2p_order_list
+            this.setState({ orders: order_response });
+        } else { // it's a single order from p2p_order_info
+            const idx_order_to_update =
+                this.state.orders.findIndex(order => order.order_id === order_response.order_id);
+            const updated_orders = [ ...this.state.orders ];
+            // if it's a new order, add it to the top of the list
+            if (idx_order_to_update < 0) {
+                updated_orders.unshift(order_response);
+            } else { // otherwise, update the correct order
+                updated_orders[idx_order_to_update] = order_response;
+            }
+            // trigger re-rendering by setting orders again
+            this.setState({ orders: updated_orders });
+        }
+    };
+
     componentDidMount() {
         this.setIsAgent();
 
-        subscribeWS({ p2p_order_list: 1, subscribe: 1 }, (order_response) => {
-            if (Array.isArray(order_response)) { // it's p2p_order_list
-                this.setState({ orders: order_response });
-            } else { // it's p2p_order_info
-                const idx_order_to_update =
-                    this.state.orders.findIndex(order => order.order_id === order_response.order_id);
-                const updated_orders = [ ...this.state.orders ];
-                if (idx_order_to_update < 0) {
-                    updated_orders.unshift(order_response);
-                } else {
-                    updated_orders[idx_order_to_update] = order_response;
-                }
-                this.setState({ orders: updated_orders });
-            }
-        });
+        subscribeWS({ p2p_order_list: 1, subscribe: 1 }, this.handleOrderListResponse);
     }
 
     componentWillUnmount = () => {

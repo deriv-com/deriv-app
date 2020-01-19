@@ -130,6 +130,7 @@ const Transaction = ({
     setActiveTransactionId,
 }) => (
     <Popover
+        zIndex = {10}
         alignment='left'
         className='transactions__item-wrapper'
         is_open={active_transaction_id === contract.transaction_ids.buy}

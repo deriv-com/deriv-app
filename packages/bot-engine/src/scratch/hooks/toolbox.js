@@ -452,7 +452,7 @@ Blockly.Toolbox.Category.prototype.createDom = function () {
     this.item_ = el_item;
 
     if (this.is_category_return_) {
-        const el_category_arrow = goog.dom.createDom('div', 'toolbox__category-arrow toolbox__category-arrow--open');
+        const el_category_arrow = goog.dom.createDom('div', 'toolbox__category-arrow toolbox__category-arrow--left');
         el_item.appendChild(el_category_arrow);
     } else {
         const el_colour = goog.dom.createDom('div', 'toolbox__category-colour');
@@ -473,7 +473,7 @@ Blockly.Toolbox.Category.prototype.createDom = function () {
     el_item.appendChild(el_toolbox_text);
 
     if (this.has_child_category_) {
-        const el_category_arrow = goog.dom.createDom('div', 'toolbox__category-arrow toolbox__category-arrow--open');
+        const el_category_arrow = goog.dom.createDom('div', 'toolbox__category-arrow toolbox__category-arrow--right');
         el_item.appendChild(el_category_arrow);
 
     } else if (this.iconURI_) {

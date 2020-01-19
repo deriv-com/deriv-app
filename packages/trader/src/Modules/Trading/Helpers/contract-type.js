@@ -104,9 +104,8 @@ export const getContractsList = (list) => flatten(
         )
 );
 
-const findContractCategory = (list, item) => Object.keys(list).map(key =>
-    list[key].contract_types.find(i => i.value === item.value) ? list[key] : null)
-    .filter(i => !!i)[0];
+const findContractCategory = (list, item) => list
+    .find(list_item => list_item.contract_types.some(i => i.value === item.value));
 
 export const getContractCategoryLabel = (list, item) => findContractCategory(list, item).label;
 

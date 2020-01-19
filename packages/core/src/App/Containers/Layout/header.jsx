@@ -3,6 +3,10 @@ import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { withRouter }          from 'react-router-dom';
 import {
+    DesktopWrapper,
+    MobileWrapper }            from '@deriv/components';
+import { isMobile }            from '@deriv/shared/utils/screen';
+import {
     AccountActions,
     MenuLinks,
     PlatformSwitcher }         from 'App/Components/Layout/Header';
@@ -33,7 +37,6 @@ class Header extends React.Component {
             is_dark_mode,
             is_logged_in,
             is_logging_in,
-            is_mobile,
             is_mt5_allowed,
             is_notifications_visible,
             is_route_modal_on,
@@ -59,55 +62,52 @@ class Header extends React.Component {
 
         return (
             <header className={classNames('header', {
-                'header--is-mobile'  : is_mobile,
+                'header--is-mobile'  : isMobile(),
                 'header--is-disabled': (is_app_disabled || is_route_modal_on),
             })}
             >
                 <div className='header__menu-items'>
                     <div className='header__menu-left'>
-
-                        {!this.props.is_mobile ?
+                        <DesktopWrapper>
                             <PlatformSwitcher platform_config={filterPlatformsForClients(platform_config)} />
-                            :
-                            <>
-                                <ToggleMenuDrawer
-                                    enableApp={enableApp}
-                                    disableApp={disableApp}
-                                    logoutClient={logoutClient}
-                                    is_dark_mode={is_dark_mode}
-                                    is_logged_in={is_logged_in}
-                                    toggleTheme={setDarkMode}
-                                    platform_switcher={
-                                        <PlatformSwitcher
-                                            is_mobile={is_mobile}
-                                            platform_config={filterPlatformsForClients(platform_config)}
-                                        />}
-                                />
-                                {(header_extension && is_logged_in) &&
-                                    <div className='header__menu-left-extensions'>
-                                        { header_extension }
-                                    </div>
-                                }
-                            </>
-                        }
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <ToggleMenuDrawer
+                                enableApp={enableApp}
+                                disableApp={disableApp}
+                                logoutClient={logoutClient}
+                                is_dark_mode={is_dark_mode}
+                                is_logged_in={is_logged_in}
+                                toggleTheme={setDarkMode}
+                                platform_switcher={
+                                    <PlatformSwitcher
+                                        is_mobile
+                                        platform_config={filterPlatformsForClients(platform_config)}
+                                    />}
+                            />
+                            {(header_extension && is_logged_in) &&
+                                <div className='header__menu-left-extensions'>
+                                    {header_extension}
+                                </div>
+                            }
+                        </MobileWrapper>
                         <MenuLinks
                             is_logged_in={is_logged_in}
                             items={header_links}
                         />
                     </div>
                     <div className={classNames('header__menu-right', {
-                        'header__menu-right--mobile': is_mobile,
+                        'header__menu-right--mobile': isMobile(),
                     })}
                     >
                         {is_logging_in &&
                         <div className={classNames('acc-info__preloader', {
                             'acc-info__preloader--no-currency': !currency,
-                            'acc-info__preloader--is-mobile'  : is_mobile,
                         })}
                         >
                             <AccountsInfoLoader
                                 is_logged_in={is_logged_in}
-                                is_mobile={is_mobile}
+                                is_mobile={isMobile()}
                                 speed={3}
                             />
                         </div>
@@ -121,7 +121,6 @@ class Header extends React.Component {
                                 disableApp={disableApp}
                                 enableApp={enableApp}
                                 is_acc_switcher_on={is_acc_switcher_on}
-                                is_mobile={is_mobile}
                                 is_notifications_visible={is_notifications_visible}
                                 is_logged_in={is_logged_in}
                                 is_virtual={is_virtual}
@@ -153,7 +152,6 @@ Header.propTypes = {
     is_dark_mode            : PropTypes.bool,
     is_logged_in            : PropTypes.bool,
     is_logging_in           : PropTypes.bool,
-    is_mobile               : PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
     is_route_modal_on       : PropTypes.bool,
     is_virtual              : PropTypes.bool,
@@ -184,7 +182,6 @@ export default connect(
         notifications_count     : ui.notifications.length,
         is_notifications_visible: ui.is_notifications_visible,
         is_route_modal_on       : ui.is_route_modal_on,
-        is_mobile               : ui.is_mobile,
         openRealAccountSignup   : ui.openRealAccountSignup,
         disableApp              : ui.disableApp,
         toggleAccountsDialog    : ui.toggleAccountsDialog,

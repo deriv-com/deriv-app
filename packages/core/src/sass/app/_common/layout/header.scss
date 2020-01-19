@@ -23,13 +23,6 @@
         content: '';
         background-color: var(--overlay-outside-dialog);
     }
-    &--is-mobile {
-        height: $MOBILE_HEADER_HEIGHT;
-
-        .header__menu-left, .header__menu-right {
-            height: #{$MOBILE_HEADER_HEIGHT - 1px};
-        }
-    }
     &--is-disabled:after {
         opacity: 1;
         pointer-events: auto;
@@ -126,7 +119,7 @@
         height: #{$HEADER_HEIGHT - 1px};
         position: relative;
 
-        &--mobile {
+        @include mobile {
             .acc-info__separator {
                 display: none;
             }
@@ -230,5 +223,12 @@
     &__icon {
         margin-right: 0.8rem;
         vertical-align: middle;
+    }
+    @include mobile {
+        height: $MOBILE_HEADER_HEIGHT;
+
+        .header__menu-left, .header__menu-right {
+            height: #{$MOBILE_HEADER_HEIGHT - 1px};
+        }
     }
 }

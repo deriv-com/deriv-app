@@ -8,12 +8,9 @@ import ContractType          from '../../Containers/contract-type.jsx';
 import Purchase              from '../../Containers/purchase.jsx';
 import                            'Sass/app/_common/mobile-widget.scss';
 
-const ScreenSmall = ({ is_dark_theme, is_trade_enabled }) => (
+const ScreenSmall = ({ is_trade_enabled }) => (
     !is_trade_enabled ?
-        <TradeParamsLoader
-            is_dark_theme={is_dark_theme}
-            speed={2}
-        />
+        <TradeParamsLoader speed={2} />
         :
         <Collapsible
             position='top'
@@ -29,7 +26,6 @@ const ScreenSmall = ({ is_dark_theme, is_trade_enabled }) => (
 );
 
 ScreenSmall.propTypes = {
-    is_dark_theme   : PropTypes.bool,
     is_trade_enabled: PropTypes.bool,
 };
 

@@ -66,6 +66,9 @@
                 margin: 1rem 0;
                 color: var(--text-prominent);
             }
+            @include mobile {
+                display: none;
+            }
         }
         &__content {
             padding: 8px 0;
@@ -77,6 +80,9 @@
                 height: 100%;
                 max-height: 400px;
             }
+            @include mobile {
+                height: calc(100vh - 40px);
+            }
         }
         &--enter-done {
             opacity: 1;
@@ -85,6 +91,16 @@
         &--enter, &--exit {
             opacity: 0;
             transform: translate3d(0, -20px, 0);
+        }
+        @include mobile {
+            opacity: unset;
+            transform: none;
+            position: relative;
+            top: unset;
+            left: unset;
+            box-shadow: none;
+            width: 100%;
+            background: var(--general-section-2);
         }
     }
     /** @define notifications-empty; weak */
@@ -146,6 +162,9 @@
             .btn__text {
                 font-size: 1.2rem;
             }
+            @include mobile {
+                margin: 8px 0 16px auto;
+            }
         }
         &__title {
             font-size: 1.4rem;
@@ -174,6 +193,16 @@
                 text-decoration: none;
                 font-weight: bold;
                 color: var(--text-prominent);
+            }
+        }
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+
+            &:after {
+                left: -1.8rem;
+                width: calc(100% + 1.4em);
+                height: 2px;
             }
         }
     }

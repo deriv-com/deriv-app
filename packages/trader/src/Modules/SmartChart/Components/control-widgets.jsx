@@ -1,5 +1,6 @@
-import PropTypes      from 'prop-types';
-import React          from 'react';
+import PropTypes          from 'prop-types';
+import React              from 'react';
+import { DesktopWrapper } from '@deriv/components';
 import {
     ChartSize,
     ChartTypes,
@@ -9,24 +10,23 @@ import {
     Share,
     StudyLegend,
     Timeperiod,
-    Views }           from 'Modules/SmartChart';
+    Views }               from 'Modules/SmartChart';
 
 const ControlWidgets = ({
-    is_mobile,
     updateChartType,
     updateGranularity,
 }) => (
     <React.Fragment>
-        <CrosshairToggle enabled={!is_mobile} />
+        <DesktopWrapper>
+            <CrosshairToggle enabled />
+        </DesktopWrapper>
         <ChartTypes onChange={updateChartType} />
-        {!is_mobile &&
-            <>
-                <StudyLegend searchInputClassName='data-hj-whitelist' />
-                <Comparison searchInputClassName='data-hj-whitelist' />
-                <DrawTools />
-                <Views searchInputClassName='data-hj-whitelist' />
-            </>
-        }
+        <DesktopWrapper>
+            <StudyLegend searchInputClassName='data-hj-whitelist' />
+            <Comparison searchInputClassName='data-hj-whitelist' />
+            <DrawTools />
+            <Views searchInputClassName='data-hj-whitelist' />
+        </DesktopWrapper>
         <Share />
         <Timeperiod onChange={updateGranularity} />
         <ChartSize />
@@ -34,7 +34,6 @@ const ControlWidgets = ({
 );
 
 ControlWidgets.propTypes = {
-    is_mobile        : PropTypes.bool,
     updateChartType  : PropTypes.func,
     updateGranularity: PropTypes.func,
 };

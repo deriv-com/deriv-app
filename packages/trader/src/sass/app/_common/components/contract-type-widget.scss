@@ -7,19 +7,7 @@
     color: var(--text-prominent);
     background: var(--fill-normal);
     border: 1px solid var(--fill-normal);
-    @include mobile {
-        margin-bottom: 0.8rem;
-        height: 4rem;
-    }
 
-    &--mobile {
-        border: 1px solid var(--border-normal);
-        margin-bottom: 8px;
-
-        .contract-type-widget__display {
-            padding: 0.8rem;
-        }
-    }
     &__display {
         cursor: pointer;
         display: flex;
@@ -101,5 +89,13 @@
         outline: none;
         border-radius: 4px;
         border-color: var(--border-active);
+    }
+    @include mobile {
+        margin-bottom: 0.8rem;
+        height: 4rem;
+
+        .contract-type-widget__display {
+            padding: 0.8rem;
+        }
     }
 }

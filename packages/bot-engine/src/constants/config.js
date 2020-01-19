@@ -266,7 +266,7 @@ export const config = {
         },
     },
     popover_zindex: {
-        quick_strategy: '99999',
-        toolbar       : '5',
+        quick_strategy: 99999,
+        toolbar       : 5,
     },
 };

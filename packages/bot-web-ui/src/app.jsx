@@ -2,6 +2,7 @@ import { reaction }         from 'mobx';
 import { Provider }         from 'mobx-react';
 import React                from 'react';
 import {
+    ApiHelpers,
     DBot,
     ServerTime }            from '@deriv/bot-engine';
 import                           './public-path'; // Leave this here! OK boss!
@@ -39,6 +40,7 @@ class App extends React.Component {
     componentDidMount() {
 
         DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store);
+        this.registerCurrencyReaction();
         this.registerOnAccountSwitch();
     }
 
@@ -54,7 +56,7 @@ class App extends React.Component {
     /**
     * Register a reaction to currency
     */
-    registerReactions() {
+    registerCurrencyReaction() {
         // Syncs all trade options blocks' currency with the client's active currency.
         this.disposeCurrencyReaction = reaction(
             () => this.root_store.core.client.currency,
@@ -67,15 +69,6 @@ class App extends React.Component {
                 }
             },
         );
-    }
-
-    /**
-    * Dispose the reaction that has been added to currency broadcast
-    */
-    disposeReactions() {
-        if (typeof this.disposeCurrencyReaction === 'function') {
-            this.disposeCurrencyReaction();
-        }
     }
 
     /**
@@ -92,10 +85,11 @@ class App extends React.Component {
                 }
 
                 const { derivWorkspace: workspace } = Blockly;
+                const { active_symbols, contracts_for } = ApiHelpers.instance;
 
                 if (workspace) {
-                    this.active_symbols.retrieveActiveSymbols(true).then(() => {
-                        this.contracts_for.disposeCache();
+                    active_symbols.retrieveActiveSymbols(true).then(() => {
+                        contracts_for.disposeCache();
                         workspace.getAllBlocks()
                             .filter(block => block.type === 'trade_definition_market')
                             .forEach(block => {
@@ -109,9 +103,12 @@ class App extends React.Component {
     }
 
     /**
-    * Dispose the reaction that has been added to switchaccount broadcast
+    * Dispose the reactions
     */
-    disposeOnAccountSwitch() {
+    disposeReactions() {
+        if (typeof this.disposeCurrencyReaction === 'function') {
+            this.disposeCurrencyReaction();
+        }
         if (typeof this.disposeSwitchAccountListener === 'function') {
             this.disposeSwitchAccountListener();
         }

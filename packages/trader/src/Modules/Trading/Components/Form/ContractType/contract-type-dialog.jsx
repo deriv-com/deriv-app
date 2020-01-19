@@ -31,29 +31,38 @@ class Dialog extends React.PureComponent {
     }
 
     componentDidUpdate() {
-        if (this.props.is_open && !this.labels_list.length) {
-            const headers       = this.dialog_ref.current.querySelectorAll('.vertical-tab__header');
-            this.labels_list    = this.dialog_ref.current.querySelectorAll('.contract-type-list__label');
+        const {
+            is_info_dialog_open,
+            is_open,
+            item,
+        } = this.props;
+
+        if (is_open && !this.labels_list.length) {
+            const headers        = this.dialog_ref.current.querySelectorAll('.vertical-tab__header');
+            this.labels_list     = this.dialog_ref.current.querySelectorAll('.contract-type-list__label');
             this.offset_top_list = this.labels.map((label, i) => label.offsetTop - headers[i].offsetTop + 40);
         }
-        if (this.props.item.value !== this.state.value) {
+        if (item.value !== this.state.value) {
             this.setState({
                 selected: this.contract_category_label,
-                value   : this.props.item.value,
+                value   : item.value,
             });
+        }
+        if (!is_open && !is_info_dialog_open && this.state.selected !== null) {
+            this.setState({ selected: null });
         }
     }
 
     onChange = (e) => {
-        this.setState({
-            selected: e,
-        });
         if (this.props.is_info_dialog_open) {
             this.props.onBackButtonClick();
-        } else {
+        }
+        this.setState({
+            selected: e,
+        }, () => {
             const idx = this.labels.findIndex(n => n.innerText === e.label);
             this.scrollbar_ref.current.scrollTop(this.offset_top_list[idx]);
-        }
+        });
     }
 
     onScroll = (e) => {
@@ -140,7 +149,7 @@ class Dialog extends React.PureComponent {
                             <VerticalTabHeaders
                                 header_title={localize('Trade types')}
                                 items={list}
-                                selected={this.state.selected}
+                                selected={this.state.selected || this.contract_category_label}
                                 onChange={this.onChange}
                             />
                             <div className='vertical-tab__content'>

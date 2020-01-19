@@ -55,6 +55,7 @@ class ContractTypeWidget extends React.PureComponent {
             this.setState({
                 is_dialog_open     : false,
                 is_info_dialog_open: false,
+                item               : { value: this.props.value },
             });
         }
     };
@@ -71,7 +72,7 @@ class ContractTypeWidget extends React.PureComponent {
     };
 
     onBackButtonClick = () => {
-        this.setState({ is_info_dialog_open: false });
+        this.setState({ is_info_dialog_open: false, item: { value: this.props.value } });
     };
 
     onChangeInput = (list) => {

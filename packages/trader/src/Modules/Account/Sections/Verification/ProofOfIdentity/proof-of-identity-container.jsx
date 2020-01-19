@@ -69,7 +69,7 @@ class ProofOfIdentityContainer extends React.Component {
             this.props.removeNotificationMessage({ key: 'poi_expired' });
             this.props.removeNotificationByKey({ key: 'poi_expired' });
             if (this.state.needs_poa) this.props.addNotificationByKey('needs_poa');
-            this.props.onStateChange({ status: 'pending' });
+            if (this.props.onStateChange) this.props.onStateChange({ status: 'pending' });
         });
     };
 
@@ -88,6 +88,7 @@ class ProofOfIdentityContainer extends React.Component {
                 if (this.is_mounted) {
                     this.setState({ is_loading: false, has_poa, needs_poa, status, onfido_service_token, unwelcome });
                     this.props.refreshNotifications();
+                    if (this.props.onStateChange) this.props.onStateChange({ status });
                 }
             });
         });

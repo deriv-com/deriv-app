@@ -26,6 +26,7 @@ class MT5AdvancedRealAccountSignup extends Component {
             finished  : undefined,
             step      : 0,
             form_error: '',
+            is_loading: false,
             items     : [
                 {
                     header: {
@@ -38,7 +39,7 @@ class MT5AdvancedRealAccountSignup extends Component {
                         tax_residence            : '',
                         tax_identification_number: '',
                     },
-                    props: ['residence_list', 'is_fully_authenticated'],
+                    props: ['residence_list', 'is_fully_authenticated', 'is_loading'],
                 },
                 {
                     header: {
@@ -184,7 +185,15 @@ class MT5AdvancedRealAccountSignup extends Component {
 
     componentDidMount() {
         if (this.state_index === index_lookup.MT5PersonalDetailsForm) {
-            this.initiatePersonalDetails();
+            this.setState({
+                is_loading: true,
+            });
+            this.initiatePersonalDetails()
+                .then(() => {
+                    this.setState({
+                        is_loading: false,
+                    });
+                });
         }
     }
 
@@ -211,7 +220,7 @@ class MT5AdvancedRealAccountSignup extends Component {
         const BodyComponent = this.getCurrent('body');
         const passthrough   = (this.getCurrent('props') || []).reduce((arr, item) => {
             return Object.assign(arr, { [item]: this.props[item] });
-        }, {});
+        }, { is_loading: this.state.is_loading });
         const height        = this.getCurrent('height') || 'auto';
         return (
             <div className='mt5-advanced-modal' id='real_mt5_advanced_account_opening'>

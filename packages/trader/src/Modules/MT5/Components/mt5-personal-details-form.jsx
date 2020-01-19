@@ -1,5 +1,4 @@
 import { Field, Formik }    from 'formik';
-import debounce             from 'lodash.debounce';
 import PropTypes            from 'prop-types';
 import React, { Component } from 'react';
 import {
@@ -90,8 +89,6 @@ class MT5PersonalDetailsForm extends Component {
         return errors;
     };
 
-    debouncedValidation = debounce(this.validatePersonalDetails, 300);
-
     submitForm = (values, actions, index, onSubmit) => {
         const { citizen: citizen_text, tax_residence: tax_residence_text, ...restOfValues } = values;
         const { citizen, tax_residence } = this.findDefaultValuesInResidenceList(
@@ -128,10 +125,11 @@ class MT5PersonalDetailsForm extends Component {
             onSubmit,
             residence_list,
             value,
+            is_loading,
         } = this.props;
 
         const onSubmitForm = (values, actions) => this.submitForm(values, actions, index, onSubmit);
-
+        if (is_loading) return <div>is LOADING</div>;
         return (
             <div id='real_mt5_personal_details' className='details-form mt5-details-form'>
                 <Formik
@@ -142,7 +140,7 @@ class MT5PersonalDetailsForm extends Component {
                     }}
                     enableReinitialize={true}
                     isInitialValid={({ initialValues }) => this.validatePersonalDetails(initialValues)}
-                    validate={this.debouncedValidation}
+                    validate={this.validatePersonalDetails}
                     onSubmit={onSubmitForm}
                     ref={form}
                 >
@@ -155,7 +153,7 @@ class MT5PersonalDetailsForm extends Component {
                             values,
                             setFieldValue,
                         }) => (
-                            <form onSubmit={handleSubmit}>
+                            <form onSubmit={handleSubmit} autoComplete='off'>
                                 <div className='details-form'>
                                     <div className='details-form__elements-container'>
                                         <ThemedScrollbars
@@ -171,8 +169,8 @@ class MT5PersonalDetailsForm extends Component {
                                                                 {...field}
                                                                 id='real_mt5_citizenship'
                                                                 data-lpignore='true'
-                                                                autoComplete='none-country' // prevent chrome autocomplete
-                                                                type='text'
+                                                                autoComplete='off'
+                                                                type='search'
                                                                 label={localize('Citizenship')}
                                                                 error={touched.citizen && errors.citizen}
                                                                 disabled={values.citizen && is_fully_authenticated}
@@ -194,8 +192,8 @@ class MT5PersonalDetailsForm extends Component {
                                                             <Autocomplete
                                                                 id='real_mt5_tax_residence'
                                                                 data-lpignore='true'
-                                                                autoComplete='none-tax-residence' // prevent chrome autocomplete
-                                                                type='text'
+                                                                type='search'
+                                                                autoComplete='off'
                                                                 label={localize('Tax residence')}
                                                                 error={touched.tax_residence && errors.tax_residence}
                                                                 disabled={

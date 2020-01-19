@@ -105,7 +105,7 @@ class MT5Dashboard extends React.Component {
                                 {is_loading && <LoadingMT5RealAccountDisplay />}
                                 {!is_loading &&
                                 <>
-                                    {!has_real_account && <MissingRealAccount onClick={beginRealSignupForMt5} />}
+                                    {!has_real_account && <MissingRealAccount onClickSignup={beginRealSignupForMt5} />}
                                     <MT5RealAccountDisplay
                                         current_list={this.props.current_list}
                                         account_status={this.props.account_status}

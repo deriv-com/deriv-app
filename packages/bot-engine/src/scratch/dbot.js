@@ -53,15 +53,15 @@ class DBot {
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), this.workspace);
             this.workspace.clearUndo();
 
-            const { saveload } = DBotStore.instance;
+            const { handleFileChange } = DBotStore.instance;
             const drop_zone    = document.body;
     
             window.addEventListener('resize', () => onWorkspaceResize());
             window.dispatchEvent(new Event('resize'));
             drop_zone.addEventListener('dragover', DBot.handleDragOver);
 
-            if (saveload) {
-                drop_zone.addEventListener('drop', saveload.handleFileChange);
+            if (handleFileChange) {
+                drop_zone.addEventListener('drop', handleFileChange);
             }
     
             // disable overflow

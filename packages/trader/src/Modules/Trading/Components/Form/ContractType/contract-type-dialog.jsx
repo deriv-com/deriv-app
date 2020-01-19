@@ -27,7 +27,7 @@ class Dialog extends React.PureComponent {
         this.scrollbar_ref   = React.createRef();
         this.labels_list     = [];
         this.offset_top_list = [];
-        this.contracts_list  = getContractsList(this.props.list, 'text');
+        this.contracts_list  = getContractsList(this.props.list);
     }
 
     componentDidUpdate() {
@@ -81,7 +81,7 @@ class Dialog extends React.PureComponent {
 
     onClickClearInput = () => {
         this.setState({ input_value: '' });
-        const filtered_list  = getFilteredList(this.props.list, this.contracts_list);
+        const filtered_list = getFilteredList(this.props.list, this.contracts_list);
         this.props.onChangeInput(filtered_list);
     }
 

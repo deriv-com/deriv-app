@@ -116,6 +116,7 @@ const MT5RealAccountDisplay = ({
                 has_mt5_account={has_mt5_account}
                 icon={() => (<Icon icon='IcMt5SyntheticIndices' size={64} />)}
                 title={localize('Synthetic Indices')}
+                is_disabled={!has_real_account}
                 type={{
                     category: 'real',
                     type    : 'synthetic_indices',

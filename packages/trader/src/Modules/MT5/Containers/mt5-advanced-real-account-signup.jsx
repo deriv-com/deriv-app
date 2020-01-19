@@ -219,6 +219,7 @@ class MT5AdvancedRealAccountSignup extends Component {
 
     render() {
         const BodyComponent = this.getCurrent('body');
+        const form_value    = this.getCurrent('form_value');
         const passthrough   = (this.getCurrent('props') || []).reduce((arr, item) => {
             return Object.assign(arr, { [item]: this.props[item] });
         }, { is_loading: this.state.is_loading });
@@ -233,10 +234,11 @@ class MT5AdvancedRealAccountSignup extends Component {
                 </div>
                 <div className='mt5-advanced-modal__body'>
                     <BodyComponent
-                        value={this.getCurrent('form_value')}
+                        value={form_value}
                         index={this.state_index}
                         onSubmit={this.updateValue}
                         height={height}
+                        is_loading={this.state.is_loading}
                         onCancel={this.prevStep}
                         onSave={this.saveFormData}
                         {...passthrough}

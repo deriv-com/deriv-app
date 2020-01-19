@@ -5,6 +5,7 @@ import {
     ThemedScrollbars,
     Autocomplete,
     Input,
+    Loading,
     FormSubmitButton }      from '@deriv/components';
 import {
     Localize,
@@ -125,11 +126,10 @@ class MT5PersonalDetailsForm extends Component {
             onSubmit,
             residence_list,
             value,
-            is_loading,
         } = this.props;
 
         const onSubmitForm = (values, actions) => this.submitForm(values, actions, index, onSubmit);
-        if (is_loading) return <div>is LOADING</div>;
+        if (residence_list.length === 0) return <Loading is_fullscreen={false} />;
         return (
             <div id='real_mt5_personal_details' className='details-form mt5-details-form'>
                 <Formik

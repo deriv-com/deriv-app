@@ -107,7 +107,7 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
     </div>
 );
 
-const popover_zindex = config.popover_zindex.toolbar;
+const popover_zindex = Number(config.popover_zindex.toolbar);
 
 const WorkspaceGroup = ({
     has_redo_stack,

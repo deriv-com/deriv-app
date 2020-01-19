@@ -337,6 +337,12 @@ export default class RunPanelStore {
     }
 
     @action.bound
+    onMount() {
+        const { journal } = this.root_store;
+        observer.register('ui.log.success', journal.onLogSuccess);
+    }
+
+    @action.bound
     onUnmount() {
         RunPanelStore.unregisterBotListeners();
         this.disposeIsSocketOpenedListener();

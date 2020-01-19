@@ -112,6 +112,10 @@ const drawerFooter = ({
 };
 
 class RunPanel extends React.PureComponent {
+    componentDidMount() {
+        this.props.onMount();
+    }
+
     componentWillUnmount() {
         this.props.onUnmount();
     }
@@ -144,6 +148,7 @@ RunPanel.propTypes = {
     is_stop_button_visible : PropTypes.bool,
     onCancelButtonClick    : PropTypes.func,
     onClearStatClick       : PropTypes.func,
+    onMount                : PropTypes.func,
     onOkButtonClick        : PropTypes.func,
     onRunButtonClick       : PropTypes.func,
     onStopButtonClick      : PropTypes.func,
@@ -162,6 +167,7 @@ export default connect(({ run_panel }) => ({
     is_stop_button_visible : run_panel.is_stop_button_visible,
     onCancelButtonClick    : run_panel.onCancelButtonClick,
     onClearStatClick       : run_panel.onClearStatClick,
+    onMount                : run_panel.onMount,
     onOkButtonClick        : run_panel.onOkButtonClick,
     onRunButtonClick       : run_panel.onRunButtonClick,
     onStopButtonClick      : run_panel.onStopButtonClick,

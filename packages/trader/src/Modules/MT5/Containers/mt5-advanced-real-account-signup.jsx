@@ -1,6 +1,7 @@
 import PropTypes                   from 'prop-types';
 import React, { Component }        from 'react';
 import { FormProgress }            from '@deriv/components';
+import { getPropertyValue }        from '@deriv/shared/utils/object';
 import { localize }                from '@deriv/translations';
 import { connect }                 from 'Stores/connect';
 import { WS }                      from 'Services/ws-methods';
@@ -173,8 +174,8 @@ class MT5AdvancedRealAccountSignup extends Component {
     };
 
     transform = (value) => {
-        const result = this.props.residence_list.filter(item => item.value === value);
-        return result[0].text || value;
+        const [result] = this.props.residence_list.filter(item => item.value === value);
+        return getPropertyValue(result, ['text']) || value;
     };
 
     goNext = () => {

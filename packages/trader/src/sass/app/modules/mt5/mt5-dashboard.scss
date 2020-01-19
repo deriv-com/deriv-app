@@ -432,8 +432,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
-    height: 26rem;
+    justify-content: flex-start;
+    height: 11em;
+    margin: 12.7em 0 0;
 
     &__heading {
         @include typeface(--title-left-bold-black);
@@ -442,6 +443,15 @@
     &__description {
         @include typeface(--paragraph-center-normal-black);
         color: var(--text-prominent);
+        margin: 0.6em 0 0;
+    }
+    &__btn-area {
+        margin: 3.2em 0 0;
+
+        .btn--primary {
+            width: 90px!important;
+            height: 40px!important;
+        }
     }
 }
 
@@ -608,7 +618,7 @@
             margin-top: 0;
         }
     }
-    p, li {
+    p:not(.dc-field-error), li {
         @include typeface(--paragraph-left-normal-black);
         color: var(--text-prominent);
         margin: 0 0 1em;

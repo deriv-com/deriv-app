@@ -1,5 +1,5 @@
-import { Formik }            from 'formik';
-import PropTypes             from 'prop-types';
+import { Field, Formik } from 'formik';
+import PropTypes         from 'prop-types';
 import React, { Component }  from 'react';
 import {
     FormSubmitButton,
@@ -94,7 +94,8 @@ class MT5POA extends Component {
                 v => validLength(v, { min: 1, max: 35 }),
             ],
             address_state: [
-                v => !v || validLength(v, { min: 0, max: 35 }),
+                v => !!v,
+                v => !v || validLength(v, { min: 1, max: 35 }),
             ],
             address_postcode: [
                 v => !!v,
@@ -131,7 +132,6 @@ class MT5POA extends Component {
                 const error_index = rules.findIndex(v => !v(values[key]));
                 if (error_index !== -1) {
                     switch (key) {
-                        case 'address_state':
                         case 'address_line_2':
                         case 'document_file':
                             errors[key] = <Localize
@@ -312,6 +312,7 @@ class MT5POA extends Component {
                             setFieldTouched,
                             setFieldValue,
                             values,
+                            touched,
                         }) => {
 
                             return (
@@ -351,17 +352,23 @@ class MT5POA extends Component {
                                                             placeholder={localize('Town/City')}
                                                         />
                                                         <fieldset className='address-state__fieldset'>
-                                                            <Dropdown
-                                                                is_alignment_top={(window.innerHeight < 930)}
-                                                                id='address_state'
-                                                                className='address_state-dropdown'
-                                                                is_align_text_left
-                                                                list={states_list}
-                                                                name='address_state'
-                                                                value={values.address_state}
-                                                                onChange={handleChange}
-                                                                placeholder={localize('State/Province')}
-                                                            />
+                                                            <Field name='address_state'>
+                                                                {({field,}) => (
+                                                                    <Dropdown
+                                                                        is_alignment_top={window.innerHeight < 930}
+                                                                        id='address_state'
+                                                                        required
+                                                                        className='address_state-dropdown'
+                                                                        is_align_text_left
+                                                                        list={states_list}
+                                                                        error={touched[field.name] && errors[field.name]}
+                                                                        name='address_state'
+                                                                        value={values.address_state}
+                                                                        onChange={handleChange}
+                                                                        placeholder={localize('State/Province')}
+                                                                    />
+                                                                )}
+                                                            </Field>
                                                         </fieldset>
                                                         <InputField
                                                             name='address_postcode'

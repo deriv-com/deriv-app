@@ -1,9 +1,9 @@
 import { localize }                   from '@deriv/translations';
-import { removeLimitedBlocks }        from '../../utils/workspace';
-import BlockConversion                from '../backward-compatibility';
 import { saveAs }                     from '../shared';
+import BlockConversion                from '../backward-compatibility';
 import { config }                     from '../../constants/config';
 import { observer as globalObserver } from '../../utils/observer';
+import { removeLimitedBlocks }        from '../../utils/workspace';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 

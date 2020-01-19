@@ -1,6 +1,6 @@
 import { localize }         from '@deriv/translations';
-import DBotStore            from '../../../dbot-store';
 import { defineContract }   from '../../images';
+import DBotStore            from '../../../dbot-store';
 import {
     setBlockTextColor,
     runIrreversibleEvents } from '../../../utils';
@@ -120,7 +120,7 @@ Blockly.Blocks.trade_definition = {
 Blockly.JavaScript.trade_definition = block => {
     const { client } = DBotStore.instance;
 
-    if (!(client && client.is_logged_in)) {
+    if (!client || !client.is_logged_in) {
         throw new Error('Please login');
     }
 

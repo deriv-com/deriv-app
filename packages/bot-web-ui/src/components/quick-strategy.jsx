@@ -15,7 +15,7 @@ import {
     Form,
     Field,
 }                    from 'formik';
-import { config }   from '@deriv/bot-engine';
+import { config }    from '@deriv/bot-engine';
 import IconTradeType from './icon-trade-types.jsx';
 import { connect }   from '../stores/connect';
 import '../assets/sass/quick-strategy.scss';

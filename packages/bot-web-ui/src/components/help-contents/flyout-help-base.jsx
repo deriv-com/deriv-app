@@ -2,7 +2,7 @@ import { Button , Icon } from '@deriv/components';
 import React             from 'react';
 import PropTypes         from 'prop-types';
 import { localize }      from '@deriv/translations';
-import { help_content_type,
+import { help_content_types,
     help_content_config }    from '@deriv/bot-engine';
 
 import FlyoutVideo       from './flyout-video.jsx';
@@ -50,19 +50,19 @@ const HelpBase = ({
                             const { type, width, url } = component;
                             const { text } = help_string;
                             switch (type) {
-                                case help_content_type.TEXT:
+                                case help_content_types.TEXT:
                                     return (
                                         <FlyoutText key={`${block_type}_${index}`} text={text[text_count++]} />
                                     );
-                                case help_content_type.VIDEO:
+                                case help_content_types.VIDEO:
                                     return (
                                         <FlyoutVideo key={`${block_type}_${index}`} url={url} />
                                     );
-                                case help_content_type.IMAGE:
+                                case help_content_types.IMAGE:
                                     return (
                                         <FlyoutImage key={`${block_type}_${index}`} width={width} url={url} />
                                     );
-                                case help_content_type.BLOCK:
+                                case help_content_types.BLOCK:
                                 {
                                     return (
                                         <FlyoutBlock

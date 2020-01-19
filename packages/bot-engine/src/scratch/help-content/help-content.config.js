@@ -1,11 +1,11 @@
-export const help_content_type   = {
+export const help_content_types   = {
     TEXT : 'text',
     VIDEO: 'video',
     IMAGE: 'image',
     BLOCK: 'block',
 };
 
-const { TEXT, IMAGE, BLOCK }     = help_content_type;
+const { TEXT, IMAGE, BLOCK }     = help_content_types;
 
 export const help_content_config = {
 //= ================= Functions ==================

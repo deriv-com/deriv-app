@@ -16,11 +16,9 @@ class DBotStore extends DBotStoreInterface {
         super();
         this.is_mobile           = store.is_mobile || false;
         this.is_dark_mode_on     = store.is_dark_mode_on || false;
-        /* TODO : Instead of passing the whole store object create a store in ui and use computed to watch changes for each store.
-        we dont need to pass the whole store in or pass the props that is being used in engine and has been defind in interface like handleFileChange */
         this.client              = store.client;
-        this.flyout              = store.flyout || {};
-        this.toolbar             = store.toolbar || {};
+        this.flyout              = store.flyout;
+        this.toolbar             = store.toolbar;
         this.toggleStrategyModal = store.toggleStrategyModal;
         this.handleFileChange    = store.handleFileChange;
     }

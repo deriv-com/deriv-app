@@ -11,7 +11,7 @@ import Dialog         from './dialog.jsx';
 import Journal        from './journal.jsx';
 import Summary        from './summary.jsx';
 import TradeAnimation from './trade-animation.jsx';
-import Transactions   from './transactions.jsx';
+import Transactions   from './transactions/transactions.jsx';
 import { connect }    from '../stores/connect';
 import                     '../assets/sass/run-panel.scss';
 

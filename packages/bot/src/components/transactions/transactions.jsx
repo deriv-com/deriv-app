@@ -3,11 +3,11 @@ import { PropTypes }            from 'prop-types';
 import React                    from 'react';
 import { localize }             from '@deriv/translations';
 import Transaction              from './transaction.jsx';
-import { transaction_elements } from '../constants/transactions';
-import { connect }              from '../stores/connect';
-import                           '../assets/sass/transactions.scss';
+import { transaction_elements } from '../../constants/transactions';
+import { connect }              from '../../stores/connect';
+import                               '../../assets/sass/transactions.scss';
 
-class Transactions extends React.PureComponent {
+class Transactions extends React.Component {
     componentDidMount() {
         this.props.onMount();
     }

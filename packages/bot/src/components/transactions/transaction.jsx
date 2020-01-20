@@ -1,6 +1,5 @@
-import classNames               from 'classnames';
+import classNames              from 'classnames';
 import React                   from 'react';
-import ContentLoader           from 'react-content-loader';
 import PropTypes               from 'prop-types';
 import {
     ContractAudit,
@@ -12,14 +11,15 @@ import ContractUtils           from '@deriv/shared/utils/contract';
 import DateTimeUtils           from '@deriv/shared/utils/date-time';
 import PortfolioUtils          from '@deriv/shared/utils/portfolio';
 import PositionsUtils          from '@deriv/shared/utils/positions';
-import IconTradeType           from './icon-trade-types.jsx';
-import config                  from '../constants';
+import TransactionFieldLoader  from './transaction-field-loader.jsx';
+import IconTradeType           from '../icon-trade-types.jsx';
+import config                  from '../../constants';
 import {
     getDurationUnitMap,
     getBarrierLabelMap,
-    getDigitTypeMap }         from '../constants/strings-map';
-import { connect }             from '../stores/connect';
-import { getContractTypeName } from '../utils/contract'; // TODO: [use-shared-helpers]
+    getDigitTypeMap }          from '../../constants/strings-map';
+import { connect }             from '../../stores/connect';
+import { getContractTypeName } from '../../utils/contract'; // TODO: [use-shared-helpers]
 
 const TransactionIconWithText = ({
     icon,
@@ -39,20 +39,7 @@ const TransactionIconWithText = ({
     </React.Fragment>
 );
 
-const TransactionFieldLoader = () => (
-    <ContentLoader
-        className='transactions__loader'
-        height={10}
-        width={80}
-        speed={3}
-        primaryColor={'var(--general-section-1)'}
-        secondaryColor={'var(--general-hover)'}
-    >
-        <rect x='0' y='0' rx='0' ry='0' width='100' height='12' />
-    </ContentLoader>
-);
-
-const ContractAuditWrapper = ({ contract_info }) => {
+const getContractAuditComponent = (contract_info) => {
     const contract_end_time = ContractUtils.getEndTime(contract_info);
     const duration          = PortfolioUtils.getDurationTime(contract_info);
     const duration_unit     = PortfolioUtils.getDurationUnitText(
@@ -60,7 +47,7 @@ const ContractAuditWrapper = ({ contract_info }) => {
         getDurationUnitMap()
     );
     const exit_spot         = ContractUtils.isUserSold(contract_info) ? '-' : contract_info.exit_tick_display_value;
-    const is_profit         = (contract_info.profit >= 0);
+    const is_profit         = contract_info.profit > 0;
     const is_valid_to_sell  = ContractUtils.isValidToSell(contract_info);
     const IconExitTime      = <Icon icon='IcContractExitTime' color={is_profit ? 'green' : 'red'} size={24} />;
 
@@ -155,7 +142,7 @@ const Transaction = ({
         className='transactions__item-wrapper'
         classNameBubble='transactions__contract-audit'
         is_open={active_transaction_id === contract.transaction_ids.buy}
-        message={<ContractAuditWrapper contract_info={contract} />}
+        message={getContractAuditComponent(contract)}
         zIndex={config.popover_zindex.contract_audit}
     >
         <div

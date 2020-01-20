@@ -8,7 +8,6 @@ import PopoverMessageCheckbox from 'Modules/Trading/Components/Elements/popover-
 
 const TakeProfit = ({
     currency,
-    has_deal_cancellation,
     has_take_profit,
     is_single_currency,
     onChange,
@@ -17,8 +16,6 @@ const TakeProfit = ({
     toggleTakeProfitWarning,
     validation_errors,
 }) => {
-    const should_show_popover = has_deal_cancellation && should_show_take_profit_warning;
-
     const checkbox_tooltip_label = (
         <PopoverMessageCheckbox
             defaultChecked={!should_show_take_profit_warning}
@@ -42,7 +39,7 @@ const TakeProfit = ({
                 label={localize('Take profit')}
                 name='take_profit'
                 onChange={onChange}
-                checkbox_tooltip_label={should_show_popover ? checkbox_tooltip_label : undefined}
+                checkbox_tooltip_label={checkbox_tooltip_label}
                 tooltip_label={localize('Your contract is closed automatically when your profit is more than or equals to this amount.')}
                 value={take_profit}
             />
@@ -65,7 +62,6 @@ TakeProfit.propTypes = {
 export default connect(({ modules, client, ui }) => ({
     is_single_currency             : client.is_single_currency,
     currency                       : modules.trade.currency,
-    has_deal_cancellation          : modules.trade.has_deal_cancellation,
     has_take_profit                : modules.trade.has_take_profit,
     onChange                       : modules.trade.onChange,
     take_profit                    : modules.trade.take_profit,

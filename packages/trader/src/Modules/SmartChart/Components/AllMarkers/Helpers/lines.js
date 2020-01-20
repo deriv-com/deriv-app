@@ -36,7 +36,7 @@ export const draw_barrier_line_to_icon = ({
 }) => {
     const start = { left: exit.left, top: barrier };
 
-    draw_line({ ctx, start, end: exit });
+    draw_line({ ctx, start, end: exit, line_style: 'dashed' });
     Svg2Canvas.render({ ctx, icon, position: exit });
 };
 

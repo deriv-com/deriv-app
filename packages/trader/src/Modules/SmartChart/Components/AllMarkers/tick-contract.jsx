@@ -127,8 +127,9 @@ const TickContract = RawMarkerMaker(({
         ctx.strokeStyle = color_based_on_status;
         draw_barrier_line({ ctx, start: reset_time, exit, barrier });
     } else {
-        ctx.strokeStyle = color_based_on_status;
+        ctx.strokeStyle = foreground_color;
         draw_barrier_line({ ctx, start, exit: entry, barrier, line_style: 'dashed' });
+        ctx.strokeStyle = color_based_on_status;
         draw_barrier_line({ ctx, start: entry, exit, barrier, line_style: 'solid' });
     }
 
@@ -153,7 +154,7 @@ const TickContract = RawMarkerMaker(({
             position: entry,
             icon    : ICONS.ENTRY_SPOT.with_color_on_specific_paths({
                 0: { fill: background_color },
-                1: { fill: is_reset_barrier_expired ? foreground_color : color_based_on_status },
+                1: { fill: foreground_color },
             }),
         });
     }

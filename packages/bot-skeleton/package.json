@@ -1,4 +1,4 @@
-  {
+{
   "name": "@deriv/bot-skeleton",
   "version": "1.0.0",
   "description": "Visual automation for deriv.app",
@@ -96,4 +96,4 @@
     "react-render-html": "^0.6.0",
     "react-transition-group": "^4.0.1"
   }
-  }
+}

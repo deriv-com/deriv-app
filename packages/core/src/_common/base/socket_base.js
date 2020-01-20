@@ -250,15 +250,21 @@ const BinarySocketBase = (() => {
     const tncApproval = () =>
         deriv_api.send({ tnc_approval: '1' });
     
-    const contractUpdate = (contract_id, req) => deriv_api.send({
-        contract_update: 1,
-        contract_id,
-        ...req,
-    });
+    const contractUpdate = (contract_id, limit_order) =>
+        deriv_api.send({
+            contract_update: 1,
+            contract_id,
+            limit_order,
+        });
 
-    const cancelContract = (contract_id) => deriv_api.send({
-        cancel: contract_id,
-    });
+    const contractUpdateHistory = (contract_id) =>
+        deriv_api.send({
+            contract_update_history: 1,
+            contract_id,
+        });
+
+    const cancelContract = (contract_id) =>
+        deriv_api.send({ cancel: contract_id });
 
     const p2pOfferList = () =>
         deriv_api.send({ p2p_offer_list: 1 });
@@ -289,6 +295,7 @@ const BinarySocketBase = (() => {
         cashier,
         cancelContract,
         contractUpdate,
+        contractUpdateHistory,
         mt5NewAccount,
         mt5PasswordChange,
         newAccountVirtual,

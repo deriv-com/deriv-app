@@ -24,6 +24,7 @@ export default class UIStore extends BaseStore {
     @observable is_positions_drawer_on      = false;
     @observable is_reports_visible          = false;
     @observable is_cashier_visible          = false;
+    @observable is_history_tab_active       = false;
 
     // Take profit, Stop loss & Deal cancellation checkbox
     @observable should_show_take_profit_warning       = true;
@@ -491,6 +492,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleDealCancellationWarning(state_change = !this.should_show_deal_cancellation_warning) {
         this.should_show_deal_cancellation_warning = state_change;
+    }
+
+    @action.bound
+    toggleHistoryTab(state_change = !this.is_history_tab_active) {
+        this.is_history_tab_active = state_change;
     }
 
     @action.bound

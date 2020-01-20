@@ -43,6 +43,7 @@ class ContractDrawer extends Component {
             onClickCancel,
             onClickSell,
             status,
+            toggleHistoryTab,
         } = this.props;
 
         const is_multiplier = isMultiplierContract(contract_type);
@@ -70,6 +71,7 @@ class ContractDrawer extends Component {
                     duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                     exit_spot={exit_spot}
                     has_result={!!(is_sold) || is_multiplier}
+                    toggleHistoryTab={toggleHistoryTab}
                 />
             </React.Fragment>
         );
@@ -129,6 +131,7 @@ class ContractDrawer extends Component {
 ContractDrawer.propTypes = {
     contract_info        : PropTypes.object,
     is_from_reports      : PropTypes.bool,
+    is_history_tab_active: PropTypes.bool,
     is_sell_requested    : PropTypes.bool,
     onClickCancel        : PropTypes.func,
     onClickContractUpdate: PropTypes.func,

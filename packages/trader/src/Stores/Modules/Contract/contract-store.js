@@ -128,26 +128,24 @@ export default class ContractStore {
     }
 
     @action.bound
-    onClickContractUpdate(update_limit_order = true) {
+    onClickContractUpdate() {
         const limit_order = getLimitOrder(this.contract_update);
-        const req = {
-            history: 1,
-            ...(update_limit_order ? { limit_order } : {}),
-        };
-        WS.contractUpdate(this.contract_id, req).then(response => {
+        WS.contractUpdate(this.contract_id, limit_order).then(response => {
             if (response.error) {
                 this.root_store.common.setServicesError({
                     type: response.msg_type,
                     ...response.error,
                 });
                 this.root_store.ui.toggleServicesErrorModal(true);
-            } else if (response.contract_update.history) {
-                runInAction(() => (
-                    this.root_store.modules
-                        .contract_replay
-                        .contract_store
-                        .contract_update_history = response.contract_update.history
-                ));
+            } else if (this.root_store.ui.is_history_tab_active) {
+                WS.contractUpdateHistory(this.contract_id).then(res => {
+                    runInAction(() => (
+                        this.root_store.modules
+                            .contract_replay
+                            .contract_store
+                            .contract_update_history = res.contract_update_history
+                    ));
+                });
             }
         });
     }

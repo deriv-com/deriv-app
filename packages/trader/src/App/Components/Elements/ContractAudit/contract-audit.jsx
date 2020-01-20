@@ -9,24 +9,27 @@ import ContractHistory from './contract-history.jsx';
 
 class ContractAudit extends React.Component {
     state = {
-        history: [],
+        is_history_tab_clicked : false,
+        contract_update_history: [],
     }
 
-    static getDerivedStateFromProps(props, state) {
-        if (!props.is_multiplier) return state;
-        if (props.contract_update_history && props.contract_update_history.length !== state.history.length) {
+    static getDerivedStateFromProps({ is_multiplier, contract_update_history }, state) {
+        if (!is_multiplier) return state;
+        if (contract_update_history && contract_update_history.length !== state.contract_update_history.length) {
             return {
-                history: props.contract_update_history,
+                contract_update_history,
             };
         }
         return state;
     }
 
     onTabItemClick = (tab_index) => {
-        if (tab_index && !this.state.history.length) {
-            WS.contractUpdate(this.props.contract_info.contract_id, { history: 1 }).then(response => {
+        this.props.toggleHistoryTab(tab_index);
+        if (tab_index && !this.state.contract_update_history.length && !this.state.is_history_tab_clicked) {
+            this.setState({ is_history_tab_clicked: true });
+            WS.contractUpdateHistory(this.props.contract_info.contract_id).then(response => {
                 this.setState({
-                    history: response.contract_update.history,
+                    contract_update_history: response.contract_update_history,
                 });
             });
         }
@@ -62,7 +65,7 @@ class ContractAudit extends React.Component {
                     <div label={localize('History')}>
                         <ContractHistory
                             currency={contract_info.currency}
-                            history={this.state.history}
+                            history={this.state.contract_update_history}
                         />
                     </div>
                 </Tabs>
@@ -83,6 +86,7 @@ ContractAudit.propTypes = {
     exit_spot              : PropTypes.string,
     has_result             : PropTypes.bool,
     is_multiplier          : PropTypes.bool,
+    toggleHistoryTab       : PropTypes.func,
 };
 
 export default ContractAudit;

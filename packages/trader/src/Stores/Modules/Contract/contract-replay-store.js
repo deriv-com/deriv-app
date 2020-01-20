@@ -85,6 +85,7 @@ export default class ContractReplayStore extends BaseStore {
         this.contract_info       = {};
         this.indicative_status   = null;
         this.prev_indicative     = 0;
+        this.root_store.ui.toggleHistoryTab(false);
         WS.removeOnReconnect();
     }
 

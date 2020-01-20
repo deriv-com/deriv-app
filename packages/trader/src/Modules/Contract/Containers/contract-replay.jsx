@@ -64,6 +64,7 @@ class ContractReplay extends React.Component {
             onClickSell,
             removeError,
             indicative_status,
+            toggleHistoryTab,
         } = this.props;
 
         const is_from_table_row = !ObjectUtils.isEmptyObject(location.state) ? location.state.from_table_row : false;
@@ -79,6 +80,7 @@ class ContractReplay extends React.Component {
                     onClickCancel={onClickCancel}
                     onClickSell={onClickSell}
                     status={indicative_status}
+                    toggleHistoryTab={toggleHistoryTab}
                 />
                 <React.Suspense fallback={<div />}>
                     <div className='replay-chart__container'>
@@ -168,6 +170,7 @@ export default withRouter(connect(
             is_dark_theme          : ui.is_dark_mode_on,
             has_service_error      : ui.is_services_error_visible,
             NotificationMessages   : ui.notification_messages_ui,
+            toggleHistoryTab       : ui.toggleHistoryTab,
         });
     }
 )(ContractReplay));

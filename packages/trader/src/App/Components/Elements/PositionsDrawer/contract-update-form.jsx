@@ -83,7 +83,7 @@ class ContractUpdateForm extends React.Component {
         };
 
         const onClick = () => {
-            onClickContractUpdate(this.props.contract_id);
+            onClickContractUpdate();
             this.props.toggleDialog();
         };
 

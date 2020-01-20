@@ -75,7 +75,7 @@ class RealAccountSignup extends Component {
                         <SignupErrorContent
                             message={this.props.state_value.error_message}
                             code={this.props.state_value.error_code}
-                            onClick={this.openPersonalDetails}
+                            onConfirm={this.openPersonalDetails}
                         />
                     ),
                 },

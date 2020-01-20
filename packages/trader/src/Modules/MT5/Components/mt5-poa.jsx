@@ -330,17 +330,17 @@ class MT5POA extends Component {
                                                 <div className='mt5-proof-of-address__field-area'>
                                                     <FormSubHeader
                                                         subtitle={localize('(All fields are required)')}
-                                                        title={localize('Financial information')}
+                                                        title={localize('Address information')}
                                                     />
                                                     <InputField
                                                         name='address_line_1'
                                                         required
-                                                        label={localize('First line of address*')}
+                                                        label={localize('First line of address')}
                                                         placeholder={localize('First line of address')}
                                                     />
                                                     <InputField
                                                         name='address_line_2'
-                                                        label={localize('Second line of address')}
+                                                        label={localize('Second line of address (optional)')}
                                                         optional
                                                         placeholder={localize('Second line of address')}
                                                     />
@@ -348,7 +348,7 @@ class MT5POA extends Component {
                                                         <InputField
                                                             name='address_city'
                                                             required
-                                                            label={localize('Town/City*')}
+                                                            label={localize('Town/City')}
                                                             placeholder={localize('Town/City')}
                                                         />
                                                         <fieldset className='address-state__fieldset'>
@@ -373,7 +373,7 @@ class MT5POA extends Component {
                                                         <InputField
                                                             name='address_postcode'
                                                             required
-                                                            label={localize('Postal/ZIP Code*')}
+                                                            label={localize('Postal/ZIP Code')}
                                                             placeholder={localize('Postal/ZIP Code')}
                                                         />
                                                     </div>

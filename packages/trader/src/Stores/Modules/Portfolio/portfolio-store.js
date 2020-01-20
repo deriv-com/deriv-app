@@ -213,7 +213,7 @@ export default class PortfolioStore extends BaseStore {
         );
         this.positions[i].exit_spot        = contract_response.exit_tick || contract_response.current_spot; // workaround if no exit_tick in proposal_open_contract, use latest spot
         this.positions[i].is_valid_to_sell = ContractUtils.isValidToSell(contract_response);
-        this.positions[i].result           = ContractUtils.ContractUtils.getEndTime(contract_response);
+        this.positions[i].result           = ContractUtils.getEndTime(contract_response);
         this.positions[i].profit_loss      = +contract_response.profit;
         this.positions[i].sell_time        =
             ContractUtils.getEndTime(contract_response) || contract_response.current_spot_time; // same as exit_spot, use latest spot time if no exit_tick_time

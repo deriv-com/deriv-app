@@ -2,12 +2,13 @@ import PropTypes from 'prop-types';
 import React     from 'react';
 
 const ContractAuditItem = ({
+    id,
     icon,
     label,
     value,
     value2,
 }) => (
-    <React.Fragment>
+    <div id={id} className='contract-audit__grid'>
         {icon &&
             <div className='contract-audit__icon'>
                 {icon}
@@ -28,11 +29,12 @@ const ContractAuditItem = ({
                 }
             </div>
         </div>
-    </React.Fragment>
+    </div>
 );
 
 ContractAuditItem.propTypes = {
     icon  : PropTypes.node,
+    id    : PropTypes.string,
     label : PropTypes.string,
     value : PropTypes.node,
     value2: PropTypes.node,

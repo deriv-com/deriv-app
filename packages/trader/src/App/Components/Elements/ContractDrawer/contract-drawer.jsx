@@ -10,7 +10,9 @@ import {
     Money }                    from '@deriv/components';
 import { localize, Localize }  from '@deriv/translations';
 import ContractUtils           from '@deriv/shared/utils/contract';
+import DateTimeUtils           from '@deriv/shared/utils/date-time';
 import PortfolioUtils          from '@deriv/shared/utils/portfolio';
+import PositionsUtils          from '@deriv/shared/utils/positions';
 import routes                  from 'Constants/routes';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
@@ -44,7 +46,6 @@ class ContractDrawer extends Component {
         } = this.props.contract_info;
         const {
             contract_info,
-            is_dark_theme,
             is_sell_requested,
             onClickSell,
         } = this.props;
@@ -52,10 +53,18 @@ class ContractDrawer extends Component {
         const getTick = () => {
             if (!contract_info.tick_count) return null;
             let current_tick = PortfolioUtils.getCurrentTick(contract_info);
-            current_tick = (current_tick > PortfolioUtils.getCurrentTick(contract_info)) ?
-                current_tick : PortfolioUtils.getCurrentTick(contract_info);
+            current_tick = (current_tick > PortfolioUtils.getCurrentTick(contract_info))
+                ? current_tick
+                : PortfolioUtils.getCurrentTick(contract_info);
             return current_tick;
         };
+
+        const duration          = PortfolioUtils.getDurationTime(contract_info);
+        const duration_unit     = PortfolioUtils.getDurationUnitText(PortfolioUtils.getDurationPeriod(contract_info));
+        const contract_end_time = ContractUtils.getEndTime(contract_info);
+        const is_profit         = (contract_info.profit >= 0);
+        const IconExitTime      = <Icon icon='IcContractExitTime' color={is_profit ? 'green' : 'red'} size={24} />;
+        const is_valid_to_sell  = ContractUtils.isValidToSell(contract_info);
 
         return (
             <React.Fragment>
@@ -130,7 +139,7 @@ class ContractDrawer extends Component {
                             </div>
                         </div>
                         <CSSTransition
-                            in={!!(ContractUtils.isValidToSell(contract_info))}
+                            in={!!is_valid_to_sell}
                             timeout={250}
                             classNames={{
                                 enter    : 'contract-card__sell-button--enter',
@@ -147,7 +156,7 @@ class ContractDrawer extends Component {
                                         'btn--sell', {
                                             'btn--loading': is_sell_requested,
                                         })}
-                                    is_disabled={!(ContractUtils.isValidToSell(contract_info)) || is_sell_requested}
+                                    is_disabled={!is_valid_to_sell || is_sell_requested}
                                     text={localize('Sell contract')}
                                     onClick={() => onClickSell(contract_info.contract_id)}
                                     secondary
@@ -156,18 +165,84 @@ class ContractDrawer extends Component {
                         </CSSTransition>
                     </ContractCardFooter>
                 </ContractCard>
-                <ContractAudit
-                    contract_info={contract_info}
-                    contract_end_time={ContractUtils.getEndTime(contract_info)}
-                    is_dark_theme={is_dark_theme}
-                    is_open={true}
-                    is_shade_visible={this.handleShade}
-                    duration={PortfolioUtils.getDurationTime(contract_info)}
-                    duration_unit={PortfolioUtils.getDurationUnitText(PortfolioUtils.getDurationPeriod(contract_info))}
-                    exit_spot={exit_spot}
-                    should_add_scrollbars={true}
-                    is_contract_sellable={ContractUtils.isValidToSell(contract_info)}
-                />
+
+                <ContractAudit should_add_scrollbars is_contract_sellable={is_valid_to_sell}>
+                    <ContractAudit.Item
+                        id='dt_id_label'
+                        icon={<Icon icon='IcContractId' size={24} />}
+                        label={localize('Reference ID')}
+                        value={localize('{{buy_value}} (Buy)', { buy_value: contract_info.transaction_ids.buy })}
+                        value2={contract_info.transaction_ids.sell
+                            ? localize('{{sell_value}} (Sell)', { sell_value: contract_info.transaction_ids.sell })
+                            : <ContractAudit.Loader />
+                        }
+                    />
+                    <ContractAudit.Item
+                        id='dt_duration_label'
+                        icon={<Icon icon='IcContractDuration' size={24} />}
+                        label={localize('Duration')}
+                        value={(contract_info.tick_count > 0)
+                            ? `${contract_info.tick_count} ${(contract_info.tick_count < 2) ? localize('tick') : localize('ticks')}`
+                            : `${duration} ${duration_unit}`}
+                    />
+                    <ContractAudit.Item
+                        id='dt_bt_label'
+                        icon={
+                            <Icon
+                                icon={PositionsUtils.isDigitType(contract_info.contract_type) ? 'IcContractTarget' : 'IcContractBarrier'}
+                                size={24}
+                            />
+                        }
+                        label={PositionsUtils.getBarrierLabel(contract_info)}
+                        value={contract_info.barrier
+                            ? PositionsUtils.getBarrierValue(contract_info)
+                            : <ContractAudit.Loader />
+                        }
+                    />
+                    <ContractAudit.Item
+                        id='dt_start_time_label'
+                        icon={<Icon icon='IcContractStartTime' size={24} />}
+                        label={localize('Start time')}
+                        value={contract_info.purchase_time
+                            ? DateTimeUtils.toGMTFormat(DateTimeUtils.epochToMoment(contract_info.purchase_time))
+                            : <ContractAudit.Loader />
+                        }
+                    />
+                    { !PositionsUtils.isDigitType(contract_info.contract_type) &&
+                        <ContractAudit.Item
+                            id='dt_entry_spot_label'
+                            icon={<Icon icon='IcContractEntrySpot' size={24} />}
+                            label={localize('Entry spot')}
+                            value={contract_info.entry_spot_display_value || <ContractAudit.Loader />}
+                            value2={contract_info.entry_tick_time
+                                ? DateTimeUtils.toGMTFormat(DateTimeUtils.epochToMoment(contract_info.entry_tick_time))
+                                : <ContractAudit.Loader />
+                            }
+                        />
+                    }
+                    { !isNaN(exit_spot) &&
+                        <ContractAudit.Item
+                            id='dt_exit_spot_label'
+                            icon={<Icon icon='IcContractExitSpot' size={24} />}
+                            label={localize('Exit spot')}
+                            value={exit_spot || <ContractAudit.Loader />}
+                            value2={contract_info.exit_tick_time
+                                ? DateTimeUtils.toGMTFormat(DateTimeUtils.epochToMoment(contract_info.exit_tick_time))
+                                : <ContractAudit.Loader />
+                            }
+                        />
+                    }
+                    <ContractAudit.Item
+                        id='dt_exit_time_label'
+                        icon={IconExitTime}
+                        label={localize('Exit Time')}
+                        value={
+                            contract_end_time
+                                ? DateTimeUtils.toGMTFormat(DateTimeUtils.epochToMoment(contract_end_time))
+                                : <ContractAudit.Loader />
+                        }
+                    />
+                </ContractAudit>
             </React.Fragment>
         );
     }

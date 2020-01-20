@@ -104,6 +104,8 @@ const getModifiedP2POrder = (response) => {
     modified_response.order_expiry_millis         = convertToMillis(response.expiry_time);
 
     // TODO: [p2p-replace-with-api] add payment method to order details once API has it
+    // modified_response.payment_method = map_payment_method[response.method] || response.method;
+    modified_response.payment_method = map_payment_method.bank_transfer;
 
     return modified_response;
 };
@@ -121,6 +123,10 @@ export const requestWS = async (request) => {
 
     const response = await ws.send(request);
 
+    return getModifiedResponse(response);
+};
+
+const getModifiedResponse = (response) => {
     let modified_response = response;
 
     if (response.p2p_offer_list) {
@@ -132,4 +138,10 @@ export const requestWS = async (request) => {
     }
 
     return modified_response;
+};
+
+export const subscribeWS = (request, cb) => {
+    ws.p2pSubscribe(request, (response) => {
+        cb(getModifiedResponse(response));
+    });
 };

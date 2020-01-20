@@ -17,7 +17,7 @@ const SummaryTile = (props) => (
         <Popover
             className='run-panel__info'
             classNameBubble='run-panel__info--bubble'
-            alignment='top'
+            alignment={ props.alignment }
             message={ props.tooltip }
             zIndex={ config.popover_zindex.run_panel_tooltips }
         >
@@ -50,32 +50,38 @@ const Summary = ({
                 <div className='summary__tiles'>
                     <SummaryTile
                         title={localize('Total stake')}
+                        alignment='top'
                         content={ Money({ amount: total_stake, currency }) }
                         tooltip={localize('Total stake since you last cleared your stats. Refreshing the page will also clear your stats.')}
                     />
                     <SummaryTile
                         title={localize('Total payout')}
+                        alignment='top'
                         content={ Money({ amount: total_payout, currency }) }
                         tooltip={localize('Total payout since you last cleared your stats. Refreshing the page will also clear your stats.')}
                     />
                     <SummaryTile
                         title={localize('No. of runs')}
+                        alignment='top'
                         content={number_of_runs}
                         tooltip={localize('The number of times your bot has run since you last cleared your stats. Each run includes the execution of all the root blocks. Refreshing the page will also clear your stats.')}
                     />
                     <SummaryTile
                         title={localize('Contracts lost')}
+                        alignment='bottom'
                         content={lost_contracts}
                         tooltip={localize('The number of contracts you have lost since you last cleared your stats. Refreshing the page will also clear your stats.')}
                     />
                     <SummaryTile
                         title={localize('Contracts won')}
+                        alignment='bottom'
                         content={won_contracts}
                         tooltip={localize('The number of contracts you have won since you last cleared your stats. Refreshing the page will also clear your stats.')}
                     />
                     <SummaryTile
                         title={localize('Profit/Loss')}
                         content={Money({ amount: total_profit, currency, has_sign: true })}
+                        alignment='bottom'
                         contentClassName={classNames(
                             'summary__tile-content',
                             'summary__amount', {

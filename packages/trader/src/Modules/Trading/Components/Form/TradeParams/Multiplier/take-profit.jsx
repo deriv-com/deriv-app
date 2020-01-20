@@ -39,7 +39,7 @@ const TakeProfit = ({
                 label={localize('Take profit')}
                 name='take_profit'
                 onChange={onChange}
-                checkbox_tooltip_label={checkbox_tooltip_label}
+                checkbox_tooltip_label={should_show_take_profit_warning ? checkbox_tooltip_label : undefined}
                 tooltip_label={localize('Your contract is closed automatically when your profit is more than or equals to this amount.')}
                 value={take_profit}
             />

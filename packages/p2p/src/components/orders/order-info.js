@@ -1,4 +1,5 @@
 import { localize } from 'Components/i18next';
+import ServerTime   from 'Utils/server-time';
 
 export default class OrderInfo {
     order_id = '';
@@ -22,6 +23,15 @@ export default class OrderInfo {
             Object.keys(order_info).forEach(detail => {
                 this[detail] = order_info[detail];
             });
+            // API has a lag before it updates status 'pending' to 'timed-out'
+            // but checking the order's expiry_time < current server time is reliable
+            // so we should override the status to 'timed-out' in this case
+            if (this.is_pending) {
+                const distance = ServerTime.getDistanceToServerTime(this.order_expiry_millis);
+                if (distance < 0) {
+                    this.status = 'timed-out';
+                }
+            }
         }
     }
 

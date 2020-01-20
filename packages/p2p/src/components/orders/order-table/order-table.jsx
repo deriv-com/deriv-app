@@ -10,14 +10,10 @@ import OrderInfo              from '../order-info';
 
 const OrderTable = ({ orders, showDetails }) => {
     const [order_list, setOrderList] = React.useState([]);
-    const [has_no_orders, setNoOrders] = React.useState(false);
 
     React.useEffect(() => {
         const modified_list = orders.map(list => new OrderInfo(list));
         setOrderList(modified_list);
-        if (!modified_list.length) {
-            setNoOrders(true);
-        }
     }, [orders]);
 
     const Row = (row_props) => (
@@ -39,17 +35,17 @@ const OrderTable = ({ orders, showDetails }) => {
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                { has_no_orders ? (
-                    <div className='orders__empty'>
-                        {localize('No orders found')}
-                    </div>
-                ) : (
+                { order_list.length ? (
                     <InfiniteLoaderList
                         items={ order_list }
                         item_size={ 72 }
                         RenderComponent={ Row }
                         RowLoader={ BuySellRowLoader }
                     />
+                ) : (
+                    <div className='orders__empty'>
+                        {localize('No orders found')}
+                    </div>
                 ) }
 
             </Table.Body>

@@ -9,7 +9,7 @@ import { localize }          from '@deriv/translations';
 import {
     getIndicativePrice,
     isEnded,
-    getContractTypeName }    from '@deriv/bot-engine';
+    getContractTypeName }    from '@deriv/bot-skeleton';
 import ContractCardLoader    from './contract-card-loading.jsx';
 import ContractResultOverlay from './contract-result-overlay.jsx';
 import IconTradeType         from './icon-trade-types.jsx';

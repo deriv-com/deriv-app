@@ -15,7 +15,7 @@ import {
     Form,
     Field,
 }                         from 'formik';
-import { config }         from '@deriv/bot-engine';
+import { config }         from '@deriv/bot-skeleton';
 import IconTradeType      from './icon-trade-types.jsx';
 import { popover_zindex } from '../constants/z-indexes';
 import { connect }        from '../stores/connect';

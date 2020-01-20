@@ -4,7 +4,7 @@ import React                from 'react';
 import {
     ApiHelpers,
     DBot,
-    ServerTime }            from '@deriv/bot-engine';
+    ServerTime }            from '@deriv/bot-skeleton';
 import                           './public-path'; // Leave this here! OK boss!
 import FooterExtension      from './components/footer-extension.jsx';
 import MainContent          from './components/main-content.jsx';
@@ -29,7 +29,7 @@ class App extends React.Component {
     }
 
     setDBotEngineStores() {
-        // DO NOT pass the rootstore in, if you need a prop define it in dbot-engine-store ans pass it through.
+        // DO NOT pass the rootstore in, if you need a prop define it in dbot-skeleton-store ans pass it through.
         const { core : { client }, flyout, toolbar, quick_strategy, saveload } = this.root_store;
         const { handleFileChange } = saveload;
         const { toggleStrategyModal } = quick_strategy;

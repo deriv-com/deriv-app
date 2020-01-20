@@ -8,7 +8,7 @@ import { localize }  from '@deriv/translations';
 import { ApiHelpers,
     config,
     load,
-}                    from '@deriv/bot-engine';
+}                    from '@deriv/bot-skeleton';
 
 export default class QuickStrategyStore {
     constructor(root_store) {

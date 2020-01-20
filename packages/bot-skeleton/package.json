@@ -1,8 +1,8 @@
 {
-	"name": "@deriv/bot-engine",
+	"name": "@deriv/bot-skeleton",
 	"version": "1.0.0",
 	"description": "Visual automation for deriv.app",
-	"main": "dist/bot-engine.js",
+	"main": "dist/bot-skeleton.js",
 	"private": true,
 	"jest": {
 		"setupFilesAfterEnv": [

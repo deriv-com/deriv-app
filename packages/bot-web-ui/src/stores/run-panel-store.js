@@ -8,7 +8,7 @@ import {
     error_types,
     unrecoverable_errors,
     observer ,
-    isEnded }                          from '@deriv/bot-engine';
+    isEnded }                          from '@deriv/bot-skeleton';
 import { setMainContentWidth }         from '../utils/window-size';
 import { contract_stages }             from '../constants/contract-stage';
 import { switch_account_notification } from '../utils/bot-notifications';

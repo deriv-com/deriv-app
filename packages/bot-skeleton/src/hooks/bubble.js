@@ -1,6 +1,6 @@
 /**
  * Move the bubble to a location relative to the anchor's centre.
- * @deriv/bot-engine: Initialise anchorXY if there are no values.
+ * @deriv/bot-skeleton: Initialise anchorXY if there are no values.
  * @private
  */
 Blockly.Bubble.prototype.positionBubble_ = function() {

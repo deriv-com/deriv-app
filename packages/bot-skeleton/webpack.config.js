@@ -10,9 +10,9 @@ module.exports = function (env, argv) {
         entry    :  path.join(__dirname, 'src', 'app.js'),
         output: {
             path         :  path.resolve(__dirname, 'dist'),
-            filename     :  'bot-engine.js',
+            filename     :  'bot-skeleton.js',
             libraryExport:  'default',
-            library      :  '@deriv/bot-engine',
+            library      :  '@deriv/bot-skeleton',
             libraryTarget:  'umd',
         },
         devServer: {

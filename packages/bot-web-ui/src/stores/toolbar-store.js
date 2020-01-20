@@ -3,7 +3,7 @@ import {
     action }               from 'mobx';
 import { localize }        from '@deriv/translations';
 import { scrollWorkspace,
-    runGroupedEvents }     from '@deriv/bot-engine';
+    runGroupedEvents }     from '@deriv/bot-skeleton';
 import { tabs_title }      from '../constants/bot-contents';
 
 export default class ToolbarStore {

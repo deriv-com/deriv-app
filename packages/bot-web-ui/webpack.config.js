@@ -100,9 +100,9 @@ module.exports = function (env, argv) {
             new MiniCssExtractPlugin({ filename: 'bot-web-ui.main.css' }),
             new StyleLintPlugin({ fix: true }),
             new CopyWebpackPlugin([
-                { from: 'node_modules/@deriv/bot-engine/dist/scratch.min.js'},
-                { from: 'node_modules/@deriv/bot-engine/dist/xml' , to : 'xml'},
-                { from: 'node_modules/@deriv/bot-engine/dist//media' , to : 'media'},
+                { from: 'node_modules/@deriv/bot-skeleton/dist/scratch.min.js'},
+                { from: 'node_modules/@deriv/bot-skeleton/dist/xml' , to : 'xml'},
+                { from: 'node_modules/@deriv/bot-skeleton/dist//media' , to : 'media'},
             ]),
             new SpriteLoaderPlugin(),
         ],

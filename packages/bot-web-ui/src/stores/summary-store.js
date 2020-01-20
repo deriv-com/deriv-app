@@ -2,7 +2,7 @@ import {
     observable,
     action,
 }                   from 'mobx';
-import { observer } from '@deriv/bot-engine';
+import { observer } from '@deriv/bot-skeleton';
 
 export default class SummaryStore {
     @observable summary = {
@@ -21,7 +21,7 @@ export default class SummaryStore {
     @action.bound
     onContractStatusEvent(contract_status) {
         switch (contract_status.id) {
-            // TODO: Constants (coming from trade engine) for case labels below.
+            // TODO: Constants (coming from trade skeleton) for case labels below.
             case ('contract.purchase_received'): {
                 const { buy } = contract_status;
                 this.summary.total_stake += buy.buy_price;

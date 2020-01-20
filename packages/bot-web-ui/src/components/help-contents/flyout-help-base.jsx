@@ -3,7 +3,7 @@ import React             from 'react';
 import PropTypes         from 'prop-types';
 import { localize }      from '@deriv/translations';
 import { help_content_types,
-    help_content_config }    from '@deriv/bot-engine';
+    help_content_config }    from '@deriv/bot-skeleton';
 
 import FlyoutVideo       from './flyout-video.jsx';
 import FlyoutText        from './flyout-text.jsx';

@@ -7,7 +7,7 @@ import { localize }            from '@deriv/translations';
 import React                   from 'react';
 import ContentLoader           from 'react-content-loader';
 import PropTypes               from 'prop-types';
-import { getContractTypeName } from '@deriv/bot-engine';
+import { getContractTypeName } from '@deriv/bot-skeleton';
 import IconTradeType           from './icon-trade-types.jsx';
 import { connect }             from '../stores/connect';
 import { popover_zindex }      from '../constants/z-indexes';

@@ -75,6 +75,12 @@
     }
     &__accounts-display {
         margin-bottom: 2.4em;
+
+        .dc-tabs__list--top {
+            width: 40%;
+            position: relative;
+            left: 30%;
+        }
     }
     &__download-center {
         border: solid 1px var(--border-normal);

@@ -43,6 +43,15 @@
             line-height: 1.5;
             font-size: 2.4rem;
         }
+        &-method {
+            font-size: 1.2rem;
+            color: var(--status-info);
+            border: 1px solid var(--status-info);
+            width: fit-content;
+            border-radius: 1.6rem;
+            padding: 0.2rem 0.8rem;
+            margin-top: 0.8rem;
+        }
         &-timer {
             font-size: 1.2rem;
             line-height: 1.5;

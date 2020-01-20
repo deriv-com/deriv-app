@@ -116,9 +116,6 @@ const TickContract = RawMarkerMaker(({
     // barrier line
     ctx.fillStyle = background_color;
     if (is_reset_barrier_expired) {
-        ctx.strokeStyle = foreground_color;
-        draw_barrier_line({ ctx, start, exit: reset_time, barrier: entry_tick_top, line_style: 'dashed' });
-        
         draw_line({
             ctx,
             start     : { left: reset_time.left, top: entry_tick_top },
@@ -126,6 +123,8 @@ const TickContract = RawMarkerMaker(({
             line_style: 'dashed',
         });
 
+        ctx.strokeStyle = foreground_color;
+        draw_barrier_line({ ctx, start, exit: reset_time, barrier: entry_tick_top, line_style: 'dashed' });
         ctx.strokeStyle = color_based_on_status;
         draw_barrier_line({ ctx, start: reset_time, exit, barrier });
     } else {
@@ -170,13 +169,6 @@ const TickContract = RawMarkerMaker(({
             left: start.left,
             top : start.top + 5,
         });
-    }
-    // start-time marker
-    if (start.visible) {
-        // Draw dot at end of barrier
-        ctx.beginPath();
-        ctx.arc(start.left - 1 * scale, barrier.top - 9 * scale, 3 * scale, 0, Math.PI * 2);
-        ctx.fill();
     }
 
     // status marker

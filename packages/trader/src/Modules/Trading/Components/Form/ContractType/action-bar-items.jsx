@@ -36,3 +36,10 @@ const SearchInput = ({
 };
 
 export const MemoizedSearchInput = React.memo(SearchInput);
+
+export const NoResultsFound = ({ text }) => (
+    <div className='no-results-found'>
+        <h2 className='no-results-found__title'>{localize('No results for "{{text}}"', { text })}</h2>
+        <p className='no-results-found__subtitle'>{localize('Try checking your spelling or use a different term')}</p>
+    </div>
+);

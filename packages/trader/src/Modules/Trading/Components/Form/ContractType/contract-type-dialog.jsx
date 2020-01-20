@@ -8,7 +8,8 @@ import {
 import { localize }           from '@deriv/translations';
 import {
     ContractTypeInfoHeader,
-    MemoizedSearchInput }     from './action-bar-items.jsx';
+    MemoizedSearchInput,
+    NoResultsFound }          from './action-bar-items.jsx';
 import MobileDialog           from '../../Elements/mobile-dialog.jsx';
 import {
     getContractCategoryLabel,
@@ -19,9 +20,10 @@ class Dialog extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            selected   : this.contract_category_label,
-            value      : this.props.item.value,
-            input_value: '',
+            is_filtered_list_empty: false,
+            selected              : this.contract_category_label,
+            value                 : this.props.item.value,
+            input_value           : '',
         };
         this.dialog_ref      = React.createRef();
         this.scrollbar_ref   = React.createRef();
@@ -79,19 +81,29 @@ class Dialog extends React.PureComponent {
     }
 
     onChangeInput = (e) => {
-        this.scrollbar_ref.current.scrollTop(0);
         this.setState({
             input_value: e.target.value,
         });
         const filtered_items = this.contracts_list.filter(l => l.indexOf(e.target.value.toLowerCase()) !== -1);
-        const filtered_list  = getFilteredList(this.props.list, filtered_items);
-        this.props.onChangeInput(filtered_list);
+        this.filterList(filtered_items);
     }
 
     onClickClearInput = () => {
-        this.setState({ input_value: '' });
-        const filtered_list = getFilteredList(this.props.list, this.contracts_list);
-        this.props.onChangeInput(filtered_list);
+        this.setState({
+            input_value           : '',
+            is_filtered_list_empty: false,
+        });
+        this.filterList(this.contracts_list);
+    }
+
+    filterList = (filtered_items) => {
+        this.scrollbar_ref.current.scrollTop(0);
+        const filtered_list = getFilteredList(this.props.list, filtered_items);
+        this.setState({
+            is_filtered_list_empty: !filtered_list.length,
+        }, () => {
+            this.props.onChangeInput(filtered_list);
+        });
     }
 
     get labels() {
@@ -157,6 +169,9 @@ class Dialog extends React.PureComponent {
                                     {action_bar_items}
                                 </div>
                                 <div className='vertical-tab__content-container'>
+                                    {this.state.is_filtered_list_empty &&
+                                        <NoResultsFound text={this.state.input_value} />
+                                    }
                                     {!is_info_dialog_open ?
                                         <ThemedScrollbars
                                             list_ref={this.scrollbar_ref}

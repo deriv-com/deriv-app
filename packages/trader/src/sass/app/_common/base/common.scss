@@ -155,3 +155,19 @@ html {
     height: 100%;
     overflow: hidden;
 }
+
+/** @define no-results-found */
+.no-results-found {
+    padding: 1.6rem;
+    text-align: center;
+
+    &__title, &__subtitle {
+        line-height: 1.5;
+    }
+    &__title {
+        font-size: 1.4rem;
+    }
+    &__subtitle {
+        font-size: 1.2rem;
+    }
+}

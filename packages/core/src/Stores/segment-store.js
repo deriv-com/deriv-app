@@ -1,5 +1,5 @@
 import { action }       from 'mobx';
-import { getLanguage }  from 'deriv-translations';
+import { getLanguage }  from '@deriv/translations';
 import BinarySocket     from '_common/base/socket_base';
 import { isLoginPages } from '_common/base/login';
 import BaseStore        from './base-store';

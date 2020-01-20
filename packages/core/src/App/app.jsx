@@ -3,7 +3,9 @@ import React                        from 'react';
 import ReactDOM                     from 'react-dom';
 import { Prompt }                   from 'react-router';
 import { BrowserRouter as Router }  from 'react-router-dom';
-import { initializeTranslations }   from 'deriv-translations';
+// Initialize i18n by importing it here
+// eslint-disable-next-line no-unused-vars
+import { initializeTranslations }   from '@deriv/translations';
 import Client                       from '_common/base/client_base';
 import WS                           from 'Services/ws-methods';
 import { MobxProvider }             from 'Stores/connect';

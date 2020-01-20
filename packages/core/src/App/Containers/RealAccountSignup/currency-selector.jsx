@@ -1,12 +1,12 @@
 import classNames           from 'classnames';
 import {
     Icon,
-    ThemedScrollbars }      from 'deriv-components';
+    ThemedScrollbars }      from '@deriv/components';
 import PropTypes            from 'prop-types';
 import React                from 'react';
 import { Field, Formik }    from 'formik';
 import { connect }          from 'Stores/connect';
-import { localize }         from 'deriv-translations';
+import { localize }         from '@deriv/translations';
 import FormSubmitButton     from './form-submit-button.jsx';
 import 'Sass/currency-select-radio.scss';
 

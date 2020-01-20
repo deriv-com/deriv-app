@@ -2,8 +2,8 @@ import classNames             from 'classnames';
 import PropTypes              from 'prop-types';
 import React                  from 'react';
 import { withRouter }         from 'react-router';
-import { Button, Icon }       from 'deriv-components';
-import { localize, Localize } from 'deriv-translations';
+import { Button, Icon }       from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
 import { connect }            from 'Stores/connect';
 
 class AccountTransferReceipt extends React.Component {

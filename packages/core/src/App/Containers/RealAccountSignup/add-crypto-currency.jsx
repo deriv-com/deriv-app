@@ -2,7 +2,7 @@ import { Field, Formik }      from 'formik';
 import PropTypes              from 'prop-types';
 import React, { Component }   from 'react';
 import { connect }            from 'Stores/connect';
-import { localize, Localize } from 'deriv-translations';
+import { localize, Localize } from '@deriv/translations';
 import {
     Hr,
     RadioButtonGroup,

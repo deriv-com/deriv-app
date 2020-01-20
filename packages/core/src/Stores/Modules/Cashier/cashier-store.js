@@ -2,10 +2,10 @@ import {
     action,
     observable,
     toJS }                 from 'mobx';
-import CurrencyUtils       from 'deriv-shared/utils/currency';
-import ObjectUtils         from 'deriv-shared/utils/object';
+import CurrencyUtils       from '@deriv/shared/utils/currency';
+import ObjectUtils         from '@deriv/shared/utils/object';
 import BinarySocket        from '_common/base/socket_base';
-import { localize }        from 'deriv-translations';
+import { localize }        from '@deriv/translations';
 import { WS }              from 'Services';
 import BaseStore           from '../../base-store';
 import {
@@ -152,33 +152,26 @@ export default class CashierStore extends BaseStore {
             this.sortAccountsTransfer();
         }
 
-        // for non-virtual clients, show dp2p if:
-        // 1. they are an agent, or
-        // 2. there is at least one buy offer available to them, or
-        // 3. there is at least one sell offer available to them
-        if (!this.root_store.client.is_virtual && !this.is_dp2p_visible &&
-            ObjectUtils.isEmptyObject(this.p2p_offer_list)) {
+        // show dp2p if:
+        // 1. we have not already checked this before, and
+        // 2. client is not virtual, and
+        // 3. they are an agent, or
+        // 4. there is at least one offer available
+        if (!this.is_dp2p_visible && ObjectUtils.isEmptyObject(this.p2p_offer_list) &&
+            !this.root_store.client.is_virtual) {
 
             const is_agent = !(await WS.p2pAgentInfo()).error;
 
-            if (is_agent) {
+            if (is_agent || (await this.hasP2pOffer())) {
                 this.setIsDp2pVisible(true);
-            } else {
-                await this.checkHasDp2pOffer('buy');
-
-                if (!this.is_dp2p_visible) {
-                    await this.checkHasDp2pOffer('sell');
-                }
             }
         }
     }
 
     @action.bound
-    async checkHasDp2pOffer (offer_type) {
-        this.p2p_offer_list[offer_type] = await WS.p2pOfferList(offer_type);
-        if (ObjectUtils.getPropertyValue(this.p2p_offer_list[offer_type], ['p2p_offer_list', 'list']).length) {
-            this.setIsDp2pVisible(true);
-        }
+    async hasP2pOffer() {
+        this.p2p_offer_list = await WS.p2pOfferList();
+        return (ObjectUtils.getPropertyValue(this.p2p_offer_list, ['p2p_offer_list', 'list']) || []).length;
     }
 
     @action.bound

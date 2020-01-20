@@ -1,4 +1,4 @@
-import { Table }    from 'deriv-components';
+import { Table }    from '@deriv/components';
 import PropTypes    from 'prop-types';
 import React        from 'react';
 import { localize } from 'Components/i18next';
@@ -15,23 +15,22 @@ const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
     } = data;
 
     return (
-        <div style={ style }>
+        <div onClick={() => onOpenDetails(data)} style={style} className='orders__table-row'>
             <Table.Row>
                 <Table.Cell>
                     <span>
                         { localize('Sell') }<br />
-                        <a
-                            onClick={() => onOpenDetails(data)}
-                            className='link'
+                        <span
+                            className='orders__table-id'
                         >
                             { order_id }
-                        </a>
+                        </span>
                     </span>
                 </Table.Cell>
                 <Table.Cell>{ order_purchase_datetime }</Table.Cell>
                 <Table.Cell>{ display_status }</Table.Cell>
-                <Table.Cell>{ offer_currency }{ ' ' }{ display_offer_amount }</Table.Cell>
-                <Table.Cell>{ transaction_currency }{ ' ' }{ display_transaction_amount }</Table.Cell>
+                <Table.Cell>{ display_offer_amount }{ ' ' }{ offer_currency }</Table.Cell>
+                <Table.Cell>{ display_transaction_amount }{ ' ' }{ transaction_currency }</Table.Cell>
             </Table.Row>
         </div>
     );

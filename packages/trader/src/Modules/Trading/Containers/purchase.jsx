@@ -1,6 +1,6 @@
 import PropTypes                   from 'prop-types';
 import React                       from 'react';
-import ObjectUtils                 from 'deriv-shared/utils/object';
+import ObjectUtils                 from '@deriv/shared/utils/object';
 import PurchaseFieldset            from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
 import { measurePerformance }      from 'Services/performance-checker';

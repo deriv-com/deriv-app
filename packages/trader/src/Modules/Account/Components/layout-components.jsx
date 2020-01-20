@@ -1,6 +1,6 @@
 import classNames           from 'classnames';
 import React                from 'react';
-import { ThemedScrollbars } from 'deriv-components';
+import { ThemedScrollbars } from '@deriv/components';
 
 export const FormSubHeader = ({ title, subtitle }) => (
     <div className='account-form__header'>

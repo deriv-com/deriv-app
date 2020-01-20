@@ -1,4 +1,5 @@
-import ApiHelpers from '../../../../services/api/api-helpers';
+import { runIrreversibleEvents } from '../../../utils';
+import ApiHelpers                from '../../../../services/api/api-helpers';
 
 /* eslint-disable */
 Blockly.Blocks.trade_definition_market = {
@@ -33,23 +34,26 @@ Blockly.Blocks.trade_definition_market = {
         this.setDeletable(false);
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        const allowed_events   = ['BLOCK_CREATE', 'BLOCK_CHANGE', 'END_DRAG'];
+        const is_allowed_event = allowed_events.findIndex(event_name => event.type === Blockly.Events[event_name]) !== -1;
+
+        if (!this.workspace || this.isInFlyout || this.workspace.isDragging() || !is_allowed_event) {
             return;
         }
 
         this.enforceLimitations();
 
         const { active_symbols } = ApiHelpers.instance;
-        const market_field       = this.getField('MARKET_LIST');
-        const submarket_field    = this.getField('SUBMARKET_LIST');
-        const symbol_field       = this.getField('SYMBOL_LIST');
-        const market             = market_field.getValue();
-        const submarket          = submarket_field.getValue();
-        const symbol             = symbol_field.getValue();
+        const market_dropdown    = this.getField('MARKET_LIST');
+        const submarket_dropdown = this.getField('SUBMARKET_LIST');
+        const symbol_dropdown    = this.getField('SYMBOL_LIST');
+        const market             = market_dropdown.getValue();
+        const submarket          = submarket_dropdown.getValue();
+        const symbol             = symbol_dropdown.getValue();
 
         const populateMarketDropdown = () => {
             active_symbols.getMarketDropdownOptions().then(market_options => {
-                market_field.updateOptions(market_options, {
+                market_dropdown.updateOptions(market_options, {
                     default_value: market,
                     should_pretend_empty: true,
                     event_group: event.group,
@@ -59,10 +63,10 @@ Blockly.Blocks.trade_definition_market = {
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             populateMarketDropdown();
-        } else if (event.type === Blockly.Events.CHANGE && event.blockId === this.id) {
+        } else if (event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === this.id) {
             if (event.name === 'MARKET_LIST') {
                 active_symbols.getSubmarketDropdownOptions(market).then(submarket_options => {
-                    submarket_field.updateOptions(submarket_options, {
+                    submarket_dropdown.updateOptions(submarket_options, {
                         default_value: submarket,
                         should_pretend_empty: true,
                         event_group: event.group,
@@ -70,49 +74,40 @@ Blockly.Blocks.trade_definition_market = {
                 });
             } else if (event.name === 'SUBMARKET_LIST') {
                 active_symbols.getSymbolDropdownOptions(submarket).then(symbol_options => {
-                    symbol_field.updateOptions(symbol_options, {
+                    symbol_dropdown.updateOptions(symbol_options, {
                         default_value: symbol,
                         should_pretend_empty: true,
                         event_group: event.group,
                     });
                 });
             }
-        } else if (event.type === Blockly.Events.END_DRAG) {
-            const top_parent = this.getTopParent();
-
-            if (event.blockId === top_parent.id) {
-                const market_options = market_field.menuGenerator_; // eslint-disable-line
-
-                if (market_options[0][0] === '') {
-                    populateMarketDropdown();
-                }
+        } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.getRootBlock().id) {
+            if (market_dropdown.isEmpty() || submarket_dropdown.isEmpty() || symbol_dropdown.isEmpty()) {;
+                populateMarketDropdown();
             }
         }
     },
     enforceLimitations() {
-        if (!this.isDescendantOf('trade_definition')) {
-            Blockly.Events.disable();
-
-            this.unplug(false); // Unplug without reconnecting siblings
-
-            const top_blocks = this.workspace.getTopBlocks();
-            const trade_definition_block = top_blocks.find(block => block.type === 'trade_definition');
-
-            // Reconnect self to trade definition block.
-            if (trade_definition_block) {
-                const connection = trade_definition_block.getLastConnectionInStatement('TRADE_OPTIONS');
-                connection.connect(this.previousConnection);
-            } else {
-                this.dispose();
+        runIrreversibleEvents(() => {
+            if (!this.isDescendantOf('trade_definition')) {
+                this.unplug(false); // Unplug without reconnecting siblings
+    
+                const top_blocks = this.workspace.getTopBlocks();
+                const trade_definition_block = top_blocks.find(block => block.type === 'trade_definition');
+    
+                // Reconnect self to trade definition block.
+                if (trade_definition_block) {
+                    const connection = trade_definition_block.getLastConnectionInStatement('TRADE_OPTIONS');
+                    connection.connect(this.previousConnection);
+                } else {
+                    this.dispose();
+                }
             }
-
-            Blockly.Events.enable();
-        }
-
-        // These blocks cannot be disabled.
-        if (this.disabled) {
-            this.setDisabled(false);
-        }
+            // These blocks cannot be disabled.
+            else if (this.disabled) {
+                this.setDisabled(false);
+            }
+        });
     },
 };
 

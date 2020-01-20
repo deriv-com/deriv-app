@@ -1,10 +1,10 @@
 import React        from 'react';
 import PropTypes    from 'prop-types';
-import AgentContext from 'Components/context/agent-context';
+import Dp2pContext  from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 
 const OrderDetailsStatusBlock = ({ order_details }) => {
-    const { is_agent } = React.useContext(AgentContext);
+    const { is_agent } = React.useContext(Dp2pContext);
     const {
         is_buyer,
         is_buyer_cancelled,
@@ -13,7 +13,6 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
         is_expired,
         is_pending,
         is_refunded,
-        is_seller_confirmed,
     } = order_details;
 
     return (
@@ -72,7 +71,7 @@ const OrderDetailsStatusBlock = ({ order_details }) => {
             { is_expired &&
                 localize('Cancelled due to timeout')
             }
-            { (is_seller_confirmed || is_completed) &&
+            { is_completed &&
                 localize('Order complete')
             }
         </h2>

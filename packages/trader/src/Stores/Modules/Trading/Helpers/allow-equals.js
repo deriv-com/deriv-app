@@ -1,5 +1,5 @@
-import { localize } from 'deriv-translations';
-import ObjectUtils  from 'deriv-shared/utils/object';
+import { localize } from '@deriv/translations';
+import ObjectUtils  from '@deriv/shared/utils/object';
 import ContractType from './contract-type';
 
 export const hasCallPutEqual = (contract_type_list) => {

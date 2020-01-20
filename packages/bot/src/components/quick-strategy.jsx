@@ -8,16 +8,16 @@ import {
     Modal,
     Popover,
     Tabs,
-}                           from 'deriv-components';
+}                           from '@deriv/components';
 import {
     Formik,
     Form,
     Field,
 }                           from 'formik';
-import { localize }         from 'deriv-translations';
+import { localize }         from '@deriv/translations';
 import IconTradeType        from './icon-trade-types.jsx';
 import { connect }          from '../stores/connect';
-import config               from '../constants/index';
+import config               from '../constants';
 import '../assets/sass/quick-strategy.scss';
 
 const MarketOption = ({ symbol }) => (
@@ -34,6 +34,8 @@ const TradetypeOption = ({ type }) => (
         <span className='quick-strategy__symbol'>{type.name}</span>
     </div>
 );
+
+const popover_zindex = config.popover_zindex.quick_strategy;
 
 const QuickStrategyForm = ({
     active_index,
@@ -131,6 +133,7 @@ const QuickStrategyForm = ({
                                                 message={
                                                     localize('The trade length of your purchased contract.')
                                                 }
+                                                zIndex={popover_zindex}
                                             >
                                                 <Icon icon='IcInfoOutline' />
                                             </Popover>
@@ -155,6 +158,7 @@ const QuickStrategyForm = ({
                                                 message={
                                                     localize('The amount that you pay to enter a trade.')
                                                 }
+                                                zIndex={popover_zindex}
                                             >
                                                 <Icon icon='IcInfoOutline' />
                                             </Popover>
@@ -177,6 +181,7 @@ const QuickStrategyForm = ({
                                                 message={
                                                     localize('The bot will stop trading if your total loss exceeds this amount.')
                                                 }
+                                                zIndex='{popover_zindex}'
                                             >
                                                 <Icon icon='IcInfoOutline' />
                                             </Popover>
@@ -201,6 +206,7 @@ const QuickStrategyForm = ({
                                                 message={
                                                     getSizeDesc(active_index)
                                                 }
+                                                zIndex='{popover_zindex}'
                                             >
                                                 <Icon icon='IcInfoOutline' />
                                             </Popover>
@@ -221,6 +227,7 @@ const QuickStrategyForm = ({
                                             <Popover
                                                 alignment='bottom'
                                                 message={localize('The bot will stop trading if your total profit exceeds this amount.')}
+                                                zIndex='{popover_zindex}'
                                             >
                                                 <Icon icon='IcInfoOutline' />
                                             </Popover>
@@ -266,7 +273,7 @@ const QuickStrategy = ({
     const asset_dropdown_options  = {};
 
     Object.assign(asset_dropdown_options, market_dropdown);
-        
+
     if (asset_dropdown_options) {
         Object.keys(asset_dropdown_options).forEach(key => {
             const submarket = asset_dropdown_options[key];
@@ -290,7 +297,7 @@ const QuickStrategy = ({
             });
         });
     }
-        
+
     const duration_dropdown_options = Object.keys(duration_dropdown).map(key => {
         const duration = duration_dropdown[key];
         return { text: duration.display, value: duration.unit };
@@ -308,8 +315,7 @@ const QuickStrategy = ({
                 <div className='quick-strategy__tabs'>
                     <Tabs
                         active_index={active_index}
-                        onClickTabItem={setActiveTabIndex}
-                        top
+                        onTabItemClick={setActiveTabIndex}
                     >
                         {
                             Object.keys(strategies).map(key => {

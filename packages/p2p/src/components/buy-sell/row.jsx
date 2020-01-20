@@ -1,8 +1,8 @@
 import React             from 'react';
 import PropTypes         from 'prop-types';
 import ContentLoader     from 'react-content-loader';
-import { Table, Button } from 'deriv-components';
-import AgentContext      from 'Components/context/agent-context';
+import { Table, Button } from '@deriv/components';
+import Dp2pContext       from 'Components/context/dp2p-context';
 import { localize }      from 'Components/i18next';
 
 export const BuySellRowLoader = () => (
@@ -27,14 +27,13 @@ BuySellRowLoader.propTypes = {
 };
 
 export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) => {
-    const { is_agent } = React.useContext(AgentContext);
+    const { is_agent } = React.useContext(Dp2pContext);
 
     return (
         <div style={style}>
             <Table.Row>
                 <Table.Cell>{data.advertiser}</Table.Cell>
-                <Table.Cell>{data.display_offer_amount}{' '}{data.offer_currency}</Table.Cell>
-                <Table.Cell>{data.display_min_transaction}{' '}{data.offer_currency}</Table.Cell>
+                <Table.Cell>{data.display_min_transaction}-{data.display_max_transaction}{' '}{data.offer_currency}</Table.Cell>
                 <Table.Cell className='buy-sell__price'>{data.display_price_rate}{' '}{data.transaction_currency}</Table.Cell>
                 <Table.Cell>{data.payment_method}</Table.Cell>
                 {!is_agent ? (

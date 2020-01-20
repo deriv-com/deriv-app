@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 import { routes }   from 'Constants/index';
 
 const platform_config = [

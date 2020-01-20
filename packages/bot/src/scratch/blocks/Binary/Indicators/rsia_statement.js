@@ -1,4 +1,4 @@
-import { localize } from 'deriv-translations';
+import { localize } from '@deriv/translations';
 
 Blockly.Blocks.rsia_statement = {
     protected_statements : ['STATEMENT'],
@@ -51,6 +51,6 @@ Blockly.JavaScript.rsia_statement = block => {
     const input    = block.childValueToCode('input_list', 'INPUT_LIST');
     const period   = block.childValueToCode('period', 'PERIOD');
     const code     = `${var_name} = Bot.rsia(${input}, ${period});\n`;
-    
+
     return code;
 };

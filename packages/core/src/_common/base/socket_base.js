@@ -1,6 +1,6 @@
 const DerivAPIBasic    = require('@deriv/deriv-api/dist/DerivAPIBasic');
-const ObjectUtils      = require('deriv-shared/utils/object');
-const { getLanguage }  = require('deriv-translations');
+const ObjectUtils      = require('@deriv/shared/utils/object');
+const { getLanguage }  = require('@deriv/translations');
 const website_name     = require('App/Constants/app-config').website_name;
 const ClientBase       = require('./client_base');
 const SocketCache      = require('./socket_cache');
@@ -250,8 +250,8 @@ const BinarySocketBase = (() => {
     const tncApproval = () =>
         deriv_api.send({ tnc_approval: '1' });
 
-    const p2pOfferList = (type) =>
-        deriv_api.send({ p2p_offer_list: 1, type });
+    const p2pOfferList = () =>
+        deriv_api.send({ p2p_offer_list: 1 });
 
     const p2pAgentInfo = () =>
         deriv_api.send({ p2p_agent_info: 1 });

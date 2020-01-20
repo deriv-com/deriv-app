@@ -1,8 +1,8 @@
-import { Button, Popover, Modal } from 'deriv-components';
+import { Button, Popover, Modal } from '@deriv/components';
 import React                      from 'react';
 import DataTable                  from 'App/Components/Elements/DataTable';
 import UILoader                   from 'App/Components/Elements/ui-loader.jsx';
-import { localize, Localize }     from 'deriv-translations';
+import { localize, Localize }     from '@deriv/translations';
 import { connect }                from 'Stores/connect';
 
 const compareAccountsColumns = [

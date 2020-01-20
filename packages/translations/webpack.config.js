@@ -10,7 +10,7 @@ module.exports = {
         path         : path.resolve(__dirname, 'lib'),
         filename     : 'translations.main.js',
         libraryExport: 'default',
-        library      : 'deriv-translations',
+        library      : '@deriv/translations',
         libraryTarget: 'umd',
     },
     resolve: {

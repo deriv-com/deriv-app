@@ -5,60 +5,69 @@ import {
     Autocomplete,
     Dropdown,
     Loading,
+    Icon,
     Input,
     Button,
-    ThemedScrollbars }                from 'deriv-components';
+    ThemedScrollbars }                from '@deriv/components';
+import ObjectUtils                    from '@deriv/shared/utils/object';
+import CurrencyUtils                  from '@deriv/shared/utils/currency';
+import Dp2pContext                    from 'Components/context/dp2p-context';
 import FooterActions                  from 'Components/footer-actions/footer-actions.jsx';
 import { localize }                   from 'Components/i18next';
 import PageReturn                     from 'Components/page-return/page-return.jsx';
+import { countDecimalPlaces }         from 'Utils/string';
+import { requestWS }                  from 'Utils/websocket';
 
 class FormAds extends Component {
     state = {
-        initial_values: {
-            country        : '',
-            currency       : '',
-            type           : '',
-            asset          : '',
-            fix_price      : '',
-            amount         : '',
-            min_transaction: '',
-            max_transaction: '',
-            advertiser_note: '',
-        },
-        is_loading: true,
+        country      : '',
+        error_message: '',
+        is_loading   : true,
     };
 
-    componentDidMount() {
-        // TODO: [p2p-fix-api] call get offer detail api and populate state
-        const new_initial_values = {
-            country        : 'Indonesia',
-            currency       : 'IDR',
-            type           : 'buy',
-            asset          : 'USD',
-            fix_price      : 10000,
-            amount         : 50,
-            min_transaction: 1000,
-        };
-        this.setState({
-            initial_values: new_initial_values,
-        });
+    async componentDidMount() {
+        const residence_response = await requestWS({ residence_list: 1 });
+        const current_residence = residence_response.residence_list.find(
+            (residence) => residence.value === this.context.residence
+        );
+        const display_residence = ObjectUtils.getPropertyValue(current_residence, 'text') || '';
 
+        // TODO: [p2p-fix-api] call get offer detail api and populate state
+        // this is pending offer edit enabled in the API
         if (this.props.ad_id) {
             // call the api, get the file based on id
             // populate the state from the respnose
+            this.setState({
+                country: display_residence,
+            });
         } else {
-            this.setState({ is_loading: false });
+            this.setState({ is_loading: false, country: display_residence });
         }
     }
 
-    handleSubmit(formik_vars, { setSubmitting }) {
-        // TODO: [p2p-fix-api] call offer create api
-        // eslint-disable-next-line no-console
-        console.log(this.state);
-        // eslint-disable-next-line no-console
-        console.log(formik_vars);
-        setSubmitting(false);
-    }
+    handleSubmit = (values, { setSubmitting }) => {
+        this.setState({ error_message: '' });
+
+        requestWS({
+            p2p_offer_create : 1,
+            type             : values.type,
+            amount           : values.offer_amount,
+            local_currency   : values.transaction_currency,
+            max_amount       : values.max_transaction,
+            method           : values.payment_method,
+            min_amount       : values.min_transaction,
+            offer_description: values.advertiser_notes,
+            rate             : values.price_rate,
+        }).then((response) => {
+            // If we get an error we should let the user submit the form again else we just go back to the list of ads
+            if (response.error) {
+                this.setState({ error_message: response.error.message });
+                setSubmitting(false);
+            } else {
+                this.props.handleShowForm(false);
+            }
+        });
+    };
 
     render() {
         return (
@@ -69,7 +78,18 @@ class FormAds extends Component {
                 />
                 {this.state.is_loading ? <Loading is_fullscreen={false} /> : (
                     <Formik
-                        initialValues={{ ...this.state.initial_values }}
+                        initialValues={{
+                            advertiser_notes: '',
+                            country         : this.state.country,
+                            currency        : this.context.local_currency_config.currency,
+                            max_transaction : '',
+                            min_transaction : '',
+                            offer_amount    : '',
+                            offer_currency  : this.context.currency,
+                            payment_method  : 'bank_transfer',
+                            price_rate      : '',
+                            type            : 'buy',
+                        }}
                         onSubmit={this.handleSubmit}
                         validate={this.validateFormAds}
                     >
@@ -84,8 +104,9 @@ class FormAds extends Component {
                             <div className='p2p-my-ads__form'>
                                 <Form noValidate>
                                     <ThemedScrollbars
+                                        style={{ position: 'absolute', height: 'calc(100% - 2.4rem - 72px - 92px)', width: 'calc(100% - 4.8rem)' }}
                                         autoHide
-                                        style={{ height: 'calc(520px - 70px)' }} // height of container minus height of modal footer container
+                                        autoHeightMax={440}
                                     >
                                         <div className='p2p-my-ads__form-container'>
                                             <Field name='country'>
@@ -109,7 +130,7 @@ class FormAds extends Component {
                                                         {...field}
                                                         type='text'
                                                         className='p2p-my-ads__form-field'
-                                                        label={localize('Currency')}
+                                                        label={localize('Local currency')}
                                                         list_items={[]}
                                                         disabled
                                                         onItemSelection={
@@ -132,7 +153,7 @@ class FormAds extends Component {
                                                     />
                                                 )}
                                             </Field>
-                                            <Field name='asset'>
+                                            <Field name='offer_currency'>
                                                 {({ field }) => (
                                                     <Autocomplete
                                                         {...field}
@@ -140,56 +161,64 @@ class FormAds extends Component {
                                                         className='p2p-my-ads__form-field'
                                                         disabled
                                                         label={localize('Asset')}
+                                                        hint={values.type === 'buy' ? localize('The currency you are buying') : localize('The currency you are selling')}
                                                         list_items={[]}
                                                         required
                                                         onItemSelection={
-                                                            ({ value, text }) => setFieldValue('asset', value ? text : '', true)
+                                                            ({ value, text }) => setFieldValue('offer_currency', value ? text : '', true)
                                                         }
                                                     />
                                                 )}
                                             </Field>
                                         </div>
                                         <div className='p2p-my-ads__form-container'>
-                                            <Field name='fix_price'>
+                                            <Field name='price_rate'>
                                                 {({ field }) => (
                                                     <Input
                                                         {...field}
                                                         data-lpignore='true'
                                                         type='number'
-                                                        error={touched.fix_price && errors.fix_price}
+                                                        error={touched.price_rate && errors.price_rate}
                                                         label={localize('Fixed price')}
+                                                        hint={localize('Price per 1 {{currency}}', { currency: values.offer_currency })}
                                                         className='p2p-my-ads__form-field'
-                                                        trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{`${values.currency}/${values.asset}`}</span>}
+                                                        trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{`${values.currency}/${values.offer_currency}`}</span>}
                                                         required
                                                     />
                                                 )}
                                             </Field>
-                                            <Field name='amount'>
+                                            <Field name='offer_amount'>
                                                 {({ field }) => (
                                                     <Input
                                                         {...field}
                                                         data-lpignore='true'
                                                         type='number'
-                                                        error={touched.amount && errors.amount}
+                                                        error={touched.offer_amount && errors.offer_amount}
                                                         label={localize('Amount')}
+                                                        hint={localize('Total asset offered')}
                                                         className='p2p-my-ads__form-field'
-                                                        trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.asset}</span>}
+                                                        trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.offer_currency}</span>}
                                                         required
                                                     />
                                                 )}
                                             </Field>
                                         </div>
-                                        <div className='p2p-my-ads__form--container'>
+                                        <div className='p2p-my-ads__form-container'>
                                             <Field name='min_transaction'>
                                                 {({ field }) => (
                                                     <Input
                                                         {...field}
                                                         data-lpignore='true'
                                                         type='number'
-                                                        error={touched.min_transaction && errors.min_transaction}
-                                                        label={localize('Min. transaction')}
-                                                        className='p2p-my-ads__form-field p2p-my-ads__form-field--single'
-                                                        trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.currency}</span>}
+                                                        error={
+                                                            touched.min_transaction
+                                                            && touched.max_transaction
+                                                            && errors.min_transaction
+                                                        }
+                                                        label={localize('Min limit')}
+                                                        hint={localize('Minimum order from client')}
+                                                        className='p2p-my-ads__form-field'
+                                                        trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.offer_currency}</span>}
                                                         required
                                                     />
                                                 )}
@@ -198,26 +227,40 @@ class FormAds extends Component {
                                                 {({ field }) => (
                                                     <Input
                                                         {...field}
-                                                        data-lpignore='true'
                                                         type='number'
-                                                        error={touched.max_transaction && errors.max_transaction}
-                                                        label={localize('Max. transaction')}
-                                                        disabled
-                                                        value={(values.amount * values.fix_price)}
-                                                        className='p2p-my-ads__form-field p2p-my-ads__form-field--single'
-                                                        trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.currency}</span>}
+                                                        error={
+                                                            touched.max_transaction
+                                                            && touched.min_transaction
+                                                            && errors.max_transaction
+                                                        }
+                                                        label={localize('Max limit')}
+                                                        hint={localize('Maximum order from client')}
+                                                        className='p2p-my-ads__form-field'
+                                                        trailing_icon={<span className='p2p-my-ads__form-field--trailing'>{values.offer_currency}</span>}
                                                         required
                                                     />
                                                 )}
                                             </Field>
                                         </div>
-                                        <Field name='advertiser_note'>
+                                        <Field name='payment_method'>
+                                            {({ field }) => (
+                                                <Dropdown
+                                                    {...field}
+                                                    placeholder={localize('Payment method')}
+                                                    is_align_text_left
+                                                    className='p2p-my-ads__form-field p2p-my-ads__form-field--single'
+                                                    list={[{ text: 'Bank transfer', value: 'bank_transfer' }]}
+                                                    error={touched.payment_method && errors.payment_method}
+                                                />
+                                            )}
+                                        </Field>
+                                        <Field name='advertiser_notes'>
                                             {({ field }) => (
                                                 <Input
                                                     {...field}
                                                     data-lpignore='true'
                                                     type='textarea'
-                                                    error={touched.advertiser_note && errors.advertiser_note}
+                                                    error={touched.advertiser_notes && errors.advertiser_notes}
                                                     label={localize('Advertiser notes')}
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
                                                     placeholder='Your contact and payment info'
@@ -227,7 +270,13 @@ class FormAds extends Component {
                                         </Field>
                                     </ThemedScrollbars>
                                     <FooterActions has_border>
-                                        <Button className='p2p-my-ads__form-button' secondary large type='reset'>{localize('Cancel')}</Button>
+                                        {this.state.error_message &&
+                                        <div className='p2p-my-ads__form-error'>
+                                            <Icon icon='IcAlertDanger' />
+                                            <p>{this.state.error_message}</p>
+                                        </div>
+                                        }
+                                        <Button className='p2p-my-ads__form-button' secondary large onClick={ () => this.props.handleShowForm(false) }>{localize('Cancel')}</Button>
                                         <Button className='p2p-my-ads__form-button' primary large is_disabled={isSubmitting || !isValid}>{localize('Post ad')}</Button>
                                     </FooterActions>
                                 </Form>
@@ -240,29 +289,45 @@ class FormAds extends Component {
     }
 
     validateFormAds = (values) => {
-        const available_price = 0.8; // later get available amount from the api
+        // TODO: uncomment this when we have available_price
+        // const available_price = ;
         const validations = {
-            fix_price: [
+            advertiser_notes: [
                 v => !!v,
+                v => v.length < 400,
+                v => /^[\p{L}\p{Nd}\s'.,:;()@#/-]{1,500}$/u.exec(v) !== null,
             ],
-            amount: [
+            max_transaction: [
                 v => !!v,
-                v => v > available_price,
+                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(values.offer_currency),
+                v => v <= values.offer_amount,
+                v => v >= values.min_transaction,
             ],
             min_transaction: [
                 v => !!v,
+                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(values.offer_currency),
+                v => v <= values.offer_amount,
+                v => v <= values.max_transaction,
             ],
-            advertiser_note: [
+            offer_amount: [
                 v => !!v,
-                v => v.length < 400,
+                // TODO: uncomment this when we have available_price
+                // v => v > available_price,
+                // TODO: remove v > 0 check when we have available_price
+                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(values.offer_currency),
+            ],
+            price_rate: [
+                v => !!v,
+                v => v > 0 && countDecimalPlaces(v) <= this.context.local_currency_config.decimal_places,
             ],
         };
 
-        const mappedKey = {
-            fix_price      : localize('Fixed price'),
-            amount         : localize('Amount'),
-            min_transaction: localize('Min. transaction'),
-            advertiser_note: localize('Advertiser note'),
+        const mapped_key = {
+            advertiser_notes: localize('Advertiser notes'),
+            max_transaction : localize('Max limit'),
+            min_transaction : localize('Min limit'),
+            offer_amount    : localize('Amount'),
+            price_rate      : localize('Fixed price'),
         };
 
         const common_messages  = (field_name) => ([
@@ -271,15 +336,37 @@ class FormAds extends Component {
 
         const amount_messages  = (field_name) => ([
             localize('{{field_name}} is required', { field_name }),
-            localize('{{field_name}} is too low', { field_name }),
+            // TODO: uncomment this when we have available_price
+            // localize('Min is {{value}}', { value: available_price }),
+            localize('Enter a valid amount'),
+        ]);
+
+        const max_limit_messages  = (field_name) => ([
+            localize('{{field_name}} is required', { field_name }),
+            localize('Enter a valid amount'),
+            localize('{{field_name}} should not exceed Amount', { field_name }),
+            localize('{{field_name}} should not be below Min limit', { field_name }),
+        ]);
+
+        const min_limit_messages  = (field_name) => ([
+            localize('{{field_name}} is required', { field_name }),
+            localize('Enter a valid amount'),
+            localize('{{field_name}} should not exceed Amount', { field_name }),
+            localize('{{field_name}} should not exceed Max limit', { field_name }),
+        ]);
+
+        const price_rate_messages  = (field_name) => ([
+            localize('{{field_name}} is required', { field_name }),
+            localize('Enter a valid amount'),
         ]);
 
         const note_messages  = (field_name) => ([
             localize('{{field_name}} is required', { field_name }),
-            localize('{{field_name}} has exceed maximum length', { field_name }),
+            localize('{{field_name}} has exceeded maximum length', { field_name }),
+            localize('{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -.,\'#@():;', { field_name }),
         ]);
 
-        const errors    = {};
+        const errors = {};
 
         Object.entries(validations)
             .forEach(([key, rules]) => {
@@ -287,14 +374,23 @@ class FormAds extends Component {
 
                 if (error_index !== -1) {
                     switch (key) {
-                        case 'amount':
-                            errors[key] = amount_messages(mappedKey[key])[error_index];
+                        case 'offer_amount':
+                            errors[key] = amount_messages(mapped_key[key])[error_index];
                             break;
-                        case 'advertiser_note':
-                            errors[key] = note_messages(mappedKey[key])[error_index];
+                        case 'max_transaction':
+                            errors[key] = max_limit_messages(mapped_key[key])[error_index];
+                            break;
+                        case 'min_transaction':
+                            errors[key] = min_limit_messages(mapped_key[key])[error_index];
+                            break;
+                        case 'price_rate':
+                            errors[key] = price_rate_messages(mapped_key[key])[error_index];
+                            break;
+                        case 'advertiser_notes':
+                            errors[key] = note_messages(mapped_key[key])[error_index];
                             break;
                         default:
-                            errors[key] = common_messages(mappedKey[key])[error_index];
+                            errors[key] = common_messages(mapped_key[key])[error_index];
                     }
                 }
             });
@@ -307,5 +403,7 @@ FormAds.propTypes = {
     ad_id         : PropTypes.string,
     handleShowForm: PropTypes.func,
 };
+
+FormAds.contextType = Dp2pContext;
 
 export default FormAds;

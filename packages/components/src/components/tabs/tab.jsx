@@ -20,8 +20,6 @@ class Tab extends Component {
 
         const classes = classNames('dc-tabs__item', {
             'dc-tabs__active'      : is_active,
-            'dc-tabs__item--top'   : top,
-            'dc-tabs__item--bottom': bottom,
         });
         return (
             <li

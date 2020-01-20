@@ -165,7 +165,6 @@ export default class GoogleDriveStore {
     }
 
     createLoadFilePicker(mime_type, title) {
-        const { setButtonStatus } = this.root_store.saveload;
         return new Promise(resolve => {
             const loadPickerCallback = async data => {
                 if (data.action === google.picker.Action.PICKED) {
@@ -181,8 +180,6 @@ export default class GoogleDriveStore {
                     });
 
                     resolve({ xml_doc: response.body, file_name });
-                } else if (data.action === google.picker.Action.CANCEL) {
-                    setButtonStatus(0);
                 }
             };
 

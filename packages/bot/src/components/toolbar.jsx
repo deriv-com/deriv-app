@@ -255,7 +255,6 @@ const Toolbar = (props) => {
             }
             <SaveModal />
             <LoadModal />
-            {is_dialog_open &&
             <Dialog
                 title={localize('Are you sure?')}
                 is_open={is_dialog_open}
@@ -264,7 +263,6 @@ const Toolbar = (props) => {
             >
                 {localize('Any unsaved changes will be lost.')}
             </Dialog>
-            }
         </div>
     );
 };

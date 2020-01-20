@@ -1,6 +1,6 @@
 import classnames       from 'classnames';
 import PropTypes        from 'prop-types';
-import React            from 'react';
+import React, { useRef } from 'react';
 import {
     Button,
     Modal,
@@ -13,22 +13,31 @@ import { timeSince }    from '../utils/tools';
 import '../assets/sass/google-drive.scss';
 import '../assets/sass/load-modal.scss';
 
+const WorkspaceControl = ({
+    onZoomInOutClick,
+}) => (
+    <div className='recent__preview-controls' >
+        <Icon icon={'IcAddRounded'} className='recent__preview-icon' onClick={() => onZoomInOutClick(true)} />
+        <Icon icon={'IcMinusRounded'} className='recent__preview-icon' onClick={() => onZoomInOutClick(false)} />
+    </div>
+);
+
 const Recent = ({
     explaination_expand,
     getRecentFileIcon,
-    loadFile,
+    loadFileFromRecent,
     onExplainationToggle,
-    onZoomInOutClick,
     previewWorkspace,
     recent_files,
     selected_file,
+    ...props
 }) => (
     <div className='recent__container'>
         {
             recent_files.length ?
                 <>
                     <div className='recent__content'>
-                        <div className='recent__files'>
+                        <div className='recent__files load__content-with-footer'>
                             <div className='recent__title'>{localize('Recent')}</div>
                             <div className='recent__list'>
                                 {
@@ -43,10 +52,16 @@ const Recent = ({
                                                 key={file.id}
                                                 onClick={() => previewWorkspace(file)}
                                             >
-                                                <Icon icon={getRecentFileIcon(file.location)} />
                                                 <div className='recent__item-text'>
                                                     <span className='recent__item-title'>{file.name}</span>
                                                     <span className='recent__item-time'>{timeSince(file.timestamp)}</span>
+                                                </div>
+                                                <div className='recent__item-location'>
+                                                    <Icon
+                                                        icon={getRecentFileIcon(file.location)}
+                                                        className={classnames({ 'gd__icon--active': file.location === 'google drive' })}
+                                                    />
+                                                    <div className='recent__item-saved'>{file.location.replace(/\b\w/g, l => l.toUpperCase())}</div>
                                                 </div>
                                             </div>
                                         );
@@ -54,13 +69,10 @@ const Recent = ({
                                 }
                             </div>
                         </div>
-                        <div className='recent__preview' >
+                        <div className='recent__preview load__content-with-footer' >
                             <div className='recent__title'>{localize('Preview')}</div>
-                            <div id='scratch_load' className='recent__preview-workspace' >
-                                <div className='recent__preview-controls' >
-                                    <Icon icon={'IcAddRounded'} className='recent__preview-icon' onClick={() => onZoomInOutClick(true)} />
-                                    <Icon icon={'IcMinusRounded'} className='recent__preview-icon' onClick={() => onZoomInOutClick(false)} />
-                                </div>
+                            <div id='scratch_recent' className='recent__preview-workspace' >
+                                <WorkspaceControl {...props} />
                             </div>
                         </div>
                     </div>
@@ -68,7 +80,7 @@ const Recent = ({
                         <Button
                             className='recent__footer-open'
                             text={localize('Open')}
-                            onClick={loadFile}
+                            onClick={loadFileFromRecent}
                             has_effect
                             primary
                         />
@@ -97,12 +109,115 @@ const Recent = ({
     </div>
 );
 
-const Local = () => (
-    <p>Local</p>
-);
+const Local = ({
+    handleFileChange,
+    loaded_local_file,
+    loadFileFromLocal,
+    ...props
+}) => {
+    let file_input_ref = useRef(null);
+    return (
+        <div className='local__container'>
+            <div className={classnames(
+                'local__preview',
+                'load__content-with-footer',
+                { 'local__preview--hidden': !loaded_local_file }
+            )}
+            >
+                <div className='local__preview-title'>{localize('Preview')}</div>
+                <div id='scratch_local' className='local__preview-workspace' >
+                    <WorkspaceControl {...props} />
+                </div>
+            </div>
+            {
+                !loaded_local_file ?
+                    <>
+                        <input
+                            type='file'
+                            ref={el => file_input_ref = el}
+                            accept='.xml'
+                            style={{ display: 'none' }}
+                            onChange={handleFileChange}
+                        />
+                        <div className='local__dragndrop'>
+                            <Icon icon={'IcPc'} className='local__icon' size={116} />
+                            <span className='local__title'>{localize('Drag your file here')}</span>
+                            <span className='local__desc'>{localize('or, if you prefer...')}</span>
+                            <Button
+                                className='local__upload'
+                                text={localize('Select a file from your device')}
+                                onClick={() => file_input_ref.click()}
+                                has_effect
+                                primary
+                                medium
+                            />
+                        </div>
+                    </>
+                    :
+                    <div className='local__footer'>
+                        <Button
+                            className='local__footer-open'
+                            text={localize('Open')}
+                            onClick={loadFileFromLocal}
+                            has_effect
+                            primary
+                        />
+                    </div>
+            }
+        </div>
+    );
+};
 
-const GoogleDrive = () => (
-    <p>Google Drive</p>
+const GoogleDrive = ({
+    is_authorised,
+    onDriveConnect,
+    onDriveOpen,
+}) => (
+    <div className='gd__container'>
+        <Icon
+            icon={'IcGoogleDrive'}
+            className={classnames(
+                {
+                    'gd__icon--active'  : is_authorised,
+                    'gd__icon--disabled': !is_authorised,
+                },
+            )}
+            size={116}
+        />
+        <div className={classnames(
+            'gd__text',
+            { 'gd__text--disabled': !is_authorised }
+        )}
+        >{localize('Google Drive')}
+        </div>
+        {
+            is_authorised ?
+                <div className='gd__buttons'>
+                    <Button
+                        className='gd__disconnect'
+                        text={localize('Disconnect')}
+                        onClick={onDriveConnect}
+                        has_effect
+                        primary
+                    />
+                    <Button
+                        className='gd__open'
+                        text={localize('Open')}
+                        onClick={onDriveOpen}
+                        has_effect
+                        secondary
+                    />
+                </div>
+                :
+                <Button
+                    className='gd__connect'
+                    text={localize('Connect')}
+                    onClick={onDriveConnect}
+                    has_effect
+                    primary
+                />
+        }
+    </div>
 );
 
 const LoadModal = ({
@@ -128,15 +243,16 @@ const LoadModal = ({
                 active_index={active_index}
                 onTabItemClick={setActiveTabIndex}
                 top
+                fit_content
             >
                 <div label={localize('Recent')}>
                     <Recent {...props} />
                 </div>
                 <div label={localize('Local')} >
-                    <Local />
+                    <Local {...props} />
                 </div>
                 <div label={localize('Google Drive')}>
-                    <GoogleDrive />
+                    <GoogleDrive {...props} />
                 </div>
             </Tabs>
         </div>
@@ -147,8 +263,14 @@ LoadModal.propTypes = {
     active_index        : PropTypes.number,
     explaination_expand : PropTypes.bool,
     getRecentFileIcon   : PropTypes.func,
+    handleFileChange    : PropTypes.func,
+    is_authorised       : PropTypes.bool,
     is_load_modal_open  : PropTypes.bool,
-    loadFile            : PropTypes.func,
+    loaded_local_file   : PropTypes.object,
+    loadFileFromLocal   : PropTypes.func,
+    loadFileFromRecent  : PropTypes.func,
+    onDriveConnect      : PropTypes.func,
+    onDriveOpen         : PropTypes.func,
     onExplainationToggle: PropTypes.func,
     onMount             : PropTypes.func,
     onUnmount           : PropTypes.func,
@@ -160,13 +282,19 @@ LoadModal.propTypes = {
     toggleLoadModal     : PropTypes.func,
 };
 
-export default connect(({ load_modal }) => ({
+export default connect(({ load_modal, google_drive }) => ({
     active_index        : load_modal.active_index,
     explaination_expand : load_modal.explaination_expand,
     getRecentFileIcon   : load_modal.getRecentFileIcon,
+    handleFileChange    : load_modal.handleFileChange,
+    is_authorised       : google_drive.is_authorised,
     is_load_modal_open  : load_modal.is_load_modal_open,
-    loadFile            : load_modal.loadFile,
+    loadFileFromLocal   : load_modal.loadFileFromLocal,
+    loadFileFromRecent  : load_modal.loadFileFromRecent,
+    loaded_local_file   : load_modal.loaded_local_file,
     onExplainationToggle: load_modal.onExplainationToggle,
+    onDriveConnect      : load_modal.onDriveConnect,
+    onDriveOpen         : load_modal.onDriveOpen,
     onMount             : load_modal.onMount,
     onUnmount           : load_modal.onUnmount,
     onZoomInOutClick    : load_modal.onZoomInOutClick,

@@ -139,11 +139,9 @@ const Modal = ({
     width,
 }) => (
     <CSSTransition
-        appear
         in={is_open}
         timeout={250}
         classNames={{
-            appear   : 'dc-modal__container--enter',
             enter    : 'dc-modal__container--enter',
             enterDone: 'dc-modal__container--enter-done',
             exit     : 'dc-modal__container--exit',

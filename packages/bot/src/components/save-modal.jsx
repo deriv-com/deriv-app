@@ -136,7 +136,14 @@ const IconRadio = ({
                     icon &&
                     React.cloneElement(
                         icon,
-                        { className: classNames('save-type__icon', icon.props.className) },
+                        { className: classNames(
+                            'save-type__icon',
+                            {
+                                'save-type__icon--active'  : is_drive_radio && google_drive_connected,
+                                'save-type__icon--disabled': is_drive_radio && !google_drive_connected,
+                            },
+                            icon.props.className
+                        ) },
                     )
                 }
                 <p className={classNames(

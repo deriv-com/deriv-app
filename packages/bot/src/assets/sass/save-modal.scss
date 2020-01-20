@@ -102,4 +102,18 @@ div.radio-group {
         color: var(--brand-red-coral);
         width: 80px;
     }
+    &__icon {
+        &--active {
+            // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
+            --fill-color1: #ffcf45 !important;
+            --fill-color2: #1ca362 !important;
+            --fill-color3: #4686f5 !important;
+        }
+        &--disabled {
+            // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
+            --fill-color1: var(--text-disabled) !important;
+            --fill-color2: var(--text-disabled) !important;
+            --fill-color3: var(--text-disabled) !important;
+        }
+    }
 }

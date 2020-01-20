@@ -110,6 +110,7 @@ export const icons =
         'IcPauseOutline',
         'IcPause',
         'IcPaymentAgent',
+        'IcPc',
         'IcPhone',
         'IcPlayOutline',
         'IcPlay',

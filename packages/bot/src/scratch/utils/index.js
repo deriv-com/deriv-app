@@ -388,8 +388,13 @@ export const emptyTextValidator = (input) => {
     return !input || input === '\'\'';
 };
 
+/**
+ * Save workspace to localStorage
+ * @param {String} location // constants/save_types.js (unsaved, local, googledrive)
+ * @param {Blockly.Events} event // Blockly event object
+ */
 export const saveWorkspaceToRecent = (location, event = {}) => {
-    if (event.recordUndo === false) {
+    if(event.recordUndo === false) {
         return;
     }
     
@@ -403,6 +408,7 @@ export const saveWorkspaceToRecent = (location, event = {}) => {
     if (current_workspace_index >= 0) {
         const current_workspace = workspaces[current_workspace_index];
         current_workspace.xml = current_xml;
+        current_workspace.name = toolbar.file_name;
         current_workspace.timestamp = current_timestamp;
         current_workspace.location = location;
     } else {

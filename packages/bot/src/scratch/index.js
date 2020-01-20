@@ -5,6 +5,7 @@ import {
     hasAllRequiredBlocks,
     updateDisabledBlocks,
     saveWorkspaceToRecent,
+    getRecentFiles,
 }                                     from './utils';
 import { onWorkspaceResize }          from './utils/workspace';
 import config                         from '../constants';
@@ -26,11 +27,17 @@ class DBot {
     async initWorkspace() {
         try {
             const el_scratch_div  = document.getElementById('scratch_div');
-            const toolbox_xml     = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(r => r.text()); // eslint-disable-line
-            const main_xml        = await fetch(`${__webpack_public_path__}xml/main.xml`).then(r => r.text()); // eslint-disable-line
+            const has_recent_files = getRecentFiles();
+            let main_xml;
+            if (has_recent_files) {
+                main_xml = has_recent_files[0].xml;
+            } else {
+                main_xml = await fetch(`${__webpack_public_path__}xml/main.xml`).then(r => r.text());
+            }
+            const toolbox_xml     = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(r => r.text());
             this.workspace        = Blockly.inject(el_scratch_div, {
                 grid    : { spacing: 40, length: 11, colour: '#f3f3f3' },
-                media   : `${__webpack_public_path__}media/`, // eslint-disable-line
+                media   : `${__webpack_public_path__}media/`,
                 toolbox : toolbox_xml,
                 trashcan: true,
                 zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },

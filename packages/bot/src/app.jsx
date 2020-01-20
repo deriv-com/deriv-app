@@ -43,7 +43,7 @@ class App extends React.Component {
         return (
             <Provider {...this.root_store}>
                 <div className='bot'>
-                    {/* <NotificationMessages /> */}
+                    <NotificationMessages />
                     <Toolbar />
                     <MainContent />
                     <RunPanel />

@@ -29,7 +29,7 @@ const OrderDetailsTimerBlock = ({ order_details }) => {
         };
     }, []);
 
-    return (order_details.is_pending || order_details.is_buyer_confirmed || order_details.is_expired) ? (
+    return (order_details.is_pending || order_details.is_buyer_confirmed) ? (
         <div className='order-details__header-timer'>
             <p className='order-details__header-timer-text'>{localize('Time left')}</p>
             <p className='order-details__header-timer-counter'>

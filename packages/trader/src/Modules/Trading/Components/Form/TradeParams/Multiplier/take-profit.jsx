@@ -22,7 +22,7 @@ const TakeProfit = ({
     const checkbox_tooltip_label = (
         <PopoverMessageCheckbox
             defaultChecked={!should_show_take_profit_warning}
-            message={localize('You may update your take profit amount after deal cancellation has expired.')}
+            message={localize('If you purchase a contract with take profit and deal cancellation, you may update your take profit amount only after deal cancellation has expired.')}
             name='should_show_take_profit_warning'
             onChange={() => toggleTakeProfitWarning()}
         />

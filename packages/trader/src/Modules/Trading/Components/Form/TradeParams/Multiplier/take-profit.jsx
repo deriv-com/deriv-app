@@ -1,18 +1,33 @@
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import { localize }      from '@deriv/translations';
-import Fieldset          from 'App/Components/Form/fieldset.jsx';
-import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
-import { connect }       from 'Stores/connect';
+import PropTypes              from 'prop-types';
+import React                  from 'react';
+import { localize }           from '@deriv/translations';
+import Fieldset               from 'App/Components/Form/fieldset.jsx';
+import InputWithCheckbox      from 'App/Components/Form/InputField/input-with-checkbox.jsx';
+import { connect }            from 'Stores/connect';
+import PopoverMessageCheckbox from 'Modules/Trading/Components/Elements/popover-message-checkbox.jsx';
 
 const TakeProfit = ({
     currency,
+    has_deal_cancellation,
     has_take_profit,
     is_single_currency,
     onChange,
+    should_show_take_profit_warning,
     take_profit,
+    toggleTakeProfitWarning,
     validation_errors,
 }) => {
+    const should_show_popover = has_deal_cancellation && should_show_take_profit_warning;
+
+    const checkbox_tooltip_label = (
+        <PopoverMessageCheckbox
+            defaultChecked={!should_show_take_profit_warning}
+            message={localize('You may update your take profit amount after deal cancellation has expired.')}
+            name='should_show_take_profit_warning'
+            onChange={() => toggleTakeProfitWarning()}
+        />
+    );
+
     return (
         <Fieldset className='trade-container__fieldset'>
             <InputWithCheckbox
@@ -27,6 +42,7 @@ const TakeProfit = ({
                 label={localize('Take profit')}
                 name='take_profit'
                 onChange={onChange}
+                checkbox_tooltip_label={should_show_popover ? checkbox_tooltip_label : undefined}
                 tooltip_label={localize('Your contract is closed automatically when your profit is more than or equals to this amount.')}
                 value={take_profit}
             />
@@ -46,11 +62,14 @@ TakeProfit.propTypes = {
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules, client }) => ({
-    is_single_currency: client.is_single_currency,
-    currency          : modules.trade.currency,
-    has_take_profit   : modules.trade.has_take_profit,
-    onChange          : modules.trade.onChange,
-    take_profit       : modules.trade.take_profit,
-    validation_errors : modules.trade.validation_errors,
+export default connect(({ modules, client, ui }) => ({
+    is_single_currency             : client.is_single_currency,
+    currency                       : modules.trade.currency,
+    has_deal_cancellation          : modules.trade.has_deal_cancellation,
+    has_take_profit                : modules.trade.has_take_profit,
+    onChange                       : modules.trade.onChange,
+    take_profit                    : modules.trade.take_profit,
+    validation_errors              : modules.trade.validation_errors,
+    should_show_take_profit_warning: ui.should_show_take_profit_warning,
+    toggleTakeProfitWarning        : ui.toggleTakeProfitWarning,
 }))(TakeProfit);

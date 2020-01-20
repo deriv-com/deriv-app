@@ -25,7 +25,8 @@ export default class UIStore extends BaseStore {
     @observable is_reports_visible          = false;
     @observable is_cashier_visible          = false;
 
-    // Stop loss & Deal cancellation checkbox
+    // Take profit, Stop loss & Deal cancellation checkbox
+    @observable should_show_take_profit_warning       = true;
     @observable should_show_stop_loss_warning         = true;
     @observable should_show_deal_cancellation_warning = true;
 
@@ -133,6 +134,7 @@ export default class UIStore extends BaseStore {
             // 'is_purchase_confirm_on',
             // 'is_purchase_lock_on',
             'should_show_stop_loss_warning',
+            'should_show_take_profit_warning',
             'should_show_deal_cancellation_warning',
         ];
 
@@ -474,6 +476,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleSetResidenceModal(state_change = !this.is_set_residence_modal_visible) {
         this.is_set_residence_modal_visible = state_change;
+    }
+
+    @action.bound
+    toggleTakeProfitWarning(state_change = !this.should_show_take_profit_warning) {
+        this.should_show_take_profit_warning = state_change;
     }
 
     @action.bound

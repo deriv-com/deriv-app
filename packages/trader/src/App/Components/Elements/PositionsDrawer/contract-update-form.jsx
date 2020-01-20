@@ -37,7 +37,7 @@ class ContractUpdateForm extends React.Component {
         const is_take_profit_valid = (has_take_profit ? take_profit > 0 : isValid(contract_info_take_profit));
         const is_stop_loss_valid   = (has_stop_loss ? stop_loss > 0 : isValid(contract_info_stop_loss));
 
-        return (is_valid_to_cancel ? is_take_profit_valid : !!(is_take_profit_valid || is_stop_loss_valid));
+        return (is_valid_to_cancel ? false : !!(is_take_profit_valid || is_stop_loss_valid));
     }
     
     render() {
@@ -96,6 +96,22 @@ class ContractUpdateForm extends React.Component {
             || (has_take_profit && take_profit_error_messages && take_profit_error_messages.length)
         );
 
+        const take_profit_input = (
+            <InputWithCheckbox
+                classNameInlinePrefix='trade-container__currency'
+                currency={currency}
+                error_messages={has_take_profit ? take_profit_error_messages : undefined}
+                is_single_currency={true}
+                is_negative_disabled={true}
+                defaultChecked={has_take_profit}
+                label={localize('Take profit')}
+                name='contract_update_take_profit'
+                onChange={onChange}
+                value={take_profit}
+                is_disabled={!!is_valid_to_cancel}
+            />
+        );
+
         const stop_loss_input = (
             <InputWithCheckbox
                 classNameInlinePrefix='trade-container__currency'
@@ -116,18 +132,19 @@ class ContractUpdateForm extends React.Component {
         return (
             <React.Fragment>
                 <div className='positions-drawer-dialog__input'>
-                    <InputWithCheckbox
-                        classNameInlinePrefix='trade-container__currency'
-                        currency={currency}
-                        error_messages={has_take_profit ? take_profit_error_messages : undefined}
-                        is_single_currency={true}
-                        is_negative_disabled={true}
-                        defaultChecked={has_take_profit}
-                        label={localize('Take profit')}
-                        name='contract_update_take_profit'
-                        onChange={onChange}
-                        value={take_profit}
-                    />
+                    {is_valid_to_cancel ?
+                        <Popover
+                            alignment='right'
+                            margin={4}
+                            message={localize('You may set a take profit amount after deal cancellation has expired.')}
+                        >
+                            {take_profit_input}
+                        </Popover>
+                        :
+                        <React.Fragment>
+                            {take_profit_input}
+                        </React.Fragment>
+                    }
                 </div>
                 <div className='positions-drawer-dialog__input'>
                     {is_valid_to_cancel ?

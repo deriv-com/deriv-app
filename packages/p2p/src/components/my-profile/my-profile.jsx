@@ -1,8 +1,8 @@
-import React        from 'react';
-import PropTypes    from 'prop-types';
-import { localize } from 'Components/i18next';
-import StringUtils  from 'Utils/string';
-import                   './my-profile.scss';
+import React              from 'react';
+import PropTypes          from 'prop-types';
+import { localize }       from 'Components/i18next';
+import { toSentenceCase } from 'Utils/string';
+import './my-profile.scss';
 
 // TODO: This is just mockup data. it will be removed after Adding BE API.
 const user_data = {
@@ -61,7 +61,7 @@ const MyProfile = () => {
     return (
         <div className='my-profile'>
             <h1 className='my-profile__name'>
-                {`${StringUtils.toSentenceCase(user_data.first_name)} ${StringUtils.toSentenceCase(user_data.last_name)}`}
+                {`${toSentenceCase(user_data.first_name)} ${toSentenceCase(user_data.last_name)}`}
             </h1>
             <div className='my-profile__data'>
                 <Cell

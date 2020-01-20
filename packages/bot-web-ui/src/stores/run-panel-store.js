@@ -63,10 +63,15 @@ export default class RunPanelStore {
         }
 
         this.registerBotListeners();
+        
+        if (!this.dbot.shouldRunBot()) {
+            RunPanelStore.unregisterBotListeners();
+            return;
+        }
 
         this.is_running = true;
         this.toggleDrawer(true);
-        this.run_id         = `run-${Date.now()}`;
+        this.run_id = `run-${Date.now()}`;
 
         contract_card.clear();
         this.setContractStage(contract_stages.STARTING);

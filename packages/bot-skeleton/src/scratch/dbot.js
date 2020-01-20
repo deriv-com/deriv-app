@@ -81,18 +81,15 @@ class DBot {
         this.before_run_funcs.push(func);
     }
 
+    shouldRunBot() {
+        return this.before_run_funcs.every(func => !!func());
+    }
+
     /**
      * Runs the bot. Does a sanity check before attempting to generate the
      * JavaScript code that's fed to the interpreter.
      */
     runBot() {
-        const should_run_bot = this.before_run_funcs.every(func => !!func());
-        
-        if (!should_run_bot) {
-            this.stopBot();
-            return;
-        }
-
         try {
             const code = this.generateCode();
 
@@ -227,7 +224,7 @@ class DBot {
 
         this.workspace.centerOnBlock(error_blocks[0].id);
         error_blocks.forEach(block => {
-            const message       = block.error_message;
+            const message       = { name: 'BlocksError', message: block.error_message };
             globalObserver.emit('Error', message);
         });
 

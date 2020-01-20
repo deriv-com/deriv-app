@@ -1,4 +1,4 @@
 export const MARKER_LINE_STYLE = {
-    'dashed': [3, 3],
+    'dashed': [2, 2],
     'solid' : [],
 };

@@ -126,8 +126,8 @@ class MT5AdvancedRealAccountSignup extends Component {
         });
     };
 
-    updateValue = async (index, value, setSubmitting) => {
-        if (index_lookup.MT5PersonalDetailsForm === index) {
+    updateValue = async (index, value, setSubmitting, is_dirty = true) => {
+        if (is_dirty && index_lookup.MT5PersonalDetailsForm === index) {
             // Set account settings
             const data = await WS.setSettings(value);
             if (data.error) {

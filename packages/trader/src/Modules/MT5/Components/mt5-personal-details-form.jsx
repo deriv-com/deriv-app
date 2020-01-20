@@ -10,6 +10,7 @@ import {
 import {
     Localize,
     localize }              from '@deriv/translations';
+import { isDeepEqual }      from '@deriv/shared/utils/object';
 import { FormSubHeader }    from 'Modules/Account/Components/layout-components.jsx';
 
 const form = React.createRef();
@@ -90,7 +91,7 @@ class MT5PersonalDetailsForm extends Component {
         return errors;
     };
 
-    submitForm = (values, actions, index, onSubmit) => {
+    submitForm = (values, actions, index, onSubmit, is_dirty) => {
         const { citizen: citizen_text, tax_residence: tax_residence_text, ...restOfValues } = values;
         const { citizen, tax_residence } = this.findDefaultValuesInResidenceList(
             citizen_text,
@@ -102,7 +103,7 @@ class MT5PersonalDetailsForm extends Component {
             tax_residence: typeof tax_residence !== 'undefined' ? tax_residence.value : '',
             ...restOfValues,
         };
-        onSubmit(index, payload, actions.setSubmitting);
+        onSubmit(index, payload, actions.setSubmitting, is_dirty);
     }
 
     findDefaultValuesInResidenceList = (citizen_text, tax_residence_text) => {
@@ -128,7 +129,7 @@ class MT5PersonalDetailsForm extends Component {
             value,
         } = this.props;
 
-        const onSubmitForm = (values, actions) => this.submitForm(values, actions, index, onSubmit);
+        const onSubmitForm = (values, actions) => this.submitForm(values, actions, index, onSubmit, !isDeepEqual(value, values));
         if (residence_list.length === 0) return <Loading is_fullscreen={false} />;
         return (
             <div id='real_mt5_personal_details' className='details-form mt5-details-form'>

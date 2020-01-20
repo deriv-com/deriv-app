@@ -288,7 +288,7 @@ class MT5POA extends Component {
         const is_form_visible = !is_loading && (resubmit_poa || this.state.poa_status === poa_status_codes.none);
 
         return (
-            <div id='real_mt5_personal_details' className='mt5-details-form'>
+            <div id='real_mt5_poa' className='mt5-details-form'>
                 <Formik
                     initialValues={{
                         address_line_1,

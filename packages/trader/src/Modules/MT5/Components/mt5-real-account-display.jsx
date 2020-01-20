@@ -4,11 +4,12 @@ import { localize, Localize } from '@deriv/translations';
 import {
     real_advanced_specs,
     real_standard_specs,
-    real_synthetic_specs }    from 'Modules/MT5/Constants/mt5-specifications';
+    real_synthetic_specs,
+}                             from 'Modules/MT5/Constants/mt5-specifications';
 import { MT5AccountCard }     from './mt5-account-card.jsx';
 
-const getRealAdvancedButtonLabel = (is_fully_authenticated, is_pending_authentication) => {
-    if (is_fully_authenticated) {
+const getRealAdvancedButtonLabel = (is_fully_authenticated, is_pending_authentication, has_required_credentials) => {
+    if (is_fully_authenticated && has_required_credentials) {
         return (
             <Localize
                 i18n_default_text='Set your password'
@@ -39,8 +40,20 @@ const MT5RealAccountDisplay = ({
     current_list,
     has_mt5_account,
     openPasswordManager,
+    account_settings,
 }) => {
-    const button_label              = getRealAdvancedButtonLabel(is_fully_authenticated, is_pending_authentication);
+    const has_required_credentials  = (
+        account_settings.citizen &&
+        account_settings.tax_identification_number &&
+        account_settings.tax_residence
+    );
+
+    const button_label = getRealAdvancedButtonLabel(
+        is_fully_authenticated,
+        is_pending_authentication,
+        has_required_credentials,
+    );
+
     const is_real_advanced_disabled = !has_real_account || is_pending_authentication;
 
     const onSelectRealAdvanced  = () => {
@@ -48,9 +61,9 @@ const MT5RealAccountDisplay = ({
             category: 'real',
             type    : 'advanced',
         };
-        if (is_fully_authenticated) {
+        if (is_fully_authenticated && has_required_credentials) {
             openPasswordModal(account_type);
-        } else if (!is_fully_authenticated && !is_real_advanced_disabled) {
+        } else if (!is_fully_authenticated && !is_real_advanced_disabled || !has_required_credentials) {
             onSelectAccount(account_type);
         }
     };

@@ -174,11 +174,11 @@ class MT5PersonalDetailsForm extends Component {
                                                                 type='search'
                                                                 label={localize('Citizenship')}
                                                                 error={touched.citizen && errors.citizen}
-                                                                disabled={values.citizen && is_fully_authenticated}
+                                                                disabled={value.citizen && is_fully_authenticated}
                                                                 list_items={residence_list}
-                                                                onItemSelection={({ value, text }) => setFieldValue(
+                                                                onItemSelection={(item) => setFieldValue(
                                                                     'citizen',
-                                                                    value ? text: '',
+                                                                    item.value ? item.text : '',
                                                                     true,
                                                                 )}
                                                                 required
@@ -198,7 +198,7 @@ class MT5PersonalDetailsForm extends Component {
                                                                 label={localize('Tax residence')}
                                                                 error={touched.tax_residence && errors.tax_residence}
                                                                 disabled={
-                                                                    values.tax_residence &&
+                                                                    value.tax_residence &&
                                                                     is_fully_authenticated
                                                                 }
                                                                 list_items={residence_list}

@@ -86,6 +86,7 @@ class MT5Dashboard extends React.Component {
             has_mt5_account,
             has_real_account,
             NotificationMessages,
+            account_settings,
         } = this.props;
 
         return (
@@ -111,6 +112,7 @@ class MT5Dashboard extends React.Component {
                                         account_status={this.props.account_status}
                                         has_mt5_account={has_mt5_account}
                                         onSelectAccount={createMT5Account}
+                                        account_settings={account_settings}
                                         is_pending_authentication={this.props.is_pending_authentication}
                                         is_fully_authenticated={this.props.is_fully_authenticated}
                                         openAccountTransfer={this.openAccountTransfer}
@@ -150,6 +152,7 @@ export default withRouter(connect(({ client, modules, ui }) => ({
     current_list               : modules.mt5.current_list,
     is_logged_in               : client.is_logged_in,
     can_upgrade_to             : client.can_upgrade_to,
+    account_settings           : client.account_settings,
     disableMt5PasswordModal    : modules.mt5.disableMt5PasswordModal,
     is_pending_authentication  : client.is_pending_authentication,
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,

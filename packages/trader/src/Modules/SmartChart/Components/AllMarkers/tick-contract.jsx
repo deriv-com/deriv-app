@@ -116,12 +116,14 @@ const TickContract = RawMarkerMaker(({
     // barrier line
     ctx.fillStyle = background_color;
     if (is_reset_barrier_expired) {
-        draw_line({
-            ctx,
-            start     : { left: reset_time.left, top: entry_tick_top },
-            end       : { left: reset_time.left, top: barrier },
-            line_style: 'dashed',
-        });
+        if (is_sold) {
+            draw_line({
+                ctx,
+                start     : { left: reset_time.left, top: entry_tick_top },
+                end       : { left: reset_time.left, top: barrier },
+                line_style: 'dashed',
+            });
+        }
 
         ctx.strokeStyle = foreground_color;
         draw_barrier_line({ ctx, start, exit: reset_time, barrier: entry_tick_top, line_style: 'dashed' });

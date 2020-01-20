@@ -10,6 +10,7 @@ import PropTypes               from 'prop-types';
 import { getContractTypeName } from '@deriv/bot-engine';
 import IconTradeType           from './icon-trade-types.jsx';
 import { connect }             from '../stores/connect';
+import { popover_zindex }      from '../constants/z-indexes';
 
 const TransactionIconWithText = ({
     icon,
@@ -130,7 +131,7 @@ const Transaction = ({
     setActiveTransactionId,
 }) => (
     <Popover
-        zIndex = {10}
+        zIndex = {popover_zindex.TRANSACTION}
         alignment='left'
         className='transactions__item-wrapper'
         is_open={active_transaction_id === contract.transaction_ids.buy}

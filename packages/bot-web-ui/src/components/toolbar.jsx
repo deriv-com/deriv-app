@@ -3,22 +3,22 @@ import {
     Icon,
     Input,
     Popover,
-}                     from '@deriv/components';
-import { localize }   from '@deriv/translations';
+}                           from '@deriv/components';
+import { localize }         from '@deriv/translations';
 import {
     Field,
     Formik,
     Form,
-}                     from 'formik';
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { config }     from '@deriv/bot-engine';
-import Dialog         from './dialog.jsx';
-import SaveLoadModal  from './saveload-modal.jsx';
-import TradeAnimation from './trade-animation.jsx';
-import { tabs_title } from '../constants/bot-contents';
-import { connect }    from '../stores/connect';
-import                '../assets/sass/toolbar.scss';
+}                           from 'formik';
+import PropTypes            from 'prop-types';
+import React                from 'react';
+import Dialog               from './dialog.jsx';
+import SaveLoadModal        from './saveload-modal.jsx';
+import TradeAnimation       from './trade-animation.jsx';
+import { tabs_title }       from '../constants/bot-contents';
+import { popover_zindex }   from '../constants/z-indexes';
+import { connect }          from '../stores/connect';
+import                      '../assets/sass/toolbar.scss';
 
 const SearchBox = ({
     is_search_loading,
@@ -107,8 +107,6 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
     </div>
 );
 
-const popover_zindex = Number(config.popover_zindex.toolbar);
-
 const WorkspaceGroup = ({
     has_redo_stack,
     has_undo_stack,
@@ -122,21 +120,21 @@ const WorkspaceGroup = ({
         <Popover
             alignment='bottom'
             message={localize('Import')}
-            zIndex={popover_zindex}
+            zIndex={popover_zindex.TOOLBAR}
         >
             <Icon icon='IcFolderOpen' className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Reset')}
-            zIndex={popover_zindex}
+            zIndex={popover_zindex.TOOLBAR}
         >
             <Icon icon='IcNewFile' className='toolbar__icon' onClick={onResetClick} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Save')}
-            zIndex={popover_zindex}
+            zIndex={popover_zindex.TOOLBAR}
         >
             <Icon
                 icon='IcSave'
@@ -148,7 +146,7 @@ const WorkspaceGroup = ({
         <Popover
             alignment='bottom'
             message={localize('Undo')}
-            zIndex={popover_zindex}
+            zIndex={popover_zindex.TOOLBAR}
         >
             <Icon
                 className='toolbar__icon'
@@ -160,7 +158,7 @@ const WorkspaceGroup = ({
         <Popover
             alignment='bottom'
             message={localize('Redo')}
-            zIndex={popover_zindex}
+            zIndex={popover_zindex.TOOLBAR}
         >
             <Icon
                 className='toolbar__icon'
@@ -172,21 +170,21 @@ const WorkspaceGroup = ({
         <Popover
             alignment='bottom'
             message={localize('Sort')}
-            zIndex={popover_zindex}
+            zIndex={popover_zindex.TOOLBAR}
         >
             <Icon icon='IcSort' className='toolbar__icon' onClick={onSortClick} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Zoom in')}
-            zIndex={popover_zindex}
+            zIndex={popover_zindex.TOOLBAR}
         >
             <Icon icon='IcZoomIn' className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Zoom out')}
-            zIndex={popover_zindex}
+            zIndex={popover_zindex.TOOLBAR}
         >
             <Icon icon='IcZoomOut' className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
         </Popover>

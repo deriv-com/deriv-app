@@ -9,7 +9,7 @@ export const getDurationUnitMap = () => ({
 
 export const getBarrierLabelMap = () => ({
     target : localize('Target'),
-    barrier: localize('Barrier')
+    barrier: localize('Barrier'),
 });
 
 export const getDigitTypeMap = (contract_info) => ({
@@ -19,4 +19,4 @@ export const getDigitTypeMap = (contract_info) => ({
     DIGITODD  : localize('Odd'),
     DIGITOVER : localize('Over {{barrier}}', { barrier: contract_info.barrier }),
     DIGITUNDER: localize('Under {{barrier}}', { barrier: contract_info.barrier }),
-})
+});

@@ -13,10 +13,10 @@ import ContractUtils           from '@deriv/shared/utils/contract';
 import DateTimeUtils           from '@deriv/shared/utils/date-time';
 import PortfolioUtils          from '@deriv/shared/utils/portfolio';
 import PositionsUtils          from '@deriv/shared/utils/positions';
-import { 
+import {
     getDurationUnitMap,
     getBarrierLabelMap,
-    getDigitTypeMap, }         from 'Constants';
+    getDigitTypeMap  }         from 'Constants';
 import routes                  from 'Constants/routes';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';

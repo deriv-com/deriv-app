@@ -61,6 +61,7 @@ const TickContract = RawMarkerMaker(({
     const should_draw_vertical_line = is_last_contract && !is_sold;
     if (should_draw_vertical_line) {
         if (start.visible) {
+            ctx.fillStyle = foreground_color;
             draw_vertical_labelled_line({
                 ctx,
                 text    : 'Buy\nTime',
@@ -78,6 +79,7 @@ const TickContract = RawMarkerMaker(({
 
         }
         if (has_reset_time) {
+            ctx.fillStyle = foreground_color;
             draw_vertical_labelled_line({
                 ctx,
                 text    : 'Reset\nTime',

@@ -140,7 +140,6 @@ const getModifiedResponse = (response) => {
     return modified_response;
 };
 
-// TODO: binary needs to also send a subscribe function in their websocket method
 export const subscribeWS = (request, cb) => {
     ws.p2pSubscribe(request, (response) => {
         cb(getModifiedResponse(response));

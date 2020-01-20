@@ -1,7 +1,16 @@
-import { localize }  from '@deriv/translations';
 import DateTimeUtils from '../date-time';
 import DigitUtils    from '../digits';
 import ObjectUtils   from '../object';
+
+let unit_map = {};
+
+export const setDurationUnitMap = (unit_map) => {
+    unit_map = unit_map;
+}
+
+export const getDurationUnitMap = () => {
+    return unit_map;
+}
 
 export const getCurrentTick = (contract_info) => {
     const tick_stream = ObjectUtils.unique(contract_info.tick_stream, 'epoch');
@@ -46,13 +55,7 @@ export const getDurationUnitValue = (obj_duration) => {
 
 export const isEndTime = (duration) => (duration % 1) !== 0;
 
-export const getDurationUnitText = (obj_duration) => {
-    const unit_map = {
-        d: { name_plural: localize('days'),    name_singular: localize('day') },
-        h: { name_plural: localize('hours'),   name_singular: localize('hour') },
-        m: { name_plural: localize('minutes'), name_singular: localize('minute') },
-        s: { name: localize('seconds') },
-    };
+export const getDurationUnitText = (obj_duration, unit_map) => {
     const duration_ms = obj_duration.asMilliseconds() / 1000;
     // return empty suffix string if duration is End Time set except for days and seconds, refer to L18 and L19
 

@@ -13,6 +13,10 @@ import ContractUtils           from '@deriv/shared/utils/contract';
 import DateTimeUtils           from '@deriv/shared/utils/date-time';
 import PortfolioUtils          from '@deriv/shared/utils/portfolio';
 import PositionsUtils          from '@deriv/shared/utils/positions';
+import { 
+    getDurationUnitMap,
+    getBarrierLabelMap,
+    getDigitTypeMap, }         from 'Constants';
 import routes                  from 'Constants/routes';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell        from 'App/Components/Elements/PositionsDrawer/contract-type-cell.jsx';
@@ -60,7 +64,10 @@ class ContractDrawer extends Component {
         };
 
         const duration          = PortfolioUtils.getDurationTime(contract_info);
-        const duration_unit     = PortfolioUtils.getDurationUnitText(PortfolioUtils.getDurationPeriod(contract_info));
+        const duration_unit     = PortfolioUtils.getDurationUnitText(
+            PortfolioUtils.getDurationPeriod(contract_info),
+            getDurationUnitMap(),
+        );
         const contract_end_time = ContractUtils.getEndTime(contract_info);
         const is_profit         = (contract_info.profit >= 0);
         const IconExitTime      = <Icon icon='IcContractExitTime' color={is_profit ? 'green' : 'red'} size={24} />;
@@ -193,9 +200,9 @@ class ContractDrawer extends Component {
                                 size={24}
                             />
                         }
-                        label={PositionsUtils.getBarrierLabel(contract_info)}
+                        label={PositionsUtils.getBarrierLabel(contract_info, getBarrierLabelMap())}
                         value={contract_info.barrier
-                            ? PositionsUtils.getBarrierValue(contract_info)
+                            ? PositionsUtils.getBarrierValue(contract_info, getDigitTypeMap)
                             : <ContractAudit.Loader />
                         }
                     />

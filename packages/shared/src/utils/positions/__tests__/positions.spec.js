@@ -21,16 +21,28 @@ describe('positions-helper', () => {
             const contract_info = {
                 contract_type: 'DIGITDIFF',
             };
-            expect(PositionsHelper.getBarrierLabel(contract_info)).to.eql('Target');
+            const barrier_label_map = {
+                target : 'Target',
+                barrier: 'Barrier',
+            }
+            expect(PositionsHelper.getBarrierLabel(contract_info, barrier_label_map)).to.eql('Target');
         });
     });
     describe('getBarrierValue', () => {
         it('should return correct target value according to digit type mapping if contract type is digit', () => {
+            const getDigitTypeMap = (contract_info) => ({
+                DIGITDIFF : `Not ${contract_info.barrier}`,
+                DIGITEVEN : 'Even',
+                DIGITMATCH: `Equals ${contract_info.barrier}`,
+                DIGITODD  : 'Odd',
+                DIGITOVER : `Over ${contract_info.barrier}`,
+                DIGITUNDER: `Under ${contract_info.barrier}`,
+            });
             const contract_info = {
                 contract_type: 'DIGITDIFF',
                 barrier      : '1',
             };
-            expect(PositionsHelper.getBarrierValue(contract_info)).to.eql('Not 1');
+            expect(PositionsHelper.getBarrierValue(contract_info, getDigitTypeMap)).to.eql('Not 1');
         });
     });
 });

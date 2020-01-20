@@ -8,6 +8,7 @@ import { WS }                      from 'Services/ws-methods';
 import ContractUtils               from '@deriv/shared/utils/contract';
 import ObjectUtils                 from '@deriv/shared/utils/object';
 import PortfolioUtils              from '@deriv/shared/utils/portfolio';
+import { getDurationUnitMap }      from 'Constants';
 import { formatPortfolioPosition } from './Helpers/format-response';
 import { contractSold }            from './Helpers/portfolio-notifications';
 import BaseStore                   from '../../base-store';
@@ -209,7 +210,8 @@ export default class PortfolioStore extends BaseStore {
         this.positions[i].contract_info    = contract_response;
         this.positions[i].duration         = PortfolioUtils.getDurationTime(contract_response);
         this.positions[i].duration_unit    = PortfolioUtils.getDurationUnitText(
-            PortfolioUtils.getDurationPeriod(contract_response)
+            PortfolioUtils.getDurationPeriod(contract_response),
+            getDurationUnitMap(),
         );
         this.positions[i].exit_spot        = contract_response.exit_tick || contract_response.current_spot; // workaround if no exit_tick in proposal_open_contract, use latest spot
         this.positions[i].is_valid_to_sell = ContractUtils.isValidToSell(contract_response);

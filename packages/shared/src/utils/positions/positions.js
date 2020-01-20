@@ -1,5 +1,4 @@
-import moment       from 'moment';
-import { localize } from '@deriv/translations';
+import moment from 'moment';
 
 export const addCommaToNumber = (num, decimal_places) => {
     if (!num || isNaN(num)) {
@@ -27,27 +26,18 @@ export const getTimePercentage = (server_time, start_time, expiry_time) => {
     return Math.round(percentage);
 };
 
-export const getBarrierLabel = (contract_info) => {
+export const getBarrierLabel = (contract_info, label_map) => {
     if (isDigitType(contract_info.contract_type)) {
-        return localize('Target');
+        return label_map.target;
     }
-    return localize('Barrier');
+    return label_map.barrier;
 };
 
-export const getBarrierValue = (contract_info) => {
+export const getBarrierValue = (contract_info, getDigitTypeMap) => {
     if (isDigitType(contract_info.contract_type)) {
-        return digitTypeMap(contract_info)[contract_info.contract_type];
+        return getDigitTypeMap(contract_info)[contract_info.contract_type];
     }
     return addCommaToNumber(contract_info.barrier);
 };
 
 export const isDigitType = (contract_type) => (/digit/.test(contract_type.toLowerCase()));
-
-const digitTypeMap = (contract_info) => ({
-    DIGITDIFF : localize('Not {{barrier}}', { barrier: contract_info.barrier }),
-    DIGITEVEN : localize('Even'),
-    DIGITMATCH: localize('Equals {{barrier}}', { barrier: contract_info.barrier }),
-    DIGITODD  : localize('Odd'),
-    DIGITOVER : localize('Over {{barrier}}', { barrier: contract_info.barrier }),
-    DIGITUNDER: localize('Under {{barrier}}', { barrier: contract_info.barrier }),
-});

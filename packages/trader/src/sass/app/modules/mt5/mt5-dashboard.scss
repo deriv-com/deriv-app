@@ -407,6 +407,9 @@
     }
     .dc-form-submit-button {
         padding: 0 2em 2em 2em;
+        position: fixed;
+        bottom: 0;
+        background-color: var(--content-bg-color);
     }
 }
 
@@ -612,7 +615,7 @@
         position: relative;
     }
     &__field-area {
-        padding: 0 2rem;
+        padding: 0 0 20rem 0;
         max-width: 556px;
         margin: 0 auto;
     }

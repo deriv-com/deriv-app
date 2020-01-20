@@ -21,7 +21,6 @@ class MT5AccountOpeningRealAdvancedModal extends Component {
                 className='mt5-advanced-signup-modal'
                 disableApp={disableApp}
                 width='904px'
-                height='688px'
                 title={localize('Create a DMT5 real Advanced account')}
                 enableApp={enableApp}
                 is_open={is_mt5_advanced_modal_open}

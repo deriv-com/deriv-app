@@ -1,21 +1,22 @@
 import React, {
     Fragment,
-    Component }        from 'react';
-import PropTypes       from 'prop-types';
+    Component }               from 'react';
+import PropTypes              from 'prop-types';
 import {
     Formik,
     Field,
-    Form }             from 'formik';
+    Form }                    from 'formik';
 import {
     Input,
     Button,
-    ThemedScrollbars } from '@deriv/components';
-import CurrencyUtils   from '@deriv/shared/utils/currency';
-import IconBack        from 'Assets/icon-back.jsx';
-import IconClose       from 'Assets/icon-close.jsx';
-import { localize }    from 'Components/i18next';
-import { requestWS }   from 'Utils/websocket';
-import FormError       from '../form/error.jsx';
+    ThemedScrollbars }        from '@deriv/components';
+import CurrencyUtils          from '@deriv/shared/utils/currency';
+import IconBack               from 'Assets/icon-back.jsx';
+import IconClose              from 'Assets/icon-close.jsx';
+import { localize }           from 'Components/i18next';
+import { countDecimalPlaces } from 'Utils/string';
+import { requestWS }          from 'Utils/websocket';
+import FormError              from '../form/error.jsx';
 
 const SendField = ({
     calculateReceiveAmount,
@@ -115,12 +116,12 @@ class Popup extends Component {
         const { ad } = this.props;
 
         const amount_asset = +((ad.min_transaction * ad.price_rate).toFixed(ad.transaction_currency_decimals));
-        const max_amount = +((ad.offer_amount * ad.price_rate).toFixed(ad.transaction_currency_decimals));
+        const max_amount = +((ad.max_transaction * ad.price_rate).toFixed(ad.transaction_currency_decimals));
 
         const buy_initial_values = {
             initial_receive : ad.min_transaction,
             initial_send    : amount_asset,
-            max_receive     : ad.offer_amount,
+            max_receive     : ad.max_transaction,
             max_send        : max_amount,
             receive_currency: ad.offer_currency,
             receive_decimals: ad.offer_currency_decimals,
@@ -131,7 +132,7 @@ class Popup extends Component {
             initial_receive : amount_asset,
             initial_send    : ad.min_transaction,
             max_receive     : max_amount,
-            max_send        : ad.offer_amount,
+            max_send        : ad.max_transaction,
             receive_currency: ad.transaction_currency,
             receive_decimals: ad.transaction_currency_decimals,
             send_currency   : ad.offer_currency,
@@ -241,7 +242,11 @@ class Popup extends Component {
                                         </div>
                                         <div className='buy-sell__popup-info'>
                                             <span className='buy-sell__popup-info--title'>{localize('Advertiser notes')}</span>
-                                            <p className='buy-sell__popup-info--text'>{ad.advertiser_note}</p>
+                                            {
+                                                ad.advertiser_note.split('\n').map((text, idx) => (
+                                                    <p className='buy-sell__popup-info--text' key={idx}>{text}</p>
+                                                ))
+                                            }
                                         </div>
 
                                     </div>
@@ -278,13 +283,13 @@ class Popup extends Component {
                 v => !!v,
                 v => v >= initial_send,
                 v => v <= max_send,
-                v => (((v.toString().split('.') || [])[1]) || []).length <= send_decimals,
+                v => countDecimalPlaces(v) <= send_decimals,
             ],
             receive: [
                 v => !!v,
                 v => v >= initial_receive,
                 v => v <= max_receive,
-                v => (((v.toString().split('.') || [])[1]) || []).length <= receive_decimals,
+                v => countDecimalPlaces(v) <= receive_decimals,
             ],
         };
 

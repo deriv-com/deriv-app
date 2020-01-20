@@ -26,6 +26,7 @@ module.exports = {
       'class-methods-use-this'            : ["error", { 'exceptMethods': ['render', 'getInitialState', 'getDefaultProps', 'getChildContext', 'componentWillMount', 'componentDidMount', 'componentWillReceiveProps', 'shouldComponentUpdate', 'componentWillUpdate', 'componentDidUpdate', 'componentWillUnmount'] }],
       'eol-last'                          : ['error', 'always'],
       'func-names'                        : ['error', 'never'],
+      'indent'                            : 'off', // https://github.com/babel/babel-eslint/issues/530
       'keyword-spacing'                   : ['error', { after: true , before: true }],
       'lines-between-class-members'       : ['error', 'always', { exceptAfterSingleLine: true }],
       'no-extra-semi'                     : 'error',
@@ -42,8 +43,10 @@ module.exports = {
       'space-in-parens'                   : ['error', 'never'],
       'space-infix-ops'                   : 'error',
       'space-unary-ops'                   : 'error',
+      'template-curly-spacing'            : 'off', // https://github.com/babel/babel-eslint/issues/530
       'no-multiple-empty-lines'           : ['error', { 'max': 1, 'maxEOF': 1 }],
       'prefer-const'                      : ['error', {destructuring: 'all', ignoreReadBeforeAssign: false}],
+      'no-underscore-dangle'              : 0,
       // import rules
       'import/no-extraneous-dependencies' : [0, { extensions: ['.jsx'] }],
       'import/no-useless-path-segments'   : 'error',

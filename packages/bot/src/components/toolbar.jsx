@@ -18,6 +18,7 @@ import SaveModal      from './save-modal.jsx';
 import TradeAnimation from './trade-animation.jsx';
 import { tabs_title } from '../constants/bot-contents';
 import { connect }    from '../stores/connect';
+import config         from '../constants';
 import                '../assets/sass/scratch/toolbar.scss';
 
 const SearchBox = ({
@@ -107,6 +108,8 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
     </div>
 );
 
+const popover_zindex = config.popover_zindex.toolbar;
+
 const WorkspaceGroup = ({
     has_redo_stack,
     has_undo_stack,
@@ -121,18 +124,21 @@ const WorkspaceGroup = ({
         <Popover
             alignment='bottom'
             message={localize('Import')}
+            zIndex={popover_zindex}
         >
             <Icon icon='IcFolderOpen' className='toolbar__icon' onClick={toggleLoadModal} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Reset')}
+            zIndex={popover_zindex}
         >
             <Icon icon='IcNewFile' className='toolbar__icon' onClick={onResetClick} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Save')}
+            zIndex={popover_zindex}
         >
             <Icon
                 icon='IcSave'
@@ -144,6 +150,7 @@ const WorkspaceGroup = ({
         <Popover
             alignment='bottom'
             message={localize('Undo')}
+            zIndex={popover_zindex}
         >
             <Icon
                 className='toolbar__icon'
@@ -155,6 +162,7 @@ const WorkspaceGroup = ({
         <Popover
             alignment='bottom'
             message={localize('Redo')}
+            zIndex={popover_zindex}
         >
             <Icon
                 className='toolbar__icon'
@@ -166,18 +174,21 @@ const WorkspaceGroup = ({
         <Popover
             alignment='bottom'
             message={localize('Sort')}
+            zIndex={popover_zindex}
         >
             <Icon icon='IcSort' className='toolbar__icon' onClick={onSortClick} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Zoom in')}
+            zIndex={popover_zindex}
         >
             <Icon icon='IcZoomIn' className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Zoom out')}
+            zIndex={popover_zindex}
         >
             <Icon icon='IcZoomOut' className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
         </Popover>

@@ -2,7 +2,7 @@ import React                     from 'react';
 import PropTypes                 from 'prop-types';
 import { Dialog }                from '@deriv/components';
 import { localize, Localize }    from 'Components/i18next';
-import AgentContext              from 'Components/context/agent-context';
+import Dp2pContext               from 'Components/context/dp2p-context';
 import FooterActions             from 'Components/footer-actions/footer-actions.jsx';
 import OrderDetailsStatusBlock   from './order-details-status-block.jsx';
 import OrderInfoBlock            from './order-info-block.jsx';
@@ -34,7 +34,7 @@ const OrderDetails = ({
     const [show_popup, setShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
 
-    const { is_agent } = React.useContext(AgentContext);
+    const { is_agent } = React.useContext(Dp2pContext);
     const onCancelClick = () => setShowPopup(false);
 
     const handleShowPopup = (options) => {
@@ -51,6 +51,7 @@ const OrderDetails = ({
                         <span>
                             <OrderDetailsStatusBlock order_details={ order_details } />
                             <OrderDetailsAmountBlock order_details={ order_details } />
+                            <h1 className='order-details__header-method'>{order_details.payment_method}</h1>
                         </span>
                         <OrderDetailsTimerBlock order_details={ order_details } />
                     </div>
@@ -59,14 +60,14 @@ const OrderDetails = ({
                         <OrderInfoBlock label={ localize('Advertiser notes') } value={ advertiser_notes } />
                         <div className='order-details__info-columns'>
                             <div className='order-details__info--left'>
-                                {is_agent && <OrderInfoBlock label={ is_buyer ? localize('Receive') : localize('Send') } value={ `${transaction_currency} ${display_transaction_amount}` } />}
-                                {!is_agent && <OrderInfoBlock label={ is_buyer ? localize('Send') : localize('Receive') } value={ `${transaction_currency} ${display_transaction_amount}` } />}
-                                <OrderInfoBlock label={ localize('Price') } value={ `${transaction_currency} ${display_price_rate}` } />
+                                {is_agent && <OrderInfoBlock label={ is_buyer ? localize('Receive') : localize('Send') } value={ `${display_transaction_amount} ${transaction_currency}` } />}
+                                {!is_agent && <OrderInfoBlock label={ is_buyer ? localize('Send') : localize('Receive') } value={ `${display_transaction_amount} ${transaction_currency}` } />}
+                                <OrderInfoBlock label={ localize('Price') } value={ `${display_price_rate} ${transaction_currency}` } />
                                 <OrderInfoBlock label={ localize('Order ID') } value={ order_id } />
                             </div>
                             <div className='order-details__info--right'>
-                                {is_agent && <OrderInfoBlock label={ is_buyer ? localize('Send') : localize('Receive') } value={ `${offer_currency} ${display_offer_amount}` } />}
-                                {!is_agent && <OrderInfoBlock label={ is_buyer ? localize('Receive') : localize('Send') } value={ `${offer_currency} ${display_offer_amount}` } />}
+                                {is_agent && <OrderInfoBlock label={ is_buyer ? localize('Send') : localize('Receive') } value={ `${display_offer_amount} ${offer_currency}` } />}
+                                {!is_agent && <OrderInfoBlock label={ is_buyer ? localize('Receive') : localize('Send') } value={ `${display_offer_amount} ${offer_currency}` } />}
                                 {is_agent && !is_buyer && <OrderInfoBlock label={localize('Seller')} value={ advertiser_name } />}
                                 {!is_agent && is_buyer && <OrderInfoBlock label={localize('Seller')} value={ advertiser_name } />}
                                 <OrderInfoBlock label={ localize('Time') } value={ order_purchase_datetime } />

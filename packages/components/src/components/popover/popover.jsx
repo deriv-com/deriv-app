@@ -35,6 +35,7 @@ class Popover extends React.PureComponent {
             is_open,
             margin,
             message,
+            zIndex,
         } = this.props;
 
         const has_external_open_state = is_open !== undefined;
@@ -45,7 +46,7 @@ class Popover extends React.PureComponent {
                 position={alignment}
                 transitionDuration={0.25}
                 padding={margin + 8}
-                containerStyle={{ zIndex: 1 }}
+                containerStyle={{ zIndex: (zIndex || 1) }}
                 content={({ position, targetRect, popoverRect }) => (
                     <ArrowContainer
                         position={position}

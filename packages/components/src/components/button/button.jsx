@@ -8,6 +8,7 @@ const Button = ({
     children,
     className = '',
     classNameSpan,
+    rounded,
     green,
     has_effect,
     icon,
@@ -36,6 +37,7 @@ const Button = ({
         'btn__large'    : large,
         'btn__medium'   : medium,
         'btn__small'    : small,
+        'btn__rounded' : rounded,
     }, className);
     const button = (
         <button
@@ -87,6 +89,7 @@ Button.propTypes = {
     medium           : PropTypes.bool,
     onClick          : PropTypes.func,
     primary          : PropTypes.bool,
+    rounded          : PropTypes.bool,
     secondary        : PropTypes.bool,
     small            : PropTypes.bool,
     tertiary         : PropTypes.bool,

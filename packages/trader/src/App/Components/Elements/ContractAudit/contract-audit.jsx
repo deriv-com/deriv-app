@@ -9,7 +9,6 @@ import ContractHistory from './contract-history.jsx';
 
 class ContractAudit extends React.Component {
     state = {
-        is_history_tab_clicked : false,
         contract_update_history: [],
     }
 
@@ -25,8 +24,7 @@ class ContractAudit extends React.Component {
 
     onTabItemClick = (tab_index) => {
         this.props.toggleHistoryTab(tab_index);
-        if (tab_index && !this.state.contract_update_history.length && !this.state.is_history_tab_clicked) {
-            this.setState({ is_history_tab_clicked: true });
+        if (tab_index) {
             WS.contractUpdateHistory(this.props.contract_info.contract_id).then(response => {
                 this.setState({
                     contract_update_history: response.contract_update_history,

@@ -161,7 +161,7 @@ class FormAds extends Component {
                                                         className='p2p-my-ads__form-field'
                                                         disabled
                                                         label={localize('Asset')}
-                                                        hint={values.type === 'buy' ? localize('The currency you are buying') : localize('The currency you are selling')}
+                                                        hint={values.type === 'buy' ? localize('Currency client is buying') : localize('Currency client is selling')}
                                                         list_items={[]}
                                                         required
                                                         onItemSelection={

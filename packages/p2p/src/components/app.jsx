@@ -2,9 +2,12 @@ import classNames           from 'classnames';
 import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
 import { Tabs }             from '@deriv/components';
-import ServerTime           from 'Utils/server-time';
-import { init, requestWS }  from 'Utils/websocket';
 import { Dp2pProvider }     from 'Components/context/dp2p-context';
+import ServerTime           from 'Utils/server-time';
+import {
+    init,
+    requestWS,
+    subscribeWS }           from 'Utils/websocket';
 import {
     localize,
     setLanguage }           from './i18next';
@@ -33,6 +36,7 @@ class App extends Component {
 
         this.state = {
             active_index: 0,
+            orders      : [],
             parameters  : null,
             is_agent    : false,
         };
@@ -55,12 +59,38 @@ class App extends Component {
         }
     }
 
+    // API will send p2p_order_list first as a list of all orders
+    // then each subscription response for a single updated order will come as p2p_order_info
+    handleOrderListResponse = (order_response) => {
+        if (Array.isArray(order_response)) { // it's an array of orders from p2p_order_list
+            this.setState({ orders: order_response });
+        } else { // it's a single order from p2p_order_info
+            const idx_order_to_update =
+                this.state.orders.findIndex(order => order.order_id === order_response.order_id);
+            const updated_orders = [ ...this.state.orders ];
+            // if it's a new order, add it to the top of the list
+            if (idx_order_to_update < 0) {
+                updated_orders.unshift(order_response);
+            } else { // otherwise, update the correct order
+                updated_orders[idx_order_to_update] = order_response;
+            }
+            // trigger re-rendering by setting orders again
+            this.setState({ orders: updated_orders });
+        }
+    };
+
     componentDidMount() {
         this.setIsAgent();
+
+        subscribeWS({ p2p_order_list: 1, subscribe: 1 }, this.handleOrderListResponse);
     }
 
+    componentWillUnmount = () => {
+        requestWS({ forget_all: 'p2p_order' });
+    };
+
     render() {
-        const { active_index, parameters } = this.state;
+        const { active_index, orders, parameters } = this.state;
         const { className, client: { currency, local_currency_config, is_virtual, residence } } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -86,7 +116,11 @@ class App extends Component {
                             </div>
                             {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
                             <div label={localize('Incoming orders')}>
-                                <Orders navigate={this.redirectTo} params={parameters} />
+                                <Orders
+                                    navigate={this.redirectTo}
+                                    orders={orders}
+                                    params={parameters}
+                                />
                             </div>
                             <div label={localize('My ads')}>
                                 <MyAds navigate={this.redirectTo} params={parameters} />
@@ -103,7 +137,11 @@ class App extends Component {
                             </div>
                             {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
                             <div label={localize('My Orders')}>
-                                <Orders navigate={this.redirectTo} params={parameters} />
+                                <Orders
+                                    navigate={this.redirectTo}
+                                    orders={orders}
+                                    params={parameters}
+                                />
                             </div>
                             {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
                             {/* <div label={localize('My profile')}>

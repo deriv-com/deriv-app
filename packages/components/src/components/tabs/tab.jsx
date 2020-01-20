@@ -17,7 +17,7 @@ class Tab extends Component {
         } = this.props;
 
         const classes = classNames('dc-tabs__item', {
-            'dc-tabs__active'      : is_active,
+            'dc-tabs__active': is_active,
         });
         return (
             <li

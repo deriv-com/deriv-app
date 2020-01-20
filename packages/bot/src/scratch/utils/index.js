@@ -394,7 +394,7 @@ export const emptyTextValidator = (input) => {
  * @param {Blockly.Events} event // Blockly event object
  */
 export const saveWorkspaceToRecent = (location, event = {}) => {
-    if(event.recordUndo === false) {
+    if (event.recordUndo === false) {
         return;
     }
     

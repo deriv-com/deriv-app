@@ -46,8 +46,8 @@ class Tabs extends Component {
             >
                 <ul className={
                     classNames('dc-tabs__list', {
-                        'dc-tabs__list--top'        : top,
-                        'dc-tabs__list--bottom'     : bottom,
+                        'dc-tabs__list--top'   : top,
+                        'dc-tabs__list--bottom': bottom,
                     })}
                 >
                     {children.map((child, index) => {

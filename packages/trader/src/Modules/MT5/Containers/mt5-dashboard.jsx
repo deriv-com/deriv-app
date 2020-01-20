@@ -133,8 +133,8 @@ class MT5Dashboard extends React.Component {
                         </Tabs>
                         <CompareAccountsModal />
                     </div>
+                    <MT5DashboardContainer />
                 </div>
-                <MT5DashboardContainer />
                 <Mt5TopUpDemoModal />
                 <MT5PasswordModal />
                 <MT5ServerErrorDialog />

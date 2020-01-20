@@ -1,5 +1,5 @@
 {
-	"name": "@deriv/bot-skeleton",
+  "name": "@deriv/bot-skeleton",
 	"version": "1.0.0",
 	"description": "Visual automation for deriv.app",
 	"main": "dist/bot-skeleton.js",

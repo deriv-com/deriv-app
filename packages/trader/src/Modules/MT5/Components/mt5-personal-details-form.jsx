@@ -175,10 +175,10 @@ class MT5PersonalDetailsForm extends Component {
                                                                 error={touched.citizen && errors.citizen}
                                                                 disabled={values.citizen && is_fully_authenticated}
                                                                 list_items={residence_list}
-                                                                onItemSelection={(item) => setFieldValue(
+                                                                onItemSelection={({ value, text }) => setFieldValue(
                                                                     'citizen',
-                                                                    item.text,
-                                                                    false,
+                                                                    value ? text: '',
+                                                                    true,
                                                                 )}
                                                                 required
                                                             />
@@ -201,10 +201,10 @@ class MT5PersonalDetailsForm extends Component {
                                                                     is_fully_authenticated
                                                                 }
                                                                 list_items={residence_list}
-                                                                onItemSelection={(item) => setFieldValue(
+                                                                onItemSelection={({ value, text }) => setFieldValue(
                                                                     'tax_residence',
-                                                                    item.text,
-                                                                    false,
+                                                                    value ? text : '',
+                                                                    true,
                                                                 )}
                                                                 {...field}
                                                             />

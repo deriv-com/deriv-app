@@ -28,14 +28,15 @@ const getUrlBase = (path = '') => {
     return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
 };
 
-const hasLanguage = (lang) => {
+const isStaging = () => /staging\.deriv\.app/i.test(window.location.hostname);
+
+const isLanguageAvailable = (lang) => {
     if (!lang) return false;
 
     const selected_language = lang.toUpperCase();
-    const is_staging = /staging\.deriv\.app/i.test(window.location.hostname);
     const is_ach = selected_language === 'ACH';
 
-    if (is_ach && is_staging) return true;
+    if (is_ach && isStaging()) return true;
     if (is_ach) return false;
 
     // TODO: remove when translations are ready
@@ -47,22 +48,19 @@ const hasLanguage = (lang) => {
 const getAllLanguages = () => ALL_LANGUAGES;
 
 const getInitialLanguage = () => {
-    const has_url_search_language = window.location.search && window.location.search.includes('lang=');
+    const url_params = new URLSearchParams(window.location.search);
+    const query_lang = url_params.get('lang');
     const local_storage_language  = localStorage.getItem(LANGUAGE_KEY);
-    if (has_url_search_language) {
-        const query_lang = window.location.search
-            .substr(1).split('&')
-            .find(query => query.includes('lang='))
-            .split('=')[1]
-            .toUpperCase();
-        if (hasLanguage(query_lang)) {
+
+    if (query_lang) {
+        if (isLanguageAvailable(query_lang)) {
             localStorage.setItem(LANGUAGE_KEY, query_lang);
             return query_lang;
         }
     }
 
     if (local_storage_language) {
-        if (hasLanguage(local_storage_language)) {
+        if (isLanguageAvailable(local_storage_language)) {
             return local_storage_language;
         }
     }
@@ -97,8 +95,7 @@ i18n
     .init(i18n_config);
 
 const initializeTranslations = async () => {
-    const is_staging = /staging\.deriv\.app/i.test(window.location.hostname);
-    if (is_staging) {
+    if (isStaging()) {
         loadIncontextTranslation();
     }
     await loadLanguageJson(initial_language);
@@ -106,6 +103,18 @@ const initializeTranslations = async () => {
 
 const getLanguage = () => {
     return i18n.language || initial_language;
+};
+
+// eslint-disable-next-line no-unused-vars
+const changeLanguage = async (lang, cb) => {
+    // TODO: uncomment this when translations are ready	    // TODO: uncomment this when translations are ready
+    // if (isLanguageAvailable(lang)) {
+    //     await loadLanguageJson(lang);
+    //     i18n.changeLanguage(lang, () => {
+    //         localStorage.setItem(LANGUAGE_KEY, lang);
+    //         cb();
+    //     })
+    // }
 };
 
 // <Localize /> component wrapped with i18n
@@ -133,6 +142,7 @@ const loadIncontextTranslation = () => {
 };
 
 export default {
+    changeLanguage,
     getAllLanguages,
     getLanguage,
     initializeTranslations,

@@ -241,6 +241,10 @@ class Popup extends Component {
                                             <p className='buy-sell__popup-info--text'>{ad.advertiser}</p>
                                         </div>
                                         <div className='buy-sell__popup-info'>
+                                            <span className='buy-sell__popup-info--title'>{localize('Payment method')}</span>
+                                            <p className='buy-sell__popup-info--text'>{ad.payment_method}</p>
+                                        </div>
+                                        <div className='buy-sell__popup-info'>
                                             <span className='buy-sell__popup-info--title'>{localize('Advertiser notes')}</span>
                                             {
                                                 ad.advertiser_note.split('\n').map((text, idx) => (

@@ -14,8 +14,6 @@ class Tab extends Component {
             count,
             is_active,
             label,
-            top,
-            bottom,
         } = this.props;
 
         const classes = classNames('dc-tabs__item', {

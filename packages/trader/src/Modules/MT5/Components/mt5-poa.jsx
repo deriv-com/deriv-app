@@ -394,6 +394,7 @@ class MT5POA extends Component {
                                                                             setFieldValue,
                                                                         )}
                                                             />
+                                                            {errors.document_file && <p className='dc-field-error'>{errors['document_file']}</p> }
                                                         </div>
                                                     </div>
                                                 </div>

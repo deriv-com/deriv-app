@@ -31,8 +31,8 @@ const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
                 </Table.Cell>
                 <Table.Cell>{ order_purchase_datetime }</Table.Cell>
                 <Table.Cell>{ display_status }</Table.Cell>
-                <Table.Cell>{ transaction_currency }{ ' ' }{ display_transaction_amount }</Table.Cell>
-                <Table.Cell>{ offer_currency }{ ' ' }{ display_offer_amount }</Table.Cell>
+                <Table.Cell>{ display_transaction_amount }{ ' ' }{ transaction_currency }</Table.Cell>
+                <Table.Cell>{ display_offer_amount }{ ' ' }{ offer_currency }</Table.Cell>
             </Table.Row>
         </div>
     );

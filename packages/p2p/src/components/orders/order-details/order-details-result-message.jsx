@@ -1,10 +1,10 @@
 import React        from 'react';
 import PropTypes    from 'prop-types';
-import AgentContext from 'Components/context/agent-context';
+import Dp2pContext  from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 
 const OrderDetailsResultMessage = ({ order_details }) => {
-    const { is_agent } = React.useContext(AgentContext);
+    const { is_agent } = React.useContext(Dp2pContext);
     const {
         is_completed,
         is_buyer,

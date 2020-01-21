@@ -150,6 +150,7 @@ function calculate_marker(contract_info) {
         transaction_ids,
         tick_stream,
         contract_id,
+        current_spot_time,
         date_start,
         date_expiry,
         entry_tick,
@@ -215,7 +216,7 @@ function calculate_marker(contract_info) {
         const end_time = getEndTime(contract_info) || date_expiry;
 
         const epoch_array = [date_start, end_time];
-        epoch_array.push(...[entry_tick_time, reset_time, exit_tick_time].filter(epoch => epoch));
+        epoch_array.push(...[entry_tick_time, exit_tick_time, current_spot_time, reset_time].map(epoch => epoch || 0));
 
         return {
             contract_info: toJS(contract_info),

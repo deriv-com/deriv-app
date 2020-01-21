@@ -10,6 +10,7 @@ import {
     draw_barrier_line,
     draw_line,
 }                           from './Helpers/lines';
+import { draw_shade }       from './Helpers/shade';
 import {
     calc_scale,
     calc_opacity,
@@ -18,7 +19,7 @@ import * as ICONS           from '../icons';
 
 const NonTickContract = RawMarkerMaker(({
     ctx: context,
-    points: [start, expiry, entry, reset_time, exit],
+    points: [start, expiry, entry, exit, current_time, reset_time],
     is_last_contract,
     prices: [barrier, entry_tick_top, exit_tick_top], // TODO: support two barrier contracts
     is_dark_theme,
@@ -41,7 +42,8 @@ const NonTickContract = RawMarkerMaker(({
 
     const foreground_color = `${get_color({ is_dark_theme, status: 'fg' })}${is_last_contract ? '' : '66'}`;
     const background_color = get_color({ is_dark_theme, status: 'bg' });
-    const color_based_on_status = `${get_color({ status, is_dark_theme, profit })}${is_last_contract ? '' : '66'}`;
+    const status_color = get_color({ status, is_dark_theme, profit });
+    const status_color_with_opacity = `${status_color}${is_last_contract ? '' : '66'}`;
 
     const scale = calc_scale(start.zoom);
     const canvas_height = (ctx.canvas.height / window.devicePixelRatio);
@@ -94,7 +96,7 @@ const NonTickContract = RawMarkerMaker(({
         }
 
         if (expiry.visible) {
-            ctx.strokeStyle = color_based_on_status;
+            ctx.strokeStyle = status_color_with_opacity;
             draw_vertical_labelled_line({
                 ctx,
                 text    : 'Sell\nTime',
@@ -106,7 +108,7 @@ const NonTickContract = RawMarkerMaker(({
                 line_style: 'solid',
                 icon      : ICONS.BUY_SELL.with_color_on_specific_paths({
                     0: { fill: background_color },
-                    1: { fill: color_based_on_status },
+                    1: { fill: status_color_with_opacity },
                 }),
             });
         }
@@ -133,13 +135,15 @@ const NonTickContract = RawMarkerMaker(({
 
             ctx.strokeStyle = foreground_color;
             draw_barrier_line({ ctx, start, exit: reset_time, barrier: entry_tick_top, line_style: 'dashed' });
-            ctx.strokeStyle = color_based_on_status;
+            ctx.strokeStyle = status_color_with_opacity;
             draw_barrier_line({ ctx, start: reset_time, exit: expiry, barrier });
+            draw_shade({ ctx, is_sold, start: reset_time, end: current_time, color: status_color });
         } else {
             ctx.strokeStyle = foreground_color;
             draw_barrier_line({ ctx, start, exit: entry, barrier, line_style: 'dashed' });
-            ctx.strokeStyle = color_based_on_status;
+            ctx.strokeStyle = status_color_with_opacity;
             draw_barrier_line({ ctx, start: entry, exit: expiry, barrier, line_style: 'solid' });
+            draw_shade({ ctx, is_sold, start: entry, end: current_time, color: status_color });
         }
     }
 
@@ -161,6 +165,7 @@ const NonTickContract = RawMarkerMaker(({
         const decimal_places = CurrencyUtils.getDecimalPlaces(currency);
         const sign = profit < 0 ? '-' : profit > 0 ? '+' : ' '; // eslint-disable-line
         const text = `${sign}${symbol}${Math.abs(profit).toFixed(decimal_places)}`;
+        ctx.fillStyle = status_color_with_opacity;
         shadowed_text({
             ctx,
             scale,
@@ -175,10 +180,10 @@ const NonTickContract = RawMarkerMaker(({
         // Draw a line from barrier to icon.
         const icon = ICONS.END.with_color_on_specific_paths({
             0: { fill: background_color + (is_sold ? opacity : '') },
-            1: { fill: color_based_on_status },
+            1: { fill: status_color_with_opacity },
         });
 
-        ctx.strokeStyle = color_based_on_status;
+        ctx.strokeStyle = status_color_with_opacity;
         draw_barrier_line_to_icon({ ctx, exit: expiry, barrier, icon });
     }
     ctx.restore();

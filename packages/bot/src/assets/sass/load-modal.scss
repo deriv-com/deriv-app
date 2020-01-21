@@ -43,6 +43,7 @@ $modal_container_height: calc(100vh - 210px);
             cursor: pointer;
         }
         &-explain {
+            font-size: var(--text-size-xxs);
             margin: 8px auto 0;
             text-align: left;
             opacity: 0;
@@ -67,7 +68,7 @@ $modal_container_height: calc(100vh - 210px);
         padding: 25px;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: center;
         height: $modal_container_height;
     }
     &__content {

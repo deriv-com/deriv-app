@@ -43,10 +43,10 @@ const NonTickContract = RawMarkerMaker(({
         if (exit) { exit.top = exit_tick_top; }
     }
 
-    const foreground_color = get_color({ is_dark_theme, status: 'fg' }).concat(is_last_contract ? get_hex_opacity(0.4) : '');
+    const foreground_color = get_color({ is_dark_theme, status: 'fg' }).concat(is_last_contract ? '' :  get_hex_opacity(0.4));
     const background_color = get_color({ is_dark_theme, status: 'bg' });
     const status_color     = get_color({ status, is_dark_theme, profit });
-    const status_color_with_opacity = status_color.concat(is_last_contract ? get_hex_opacity(0.4) : '');
+    const status_color_with_opacity = status_color.concat(is_last_contract ? '' : get_hex_opacity(0.4));
 
     const scale = calc_scale(start.zoom);
     const canvas_height = (ctx.canvas.height / window.devicePixelRatio);

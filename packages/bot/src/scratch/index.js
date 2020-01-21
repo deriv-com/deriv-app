@@ -366,10 +366,12 @@ class DBot {
                     // Remove select highlight in favour of error highlight.
                     block.removeSelect();
 
-                    let current_collapsed_block = block;
-                    while (current_collapsed_block) {
-                        current_collapsed_block.setCollapsed(false);
-                        current_collapsed_block = current_collapsed_block.getParent();
+                    if (force_check) {
+                        let current_collapsed_block = block;
+                        while (current_collapsed_block) {
+                            current_collapsed_block.setCollapsed(false);
+                            current_collapsed_block = current_collapsed_block.getParent();
+                        }
                     }
                 }
 

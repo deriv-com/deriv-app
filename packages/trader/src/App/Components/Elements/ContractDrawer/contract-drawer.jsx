@@ -29,6 +29,7 @@ import ContractCardBody        from './contract-card-body.jsx';
 import ContractCardFooter      from './contract-card-footer.jsx';
 import ContractCardHeader      from './contract-card-header.jsx';
 import ContractCard            from './contract-card.jsx';
+import ContractCardLoader      from './contract-card-loader.jsx';
 
 class ContractDrawer extends Component {
     state = {
@@ -120,10 +121,14 @@ class ContractDrawer extends Component {
                                     {localize('Purchase price:')}
                                 </span>
                                 <span id='dt_purchase_price_label' className='purchase-price__value' >
-                                    <Money
-                                        currency={currency}
-                                        amount={buy_price}
-                                    />
+                                    { is_contract_waiting ?
+                                        <ContractCardLoader />
+                                        :
+                                        <Money
+                                            currency={currency}
+                                            amount={buy_price}
+                                        />
+                                    }
                                 </span>
                             </div>
                             <div className='potential-payout-container'>
@@ -131,10 +136,14 @@ class ContractDrawer extends Component {
                                     {localize('Potential payout:')}
                                 </span>
                                 <span id='dt_potential_payout_label' className='potential-payout-price__value' >
-                                    <Money
-                                        currency={currency}
-                                        amount={payout}
-                                    />
+                                    { is_contract_waiting ?
+                                        <ContractCardLoader />
+                                        :
+                                        <Money
+                                            currency={currency}
+                                            amount={payout}
+                                        />
+                                    }
                                 </span>
                             </div>
                         </div>

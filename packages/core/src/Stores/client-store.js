@@ -343,7 +343,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_mt5_allowed() {
-        if (!Object.keys(this.landing_companies).length) return false;
+        if (!this.landing_companies || !Object.keys(this.landing_companies).length) return false;
         // TODO revert this when all landing companies are accepted.
         // return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
         if ('mt_financial_company' in this.landing_companies ||  'mt_gaming_company' in this.landing_companies) {

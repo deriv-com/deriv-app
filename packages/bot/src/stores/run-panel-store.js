@@ -186,6 +186,7 @@ export default class RunPanelStore {
 
         observer.register('bot.running', this.onBotRunningEvent);
         observer.register('bot.stop', this.onBotStopEvent);
+        observer.register('bot.click_stop', this.onStopButtonClick);
         observer.register('bot.trade_again', this.onBotTradeAgain);
         observer.register('contract.status', this.onContractStatusEvent);
         observer.register('contract.status', summary.onContractStatusEvent);

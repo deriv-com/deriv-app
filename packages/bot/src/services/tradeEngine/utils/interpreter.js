@@ -99,7 +99,7 @@ export default class Interpreter {
 
                 if (shouldStopOnError(this.bot, e.name)) {
                     globalObserver.emit('ui.log.error', e.message);
-                    this.stop();
+                    globalObserver.emit('bot.click_stop');
                     return;
                 }
 

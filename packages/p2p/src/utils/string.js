@@ -4,3 +4,7 @@ export const toSentenceCase = (string) => {
     }
     return string[0].toUpperCase() + string.slice(1);
 };
+
+export const countDecimalPlaces = (value) => {
+    return (((value.toString().split('.') || [])[1]) || []).length;
+};

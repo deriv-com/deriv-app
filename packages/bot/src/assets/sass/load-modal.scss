@@ -270,9 +270,9 @@ $modal_container_height: calc(100vh - 210px);
         }
         &--disabled {
             // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
-            --fill-color1: var(--text-disabled) !important;
-            --fill-color2: var(--text-disabled) !important;
-            --fill-color3: var(--text-disabled) !important;
+            --fill-color1: #{$color-grey-8} !important;
+            --fill-color2: #{$color_grey-9} !important;
+            --fill-color3: #{$color-grey-10} !important;
         }
     }
 }

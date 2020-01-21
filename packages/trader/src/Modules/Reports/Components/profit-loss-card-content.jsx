@@ -70,10 +70,11 @@ const ProfitLossCardContent = ({
 );
 
 ProfitLossCardContent.propTypes = {
-    currency: PropTypes.string,
-    is_sold : PropTypes.bool,
-    payout  : PropTypes.number,
-    pl_value: PropTypes.number,
-    status  : PropTypes.string,
+    currency           : PropTypes.string,
+    is_contract_waiting: PropTypes.bool,
+    is_sold            : PropTypes.bool,
+    payout             : PropTypes.number,
+    pl_value           : PropTypes.number,
+    status             : PropTypes.string,
 };
 export default ProfitLossCardContent;

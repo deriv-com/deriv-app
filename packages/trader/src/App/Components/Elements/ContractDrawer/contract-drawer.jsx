@@ -110,6 +110,7 @@ class ContractDrawer extends Component {
                             pl_value={+profit}
                             payout={getIndicativePrice(contract_info)}
                             currency={currency}
+                            is_contract_waiting={is_contract_waiting}
                             is_sold={!!(is_sold)}
                             status={this.props.status}
                         />

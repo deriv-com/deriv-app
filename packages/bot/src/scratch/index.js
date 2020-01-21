@@ -365,17 +365,18 @@ class DBot {
                 if (should_highlight) {
                     // Remove select highlight in favour of error highlight.
                     block.removeSelect();
-
-                    if (force_check) {
-                        let current_collapsed_block = block;
-                        while (current_collapsed_block) {
-                            current_collapsed_block.setCollapsed(false);
-                            current_collapsed_block = current_collapsed_block.getParent();
-                        }
-                    }
                 }
 
                 block.setErrorHighlighted(should_highlight);
+
+                // Automatically expand blocks that have been highlighted.
+                if (force_check && (block.is_error_highlighted || block.hasErrorHighlightedDescendant())) {
+                    let current_collapsed_block = block;
+                    while (current_collapsed_block) {
+                        current_collapsed_block.setCollapsed(false);
+                        current_collapsed_block = current_collapsed_block.getParent();
+                    }
+                }
             }
         });
     }

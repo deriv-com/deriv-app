@@ -2,7 +2,10 @@ import CurrencyUtils        from '@deriv/shared/utils/currency';
 import RawMarkerMaker       from './Helpers/raw-marker-maker.jsx';
 import Svg2Canvas           from './Helpers/svg2canvas';
 import { CURRENCY_SYMBOLS } from './Constants/currency_symbols';
-import { get_color }        from './Helpers/colors';
+import {
+    get_color,
+    get_hex_opacity,
+}                           from './Helpers/colors';
 import { shadowed_text }    from './Helpers/text';
 import {
     draw_vertical_labelled_line,
@@ -40,10 +43,10 @@ const NonTickContract = RawMarkerMaker(({
         if (exit) { exit.top = exit_tick_top; }
     }
 
-    const foreground_color = `${get_color({ is_dark_theme, status: 'fg' })}${is_last_contract ? '' : '66'}`;
+    const foreground_color = get_color({ is_dark_theme, status: 'fg' }).concat(is_last_contract ? get_hex_opacity(0.4) : '');
     const background_color = get_color({ is_dark_theme, status: 'bg' });
-    const status_color = get_color({ status, is_dark_theme, profit });
-    const status_color_with_opacity = `${status_color}${is_last_contract ? '' : '66'}`;
+    const status_color     = get_color({ status, is_dark_theme, profit });
+    const status_color_with_opacity = status_color.concat(is_last_contract ? get_hex_opacity(0.4) : '');
 
     const scale = calc_scale(start.zoom);
     const canvas_height = (ctx.canvas.height / window.devicePixelRatio);

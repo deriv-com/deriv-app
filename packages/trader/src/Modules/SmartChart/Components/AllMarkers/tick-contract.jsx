@@ -1,6 +1,9 @@
 import RawMarkerMaker    from './Helpers/raw-marker-maker.jsx';
 import Svg2Canvas        from './Helpers/svg2canvas';
-import { get_color }     from './Helpers/colors';
+import {
+    get_color,
+    get_hex_opacity,
+}                        from './Helpers/colors';
 import { shadowed_text } from './Helpers/text';
 import {
     draw_vertical_labelled_line,
@@ -35,7 +38,7 @@ const TickContract = RawMarkerMaker(({
     /** @type {CanvasRenderingContext2D} */
     const ctx = context;
 
-    const foreground_color = `${get_color({ is_dark_theme, status: 'fg' })}${is_last_contract ? '' : '66'}`;
+    const foreground_color = get_color({ is_dark_theme, status: 'fg' }).concat(get_hex_opacity(0.4));
     const background_color = get_color({ is_dark_theme, status: 'bg' });
     const scale = calc_scale(start.zoom);
     const canvas_height = (ctx.canvas.height / window.devicePixelRatio);
@@ -57,7 +60,7 @@ const TickContract = RawMarkerMaker(({
     const entry = ticks[0];
     const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
     const status_color = get_color({ status, is_dark_theme, profit });
-    const status_color_with_opacity = `${status_color}${is_last_contract ? '' : '66'}`;
+    const status_color_with_opacity = status_color.concat(get_hex_opacity(0.4));
 
     const has_reset_time = reset_time && reset_time.epoch;
     const should_draw_vertical_line = is_last_contract && !is_sold;

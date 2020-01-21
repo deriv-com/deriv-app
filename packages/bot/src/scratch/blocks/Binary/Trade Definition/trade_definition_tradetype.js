@@ -48,11 +48,13 @@ Blockly.Blocks.trade_definition_tradetype = {
                     contracts_for.getTradeTypeCategories(market, submarket, symbol).then(categories => {
                         const trade_type_cat_field = this.getField('TRADETYPECAT_LIST');
 
-                        trade_type_cat_field.updateOptions(categories, {
-                            default_value       : trade_type_cat,
-                            should_pretend_empty: true,
-                            event_group         : event.group,
-                        });
+                        if (trade_type_cat_field) {
+                            trade_type_cat_field.updateOptions(categories, {
+                                default_value       : trade_type_cat,
+                                should_pretend_empty: true,
+                                event_group         : event.group,
+                            });
+                        }
                     });
                 } else if (event.name === 'TRADETYPECAT_LIST' && event.blockId === this.id) {
                     contracts_for.getTradeTypes(market, submarket, symbol, trade_type_cat).then(trade_types => {

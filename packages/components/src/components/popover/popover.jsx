@@ -157,6 +157,7 @@ Popover.propTypes = {
         PropTypes.string,
     ]),
     portal_container: PropTypes.string,
+    zIndex          : PropTypes.number,
 };
 
 export default Popover;

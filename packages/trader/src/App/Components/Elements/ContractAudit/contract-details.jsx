@@ -16,7 +16,7 @@ import {
     getDealCancellationPrice,
     isDealCancellationExpired,
     isUserCancelled,
-    isUserSold }                from 'Stores/Modules/Contract/Helpers/logic';
+    isEnded }                   from 'Stores/Modules/Contract/Helpers/logic';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
 import ContractAuditItem        from './contract-audit-item.jsx';
 
@@ -50,7 +50,7 @@ const ContractDetails = ({
     const getLabel = () => {
         if (isUserCancelled(contract_info))           return localize('Deal cancellation (executed)');
         if (isDealCancellationExpired(contract_info)) return localize('Deal cancellation (expired)');
-        if (isUserSold(contract_info))                return localize('Deal cancellation');
+        if (isEnded(contract_info))                   return localize('Deal cancellation');
         return localize('Deal cancellation (active)');
     };
 

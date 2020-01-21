@@ -15,9 +15,10 @@ const RemainingTime = ({
     }
 
     const remaining_time = formatDuration(getDiffDuration(start_time.unix(), end_time), format);
+    const is_zeroes      = /^00:00$/.test(remaining_time);
 
     return (
-        <div className='remaining-time'>{remaining_time}</div>
+        !is_zeroes && <div className='remaining-time'>{remaining_time}</div>
     );
 };
 

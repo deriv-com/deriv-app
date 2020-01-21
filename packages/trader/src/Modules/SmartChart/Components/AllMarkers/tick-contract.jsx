@@ -8,6 +8,7 @@ import {
     draw_barrier_line,
     draw_line,
 }                        from './Helpers/lines';
+import { draw_shade }    from './Helpers/shade';
 import {
     calc_scale,
     calc_opacity,
@@ -55,7 +56,8 @@ const TickContract = RawMarkerMaker(({
     const exit = ticks[ticks.length - 1];
     const entry = ticks[0];
     const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
-    const color_based_on_status = `${get_color({ status, is_dark_theme, profit })}${is_last_contract ? '' : '66'}`;
+    const status_color = get_color({ status, is_dark_theme, profit });
+    const status_color_with_opacity = `${status_color}${is_last_contract ? '' : '66'}`;
 
     const has_reset_time = reset_time && reset_time.epoch;
     const should_draw_vertical_line = is_last_contract && !is_sold;
@@ -93,7 +95,7 @@ const TickContract = RawMarkerMaker(({
             });
         }
         if (exit.visible && tick_count === (ticks.length - 1)) {
-            ctx.strokeStyle = color_based_on_status;
+            ctx.strokeStyle = status_color_with_opacity;
             draw_vertical_labelled_line({
                 ctx,
                 text    : 'Sell\nTime',
@@ -105,7 +107,7 @@ const TickContract = RawMarkerMaker(({
                 line_style: 'solid',
                 icon      : ICONS.BUY_SELL.with_color_on_specific_paths({
                     0: { fill: background_color },
-                    1: { fill: color_based_on_status },
+                    1: { fill: status_color_with_opacity },
                 }),
             });
         }
@@ -127,13 +129,15 @@ const TickContract = RawMarkerMaker(({
 
         ctx.strokeStyle = foreground_color;
         draw_barrier_line({ ctx, start, exit: reset_time, barrier: entry_tick_top, line_style: 'dashed' });
-        ctx.strokeStyle = color_based_on_status;
+        ctx.strokeStyle = status_color_with_opacity;
         draw_barrier_line({ ctx, start: reset_time, exit, barrier });
+        draw_shade({ ctx, is_sold, start: reset_time, end: exit, color: status_color });
     } else {
         ctx.strokeStyle = foreground_color;
         draw_barrier_line({ ctx, start, exit: entry, barrier, line_style: 'dashed' });
-        ctx.strokeStyle = color_based_on_status;
+        ctx.strokeStyle = status_color_with_opacity;
         draw_barrier_line({ ctx, start: entry, exit, barrier, line_style: 'solid' });
+        draw_shade({ ctx, is_sold, start: entry, end: exit, color: status_color });
     }
 
     // ticks for last contract
@@ -169,7 +173,7 @@ const TickContract = RawMarkerMaker(({
             is_dark_theme,
             text: `${ticks.length - 1}/${tick_count}`,
             left: start.left,
-            top : start.top + 5,
+            top : barrier - 28 * scale,
         });
     }
 
@@ -178,10 +182,10 @@ const TickContract = RawMarkerMaker(({
         // Draw a line from barrier to icon.
         const icon = ICONS.END.with_color_on_specific_paths({
             0: { fill: background_color + (is_sold ? opacity : '') },
-            1: { fill: color_based_on_status },
+            1: { fill: status_color_with_opacity },
         });
 
-        ctx.strokeStyle = color_based_on_status;
+        ctx.strokeStyle = status_color_with_opacity;
         draw_barrier_line_to_icon({ ctx, exit, barrier, icon });
     }
     ctx.restore();

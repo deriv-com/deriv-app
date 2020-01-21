@@ -292,7 +292,7 @@ Blockly.WorkspaceSvg.prototype.paste = function (xml_block) {
         this.currentGesture_.cancel();  // Dragging while pasting?  No.
     }
 
-    if (xml_block.tagName.toLowerCase() == 'comment') {
+    if (xml_block.tagName.toLowerCase() === 'comment') {
         this.pasteWorkspaceComment_(xml_block);
     } else {
         removeLimitedBlocks(this, xml_block.getAttribute('type'));

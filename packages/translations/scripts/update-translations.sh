@@ -44,7 +44,6 @@ then
     cd $(git rev-parse --show-toplevel) && cd packages/translations/scripts && node extract-translations.js &&
     message "Uploading source file to Crowdin"
     cd $(git rev-parse --show-toplevel) && cd packages/translations && source ~/.bash_profile && crowdin upload sources
-    cd $(git rev-parse --show-toplevel) && git checkout packages/translations/crowdin/messages.json
     message "Complete, new translations have been uploaded to Crowdin"
 fi
 
@@ -52,7 +51,7 @@ confirm "Download deriv app files and update javascript texts?" &&
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     message "Downloading deriv app files from Crowdin (*.json)" &&
-    crowdin download
+    cd $(git rev-parse --show-toplevel) && cd packages/translations && crowdin download
 fi &&
 
 confirm "Commit changes and push to origin?" &&

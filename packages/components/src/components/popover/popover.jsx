@@ -124,6 +124,7 @@ Popover.propTypes = {
     margin              : PropTypes.number,
     message             : PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     portal_container    : PropTypes.string,
+    zIndex              : PropTypes.number,
 };
 
 export default Popover;

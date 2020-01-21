@@ -33,6 +33,9 @@
     &:not([disabled]):hover {
         text-decoration: none;
     }
+    &__rounded {
+        border-radius: 24px;
+    }
     &--primary {
         background: var(--button-primary-default);
         color: var(--text-colored-background);

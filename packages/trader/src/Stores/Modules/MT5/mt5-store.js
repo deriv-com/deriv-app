@@ -28,6 +28,8 @@ export default class MT5Store extends BaseStore {
     @observable is_mt5_advanced_modal_open    = false;
     @observable is_mt5_password_modal_enabled = false;
 
+    @observable is_mt5_pending_dialog_open = false;
+
     @observable current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
 
     constructor({ root_store }) {
@@ -310,13 +312,21 @@ export default class MT5Store extends BaseStore {
         }
     }
 
+    @action.bound
+    closeMT5PendingDialog() {
+        this.is_mt5_pending_dialog_open = false;
+    }
+
+    @action.bound
+    openPendingDialog() {
+        setTimeout(runInAction(() => {
+            this.is_mt5_pending_dialog_open = true;
+        }), 300);
+    }
+
     static async changePassword({ login, old_password, new_password, password_type }) {
-        const response = await WS.authorized.mt5PasswordChange(login, old_password, new_password, password_type);
+        const { error } = await WS.authorized.mt5PasswordChange(login, old_password, new_password, password_type);
 
-        if (response.error) {
-            return response.error.message;
-        }
-
-        return undefined;
+        return error ? error.message : undefined;
     }
 }

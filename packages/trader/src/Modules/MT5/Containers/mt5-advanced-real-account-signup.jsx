@@ -8,7 +8,6 @@ import { WS }                      from 'Services/ws-methods';
 import MT5POA                      from '../Components/mt5-poa.jsx';
 import MT5PersonalDetailsForm      from '../Components/mt5-personal-details-form.jsx';
 import MT5POI                      from '../Components/mt5-poi.jsx';
-import MT5PendingVerificationModal from '../Components/mt5-pending-verification-modal.jsx';
 
 const index_lookup = {
     MT5PersonalDetailsForm: 0,
@@ -74,15 +73,6 @@ class MT5AdvancedRealAccountSignup extends Component {
                     },
                     props: ['states_list', 'get_settings', 'storeProofOfAddress', 'refreshNotifications'],
                 },
-                {
-                    body      : MT5PendingVerificationModal,
-                    form_value: {},
-                    header    : {
-                        active_title: localize('Account password'),
-                        title       : localize('Account password'),
-                    },
-                    props: ['toggleModal'],
-                },
             ],
         };
     }
@@ -106,17 +96,14 @@ class MT5AdvancedRealAccountSignup extends Component {
         if (this.has_more_steps) {
             this.goNext();
         } else {
-            this.createMT5AdvancedAccount(setSubmitting);
+            this.finishWizard(setSubmitting);
         }
     };
 
-    createMT5AdvancedAccount = (setSubmitting) => {
-        setSubmitting(true);
-        this.props.getAccountSettings();
-        // get account settings
-        // if POI/POA is accepted, open password modal
-        // else show a prompt for user to wait and check back later.
+    finishWizard = (setSubmitting) => {
         setSubmitting(false);
+        this.props.openPendingDialog();
+        this.props.toggleModal();
     };
 
     prevStep = () => {
@@ -250,17 +237,19 @@ class MT5AdvancedRealAccountSignup extends Component {
 }
 
 MT5AdvancedRealAccountSignup.propTypes = {
-    toggleModal: PropTypes.func,
+    openPendingDialog: PropTypes.func,
+    toggleModal      : PropTypes.func,
 };
 
 export default connect(({ client, modules: { mt5 }, ui }) => ({
     addNotificationByKey     : ui.addNotificationByKey,
-    residence_list           : client.residence_list,
+    get_settings             : client.account_settings,
     is_fully_authenticated   : client.is_fully_authenticated,
+    openPendingDialog        : mt5.openPendingDialog,
     refreshNotifications     : client.refreshNotifications,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey  : ui.removeNotificationByKey,
+    residence_list           : client.residence_list,
     states_list              : client.states_list,
-    get_settings             : client.account_settings,
     storeProofOfAddress      : mt5.storeProofOfAddress,
 }))(MT5AdvancedRealAccountSignup);

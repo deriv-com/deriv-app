@@ -14,8 +14,9 @@ import MT5PasswordModal                   from './mt5-password-modal.jsx';
 import MT5ServerErrorDialog               from './mt5-server-error-dialog.jsx';
 import Mt5TopUpDemoModal                  from './mt5-top-up-demo-modal.jsx';
 import MT5WelcomeMessage                  from './mt5-welcome-message.jsx';
-import { MT5RealAccountDisplay }          from '../Components/mt5-real-account-display.jsx';
+import Mt5AdvancedPendingDialog           from '../Components/mt5-advanced-pending-dialog.jsx';
 import { MT5DemoAccountDisplay }          from '../Components/mt5-demo-account-display.jsx';
+import { MT5RealAccountDisplay }          from '../Components/mt5-real-account-display.jsx';
 
 class MT5Dashboard extends React.Component {
     state = {
@@ -141,6 +142,7 @@ class MT5Dashboard extends React.Component {
                 <MT5PasswordModal />
                 <MT5ServerErrorDialog />
                 <MT5AccountOpeningRealAdvancedModal />
+                <Mt5AdvancedPendingDialog />
             </div>
         );
     }

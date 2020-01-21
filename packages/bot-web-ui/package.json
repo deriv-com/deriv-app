@@ -88,10 +88,10 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
+    "@deriv/bot-skeleton": "^1.0.0",
     "@deriv/components": "^1.0.0",
     "@deriv/shared": "^1.0.0",
     "@deriv/translations": "^1.0.0",
-    "@deriv/bot-skeleton": "^1.0.0",
     "classnames": "^2.2.6",
     "commander": "^2.20.0",
     "concat-stream": "^2.0.0",

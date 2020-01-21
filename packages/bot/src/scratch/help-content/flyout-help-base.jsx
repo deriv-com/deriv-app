@@ -91,7 +91,7 @@ const HelpBase = ({
                         <Button
                             className='flyout__button-next'
                             has_effect
-                            onClick={() => onSequenceClick(false)}
+                            onClick={() => onSequenceClick(true)}
                             text={localize('Next')}
                             type='button'
                         />

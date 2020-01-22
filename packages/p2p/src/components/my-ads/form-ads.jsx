@@ -43,7 +43,7 @@ class FormAds extends Component {
 
         const { data } = this.props;
 
-        // user is editting an existing ad, we should populate its data
+        // user is editing an existing ad, we should populate its data
         if (this.isUpdatingAd()) {
             this.setState({
                 is_loading      : false,

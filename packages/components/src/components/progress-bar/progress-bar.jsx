@@ -4,12 +4,12 @@ import React                           from 'react';
 
 function withinZeroAndOne(props, propName, componentName) {
     if (props[propName]) {
-        let value = props[propName];
+        const value = props[propName];
         if (typeof value === 'number') {
             return (value >= 0 && value <= 1) ? null : new Error(`${propName} in ${componentName} is not within 0 to 1`);
-        } else {
-            return new Error(`${propName} in ${componentName} is not a number`)
         }
+        return new Error(`${propName} in ${componentName} is not a number`);
+
     }
     return null;
 }
@@ -30,26 +30,25 @@ const ProgressBar = ({
         status = 'normal';
     }
     return (
-            <div className={classNames('dc-progress-bar__container', className)}>
-                <p className="dc-progress-bar__label">{label}</p>
-                <div
-                    className={classNames(
-                        `dc-progress-bar--${status}`,
-                        'dc-progress-bar__bar',
-                    )}
-                    style={{
-                        width: `${value * 100}%`,
-                    }}
-                >
-                </div>
-                <div
-                    className={classNames(
-                        `dc-progress-bar--${status}`,
-                        'dc-progress-bar__empty',
-                    )}
-                >
-                </div>
-            </div>
+        <div className={classNames('dc-progress-bar__container', className)}>
+            <p className='dc-progress-bar__label'>{label}</p>
+            <div
+                className={classNames({
+                    [`dc-progress-bar--${status}`]: status,
+                },
+                'dc-progress-bar__bar',
+                )}
+                style={{
+                    width: `${value * 100}%`,
+                }}
+            />
+            <div
+                className={classNames(
+                    `dc-progress-bar--${status}`,
+                    'dc-progress-bar__empty',
+                )}
+            />
+        </div>
     );
 };
 
@@ -58,7 +57,7 @@ ProgressBar.defaultProps = {
     label        : '',
     value        : 0,
     warning_limit: 0.5,
-}
+};
 
 export default ProgressBar;
 

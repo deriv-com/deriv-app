@@ -10,10 +10,7 @@ const ToggleMessage = ({ is_enabled, className, error }) => {
     return (
         <p className={className}>
             {error && error}
-            {/* TODO: [p2p-replace-design] handle loading design */}
-            {/* {is_loading && localize('Loading...')} */}
-            {!error && is_enabled && localize('Your ads are running')}
-            {!error && !is_enabled && localize('Your ads are paused')}
+            {is_enabled && !error ? localize('Your ads are running') : localize('Your ads are paused')}
         </p>
     );
 };
@@ -35,10 +32,8 @@ class ToggleAds extends Component {
         this.setState({ is_enabled: !this.state.is_enabled });
 
         requestWS({ p2p_agent_update: 1, is_active }).then((response) => {
-            console.log(response)
             if (response.error) {
                 this.setState({ error: response.error.message });
-                return;
             }
         });
     }

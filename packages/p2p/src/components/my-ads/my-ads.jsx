@@ -10,10 +10,9 @@ import './my-ads.scss';
 
 class MyAds extends Component {
     state = {
-        ad_id    : '',
-        // is_enabled: false,
-        show_form: false,
-        is_active: 0,
+        ad_id     : '',
+        is_enabled: false,
+        show_form : false,
         is_loading: true,
     };
 
@@ -24,9 +23,9 @@ class MyAds extends Component {
     componentDidMount() {
         requestWS({ p2p_agent_info: 1 }).then(response => {
             if (!response.error) {
-                this.setState({ is_active: response.p2p_agent_info.is_active, is_loading: false });
+                this.setState({ is_enabled: !!response.p2p_agent_info.is_active, is_loading: false });
             }
-        })
+        });
     }
 
     render() {
@@ -40,7 +39,7 @@ class MyAds extends Component {
                         <div className='p2p-my-ads__header'>
                             { !this.state.is_loading &&
                                 <ToggleAds
-                                    is_enabled={!!this.state.is_active}
+                                    is_enabled={this.state.is_enabled}
                                 />
                             }
                             <Button

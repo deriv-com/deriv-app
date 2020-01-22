@@ -377,10 +377,23 @@ export default class TradeStore extends BaseStore {
     onPurchase(proposal_id, price, type) {
         if (!this.is_purchase_enabled) return;
         performance.mark('purchase-started');
+
         if (proposal_id) {
             this.is_purchase_enabled = false;
             const is_tick_contract = this.duration_unit === 't';
-            processPurchase(proposal_id, price).then(action((response) => {
+            const passthrough = {
+                ...(this.expiry_type !== 'endtime') && {
+                    duration     : this.duration,
+                    duration_unit: this.duration_unit,
+                },
+                ...(this.expiry_type === 'endtime') && {
+                    expiry_date: this.expiry_date,
+                    expiry_time: this.expiry_time,
+                },
+                symbol: this.symbol,
+                type,
+            };
+            processPurchase(proposal_id, price, passthrough).then(action((response) => {
                 const last_digit = +this.last_digit;
                 if (this.proposal_info[type].id !== proposal_id) {
                     throw new Error('Proposal ID does not match.');

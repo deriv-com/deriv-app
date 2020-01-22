@@ -10,6 +10,7 @@ const ToggleMessage = ({ is_enabled, className, error, loading }) => {
     return (
         <p className={className}>
             {error && error}
+            {/* TODO: [p2p-replace-design] handle loading design */}
             {loading && localize('Loading...')}
             {!error && !loading && is_enabled && localize('Your ads are running')}
             {!error && !loading && !is_enabled && localize('Your ads are paused')}

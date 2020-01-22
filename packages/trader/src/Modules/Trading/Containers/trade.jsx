@@ -128,6 +128,7 @@ const ChartBottomWidgets = connect(
 const LazyTopWidgets = ({ onSymbolChange }) => (
     <TopWidgets
         InfoBox={null}
+        is_mobile={isMobile()}
         is_title_enabled={true}
         onSymbolChange={symbolChange(onSymbolChange)}
     />

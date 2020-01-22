@@ -288,42 +288,6 @@
         background: transparent;
         min-height: 100%;
     }
-    @include mobile {
-        // smartchart library style fixes
-        .cq-context {
-            div.cq-chart-controls {
-                border: 0;
-                width: calc(100% - 16px);
-                margin-left: 8px;
-            }
-        }
-        .cq-modal-dropdown {
-            &.stxMenuActive {
-                position: fixed;
-                height: 100%;
-                width: 100%;
-                top: 4.7em;
-                left: -0.1em;
-            }
-            .cq-categorical-display {
-                .ic-icon.icon-close-menu {
-                    svg {
-                        width: 2.4em;
-                        height: 2.4em;
-                    }
-                }
-                .cq-lookup-filters.scroll-down {
-                    max-height: unset;
-                }
-                .scrollbar-container.cq-scroll-panel {
-                    left: -0.1em;
-                }
-            }
-        }
-        .smartcharts-mobile .cq-modal-dropdown .cq-menu-overlay .cq-menu-dropdown {
-            bottom: 4em;
-        }
-    }
 }
 
 /** @define sidebar; weak; */

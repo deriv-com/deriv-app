@@ -4,7 +4,6 @@ import BlockConversion                from '../backward-compatibility';
 import { config }                     from '../../constants/config';
 import { observer as globalObserver } from '../../utils/observer';
 import { removeLimitedBlocks }        from '../../utils/workspace';
-import { save_types }                 from '../../constants/save-type';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 

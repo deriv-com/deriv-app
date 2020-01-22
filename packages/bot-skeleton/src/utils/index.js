@@ -16,7 +16,7 @@ import {
     saveWorkspaceToRecent,
 }                            from './local-storage';
 import {
-    timeSince
+    timeSince,
 }                            from './date-time-helper';
 
 export default {

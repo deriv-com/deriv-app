@@ -138,6 +138,11 @@
         animation-fill-mode: forwards;
         display: block;
     }
+    &__group {
+        .btn + .btn {
+            margin-left: 8px;
+        }
+    }
     /* TODO: confirm this button with designer are we still using this? */
     /* postcss-bem-linter: ignore */
     .initial-loader--btn {

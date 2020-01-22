@@ -1,0 +1,175 @@
+$category-colours: (
+    search             : #afffda,
+
+    trade_parameters   : #f3f3f3,
+    purchase_conditions: #f3f3f3,
+    sell_conditions    : #f3f3f3,
+    trade_results      : #f3f3f3,
+
+    contract_details   : #f3f3f3,
+    analysis           : #f3f3f3,
+    tick_analysis      : #f3f3f3,
+    indicators         : #f3f3f3,
+    stats              : #f3f3f3,
+
+    utility            : #f3f3f3,
+    math               : #f3f3f3,
+    text               : #f3f3f3,
+    logic              : #f3f3f3,
+    lists              : #f3f3f3,
+    custom_functions   : #f3f3f3,
+    variables          : #f3f3f3,
+    loops              : #f3f3f3,
+    time               : #f3f3f3,
+    misc               : #f3f3f3,
+    notifications      : #f3f3f3
+);
+
+.toolbox {
+    $toolbox         : &;
+    $white           : #fff;
+    $lightgrey       : #ebebeb;
+    $grey            : #f4f4f6;
+    $gray20          : #333;
+    $category-text-spacing: 10px;
+
+    background-color: $white;
+    border: 1px solid $lightgrey;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: absolute;
+    user-select: none;
+    z-index: 1;
+    width: 250px;
+
+    &__header {
+        padding: 8px;
+        margin-bottom: 10px;
+        position: relative;
+        font-weight: bold;
+        font-size: 1.6em;
+        background-color: $grey;
+        text-align: center;
+    }
+    &__item {
+        display: flex;
+        flex-direction: row;
+    }
+    &__category-arrow {
+        display: flex;
+        margin: auto;
+        width: 16px;
+        height: 16px;
+        padding: 6px;
+        background-image: url('/js/bot/media/ic-chevron-down-bold.svg');
+
+        &--left {
+            margin-left: $category-text-spacing;
+            transform: rotate(90deg);
+        }
+        &--right {
+            margin-right: $category-text-spacing;
+            transform: rotate(270deg);
+        }
+    }
+    &__category-colour {
+        width: 5px;
+        flex-shrink: 0;
+    }
+    @each $category, $colour in $category-colours {
+        &__category {
+            &--#{$category} {
+                #{$toolbox}__category-colour {
+                    background-color: $colour;
+                }
+            }
+        }
+        &__category-return {
+            #{$toolbox}__category {
+                &--#{$category} {
+                    background-color: $lightgrey;
+                    color: $gray20;
+                    max-height: 38px;
+                }
+            }
+        }
+    }
+
+    &__category-menu {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    &__category-return {
+        cursor: pointer;
+        text-align: center;
+
+        #{$toolbox}__label {
+            margin-left: -($category-text-spacing * 2);
+        }
+    }
+    &__category-text {
+        align-self: center;
+        margin: $category-text-spacing;
+        width: 100%;
+    }
+    &__description {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+    &__icon {
+        display: flex;
+        align-self: center;
+        margin-right: $category-text-spacing;
+
+        > svg {
+            height: 25px;
+            width: 25px;
+        }
+    }
+    &__label {
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    &__row {
+        cursor: pointer;
+        border-top: 1px solid $lightgrey;
+
+        &:last-of-type {
+            border-bottom: 1px solid $lightgrey;
+        }
+
+        @each $category, $colour in $category-colours {
+            #{$toolbox}__category {
+                &--#{$category} {
+                    &:hover:not(#{$toolbox}__category--selected) {
+                        background-image: linear-gradient(to right, $white 25%, transparentize($colour, 0.8) 100%);
+                    }
+                }
+                &--#{$category}#{$toolbox}__category--selected {
+                    background-color: transparentize($colour, 0.9);
+                    transition: background-color 0.25s ease;
+                }
+            }
+        }
+    }
+    &__separator {
+        padding: 10px 0;
+        border-top: 1px solid $lightgrey;
+    }
+    &__button.btn {
+        margin: 16px auto;
+        padding: 0;
+        width: 152px;
+        height: 32px;
+        color: var(--text-colored-background);
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 1.4;
+    }
+}

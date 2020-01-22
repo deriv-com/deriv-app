@@ -1,6 +1,6 @@
 {
   "name": "@deriv/p2p",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "p2p cashier",
   "main": "lib/index.js",
   "private": false,
@@ -45,6 +45,7 @@
     "@babel/plugin-proposal-export-default-from": "^7.5.2",
     "@babel/plugin-proposal-export-namespace-from": "^7.5.2",
     "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
+    "@babel/plugin-proposal-unicode-property-regex": "^7.7.7",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",

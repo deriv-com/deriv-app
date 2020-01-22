@@ -1,17 +1,27 @@
 /** @define contract-type-info; */
 .contract-type-info {
     overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
+    &__cards-wrapper {
+        display: flex;
+        flex-direction: row;
+        transition: transform 0.3s linear;
+        padding: 2.4rem;
+        width: 100%;
+    }
     &__card {
         width: 272px;
-        margin-right: 24px;
+        margin-right: 2.4rem;
 
         &-wrapper {
-            display: flex;
-            flex-direction: row;
-            transition: transform 0.3s linear;
-            padding: 24px;
-            width: 100%;
+            width: 288px !important;  // !important to overwrite ThemedScrollbars width
+            height: 535px !important; // !important to overwrite ThemedScrollbars height
+            max-height: calc(100vh - 250px);
+            margin-right: 2.4rem;
         }
     }
     &__choose-button {
@@ -26,7 +36,6 @@
     }
     &__content {
         margin-top: 1.5em;
-        height: 260px;
         overflow: hidden;
 
         /* postcss-bem-linter: ignore */
@@ -80,6 +89,7 @@
     width: 320px;
     padding: 0 2.4rem;
     overflow: hidden;
+    margin-bottom: 2.4rem;
 
     &__list {
         display: inline-block;
@@ -88,17 +98,17 @@
         position: relative;
     }
     &__circle-button {
-        width: 0.8em;
-        height: 0.8em;
+        width: 0.8rem;
+        height: 0.8rem;
         border-radius: 50%;
         display: inline-block;
-        margin: 0 0.4em;
+        margin: 0 0.8rem;
         cursor: pointer;
         background-color: var(--text-disabled);
 
         &--active {
             position: absolute;
-            top: 1px;
+            top: 0;
             left: 0;
             cursor: initial;
             transition: transform 0.3s linear;

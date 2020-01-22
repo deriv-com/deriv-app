@@ -42,7 +42,7 @@ const ContractTypeInfoNav = ({
                     className={classNames(
                         'contract-type-info-navigation__circle-button',
                         'contract-type-info-navigation__circle-button--active')}
-                    style={{ 'transform': `translate3d(${16 * selected_item_index}px, 0, 0)` }}
+                    style={{ 'transform': `translate3d(${24 * selected_item_index}px, 0, 0)` }}
                 />
                 {
                     list.map((contract, idx) => (

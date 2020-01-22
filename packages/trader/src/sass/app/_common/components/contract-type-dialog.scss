@@ -23,7 +23,7 @@
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
         min-width: 560px;
         height: 680px;
-        max-height: 80vh;
+        max-height: calc(100vh - 116px);
         overflow: hidden;
 
         /* postcss-bem-linter: ignore */

@@ -134,7 +134,7 @@ const TickContract = RawMarkerMaker(({
         draw_barrier_line({ ctx, start, exit: reset_time, barrier: entry_tick_top, line_style: 'dashed' });
         ctx.strokeStyle = status_color_with_opacity;
         draw_barrier_line({ ctx, start: reset_time, exit, barrier });
-        draw_shade({ ctx, is_sold, start: reset_time, end: exit, color: status_color });
+        draw_shade({ ctx, is_sold, is_last_contract, start: reset_time, end: exit, color: status_color });
     } else {
         ctx.strokeStyle = foreground_color;
         draw_barrier_line({ ctx, start, exit: entry, barrier, line_style: 'dashed' });
@@ -144,8 +144,9 @@ const TickContract = RawMarkerMaker(({
             color: status_color,
             ctx,
             end  : exit,
-            left : has_reset_time && reset_time.left,
             is_sold,
+            is_last_contract,
+            left : has_reset_time && reset_time.left,
             start: entry,
         });
     }

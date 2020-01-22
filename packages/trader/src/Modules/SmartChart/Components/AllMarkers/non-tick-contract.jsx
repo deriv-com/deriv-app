@@ -140,7 +140,7 @@ const NonTickContract = RawMarkerMaker(({
             draw_barrier_line({ ctx, start, exit: reset_time, barrier: entry_tick_top, line_style: 'dashed' });
             ctx.strokeStyle = status_color_with_opacity;
             draw_barrier_line({ ctx, start: reset_time, exit: expiry, barrier });
-            draw_shade({ ctx, is_sold, start: reset_time, end: current_time, color: status_color });
+            draw_shade({ ctx, is_last_contract, is_sold, start: reset_time, end: current_time, color: status_color });
         } else {
             ctx.strokeStyle = foreground_color;
             draw_barrier_line({ ctx, start, exit: entry, barrier, line_style: 'dashed' });
@@ -150,8 +150,9 @@ const NonTickContract = RawMarkerMaker(({
                 color: status_color,
                 ctx,
                 end  : current_time,
-                left : has_reset_time && reset_time.left,
+                is_last_contract,
                 is_sold,
+                left : has_reset_time && reset_time.left,
                 start: entry,
             });
         }

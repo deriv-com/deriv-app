@@ -21,7 +21,7 @@ const HelpBase = ({
     title,
 }) => {
     const { display_name } = Blockly.Blocks[block_type].meta();
-    const block_help_component = help_string && help_content_config[block_type];
+    const block_help_component = help_string && help_content_config(__webpack_public_path__)[block_type];
     let text_count = 0;
 
     return (

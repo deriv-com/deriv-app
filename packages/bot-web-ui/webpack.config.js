@@ -102,7 +102,7 @@ module.exports = function (env, argv) {
             new CopyWebpackPlugin([
                 { from: 'node_modules/@deriv/bot-skeleton/dist/scratch.min.js'},
                 { from: 'node_modules/@deriv/bot-skeleton/dist/xml' , to : 'xml'},
-                { from: 'node_modules/@deriv/bot-skeleton/dist//media' , to : 'media'},
+                { from: 'node_modules/@deriv/bot-skeleton/dist/media' , to : 'media'},
             ]),
             new SpriteLoaderPlugin(),
         ],

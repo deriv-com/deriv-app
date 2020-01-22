@@ -88,7 +88,7 @@ class Flyout extends React.PureComponent {
                                                         id={`flyout__item-workspace--${index}`}
                                                         block_node={node}
                                                         onInfoClick={
-                                                            help_content_config[block_type]
+                                                            help_content_config(__webpack_public_path__)[block_type]
                                                     && (() => setHelpContent(node))
                                                         }
                                                     />

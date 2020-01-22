@@ -7,7 +7,9 @@ export const help_content_types   = {
 
 const { TEXT, IMAGE, BLOCK }     = help_content_types;
 
-export const help_content_config = {
+export const help_content_config = (public_path) => {
+    __webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
+    return {
 //= ================= Functions ==================
     procedures_ifreturn: [
         { type: TEXT },
@@ -364,5 +366,6 @@ export const help_content_config = {
         { type: TEXT },
         { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/continue.png` },
     ],
+};
 };
 

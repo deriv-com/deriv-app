@@ -9,7 +9,6 @@ import {
 const Contract = ({
     contract_type,
     contract_types_list,
-    is_dark_theme,
     is_equal,
     is_mobile,
     onChange,
@@ -18,7 +17,6 @@ const Contract = ({
 
     return (
         <ContractTypeWidget
-            is_dark_theme={is_dark_theme}
             is_equal={is_equal}
             is_mobile={is_mobile}
             list={list}
@@ -47,7 +45,6 @@ export default connect(
         contract_types_list: modules.trade.contract_types_list,
         is_equal           : modules.trade.is_equal,
         onChange           : modules.trade.onChange,
-        is_dark_theme      : ui.is_dark_mode_on,
         is_mobile          : ui.is_mobile,
     })
 )(Contract);

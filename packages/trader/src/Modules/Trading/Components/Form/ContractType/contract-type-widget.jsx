@@ -93,7 +93,7 @@ class ContractTypeWidget extends React.PureComponent {
     };
     
     render() {
-        const { is_dark_theme, is_equal, is_mobile, name, value } = this.props;
+        const { is_equal, is_mobile, name, value } = this.props;
         const { is_dialog_open, is_info_dialog_open, item, list } = this.state;
 
         return (
@@ -146,7 +146,6 @@ class ContractTypeWidget extends React.PureComponent {
                         <ContractTypeInfo
                             handleNavigationClick={this.handleNavigationClick}
                             handleSelect={this.handleSelect}
-                            is_dark_theme={is_dark_theme}
                             item={item || { value }}
                             list={list}
                         />
@@ -158,8 +157,7 @@ class ContractTypeWidget extends React.PureComponent {
 }
 
 ContractTypeWidget.propTypes = {
-    is_dark_theme: PropTypes.bool,
-    is_equal     : PropTypes.oneOfType([
+    is_equal: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
     ]),

@@ -11,7 +11,6 @@ import { getContractTypes } from '../../../Helpers/contract-type';
 
 const ContractTypeInfo = ({
     handleNavigationClick,
-    is_dark_theme,
     item,
     list,
     handleSelect,
@@ -44,8 +43,6 @@ const ContractTypeInfo = ({
                             <div className='contract-type-info__gif'>
                                 <TradeCategoriesGIF
                                     category={type.value}
-                                    className='contract-type-info__gif-image'
-                                    is_dark_theme={is_dark_theme}
                                 />
                             </div>
                             <div className='contract-type-info__content'>
@@ -78,7 +75,6 @@ ContractTypeInfo.propTypes = {
     handleNavigationClick: PropTypes.func,
     handleNextClick      : PropTypes.func,
     handlePrevClick      : PropTypes.func,
-    is_dark_theme        : PropTypes.bool,
     is_mobile            : PropTypes.bool,
     item                 : PropTypes.object,
     item_index           : PropTypes.number,

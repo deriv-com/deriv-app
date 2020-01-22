@@ -292,7 +292,7 @@ const IconTradeCategory = ({ category, className }) => {
                         </div>
                         <div className='category-wrapper'>
                             <Icon
-                                icon='IcTradetypeTickhigh'
+                                icon='IcTradetypeTicklow'
                                 className='category-type'
                                 color='brand'
                             />

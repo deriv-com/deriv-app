@@ -1,12 +1,12 @@
 import React         from 'react';
 import PropTypes     from 'prop-types';
 import { Button }    from '@deriv/components';
-import AgentContext  from 'Components/context/agent-context';
+import Dp2pContext   from 'Components/context/dp2p-context';
 import { localize }  from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 
 const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
-    const { is_agent } = React.useContext(AgentContext);
+    const { is_agent } = React.useContext(Dp2pContext);
     const {
         display_offer_amount,
         display_transaction_amount,

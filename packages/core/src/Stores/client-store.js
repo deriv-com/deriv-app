@@ -68,6 +68,11 @@ export default class ClientStore extends BaseStore {
         payment_agent_withdraw: '',
     };
 
+    @observable local_currency_config = {
+        currency      : '',
+        decimal_places: '',
+    };
+
     is_mt5_account_list_updated = false;
 
     constructor(root_store) {
@@ -332,7 +337,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_mt5_allowed() {
-        if (!Object.keys(this.landing_companies).length) return false;
+        if (!this.landing_companies || !Object.keys(this.landing_companies).length) return false;
         // TODO revert this when all landing companies are accepted.
         // return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
         if ('mt_financial_company' in this.landing_companies ||  'mt_gaming_company' in this.landing_companies) {
@@ -403,6 +408,11 @@ export default class ClientStore extends BaseStore {
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id      = response.authorize.user_id;
+
+        this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
+        this.local_currency_config.decimal_places =
+            +response.authorize.local_currencies[this.local_currency_config.currency].fractional_digits;
+
         ClientBase.responseAuthorize(response);
     }
 

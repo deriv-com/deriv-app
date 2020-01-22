@@ -54,7 +54,7 @@ $SQUARE_SIZE: 48px;
         height: $SQUARE_SIZE;
     }
     &__input-field, &__increment, &__decrement {
-        background-color: var(--general-section-1);
+        background-color: var(--general-section-2);
         color: var(--text-prominent);
     }
     &__input-field {
@@ -76,7 +76,7 @@ $SQUARE_SIZE: 48px;
     }
     &__number {
         border-radius: 2.4rem;
-        background-color: var(--general-section-1);
+        background-color: var(--general-section-2);
         width: $SQUARE_SIZE;
         height: $SQUARE_SIZE;
         @include typeface(--title-left-bold-black);

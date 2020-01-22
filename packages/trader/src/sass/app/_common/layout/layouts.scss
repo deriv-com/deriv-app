@@ -256,6 +256,28 @@
                 &.ciq-disabled {
                     display: none;
                 }
+                @include mobile {
+                    top: 0.8rem;
+                    left: 0.8rem;
+                    max-width: 228px;
+
+                    .cq-menu-btn {
+                        padding: 0.2rem;
+                    }
+                    .cq-symbol-select-btn {
+                        padding: 0.3rem 0.9rem;
+
+                        .ic-icon {
+                            transform: scale(1);
+                        }
+                        .cq-symbol {
+                            font-size: 1.2rem;
+                        }
+                        .cq-chart-price {
+                            display: none;
+                        }
+                    }
+                }
             }
         }
         .cq-chart-controls {
@@ -265,42 +287,6 @@
     .chartContainer {
         background: transparent;
         min-height: 100%;
-    }
-    @include mobile {
-        // smartchart library style fixes
-        .cq-context {
-            div.cq-chart-controls {
-                border: 1px solid $COLOR_LIGHT_BLACK_4;
-                width: calc(100% - 16px);
-                margin-left: 8px;
-            }
-        }
-        .cq-modal-dropdown {
-            &.stxMenuActive {
-                position: fixed;
-                height: 100%;
-                width: 100%;
-                top: 4.7em;
-                left: -0.1em;
-            }
-            .cq-categorical-display {
-                .ic-icon.icon-close-menu {
-                    svg {
-                        width: 2.4em;
-                        height: 2.4em;
-                    }
-                }
-                .cq-lookup-filters.scroll-down {
-                    max-height: unset;
-                }
-                .scrollbar-container.cq-scroll-panel {
-                    left: -0.1em;
-                }
-            }
-        }
-        .smartcharts-mobile .cq-modal-dropdown .cq-menu-overlay .cq-menu-dropdown {
-            bottom: 4em;
-        }
     }
 }
 

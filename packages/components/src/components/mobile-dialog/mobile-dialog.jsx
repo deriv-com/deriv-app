@@ -6,15 +6,15 @@ import { CSSTransition } from 'react-transition-group';
 import Icon              from '../icon';
 
 const MobileDialog = (props) => {
-    const { title, visible, children, container_el, wrapper_classname } = props;
+    const { title, visible, children, portal_element_id, wrapper_classname } = props;
 
     const checkVisibility = () => {
         if (props.visible) {
             document.body.style.overflow = 'hidden';
-            document.getElementById(container_el).style.overflow = 'hidden';
+            document.getElementById(portal_element_id).style.overflow = 'hidden';
         } else {
             document.body.style.overflow = null;
-            document.getElementById(container_el).style.overflow = null;
+            document.getElementById(portal_element_id).style.overflow = null;
         }
     };
 
@@ -41,7 +41,7 @@ const MobileDialog = (props) => {
     };
 
     checkVisibility();
-    if (!document.getElementById(container_el)) return null;
+    if (!document.getElementById(portal_element_id)) return null;
     return ReactDOM.createPortal(
         <CSSTransition
             in={visible}
@@ -81,14 +81,14 @@ const MobileDialog = (props) => {
                 </div>
             </div>
         </CSSTransition>,
-        document.getElementById(container_el)
+        document.getElementById(portal_element_id)
     );
 };
 
 MobileDialog.propTypes = {
     children         : PropTypes.any,
-    container_el     : PropTypes.string.isRequired,
     onClose          : PropTypes.func,
+    portal_element_id: PropTypes.string.isRequired,
     title            : PropTypes.string,
     visible          : PropTypes.bool,
     wrapper_classname: PropTypes.string,

@@ -40,6 +40,9 @@
         &__bottom {
             width: 40vw; // TODO remove this when find a solution for fill-width inside flex.
         }
+        &:hover {
+            transform: none !important;
+        }
     }
 
     &__icon_wrapper {

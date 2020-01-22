@@ -15,7 +15,7 @@ const TradeTypeInfoDialog = ({
     <React.Fragment>
         <MobileWrapper>
             <MobileDialog
-                container_el='deriv_app'
+                portal_element_id='deriv_app'
                 visible={open}
                 onClose={onClose}
                 title={title}

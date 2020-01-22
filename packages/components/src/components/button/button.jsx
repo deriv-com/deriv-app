@@ -37,7 +37,7 @@ const Button = ({
         'btn__large'    : large,
         'btn__medium'   : medium,
         'btn__small'    : small,
-        'btn__rounded' : rounded,
+        'btn__rounded'  : rounded,
     }, className);
     const button = (
         <button

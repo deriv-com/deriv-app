@@ -128,6 +128,7 @@ const ChartBottomWidgets = connect(
 const LazyTopWidgets = ({ onSymbolChange }) => (
     <TopWidgets
         InfoBox={null}
+        is_mobile={isMobile()}
         is_title_enabled={true}
         onSymbolChange={symbolChange(onSymbolChange)}
     />
@@ -204,12 +205,14 @@ class ChartTradeClass extends React.Component {
             <SmartChart
                 barriers={barriers}
                 bottomWidgets={(show_digits_stats && isDesktop()) ? this.bottomWidgets : null}
+                crosshairState={isMobile() ? 0 : undefined}
                 showLastDigitStats={isDesktop() ? show_digits_stats : false}
-                chartControlsWidgets={this.chartControlsWidgets}
+                chartControlsWidgets={isDesktop() ? this.chartControlsWidgets : null}
                 chartStatusListener={(v) => this.props.setChartStatus(!v)}
                 chartType={this.props.chart_type}
                 id='trade'
                 isMobile={isMobile()}
+                maxTick={isMobile() ? 8 : undefined}
                 granularity={this.props.granularity}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}

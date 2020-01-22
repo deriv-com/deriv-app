@@ -19,7 +19,8 @@ class MyAds extends Component {
     };
 
     render() {
-        const { is_authenticated, is_active } = this.context.agent_info;
+        const { is_active } = this.context.agent_info;
+
         return (
             <div className='p2p-my-ads'>
                 {this.state.show_form ? (
@@ -27,9 +28,9 @@ class MyAds extends Component {
                 ) : (
                     <Fragment>
                         <div className='p2p-my-ads__header'>
-                            {is_authenticated ? <ToggleAds
+                            <ToggleAds
                                 is_enabled={!!is_active}
-                            /> : null}
+                            />
                             <Button
                                 primary
                                 onClick={() => this.handleShowForm(true) }

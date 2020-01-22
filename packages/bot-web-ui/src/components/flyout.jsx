@@ -26,7 +26,8 @@ class Flyout extends React.PureComponent {
             flyout_width,
             is_visible,
             search_term,
-            setHelpContent } = this.props;
+            initializeFlyoutHelp,
+        }                    = this.props;
         const total_result   = Object.keys(flyout_content).length;
         const is_empty       = total_result === 0;
 
@@ -89,7 +90,7 @@ class Flyout extends React.PureComponent {
                                                         block_node={node}
                                                         onInfoClick={
                                                             help_content_config(__webpack_public_path__)[block_type]
-                                                    && (() => setHelpContent(node))
+                                                    && (() => initializeFlyoutHelp(node))
                                                         }
                                                     />
                                                 );
@@ -151,26 +152,26 @@ class Flyout extends React.PureComponent {
 }
 
 Flyout.propTypes = {
-    flyout_content  : PropTypes.any,
-    flyout_width    : PropTypes.number,
-    is_help_content : PropTypes.bool,
-    is_search_flyout: PropTypes.bool,
-    is_visible      : PropTypes.bool,
-    onMount         : PropTypes.func,
-    onUnmount       : PropTypes.func,
-    search_term     : PropTypes.string,
-    setHelpContent  : PropTypes.func,
+    flyout_content      : PropTypes.any,
+    flyout_width        : PropTypes.number,
+    initializeFlyoutHelp: PropTypes.func,
+    is_help_content     : PropTypes.bool,
+    is_search_flyout    : PropTypes.bool,
+    is_visible          : PropTypes.bool,
+    onMount             : PropTypes.func,
+    onUnmount           : PropTypes.func,
+    search_term         : PropTypes.string,
 };
 
 export default connect(({ flyout, flyout_help, gtm }) => ({
-    pushDataLayer   : gtm.pushDataLayer,
-    flyout_content  : flyout.flyout_content,
-    flyout_width    : flyout.flyout_width,
-    is_help_content : flyout.is_help_content,
-    is_search_flyout: flyout.is_search_flyout,
-    is_visible      : flyout.is_visible,
-    onMount         : flyout.onMount,
-    onUnmount       : flyout.onUnmount,
-    search_term     : flyout.search_term,
-    setHelpContent  : flyout_help.setHelpContent,
+    pushDataLayer       : gtm.pushDataLayer,
+    flyout_content      : flyout.flyout_content,
+    flyout_width        : flyout.flyout_width,
+    initializeFlyoutHelp: flyout_help.initializeFlyoutHelp,
+    is_help_content     : flyout.is_help_content,
+    is_search_flyout    : flyout.is_search_flyout,
+    is_visible          : flyout.is_visible,
+    onMount             : flyout.onMount,
+    onUnmount           : flyout.onUnmount,
+    search_term         : flyout.search_term,
 }))(Flyout);

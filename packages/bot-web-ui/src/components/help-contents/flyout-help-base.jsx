@@ -18,6 +18,8 @@ const HelpBase = ({
     is_search_flyout,
     onBackClick,
     onSequenceClick,
+    should_next_disable,
+    should_previous_disable,
     title,
 }) => {
     const { display_name } = Blockly.Blocks[block_type].meta();
@@ -87,6 +89,7 @@ const HelpBase = ({
                             onClick={() => onSequenceClick(false)}
                             text={localize('Previous')}
                             type='button'
+                            is_disabled={should_previous_disable}
                         />
                         <Button
                             className='flyout__button-next'
@@ -94,6 +97,7 @@ const HelpBase = ({
                             onClick={() => onSequenceClick(true)}
                             text={localize('Next')}
                             type='button'
+                            is_disabled={should_next_disable}
                         />
                     </div>
             }
@@ -102,21 +106,25 @@ const HelpBase = ({
 };
 
 HelpBase.propTypes = {
-    block_node      : PropTypes.object,
-    block_type      : PropTypes.string,
-    help_string     : PropTypes.object,
-    is_search_flyout: PropTypes.bool,
-    onBackClick     : PropTypes.func,
-    onSequenceClick : PropTypes.func,
-    title           : PropTypes.string,
+    block_node             : PropTypes.object,
+    block_type             : PropTypes.string,
+    help_string            : PropTypes.object,
+    is_search_flyout       : PropTypes.bool,
+    onBackClick            : PropTypes.func,
+    onSequenceClick        : PropTypes.func,
+    should_next_disable    : PropTypes.bool,
+    should_previous_disable: PropTypes.bool,
+    title                  : PropTypes.string,
 };
 
 export default connect(({ flyout, flyout_help }) => ({
-    block_node      : flyout_help.block_node,
-    block_type      : flyout_help.block_type,
-    help_string     : flyout_help.help_string,
-    is_search_flyout: flyout.is_search_flyout,
-    onBackClick     : flyout_help.onBackClick,
-    onSequenceClick : flyout_help.onSequenceClick,
-    title           : flyout_help.title,
+    block_node             : flyout_help.block_node,
+    block_type             : flyout_help.block_type,
+    help_string            : flyout_help.help_string,
+    is_search_flyout       : flyout.is_search_flyout,
+    onBackClick            : flyout_help.onBackClick,
+    onSequenceClick        : flyout_help.onSequenceClick,
+    should_next_disable    : flyout_help.should_next_disable,
+    should_previous_disable: flyout_help.should_previous_disable,
+    title                  : flyout_help.title,
 }))(HelpBase);

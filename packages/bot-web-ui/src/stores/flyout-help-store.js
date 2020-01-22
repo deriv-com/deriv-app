@@ -22,6 +22,8 @@ export default class FlyoutHelpStore {
     @observable block_type = '';
     @observable help_string = {};
     @observable title = '';
+    @observable should_next_disable = false;
+    @observable should_previous_disable = false;
 
     @action.bound
     setHelpContent = async block_node => {
@@ -46,6 +48,8 @@ export default class FlyoutHelpStore {
             this.title             = title;
             this.help_string       = help_string_obj.default[block_type];
         });
+
+        this.shoudDisableSequence();
     }
 
     @action.bound
@@ -65,16 +69,11 @@ export default class FlyoutHelpStore {
 
     @action.bound
     async onSequenceClick(should_go_next) {
-        // eslint-disable-next-line no-underscore-dangle
-        const toolbox = Blockly.derivWorkspace.toolbox_;
-        const selected_category = toolbox.getSelectedItem();
-        const xml_list = toolbox.getCategoryContents(selected_category);
-        const xml_list_group = this.groupBy(xml_list, true);
-        const current_block = xml_list.find(xml => xml.getAttribute('type') === this.block_type);
+        const current_block = this.xml_list.find(xml => xml.getAttribute('type') === this.block_type);
 
         let current_block_index;
 
-        Object.keys(xml_list_group).forEach((key, index) => {
+        Object.keys(this.xml_list_group).forEach((key, index) => {
             if (current_block.getAttribute('type') === key) {
                 current_block_index = index;
             }
@@ -96,11 +95,30 @@ export default class FlyoutHelpStore {
             }
         };
 
-        const block_type = await getNextBlock(xml_list_group,current_block_index,should_go_next);
+        const block_type = await getNextBlock(this.xml_list_group,current_block_index,should_go_next);
         if (block_type) {
-            const target_blocks = xml_list_group[block_type];
+            const target_blocks = this.xml_list_group[block_type];
             this.setHelpContent(target_blocks[0]);
         }
+    }
+
+    @action.bound
+    initializeFlyoutHelp(block_node) {
+        // eslint-disable-next-line no-underscore-dangle
+        const toolbox = Blockly.derivWorkspace.toolbox_;
+        const selected_category = toolbox.getSelectedItem();
+        this.xml_list = toolbox.getCategoryContents(selected_category);
+        this.xml_list_group = this.groupBy(this.xml_list, true);
+
+        this.setHelpContent(block_node);
+    }
+
+    @action.bound
+    shoudDisableSequence() {
+        const current_block = this.xml_list.find(xml => xml.getAttribute('type') === this.block_type);
+        const current_index = Object.keys(this.xml_list_group).findIndex(key => current_block.getAttribute('type') === key);
+        this.should_previous_disable = current_index === 0;
+        this.should_next_disable = current_index === (Object.keys(this.xml_list_group).length - 1);
     }
 
     // eslint-disable-next-line

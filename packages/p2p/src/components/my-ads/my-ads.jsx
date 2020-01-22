@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { Button }                     from '@deriv/components';
+import Dp2pContext                    from 'Components/context/dp2p-context';
 import { localize }                   from 'Components/i18next';
 import FormAds                        from './form-ads.jsx';
 import { MyAdsTable }                 from './my-ads-table.jsx';
-// import ToggleAds                      from './toggle-ads.jsx';
+import ToggleAds                      from './toggle-ads.jsx';
 import './my-ads.scss';
 
 class MyAds extends Component {
@@ -18,6 +19,7 @@ class MyAds extends Component {
     };
 
     render() {
+        const { is_authenticated, is_active } = this.context.agent_info;
         return (
             <div className='p2p-my-ads'>
                 {this.state.show_form ? (
@@ -25,9 +27,9 @@ class MyAds extends Component {
                 ) : (
                     <Fragment>
                         <div className='p2p-my-ads__header'>
-                            {/* <ToggleAds
-                                is_enabled={true}
-                            /> */}
+                            {is_authenticated ? <ToggleAds
+                                is_enabled={!!is_active}
+                            /> : null}
                             <Button
                                 primary
                                 onClick={() => this.handleShowForm(true) }
@@ -42,5 +44,7 @@ class MyAds extends Component {
         );
     }
 }
+
+MyAds.contextType = Dp2pContext;
 
 export default MyAds;

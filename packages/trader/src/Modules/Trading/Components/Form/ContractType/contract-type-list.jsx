@@ -1,8 +1,8 @@
-import PropTypes                      from 'prop-types';
-import React                          from 'react';
-import ContractTypeItem               from './contract-type-item.jsx';
+import PropTypes from 'prop-types';
+import React     from 'react';
+import Item      from './contract-type-item.jsx';
 
-const ContractTypeList = ({
+const List = ({
     handleInfoClick,
     handleSelect,
     is_equal,
@@ -15,9 +15,9 @@ const ContractTypeList = ({
             <div className='contract-type-list__label'>
                 <span>{contract_category.label}</span>
             </div>
-            <div className='contract-type-list__contracts-wrapper'>
-                <ContractTypeItem
-                    contracts={contract_category.contract_types}
+            <div className='contract-type-list__wrapper'>
+                <Item
+                    contract_types={contract_category.contract_types}
                     handleSelect={handleSelect}
                     handleInfoClick={handleInfoClick}
                     is_equal={is_equal}
@@ -29,7 +29,7 @@ const ContractTypeList = ({
     ))
 );
 
-ContractTypeList.propTypes = {
+List.propTypes = {
     handleInfoClick: PropTypes.func,
     handleSelect   : PropTypes.func,
     is_equal       : PropTypes.oneOfType([
@@ -41,4 +41,4 @@ ContractTypeList.propTypes = {
     value: PropTypes.string,
 };
 
-export default ContractTypeList;
+export default List;

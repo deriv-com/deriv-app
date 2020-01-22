@@ -1,0 +1,37 @@
+/** @define contract-type-info-nav; */
+.contract-type-info-nav {
+    display: flex;
+    align-items: center;
+    width: 320px;
+    padding: 0 2.4rem;
+    overflow: hidden;
+    margin-bottom: 2.4rem;
+
+    &__list {
+        display: inline-block;
+        text-align: center;
+        margin: 0 auto;
+        position: relative;
+    }
+    &__item {
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 50%;
+        display: inline-block;
+        margin: 0 0.8rem;
+        cursor: pointer;
+        background-color: var(--text-disabled);
+
+        &--active {
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: initial;
+            transition: transform 0.3s linear;
+            background-color: var(--brand-red-coral);
+        }
+    }
+    &__icon {
+        cursor: pointer;
+    }
+}

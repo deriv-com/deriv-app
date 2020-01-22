@@ -93,7 +93,7 @@ export const getFilteredList = (contract_types_list, filtered_items_array) => {
 };
 
 /**
- * Flatten an object into an array of contract category label and contract types names
+ * Flatten list object into an array of contract category label and contract types names
  * @param {object} list
  */
 export const getContractsList = (list) => flatten(
@@ -104,7 +104,7 @@ export const getContractsList = (list) => flatten(
         )
 );
 
-const findContractCategory = (list, item) => list
+export const findContractCategory = (list, item) => list
     .find(list_item => list_item.contract_types.some(i => i.value === item.value));
 
 export const getContractCategoryLabel = (list, item) => findContractCategory(list, item).label;

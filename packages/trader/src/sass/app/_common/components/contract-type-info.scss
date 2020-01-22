@@ -6,64 +6,71 @@
     flex-direction: column;
     justify-content: space-between;
 
-    &__cards-wrapper {
+    &__wrapper {
         display: flex;
         flex-direction: row;
         transition: transform 0.3s linear;
         padding: 2.4rem;
         width: 100%;
+        height: 100%;
     }
     &__card {
+        height: 100%;
         width: 272px;
         margin-right: 2.4rem;
+        display: flex;
+        flex-direction: column;
 
         &-wrapper {
             width: 288px !important;  // !important to overwrite ThemedScrollbars width
             height: 535px !important; // !important to overwrite ThemedScrollbars height
-            max-height: calc(100vh - 250px);
+            max-height: calc(100vh - 262px);
             margin-right: 2.4rem;
         }
     }
-    &__choose-button {
-        margin: 1.6rem 0 1rem;
-        width: 100%;
-
-        /* postcss-bem-linter: ignore */
-        span {
-            @include typeface(--paragraph-center-bold-active);
-        }
-
-    }
     &__content {
-        margin-top: 1.5em;
+        margin-top: 2.4rem;
+        margin-bottom: auto;
         overflow: hidden;
 
         /* postcss-bem-linter: ignore */
+        h2 {
+            @include typeface(--paragraph-left-bold-black, none);
+            margin-bottom: 0.8rem;
+            color: var(--text-prominent);
+        }
+        /* postcss-bem-linter: ignore */
         p, ul li {
             @include typeface(--paragraph-left-normal-black, none);
-            @include toEm(margin-bottom, 8px, 1.4em);
+            margin-bottom: 1.6rem;
             color: var(--text-general);
         }
         /* postcss-bem-linter: ignore */
         ul {
             margin-left: 1.6rem;
             list-style: disc;
+
+            /* postcss-bem-linter: ignore */
+            li {
+                margin-bottom: 0.8rem;
+            }
         }
     }
     &__gif {
         width: 100%;
-        height: 140px;
+        height: 148px;
         border-radius: 4px;
     }
     &__header {
         display: flex;
         align-items: center;
         justify-content: center;
+        width: 288px;
 
         /* postcss-bem-linter: ignore */
         .title {
-            @include typeface(--paragraph-left-bold-black);
-            margin-left: 0.8rem;
+            @include typeface(--title-left-bold-black);
+            margin: auto;
             color: var(--text-prominent);
             cursor: default;
         }
@@ -72,44 +79,5 @@
         span {
             cursor: pointer;
         }
-    }
-}
-
-/** @define contract-type-info-navigation; */
-.contract-type-info-navigation {
-    display: flex;
-    align-items: center;
-    width: 320px;
-    padding: 0 2.4rem;
-    overflow: hidden;
-    margin-bottom: 2.4rem;
-
-    &__list {
-        display: inline-block;
-        text-align: center;
-        margin: 0 auto;
-        position: relative;
-    }
-    &__circle-button {
-        width: 0.8rem;
-        height: 0.8rem;
-        border-radius: 50%;
-        display: inline-block;
-        margin: 0 0.8rem;
-        cursor: pointer;
-        background-color: var(--text-disabled);
-
-        &--active {
-            position: absolute;
-            top: 0;
-            left: 0;
-            cursor: initial;
-            transition: transform 0.3s linear;
-            background-color: var(--brand-red-coral);
-        }
-    }
-    &__icon {
-        @extend %inline-icon;
-        cursor: pointer;
     }
 }

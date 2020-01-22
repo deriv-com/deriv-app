@@ -1,11 +1,6 @@
-import classNames          from 'classnames';
-import PropTypes           from 'prop-types';
-import React               from 'react';
-import { Icon }            from '@deriv/components';
-import IconTradeCategory   from 'Assets/Trading/Categories/icon-trade-categories.jsx';
-import ContractTypeDialog  from './contract-type-dialog.jsx';
-import ContractTypeInfo    from './contract-type-info.jsx';
-import ContractTypeList    from './contract-type-list.jsx';
+import PropTypes    from 'prop-types';
+import React        from 'react';
+import ContractType from './contract-type.jsx';
 
 class ContractTypeWidget extends React.PureComponent {
     state = {
@@ -22,14 +17,15 @@ class ContractTypeWidget extends React.PureComponent {
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
 
-    handleSelect = ({ value }, e) => {
+    handleSelect = (item, e) => {
         if (e.target.id !== 'info-icon') {
             this.setState({
                 is_dialog_open     : false,
                 is_info_dialog_open: false,
+                item,
             }, () => {
-                if (value !== this.props.value) {
-                    this.props.onChange({ target: { name: this.props.name, value } });
+                if (item.value !== this.props.value) {
+                    this.props.onChange({ target: { name: this.props.name, value: item.value } });
                 }
             });
         }
@@ -68,6 +64,7 @@ class ContractTypeWidget extends React.PureComponent {
         this.setState(state => ({
             is_dialog_open     : !state.is_dialog_open,
             is_info_dialog_open: false,
+            item               : { value: this.props.value },
         }));
     };
 
@@ -78,19 +75,6 @@ class ContractTypeWidget extends React.PureComponent {
     onChangeInput = (list) => {
         this.setState({ list });
     }
-
-    getDisplayText = () => {
-        const { list, value } = this.props;
-        const findInArray = (arr_list) => (arr_list.find(item => item.value === value) || {}).text;
-        let text = '';
-        if (list) {
-            Object.keys(list).some(key => {
-                text = findInArray(list[key].contract_types);
-                return text;
-            });
-        }
-        return text;
-    };
     
     render() {
         const { is_equal, is_mobile, name, value } = this.props;
@@ -103,27 +87,14 @@ class ContractTypeWidget extends React.PureComponent {
                 ref={this.setWrapperRef}
                 tabIndex='0'
             >
-                <div
-                    className={classNames('contract-type-widget__display', {
-                        'contract-type-widget__display--clicked': (is_dialog_open || is_info_dialog_open),
-                    })}
+                <ContractType.Display
+                    is_open={is_dialog_open || is_info_dialog_open}
+                    list={this.props.list}
+                    name={name}
                     onClick={this.onWidgetClick}
-                >
-                    <IconTradeCategory
-                        category={value}
-                        className='contract-type-widget__icon-wrapper'
-                    />
-                    <span name={name} value={value}>
-                        {this.getDisplayText()}
-                    </span>
-                    <Icon
-                        icon='IcChevronDown'
-                        className={classNames(
-                            'contract-type-widget__select-arrow',
-                            'contract-type-widget__select-arrow--left')}
-                    />
-                </div>
-                <ContractTypeDialog
+                    value={value}
+                />
+                <ContractType.Dialog
                     is_info_dialog_open={is_info_dialog_open}
                     is_mobile={is_mobile}
                     is_open={is_dialog_open}
@@ -134,7 +105,7 @@ class ContractTypeWidget extends React.PureComponent {
                     onChangeInput={this.onChangeInput}
                 >
                     {!is_info_dialog_open ?
-                        <ContractTypeList
+                        <ContractType.List
                             handleInfoClick={this.handleInfoClick}
                             handleSelect={this.handleSelect}
                             is_equal={is_equal}
@@ -143,14 +114,14 @@ class ContractTypeWidget extends React.PureComponent {
                             value={value}
                         />
                         :
-                        <ContractTypeInfo
+                        <ContractType.Info
                             handleNavigationClick={this.handleNavigationClick}
                             handleSelect={this.handleSelect}
                             item={item || { value }}
                             list={list}
                         />
                     }
-                </ContractTypeDialog>
+                </ContractType.Dialog>
             </div>
         );
     }

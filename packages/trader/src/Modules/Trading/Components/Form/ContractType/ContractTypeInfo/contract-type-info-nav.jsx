@@ -1,14 +1,15 @@
 import classNames from 'classnames';
+import PropTypes  from 'prop-types';
 import React      from 'react';
 import { Icon }   from '@deriv/components';
 
-const ContractTypeInfoNav = ({
-    list,
-    selected_item_index,
+const Nav = ({
+    active_index,
     handleNavigationClick,
+    list,
 }) => {
     const handleNextClick = () => {
-        const next_idx       = selected_item_index + 1;
+        const next_idx       = active_index + 1;
         const is_reached_end = next_idx === list.length;
 
         if (!is_reached_end) {
@@ -19,7 +20,7 @@ const ContractTypeInfoNav = ({
     };
 
     const handlePrevClick = () => {
-        const prev_idx = selected_item_index - 1;
+        const prev_idx = active_index - 1;
 
         if (prev_idx > -1) {
             handleNavigationClick(list[prev_idx]);
@@ -29,41 +30,46 @@ const ContractTypeInfoNav = ({
     };
 
     return (
-        <div className='contract-type-info-navigation'>
-            <div
+        <nav className='contract-type-info-nav'>
+            <span
                 id='dt_contract_info_left_nav'
-                className='contract-type-info-navigation__icon'
+                className='contract-type-info-nav__icon'
                 onClick={handlePrevClick}
             >
                 <Icon icon='IcChevronLeft' />
-            </div>
-            <div className='contract-type-info-navigation__list'>
-                <i
+            </span>
+            <ul className='contract-type-info-nav__list'>
+                <li
                     className={classNames(
-                        'contract-type-info-navigation__circle-button',
-                        'contract-type-info-navigation__circle-button--active')}
-                    style={{ 'transform': `translate3d(${24 * selected_item_index}px, 0, 0)` }}
+                        'contract-type-info-nav__item',
+                        'contract-type-info-nav__item--active')}
+                    style={{ 'transform': `translate3d(${24 * active_index}px, 0, 0)` }}
                 />
                 {
                     list.map((contract, idx) => (
-                        <div
-                            id={`dt_contract_info_${contract.value}_circle`}
+                        <li
                             key={idx}
-                            className='contract-type-info-navigation__circle-button'
+                            className='contract-type-info-nav__item'
                             onClick={() => handleNavigationClick(contract)}
                         />
                     ))
                 }
-            </div>
-            <div
+            </ul>
+            <span
                 id='dt_contract_info_right_nav'
-                className='contract-type-info-navigation__icon'
+                className='contract-type-info-nav__icon'
                 onClick={handleNextClick}
             >
                 <Icon icon='IcChevronRight' />
-            </div>
-        </div>
+            </span>
+        </nav>
     );
 };
 
-export default React.memo(ContractTypeInfoNav);
+Nav.propTypes = {
+    active_index         : PropTypes.number,
+    handleNavigationClick: PropTypes.func,
+    list                 : PropTypes.array,
+};
+
+export default React.memo(Nav);

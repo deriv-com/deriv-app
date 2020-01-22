@@ -1,5 +1,5 @@
-/** @define contracts-type-dialog; */
-.contracts-type-dialog {
+/** @define contract-type-dialog; */
+.contract-type-dialog {
     right: 0.4em;
     width: 100%;
     pointer-events: none;
@@ -10,7 +10,7 @@
     height: 0;
     z-index: 999;
 
-    &__list-wrapper {
+    &__wrapper {
         position: absolute;
         width: 290px;
         right: calc(100% + 10px);
@@ -29,7 +29,7 @@
         /* postcss-bem-linter: ignore */
         .vertical-tab__action-bar {
             flex-flow: row;
-            border-bottom: 2px solid var(--general-section-2);
+            border-bottom: 2px solid var(--general-section-1);
             height: 56px;
 
             /* postcss-bem-linter: ignore */

@@ -119,9 +119,9 @@ const TradeCategories = ({ category }) => {
                         <p>{ localize('Win up to maximum payout if exit spot is between lower and upper barrier, in proportion to the difference between exit spot and lower barrier.') }</p>
                         <p>{ localize('No payout if exit spot is below or equal to the lower barrier.') }</p>
                         <h2>{ localize('Spread Down') }</h2>
-                        <p>{ localize('Win maximum payout if the exit spot is lower than or equal to the lower barrier') }</p>
-                        <p>{ localize('Win up to maximum payout if exit spot is between lower and upper barrier, in proportion to the difference between upper barrier and exit spot') }</p>
-                        <p>{ localize('No payout if exit spot is above or equal to the upper barrier') }</p>
+                        <p>{ localize('Win maximum payout if the exit spot is lower than or equal to the lower barrier.') }</p>
+                        <p>{ localize('Win up to maximum payout if exit spot is between lower and upper barrier, in proportion to the difference between upper barrier and exit spot.') }</p>
+                        <p>{ localize('No payout if exit spot is above or equal to the upper barrier.') }</p>
                     </React.Fragment>
                 );
                 break;
@@ -194,9 +194,9 @@ const TradeCategories = ({ category }) => {
         }
     }
     return (
-        <div>
+        <>
             {TradeTypeTemplate}
-        </div>
+        </>
     );
 };
 

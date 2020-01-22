@@ -32,5 +32,9 @@
         &--active {
             background-color: var(--state-active);
         }
+        &--disabled {
+            color: var(--text-disabled);
+            cursor: not-allowed;
+        }
     }
 }

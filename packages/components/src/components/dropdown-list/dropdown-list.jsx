@@ -10,6 +10,11 @@ const thumbHorizontal = props => <div {...props} style={{ display: 'none' }} />;
 const ListItems = React.forwardRef((props, ref) => {
     const { active_index, list_items, is_object_list, onItemSelection, not_found_text } = props;
 
+    const onMouseDown = (item) => {
+        if (!item.disabled) {
+            onItemSelection(item);
+        }
+    };
     return (
         <>
             {list_items.length ?
@@ -18,9 +23,10 @@ const ListItems = React.forwardRef((props, ref) => {
                         ref={idx === active_index ? ref : null}
                         key={idx}
                         // onMouseDown ensures the click handler runs before the onBlur event of Input
-                        onMouseDown={() => onItemSelection(item)}
+                        onMouseDown={() => onMouseDown(item)}
                         className={classNames('dc-dropdown-list__item', {
-                            'dc-dropdown-list__item--active': idx === active_index,
+                            'dc-dropdown-list__item--active'  : idx === active_index,
+                            'dc-dropdown-list__item--disabled': item.disabled === 'DISABLED',
                         })}
                         value={is_object_list ? item.value : null}
                     >

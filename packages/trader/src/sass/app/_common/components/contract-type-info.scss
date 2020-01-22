@@ -39,10 +39,15 @@
         overflow: hidden;
 
         /* postcss-bem-linter: ignore */
-        p {
+        p, ul li {
             @include typeface(--paragraph-left-normal-black, none);
             @include toEm(margin-bottom, 8px, 1.4em);
             color: var(--text-general);
+        }
+        /* postcss-bem-linter: ignore */
+        ul {
+            margin-left: 1.6rem;
+            list-style: disc;
         }
     }
     &__gif {

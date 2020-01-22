@@ -140,7 +140,14 @@ const TickContract = RawMarkerMaker(({
         draw_barrier_line({ ctx, start, exit: entry, barrier, line_style: 'dashed' });
         ctx.strokeStyle = status_color_with_opacity;
         draw_barrier_line({ ctx, start: entry, exit, barrier, line_style: 'solid' });
-        draw_shade({ ctx, is_sold, start: entry, end: exit, color: status_color });
+        draw_shade({
+            color: status_color,
+            ctx,
+            end  : exit,
+            left : has_reset_time && reset_time.left,
+            is_sold,
+            start: entry,
+        });
     }
 
     // ticks for last contract

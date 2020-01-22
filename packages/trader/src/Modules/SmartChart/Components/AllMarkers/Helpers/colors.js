@@ -17,5 +17,5 @@ export const get_hex_opacity = (opacity) => {
         ? opacity * 100
         : opacity;
 
-    return ((percentages * 255) / 100).toString(16);
+    return ((percentages * 255) / 100).toString(16).slice(0, 2);
 };

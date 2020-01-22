@@ -141,7 +141,7 @@ const MT5AccountCard = ({
                     className={classNames('mt5-account-card__account-selection mt5-account-card__account-selection--primary', {
                         'mt5-account-card__account-selection--disabled': is_disabled,
                     })}
-                    onClick={onSelectAccount}
+                    onClick={!is_disabled ? onSelectAccount : undefined}
                     type='button'
                     primary
                 >

@@ -56,7 +56,7 @@ class App extends Component {
         /* if there is no error means its an agent else its a client */
         if (!agent_info.error) {
             this.setState({
-                agent_info: agent_info.p2p_agent_info,
+                agent_id: agent_info.p2p_agent_info.agent_id,
                 is_agent  : true,
             });
         }
@@ -107,7 +107,7 @@ class App extends Component {
                     currency,
                     local_currency_config,
                     residence,
-                    agent_info: this.state.agent_info,
+                    agent_id: this.state.agent_id,
                     is_agent  : this.state.is_agent,
                 }}
             >

@@ -50,7 +50,7 @@ export class MyAdsTable extends React.Component {
     componentDidMount() {
         this.is_mounted = true;
 
-        requestWS({ p2p_offer_list: 1, agent_id: this.context.agent_info.agent_id }).then((response) => {
+        requestWS({ p2p_offer_list: 1, agent_id: this.context.agent_id }).then((response) => {
             if (this.is_mounted) {
                 this.setState({ items: response, is_loading: false });
             }

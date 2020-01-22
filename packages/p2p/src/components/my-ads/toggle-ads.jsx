@@ -6,14 +6,14 @@ import { localize }         from 'Components/i18next';
 import { requestWS }        from 'Utils/websocket';
 import './my-ads.scss';
 
-const ToggleMessage = ({ is_enabled, className, error, is_loading }) => {
+const ToggleMessage = ({ is_enabled, className, error }) => {
     return (
         <p className={className}>
             {error && error}
             {/* TODO: [p2p-replace-design] handle loading design */}
-            {is_loading && localize('Loading...')}
-            {!error && !loading && is_enabled && localize('Your ads are running')}
-            {!error && !loading && !is_enabled && localize('Your ads are paused')}
+            {/* {is_loading && localize('Loading...')} */}
+            {!error && is_enabled && localize('Your ads are running')}
+            {!error && !is_enabled && localize('Your ads are paused')}
         </p>
     );
 };
@@ -28,19 +28,18 @@ class ToggleAds extends Component {
     state = {
         is_enabled: this.props.is_enabled,
         error     : '',
-        is_loading: false,
     }
 
     handleToggle = () => {
         const is_active = this.state.is_enabled ? 0 : 1;
-        this.setState({ is_loading: true });
+        this.setState({ is_enabled: !this.state.is_enabled });
 
         requestWS({ p2p_agent_update: 1, is_active }).then((response) => {
+            console.log(response)
             if (response.error) {
-                this.setState({ is_loading: false, error: response.error.message });
+                this.setState({ error: response.error.message });
                 return;
             }
-            this.setState({ is_loading: false, is_enabled: !this.state.is_enabled });
         });
     }
 

@@ -26,8 +26,8 @@ class ToggleAds extends Component {
 
     state = {
         is_enabled: this.props.is_enabled,
-        error: '',
-        loading: false,
+        error     : '',
+        loading   : false,
     }
 
     handleToggle = () => {

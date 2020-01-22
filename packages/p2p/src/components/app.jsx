@@ -56,8 +56,8 @@ class App extends Component {
         /* if there is no error means its an agent else its a client */
         if (!agent_info.error) {
             this.setState({
-                is_agent              : true,
-                agent_info              : agent_info.p2p_agent_info,
+                is_agent  : true,
+                agent_info: agent_info.p2p_agent_info,
             });
         }
     }
@@ -108,7 +108,7 @@ class App extends Component {
                     local_currency_config,
                     residence,
                     agent_info: this.state.agent_info,
-                    is_agent: this.state.is_agent,
+                    is_agent  : this.state.is_agent,
                 }}
             >
                 <main className={classNames('deriv-p2p', className)}>

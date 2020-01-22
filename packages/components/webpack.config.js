@@ -34,6 +34,7 @@ module.exports = {
         'mobile-wrapper'   : path.resolve(__dirname, 'src', 'components/mobile-wrapper/index.js'),
         modal              : path.resolve(__dirname, 'src', 'components/modal/index.js'),
         money              : path.resolve(__dirname, 'src', 'components/money/index.js'),
+        numpad             : path.resolve(__dirname, 'src', 'components/numpad/index.js'),
         'password-input'   : path.resolve(__dirname, 'src', 'components/password-input/index.js'),
         'password-meter'   : path.resolve(__dirname, 'src', 'components/password-meter/index.js'),
         popover            : path.resolve(__dirname, 'src', 'components/popover/index.js'),
@@ -42,6 +43,7 @@ module.exports = {
         table              : path.resolve(__dirname, 'src', 'components/table/index.js'),
         tabs               : path.resolve(__dirname, 'src', 'components/tabs/index.js'),
         'themed-scrollbars': path.resolve(__dirname, 'src', 'components/themed-scrollbars/index.js'),
+        'tick-picker'      : path.resolve(__dirname, 'src', 'components/tick-picker/index.js'),
         'toggle-switch'    : path.resolve(__dirname, 'src', 'components/toggle-switch/index.js'),
     },
     output: {

@@ -13,15 +13,24 @@
         &-container {
             display: flex;
             width: 41rem;
+            height: 8rem;
         }
         &-field {
-            margin: 1rem 1.8rem 1.8rem 0;
+            margin-top: 1rem;
+            margin-right: 1.8rem;
+            margin-left: 0;
 
-            & .dc-autocomplete__field {
-                margin-bottom: 0;
+            &:not(&--single) {
+                margin-bottom: 2.8rem;
+            }
+            &.dc-dropdown-container {
+                margin-bottom: 4.2rem;
             }
             & .dc-input__label {
                 top: 1.2rem;
+            }
+            & .dc-input__hint {
+                padding-top: 0.4rem;
             }
             &--single {
                 width: 18.9rem;
@@ -36,6 +45,26 @@
         }
         &-button {
             margin-left: 0.8rem;
+        }
+        &-error {
+            display: flex;
+            align-items: center;
+            margin-right: auto;
+            font-size: var(--text-size-xxs);
+            font-weight: bold;
+            flex: 1;
+            color: var(--text-prominent);
+            padding-left: 2.4rem;
+
+            p {
+                padding-left: 1.6rem;
+            }
+        }
+    }
+    &__table {
+        &-price {
+            color: var(--text-profit-success);
+            font-weight: bold;
         }
     }
 }

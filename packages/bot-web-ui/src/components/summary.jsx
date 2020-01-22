@@ -1,16 +1,16 @@
-import classNames    from 'classnames';
+import classNames     from 'classnames';
 import {
     Money,
     ThemedScrollbars,
     Popover,
-}                    from '@deriv/components';
-import PropTypes     from 'prop-types';
-import React         from 'react';
-import { localize }  from '@deriv/translations';
-import ContractCard  from './contract-card.jsx';
-import { connect }   from '../stores/connect';
+}                         from '@deriv/components';
+import PropTypes          from 'prop-types';
+import React              from 'react';
+import { localize }       from '@deriv/translations';
+import ContractCard       from './contract-card.jsx';
+import { connect }        from '../stores/connect';
 import                    '../assets/sass/summary.scss';
-import config        from '../constants';
+import { popover_zindex } from '../constants/z-indexes';
 
 const SummaryTile = (props) => (
     <div className={'summary__tile'}>
@@ -19,7 +19,7 @@ const SummaryTile = (props) => (
             classNameBubble='run-panel__info--bubble'
             alignment={ props.alignment }
             message={ props.tooltip }
-            zIndex={ config.popover_zindex.run_panel_tooltips }
+            zIndex={ popover_zindex.SUMMARY_TOOLTIPS }
         >
             {/* <Icon icon='IcInfoOutline' className='run-panel__icon-info' /> */}
             <div className='summary__tile-title'>{props.title}</div>

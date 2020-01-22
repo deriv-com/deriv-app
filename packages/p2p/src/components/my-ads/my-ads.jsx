@@ -8,7 +8,7 @@ import './my-ads.scss';
 
 class MyAds extends Component {
     state = {
-        ad_id    : '',
+        data     : {},
         // is_enabled: false,
         show_form: false,
     };
@@ -17,11 +17,16 @@ class MyAds extends Component {
         this.setState({ show_form });
     };
 
+    onClickEdit = (data) => {
+        this.setState({ data });
+        this.handleShowForm(true);
+    }
+
     render() {
         return (
             <div className='p2p-my-ads'>
                 {this.state.show_form ? (
-                    <FormAds ad_id={this.state.ad_id} handleShowForm={this.handleShowForm} />
+                    <FormAds data={this.state.data} handleShowForm={this.handleShowForm} />
                 ) : (
                     <Fragment>
                         <div className='p2p-my-ads__header'>
@@ -35,7 +40,7 @@ class MyAds extends Component {
                                 {localize('Create ad')}
                             </Button>
                         </div>
-                        <MyAdsTable />
+                        <MyAdsTable onClickEdit={this.onClickEdit} />
                     </Fragment>
                 )}
             </div>

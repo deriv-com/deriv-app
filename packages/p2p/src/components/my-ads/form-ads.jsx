@@ -20,9 +20,18 @@ import { requestWS }                  from 'Utils/websocket';
 
 class FormAds extends Component {
     state = {
-        country      : '',
-        error_message: '',
-        is_loading   : true,
+        advertiser_notes: '',
+        country         : '',
+        currency        : '',
+        max_transaction : '',
+        min_transaction : '',
+        offer_amount    : '',
+        offer_currency  : '',
+        payment_method  : 'bank_transfer',
+        price_rate      : '',
+        type            : 'buy',
+        error_message   : '',
+        is_loading      : true,
     };
 
     async componentDidMount() {
@@ -32,32 +41,56 @@ class FormAds extends Component {
         );
         const display_residence = ObjectUtils.getPropertyValue(current_residence, 'text') || '';
 
-        // TODO: [p2p-fix-api] call get offer detail api and populate state
-        // this is pending offer edit enabled in the API
-        if (this.props.ad_id) {
-            // call the api, get the file based on id
-            // populate the state from the respnose
+        const { data } = this.props;
+
+        // user is editting an existing ad, we should populate its data
+        if (this.isUpdatingAd()) {
             this.setState({
-                country: display_residence,
+                is_loading      : false,
+                advertiser_notes: data.advertiser_notes,
+                country         : display_residence,
+                currency        : data.transaction_currency,
+                max_transaction : data.max_transaction,
+                min_transaction : data.min_transaction,
+                offer_amount    : data.offer_amount,
+                offer_currency  : data.offer_currency,
+                payment_method  : data.payment_method,
+                price_rate      : data.price_rate,
+                type            : data.type,
             });
         } else {
-            this.setState({ is_loading: false, country: display_residence });
+            this.setState({
+                is_loading    : false,
+                country       : display_residence,
+                currency      : this.context.local_currency_config.currency,
+                offer_currency: this.context.currency,
+            });
         }
     }
+
+    isUpdatingAd = () => !ObjectUtils.isEmptyObject(this.props.data);
 
     handleSubmit = (values, { setSubmitting }) => {
         this.setState({ error_message: '' });
 
+        const msg_type = this.isUpdatingAd() ? 'p2p_offer_update' : 'p2p_offer_create';
+
         requestWS({
-            p2p_offer_create : 1,
-            type             : values.type,
+            [msg_type]       : 1,
             amount           : values.offer_amount,
             local_currency   : values.transaction_currency,
             max_amount       : values.max_transaction,
-            method           : values.payment_method,
             min_amount       : values.min_transaction,
             offer_description: values.advertiser_notes,
-            rate             : values.price_rate,
+            ...(this.isUpdatingAd() ?
+                { offer_id: this.props.data.offer_id }
+                :
+                { // these fields are not allowed to be updated after creation
+                    method: values.payment_method,
+                    rate  : values.price_rate,
+                    type  : values.type,
+                }
+            ),
         }).then((response) => {
             // If we get an error we should let the user submit the form again else we just go back to the list of ads
             if (response.error) {
@@ -74,21 +107,21 @@ class FormAds extends Component {
             <Fragment>
                 <PageReturn
                     onClick={ () => this.props.handleShowForm(false) }
-                    page_title={ localize('Create new ad') }
+                    page_title={ this.isUpdatingAd() ? localize('Edit ad') : localize('Create new ad') }
                 />
                 {this.state.is_loading ? <Loading is_fullscreen={false} /> : (
                     <Formik
                         initialValues={{
-                            advertiser_notes: '',
+                            advertiser_notes: this.state.advertiser_notes,
                             country         : this.state.country,
-                            currency        : this.context.local_currency_config.currency,
-                            max_transaction : '',
-                            min_transaction : '',
-                            offer_amount    : '',
-                            offer_currency  : this.context.currency,
-                            payment_method  : 'bank_transfer',
-                            price_rate      : '',
-                            type            : 'buy',
+                            currency        : this.state.currency,
+                            max_transaction : this.state.max_transaction,
+                            min_transaction : this.state.min_transaction,
+                            offer_amount    : this.state.offer_amount,
+                            offer_currency  : this.state.offer_currency,
+                            payment_method  : this.state.payment_method,
+                            price_rate      : this.state.price_rate,
+                            type            : this.state.type,
                         }}
                         onSubmit={this.handleSubmit}
                         validate={this.validateFormAds}
@@ -147,6 +180,7 @@ class FormAds extends Component {
                                                         {...field}
                                                         placeholder={localize('Type')}
                                                         is_align_text_left
+                                                        disabled={this.isUpdatingAd()}
                                                         className='p2p-my-ads__form-field'
                                                         list={[{ text: 'Buy', value: 'buy' }, { text: 'Sell', value: 'sell' }]}
                                                         error={touched.type && errors.type}
@@ -178,6 +212,7 @@ class FormAds extends Component {
                                                         {...field}
                                                         data-lpignore='true'
                                                         type='number'
+                                                        disabled={this.isUpdatingAd()}
                                                         error={touched.price_rate && errors.price_rate}
                                                         label={localize('Fixed price')}
                                                         hint={localize('Price per 1 {{currency}}', { currency: values.offer_currency })}
@@ -248,6 +283,7 @@ class FormAds extends Component {
                                                     {...field}
                                                     placeholder={localize('Payment method')}
                                                     is_align_text_left
+                                                    disabled={this.isUpdatingAd()}
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--single'
                                                     list={[{ text: 'Bank transfer', value: 'bank_transfer' }]}
                                                     error={touched.payment_method && errors.payment_method}
@@ -277,7 +313,9 @@ class FormAds extends Component {
                                         </div>
                                         }
                                         <Button className='p2p-my-ads__form-button' secondary large onClick={ () => this.props.handleShowForm(false) }>{localize('Cancel')}</Button>
-                                        <Button className='p2p-my-ads__form-button' primary large is_disabled={isSubmitting || !isValid}>{localize('Post ad')}</Button>
+                                        <Button className='p2p-my-ads__form-button' primary large is_disabled={isSubmitting || !isValid}>
+                                            {this.isUpdatingAd() ? localize('Save changes') : localize('Post ad')}
+                                        </Button>
                                     </FooterActions>
                                 </Form>
                             </div>
@@ -400,7 +438,7 @@ class FormAds extends Component {
 }
 
 FormAds.propTypes = {
-    ad_id         : PropTypes.string,
+    data          : PropTypes.object,
     handleShowForm: PropTypes.func,
 };
 

@@ -1,6 +1,8 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
-import { Table }              from '@deriv/components';
+import {
+    Button,
+    Table }                   from '@deriv/components';
 import Dp2pContext            from 'Components/context/dp2p-context';
 import { localize }           from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
@@ -13,6 +15,7 @@ const headers = [
     { text: localize('Limits') },
     { text: localize('Price') },
     { text: localize('Payment method') },
+    { text: localize('Actions') },
 ];
 
 const type = {
@@ -20,14 +23,22 @@ const type = {
     sell: localize('Sell'),
 };
 
-const RowComponent = React.memo(({ data, style }) => (
+const RowComponent = React.memo(({ data, row_actions, style }) => (
     <div style={style}>
         <Table.Row>
-            <Table.Cell><div>{type[data.type]}<div className='p2p-my-ads__table-id'>{data.offer_id}</div></div></Table.Cell>
+            <Table.Cell>{type[data.type]}{' '}{data.offer_id}</Table.Cell>
             <Table.Cell>{data.display_available_amount}{' '}{data.offer_currency}</Table.Cell>
             <Table.Cell>{data.display_min_transaction}-{data.display_max_transaction}{' '}{data.offer_currency}</Table.Cell>
             <Table.Cell className='p2p-my-ads__table-price'>{data.display_price_rate}{' '}{data.transaction_currency}</Table.Cell>
-            <Table.Cell>{data.payment_method}</Table.Cell>
+            <Table.Cell>{data.display_payment_method}</Table.Cell>
+            <Table.Cell>
+                <Button secondary small onClick={() => row_actions.onClickEdit(data)} className='p2p-my-ads__table-button'>
+                    {localize('Edit')}
+                </Button>
+                <Button secondary small onClick={() => row_actions.onClickEdit(data)}>
+                    {localize('Delete')}
+                </Button>
+            </Table.Cell>
         </Table.Row>
     </div>
 ));
@@ -76,6 +87,7 @@ export class MyAdsTable extends React.Component {
                     <Table.Body>
                         <InfiniteLoaderList
                             items={items}
+                            row_actions={{ onClickEdit: this.props.onClickEdit }}
                             RenderComponent={RowComponent}
                             RowLoader={MyAdsLoader}
                         />
@@ -85,5 +97,9 @@ export class MyAdsTable extends React.Component {
         );
     }
 }
+
+MyAdsTable.propTypes = {
+    onClickEdit: PropTypes.func,
+};
 
 MyAdsTable.contextType = Dp2pContext;

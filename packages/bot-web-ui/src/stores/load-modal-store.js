@@ -38,21 +38,28 @@ export default class LoadModalStore {
     setActiveTabIndex(index) {
         this.active_index = index;
 
-        if (this.active_index !== 0 && this.recent_workspace && this.recent_workspace.rendered) {
+        if (this.active_index !== 0 &&
+            this.recent_workspace &&
+            this.recent_workspace.rendered
+        ) {
             this.recent_workspace.dispose();
         }
         if (this.active_index === 0 && this.recent_files.length) {
             this.previewWorkspace({ id: this.selected_file });
         }
-        if (this.active_index !== 1 && this.loaded_local_file && this.local_workspace.rendered) {
+        if (this.active_index !== 1 &&
+            this.loaded_local_file &&
+            this.local_workspace &&
+            this.local_workspace.rendered
+        ) {
             this.local_workspace.dispose();
             this.loaded_local_file = null;
         }
         if (this.active_index === 1) {
             this.drop_zone = document.getElementsByClassName('local__dragndrop')[0];
-            this.drop_zone.addEventListener('drop', this.handleFileChange);
+            this.drop_zone.addEventListener('drop', e => this.handleFileChange(e, false));
         } else if (this.drop_zone) {
-            this.drop_zone.removeEventListener('drop', this.handleFileChange);
+            this.drop_zone.removeEventListener('drop', e => this.handleFileChange(e, false));
         }
     }
 
@@ -145,7 +152,7 @@ export default class LoadModalStore {
 
     /** --------- Local Tab Start --------- */
     @action.bound
-    handleFileChange(event) {
+    handleFileChange(event, is_body = true) {
         let files;
         if (event.type === 'drop') {
             event.stopPropagation();
@@ -158,7 +165,7 @@ export default class LoadModalStore {
 
         files = Array.from(files);
         this.loaded_local_file = files[0];
-        this.handleFilefromLocal(files[0], true, event);
+        this.handleFilefromLocal(files[0], !is_body, event);
         event.target.value = '';
     }
 

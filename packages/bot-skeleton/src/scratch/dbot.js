@@ -34,12 +34,13 @@ class DBot {
             DBotStore.setInstance(store);
 
             const el_scratch_div  = document.getElementById('scratch_div');
+            const default_xml = await fetch(`${__webpack_public_path__}xml/main.xml`).then(r => r.text());
             const has_recent_files = getRecentFiles();
             let main_xml;
             if (has_recent_files) {
                 main_xml = has_recent_files[0].xml;
             } else {
-                main_xml = await fetch(`${__webpack_public_path__}xml/main.xml`).then(r => r.text());
+                main_xml = default_xml;
             }
             const toolbox_xml     = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(r => r.text());
             this.workspace        = Blockly.inject(el_scratch_div, {
@@ -50,7 +51,7 @@ class DBot {
                 zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
             });
 
-            this.workspace.blocksXmlStr  = main_xml;
+            this.workspace.blocksXmlStr  = default_xml;
             this.workspace.toolboxXmlStr = toolbox_xml;
             Blockly.derivWorkspace       = this.workspace;
 
@@ -67,15 +68,11 @@ class DBot {
             this.workspace.clearUndo();
 
             const { handleFileChange } = DBotStore.instance;
-            const drop_zone    = document.body;
     
             window.addEventListener('resize', () => onWorkspaceResize());
             window.dispatchEvent(new Event('resize'));
-            drop_zone.addEventListener('dragover', DBot.handleDragOver);
-
-            if (handleFileChange) {
-                drop_zone.addEventListener('drop', handleFileChange);
-            }
+            window.addEventListener('dragover', DBot.handleDragOver);
+            window.addEventListener('drop', e => DBot.handleDropOver(e, handleFileChange));
     
             // disable overflow
             el_scratch_div.parentNode.style.overflow = 'hidden';
@@ -391,6 +388,22 @@ class DBot {
         event.stopPropagation();
         event.preventDefault();
         event.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
+    }
+
+    static handleDropOver(event, handleFileChange) {
+        const main_workspace_dom = document.getElementById('scratch_div');
+        const local_drag_zone =  document.getElementById('import_dragndrop');
+
+        if (main_workspace_dom.contains(event.target)) {
+            handleFileChange(event);
+        } else if (local_drag_zone && local_drag_zone.contains(event.target)){
+            handleFileChange(event, false);
+        } else {
+            event.stopPropagation();
+            event.preventDefault();
+            event.dataTransfer.effectAllowed = 'none';
+            event.dataTransfer.dropEffect = 'none';
+        }
     }
 }
 

@@ -139,9 +139,9 @@ const Local = ({
                             ref={el => file_input_ref = el}
                             accept='.xml'
                             style={{ display: 'none' }}
-                            onChange={handleFileChange}
+                            onChange={e => handleFileChange(e, false)}
                         />
-                        <div className='local__dragndrop'>
+                        <div id='import_dragndrop' className='local__dragndrop'>
                             <Icon icon={'IcPc'} className='local__icon' size={116} />
                             <span className='local__title'>{localize('Drag your file here')}</span>
                             <span className='local__desc'>{localize('or, if you prefer...')}</span>

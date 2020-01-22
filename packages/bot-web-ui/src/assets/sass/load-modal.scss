@@ -216,12 +216,12 @@ $modal_container_height: calc(100vh - 210px);
             border: solid 1px var(--border-normal);
             position: relative;
 
-            .injectionDiv {
+            s            .injectionDiv {
                 pointer-events: none;
             }
         }
         &-close {
-            background-image: linear-gradient(to left, white, transparent);
+            background-image: linear-gradient(to left, $color_white, transparent);
             position: absolute;
             padding: 25px;
             border-bottom-left-radius: 50%;

@@ -1,9 +1,11 @@
-import React, { Component, Fragment } from 'react';
-import { Button }                     from '@deriv/components';
-import { localize }                   from 'Components/i18next';
-import FormAds                        from './form-ads.jsx';
-import { MyAdsTable }                 from './my-ads-table.jsx';
-// import ToggleAds                      from './toggle-ads.jsx';
+import React, {
+    Component,
+    Fragment }        from 'react';
+import { Button }     from '@deriv/components';
+import { localize }   from 'Components/i18next';
+import FormAds        from './form-ads.jsx';
+import { MyAdsTable } from './my-ads-table.jsx';
+// import ToggleAds      from './toggle-ads.jsx';
 import './my-ads.scss';
 
 class MyAds extends Component {
@@ -17,9 +19,12 @@ class MyAds extends Component {
         this.setState({ show_form });
     };
 
+    onClickCreate = () => {
+        this.setState({ data: {}, show_form: true });
+    }
+
     onClickEdit = (data) => {
-        this.setState({ data });
-        this.handleShowForm(true);
+        this.setState({ data, show_form: true });
     }
 
     render() {
@@ -33,10 +38,7 @@ class MyAds extends Component {
                             {/* <ToggleAds
                                 is_enabled={true}
                             /> */}
-                            <Button
-                                primary
-                                onClick={() => this.handleShowForm(true) }
-                            >
+                            <Button primary onClick={this.onClickCreate}>
                                 {localize('Create ad')}
                             </Button>
                         </div>

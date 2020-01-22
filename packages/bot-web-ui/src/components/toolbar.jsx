@@ -1,15 +1,14 @@
 import {
-    Button,
-    Icon,
-    Input,
-    Popover }             from '@deriv/components';
-import { localize }       from '@deriv/translations';
-import {
     Field,
     Formik,
     Form }                from 'formik';
 import PropTypes          from 'prop-types';
 import React              from 'react';
+import {
+    Button,
+    Icon,
+    Input,
+    Popover }             from '@deriv/components';
 import { localize }       from '@deriv/translations';
 import Dialog             from './dialog.jsx';
 import SaveLoadModal      from './saveload-modal.jsx';

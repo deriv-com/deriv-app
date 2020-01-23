@@ -247,7 +247,7 @@ class FormAds extends Component {
                                                         type='number'
                                                         error={
                                                             touched.min_transaction
-                                                            && touched.max_transaction
+                                                            && (touched.max_transaction || this.isUpdatingAd())
                                                             && errors.min_transaction
                                                         }
                                                         label={localize('Min limit')}
@@ -265,7 +265,7 @@ class FormAds extends Component {
                                                         type='number'
                                                         error={
                                                             touched.max_transaction
-                                                            && touched.min_transaction
+                                                            && (touched.min_transaction || this.isUpdatingAd())
                                                             && errors.max_transaction
                                                         }
                                                         label={localize('Max limit')}

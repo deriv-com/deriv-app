@@ -353,7 +353,7 @@ class MT5POA extends Component {
                                                         />
                                                         <fieldset className='address-state__fieldset'>
                                                             <Field name='address_state'>
-                                                                {({field,}) => (
+                                                                {({ field }) => (
                                                                     <Dropdown
                                                                         is_alignment_top={window.innerHeight < 930}
                                                                         id='address_state'
@@ -361,7 +361,10 @@ class MT5POA extends Component {
                                                                         className='address_state-dropdown'
                                                                         is_align_text_left
                                                                         list={states_list}
-                                                                        error={touched[field.name] && errors[field.name]}
+                                                                        error={
+                                                                            touched[field.name] &&
+                                                                            errors[field.name]
+                                                                        }
                                                                         name='address_state'
                                                                         value={values.address_state}
                                                                         onChange={handleChange}
@@ -394,7 +397,14 @@ class MT5POA extends Component {
                                                                             setFieldValue,
                                                                         )}
                                                             />
-                                                            {errors.document_file && <p className='dc-field-error'>{errors['document_file']}</p> }
+                                                            {
+                                                                errors.document_file &&
+                                                                <p
+                                                                    className='dc-field-error'
+                                                                >
+                                                                    {errors.document_file}
+                                                                </p>
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>

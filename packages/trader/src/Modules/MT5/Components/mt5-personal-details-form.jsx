@@ -129,7 +129,14 @@ class MT5PersonalDetailsForm extends Component {
             value,
         } = this.props;
 
-        const onSubmitForm = (values, actions) => this.submitForm(values, actions, index, onSubmit, !isDeepEqual(value, values));
+        const onSubmitForm = (values, actions) => this.submitForm(
+            values,
+            actions,
+            index,
+            onSubmit,
+            !isDeepEqual(value, values)
+        );
+
         if (residence_list.length === 0) return <Loading is_fullscreen={false} />;
         return (
             <div id='real_mt5_personal_details' className='details-form mt5-details-form'>
@@ -202,9 +209,9 @@ class MT5PersonalDetailsForm extends Component {
                                                                     is_fully_authenticated
                                                                 }
                                                                 list_items={residence_list}
-                                                                onItemSelection={({ value, text }) => setFieldValue(
+                                                                onItemSelection={({ v, text }) => setFieldValue(
                                                                     'tax_residence',
-                                                                    value ? text : '',
+                                                                    v ? text : '',
                                                                     true,
                                                                 )}
                                                                 {...field}

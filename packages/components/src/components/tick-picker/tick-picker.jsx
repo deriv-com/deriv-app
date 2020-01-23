@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import Button              from '../button';
 import Icon                from '../icon';
 
-const TickPicker = ({ min_value, max_value, onSubmit, submit_label, singular_label, plural_label }) => {
+const TickPicker = ({ default_value, min_value, max_value, onSubmit, submit_label, singular_label, plural_label }) => {
     const normalizedTick = (tick) => `${tick}`.padStart(2, 0);
-    const [tick_value, setTickValue] = useState(parseInt(min_value));
+    const [tick_value, setTickValue] = useState(parseInt(default_value));
 
     const handleDecrease = () => {
         if (tick_value - 1 >= min_value) {

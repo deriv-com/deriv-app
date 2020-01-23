@@ -1,21 +1,15 @@
 /** @define dc-modal; weak */
 .dc-modal {
     @include mobile {
-        position: absolute;
-        top: 50vh;
-        transform: translateY(-50%);
         width: calc(100vw - 4.8em);
-
-        .dc-modal__container {
-            min-width: unset;
-            top: 2rem;
-        }
     }
 
     &__container {
         display: flex;
         flex-direction: column;
-        min-width: 400px;
+        @include desktop {
+            min-width: 400px;
+        }
         position: relative;
         overflow: hidden;
         border-radius: 8px;
@@ -25,6 +19,35 @@
         max-height: calc(100vh - 48px - 36px);
         max-width: 90vw;
 
+        &--is-vertical-centered {
+            position: absolute;
+            top: 50vh;
+            transform: translateY(-50%) !important;
+            @include mobile {
+                width: calc(100vw - 4.8em) !important;
+            }
+
+            .dc-modal__container {
+                min-width: unset;
+                top: 2rem;
+            }
+        }
+        &--is-vertical-top {
+            top: $HEADER_HEIGHT;
+            position: absolute;
+            @include mobile {
+                top: $MOBILE_HEADER_HEIGHT;
+                width: calc(100vw - 4.8em) !important;
+            }
+        }
+        &--is-vertical-bottom {
+            bottom: $FOOTER_HEIGHT;
+            position: absolute;
+            @include mobile {
+                bottom: 2.4rem;
+                width: calc(100vw - 4.8em) !important;
+            }
+        }
         &--hide {
             display: none;
         }

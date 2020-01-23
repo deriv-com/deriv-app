@@ -15,6 +15,7 @@ const InsufficientBalanceModal = ({
         id='dt_insufficient_balance_modal'
         is_open={is_visible}
         small
+        is_vertical_centered
         toggleModal={toggleModal}
         title={localize('Insufficient balance')}
     >

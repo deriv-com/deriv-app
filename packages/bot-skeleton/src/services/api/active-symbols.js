@@ -103,6 +103,39 @@ export default class ActiveSymbols {
         return (all_market_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : all_market_options);
     }
 
+    /**
+     * Retrieves all symbols and returns an array of symbol objects consisting of symbol and their linked market + submarket.
+     * @returns {Array} Symbols and their submarkets + markets.
+     */
+    getAllSymbols() {
+        const all_symbols = [];
+
+        Object.keys(this.processed_symbols).forEach(market_name => {
+            const market         = this.processed_symbols[market_name];
+            const { submarkets } = market;
+
+            Object.keys(submarkets).forEach(submarket_name => {
+                const submarket   = submarkets[submarket_name];
+                const { symbols } = submarket;
+
+                Object.keys(symbols).forEach(symbol_name => {
+                    const symbol = symbols[symbol_name];
+                    
+                    all_symbols.push({
+                        market           : market_name,
+                        market_display   : market.display_name,
+                        submarket        : submarket_name,
+                        submarket_display: submarket.display_name,
+                        symbol           : symbol_name,
+                        symbol_display   : symbol.display_name,
+                    });
+                });
+            });
+        });
+
+        return all_symbols;
+    }
+
     // eslint-disable-next-line class-methods-use-this
     getAllSymbolDropdownOptions(submarket) {
         return Object.keys(submarket.symbols).map(key => {

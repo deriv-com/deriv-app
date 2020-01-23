@@ -81,7 +81,7 @@ class Reports extends React.Component {
                         is_routed={true}
                         is_full_width={true}
                         list={menu_options()}
-                        modal_index={this.props.modal_index}
+                        vertical_tab_index={this.props.vertical_tab_index}
                         setModalIndex={this.props.setModalIndex}
                     />
                 </div>
@@ -91,24 +91,24 @@ class Reports extends React.Component {
 }
 
 Reports.propTypes = {
-    disableRouteMode: PropTypes.func,
-    enableRouteMode : PropTypes.func,
-    history         : PropTypes.object,
-    is_visible      : PropTypes.bool,
-    location        : PropTypes.object,
-    modal_index     : PropTypes.number,
-    routes          : PropTypes.arrayOf(PropTypes.object),
-    setModalIndex   : PropTypes.func,
-    toggleReports   : PropTypes.func,
+    disableRouteMode  : PropTypes.func,
+    enableRouteMode   : PropTypes.func,
+    history           : PropTypes.object,
+    is_visible        : PropTypes.bool,
+    location          : PropTypes.object,
+    routes            : PropTypes.arrayOf(PropTypes.object),
+    setModalIndex     : PropTypes.func,
+    toggleReports     : PropTypes.func,
+    vertical_tab_index: PropTypes.number,
 };
 
 export default connect(
     ({ ui }) => ({
-        disableRouteMode: ui.disableRouteModal,
-        enableRouteMode : ui.setRouteModal,
-        is_visible      : ui.is_reports_visible,
-        modal_index     : ui.modal_index,
-        setModalIndex   : ui.setModalIndex,
-        toggleReports   : ui.toggleReports,
+        disableRouteMode  : ui.disableRouteModal,
+        enableRouteMode   : ui.setRouteModal,
+        is_visible        : ui.is_reports_visible,
+        setModalIndex     : ui.setModalIndex,
+        toggleReports     : ui.toggleReports,
+        vertical_tab_index: ui.vertical_tab_index,
     })
 )(withRouter(Reports));

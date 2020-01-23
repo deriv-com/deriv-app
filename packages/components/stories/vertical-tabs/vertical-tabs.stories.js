@@ -72,7 +72,7 @@ const list = [
 const stories = storiesOf('Vertical Tabs', module);
 stories.addDecorator(withKnobs);
 stories.add('Basic usage', () => {
-    const [modal_index, setModalIndex] = React.useState(0);
+    const [vertical_tab_index, setVerticalTabIndex] = React.useState(0);
 
     return (
         <Theme is_dark={boolean('Dark theme?', false)}>
@@ -89,8 +89,8 @@ stories.add('Basic usage', () => {
                     is_routed={false}
                     is_full_width={boolean('Full screen?', true)}
                     list={list}
-                    modal_index={modal_index}
-                    setModalIndex={setModalIndex}
+                    vertical_tab_index={vertical_tab_index}
+                    setVerticalTabIndex={setVerticalTabIndex}
                 />
             </div>
         </Theme>

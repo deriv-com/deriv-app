@@ -11,7 +11,7 @@ import VerticalTabWrapper          from 'Components/vertical-tab/vertical-tab-wr
 class VerticalTab extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { modal_index: props.modal_index || 0 };
+        this.state = { vertical_tab_index: props.vertical_tab_index || 0 };
     }
 
     setSelectedIndex = ({ list, selected_index, is_routed, current_path }) => {
@@ -23,10 +23,10 @@ class VerticalTab extends React.Component {
             index = (typeof selected_index === 'object' ? list.indexOf(selected_index) : selected_index);
         }
 
-        this.setState({ modal_index: index });
+        this.setState({ vertical_tab_index: index });
         
-        if (typeof this.props.setModalIndex === 'function') {
-            this.props.setModalIndex(index);
+        if (typeof this.props.setVerticalTabIndex === 'function') {
+            this.props.setVerticalTabIndex(index);
         }
     };
 
@@ -52,7 +52,7 @@ class VerticalTab extends React.Component {
     }
 
     render() {
-        const selected = this.props.list[this.state.modal_index] || this.props.list[0];
+        const selected = this.props.list[this.state.vertical_tab_index] || this.props.list[0];
         return (
             <div
                 className={classNames('dc-vertical-tab', {
@@ -110,9 +110,9 @@ VerticalTab.propTypes = {
             value  : PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
         }),
     ).isRequired,
-    modal_index   : PropTypes.number,
-    selected_index: PropTypes.number,
-    setModalIndex : PropTypes.func,
+    vertical_tab_index : PropTypes.number,
+    selected_index     : PropTypes.number,
+    setVerticalTabIndex: PropTypes.func,
 };
 
 VerticalTab.ContentContainer = VerticalTabContentContainer;

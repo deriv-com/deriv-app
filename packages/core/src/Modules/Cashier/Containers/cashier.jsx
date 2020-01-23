@@ -88,8 +88,8 @@ class Cashier extends React.Component {
                         is_routed={true}
                         is_full_width={true}
                         list={menu_options()}
-                        modal_index={this.props.modal_index}
-                        setModalIndex={this.props.setModalIndex}
+                        vertical_tab_index={this.props.vertical_tab_index}
+                        setVerticalTabIndex={this.props.setVerticalTabIndex}
                     />
                 </div>
             </FadeWrapper>
@@ -106,11 +106,11 @@ Cashier.propTypes = {
     is_payment_agent_visible         : PropTypes.bool,
     is_visible                       : PropTypes.bool,
     location                         : PropTypes.object,
-    modal_index                      : PropTypes.number,
     onMount                          : PropTypes.func,
     routes                           : PropTypes.arrayOf(PropTypes.object),
-    setModalIndex                    : PropTypes.func,
+    setVerticalTabIndex              : PropTypes.func,
     toggleCashier                    : PropTypes.func,
+    vertical_tab_index               : PropTypes.number,
 };
 
 export default connect(
@@ -122,9 +122,9 @@ export default connect(
         is_payment_agent_visible: !!(modules.cashier.config.payment_agent.filtered_list.length
             || modules.cashier.config.payment_agent.agents.length),
         is_payment_agent_transfer_visible: modules.cashier.config.payment_agent_transfer.is_payment_agent,
-        modal_index                      : ui.modal_index,
         onMount                          : modules.cashier.onMountCommon,
-        setModalIndex                    : ui.setModalIndex,
+        setVerticalTabIndex              : ui.setVerticalTabIndex,
         toggleCashier                    : ui.toggleCashier,
+        vertical_tab_index               : ui.vertical_tab_index,
     })
 )(withRouter(Cashier));

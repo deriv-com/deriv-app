@@ -67,7 +67,7 @@ export default class QuickStrategyStore {
         const strategy_name  = Object.keys(strategies).find(strategy =>
             strategies[strategy].index === this.active_index
         );
-        const strategy_xml   = await import(/* webpackChunkName: `[request]` */ `../scratch/xml/${strategy_name}.xml`);
+        const strategy_xml   = await import(/* webpackChunkName: `[request]` */ `../xml/${strategy_name}.xml`);
         const strategy_dom   = Blockly.Xml.textToDom(strategy_xml.default);
 
         const modifyValueInputs = (key, value) => {

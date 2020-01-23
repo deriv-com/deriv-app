@@ -18,9 +18,9 @@ export default class VerticalTabContentContainer extends React.PureComponent {
         const TabContent    = selected_item.value;
 
         return (
-            <div className='vertical-tab__content'>
+            <div className='dc-vertical-tab__content'>
                 { action_bar &&
-                    <div className={classNames('vertical-tab__action-bar', {
+                    <div className={classNames('dc-vertical-tab__action-bar', {
                         [action_bar_classname]: !!action_bar_classname,
                     })}
                     >
@@ -32,13 +32,13 @@ export default class VerticalTabContentContainer extends React.PureComponent {
                                         <Component key={idx} />
                                         :
                                         <div
-                                            id={`dt_${id}_close_icon`}
-                                            className='vertical-tab__action-bar-wrapper'
+                                            id={`dc_${id}_close_icon`}
+                                            className='dc-vertical-tab__action-bar-wrapper'
                                             key={idx}
                                             onClick={onClick}
                                         >
                                             <Icon
-                                                className='vertical-tab__action-bar--icon'
+                                                className='dc-vertical-tab__action-bar--icon'
                                                 icon={icon}
                                             />
                                         </div>
@@ -47,7 +47,7 @@ export default class VerticalTabContentContainer extends React.PureComponent {
                         }
                     </div>
                 }
-                <div className={classNames('vertical-tab__content-container', tab_container_classname)}>
+                <div className={classNames('dc-vertical-tab__content-container', tab_container_classname)}>
                     { is_routed ?
                         <Switch>
                             {

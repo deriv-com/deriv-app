@@ -1,7 +1,7 @@
 $BOTTOM_SPACING_REQUIRED: 31px; // Spacing between end of the container and Footer (including shadow)
 $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING_REQUIRED});
 
-.vertical-tab {
+.dc-vertical-tab {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
@@ -20,12 +20,12 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
     &--full-screen {
         min-height: $MIN_HEIGHT;
 
-        // .vertical-tab__tab {
+        // .dc-vertical-tab__tab {
         //     min-width: 15%;
         // }
     }
-    &:not(.vertical-tab--full-screen) {
-        .vertical-tab__content {
+    &:not(.dc-vertical-tab--full-screen) {
+        .dc-vertical-tab__content {
             @include toEm(padding, 24px);
         }
     }
@@ -80,7 +80,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         transition: background-color 0.1s ease-in;
         text-decoration: none;
 
-        &:hover:not(.vertical-tab__header--active) {
+        &:hover:not(.dc-vertical-tab__header--active) {
             background-color: var(--state-hover);
         }
         &--active {
@@ -120,7 +120,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         position: relative;
         background-color: var(--general-main-1);
 
-        &.vertical-tab:not(.vertical-tab--full-screen) {
+        &.dc-vertical-tab:not(.dc-vertical-tab--full-screen) {
             @include toEm(padding, 24px);
             height: 100%;
         }

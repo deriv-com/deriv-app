@@ -55,8 +55,8 @@ class VerticalTab extends React.Component {
         const selected = this.props.list[this.state.modal_index] || this.props.list[0];
         return (
             <div
-                className={classNames('vertical-tab', {
-                    'vertical-tab--full-screen': this.props.is_full_width,
+                className={classNames('dc-vertical-tab', {
+                    'dc-vertical-tab--full-screen': this.props.is_full_width,
                 })}
             >
                 {this.props.is_sidebar_enabled &&

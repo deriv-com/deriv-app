@@ -2,7 +2,9 @@
 .dc-modal {
     @include mobile {
         position: absolute;
-        top: 0;
+        top: 50vh;
+        transform: translateY(-50%);
+        width: calc(100vw - 4.8em);
 
         .dc-modal__container {
             min-width: unset;
@@ -60,6 +62,10 @@
             padding: 1.2rem 1.6rem;
             display: flex;
             align-items: center;
+            @include mobile {
+                padding: 2.4rem;
+                line-height: 1;
+            }
         }
         &__section {
             flex-grow: 1;
@@ -76,6 +82,9 @@
             height: 30px;
             width: 32px;
             margin: 1.2rem 1.6rem 1.2rem auto;
+            @include mobile {
+                margin: 1.8rem;
+            }
         }
     }
     /** @define dc-modal-body */

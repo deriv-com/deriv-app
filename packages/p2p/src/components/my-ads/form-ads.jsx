@@ -245,11 +245,7 @@ class FormAds extends Component {
                                                         {...field}
                                                         data-lpignore='true'
                                                         type='number'
-                                                        error={
-                                                            touched.min_transaction
-                                                            && (touched.max_transaction || this.isUpdatingAd())
-                                                            && errors.min_transaction
-                                                        }
+                                                        error={touched.min_transaction && errors.min_transaction}
                                                         label={localize('Min limit')}
                                                         hint={localize('Minimum order from client')}
                                                         className='p2p-my-ads__form-field'
@@ -263,11 +259,7 @@ class FormAds extends Component {
                                                     <Input
                                                         {...field}
                                                         type='number'
-                                                        error={
-                                                            touched.max_transaction
-                                                            && (touched.min_transaction || this.isUpdatingAd())
-                                                            && errors.max_transaction
-                                                        }
+                                                        error={touched.max_transaction && errors.max_transaction}
                                                         label={localize('Max limit')}
                                                         hint={localize('Maximum order from client')}
                                                         className='p2p-my-ads__form-field'
@@ -338,14 +330,14 @@ class FormAds extends Component {
             max_transaction: [
                 v => !!v,
                 v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(values.offer_currency),
-                v => v <= values.offer_amount,
-                v => v >= values.min_transaction,
+                v => values.offer_amount ? v <= values.offer_amount : true,
+                v => values.min_transaction ? v >= values.min_transaction : true,
             ],
             min_transaction: [
                 v => !!v,
                 v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(values.offer_currency),
-                v => v <= values.offer_amount,
-                v => v <= values.max_transaction,
+                v => values.offer_amount ? v <= values.offer_amount : true,
+                v => values.max_transaction ? v <= values.max_transaction : true,
             ],
             offer_amount: [
                 v => !!v,
@@ -353,6 +345,8 @@ class FormAds extends Component {
                 // v => v > available_price,
                 // TODO: remove v > 0 check when we have available_price
                 v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(values.offer_currency),
+                v => values.min_transaction ? v >= values.min_transaction : true,
+                v => values.max_transaction ? v >= values.max_transaction : true,
             ],
             price_rate: [
                 v => !!v,
@@ -377,6 +371,8 @@ class FormAds extends Component {
             // TODO: uncomment this when we have available_price
             // localize('Min is {{value}}', { value: available_price }),
             localize('Enter a valid amount'),
+            localize('{{field_name}} should not be below Min limit', { field_name }),
+            localize('{{field_name}} should not be below Max limit', { field_name }),
         ]);
 
         const max_limit_messages  = (field_name) => ([

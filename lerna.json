@@ -6,5 +6,14 @@
       "npmClientArgs": ["--no-package-lock"]
     }
   },
-  "packages": ["packages/*"]
+  "packages": [
+    "packages/bot-skeleton",
+    "packages/bot-web-ui",
+    "packages/components",
+    "packages/core",
+    "packages/p2p",
+    "packages/shared",
+    "packages/trader",
+    "packages/translations"
+  ]
 }

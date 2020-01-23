@@ -4,9 +4,9 @@ const { IS_RELEASE }              = require('./constants');
 const { transformContentUrlBase } = require('./helpers');
 
 const copyConfig = (base) => ([
-    { from: path.resolve(__dirname, '../node_modules/@deriv/bot/dist/bot.main.css*'), to: 'css/', flatten: true },
-    { from: path.resolve(__dirname, '../node_modules/@deriv/bot/dist/media/**'), to: 'js/bot/media', flatten: true },
-    { from: path.resolve(__dirname, '../node_modules/@deriv/bot/dist/*.*'), to: 'js/bot/', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot-web-ui.main.css*'), to: 'css/', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/media/**'), to: 'js/bot/media', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/*.*'), to: 'js/bot/', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/smartcharts/**'), to: 'js/smartcharts/', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/smartcharts.css*'), to: 'css/', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/public/**'), to: 'public', transformPath(context) { return context.split('node_modules/@deriv/trader/dist/')[1]; } },
@@ -54,7 +54,7 @@ const htmlOutputConfig = () => ({
 const htmlInjectConfig = () => ({
     links: [
         'css/smartcharts.css',
-        'css/bot.main.css',
+        'css/bot-web-ui.main.css',
         {
             path: 'manifest.json',
             attributes: {

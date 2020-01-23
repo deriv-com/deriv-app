@@ -110,9 +110,9 @@ VerticalTab.propTypes = {
             value  : PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
         }),
     ).isRequired,
-    vertical_tab_index : PropTypes.number,
     selected_index     : PropTypes.number,
     setVerticalTabIndex: PropTypes.func,
+    vertical_tab_index : PropTypes.number,
 };
 
 VerticalTab.ContentContainer = VerticalTabContentContainer;

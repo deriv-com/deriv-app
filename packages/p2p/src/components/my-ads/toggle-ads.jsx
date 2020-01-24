@@ -9,8 +9,8 @@ import './my-ads.scss';
 const ToggleMessage = ({ is_enabled, className, error }) => {
     return (
         <p className={className}>
-            {error && error}
-            {is_enabled && !error ? localize('Your ads are running') : localize('Your ads are paused')}
+            {/* eslint-disable-next-line no-unneeded-ternary */}
+            {error ? error : is_enabled ? localize('Your ads are running') : localize('Your ads are paused') }
         </p>
     );
 };
@@ -23,8 +23,8 @@ ToggleMessage.propTypes = {
 class ToggleAds extends Component {
 
     state = {
-        is_enabled: this.props.is_enabled,
         error     : '',
+        is_enabled: this.props.is_enabled,
     }
 
     handleToggle = () => {
@@ -33,7 +33,7 @@ class ToggleAds extends Component {
 
         requestWS({ p2p_agent_update: 1, is_active }).then((response) => {
             if (response.error) {
-                this.setState({ error: response.error.message });
+                this.setState({ error: response.error.message, is_enabled: !this.state.is_enabled });
             }
         });
     }

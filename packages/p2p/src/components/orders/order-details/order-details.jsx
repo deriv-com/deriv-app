@@ -51,7 +51,7 @@ const OrderDetails = ({
                         <span>
                             <OrderDetailsStatusBlock order_details={ order_details } />
                             <OrderDetailsAmountBlock order_details={ order_details } />
-                            <h1 className='order-details__header-method'>{order_details.payment_method}</h1>
+                            <h1 className='order-details__header-method'>{order_details.display_payment_method}</h1>
                         </span>
                         <OrderDetailsTimerBlock order_details={ order_details } />
                     </div>

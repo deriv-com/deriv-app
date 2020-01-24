@@ -17,16 +17,7 @@ const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
     return (
         <div onClick={() => onOpenDetails(data)} style={style} className='orders__table-row'>
             <Table.Row>
-                <Table.Cell>
-                    <span>
-                        { localize('Sell') }<br />
-                        <span
-                            className='orders__table-id'
-                        >
-                            { order_id }
-                        </span>
-                    </span>
-                </Table.Cell>
+                <Table.Cell>{ localize('Sell') }{' '}{ order_id }</Table.Cell>
                 <Table.Cell>{ order_purchase_datetime }</Table.Cell>
                 <Table.Cell>{ display_status }</Table.Cell>
                 <Table.Cell>{ display_offer_amount }{ ' ' }{ offer_currency }</Table.Cell>

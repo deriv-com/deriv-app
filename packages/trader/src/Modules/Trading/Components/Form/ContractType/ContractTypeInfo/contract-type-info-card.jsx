@@ -14,7 +14,6 @@ const Card = ({
     <ThemedScrollbars
         autohide
         className='contract-type-info__card-wrapper'
-        renderView={props => <div style={{ paddingBottom: '24px', ...props.style }} />}
         renderTrackHorizontal={() =>
             <div
                 // hide horizontal scrollbar

@@ -115,11 +115,11 @@ export const getUnsupportedContracts = () => ({
         position: 'top',
     },
     CALLSPREAD: {
-        name    : localize('Call Spread'),
+        name    : localize('Spread Up'),
         position: 'top',
     },
     PUTSPREAD: {
-        name    : localize('Put Spread'),
+        name    : localize('Spread Down'),
         position: 'bottom',
     },
     RUNHIGH: {

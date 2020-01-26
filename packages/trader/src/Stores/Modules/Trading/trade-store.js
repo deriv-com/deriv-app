@@ -381,6 +381,7 @@ export default class TradeStore extends BaseStore {
         if (proposal_id) {
             this.is_purchase_enabled = false;
             const is_tick_contract = this.duration_unit === 't';
+            // Passthough is necessary only for logging purposes in trackjs
             const passthrough = {
                 ...(this.expiry_type !== 'endtime') && {
                     duration     : this.duration,

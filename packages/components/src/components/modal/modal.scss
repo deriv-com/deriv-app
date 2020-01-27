@@ -1,28 +1,53 @@
 /** @define dc-modal; weak */
 .dc-modal {
     @include mobile {
-        position: absolute;
-        top: 0;
-
-        .dc-modal__container {
-            min-width: unset;
-            top: 2rem;
-        }
+        width: calc(100vw - 4.8em);
     }
 
     &__container {
         display: flex;
         flex-direction: column;
-        min-width: 400px;
         position: relative;
         overflow: hidden;
         border-radius: 8px;
         transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
         background-color: var(--general-main-2);
         box-shadow: 0 4px 6px 0 var(--shadow-menu);
-        max-height: calc(100vh - 48px - 36px);
-        max-width: 90vw;
+        @include desktop {
+            min-width: 400px;
+            max-height: calc(100vh - 48px - 36px);
+            max-width: 90vw;
+        }
 
+        &--is-vertical-centered {
+            position: absolute;
+            top: 50vh;
+            transform: translateY(-50%) !important;
+            @include mobile {
+                width: calc(100vw - 4.8em) !important;
+            }
+
+            .dc-modal__container {
+                min-width: unset;
+                top: 2rem;
+            }
+        }
+        &--is-vertical-top {
+            top: $HEADER_HEIGHT;
+            position: absolute;
+            @include mobile {
+                top: $MOBILE_HEADER_HEIGHT;
+                width: calc(100vw - 4.8em) !important;
+            }
+        }
+        &--is-vertical-bottom {
+            bottom: $FOOTER_HEIGHT;
+            position: absolute;
+            @include mobile {
+                bottom: 2.4rem;
+                width: calc(100vw - 4.8em) !important;
+            }
+        }
         &--hide {
             display: none;
         }
@@ -60,6 +85,10 @@
             padding: 1.2rem 1.6rem;
             display: flex;
             align-items: center;
+            @include mobile {
+                padding: 2.4rem;
+                line-height: 1;
+            }
         }
         &__section {
             flex-grow: 1;
@@ -76,6 +105,9 @@
             height: 30px;
             width: 32px;
             margin: 1.2rem 1.6rem 1.2rem auto;
+            @include mobile {
+                margin: 1.8rem;
+            }
         }
     }
     /** @define dc-modal-body */

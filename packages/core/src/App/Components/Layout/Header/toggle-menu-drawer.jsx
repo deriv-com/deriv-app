@@ -1,6 +1,7 @@
 import classNames        from 'classnames';
 import React             from 'react';
 import {
+    Div100vhContainer,
     Icon,
     MobileDrawer,
     ToggleSwitch }       from '@deriv/components';
@@ -89,97 +90,99 @@ class ToggleMenuDrawer extends React.PureComponent {
                     height='100vh'
                     width='295px'
                 >
-                    <MobileDrawer.SubHeader>
-                        {this.props.platform_switcher}
-                    </MobileDrawer.SubHeader>
-                    <MobileDrawer.Body>
-                        <div
-                            className='header__menu-mobile-platform-switcher'
-                            id='mobile_platform_switcher'
-                        />
-                        <MobileDrawer.Item>
-                            <MenuLink
-                                link_to={routes.trade}
-                                icon='IcTrade'
-                                text={localize('Trade')}
+                    <Div100vhContainer height_offset='166px'>
+                        <MobileDrawer.SubHeader>
+                            {this.props.platform_switcher}
+                        </MobileDrawer.SubHeader>
+                        <MobileDrawer.Body>
+                            <div
+                                className='header__menu-mobile-platform-switcher'
+                                id='mobile_platform_switcher'
                             />
-                        </MobileDrawer.Item>
-                        {this.props.is_logged_in &&
-                        <MobileDrawer.SubMenu
-                            has_subheader
-                            submenu_icon='IcReports'
-                            submenu_title={localize('Reports')}
-                            submenu_suffix_icon='IcChevronRight'
-                        >
                             <MobileDrawer.Item>
                                 <MenuLink
-                                    link_to={routes.positions}
-                                    icon='IcPortfolio'
-                                    text={localize('Open positions')}
+                                    link_to={routes.trade}
+                                    icon='IcTrade'
+                                    text={localize('Trade')}
                                 />
                             </MobileDrawer.Item>
-                            <MobileDrawer.Item>
-                                <MenuLink
-                                    link_to={routes.profit}
-                                    icon='IcProfitTable'
-                                    text={localize('Profit table')}
-                                />
-                            </MobileDrawer.Item>
-                            <MobileDrawer.Item>
-                                <MenuLink
-                                    link_to={routes.statement}
-                                    icon='IcStatement'
-                                    text={localize('Statements')}
-                                />
-                            </MobileDrawer.Item>
-                        </MobileDrawer.SubMenu>
-                        }
-                        <MobileDrawer.Item
-                            onClick={(e) => {
-                                e.preventDefault();
-                                this.props.toggleTheme(!this.props.is_dark_mode);
-                            }}
-                        >
-                            <div className={classNames('header__menu-mobile-link', {
-                                'header__menu-mobile-link--active': this.props.is_dark_mode,
-                            })}
+                            {this.props.is_logged_in &&
+                            <MobileDrawer.SubMenu
+                                has_subheader
+                                submenu_icon='IcReports'
+                                submenu_title={localize('Reports')}
+                                submenu_suffix_icon='IcChevronRight'
                             >
-                                <Icon
-                                    className='header__menu-mobile-link-icon'
-                                    icon={'IcTheme'}
+                                <MobileDrawer.Item>
+                                    <MenuLink
+                                        link_to={routes.positions}
+                                        icon='IcPortfolio'
+                                        text={localize('Open positions')}
+                                    />
+                                </MobileDrawer.Item>
+                                <MobileDrawer.Item>
+                                    <MenuLink
+                                        link_to={routes.profit}
+                                        icon='IcProfitTable'
+                                        text={localize('Profit table')}
+                                    />
+                                </MobileDrawer.Item>
+                                <MobileDrawer.Item>
+                                    <MenuLink
+                                        link_to={routes.statement}
+                                        icon='IcStatement'
+                                        text={localize('Statements')}
+                                    />
+                                </MobileDrawer.Item>
+                            </MobileDrawer.SubMenu>
+                            }
+                            <MobileDrawer.Item
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    this.props.toggleTheme(!this.props.is_dark_mode);
+                                }}
+                            >
+                                <div className={classNames('header__menu-mobile-link', {
+                                    'header__menu-mobile-link--active': this.props.is_dark_mode,
+                                })}
+                                >
+                                    <Icon
+                                        className='header__menu-mobile-link-icon'
+                                        icon={'IcTheme'}
+                                    />
+                                    <span className='header__menu-mobile-link-text'>
+                                        {localize('Dark Theme')}
+                                    </span>
+                                    <ToggleSwitch
+                                        id='dt_mobile_drawer_theme_toggler'
+                                        classNameLabel='header__menu-mobile-link-toggler-label'
+                                        classNameButton={classNames('header__menu-mobile-link-toggler-button', {
+                                            'header__menu-mobile-link-toggler-button--active': this.props.is_dark_mode,
+                                        })}
+                                        handleToggle={() => this.props.toggleTheme(!this.props.is_dark_mode)}
+                                        is_enabled={this.props.is_dark_mode}
+                                    />
+                                </div>
+                            </MobileDrawer.Item>
+                            {this.props.is_logged_in &&
+                            <MobileDrawer.Item
+                                onClick={() => {
+                                    this.props.logoutClient();
+                                    this.toggleDrawer();
+                                }}
+                            >
+                                <MenuLink
+                                    icon='IcLogout'
+                                    text={localize('Log out')}
                                 />
-                                <span className='header__menu-mobile-link-text'>
-                                    {localize('Dark Theme')}
-                                </span>
-                                <ToggleSwitch
-                                    id='dt_mobile_drawer_theme_toggler'
-                                    classNameLabel='header__menu-mobile-link-toggler-label'
-                                    classNameButton={classNames('header__menu-mobile-link-toggler-button', {
-                                        'header__menu-mobile-link-toggler-button--active': this.props.is_dark_mode,
-                                    })}
-                                    handleToggle={() => this.props.toggleTheme(!this.props.is_dark_mode)}
-                                    is_enabled={this.props.is_dark_mode}
-                                />
-                            </div>
-                        </MobileDrawer.Item>
-                        {this.props.is_logged_in &&
-                        <MobileDrawer.Item
-                            onClick={() => {
-                                this.props.logoutClient();
-                                this.toggleDrawer();
-                            }}
-                        >
-                            <MenuLink
-                                icon='IcLogout'
-                                text={localize('Log out')}
-                            />
-                        </MobileDrawer.Item>
-                        }
-                    </MobileDrawer.Body>
-                    <MobileDrawer.Footer>
-                        <ServerTime is_mobile />
-                        <NetworkStatus is_mobile />
-                    </MobileDrawer.Footer>
+                            </MobileDrawer.Item>
+                            }
+                        </MobileDrawer.Body>
+                        <MobileDrawer.Footer>
+                            <ServerTime is_mobile />
+                            <NetworkStatus is_mobile />
+                        </MobileDrawer.Footer>
+                    </Div100vhContainer>
                 </MobileDrawer>
             </React.Fragment>
         );

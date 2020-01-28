@@ -24,6 +24,14 @@ const InputField = props => {
     );
 };
 
+const getLocation = (location_list, value, type) => {
+    const location_obj = location_list.find(location =>
+        location[type === 'text' ? 'value' : 'text'].toLowerCase() === value.toLowerCase());
+
+    if (location_obj) return location_obj[type];
+    return '';
+};
+
 class AddressDetails extends Component {
     constructor(props) {
         super(props);
@@ -61,6 +69,10 @@ class AddressDetails extends Component {
                 }}
                 validate={this.validateAddressDetails}
                 onSubmit={(values, actions) => {
+                    if (values.address_state) {
+                        values.address_state = this.props.states_list.length ?
+                            getLocation(this.props.states_list, values.address_state, 'value') : request.address_state;
+                    }
                     this.props.onSubmit(this.props.index, values, actions.setSubmitting);
                 }}
                 ref={this.form}

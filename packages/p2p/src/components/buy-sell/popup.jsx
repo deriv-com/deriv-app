@@ -134,8 +134,8 @@ class Popup extends Component {
                                                         className='buy-sell__popup-field'
                                                         trailing_icon={<span className='buy-sell__popup-field--trailing'>{ad.offer_currency}</span>}
                                                         onChange={(e) => {
-                                                            // typing anymore than 15 characters will break the layout
-                                                            // max doesn't work to stop typing, so we will use this
+                                                            // typing more than 15 characters will break the layout
+                                                            // max doesn't disable typing, so we will use this to restrict length
                                                             if (e.target.value.length > 15) {
                                                                 e.target.value = e.target.value.slice(0, 15);
                                                                 return;

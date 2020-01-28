@@ -50,6 +50,7 @@ class TogglePositionsMobile extends React.PureComponent {
                             }}
                             unmountOnExit
                         >
+                            {/* TODO: Update positions card design for mobile here */}
                             <PositionsDrawerCard
                                 onClickSell={onClickSell}
                                 onClickRemove={onClickRemove}

@@ -39,8 +39,8 @@ const ProfitLossCardContent = ({
                         },
                     )}
                     >
-                        {status === 'profit' && <Icon icon='IcProfit' />}
-                        {status === 'loss'   && <Icon icon='IcLoss' />}
+                        {status === 'profit' && <Icon icon='IcProfit' color='green' />}
+                        {status === 'loss'   && <Icon icon='IcLoss' color='red' />}
                     </div>
                 </div>
             }
@@ -60,8 +60,8 @@ const ProfitLossCardContent = ({
                         },
                     )}
                     >
-                        {status === 'profit' && <Icon icon='IcProfit' />}
-                        {status === 'loss'   && <Icon icon='IcLoss' />}
+                        {status === 'profit' && <Icon icon='IcProfit' color='green' />}
+                        {status === 'loss'   && <Icon icon='IcLoss' color='red' />}
                     </div>
                 </div>
             }

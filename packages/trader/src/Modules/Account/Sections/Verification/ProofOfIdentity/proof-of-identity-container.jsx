@@ -40,8 +40,9 @@ class ProofOfIdentityContainer extends React.Component {
                 const { token } = response.service_token;
                 const in_90_minutes = (1 / 16);
                 Cookies.set(onfido_cookie_name, token, {
-                    expires: in_90_minutes,
-                    secure : true,
+                    expires : in_90_minutes,
+                    secure  : true,
+                    sameSite: 'strict',
                 });
                 resolve(token);
             });

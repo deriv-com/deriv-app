@@ -12,8 +12,11 @@ const Card = ({
     onClick,
 }) => (
     <ThemedScrollbars
-        autohide
-        className='contract-type-info__card-wrapper'
+        style={{
+            width      : '288px',
+            maxHeight  : 'calc(100vh- 262px)',
+            marginRight: '2.4rem',
+        }}
         renderTrackHorizontal={() =>
             <div
                 // hide horizontal scrollbar

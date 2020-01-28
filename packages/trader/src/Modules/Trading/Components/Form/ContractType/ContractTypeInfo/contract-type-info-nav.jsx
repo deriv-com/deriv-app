@@ -30,26 +30,26 @@ const Nav = ({
     };
 
     return (
-        <nav className='contract-type-info-nav'>
+        <nav className='contract-type-info__nav'>
             <span
                 id='dt_contract_info_left_nav'
-                className='contract-type-info-nav__icon'
+                className='contract-type-info__icon'
                 onClick={handlePrevClick}
             >
                 <Icon icon='IcChevronLeft' />
             </span>
-            <ul className='contract-type-info-nav__list'>
+            <ul className='contract-type-info__nav-list'>
                 <li
                     className={classNames(
-                        'contract-type-info-nav__item',
-                        'contract-type-info-nav__item--active')}
+                        'contract-type-info__nav-item',
+                        'contract-type-info__nav-item--active')}
                     style={{ 'transform': `translate3d(${24 * active_index}px, 0, 0)` }}
                 />
                 {
                     list.map((contract, idx) => (
                         <li
                             key={idx}
-                            className='contract-type-info-nav__item'
+                            className='contract-type-info__nav-item'
                             onClick={() => handleNavigationClick(contract)}
                         />
                     ))
@@ -57,7 +57,7 @@ const Nav = ({
             </ul>
             <span
                 id='dt_contract_info_right_nav'
-                className='contract-type-info-nav__icon'
+                className='contract-type-info__icon'
                 onClick={handleNextClick}
             >
                 <Icon icon='IcChevronRight' />

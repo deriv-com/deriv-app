@@ -15,19 +15,12 @@
         height: 100%;
     }
     &__card {
-        min-height: 535px;
-        height: 100%;
+        min-height: calc(100vh - 368px);
         width: 272px;
         margin-right: 2.4rem;
         display: flex;
         flex-direction: column;
-
-        &-wrapper {
-            width: 288px !important;  // !important to overwrite ThemedScrollbars width
-            height: 535px !important; // !important to overwrite ThemedScrollbars height
-            max-height: calc(100vh - 262px);
-            margin-right: 2.4rem;
-        }
+        padding-bottom: 0.8rem;
     }
     &__content {
         margin-top: 2.4rem;
@@ -62,23 +55,52 @@
         height: 148px;
         border-radius: 4px;
     }
-    &__header {
+    &__action-bar {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 288px;
+        width: 100%;
+    }
+    &__title {
+        @include typeface(--title-left-bold-black);
+        margin: auto;
+        color: var(--text-prominent);
+        cursor: default;
+    }
+    &__nav {
+        display: flex;
+        align-items: center;
+        width: 320px;
+        padding: 0 2.4rem;
+        overflow: hidden;
+        margin-bottom: 2.4rem;
 
-        /* postcss-bem-linter: ignore */
-        .title {
-            @include typeface(--title-left-bold-black);
-            margin: auto;
-            color: var(--text-prominent);
-            cursor: default;
+        &-list {
+            display: inline-block;
+            text-align: center;
+            margin: 0 auto;
+            position: relative;
         }
-
-        /* postcss-bem-linter: ignore */
-        span {
+        &-item {
+            width: 0.8rem;
+            height: 0.8rem;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 0.8rem;
             cursor: pointer;
+            background-color: var(--text-disabled);
+
+            &--active {
+                position: absolute;
+                top: 0;
+                left: 0;
+                cursor: initial;
+                transition: transform 0.3s linear;
+                background-color: var(--brand-red-coral);
+            }
         }
+    }
+    &__icon {
+        cursor: pointer;
     }
 }

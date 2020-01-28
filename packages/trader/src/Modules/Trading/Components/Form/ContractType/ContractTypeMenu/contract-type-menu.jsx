@@ -21,38 +21,36 @@ class Dialog extends React.PureComponent {
 
     state = {
         is_filtered_list_empty: false,
-        selected              : this.contract_category_label,
+        selected              : this.contract_category,
         value                 : this.props.item.value,
         input_value           : '',
     };
 
-    componentDidUpdate() {
-        const {
-            is_info_dialog_open,
-            is_open,
-            item,
-        } = this.props;
+    static getDerivedStateFromProps(props, state) {
+        if (props.item.value !== state.value) {
+            return {
+                selected: {
+                    label: getContractCategoryLabel(props.list, props.item),
+                    value: props.item.value,
+                },
+            };
+        }
+        if (!props.is_open && !props.is_info_dialog_open && state.selected !== null) {
+            return {
+                selected: null, // reset selected header when dialog is closed
+            };
+        }
+        return null;
+    }
 
-        if (is_open && !this.vertical_tab_headers.length) {
-            this.vertical_tab_headers = this.getVerticalTabHeaders();
-        }
-        if (item.value !== this.state.value) {
-            // sync selected vertical tab header with contract type value
-            this.setState({
-                selected: this.contract_category_label,
-                value   : item.value,
-            }, () => {
-                if (is_open && !is_info_dialog_open) {
-                    this.scroll();
-                }
-            });
-        }
-        if (!is_open && !is_info_dialog_open && this.state.selected !== null) {
-            // reset selected vertical tab header when dialog is closed
-            this.setState({ selected: null });
-        }
-        if (!this.state.selected && this.scrollbar_ref.current) {
-            this.scroll();
+    componentDidUpdate() {
+        if (this.props.is_open) {
+            if (!this.vertical_tab_headers.length) {
+                this.vertical_tab_headers = this.getVerticalTabHeaders();
+            }
+            if (this.scrollbar_ref.current && !this.scrollbar_ref.current.getScrollTop()) {
+                this.scroll();
+            }
         }
     }
 
@@ -122,7 +120,7 @@ class Dialog extends React.PureComponent {
         return getContractsList(this.props.list);
     }
 
-    get contract_category_label() {
+    get contract_category() {
         const { list, item } = this.props;
         const label = getContractCategoryLabel(list, item);
 
@@ -132,7 +130,7 @@ class Dialog extends React.PureComponent {
     }
 
     get selected() {
-        return this.state.selected || this.contract_category_label;
+        return this.state.selected || this.contract_category;
     }
 
     get offset_top() {

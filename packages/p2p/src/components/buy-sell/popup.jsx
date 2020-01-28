@@ -25,7 +25,7 @@ class Popup extends Component {
     };
 
     componentDidMount() {
-        this.setState({ total_amount: this.getTotalAmount(this.props.ad.min_transaction) });
+        this.setTotalAmount(this.props.ad.min_transaction);
     }
 
     handleSubmit = async (values, { setStatus, setSubmitting }) => {
@@ -50,14 +50,15 @@ class Popup extends Component {
 
     };
 
-    getTotalAmount = (amount) => {
+    setTotalAmount = (amount) => {
         const { ad } = this.props;
-        return CurrencyUtils.formatMoney(
+        const total_amount = CurrencyUtils.formatMoney(
             ad.transaction_currency,
             +amount * ad.price_rate,
             true,
             ad.transaction_currency_decimals,
         );
+        this.setState({ total_amount });
     };
 
     render() {
@@ -120,6 +121,13 @@ class Popup extends Component {
                                                         type='number'
                                                         error={errors.amount}
                                                         label={localize('Amount')}
+                                                        onInput={(e) => {
+                                                            // typing anymore than 15 characters will break the layout
+                                                            // max doesn't work to stop typing, so we will use this
+                                                            if (e.target.value.length > 15) {
+                                                                e.target.value = e.target.value.slice(0, 15);
+                                                            }
+                                                        }}
                                                         hint={
                                                             <Localize
                                                                 i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
@@ -134,9 +142,7 @@ class Popup extends Component {
                                                         trailing_icon={<span className='buy-sell__popup-field--trailing'>{ad.offer_currency}</span>}
                                                         onChange={(e) => {
                                                             const amount = isNaN(e.target.value) ? 0 : e.target.value;
-                                                            this.setState({
-                                                                total_amount: this.getTotalAmount(amount),
-                                                            });
+                                                            this.setTotalAmount(amount);
                                                             handleChange(e);
                                                         }}
                                                         required
@@ -153,7 +159,7 @@ class Popup extends Component {
                                 <div className='buy-sell__popup-footer'>
                                     {status && status.error_message && <FormError message={status.error_message} />}
                                     <Button secondary type='button' onClick={handleClose}>{localize('Cancel')}</Button>
-                                    <Button is_disabled={isSubmitting || errors.amount} primary>{localize('Confirm')}</Button>
+                                    <Button is_disabled={!!(isSubmitting || errors.amount)} primary>{localize('Confirm')}</Button>
                                 </div>
                             </Form>
                         )}

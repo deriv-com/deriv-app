@@ -32,7 +32,7 @@ export default class VerticalTabContentContainer extends React.PureComponent {
                                         <Component key={idx} />
                                         :
                                         <div
-                                            id={`dc_${id}_close_icon`}
+                                            id={`dt_${id}_close_icon`}
                                             className='dc-vertical-tab__action-bar-wrapper'
                                             key={idx}
                                             onClick={onClick}

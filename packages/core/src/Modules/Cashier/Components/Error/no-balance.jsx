@@ -9,7 +9,7 @@ import { connect }            from 'Stores/connect';
 class NoBalance extends React.Component {
     onClickDeposit = () => {
         // index of deposit tab in the cashier modal is 0
-        this.props.setModalIndex(0);
+        this.props.setVerticalTabIndex(0);
         this.props.history.push(routes.cashier_deposit);
     };
 
@@ -35,14 +35,14 @@ class NoBalance extends React.Component {
 }
 
 NoBalance.propTypes = {
-    currency     : PropTypes.string,
-    setModalIndex: PropTypes.func,
+    currency           : PropTypes.string,
+    setVerticalTabIndex: PropTypes.func,
 };
 
 export default connect(
     ({ client, ui }) => ({
-        currency     : client.currency,
-        setModalIndex: ui.setModalIndex,
+        currency           : client.currency,
+        setVerticalTabIndex: ui.setVerticalTabIndex,
     })
 )(withRouter(NoBalance));
 

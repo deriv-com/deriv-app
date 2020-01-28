@@ -36,8 +36,7 @@ const isLanguageAvailable = (lang) => {
     const selected_language = lang.toUpperCase();
     const is_ach = selected_language === 'ACH';
 
-    if (is_ach && isStaging()) return true;
-    if (is_ach) return false;
+    if (is_ach) return isStaging();
 
     // TODO: remove when translations are ready
     if (selected_language !== DEFAULT_LANGUAGE) return false;
@@ -107,7 +106,7 @@ const getLanguage = () => {
 
 // eslint-disable-next-line no-unused-vars
 const changeLanguage = async (lang, cb) => {
-    // TODO: uncomment this when translations are ready	    // TODO: uncomment this when translations are ready
+    // TODO: uncomment this when translations are ready
     // if (isLanguageAvailable(lang)) {
     //     await loadLanguageJson(lang);
     //     i18n.changeLanguage(lang, () => {

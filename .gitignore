@@ -15,3 +15,4 @@ coverage
 packages/shared/utils
 packages/components/.out
 packages/p2p/lib
+tsconfig.json

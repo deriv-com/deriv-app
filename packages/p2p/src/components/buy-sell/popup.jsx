@@ -121,13 +121,6 @@ class Popup extends Component {
                                                         type='number'
                                                         error={errors.amount}
                                                         label={localize('Amount')}
-                                                        onInput={(e) => {
-                                                            // typing anymore than 15 characters will break the layout
-                                                            // max doesn't work to stop typing, so we will use this
-                                                            if (e.target.value.length > 15) {
-                                                                e.target.value = e.target.value.slice(0, 15);
-                                                            }
-                                                        }}
                                                         hint={
                                                             <Localize
                                                                 i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
@@ -141,6 +134,12 @@ class Popup extends Component {
                                                         className='buy-sell__popup-field'
                                                         trailing_icon={<span className='buy-sell__popup-field--trailing'>{ad.offer_currency}</span>}
                                                         onChange={(e) => {
+                                                            // typing anymore than 15 characters will break the layout
+                                                            // max doesn't work to stop typing, so we will use this
+                                                            if (e.target.value.length > 15) {
+                                                                e.target.value = e.target.value.slice(0, 15);
+                                                                return;
+                                                            }
                                                             const amount = isNaN(e.target.value) ? 0 : e.target.value;
                                                             this.setTotalAmount(amount);
                                                             handleChange(e);

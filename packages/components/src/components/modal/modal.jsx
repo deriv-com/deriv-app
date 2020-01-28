@@ -71,12 +71,13 @@ class ModalElement extends React.PureComponent {
                     width : width || 'auto',
                 }}
             >
+                {(header || title) &&
                 <div className={classNames('dc-modal-header', {
                     [`dc-modal-header--${className}`]: className,
                 }
                 )}
                 >
-                    {  title &&
+                    {title &&
                     <h3 className={classNames('dc-modal-header__title', {
                         [`dc-modal-header__title--${className}`]: className,
                     }
@@ -84,7 +85,7 @@ class ModalElement extends React.PureComponent {
                     >{title}
                     </h3>
                     }
-                    { header &&
+                    {header &&
                     <div className={classNames('dc-modal-header__section', {
                         [`dc-modal-header__section--${className}`]: className,
                     }
@@ -93,7 +94,7 @@ class ModalElement extends React.PureComponent {
                         {header}
                     </div>
                     }
-                    { has_close_icon &&
+                    {has_close_icon &&
                     <div
                         onClick={toggleModal}
                         className='dc-modal-header__close'
@@ -102,6 +103,7 @@ class ModalElement extends React.PureComponent {
                     </div>
                     }
                 </div>
+                }
                 {children}
             </div>,
             this.el,

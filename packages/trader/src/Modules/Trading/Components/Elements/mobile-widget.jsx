@@ -81,10 +81,11 @@ class MobileWidget extends React.Component {
                     className='trade-params'
                     enableApp={this.props.enableApp}
                     is_open={this.state.is_open}
+                    is_vertical_top
                     disableApp={this.props.disableApp}
                     toggleModal={this.toggleWidget}
-                    height='100%'
-                    width='calc(100vw - 42px)'
+                    height='auto'
+                    width='calc(100vw - 32px)'
                 >
                     <div className='mobile-widget-dialog__wrapper'>
                         <TradeParamsMobile is_nativepicker />

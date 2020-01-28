@@ -259,7 +259,9 @@
                 @include mobile {
                     top: 0.8rem;
                     left: 0.8rem;
-                    max-width: 228px;
+                    min-width: 170px;
+                    max-width: 260px;
+                    width: auto;
 
                     .cq-menu-btn {
                         padding: 0.2rem;
@@ -267,8 +269,9 @@
                     .cq-symbol-select-btn {
                         padding: 0.3rem 0.9rem;
 
-                        .ic-icon {
+                        .cq-symbol-dropdown {
                             transform: scale(1);
+                            margin-left: auto;
                         }
                         .cq-symbol {
                             font-size: 1.2rem;

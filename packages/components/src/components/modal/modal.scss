@@ -1,9 +1,5 @@
 /** @define dc-modal; weak */
 .dc-modal {
-    @include mobile {
-        width: calc(100vw - 4.8em);
-    }
-
     &__container {
         display: flex;
         flex-direction: column;
@@ -13,23 +9,19 @@
         transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
         background-color: var(--general-main-2);
         box-shadow: 0 4px 6px 0 var(--shadow-menu);
-        @include desktop {
-            min-width: 400px;
-            max-height: calc(100vh - 48px - 36px);
-            max-width: 90vw;
-        }
 
         &--is-vertical-centered {
             position: absolute;
             top: 50vh;
             transform: translateY(-50%) !important;
-            @include mobile {
-                width: calc(100vw - 4.8em) !important;
-            }
 
             .dc-modal__container {
                 min-width: unset;
                 top: 2rem;
+            }
+            @include mobile {
+                left: 2.4rem;
+                width: calc(100vw - 4.8rem) !important;
             }
         }
         &--is-vertical-top {
@@ -37,15 +29,16 @@
             position: absolute;
             @include mobile {
                 top: $MOBILE_HEADER_HEIGHT;
-                width: calc(100vw - 4.8em) !important;
+                left: 1.6rem;
+                width: calc(100vw - 3.2rem) !important;
             }
         }
         &--is-vertical-bottom {
             bottom: $FOOTER_HEIGHT;
             position: absolute;
             @include mobile {
-                bottom: 2.4rem;
-                width: calc(100vw - 4.8em) !important;
+                left: 1.6rem;
+                width: calc(100vw - 3.2rem) !important;
             }
         }
         &--hide {
@@ -67,6 +60,11 @@
             .dc-modal-header {
                 border-bottom: none;
             }
+        }
+        @include desktop {
+            min-width: 400px;
+            max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
+            max-width: 90vw;
         }
     }
     /** @define dc-modal-header */

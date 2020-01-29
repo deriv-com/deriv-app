@@ -34,7 +34,7 @@ const OrderDetails = ({
     const [show_popup, setShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
 
-    const { is_agent } = React.useContext(Dp2pContext);
+    const { is_agent, domain } = React.useContext(Dp2pContext);
     const onCancelClick = () => setShowPopup(false);
 
     const handleShowPopup = (options) => {
@@ -81,8 +81,8 @@ const OrderDetails = ({
                                 <p>
                                     <Localize
                                         i18n_default_text='If you have a complaint, please email <0>{{support_email}}</0> and include your order ID.'
-                                        values={{ support_email: 'support@deriv.com' }}
-                                        components={[ <a key={0} className='link' rel='noopener noreferrer' target='_blank' href='mailto:support@deriv.com' /> ]}
+                                        values={{ support_email: `support@${domain}` }}
+                                        components={[ <a key={0} className='link' rel='noopener noreferrer' target='_blank' href={`mailto:support@${domain}`} /> ]}
                                     />
                                 </p>
                             </div>

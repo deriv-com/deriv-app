@@ -159,6 +159,9 @@ class App extends Component {
 App.propTypes = {
     client: PropTypes.shape({
         currency             : PropTypes.string.isRequired,
+        custom_strings       : PropTypes.shape({
+            email_domain: PropTypes.string,
+        }),
         is_virtual           : PropTypes.bool.isRequired,
         local_currency_config: PropTypes.shape({
             currency      : PropTypes.string.isRequired,

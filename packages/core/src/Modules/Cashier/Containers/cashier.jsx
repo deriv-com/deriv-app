@@ -58,6 +58,7 @@ class Cashier extends React.Component {
                     <PageOverlay
                         header={localize('Cashier')}
                         onClickClose={this.onClickClose}
+                        has_side_note
                     >
                         <VerticalTab
                             alignment='center'
@@ -65,8 +66,8 @@ class Cashier extends React.Component {
                             classNameHeader='cashier__tab-header'
                             current_path={this.props.location.pathname}
                             is_floating
-                            is_routed={true}
-                            is_full_width={true}
+                            is_routed
+                            is_full_width
                             list={menu_options()}
                         />
                     </PageOverlay>

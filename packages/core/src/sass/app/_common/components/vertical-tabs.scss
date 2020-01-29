@@ -23,6 +23,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT});
     }
     &--full-screen {
         min-height: $MIN_HEIGHT;
+        width: 100%;
 
         // .vertical-tab__tab {
         //     min-width: 15%;
@@ -59,13 +60,14 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT});
     }
     &__tab {
         display: flex;
-        min-width: 256px;
+        min-width: 28%;
         height: 100%;
         flex-direction: column;
         border-radius: $BORDER_RADIUS 0 0 $BORDER_RADIUS;
         background-color: var(--general-section-1);
 
         &--floating {
+            min-width: 256px;
             padding: 0.8rem;
             border-radius: #{$BORDER_RADIUS * 2};
         }
@@ -137,6 +139,8 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT});
         }
         &--floating {
             max-width: 952px;
+            min-width: 672px;
+            margin-left: 2.4rem;
         }
     }
 }

@@ -104,7 +104,7 @@ export default class CashierStore extends BaseStore {
     };
 
     active_container = this.config.deposit.container;
-    current_client;
+    onRemount = () => {};
     is_populating_values = false;
     p2p_offer_list = {};
 
@@ -119,17 +119,8 @@ export default class CashierStore extends BaseStore {
     };
 
     @action.bound
-    resetValuesIfNeeded() {
-        if (this.current_client && this.current_client !== this.root_store.client.loginid) {
-            this.onAccountSwitch();
-        }
-        this.current_client = this.root_store.client.loginid;
-    }
-
-    @action.bound
     async onMountCommon() {
         await BinarySocket.wait('authorize');
-        this.resetValuesIfNeeded();
 
         // avoid calling this again
         if (this.is_populating_values) {
@@ -137,6 +128,9 @@ export default class CashierStore extends BaseStore {
         }
 
         this.is_populating_values = true;
+
+        this.disposeSwitchAccount();
+        this.onSwitchAccount(this.accountSwitcherListener);
 
         // we need to see if client's country has PA
         // if yes, we can show the PA tab in cashier
@@ -182,6 +176,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMount(verification_code) {
         const current_container = this.active_container;
+        this.onRemount = this.onMount;
         await this.onMountCommon();
 
         if (this.containers.indexOf(this.active_container) === -1) {
@@ -199,7 +194,8 @@ export default class CashierStore extends BaseStore {
         // if session has timed out reset everything
         this.setIframeUrl('');
 
-        if (this.active_container === this.config.withdraw.container && !verification_code) {
+        if ((this.active_container === this.config.withdraw.container && !verification_code) ||
+            this.root_store.client.is_virtual) { // if virtual, clear everything and don't proceed further
             // if no verification code, we should request again
             return;
         }
@@ -412,6 +408,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountPaymentAgentList() {
         this.setLoading(true);
+        this.onRemount = this.onMountPaymentAgentList;
         await this.onMountCommon();
 
         if (!this.config.payment_agent.list.length) {
@@ -503,6 +500,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountPaymentAgentWithdraw() {
         this.setLoading(true);
+        this.onRemount = this.onMountPaymentAgentWithdraw;
         await this.onMountCommon();
 
         this.setIsWithdraw(true);
@@ -599,6 +597,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountAccountTransfer() {
         this.setLoading(true);
+        this.onRemount = this.onMountAccountTransfer;
         await this.onMountCommon();
         await BinarySocket.wait('website_status');
 
@@ -844,6 +843,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountPaymentAgentTransfer() {
         this.setLoading(true);
+        this.onRemount = this.onMountPaymentAgentTransfer;
         await this.onMountCommon();
 
         if (!this.config.payment_agent_transfer.transfer_limit.min_withdrawal) {
@@ -910,7 +910,7 @@ export default class CashierStore extends BaseStore {
         this.setErrorMessage('');
     };
 
-    onAccountSwitch() {
+    accountSwitcherListener() {
         [this.config.withdraw.container, this.config.payment_agent.container].forEach((container) => {
             this.clearVerification(container);
         });
@@ -925,5 +925,15 @@ export default class CashierStore extends BaseStore {
         this.is_populating_values = false;
         this.setIsDp2pVisible(false);
         this.p2p_offer_list = {};
+
+        this.onRemount();
+
+        return Promise.resolve();
+    }
+
+    @action.bound
+    onUnmount() {
+        this.disposePreSwitchAccount();
+        this.disposeSwitchAccount();
     }
 }

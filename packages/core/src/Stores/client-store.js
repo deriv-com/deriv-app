@@ -1174,7 +1174,7 @@ export default class ClientStore extends BaseStore {
         }, 60000);
 
         if (!response.error) {
-            this.mt5_login_list = response.mt5_login_list.map(account => ({ ...account, display_login: account.login.replace(/^(MT[DR])/i, '') }));
+            this.mt5_login_list = response.mt5_login_list.map(account => ({ ...account, display_login: account.login.replace(/^(MT[DR]?)/i, '') }));
         }
     }
 

@@ -4,6 +4,7 @@ import { withRouter }  from 'react-router';
 import { PageOverlay } from '@deriv/components';
 import ObjectUtils     from '@deriv/shared/utils/object';
 import { localize }    from '@deriv/translations';
+import { FadeWrapper } from 'App/Components/Animations';
 import ChartLoader     from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer  from 'App/Components/Elements/ContractDrawer';
 import AppRoutes       from 'Constants/routes';
@@ -16,21 +17,28 @@ import ChartMarker     from '../../SmartChart/Components/Markers/marker.jsx';
 import TopWidgets      from '../../SmartChart/Components/top-widgets.jsx';
 
 class ContractReplay extends React.Component {
+    state = {
+        is_visible: false,
+    };
+
     componentDidMount() {
         const url_contract_id = +/[^/]*$/.exec(location.pathname)[0];
         this.props.onMount(this.props.contract_id || url_contract_id);
+        this.setState({ is_visible: true });
     }
 
     componentWillUnmount() {
+        this.setState({ is_visible: false });
         this.props.onUnmount();
     }
 
     // TODO: [history-routing] handle going back as per user actions
     onClickClose = () => {
+        this.setState({ is_visible: false });
         const is_from_table_row = !ObjectUtils.isEmptyObject(this.props.location.state) ?
             this.props.location.state.from_table_row : false;
-        return this.props.history.push(is_from_table_row ? AppRoutes.reports : AppRoutes.trade);
-    }
+        return this.props.history.push(is_from_table_row ? this.props.history.goBack() : AppRoutes.trade);
+    };
 
     render() {
         const {
@@ -50,47 +58,53 @@ class ContractReplay extends React.Component {
         } = this.props;
 
         return (
-            <PageOverlay
-                header={localize('Contract details')}
-                onClickClose={this.onClickClose}
+            <FadeWrapper
+                is_visible={this.state.is_visible}
+                className='contract-details-wrapper'
+                keyname='contract-details-wrapper'
             >
-                <div id='dt_contract_replay_container' className='trade-container__replay'>
-                    <ContractDrawer
-                        contract_info={contract_info}
-                        is_dark_theme={is_dark_theme}
-                        is_sell_requested={is_sell_requested}
-                        onClickSell={onClickSell}
-                        status={indicative_status}
-                    />
-                    <React.Suspense fallback={<div />}>
-                        <div className='replay-chart__container'>
-                            <NotificationMessages />
-                            <ChartLoader is_dark={is_dark_theme} is_visible={is_chart_loading} />
-                            { contract_info.underlying  &&
-                            <ReplayChart
-                                Digits={
-                                    <Digits
-                                        is_digit_contract={is_digit_contract}
-                                        is_ended={is_ended}
-                                        contract_info={contract_info}
-                                        digits_info={digits_info}
-                                        display_status={display_status}
-                                    />
+                <PageOverlay
+                    header={localize('Contract details')}
+                    onClickClose={this.onClickClose}
+                >
+                    <div id='dt_contract_replay_container' className='trade-container__replay'>
+                        <ContractDrawer
+                            contract_info={contract_info}
+                            is_dark_theme={is_dark_theme}
+                            is_sell_requested={is_sell_requested}
+                            onClickSell={onClickSell}
+                            status={indicative_status}
+                        />
+                        <React.Suspense fallback={<div />}>
+                            <div className='replay-chart__container'>
+                                <NotificationMessages />
+                                <ChartLoader is_dark={is_dark_theme} is_visible={is_chart_loading} />
+                                { contract_info.underlying  &&
+                                <ReplayChart
+                                    Digits={
+                                        <Digits
+                                            is_digit_contract={is_digit_contract}
+                                            is_ended={is_ended}
+                                            contract_info={contract_info}
+                                            digits_info={digits_info}
+                                            display_status={display_status}
+                                        />
+                                    }
+                                    InfoBox={
+                                        <InfoBox
+                                            contract_info={contract_info}
+                                            error_message={error_message}
+                                            removeError={removeError}
+                                        />
+                                    }
+                                    symbol={contract_info.underlying}
+                                />
                                 }
-                                InfoBox={
-                                    <InfoBox
-                                        contract_info={contract_info}
-                                        error_message={error_message}
-                                        removeError={removeError}
-                                    />
-                                }
-                                symbol={contract_info.underlying}
-                            />
-                            }
-                        </div>
-                    </React.Suspense>
-                </div>
-            </PageOverlay>
+                            </div>
+                        </React.Suspense>
+                    </div>
+                </PageOverlay>
+            </FadeWrapper>
         );
     }
 }

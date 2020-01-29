@@ -104,9 +104,9 @@ class App extends Component {
                     currency,
                     local_currency_config,
                     residence,
-                    agent_id: this.state.agent_id,
-                    is_agent: this.state.is_agent,
-                    domain  : this.props.custom_strings.domain || 'deriv.com',
+                    agent_id    : this.state.agent_id,
+                    is_agent    : this.state.is_agent,
+                    email_domain: this.props.custom_strings.email_domain || 'deriv.com',
                 }}
             >
                 <main className={classNames('deriv-p2p', className)}>

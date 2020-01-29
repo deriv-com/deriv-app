@@ -1,11 +1,14 @@
 import { Table }                  from '@deriv/components';
 import PropTypes                  from 'prop-types';
 import React                      from 'react';
+import Dp2pContext                from 'Components/context/dp2p-context';
 import { localize }               from 'Components/i18next';
 // TODO: [p2p-uncomment] uncomment this when API sends epoch for time
 // import { getFormattedDateString } from 'Utils/date-time';
 
 const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
+    const { is_agent } = React.useContext(Dp2pContext);
+
     const {
         display_transaction_amount,
         display_offer_amount,
@@ -22,8 +25,17 @@ const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
                 <Table.Cell>{ localize('Buy') }{' '}{ order_id }</Table.Cell>
                 <Table.Cell>{ order_purchase_datetime }</Table.Cell>
                 <Table.Cell>{ display_status }</Table.Cell>
-                <Table.Cell>{ display_transaction_amount }{ ' ' }{ transaction_currency }</Table.Cell>
-                <Table.Cell>{ display_offer_amount }{ ' ' }{ offer_currency }</Table.Cell>
+                {is_agent ?
+                    <React.Fragment>
+                        <Table.Cell>{ display_offer_amount }{ ' ' }{ offer_currency }</Table.Cell>
+                        <Table.Cell>{ display_transaction_amount }{ ' ' }{ transaction_currency }</Table.Cell>
+                    </React.Fragment>
+                    :
+                    <React.Fragment>
+                        <Table.Cell>{ display_transaction_amount }{ ' ' }{ transaction_currency }</Table.Cell>
+                        <Table.Cell>{ display_offer_amount }{ ' ' }{ offer_currency }</Table.Cell>
+                    </React.Fragment>
+                }
             </Table.Row>
         </div>
     );

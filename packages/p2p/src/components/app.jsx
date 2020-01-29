@@ -106,7 +106,7 @@ class App extends Component {
                     residence,
                     agent_id: this.state.agent_id,
                     is_agent: this.state.is_agent,
-                    domain  : this.props.custom_object.domain || 'deriv.com',
+                    domain  : this.props.custom_strings.domain || 'deriv.com',
                 }}
             >
                 <main className={classNames('deriv-p2p', className)}>

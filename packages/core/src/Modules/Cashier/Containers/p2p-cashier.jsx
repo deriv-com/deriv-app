@@ -17,9 +17,6 @@ const P2PCashier = ({
         lang={getLanguage()}
         client={{ currency, local_currency_config, is_virtual, residence }}
         server_time={ServerTime}
-        custom_object={{
-            domain: 'deriv.com'
-        }}
     />
 );
 

@@ -21,11 +21,13 @@ const getKebabCase = (str) => {
 };
 
 const Icon = ({
+    
     className,
     color,
     custom_color,
     height,
     icon,
+    id,
     onClick,
     onMouseEnter,
     onMouseLeave,
@@ -40,7 +42,9 @@ const Icon = ({
         filename = getKebabCase(filenames[1]);
     }
 
-    const id = icon.startsWith('IcUnderlying') ? `ic-underlying-${icon.split('IcUnderlying')[1].toUpperCase()}` : getKebabCase(icon);
+    const sprite_id = icon.startsWith('IcUnderlying') 
+        ? `ic-underlying-${icon.split('IcUnderlying')[1].toUpperCase()}` 
+        : getKebabCase(icon);
 
     return (
         <svg
@@ -55,6 +59,7 @@ const Icon = ({
                 'dc-icon--brand'    : color === 'brand',
             })}
             height={height || size}
+            id={id}
             width={width || size}
             onClick={onClick}
             onMouseEnter={onMouseEnter}
@@ -63,7 +68,7 @@ const Icon = ({
                 '--fill-color1': custom_color,
             } : undefined}
         >
-            <use xlinkHref={`${(getUrlBase(`/public/images/sprite/${filename}.svg`))}#${id}`} />
+            <use xlinkHref={`${(getUrlBase(`/public/images/sprite/${filename}.svg`))}#${sprite_id}`} />
         </svg>
     );
 };

@@ -393,16 +393,16 @@ Blockly.Toolbox.prototype.setSelectedItem = function (item, should_close_on_same
                 return null;
             };
 
-            const { toolboxXmlStr } = this.workspace_;
-            const toolboxDom = Blockly.Xml.textToDom(toolboxXmlStr);
-            const selected_category = findCategory(toolboxDom.children);
+            const { toolbox: toolbox_xml } = this.workspace_.cached_xml;
+            const toolbox_dom = Blockly.Xml.textToDom(toolbox_xml);
+            const selected_category = findCategory(toolbox_dom.children);
 
             if (selected_category) {
                 const el_parent = selected_category.parentElement;
 
                 flyout.setVisibility(false);
                 if (el_parent.tagName === 'xml') {
-                    this.workspace_.updateToolbox(toolboxXmlStr);
+                    this.workspace_.updateToolbox(toolbox_xml);
                 } else {
                     const newTree = getCategoryTree(
                         el_parent.getAttribute('name'),

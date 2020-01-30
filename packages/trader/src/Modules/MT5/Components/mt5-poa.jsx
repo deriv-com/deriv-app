@@ -134,22 +134,10 @@ class MT5POA extends Component {
                     switch (key) {
                         case 'address_line_2':
                         case 'document_file':
-                            errors[key] = <Localize
-                                i18n_default_text={optional_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                                options={{ interpolation: { escapeValue: false } }}
-                            />;
+                            errors[key] = localize(optional_messages[error_index], { field_name: mappedKey[key] });
                             break;
                         default:
-                            errors[key] = <Localize
-                                i18n_default_text={required_messages[error_index]}
-                                values={{
-                                    field_name: mappedKey[key],
-                                }}
-                                options={{ interpolation: { escapeValue: false } }}
-                            />;
+                            errors[key] = localize(required_messages[error_index], { field_name: mappedKey[key] });
                     }
                 }
             });

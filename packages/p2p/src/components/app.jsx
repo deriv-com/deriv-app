@@ -39,6 +39,7 @@ class App extends Component {
             orders      : [],
             parameters  : null,
             is_agent    : false,
+            notifications: 0,
         };
     }
 
@@ -75,7 +76,12 @@ class App extends Component {
                 updated_orders[idx_order_to_update] = order_response;
             }
             // trigger re-rendering by setting orders again
-            this.setState({ orders: updated_orders });
+            this.setState({ orders: updated_orders }, () => {
+                this.setState({ notifications: this.state.notifications + 1 }, () => {
+                    console.log(this.state.notifications)
+                    console.log('hi')
+                });
+            });
         }
     };
 
@@ -97,6 +103,7 @@ class App extends Component {
         if (is_virtual || currency !== allowed_currency) {
             return <h1 className='p2p-not-allowed'>{localize('This feature is only available for real-money USD accounts right now.')}</h1>;
         }
+        console.log(this.state.notifications)
 
         return (
             <Dp2pProvider
@@ -136,7 +143,7 @@ class App extends Component {
                                 <BuySell navigate={this.redirectTo} params={parameters} />
                             </div>
                             {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
-                            <div label={localize('My Orders')}>
+                            <div count={this.state.notifications} label={localize('My Orders')}>
                                 <Orders
                                     navigate={this.redirectTo}
                                     orders={orders}

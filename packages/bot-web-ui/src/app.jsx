@@ -2,6 +2,7 @@ import { reaction }         from 'mobx';
 import { Provider }         from 'mobx-react';
 import React                from 'react';
 import {
+    runIrreversibleEvents,
     ApiHelpers,
     DBot,
     ServerTime }            from '@deriv/bot-skeleton';
@@ -91,8 +92,10 @@ class App extends React.Component {
                         workspace.getAllBlocks()
                             .filter(block => block.type === 'trade_definition_market')
                             .forEach(block => {
-                                const fake_create_event = new Blockly.Events.Create(block);
-                                Blockly.Events.fire(fake_create_event);
+                                runIrreversibleEvents(() => {
+                                    const fake_create_event = new Blockly.Events.Create(block);
+                                    Blockly.Events.fire(fake_create_event);
+                                });
                             });
                     });
                 }

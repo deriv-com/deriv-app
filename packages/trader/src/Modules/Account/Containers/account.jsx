@@ -1,11 +1,14 @@
 import PropTypes         from 'prop-types';
-import React, { lazy }   from 'react';
+import React             from 'react';
+// import React, { lazy }   from 'react';
 import {
     withRouter,
     Redirect }           from 'react-router-dom';
-import SideMenu          from 'App/Components/Elements/SideMenu';
+import { PageOverlay }   from '@deriv/components';
+// import SideMenu          from 'App/Components/Elements/SideMenu';
 import { FadeWrapper }   from 'App/Components/Animations';
 import { localize }      from '@deriv/translations';
+import VerticalTab       from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
 import AppRoutes         from 'Constants/routes';
 import { connect }       from 'Stores/connect';
 import { WS }            from 'Services/ws-methods';
@@ -13,13 +16,13 @@ import { flatten }       from '../Helpers/flatten';
 import AccountLimitInfo  from '../Sections/Security/AccountLimits/account-limits-info.jsx';
 import                        'Sass/app/modules/account.scss';
 
-const DemoMessage = lazy(() => import(/* webpackChunkName: 'demo_message' */ 'Modules/Account/Sections/ErrorMessages/DemoMessage'));
+// const DemoMessage = lazy(() => import(/* webpackChunkName: 'demo_message' */ 'Modules/Account/Sections/ErrorMessages/DemoMessage'));
 
-const fallback_content = {
-    path     : AppRoutes.personal_details,
-    component: DemoMessage,
-    title    : localize('Personal details'),
-};
+// const fallback_content = {
+//     path     : AppRoutes.personal_details,
+//     component: DemoMessage,
+//     title    : localize('Personal details'),
+// };
 
 class Account extends React.Component {
     // TODO: find better fix for no-op issue
@@ -29,16 +32,6 @@ class Account extends React.Component {
         is_loading         : true,
         needs_verification : false,
     }
-
-    setWrapperRef = (node) => {
-        this.wrapper_ref = node;
-    };
-
-    handleClickOutside = (event) => {
-        if (this.wrapper_ref && !this.wrapper_ref.contains(event.target) && !event.target.classList.contains('dc-dropdown-list__item')) {
-            this.props.history.push(AppRoutes.trade);
-        }
-    };
 
     componentDidMount() {
         this.is_mounted = true;
@@ -50,17 +43,19 @@ class Account extends React.Component {
                 if (this.is_mounted) this.setState({ is_high_risk_client, is_loading: false, needs_verification });
             }
         });
-        this.props.enableRouteMode();
-        document.addEventListener('mousedown', this.handleClickOutside);
         this.props.toggleAccount(true);
     }
 
     componentWillUnmount() {
         this.is_mounted = false;
         this.props.toggleAccount(false);
-        this.props.disableRouteMode();
-        document.removeEventListener('mousedown', this.handleClickOutside);
     }
+
+    // TODO: [history-routing] handle going back as per user actions
+    onClickClose = () => {
+        this.props.toggleReports(false);
+        this.props.history.push(AppRoutes.trade);
+    };
 
     render () {
         const { is_high_risk_client, is_loading, needs_verification } = this.state;
@@ -104,9 +99,9 @@ class Account extends React.Component {
             });
         }
 
-        const { title: active_title } = this.props.routes
-            .find(route => route.subroutes
-                .find(sub_route => sub_route.title === selected_content.title));
+        // const { title: active_title } = this.props.routes
+        //     .find(route => route.subroutes
+        //         .find(sub_route => sub_route.title === selected_content.title));
 
         return (
             <FadeWrapper
@@ -114,22 +109,38 @@ class Account extends React.Component {
                 className='account-page-wrapper'
                 keyname='account-page-wrapper'
             >
-                <div className='account' ref={this.setWrapperRef}>
-                    <SideMenu
-                        active_title={active_title}
-                        action_bar={action_bar_items}
-                        action_bar_classname='account__inset_header'
-                        alignment='center'
-                        fallback_content={fallback_content}
-                        header_title={localize('Settings')}
-                        is_routed={true}
-                        is_full_width={true}
-                        is_loading={is_loading}
-                        list={this.props.routes}
-                        selected_content={selected_content}
-                        sub_list={subroutes}
-                        tab_container_classname='account__tab_container'
-                    />
+                <div className='account'>
+                    {/* <SideMenu */}
+                    {/*    active_title={active_title} */}
+                    {/*    action_bar={action_bar_items} */}
+                    {/*    action_bar_classname='account__inset_header' */}
+                    {/*    alignment='center' */}
+                    {/*    fallback_content={fallback_content} */}
+                    {/*    header_title={localize('Settings')} */}
+                    {/*    is_routed={true} */}
+                    {/*    is_full_width={true} */}
+                    {/*    is_loading={is_loading} */}
+                    {/*    list={this.props.routes} */}
+                    {/*    selected_content={selected_content} */}
+                    {/*    sub_list={subroutes} */}
+                    {/*    tab_container_classname='account__tab_container' */}
+                    {/* /> */}
+                    <PageOverlay
+                        has_side_note
+                        header={localize('Settings')}
+                        onClickClose={this.onClickClose}
+                    >
+                        <VerticalTab
+                            // action_bar_classname='account__inset_header'
+                            alignment='center'
+                            is_floating
+                            classNameHeader='account__inset_header'
+                            current_path={this.props.location.pathname}
+                            is_routed
+                            is_full_width
+                            list={subroutes}
+                        />
+                    </PageOverlay>
                 </div>
             </FadeWrapper>
         );
@@ -137,25 +148,24 @@ class Account extends React.Component {
 }
 
 Account.propTypes = {
-    disableRouteMode: PropTypes.func,
-    enableRouteMode : PropTypes.func,
-    history         : PropTypes.object,
-    is_visible      : PropTypes.bool,
-    location        : PropTypes.object,
-    routes          : PropTypes.arrayOf(PropTypes.object),
-    toggleAccount   : PropTypes.func,
+    account_status: PropTypes.object,
+    currency      : PropTypes.string,
+    history       : PropTypes.object,
+    is_high_risk  : PropTypes.bool,
+    is_virtual    : PropTypes.bool,
+    is_visible    : PropTypes.bool,
+    location      : PropTypes.object,
+    routes        : PropTypes.arrayOf(PropTypes.object),
+    toggleAccount : PropTypes.func,
 };
 
 export default connect(
     ({ client, ui }) => ({
-        account_status   : client.account_status,
-        currency         : client.currency,
-        is_high_risk     : client.is_high_risk,
-        is_virtual       : client.is_virtual,
-        getRiskAssessment: client.getRiskAssessment,
-        disableRouteMode : ui.disableRouteModal,
-        enableRouteMode  : ui.setRouteModal,
-        is_visible       : ui.is_account_settings_visible,
-        toggleAccount    : ui.toggleAccountSettings,
+        account_status: client.account_status,
+        currency      : client.currency,
+        is_high_risk  : client.is_high_risk,
+        is_virtual    : client.is_virtual,
+        is_visible    : ui.is_account_settings_visible,
+        toggleAccount : ui.toggleAccountSettings,
     })
 )(withRouter(Account));

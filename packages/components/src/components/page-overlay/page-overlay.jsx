@@ -3,20 +3,12 @@ import PropTypes from 'prop-types';
 import Icon      from '../icon';
 
 class PageOverlay extends React.Component {
-    state = {
-        show_password: false,
-    };
-
-    togglePasswordVisibility = () => {
-        this.setState((prev_state) => ({ show_password: !prev_state.show_password }));
-    };
-
     render() {
         const {
             children,
             header,
             onClickClose,
-            has_side_note, // This is currently set to true by default in order to create the 3-column placeholder setup
+            has_side_note, // This is currently set to false by default and is used to create the 3-column placeholder setup
             // side_note, // Enable this once there is a use for it and pass it inside `.dc-page-overlay__content-side-note` and use it as the flag instead of `has_side_note`
         } = this.props;
 

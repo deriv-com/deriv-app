@@ -1,26 +1,14 @@
 @import '../_common/base/index';
 
+$FLOATING_PADDING: 2.4rem;
+$FLOATING_HEADER_HEIGHT: 41px;
+$MIN_HEIGHT_FLOATING: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - #{$FLOATING_PADDING});
+
 .account {
     margin: 0 16px;
 
-    .vertical-tab {
-        height: calc(100vh - 83px);
-        max-width: calc(100vw - 32px);
-
-        &__tab {
-            min-width: 240px;
-        }
-        &__header {
-            .vertical-tab__header__link {
-                margin-left: 4px;
-            }
-            &--active {
-                /* postcss-bem-linter: ignore */
-                .vertical-tab__header__link {
-                    margin-left: 0;
-                }
-            }
-        }
+    .vertical-tab__content {
+        height: $MIN_HEIGHT_FLOATING;
     }
     &__inset_header {
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);

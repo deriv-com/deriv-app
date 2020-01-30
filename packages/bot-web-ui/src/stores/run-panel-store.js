@@ -54,6 +54,11 @@ export default class RunPanelStore {
 
     @action.bound
     onRunButtonClick = () => {
+        // Block the bot from more than once.
+        if (this.is_running) {
+            return;
+        }
+
         const { core , contract_card } = this.root_store;
         const { client } = core;
 
@@ -80,6 +85,11 @@ export default class RunPanelStore {
 
     @action.bound
     onStopButtonClick() {
+        // Don't stop the bot more than once.
+        if (!this.is_running) {
+            return;
+        }
+
         this.dbot.stopBot();
         this.is_running = false;
         if (this.error_type) {

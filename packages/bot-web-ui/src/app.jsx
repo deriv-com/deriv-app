@@ -49,7 +49,6 @@ class App extends React.Component {
         }
 
         this.disposeReactions();
-        this.disposeOnAccountSwitch();
     }
 
     /**

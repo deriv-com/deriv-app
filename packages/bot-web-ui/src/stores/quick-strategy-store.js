@@ -227,10 +227,17 @@ export default class QuickStrategyStore {
         });
 
         load(Blockly.Xml.domToText(strategy_dom));
-        this.toggleStrategyModal();
 
         if (button === 'run') {
-            this.root_store.run_panel.onRunButtonClick();
+            const workspace              = Blockly.derivWorkspace;
+            const trade_definition_block = workspace.getTradeDefinitionBlock();
+
+            workspace.waitForBlockEvent(trade_definition_block.id, Blockly.Events.BLOCK_CREATE).then(() => {
+                this.toggleStrategyModal();
+                this.root_store.run_panel.onRunButtonClick();
+            });
+        } else {
+            this.toggleStrategyModal();
         }
     }
 

@@ -216,17 +216,12 @@ $modal_container_height: calc(100vh - 210px);
             border: solid 1px var(--border-normal);
             position: relative;
 
-            &:hover {
-                .local__preview-close {
-                    opacity: 1;
-                }
-            }
             .injectionDiv {
                 pointer-events: none;
             }
         }
         &-close {
-            background-image: linear-gradient(to left, $color_white, transparent);
+            background-image: radial-gradient(at right top, $color_white 60%, transparent 90%);
             position: absolute;
             padding: 25px;
             border-bottom-left-radius: 50%;
@@ -234,7 +229,6 @@ $modal_container_height: calc(100vh - 210px);
             top: 0;
             z-index: 99;
             cursor: pointer;
-            opacity: 0.5;
         }
     }
     &__footer {

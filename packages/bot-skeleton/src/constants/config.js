@@ -240,9 +240,9 @@ export const config = {
     bbResult                        : [[localize('upper'), '1'], [localize('middle'), '0'], [localize('lower'), '2']],
     macdFields                      : [[localize('Histogram'), '0'], [localize('MACD'), '1'], [localize('Signal'), '2']],
     gd                              : {
-        cid: '828416594271-b4bhia944ecegn3j327oeb4l8o803bts.apps.googleusercontent.com',
-        aid: 'derivbot-248506',
-        api: 'AIzaSyA52MX2l8p75-w7nvab7fU6Lk6KwLqnyEI',
+        cid: '762348641835-0vn7baqvt6ranmvj1lm23lk34uvbn9v1.apps.googleusercontent.com',
+        aid: 'famous-segment-254009',
+        api: 'AIzaSyC7bULpbdhEDKnknNBzsxe7KIbp65VnJHc',
     },
     workspaces: {
         flyoutWorkspacesStartScale: 0.7,

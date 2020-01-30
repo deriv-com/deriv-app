@@ -93,6 +93,11 @@ module.exports = function (env, argv) {
                     loader : [ '@deriv/shared/utils/deriv-components-loader.js',
                         'babel-loader' ],
                 },
+                {
+                    test : /\.xml$/,
+                    exclude: /node_modules/,
+                    use: 'raw-loader'
+                },
             ],
         },
         plugins  : [
@@ -101,7 +106,6 @@ module.exports = function (env, argv) {
             new StyleLintPlugin({ fix: true }),
             new CopyWebpackPlugin([
                 { from: 'node_modules/@deriv/bot-skeleton/dist/scratch.min.js'},
-                { from: 'node_modules/@deriv/bot-skeleton/dist/xml' , to : 'xml'},
                 { from: 'node_modules/@deriv/bot-skeleton/dist//media' , to : 'media'},
             ]),
             new SpriteLoaderPlugin(),

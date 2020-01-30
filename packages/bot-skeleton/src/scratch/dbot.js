@@ -3,8 +3,9 @@ import                                    './blocks';
 import                                    './hooks';
 import {
     hasAllRequiredBlocks,
-    updateDisabledBlocks,
-}                                     from './utils';
+    updateDisabledBlocks }            from './utils';
+import main_xml                       from './xml/main.xml';
+import toolbox_xml                    from './xml/toolbox.xml';
 import DBotStore                      from './dbot-store';
 import {
     getRecentFiles,
@@ -34,15 +35,6 @@ class DBot {
             DBotStore.setInstance(store);
 
             const el_scratch_div  = document.getElementById('scratch_div');
-            const default_xml = await fetch(`${__webpack_public_path__}xml/main.xml`).then(r => r.text());
-            const has_recent_files = getRecentFiles();
-            let main_xml;
-            if (has_recent_files) {
-                main_xml = has_recent_files[0].xml;
-            } else {
-                main_xml = default_xml;
-            }
-            const toolbox_xml     = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(r => r.text());
             this.workspace        = Blockly.inject(el_scratch_div, {
                 grid    : { spacing: 40, length: 11, colour: '#f3f3f3' },
                 media   : `${__webpack_public_path__}media/`,
@@ -51,9 +43,8 @@ class DBot {
                 zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
             });
 
-            this.workspace.blocksXmlStr  = default_xml;
-            this.workspace.toolboxXmlStr = toolbox_xml;
-            Blockly.derivWorkspace       = this.workspace;
+            this.workspace.cached_xml = { main: main_xml, toolbox: toolbox_xml };
+            Blockly.derivWorkspace    = this.workspace;
 
             this.workspace.addChangeListener((event) => saveWorkspaceToRecent(save_types.UNSAVED, event));
             this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
@@ -64,7 +55,8 @@ class DBot {
             this.addBeforeRunFunction(this.checkForRequiredBlocks.bind(this));
 
             // Push main.xml to workspace and reset the undo stack.
-            Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), this.workspace);
+            const has_recent_files = getRecentFiles();
+            Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(has_recent_files ? has_recent_files[0].xml : main_xml), this.workspace);
             this.workspace.clearUndo();
 
             const { handleFileChange } = DBotStore.instance;
@@ -380,6 +372,15 @@ class DBot {
                 }
 
                 block.setErrorHighlighted(should_highlight);
+
+                // Automatically expand blocks that have been highlighted.
+                if (force_check && (block.is_error_highlighted || block.hasErrorHighlightedDescendant())) {
+                    let current_collapsed_block = block;
+                    while (current_collapsed_block) {
+                        current_collapsed_block.setCollapsed(false);
+                        current_collapsed_block = current_collapsed_block.getParent();
+                    }
+                }
             }
         });
     }

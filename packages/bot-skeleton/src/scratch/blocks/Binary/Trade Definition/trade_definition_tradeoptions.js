@@ -8,6 +8,7 @@ import { config }          from '../../../../constants/config';
 import ApiHelpers          from '../../../../services/api/api-helpers';
 
 Blockly.Blocks.trade_definition_tradeoptions = {
+    durations: [],
     init() {
         this.jsonInit(this.definition());
 
@@ -135,8 +136,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.enforceSingleBarrierType(true);
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
-            } else if (event.name === 'NUM') {
-                this.validateDurationInput();
             }
         } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.id) {
             // Ensure this block is populated after initial drag from flyout.
@@ -202,6 +201,9 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         const { contracts_for } = ApiHelpers.instance;
 
         contracts_for.getDurations(this.selected_symbol, this.selected_trade_type).then(durations => {
+            // Keep duration in memory so we can later reference them for validation
+            this.durations = durations;
+
             const duration_field_dropdown = this.getField('DURATIONTYPE_LIST');
             const duration_input          = this.getInput('DURATION');
             const duration_options        = durations.map(duration => [duration.display, duration.unit]);
@@ -225,25 +227,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     }
                 }
             }
-        });
-    },
-    validateDurationInput() {
-        const { contracts_for } = ApiHelpers.instance;
-
-        contracts_for.getDurations(this.selected_symbol, this.selected_trade_type).then(durations => {
-            const duration_block    = this.getInputTargetBlock('DURATION');
-            const duration_input    = duration_block.getFieldValue('NUM');
-            const { min, max }      = durations.find(d => d.unit === this.selected_duration);
-
-            const is_valid_duration = duration_input >= min && duration_input <= max;
-            let error_message = localize('Duration value is not allowed. To run the bot, please enter a value between {{min}} to {{max}}.', { min, max });
-            if (max === min) {
-                error_message = localize('Duration value is not allowed. To run the bot, please enter {{min}}', { min });
-            }
-            duration_block.setErrorHighlighted(
-                !is_valid_duration,
-                error_message
-            );
         });
     },
     updateBarrierInputs(should_use_default_type, should_use_default_values) {
@@ -378,7 +361,24 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     getRequiredValueInputs() {
         return {
             AMOUNT  : null,
-            DURATION: null,
+            DURATION: (input) => {
+                const input_number = Number(input);
+
+                if (isNaN(input_number) || !this.durations.length) {
+                    return false;
+                }
+
+                const { min, max }      = this.durations.find(d => d.unit === this.selected_duration);
+                const is_valid_duration = input_number >= min && input_number <= max;
+
+                if (min === max) {
+                    this.error_message = localize('Duration value is not allowed. To run the bot, please enter {{min}}.', { min });
+                } else {
+                    this.error_message = localize('Duration value is not allowed. To run the bot, please enter a value between {{min}} to {{max}}.', { min, max });
+                }
+
+                return !is_valid_duration;
+            },
         };
     },
 };

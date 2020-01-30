@@ -34,6 +34,16 @@ class Autocomplete extends React.PureComponent {
         active_index    : null,
     };
 
+    componentDidUpdate(prev_props) {
+        if (prev_props.list_items !== this.props.list_items) {
+            this.setState({
+                input_value   : '',
+                active_index  : null,
+                filtered_items: this.props.list_items,
+            });
+        }
+    }
+
     setInputWrapperRef = (node) => this.input_wrapper_ref = node;
 
     onKeyPressed = event => {
@@ -165,7 +175,13 @@ class Autocomplete extends React.PureComponent {
         }
     });
 
-    hideDropdownList = () => this.setState({ should_show_list: false });
+    hideDropdownList = () => {
+        this.setState({ should_show_list: false });
+
+        if (typeof this.props.onHideDropdownList === 'function') {
+            this.props.onHideDropdownList();
+        }
+    };
 
     filterList = (e) => {
         const val            = e.target.value.toLowerCase();
@@ -203,10 +219,9 @@ class Autocomplete extends React.PureComponent {
                         onBlur={this.onBlur}
                         value={
                             // This allows us to let control of value externally (from <Form/>) or internally if used without form
-                            typeof onItemSelection === 'function' ?
-                                value
-                                :
-                                this.state.input_value
+                            typeof onItemSelection === 'function'
+                                ? value
+                                : this.state.input_value
                         }
                         trailing_icon={
                             <Icon
@@ -258,6 +273,7 @@ Autocomplete.propTypes = {
             })
         ),
     ]),
-    not_found_text : PropTypes.string,
-    onItemSelection: PropTypes.func,
+    not_found_text    : PropTypes.string,
+    onHideDropdownList: PropTypes.func,
+    onItemSelection   : PropTypes.func,
 };

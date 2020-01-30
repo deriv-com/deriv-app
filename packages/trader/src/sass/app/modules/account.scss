@@ -3,7 +3,7 @@
 .account {
     margin: 0 16px;
 
-    .vertical-tab {
+    .dc-vertical-tab {
         height: calc(100vh - 83px);
         max-width: calc(100vw - 32px);
 
@@ -11,12 +11,12 @@
             min-width: 240px;
         }
         &__header {
-            .vertical-tab__header__link {
+            .dc-vertical-tab__header__link {
                 margin-left: 4px;
             }
             &--active {
                 /* postcss-bem-linter: ignore */
-                .vertical-tab__header__link {
+                .dc-vertical-tab__header__link {
                     margin-left: 0;
                 }
             }

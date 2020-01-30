@@ -67,8 +67,9 @@ class Cashier extends React.Component {
                             classNameHeader='cashier__tab-header'
                             current_path={this.props.location.pathname}
                             is_floating
-                            is_routed
                             is_full_width
+                            is_routed
+                            is_scrollable
                             list={menu_options()}
                         />
                     </PageOverlay>

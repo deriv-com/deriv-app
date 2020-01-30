@@ -3,7 +3,7 @@ import PropTypes    from 'prop-types';
 import React        from 'react';
 import { localize } from 'Components/i18next';
 
-const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
+const SellOrderRowComponent = React.memo(({ data, is_agent, onOpenDetails, style }) => {
     const {
         display_transaction_amount,
         display_offer_amount,
@@ -20,8 +20,10 @@ const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
                 <Table.Cell>{ localize('Sell') }{' '}{ order_id }</Table.Cell>
                 <Table.Cell>{ order_purchase_datetime }</Table.Cell>
                 <Table.Cell>{ display_status }</Table.Cell>
-                <Table.Cell>{ display_offer_amount }{ ' ' }{ offer_currency }</Table.Cell>
-                <Table.Cell>{ display_transaction_amount }{ ' ' }{ transaction_currency }</Table.Cell>
+                {is_agent && <Table.Cell>{ display_transaction_amount }{ ' ' }{ transaction_currency }</Table.Cell>}
+                {is_agent && <Table.Cell>{ display_offer_amount }{ ' ' }{ offer_currency }</Table.Cell>}
+                {!is_agent && <Table.Cell>{ display_offer_amount }{ ' ' }{ offer_currency }</Table.Cell>}
+                {!is_agent && <Table.Cell>{ display_transaction_amount }{ ' ' }{ transaction_currency }</Table.Cell>}
             </Table.Row>
         </div>
     );
@@ -32,6 +34,7 @@ SellOrderRowComponent.propTypes = {
         display_offer_amount      : PropTypes.string,
         display_status            : PropTypes.string,
         display_transaction_amount: PropTypes.string,
+        is_agent                  : PropTypes.bool,
         offer_currency            : PropTypes.string,
         order_id                  : PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]),
         order_purchase_datetime   : PropTypes.string,

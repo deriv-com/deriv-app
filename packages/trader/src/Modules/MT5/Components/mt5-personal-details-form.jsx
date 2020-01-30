@@ -234,7 +234,8 @@ class MT5PersonalDetailsForm extends Component {
                                     cancel_label={localize('Previous')}
                                     is_disabled={
                                         isSubmitting ||
-                                        Object.keys(errors).length > 0
+                                        Object.keys(errors).length > 0 ||
+                                        Object.keys(touched).length === 0
                                     }
                                     label={localize('Next')}
                                     onCancel={() => this.handleCancel(values)}

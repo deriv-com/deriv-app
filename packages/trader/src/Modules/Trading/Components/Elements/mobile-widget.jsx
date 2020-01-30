@@ -1,6 +1,6 @@
 import React                 from 'react';
 import { Money, Modal }      from '@deriv/components';
-import { Localize }          from '@deriv/translations';
+import { localize }          from '@deriv/translations';
 import { connect }           from 'Stores/connect';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
 import TradeParamsMobile     from '../../Containers/trade-params-mobile.jsx';
@@ -22,22 +22,15 @@ class MobileWidget extends React.Component {
     getHumanReadableDuration() {
         const { duration, duration_unit } = this.props;
         const lookup                      = {
-            t: ['tick', 'ticks'],
-            s: ['second', 'seconds'],
-            m: ['min', 'mins'],
-            h: ['hour', 'hours'],
-            d: ['day', 'days'],
+            t: [localize('tick'), localize('ticks')],
+            s: [localize('second'), localize('seconds')],
+            m: [localize('min'), localize('mins')],
+            h: [localize('hour'), localize('hours')],
+            d: [localize('day'), localize('days')],
         };
+        const formatted_duration_unit = +duration === 1 ? lookup[duration_unit][0] : lookup[duration_unit][1];
 
-        return (
-            <Localize
-                i18n_default_text='{{duration}} {{formatted_duration_unit}}'
-                values={{
-                    duration,
-                    formatted_duration_unit: +duration === 1 ? lookup[duration_unit][0] : lookup[duration_unit][1],
-                }}
-            />
-        );
+        return `${duration} ${formatted_duration_unit}`;
     }
 
     render() {

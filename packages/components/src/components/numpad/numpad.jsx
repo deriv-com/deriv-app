@@ -20,6 +20,7 @@ const Numpad = ({
     submit_label = 'OK',
     value,
     format,
+    onValueChange,
 }) => {
     const [is_float, setFloat]      = React.useState(false);
     const [default_value, setValue] = React.useState(value);
@@ -80,6 +81,11 @@ const Numpad = ({
             console.error('Warning: property pip_size is required when using currency type <Numpad pip_size=\'2\' />');
         }
     });
+
+    React.useEffect(() => {
+        if (onValueChange) onValueChange(default_value);
+    }, [default_value]);
+
     return (
         <div className={
             classNames('dc-numpad', className, {

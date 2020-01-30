@@ -488,6 +488,10 @@
 }
 
 .mt5-details-form {
+    &__fields {
+        padding: 0 0 18rem 0;
+    }
+
     & .mt5-tax-identification-number {
         margin-top: 1em;
     }

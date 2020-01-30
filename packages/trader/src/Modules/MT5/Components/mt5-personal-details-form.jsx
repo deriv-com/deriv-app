@@ -165,7 +165,7 @@ class MT5PersonalDetailsForm extends Component {
                                             autoHide
                                             style={{ height: 432 }}
                                         >
-                                            <div className='details-form__elements' style={{ paddingBottom: '18rem' }}>
+                                            <div className='details-form__elements mt5-details-form__fields'>
                                                 <FormSubHeader title={localize('Details')} />
                                                 <fieldset className='details-form__fieldset'>
                                                     <Field name='citizen'>

@@ -26,6 +26,7 @@ class Flyout extends React.PureComponent {
             flyout_width,
             is_visible,
             search_term,
+            setHelpContent,
             initialiseFlyoutHelp,
         }                    = this.props;
         const total_result   = Object.keys(flyout_content).length;
@@ -90,7 +91,10 @@ class Flyout extends React.PureComponent {
                                                         block_node={node}
                                                         onInfoClick={
                                                             help_content_config(__webpack_public_path__)[block_type]
-                                                    && (() => initialiseFlyoutHelp(node))
+                                                            && (is_search_flyout ?
+                                                                () => setHelpContent(node)
+                                                                : () => initialiseFlyoutHelp(node)
+                                                            )
                                                         }
                                                     />
                                                 );
@@ -161,6 +165,7 @@ Flyout.propTypes = {
     onMount             : PropTypes.func,
     onUnmount           : PropTypes.func,
     search_term         : PropTypes.string,
+    setHelpContent      : PropTypes.func,
 };
 
 export default connect(({ flyout, flyout_help, gtm }) => ({
@@ -174,4 +179,5 @@ export default connect(({ flyout, flyout_help, gtm }) => ({
     onMount             : flyout.onMount,
     onUnmount           : flyout.onUnmount,
     search_term         : flyout.search_term,
+    setHelpContent      : flyout_help.setHelpContent,
 }))(Flyout);

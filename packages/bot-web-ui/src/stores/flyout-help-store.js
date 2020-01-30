@@ -40,8 +40,8 @@ export default class FlyoutHelpStore {
         block_node.setAttribute('width', block_hw.width * start_scale);
         block_node.setAttribute('height', block_hw.height * start_scale);
 
+        const { flyout }       = this.root_store;
         runInAction(() => {
-            const { flyout }       = this.root_store;
             flyout.is_help_content = true;
             this.block_node        = block_node;
             this.block_type        = block_type;
@@ -49,7 +49,9 @@ export default class FlyoutHelpStore {
             this.help_string       = help_string_obj.default[block_type];
         });
 
-        this.updateSequenceButtons();
+        if (!flyout.is_search_flyout) {
+            this.updateSequenceButtons();
+        }
     }
 
     @action.bound

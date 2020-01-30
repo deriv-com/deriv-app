@@ -69,10 +69,10 @@ Blockly.Workspace.prototype.waitForBlockEvent = function(block_id, opt_event_typ
 };
 
 Blockly.Workspace.prototype.dispatchBlockEventEffects = function(event) {
-    this.wait_events.filter((wait_event, idx) => {
+    this.wait_events.forEach((wait_event, idx) => {
         const is_subscribed_event =
             wait_event.blockId === event.blockId &&
-            (wait_event.type !== null ? event.type === wait_event.type : true);
+            (wait_event.type === null || event.type === wait_event.type);
 
         if (is_subscribed_event) {
             wait_event.promise.resolve();

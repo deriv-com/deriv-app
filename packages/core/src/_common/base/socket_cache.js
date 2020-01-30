@@ -1,5 +1,5 @@
 const moment        = require('moment');
-const ObjectUtils   = require('deriv-shared/utils/object');
+const ObjectUtils   = require('@deriv/shared/utils/object');
 const getStaticHash = require('_common/utility.js').getStaticHash;
 const LocalStore    = require('../storage').LocalStore;
 

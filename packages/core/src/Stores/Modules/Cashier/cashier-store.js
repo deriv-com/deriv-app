@@ -2,10 +2,10 @@ import {
     action,
     observable,
     toJS }                 from 'mobx';
-import CurrencyUtils       from 'deriv-shared/utils/currency';
-import ObjectUtils         from 'deriv-shared/utils/object';
+import CurrencyUtils       from '@deriv/shared/utils/currency';
+import ObjectUtils         from '@deriv/shared/utils/object';
 import BinarySocket        from '_common/base/socket_base';
-import { localize }        from 'deriv-translations';
+import { localize }        from '@deriv/translations';
 import { WS }              from 'Services';
 import BaseStore           from '../../base-store';
 import {
@@ -85,7 +85,8 @@ class ConfigVerification {
 }
 
 export default class CashierStore extends BaseStore {
-    @observable is_loading = false;
+    @observable is_loading      = false;
+    @observable is_dp2p_visible = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -105,6 +106,7 @@ export default class CashierStore extends BaseStore {
     active_container = this.config.deposit.container;
     current_client;
     is_populating_values = false;
+    p2p_offer_list = {};
 
     containers = [
         this.config.deposit.container,
@@ -149,6 +151,32 @@ export default class CashierStore extends BaseStore {
         if (!this.config.account_transfer.accounts_list.length) {
             this.sortAccountsTransfer();
         }
+
+        // show dp2p if:
+        // 1. we have not already checked this before, and
+        // 2. client is not virtual, and
+        // 3. they are an agent, or
+        // 4. there is at least one offer available
+        if (!this.is_dp2p_visible && ObjectUtils.isEmptyObject(this.p2p_offer_list) &&
+            !this.root_store.client.is_virtual) {
+
+            const is_agent = !(await WS.p2pAgentInfo()).error;
+
+            if (is_agent || (await this.hasP2pOffer())) {
+                this.setIsDp2pVisible(true);
+            }
+        }
+    }
+
+    @action.bound
+    async hasP2pOffer() {
+        this.p2p_offer_list = await WS.p2pOfferList();
+        return (ObjectUtils.getPropertyValue(this.p2p_offer_list, ['p2p_offer_list', 'list']) || []).length;
+    }
+
+    @action.bound
+    setIsDp2pVisible(is_dp2p_visible) {
+        this.is_dp2p_visible = is_dp2p_visible;
     }
 
     @action.bound
@@ -895,5 +923,7 @@ export default class CashierStore extends BaseStore {
         this.config.account_transfer = new ConfigAccountTransfer();
         this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
         this.is_populating_values = false;
+        this.setIsDp2pVisible(false);
+        this.p2p_offer_list = {};
     }
 }

@@ -1,8 +1,8 @@
 import classNames              from 'classnames';
 import PropTypes               from 'prop-types';
 import React                   from 'react';
-import { Button }              from 'deriv-components';
-import ObjectUtils             from 'deriv-shared/utils/object';
+import { Button }              from '@deriv/components';
+import ObjectUtils             from '@deriv/shared/utils/object';
 import CloseButton             from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
 import {

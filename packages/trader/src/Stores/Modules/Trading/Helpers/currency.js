@@ -1,5 +1,5 @@
-import CurrencyUtils from 'deriv-shared/utils/currency';
-import { localize }  from 'deriv-translations';
+import CurrencyUtils from '@deriv/shared/utils/currency';
+import { localize }  from '@deriv/translations';
 
 export const buildCurrenciesList = (payout_currencies) => {
     const fiat   = [];

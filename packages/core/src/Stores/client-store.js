@@ -6,15 +6,15 @@ import {
     runInAction,
     when,
     reaction }                       from 'mobx';
-import CurrencyUtils                 from 'deriv-shared/utils/currency';
-import ObjectUtils                   from 'deriv-shared/utils/object';
+import CurrencyUtils                 from '@deriv/shared/utils/currency';
+import ObjectUtils                   from '@deriv/shared/utils/object';
 import {
     requestLogout,
     WS }                             from 'Services';
 import ClientBase                    from '_common/base/client_base';
 import BinarySocket                  from '_common/base/socket_base';
 import * as SocketCache              from '_common/base/socket_cache';
-import { localize }                  from 'deriv-translations';
+import { localize }                  from '@deriv/translations';
 import {
     LocalStore,
     State }                          from '_common/storage';
@@ -66,6 +66,11 @@ export default class ClientStore extends BaseStore {
         reset_password        : '',
         payment_withdraw      : '',
         payment_agent_withdraw: '',
+    };
+
+    @observable local_currency_config = {
+        currency      : '',
+        decimal_places: '',
     };
 
     is_mt5_account_list_updated = false;
@@ -252,7 +257,7 @@ export default class ClientStore extends BaseStore {
         if (Object.keys(this.currencies_list).length > 0) {
             const keys = Object.keys(this.currencies_list);
             // Fix for edge case when logging out from crypto accounts causes Fiat list to be empty
-            if (this.currencies_list.Fiat.length < 1) return 'USD';
+            if (this.currencies_list[localize('Fiat')].length < 1) return 'USD';
             return Object.values(this.currencies_list[`${keys[0]}`])[0].text;
         }
 
@@ -332,7 +337,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_mt5_allowed() {
-        if (!Object.keys(this.landing_companies).length) return false;
+        if (!this.landing_companies || !Object.keys(this.landing_companies).length) return false;
         // TODO revert this when all landing companies are accepted.
         // return 'mt_financial_company' in this.landing_companies || 'mt_gaming_company' in this.landing_companies;
         if ('mt_financial_company' in this.landing_companies ||  'mt_gaming_company' in this.landing_companies) {
@@ -403,6 +408,11 @@ export default class ClientStore extends BaseStore {
         this.updateAccountList(response.authorize.account_list);
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id      = response.authorize.user_id;
+
+        this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
+        this.local_currency_config.decimal_places =
+            +response.authorize.local_currencies[this.local_currency_config.currency].fractional_digits;
+
         ClientBase.responseAuthorize(response);
     }
 

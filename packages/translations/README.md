@@ -1,4 +1,4 @@
-# `Deriv-translations`
+# `@deriv/translations`
 >
 * Extract new string translations to crowdin
 * Staging / dev branch is the source of truth for strings that should be translated.
@@ -31,22 +31,24 @@
 * This project uses [react-i18next](https://react.i18next.com)
 
 ### Setup
-* initialize translations in root app.jsx by importing i18n.js
-* in `app.jsx`
+* initialize translations in root app.jsx by importing and calling initializeTranslations
+* in `app.jsx`:
 ```jsx
-    import { i18n } from 'deriv-translations';
+    import { initializeTranslations } from '@deriv/translations';
+    ...
+    initializeTranslations()
 ```
 ### Usage
 * For strings use either `localize(...)` or `<Localize />`
 * [`<Localize />`](https://react.i18next.com/latest/trans-component) example:
 ```jsx
-    import { Localize } from 'deriv-translations';
+    import { Localize } from '@deriv/translations';
 
     <Localize i18n_default_text='You cannot use your real money account with {{website_name}} at this time.' values={{ website_name }} />
 ```
 * localize example:
 ```jsx
-    import { localize } from 'deriv-translations';
+    import { localize } from '@deriv/translations';
 
     <h4 className='drawer__notifications-header'>{localize('all notifications')}</h4>
 ```

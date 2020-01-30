@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
-import { ToggleSwitch }     from 'deriv-components';
+import { ToggleSwitch }     from '@deriv/components';
 import classNames           from 'classnames';
 import { localize }         from 'Components/i18next';
+import { requestWS }        from 'Utils/websocket';
 import './my-ads.scss';
 
-const ToggleMessage = ({ is_enabled, className }) => {
+const ToggleMessage = ({ is_enabled, className, error }) => {
     return (
         <p className={className}>
-            {is_enabled ? localize('Your ads are running') : localize('Your ads are paused')}
+            {/* eslint-disable-next-line no-unneeded-ternary */}
+            {error ? error : is_enabled ? localize('Your ads are running') : localize('Your ads are paused') }
         </p>
     );
 };
@@ -21,11 +23,19 @@ ToggleMessage.propTypes = {
 class ToggleAds extends Component {
 
     state = {
+        error     : '',
         is_enabled: this.props.is_enabled,
     }
 
-    setEnabled (is_enabled) {
-        this.setState({ is_enabled });
+    handleToggle = () => {
+        const is_active = this.state.is_enabled ? 0 : 1;
+        this.setState({ is_enabled: !this.state.is_enabled });
+
+        requestWS({ p2p_agent_update: 1, is_active }).then((response) => {
+            if (response.error) {
+                this.setState({ error: response.error.message, is_enabled: !this.state.is_enabled });
+            }
+        });
     }
 
     render () {
@@ -41,11 +51,13 @@ class ToggleAds extends Component {
                     className='toggle-ads__switch'
                     classNameLabel='toggle-ads__switch'
                     is_enabled={this.state.is_enabled}
-                    handleToggle={() => {this.setEnabled(!this.state.is_enabled);}}
+                    handleToggle={this.handleToggle}
                 />
                 <ToggleMessage
                     is_enabled={this.state.is_enabled}
                     className='toggle-ads__message'
+                    error={this.state.error}
+                    is_loading={this.state.is_loading}
                 />
             </div>
         );

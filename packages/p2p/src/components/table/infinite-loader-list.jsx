@@ -13,6 +13,7 @@ export const InfiniteLoaderList = ({
     has_more_items_to_load,
     item_size,
     RenderComponent,
+    row_actions,
     RowLoader,
     height: initial_height,
 }) => {
@@ -27,7 +28,7 @@ export const InfiniteLoaderList = ({
             );
         }
 
-        return <RenderComponent data={items[index]} num={index} style={style} />;
+        return <RenderComponent data={items[index]} num={index} style={style} row_actions={row_actions} />;
     };
     RowRenderer.propTypes = {
         index: PropTypes.number,
@@ -71,5 +72,6 @@ InfiniteLoaderList.propTypes = {
     items                 : PropTypes.array,
     loadMore              : PropTypes.func,
     RenderComponent       : PropTypes.any,
+    row_actions           : PropTypes.object,
     RowLoader             : PropTypes.any.isRequired,
 };

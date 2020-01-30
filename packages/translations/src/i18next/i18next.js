@@ -1,21 +1,7 @@
-/* eslint-disable */
 import { str as crc32 }     from 'crc-32';
 import i18n                 from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import withI18n             from '../components'
-// TODO: lazy load these: with i18n.addResourceBundle
-import ach                  from '../translations/ach.json';
-import en                   from '../translations/en.json';
-import es                   from '../translations/es.json';
-import fr                   from '../translations/fr.json';
-import id                   from '../translations/id.json';
-import it                   from '../translations/it.json';
-import pl                   from '../translations/pl.json';
-import pt                   from '../translations/pt.json';
-import ru                   from '../translations/ru.json';
-import vi                   from '../translations/ru.json';
-import zh_cn                from '../translations/zh_cn.json';
-import zh_tw                from '../translations/zh_tw.json';
+import withI18n             from '../components';
 
 const LANGUAGE_KEY     = 'i18n_language';
 const DEFAULT_LANGUAGE = 'EN';
@@ -29,110 +15,136 @@ const ALL_LANGUAGES    = Object.freeze({
     PL   : 'Polish',
     PT   : 'Português',
     RU   : 'Русский',
-    TH   : 'Thai',
     VI   : 'Tiếng Việt',
     ZH_CN: '简体中文',
     ZH_TW: '繁體中文',
 });
 
-const hasLanguage = lang => {
+const getUrlBase = (path = '') => {
+    const l = window.location;
+
+    if (!/^\/(br_)/.test(l.pathname)) return path;
+
+    return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
+};
+
+const isStaging = () => /staging\.deriv\.app/i.test(window.location.hostname);
+
+const isLanguageAvailable = (lang) => {
     if (!lang) return false;
-    return Object.keys(ALL_LANGUAGES).includes(lang.toUpperCase());
+
+    const selected_language = lang.toUpperCase();
+    const is_ach = selected_language === 'ACH';
+
+    if (is_ach) return isStaging();
+
+    // TODO: remove when translations are ready
+    if (selected_language !== DEFAULT_LANGUAGE) return false;
+
+    return Object.keys(ALL_LANGUAGES).includes(selected_language);
 };
 
 const getAllLanguages = () => ALL_LANGUAGES;
 
 const getInitialLanguage = () => {
+    const url_params = new URLSearchParams(window.location.search);
+    const query_lang = url_params.get('lang');
+    const local_storage_language  = localStorage.getItem(LANGUAGE_KEY);
+
+    if (query_lang) {
+        if (isLanguageAvailable(query_lang)) {
+            localStorage.setItem(LANGUAGE_KEY, query_lang);
+            return query_lang;
+        }
+    }
+
+    if (local_storage_language) {
+        if (isLanguageAvailable(local_storage_language)) {
+            return local_storage_language;
+        }
+    }
+
     return DEFAULT_LANGUAGE;
-    // TODO: uncomment this when translations are ready
-    // const has_url_search_language = window.location.search && window.location.search.includes('lang=');
-    // const local_storage_language  = localStorage.getItem(LANGUAGE_KEY);
-    // if (has_url_search_language) {
-    //     const query_lang = window.location.search
-    //         .substr(1).split('&')
-    //         .find(query => query.includes('lang='))
-    //         .split('=')[1]
-    //         .toUpperCase()
-    //     if (hasLanguage(query_lang)) {
-    //         localStorage.setItem(LANGUAGE_KEY, query_lang);
-    //         return query_lang;
-    //     }
-    // }
+};
 
-    // if (local_storage_language) {
-    //     if (hasLanguage(local_storage_language)) {
-    //         return local_storage_language;
-    //     }
-    // }
+const loadLanguageJson = async (lang) => {
+    if (!i18n.hasResourceBundle(lang, 'translations') && lang !== DEFAULT_LANGUAGE) {
+        const response = await fetch(getUrlBase(`/public/i18n/${lang.toLowerCase()}.json`));
+        const lang_json = await response.text();
 
-    // return DEFAULT_LANGUAGE;
+        i18n.addResourceBundle(lang, 'translations', JSON.parse(lang_json));
+    }
 };
 
 const initial_language = getInitialLanguage();
 const i18n_config = {
-    resources: {
-        ACH  : { translations: {...ach } },
-        EN   : { translations: { ...en } },
-        ES   : { translations: { ...es } },
-        FR   : { translations: { ...fr } },
-        ID   : { translations: { ...id } },
-        IT   : { translations: { ...it } },
-        PL   : { translations: { ...pl } },
-        PT   : { translations: { ...pt } },
-        RU   : { translations: { ...ru } },
-        VI   : { translations: { ...vi } },
-        ZH_CN: { translations: { ...zh_cn } },
-        ZH_TW: { translations: { ...zh_tw } },
-    },
     react: {
         hashTransKey(defaultValue) {
             return crc32(defaultValue);
         },
     },
-    lng: initial_language,
+    lng        : initial_language,
     fallbackLng: 'EN',
-    ns: ['translations'],
-    defaultNS: 'translations',
+    ns         : ['translations'],
+    defaultNS  : 'translations',
 };
 
 i18n
     .use(initReactI18next) // passes i18n down to react-i18next
     .init(i18n_config);
 
-const changeLanguage = (lang, cb) => {
-    return;
+const initializeTranslations = async () => {
+    if (isStaging()) {
+        loadIncontextTranslation();
+    }
+    await loadLanguageJson(initial_language);
+};
+
+const getLanguage = () => {
+    return i18n.language || initial_language;
+};
+
+// eslint-disable-next-line no-unused-vars
+const changeLanguage = async (lang, cb) => {
     // TODO: uncomment this when translations are ready
-    // if (hasLanguage(lang)) {
+    // if (isLanguageAvailable(lang)) {
+    //     await loadLanguageJson(lang);
     //     i18n.changeLanguage(lang, () => {
     //         localStorage.setItem(LANGUAGE_KEY, lang);
     //         cb();
     //     })
     // }
-}
-
-const getLanguage = () => i18n.language;
+};
 
 // <Localize /> component wrapped with i18n
 const Localize = withI18n(i18n);
 
 const localize = (string, values) => {
     if (!string) return '';
-    return i18n.t(crc32(string), { defaultValue: string, ...values })
+
+    return i18n.t(crc32(string), { defaultValue: string, ...values });
 };
 
 const loadIncontextTranslation = () => {
-    const is_ach = i18n.language === 'ACH';
+    const is_ach = getLanguage() === 'ACH';
     if (is_ach) {
-        const jipt = document.createElement('script')
-        jipt.type = 'text/javascript'
+        const jipt = document.createElement('script');
+        jipt.type = 'text/javascript';
         jipt.text = `
             var _jipt = []; _jipt.push(['project', 'deriv-app']);
             var crowdin = document.createElement("script");
             crowdin.setAttribute('src', '//cdn.crowdin.com/jipt/jipt.js');
             document.head.appendChild(crowdin);
-        `
-        document.head.appendChild(jipt)
+        `;
+        document.head.appendChild(jipt);
     }
-}
+};
 
-export default { i18n, localize, Localize, changeLanguage, getLanguage, getAllLanguages, loadIncontextTranslation };
+export default {
+    changeLanguage,
+    getAllLanguages,
+    getLanguage,
+    initializeTranslations,
+    localize,
+    Localize,
+};

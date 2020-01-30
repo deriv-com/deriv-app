@@ -122,14 +122,24 @@ const WorkspaceGroup = ({
             message={localize('Import')}
             zIndex={popover_zindex.TOOLBAR}
         >
-            <Icon icon='IcFolderOpen' className='toolbar__icon' onClick={() => toggleSaveLoadModal(false)} />
+            <Icon
+                icon='IcFolderOpen'
+                id='db-toolbar__import'
+                className='toolbar__icon'
+                onClick={() => toggleSaveLoadModal(false)}
+            />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Reset')}
             zIndex={popover_zindex.TOOLBAR}
         >
-            <Icon icon='IcNewFile' className='toolbar__icon' onClick={onResetClick} />
+            <Icon
+                icon='IcNewFile'
+                id='db-toolbar__reset'
+                className='toolbar__icon'
+                onClick={onResetClick}
+            />
         </Popover>
         <Popover
             alignment='bottom'
@@ -138,6 +148,7 @@ const WorkspaceGroup = ({
         >
             <Icon
                 icon='IcSave'
+                id='db-toolbar__save'
                 className='toolbar__icon'
                 onClick={() => toggleSaveLoadModal(true)}
             />
@@ -152,6 +163,7 @@ const WorkspaceGroup = ({
                 className='toolbar__icon'
                 color={has_undo_stack ? undefined : 'disabled'}
                 icon='IcUndo'
+                id='db-toolbar__undo'
                 onClick={() => onUndoClick(/* redo */ false)}
             />️
         </Popover>
@@ -164,6 +176,7 @@ const WorkspaceGroup = ({
                 className='toolbar__icon'
                 color={has_redo_stack ? undefined : 'disabled'}
                 icon='IcRedo'
+                id='db-toolbar__redo'
                 onClick={() => onUndoClick(/* redo */ true)}
             />
         </Popover>
@@ -172,21 +185,36 @@ const WorkspaceGroup = ({
             message={localize('Sort')}
             zIndex={popover_zindex.TOOLBAR}
         >
-            <Icon icon='IcSort' className='toolbar__icon' onClick={onSortClick} />
+            <Icon
+                icon='IcSort'
+                id='db-toolbar__sort'
+                className='toolbar__icon'
+                onClick={onSortClick}
+            />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Zoom in')}
             zIndex={popover_zindex.TOOLBAR}
         >
-            <Icon icon='IcZoomIn' className='toolbar__icon' onClick={() => onZoomInOutClick(true)} />
+            <Icon
+                icon='IcZoomIn'
+                id='db-toolbar__zoom-in'
+                className='toolbar__icon'
+                onClick={() => onZoomInOutClick(true)}
+            />
         </Popover>
         <Popover
             alignment='bottom'
             message={localize('Zoom out')}
             zIndex={popover_zindex.TOOLBAR}
         >
-            <Icon icon='IcZoomOut' className='toolbar__icon' onClick={() => onZoomInOutClick(false)} />
+            <Icon
+                icon='IcZoomOut'
+                id='db-toolbar__zoom-out'
+                className='toolbar__icon'
+                onClick={() => onZoomInOutClick(false)}
+            />
         </Popover>
     </div>
 );

@@ -201,6 +201,7 @@ class Autocomplete extends React.PureComponent {
             value,
             list_items,
             autoComplete,
+            onHideDropdownList,
             ...otherProps
         } = this.props;
 

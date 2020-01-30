@@ -209,6 +209,14 @@
     }
     &--disabled {
         pointer-events: none;
+
+        .dc-dropdown__display {
+            border: 1px solid var(--general-disabled);
+
+            &-text {
+                color: var(--text-disabled);
+            }
+        }
     }
     &-container {
         position: relative;

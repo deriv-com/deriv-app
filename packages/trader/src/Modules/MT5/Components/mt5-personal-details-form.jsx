@@ -13,8 +13,6 @@ import {
 import { isDeepEqual }      from '@deriv/shared/utils/object';
 import { FormSubHeader }    from 'Modules/Account/Components/layout-components.jsx';
 
-const form = React.createRef();
-
 export const InputField = ({ name, optional = false, ...props }) => (
     <Field name={name}>
         {
@@ -150,7 +148,6 @@ class MT5PersonalDetailsForm extends Component {
                     isInitialValid={({ initialValues }) => this.validatePersonalDetails(initialValues)}
                     validate={this.validatePersonalDetails}
                     onSubmit={onSubmitForm}
-                    ref={form}
                 >
                     {
                         ({
@@ -209,7 +206,7 @@ class MT5PersonalDetailsForm extends Component {
                                                                     is_fully_authenticated
                                                                 }
                                                                 list_items={residence_list}
-                                                                onItemSelection={({ v, text }) => setFieldValue(
+                                                                onItemSelection={({ value: v, text }) => setFieldValue(
                                                                     'tax_residence',
                                                                     v ? text : '',
                                                                     true,

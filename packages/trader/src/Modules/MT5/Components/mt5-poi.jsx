@@ -19,7 +19,7 @@ class MT5POI extends PureComponent {
     validateForm = () => {
         const errors = {};
         if (!['pending', 'verified'].includes(this.state.poi_state)) {
-            errors.poi_state = localize('You need a successful/pending POI status before continue.');
+            errors.poi_state = true;
         }
 
         return errors;

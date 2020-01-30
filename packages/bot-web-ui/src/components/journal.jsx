@@ -164,13 +164,16 @@ const Journal = ({
                                 <tr className='journal-empty__container'>
                                     <td className='journal-empty'>
                                         <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
-                                        <div className='journal-empty__content'>
-                                            <h4 className='journal-empty__header'>
-                                                {localize('No messages')}
-                                            </h4>
-                                            <span className='journal-empty__message'>
-                                                {localize('You have not run the bot yet')}
-                                            </span>
+                                        <h4 className='journal-empty__header'>
+                                            {localize('There are no messages to display')}
+                                        </h4>
+                                        <div className='journal-empty__message'>
+                                            <span>{localize('Here are the possible reasons:')}</span>
+                                            <ul className='journal-empty__list'>
+                                                <li>{localize('The bot is not running')}</li>
+                                                <li>{localize('The stats are cleared')}</li>
+                                                <li>{localize('All messages are filtered out')}</li>
+                                            </ul>
                                         </div>
                                     </td>
                                 </tr>

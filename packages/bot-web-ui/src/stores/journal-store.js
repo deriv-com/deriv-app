@@ -21,9 +21,9 @@ export default class JournalStore {
     }
 
     filters = [
-        { id: message_types.ERROR, label: localize('Error messages') },
+        { id: message_types.ERROR, label: localize('Errors') },
         { id: message_types.NOTIFY, label: localize('Notifications') },
-        { id: message_types.SUCCESS, label: localize('System log') },
+        { id: message_types.SUCCESS, label: localize('System') },
     ];
 
     @observable unfiltered_messages = [];

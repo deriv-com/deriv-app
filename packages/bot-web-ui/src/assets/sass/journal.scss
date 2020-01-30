@@ -32,8 +32,12 @@
         &__message {
             line-height: 1.5;
             font-size: 1.2rem;
-            text-align: center;
             color: var(--text-less-prominent);
+            margin: 0 auto;
+        }
+        &__list {
+            list-style-type: circle;
+            margin-left: 20px;
         }
     }
     &__table {

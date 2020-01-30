@@ -248,9 +248,8 @@ export default class QuickStrategyStore {
 
         if (!this.selected_symbol && symbol_options.length) {
             this.selected_symbol = symbol_options[0];
+            await this.updateTradeTypeDropdown(this.selected_symbol.value);
         }
-
-        await this.updateTradeTypeDropdown(this.selected_symbol.value);
     }
 
     @action.bound

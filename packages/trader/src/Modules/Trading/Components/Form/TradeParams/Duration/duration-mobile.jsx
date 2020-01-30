@@ -2,24 +2,23 @@ import React                          from 'react';
 import { Tabs, TickPicker, Numpad }   from '@deriv/components';
 import { localize }                   from '@deriv/translations';
 import { connect }                    from 'Stores/connect';
-import { convertDurationLimit }       from 'Stores/Modules/Trading/Helpers/duration';
+import { getDurationMinMaxValues }    from 'Stores/Modules/Trading/Helpers/duration';
 
-// TODO: move to Stores/Modules/Trading/Helpers/duration
-const getDurationMinMaxValues = (duration_min_max, contract_expiry_type, duration_unit) => {
-    if (!duration_min_max[contract_expiry_type]) return [];
-    const max_value = convertDurationLimit(+duration_min_max[contract_expiry_type].max, duration_unit);
-    const min_value = convertDurationLimit(+duration_min_max[contract_expiry_type].min, duration_unit);
+const submit_label = localize('Ok');
 
-    return [min_value, max_value];
-};
-
-const Ticks = ({ onChangeMultiple, duration_min_max, selected_duration, setSelectedDuration }) => {
+const Ticks = ({
+    toggleModal,
+    onChangeMultiple,
+    duration_min_max,
+    selected_duration,
+    setSelectedDuration,
+}) => {
     const [min_tick, max_tick] = getDurationMinMaxValues(duration_min_max, 'tick', 't');
 
-    const setDuration = (value) => {
+    const setTickDuration = (value) => {
         const { value: duration } = value.target;
         onChangeMultiple({ duration_unit: 't', duration });
-        // TODO close picker
+        toggleModal();
     };
 
     const onTickChange = tick => setSelectedDuration('t', tick);
@@ -28,10 +27,10 @@ const Ticks = ({ onChangeMultiple, duration_min_max, selected_duration, setSelec
         <div className='trade-params__duration-tickpicker'>
             <TickPicker
                 default_value={selected_duration}
-                submit_label={localize('OK')}
+                submit_label={submit_label}
                 max_value={max_tick}
                 min_value={min_tick}
-                onSubmit={setDuration}
+                onSubmit={setTickDuration}
                 onValueChange={onTickChange}
                 singular_label={localize('Tick')}
                 plural_label={localize('Ticks')}
@@ -48,6 +47,7 @@ const TicksWrapper = connect(
 )(Ticks);
 
 const Numbers = ({
+    toggleModal,
     onChangeMultiple,
     duration_min_max,
     duration_unit_option,
@@ -58,9 +58,9 @@ const Numbers = ({
     const { value: duration_unit } = duration_unit_option;
     const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry, duration_unit);
 
-    const consoleOut = (duration) => {
+    const setDuration = (duration) => {
         onChangeMultiple({ duration_unit, duration });
-        // TODO close picker
+        toggleModal();
     };
 
     const onNumberChange = num => setSelectedDuration(duration_unit, num);
@@ -69,7 +69,7 @@ const Numbers = ({
         <div className='trade-params__amount-keypad'>
             <Numpad
                 value={selected_duration}
-                onSubmit={consoleOut}
+                onSubmit={setDuration}
                 is_currency
                 render={({ value: v, className }) => {
                     return (
@@ -77,7 +77,7 @@ const Numbers = ({
                     );
                 }}
                 pip_size={2}
-                submit_label={localize('OK')}
+                submit_label={submit_label}
                 min={min}
                 max={max}
                 onValueChange={onNumberChange}
@@ -94,6 +94,7 @@ const NumpadWrapper = connect(
 )(Numbers);
 
 const Duration = ({
+    toggleModal,
     duration_units_list,
     duration_unit,
     duration_tab_idx,
@@ -119,6 +120,7 @@ const Duration = ({
                                 return (
                                     <div label={duration_unit_option.text} key={duration_unit_option.value}>
                                         <TicksWrapper
+                                            toggleModal={toggleModal}
                                             selected_duration={t_duration}
                                             setSelectedDuration={setSelectedDuration}
                                         />
@@ -127,6 +129,7 @@ const Duration = ({
                                 return (
                                     <div label={duration_unit_option.text} key={duration_unit_option.value}>
                                         <NumpadWrapper
+                                            toggleModal={toggleModal}
                                             duration_unit_option={duration_unit_option}
                                             selected_duration={s_duration}
                                             setSelectedDuration={setSelectedDuration}
@@ -137,6 +140,7 @@ const Duration = ({
                                 return (
                                     <div label={duration_unit_option.text} key={duration_unit_option.value}>
                                         <NumpadWrapper
+                                            toggleModal={toggleModal}
                                             duration_unit_option={duration_unit_option}
                                             selected_duration={m_duration}
                                             setSelectedDuration={setSelectedDuration}
@@ -147,6 +151,7 @@ const Duration = ({
                                 return (
                                     <div label={duration_unit_option.text} key={duration_unit_option.value}>
                                         <NumpadWrapper
+                                            toggleModal={toggleModal}
                                             duration_unit_option={duration_unit_option}
                                             selected_duration={h_duration}
                                             setSelectedDuration={setSelectedDuration}
@@ -157,6 +162,7 @@ const Duration = ({
                                 return (
                                     <div label={duration_unit_option.text} key={duration_unit_option.value}>
                                         <NumpadWrapper
+                                            toggleModal={toggleModal}
                                             duration_unit_option={duration_unit_option}
                                             contract_expiry='daily'
                                             selected_duration={d_duration}

@@ -80,7 +80,7 @@ class MobileWidget extends React.Component {
                     width='calc(100vw - 42px)'
                 >
                     <div className='mobile-widget-dialog__wrapper'>
-                        <TradeParamsMobile is_nativepicker />
+                        <TradeParamsMobile toggleModal={this.toggleWidget} is_nativepicker />
                     </div>
                 </Modal>
             </React.Fragment>

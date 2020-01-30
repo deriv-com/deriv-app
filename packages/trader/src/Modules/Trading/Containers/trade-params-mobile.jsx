@@ -67,7 +67,7 @@ class TradeParamsMobile extends React.Component {
     updateTabIndex = active_tab_index => this.setState({ active_tab_index })
 
     setDurationTabIdx = duration_tab_idx => this.setState({ duration_tab_idx })
-    // todo: use this one
+
     isVisible = component_key => this.props.form_components.includes(component_key);
 
     setSelectedDuration = (duration_unit, selected_duration) =>
@@ -86,6 +86,7 @@ class TradeParamsMobile extends React.Component {
                 {this.isVisible('duration') &&
                     <div label={localize('Duration')}>
                         <DurationMobile
+                            toggleModal={this.props.toggleModal}
                             duration_tab_idx={this.state.duration_tab_idx}
                             setDurationTabIdx={this.setDurationTabIdx}
                             setSelectedDuration={this.setSelectedDuration}

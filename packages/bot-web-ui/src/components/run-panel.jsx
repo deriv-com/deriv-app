@@ -25,13 +25,22 @@ const drawerContent = ({
             onTabItemClick={setActiveTabIndex}
             top
         >
-            <div label={localize('Summary')}>
+            <div
+                id='db-run-panel-tab__summary'
+                label={localize('Summary')}
+            >
                 <Summary />
             </div>
-            <div label={localize('Transactions')} >
+            <div
+                id='db-run-panel-tab__summary'
+                label={localize('Transactions')}
+            >
                 <Transactions />
             </div>
-            <div label={localize('Journal')}>
+            <div
+                id='db-run-panel-tab__summary'
+                label={localize('Journal')}
+            >
                 <Journal />
             </div>
         </Tabs>

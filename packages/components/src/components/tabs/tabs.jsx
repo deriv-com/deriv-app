@@ -52,10 +52,11 @@ class Tabs extends Component {
                     })}
                 >
                     {children.map((child, index) => {
-                        const { count, label } = child.props;
+                        const { count, label, id } = child.props;
 
                         return (
                             <Tab
+                                id={id}
                                 count={count}
                                 is_active={index === active_index}
                                 key={label}

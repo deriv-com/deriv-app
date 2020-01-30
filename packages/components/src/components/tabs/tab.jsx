@@ -12,6 +12,7 @@ class Tab extends Component {
     render() {
         const {
             count,
+            id,
             is_active,
             label,
             top,
@@ -25,6 +26,7 @@ class Tab extends Component {
         });
         return (
             <li
+                id={id}
                 className={classes}
                 onClick={this.onClick}
             >

@@ -52,7 +52,6 @@ class Tabs extends Component {
                     })}
                 >
                     {React.Children.map(children, (child, index) => {
-                        if (!child) return null;
                         const { count, label } = child.props;
 
                         return (
@@ -77,8 +76,6 @@ class Tabs extends Component {
                 </ul>
                 <div className='dc-tabs__content'>
                     {React.Children.map(children, (child, index) => {
-                        if (!child) return null;
-
                         if (index !== active_index) {
                             return undefined;
                         }

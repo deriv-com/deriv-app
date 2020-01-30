@@ -1,6 +1,6 @@
 import { localize }                      from '@deriv/translations';
 import { DURING_PURCHASE }               from './state/constants';
-import { contractStatus, notify }        from '../utils/broadcast';
+import { contractStatus, log }        from '../utils/broadcast';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
 
 let delayIndex = 0;
@@ -30,7 +30,7 @@ export default Engine =>
             const onSuccess = ({ sell: { sold_for: soldFor } }) => {
                 delayIndex = 0;
                 contractStatus('purchase.sold');
-                notify('info', `${localize('Sold for')}: ${soldFor}`);
+                log(`${localize('Sold for')}: ${soldFor}`);
                 return this.waitForAfter();
             };
 

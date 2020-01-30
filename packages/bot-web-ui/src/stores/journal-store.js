@@ -16,8 +16,8 @@ export default class JournalStore {
         this.root_store = root_store;
     }
 
-    get serverTime () {
-        return this.root_store.server_time;
+    getServerTime() {
+        return this.root_store.core.common.server_time.get();
     }
 
     filters = [
@@ -46,8 +46,8 @@ export default class JournalStore {
 
     @action.bound
     pushMessage(data, message_type) {
-        const date = formatDate(this.serverTime.get());
-        const time = formatDate(this.serverTime.get(), 'HH:mm:ss [GMT]');
+        const date = formatDate(this.getServerTime());
+        const time = formatDate(this.getServerTime(), 'HH:mm:ss [GMT]');
 
         let error_message  = data;
         if (typeof data !== 'string') {

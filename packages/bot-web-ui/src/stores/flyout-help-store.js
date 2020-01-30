@@ -49,7 +49,7 @@ export default class FlyoutHelpStore {
             this.help_string       = help_string_obj.default[block_type];
         });
 
-        this.shoudDisableSequence();
+        this.updateSequenceButtons();
     }
 
     @action.bound
@@ -103,9 +103,8 @@ export default class FlyoutHelpStore {
     }
 
     @action.bound
-    initializeFlyoutHelp(block_node) {
-        // eslint-disable-next-line no-underscore-dangle
-        const toolbox = Blockly.derivWorkspace.toolbox_;
+    initialiseFlyoutHelp(block_node) {
+        const toolbox = Blockly.derivWorkspace.getToolbox();
         const selected_category = toolbox.getSelectedItem();
         this.xml_list = toolbox.getCategoryContents(selected_category);
         this.xml_list_group = this.groupBy(this.xml_list, true);
@@ -114,7 +113,7 @@ export default class FlyoutHelpStore {
     }
 
     @action.bound
-    shoudDisableSequence() {
+    updateSequenceButtons() {
         const current_block = this.xml_list.find(xml => xml.getAttribute('type') === this.block_type);
         const current_index = Object.keys(this.xml_list_group).findIndex(key => current_block.getAttribute('type') === key);
         this.should_previous_disable = current_index === 0;

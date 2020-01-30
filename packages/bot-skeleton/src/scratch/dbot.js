@@ -56,7 +56,9 @@ class DBot {
 
             // Push main.xml to workspace and reset the undo stack.
             const has_recent_files = getRecentFiles();
-            Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(has_recent_files ? has_recent_files[0].xml : main_xml), this.workspace);
+            Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(
+                has_recent_files ? has_recent_files[0].xml : main_xml
+            ), this.workspace);
             this.workspace.clearUndo();
 
             const { handleFileChange } = DBotStore.instance;

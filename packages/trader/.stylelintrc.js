@@ -67,9 +67,9 @@ module.exports = {
         'selector-class-pattern'                           : null,
         'selector-combinator-space-after'                  : 'always',
         'selector-combinator-space-before'                 : 'always',
-        'selector-list-comma-newline-after'                : 'never-multi-line',
+        // 'selector-list-comma-newline-after'                : 'never-multi-line',
         'selector-list-comma-newline-before'               : 'never-multi-line',
-        'selector-list-comma-space-after'                  : 'always',
+        // 'selector-list-comma-space-after'                  : 'always',
         'selector-list-comma-space-before'                 : 'never',
         'selector-max-empty-lines'                         : 0,
         'selector-pseudo-class-case'                       : 'lower',
@@ -87,9 +87,9 @@ module.exports = {
         'unit-case'                                        : 'lower',
         'unit-whitelist'                                   : ['px', 'em', 'rem', '%', 'vw', 'vh', 'deg', 'ms', 's', 'fr'],
         'value-keyword-case'                               : 'lower',
-        'value-list-comma-newline-after'                   : 'never-multi-line',
+        // 'value-list-comma-newline-after'                   : 'never-multi-line',
         'value-list-comma-newline-before'                  : 'never-multi-line',
-        'value-list-comma-space-after'                     : 'always',
+        // 'value-list-comma-space-after'                     : 'always',
         'value-list-comma-space-before'                    : 'never',
     }
 };

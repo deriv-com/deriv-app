@@ -1,57 +1,45 @@
 import React                  from 'react';
 import PropTypes              from 'prop-types';
-import { Table, Button }      from 'deriv-components';
-import { localize }           from 'deriv-translations';
-import { InfiniteLoaderList } from '../table/infinite-loader-list.jsx';
-
-// TODO: replace with API response
-const mock_response = {
-    ad_id          : 'Buy 000023434',
-    amount         : 'BTC 0.00001234',
-    price          : '34,000 MYR/BTC',
-    min_transaction: 'MYR 50',
-    payment_method : 'Bank transfer',
-};
-const initial_data = [
-    { ...mock_response },
-    { ...mock_response },
-    { ...mock_response },
-    { ...mock_response },
-];
-
-const getMockData = () => {
-    return new Promise((resolve) => {
-        setTimeout(function() {
-            resolve([
-                { ...mock_response }, { ...mock_response }, { ...mock_response }, { ...mock_response },
-            ]);
-        }, 300);
-    });
-};
+import {
+    Button,
+    Dialog,
+    Table }                   from '@deriv/components';
+import Dp2pContext            from 'Components/context/dp2p-context';
+import { localize }           from 'Components/i18next';
+import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
+import { requestWS }          from 'Utils/websocket';
+import { MyAdsLoader }        from './my-ads-loader.jsx';
+import Popup                  from '../orders/popup.jsx';
 
 const headers = [
     { text: localize('Ad ID')  },
-    { text: localize('Amount') },
+    { text: localize('Available') },
+    { text: localize('Limits') },
     { text: localize('Price') },
-    { text: localize('Min transaction') },
-    { text: localize('Payment Method') },
+    { text: localize('Payment method') },
+    { text: localize('Actions') },
 ];
 
-const RowComponent = React.memo(({ data, style }) => (
+const type = {
+    buy : localize('Buy'),
+    sell: localize('Sell'),
+};
+
+const RowComponent = React.memo(({ data, row_actions, style }) => (
     <div style={style}>
         <Table.Row>
-            <Table.Cell>{data.ad_id}</Table.Cell>
-            <Table.Cell>{data.amount}</Table.Cell>
-            <Table.Cell>{data.price}</Table.Cell>
-            <Table.Cell>{data.min_transaction}</Table.Cell>
-            <Table.Cell>{data.payment_method}</Table.Cell>
+            <Table.Cell>{type[data.type]}{' '}{data.offer_id}</Table.Cell>
+            <Table.Cell>{data.display_available_amount}{' '}{data.offer_currency}</Table.Cell>
+            <Table.Cell>{data.display_min_transaction}-{data.display_max_transaction}{' '}{data.offer_currency}</Table.Cell>
+            <Table.Cell className='p2p-my-ads__table-price'>{data.display_price_rate}{' '}{data.transaction_currency}</Table.Cell>
+            <Table.Cell>{data.display_payment_method}</Table.Cell>
             <Table.Cell>
-                <div style={{
-                    marginRight: '0.9rem',
-                }}>
-                    <Button secondary small>{localize('Edit')}</Button>
-                </div>
-                <Button secondary small>{localize('Delete')}</Button>
+                <Button secondary small onClick={() => row_actions.onClickEdit(data)} className='p2p-my-ads__table-button'>
+                    {localize('Edit')}
+                </Button>
+                <Button secondary small onClick={() => row_actions.onClickDelete(data.offer_id)}>
+                    {localize('Delete')}
+                </Button>
             </Table.Cell>
         </Table.Row>
     </div>
@@ -63,36 +51,55 @@ RowComponent.propTypes = {
 RowComponent.displayName = 'RowComponent';
 
 export class MyAdsTable extends React.Component {
+    // TODO: Find a better solution for handling no-op instead of using is_mounted flags
+    is_mounted = false;
+
     state = {
-        items                 : initial_data,
-        is_loading_more_items : false,
-        has_more_items_to_load: true,
-        width                 : null,
-        height                : null,
+        items         : [],
+        selected_ad_id: '',
+        show_popup    : false,
     };
 
     table_container_ref = React.createRef();
-    
-    loadMore = () => {
-        this.setState({ is_loading_more_items: true }, () => {
-            getMockData().then((res) => {
-                this.setState({
-                    is_loading_more_items: false,
-                    items                : [...this.state.items, ...res],
-                });
-            });
+
+    componentDidMount() {
+        this.is_mounted = true;
+
+        requestWS({ p2p_offer_list: 1, agent_id: this.context.agent_id }).then((response) => {
+            if (this.is_mounted) {
+                this.setState({ items: response, is_loading: false });
+            }
         });
     }
 
-    render() {
-        const { items, is_loading_more_items, has_more_items_to_load } = this.state;
+    componentWillUnmount() {
+        this.is_mounted = false;
+    }
 
-        let width, height;
-        if (this.table_container_ref.current) {
-            const { offsetWidth, clientHeight } = this.table_container_ref.current;
-            width = offsetWidth;
-            height = clientHeight;
-        }
+    onClickDelete = (offer_id) => {
+        this.setState({ selected_ad_id: offer_id, show_popup: true });
+    };
+
+    onClickCancel = () => {
+        this.setState({ selected_ad_id: '', show_popup: false });
+    };
+
+    onClickConfirm = (showError) => {
+        requestWS({ p2p_offer_update: 1, offer_id: this.state.selected_ad_id, is_active: 0 }).then((response) => {
+            if (response.error) {
+                showError({ error_message: response.error.message });
+            } else {
+                // remove the deleted ad from the list of items
+                const updated_items = this.state.items.filter(
+                    ad => ad.offer_id !== response.p2p_offer_update.offer_id
+                );
+                this.setState({ items: updated_items, show_popup: false });
+            }
+        });
+    };
+
+    render() {
+        const { items } = this.state;
 
         return (
             <div ref={this.table_container_ref}>
@@ -101,22 +108,42 @@ export class MyAdsTable extends React.Component {
                         <Table.Row>
                             {headers.map(header =>
                                 <Table.Head key={header.text}>{header.text}</Table.Head>)}
-                            <Table.Head />
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
                         <InfiniteLoaderList
                             items={items}
-                            is_loading_more_items={is_loading_more_items}
-                            loadMore={this.loadMore}
-                            has_more_items_to_load={has_more_items_to_load}
+                            row_actions={{
+                                onClickDelete: this.onClickDelete,
+                                onClickEdit  : this.props.onClickEdit,
+                            }}
                             RenderComponent={RowComponent}
-                            width={width}
-                            heigh={height}
+                            RowLoader={MyAdsLoader}
                         />
                     </Table.Body>
                 </Table>
+                {this.state.show_popup && (
+                    <div className='orders__dialog'>
+                        <Dialog is_visible={!!this.state.show_popup}>
+                            <Popup
+                                has_cancel
+                                title={localize('Delete this ad')}
+                                message={localize('You won\'t be able to restore it later.')}
+                                cancel_text={localize('Cancel')}
+                                confirm_text={localize('Delete')}
+                                onCancel={this.onClickCancel}
+                                onClickConfirm={this.onClickConfirm}
+                            />
+                        </Dialog>
+                    </div>
+                )}
             </div>
         );
     }
 }
+
+MyAdsTable.propTypes = {
+    onClickEdit: PropTypes.func,
+};
+
+MyAdsTable.contextType = Dp2pContext;

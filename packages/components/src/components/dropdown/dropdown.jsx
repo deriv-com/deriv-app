@@ -3,7 +3,6 @@ import PropTypes         from 'prop-types';
 import React             from 'react';
 import { CSSTransition } from 'react-transition-group';
 import ThemedScrollbars  from 'Components/themed-scrollbars';
-import Icon              from 'Components/icon-arrow.jsx';
 import {
     getItemFromValue,
     getValueFromIndex,
@@ -14,6 +13,7 @@ import {
 import Items             from './items.jsx';
 import NativeSelect      from './native-select.jsx';
 import DisplayText       from './display-text.jsx';
+import Icon              from '../icon';
 
 class Dropdown extends React.Component {
     list_ref = React.createRef();
@@ -61,7 +61,7 @@ class Dropdown extends React.Component {
                 'dc-dropdown--has-placeholder': this.props.placeholder,
                 'dc-dropdown--left'           : this.props.is_alignment_left,
                 'dc-dropdown--show'           : this.state.is_list_visible,
-                'dc-dropdown--disabled'       : this.is_single_option,
+                'dc-dropdown--disabled'       : this.is_single_option || this.props.disabled,
             },
         );
     }
@@ -142,7 +142,8 @@ class Dropdown extends React.Component {
 
     handleClickOutside = (event) => {
         if (
-            this.wrapper_ref && !this.wrapper_ref.contains(event.target) &&
+            this.wrapper_ref &&
+            (!this.wrapper_ref.contains(event.target) && !this.wrapper_ref.contains(event.path[0])) && // event.path[0] is the node that the event originated from, it does not need to walk the array
             this.state.is_list_visible
         ) {
             if (typeof this.props.handleBlur === 'function') {
@@ -294,7 +295,7 @@ class Dropdown extends React.Component {
                     </div>
                     {
                         !this.is_single_option && <Icon
-                            icon='IconArrow'
+                            icon={this.props.is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
                             className={classNames('dc-dropdown__select-arrow', {
                                 'dc-dropdown__select-arrow--left': this.props.is_alignment_left,
                             })}
@@ -374,6 +375,7 @@ Dropdown.propTypes = {
     classNameDisplay : PropTypes.string,
     classNameItems   : PropTypes.string,
     classNameLabel   : PropTypes.string,
+    disabled         : PropTypes.bool,
     has_symbol       : PropTypes.bool,
     is_alignment_left: PropTypes.bool,
     is_nativepicker  : PropTypes.bool,

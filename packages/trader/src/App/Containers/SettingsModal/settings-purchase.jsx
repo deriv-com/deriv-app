@@ -1,7 +1,7 @@
-// import { Checkbox }                  from 'deriv-components';
+// import { Checkbox }                  from '@deriv/components';
 // import PropTypes                     from 'prop-types';
 // import React                         from 'react';
-// import { localize }                  from 'deriv-translations';
+// import { localize }                  from '@deriv/translations';
 // import MediaItem, {
 //     MediaDescription,
 //     MediaHeading,

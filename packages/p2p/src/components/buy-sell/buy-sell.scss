@@ -1,23 +1,20 @@
 .buy-sell {
     margin: 1.6rem;
     padding: 1.6rem;
-    background: var(--general-section-1);
 
     &__header {
         background: var(--general-section-1);
-        padding: 0.8rem;
-        width: 100%;
+        padding: 0.4rem;
+        width: fit-content;
+        border-radius: 4px;
 
         &__filters {
             width: 12rem;
         }
     }
-
-    &__list {
-        padding: 0.8rem;
-        margin: 0.8rem;
-        background: var(--general-main-2);
-        color: var(--text-general);
+    &__price {
+        color: var(--text-profit-success);
+        font-weight: bold;
     }
     &__dialog {
         position: absolute;
@@ -32,11 +29,12 @@
             height: auto;
             padding: 0;
             max-height: initial;
-            min-width: 44rem;
+            min-width: 50rem;
         }
         & .dc-dialog__content {
             margin-bottom: 0;
             width: 100%;
+            max-width: 50rem;
         }
     }
     &__popup {
@@ -49,6 +47,7 @@
                 align-items: center;
                 width: 100%;
                 justify-content: space-between;
+                box-sizing: border-box;
             }
             &--title {
                 font-weight: bold;
@@ -64,10 +63,14 @@
         }
         &-field {
             margin-bottom: 0 !important;
+            flex: 1;
 
+            &:not(:first-child) {
+                margin-left: 2.4rem;
+            }
             &_wrapper {
                 display: flex;
-                margin-bottom: 2.4rem;
+                margin-bottom: 1.6rem;
                 align-items: center;
             }
             &--icon {
@@ -83,6 +86,9 @@
         &-info {
             margin-bottom: 1.6rem;
 
+            &_notes {
+                margin-bottom: 2rem;
+            }
             &--title {
                 color: var(--text-less-prominent);
                 font-size: var(--text-size-xxs);
@@ -90,6 +96,9 @@
             &--text {
                 color: var(--text-general);
                 font-size: var(--text-size-xs);
+            }
+            &--strong {
+                font-weight: bold;
             }
         }
         &-footer {

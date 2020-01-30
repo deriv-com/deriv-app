@@ -5,7 +5,7 @@ import {
     Redirect }           from 'react-router-dom';
 import SideMenu          from 'App/Components/Elements/SideMenu';
 import { FadeWrapper }   from 'App/Components/Animations';
-import { localize }      from 'deriv-translations';
+import { localize }      from '@deriv/translations';
 import AppRoutes         from 'Constants/routes';
 import { connect }       from 'Stores/connect';
 import { WS }            from 'Services/ws-methods';
@@ -92,7 +92,7 @@ class Account extends React.Component {
                 onClick: () => {
                     this.props.history.push(AppRoutes.trade);
                 },
-                icon : 'ModalIconClose',
+                icon : 'IcCross',
                 title: localize('Close'),
             },
         ];

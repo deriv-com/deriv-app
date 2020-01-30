@@ -1,9 +1,9 @@
 
-import { ThemedScrollbars }    from 'deriv-components';
+import { ThemedScrollbars }    from '@deriv/components';
 import PropTypes               from 'prop-types';
 import React                   from 'react';
 import { init }                from 'onfido-sdk-ui';
-import { get as getLanguage }  from '_common/language';
+import { getLanguage }         from '@deriv/translations';
 import {
     Expired,
     OnfidoFailed,
@@ -31,8 +31,9 @@ class Onfido extends React.Component {
         onfido_init_error: false,
     }
 
-    initOnfido = async () => {
+    initOnfido = () => {
         try {
+            const { documents_supported } = this.props;
             const onfido = init({
                 containerId: onfido_container_id,
                 language   : {
@@ -42,7 +43,16 @@ class Onfido extends React.Component {
                 useModal  : false,
                 onComplete: this.handleComplete,
                 steps     : [
-                    'document',
+                    {
+                        type   : 'document',
+                        options: {
+                            documentTypes: {
+                                passport              : documents_supported.some(doc => /Passport/g.test(doc)),
+                                driving_licence       : documents_supported.some(doc => /Driving Licence/g.test(doc)),
+                                national_identity_card: documents_supported.some(doc => /National Identity Card/g.test(doc)),
+                            },
+                        },
+                    },
                     'face',
                 ],
             });
@@ -59,7 +69,7 @@ class Onfido extends React.Component {
 
     componentDidMount() {
         if (this.props.status === onfido_status_codes.onfido) {
-            this.initOnfido(this.props.onfido_service_token);
+            this.initOnfido();
         }
     }
 
@@ -94,6 +104,7 @@ class Onfido extends React.Component {
 }
 
 Onfido.propTypes = {
+    documents_supported : PropTypes.array,
     handleComplete      : PropTypes.func,
     has_poa             : PropTypes.bool,
     onfido_service_token: PropTypes.string,

@@ -1,7 +1,7 @@
 import PropTypes         from 'prop-types';
 import React             from 'react';
 import { withRouter }    from 'react-router-dom';
-import { localize }      from 'deriv-translations';
+import { localize }      from '@deriv/translations';
 import { FadeWrapper }   from 'App/Components/Animations';
 import VerticalTab       from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
 import AppRoutes         from 'Constants/routes';
@@ -55,7 +55,7 @@ class Reports extends React.Component {
                     this.props.history.push(AppRoutes.trade);
                     this.props.toggleReports(false);
                 },
-                icon : 'ModalIconClose',
+                icon : 'IcCross',
                 title: localize('Close'),
             },
             {

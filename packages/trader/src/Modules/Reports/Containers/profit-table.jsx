@@ -2,7 +2,7 @@ import PropTypes                         from 'prop-types';
 import { PropTypes as MobxPropTypes }    from 'mobx-react';
 import React                             from 'react';
 import { withRouter }                    from 'react-router';
-import { localize, Localize }            from 'deriv-translations';
+import { localize, Localize }            from '@deriv/translations';
 import { urlFor }                        from '_common/url';
 import { website_name }                  from 'App/Constants/app-config';
 import DataTable                         from 'App/Components/Elements/DataTable';
@@ -36,14 +36,20 @@ class ProfitTable extends React.Component {
                             website_name,
                         }}
                         components={[
-                            <a key={0} className='link link--orange' rel='noopener noreferrer' target='_blank' href={urlFor('user/profit_tablews', undefined, undefined, true)} />,
+                            <a
+                                key={0}
+                                className='link link--orange'
+                                rel='noopener noreferrer'
+                                target='_blank'
+                                href={urlFor('user/profit_tablews', undefined, undefined, true)}
+                            />,
                         ]}
                     />
                 ),
             }
     );
 
-    render () {
+    render() {
         const {
             component_icon,
             currency,
@@ -69,16 +75,18 @@ class ProfitTable extends React.Component {
                 />
             </React.Fragment>
         );
+
         const columns = getProfitTableColumnsTemplate(currency, data.length);
 
         return (
             <React.Fragment>
                 <ReportsMeta
                     i18n_heading={localize('Profit table')}
-                    i18n_message={localize('View all trades purchased on your account, and a summary of your total profit/loss.')}
+                    i18n_message={localize(
+                        'View all trades purchased on your account, and a summary of your total profit/loss.')}
                     filter_component={filter_component}
                 />
-                { (is_loading && data.length === 0) || is_empty ?
+                {(is_loading && data.length === 0) || is_empty ?
                     <PlaceholderComponent
                         is_loading={is_loading}
                         has_selected_date={has_selected_date}
@@ -98,6 +106,7 @@ class ProfitTable extends React.Component {
                         is_empty={is_empty}
                         getRowAction={this.getRowAction}
                         custom_width={'100%'}
+                        getRowSize={() => 63}
                     >
                         <PlaceholderComponent
                             is_loading={is_loading}
@@ -142,5 +151,5 @@ export default connect(
         onMount          : modules.profit_table.onMount,
         onUnmount        : modules.profit_table.onUnmount,
         totals           : modules.profit_table.totals,
-    })
+    }),
 )(withRouter(ProfitTable));

@@ -1,4 +1,5 @@
-@import 'deriv-shared/src/styles/reset.scss';
+@import '~@deriv/shared/utils/styles/reset.scss';
+@import '~@deriv/shared/utils/styles/themes.scss';
 
 .deriv-p2p {
     background: transparent;
@@ -11,4 +12,17 @@
     & .dc-tabs {
         position: static;
     }
+    &__separator {
+        width: 100%;
+        border-top: 1px solid var(--general-section-1);
+    }
+}
+
+.p2p-not-allowed {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    color: var(--text-general);
 }

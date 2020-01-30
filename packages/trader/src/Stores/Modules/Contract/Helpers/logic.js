@@ -1,5 +1,5 @@
 import moment      from 'moment';
-import ObjectUtils from 'deriv-shared/utils/object';
+import ObjectUtils from '@deriv/shared/utils/object';
 import ServerTime  from '_common/base/server_time';
 
 export const getChartConfig = (contract_info) => {

@@ -1,0 +1,101 @@
+.dc-modal {
+    $strategy-modal : 'modal--strategy';
+
+    &__container {
+        &_#{$strategy-modal} {
+            .modal__content {
+                padding: 15px 24px;
+                height: calc(100% - 200px);
+            }
+        }
+    }
+}
+
+.quick-strategy {
+    $quick-strategy: &;
+
+    &__description {
+        margin-top: 15px;
+        font-size: 14px;
+        font-weight: normal;
+        line-height: 1.43;
+        color: var(--text-general);
+    }
+    &__tab-content {
+        height: calc(100vh - 330px);
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+    }
+    &__form {
+        margin-top: auto;
+
+        &-row {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin: 16px 0;
+
+            > * {
+                justify-content: center;
+            }
+            #{$quick-strategy}__input {
+                margin: 10px 0 0;
+                width: 196px;
+
+                input {
+                    width: 80%;
+                }
+                .dc-field-error {
+                    padding: 0;
+                    left: 0;
+                }
+            }
+        }
+        &-footer {
+            text-align: right;
+
+            #{$quick-strategy}__button {
+                &--create {
+                    height: 40px;
+                    margin: 14px 0 0 auto;
+                }
+            }
+        }
+    }
+    &__option {
+        display: flex;
+
+        > * {
+            align-self: center;
+        }
+        .icons-underlying {
+            margin-top: 5px;
+        }
+    }
+    &__symbol {
+        margin-left: 8px;
+    }
+    &__icon {
+        width: 24px;
+        height: 24px;
+        padding: 3px;
+        margin: 2px;
+        background-color: var(--general-section-1);
+    }
+    &__duration {
+        &-dropdown {
+            width: 196px !important;
+            margin-top: 10px !important;
+            height: 40px;
+        }
+    }
+}
+
+/* stylelint-disable */
+@media (max-resolution: 200dpi) {
+    .quick-strategy__tab-content {
+        height: 100%;
+    }
+}
+/* stylelint-enable */

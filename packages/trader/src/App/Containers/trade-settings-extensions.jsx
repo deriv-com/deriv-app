@@ -1,6 +1,6 @@
 import PropTypes           from 'prop-types';
 import React               from 'react';
-import { localize }        from 'deriv-translations';
+import { localize }        from '@deriv/translations';
 import { connect }         from 'Stores/connect';
 import Lazy                from 'App/Containers/Lazy';
 
@@ -25,7 +25,7 @@ class TradeSettingsExtensions extends React.Component {
 
         const menu_items = [
             {
-                icon : 'IconCharts',
+                icon : 'IcChart',
                 label: localize('Charts'),
                 value: ChartSettingContainer,
                 // uncomment below lines to bring back purchase lock and purchase confirmation}

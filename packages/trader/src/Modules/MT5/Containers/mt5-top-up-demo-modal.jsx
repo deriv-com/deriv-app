@@ -1,12 +1,12 @@
 import {
+    Icon,
     Modal,
     Button,
-    Money }                   from 'deriv-components';
+    Money }                   from '@deriv/components';
 import PropTypes              from 'prop-types';
 import React                  from 'react';
 import SuccessDialog          from 'App/Containers/Modals/success-dialog.jsx';
-import { localize, Localize } from 'deriv-translations';
-import IconWallet             from 'Assets/Common/icon-wallet.jsx';
+import { localize, Localize } from '@deriv/translations';
 import { connect }            from 'Stores/connect';
 
 class Mt5TopUpDemoModal extends React.Component {
@@ -84,7 +84,7 @@ class Mt5TopUpDemoModal extends React.Component {
                     title={ localize('Top up success') }
                 >
                     <SuccessDialog
-                        icon={<IconWallet />}
+                        icon={<Icon icon='IcCashierWallet' size={115} />}
                         heading={(
                             <h3 className='mt5-success-topup__heading'>
                                 <Localize

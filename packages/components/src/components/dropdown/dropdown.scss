@@ -191,7 +191,6 @@
             }
         }
         .dc-dropdown__select-arrow {
-            transform: rotate(90deg);
             left: 0.6em;
             right: unset;
         }
@@ -204,12 +203,20 @@
             transform: rotate(-180deg);
 
             &--left {
-                transform: rotate(-90deg);
+                transform: rotate(-180deg);
             }
         }
     }
     &--disabled {
         pointer-events: none;
+
+        .dc-dropdown__display {
+            border: 1px solid var(--general-disabled);
+
+            &-text {
+                color: var(--text-disabled);
+            }
+        }
     }
     &-container {
         position: relative;

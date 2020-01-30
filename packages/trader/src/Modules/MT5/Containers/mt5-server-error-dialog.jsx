@@ -1,7 +1,7 @@
-import { Dialog }           from 'deriv-components';
+import { Dialog }           from '@deriv/components';
 import PropTypes            from 'prop-types';
 import React, { Component } from 'react';
-import { localize }         from 'deriv-translations';
+import { localize }         from '@deriv/translations';
 import { connect }          from 'Stores/connect';
 
 class MT5ServerErrorDialog extends Component {

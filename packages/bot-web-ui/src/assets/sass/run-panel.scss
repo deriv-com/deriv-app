@@ -1,0 +1,33 @@
+/**
+* @define -panel
+**/
+// TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
+.run-panel {
+    height: var(--bot-content-height) !important;
+    top: 104px !important;
+    // Mahboobeh, don't re-add z-index plz.
+
+    &__footer {
+        text-align: center;
+        height: 152px;
+        margin: 16px 0;
+    }
+    &__buttons {
+        display: inline-flex !important;
+        justify-content: space-between;
+        width: 67%;
+        height: 6rem;
+        align-items: center;
+    }
+    &__icon-info {
+        vertical-align: middle;
+    }
+    &__info {
+        display: block;
+        font-size: 10px;
+    }
+    &__animation {
+        height: 64px;
+        margin: 0 16px;
+    }
+}

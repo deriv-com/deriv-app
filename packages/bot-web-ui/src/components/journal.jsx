@@ -122,7 +122,7 @@ const Tools = ({
 );
 
 const Journal = ({
-    filtered_message,
+    filtered_messages,
     ...props
 }) => {
     return (
@@ -144,8 +144,8 @@ const Journal = ({
                     </thead>
                     <tbody className='journal__table--body'>
                         {
-                            filtered_message.length ?
-                                filtered_message.map((item, index) => {
+                            filtered_messages.length ?
+                                filtered_messages.map((item, index) => {
                                     const { date, time, message, message_type } = item;
                                     const date_el = DateItem({ date, time });
                                     const message_el = MessageItem({ message });
@@ -186,15 +186,15 @@ const Journal = ({
 };
 
 Journal.propTypes = {
-    checked_filters : PropTypes.array,
-    filtered_message: PropTypes.array,
-    filterMessage   : PropTypes.func,
-    filters         : PropTypes.array,
+    checked_filters  : PropTypes.array,
+    filtered_messages: PropTypes.array,
+    filterMessage    : PropTypes.func,
+    filters          : PropTypes.array,
 };
 
 export default connect(({ journal }) => ({
-    checked_filters : journal.checked_filters,
-    filterMessage   : journal.filterMessage,
-    filters         : journal.filters,
-    filtered_message: journal.filtered_message,
+    checked_filters  : journal.checked_filters,
+    filterMessage    : journal.filterMessage,
+    filters          : journal.filters,
+    filtered_messages: journal.filtered_messages,
 }))(Journal);

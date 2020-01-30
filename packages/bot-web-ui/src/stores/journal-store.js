@@ -56,7 +56,6 @@ export default class JournalStore {
         }
 
         this.unfiltered_messages.unshift({ date, time , message: error_message, message_type });
-        // this.filterMessage(this.checked_filters);
     }
 
     @computed

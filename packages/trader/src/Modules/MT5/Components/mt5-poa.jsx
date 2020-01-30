@@ -233,7 +233,7 @@ class MT5POA extends Component {
                 this.proceed();
             } else {
                 this.setState({
-                    form_error: localize('Proof of identity failed. redirecting you back to previous step.'),
+                    form_error: localize('Identity confirmation failed. You will be redirected to the previous step.'),
                 });
                 setTimeout(() => {
                     this.handleCancel(get_settings);

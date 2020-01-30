@@ -60,7 +60,7 @@ export default class JournalStore {
     }
 
     @computed
-    get filtered_message() {
+    get filtered_messages() {
         // filter messages based on filtered-checkbox
         return this.unfiltered_messages
             .filter(message => !this.checked_filters.length

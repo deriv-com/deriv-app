@@ -115,9 +115,9 @@ const Tools = ({
                 })
             }
         </div>
-        <div className='tools__container-download'>
+        {/* <div className='tools__container-download'>
             <Icon icon='IcDownload' />
-        </div>
+        </div> */}
     </div>
 );
 

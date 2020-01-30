@@ -38,7 +38,6 @@ const QuickStrategyForm = ({
 }) => (
     <div className='quick-strategy__form'>
         <Formik
-            initialErrors={initial_errors}
             initialValues={initial_values}
             validate={validateQuickStrategy}
             onSubmit={createStrategy}
@@ -125,7 +124,9 @@ const QuickStrategyForm = ({
                                         {...field}
                                         className='quick-strategy__input'
                                         type='text'
-                                        error={initial_errors[field.name] || (touched[field.name] && errors[field.name])}
+                                        error={
+                                            initial_errors[field.name] || (touched[field.name] && errors[field.name])
+                                        }
                                         label={localize('Duration value')}
                                         onChange={(e) => {
                                             handleChange(e);
@@ -152,7 +153,9 @@ const QuickStrategyForm = ({
                                         {...field}
                                         className='quick-strategy__input'
                                         type='text'
-                                        error={initial_errors[field.name] || (touched[field.name] && errors[field.name])}
+                                        error={
+                                            initial_errors[field.name] || (touched[field.name] && errors[field.name])
+                                        }
                                         label={localize('Initial stake')}
                                         onChange={(e) => {
                                             handleChange(e);
@@ -177,7 +180,9 @@ const QuickStrategyForm = ({
                                         {...field}
                                         className='quick-strategy__input'
                                         type='text'
-                                        error={initial_errors[field.name] || (touched[field.name] && errors[field.name])}
+                                        error={
+                                            initial_errors[field.name] || (touched[field.name] && errors[field.name])
+                                        }
                                         label={localize('Loss threshold')}
                                         onChange={(e) => {
                                             handleChange(e);
@@ -204,7 +209,9 @@ const QuickStrategyForm = ({
                                         {...field}
                                         className='quick-strategy__input'
                                         type='text'
-                                        error={initial_errors[field.name] || (touched[field.name] && errors[field.name])}
+                                        error={
+                                            initial_errors[field.name] || (touched[field.name] && errors[field.name])
+                                        }
                                         label={getSizeText(active_index)}
                                         onChange={(e) => {
                                             handleChange(e);
@@ -229,7 +236,9 @@ const QuickStrategyForm = ({
                                         {...field}
                                         className='quick-strategy__input'
                                         type='text'
-                                        error={initial_errors[field.name] || (touched[field.name] && errors[field.name])}
+                                        error={
+                                            initial_errors[field.name] || (touched[field.name] && errors[field.name])
+                                        }
                                         label={localize('Profit threshold')}
                                         onChange={(e) => {
                                             handleChange(e);

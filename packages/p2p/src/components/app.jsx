@@ -15,6 +15,7 @@ import BuySell              from './buy-sell/buy-sell.jsx';
 import MyAds                from './my-ads/my-ads.jsx';
 // import MyProfile  from './my-profile/my-profile.jsx';
 import Orders               from './orders/orders.jsx';
+import OrderInfo            from './orders/order-info';
 import './app.scss';
 
 const allowed_currency = 'USD';
@@ -25,6 +26,21 @@ const path = {
     my_ads  : 2,
     // my_profile: 3,
 };
+
+const notifications_map = {
+    'pending': {
+        is_agent_buyer  : 0,
+        is_agent_seller : 1,
+        is_client_buyer : 1,
+        is_client_seller: 0,
+    },
+    'buyer-confirmed': {
+        is_agent_buyer  : 1,
+        is_agent_seller : 0,
+        is_client_buyer : 0,
+        is_client_seller: 1,
+    },
+}
 
 class App extends Component {
     constructor(props) {
@@ -60,11 +76,42 @@ class App extends Component {
         }
     }
 
+    handleNotifications = (updated_orders) => {
+        let notifications = 0
+
+        updated_orders.forEach(order => {
+            const modified_order = new OrderInfo(order)
+
+            const current_state = {
+                is_agent_buyer  : this.state.is_agent && modified_order.is_buyer,
+                is_agent_seller : this.state.is_agent && !modified_order.is_buyer,
+                is_client_buyer : !this.state.is_agent && modified_order.is_buyer,
+                is_client_seller: !this.state.is_agent && !modified_order.is_buyer,
+            }
+
+            const sa = {
+                'pending'        : modified_order.is_pending,
+                'buyer-confirmed': modified_order.is_buyer_confirmed
+            }
+
+            Object.keys(notifications_map).forEach(kemem => {
+                if (sa[kemem]) {
+                    Object.keys(notifications_map[kemem]).forEach(abc => {
+                        notifications += current_state[abc] && notifications_map[kemem][abc]
+                    })
+                }
+            })
+        })
+
+        this.setState({ notifications })
+    }
+
     // API will send p2p_order_list first as a list of all orders
     // then each subscription response for a single updated order will come as p2p_order_info
     handleOrderListResponse = (order_response) => {
         if (Array.isArray(order_response)) { // it's an array of orders from p2p_order_list
             this.setState({ orders: order_response });
+            this.handleNotifications(order_response);
         } else { // it's a single order from p2p_order_info
             const idx_order_to_update =
                 this.state.orders.findIndex(order => order.order_id === order_response.order_id);
@@ -76,12 +123,7 @@ class App extends Component {
                 updated_orders[idx_order_to_update] = order_response;
             }
             // trigger re-rendering by setting orders again
-            this.setState({ orders: updated_orders }, () => {
-                this.setState({ notifications: this.state.notifications + 1 }, () => {
-                    console.log(this.state.notifications)
-                    console.log('hi')
-                });
-            });
+            this.setState({ orders: updated_orders }, () => this.handleNotifications(updated_orders));
         }
     };
 

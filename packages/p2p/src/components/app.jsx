@@ -104,8 +104,9 @@ class App extends Component {
                     currency,
                     local_currency_config,
                     residence,
-                    agent_id: this.state.agent_id,
-                    is_agent: this.state.is_agent,
+                    agent_id    : this.state.agent_id,
+                    is_agent    : this.state.is_agent,
+                    email_domain: this.props.custom_strings.email_domain || 'deriv.com',
                 }}
             >
                 <main className={classNames('deriv-p2p', className)}>
@@ -157,7 +158,10 @@ class App extends Component {
 
 App.propTypes = {
     client: PropTypes.shape({
-        currency             : PropTypes.string.isRequired,
+        currency      : PropTypes.string.isRequired,
+        custom_strings: PropTypes.shape({
+            email_domain: PropTypes.string,
+        }),
         is_virtual           : PropTypes.bool.isRequired,
         local_currency_config: PropTypes.shape({
             currency      : PropTypes.string.isRequired,

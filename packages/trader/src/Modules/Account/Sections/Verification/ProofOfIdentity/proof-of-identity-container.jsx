@@ -85,8 +85,17 @@ class ProofOfIdentityContainer extends React.Component {
                 const { onfido_unsupported }           = this.state;
                 const status                           = getIdentityStatus(identity, onfido_unsupported);
                 const unwelcome                        = get_account_status.status.some(account_status => account_status === 'unwelcome');
+                const documents_supported              = identity.services.onfido.documents_supported;
                 if (this.is_mounted) {
-                    this.setState({ is_loading: false, has_poa, needs_poa, status, onfido_service_token, unwelcome });
+                    this.setState({
+                        is_loading: false,
+                        has_poa,
+                        needs_poa,
+                        status,
+                        onfido_service_token,
+                        unwelcome,
+                        documents_supported,
+                    });
                     this.props.refreshNotifications();
                 }
             });
@@ -99,6 +108,7 @@ class ProofOfIdentityContainer extends React.Component {
 
     render() {
         const {
+            documents_supported,
             is_loading,
             status,
             onfido_service_token,
@@ -113,6 +123,7 @@ class ProofOfIdentityContainer extends React.Component {
 
         return (
             <Onfido
+                documents_supported={documents_supported}
                 status={status}
                 onfido_service_token={onfido_service_token}
                 has_poa={has_poa}

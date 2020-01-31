@@ -15,11 +15,24 @@ const SellOrderRowComponent = React.memo(({ data, is_agent, onOpenDetails, style
     } = data;
 
     return (
-        <div onClick={() => onOpenDetails(data)} style={style} className='orders__table-row'>
+        <div
+            onClick={() => onOpenDetails(data)}
+            style={style}
+            className={classNames('orders__table-row', {
+                'orders__table-row--attention': (!is_agent && display_status === 'Paid') || (is_agent && display_status === 'Unpaid'),
+            })}
+        >
             <Table.Row>
                 <Table.Cell>{ localize('Sell') }{' '}{ order_id }</Table.Cell>
                 <Table.Cell>{ order_purchase_datetime }</Table.Cell>
-                <Table.Cell>{ display_status }</Table.Cell>
+                <Table.Cell className={classNames('orders__table-cell', {
+                    'orders__table-cell--primary' : display_status === 'Unpaid' || display_status === 'Paid',
+                    'orders__table-cell--success' : display_status === 'Completed',
+                    'orders__table-cell--disabled': display_status === 'Cancelled',
+                })}
+                >
+                    { display_status }
+                </Table.Cell>
                 {is_agent && <Table.Cell>{ display_transaction_amount }{ ' ' }{ transaction_currency }</Table.Cell>}
                 {is_agent && <Table.Cell>{ display_offer_amount }{ ' ' }{ offer_currency }</Table.Cell>}
                 {!is_agent && <Table.Cell>{ display_offer_amount }{ ' ' }{ offer_currency }</Table.Cell>}

@@ -40,7 +40,7 @@ const notifications_map = {
         is_client_buyer : 0,
         is_client_seller: 1,
     },
-}
+};
 
 class App extends Component {
     constructor(props) {
@@ -51,10 +51,10 @@ class App extends Component {
         ServerTime.init(this.props.server_time);
 
         this.state = {
-            active_index: 0,
-            orders      : [],
-            parameters  : null,
-            is_agent    : false,
+            active_index : 0,
+            orders       : [],
+            parameters   : null,
+            is_agent     : false,
             notifications: 0,
         };
     }
@@ -67,7 +67,7 @@ class App extends Component {
         this.setState({ parameters: null });
     }
 
-    setIsAgent = () => new Promise( async (resolve) => {
+    setIsAgent = () => new Promise(async (resolve) => {
         const agent_info = await requestWS({ p2p_agent_info: 1 });
 
         /* if there is no error means its an agent else its a client */
@@ -89,21 +89,21 @@ class App extends Component {
                 is_agent_seller : this.state.is_agent && !modified_order.is_buyer,
                 is_client_buyer : !this.state.is_agent && modified_order.is_buyer,
                 is_client_seller: !this.state.is_agent && !modified_order.is_buyer,
-            }
+            };
 
             const order_state = {
                 'pending'        : modified_order.is_pending,
-                'buyer-confirmed': modified_order.is_buyer_confirmed
-            }
+                'buyer-confirmed': modified_order.is_buyer_confirmed,
+            };
 
             Object.keys(notifications_map).forEach(notif_state => {
                 if (order_state[notif_state]) {
                     Object.keys(notifications_map[notif_state]).forEach(notif_condition => {
                         notifications += user_state[notif_condition] && notifications_map[notif_state][notif_condition];
-                    })
+                    });
                 }
-            })
-        })
+            });
+        });
 
         this.setState({ notifications });
         this.props.setP2pNotifications(notifications);

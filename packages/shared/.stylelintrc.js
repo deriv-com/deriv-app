@@ -85,7 +85,7 @@ module.exports = {
         'string-quotes'                                    : 'single',
         'time-min-milliseconds'                            : 100,
         'unit-case'                                        : 'lower',
-        'unit-whitelist'                                   : ['px', 'em', 'rem', '%', 'vw', 'vh', 'deg', 'ms', 's', 'fr'],
+        'unit-whitelist'                                   : ['px', 'em', 'rem', '%', 'vw', 'vh', 'deg', 'ms', 's', 'fr', 'dpcm'],
         'value-keyword-case'                               : 'lower',
         // 'value-list-comma-newline-after'                   : 'never-multi-line',
         'value-list-comma-newline-before'                  : 'never-multi-line',

@@ -1,9 +1,9 @@
 import { getRoundedNumber } from '@deriv/shared/utils/currency';
-import { localize }         from '@deriv/translations';
-import { log }           from './broadcast';
-import { getUTCTime }       from '../../../utils/date-time-helper';
+import { localize } from '@deriv/translations';
+import { log } from './broadcast';
+import { getUTCTime } from '../../../utils/date-time-helper';
 
-export const noop = () => { };
+export const noop = () => {};
 
 const hasOwnProperty = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop);
 
@@ -13,11 +13,11 @@ export const tradeOptionToProposal = tradeOption =>
     tradeOption.contractTypes.map(type => {
         const proposal = {
             duration_unit: tradeOption.duration_unit,
-            basis        : tradeOption.basis,
-            currency     : tradeOption.currency,
-            symbol       : tradeOption.symbol,
-            duration     : tradeOption.duration,
-            amount       : tradeOption.amount,
+            basis: tradeOption.basis,
+            currency: tradeOption.currency,
+            symbol: tradeOption.symbol,
+            duration: tradeOption.duration,
+            amount: tradeOption.amount,
             contract_type: type,
         };
         if (tradeOption.prediction !== undefined) {
@@ -73,8 +73,7 @@ export const registerStream = (observer, name, cb) => {
 
 const maxRetries = 12;
 
-const notifyRetry = (msg, error, delay) =>
-    log(`${msg}: ${error.error.msg_type}, ${localize('retrying in')} ${delay}s`);
+const notifyRetry = (msg, error, delay) => log(`${msg}: ${error.error.msg_type}, ${localize('retrying in')} ${delay}s`);
 
 const getBackoffDelay = (error, delayIndex) => {
     const offset = 0.5; // 500ms
@@ -166,7 +165,7 @@ export const showDialog = options =>
         options.text.forEach(text => $dialog.append(`<p style="margin: 0.7em;">${text}</p>`));
         const defaultButtons = [
             {
-                text : localize('No'),
+                text: localize('No'),
                 class: 'button-secondary',
                 click() {
                     $(this).dialog('close');
@@ -175,7 +174,7 @@ export const showDialog = options =>
                 },
             },
             {
-                text : localize('Yes'),
+                text: localize('Yes'),
                 class: 'button-primary',
                 click() {
                     $(this).dialog('close');
@@ -185,12 +184,12 @@ export const showDialog = options =>
             },
         ];
         const dialogOptions = {
-            autoOpen : false,
-            classes  : { 'ui-dialog-titlebar-close': 'icon-close' },
+            autoOpen: false,
+            classes: { 'ui-dialog-titlebar-close': 'icon-close' },
             closeText: '',
-            height   : 'auto',
-            width    : 600,
-            modal    : true,
+            height: 'auto',
+            width: 600,
+            modal: true,
             resizable: false,
             open() {
                 $(this)

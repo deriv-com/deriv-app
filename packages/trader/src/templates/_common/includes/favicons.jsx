@@ -27,7 +27,7 @@ const Favicons = () => {
                 key={idx}
                 rel={rel || undefined}
                 sizes={sizes}
-                type={fav.is_image && 'image/png' || undefined}
+                type={(fav.is_image && 'image/png') || undefined}
                 href={`${it.url_for(url)}?v=2`}
             />
         );

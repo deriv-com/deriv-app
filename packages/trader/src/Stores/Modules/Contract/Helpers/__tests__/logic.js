@@ -1,40 +1,40 @@
 import { expect } from 'chai';
-import React      from 'react';
+import React from 'react';
 import * as Logic from '../logic';
 
 describe('logic', () => {
     describe('isEnded', () => {
-        it('should return false when there is status and it\'s equal to open in contract info', () => {
+        it("should return false when there is status and it's equal to open in contract info", () => {
             const contract_info = {
-                "status": "open",
+                status: 'open',
             };
             expect(Logic.isEnded(contract_info)).to.eql(false);
         });
-        it('should return true when there is status and it\'s not equal to open in contract info', () => {
+        it("should return true when there is status and it's not equal to open in contract info", () => {
             const contract_info = {
-                "status": "sold",
+                status: 'sold',
             };
             expect(Logic.isEnded(contract_info)).to.eql(true);
         });
         it('should return true when contract is expired', () => {
             const contract_info = {
-                "status": "open",
-                "is_expired": true,
+                status: 'open',
+                is_expired: true,
             };
             expect(Logic.isEnded(contract_info)).to.eql(true);
         });
         it('should return true when contract is settleable', () => {
             const contract_info = {
-                "status": "open",
-                "is_expired": false,
-                "is_settleable": true,
+                status: 'open',
+                is_expired: false,
+                is_settleable: true,
             };
             expect(Logic.isEnded(contract_info)).to.eql(true);
         });
         it('should return true when contract is not expired', () => {
             const contract_info = {
-                "status": "open",
-                "is_expired": false,
+                status: 'open',
+                is_expired: false,
             };
             expect(Logic.isEnded(contract_info)).to.eql(false);
         });
@@ -47,57 +47,57 @@ describe('logic', () => {
     expect('getDisplayStatus', () => {
         it('should return won if contract is ended and profit is more than zero', () => {
             const contract_info = {
-                "status": "sold",
-                "profit": 100,
+                status: 'sold',
+                profit: 100,
             };
             expect(Logic.getDisplayStatus(contract_info)).to.eql('won');
         });
         it('should return lost if contract is ended and profit is less than zero', () => {
             const contract_info = {
-                "status": "sold",
-                "profit": -100,
+                status: 'sold',
+                profit: -100,
             };
             expect(Logic.getDisplayStatus(contract_info)).to.eql('loss');
         });
         it('should return won if contract is ended and profit is zero', () => {
             const contract_info = {
-                "status": "sold",
-                "profit": 0,
+                status: 'sold',
+                profit: 0,
             };
             expect(Logic.getDisplayStatus(contract_info)).to.eql('won');
         });
         it('should return purchased if contract is not ended', () => {
             const contract_info = {
-                "status": "open",
+                status: 'open',
             };
             expect(Logic.getDisplayStatus(contract_info)).to.eql('purchased');
         });
     });
 
     describe('getFinalPrice', () => {
-        it('should return sell_price as final price when it\'s available', () => {
+        it("should return sell_price as final price when it's available", () => {
             const contract_info = {
-                "sell_price": 12345,
+                sell_price: 12345,
             };
             expect(Logic.getFinalPrice(contract_info)).to.eql(12345);
         });
         it('should return sell_price as final price when sell_price && bid_price are available', () => {
             const contract_info = {
-                "sell_price": 12345,
-                "bid_price": 789,
+                sell_price: 12345,
+                bid_price: 789,
             };
             expect(Logic.getFinalPrice(contract_info)).to.eql(12345);
         });
         it('should return bid_price as final price when sell_price is not available and bid_price is available', () => {
             const contract_info = {
-                "bid_price": 789,
+                bid_price: 789,
             };
             expect(Logic.getFinalPrice(contract_info)).to.eql(789);
         });
         it('should return 0 as final price when sell_price and bid_price are empty', () => {
             const contract_info = {
-                "sell_price": false,
-                "bid_price": false,
+                sell_price: false,
+                bid_price: false,
             };
             expect(Logic.getFinalPrice(contract_info)).to.eql(0);
         });
@@ -106,21 +106,21 @@ describe('logic', () => {
     describe('getIndicativePrice', () => {
         it('should return getFinalPrice if it has final price and contract is ended', () => {
             const contract_info = {
-                "sell_price": 12345,
-                "status": "sold"
+                sell_price: 12345,
+                status: 'sold',
             };
             expect(Logic.getIndicativePrice(contract_info)).to.eql(12345);
         });
-        it('should return null if it doesn\'t have final price, bid_price and contract is not ended', () => {
+        it("should return null if it doesn't have final price, bid_price and contract is not ended", () => {
             const contract_info = {
-                "status": "open",
+                status: 'open',
             };
             expect(Logic.getIndicativePrice(contract_info)).to.eql(null);
         });
-        it('should return bid_price if it doesn\'t have final price, has bid_price and contract is not ended', () => {
+        it("should return bid_price if it doesn't have final price, has bid_price and contract is not ended", () => {
             const contract_info = {
-                "status": "open",
-                "bid_price": 12345,
+                status: 'open',
+                bid_price: 12345,
             };
             expect(Logic.getIndicativePrice(contract_info)).to.eql(12345);
         });
@@ -130,17 +130,17 @@ describe('logic', () => {
         it('should return the last tick in the tick_stream array', () => {
             const tick_stream = [
                 {
-                    "tick" : 766.53,
-                    "epoch": 1000001,
+                    tick: 766.53,
+                    epoch: 1000001,
                 },
                 {
-                    "tick" : 800.23,
-                    "epoch": 1000002,
+                    tick: 800.23,
+                    epoch: 1000002,
                 },
             ];
             expect(Logic.getLastTickFromTickStream(tick_stream)).to.deep.include({
-                "tick" : 800.23,
-                "epoch": 1000002,
+                tick: 800.23,
+                epoch: 1000002,
             });
         });
         it('should return an empty object if the tick_stream array is empty', () => {
@@ -202,13 +202,13 @@ describe('logic', () => {
     });
 
     describe('isUserSold', () => {
-        it('should return true if contract\'s status is sold', () => {
+        it("should return true if contract's status is sold", () => {
             const contract_info = {
                 status: 'sold',
             };
             expect(Logic.isUserSold(contract_info)).to.eql(true);
         });
-        it('should return false if contract\'s status is not sold', () => {
+        it("should return false if contract's status is not sold", () => {
             const contract_info = {
                 status: 'open',
             };

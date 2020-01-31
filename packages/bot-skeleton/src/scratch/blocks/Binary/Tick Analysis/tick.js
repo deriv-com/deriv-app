@@ -4,22 +4,22 @@ Blockly.Blocks.tick = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
-            message0       : localize('Last Tick'),
-            output         : 'Number',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            message0: localize('Last Tick'),
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Returns the tick value received from server'),
-            category       : Blockly.Categories.Tick_Analysis,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Returns the tick value received from server'),
+            category: Blockly.Categories.Tick_Analysis,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Last tick'),
-            'description' : localize('This block gives you the value of the last tick.'),
+            display_name: localize('Last tick'),
+            description: localize('This block gives you the value of the last tick.'),
         };
     },
 };
@@ -30,20 +30,20 @@ Blockly.Blocks.tick_string = {
     },
     definition() {
         return {
-            message0       : localize('Last Tick String'),
-            output         : 'String',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            message0: localize('Last Tick String'),
+            output: 'String',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Returns the tick value received by a before purchase block in string format'),
-            category       : Blockly.Categories.Tick_Analysis,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Returns the tick value received by a before purchase block in string format'),
+            category: Blockly.Categories.Tick_Analysis,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Tick value'),
-            'description' : localize('Tick value Description'),
+            display_name: localize('Tick value'),
+            description: localize('Tick value Description'),
         };
     },
     onchange: Blockly.Blocks.tick.onchange,

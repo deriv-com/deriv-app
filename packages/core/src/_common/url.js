@@ -1,20 +1,19 @@
-const { getLanguage }            = require('@deriv/translations');
-const urlForLanguage             = require('./language').urlFor;
+const { getLanguage } = require('@deriv/translations');
+const urlForLanguage = require('./language').urlFor;
 const getCurrentProductionDomain = require('../config').getCurrentProductionDomain;
 require('url-polyfill');
 
 const Url = (() => {
-    let location_url,
-        static_host;
+    let location_url, static_host;
 
     const reset = () => {
         location_url = window ? window.location : location_url;
     };
 
-    const params = (href) => {
+    const params = href => {
         const arr_params = [];
-        const parsed     = ((href ? new URL(href) : location_url).search || '').substr(1).split('&');
-        let p_l          = parsed.length;
+        const parsed = ((href ? new URL(href) : location_url).search || '').substr(1).split('&');
+        let p_l = parsed.length;
         while (p_l--) {
             const param = parsed[p_l].split('=');
             arr_params.push(param);
@@ -22,10 +21,10 @@ const Url = (() => {
         return arr_params;
     };
 
-    const paramsHash = (href) => {
+    const paramsHash = href => {
         const param_hash = {};
         const arr_params = params(href);
-        let param        = arr_params.length;
+        let param = arr_params.length;
         while (param--) {
             if (arr_params[param][0]) {
                 param_hash[arr_params[param][0]] = arr_params[param][1] || '';
@@ -52,21 +51,22 @@ const Url = (() => {
                 domain = domain.replace(/deriv\.app/, `binary.com/${lang || 'en'}`);
             }
         }
-        const new_url = `${domain}${(normalizePath(path) || 'home')}.html${(pars ? `?${pars}` : '')}`;
+        const new_url = `${domain}${normalizePath(path) || 'home'}.html${pars ? `?${pars}` : ''}`;
         // replace old lang with new lang
         return urlForLanguage(lang, new_url);
     };
 
     const default_domain = 'binary.com';
-    const host_map = { // the exceptions regarding updating the URLs
-        'bot.binary.com'       : 'www.binary.bot',
+    const host_map = {
+        // the exceptions regarding updating the URLs
+        'bot.binary.com': 'www.binary.bot',
         'developers.binary.com': 'developers.binary.com', // same, shouldn't change
-        'academy.binary.com'   : 'academy.binary.com',
-        'tech.binary.com'      : 'tech.binary.com',
-        'blog.binary.com'      : 'blog.binary.com',
+        'academy.binary.com': 'academy.binary.com',
+        'tech.binary.com': 'tech.binary.com',
+        'blog.binary.com': 'blog.binary.com',
     };
 
-    const urlForCurrentDomain = (href) => {
+    const urlForCurrentDomain = href => {
         const current_domain = getCurrentProductionDomain();
 
         if (!current_domain) {
@@ -78,7 +78,10 @@ const Url = (() => {
             url_object.hostname = host_map[url_object.hostname];
         } else if (url_object.hostname.indexOf(default_domain) !== -1) {
             // to keep all non-Binary links unchanged, we use default domain for all Binary links in the codebase (javascript and templates)
-            url_object.hostname = url_object.hostname.replace(new RegExp(`\\.${default_domain}`, 'i'), `.${current_domain}`);
+            url_object.hostname = url_object.hostname.replace(
+                new RegExp(`\\.${default_domain}`, 'i'),
+                `.${current_domain}`
+            );
         } else {
             return href;
         }
@@ -119,10 +122,12 @@ const Url = (() => {
         urlForCurrentDomain,
         urlForStatic,
 
-        param          : name => paramsHash()[name],
-        websiteUrl     : () => `${location.protocol}//${location.hostname}/`,
-        getHostMap     : () => host_map,
-        resetStaticHost: () => { static_host = undefined; },
+        param: name => paramsHash()[name],
+        websiteUrl: () => `${location.protocol}//${location.hostname}/`,
+        getHostMap: () => host_map,
+        resetStaticHost: () => {
+            static_host = undefined;
+        },
     };
 })();
 

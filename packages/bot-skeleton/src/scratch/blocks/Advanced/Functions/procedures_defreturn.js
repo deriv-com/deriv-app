@@ -1,4 +1,4 @@
-import { localize }     from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { plusIconDark } from '../../images';
 
 Blockly.Blocks.procedures_defreturn = {
@@ -19,11 +19,11 @@ Blockly.Blocks.procedures_defreturn = {
 
         this.setStatements(true);
     },
-    definition(){
+    definition() {
         return {
             message0: localize('function %1 %2 %3'),
             message1: 'return %1',
-            args0   : [
+            args0: [
                 {
                     type: 'field_input',
                     name: 'NAME',
@@ -40,29 +40,31 @@ Blockly.Blocks.procedures_defreturn = {
             ],
             args1: [
                 {
-                    type : 'input_value',
-                    name : 'RETURN',
+                    type: 'input_value',
+                    name: 'RETURN',
                     check: null,
                     align: Blockly.ALIGN_RIGHT,
                 },
             ],
-            colour         : Blockly.Colours.Special2.colour,
+            colour: Blockly.Colours.Special2.colour,
             colourSecondary: Blockly.Colours.Special2.colourSecondary,
-            colourTertiary : Blockly.Colours.Special2.colourTertiary,
-            tooltip        : localize('Function that returns a value'),
-            category       : Blockly.Categories.Functions,
+            colourTertiary: Blockly.Colours.Special2.colourTertiary,
+            tooltip: localize('Function that returns a value'),
+            category: Blockly.Categories.Functions,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Function that returns a value'),
-            'description' : localize('This block is similar to the one above, except that this returns a value. The returned value can be assigned to a variable of your choice.'),
+            display_name: localize('Function that returns a value'),
+            description: localize(
+                'This block is similar to the one above, except that this returns a value. The returned value can be assigned to a variable of your choice.'
+            ),
         };
     },
-    onAddClick   : Blockly.Blocks.procedures_defnoreturn.onAddClick,
-    onchange     : Blockly.Blocks.procedures_defnoreturn.onchange,
+    onAddClick: Blockly.Blocks.procedures_defnoreturn.onAddClick,
+    onchange: Blockly.Blocks.procedures_defnoreturn.onchange,
     setStatements: Blockly.Blocks.procedures_defnoreturn.setStatements,
-    updateParams : Blockly.Blocks.procedures_defnoreturn.updateParams,
+    updateParams: Blockly.Blocks.procedures_defnoreturn.updateParams,
     mutationToDom: Blockly.Blocks.procedures_defnoreturn.mutationToDom,
     domToMutation: Blockly.Blocks.procedures_defnoreturn.domToMutation,
     /**
@@ -76,14 +78,14 @@ Blockly.Blocks.procedures_defreturn = {
     getProcedureDef() {
         return [this.getFieldValue('NAME'), this.arguments, true];
     },
-    getProcedureCallers      : Blockly.Blocks.procedures_defnoreturn.getProcedureCallers,
-    getVars                  : Blockly.Blocks.procedures_defnoreturn.getVars,
-    getVarModels             : Blockly.Blocks.procedures_defnoreturn.getVarModels,
-    renameVarById            : Blockly.Blocks.procedures_defnoreturn.renameVarById,
-    updateVarName            : Blockly.Blocks.procedures_defnoreturn.updateVarName,
-    displayRenamedVar        : Blockly.Blocks.procedures_defnoreturn.displayRenamedVar,
-    customContextMenu        : Blockly.Blocks.procedures_defnoreturn.customContextMenu,
-    callType                 : 'procedures_callreturn',
+    getProcedureCallers: Blockly.Blocks.procedures_defnoreturn.getProcedureCallers,
+    getVars: Blockly.Blocks.procedures_defnoreturn.getVars,
+    getVarModels: Blockly.Blocks.procedures_defnoreturn.getVarModels,
+    renameVarById: Blockly.Blocks.procedures_defnoreturn.renameVarById,
+    updateVarName: Blockly.Blocks.procedures_defnoreturn.updateVarName,
+    displayRenamedVar: Blockly.Blocks.procedures_defnoreturn.displayRenamedVar,
+    customContextMenu: Blockly.Blocks.procedures_defnoreturn.customContextMenu,
+    callType: 'procedures_callreturn',
     registerWorkspaceListener: Blockly.Blocks.procedures_defnoreturn.registerWorkspaceListener,
 };
 

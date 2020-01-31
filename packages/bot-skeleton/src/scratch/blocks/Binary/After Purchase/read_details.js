@@ -1,34 +1,33 @@
 import { localize } from '@deriv/translations';
-import { config }   from '../../../../constants/config';
+import { config } from '../../../../constants/config';
 
 Blockly.Blocks.read_details = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('Contract Details: %1'),
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'DETAIL_INDEX',
+                    type: 'field_dropdown',
+                    name: 'DETAIL_INDEX',
                     options: config.lists.DETAILS,
                 },
             ],
-            output         : null,
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND, // TODO: Investigate why block glitches in square shape.
-            colour         : Blockly.Colours.Base.colour,
+            output: null,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND, // TODO: Investigate why block glitches in square shape.
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Reads a selected property from contract details list'),
-            category       : Blockly.Categories.After_Purchase,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Reads a selected property from contract details list'),
+            category: Blockly.Categories.After_Purchase,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Contract details'),
-            'description' : localize('This block gives you information about your last contract.'),
-
+            display_name: localize('Contract details'),
+            description: localize('This block gives you information about your last contract.'),
         };
     },
     restricted_parents: ['after_purchase'],

@@ -16,7 +16,8 @@
         pointer-events: none;
         padding-right: 0.05em;
     }
-    &, &:before {
+    &,
+    &:before {
         transition: none;
         animation: none;
     }

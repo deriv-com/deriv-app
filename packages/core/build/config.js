@@ -6,7 +6,6 @@ const { transformContentUrlBase } = require('./helpers');
 const copyConfig = (base) => ([
     { from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot-web-ui.main.css*'), to: 'css/', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/media/**'), to: 'js/bot/media', flatten: true },
-    { from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/xml/**'), to: 'js/bot/xml', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/*.*'), to: 'js/bot/', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/smartcharts/**'), to: 'js/smartcharts/', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/smartcharts.css*'), to: 'css/', flatten: true },
@@ -14,6 +13,7 @@ const copyConfig = (base) => ([
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/trader.*.js'), to: 'js', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/**'), to: 'css', flatten: true },
     { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/*.*'), to: 'js', flatten: true },
+    { from: path.resolve(__dirname, '../node_modules/@deriv/translations/lib/public/i18n/*.*'), to: 'public/i18n', flatten: true },
     { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file' },
     { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },
     { from: path.resolve(__dirname, '../src/root_files/robots.txt'), to: 'robots.txt', toType: 'file' },

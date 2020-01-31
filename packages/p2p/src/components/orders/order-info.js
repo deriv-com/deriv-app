@@ -31,7 +31,7 @@ export default class OrderInfo {
         'cancelled'      : localize('Cancelled'),
         'timed-out'      : localize('Cancelled'),
         'refunded'       : localize('Refunded'),
-        'completed'      : localize('Complete'),
+        'completed'      : localize('Completed'),
     };
 
     get display_status() {

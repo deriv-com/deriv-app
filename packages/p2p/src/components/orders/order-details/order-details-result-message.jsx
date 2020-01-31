@@ -15,10 +15,10 @@ const OrderDetailsResultMessage = ({ order_details }) => {
     if (is_agent && is_completed && is_buyer) {
         return (
             <p className='order-details__wrapper-message order-details__wrapper-message--success'>
-                { localize('You sold {{offered_currency}} {{offered_amount}}',
+                { localize('You sold {{offered_amount}} {{offered_currency}}',
                     {
-                        offered_currency: offer_currency,
                         offered_amount  : display_offer_amount,
+                        offered_currency: offer_currency,
                     })
                 }
             </p>
@@ -28,10 +28,10 @@ const OrderDetailsResultMessage = ({ order_details }) => {
     if (is_agent && is_completed && !is_buyer) {
         return (
             <p className='order-details__wrapper-message order-details__wrapper-message--success'>
-                { localize('{{offered_currency}} {{offered_amount}} was deposited on your account',
+                { localize('{{offered_amount}} {{offered_currency}} was deposited on your account',
                     {
-                        offered_currency: offer_currency,
                         offered_amount  : display_offer_amount,
+                        offered_currency: offer_currency,
                     })
                 }
             </p>
@@ -41,10 +41,10 @@ const OrderDetailsResultMessage = ({ order_details }) => {
     if (!is_agent && is_completed && is_buyer) {
         return (
             <p className='order-details__wrapper-message order-details__wrapper-message--success'>
-                { localize('{{offered_currency}} {{offered_amount}} was deposited on your account',
+                { localize('{{offered_amount}} {{offered_currency}} was deposited on your account',
                     {
-                        offered_currency: offer_currency,
                         offered_amount  : display_offer_amount,
+                        offered_currency: offer_currency,
                     })
                 }
             </p>
@@ -54,10 +54,10 @@ const OrderDetailsResultMessage = ({ order_details }) => {
     if (!is_agent && is_completed && !is_buyer) {
         return (
             <p className='order-details__wrapper-message order-details__wrapper-message--success'>
-                { localize('You sold {{offered_currency}} {{offered_amount}}',
+                { localize('You sold {{offered_amount}} {{offered_currency}}',
                     {
-                        offered_currency: offer_currency,
                         offered_amount  : display_offer_amount,
+                        offered_currency: offer_currency,
                     })
                 }
             </p>

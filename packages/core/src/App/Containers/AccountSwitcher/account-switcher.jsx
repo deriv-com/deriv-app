@@ -310,7 +310,7 @@ class AccountSwitcher extends React.Component {
                                                                     currency={account.currency}
                                                                     currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
                                                                     has_balance={'balance' in account}
-                                                                    loginid={account.login}
+                                                                    loginid={account.display_login}
                                                                     onClickAccount={this.redirectToMt5Real}
                                                                 />
                                                             ))}
@@ -397,7 +397,7 @@ class AccountSwitcher extends React.Component {
                                                                     currency_icon={`IcMt5-${getMT5AccountDisplay(account.group)}`}
                                                                     has_balance={'balance' in account}
                                                                     is_virtual
-                                                                    loginid={account.login}
+                                                                    loginid={account.display_login}
                                                                     onClickAccount={this.redirectToMt5Demo}
                                                                 />
                                                             ))}

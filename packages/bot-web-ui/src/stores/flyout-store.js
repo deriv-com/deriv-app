@@ -116,7 +116,7 @@ export default class FlyoutStore {
         this.block_listeners.push(
             Blockly.bindEventWithChecks_(block_svg_root, 'mousedown', null, event => {
                 GTM.pushDataLayer({
-                    event: 'Drag Block',
+                    event: 'dbot_drag_block',
                     block_type: block.type,
                 });
                 blockly_flyout.blockMouseDown_(block)(event);

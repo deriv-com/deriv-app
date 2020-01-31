@@ -49,7 +49,7 @@ export default class RunPanelStore {
     get is_clear_stat_disabled() {
         return this.is_running ||
             this.has_open_contract ||
-            this.root_store.journal.messages.length === 0;
+            this.root_store.journal.unfiltered_messages.length === 0;
     }
 
     @action.bound
@@ -198,7 +198,7 @@ export default class RunPanelStore {
         observer.register('ui.log.success', journal.onLogSuccess);
         observer.register('ui.log.error', this.onError);
         observer.register('Error', this.onError);
-        observer.register('Notify', journal.onNotify);
+        observer.register('ui.log.notify', journal.onNotify);
     }
 
     @action.bound
@@ -294,7 +294,7 @@ export default class RunPanelStore {
         observer.unregisterAll('ui.log.success');
         observer.unregisterAll('ui.log.error');
         observer.unregisterAll('Error');
-        observer.unregisterAll('Notify');
+        observer.unregisterAll('ui.log.notify');
     }
 
     // #endregion

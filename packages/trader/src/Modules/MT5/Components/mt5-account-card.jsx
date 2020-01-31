@@ -51,13 +51,13 @@ const MT5AccountCard = ({
                     <Localize
                         i18n_default_text='Account login no.&nbsp;<0>{{login}}</0>'
                         values={{
-                            login: existing_data.login,
+                            login: existing_data.display_login,
                         }}
                         components={[
                             <strong key='0' />,
                         ]}
                     />
-                    <Mt5AccountCopy text={existing_data.login} />
+                    <Mt5AccountCopy text={existing_data.display_login} />
                 </div>
                 }
                 <div className='mt5-account-card__specs'>

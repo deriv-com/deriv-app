@@ -6,12 +6,12 @@ import { Highlight } from "./button-highlight.jsx";
 class HighlightWrapper extends React.PureComponent {
   state = {
     left: 0,
-    width: 0
+    width: 0,
   };
 
   componentDidMount() {
     const active_button_el = [
-      ...this.node.getElementsByClassName("dc-button-menu__button--active")
+      ...this.node.getElementsByClassName("dc-button-menu__button--active"),
     ][0];
     if (!this.node) return;
     this.updateHighlightPosition(active_button_el);
@@ -19,7 +19,7 @@ class HighlightWrapper extends React.PureComponent {
 
   componentDidUpdate() {
     const active_button_el = [
-      ...this.node.getElementsByClassName("dc-button-menu__button--active")
+      ...this.node.getElementsByClassName("dc-button-menu__button--active"),
     ][0];
     if (active_button_el) {
       this.updateHighlightPosition(active_button_el);
@@ -56,7 +56,7 @@ class HighlightWrapper extends React.PureComponent {
     const { children, className, ...other_props } = this.props;
     const props = {
       className: classnames("dc-button-menu__wrapper", className),
-      ...other_props
+      ...other_props,
     };
     const button_width = (100 / children.length).toFixed(2);
 
@@ -64,7 +64,7 @@ class HighlightWrapper extends React.PureComponent {
       <div ref={node => (this.node = node)} {...props}>
         {React.Children.map(children, child =>
           React.cloneElement(child, {
-            onClick: e => this.onClick(e, child.props.onClick)
+            onClick: e => this.onClick(e, child.props.onClick),
           })
         )}
         <Highlight left={this.state.left} width={`${button_width}%`} />
@@ -76,7 +76,7 @@ class HighlightWrapper extends React.PureComponent {
 HighlightWrapper.propTypes = {
   children: PropTypes.array,
   className: PropTypes.string,
-  timeout: PropTypes.number
+  timeout: PropTypes.number,
 };
 
 export default HighlightWrapper;

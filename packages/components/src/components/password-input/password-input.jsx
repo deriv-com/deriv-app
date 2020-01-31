@@ -6,7 +6,7 @@ import Input from "../input";
 
 class PasswordInput extends React.Component {
   state = {
-    show_password: false
+    show_password: false,
   };
 
   togglePasswordVisibility = () => {
@@ -47,10 +47,10 @@ class PasswordInput extends React.Component {
 PasswordInput.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
   ]),
   has_error: PropTypes.bool,
-  input: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  input: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default PasswordInput;

@@ -35,7 +35,7 @@ class Tabs extends Component {
     return (
       <div
         className={classNames("dc-tabs", {
-          [`dc-tabs dc-tabs--${className}`]: className
+          [`dc-tabs dc-tabs--${className}`]: className,
         })}
         style={{ "--tab-width": `${tab_width}%` }}
       >
@@ -43,7 +43,7 @@ class Tabs extends Component {
           className={classNames("dc-tabs__list", {
             "dc-tabs__list--top": top,
             "dc-tabs__list--bottom": bottom,
-            "dc-tabs__list--fit-content": fit_content
+            "dc-tabs__list--fit-content": fit_content,
           })}
         >
           {children.map((child, index) => {
@@ -65,7 +65,7 @@ class Tabs extends Component {
             className={classNames("dc-tabs__active-line", {
               "dc-tabs__active-line--top": top,
               "dc-tabs__active-line--bottom": bottom,
-              "dc-tabs__active-line--fit-content": fit_content
+              "dc-tabs__active-line--fit-content": fit_content,
             })}
           />
         </ul>
@@ -83,7 +83,7 @@ class Tabs extends Component {
 }
 
 Tabs.propTypes = {
-  children: PropTypes.instanceOf(Array)
+  children: PropTypes.instanceOf(Array),
 };
 
 export default Tabs;

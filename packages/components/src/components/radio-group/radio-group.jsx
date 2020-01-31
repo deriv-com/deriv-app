@@ -31,11 +31,11 @@ RadioGroup.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.node.isRequired,
-      value: PropTypes.bool.isRequired
+      value: PropTypes.bool.isRequired,
     })
   ),
   onToggle: PropTypes.func,
-  selected: PropTypes.bool
+  selected: PropTypes.bool,
 };
 
 export default RadioGroup;

@@ -12,7 +12,7 @@ class ModalElement extends React.PureComponent {
     super(props);
     this.el = document.createElement("div");
     this.state = {
-      modal_root: document.getElementById("modal_root")
+      modal_root: document.getElementById("modal_root"),
     };
   }
 
@@ -52,7 +52,7 @@ class ModalElement extends React.PureComponent {
       has_close_icon,
       height,
       toggleModal,
-      width
+      width,
     } = this.props;
 
     return ReactDOM.createPortal(
@@ -61,22 +61,22 @@ class ModalElement extends React.PureComponent {
         id={id}
         className={classNames("dc-modal__container", {
           [`dc-modal__container_${className}`]: className,
-          "dc-modal__container--small": this.props.small
+          "dc-modal__container--small": this.props.small,
         })}
         style={{
           height: height || "auto",
-          width: width || "auto"
+          width: width || "auto",
         }}
       >
         <div
           className={classNames("dc-modal-header", {
-            [`dc-modal-header--${className}`]: className
+            [`dc-modal-header--${className}`]: className,
           })}
         >
           {title && (
             <h3
               className={classNames("dc-modal-header__title", {
-                [`dc-modal-header__title--${className}`]: className
+                [`dc-modal-header__title--${className}`]: className,
               })}
             >
               {title}
@@ -85,7 +85,7 @@ class ModalElement extends React.PureComponent {
           {header && (
             <div
               className={classNames("dc-modal-header__section", {
-                [`dc-modal-header__section--${className}`]: className
+                [`dc-modal-header__section--${className}`]: className,
               })}
             >
               {header}
@@ -109,7 +109,7 @@ class ModalElement extends React.PureComponent {
 }
 
 ModalElement.defaultProps = {
-  has_close_icon: true
+  has_close_icon: true,
 };
 
 ModalElement.propTypes = {
@@ -121,7 +121,7 @@ ModalElement.propTypes = {
   is_open: PropTypes.bool,
   small: PropTypes.bool,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  toggleModal: PropTypes.func
+  toggleModal: PropTypes.func,
 };
 
 const Modal = ({
@@ -135,7 +135,7 @@ const Modal = ({
   small,
   title,
   toggleModal,
-  width
+  width,
 }) => (
   <CSSTransition
     appear
@@ -145,7 +145,7 @@ const Modal = ({
       appear: "dc-modal__container--enter",
       enter: "dc-modal__container--enter",
       enterDone: "dc-modal__container--enter-done",
-      exit: "dc-modal__container--exit"
+      exit: "dc-modal__container--exit",
     }}
     unmountOnExit
   >
@@ -170,7 +170,7 @@ Modal.Body = Body;
 Modal.Footer = Footer;
 
 Modal.defaultProps = {
-  has_close_icon: true
+  has_close_icon: true,
 };
 
 Modal.propTypes = {
@@ -184,7 +184,7 @@ Modal.propTypes = {
   small: PropTypes.bool,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   toggleModal: PropTypes.func,
-  width: PropTypes.string
+  width: PropTypes.string,
 };
 
 export default Modal;

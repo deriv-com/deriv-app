@@ -30,7 +30,7 @@ const Icon = ({
   onMouseEnter,
   onMouseLeave,
   size = 16,
-  width
+  width,
 }) => {
   if (!icon) return null;
 
@@ -54,7 +54,7 @@ const Icon = ({
         "dc-icon--green": color === "green" || icon === "IcProfit",
         "dc-icon--red": color === "red" || icon === "IcLoss",
         "dc-icon--secondary": color === "secondary",
-        "dc-icon--brand": color === "brand"
+        "dc-icon--brand": color === "brand",
       })}
       height={height || size}
       width={width || size}
@@ -64,7 +64,7 @@ const Icon = ({
       style={
         custom_color
           ? {
-              "--fill-color1": custom_color
+              "--fill-color1": custom_color,
             }
           : undefined
       }
@@ -88,7 +88,7 @@ Icon.propTypes = {
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
   size: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default Icon;

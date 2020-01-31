@@ -8,7 +8,7 @@ const Counter = ({ className, count }) => {
 
 Counter.propTypes = {
   className: PropTypes.string,
-  count: PropTypes.number
+  count: PropTypes.number,
 };
 
 export default Counter;

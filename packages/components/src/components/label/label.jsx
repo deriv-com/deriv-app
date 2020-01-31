@@ -10,7 +10,7 @@ const available_modes = [
   "info",
   "default-invert",
   "success-invert",
-  "warn-invert"
+  "warn-invert",
 ];
 
 const available_sizes = ["regular", "large"];
@@ -23,7 +23,7 @@ const Label = ({ mode, children, size = "regular", className }) => {
     <span
       className={classNames("dc-label", className, {
         [`dc-label--${scale}`]: scale,
-        [`dc-label--${type}`]: type
+        [`dc-label--${type}`]: type,
       })}
     >
       {children}
@@ -34,9 +34,9 @@ const Label = ({ mode, children, size = "regular", className }) => {
 Label.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
   ]),
-  mode: PropTypes.oneOf(available_modes)
+  mode: PropTypes.oneOf(available_modes),
 };
 
 export default Label;

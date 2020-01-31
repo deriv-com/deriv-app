@@ -40,11 +40,11 @@ class Dialog extends React.Component {
       is_loading,
       is_visible,
       is_content_centered,
-      title
+      title,
     } = this.props;
 
     const content_classes = classNames("dc-dialog__content", {
-      "dc-dialog__content--centered": is_content_centered
+      "dc-dialog__content--centered": is_content_centered,
     });
 
     return (
@@ -57,7 +57,7 @@ class Dialog extends React.Component {
             appear: "dc-dialog__wrapper--enter",
             enter: "dc-dialog__wrapper--enter",
             enterDone: "dc-dialog__wrapper--enter-done",
-            exit: "dc-dialog__wrapper--exit"
+            exit: "dc-dialog__wrapper--exit",
           }}
           unmountOnExit
         >
@@ -99,7 +99,7 @@ class Dialog extends React.Component {
 
 Dialog.defaultProps = {
   is_closed_on_cancel: true,
-  is_closed_on_confirm: true
+  is_closed_on_confirm: true,
 };
 
 Dialog.propTypes = {
@@ -113,7 +113,7 @@ Dialog.propTypes = {
   is_visible: PropTypes.bool,
   onCancel: PropTypes.func,
   onConfirm: PropTypes.func,
-  title: PropTypes.string
+  title: PropTypes.string,
 };
 
 export default Dialog;

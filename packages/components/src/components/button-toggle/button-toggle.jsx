@@ -11,7 +11,7 @@ const ButtonToggle = ({
   is_animated,
   name,
   onChange,
-  value
+  value,
 }) => {
   const changeValue = selected_value => {
     if (value === selected_value) return;
@@ -19,7 +19,7 @@ const ButtonToggle = ({
   };
   const menu = buttons_arr.map((val, idx) => {
     const menuClassNames = classNames("dc-button-menu__button", {
-      "dc-button-menu__button--active": val.value === value
+      "dc-button-menu__button--active": val.value === value,
     });
     return (
       <Button
@@ -49,7 +49,7 @@ ButtonToggle.propTypes = {
   is_animated: PropTypes.bool,
   name: PropTypes.string,
   onChange: PropTypes.func,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default ButtonToggle;

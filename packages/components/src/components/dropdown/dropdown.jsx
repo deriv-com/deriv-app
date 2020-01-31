@@ -8,7 +8,7 @@ import {
   getValueFromIndex,
   getPrevIndex,
   getNextIndex,
-  listPropType
+  listPropType,
 } from "./dropdown";
 import Items from "./items.jsx";
 import NativeSelect from "./native-select.jsx";
@@ -22,7 +22,7 @@ class Dropdown extends React.Component {
     curr_index: 0,
     is_list_visible: false,
     list_height: 0,
-    list_width: 0
+    list_width: 0,
   };
 
   /**
@@ -32,7 +32,7 @@ class Dropdown extends React.Component {
    */
   get computed_offset_left() {
     return {
-      transform: `translate3d(calc(-${this.state.list_width}px - 12px), 0, 0px)`
+      transform: `translate3d(calc(-${this.state.list_width}px - 12px), 0, 0px)`,
     };
   }
 
@@ -43,7 +43,7 @@ class Dropdown extends React.Component {
    */
   get computed_offset_top() {
     return {
-      transform: `translate3d(0, calc(-${this.state.list_height}px - 16px), 0px)`
+      transform: `translate3d(0, calc(-${this.state.list_height}px - 16px), 0px)`,
     };
   }
 
@@ -61,7 +61,7 @@ class Dropdown extends React.Component {
       "dc-dropdown--has-placeholder": this.props.placeholder,
       "dc-dropdown--left": this.props.is_alignment_left,
       "dc-dropdown--show": this.state.is_list_visible,
-      "dc-dropdown--disabled": this.is_single_option || this.props.disabled
+      "dc-dropdown--disabled": this.is_single_option || this.props.disabled,
     });
   }
 
@@ -70,20 +70,20 @@ class Dropdown extends React.Component {
       "dc-dropdown__display--clicked": this.state.is_list_visible,
       "dc-dropdown__display--has-symbol": this.props.has_symbol,
       "dc-dropdown__display--no-border": this.props.no_border,
-      "dc-dropdown__display--is-left-text": this.props.is_align_text_left
+      "dc-dropdown__display--is-left-text": this.props.is_align_text_left,
     });
   }
 
   get dropdown_list_class_names() {
     return classNames("dc-dropdown__list", {
       "dc-dropdown__list--left": this.props.is_alignment_left,
-      "dc-dropdown__list--top": this.props.is_alignment_top
+      "dc-dropdown__list--top": this.props.is_alignment_top,
     });
   }
 
   get list_class_names() {
     return classNames("dc-list", {
-      "dc-list--left": this.props.is_alignment_left
+      "dc-list--left": this.props.is_alignment_left,
     });
   }
 
@@ -99,14 +99,14 @@ class Dropdown extends React.Component {
       }`,
       exit: `dc-dropdown__list--exit${
         this.props.is_alignment_left ? " dc-dropdown__list--left--exit" : ""
-      }`
+      }`,
     };
   }
 
   componentDidMount() {
     this.updateSelected(this.props.value);
     document.addEventListener("mousedown", this.handleClickOutside, {
-      passive: true
+      passive: true,
     });
   }
 
@@ -123,7 +123,7 @@ class Dropdown extends React.Component {
   handleSelect = item => {
     if (item.value !== this.props.value) {
       this.props.onChange({
-        target: { name: this.props.name, value: item.value }
+        target: { name: this.props.name, value: item.value },
       });
       this.updateSelected(item.value);
     }
@@ -132,7 +132,7 @@ class Dropdown extends React.Component {
 
   updateSelected(value) {
     this.setState({
-      curr_index: getItemFromValue(this.props.list, value).number
+      curr_index: getItemFromValue(this.props.list, value).number,
     });
   }
 
@@ -236,7 +236,7 @@ class Dropdown extends React.Component {
   setListDimension = () =>
     this.setState({
       list_width: this.list_ref.current.offsetWidth,
-      list_height: this.list_ref.current.offsetHeight
+      list_height: this.list_ref.current.offsetHeight,
     });
 
   render() {
@@ -269,7 +269,7 @@ class Dropdown extends React.Component {
           {this.props.label && (
             <span
               className={classNames("dc-dropdown__label", {
-                "dc-dropdown__label--clicked": this.state.is_list_visible
+                "dc-dropdown__label--clicked": this.state.is_list_visible,
               })}
             >
               {this.props.label}
@@ -297,7 +297,7 @@ class Dropdown extends React.Component {
                 this.props.is_alignment_left ? "IcChevronLeft" : "IcChevronDown"
               }
               className={classNames("dc-dropdown__select-arrow", {
-                "dc-dropdown__select-arrow--left": this.props.is_alignment_left
+                "dc-dropdown__select-arrow--left": this.props.is_alignment_left,
               })}
             />
           )}
@@ -390,7 +390,7 @@ Dropdown.propTypes = {
   no_border: PropTypes.bool,
   onChange: PropTypes.func,
   placeholder: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default Dropdown;

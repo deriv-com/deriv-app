@@ -177,14 +177,14 @@ export default class QuickStrategyStore {
         const profit            = this.input_profit;
 
         const { contracts_for } = ApiHelpers.instance;
-        const market            = await contracts_for.getMarketBySymbol(this.selected_symbol.value);
-        const submarket         = await contracts_for.getSubmarketBySymbol(this.selected_symbol.value);
-        const trade_type_cat    = await contracts_for.getTradeTypeCategoryByTradeType(this.selected_trade_type.value);
-
+        const market            = await contracts_for.getMarketBySymbol(symbol);
+        const submarket         = await contracts_for.getSubmarketBySymbol(symbol);
+        const trade_type_cat    = await contracts_for.getTradeTypeCategoryByTradeType(trade_type);
+        
         const { strategies }    = config;
-        const strategy_name     = Object.keys(strategies).filter(key => strategies[key].index === this.active_index)[0];
-        const strategy_xml      = await fetch(`${__webpack_public_path__}xml/${strategy_name}.xml`).then(response => response.text());
-        const strategy_dom      = Blockly.Xml.textToDom(strategy_xml);
+        const strategy_name     = Object.keys(strategies).find(s => strategies[s].index === this.active_index);
+        const strategy_xml      = await import(/* webpackChunkName: `[request]` */ `../xml/${strategy_name}.xml`);
+        const strategy_dom      = Blockly.Xml.textToDom(strategy_xml.default);
 
         const modifyValueInputs = (key, value) => {
             const el_value_inputs = strategy_dom.querySelectorAll(`value[strategy_value="${key}"]`);

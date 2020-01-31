@@ -49,16 +49,11 @@ export default class RunPanelStore {
     get is_clear_stat_disabled() {
         return this.is_running ||
             this.has_open_contract ||
-            this.root_store.journal.messages.length === 0;
+            this.root_store.journal.unfiltered_messages.length === 0;
     }
 
     @action.bound
     onRunButtonClick = () => {
-        // Block the bot from more than once.
-        if (this.is_running) {
-            return;
-        }
-
         const { core , contract_card } = this.root_store;
         const { client } = core;
 
@@ -85,11 +80,6 @@ export default class RunPanelStore {
 
     @action.bound
     onStopButtonClick() {
-        // Don't stop the bot more than once.
-        if (!this.is_running) {
-            return;
-        }
-
         this.dbot.stopBot();
         this.is_running = false;
         if (this.error_type) {
@@ -205,10 +195,9 @@ export default class RunPanelStore {
         observer.register('bot.contract', this.onBotContractEvent);
         observer.register('bot.contract', contract_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
-        observer.register('ui.log.success', journal.onLogSuccess);
         observer.register('ui.log.error', this.onError);
         observer.register('Error', this.onError);
-        observer.register('Notify', journal.onNotify);
+        observer.register('ui.log.notify', journal.onNotify);
     }
 
     @action.bound
@@ -301,10 +290,9 @@ export default class RunPanelStore {
         observer.unregisterAll('bot.trade_again');
         observer.unregisterAll('contract.status');
         observer.unregisterAll('bot.contract');
-        observer.unregisterAll('ui.log.success');
         observer.unregisterAll('ui.log.error');
         observer.unregisterAll('Error');
-        observer.unregisterAll('Notify');
+        observer.unregisterAll('ui.log.notify');
     }
 
     // #endregion

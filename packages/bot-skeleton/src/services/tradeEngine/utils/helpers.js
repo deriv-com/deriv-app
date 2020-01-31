@@ -1,6 +1,6 @@
 import { getRoundedNumber } from '@deriv/shared/utils/currency';
 import { localize }         from '@deriv/translations';
-import { notify }           from './broadcast';
+import { log }           from './broadcast';
 import { getUTCTime }       from '../../../utils/date-time-helper';
 
 export const noop = () => { };
@@ -74,7 +74,7 @@ export const registerStream = (observer, name, cb) => {
 const maxRetries = 12;
 
 const notifyRetry = (msg, error, delay) =>
-    notify('warn', `${msg}: ${error.error.msg_type}, ${localize('retrying in')} ${delay}s`);
+    log(`${msg}: ${error.error.msg_type}, ${localize('retrying in')} ${delay}s`);
 
 const getBackoffDelay = (error, delayIndex) => {
     const offset = 0.5; // 500ms

@@ -23,6 +23,7 @@ const TransactionIconWithText = ({
             className={classNames(className, 'transactions__icon')}
             alignment='left'
             message={title}
+            zIndex= {popover_zindex.TRANSACTION}
         >
             { icon }
         </Popover>

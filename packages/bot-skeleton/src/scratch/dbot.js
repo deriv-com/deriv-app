@@ -4,6 +4,8 @@ import                                    './hooks';
 import {
     hasAllRequiredBlocks,
     updateDisabledBlocks }            from './utils';
+import main_xml                       from './xml/main.xml';
+import toolbox_xml                    from './xml/toolbox.xml';
 import DBotStore                      from './dbot-store';
 import { onWorkspaceResize }          from '../utils/workspace';
 import { config }                     from '../constants/config';
@@ -28,8 +30,6 @@ class DBot {
             DBotStore.setInstance(store);
 
             const el_scratch_div  = document.getElementById('scratch_div');
-            const toolbox_xml     = await fetch(`${__webpack_public_path__}xml/toolbox.xml`).then(r => r.text()); // eslint-disable-line
-            const main_xml        = await fetch(`${__webpack_public_path__}xml/main.xml`).then(r => r.text()); // eslint-disable-line
             this.workspace        = Blockly.inject(el_scratch_div, {
                 grid    : { spacing: 40, length: 11, colour: '#f3f3f3' },
                 media   : `${__webpack_public_path__}media/`, // eslint-disable-line
@@ -38,14 +38,12 @@ class DBot {
                 zoom    : { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
             });
 
-            this.workspace.blocksXmlStr  = main_xml;
-            this.workspace.toolboxXmlStr = toolbox_xml;
-            Blockly.derivWorkspace       = this.workspace;
+            this.workspace.cached_xml = { main: main_xml, toolbox: toolbox_xml };
+            Blockly.derivWorkspace    = this.workspace;
 
             this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
             this.workspace.addChangeListener((event) => updateDisabledBlocks(this.workspace, event));
             this.workspace.addChangeListener((event) => this.workspace.dispatchBlockEventEffects(event));
-            // this.workspace.addChangeListener((event) => console.log(event));
 
             this.addBeforeRunFunction(this.unselectBlocks.bind(this));
             this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
@@ -373,6 +371,15 @@ class DBot {
                 }
 
                 block.setErrorHighlighted(should_highlight);
+
+                // Automatically expand blocks that have been highlighted.
+                if (force_check && (block.is_error_highlighted || block.hasErrorHighlightedDescendant())) {
+                    let current_collapsed_block = block;
+                    while (current_collapsed_block) {
+                        current_collapsed_block.setCollapsed(false);
+                        current_collapsed_block = current_collapsed_block.getParent();
+                    }
+                }
             }
         });
     }

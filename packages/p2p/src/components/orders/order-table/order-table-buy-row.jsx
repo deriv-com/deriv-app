@@ -15,6 +15,10 @@ const BuyOrderRowComponent = React.memo(({ data, is_agent, onOpenDetails, style 
         order_purchase_datetime,
         offer_currency,
         transaction_currency,
+        is_buyer_confirmed,
+        is_buyer_cancelled,
+        is_pending,
+        is_completed,
     } = data;
 
     return (
@@ -22,16 +26,16 @@ const BuyOrderRowComponent = React.memo(({ data, is_agent, onOpenDetails, style 
             onClick={() => onOpenDetails(data)}
             style={style}
             className={classNames('orders__table-row', {
-                'orders__table-row--attention': (!is_agent && display_status === 'Unpaid') || (is_agent && display_status === 'Paid'),
+                'orders__table-row--attention': (!is_agent && is_pending) || (is_agent && is_buyer_confirmed),
             })}
         >
             <Table.Row>
                 <Table.Cell>{ localize('Buy') }{' '}{ order_id }</Table.Cell>
                 <Table.Cell>{ order_purchase_datetime }</Table.Cell>
                 <Table.Cell className={classNames('orders__table-cell', {
-                    'orders__table-cell--primary' : display_status === 'Unpaid' || display_status === 'Paid',
-                    'orders__table-cell--success' : display_status === 'Completed',
-                    'orders__table-cell--disabled': display_status === 'Cancelled',
+                    'orders__table-cell--primary' : is_pending || is_buyer_confirmed,
+                    'orders__table-cell--success' : is_completed,
+                    'orders__table-cell--disabled': is_buyer_cancelled,
                 })}
                 >
                     { display_status }

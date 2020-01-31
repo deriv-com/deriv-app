@@ -65,6 +65,7 @@ const drawerFooter = ({
             <TradeAnimation className='run-panel__animation' should_show_overlay={active_index > 0} />
             <div className='run-panel__buttons'>
                 <Button
+                    id='db-run-panel__clear-button'
                     is_disabled={is_clear_stat_disabled}
                     text={localize('Clear stat')}
                     onClick={onClearStatClick}
@@ -76,7 +77,7 @@ const drawerFooter = ({
                     (is_stop_button_visible) ?
                         <Button
                             is_disabled={is_stop_button_disabled}
-                            id='db-run-panel__stop'
+                            id='db-run-panel__stop-button'
                             text={localize('Stop bot')}
                             icon={<Icon icon='IcPause' className='run-panel__button--icon' color='active' />}
                             onClick={onStopButtonClick}
@@ -84,7 +85,7 @@ const drawerFooter = ({
                             primary
                         /> :
                         <Button
-                            id='db-run-panel__run'
+                            id='db-run-panel__run-button'
                             text={localize('Run bot')}
                             icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
                             onClick={onRunButtonClick}

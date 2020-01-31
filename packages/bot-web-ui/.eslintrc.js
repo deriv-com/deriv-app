@@ -52,6 +52,7 @@ module.exports = {
         // 'no-multiple-empty-lines'           : ['error', { 'max': 1, 'maxEOF': 1 }],
         'prefer-const'                      : ['error', {destructuring: 'all', ignoreReadBeforeAssign: false}],
         'class-methods-use-this'            : ["error", { 'exceptMethods': ['render', 'getInitialState', 'getDefaultProps', 'getChildContext', 'componentWillMount', 'componentDidMount', 'componentWillReceiveProps', 'shouldComponentUpdate', 'componentWillUpdate', 'componentDidUpdate', 'componentWillUnmount'] }],
+        'no-underscore-dangle'              : 0,
         // import rules
         'import/no-extraneous-dependencies' : [0, { extensions: ['.jsx'] }],
         'import/no-useless-path-segments'   : 'error',

@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { observable, action } from 'mobx';
 import { config }             from '@deriv/bot-skeleton';
+import GTM                    from '../utils/gtm';
 
 export default class FlyoutStore {
     block_listeners  = [];
@@ -113,7 +114,13 @@ export default class FlyoutStore {
         const block_svg_root = block.getSvgRoot();
 
         this.block_listeners.push(
-            Blockly.bindEventWithChecks_(block_svg_root, 'mousedown', null, (event) => blockly_flyout.blockMouseDown_(block)(event)),
+            Blockly.bindEventWithChecks_(block_svg_root, 'mousedown', null, (event) => {
+                GTM.pushDataLayer({
+                    event     : 'Drag Block',
+                    block_type: block.type,
+                });
+                blockly_flyout.blockMouseDown_(block)(event);
+            }),
             Blockly.bindEvent_(block_svg_root, 'mouseout', block, block.removeSelect),
             Blockly.bindEvent_(block_svg_root, 'mouseover', block, block.addSelect),
         );

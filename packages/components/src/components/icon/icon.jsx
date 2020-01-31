@@ -21,7 +21,6 @@ const getKebabCase = (str) => {
 };
 
 const Icon = ({
-    
     className,
     color,
     custom_color,

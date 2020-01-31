@@ -152,8 +152,8 @@ const BinarySocketBase = (() => {
         });
     };
 
-    const buy = ({ proposal_id, price }) =>
-        deriv_api.send({ buy: proposal_id, price });
+    const buy = ({ proposal_id, price, passthrough }) =>
+        deriv_api.send({ buy: proposal_id, price, passthrough });
 
     const sell = (contract_id, bid_price) =>
         deriv_api.send({ sell: contract_id, price: bid_price });

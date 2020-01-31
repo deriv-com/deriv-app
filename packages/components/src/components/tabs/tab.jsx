@@ -44,8 +44,12 @@ Tab.propTypes = {
     className: PropTypes.string,
     count    : PropTypes.number,
     is_active: PropTypes.bool,
-    label    : PropTypes.string,
-    onClick  : PropTypes.func,
+    label    : PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+        PropTypes.string,
+    ]),
+    onClick: PropTypes.func,
 };
 
 export default Tab;

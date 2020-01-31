@@ -51,7 +51,7 @@ class Tabs extends Component {
                         'dc-tabs__list--fit-content': fit_content,
                     })}
                 >
-                    {children.map((child, index) => {
+                    {React.Children.map(children, (child, index) => {
                         const { count, label } = child.props;
 
                         return (
@@ -75,7 +75,7 @@ class Tabs extends Component {
                     />
                 </ul>
                 <div className='dc-tabs__content'>
-                    {children.map((child, index) => {
+                    {React.Children.map(children, (child, index) => {
                         if (index !== active_index) {
                             return undefined;
                         }
@@ -88,7 +88,10 @@ class Tabs extends Component {
 }
 
 Tabs.propTypes = {
-    children: PropTypes.instanceOf(Array),
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+    ]),
 };
 
 export default Tabs;

@@ -63,6 +63,8 @@
     "eslint-plugin-import": "^2.18.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.14.2",
+    "eslint-plugin-prettier": "^3.1.1",
+    "prettier": "^1.19.1",
     "expose-loader": "^0.7.5",
     "immutable": "^3.8.2",
     "jest": "^24.8.0",

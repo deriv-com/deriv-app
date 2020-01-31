@@ -7,6 +7,7 @@ const isSafari = () =>
     /constructor/i.test(window.HTMLElement) ||
     (function(p) {
         return p.toString() === '[object SafariRemoteNotification]';
+        // eslint-disable-next-line no-undef
     })(!window.safari || (typeof safari !== 'undefined' && safari.pushNotification));
 
 // Edge 20+

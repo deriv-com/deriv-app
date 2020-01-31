@@ -11,6 +11,7 @@ export class MobxProvider extends Provider {
         // inherit stores
         const baseStores = this.context.mobxStores;
         if (baseStores) {
+            // eslint-disable-next-line guard-for-in,no-restricted-syntax
             for (const key in baseStores) {
                 // eslint-disable-line
                 stores[key] = baseStores[key];
@@ -18,6 +19,7 @@ export class MobxProvider extends Provider {
         }
 
         // add own stores
+        // eslint-disable-next-line no-restricted-syntax
         for (const key in this.props.store) {
             // eslint-disable-line
             if (!SPECIAL_REACT_KEYS[key]) {

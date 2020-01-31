@@ -4,40 +4,40 @@ Blockly.Blocks.math_random_int = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('random integer from %1 to %2'),
-            args0   : [
+            args0: [
                 {
-                    type : 'input_value',
-                    name : 'FROM',
+                    type: 'input_value',
+                    name: 'FROM',
                     check: 'Number',
                 },
                 {
-                    type : 'input_value',
-                    name : 'TO',
+                    type: 'input_value',
+                    name: 'TO',
                     check: 'Number',
                 },
             ],
-            output         : 'Number',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('This block gives you a random number from within a set range'),
-            category       : Blockly.Categories.Mathematical,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('This block gives you a random number from within a set range'),
+            category: Blockly.Categories.Mathematical,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Random integer'),
-            'description' : localize('This block gives you a random number from within a set range.'),
+            display_name: localize('Random integer'),
+            description: localize('This block gives you a random number from within a set range.'),
         };
     },
     getRequiredValueInputs() {
         return {
             FROM: null,
-            TO  : null,
+            TO: null,
         };
     },
 };

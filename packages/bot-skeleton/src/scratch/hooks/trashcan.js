@@ -1,4 +1,4 @@
-const trashcan_margin    = 16;
+const trashcan_margin = 16;
 const core_footer_height = 36;
 
 /**
@@ -6,7 +6,7 @@ const core_footer_height = 36;
  * @type {number}
  * @private
  */
-Blockly.Trashcan.prototype.MARGIN_BOTTOM_ = (trashcan_margin * 2) + core_footer_height; // eslint-disable-line
+Blockly.Trashcan.prototype.MARGIN_BOTTOM_ = trashcan_margin * 2 + core_footer_height; // eslint-disable-line
 
 /**
  * Distance between trashcan and right edge of workspace.

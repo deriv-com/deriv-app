@@ -1,39 +1,40 @@
 .dc-table {
-    color: var(--text-general);
+  color: var(--text-general);
 
-    &__row {
-        display: grid;
-        height: 100%;
+  &__row {
+    display: grid;
+    height: 100%;
 
-        &--hover:hover {
-            background-color: var(--general-section-1);
-            cursor: pointer;
-        }
+    &--hover:hover {
+      background-color: var(--general-section-1);
+      cursor: pointer;
     }
-    &__header {
-        border-bottom: 2px solid var(--general-section-1);
-        height: 52px;
-    }
-    &__cell, &__head {
-        font-size: 1.4rem;
-        line-height: 1.43;
-        display: flex;
-        align-items: center;
-    }
-    &__cell {
-        border-bottom: 1px solid var(--general-section-1);
+  }
+  &__header {
+    border-bottom: 2px solid var(--general-section-1);
+    height: 52px;
+  }
+  &__cell,
+  &__head {
+    font-size: 1.4rem;
+    line-height: 1.43;
+    display: flex;
+    align-items: center;
+  }
+  &__cell {
+    border-bottom: 1px solid var(--general-section-1);
 
-        &--right {
-            display: flex;
-            justify-content: flex-end;
-        }
+    &--right {
+      display: flex;
+      justify-content: flex-end;
     }
-    &__head {
-        font-weight: bold;
+  }
+  &__head {
+    font-weight: bold;
 
-        &--right {
-            display: flex;
-            justify-content: flex-end;
-        }
+    &--right {
+      display: flex;
+      justify-content: flex-end;
     }
+  }
 }

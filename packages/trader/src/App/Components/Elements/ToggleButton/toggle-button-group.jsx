@@ -1,17 +1,9 @@
-import classNames           from 'classnames';
-import PropTypes            from 'prop-types';
-import React                from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { isButtonSelected } from './helpers';
 
-const ToggleButtonGroup = ({
-    children,
-    className,
-    multiple,
-    onChange,
-    value,
-    ...others
-}) => {
-
+const ToggleButtonGroup = ({ children, className, multiple, onChange, value, ...others }) => {
     const handleChange = (event, button_value) => {
         if (!onChange) {
             return;
@@ -40,7 +32,7 @@ const ToggleButtonGroup = ({
         }
         const { is_selected: button_is_selected, value: button_value } = button.props;
         const is_selected =
-            button_is_selected === undefined ? isButtonSelected(value,button_value) : button_is_selected;
+            button_is_selected === undefined ? isButtonSelected(value, button_value) : button_is_selected;
 
         return React.cloneElement(button, {
             onChange: handleChange,
@@ -56,12 +48,12 @@ const ToggleButtonGroup = ({
 };
 
 ToggleButtonGroup.propTypes = {
-    children : PropTypes.node.isRequired,
+    children: PropTypes.node.isRequired,
     className: PropTypes.string,
     /**
      * If `true`, only allow one of the child ToggleButton values to be selected.
      */
-    multiple : PropTypes.bool,
+    multiple: PropTypes.bool,
     /**
      * Callback fired when the value changes.
      *
@@ -72,12 +64,12 @@ ToggleButtonGroup.propTypes = {
      * is selected and `multiple` is false the value is null;
      * when false an empty array.
      */
-    onChange : PropTypes.func,
+    onChange: PropTypes.func,
     /**
      * The currently selected value within the group or an array of selected
      * values when `multiple` is true.
      */
-    value    : PropTypes.any,
+    value: PropTypes.any,
 };
 
 export default ToggleButtonGroup;

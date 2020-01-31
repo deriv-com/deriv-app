@@ -1,3 +1,3 @@
-export *                   from './logout';
+export * from './logout';
 export BinarySocketGeneral from './socket-general';
-export WS                  from './ws-methods';
+export WS from './ws-methods';

@@ -1,12 +1,10 @@
-import PropTypes              from 'prop-types';
-import React                  from 'react';
-import { withRouter }         from 'react-router-dom';
-import {
-    Button,
-    ThemedScrollbars }        from '@deriv/components';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { Button, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import routes                 from 'Constants/routes';
-import { connect }            from 'Stores/connect';
+import routes from 'Constants/routes';
+import { connect } from 'Stores/connect';
 
 class Virtual extends React.Component {
     onClickSignup = () => {
@@ -24,9 +22,9 @@ class Virtual extends React.Component {
                 >
                     <div className='cashier__virtual-center'>
                         <h2 className='cashier-error__header cashier__virtual-header'>
-                            <Localize i18n_default_text={'You\'re currently using a demo account'} />
+                            <Localize i18n_default_text={"You're currently using a demo account"} />
                         </h2>
-                        {this.props.has_real_account ?
+                        {this.props.has_real_account ? (
                             <React.Fragment>
                                 <p className='cashier__paragraph cashier__text'>
                                     <Localize i18n_default_text='You need to switch to a real money account to use this feature.' />
@@ -35,10 +33,14 @@ class Virtual extends React.Component {
                                 </p>
                                 <div className='cashier__account-switch-icon' />
                             </React.Fragment>
-                            :
+                        ) : (
                             <React.Fragment>
                                 <p className='cashier__paragraph cashier__text'>
-                                    <Localize i18n_default_text={'You need a real money account to use this feature. It\'s easy to create a real money account and start trading.'} />
+                                    <Localize
+                                        i18n_default_text={
+                                            "You need a real money account to use this feature. It's easy to create a real money account and start trading."
+                                        }
+                                    />
                                 </p>
                                 <Button
                                     className='cashier-error__button'
@@ -49,23 +51,20 @@ class Virtual extends React.Component {
                                     large
                                 />
                             </React.Fragment>
-                        }
+                        )}
                     </div>
                 </ThemedScrollbars>
             </div>
         );
-    }
+    };
 }
 
 Virtual.propTypes = {
-    has_real_account     : PropTypes.bool,
+    has_real_account: PropTypes.bool,
     openRealAccountSignup: PropTypes.func,
 };
 
-export default connect(
-    ({ client, ui }) => ({
-        has_real_account     : client.has_any_real_account,
-        openRealAccountSignup: ui.openRealAccountSignup,
-    })
-)(withRouter(Virtual));
-
+export default connect(({ client, ui }) => ({
+    has_real_account: client.has_any_real_account,
+    openRealAccountSignup: ui.openRealAccountSignup,
+}))(withRouter(Virtual));

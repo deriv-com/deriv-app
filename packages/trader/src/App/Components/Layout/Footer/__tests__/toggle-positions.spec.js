@@ -1,10 +1,10 @@
-import React                  from 'react';
-import { expect }             from 'chai';
-import { fake }               from 'sinon';
+import React from 'react';
+import { expect } from 'chai';
+import { fake } from 'sinon';
 import { configure, shallow } from 'enzyme';
-import Adapter                from 'enzyme-adapter-react-16';
-import { TogglePositions }    from '../toggle-positions.jsx';
-import { Icon }               from '@deriv/components';
+import Adapter from 'enzyme-adapter-react-16';
+import { TogglePositions } from '../toggle-positions.jsx';
+import { Icon } from '@deriv/components';
 
 configure({ adapter: new Adapter() });
 
@@ -21,7 +21,7 @@ describe('TogglePositions', () => {
         const wrapper = shallow(<TogglePositions is_positions_drawer_on={false} />);
         expect(wrapper.find('.ic-positions--active').exists()).to.be.false;
     });
-    it('should contain <Icon icon=\'IcPositions\' />', () => {
+    it("should contain <Icon icon='IcPositions' />", () => {
         const wrapper = shallow(<TogglePositions />);
         expect(wrapper.contains(<Icon icon='IcPositions' className='footer__icon ic-positions__icon' />)).to.be.true;
     });

@@ -1,1 +1,1 @@
-Blockly.WorkspaceAudio.prototype.preload = function () {};
+Blockly.WorkspaceAudio.prototype.preload = function() {};

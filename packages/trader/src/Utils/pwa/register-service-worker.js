@@ -4,11 +4,9 @@ let interval_id;
 function refreshOnUpdate() {
     return swRegistrationObject => {
         swRegistrationObject.onupdatefound = () => {
-            const updatingWorker         = swRegistrationObject.installing;
+            const updatingWorker = swRegistrationObject.installing;
             updatingWorker.onstatechange = () => {
-                if (updatingWorker.state === 'installed' &&
-                    navigator.serviceWorker.controller
-                ) {
+                if (updatingWorker.state === 'installed' && navigator.serviceWorker.controller) {
                     // eslint-disable-next-line no-console
                     console.log('New version is found, refreshing the page...');
                     clearInterval(interval_id);
@@ -18,23 +16,22 @@ function refreshOnUpdate() {
     };
 }
 
-export default function register() { // Register the service worker
+export default function register() {
+    // Register the service worker
     if (/* process.env.NODE_ENV === 'production' && */ 'serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             let path_name = window.location.pathname;
-            path_name     = /index\.html/g.test(path_name) ? window.location.pathname.replace('index.html', '') : '';
-            const sw_url  = `${path_name}service-worker.js`;
+            path_name = /index\.html/g.test(path_name) ? window.location.pathname.replace('index.html', '') : '';
+            const sw_url = `${path_name}service-worker.js`;
             navigator.serviceWorker
                 .register(sw_url)
                 .then(registration => {
                     interval_id = setInterval(() => {
-                        registration
-                            .update()
-                            .then(refreshOnUpdate);
+                        registration.update().then(refreshOnUpdate);
                     }, EVERY_HOUR);
 
                     registration.onupdatefound = () => {
-                        const installingWorker         = registration.installing;
+                        const installingWorker = registration.installing;
                         installingWorker.onstatechange = () => {
                             if (installingWorker.state === 'installed') {
                                 if (navigator.serviceWorker.controller) {

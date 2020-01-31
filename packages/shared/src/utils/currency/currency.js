@@ -4,11 +4,11 @@ let currencies_config = {};
 
 export const getRoundedNumber = (number, currency) => {
     return Number(Number(number).toFixed(getDecimalPlaces(currency)));
-}
+};
 
 export const getFormattedText = (number, currency) => {
     return `${addComma(number, getDecimalPlaces(currency), isCryptocurrency(currency))} ${currency}`;
-}
+};
 
 export const formatMoney = (currency_value, amount, exclude_currency, decimals = 0, minimumFractionDigits = 0) => {
     let money = amount;
@@ -33,7 +33,7 @@ export const formatMoney = (currency_value, amount, exclude_currency, decimals =
 
 export const formatCurrency = currency => {
     return `<span class="symbols ${(currency || '').toLowerCase()}"></span>`;
-}
+};
 
 export const addComma = (num, decimal_points, is_crypto) => {
     let number = String(num || 0).replace(/,/g, '');
@@ -44,28 +44,32 @@ export const addComma = (num, decimal_points, is_crypto) => {
         number = parseFloat(+number);
     }
 
-    return number.toString().replace(/(^|[^\w.])(\d{4,})/g, ($0, $1, $2) => (
-        $1 + $2.replace(/\d(?=(?:\d\d\d)+(?!\d))/g, '$&,')
-    ));
+    return number
+        .toString()
+        .replace(/(^|[^\w.])(\d{4,})/g, ($0, $1, $2) => $1 + $2.replace(/\d(?=(?:\d\d\d)+(?!\d))/g, '$&,'));
 };
 
-export const calcDecimalPlaces = (currency) => {
+export const calcDecimalPlaces = currency => {
     return isCryptocurrency(currency) ? 8 : 2;
-}
+};
 
-export const getDecimalPlaces = (currency) => (
+export const getDecimalPlaces = currency =>
     // need to check currencies_config[currency] exists instead of || in case of 0 value
-    currencies_config[currency] ? ObjectUtils.getPropertyValue(currencies_config, [currency, 'fractional_digits']) : calcDecimalPlaces(currency)
-);
+    currencies_config[currency]
+        ? ObjectUtils.getPropertyValue(currencies_config, [currency, 'fractional_digits'])
+        : calcDecimalPlaces(currency);
 
-export const setCurrencies = (website_status) => {
+export const setCurrencies = website_status => {
     currencies_config = website_status.currencies_config;
 };
 
 // (currency in crypto_config) is a back-up in case website_status doesn't include the currency config, in some cases where it's disabled
 export const isCryptocurrency = currency => {
-    return /crypto/i.test(ObjectUtils.getPropertyValue(currencies_config, [currency, 'type'])) || (currency in CryptoConfig.get());
-}
+    return (
+        /crypto/i.test(ObjectUtils.getPropertyValue(currencies_config, [currency, 'type'])) ||
+        currency in CryptoConfig.get()
+    );
+};
 
 export const CryptoConfig = (() => {
     let crypto_config;
@@ -91,9 +95,11 @@ export const CryptoConfig = (() => {
     };
 })();
 
-export const getMinWithdrawal = (currency) => {
-    return (isCryptocurrency(currency) ? (ObjectUtils.getPropertyValue(CryptoConfig.get(), [currency, 'min_withdrawal']) || 0.002) : 1);
-}
+export const getMinWithdrawal = currency => {
+    return isCryptocurrency(currency)
+        ? ObjectUtils.getPropertyValue(CryptoConfig.get(), [currency, 'min_withdrawal']) || 0.002
+        : 1;
+};
 
 /**
  * Returns the transfer limits for the account.
@@ -102,7 +108,9 @@ export const getMinWithdrawal = (currency) => {
  * @returns numeric|undefined
  */
 export const getTransferLimits = (currency, which) => {
-    const transfer_limits = ObjectUtils.getPropertyValue(currencies_config, [currency, 'transfer_between_accounts', 'limits']) || getMinWithdrawal(currency);
+    const transfer_limits =
+        ObjectUtils.getPropertyValue(currencies_config, [currency, 'transfer_between_accounts', 'limits']) ||
+        getMinWithdrawal(currency);
     const decimals = getDecimalPlaces(currency);
     if (which === 'max') {
         return transfer_limits.max ? transfer_limits.max.toFixed(decimals) : undefined;
@@ -112,12 +120,17 @@ export const getTransferLimits = (currency, which) => {
 };
 
 export const getTransferFee = (currency_from, currency_to) => {
-    const transfer_fee = ObjectUtils.getPropertyValue(currencies_config, [currency_from, 'transfer_between_accounts', 'fees', currency_to]);
+    const transfer_fee = ObjectUtils.getPropertyValue(currencies_config, [
+        currency_from,
+        'transfer_between_accounts',
+        'fees',
+        currency_to,
+    ]);
     return `${typeof transfer_fee === 'undefined' ? '1' : transfer_fee}%`;
 };
 
 // returns in a string format, e.g. '0.00000001'
-export const getMinimumTransferFee = (currency) => {
+export const getMinimumTransferFee = currency => {
     const decimals = getDecimalPlaces(currency);
     return `${currency} ${(1 / Math.pow(10, decimals)).toFixed(decimals)}`; // we need toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
 };
@@ -132,12 +145,12 @@ export const getPaWithdrawalLimit = (currency, limit) => {
 
 export const getCurrencyName = currency => {
     return ObjectUtils.getPropertyValue(CryptoConfig.get(), [currency, 'name']) || '';
-}
+};
 
 export const getMinPayout = currency => {
     return ObjectUtils.getPropertyValue(currencies_config, [currency, 'stake_default']);
-}
+};
 
 export const getCurrencies = () => {
     return currencies_config;
-}
+};

@@ -5,7 +5,7 @@ export const buildBarriersConfig = (contract, barriers = { count: contract.barri
 
     const obj_barrier = {};
 
-    ['barrier', 'low_barrier', 'high_barrier'].forEach((field) => {
+    ['barrier', 'low_barrier', 'high_barrier'].forEach(field => {
         if (field in contract) obj_barrier[field] = contract[field];
     });
 

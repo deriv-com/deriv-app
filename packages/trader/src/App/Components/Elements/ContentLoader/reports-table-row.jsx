@@ -1,6 +1,6 @@
 import ContentLoader from 'react-content-loader';
-import React         from 'react';
-import PropTypes     from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const ReportsTableRowLoader = ({ speed }) => (
     <ContentLoader

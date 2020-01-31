@@ -1,17 +1,15 @@
 export const getTokenList = () => {
-    const tokenList =  localStorage.getItem('tokenList') ;
+    const tokenList = localStorage.getItem('tokenList');
     return JSON.parse(tokenList || '{}');
 };
 
 export const setTokenList = (tokenList = []) => {
-    localStorage.setItem('tokenList' , JSON.stringify(tokenList));
+    localStorage.setItem('tokenList', JSON.stringify(tokenList));
 };
 
-const findAccount = (accountName = '') =>
-    getTokenList().findIndex(tokenInfo => tokenInfo.accountName === accountName);
+const findAccount = (accountName = '') => getTokenList().findIndex(tokenInfo => tokenInfo.accountName === accountName);
 
-export const findToken = (token = '') =>
-    getTokenList().findIndex(tokenInfo => tokenInfo.token === token);
+export const findToken = (token = '') => getTokenList().findIndex(tokenInfo => tokenInfo.token === token);
 
 export const addToken = (token = '', loginInfo, hasRealityCheck = false, hasTradeLimitation = false) => {
     const { loginid: accountName } = loginInfo;
@@ -41,7 +39,7 @@ export const removeToken = token => {
     if (index > -1) {
         const tokenList = getTokenList();
         tokenList.splice(index, 1);
-        localStorage.setItem('tokenList' , JSON.stringify(tokenList));
+        localStorage.setItem('tokenList', JSON.stringify(tokenList));
     }
 };
 

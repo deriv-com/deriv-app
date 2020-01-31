@@ -2,47 +2,49 @@
 // TODO: use-phase-2-colors - Switch to using phase 2 colors, following the new color palette (refer Abstract)
 
 .dc-autocomplete {
-    width: 100%;
-    position: relative;
+  width: 100%;
+  position: relative;
 
-    &__trailing-icon {
-        position: absolute;
-        right: 0;
-        pointer-events: none;
-        cursor: text;
-        transition: transform 0.2s ease;
-        transform: rotate(0deg);
-        transform-origin: 50% 45%;
+  &__trailing-icon {
+    position: absolute;
+    right: 0;
+    pointer-events: none;
+    cursor: text;
+    transition: transform 0.2s ease;
+    transform: rotate(0deg);
+    transform-origin: 50% 45%;
 
-        &--opened {
-            transform: rotate(-180deg);
-        }
+    &--opened {
+      transform: rotate(-180deg);
+    }
+    .color1-fill {
+      fill: var(--text-less-prominent);
+    }
+  }
+  .dc-input {
+    &--error {
+      .dc-autocomplete__trailing-icon {
         .color1-fill {
-            fill: var(--text-less-prominent);
+          fill: var(--text-loss-danger);
         }
+      }
     }
-    .dc-input {
-        &--error {
-            .dc-autocomplete__trailing-icon {
-                .color1-fill {
-                    fill: var(--text-loss-danger);
-                }
-            }
-        }
-    }
-    .dc-dropdown-list {
-        box-shadow: 0 8px 16px 0 var(--shadow-menu);
-        background: var(--general-main-2);
-    }
-    &:focus, &:focus-within, &:active {
-        outline: 0;
+  }
+  .dc-dropdown-list {
+    box-shadow: 0 8px 16px 0 var(--shadow-menu);
+    background: var(--general-main-2);
+  }
+  &:focus,
+  &:focus-within,
+  &:active {
+    outline: 0;
 
-        .dc-input:not(.dc-input--error) {
-            .dc-autocomplete__trailing-icon {
-                .color1-fill {
-                    fill: var(--brand-secondary);
-                }
-            }
+    .dc-input:not(.dc-input--error) {
+      .dc-autocomplete__trailing-icon {
+        .color1-fill {
+          fill: var(--brand-secondary);
         }
+      }
     }
+  }
 }

@@ -1,7 +1,6 @@
 import { reaction } from 'mobx';
 
 const GTM = (() => {
-
     let root_store;
 
     const getLoginId = () => {
@@ -12,11 +11,11 @@ const GTM = (() => {
         return root_store.server_time.unix();
     };
 
-    const pushDataLayer = (data) => {
+    const pushDataLayer = data => {
         return root_store.core.gtm.pushDataLayer(data);
     };
 
-    const init = (_root_store) => {
+    const init = _root_store => {
         try {
             root_store = _root_store;
 
@@ -31,17 +30,15 @@ const GTM = (() => {
                 () => transactions.contracts,
                 () => onTransactionClosed(transactions.contracts)
             );
-
         } catch (error) {
             console.warn('Error initializing GTM reactions ', error); // eslint-disable-line no-console
         }
     };
 
-    const onRunBot = (summary) => {
+    const onRunBot = summary => {
         try {
             const run_id = `${getLoginId()}-${getServerTime()}`;
-            const counters =
-                `tr:${summary.number_of_runs},\
+            const counters = `tr:${summary.number_of_runs},\
                 ts:${summary.total_stake},\
                 py:${summary.total_payout},\
                 lc:${summary.lost_contracts},\
@@ -49,8 +46,8 @@ const GTM = (() => {
                 pr:${summary.total_profit}`;
 
             const data = {
-                counters: counters.replace(/\s/g,''),
-                event   : 'dbot_run',
+                counters: counters.replace(/\s/g, ''),
+                event: 'dbot_run',
                 run_id,
             };
             pushDataLayer(data);
@@ -59,12 +56,12 @@ const GTM = (() => {
         }
     };
 
-    const onTransactionClosed = (contracts) => {
+    const onTransactionClosed = contracts => {
         try {
             const contract = contracts.length > 0 && contracts[0];
             if (contract && contract.is_completed) {
                 const data = {
-                    event       : 'dbot_run_transaction',
+                    event: 'dbot_run_transaction',
                     reference_id: contract.refrence_id,
                 };
                 pushDataLayer(data);

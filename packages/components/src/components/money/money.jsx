@@ -8,7 +8,7 @@ const Money = ({
   className,
   currency = "USD",
   has_sign,
-  should_format = true
+  should_format = true,
 }) => {
   let sign = "";
   if (+amount && (amount < 0 || has_sign)) {
@@ -41,7 +41,7 @@ Money.propTypes = {
   className: PropTypes.string,
   currency: PropTypes.string,
   has_sign: PropTypes.bool,
-  should_format: PropTypes.bool
+  should_format: PropTypes.bool,
 };
 
 export default Money;

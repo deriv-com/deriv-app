@@ -10,7 +10,7 @@ const KEY_CODE = {
   ESCAPE: 27,
   TAB: 9,
   KEYDOWN: 40,
-  KEYUP: 38
+  KEYUP: 38,
 };
 
 const getFilteredItems = (val, list) => {
@@ -31,7 +31,7 @@ class Autocomplete extends React.PureComponent {
     should_show_list: false,
     filtered_items: [...this.props.list_items],
     input_value: "",
-    active_index: null
+    active_index: null,
   };
 
   setInputWrapperRef = node => (this.input_wrapper_ref = node);
@@ -154,7 +154,7 @@ class Autocomplete extends React.PureComponent {
     ) {
       this.props.onItemSelection({
         text: this.props.not_found_text,
-        value: ""
+        value: "",
       });
     }
     if (typeof this.props.onBlur === "function") {
@@ -231,7 +231,7 @@ class Autocomplete extends React.PureComponent {
                 className={{
                   "dc-autocomplete__trailing-icon": true,
                   "dc-autocomplete__trailing-icon--opened": this.state
-                    .should_show_list
+                    .should_show_list,
                 }}
               />
             }
@@ -241,7 +241,7 @@ class Autocomplete extends React.PureComponent {
           ref={{
             dropdown_ref: this.dropdown_ref,
             list_item_ref: this.list_item_ref,
-            list_wrapper_ref: this.list_wrapper_ref
+            list_wrapper_ref: this.list_wrapper_ref,
           }}
           active_index={this.state.active_index}
           style={{
@@ -250,7 +250,7 @@ class Autocomplete extends React.PureComponent {
               : "100%",
             marginTop: dropdown_offset
               ? `calc(-${dropdown_offset} + 8px)`
-              : "8px" // 4px is the standard margin. In case of error, the list should overlap the error
+              : "8px", // 4px is the standard margin. In case of error, the list should overlap the error
             // TODO confirm placement of dropdown list and positioning of error
             // marginTop: form.errors[field.name] ? 'calc(4px - 18px)' : '4px', // 4px is the standard margin. In case of error, the list should overlap the error
           }}
@@ -265,7 +265,7 @@ class Autocomplete extends React.PureComponent {
   }
 }
 Autocomplete.defaultProps = {
-  not_found_text: "No results found"
+  not_found_text: "No results found",
 };
 
 export default Autocomplete;
@@ -276,10 +276,10 @@ Autocomplete.propTypes = {
     PropTypes.arrayOf(
       PropTypes.shape({
         text: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired
+        value: PropTypes.string.isRequired,
       })
-    )
+    ),
   ]),
   not_found_text: PropTypes.string,
-  onItemSelection: PropTypes.func
+  onItemSelection: PropTypes.func,
 };

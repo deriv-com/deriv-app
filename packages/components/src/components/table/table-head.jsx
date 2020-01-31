@@ -6,7 +6,7 @@ const Head = ({ children, align, className }) => (
   <div
     role="columnheader"
     className={classNames("dc-table__head", className, {
-      "dc-table__cell--right": align === "right"
+      "dc-table__cell--right": align === "right",
     })}
   >
     {children}
@@ -16,7 +16,7 @@ const Head = ({ children, align, className }) => (
 Head.propTypes = {
   align: PropTypes.oneOf(["left", "right"]),
   children: PropTypes.node,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default Head;

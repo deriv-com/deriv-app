@@ -10,7 +10,7 @@ const Highlight = ({ left, width }) => {
     borderTopLeftRadius: left === 0 ? border_radius_size : 0,
     borderTopRightRadius: left === 0 ? 0 : border_radius_size,
     borderBottomLeftRadius: left === 0 ? border_radius_size : 0,
-    borderBottomRightRadius: left === 0 ? 0 : border_radius_size
+    borderBottomRightRadius: left === 0 ? 0 : border_radius_size,
   };
 
   return <span style={highlight_style} className="dc-button-menu--highlight" />;
@@ -18,7 +18,7 @@ const Highlight = ({ left, width }) => {
 
 Highlight.propTypes = {
   left: PropTypes.number,
-  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export { Highlight };

@@ -1,118 +1,118 @@
 .dc-label {
-  font-size: 14px;
-  font-weight: bold;
-  height: 24px;
-  line-height: 20px;
-  border-radius: $BORDER_RADIUS * 3;
-  padding: 2px 8px;
-  margin: 0 2px;
-  position: relative;
-
-  /* TODO: change all :after to normal background color once styleguide ready */
-  &--default {
-    color: var(--status-default);
-
-    &:after {
-      background-color: var(--status-default);
-      opacity: 0.16;
-      content: "";
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      position: absolute;
-      border-radius: $BORDER_RADIUS * 3;
-    }
-  }
-  &--danger {
-    color: var(--status-danger);
-
-    &:after {
-      background-color: var(--status-danger);
-      opacity: 0.16;
-      content: "";
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      position: absolute;
-      border-radius: $BORDER_RADIUS * 3;
-    }
-  }
-  &--warn {
-    color: var(--status-warning);
-
-    &:after {
-      background-color: var(--status-warning);
-      opacity: 0.16;
-      content: "";
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      position: absolute;
-      border-radius: $BORDER_RADIUS * 3;
-    }
-  }
-  &--success {
-    color: var(--status-success);
-
-    &:after {
-      background-color: var(--status-success);
-      opacity: 0.16;
-      content: "";
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      position: absolute;
-      border-radius: $BORDER_RADIUS * 3;
-    }
-  }
-  // TODO: change styleguide badges to include new design
-  &--default-invert {
-    color: var(--text-less-prominent);
-
-    &:after {
-      background-color: var(--text-less-prominent);
-      opacity: 0.16;
-      content: "";
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      position: absolute;
-      border-radius: $BORDER_RADIUS * 3;
-    }
-  }
-  &--success-invert {
-    color: var(--text-colored-background);
-    background-color: var(--status-success);
-  }
-  &--warn-invert {
-    color: var(--text-colored-background);
-    background-color: var(--status-warning);
-  }
-  &--info {
-    color: var(--status-info);
-
-    &:after {
-      background-color: var(--status-info);
-      opacity: 0.16;
-      content: "";
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      position: absolute;
-      border-radius: $BORDER_RADIUS * 3;
-    }
-  }
-  &--large {
-    height: 28px;
-    border-radius: $BORDER_RADIUS * 5;
-    padding: 4px 8px 4px 4px;
+    font-size: 14px;
+    font-weight: bold;
+    height: 24px;
+    line-height: 20px;
+    border-radius: $BORDER_RADIUS * 3;
+    padding: 2px 8px;
     margin: 0 2px;
-    font-size: 16px;
-  }
+    position: relative;
+
+    /* TODO: change all :after to normal background color once styleguide ready */
+    &--default {
+        color: var(--status-default);
+
+        &:after {
+            background-color: var(--status-default);
+            opacity: 0.16;
+            content: '';
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+            border-radius: $BORDER_RADIUS * 3;
+        }
+    }
+    &--danger {
+        color: var(--status-danger);
+
+        &:after {
+            background-color: var(--status-danger);
+            opacity: 0.16;
+            content: '';
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+            border-radius: $BORDER_RADIUS * 3;
+        }
+    }
+    &--warn {
+        color: var(--status-warning);
+
+        &:after {
+            background-color: var(--status-warning);
+            opacity: 0.16;
+            content: '';
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+            border-radius: $BORDER_RADIUS * 3;
+        }
+    }
+    &--success {
+        color: var(--status-success);
+
+        &:after {
+            background-color: var(--status-success);
+            opacity: 0.16;
+            content: '';
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+            border-radius: $BORDER_RADIUS * 3;
+        }
+    }
+    // TODO: change styleguide badges to include new design
+    &--default-invert {
+        color: var(--text-less-prominent);
+
+        &:after {
+            background-color: var(--text-less-prominent);
+            opacity: 0.16;
+            content: '';
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+            border-radius: $BORDER_RADIUS * 3;
+        }
+    }
+    &--success-invert {
+        color: var(--text-colored-background);
+        background-color: var(--status-success);
+    }
+    &--warn-invert {
+        color: var(--text-colored-background);
+        background-color: var(--status-warning);
+    }
+    &--info {
+        color: var(--status-info);
+
+        &:after {
+            background-color: var(--status-info);
+            opacity: 0.16;
+            content: '';
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+            border-radius: $BORDER_RADIUS * 3;
+        }
+    }
+    &--large {
+        height: 28px;
+        border-radius: $BORDER_RADIUS * 5;
+        padding: 4px 8px 4px 4px;
+        margin: 0 2px;
+        font-size: 16px;
+    }
 }

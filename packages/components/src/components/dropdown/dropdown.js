@@ -62,8 +62,8 @@ export const listPropType = () =>
         has_tooltip: PropTypes.bool,
         text: PropTypes.string,
         tooltip: PropTypes.string,
-        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       })
     ),
-    PropTypes.object
+    PropTypes.object,
   ]);

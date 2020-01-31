@@ -19,7 +19,7 @@ const Input = (
   <div
     className={classNames("dc-input", className, {
       "dc-input__disabled": disabled,
-      "dc-input--error": error
+      "dc-input--error": error,
     })}
   >
     {leading_icon &&
@@ -27,14 +27,14 @@ const Input = (
         className: classNames(
           "dc-input__leading-icon",
           leading_icon.props.className
-        )
+        ),
       })}
     {props.type === "textarea" ? (
       <textarea
         ref={ref}
         {...props}
         className={classNames("dc-input__field", {
-          "dc-input__field--placeholder-visible": !label && props.placeholder
+          "dc-input__field--placeholder-visible": !label && props.placeholder,
         })}
         disabled={disabled}
       />
@@ -43,7 +43,7 @@ const Input = (
         ref={ref}
         {...props}
         className={classNames("dc-input__field", {
-          "dc-input__field--placeholder-visible": !label && props.placeholder
+          "dc-input__field--placeholder-visible": !label && props.placeholder,
         })}
         disabled={disabled}
       />
@@ -53,7 +53,7 @@ const Input = (
         className: classNames(
           "dc-input__trailing-icon",
           trailing_icon.props.className
-        )
+        ),
       })}
     {label && (
       <label className="dc-input__label" htmlFor={props.id}>

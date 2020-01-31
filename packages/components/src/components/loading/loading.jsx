@@ -8,7 +8,7 @@ const Loading = ({
   is_fullscreen = true,
   is_slow_loading,
   status,
-  theme
+  theme,
 }) => {
   const theme_class = theme ? `barspinner-${theme}` : "barspinner-light";
   return (
@@ -16,7 +16,7 @@ const Loading = ({
       className={classNames(
         "initial-loader",
         {
-          "initial-loader--fullscreen": is_fullscreen
+          "initial-loader--fullscreen": is_fullscreen,
         },
         className
       )}
@@ -53,6 +53,6 @@ Loading.propTypes = {
   is_fullscreen: PropTypes.bool,
   is_slow_loading: PropTypes.bool,
   status: PropTypes.array,
-  theme: PropTypes.string
+  theme: PropTypes.string,
 };
 export default Loading;

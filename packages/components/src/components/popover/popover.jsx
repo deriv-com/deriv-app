@@ -35,7 +35,7 @@ class Popover extends React.PureComponent {
       is_open,
       margin,
       message,
-      zIndex
+      zIndex,
     } = this.props;
 
     const has_external_open_state = is_open !== undefined;
@@ -60,7 +60,7 @@ class Popover extends React.PureComponent {
             <div
               id={id}
               className={classNames(classNameBubble, "dc-popover__bubble", {
-                "dc-popover__bubble--error": has_error
+                "dc-popover__bubble--error": has_error,
               })}
             >
               {!disable_message_icon && icon === "info" && (
@@ -70,7 +70,7 @@ class Popover extends React.PureComponent {
               )}
               <span
                 className={classNames("dc-popover__bubble__text", {
-                  "dc-popover__bubble__text--error": has_error
+                  "dc-popover__bubble__text--error": has_error,
                 })}
               >
                 {message}
@@ -119,7 +119,7 @@ class Popover extends React.PureComponent {
 
 Popover.defaultProps = {
   portal_container: "deriv_app",
-  margin: 0
+  margin: 0,
 };
 
 Popover.propTypes = {
@@ -139,7 +139,7 @@ Popover.propTypes = {
   margin: PropTypes.number,
   message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   portal_container: PropTypes.string,
-  zIndex: PropTypes.number
+  zIndex: PropTypes.number,
 };
 
 export default Popover;

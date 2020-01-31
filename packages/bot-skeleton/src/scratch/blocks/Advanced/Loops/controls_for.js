@@ -4,58 +4,62 @@ Blockly.Blocks.controls_for = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('count with %1 from %2 to %3 by %4'),
-            args0   : [
+            args0: [
                 {
-                    type    : 'field_variable',
-                    name    : 'VAR',
+                    type: 'field_variable',
+                    name: 'VAR',
                     variable: null,
                 },
                 {
-                    type : 'input_value',
-                    name : 'FROM',
+                    type: 'input_value',
+                    name: 'FROM',
                     check: 'Number',
                 },
                 {
-                    type : 'input_value',
-                    name : 'TO',
+                    type: 'input_value',
+                    name: 'TO',
                     check: 'Number',
                 },
                 {
-                    type : 'input_value',
-                    name : 'BY',
+                    type: 'input_value',
+                    name: 'BY',
                     check: 'Number',
                 },
             ],
             message1: localize('do %1'),
-            args1   : [
+            args1: [
                 {
                     type: 'input_statement',
                     name: 'DO',
                 },
             ],
-            colour           : Blockly.Colours.Base.colour,
-            colourSecondary  : Blockly.Colours.Base.colourSecondary,
-            colourTertiary   : Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
-            tooltip          : localize('This block uses the variable “i” to control the iterations. With each iteration, the value of “i” is determined by the items in a given list.'),
-            category         : Blockly.Categories.Loop,
+            nextStatement: null,
+            tooltip: localize(
+                'This block uses the variable “i” to control the iterations. With each iteration, the value of “i” is determined by the items in a given list.'
+            ),
+            category: Blockly.Categories.Loop,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Iterate (1)'),
-            'description' : localize('This block uses the variable “i” to control the iterations. With each iteration, the value of “i” is determined by the items in a given list.'),
+            display_name: localize('Iterate (1)'),
+            description: localize(
+                'This block uses the variable “i” to control the iterations. With each iteration, the value of “i” is determined by the items in a given list.'
+            ),
         };
     },
     getRequiredValueInputs() {
         return {
             FROM: null,
-            TO  : null,
-            BY  : null,
+            TO: null,
+            BY: null,
         };
     },
 };

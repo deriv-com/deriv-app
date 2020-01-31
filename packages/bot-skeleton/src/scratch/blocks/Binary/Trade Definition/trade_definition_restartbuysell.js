@@ -4,18 +4,18 @@ Blockly.Blocks.trade_definition_restartbuysell = {
     init() {
         this.jsonInit({
             message0: localize('Restart buy/sell on error (disable for better performance): %1'),
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_image_checkbox',
-                    name   : 'TIME_MACHINE_ENABLED',
+                    type: 'field_image_checkbox',
+                    name: 'TIME_MACHINE_ENABLED',
                     checked: false,
                 },
             ],
-            colour           : Blockly.Colours.Base.colour,
-            colourSecondary  : Blockly.Colours.Base.colourSecondary,
-            colourTertiary   : Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
+            nextStatement: null,
         });
 
         this.setMovable(false);
@@ -29,6 +29,6 @@ Blockly.Blocks.trade_definition_restartbuysell = {
         this.enforceLimitations();
     },
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
-    required_inputs   : ['TIME_MACHINE_ENABLED'],
+    required_inputs: ['TIME_MACHINE_ENABLED'],
 };
 Blockly.JavaScript.trade_definition_restartbuysell = () => {};

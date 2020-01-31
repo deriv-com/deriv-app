@@ -82,7 +82,8 @@
             opacity: 1;
             transform: translate3d(0, 0, 0);
         }
-        &--enter, &--exit {
+        &--enter,
+        &--exit {
             opacity: 0;
             transform: translate3d(0, -20px, 0);
         }

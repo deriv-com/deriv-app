@@ -1,7 +1,7 @@
-import { localize }                      from '@deriv/translations';
-import { purchaseSuccessful }            from './state/actions';
-import { BEFORE_PURCHASE }               from './state/constants';
-import { contractStatus, info, log }     from '../utils/broadcast';
+import { localize } from '@deriv/translations';
+import { purchaseSuccessful } from './state/actions';
+import { BEFORE_PURCHASE } from './state/constants';
+import { contractStatus, info, log } from '../utils/broadcast';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
 
 let delayIndex = 0;
@@ -19,7 +19,7 @@ export default Engine =>
             const onSuccess = r => {
                 const { buy } = r;
                 contractStatus({
-                    id  : 'contract.purchase_received',
+                    id: 'contract.purchase_received',
                     data: buy.transaction_id,
                     buy,
                 });
@@ -30,18 +30,18 @@ export default Engine =>
                 delayIndex = 0;
                 log(`${localize('Bought')}: ${buy.longcode} (${localize('ID')}: ${buy.transaction_id})`);
                 info({
-                    accountID      : this.accountInfo.loginid,
-                    totalRuns      : this.updateAndReturnTotalRuns(),
+                    accountID: this.accountInfo.loginid,
+                    totalRuns: this.updateAndReturnTotalRuns(),
                     transaction_ids: { buy: buy.transaction_id },
-                    contract_type  : contractType,
-                    buy_price      : buy.buy_price,
+                    contract_type: contractType,
+                    buy_price: buy.buy_price,
                 });
             };
 
             const action = () => this.api.buyContract(id, askPrice);
             this.isSold = false;
             contractStatus({
-                id  : 'contract.purchase_sent',
+                id: 'contract.purchase_sent',
                 data: askPrice,
             });
 

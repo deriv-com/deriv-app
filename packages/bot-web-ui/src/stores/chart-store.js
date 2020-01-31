@@ -1,10 +1,4 @@
-
-import {
-    action,
-    computed,
-    observable,
-    reaction,
-}                     from 'mobx';
+import { action, computed, observable, reaction } from 'mobx';
 // import { tabs_title } from '../constants/bot-contents';
 import { ServerTime } from '@deriv/bot-skeleton';
 
@@ -17,11 +11,9 @@ export default class ChartStore {
         WS = root_store.ws;
         const { run_panel } = root_store;
 
-        reaction(() =>
-            run_panel.is_running, () =>
-            run_panel.is_running ?
-                this.onStartBot() :
-                this.onStopBot()
+        reaction(
+            () => run_panel.is_running,
+            () => (run_panel.is_running ? this.onStartBot() : this.onStopBot())
         );
     }
 
@@ -57,7 +49,7 @@ export default class ChartStore {
     updateSymbol() {
         const workspace = Blockly.derivWorkspace;
         const market_block = workspace.getAllBlocks().find(block => {
-            return (block.type === 'trade_definition_market');
+            return block.type === 'trade_definition_market';
         });
 
         if (market_block && market_block !== 'na') {
@@ -67,7 +59,7 @@ export default class ChartStore {
     }
 
     @action.bound
-    onSymbolChange(symbol){
+    onSymbolChange(symbol) {
         this.symbol = symbol;
     }
 
@@ -95,25 +87,25 @@ export default class ChartStore {
         }
     };
 
-    wsForget = (req) => {
+    wsForget = req => {
         const key = JSON.stringify(req);
         if (g_subscribers_map[key]) {
             g_subscribers_map[key].unsubscribe();
             delete g_subscribers_map[key];
         }
-    }
+    };
 
-    wsForgetStream = (stream_id) => {
+    wsForgetStream = stream_id => {
         WS.forgetStream(stream_id);
-    }
+    };
 
-    wsSendRequest = (req) => {
+    wsSendRequest = req => {
         if (req.time) {
             return ServerTime.timePromise().then(() => {
-                return ({
+                return {
                     msg_type: 'time',
-                    time    : ServerTime.get().unix(),
-                });
+                    time: ServerTime.get().unix(),
+                };
             });
         }
         if (req.active_symbols) {
@@ -123,4 +115,3 @@ export default class ChartStore {
     };
     // #endregion
 }
-

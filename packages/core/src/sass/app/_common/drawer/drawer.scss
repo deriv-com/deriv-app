@@ -159,7 +159,6 @@
                     display: block;
                     font-size: 1.2em;
                 }
-
             }
         }
     }
@@ -250,7 +249,8 @@
             width: 100%;
         }
     }
-    &--enter, &--exit {
+    &--enter,
+    &--exit {
         .drawer__bg {
             box-shadow: none;
 
@@ -266,10 +266,12 @@
     }
     &--enter-done {
         .drawer__bg {
-            box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2), 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2), 0 16px 24px 2px rgba(0, 0, 0, 0.14),
+                0 6px 30px 5px rgba(0, 0, 0, 0.12);
 
             .drawer {
-                &--left, &--right {
+                &--left,
+                &--right {
                     transform: translateX(0);
                 }
             }

@@ -27,7 +27,8 @@
         &:hover {
             border-color: var(--general-hover);
         }
-        &:active, &:focus {
+        &:active,
+        &:focus {
             outline: 0;
             border-color: var(--general-active);
             box-shadow: 0 0 0 2px var(--shadow-menu);

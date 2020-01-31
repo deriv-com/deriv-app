@@ -1,6 +1,6 @@
-import { localize }                      from '@deriv/translations';
-import { DURING_PURCHASE }               from './state/constants';
-import { contractStatus, log }        from '../utils/broadcast';
+import { localize } from '@deriv/translations';
+import { DURING_PURCHASE } from './state/constants';
+import { contractStatus, log } from '../utils/broadcast';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
 
 let delayIndex = 0;

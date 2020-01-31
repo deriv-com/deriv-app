@@ -1,25 +1,23 @@
-import React, {
-    Component,
-    Fragment }        from 'react';
-import { Button }     from '@deriv/components';
-import Dp2pContext    from 'Components/context/dp2p-context';
+import React, { Component, Fragment } from 'react';
+import { Button } from '@deriv/components';
+import Dp2pContext from 'Components/context/dp2p-context';
 
-import { localize }   from 'Components/i18next';
-import { requestWS }  from 'Utils/websocket';
-import FormAds        from './form-ads.jsx';
+import { localize } from 'Components/i18next';
+import { requestWS } from 'Utils/websocket';
+import FormAds from './form-ads.jsx';
 import { MyAdsTable } from './my-ads-table.jsx';
-import ToggleAds      from './toggle-ads.jsx';
+import ToggleAds from './toggle-ads.jsx';
 import './my-ads.scss';
 
 class MyAds extends Component {
     state = {
-        data      : {},
+        data: {},
         is_enabled: false,
         is_loading: true,
-        show_form : false,
+        show_form: false,
     };
 
-    handleShowForm = (show_form) => {
+    handleShowForm = show_form => {
         this.setState({ show_form });
     };
 
@@ -33,11 +31,11 @@ class MyAds extends Component {
 
     onClickCreate = () => {
         this.setState({ data: {}, show_form: true });
-    }
+    };
 
-    onClickEdit = (data) => {
+    onClickEdit = data => {
         this.setState({ data, show_form: true });
-    }
+    };
 
     render() {
         return (
@@ -47,11 +45,7 @@ class MyAds extends Component {
                 ) : (
                     <Fragment>
                         <div className='p2p-my-ads__header'>
-                            { !this.state.is_loading &&
-                                <ToggleAds
-                                    is_enabled={this.state.is_enabled}
-                                />
-                            }
+                            {!this.state.is_loading && <ToggleAds is_enabled={this.state.is_enabled} />}
                             <Button primary onClick={this.onClickCreate}>
                                 {localize('Create ad')}
                             </Button>

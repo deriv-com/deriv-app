@@ -85,8 +85,9 @@ class ConfigVerification {
 }
 
 export default class CashierStore extends BaseStore {
-    @observable is_loading      = false;
-    @observable is_dp2p_visible = false;
+    @observable is_loading        = false;
+    @observable is_dp2p_visible   = false;
+    @observable p2p_notifications = 0;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -177,6 +178,11 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setIsDp2pVisible(is_dp2p_visible) {
         this.is_dp2p_visible = is_dp2p_visible;
+    }
+
+    @action.bound
+    setP2pNotifications(notifications) {
+        this.p2p_notifications = notifications;
     }
 
     @action.bound

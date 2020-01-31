@@ -77,10 +77,10 @@ class App extends Component {
     }
 
     handleNotifications = (updated_orders) => {
-        let notifications = 0
+        let notifications = 0;
 
         updated_orders.forEach(order => {
-            const modified_order = new OrderInfo(order)
+            const modified_order = new OrderInfo(order);
 
             const user_state = {
                 is_agent_buyer  : this.state.is_agent && modified_order.is_buyer,
@@ -103,7 +103,8 @@ class App extends Component {
             })
         })
 
-        this.setState({ notifications })
+        this.setState({ notifications });
+        this.props.setP2pNotifications(notifications);
     }
 
     // API will send p2p_order_list first as a list of all orders

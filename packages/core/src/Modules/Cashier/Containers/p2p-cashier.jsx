@@ -1,4 +1,5 @@
 import React           from 'react';
+import PropTypes       from 'prop-types';
 import { WS }          from 'Services';
 import P2P             from '@deriv/p2p';
 import { getLanguage } from '@deriv/translations';
@@ -11,20 +12,31 @@ const P2PCashier = ({
     local_currency_config,
     is_virtual,
     residence,
+    setP2pNotifications,
 }) => (
     <P2P
         websocket_api={WS}
         lang={getLanguage()}
         client={{ currency, local_currency_config, is_virtual, residence }}
         server_time={ServerTime}
+        setP2pNotifications={setP2pNotifications}
     />
 );
 
+P2PCashier.propTypes = {
+    currency             : PropTypes.string,
+    local_currency_config: PropTypes.object,
+    is_virtual           : PropTypes.bool,
+    residence            : PropTypes.string,
+    setP2pNotifications  : PropTypes.func,
+}
+
 export default connect(
-    ({ client }) => ({
+    ({ client, modules }) => ({
         currency             : client.currency,
         local_currency_config: client.local_currency_config,
         is_virtual           : client.is_virtual,
         residence            : client.residence,
+        setP2pNotifications  : modules.cashier.setP2pNotifications,
     }),
 )(P2PCashier);

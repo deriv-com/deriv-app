@@ -43,7 +43,7 @@ class Cashier extends React.Component {
                     (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible) &&
                     (route.path !== routes.cashier_dp2p || (this.props.is_dp2p_visible && /show_dp2p/.test(this.props.location.hash)))) {
                         options.push({
-                            count  : route.path === routes.cashier_dp2p ? 1 : 0,
+                            count  : route.path === routes.cashier_dp2p && this.props.p2p_notifications,
                             default: route.default,
                             icon   : route.icon_component,
                             label  : route.title,
@@ -104,6 +104,7 @@ Cashier.propTypes = {
     is_visible                       : PropTypes.bool,
     location                         : PropTypes.object,
     onMount                          : PropTypes.func,
+    p2p_notifications                : PropTypes.number,
     routes                           : PropTypes.arrayOf(PropTypes.object),
     toggleCashier                    : PropTypes.func,
 };
@@ -118,6 +119,7 @@ export default connect(
             || modules.cashier.config.payment_agent.agents.length),
         is_payment_agent_transfer_visible: modules.cashier.config.payment_agent_transfer.is_payment_agent,
         onMount                          : modules.cashier.onMountCommon,
+        p2p_notifications                : modules.cashier.p2p_notifications,
         toggleCashier                    : ui.toggleCashier,
     })
 )(withRouter(Cashier));

@@ -100,7 +100,7 @@
     "@babel/polyfill": "^7.4.4",
     "@binary-com/binary-document-uploader": "^2.4.4",
     "@deriv/deriv-api": "^1.0.1",
-    "@deriv/p2p": "^0.2.0",
+    "@deriv/p2p": "^0.3.0",
     "acorn": "^6.1.1",
     "babel-polyfill": "^6.26.0",
     "canvas-toBlob": "^1.0.0",

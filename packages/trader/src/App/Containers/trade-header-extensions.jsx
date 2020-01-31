@@ -1,38 +1,40 @@
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import { MobileWrapper } from '@deriv/components';
-import { isMobile }      from '@deriv/shared/utils/screen';
-import TogglePositions   from 'App/Components/Elements/TogglePositions';
-import { connect }       from 'Stores/connect';
+import PropTypes             from 'prop-types';
+import React                 from 'react';
+import { MobileWrapper }     from '@deriv/components';
+import { isMobile }          from '@deriv/shared/utils/screen';
+import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggle-positions-mobile.jsx';
+import { connect }           from 'Stores/connect';
 
 class TradeHeaderExtensions extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            is_visible: false,
-        };
-    }
-
-    toggleDrawer = () => {
-        this.setState({ is_visible: !this.state.is_visible });
-    };
-
     populateHeader = () => {
         const {
-            is_logged_in,
             active_positions_count,
-            show_positions_toggle,
+            disableApp,
+            enableApp,
+            is_logged_in,
+            is_positions_empty,
+            onPositionsRemove,
+            onPositionsSell,
+            positions,
+            positions_currency,
+            positions_error,
             populateHeaderExtensions,
+            show_positions_toggle,
         } = this.props;
 
         const header_items = (is_logged_in && show_positions_toggle) &&
             (
                 <MobileWrapper>
-                    <TogglePositions
-                        is_open={this.state.is_visible}
-                        togglePositions={this.toggleDrawer}
-                        positions_count={active_positions_count}
+                    <TogglePositionsMobile
+                        active_positions_count={active_positions_count}
+                        all_positions={positions}
+                        currency={positions_currency}
+                        disableApp={disableApp}
+                        is_empty={is_positions_empty}
+                        enableApp={enableApp}
+                        error={positions_error}
+                        onClickSell={onPositionsSell}
+                        onClickRemove={onPositionsRemove}
                     />
                 </MobileWrapper>
             );
@@ -41,7 +43,7 @@ class TradeHeaderExtensions extends React.Component {
     };
 
     componentDidMount() {
-        if (isMobile()) this.props.onMount();
+        if (isMobile()) this.props.onMountPositions();
         this.populateHeader();
     }
 
@@ -50,7 +52,7 @@ class TradeHeaderExtensions extends React.Component {
     }
 
     componentWillUnmount() {
-        if (isMobile()) this.props.onUnmount();
+        if (isMobile()) this.props.onUnmountPositions();
         this.props.populateHeaderExtensions(null);
     }
 
@@ -68,11 +70,20 @@ TradeHeaderExtensions.propTypes = {
 
 export default connect(
     ({ client, modules, ui }) => ({
-        is_logged_in            : client.is_logged_in,
-        onMount                 : modules.portfolio.onMount,
-        onUnmount               : modules.portfolio.onUnmount,
-        active_positions_count  : modules.portfolio.active_positions_count,
-        show_positions_toggle   : ui.show_positions_toggle,
-        populateHeaderExtensions: ui.populateHeaderExtensions,
+        positions_currency            : client.currency,
+        is_logged_in                  : client.is_logged_in,
+        positions                     : modules.portfolio.all_positions,
+        positions_error               : modules.portfolio.error,
+        is_positions_empty            : modules.portfolio.is_empty,
+        onPositionsSell               : modules.portfolio.onClickSell,
+        onPositionsRemove             : modules.portfolio.removePositionById,
+        onMountPositions              : modules.portfolio.onMount,
+        onUnmountPositions            : modules.portfolio.onUnmount,
+        active_positions_count        : modules.portfolio.active_positions_count,
+        disableApp                    : ui.disableApp,
+        enableApp                     : ui.enableApp,
+        show_positions_toggle         : ui.show_positions_toggle,
+        populateHeaderExtensions      : ui.populateHeaderExtensions,
+        toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
     })
 )(TradeHeaderExtensions);

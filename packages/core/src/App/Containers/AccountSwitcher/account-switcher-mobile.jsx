@@ -12,11 +12,12 @@ const AccountSwitcherMobile = (props) => {
             className='accounts-switcher'
             enableApp={enableApp}
             is_open={is_visible}
+            is_vertical_top
             disableApp={disableApp}
             has_close_icon={false}
             toggleModal={toggle}
-            height='100%'
-            width='calc(100vw - 42px)'
+            height='auto'
+            width='calc(100vw - 32px)'
         >
             <div
                 className={classNames(

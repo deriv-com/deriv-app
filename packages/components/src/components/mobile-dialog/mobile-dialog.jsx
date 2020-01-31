@@ -3,6 +3,7 @@ import PropTypes         from 'prop-types';
 import React             from 'react';
 import ReactDOM          from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
+import Div100vhContainer from '../div100vh-container';
 import Icon              from '../icon';
 
 const MobileDialog = (props) => {
@@ -57,28 +58,30 @@ const MobileDialog = (props) => {
                 className='dc-mobile-dialog'
                 onClick={handleClick}
             >
-                <div className='dc-mobile-dialog__header'>
-                    <h2 className='dc-mobile-dialog__title'>
-                        {title}
-                    </h2>
-                    <div
-                        className='icons btn-close dc-mobile-dialog__close-btn'
-                        onClick={props.onClose}
-                    >
-                        <Icon
-                            icon='IcCross'
-                            className='dc-mobile-dialog__close-btn-icon'
-                        />
+                <Div100vhContainer height_offset='8px'>
+                    <div className='dc-mobile-dialog__header'>
+                        <h2 className='dc-mobile-dialog__title'>
+                            {title}
+                        </h2>
+                        <div
+                            className='icons btn-close dc-mobile-dialog__close-btn'
+                            onClick={props.onClose}
+                        >
+                            <Icon
+                                icon='IcCross'
+                                className='dc-mobile-dialog__close-btn-icon'
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className='dc-mobile-dialog__content'>
-                    <div className={classNames({
-                        [`dc-mobile-dialog__${wrapper_classname}`]: wrapper_classname },
-                    )}
-                    >
-                        {children}
+                    <div className='dc-mobile-dialog__content'>
+                        <div className={classNames({
+                            [`dc-mobile-dialog__${wrapper_classname}`]: wrapper_classname },
+                        )}
+                        >
+                            {children}
+                        </div>
                     </div>
-                </div>
+                </Div100vhContainer>
             </div>
         </CSSTransition>,
         document.getElementById(portal_element_id)

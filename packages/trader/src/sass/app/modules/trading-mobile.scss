@@ -1,11 +1,5 @@
 /** @define dc-modal; weak */
 .dc-modal {
-    &__container {
-        /* postcss-bem-linter: ignore */
-        &_trade-params {
-            top: 9rem !important;
-        }
-    }
     &-header {
         /* postcss-bem-linter: ignore */
         &--trade-params {

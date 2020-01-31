@@ -1,6 +1,7 @@
 import React                 from 'react';
-import Div100vh              from 'react-div-100vh';
-import { DesktopWrapper }    from '@deriv/components';
+import {
+    DesktopWrapper,
+    Div100vhContainer }      from '@deriv/components';
 import {
     isDesktop,
     isMobile }               from '@deriv/shared/utils/screen';
@@ -28,15 +29,19 @@ class Trade extends React.Component {
         const { NotificationMessages } = this.props;
         const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
         const is_trade_enabled = (this.props.form_components.length > 0) && this.props.is_trade_enabled;
-        const chart_height = isMobile() ? 'calc(100rvh - 260px)' : 'unset';
         return (
             <div id='trade_container' className='trade-container'>
                 <DesktopWrapper>
                     <PositionsDrawer />
                 </DesktopWrapper>
-                {/* Div100vh is workaround for iPhone without bezels,
+                {/* Div100vhContainer is workaround for browsers on devices
+                    with toolbars covering screen height,
                     using css vh is not returning correct screen height */}
-                <Div100vh className='chart-container' style={{ height: chart_height }}>
+                <Div100vhContainer
+                    className='chart-container'
+                    is_disabled={isDesktop()}
+                    height_offset='260px'
+                >
                     <DesktopWrapper>
                         <NotificationMessages />
                     </DesktopWrapper>
@@ -54,7 +59,7 @@ class Trade extends React.Component {
 
                     {/* Remove Test component for debugging below for production release */}
                     <Test />
-                </Div100vh>
+                </Div100vhContainer>
                 <div className={form_wrapper_class}>
                     {this.props.is_market_closed && <MarketIsClosedOverlay />}
                     <FormLayout

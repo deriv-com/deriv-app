@@ -101,7 +101,7 @@
             cursor: pointer;
             padding-left: 1rem;
 
-            &--danger {
+            &--attention {
                 background: var(--button-tertiary-hover);
             }
             &:hover {
@@ -111,17 +111,14 @@
         &-cell {
             font-weight: bold;
 
-            &--danger {
-                color: var(--text-loss-danger);
+            &--primary {
+                color: var(--brand-red-coral);
             }
             &--success {
                 color: var(--text-profit-success);
             }
-            &--disabled {
+            &--cancelled {
                 color: var(--text-less-prominent);
-            }
-            &--warning {
-                color: var(--status-warning);
             }
         }
     }

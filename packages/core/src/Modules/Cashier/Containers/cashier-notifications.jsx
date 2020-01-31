@@ -3,18 +3,20 @@ import PropTypes   from 'prop-types';
 import { Icon, Counter }    from '@deriv/components';
 import { connect } from 'Stores/connect';
 
-const CashierNotifications = (({ notifications }) => {
+const CashierNotifications = ({ p2p_notifications }) => {
+    console.log(p2p_notifications);
     return (
         <React.Fragment>
             <Icon icon='IcCashier' className='header__icon' />
-            {!!notifications &&
+            {!!p2p_notifications &&
                 <Counter
-                    count={notifications}
+                    className='cashier__counter'
+                    count={p2p_notifications}
                 />
             }
         </React.Fragment>
     )
-});
+};
 
 CashierNotifications.propTypes = {
     notifications: PropTypes.number,
@@ -22,6 +24,6 @@ CashierNotifications.propTypes = {
 
 export default connect(
     ({ modules }) => ({
-        p2p_notifications                : modules.cashier.p2p_notifications,
-    })
+        p2p_notifications: modules.cashier.p2p_notifications,
+    }),
 )(CashierNotifications);

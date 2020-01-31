@@ -101,8 +101,27 @@
             cursor: pointer;
             padding-left: 1rem;
 
+            &--danger {
+                background: var(--button-tertiary-hover);
+            }
             &:hover {
                 background: var(--general-hover);
+            }
+        }
+        &-cell {
+            font-weight: bold;
+
+            &--danger {
+                color: var(--text-loss-danger);
+            }
+            &--success {
+                color: var(--text-profit-success);
+            }
+            &--disabled {
+                color: var(--text-less-prominent);
+            }
+            &--warning {
+                color: var(--status-warning);
             }
         }
     }

@@ -67,14 +67,16 @@ class App extends Component {
         this.setState({ parameters: null });
     }
 
-    setIsAgent = async () => {
+    setIsAgent = () => new Promise( async (resolve) => {
         const agent_info = await requestWS({ p2p_agent_info: 1 });
 
         /* if there is no error means its an agent else its a client */
         if (!agent_info.error) {
-            this.setState({ agent_id: agent_info.p2p_agent_info.agent_id, is_agent: true });
+            await this.setState({ agent_id: agent_info.p2p_agent_info.agent_id, is_agent: true });
+            resolve();
         }
-    }
+        resolve();
+    })
 
     handleNotifications = (updated_orders) => {
         let notifications = 0;
@@ -128,10 +130,13 @@ class App extends Component {
         }
     };
 
-    componentDidMount() {
-        this.setIsAgent();
-
+    initializeApp = async () => {
+        await this.setIsAgent();
         subscribeWS({ p2p_order_list: 1, subscribe: 1 }, this.handleOrderListResponse);
+    }
+
+    componentDidMount() {
+        this.initializeApp();
     }
 
     componentWillUnmount = () => {
@@ -163,8 +168,7 @@ class App extends Component {
                             <div label={localize('Buy/Sell')}>
                                 <BuySell navigate={this.redirectTo} params={parameters} />
                             </div>
-                            {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
-                            <div label={localize('Incoming orders')}>
+                            <div count={this.state.notifications} label={localize('Incoming orders')}>
                                 <Orders
                                     navigate={this.redirectTo}
                                     orders={orders}

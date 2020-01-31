@@ -2,7 +2,7 @@ import React                    from 'react';
 import { Icon }                 from '@deriv/components';
 import { localize }             from '@deriv/translations';
 import { routes }               from 'Constants/index';
-import { CashierNotifications } from 'Modules/Cashier/Containers/CashierNotifications';
+import CashierNotifications     from 'Modules/Cashier/Containers/cashier-notifications.jsx';
 
 export const header_links = [
     {

@@ -1,12 +1,16 @@
-import PropTypes           from 'prop-types';
-import React               from 'react';
-import { localize }        from '@deriv/translations';
-import { connect }         from 'Stores/connect';
-import Lazy                from 'App/Containers/Lazy';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
+import Lazy from 'App/Containers/Lazy';
 
 const ChartSettingContainer = () => (
     <Lazy
-        ctor={() => import(/* webpackChunkName: "settings-chart", webpackPrefetch: true */'App/Containers/SettingsModal/settings-chart.jsx')}
+        ctor={() =>
+            import(
+                /* webpackChunkName: "settings-chart", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-chart.jsx'
+            )
+        }
     />
 );
 
@@ -25,7 +29,7 @@ class TradeSettingsExtensions extends React.Component {
 
         const menu_items = [
             {
-                icon : 'IcChart',
+                icon: 'IcChart',
                 label: localize('Charts'),
                 value: ChartSettingContainer,
                 // uncomment below lines to bring back purchase lock and purchase confirmation}
@@ -61,8 +65,6 @@ TradeSettingsExtensions.propTypes = {
     populateSettingsExtensions: PropTypes.func,
 };
 
-export default connect(
-    ({ ui }) => ({
-        populateSettingsExtensions: ui.populateSettingsExtensions,
-    })
-)(TradeSettingsExtensions);
+export default connect(({ ui }) => ({
+    populateSettingsExtensions: ui.populateSettingsExtensions,
+}))(TradeSettingsExtensions);

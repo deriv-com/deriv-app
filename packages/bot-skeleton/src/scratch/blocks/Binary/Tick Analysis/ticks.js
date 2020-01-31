@@ -1,25 +1,25 @@
-import { localize }  from '@deriv/translations';
+import { localize } from '@deriv/translations';
 
 Blockly.Blocks.ticks = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
-            message0       : localize('Ticks list'),
-            output         : 'Array',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            message0: localize('Ticks list'),
+            output: 'Array',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('This block gives you a list of the last 1000 tick values.'),
-            category       : Blockly.Categories.Tick_Analysis,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('This block gives you a list of the last 1000 tick values.'),
+            category: Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
         return {
-            'display_name': localize('Tick list'),
-            'description' : localize('This block gives you a list of the last 1000 tick values.'),
+            display_name: localize('Tick list'),
+            description: localize('This block gives you a list of the last 1000 tick values.'),
         };
     },
 };
@@ -30,20 +30,20 @@ Blockly.Blocks.ticks_string = {
     },
     definition() {
         return {
-            message0       : localize('Ticks String List'),
-            output         : 'Array',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            message0: localize('Ticks String List'),
+            output: 'Array',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Returns the list of tick values in string format'),
-            category       : Blockly.Categories.Tick_Analysis,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Returns the list of tick values in string format'),
+            category: Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
         return {
-            'display_name': localize('Tick List String'),
-            'description' : localize('Tick List String Description'),
+            display_name: localize('Tick List String'),
+            description: localize('Tick List String Description'),
         };
     },
     onchange: Blockly.Blocks.ticks.onchange,

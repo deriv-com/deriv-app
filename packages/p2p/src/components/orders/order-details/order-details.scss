@@ -25,7 +25,9 @@
             width: 100%;
         }
     }
-    &__header, &__info, &__footer {
+    &__header,
+    &__info,
+    &__footer {
         //border-bottom: 1px solid var(--general-section-1);
         padding: 1.6rem;
     }
@@ -85,7 +87,8 @@
             display: flex;
             flex-flow: row nowrap;
         }
-        &--right, &--left {
+        &--right,
+        &--left {
             display: flex;
             flex-flow: column nowrap;
             flex: 1;

@@ -1,74 +1,66 @@
-import classNames      from 'classnames';
+import classNames from 'classnames';
 import { Icon, Modal } from '@deriv/components';
-import PropTypes       from 'prop-types';
-import React           from 'react';
-import UILoader        from 'App/Components/Elements/ui-loader.jsx';
-import Lazy            from 'App/Containers/Lazy';
-import { localize }    from '@deriv/translations';
-import VerticalTab     from 'App/Components/Elements/VerticalTabs';
+import PropTypes from 'prop-types';
+import React from 'react';
+import UILoader from 'App/Components/Elements/ui-loader.jsx';
+import Lazy from 'App/Containers/Lazy';
+import { localize } from '@deriv/translations';
+import VerticalTab from 'App/Components/Elements/VerticalTabs';
 
 import 'Sass/app/modules/settings.scss';
 
 const ThemeSetting = () => (
     <Lazy
-        ctor={() => import(/* webpackChunkName: "settings-theme", webpackPrefetch: true */'App/Containers/SettingsModal/settings-theme.jsx')}
+        ctor={() =>
+            import(
+                /* webpackChunkName: "settings-theme", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-theme.jsx'
+            )
+        }
         should_load={true}
         has_progress={true}
     />
 );
 const LanguageSettingContainer = () => (
     <Lazy
-        ctor={() => import(/* webpackChunkName: "settings-language", webpackPrefetch: true */'App/Containers/SettingsModal/settings-language.jsx')}
+        ctor={() =>
+            import(
+                /* webpackChunkName: "settings-language", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-language.jsx'
+            )
+        }
         should_load={true}
         has_progress={true}
     />
 );
 
 LanguageSettingContainer.displayName = 'LanguageSettingContainer';
-ThemeSetting.displayName             = 'ThemeSettingContainer';
+ThemeSetting.displayName = 'ThemeSettingContainer';
 
 const ModalContent = ({ settings_extension }) => {
     const content = [
         {
-            icon : 'IcTheme',
+            icon: 'IcTheme',
             label: localize('Themes'),
             // eslint-disable-next-line react/display-name
             value: ThemeSetting,
-        }, {
-            icon : 'IcLanguage',
+        },
+        {
+            icon: 'IcLanguage',
             label: localize('Language'),
             value: LanguageSettingContainer,
         },
         ...(settings_extension || []),
     ];
 
-    return (
-        <VerticalTab
-            alignment='center'
-            classNameHeader='modal__tab-header'
-            id='modal'
-            list={content}
-        />
-    );
+    return <VerticalTab alignment='center' classNameHeader='modal__tab-header' id='modal' list={content} />;
 };
 
-const ToggleSettings = ({
-    enableApp,
-    is_settings_visible,
-    disableApp,
-    toggleSettings,
-    settings_extension,
-}) => {
+const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSettings, settings_extension }) => {
     const toggle_settings_class = classNames('ic-settings', 'footer__link', {
         'ic-settings--active': is_settings_visible,
     });
     return (
         <React.Fragment>
-            <a
-                id='dt_settings_toggle'
-                onClick={toggleSettings}
-                className={toggle_settings_class}
-            >
+            <a id='dt_settings_toggle' onClick={toggleSettings} className={toggle_settings_class}>
                 <Icon icon='IcGear' className='footer__icon ic-settings__icon' />
             </a>
             <React.Suspense fallback={<UILoader />}>
@@ -91,10 +83,10 @@ const ToggleSettings = ({
 };
 
 ToggleSettings.propTypes = {
-    disableApp         : PropTypes.func,
-    enableApp          : PropTypes.func,
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
     is_settings_visible: PropTypes.bool,
-    toggleSettings     : PropTypes.func,
+    toggleSettings: PropTypes.func,
 };
 
 export { ToggleSettings };

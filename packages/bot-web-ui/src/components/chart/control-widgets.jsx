@@ -1,5 +1,5 @@
-import PropTypes      from 'prop-types';
-import React          from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {
     ChartSize,
     ChartTypes,
@@ -9,12 +9,10 @@ import {
     Share,
     StudyLegend,
     Timeperiod,
-    Views }           from 'smartcharts-beta';
+    Views,
+} from 'smartcharts-beta';
 
-const ControlWidgets = ({
-    updateChartType,
-    updateGranularity,
-}) => (
+const ControlWidgets = ({ updateChartType, updateGranularity }) => (
     <React.Fragment>
         <CrosshairToggle />
         <ChartTypes onChange={updateChartType} />
@@ -29,7 +27,7 @@ const ControlWidgets = ({
 );
 
 ControlWidgets.propTypes = {
-    updateChartType  : PropTypes.func,
+    updateChartType: PropTypes.func,
     updateGranularity: PropTypes.func,
 };
 

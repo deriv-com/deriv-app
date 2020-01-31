@@ -1,19 +1,19 @@
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import { withRouter }    from 'react-router-dom';
-import { localize }      from '@deriv/translations';
-import { FadeWrapper }   from 'App/Components/Animations';
-import VerticalTab       from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
-import routes            from 'Constants/routes';
-import { connect }       from 'Stores/connect';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { localize } from '@deriv/translations';
+import { FadeWrapper } from 'App/Components/Animations';
+import VerticalTab from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
+import routes from 'Constants/routes';
+import { connect } from 'Stores/connect';
 import WalletInformation from '../../Reports/Containers/wallet-information.jsx';
 
 class Cashier extends React.Component {
-    setWrapperRef = (node) => {
+    setWrapperRef = node => {
         this.wrapper_ref = node;
     };
 
-    handleClickOutside = (event) => {
+    handleClickOutside = event => {
         if (this.wrapper_ref && !this.wrapper_ref.contains(event.target)) {
             this.props.history.push(routes.trade);
         }
@@ -33,23 +33,26 @@ class Cashier extends React.Component {
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
 
-    render () {
+    render() {
         const menu_options = () => {
             const options = [];
 
             // TODO: remove show_dp2p hash check once released
             this.props.routes.forEach(route => {
-                if ((route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
+                if (
+                    (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                     (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible) &&
-                    (route.path !== routes.cashier_dp2p || (this.props.is_dp2p_visible && /show_dp2p/.test(this.props.location.hash)))) {
-                        options.push({
-                            count  : route.path === routes.cashier_dp2p && this.props.p2p_notifications,
-                            default: route.default,
-                            icon   : route.icon_component,
-                            label  : route.title,
-                            value  : route.component,
-                            path   : route.path,
-                        });
+                    (route.path !== routes.cashier_dp2p ||
+                        (this.props.is_dp2p_visible && /show_dp2p/.test(this.props.location.hash)))
+                ) {
+                    options.push({
+                        count: route.path === routes.cashier_dp2p && this.props.p2p_notifications,
+                        default: route.default,
+                        icon: route.icon_component,
+                        label: route.title,
+                        value: route.component,
+                        path: route.path,
+                    });
                 }
             });
 
@@ -61,12 +64,12 @@ class Cashier extends React.Component {
                 onClick: () => {
                     this.props.history.push(routes.trade);
                 },
-                icon : 'IcCross',
+                icon: 'IcCross',
                 title: localize('Close'),
             },
             {
                 component: () => <WalletInformation />,
-                title    : '',
+                title: '',
             },
         ];
         return (
@@ -95,31 +98,30 @@ class Cashier extends React.Component {
 }
 
 Cashier.propTypes = {
-    disableRouteMode                 : PropTypes.func,
-    enableRouteMode                  : PropTypes.func,
-    history                          : PropTypes.object,
-    is_dp2p_visible                  : PropTypes.bool,
+    disableRouteMode: PropTypes.func,
+    enableRouteMode: PropTypes.func,
+    history: PropTypes.object,
+    is_dp2p_visible: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
-    is_payment_agent_visible         : PropTypes.bool,
-    is_visible                       : PropTypes.bool,
-    location                         : PropTypes.object,
-    onMount                          : PropTypes.func,
-    p2p_notifications                : PropTypes.number,
-    routes                           : PropTypes.arrayOf(PropTypes.object),
-    toggleCashier                    : PropTypes.func,
+    is_payment_agent_visible: PropTypes.bool,
+    is_visible: PropTypes.bool,
+    location: PropTypes.object,
+    onMount: PropTypes.func,
+    p2p_notifications: PropTypes.number,
+    routes: PropTypes.arrayOf(PropTypes.object),
+    toggleCashier: PropTypes.func,
 };
 
-export default connect(
-    ({ modules, ui }) => ({
-        disableRouteMode        : ui.disableRouteModal,
-        enableRouteMode         : ui.setRouteModal,
-        is_dp2p_visible         : modules.cashier.is_dp2p_visible,
-        is_visible              : ui.is_cashier_visible,
-        is_payment_agent_visible: !!(modules.cashier.config.payment_agent.filtered_list.length
-            || modules.cashier.config.payment_agent.agents.length),
-        is_payment_agent_transfer_visible: modules.cashier.config.payment_agent_transfer.is_payment_agent,
-        onMount                          : modules.cashier.onMountCommon,
-        p2p_notifications                : modules.cashier.p2p_notifications,
-        toggleCashier                    : ui.toggleCashier,
-    })
-)(withRouter(Cashier));
+export default connect(({ modules, ui }) => ({
+    disableRouteMode: ui.disableRouteModal,
+    enableRouteMode: ui.setRouteModal,
+    is_dp2p_visible: modules.cashier.is_dp2p_visible,
+    is_visible: ui.is_cashier_visible,
+    is_payment_agent_visible: !!(
+        modules.cashier.config.payment_agent.filtered_list.length || modules.cashier.config.payment_agent.agents.length
+    ),
+    is_payment_agent_transfer_visible: modules.cashier.config.payment_agent_transfer.is_payment_agent,
+    onMount: modules.cashier.onMountCommon,
+    p2p_notifications: modules.cashier.p2p_notifications,
+    toggleCashier: ui.toggleCashier,
+}))(withRouter(Cashier));

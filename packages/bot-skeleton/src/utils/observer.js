@@ -81,7 +81,10 @@ export default class Observer {
     }
 
     unregister(event, f) {
-        this.eam = this.eam.set(event, this.eam.get(event).filter(r => r.searchBy !== f));
+        this.eam = this.eam.set(
+            event,
+            this.eam.get(event).filter(r => r.searchBy !== f)
+        );
     }
 
     isRegistered(event) {
@@ -91,7 +94,7 @@ export default class Observer {
     unregisterAll(event) {
         this.eam = this.eam.delete(event);
     }
-    
+
     emit(event, data) {
         if (this.eam.has(event)) {
             this.eam.get(event).forEach(action => action.action(data));

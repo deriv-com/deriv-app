@@ -1,17 +1,17 @@
 import { localize } from '@deriv/translations';
-import { config }   from '../../../../../constants/config';
+import { config } from '../../../../../constants/config';
 
 Blockly.Blocks.read_ohlc_obj = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('Read %1 value in candle %2'),
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'OHLCFIELD_LIST',
+                    type: 'field_dropdown',
+                    name: 'OHLCFIELD_LIST',
                     options: config.ohlcFields,
                 },
                 {
@@ -19,19 +19,19 @@ Blockly.Blocks.read_ohlc_obj = {
                     name: 'OHLCOBJ',
                 },
             ],
-            output         : 'Number',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('This block gives you the selected candle value.'),
-            category       : Blockly.Categories.Candle,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('This block gives you the selected candle value.'),
+            category: Blockly.Categories.Candle,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Read candle value (2)'),
-            'description' : localize('This block gives you the selected candle value.'),
+            display_name: localize('Read candle value (2)'),
+            description: localize('This block gives you the selected candle value.'),
         };
     },
     getRequiredValueInputs() {

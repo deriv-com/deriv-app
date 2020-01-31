@@ -16,10 +16,12 @@
         &:hover {
             border-color: var(--border-hover);
         }
-        &:focus, &:active {
+        &:focus,
+        &:active {
             border-color: var(--border-active);
         }
-        &::-ms-clear { // Edge: hide clear icon for increment input
+        &::-ms-clear {
+            // Edge: hide clear icon for increment input
             display: none;
         }
     }
@@ -87,7 +89,8 @@
         opacity: 1;
 
         &--left {
-            &-enter, &-exit {
+            &-enter,
+            &-exit {
                 transform: translate3d(-275px, 0, 0);
                 opacity: 0;
             }
@@ -95,12 +98,14 @@
                 transform: translate3d(-295px, 0, 0);
                 opacity: 1;
             }
-            &-enter-done, &-exit {
+            &-enter-done,
+            &-exit {
                 transition: transform 0.25s ease, opacity 0.25s linear;
             }
         }
         &--bottom {
-            &-enter, &-exit {
+            &-enter,
+            &-exit {
                 transform: translate3d(0, 0, 0);
                 opacity: 0;
             }
@@ -108,7 +113,8 @@
                 transform: translate3d(0, 33px, 0);
                 opacity: 1;
             }
-            &-enter-done, &-exit {
+            &-enter-done,
+            &-exit {
                 transition: transform 0.25s ease, opacity 0.25s linear;
             }
         }

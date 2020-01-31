@@ -38,7 +38,6 @@
                 left: 0;
                 right: 0;
                 margin: auto;
-
             }
             &-path {
                 stroke-dasharray: 1, 200;
@@ -73,7 +72,8 @@
 }
 
 @keyframes colorRed {
-    100%, 0% {
+    100%,
+    0% {
         stroke: var(--brand-red-coral);
     }
 }

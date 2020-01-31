@@ -1,10 +1,6 @@
-import {
-    action,
-    observable,
-    reaction,
-}                            from 'mobx';
+import { action, observable, reaction } from 'mobx';
 import { onWorkspaceResize } from '@deriv/bot-skeleton';
-import { tabs_title }        from '../constants/bot-contents';
+import { tabs_title } from '../constants/bot-contents';
 
 export default class MainContentStore {
     constructor(root_store) {
@@ -13,7 +9,8 @@ export default class MainContentStore {
 
         this.disposeIsDrawerOpenReaction = reaction(
             () => run_panel.is_drawer_open,
-            () => this.setContainerSize());
+            () => this.setContainerSize()
+        );
     }
 
     @observable active_tab = tabs_title.WORKSPACE;

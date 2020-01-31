@@ -1,15 +1,20 @@
 // Firefox 1.0+
-const isFirefox =  () => typeof InstallTrigger !== 'undefined';
+const isFirefox = () => typeof InstallTrigger !== 'undefined';
 
 // Safari 3.0+ "[object HTMLElementConstructor]"
 // eslint-disable-next-line no-undef
-const isSafari = () => /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === '[object SafariRemoteNotification]'; })(!window.safari || (typeof safari !== 'undefined' && safari.pushNotification));
+const isSafari = () =>
+    /constructor/i.test(window.HTMLElement) ||
+    (function(p) {
+        return p.toString() === '[object SafariRemoteNotification]';
+        // eslint-disable-next-line no-undef
+    })(!window.safari || (typeof safari !== 'undefined' && safari.pushNotification));
 
 // Edge 20+
-const isEdge = () =>  !isIE && !!window.StyleMedia;
+const isEdge = () => !isIE && !!window.StyleMedia;
 
 // Internet Explorer 6-11
-const isIE = /* @cc_on!@ */false || !!document.documentMode;
+const isIE = /* @cc_on!@ */ false || !!document.documentMode;
 
 module.exports = {
     isFirefox,

@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = {
     parser: 'babel-eslint',
+    plugins: ['prettier'],
     env: {
         es6    : true,
         browser: true,
@@ -66,6 +67,8 @@ module.exports = {
         // 'react/sort-prop-types'             : ['error', { ignoreCase: true, sortShapeProp: true }],
     },
     extends: [
+        'prettier',
+        'prettier/react',
         'airbnb-base',
         'binary',
         'plugin:react/recommended',

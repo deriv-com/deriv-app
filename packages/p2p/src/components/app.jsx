@@ -82,22 +82,22 @@ class App extends Component {
         updated_orders.forEach(order => {
             const modified_order = new OrderInfo(order)
 
-            const current_state = {
+            const user_state = {
                 is_agent_buyer  : this.state.is_agent && modified_order.is_buyer,
                 is_agent_seller : this.state.is_agent && !modified_order.is_buyer,
                 is_client_buyer : !this.state.is_agent && modified_order.is_buyer,
                 is_client_seller: !this.state.is_agent && !modified_order.is_buyer,
             }
 
-            const sa = {
+            const order_state = {
                 'pending'        : modified_order.is_pending,
                 'buyer-confirmed': modified_order.is_buyer_confirmed
             }
 
-            Object.keys(notifications_map).forEach(kemem => {
-                if (sa[kemem]) {
-                    Object.keys(notifications_map[kemem]).forEach(abc => {
-                        notifications += current_state[abc] && notifications_map[kemem][abc]
+            Object.keys(notifications_map).forEach(notif_state => {
+                if (order_state[notif_state]) {
+                    Object.keys(notifications_map[notif_state]).forEach(notif_condition => {
+                        notifications += user_state[notif_condition] && notifications_map[notif_state][notif_condition];
                     })
                 }
             })
@@ -145,7 +145,6 @@ class App extends Component {
         if (is_virtual || currency !== allowed_currency) {
             return <h1 className='p2p-not-allowed'>{localize('This feature is only available for real-money USD accounts right now.')}</h1>;
         }
-        console.log(this.state.notifications)
 
         return (
             <Dp2pProvider

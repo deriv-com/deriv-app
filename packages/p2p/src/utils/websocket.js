@@ -75,7 +75,6 @@ const getModifiedP2POfferList = (response) => {
             transaction_currency,
             transaction_currency_decimals,
             advertiser_name         : filtered_list[i].agent_name,
-            advertiser_id           : filtered_list[i].agent_id,
             advertiser_notes        : filtered_list[i].offer_description,
             display_available_amount: formatMoney(offer_currency, available_amount),
             display_max_available   : formatMoney(offer_currency, max_available), // for displaying limit fields in buy/sell and ads table

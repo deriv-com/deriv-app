@@ -20,7 +20,6 @@ const HelpBase = ({
     onSequenceClick,
     title,
 }) => {
-    const { display_name } = Blockly.Blocks[block_type].meta();
     const block_help_component = help_string && help_content_config[block_type];
     let text_count = 0;
 
@@ -35,7 +34,7 @@ const HelpBase = ({
                     <Button
                         className='flyout__button-add'
                         has_effect
-                        id={`gtm-${  display_name.replace(/\s/ig, '-')}`}
+                        id={`db-flyout-help__add--${block_type}`}
                         onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}
                         primary
                         text={localize('Add')}
@@ -82,6 +81,7 @@ const HelpBase = ({
                 !is_search_flyout &&
                     <div className='flyout__help-footer'>
                         <Button
+                            id='db-flyout-help__previous-button'
                             className='flyout__button-previous'
                             has_effect
                             onClick={() => onSequenceClick(false)}
@@ -89,6 +89,7 @@ const HelpBase = ({
                             type='button'
                         />
                         <Button
+                            id='db-flyout-help__next-button'
                             className='flyout__button-next'
                             has_effect
                             onClick={() => onSequenceClick(false)}

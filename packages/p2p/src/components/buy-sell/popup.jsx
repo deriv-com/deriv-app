@@ -25,7 +25,7 @@ class Popup extends Component {
     };
 
     componentDidMount() {
-        this.setTotalAmount(this.props.ad.min_transaction);
+        this.setTotalAmount(this.props.ad.min_available);
     }
 
     handleSubmit = async (values, { setStatus, setSubmitting }) => {
@@ -75,7 +75,7 @@ class Popup extends Component {
                     </div>
                     <Formik
                         validate={this.validatePopup}
-                        initialValues={{ amount: ad.min_transaction }}
+                        initialValues={{ amount: ad.min_available }}
                         onSubmit={this.handleSubmit}
                     >
                         {({
@@ -125,8 +125,8 @@ class Popup extends Component {
                                                             <Localize
                                                                 i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
                                                                 values={{
-                                                                    min     : ad.min_transaction,
-                                                                    max     : ad.max_transaction,
+                                                                    min     : ad.min_available,
+                                                                    max     : ad.max_available,
                                                                     currency: ad.offer_currency,
                                                                 }}
                                                             />
@@ -174,14 +174,14 @@ class Popup extends Component {
         const validations = {
             amount: [
                 v => !!v,
-                v => v >= ad.min_transaction,
-                v => v <= ad.max_transaction,
+                v => v >= ad.min_available,
+                v => v <= ad.max_available,
                 v => countDecimalPlaces(v) <= ad.offer_currency_decimals,
             ],
         };
 
         const display_initial_amount =
-            CurrencyUtils.formatMoney(ad.offer_currency, ad.min_transaction, true, ad.offer_currency_decimals);
+            CurrencyUtils.formatMoney(ad.offer_currency, ad.min_available, true, ad.offer_currency_decimals);
 
         const display_max_amount =
             CurrencyUtils.formatMoney(ad.offer_currency, ad.max_transaction, true, ad.offer_currency_decimals);

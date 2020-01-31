@@ -30,7 +30,7 @@ const RowComponent = React.memo(({ data, row_actions, style }) => (
         <Table.Row>
             <Table.Cell>{type[data.type]}{' '}{data.offer_id}</Table.Cell>
             <Table.Cell>{data.display_available_amount}{' '}{data.offer_currency}</Table.Cell>
-            <Table.Cell>{data.display_min_transaction}-{data.display_max_transaction}{' '}{data.offer_currency}</Table.Cell>
+            <Table.Cell>{data.display_min_available}-{data.display_max_available}{' '}{data.offer_currency}</Table.Cell>
             <Table.Cell className='p2p-my-ads__table-price'>{data.display_price_rate}{' '}{data.transaction_currency}</Table.Cell>
             <Table.Cell>{data.display_payment_method}</Table.Cell>
             <Table.Cell>
@@ -65,7 +65,7 @@ export class MyAdsTable extends React.Component {
     componentDidMount() {
         this.is_mounted = true;
 
-        requestWS({ p2p_offer_list: 1, agent_id: this.context.agent_id }).then((response) => {
+        requestWS({ p2p_agent_offers: 1 }).then((response) => {
             if (this.is_mounted) {
                 this.setState({ items: response, is_loading: false });
             }

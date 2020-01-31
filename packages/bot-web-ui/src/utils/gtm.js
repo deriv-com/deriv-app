@@ -76,6 +76,7 @@ const GTM = (() => {
 
     return {
         init,
+        pushDataLayer,
     };
 })();
 

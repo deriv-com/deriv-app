@@ -180,7 +180,7 @@ export default class QuickStrategyStore {
         const market            = await contracts_for.getMarketBySymbol(symbol);
         const submarket         = await contracts_for.getSubmarketBySymbol(symbol);
         const trade_type_cat    = await contracts_for.getTradeTypeCategoryByTradeType(trade_type);
-        
+
         const { strategies }    = config;
         const strategy_name     = Object.keys(strategies).find(s => strategies[s].index === this.active_index);
         const strategy_xml      = await import(/* webpackChunkName: `[request]` */ `../xml/${strategy_name}.xml`);

@@ -39,6 +39,12 @@
     background: var(--button-primary-default);
     color: var(--text-colored-background);
 
+    &:hover:not([disabled]) {
+      background: var(--button-primary-hover);
+    }
+    &:active:not([disabled]) {
+      background: var(--button-primary-default);
+    }
     &:disabled,
     &[disabled] {
       opacity: 0.32;

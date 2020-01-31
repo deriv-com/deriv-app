@@ -42,8 +42,8 @@ const Icon = ({
         filename = getKebabCase(filenames[1]);
     }
 
-    const sprite_id = icon.startsWith('IcUnderlying') 
-        ? `ic-underlying-${icon.split('IcUnderlying')[1].toUpperCase()}` 
+    const sprite_id = icon.startsWith('IcUnderlying')
+        ? `ic-underlying-${icon.split('IcUnderlying')[1].toUpperCase()}`
         : getKebabCase(icon);
 
     return (

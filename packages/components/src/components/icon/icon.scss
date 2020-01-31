@@ -31,4 +31,7 @@
         --fill-color2: var(--brand-secondary);
         --fill-color3: #{$color-white};
     }
+    > use {
+        pointer-events: none;
+    }
 }

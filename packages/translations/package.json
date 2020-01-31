@@ -14,7 +14,8 @@
     "test": "echo \"No test specified\"",
     "build": "rimraf lib && webpack --mode=production --optimize-minimize --progress",
     "build:travis": "rimraf lib && webpack --mode=production --optimize-minimize",
-    "prettify": "prettier --write \"./src/**/*.{js,jsx,scss}\"",
+    "prettify": "prettier --write \"./{script,src}/**/*.{js,jsx,scss}\"",
+    "precommit": "lint-staged",
     "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
     "start": "rimraf lib && npm run test && npm run serve",
     "translate": "sh ./scripts/update-translations.sh",
@@ -28,15 +29,15 @@
     "url": "https://github.com/binary-com/deriv-app/issues"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.4.4",
     "commander": "^3.0.2",
     "crc-32": "^1.2.0",
     "glob": "^7.1.5",
     "i18next": "^18.0.0",
-    "react-i18next": "^11.0.0",
-    "@babel/polyfill": "^7.4.4",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-i18next": "^11.0.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",
@@ -64,6 +65,7 @@
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.14.2",
+    "lint-staged": "^10.0.6",
     "prettier": "^1.19.1",
     "react": "^16.8.6",
     "webpack": "^4.34.0",

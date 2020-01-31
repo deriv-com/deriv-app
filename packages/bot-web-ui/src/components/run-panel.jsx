@@ -32,13 +32,13 @@ const drawerContent = ({
                 <Summary />
             </div>
             <div
-                id='db-run-panel-tab__summary'
+                id='db-run-panel-tab__transactions'
                 label={localize('Transactions')}
             >
                 <Transactions />
             </div>
             <div
-                id='db-run-panel-tab__summary'
+                id='db-run-panel-tab__journal'
                 label={localize('Journal')}
             >
                 <Journal />

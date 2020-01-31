@@ -27,6 +27,7 @@
     @include typeface(--paragraph-center-bold-black, unset);
     color: var(--text-general);
     display: flex;
+    pointer-events: none;
   }
   &__icon {
     padding-right: 0.8rem;
@@ -38,13 +39,6 @@
     background: var(--button-primary-default);
     color: var(--text-colored-background);
 
-    &__text,
-    &__icon {
-      @include typeface(--paragraph-center-bold-black, unset);
-      color: var(--text-general);
-      display: flex;
-      pointer-events: none;
-    }
     &:disabled,
     &[disabled] {
       opacity: 0.32;

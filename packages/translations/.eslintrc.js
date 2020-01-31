@@ -64,6 +64,8 @@ module.exports = {
         // 'react/sort-prop-types'             : ['error', { ignoreCase: true, sortShapeProp: true }],
     },
     extends: [
+        'prettier',
+        'prettier/react',
         'airbnb-base',
         "binary",
         'plugin:react/recommended',

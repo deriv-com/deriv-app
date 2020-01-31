@@ -46,6 +46,7 @@ module.exports = {
         "import/no-unresolved"              : [2, { ignore: ['@deriv/components' , '@deriv/shared'] }],
     },
     extends: [
+        'prettier',
         'airbnb-base',
         "binary",
     ],

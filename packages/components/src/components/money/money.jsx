@@ -19,7 +19,8 @@ const Money = ({
     // if it's formatted already then don't make any changes unless we should remove extra -/+ signs
     const value = (has_sign || should_format) ? Math.abs(amount) : amount;
     const decimalPart = CurrencyUtils.getDecimalPart(amount);
-    const needsCryptoToggle = CurrencyUtils.isCryptocurrency(currency) && decimalPart && decimalPart.length > CurrencyUtils.getDecimalPlaces(currency);
+    const needsCryptoToggle = CurrencyUtils.isCryptocurrency(currency) &&
+        (decimalPart && decimalPart.length > CurrencyUtils.getDecimalPlaces(currency));
     let final_amount = null;
     if (needsCryptoToggle) {
         final_amount = CurrencyUtils.getCryptoFormat(value);
@@ -42,9 +43,9 @@ Money.propTypes = {
         PropTypes.number,
         PropTypes.string,
     ]),
-    className: PropTypes.string,
-    currency: PropTypes.string,
-    has_sign: PropTypes.bool,
+    className    : PropTypes.string,
+    currency     : PropTypes.string,
+    has_sign     : PropTypes.bool,
     should_format: PropTypes.bool,
 };
 

@@ -1,15 +1,9 @@
-import classNames      from 'classnames';
-import PropTypes       from 'prop-types';
-import React           from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { formatMoney } from '_common/base/currency_base';
 
-const Money = ({
-    amount,
-    className,
-    currency = 'USD',
-    has_sign,
-    is_formatted = true,
-}) => {
+const Money = ({ amount, className, currency = 'USD', has_sign, is_formatted = true }) => {
     let sign = '';
     if (+amount && (amount < 0 || has_sign)) {
         sign = amount > 0 ? '+' : '-';
@@ -28,13 +22,10 @@ const Money = ({
 };
 
 Money.propTypes = {
-    amount: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    className   : PropTypes.string,
-    currency    : PropTypes.string,
-    has_sign    : PropTypes.bool,
+    amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    className: PropTypes.string,
+    currency: PropTypes.string,
+    has_sign: PropTypes.bool,
     is_formatted: PropTypes.bool,
 };
 

@@ -1,10 +1,8 @@
-import classNames         from 'classnames';
-import React              from 'react';
-import { withRouter }     from 'react-router-dom';
-import { Icon }           from '@deriv/components';
-import {
-    VerticalTabHeaders,
-    VerticalTabHeader }   from '../VerticalTabs';
+import classNames from 'classnames';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { Icon } from '@deriv/components';
+import { VerticalTabHeaders, VerticalTabHeader } from '../VerticalTabs';
 
 const MainHeaderLayout = ({ children }) => <div className='side-menu__main-header-layout'>{children}</div>;
 
@@ -19,15 +17,12 @@ const MainHeaders = ({ items, handleSubroute, active_title }) => (
                     <VerticalTabHeader
                         item={item}
                         className={classNames('side-menu__header', {
-                            'side-menu__header--active'  : item.title === active_title,
+                            'side-menu__header--active': item.title === active_title,
                             'side-menu__header--disabled': item.is_disabled,
                         })}
                         onChange={handleSubroute}
                     >
-                        <Icon
-                            icon='IcChevronRight'
-                            className='side-menu__icon'
-                        />
+                        <Icon icon='IcChevronRight' className='side-menu__icon' />
                     </VerticalTabHeader>
                 </div>
             ))}
@@ -35,12 +30,7 @@ const MainHeaders = ({ items, handleSubroute, active_title }) => (
 );
 
 const SubHeaders = ({ items, onChange, selected, is_routed }) => (
-    <VerticalTabHeaders
-        items={items}
-        onChange={onChange}
-        selected={selected}
-        is_routed={is_routed}
-    />
+    <VerticalTabHeaders items={items} onChange={onChange} selected={selected} is_routed={is_routed} />
 );
 
 class SideMenuHeaders extends React.PureComponent {
@@ -50,7 +40,7 @@ class SideMenuHeaders extends React.PureComponent {
         if (selected.title !== active_title) {
             history.push(selected.subroutes[0].path);
         }
-    }
+    };
 
     render() {
         const { active_title, onChange, selected, items, header_title, is_routed } = this.props;
@@ -59,11 +49,11 @@ class SideMenuHeaders extends React.PureComponent {
         return (
             <>
                 <MainHeaderLayout>
-                    {header_title &&
+                    {header_title && (
                         <div className='side-menu__heading'>
                             <h1 className='side-menu__title'>{header_title}</h1>
                         </div>
-                    }
+                    )}
                     <MainHeaders items={items} handleSubroute={this.handleSubroute} active_title={active_title} />
                 </MainHeaderLayout>
                 <SubHeaderLayout>

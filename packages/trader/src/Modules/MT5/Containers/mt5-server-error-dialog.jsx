@@ -1,8 +1,8 @@
-import { Dialog }           from '@deriv/components';
-import PropTypes            from 'prop-types';
+import { Dialog } from '@deriv/components';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { localize }         from '@deriv/translations';
-import { connect }          from 'Stores/connect';
+import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 
 class MT5ServerErrorDialog extends Component {
     render() {
@@ -25,19 +25,19 @@ class MT5ServerErrorDialog extends Component {
 }
 
 MT5ServerErrorDialog.propTypes = {
-    clearMt5Error                : PropTypes.func,
-    disableApp                   : PropTypes.func,
-    enableApp                    : PropTypes.func,
-    error_message                : PropTypes.string,
-    has_mt5_error                : PropTypes.bool,
+    clearMt5Error: PropTypes.func,
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
+    error_message: PropTypes.string,
+    has_mt5_error: PropTypes.bool,
     is_mt5_success_dialog_enabled: PropTypes.bool,
 };
 
 export default connect(({ ui, modules }) => ({
-    clearMt5Error                : modules.mt5.clearMt5Error,
-    disableApp                   : ui.disableApp,
-    enableApp                    : ui.enableApp,
-    error_message                : modules.mt5.error_message,
-    has_mt5_error                : modules.mt5.has_mt5_error,
+    clearMt5Error: modules.mt5.clearMt5Error,
+    disableApp: ui.disableApp,
+    enableApp: ui.enableApp,
+    error_message: modules.mt5.error_message,
+    has_mt5_error: modules.mt5.has_mt5_error,
     is_mt5_success_dialog_enabled: modules.mt5.is_mt5_success_dialog_enabled,
 }))(MT5ServerErrorDialog);

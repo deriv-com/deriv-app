@@ -1,14 +1,6 @@
-
-import {
-    observable,
-    action,
-    runInAction,
-}                    from 'mobx';
-import { localize }  from '@deriv/translations';
-import { ApiHelpers,
-    config,
-    load,
-}                    from '@deriv/bot-skeleton';
+import { observable, action, runInAction } from 'mobx';
+import { localize } from '@deriv/translations';
+import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
 
 export default class QuickStrategyStore {
     constructor(root_store) {
@@ -16,21 +8,21 @@ export default class QuickStrategyStore {
     }
 
     initial_values = {
-        symbol       : 'WLDAUD',
-        trade_type   : 'callput',
+        symbol: 'WLDAUD',
+        trade_type: 'callput',
         duration_type: 't',
-        duration     : 5,
-        stake        : '',
-        size         : '',
-        loss         : '',
-        profit       : '',
+        duration: 5,
+        stake: '',
+        size: '',
+        loss: '',
+        profit: '',
     };
 
     @observable is_strategy_modal_open = false;
-    @observable active_index           = 0;
-    @observable market_dropdown        = {};
-    @observable trade_type_dropdown    = {};
-    @observable duration_dropdown      = [];
+    @observable active_index = 0;
+    @observable market_dropdown = {};
+    @observable trade_type_dropdown = {};
+    @observable duration_dropdown = [];
 
     @action.bound
     toggleStrategyModal() {
@@ -50,25 +42,16 @@ export default class QuickStrategyStore {
     @action.bound
     async createStrategy(values) {
         const { contracts_for } = ApiHelpers.instance;
-        const {
-            symbol,
-            trade_type,
-            duration_type,
-            duration,
-            stake,
-            size,
-            loss,
-            profit,
-        }                    = values;
-        const market         = await contracts_for.getMarketBySymbol(symbol);
-        const submarket      = await contracts_for.getSubmarketBySymbol(symbol);
+        const { symbol, trade_type, duration_type, duration, stake, size, loss, profit } = values;
+        const market = await contracts_for.getMarketBySymbol(symbol);
+        const submarket = await contracts_for.getSubmarketBySymbol(symbol);
         const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(trade_type);
         const { strategies } = config;
-        const strategy_name  = Object.keys(strategies).find(strategy =>
-            strategies[strategy].index === this.active_index
+        const strategy_name = Object.keys(strategies).find(
+            strategy => strategies[strategy].index === this.active_index
         );
-        const strategy_xml   = await import(/* webpackChunkName: `[request]` */ `../xml/${strategy_name}.xml`);
-        const strategy_dom   = Blockly.Xml.textToDom(strategy_xml.default);
+        const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${strategy_name}.xml`);
+        const strategy_dom = Blockly.Xml.textToDom(strategy_xml.default);
 
         const modifyValueInputs = (key, value) => {
             const el_value_inputs = strategy_dom.querySelectorAll(`value[strategy_value="${key}"]`);
@@ -90,7 +73,7 @@ export default class QuickStrategyStore {
             market,
             submarket,
             symbol,
-            tradetype   : trade_type,
+            tradetype: trade_type,
             tradetypecat: trade_type_cat,
             durationtype: duration_type,
             duration,
@@ -103,9 +86,9 @@ export default class QuickStrategyStore {
         Object.keys(fields_to_update).forEach(key => {
             const value = fields_to_update[key];
 
-            if (!isNaN(value)){
+            if (!isNaN(value)) {
                 modifyValueInputs(key, value);
-            } else if (typeof value === 'string'){
+            } else if (typeof value === 'string') {
                 modifyFieldDropdownValues(key, value);
             }
         });
@@ -146,10 +129,10 @@ export default class QuickStrategyStore {
         Object.keys(values).forEach(key => {
             const value = values[key];
 
-            if (number_field.includes(key)){
+            if (number_field.includes(key)) {
                 if (isNaN(value)) {
                     errors[key] = localize('Must be a number');
-                } else if (value <= 0){
+                } else if (value <= 0) {
                     errors[key] = localize('Must be a number higher than 0');
                 } else if (/^0+(?=\d)/.test(value)) {
                     errors[key] = localize('Invalid number format');
@@ -174,7 +157,7 @@ export default class QuickStrategyStore {
     @action.bound
     async onModalOpen() {
         const { active_symbols } = ApiHelpers.instance;
-        const market_options     = await active_symbols.getAssetOptions();
+        const market_options = await active_symbols.getAssetOptions();
 
         await this.updateTradetypeDropdown();
         await this.updateDurationDropdown();
@@ -198,11 +181,11 @@ export default class QuickStrategyStore {
 
     @action.bound
     async updateTradetypeDropdown(setFieldValue = null, symbol = this.initial_values.symbol) {
-        const { contracts_for }  = ApiHelpers.instance;
+        const { contracts_for } = ApiHelpers.instance;
         const trade_type_options = await contracts_for.getGroupedTradeTypes(symbol);
         const first_trade_type_option = trade_type_options[Object.keys(trade_type_options)[0]][0].value;
 
-        runInAction(() => this.trade_type_dropdown = trade_type_options);
+        runInAction(() => (this.trade_type_dropdown = trade_type_options));
 
         if (setFieldValue) {
             setFieldValue('trade_type', first_trade_type_option);
@@ -229,7 +212,7 @@ export default class QuickStrategyStore {
         const durations = await contracts_for.getDurations(symbol, trade_type);
         const first_duration_option = durations[Object.keys(durations)[0]].unit;
 
-        runInAction(() => this.duration_dropdown = durations);
+        runInAction(() => (this.duration_dropdown = durations));
 
         if (setFieldValue) {
             setFieldValue('duration_type', first_duration_option);
@@ -247,10 +230,7 @@ export default class QuickStrategyStore {
     }
 
     @action.bound
-    async updateDurationValue(
-        setFieldValue = null,
-        duration_type = this.initial_values.duration_type
-    ) {
+    async updateDurationValue(setFieldValue = null, duration_type = this.initial_values.duration_type) {
         const min_duration = this.duration_dropdown.filter(duration => duration.unit === duration_type)[0].min;
 
         if (setFieldValue) {

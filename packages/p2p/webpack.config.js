@@ -64,6 +64,7 @@ module.exports = {
                         path.resolve(__dirname, 'scripts', 'dp2p-css-unit-loader.js'),
                     ] : []),
                     'css-loader',
+                    'postcss-loader',
                     'sass-loader',
                     {
                         loader: 'sass-resources-loader',

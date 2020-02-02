@@ -1,33 +1,20 @@
-import PropTypes       from 'prop-types';
-import React           from 'react';
-import { SlideIn }     from 'App/Components/Animations';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { SlideIn } from 'App/Components/Animations';
 import InfoBoxLongcode from './info-box-longcode.jsx';
-import ContractError   from '../contract-error.jsx';
+import ContractError from '../contract-error.jsx';
 
-const InfoBox = ({
-    contract_info,
-    error_message,
-    removeError,
-}) => {
+const InfoBox = ({ contract_info, error_message, removeError }) => {
     const Contents = InfoBoxLongcode;
-    const is_ready = !!(contract_info.longcode);
+    const is_ready = !!contract_info.longcode;
     return (
-        <SlideIn
-            is_visible={is_ready}
-            className='info-box-container'
-            keyname='info-box-container'
-        >
-            { !!(contract_info.contract_type) &&
+        <SlideIn is_visible={is_ready} className='info-box-container' keyname='info-box-container'>
+            {!!contract_info.contract_type && (
                 <div className='info-box'>
-                    <Contents
-                        contract_info={contract_info}
-                    />
+                    <Contents contract_info={contract_info} />
                 </div>
-            }
-            <ContractError
-                message={error_message}
-                onClickClose={removeError}
-            />
+            )}
+            <ContractError message={error_message} onClickClose={removeError} />
         </SlideIn>
     );
 };
@@ -35,7 +22,7 @@ const InfoBox = ({
 InfoBox.propTypes = {
     contract_info: PropTypes.object,
     error_message: PropTypes.string,
-    removeError  : PropTypes.func,
+    removeError: PropTypes.func,
 };
 
 export default InfoBox;

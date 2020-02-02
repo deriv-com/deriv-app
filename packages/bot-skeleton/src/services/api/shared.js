@@ -1,7 +1,7 @@
-import _Symbol                     from './symbolApi';
+import _Symbol from './symbolApi';
 import { generateLiveApiInstance } from './appId';
-import TicksService                from './ticks_service';
-import Observer                    from '../../utils/observer';
+import TicksService from './ticks_service';
+import Observer from '../../utils/observer';
 
 export const symbolApi = new _Symbol(generateLiveApiInstance());
 

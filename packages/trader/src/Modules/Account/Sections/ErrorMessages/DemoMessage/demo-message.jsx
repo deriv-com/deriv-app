@@ -1,6 +1,6 @@
-import React              from 'react';
-import { Icon }           from '@deriv/components';
-import { localize }       from '@deriv/translations';
+import React from 'react';
+import { Icon } from '@deriv/components';
+import { localize } from '@deriv/translations';
 import IconMessageContent from '../../../Components/icon-message-content.jsx';
 
 const DemoMessage = () => (

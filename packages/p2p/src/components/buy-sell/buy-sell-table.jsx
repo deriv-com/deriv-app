@@ -1,9 +1,9 @@
-import React         from 'react';
-import PropTypes     from 'prop-types';
-import { Table }     from '@deriv/components';
-import Dp2pContext   from 'Components/context/dp2p-context';
-import { localize }  from 'Components/i18next';
-import { BuyTable }  from './buy-table.jsx';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Table } from '@deriv/components';
+import Dp2pContext from 'Components/context/dp2p-context';
+import { localize } from 'Components/i18next';
+import { BuyTable } from './buy-table.jsx';
 import { SellTable } from './sell-table.jsx';
 
 export const BuySellTable = ({ setSelectedAd, table_type }) => {
@@ -23,11 +23,7 @@ export const BuySellTable = ({ setSelectedAd, table_type }) => {
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                { is_buy ?
-                    <BuyTable setSelectedAd={setSelectedAd} />
-                    :
-                    <SellTable setSelectedAd={setSelectedAd} />
-                }
+                {is_buy ? <BuyTable setSelectedAd={setSelectedAd} /> : <SellTable setSelectedAd={setSelectedAd} />}
             </Table.Body>
         </Table>
     );
@@ -35,6 +31,6 @@ export const BuySellTable = ({ setSelectedAd, table_type }) => {
 
 BuySellTable.propTypes = {
     exchange_to_currency: PropTypes.string,
-    setSelectedAd       : PropTypes.func,
-    table_type          : PropTypes.string,
+    setSelectedAd: PropTypes.func,
+    table_type: PropTypes.string,
 };

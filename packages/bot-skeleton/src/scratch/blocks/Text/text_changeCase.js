@@ -1,17 +1,17 @@
-import { localize }           from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_changeCase = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('to %1 %2'),
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'CASE',
+                    type: 'field_dropdown',
+                    name: 'CASE',
                     options: [
                         [localize('UPPER CASE'), 'UPPERCASE'],
                         [localize('lower case'), 'LOWERCASE'],
@@ -23,19 +23,21 @@ Blockly.Blocks.text_changeCase = {
                     name: 'TEXT',
                 },
             ],
-            output         : 'String',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'String',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Changes text case accordingly'),
-            category       : Blockly.Categories.Text,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Changes text case accordingly'),
+            category: Blockly.Categories.Text,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Change text case'),
-            'description' : localize('Changes the capitalisation of a string of text to Upper case, Lower case, Title case.'),
+            display_name: localize('Change text case'),
+            description: localize(
+                'Changes the capitalisation of a string of text to Upper case, Lower case, Title case.'
+            ),
         };
     },
     getRequiredValueInputs() {
@@ -53,7 +55,7 @@ Blockly.JavaScript.text_changeCase = block => {
     };
     const operator = operators[block.getFieldValue('CASE')];
     const textOrder = operator ? Blockly.JavaScript.ORDER_MEMBER : Blockly.JavaScript.ORDER_NONE;
-    const text = Blockly.JavaScript.valueToCode(block, 'TEXT', textOrder) || '\'\'';
+    const text = Blockly.JavaScript.valueToCode(block, 'TEXT', textOrder) || "''";
 
     let code;
 

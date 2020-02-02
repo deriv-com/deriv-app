@@ -1,4 +1,4 @@
-const expect   = require('chai').expect;
+const expect = require('chai').expect;
 const Currency = require('@deriv/shared/utils/currency');
 
 describe('Currency', () => {
@@ -7,9 +7,9 @@ describe('Currency', () => {
             AUD: { fractional_digits: 2, type: 'fiat' },
             EUR: { fractional_digits: 2, type: 'fiat' },
             GBP: { fractional_digits: 2, type: 'fiat' },
-            USD: { fractional_digits: 2, type: 'fiat', transfer_between_accounts: { limits: { max: 2500, min: 1.00 } } },
+            USD: { fractional_digits: 2, type: 'fiat', transfer_between_accounts: { limits: { max: 2500, min: 1.0 } } },
             BTC: { fractional_digits: 8, type: 'crypto' },
-        }
+        },
     };
     before(() => {
         Currency.setCurrencies(currencies_config);

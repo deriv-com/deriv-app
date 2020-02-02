@@ -9,7 +9,8 @@
         position: relative;
         overflow: hidden;
         border-radius: 8px;
-        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25),
+            opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
         background-color: var(--general-main-2);
         box-shadow: 0 4px 6px 0 var(--shadow-menu);
         max-height: calc(100vh - 48px - 36px);
@@ -18,7 +19,8 @@
         &--hide {
             display: none;
         }
-        &--enter, &--exit {
+        &--enter,
+        &--exit {
             transform: translateY(50px);
             opacity: 0;
             pointer-events: none;

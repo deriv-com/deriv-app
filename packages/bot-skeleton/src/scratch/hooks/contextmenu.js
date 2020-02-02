@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { config }   from '../../constants/config';
+import { config } from '../../constants/config';
 
 /**
  * Make a context menu option for duplicating the current block.
@@ -30,8 +30,8 @@ Blockly.ContextMenu.blockDuplicateOption = function(block) {
  */
 Blockly.ContextMenu.wsCleanupOption = function(ws, numTopBlocks) {
     return {
-        text    : localize('Rearrange Vertically'),
-        enabled : numTopBlocks > 1,
+        text: localize('Rearrange Vertically'),
+        enabled: numTopBlocks > 1,
         callback: ws.cleanUp.bind(ws),
     };
 };
@@ -48,7 +48,7 @@ Blockly.ContextMenu.wsCleanupOption = function(ws, numTopBlocks) {
 Blockly.ContextMenu.wsCollapseOption = function(hasExpandedBlocks, topBlocks) {
     return {
         enabled: hasExpandedBlocks,
-        text   : localize('Collapse Blocks'),
+        text: localize('Collapse Blocks'),
         callback() {
             Blockly.ContextMenu.toggleCollapseFn_(topBlocks, true);
         },
@@ -67,7 +67,7 @@ Blockly.ContextMenu.wsCollapseOption = function(hasExpandedBlocks, topBlocks) {
 Blockly.ContextMenu.wsExpandOption = function(hasCollapsedBlocks, topBlocks) {
     return {
         enabled: hasCollapsedBlocks,
-        text   : localize('Expand Blocks'),
+        text: localize('Expand Blocks'),
         callback() {
             Blockly.ContextMenu.toggleCollapseFn_(topBlocks, false);
         },

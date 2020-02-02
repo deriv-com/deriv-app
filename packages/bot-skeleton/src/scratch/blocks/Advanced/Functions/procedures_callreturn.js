@@ -7,10 +7,10 @@ Blockly.Blocks.procedures_callreturn = {
 
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: '%1 %2',
-            args0   : [
+            args0: [
                 {
                     type: 'field_label',
                     name: 'NAME',
@@ -21,32 +21,32 @@ Blockly.Blocks.procedures_callreturn = {
                     name: 'TOPROW',
                 },
             ],
-            output         : null,
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Special2.colour,
+            output: null,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Special2.colour,
             colourSecondary: Blockly.Colours.Special2.colourSecondary,
-            colourTertiary : Blockly.Colours.Special2.colourTertiary,
-            tooltip        : localize('Custom function'),
-            category       : Blockly.Categories.Functions,
+            colourTertiary: Blockly.Colours.Special2.colourTertiary,
+            tooltip: localize('Custom function'),
+            category: Blockly.Categories.Functions,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Custom function'),
-            'description' : '',
+            display_name: localize('Custom function'),
+            description: '',
         };
     },
-    onchange              : Blockly.Blocks.procedures_callnoreturn.onchange,
+    onchange: Blockly.Blocks.procedures_callnoreturn.onchange,
     getProcedureDefinition: Blockly.Blocks.procedures_callnoreturn.getProcedureDefinition,
-    getProcedureCall      : Blockly.Blocks.procedures_callnoreturn.getProcedureCall,
-    renameProcedure       : Blockly.Blocks.procedures_callnoreturn.renameProcedure,
+    getProcedureCall: Blockly.Blocks.procedures_callnoreturn.getProcedureCall,
+    renameProcedure: Blockly.Blocks.procedures_callnoreturn.renameProcedure,
     setProcedureParameters: Blockly.Blocks.procedures_callnoreturn.setProcedureParameters,
-    updateShape           : Blockly.Blocks.procedures_callnoreturn.updateShape,
-    mutationToDom         : Blockly.Blocks.procedures_callnoreturn.mutationToDom,
-    domToMutation         : Blockly.Blocks.procedures_callnoreturn.domToMutation,
-    getVarModels          : Blockly.Blocks.procedures_callnoreturn.getVarModels,
-    customContextMenu     : Blockly.Blocks.procedures_callnoreturn.customContextMenu,
-    defType               : 'procedures_defreturn',
+    updateShape: Blockly.Blocks.procedures_callnoreturn.updateShape,
+    mutationToDom: Blockly.Blocks.procedures_callnoreturn.mutationToDom,
+    domToMutation: Blockly.Blocks.procedures_callnoreturn.domToMutation,
+    getVarModels: Blockly.Blocks.procedures_callnoreturn.getVarModels,
+    customContextMenu: Blockly.Blocks.procedures_callnoreturn.customContextMenu,
+    defType: 'procedures_defreturn',
 };
 
 Blockly.JavaScript.procedures_callreturn = block => {

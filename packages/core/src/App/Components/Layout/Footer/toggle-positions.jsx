@@ -1,20 +1,13 @@
 import classNames from 'classnames';
-import PropTypes  from 'prop-types';
-import React      from 'react';
-import { Icon }   from '@deriv/components';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Icon } from '@deriv/components';
 
-const TogglePositions = ({
-    positions_count,
-    is_positions_drawer_on,
-    togglePositionsDrawer,
-}) => {
-    const toggle_positions_class = classNames(
-        'ic-positions',
-        'footer__link', {
-            'ic-positions--active'   : is_positions_drawer_on,
-            'ic-positions--has-count': (positions_count > 0),
-        }
-    );
+const TogglePositions = ({ positions_count, is_positions_drawer_on, togglePositionsDrawer }) => {
+    const toggle_positions_class = classNames('ic-positions', 'footer__link', {
+        'ic-positions--active': is_positions_drawer_on,
+        'ic-positions--has-count': positions_count > 0,
+    });
     return (
         <a
             id='dt_positions_toggle'
@@ -29,8 +22,8 @@ const TogglePositions = ({
 
 TogglePositions.propTypes = {
     is_positions_drawer_on: PropTypes.bool,
-    positions_count       : PropTypes.number,
-    togglePositionsDrawer : PropTypes.func,
+    positions_count: PropTypes.number,
+    togglePositionsDrawer: PropTypes.func,
 };
 
 export { TogglePositions };

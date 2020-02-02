@@ -1,15 +1,10 @@
 import { Button, Modal } from '@deriv/components';
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import { localize }      from '@deriv/translations';
-import { connect }       from 'Stores/connect';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 
-const SetAccountCurrencyModal = ({
-    is_visible,
-    is_virtual,
-    setCurrency,
-    toggleModal,
-}) => (
+const SetAccountCurrencyModal = ({ is_visible, is_virtual, setCurrency, toggleModal }) => (
     <Modal
         id='dt_set_account_currency_modal'
         has_close_icon={false}
@@ -20,16 +15,11 @@ const SetAccountCurrencyModal = ({
     >
         <Modal.Body>
             {localize('Please set a currency for your existing real account before creating another account.')}
-        </Modal.Body >
+        </Modal.Body>
         <Modal.Footer>
-            {!is_virtual ?
+            {!is_virtual ? (
                 <>
-                    <Button
-                        has_effect
-                        text={localize('Cancel')}
-                        onClick={toggleModal}
-                        secondary
-                    />
+                    <Button has_effect text={localize('Cancel')} onClick={toggleModal} secondary />
                     <Button
                         has_effect
                         text={localize('Set currency')}
@@ -40,30 +30,23 @@ const SetAccountCurrencyModal = ({
                         primary
                     />
                 </>
-                :
-                <Button
-                    has_effect
-                    text={localize('OK')}
-                    onClick={toggleModal}
-                    primary
-                />
-            }
+            ) : (
+                <Button has_effect text={localize('OK')} onClick={toggleModal} primary />
+            )}
         </Modal.Footer>
     </Modal>
 );
 
 SetAccountCurrencyModal.propTypes = {
-    is_virtual : PropTypes.bool,
-    is_visible : PropTypes.bool,
+    is_virtual: PropTypes.bool,
+    is_visible: PropTypes.bool,
     setCurrency: PropTypes.func,
     toggleModal: PropTypes.func,
 };
 
-export default connect(
-    ({ client, ui }) => ({
-        is_virtual : client.is_virtual,
-        toggleModal: ui.toggleSetCurrencyModal,
-        setCurrency: ui.openRealAccountSignup,
-        is_visible : ui.is_set_currency_modal_visible,
-    }),
-)(SetAccountCurrencyModal);
+export default connect(({ client, ui }) => ({
+    is_virtual: client.is_virtual,
+    toggleModal: ui.toggleSetCurrencyModal,
+    setCurrency: ui.openRealAccountSignup,
+    is_visible: ui.is_set_currency_modal_visible,
+}))(SetAccountCurrencyModal);

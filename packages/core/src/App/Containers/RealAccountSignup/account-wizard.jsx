@@ -1,29 +1,29 @@
-import PropTypes              from 'prop-types';
-import fromEntries            from 'object.fromentries';
-import React                  from 'react';
-import { FormProgress }       from '@deriv/components';
+import PropTypes from 'prop-types';
+import fromEntries from 'object.fromentries';
+import React from 'react';
+import { FormProgress } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { connect }            from 'Stores/connect';
-import { toMoment }           from 'Utils/Date';
-import AddressDetails         from './address-details.jsx';
-import CurrencySelector       from './currency-selector.jsx';
-import PersonalDetails        from './personal-details.jsx';
-import TermsOfUse             from './terms-of-use.jsx';
+import { connect } from 'Stores/connect';
+import { toMoment } from 'Utils/Date';
+import AddressDetails from './address-details.jsx';
+import CurrencySelector from './currency-selector.jsx';
+import PersonalDetails from './personal-details.jsx';
+import TermsOfUse from './terms-of-use.jsx';
 
 class AccountWizard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            finished  : undefined,
-            step      : 0,
+            finished: undefined,
+            step: 0,
             form_error: '',
-            items     : [
+            items: [
                 {
                     header: {
                         active_title: localize('Please choose your currency'),
-                        title       : localize('Account currency'),
+                        title: localize('Account currency'),
                     },
-                    body      : CurrencySelector,
+                    body: CurrencySelector,
                     form_value: {
                         currency: '',
                     },
@@ -31,37 +31,37 @@ class AccountWizard extends React.Component {
                 {
                     header: {
                         active_title: localize('Complete your personal details'),
-                        title       : localize('Personal details'),
+                        title: localize('Personal details'),
                     },
-                    body      : PersonalDetails,
+                    body: PersonalDetails,
                     form_value: {
-                        first_name   : '',
-                        last_name    : '',
+                        first_name: '',
+                        last_name: '',
                         date_of_birth: '',
-                        phone        : '',
+                        phone: '',
                     },
                     passthrough: ['residence_list'],
                 },
                 {
                     header: {
                         active_title: localize('Complete your address details'),
-                        title       : localize('Address details'),
+                        title: localize('Address details'),
                     },
-                    body      : AddressDetails,
+                    body: AddressDetails,
                     form_value: {
-                        address_line_1  : '',
-                        address_line_2  : '',
-                        address_city    : '',
-                        address_state   : '',
+                        address_line_1: '',
+                        address_line_2: '',
+                        address_city: '',
+                        address_state: '',
                         address_postcode: '',
                     },
                 },
                 {
                     header: {
                         active_title: localize('Terms of use'),
-                        title       : localize('Terms of use'),
+                        title: localize('Terms of use'),
                     },
-                    body      : TermsOfUse,
+                    body: TermsOfUse,
                     form_value: {
                         agreed_tos: false,
                         agreed_tnc: false,
@@ -83,7 +83,7 @@ class AccountWizard extends React.Component {
     fetchFromStorage = () => {
         const stored_items = localStorage.getItem('real_account_signup_wizard');
         try {
-            const items  = JSON.parse(stored_items);
+            const items = JSON.parse(stored_items);
             const cloned = this.state.items.slice(0);
             items.forEach((item, index) => {
                 if (typeof item === 'object') {
@@ -92,7 +92,7 @@ class AccountWizard extends React.Component {
             });
             this.setState({
                 items: cloned,
-                step : 1, // Send the user back to personal details.
+                step: 1, // Send the user back to personal details.
             });
             localStorage.removeItem('real_account_signup_wizard');
         } catch (e) {
@@ -101,7 +101,8 @@ class AccountWizard extends React.Component {
     };
 
     get form_values() {
-        return this.state.items.map(item => item.form_value)
+        return this.state.items
+            .map(item => item.form_value)
             .reduce((obj, item) => {
                 const values = fromEntries(new Map(Object.entries(item)));
                 if (values.date_of_birth) {
@@ -121,7 +122,7 @@ class AccountWizard extends React.Component {
 
     getCountryCode = async () => {
         await this.props.fetchResidenceList();
-        const response = this.props.residence_list.find((item => item.value === this.props.residence));
+        const response = this.props.residence_list.find(item => item.value === this.props.residence);
         if (!response || !response.phone_idd) return '';
         return `+${response.phone_idd}`;
     };
@@ -132,7 +133,7 @@ class AccountWizard extends React.Component {
         });
     };
 
-    getCurrent = (key) => {
+    getCurrent = key => {
         return key ? this.state.items[this.state_index][key] : this.state.items[this.state_index];
     };
 
@@ -140,7 +141,7 @@ class AccountWizard extends React.Component {
         return this.state.finished;
     };
 
-    nextStep = (setSubmitting) => {
+    nextStep = setSubmitting => {
         this.clearError();
         // Check if account wizard is not finished
         if (this.hasMoreSteps()) {
@@ -153,7 +154,7 @@ class AccountWizard extends React.Component {
 
     prevStep = () => {
         this.setState({
-            step      : this.state.step - 1,
+            step: this.state.step - 1,
             form_error: '',
         });
     };
@@ -170,7 +171,7 @@ class AccountWizard extends React.Component {
     };
 
     saveFormData = (index, value) => {
-        const cloned_items             = Object.assign([], this.state.items);
+        const cloned_items = Object.assign([], this.state.items);
         cloned_items[index].form_value = value;
 
         this.setState({
@@ -191,28 +192,25 @@ class AccountWizard extends React.Component {
     };
 
     createRealAccount(setSubmitting) {
-        if (this.props.has_real_account
-            && !this.props.has_currency
-        ) {
+        if (this.props.has_real_account && !this.props.has_currency) {
             this.setAccountCurrency()
-                .then((response) => {
+                .then(response => {
                     setSubmitting(false);
-                    this.props.onSuccessAddCurrency(
-                        response.echo_req.set_account_currency.toLowerCase(),
-                    );
+                    this.props.onSuccessAddCurrency(response.echo_req.set_account_currency.toLowerCase());
                 })
                 .catch(error_message => {
-                    this.setState({
-                        form_error: error_message,
-                    }, () => setSubmitting(false));
+                    this.setState(
+                        {
+                            form_error: error_message,
+                        },
+                        () => setSubmitting(false)
+                    );
                 });
         } else {
             this.submitForm()
-                .then((response) => {
+                .then(response => {
                     setSubmitting(false);
-                    this.props.onSuccessAddCurrency(
-                        response.new_account_real.currency.toLowerCase(),
-                    );
+                    this.props.onSuccessAddCurrency(response.new_account_real.currency.toLowerCase());
                 })
                 .catch(error => {
                     this.props.onError(error, this.state.items);
@@ -236,34 +234,25 @@ class AccountWizard extends React.Component {
     render() {
         if (!this.state.finished) {
             const BodyComponent = this.getCurrent('body');
-            const passthrough   = this.getPropsForChild();
+            const passthrough = this.getPropsForChild();
             return (
                 <div className='account-wizard'>
-                    {!this.props.has_real_account &&
-                    <FormProgress
-                        steps={this.state.items}
-                        current_step={this.state.step}
-                    />
-                    }
-                    {this.props.has_real_account &&
-                    <div className='account-wizard__set-currency'>
-                        {!this.props.has_currency &&
-                        <p>
-                            <Localize
-                                i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.'
-                            />
-                        </p>
-                        }
-                        <h2>
-                            <Localize
-                                i18n_default_text='Please choose your currency'
-                            />
-                        </h2>
-                    </div>
-                    }
-                    <div
-                        className='account-wizard__body'
-                    >
+                    {!this.props.has_real_account && (
+                        <FormProgress steps={this.state.items} current_step={this.state.step} />
+                    )}
+                    {this.props.has_real_account && (
+                        <div className='account-wizard__set-currency'>
+                            {!this.props.has_currency && (
+                                <p>
+                                    <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
+                                </p>
+                            )}
+                            <h2>
+                                <Localize i18n_default_text='Please choose your currency' />
+                            </h2>
+                        </div>
+                    )}
+                    <div className='account-wizard__body'>
                         <BodyComponent
                             value={this.getCurrent('form_value')}
                             index={this.state_index}
@@ -280,31 +269,29 @@ class AccountWizard extends React.Component {
         }
 
         const FinishedModalItem = this.getFinishedComponent();
-        return (
-            <FinishedModalItem />
-        );
+        return <FinishedModalItem />;
     }
 }
 
 AccountWizard.propTypes = {
-    fetchResidenceList  : PropTypes.func,
-    has_currency        : PropTypes.bool,
-    has_real_account    : PropTypes.bool,
-    onError             : PropTypes.func,
-    onLoading           : PropTypes.func,
+    fetchResidenceList: PropTypes.func,
+    has_currency: PropTypes.bool,
+    has_real_account: PropTypes.bool,
+    onError: PropTypes.func,
+    onLoading: PropTypes.func,
     onSuccessAddCurrency: PropTypes.func,
-    realAccountSignup   : PropTypes.func,
-    residence           : PropTypes.string,
-    residence_list      : PropTypes.array,
-    setAccountCurrency  : PropTypes.func,
+    realAccountSignup: PropTypes.func,
+    residence: PropTypes.string,
+    residence_list: PropTypes.array,
+    setAccountCurrency: PropTypes.func,
 };
 
 export default connect(({ client }) => ({
-    realAccountSignup : client.realAccountSignup,
-    has_real_account  : client.has_active_real_account,
-    has_currency      : !!client.currency,
+    realAccountSignup: client.realAccountSignup,
+    has_real_account: client.has_active_real_account,
+    has_currency: !!client.currency,
     setAccountCurrency: client.setAccountCurrency,
-    residence         : client.residence,
-    residence_list    : client.residence_list,
+    residence: client.residence,
+    residence_list: client.residence_list,
     fetchResidenceList: client.fetchResidenceList,
 }))(AccountWizard);

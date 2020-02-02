@@ -13,7 +13,7 @@ Blockly.VariableMap.prototype.createVariable = function(name, opt_type, opt_id, 
         }
     }
 
-    const optional_id   = opt_id || Blockly.utils.genUid();
+    const optional_id = opt_id || Blockly.utils.genUid();
     const optional_type = opt_type || '';
 
     variable = new Blockly.VariableModel(this.workspace, name, optional_type, optional_id, opt_is_local, opt_is_cloud);
@@ -25,6 +25,6 @@ Blockly.VariableMap.prototype.createVariable = function(name, opt_type, opt_id, 
         // Else append the variable to the preexisting list.
         this.variableMap_[optional_type].push(variable);
     }
-  
+
     return variable;
 };

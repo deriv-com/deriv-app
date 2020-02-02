@@ -4,31 +4,31 @@ Blockly.Blocks.is_candle_black = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('Is candle black? %1'),
-            args0   : [
+            args0: [
                 {
-                    type : 'input_value',
-                    name : 'OHLCOBJ',
+                    type: 'input_value',
+                    name: 'OHLCOBJ',
                     check: 'Candle',
                 },
             ],
-            output         : 'Boolean',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Boolean',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize(
-                'Returns "True" if the given candle is black'
-            ),
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Returns "True" if the given candle is black'),
             category: Blockly.Categories.Candle,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Is candle black?'),
-            'description' : localize('This block returns “True” if the last candle is black. It can be placed anywhere on the canvas except within the Trade parameters root block.'),
+            display_name: localize('Is candle black?'),
+            description: localize(
+                'This block returns “True” if the last candle is black. It can be placed anywhere on the canvas except within the Trade parameters root block.'
+            ),
         };
     },
     getRequiredValueInputs() {

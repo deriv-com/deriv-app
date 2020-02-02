@@ -1,8 +1,8 @@
-import React                  from 'react';
-import { expect }             from 'chai';
-import { Money }                from '@deriv/components'
+import React from 'react';
+import { expect } from 'chai';
+import { Money } from '@deriv/components';
 import { configure, shallow } from 'enzyme';
-import Adapter                from 'enzyme-adapter-react-16';
+import Adapter from 'enzyme-adapter-react-16';
 
 configure({ adapter: new Adapter() });
 
@@ -60,7 +60,7 @@ describe('Money', () => {
         expect(wrapper.text()).to.be.equal('10.00');
     });
     it('should return correct text based on props when number is < 0 and has_sign is false', () => {
-        const wrapper = shallow(<Money has_sign={false} amount={-10.50} />);
+        const wrapper = shallow(<Money has_sign={false} amount={-10.5} />);
         expect(wrapper.text()).to.be.equal('10.50');
     });
     it('should return correct text based on props when number is 0 and has_sign is false', () => {

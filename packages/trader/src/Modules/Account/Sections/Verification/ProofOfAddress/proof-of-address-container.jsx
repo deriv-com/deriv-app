@@ -1,31 +1,26 @@
 // // import PropTypes            from 'prop-types';
-import React              from 'react';
-import { WS }             from 'Services/ws-methods';
+import React from 'react';
+import { WS } from 'Services/ws-methods';
 import ProofOfAddressForm from './proof-of-address-form.jsx';
-import {
-    Expired,
-    NeedsReview,
-    Submitted,
-    Verified,
-    Unverified }          from './proof-of-address-messages.jsx';
-import Loading            from '../../../../../templates/app/components/loading.jsx';
+import { Expired, NeedsReview, Submitted, Verified, Unverified } from './proof-of-address-messages.jsx';
+import Loading from '../../../../../templates/app/components/loading.jsx';
 
 export const poa_status_codes = {
-    none     : 'none',
-    pending  : 'pending',
-    rejected : 'rejected',
-    verified : 'verified',
-    expired  : 'expired',
+    none: 'none',
+    pending: 'pending',
+    rejected: 'rejected',
+    verified: 'verified',
+    expired: 'expired',
     suspected: 'suspected',
 };
 
 class ProofOfAddressContainer extends React.Component {
     is_mounted = false;
     state = {
-        is_loading   : true,
-        has_poi      : false,
+        is_loading: true,
+        has_poi: false,
         submitted_poa: false,
-        resubmit_poa : false,
+        resubmit_poa: false,
     };
 
     componentDidMount() {
@@ -37,8 +32,9 @@ class ProofOfAddressContainer extends React.Component {
             const needs_poi = needs_verification.length && needs_verification.includes('identity');
             if (this.is_mounted) {
                 this.setState({
-                    status       : document.status, needs_poi,
-                    is_loading   : false,
+                    status: document.status,
+                    needs_poi,
+                    is_loading: false,
                     submitted_poa: !(needs_verification.length && needs_verification.includes('document')),
                 });
                 this.props.refreshNotifications();
@@ -52,24 +48,18 @@ class ProofOfAddressContainer extends React.Component {
 
     handleResubmit = () => {
         this.setState({ resubmit_poa: true });
-    }
+    };
 
     onSubmit = ({ needs_poi }) => {
         this.setState({ submitted_poa: true, needs_poi });
-    }
+    };
 
     render() {
-        const {
-            is_loading,
-            needs_poi,
-            resubmit_poa,
-            status,
-            submitted_poa,
-        } = this.state;
+        const { is_loading, needs_poi, resubmit_poa, status, submitted_poa } = this.state;
 
-        if (is_loading)    return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
         if (submitted_poa) return <Submitted needs_poi={needs_poi} />;
-        if (resubmit_poa)  return <ProofOfAddressForm onSubmit={() => this.onSubmit({ needs_poi })} />;
+        if (resubmit_poa) return <ProofOfAddressForm onSubmit={() => this.onSubmit({ needs_poi })} />;
 
         switch (status) {
             case poa_status_codes.none:

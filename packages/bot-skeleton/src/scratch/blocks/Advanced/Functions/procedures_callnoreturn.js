@@ -17,7 +17,7 @@ Blockly.Blocks.procedures_callnoreturn = {
     definition() {
         return {
             message0: '%1 %2',
-            args0   : [
+            args0: [
                 {
                     type: 'field_label',
                     name: 'NAME',
@@ -28,13 +28,13 @@ Blockly.Blocks.procedures_callnoreturn = {
                     name: 'TOPROW',
                 },
             ],
-            colour           : Blockly.Colours.Special2.colour,
-            colourSecondary  : Blockly.Colours.Special2.colourSecondary,
-            colourTertiary   : Blockly.Colours.Special2.colourTertiary,
+            colour: Blockly.Colours.Special2.colour,
+            colourSecondary: Blockly.Colours.Special2.colourSecondary,
+            colourTertiary: Blockly.Colours.Special2.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
-            tooltip          : localize('Custom function'),
-            category         : Blockly.Categories.Functions,
+            nextStatement: null,
+            tooltip: localize('Custom function'),
+            category: Blockly.Categories.Functions,
         };
     },
     /**
@@ -44,8 +44,8 @@ Blockly.Blocks.procedures_callnoreturn = {
      */
     meta() {
         return {
-            'display_name': localize('Custom function'),
-            'description' : '',
+            display_name: localize('Custom function'),
+            description: '',
         };
     },
     /**
@@ -70,7 +70,7 @@ Blockly.Blocks.procedures_callnoreturn = {
             // paste) and there is no matching definition.  In this case, create
             // an empty definition block with the correct signature.
             const name = this.getProcedureCall();
-            let def    = Blockly.Procedures.getDefinition(name, this.workspace);
+            let def = Blockly.Procedures.getDefinition(name, this.workspace);
 
             if (
                 def &&

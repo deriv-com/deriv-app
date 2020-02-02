@@ -1,8 +1,8 @@
-import classNames  from 'classnames';
-import PropTypes   from 'prop-types';
-import React       from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'Stores/connect';
-import { Drawer }  from './drawer.jsx';
+import { Drawer } from './drawer.jsx';
 
 class ToggleDrawer extends React.Component {
     showDrawer = () => {
@@ -28,10 +28,7 @@ class ToggleDrawer extends React.Component {
                 <div className={toggle_class} onClick={this.showDrawer}>
                     {icon}
                 </div>
-                <Drawer
-                    alignment={alignment}
-                    closeBtn={this.closeDrawer}
-                >
+                <Drawer alignment={alignment} closeBtn={this.closeDrawer}>
                     {children}
                 </Drawer>
             </React.Fragment>
@@ -41,26 +38,21 @@ class ToggleDrawer extends React.Component {
 
 ToggleDrawer.propTypes = {
     alignment: PropTypes.string,
-    children : PropTypes.oneOfType([
-        PropTypes.array,
-        PropTypes.object,
-    ]),
-    footer     : PropTypes.func,
+    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+    footer: PropTypes.func,
     hideDrawers: PropTypes.func,
-    icon       : PropTypes.shape({
+    icon: PropTypes.shape({
         className: PropTypes.string,
     }),
-    icon_class             : PropTypes.string,
-    showMainDrawer         : PropTypes.func,
+    icon_class: PropTypes.string,
+    showMainDrawer: PropTypes.func,
     showNotificationsDrawer: PropTypes.func,
 };
 
-const drawer_component = connect(
-    ({ ui }) => ({
-        showMainDrawer         : ui.showMainDrawer,
-        showNotificationsDrawer: ui.showNotificationsDrawer,
-        hideDrawers            : ui.hideDrawers,
-    })
-)(ToggleDrawer);
+const drawer_component = connect(({ ui }) => ({
+    showMainDrawer: ui.showMainDrawer,
+    showNotificationsDrawer: ui.showNotificationsDrawer,
+    hideDrawers: ui.hideDrawers,
+}))(ToggleDrawer);
 
 export { drawer_component as ToggleDrawer };

@@ -4,14 +4,14 @@ Blockly.Blocks.variables_set = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
-            type    : 'field_variable',
+            type: 'field_variable',
             message0: localize('set %1 to %2'),
-            args0   : [
+            args0: [
                 {
-                    type    : 'field_variable',
-                    name    : 'VAR',
+                    type: 'field_variable',
+                    name: 'VAR',
                     variable: localize('item'),
                 },
                 {
@@ -19,19 +19,19 @@ Blockly.Blocks.variables_set = {
                     name: 'VALUE',
                 },
             ],
-            colour           : Blockly.Colours.Special2.colour,
-            colourSecondary  : Blockly.Colours.Special2.colourSecondary,
-            colourTertiary   : Blockly.Colours.Special2.colourTertiary,
+            colour: Blockly.Colours.Special2.colour,
+            colourSecondary: Blockly.Colours.Special2.colourSecondary,
+            colourTertiary: Blockly.Colours.Special2.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
-            tooltip          : localize('Sets variable value'),
-            category         : Blockly.Categories.Variables,
+            nextStatement: null,
+            tooltip: localize('Sets variable value'),
+            category: Blockly.Categories.Variables,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Set variable'),
-            'description' : localize('Assigns a given value to a variable'),
+            display_name: localize('Set variable'),
+            description: localize('Assigns a given value to a variable'),
         };
     },
 };

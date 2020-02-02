@@ -1,9 +1,9 @@
-import { localize }                     from '@deriv/translations';
-import { trackAndEmitError }            from './error';
-import { getLanguage }                  from './lang/lang';
-import { observer as globalObserver }   from './observer';
-import { config }                       from '../constants/config';
-import { loadWorkspace, loadBlocks }    from '../scratch/dbot';
+import { localize } from '@deriv/translations';
+import { trackAndEmitError } from './error';
+import { getLanguage } from './lang/lang';
+import { observer as globalObserver } from './observer';
+import { config } from '../constants/config';
+import { loadWorkspace, loadBlocks } from '../scratch/dbot';
 
 /* eslint-disable */
 class GoogleDrive {
@@ -37,27 +37,25 @@ class GoogleDrive {
     }
 
     init() {
-        gapi.load('client:auth2',
-            () => {
-                gapi.client
-                    .init({
-                        apiKey       : this.apiKey,
-                        clientId     : this.clientId,
-                        scope        : 'https://www.googleapis.com/auth/drive.file',
-                        discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
-                    })
-                    .then(
-                        () => {
-                            this.googleAuth = gapi.auth2.getAuthInstance();
-                            this.googleAuth.isSignedIn.listen(isSignedIn => this.updateSigninStatus(isSignedIn));
-                            this.updateSigninStatus(this.googleAuth.isSignedIn.get());
-                        },
-                        error => {
-                            console.log(error); // eslint-disable-line
-                        }
-                    );
-            }
-        );
+        gapi.load('client:auth2', () => {
+            gapi.client
+                .init({
+                    apiKey: this.apiKey,
+                    clientId: this.clientId,
+                    scope: 'https://www.googleapis.com/auth/drive.file',
+                    discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
+                })
+                .then(
+                    () => {
+                        this.googleAuth = gapi.auth2.getAuthInstance();
+                        this.googleAuth.isSignedIn.listen(isSignedIn => this.updateSigninStatus(isSignedIn));
+                        this.updateSigninStatus(this.googleAuth.isSignedIn.get());
+                    },
+                    error => {
+                        console.log(error); // eslint-disable-line
+                    }
+                );
+        });
     }
 
     updateSigninStatus(isSignedIn) {
@@ -100,7 +98,9 @@ class GoogleDrive {
     }
 
     setInfo(data) {
-        const { gd: {cid, aid, api } } = data;
+        const {
+            gd: { cid, aid, api },
+        } = data;
         this.clientId = cid;
         this.appId = aid;
         this.apiKey = api;
@@ -126,7 +126,7 @@ class GoogleDrive {
                     const fileId = data.docs[0].id;
                     gapi.client.drive.files
                         .get({
-                            alt     : 'media',
+                            alt: 'media',
                             fileId,
                             mimeType: 'text/plain',
                         })
@@ -223,9 +223,9 @@ class GoogleDrive {
                             gapi.client.drive.files
                                 .create({
                                     resource: {
-                                        name    : this.botFolderName,
+                                        name: this.botFolderName,
                                         mimeType: 'application/vnd.google-apps.folder',
-                                        fields  : 'id',
+                                        fields: 'id',
                                     },
                                 })
                                 .then(createFileResponse => resolve(createFileResponse.result.id))
@@ -262,9 +262,9 @@ class GoogleDrive {
                     const folderId = data.docs[0].id;
                     const strategyFile = new Blob([options.content], { type: options.mimeType });
                     const strategyFileMetadata = JSON.stringify({
-                        name    : options.name,
+                        name: options.name,
                         mimeType: options.mimeType,
-                        parents : [folderId],
+                        parents: [folderId],
                     });
 
                     const formData = new FormData();

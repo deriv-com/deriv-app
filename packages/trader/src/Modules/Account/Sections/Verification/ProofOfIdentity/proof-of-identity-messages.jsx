@@ -1,29 +1,23 @@
-import React                  from 'react';
-import { Icon }               from '@deriv/components';
+import React from 'react';
+import { Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import ButtonLink             from 'App/Components/Routes/button-link.jsx';
-import IconMessageContent     from '../../../Components/icon-message-content.jsx';
+import ButtonLink from 'App/Components/Routes/button-link.jsx';
+import IconMessageContent from '../../../Components/icon-message-content.jsx';
 
 const ContinueTradingButton = () => (
-    <ButtonLink
-        to='/'
-    >
+    <ButtonLink to='/'>
         <p className='btn__text'>{localize('Continue trading')}</p>
     </ButtonLink>
 );
 
 const PoaButton = () => (
-    <ButtonLink
-        to='/account/proof-of-address'
-    >
+    <ButtonLink to='/account/proof-of-address'>
         <p className='btn__text'>{localize('Submit proof of address')}</p>
     </ButtonLink>
 );
 
 const GoToPersonalDetailsButton = () => (
-    <ButtonLink
-        to='/account/personal-details'
-    >
+    <ButtonLink to='/account/personal-details'>
         <p className='btn__text'>{localize('Go to personal details')}</p>
     </ButtonLink>
 );
@@ -56,11 +50,19 @@ export const Unsupported = () => {
                 <Localize
                     i18n_default_text='To continue trading with us, you need to email a copy of any one of these government-issued photo ID documents to <0>authentications@deriv.com</0>.'
                     components={[
-                        <a key={0} className='link link--orange' rel='noopener noreferrer' target='_blank' href='mailto:authentications@deriv.com' />,
+                        <a
+                            key={0}
+                            className='link link--orange'
+                            rel='noopener noreferrer'
+                            target='_blank'
+                            href='mailto:authentications@deriv.com'
+                        />,
                     ]}
-                />}
+                />
+            }
             icon_row={<UnsupportedIconRow />}
-        />);
+        />
+    );
 };
 
 export const UploadComplete = ({ has_poa, is_description_enabled }) => {
@@ -72,26 +74,25 @@ export const UploadComplete = ({ has_poa, is_description_enabled }) => {
                 text={localize('Your document is being reviewed, please check back in 1-3 days.')}
                 icon={<Icon icon='IcPoiVerified' size={128} />}
             >
-                {is_description_enabled &&
-                <ContinueTradingButton />
-                }
+                {is_description_enabled && <ContinueTradingButton />}
             </IconMessageContent>
         );
     }
     return (
-        <IconMessageContent
-            message={message}
-            icon={<Icon icon='IcPoiVerified' size={128} />}
-        >
-            {is_description_enabled &&
-            <React.Fragment>
-                <div className='account-management__text-container'>
-                    <p className='account-management__text'>{localize('Your document is being reviewed, please check back in 1-3 days.')}</p>
-                    <p className='account-management__text'>{localize('You must also submit a proof of address.')}</p>
-                </div>
-                <PoaButton />
-            </React.Fragment>
-            }
+        <IconMessageContent message={message} icon={<Icon icon='IcPoiVerified' size={128} />}>
+            {is_description_enabled && (
+                <React.Fragment>
+                    <div className='account-management__text-container'>
+                        <p className='account-management__text'>
+                            {localize('Your document is being reviewed, please check back in 1-3 days.')}
+                        </p>
+                        <p className='account-management__text'>
+                            {localize('You must also submit a proof of address.')}
+                        </p>
+                    </div>
+                    <PoaButton />
+                </React.Fragment>
+            )}
         </IconMessageContent>
     );
 };
@@ -99,15 +100,18 @@ export const UploadComplete = ({ has_poa, is_description_enabled }) => {
 export const Unverified = ({ is_description_enabled }) => (
     <IconMessageContent
         message={localize('We could not verify your proof of identity')}
-        text={is_description_enabled ?
-            <Localize
-                i18n_default_text='Please check your email for details.'
-                // TODO: enable link to Help Center when POI help content is ready
-                // i18n_default_text='Please check your email for details. If you have any questions, please go to our <0>Help Centre</0>.'
-                // components={[
-                //     <a key={0} className='link link--orange' rel='noopener noreferrer' target='_blank' href='https://www.deriv.com/help-centre/' />,
-                // ]}
-            /> : null}
+        text={
+            is_description_enabled ? (
+                <Localize
+                    i18n_default_text='Please check your email for details.'
+                    // TODO: enable link to Help Center when POI help content is ready
+                    // i18n_default_text='Please check your email for details. If you have any questions, please go to our <0>Help Centre</0>.'
+                    // components={[
+                    //     <a key={0} className='link link--orange' rel='noopener noreferrer' target='_blank' href='https://www.deriv.com/help-centre/' />,
+                    // ]}
+                />
+            ) : null
+        }
         icon={<Icon icon='IcPoiError' size={128} />}
     />
 );
@@ -119,9 +123,16 @@ export const Expired = () => (
             <Localize
                 i18n_default_text='Kindly send a scan of a valid proof of identity to <0>support@deriv.com</0>'
                 components={[
-                    <a key={0} className='link link--orange' rel='noopener noreferrer' target='_blank' href='mailto:support@deriv.com' />,
+                    <a
+                        key={0}
+                        className='link link--orange'
+                        rel='noopener noreferrer'
+                        target='_blank'
+                        href='mailto:support@deriv.com'
+                    />,
                 ]}
-            />}
+            />
+        }
         icon={<Icon icon='IcPoiUpload' size={128} />}
     />
 );
@@ -130,13 +141,8 @@ export const Verified = ({ has_poa, is_description_enabled }) => {
     const message = localize('Your proof of identity is verified');
     if (has_poa) {
         return (
-            <IconMessageContent
-                message={message}
-                icon={<Icon icon='IcPoiVerified' size={128} />}
-            >
-                {is_description_enabled &&
-                <ContinueTradingButton />
-                }
+            <IconMessageContent message={message} icon={<Icon icon='IcPoiVerified' size={128} />}>
+                {is_description_enabled && <ContinueTradingButton />}
             </IconMessageContent>
         );
     }
@@ -146,9 +152,7 @@ export const Verified = ({ has_poa, is_description_enabled }) => {
             icon={<Icon icon='IcPoiVerified' size={128} />}
             text={localize('To continue trading, you must also submit a proof of address.')}
         >
-            {is_description_enabled &&
-            <PoaButton />
-            }
+            {is_description_enabled && <PoaButton />}
         </IconMessageContent>
     );
 };
@@ -166,7 +170,9 @@ export const MissingPersonalDetails = () => (
 export const OnfidoFailed = () => (
     <IconMessageContent
         message={localize('Proof of identity verification failed')}
-        text={localize('We were unable to verify your document automatically. We will try to verify your document manually. Please check back in 1-3 days.')}
+        text={localize(
+            'We were unable to verify your document automatically. We will try to verify your document manually. Please check back in 1-3 days.'
+        )}
         icon={<Icon icon='IcPoiFailed' size={128} />}
     />
 );

@@ -1,44 +1,39 @@
-import classNames          from 'classnames';
-import PropTypes           from 'prop-types';
-import React               from 'react';
-import { CSSTransition }   from 'react-transition-group';
-import { NavLink }         from 'react-router-dom';
-import { Icon }            from '@deriv/components';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { CSSTransition } from 'react-transition-group';
+import { NavLink } from 'react-router-dom';
+import { Icon } from '@deriv/components';
 import { getContractPath } from 'App/Components/Routes/helpers';
-import { localize }        from '@deriv/translations';
+import { localize } from '@deriv/translations';
 
 class ResultOverlay extends React.PureComponent {
-
-    handleClick = (e) => {
+    handleClick = e => {
         if (this.props.is_unsupported) {
             e.preventDefault();
             this.props.onClick();
         }
-    }
+    };
 
     render() {
-        const {
-            contract_id,
-            is_visible,
-            onClickRemove,
-            result } = this.props;
-        const is_contract_won = (result === 'won');
+        const { contract_id, is_visible, onClickRemove, result } = this.props;
+        const is_contract_won = result === 'won';
         return (
             <React.Fragment>
                 <CSSTransition
                     in={is_visible}
                     timeout={250}
                     classNames={{
-                        enter    : 'positions-drawer-card__result--enter',
+                        enter: 'positions-drawer-card__result--enter',
                         enterDone: 'positions-drawer-card__result--enter-done',
-                        exit     : 'positions-drawer-card__result--exit',
+                        exit: 'positions-drawer-card__result--exit',
                     }}
                     unmountOnExit
                 >
                     <div
                         id={`dt_drawer_${contract_id}_result`}
                         className={classNames('positions-drawer-card__result', {
-                            'positions-drawer-card__result--won' : is_contract_won,
+                            'positions-drawer-card__result--won': is_contract_won,
                             'positions-drawer-card__result--lost': !is_contract_won,
                         })}
                     >
@@ -54,23 +49,21 @@ class ResultOverlay extends React.PureComponent {
                         >
                             <span
                                 className={classNames('result__caption', {
-                                    'result__caption--won' : is_contract_won,
+                                    'result__caption--won': is_contract_won,
                                     'result__caption--lost': !is_contract_won,
-                                }
-                                )}
+                                })}
                             >
-                                {
-                                    (is_contract_won) ?
-                                        <React.Fragment>
-                                            {localize('won')}
-                                            <Icon icon='IcCheckmarkCircle' className='result__icon' color='green' />
-                                        </React.Fragment>
-                                        :
-                                        <React.Fragment>
-                                            {localize('lost')}
-                                            <Icon icon='IcCrossCircle' className='result__icon' color='red' />
-                                        </React.Fragment>
-                                }
+                                {is_contract_won ? (
+                                    <React.Fragment>
+                                        {localize('won')}
+                                        <Icon icon='IcCheckmarkCircle' className='result__icon' color='green' />
+                                    </React.Fragment>
+                                ) : (
+                                    <React.Fragment>
+                                        {localize('lost')}
+                                        <Icon icon='IcCrossCircle' className='result__icon' color='red' />
+                                    </React.Fragment>
+                                )}
                             </span>
                         </NavLink>
                     </div>
@@ -81,12 +74,12 @@ class ResultOverlay extends React.PureComponent {
 }
 
 ResultOverlay.propTypes = {
-    contract_id   : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    contract_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     is_unsupported: PropTypes.bool,
-    is_visible    : PropTypes.bool,
-    onClick       : PropTypes.func,
-    onClickRemove : PropTypes.func,
-    result        : PropTypes.string,
+    is_visible: PropTypes.bool,
+    onClick: PropTypes.func,
+    onClickRemove: PropTypes.func,
+    result: PropTypes.string,
 };
 
 export default ResultOverlay;

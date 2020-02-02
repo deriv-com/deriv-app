@@ -1,33 +1,21 @@
-import React                  from 'react';
-import { Icon }               from '@deriv/components';
+import React from 'react';
+import { Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import {
     real_advanced_specs,
     real_standard_specs,
     real_synthetic_specs,
-}                             from 'Modules/MT5/Constants/mt5-specifications';
-import { MT5AccountCard }     from './mt5-account-card.jsx';
+} from 'Modules/MT5/Constants/mt5-specifications';
+import { MT5AccountCard } from './mt5-account-card.jsx';
 
 const getRealAdvancedButtonLabel = (is_fully_authenticated, is_pending_authentication, has_required_credentials) => {
     if (is_fully_authenticated && has_required_credentials) {
-        return (
-            <Localize
-                i18n_default_text='Set your password'
-            />
-        );
+        return <Localize i18n_default_text='Set your password' />;
     } else if (is_pending_authentication) {
-        return (
-            <Localize
-                i18n_default_text='Pending verification'
-            />
-        );
+        return <Localize i18n_default_text='Pending verification' />;
     }
 
-    return (
-        <Localize
-            i18n_default_text='Create account'
-        />
-    );
+    return <Localize i18n_default_text='Create account' />;
 };
 
 const MT5RealAccountDisplay = ({
@@ -42,57 +30,57 @@ const MT5RealAccountDisplay = ({
     openPasswordManager,
     account_settings,
 }) => {
-    const has_required_credentials  = (
-        account_settings.citizen &&
-        account_settings.tax_identification_number &&
-        account_settings.tax_residence
-    );
+    const has_required_credentials =
+        account_settings.citizen && account_settings.tax_identification_number && account_settings.tax_residence;
 
     const button_label = getRealAdvancedButtonLabel(
         is_fully_authenticated,
         is_pending_authentication,
-        has_required_credentials,
+        has_required_credentials
     );
 
     const is_real_advanced_disabled = !has_real_account || is_pending_authentication;
 
-    const onSelectRealAdvanced  = () => {
+    const onSelectRealAdvanced = () => {
         const account_type = {
             category: 'real',
-            type    : 'advanced',
+            type: 'advanced',
         };
         if (is_fully_authenticated && has_required_credentials) {
             openPasswordModal(account_type);
-        } else if (!is_fully_authenticated && !is_real_advanced_disabled || !has_required_credentials) {
+        } else if ((!is_fully_authenticated && !is_real_advanced_disabled) || !has_required_credentials) {
             onSelectAccount(account_type);
         }
     };
-    const onSelectRealStandard  = () => onSelectAccount({ type: 'standard', category: 'real' });
+    const onSelectRealStandard = () => onSelectAccount({ type: 'standard', category: 'real' });
     const onSelectRealSynthetic = () => onSelectAccount({ type: 'synthetic_indices', category: 'real' });
 
-    const onClickFundRealAdvanced  = () => openAccountTransfer(current_list['real.advanced'], {
-        category: 'real',
-        type    : 'advanced',
-    });
-    const onClickFundRealSynthetic = () => openAccountTransfer(current_list['real.synthetic_indices'], {
-        category: 'real',
-        type    : 'synthetic_indices',
-    });
-    const onClickFundRealStandard  = () => openAccountTransfer(current_list['real.standard'], {
-        category: 'real',
-        type    : 'standard',
-    });
+    const onClickFundRealAdvanced = () =>
+        openAccountTransfer(current_list['real.advanced'], {
+            category: 'real',
+            type: 'advanced',
+        });
+    const onClickFundRealSynthetic = () =>
+        openAccountTransfer(current_list['real.synthetic_indices'], {
+            category: 'real',
+            type: 'synthetic_indices',
+        });
+    const onClickFundRealStandard = () =>
+        openAccountTransfer(current_list['real.standard'], {
+            category: 'real',
+            type: 'standard',
+        });
 
     return (
         <div className='mt5-real-accounts-display'>
             <MT5AccountCard
                 has_mt5_account={has_mt5_account}
                 is_disabled={!has_real_account}
-                icon={() => (<Icon icon='IcMt5Standard' size={64} />)}
+                icon={() => <Icon icon='IcMt5Standard' size={64} />}
                 title={localize('Standard')}
                 type={{
                     category: 'real',
-                    type    : 'standard',
+                    type: 'standard',
                 }}
                 existing_data={current_list['real.standard']}
                 commission_message={
@@ -109,11 +97,11 @@ const MT5RealAccountDisplay = ({
             />
             <MT5AccountCard
                 has_mt5_account={has_mt5_account}
-                icon={() => (<Icon icon='IcMt5Advanced' size={64} />)}
+                icon={() => <Icon icon='IcMt5Advanced' size={64} />}
                 title={localize('Advanced')}
                 type={{
                     category: 'real',
-                    type    : 'advanced',
+                    type: 'advanced',
                 }}
                 existing_data={current_list['real.advanced']}
                 commission_message={<Localize i18n_default_text='No commission' />}
@@ -127,12 +115,12 @@ const MT5RealAccountDisplay = ({
             />
             <MT5AccountCard
                 has_mt5_account={has_mt5_account}
-                icon={() => (<Icon icon='IcMt5SyntheticIndices' size={64} />)}
+                icon={() => <Icon icon='IcMt5SyntheticIndices' size={64} />}
                 title={localize('Synthetic Indices')}
                 is_disabled={!has_real_account}
                 type={{
                     category: 'real',
-                    type    : 'synthetic_indices',
+                    type: 'synthetic_indices',
                 }}
                 existing_data={current_list['real.synthetic_indices']}
                 commission_message={<Localize i18n_default_text='No commission' />}

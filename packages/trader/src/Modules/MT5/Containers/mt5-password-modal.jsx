@@ -1,34 +1,28 @@
-import { Formik }                     from 'formik';
-import PropTypes                      from 'prop-types';
-import React                          from 'react';
-import { withRouter }                 from 'react-router';
-import {
-    FormSubmitButton,
-    Icon,
-    Modal,
-    PasswordInput,
-    PasswordMeter,
-} from '@deriv/components';
-import { localize, Localize }         from '@deriv/translations';
-import SuccessDialog                  from 'App/Containers/Modals/success-dialog.jsx';
-import routes                         from 'Constants/routes';
+import { Formik } from 'formik';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { withRouter } from 'react-router';
+import { FormSubmitButton, Icon, Modal, PasswordInput, PasswordMeter } from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
+import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
+import routes from 'Constants/routes';
 import 'Sass/app/modules/mt5/mt5.scss';
-import { connect }                    from 'Stores/connect';
+import { connect } from 'Stores/connect';
 import { validLength, validPassword } from 'Utils/Validator/declarative-validation-rules';
-import AdvancedDescription            from './advanced-description.jsx';
+import AdvancedDescription from './advanced-description.jsx';
 
 const getSubmitText = (account_title, category) => {
     if (category === 'real') {
         return localize(
             'You have created a DMT5 {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.',
-            { account_title: account_title[0].toLowerCase() + account_title.substr(1) },
+            { account_title: account_title[0].toLowerCase() + account_title.substr(1) }
         );
     }
 
     return localize('You have created a Deriv {{account_title}}.', { account_title });
 };
 
-const getIconFromType = (type) => {
+const getIconFromType = type => {
     switch (type) {
         case 'synthetic_indices':
             return <Icon icon='IcMt5SyntheticIndices' size={64} />;
@@ -53,13 +47,14 @@ const MT5PasswordModal = ({
     setMt5Error,
     submitMt5Password,
 }) => {
-    const validatePassword = (values) => {
-        const is_valid = validPassword(values.password) &&
+    const validatePassword = values => {
+        const is_valid =
+            validPassword(values.password) &&
             validLength(values.password, {
                 min: 8,
                 max: 25,
             });
-        const errors   = {};
+        const errors = {};
 
         if (!is_valid) {
             errors.password = localize('You need to include uppercase and lowercase letters, and numbers.');
@@ -84,11 +79,10 @@ const MT5PasswordModal = ({
         history.push(routes.cashier_acc_transfer);
     };
 
-    const IconType             = () => getIconFromType(account_type.type);
-    const should_show_password = is_mt5_password_modal_enabled && !has_mt5_error &&
-        !is_mt5_success_dialog_enabled;
-    const should_show_success  = !has_mt5_error && is_mt5_success_dialog_enabled;
-    const is_real_advanced     = [account_type.category, account_type.type].join('_') === 'real_advanced';
+    const IconType = () => getIconFromType(account_type.type);
+    const should_show_password = is_mt5_password_modal_enabled && !has_mt5_error && !is_mt5_success_dialog_enabled;
+    const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
+    const is_real_advanced = [account_type.category, account_type.type].join('_') === 'real_advanced';
 
     return (
         <React.Fragment>
@@ -105,10 +99,7 @@ const MT5PasswordModal = ({
                     }}
                     validate={validatePassword}
                     onSubmit={(values, actions) => {
-                        submitMt5Password(
-                            values.password,
-                            actions.setSubmitting,
-                        );
+                        submitMt5Password(values.password, actions.setSubmitting);
                     }}
                     render={({
                         handleSubmit,
@@ -130,48 +121,32 @@ const MT5PasswordModal = ({
                                     }}
                                 />
                             </h2>
-                            <div
-                                className='dc-modal__container_mt5-password-modal__body'
-                            >
+                            <div className='dc-modal__container_mt5-password-modal__body'>
                                 <div className='input-element'>
-                                    <PasswordMeter
-                                        input={values.password}
-                                        error={touched.password && errors.password}
-                                    >
+                                    <PasswordMeter input={values.password} error={touched.password && errors.password}>
                                         <PasswordInput
                                             autoComplete='password'
                                             label={localize('MT5 Password')}
                                             name='password'
                                             value={values.password}
                                             onBlur={handleBlur}
-                                            onChange={(e) => {
-                                                setFieldTouched(
-                                                    'password',
-                                                    true,
-                                                );
+                                            onChange={e => {
+                                                setFieldTouched('password', true);
                                                 handleChange(e);
                                             }}
                                         />
                                     </PasswordMeter>
                                 </div>
-                                <div
-                                    className='dc-modal__container_mt5-password-modal__description'
-                                >
+                                <div className='dc-modal__container_mt5-password-modal__description'>
                                     <p>
-                                        <Localize
-                                            i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters with numbers'
-                                        />
+                                        <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters with numbers' />
                                     </p>
                                     <AdvancedDescription is_real_advanced={is_real_advanced} />
                                 </div>
                             </div>
                             <FormSubmitButton
                                 is_center={is_real_advanced}
-                                is_disabled={
-                                    isSubmitting ||
-                                    !values.password ||
-                                    Object.keys(errors).length > 0
-                                }
+                                is_disabled={isSubmitting || !values.password || Object.keys(errors).length > 0}
                                 has_cancel={!is_real_advanced}
                                 cancel_label={localize('Cancel')}
                                 onCancel={closeModal}
@@ -205,27 +180,27 @@ const MT5PasswordModal = ({
 };
 
 MT5PasswordModal.propTypes = {
-    account_title                : PropTypes.string,
-    account_type                 : PropTypes.object,
-    disableMt5PasswordModal      : PropTypes.func,
-    error_message                : PropTypes.string,
-    has_mt5_error                : PropTypes.bool,
+    account_title: PropTypes.string,
+    account_type: PropTypes.object,
+    disableMt5PasswordModal: PropTypes.func,
+    error_message: PropTypes.string,
+    has_mt5_error: PropTypes.bool,
     is_mt5_password_modal_enabled: PropTypes.bool,
     is_mt5_success_dialog_enabled: PropTypes.bool,
-    setMt5Error                  : PropTypes.func,
-    setMt5SuccessDialog          : PropTypes.func,
-    submitMt5Password            : PropTypes.func,
+    setMt5Error: PropTypes.func,
+    setMt5SuccessDialog: PropTypes.func,
+    submitMt5Password: PropTypes.func,
 };
 
 export default connect(({ modules }) => ({
-    account_title                : modules.mt5.account_title,
-    account_type                 : modules.mt5.account_type,
-    disableMt5PasswordModal      : modules.mt5.disableMt5PasswordModal,
-    error_message                : modules.mt5.error_message,
-    has_mt5_error                : modules.mt5.has_mt5_error,
+    account_title: modules.mt5.account_title,
+    account_type: modules.mt5.account_type,
+    disableMt5PasswordModal: modules.mt5.disableMt5PasswordModal,
+    error_message: modules.mt5.error_message,
+    has_mt5_error: modules.mt5.has_mt5_error,
     is_mt5_success_dialog_enabled: modules.mt5.is_mt5_success_dialog_enabled,
     is_mt5_password_modal_enabled: modules.mt5.is_mt5_password_modal_enabled,
-    setMt5Error                  : modules.mt5.setError,
-    setMt5SuccessDialog          : modules.mt5.setMt5SuccessDialog,
-    submitMt5Password            : modules.mt5.submitMt5Password,
+    setMt5Error: modules.mt5.setError,
+    setMt5SuccessDialog: modules.mt5.setMt5SuccessDialog,
+    submitMt5Password: modules.mt5.submitMt5Password,
 }))(withRouter(MT5PasswordModal));

@@ -1,31 +1,22 @@
-import {
-    action,
-    computed,
-    observable,
-    runInAction,
-}                from 'mobx';
-import { WS }    from 'Services/ws-methods';
+import { action, computed, observable, runInAction } from 'mobx';
+import { WS } from 'Services/ws-methods';
 import BaseStore from 'Stores/base-store';
-import {
-    getMt5GroupConfig,
-    getAccountTypeFields,
-    getMtCompanies,
-}                from './Helpers/mt5-config';
+import { getMt5GroupConfig, getAccountTypeFields, getMtCompanies } from './Helpers/mt5-config';
 
 export default class MT5Store extends BaseStore {
     @observable is_compare_accounts_visible = false;
-    @observable account_type                = {
+    @observable account_type = {
         category: undefined,
-        type    : undefined,
+        type: undefined,
     };
 
     @observable new_account_response = {};
-    @observable map_type             = {};
-    @observable has_mt5_error        = false;
-    @observable error_message        = '';
+    @observable map_type = {};
+    @observable has_mt5_error = false;
+    @observable error_message = '';
 
     @observable is_mt5_success_dialog_enabled = false;
-    @observable is_mt5_advanced_modal_open    = false;
+    @observable is_mt5_advanced_modal_open = false;
     @observable is_mt5_password_modal_enabled = false;
 
     @observable is_mt5_pending_dialog_open = false;
@@ -53,7 +44,7 @@ export default class MT5Store extends BaseStore {
         const list = [];
 
         this.root_store.client.mt5_login_list.forEach(login => {
-            const { type, category }    = getMt5GroupConfig(login.group);
+            const { type, category } = getMt5GroupConfig(login.group);
             list[`${category}.${type}`] = Object.assign({}, login);
         });
 
@@ -87,8 +78,8 @@ export default class MT5Store extends BaseStore {
 
     @action.bound
     clearMt5Error() {
-        this.error_message                 = '';
-        this.has_mt5_error                 = false;
+        this.error_message = '';
+        this.has_mt5_error = false;
         this.is_mt5_password_modal_enabled = false;
     }
 
@@ -140,8 +131,7 @@ export default class MT5Store extends BaseStore {
 
     @action.bound
     getName() {
-        const { first_name } = (this.root_store.client.account_settings && this.root_store.client.account_settings);
-
+        const { first_name } = this.root_store.client.account_settings && this.root_store.client.account_settings;
         const title = this.mt5_companies[this.account_type.category][this.account_type.type].title;
 
         // First name is not set when user has no real account
@@ -150,13 +140,13 @@ export default class MT5Store extends BaseStore {
 
     @action.bound
     openAccount(mt5_password) {
-        const name         = this.getName();
-        const leverage     = this.mt5_companies[this.account_type.category][this.account_type.type].leverage;
+        const name = this.getName();
+        const leverage = this.mt5_companies[this.account_type.category][this.account_type.type].leverage;
         const type_request = getAccountTypeFields(this.account_type);
 
         return WS.mt5NewAccount({
             mainPassword: mt5_password,
-            email       : this.root_store.client.email_address,
+            email: this.root_store.client.email_address,
             leverage,
             name,
             ...type_request,
@@ -230,14 +220,14 @@ export default class MT5Store extends BaseStore {
             setStatus({ msg: '' });
             this.setState({ is_btn_loading: true });
 
-            WS.setSettings(values).then((data) => {
+            WS.setSettings(values).then(data => {
                 if (data.error) {
                     setStatus({ msg: data.error.message });
                     reject(data);
                 } else {
                     this.root_store.fetchAccountSettings();
                     // force request to update settings cache since settings have been updated
-                    file_uploader_ref.current.upload().then((api_response) => {
+                    file_uploader_ref.current.upload().then(api_response => {
                         if (api_response.warning) {
                             setStatus({ msg: api_response.message });
                             reject(api_response);
@@ -247,7 +237,7 @@ export default class MT5Store extends BaseStore {
                                     reject(error);
                                 }
                                 const { identity } = get_account_status.authentication;
-                                const has_poi      = !(identity && identity.status === 'none');
+                                const has_poi = !(identity && identity.status === 'none');
                                 resolve({
                                     identity,
                                     has_poi,
@@ -268,7 +258,7 @@ export default class MT5Store extends BaseStore {
             runInAction(() => {
                 this.setMt5Account(response.mt5_new_account);
                 this.is_mt5_password_modal_enabled = false;
-                this.has_mt5_error                 = false;
+                this.has_mt5_error = false;
                 setTimeout(() => this.setMt5SuccessDialog(true), 300);
             });
         } else {
@@ -319,9 +309,12 @@ export default class MT5Store extends BaseStore {
 
     @action.bound
     openPendingDialog() {
-        setTimeout(runInAction(() => {
-            this.is_mt5_pending_dialog_open = true;
-        }), 300);
+        setTimeout(
+            runInAction(() => {
+                this.is_mt5_pending_dialog_open = true;
+            }),
+            300
+        );
     }
 
     static async changePassword({ login, old_password, new_password, password_type }) {

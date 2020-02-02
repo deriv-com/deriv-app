@@ -1,20 +1,16 @@
-import React                  from 'react';
-import { Button, Icon }       from '@deriv/components';
-import ButtonLink             from 'App/Components/Routes/button-link.jsx';
+import React from 'react';
+import { Button, Icon } from '@deriv/components';
+import ButtonLink from 'App/Components/Routes/button-link.jsx';
 import { localize, Localize } from '@deriv/translations';
-import IconMessageContent     from '../../../Components/icon-message-content.jsx';
+import IconMessageContent from '../../../Components/icon-message-content.jsx';
 
 const ContinueTradingButton = () => (
-    <ButtonLink
-        to='/'
-    >
+    <ButtonLink to='/'>
         <p className='btn__text'>{localize('Continue trading')}</p>
     </ButtonLink>
 );
 const PoiButton = () => (
-    <ButtonLink
-        to='/account/proof-of-identity'
-    >
+    <ButtonLink to='/account/proof-of-identity'>
         <p className='btn__text'>{localize('Submit proof of identity')}</p>
     </ButtonLink>
 );
@@ -25,11 +21,7 @@ export const Expired = ({ onClick }) => (
         text={localize('Your documents for proof of address is expired. Please submit again.')}
         icon={<Icon icon='IcPoaUpload' size={128} />}
     >
-        <Button
-            onClick={onClick}
-            has_effect
-            primary
-        >
+        <Button onClick={onClick} has_effect primary>
             <p className='btn__text'>{localize('Resubmit')}</p>
         </Button>
     </IconMessageContent>
@@ -49,12 +41,11 @@ export const Submitted = ({ needs_poi, is_description_disabled = false }) => {
     const message = localize('Your proof of address was submitted successfully');
     if (needs_poi) {
         return (
-            <IconMessageContent
-                message={message}
-                icon={<Icon icon='IcPoaVerified' size={128} />}
-            >
+            <IconMessageContent message={message} icon={<Icon icon='IcPoaVerified' size={128} />}>
                 <div className='account-management__text-container'>
-                    <p className='account-management__text'>{localize('Your document is being reviewed, please check back in 1-3 days.')}</p>
+                    <p className='account-management__text'>
+                        {localize('Your document is being reviewed, please check back in 1-3 days.')}
+                    </p>
                     <p className='account-management__text'>{localize('You must also submit a proof of identity.')}</p>
                 </div>
                 <PoiButton />
@@ -86,16 +77,13 @@ export const Verified = ({ needs_poi, is_description_disabled = false }) => {
         );
     }
     return (
-        <IconMessageContent
-            message={message}
-            icon={<Icon icon='IcPoaVerified' size={128} />}
-        >
-            {!is_description_disabled && <ContinueTradingButton /> }
+        <IconMessageContent message={message} icon={<Icon icon='IcPoaVerified' size={128} />}>
+            {!is_description_disabled && <ContinueTradingButton />}
         </IconMessageContent>
     );
 };
 
-export const Unverified = () =>  (
+export const Unverified = () => (
     <IconMessageContent
         message={localize('We could not verify your proof of address')}
         text={
@@ -106,7 +94,8 @@ export const Unverified = () =>  (
                 // components={[
                 //     <a key={0} className='link link--orange' rel='noopener noreferrer' target='_blank' href='https://www.deriv.com/help-centre/' />,
                 // ]}
-            />}
+            />
+        }
         icon={<Icon icon='IcPoaError' size={128} />}
     />
 );

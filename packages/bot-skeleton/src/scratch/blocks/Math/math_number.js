@@ -7,29 +7,31 @@ Blockly.Blocks.math_number = {
         const fieldInput = this.getField('NUM');
         fieldInput.setValidator(input => this.numberValidator(input));
     },
-    definition(){
+    definition() {
         return {
             message0: '%1',
-            args0   : [
+            args0: [
                 {
-                    type : 'field_number',
-                    name : 'NUM',
+                    type: 'field_number',
+                    name: 'NUM',
                     value: 0,
                 },
             ],
-            output         : 'Number',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Please use `.` as a decimal separator for fractional numbers.'),
-            category       : Blockly.Categories.Mathematical,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Please use `.` as a decimal separator for fractional numbers.'),
+            category: Blockly.Categories.Mathematical,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Number block'),
-            'description' : localize('Enter an integer or fractional number into this block. Please use `.` as a decimal separator for fractional numbers.'),
+            display_name: localize('Number block'),
+            description: localize(
+                'Enter an integer or fractional number into this block. Please use `.` as a decimal separator for fractional numbers.'
+            ),
         };
     },
     numberValidator(input) {

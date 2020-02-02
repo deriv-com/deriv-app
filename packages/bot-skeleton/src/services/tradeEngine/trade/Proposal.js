@@ -1,5 +1,5 @@
-import { localize }                                    from '@deriv/translations';
-import { proposalsReady, clearProposals }              from './state/actions';
+import { localize } from '@deriv/translations';
+import { proposalsReady, clearProposals } from './state/actions';
 import { tradeOptionToProposal, doUntilDone, getUUID } from '../utils/helpers';
 
 export default Engine =>
@@ -35,7 +35,7 @@ export default Engine =>
             }
 
             return {
-                id      : toBuy.id,
+                id: toBuy.id,
                 askPrice: toBuy.ask_price,
             };
         }
@@ -57,7 +57,7 @@ export default Engine =>
                             ...proposal,
                             passthrough: {
                                 contractType: proposal.contract_type,
-                                uuid        : getUUID(),
+                                uuid: getUUID(),
                             },
                         })
                         // eslint-disable-next-line consistent-return
@@ -75,7 +75,7 @@ export default Engine =>
                                     this.data = this.data.setIn(['proposals', uuid], {
                                         ...proposal,
                                         contractType: proposal.contract_type,
-                                        error       : e,
+                                        error: e,
                                     });
                                 }
                             } else {

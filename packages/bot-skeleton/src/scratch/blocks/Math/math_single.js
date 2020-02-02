@@ -4,13 +4,13 @@ Blockly.Blocks.math_single = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('%1 %2'),
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'OP',
+                    type: 'field_dropdown',
+                    name: 'OP',
                     options: [
                         [localize('square root'), 'ROOT'],
                         [localize('absolute'), 'ABS'],
@@ -26,19 +26,19 @@ Blockly.Blocks.math_single = {
                     name: 'NUM',
                 },
             ],
-            output         : 'Number',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Operations on a given number'),
-            category       : Blockly.Categories.Mathematical,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Operations on a given number'),
+            category: Blockly.Categories.Mathematical,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Operations on a given number'),
-            'description' : localize('This block performs the selected operations to a given number.'),
+            display_name: localize('Operations on a given number'),
+            description: localize('This block performs the selected operations to a given number.'),
         };
     },
     getRequiredValueInputs() {
@@ -51,8 +51,7 @@ Blockly.Blocks.math_single = {
 Blockly.JavaScript.math_single = block => {
     const operator = block.getFieldValue('OP');
 
-    let code,
-        arg;
+    let code, arg;
 
     if (operator === 'NEG') {
         // Negation is a special case given its different operator precedence.

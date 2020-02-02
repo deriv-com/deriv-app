@@ -18,17 +18,17 @@ Blockly.Blocks.text_charAt = {
 
         this.updateAt(true);
     },
-    definition(){
+    definition() {
         return {
             message0: localize('in text %1 get %2'),
-            args0   : [
+            args0: [
                 {
                     type: 'input_value',
                     name: 'VALUE',
                 },
                 {
-                    type   : 'field_dropdown',
-                    name   : 'WHERE',
+                    type: 'field_dropdown',
+                    name: 'WHERE',
                     options: [
                         [localize('letter #'), 'FROM_START'],
                         [localize('letter # from end'), 'FROM_END'],
@@ -38,19 +38,21 @@ Blockly.Blocks.text_charAt = {
                     ],
                 },
             ],
-            output         : 'String',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'String',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Returns a specific character from a given string'),
-            category       : Blockly.Categories.Text,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Returns a specific character from a given string'),
+            category: Blockly.Categories.Text,
         };
     },
     meta() {
         return {
-            'display_name': localize('Get character'),
-            'description' : localize('Returns the specific character from a given string of text according to the selected option. '),
+            display_name: localize('Get character'),
+            description: localize(
+                'Returns the specific character from a given string of text according to the selected option. '
+            ),
         };
     },
     mutationToDom() {
@@ -75,7 +77,7 @@ Blockly.Blocks.text_charAt = {
     getRequiredValueInputs() {
         return {
             VALUE: emptyTextValidator,
-            AT   : emptyTextValidator,
+            AT: emptyTextValidator,
         };
     },
 };
@@ -83,7 +85,7 @@ Blockly.Blocks.text_charAt = {
 Blockly.JavaScript.text_charAt = block => {
     const where = block.getFieldValue('WHERE') || 'FROM_START';
     const textOrder = where === 'RANDOM' ? Blockly.JavaScript.ORDER_NONE : Blockly.JavaScript.ORDER_MEMBER;
-    const text = Blockly.JavaScript.valueToCode(block, 'VALUE', textOrder) || '\'\'';
+    const text = Blockly.JavaScript.valueToCode(block, 'VALUE', textOrder) || "''";
 
     let code;
 

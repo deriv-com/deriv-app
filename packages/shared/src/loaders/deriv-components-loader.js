@@ -9,11 +9,14 @@ stylesheets.
 */
 
 function getKebabCase(str) {
-    return str.split(/(?=[A-Z])/).join('-').toLowerCase();
+    return str
+        .split(/(?=[A-Z])/)
+        .join('-')
+        .toLowerCase();
 }
 
 module.exports = function(source, map) {
-    const lines  = source.split(/\n/);
+    const lines = source.split(/\n/);
     const mapped_lines = lines.map(line => {
         const matches = /\s*import\s+\{(.*)\}\s*from\s+\'@deriv\/components/.exec(line); // eslint-disable-line no-useless-escape
         if (!matches || !matches[1]) {
@@ -23,10 +26,14 @@ module.exports = function(source, map) {
             .replace(/\sas\s\w+/, '') // Remove aliasing from imports.
             .replace(/\s+/g, '')
             .split(',');
-        const replace = components.map(c => `
+        const replace = components
+            .map(
+                c => `
 import ${c} from '@deriv/components/lib/${getKebabCase(c)}';
 import '@deriv/components/lib/${getKebabCase(c)}.css';
-        `).join('\n');
+        `
+            )
+            .join('\n');
 
         return replace;
     });

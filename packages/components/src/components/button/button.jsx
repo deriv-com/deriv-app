@@ -25,7 +25,7 @@ const Button = ({
   primary,
   secondary,
   small,
-  tertiary
+  tertiary,
 }) => {
   const classes = classNames(
     "btn",
@@ -37,7 +37,7 @@ const Button = ({
       "btn--green": green,
       btn__large: large,
       btn__medium: medium,
-      btn__small: small
+      btn__small: small,
     },
     className
   );
@@ -89,7 +89,7 @@ Button.propTypes = {
   small: PropTypes.bool,
   tertiary: PropTypes.bool,
   text: PropTypes.string,
-  wrapperClassName: PropTypes.string
+  wrapperClassName: PropTypes.string,
 };
 
 export default Button;

@@ -15,7 +15,7 @@ class Tab extends Component {
     const classes = classNames("dc-tabs__item", {
       "dc-tabs__active": is_active,
       "dc-tabs__item--top": top,
-      "dc-tabs__item--bottom": bottom
+      "dc-tabs__item--bottom": bottom,
     });
     return (
       <li className={classes} onClick={this.onClick}>
@@ -33,7 +33,7 @@ Tab.propTypes = {
   count: PropTypes.number,
   is_active: PropTypes.bool,
   label: PropTypes.string,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
 };
 
 export default Tab;

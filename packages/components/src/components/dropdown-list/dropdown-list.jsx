@@ -13,7 +13,7 @@ const ListItems = React.forwardRef((props, ref) => {
     list_items,
     is_object_list,
     onItemSelection,
-    not_found_text
+    not_found_text,
   } = props;
 
   const onMouseDown = item => {
@@ -32,7 +32,7 @@ const ListItems = React.forwardRef((props, ref) => {
             onMouseDown={() => onMouseDown(item)}
             className={classNames("dc-dropdown-list__item", {
               "dc-dropdown-list__item--active": idx === active_index,
-              "dc-dropdown-list__item--disabled": item.disabled === "DISABLED"
+              "dc-dropdown-list__item--disabled": item.disabled === "DISABLED",
             })}
             value={is_object_list ? item.value : null}
           >
@@ -55,7 +55,7 @@ const DropdownList = React.forwardRef((props, ref) => {
     list_items,
     onItemSelection,
     style,
-    not_found_text
+    not_found_text,
   } = props;
   if (
     list_items.length &&
@@ -77,7 +77,7 @@ const DropdownList = React.forwardRef((props, ref) => {
       classNames={{
         enter: "dc-dropdown-list--enter",
         enterDone: "dc-dropdown-list--enter-done",
-        exit: "dc-dropdown-list--exit"
+        exit: "dc-dropdown-list--exit",
       }}
       unmountOnExit
     >
@@ -123,7 +123,7 @@ export default DropdownList;
 const list_items_shape = PropTypes.arrayOf(
   PropTypes.shape({
     text: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired
+    value: PropTypes.string.isRequired,
   })
 );
 
@@ -133,9 +133,9 @@ DropdownList.propTypes = {
   list_items: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.string),
     list_items_shape,
-    PropTypes.objectOf(list_items_shape)
+    PropTypes.objectOf(list_items_shape),
   ]),
   not_found_text: PropTypes.string,
   onItemSelection: PropTypes.func,
-  style: PropTypes.object
+  style: PropTypes.object,
 };

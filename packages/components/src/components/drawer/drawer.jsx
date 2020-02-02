@@ -27,14 +27,14 @@ class Drawer extends React.PureComponent {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      is_open: nextProps.is_open
+      is_open: nextProps.is_open,
     });
   }
 
   toggleDrawer = () => {
     this.setState(
       prev_state => ({
-        is_open: !prev_state.is_open
+        is_open: !prev_state.is_open,
       }),
       () => {
         if (this.props.toggleDrawer) {
@@ -50,7 +50,7 @@ class Drawer extends React.PureComponent {
     return (
       <div
         className={classNames("dc-drawer", className, {
-          "dc-drawer--open": this.state.is_open
+          "dc-drawer--open": this.state.is_open,
         })}
       >
         <div className="dc-drawer__container">
@@ -60,7 +60,7 @@ class Drawer extends React.PureComponent {
         </div>
         <div
           className={classNames("dc-drawer__toggle", {
-            "dc-drawer__toggle--open": this.state.is_open
+            "dc-drawer__toggle--open": this.state.is_open,
           })}
           onClick={this.toggleDrawer}
         >
@@ -75,7 +75,7 @@ Drawer.propTypes = {
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   footer: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
   header: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-  is_open: PropTypes.bool
+  is_open: PropTypes.bool,
 };
 
 export default Drawer;

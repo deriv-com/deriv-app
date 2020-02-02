@@ -15,7 +15,7 @@ const FadeInMessage = ({ is_visible, children, key, timeout }) => (
       enterActive: "dc-file-dropzone__message--enter-active",
       enterDone: "dc-file-dropzone__message--enter-done",
       exit: "dc-file-dropzone__message--exit",
-      exitActive: "dc-file-dropzone__message--exit-active"
+      exitActive: "dc-file-dropzone__message--exit-active",
     }}
     unmountOnExit
   >
@@ -41,7 +41,7 @@ const FileDropzone = ({ className, ...props }) => (
       getInputProps,
       isDragAccept,
       isDragActive,
-      isDragReject
+      isDragReject,
     }) => {
       return (
         <div
@@ -52,7 +52,7 @@ const FileDropzone = ({ className, ...props }) => (
               isDragActive || props.value.length > 0,
             "dc-file-dropzone--has-error":
               (isDragReject || !!props.validation_error_message) &&
-              !isDragAccept
+              !isDragAccept,
           })}
         >
           <input {...getInputProps()} />

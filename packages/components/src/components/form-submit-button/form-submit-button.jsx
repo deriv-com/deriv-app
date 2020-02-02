@@ -12,14 +12,14 @@ const FormSubmitButton = ({
   is_absolute,
   is_loading,
   label,
-  onCancel
+  onCancel,
 }) => {
   return (
     <div
       className={classNames("dc-form-submit-button", {
         "dc-form-submit-button--absolute": is_absolute,
         "dc-form-submit-button--center": !!is_center,
-        "dc-form-submit-button--relative": !is_absolute
+        "dc-form-submit-button--relative": !is_absolute,
       })}
     >
       {!!form_error && (
@@ -51,7 +51,7 @@ FormSubmitButton.defaultProps = {
   form_error: "",
   is_disabled: false,
   is_center: false,
-  is_absolute: false
+  is_absolute: false,
 };
 
 FormSubmitButton.propTypes = {
@@ -59,7 +59,7 @@ FormSubmitButton.propTypes = {
   is_absolute: PropTypes.bool,
   is_center: PropTypes.bool,
   is_disabled: PropTypes.bool,
-  label: PropTypes.string
+  label: PropTypes.string,
 };
 
 export default FormSubmitButton;

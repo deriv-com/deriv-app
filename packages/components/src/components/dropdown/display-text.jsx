@@ -10,7 +10,7 @@ const DisplayText = ({
   is_align_text_left,
   placeholder,
   name,
-  value
+  value,
 }) => {
   const symbol_value_class =
     value && has_symbol ? `symbols--${value.toLowerCase()}` : null;
@@ -39,7 +39,7 @@ const DisplayText = ({
         <div
           className={classNames("dc-dropdown__display-placeholder", {
             "dc-dropdown__display-placeholder--is-title": value,
-            "dc-dropdown__display-placeholder--is-left-text": is_align_text_left
+            "dc-dropdown__display-placeholder--is-left-text": is_align_text_left,
           })}
         >
           <span className="dc-dropdown__display-placeholder-text">
@@ -58,7 +58,7 @@ DisplayText.propTypes = {
   list: listPropType(),
   name: PropTypes.string,
   placeholder: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default DisplayText;

@@ -5,7 +5,7 @@ import Icon from "../icon";
 
 class Accordion extends React.Component {
   state = {
-    open_idx: null
+    open_idx: null,
   };
 
   componentDidUpdate(prevProps) {
@@ -33,7 +33,7 @@ class Accordion extends React.Component {
               }`,
               {
                 [`dc-accordion__item--${idx === 0 ? "first" : "last"}`]:
-                  idx === 0 || idx === list.length - 1
+                  idx === 0 || idx === list.length - 1,
               }
             )}
             key={idx}
@@ -69,7 +69,7 @@ class Accordion extends React.Component {
 
 Accordion.propTypes = {
   className: PropTypes.string,
-  list: PropTypes.arrayOf(PropTypes.object)
+  list: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default Accordion;

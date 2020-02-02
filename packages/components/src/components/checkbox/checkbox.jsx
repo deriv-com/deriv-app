@@ -8,7 +8,7 @@ class Checkbox extends React.PureComponent {
     super(props);
 
     this.state = {
-      checked: props.defaultChecked
+      checked: props.defaultChecked,
     };
   }
 
@@ -38,7 +38,7 @@ class Checkbox extends React.PureComponent {
         />
         <span
           className={classNames("dc-checkbox__box", {
-            "dc-checkbox__box--active": this.state.checked
+            "dc-checkbox__box--active": this.state.checked,
           })}
         >
           {!!this.state.checked && <Icon icon="IcCheckmark" color="active" />}
@@ -55,7 +55,7 @@ Checkbox.propTypes = {
   className: PropTypes.string,
   classNameLabel: PropTypes.string,
   id: PropTypes.string,
-  label: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 export default Checkbox;

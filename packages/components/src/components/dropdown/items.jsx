@@ -11,7 +11,7 @@ const Items = ({
   items,
   name,
   is_align_text_left,
-  value
+  value,
 }) =>
   items.map((item, idx) => {
     const symbol_type_class_name =
@@ -74,7 +74,7 @@ Items.propTypes = {
   handleSelect: PropTypes.func,
   has_symbol: PropTypes.bool,
   name: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default Items;

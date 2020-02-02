@@ -34,7 +34,7 @@ NativeSelect.propTypes = {
   list: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   name: PropTypes.string,
   onChange: PropTypes.func,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default NativeSelect;

@@ -29,7 +29,7 @@ const PasswordMeter = ({ children, error, error_className, input }) => {
         <div
           className={classNames("dc-password-meter", {
             "dc-password-meter--weak": error || (input.length && score < 3),
-            "dc-password-meter--strong": !error && input.length && score >= 3
+            "dc-password-meter--strong": !error && input.length && score >= 3,
           })}
           style={{ transform: `scale(${width_scale}, 1)` }}
         />
@@ -53,10 +53,10 @@ const PasswordMeter = ({ children, error, error_className, input }) => {
 PasswordMeter.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
   ]),
   has_error: PropTypes.bool,
-  input: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  input: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default PasswordMeter;

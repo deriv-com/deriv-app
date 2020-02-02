@@ -40,7 +40,7 @@ ToggleSwitch.propTypes = {
   classNameLabel: PropTypes.string,
   handleToggle: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
-  is_enabled: PropTypes.bool.isRequired
+  is_enabled: PropTypes.bool.isRequired,
 };
 
 export default ToggleSwitch;

@@ -7,7 +7,7 @@ class Radio extends React.Component {
     super(props);
 
     this.state = {
-      checked: props.defaultChecked
+      checked: props.defaultChecked,
     };
   }
 
@@ -53,7 +53,7 @@ class Radio extends React.Component {
         />
         <span
           className={classNames("dc-radio-group__circle", {
-            "dc-radio-group__circle--selected": this.state.checked
+            "dc-radio-group__circle--selected": this.state.checked,
           })}
         />
         <span className={classNames("dc-radio-group__label", classNameLabel)}>
@@ -69,7 +69,7 @@ Radio.propTypes = {
   id: PropTypes.string,
   onClick: PropTypes.func,
   selected: PropTypes.bool,
-  value: PropTypes.bool
+  value: PropTypes.bool,
 };
 
 export default Radio;

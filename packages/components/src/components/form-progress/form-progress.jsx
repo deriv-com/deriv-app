@@ -19,7 +19,7 @@ class FormProgress extends React.PureComponent {
   animateCompleteBar() {
     const el_first_identifier = document.querySelector(".identifier") || {
       offsetLeft: 0,
-      clientWidth: 1
+      clientWidth: 1,
     };
     const each = 100 / this.props.steps.length;
     this.el_completed_bar.current.style.width = `${this.props.current_step *
@@ -38,7 +38,7 @@ class FormProgress extends React.PureComponent {
             <div
               className="dc-form-progress__steps--before"
               style={{
-                width: `calc(100% * ${steps.length - 1} / ${steps.length})`
+                width: `calc(100% * ${steps.length - 1} / ${steps.length})`,
               }}
             />
             {steps.map((item, idx) => (
@@ -46,7 +46,7 @@ class FormProgress extends React.PureComponent {
                 key={idx + 1}
                 className={classNames("dc-form-progress__step", {
                   "dc-form-progress__step--active": idx <= current_step,
-                  "dc-form-progress__step--current": idx === current_step
+                  "dc-form-progress__step--current": idx === current_step,
                 })}
               >
                 <span className="identifier">{idx + 1}</span>
@@ -68,7 +68,7 @@ FormProgress.propTypes = {
   current_step: PropTypes.any,
   nextStep: PropTypes.any,
   prevStep: PropTypes.any,
-  steps: PropTypes.array
+  steps: PropTypes.array,
 };
 
 FormProgress.defaultProps = { steps: [] };

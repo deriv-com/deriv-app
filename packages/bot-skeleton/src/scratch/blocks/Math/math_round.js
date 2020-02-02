@@ -10,33 +10,39 @@ Blockly.Blocks.math_round = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: '%1 %2',
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'OP',
-                    options: [['round', 'ROUND'], ['round up', 'ROUNDUP'], ['round down', 'ROUNDDOWN']],
+                    type: 'field_dropdown',
+                    name: 'OP',
+                    options: [
+                        ['round', 'ROUND'],
+                        ['round up', 'ROUNDUP'],
+                        ['round down', 'ROUNDDOWN'],
+                    ],
                 },
                 {
                     type: 'input_value',
                     name: 'NUM',
                 },
             ],
-            output         : 'Number',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Rounds a given number to an integer'),
-            category       : Blockly.Categories.Mathematical,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Rounds a given number to an integer'),
+            category: Blockly.Categories.Mathematical,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Rounding operation'),
-            'description' : localize('This block rounds a given number according to the selection: round, round up, round down.'),
+            display_name: localize('Rounding operation'),
+            description: localize(
+                'This block rounds a given number according to the selection: round, round up, round down.'
+            ),
         };
     },
     getRequiredValueInputs() {

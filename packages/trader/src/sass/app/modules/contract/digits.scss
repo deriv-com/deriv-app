@@ -101,7 +101,8 @@
                 background-color: var(--text-profit-success);
                 color: var(--text-prominent);
 
-                .digits__digit-display-value, .digits__digit-display-percentage {
+                .digits__digit-display-value,
+                .digits__digit-display-percentage {
                     color: $color-white;
                 }
             }
@@ -116,7 +117,8 @@
                 background-color: var(--text-loss-danger);
                 color: var(--text-prominent);
 
-                .digits__digit-display-value, .digits__digit-display-percentage {
+                .digits__digit-display-value,
+                .digits__digit-display-percentage {
                     color: $color-white;
                 }
             }

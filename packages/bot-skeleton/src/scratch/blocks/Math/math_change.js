@@ -2,10 +2,10 @@ import { localize } from '@deriv/translations';
 
 Blockly.Blocks.math_change = {
     /**
-    * Initializes the block, in most cases this calls the jsonInit function, in some
-    * cases it may add extra properties to the block object.
-    * https://developers.google.com/blockly/reference/js/Blockly.Block#jsonInit
-    */
+     * Initializes the block, in most cases this calls the jsonInit function, in some
+     * cases it may add extra properties to the block object.
+     * https://developers.google.com/blockly/reference/js/Blockly.Block#jsonInit
+     */
     init() {
         this.jsonInit(this.definition());
     },
@@ -18,25 +18,25 @@ Blockly.Blocks.math_change = {
     definition() {
         return {
             message0: localize('change %1 by %2'),
-            args0   : [
+            args0: [
                 {
-                    type    : 'field_variable',
-                    name    : 'VAR',
+                    type: 'field_variable',
+                    name: 'VAR',
                     variable: localize('item'),
                 },
                 {
-                    type : 'input_value',
-                    name : 'DELTA',
+                    type: 'input_value',
+                    name: 'DELTA',
                     check: 'Number',
                 },
             ],
-            colour           : Blockly.Colours.Base.colour,
-            colourSecondary  : Blockly.Colours.Base.colourSecondary,
-            colourTertiary   : Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
-            tooltip          : localize('This block adds the given number to the selected variable'),
-            category         : Blockly.Categories.Mathematical,
+            nextStatement: null,
+            tooltip: localize('This block adds the given number to the selected variable'),
+            category: Blockly.Categories.Mathematical,
         };
     },
     /**
@@ -46,8 +46,8 @@ Blockly.Blocks.math_change = {
      */
     meta() {
         return {
-            'display_name': localize('Change variable'),
-            'description' : localize('This block adds the given number to the selected variable.'),
+            display_name: localize('Change variable'),
+            description: localize('This block adds the given number to the selected variable.'),
         };
     },
     getRequiredValueInputs() {
@@ -62,7 +62,7 @@ Blockly.JavaScript.math_change = block => {
     // eslint-disable-next-line no-underscore-dangle
     const argument0 = Blockly.JavaScript.variableDB_.getName(variable, Blockly.Variables.NAME_TYPE);
     const argument1 = Blockly.JavaScript.valueToCode(block, 'DELTA', Blockly.JavaScript.ORDER_ADDITION) || '0';
-    const code      = `${argument0} = (typeof ${argument0} === 'number' ? ${argument0} : 0) + ${argument1};`;
+    const code = `${argument0} = (typeof ${argument0} === 'number' ? ${argument0} : 0) + ${argument1};`;
 
     return code;
 };

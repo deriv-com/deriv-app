@@ -4,7 +4,8 @@ const URLHandler = () => (
     <React.Fragment>
         <script
             type='text/javascript'
-            dangerouslySetInnerHTML={{ __html: `
+            dangerouslySetInnerHTML={{
+                __html: `
                 if (location.protocol !== 'https:') {
                     location.href = location.href.replace("http://", "https://");
                 } else {
@@ -29,7 +30,8 @@ const URLHandler = () => (
                         }
                     }(window.location));
                 }
-            ` }}
+            `,
+            }}
         />
     </React.Fragment>
 );

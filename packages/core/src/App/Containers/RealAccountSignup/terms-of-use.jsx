@@ -1,10 +1,10 @@
-import { ThemedScrollbars }   from '@deriv/components';
-import { Field, Formik }      from 'formik';
-import React                  from 'react';
-import CheckboxField          from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
+import { ThemedScrollbars } from '@deriv/components';
+import { Field, Formik } from 'formik';
+import React from 'react';
+import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
 import { localize, Localize } from '@deriv/translations';
-import { Hr }                 from './currency-selector.jsx';
-import FormSubmitButton       from './form-submit-button.jsx';
+import { Hr } from './currency-selector.jsx';
+import FormSubmitButton from './form-submit-button.jsx';
 import 'Sass/terms-of-use.scss';
 
 class TermsOfUse extends React.Component {
@@ -25,9 +25,7 @@ class TermsOfUse extends React.Component {
                     values,
                     isSubmitting,
                 }) => (
-                    <form
-                        onSubmit={handleSubmit}
-                    >
+                    <form onSubmit={handleSubmit}>
                         <ThemedScrollbars
                             autohide
                             style={{
@@ -40,7 +38,9 @@ class TermsOfUse extends React.Component {
                                 </h4>
                                 <p>
                                     <Localize
-                                        i18n_default_text={'Your account will be opened with Binary (SVG) Ltd., and will be subject to the jurisdiction and laws of Saint Vincent and the Grenadines.'}
+                                        i18n_default_text={
+                                            'Your account will be opened with Binary (SVG) Ltd., and will be subject to the jurisdiction and laws of Saint Vincent and the Grenadines.'
+                                        }
                                     />
                                 </p>
                                 <Hr />
@@ -49,18 +49,18 @@ class TermsOfUse extends React.Component {
                                 </h4>
                                 <p>
                                     <Localize
-                                        i18n_default_text={'The financial trading services offered on this site are only suitable for customers who accept the ' +
-                                        'possibility of losing all the money they invest and who understand and have experience of the risk ' +
-                                        'involved in the purchase of financial contracts. Transactions in financial contracts carry a high ' +
-                                        'degree of risk. If the contracts you purchased expire as worthless, you will lose all your ' +
-                                        'investment, which includes the contract premium.'}
+                                        i18n_default_text={
+                                            'The financial trading services offered on this site are only suitable for customers who accept the ' +
+                                            'possibility of losing all the money they invest and who understand and have experience of the risk ' +
+                                            'involved in the purchase of financial contracts. Transactions in financial contracts carry a high ' +
+                                            'degree of risk. If the contracts you purchased expire as worthless, you will lose all your ' +
+                                            'investment, which includes the contract premium.'
+                                        }
                                     />
                                 </p>
                                 <Hr />
                                 <h4>
-                                    <Localize
-                                        i18n_default_text='Real accounts are not available to politically exposed persons (PEPs).'
-                                    />
+                                    <Localize i18n_default_text='Real accounts are not available to politically exposed persons (PEPs).' />
                                 </h4>
                                 <p>
                                     <Localize
@@ -83,18 +83,20 @@ class TermsOfUse extends React.Component {
                                     className='terms-of-use__checkbox'
                                     name='agreed_tnc'
                                     id='agreed_tnc'
-                                    label={<Localize
-                                        i18n_default_text='I have read and agree to the <0>terms and conditions</0> of the Deriv website.'
-                                        components={[ (
-                                            <a
-                                                key={0}
-                                                className='link'
-                                                target='_blank'
-                                                rel='noopener noreferrer'
-                                                href='https://www.deriv.com/terms-and-conditions/#general'
-                                            />
-                                        ) ]}
-                                    />}
+                                    label={
+                                        <Localize
+                                            i18n_default_text='I have read and agree to the <0>terms and conditions</0> of the Deriv website.'
+                                            components={[
+                                                <a
+                                                    key={0}
+                                                    className='link'
+                                                    target='_blank'
+                                                    rel='noopener noreferrer'
+                                                    href='https://www.deriv.com/terms-and-conditions/#general'
+                                                />,
+                                            ]}
+                                        />
+                                    }
                                 />
                             </div>
                         </ThemedScrollbars>

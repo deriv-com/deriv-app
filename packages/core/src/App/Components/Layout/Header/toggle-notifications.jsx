@@ -1,44 +1,27 @@
-import classNames          from 'classnames';
-import React               from 'react';
-import {
-    Counter,
-    Icon,
-    Popover }              from '@deriv/components';
+import classNames from 'classnames';
+import React from 'react';
+import { Counter, Icon, Popover } from '@deriv/components';
 import NotificationsDialog from 'App/Containers/NotificationsDialog';
-import                          'Sass/app/modules/notifications-dialog.scss';
+import 'Sass/app/modules/notifications-dialog.scss';
 
-const ToggleNotificationsDrawer = ({ count, is_visible, toggleDialog, tooltip_message }) =>  (
-    <div className={classNames('notifications-toggle', {
-        'notifications-toggle--active': is_visible,
-    })}
+const ToggleNotificationsDrawer = ({ count, is_visible, toggleDialog, tooltip_message }) => (
+    <div
+        className={classNames('notifications-toggle', {
+            'notifications-toggle--active': is_visible,
+        })}
     >
-        <Popover
-            classNameBubble='notifications-toggle__tooltip'
-            alignment='bottom'
-            message={tooltip_message}
-        >
+        <Popover classNameBubble='notifications-toggle__tooltip' alignment='bottom' message={tooltip_message}>
             <div
                 className={classNames('notifications-toggle__icon-wrapper', {
                     'notifications-toggle__icon-wrapper--active': is_visible,
                 })}
                 onClick={toggleDialog}
             >
-                <Icon
-                    className='notifications-toggle__icon'
-                    icon='IcBell'
-                />
-                {!!count &&
-                    <Counter
-                        count={count}
-                        className='notifications-toggle__step'
-                    />
-                }
+                <Icon className='notifications-toggle__icon' icon='IcBell' />
+                {!!count && <Counter count={count} className='notifications-toggle__step' />}
             </div>
         </Popover>
-        <NotificationsDialog
-            is_visible={is_visible}
-            toggleDialog={toggleDialog}
-        />
+        <NotificationsDialog is_visible={is_visible} toggleDialog={toggleDialog} />
     </div>
 );
 

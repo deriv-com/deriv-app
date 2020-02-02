@@ -1,11 +1,12 @@
-import { Popover, Checkbox }    from '@deriv/components';
-import React                    from 'react';
-import PropTypes                from 'prop-types';
-import { localize }             from '@deriv/translations';
+import { Popover, Checkbox } from '@deriv/components';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { localize } from '@deriv/translations';
 import {
     hasCallPutEqual,
     hasDurationForCallPutEqual,
-    isRiseFallEqual }           from 'Stores/Modules/Trading/Helpers/allow-equals';
+    isRiseFallEqual,
+} from 'Stores/Modules/Trading/Helpers/allow-equals';
 
 const AllowEquals = ({
     contract_start_type,
@@ -16,21 +17,24 @@ const AllowEquals = ({
     onChange,
     value,
 }) => {
-    const has_callputequal_duration = hasDurationForCallPutEqual(contract_types_list,
-        duration_unit, contract_start_type);
-    const has_callputequal          = hasCallPutEqual(contract_types_list);
+    const has_callputequal_duration = hasDurationForCallPutEqual(
+        contract_types_list,
+        duration_unit,
+        contract_start_type
+    );
+    const has_callputequal = hasCallPutEqual(contract_types_list);
 
-    const has_allow_equals = isRiseFallEqual(contract_type) &&
-            ((has_callputequal_duration || expiry_type === 'endtime') && has_callputequal);
+    const has_allow_equals =
+        isRiseFallEqual(contract_type) && (has_callputequal_duration || expiry_type === 'endtime') && has_callputequal;
 
-    const changeValue = (e) => {
+    const changeValue = e => {
         e.persist();
         const { name, checked } = e.target;
         onChange({ target: { name, value: Number(checked) } });
     };
 
     return (
-        has_allow_equals &&
+        has_allow_equals && (
             <div className='allow-equals'>
                 <Checkbox
                     className='allow-equals__input-field'
@@ -50,17 +54,18 @@ const AllowEquals = ({
                     margin={113}
                 />
             </div>
+        )
     );
 };
 
 AllowEquals.propTypes = {
     contract_start_type: PropTypes.string,
-    contract_type      : PropTypes.string,
+    contract_type: PropTypes.string,
     contract_types_list: PropTypes.object,
-    duration_unit      : PropTypes.string,
-    expiry_type        : PropTypes.string,
-    onChange           : PropTypes.func,
-    value              : PropTypes.number,
+    duration_unit: PropTypes.string,
+    expiry_type: PropTypes.string,
+    onChange: PropTypes.func,
+    value: PropTypes.number,
 };
 
 export default AllowEquals;

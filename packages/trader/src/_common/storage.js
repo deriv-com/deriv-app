@@ -1,16 +1,18 @@
-const Cookies      = require('js-cookie');
-const ObjectUtils  = require('@deriv/shared/utils/object');
+const Cookies = require('js-cookie');
+const ObjectUtils = require('@deriv/shared/utils/object');
 const isProduction = require('../config').isProduction;
 
-const getObject = function (key) {
+const getObject = function(key) {
     return JSON.parse(this.getItem(key) || '{}');
 };
 
-const setObject = function (key, value) {
+const setObject = function(key, value) {
     if (value && value instanceof Object) {
         try {
             this.setItem(key, JSON.stringify(value));
-        } catch (e) { /* do nothing */ }
+        } catch (e) {
+            /* do nothing */
+        }
     }
 };
 
@@ -19,7 +21,7 @@ if (typeof Storage !== 'undefined') {
     Storage.prototype.setObject = setObject;
 }
 
-const isStorageSupported = (storage) => {
+const isStorageSupported = storage => {
     if (typeof storage === 'undefined') {
         return false;
     }
@@ -34,8 +36,8 @@ const isStorageSupported = (storage) => {
     }
 };
 
-const Store = function (storage) {
-    this.storage           = storage;
+const Store = function(storage) {
+    this.storage = storage;
     this.storage.getObject = getObject;
     this.storage.setObject = setObject;
 };
@@ -55,17 +57,22 @@ Store.prototype = {
             : JSON.parse(this.storage.getItem(key) || '{}');
     },
     setObject(key, value) {
-        if (typeof this.storage.setObject === 'function') { // Prevent runtime error in IE
+        if (typeof this.storage.setObject === 'function') {
+            // Prevent runtime error in IE
             this.storage.setObject(key, value);
         } else {
             this.storage.setItem(key, JSON.stringify(value));
         }
     },
-    remove(key) { this.storage.removeItem(key); },
-    clear()     { this.storage.clear(); },
+    remove(key) {
+        this.storage.removeItem(key);
+    },
+    clear() {
+        this.storage.clear();
+    },
 };
 
-const InScriptStore = function (object) {
+const InScriptStore = function(object) {
     this.store = typeof object !== 'undefined' ? object : {};
 };
 
@@ -90,15 +97,25 @@ InScriptStore.prototype = {
         this.set(key, JSON.stringify(value));
     },
     remove(...keys) {
-        keys.forEach((key) => { delete this.store[key]; });
+        keys.forEach(key => {
+            delete this.store[key];
+        });
     },
-    clear()   { this.store = {}; },
-    has(key)  { return this.get(key) !== undefined; },
-    keys()    { return Object.keys(this.store); },
-    call(key) { if (typeof this.get(key) === 'function') this.get(key)(); },
+    clear() {
+        this.store = {};
+    },
+    has(key) {
+        return this.get(key) !== undefined;
+    },
+    keys() {
+        return Object.keys(this.store);
+    },
+    call(key) {
+        if (typeof this.get(key) === 'function') this.get(key)();
+    },
 };
 
-const State     = new InScriptStore();
+const State = new InScriptStore();
 State.prototype = InScriptStore.prototype;
 /**
  * Shorthand function to get values from response object of State
@@ -106,7 +123,7 @@ State.prototype = InScriptStore.prototype;
  * @param {String} pathname
  *     e.g. getResponse('authorize.currency') == get(['response', 'authorize', 'authorize', 'currency'])
  */
-State.prototype.getResponse = function (pathname) {
+State.prototype.getResponse = function(pathname) {
     let path = pathname;
     if (typeof path === 'string') {
         const keys = path.split('.');
@@ -117,15 +134,22 @@ State.prototype.getResponse = function (pathname) {
 State.prototype.getByMsgType = State.getResponse;
 State.set('response', {});
 
-const CookieStorage = function (cookie_name, cookie_domain) {
+const CookieStorage = function(cookie_name, cookie_domain) {
     const hostname = window.location.hostname;
 
     this.initialized = false;
     this.cookie_name = cookie_name;
-    this.domain      = cookie_domain || (isProduction() ? `.${hostname.split('.').slice(-2).join('.')}` : hostname);
-    this.path        = '/';
-    this.expires     = new Date('Thu, 1 Jan 2037 12:00:00 GMT');
-    this.value       = {};
+    this.domain =
+        cookie_domain ||
+        (isProduction()
+            ? `.${hostname
+                  .split('.')
+                  .slice(-2)
+                  .join('.')}`
+            : hostname);
+    this.path = '/';
+    this.expires = new Date('Thu, 1 Jan 2037 12:00:00 GMT');
+    this.value = {};
 };
 
 CookieStorage.prototype = {
@@ -144,9 +168,9 @@ CookieStorage.prototype = {
         if (expireDate) this.expires = expireDate;
         Cookies.set(this.cookie_name, this.value, {
             expires: this.expires,
-            path   : this.path,
-            domain : this.domain,
-            secure : !!isSecure,
+            path: this.path,
+            domain: this.domain,
+            secure: !!isSecure,
         });
     },
     get(key) {
@@ -158,13 +182,13 @@ CookieStorage.prototype = {
         this.value[key] = val;
         Cookies.set(this.cookie_name, this.value, {
             expires: new Date(this.expires),
-            path   : this.path,
-            domain : this.domain,
+            path: this.path,
+            domain: this.domain,
         });
     },
     remove() {
         Cookies.remove(this.cookie_name, {
-            path  : this.path,
+            path: this.path,
             domain: this.domain,
         });
     },
@@ -172,7 +196,10 @@ CookieStorage.prototype = {
 
 const removeCookies = (...cookie_names) => {
     const domains = [
-        `.${document.domain.split('.').slice(-2).join('.')}`,
+        `.${document.domain
+            .split('.')
+            .slice(-2)
+            .join('.')}`,
         `.${document.domain}`,
     ];
 
@@ -181,7 +208,7 @@ const removeCookies = (...cookie_names) => {
         parent_path = `/${parent_path}`;
     }
 
-    cookie_names.forEach((c) => {
+    cookie_names.forEach(c => {
         Cookies.remove(c, { path: '/', domain: domains[0] });
         Cookies.remove(c, { path: '/', domain: domains[1] });
         Cookies.remove(c);
@@ -193,8 +220,7 @@ const removeCookies = (...cookie_names) => {
     });
 };
 
-let SessionStore,
-    LocalStore;
+let SessionStore, LocalStore;
 
 if (isStorageSupported(window.localStorage)) {
     LocalStore = new Store(window.localStorage);

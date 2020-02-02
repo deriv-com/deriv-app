@@ -92,22 +92,22 @@ Blockly.Block.prototype.getTopParent = function() {
 
 Blockly.Block.getDimensions = function(block_node) {
     // Attempt to retrieve dimensions from memory rather than recalculating.
-    const existing_dimensions_key = Object.keys(Blockly.Block.Dimensions).find(outer_html =>
-        block_node.outerHTML === outer_html
+    const existing_dimensions_key = Object.keys(Blockly.Block.Dimensions).find(
+        outer_html => block_node.outerHTML === outer_html
     );
 
     if (existing_dimensions_key) {
         return Blockly.Block.Dimensions[existing_dimensions_key];
     }
 
-    const options          = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
+    const options = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
     const el_injection_div = document.createElement('div');
 
     // Create a headless workspace to calculate xmlList block dimensions
-    const svg       = Blockly.createDom_(el_injection_div, options);
+    const svg = Blockly.createDom_(el_injection_div, options);
     const workspace = Blockly.createMainWorkspace_(svg, options, false, false);
-    const block     = Blockly.Xml.domToBlock(block_node, workspace);
-    const block_hw  = block.getHeightWidth();
+    const block = Blockly.Xml.domToBlock(block_node, workspace);
+    const block_hw = block.getHeightWidth();
 
     workspace.dispose();
     Blockly.Block.Dimensions[block_node.outerHTML] = block_hw;
@@ -147,12 +147,12 @@ Blockly.Block.prototype.getRootInputTargetBlock = function() {
 /**
  * Returns whether the block has an error highlighted descendant.
  */
-Blockly.Block.prototype.hasErrorHighlightedDescendant = function () {
-    const hasHighlightedDescendant = (child_blocks) =>
+Blockly.Block.prototype.hasErrorHighlightedDescendant = function() {
+    const hasHighlightedDescendant = child_blocks =>
         child_blocks.some(child_block => {
-            const is_self_highlighted       = child_block.is_error_highlighted;
+            const is_self_highlighted = child_block.is_error_highlighted;
             const is_descendant_highlighted = hasHighlightedDescendant(child_block.getChildren());
-            
+
             return is_self_highlighted || is_descendant_highlighted;
         });
 

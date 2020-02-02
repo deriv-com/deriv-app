@@ -1,14 +1,9 @@
-import {
-    intercept,
-    spy }        from 'mobx';
+import { intercept, spy } from 'mobx';
 import Validator from '../validator';
 
-const validate = (dvrs) => (target, key) => {
+const validate = dvrs => (target, key) => {
     const handler = (store, property, change) => {
-        const validator = new Validator(
-            { [property]: change.newValue },
-            store.validation_rules
-        );
+        const validator = new Validator({ [property]: change.newValue }, store.validation_rules);
 
         if (validator.passes()) {
             store.validation_errors[property] = [];

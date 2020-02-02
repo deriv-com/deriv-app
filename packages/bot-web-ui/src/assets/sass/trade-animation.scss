@@ -136,7 +136,8 @@
     &--running {
         #{$animation}__progress {
             .circular-wrapper {
-                &.completed, &.active {
+                &.completed,
+                &.active {
                     .static-circle {
                         background-color: $color-green-2;
                     }

@@ -1,11 +1,11 @@
-import React             from 'react';
-import ContentLoader     from 'react-content-loader';
+import React from 'react';
+import ContentLoader from 'react-content-loader';
 
 const ContractCardLoader = () => (
     <ContentLoader
-        height={ 153 }
-        width={ 334 }
-        speed={ 3 }
+        height={153}
+        width={334}
+        speed={3}
         primaryColor={'var(--general-section-1)'}
         secondaryColor={'var(--general-hover)'}
     >

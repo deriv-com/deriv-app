@@ -1,19 +1,16 @@
 import React from 'react';
 
-const convertObjectToReactElement = (props) => {
+const convertObjectToReactElement = props => {
     const { tagName, ...other_props } = props;
 
     if (!tagName) throw new Error('Missing tagName');
 
-    return React.createElement(
-        tagName.toLowerCase(),
-        other_props,
-    );
+    return React.createElement(tagName.toLowerCase(), other_props);
 };
 
 export const fillTemplate = (template, replacers) => {
-    const res       = [];
-    let str         = template;
+    const res = [];
+    let str = template;
     let open_tag_id = null;
 
     while (str.length) {
@@ -24,22 +21,20 @@ export const fillTemplate = (template, replacers) => {
             break;
         }
 
-        const {
-            0: tag,
-            1: tag_id,
-            index,
-        } = match;
+        const { 0: tag, 1: tag_id, index } = match;
 
         const before = str.slice(0, index);
         str = str.slice(index + tag.length);
 
         if (open_tag_id) {
             const pair_code = `${open_tag_id}_${tag_id}`;
-            const element   = replacers[pair_code];
-            const wrapper   = React.isValidElement(element) ? element : convertObjectToReactElement(element);
+            const element = replacers[pair_code];
+            const wrapper = React.isValidElement(element) ? element : convertObjectToReactElement(element);
 
-            if (!React.isValidElement(wrapper)) throw new Error(`Localize: pair tag ${pair_code} must be replaced with a react element.`);
-            if (!wrapper) throw new Error(`Localize: no ${open_tag_id} or ${pair_code} replacer for "${template}" template.`);
+            if (!React.isValidElement(wrapper))
+                throw new Error(`Localize: pair tag ${pair_code} must be replaced with a react element.`);
+            if (!wrapper)
+                throw new Error(`Localize: no ${open_tag_id} or ${pair_code} replacer for "${template}" template.`);
 
             res.push(React.cloneElement(wrapper, { key: index, children: before }));
             open_tag_id = null;

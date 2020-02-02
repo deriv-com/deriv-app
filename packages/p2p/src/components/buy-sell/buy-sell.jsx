@@ -1,44 +1,44 @@
-import React, { Component }     from 'react';
-import PropTypes                from 'prop-types';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Dialog, ButtonToggle } from '@deriv/components';
-import { localize }             from 'Components/i18next';
-import { BuySellTable }         from './buy-sell-table.jsx';
-import Popup                    from './popup.jsx';
+import { localize } from 'Components/i18next';
+import { BuySellTable } from './buy-sell-table.jsx';
+import Popup from './popup.jsx';
 import './buy-sell.scss';
 
 const buy_sell_filters = [
     {
-        text : localize('Buy'),
+        text: localize('Buy'),
         value: 'buy',
     },
     {
-        text : localize('Sell'),
+        text: localize('Sell'),
         value: 'sell',
     },
 ];
 
 class BuySell extends Component {
     state = {
-        table_type : 'buy',
+        table_type: 'buy',
         selected_ad: {},
-        show_popup : false,
-    }
+        show_popup: false,
+    };
 
     setSelectedAd = selected_ad => {
         this.setState({ selected_ad, show_popup: true });
-    }
+    };
 
     onCancelClick = () => {
         this.setState({ show_popup: false });
-    }
+    };
 
-    onChangeTableType = (event) => {
+    onChangeTableType = event => {
         this.setState({ table_type: event.target.value });
-    }
+    };
 
-    onConfirmClick = (order_info) => {
+    onConfirmClick = order_info => {
         this.props.navigate('orders', { order_info });
-    }
+    };
 
     render() {
         const { table_type, selected_ad, show_popup } = this.state;
@@ -55,10 +55,7 @@ class BuySell extends Component {
                         value={table_type}
                     />
                 </div>
-                <BuySellTable
-                    table_type={table_type}
-                    setSelectedAd={this.setSelectedAd}
-                />
+                <BuySellTable table_type={table_type} setSelectedAd={this.setSelectedAd} />
                 {show_popup && (
                     <div className='buy-sell__dialog'>
                         <Dialog is_visible={show_popup}>
@@ -77,7 +74,7 @@ class BuySell extends Component {
 
 BuySell.propTypes = {
     navigate: PropTypes.func,
-    params  : PropTypes.object,
+    params: PropTypes.object,
 };
 
 export default BuySell;

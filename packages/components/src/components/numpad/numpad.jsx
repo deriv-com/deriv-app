@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import Button from 'Components/button';
+import Button from 'Components/button/button.jsx';
 import NumberGrid from './number-grid.jsx';
 import StepInput from './step-input.jsx';
 

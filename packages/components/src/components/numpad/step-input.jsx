@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Input from 'Components/input';
-import Button from 'Components/button';
+import Input from 'Components/input/input.jsx';
+import Button from 'Components/button/button.jsx';
 
 const StepInput = ({ max, min, value, onChange, render, pip_size = 0 }) => {
     const is_gt_max = parseFloat(value) + 1 > max;

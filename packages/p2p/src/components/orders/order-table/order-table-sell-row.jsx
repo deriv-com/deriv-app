@@ -15,6 +15,7 @@ const SellOrderRowComponent = React.memo(({ data, is_agent, onOpenDetails, style
         transaction_currency,
         is_buyer_confirmed,
         is_buyer_cancelled,
+        is_expired,
         is_pending,
         is_completed,
     } = data;
@@ -36,7 +37,7 @@ const SellOrderRowComponent = React.memo(({ data, is_agent, onOpenDetails, style
                     className={classNames('orders__table-cell', {
                         'orders__table-cell--primary': is_pending || is_buyer_confirmed,
                         'orders__table-cell--success': is_completed,
-                        'orders__table-cell--disabled': is_buyer_cancelled,
+                        'orders__table-cell--disabled': is_buyer_cancelled || is_expired,
                     })}
                 >
                     {display_status}

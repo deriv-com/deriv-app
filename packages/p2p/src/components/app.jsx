@@ -70,7 +70,6 @@ class App extends Component {
             /* if there is no error means its an agent else its a client */
             if (!agent_info.error) {
                 await this.setState({ agent_id: agent_info.p2p_agent_info.agent_id, is_agent: true });
-                resolve();
             }
             resolve();
         });

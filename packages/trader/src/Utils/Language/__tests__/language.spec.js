@@ -1,12 +1,12 @@
-import { expect }              from 'chai';
-import React                   from 'react';
+import { expect } from 'chai';
+import React from 'react';
 import { getAllowedLanguages } from '../language';
 
 describe('getAllowedLanguages', () => {
     it('It Returns the desired allowed languages', () => {
         expect(getAllowedLanguages()).to.eql({
             // TODO uncomment this part when the design is ready.
-            EN   : 'English',
+            EN: 'English',
             // DE   : 'Deutsch',
             // ES   : 'Español',
             // FR   : 'Français',

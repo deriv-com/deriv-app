@@ -1,14 +1,15 @@
 const { getLanguage, localize } = require('@deriv/translations');
-const getPropertyValue          = require('../utility').getPropertyValue;
+const getPropertyValue = require('../utility').getPropertyValue;
 
 let currencies_config = {};
 
-const getTextFormat = (number, currency) => `${currency} ${addComma(number, getDecimalPlaces(currency), isCryptocurrency(currency))}`;
+const getTextFormat = (number, currency) =>
+    `${currency} ${addComma(number, getDecimalPlaces(currency), isCryptocurrency(currency))}`;
 
 const formatMoney = (currency_value, amount, exclude_currency, decimals = 0, minimumFractionDigits = 0) => {
     let money = amount;
     if (money) money = String(money).replace(/,/g, '');
-    const sign           = money && Number(money) < 0 ? '-' : '';
+    const sign = money && Number(money) < 0 ? '-' : '';
     const decimal_places = decimals || getDecimalPlaces(currency_value);
 
     money = isNaN(money) ? 0 : Math.abs(money);
@@ -17,7 +18,12 @@ const formatMoney = (currency_value, amount, exclude_currency, decimals = 0, min
             minimumFractionDigits: minimumFractionDigits || decimal_places,
             maximumFractionDigits: decimal_places,
         };
-        money = new Intl.NumberFormat(getLanguage().toLowerCase().replace('_', '-'), options).format(money);
+        money = new Intl.NumberFormat(
+            getLanguage()
+                .toLowerCase()
+                .replace('_', '-'),
+            options
+        ).format(money);
     } else {
         money = addComma(money, decimal_places);
     }
@@ -36,36 +42,38 @@ const addComma = (num, decimal_points, is_crypto) => {
         number = parseFloat(+number);
     }
 
-    return number.toString().replace(/(^|[^\w.])(\d{4,})/g, ($0, $1, $2) => (
-        $1 + $2.replace(/\d(?=(?:\d\d\d)+(?!\d))/g, '$&,')
-    ));
+    return number
+        .toString()
+        .replace(/(^|[^\w.])(\d{4,})/g, ($0, $1, $2) => $1 + $2.replace(/\d(?=(?:\d\d\d)+(?!\d))/g, '$&,'));
 };
 
-const calcDecimalPlaces = (currency) => isCryptocurrency(currency) ? 8 : 2;
+const calcDecimalPlaces = currency => (isCryptocurrency(currency) ? 8 : 2);
 
-const getDecimalPlaces = (currency) => (
+const getDecimalPlaces = currency =>
     // need to check currencies_config[currency] exists instead of || in case of 0 value
-    currencies_config[currency] ? getPropertyValue(currencies_config, [currency, 'fractional_digits']) : calcDecimalPlaces(currency)
-);
+    currencies_config[currency]
+        ? getPropertyValue(currencies_config, [currency, 'fractional_digits'])
+        : calcDecimalPlaces(currency);
 
-const setCurrencies = (website_status) => {
+const setCurrencies = website_status => {
     currencies_config = website_status.currencies_config;
 };
 
 // (currency in crypto_config) is a back-up in case website_status doesn't include the currency config, in some cases where it's disabled
-const isCryptocurrency = currency => /crypto/i.test(getPropertyValue(currencies_config, [currency, 'type'])) || (currency in CryptoConfig.get());
+const isCryptocurrency = currency =>
+    /crypto/i.test(getPropertyValue(currencies_config, [currency, 'type'])) || currency in CryptoConfig.get();
 
 const CryptoConfig = (() => {
     let crypto_config;
 
     const initCryptoConfig = () => ({
-        BTC: { name: localize('Bitcoin'),       min_withdrawal: 0.002, pa_max_withdrawal: 5,    pa_min_withdrawal: 0.002 },
-        BCH: { name: localize('Bitcoin Cash'),  min_withdrawal: 0.002, pa_max_withdrawal: 5,    pa_min_withdrawal: 0.002 },
-        ETH: { name: localize('Ether'),         min_withdrawal: 0.002, pa_max_withdrawal: 5,    pa_min_withdrawal: 0.002 },
-        ETC: { name: localize('Ether Classic'), min_withdrawal: 0.002, pa_max_withdrawal: 5,    pa_min_withdrawal: 0.002 },
-        LTC: { name: localize('Litecoin'),      min_withdrawal: 0.002, pa_max_withdrawal: 5,    pa_min_withdrawal: 0.002 },
-        UST: { name: localize('Tether'),        min_withdrawal: 0.02,  pa_max_withdrawal: 2000, pa_min_withdrawal: 10 },
-        USB: { name: localize('Binary Coin'),   min_withdrawal: 0.02,  pa_max_withdrawal: 2000, pa_min_withdrawal: 10 },
+        BTC: { name: localize('Bitcoin'), min_withdrawal: 0.002, pa_max_withdrawal: 5, pa_min_withdrawal: 0.002 },
+        BCH: { name: localize('Bitcoin Cash'), min_withdrawal: 0.002, pa_max_withdrawal: 5, pa_min_withdrawal: 0.002 },
+        ETH: { name: localize('Ether'), min_withdrawal: 0.002, pa_max_withdrawal: 5, pa_min_withdrawal: 0.002 },
+        ETC: { name: localize('Ether Classic'), min_withdrawal: 0.002, pa_max_withdrawal: 5, pa_min_withdrawal: 0.002 },
+        LTC: { name: localize('Litecoin'), min_withdrawal: 0.002, pa_max_withdrawal: 5, pa_min_withdrawal: 0.002 },
+        UST: { name: localize('Tether'), min_withdrawal: 0.02, pa_max_withdrawal: 2000, pa_min_withdrawal: 10 },
+        USB: { name: localize('Binary Coin'), min_withdrawal: 0.02, pa_max_withdrawal: 2000, pa_min_withdrawal: 10 },
     });
 
     return {
@@ -78,7 +86,8 @@ const CryptoConfig = (() => {
     };
 })();
 
-const getMinWithdrawal = currency => (isCryptocurrency(currency) ? (getPropertyValue(CryptoConfig.get(), [currency, 'min_withdrawal']) || 0.002) : 1);
+const getMinWithdrawal = currency =>
+    isCryptocurrency(currency) ? getPropertyValue(CryptoConfig.get(), [currency, 'min_withdrawal']) || 0.002 : 1;
 
 // @param {String} limit = max|min
 const getPaWithdrawalLimit = (currency, limit) => {

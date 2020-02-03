@@ -1,11 +1,19 @@
-const path                        = require('path');
-const stylelintFormatter          = require('stylelint-formatter-pretty');
-const { IS_RELEASE }              = require('./constants');
+const path = require('path');
+const stylelintFormatter = require('stylelint-formatter-pretty');
+const { IS_RELEASE } = require('./constants');
 // const { transformContentUrlBase } = require('./helpers');
 
-const copyConfig = (base) => ([
-    { from: path.resolve(__dirname, '../node_modules/smartcharts-beta/dist/*.smartcharts.*'), to: 'js/smartcharts/', flatten: true },
-    { from: path.resolve(__dirname, '../node_modules/smartcharts-beta/dist/smartcharts.css*'), to: 'css/', flatten: true },
+const copyConfig = base => [
+    {
+        from: path.resolve(__dirname, '../node_modules/smartcharts-beta/dist/*.smartcharts.*'),
+        to: 'js/smartcharts/',
+        flatten: true,
+    },
+    {
+        from: path.resolve(__dirname, '../node_modules/smartcharts-beta/dist/smartcharts.css*'),
+        to: 'css/',
+        flatten: true,
+    },
     // { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file' },
     // { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },
     // { from: path.resolve(__dirname, '../src/root_files/robots.txt'), to: 'robots.txt', toType: 'file' },
@@ -22,25 +30,27 @@ const copyConfig = (base) => ([
     //         return transformContentUrlBase(content, path, base);
     //     }
     // },
-]);
+];
 
 const generateSWConfig = () => ({
-    importWorkboxFrom    : 'local',
+    importWorkboxFrom: 'local',
     cleanupOutdatedCaches: true,
-    exclude              : [/CNAME$/, /index\.html$/, /404\.html$/],
-    skipWaiting          : true,
-    clientsClaim         : true,
+    exclude: [/CNAME$/, /index\.html$/, /404\.html$/],
+    skipWaiting: true,
+    clientsClaim: true,
 });
 
 const htmlOutputConfig = () => ({
     template: 'index.html',
     filename: 'index.html',
-    minify: !IS_RELEASE ? false : {
-        collapseWhitespace: true,
-        removeComments: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true
-    }
+    minify: !IS_RELEASE
+        ? false
+        : {
+              collapseWhitespace: true,
+              removeComments: true,
+              removeRedundantAttributes: true,
+              useShortDoctype: true,
+          },
 });
 
 const htmlInjectConfig = () => ({
@@ -49,16 +59,16 @@ const htmlInjectConfig = () => ({
         {
             path: 'manifest.json',
             attributes: {
-                rel: 'manifest'
-            }
+                rel: 'manifest',
+            },
         },
         {
             path: 'public/images/favicons',
             glob: '*',
             globPath: path.resolve(__dirname, '../src/public/images/favicons'),
             attributes: {
-                rel: 'icon'
-            }
+                rel: 'icon',
+            },
         },
         // {
         //     path: 'pushwoosh-web-notifications.js',
@@ -77,7 +87,7 @@ const htmlInjectConfig = () => ({
         //     }
         // }
     ],
-    append: false
+    append: false,
 });
 
 const cssConfig = () => ({ filename: 'css/trader.main.css', chunkFilename: 'css/trader.[name].[contenthash].css' });

@@ -1,0 +1,144 @@
+/**
+ * @define journal
+ */
+.journal {
+    &-empty {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+
+        &__container {
+            -webkit-box-flex: 1;
+            flex-grow: 1;
+            display: -webkit-box;
+            display: flex;
+            flex-direction: column;
+            -webkit-box-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            width: 345px;
+            margin-top: 50%;
+        }
+        &__header {
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: center;
+            color: var(--text-less-prominent);
+            padding: 8px;
+        }
+        &__icon {
+            align-self: center;
+        }
+        &__message {
+            line-height: 1.5;
+            font-size: 1.2rem;
+            color: var(--text-less-prominent);
+            margin: 0 auto;
+        }
+        &__list {
+            list-style-type: circle;
+            margin-left: 20px;
+        }
+    }
+    &__table {
+        display: block;
+        font-size: 10px;
+
+        &--header {
+            position: fixed;
+            display: table;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 40px;
+            width: 100%;
+            border-bottom: 1px solid var(--border-normal);
+        }
+        &--body {
+            &:before {
+                content: '';
+                display: block;
+                height: 40px;
+            }
+        }
+        &--th {
+            background-color: var(--general-main-1);
+            text-align: left;
+            padding-left: 16px;
+
+            &:nth-child(1) {
+                width: 30%;
+            }
+            &:nth-child(2) {
+                width: 90%;
+            }
+            &-icon {
+                display: flex;
+                justify-content: space-between;
+
+                > * {
+                    align-self: center;
+                }
+            }
+        }
+        &--tr {
+            &:nth-child(odd) {
+                background: var(--general-main-1);
+            }
+            &:nth-child(even) {
+                background: var(--general-section-1);
+            }
+        }
+        &--td {
+            height: 40px;
+            display: table-cell;
+            vertical-align: middle;
+            padding: 8px 0 8px 16px;
+            line-height: 16px;
+            word-break: break-word;
+
+            &:nth-child(1) {
+                width: 30%;
+            }
+            &:nth-child(2) {
+                width: 70%;
+            }
+        }
+        &--date,
+        &--time {
+            line-height: 1.4em;
+        }
+        &--bold {
+            font-weight: 700;
+        }
+        &--red {
+            color: var(--text-loss-danger);
+        }
+        &--green {
+            color: var(--text-profit-success);
+        }
+        &--blue {
+            color: var(--status-info);
+        }
+    }
+}
+
+.tools {
+    &__container {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px;
+
+        &-filter {
+            display: flex;
+            justify-content: space-between;
+            width: 85%;
+
+            .dc-checkbox__label {
+                font-size: var(--text-size--xxs);
+            }
+        }
+        &-download {
+            cursor: pointer;
+        }
+    }
+}

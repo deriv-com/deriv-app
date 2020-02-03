@@ -1,8 +1,8 @@
-import React                  from 'react';
-import { expect }             from 'chai';
+import React from 'react';
+import { expect } from 'chai';
 import { configure, shallow } from 'enzyme';
-import Adapter                from 'enzyme-adapter-react-16';
-import LoginPrompt            from '../login-prompt.jsx';
+import Adapter from 'enzyme-adapter-react-16';
+import LoginPrompt from '../login-prompt.jsx';
 
 configure({ adapter: new Adapter() });
 

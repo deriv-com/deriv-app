@@ -44,7 +44,8 @@
                     padding-left: 16px;
                 }
                 /* postcss-bem-linter: ignore */
-                path, rect {
+                path,
+                rect {
                     fill: var(--text-general);
                 }
             }

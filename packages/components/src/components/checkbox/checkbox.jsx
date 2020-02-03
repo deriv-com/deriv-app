@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import PropTypes  from 'prop-types';
-import React      from 'react';
-import Icon       from '../icon';
+import PropTypes from 'prop-types';
+import React from 'react';
+import Icon from '../icon';
 
 class Checkbox extends React.PureComponent {
     constructor(props) {
@@ -12,7 +12,7 @@ class Checkbox extends React.PureComponent {
         };
     }
 
-    onChange = (e) => {
+    onChange = e => {
         this.setState({ checked: e.target.checked });
         this.props.onChange(e);
     };
@@ -28,39 +28,32 @@ class Checkbox extends React.PureComponent {
         } = this.props;
 
         return (
-            <label htmlFor={ id } className={ classNames('dc-checkbox', className) }>
+            <label htmlFor={id} className={classNames('dc-checkbox', className)}>
                 <input
                     className='dc-checkbox__input'
                     type='checkbox'
-                    id={ id }
-                    onChange={ this.onChange }
-                    { ...otherProps }
+                    id={id}
+                    onChange={this.onChange}
+                    {...otherProps}
                 />
                 <span
-                    className={ classNames('dc-checkbox__box', {
+                    className={classNames('dc-checkbox__box', {
                         'dc-checkbox__box--active': this.state.checked,
-                    }) }
+                    })}
                 >
-                    { !!this.state.checked &&
-                        <Icon icon='IcCheckmark' color='active' />
-                    }
+                    {!!this.state.checked && <Icon icon='IcCheckmark' color='active' />}
                 </span>
-                <span className={classNames('dc-checkbox__label', classNameLabel)}>
-                    { label }
-                </span>
+                <span className={classNames('dc-checkbox__label', classNameLabel)}>{label}</span>
             </label>
         );
     }
 }
 
 Checkbox.propTypes = {
-    className     : PropTypes.string,
+    className: PropTypes.string,
     classNameLabel: PropTypes.string,
-    id            : PropTypes.string,
-    label         : PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.object,
-    ]),
+    id: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 export default Checkbox;

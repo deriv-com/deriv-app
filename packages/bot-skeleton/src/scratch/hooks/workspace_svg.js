@@ -308,6 +308,7 @@ Blockly.WorkspaceSvg.prototype.showContextMenu_ = function(e) {
     const top_blocks = this.getTopBlocks(true);
     const all_blocks = this.getAllBlocks(true);
     const event_group = Blockly.utils.genUid();
+    const ws = this;
 
     // Options to undo/redo previous action.
     menu_options.push(Blockly.ContextMenu.wsUndoOption(this));
@@ -356,7 +357,7 @@ Blockly.WorkspaceSvg.prototype.showContextMenu_ = function(e) {
 
     const delete_option = {
         text:
-            delete_count == 1
+            delete_count === 1
                 ? localize('Delete Block')
                 : localize('Delete {{ delete_count }} Blocks', { delete_count }),
         enabled: delete_count > 0,

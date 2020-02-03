@@ -125,8 +125,9 @@ export default class LoadModalStore {
         this.is_explanation_expand = !this.is_explanation_expand;
     }
 
-    static getRecentFileIcon(location) {
-        switch (location) {
+    // eslint-disable-next-line class-methods-use-this
+    getRecentFileIcon(save_type) {
+        switch (save_type) {
             case save_types.UNSAVED:
                 return 'IcReports';
             case save_types.LOCAL:
@@ -138,7 +139,8 @@ export default class LoadModalStore {
         }
     }
 
-    static getSaveType(save_type) {
+    // eslint-disable-next-line class-methods-use-this
+    getSaveType(save_type) {
         return save_type.replace(/\b\w/g, l => l.toUpperCase());
     }
     /** --------- Recent Tab End --------- */

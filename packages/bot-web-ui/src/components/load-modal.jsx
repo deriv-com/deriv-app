@@ -23,7 +23,7 @@ const Recent = ({
     onExplainationToggle,
     previewWorkspace,
     recent_files,
-    selected_file,
+    selected_file_id,
     ...props
 }) => (
     <div className='recent__container'>
@@ -37,7 +37,7 @@ const Recent = ({
                                 return (
                                     <div
                                         className={classnames('recent__item', {
-                                            'recent__item--selected': selected_file === file.id,
+                                            'recent__item--selected': selected_file_id === file.id,
                                         })}
                                         key={file.id}
                                         onClick={() => previewWorkspace(file.id)}
@@ -50,7 +50,7 @@ const Recent = ({
                                             <Icon
                                                 icon={getRecentFileIcon(file.save_type)}
                                                 className={classnames({
-                                                    'gd__icon--active': file.location === save_types.GOOGLE_DRIVE,
+                                                    'gd__icon--active': file.save_type === save_types.GOOGLE_DRIVE,
                                                 })}
                                             />
                                             <div className='recent__item-saved'>{getSaveType(file.save_type)}</div>
@@ -245,7 +245,7 @@ LoadModal.propTypes = {
     onZoomInOutClick: PropTypes.func,
     previewWorkspace: PropTypes.func,
     recent_files: PropTypes.array,
-    selected_file: PropTypes.string,
+    selected_file_id: PropTypes.string,
     setActiveTabIndex: PropTypes.func,
     toggleLoadModal: PropTypes.func,
 };
@@ -270,7 +270,7 @@ export default connect(({ load_modal, google_drive }) => ({
     onZoomInOutClick: load_modal.onZoomInOutClick,
     previewWorkspace: load_modal.previewWorkspace,
     recent_files: load_modal.recent_files,
-    selected_file: load_modal.selected_file,
+    selected_file_id: load_modal.selected_file_id,
     setActiveTabIndex: load_modal.setActiveTabIndex,
     toggleLoadModal: load_modal.toggleLoadModal,
 }))(LoadModal);

@@ -22,6 +22,7 @@ class ModalElement extends React.PureComponent {
         }
         this.el.classList.add('dc-modal');
         this.state.modal_root.appendChild(this.el);
+        this.props.onMount();
     };
 
     componentWillUnmount = () => {
@@ -29,6 +30,7 @@ class ModalElement extends React.PureComponent {
             document.removeEventListener('mousedown', this.handleClickOutside);
         }
         this.state.modal_root.removeChild(this.el);
+        this.props.onUnmount();
     };
 
     handleClickOutside = event => {
@@ -100,6 +102,8 @@ class ModalElement extends React.PureComponent {
 
 ModalElement.defaultProps = {
     has_close_icon: true,
+    onMount: () => {},
+    onUnmount: () => {},
 };
 
 ModalElement.propTypes = {
@@ -109,6 +113,8 @@ ModalElement.propTypes = {
     header: PropTypes.node,
     id: PropTypes.string,
     is_open: PropTypes.bool,
+    onMount: PropTypes.func,
+    onUnmount: PropTypes.func,
     small: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     toggleModal: PropTypes.func,
@@ -122,6 +128,8 @@ const Modal = ({
     is_open,
     has_close_icon,
     height,
+    onMount,
+    onUnmount,
     small,
     title,
     toggleModal,
@@ -148,6 +156,8 @@ const Modal = ({
             toggleModal={toggleModal}
             has_close_icon={has_close_icon}
             height={height}
+            onMount={onMount}
+            onUnmount={onUnmount}
             small={small}
             width={width}
         >
@@ -171,6 +181,8 @@ Modal.propTypes = {
     height: PropTypes.string,
     id: PropTypes.string,
     is_open: PropTypes.bool,
+    onMount: PropTypes.func,
+    onUnmount: PropTypes.func,
     small: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     toggleModal: PropTypes.func,

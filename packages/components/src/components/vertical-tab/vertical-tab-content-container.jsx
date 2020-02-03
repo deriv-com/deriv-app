@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Icon, ThemedScrollbars } from 'Components/icon';
+import Icon from 'Components/icon';
+import ThemedScrollbars from 'Components/themed-scrollbars';
 
 const Content = ({ is_routed, items, selected }) => {
     const selected_item = items.find(item => item.label === selected.label);

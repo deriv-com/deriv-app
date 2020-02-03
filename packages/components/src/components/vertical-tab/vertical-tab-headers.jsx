@@ -6,19 +6,17 @@ import VerticalTabHeaderTitle from 'Components/vertical-tab/vertical-tab-header-
 
 const VerticalTabHeaders = props => (
     <VerticalTabWrapper
-        className={classNames(this.props.className, {
-            'vertical-tab__tab--floating': this.props.is_floating,
+        className={classNames(props.className, {
+            'dc-vertical-tab__tab--floating': props.is_floating,
         })}
     >
-        {!this.props.is_floating && this.props.header_title && (
-            <VerticalTabHeaderTitle header_title={this.props.header_title} />
-        )}
+        {!props.is_floating && props.header_title && <VerticalTabHeaderTitle header_title={props.header_title} />}
         {props.header_title && <VerticalTabHeaderTitle header_title={props.header_title} />}
         {props.items.map((item, idx) => (
             <VerticalTabHeader
                 item={item}
                 onChange={props.onChange || undefined}
-                is_floating={this.props.is_floating}
+                is_floating={props.is_floating}
                 is_routed={props.is_routed}
                 selected={props.selected}
                 key={idx}

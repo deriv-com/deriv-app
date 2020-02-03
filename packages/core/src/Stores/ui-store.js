@@ -80,7 +80,7 @@ export default class UIStore extends BaseStore {
     // position states
     @observable show_positions_toggle = true;
 
-    @observable modal_index = 0;
+    @observable vertical_tab_index = 0;
 
     // Mt5 topup
     @observable is_top_up_virtual_open = false;
@@ -282,8 +282,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    setModalIndex(index = 0) {
-        this.modal_index = index;
+    setVerticalTabIndex(index = 0) {
+        this.vertical_tab_index = index;
     }
 
     @action.bound

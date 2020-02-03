@@ -19,3 +19,11 @@ export const barriersObjectToArray = (barriers, reference_array) => {
 
     return reference_array;
 };
+
+export const getBarrierShade = ({ barrier, contract_type, current_spot }) => {
+    if (!/CALL|PUT|ASIANU|ASIAND/.test(contract_type)) return undefined;
+
+    if (current_spot >= barrier) return 'ABOVE';
+
+    return 'BELOW';
+};

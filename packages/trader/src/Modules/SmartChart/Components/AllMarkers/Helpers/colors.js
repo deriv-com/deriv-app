@@ -15,5 +15,5 @@ export const get_color = ({ status, profit, is_dark_theme }) => {
 export const get_hex_opacity = opacity => {
     const percentages = opacity >= 0 && opacity <= 1 ? opacity * 100 : opacity;
 
-    return ((percentages * 255) / 100).toString(16);
+    return ((percentages * 255) / 100).toString(16).slice(0, 2);
 };

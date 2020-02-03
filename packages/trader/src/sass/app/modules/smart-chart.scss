@@ -29,19 +29,6 @@
             color: $COLOR_WHITE;
         }
     }
-    &__entry {
-        left: -12px;
-        top: -12px;
-        position: relative;
-        border: 6px solid var(--brand-red-coral);
-        background-color: var(--general-main-2);
-    }
-    &__spot,
-    &__entry {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-    }
     &__icon {
         border-radius: 50%;
         width: 16px;

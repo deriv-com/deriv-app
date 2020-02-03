@@ -1,9 +1,10 @@
 import { action, extendObservable, observable, toJS } from 'mobx';
+import { get_color } from 'Modules/SmartChart/Components/AllMarkers/Helpers/colors';
 import { createChartMarkers } from './Helpers/chart-markers';
 import { getDigitInfo, isDigitContract } from './Helpers/digits';
 import { getChartConfig, getDisplayStatus, getEndTime, isEnded, isContractWaiting } from './Helpers/logic';
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
-import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
+import { isBarrierSupported, getBarrierShade } from '../SmartChart/Helpers/barriers';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 
 export default class ContractStore {
@@ -73,9 +74,16 @@ export default class ContractStore {
 
         const main_barrier = this.barriers_array[0];
         if (contract_info) {
-            const { contract_type, barrier, high_barrier, low_barrier } = contract_info;
+            const { contract_type, barrier, high_barrier, low_barrier, profit, status } = contract_info;
 
             if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
+                main_barrier.shade = getBarrierShade(contract_info);
+                main_barrier.shadeColor = get_color({
+                    status,
+                    profit,
+                    is_dark_mode: this.root_store.ui.is_dark_mode_on,
+                });
+
                 main_barrier.updateBarriers(barrier || high_barrier, low_barrier);
                 main_barrier.updateBarrierColor(is_dark_mode);
             }
@@ -85,7 +93,7 @@ export default class ContractStore {
     createBarriersArray = (contract_info, is_dark_mode) => {
         let result = [];
         if (contract_info) {
-            const { contract_type, barrier, high_barrier, low_barrier } = contract_info;
+            const { contract_type, barrier, high_barrier, low_barrier, profit, status } = contract_info;
 
             if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
                 // create barrier only when it's available in response
@@ -93,6 +101,12 @@ export default class ContractStore {
                     color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
                     line_style: BARRIER_LINE_STYLES.SOLID,
                     not_draggable: true,
+                });
+                main_barrier.shade = getBarrierShade(contract_info);
+                main_barrier.shadeColor = get_color({
+                    status,
+                    profit,
+                    is_dark_mode: this.root_store.ui.is_dark_mode_on,
                 });
 
                 main_barrier.updateBarrierShade(true, contract_type);

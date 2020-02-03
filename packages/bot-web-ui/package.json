@@ -24,7 +24,7 @@
     "build:travis": "echo \"No build:travis specified\"",
     "prettify": "prettier --write \"./src/**/*.{js,jsx,scss}\"",
     "precommit": "lint-staged",
-    "test": "npm run test:eslint && npm run test:mocha",
+    "test": "npm run test:eslint && npm run test:stylelint && npm run test:mocha",
     "test:mocha": "",
     "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
     "test:stylelint": "stylelint \"./src/**/*.s?(a|c)ss\"",

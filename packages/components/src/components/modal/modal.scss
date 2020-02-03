@@ -1,130 +1,129 @@
 /** @define dc-modal; weak */
 .dc-modal {
-  &__container {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
-    border-radius: 8px;
-    transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25),
-      opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
-    background-color: var(--general-main-2);
-    box-shadow: 0 4px 6px 0 var(--shadow-menu);
+    &__container {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+        background-color: var(--general-main-2);
+        box-shadow: 0 4px 6px 0 var(--shadow-menu);
 
-    &--is-vertical-centered {
-      position: absolute;
-      top: 50vh;
-      transform: translateY(-50%) !important;
+        &--is-vertical-centered {
+            position: absolute;
+            top: 50vh;
+            transform: translateY(-50%) !important;
 
-      .dc-modal__container {
-        min-width: unset;
-        top: 2rem;
-      }
-      @include mobile {
-        left: 2.4rem;
-        width: calc(100vw - 4.8rem) !important;
-      }
-    }
-    &--is-vertical-top {
-      top: $HEADER_HEIGHT;
-      position: absolute;
-      @include mobile {
-        top: $MOBILE_HEADER_HEIGHT;
-        left: 1.6rem;
-        width: calc(100vw - 3.2rem) !important;
-      }
-    }
-    &--is-vertical-bottom {
-      bottom: $FOOTER_HEIGHT;
-      position: absolute;
-      @include mobile {
-        left: 1.6rem;
-        width: calc(100vw - 3.2rem) !important;
-      }
-    }
-    &--hide {
-      display: none;
-    }
-    &--enter,
-    &--exit {
-      transform: translateY(50px);
-      opacity: 0;
-      pointer-events: none;
-    }
-    &--enter-done {
-      transform: translateY(0);
-      opacity: 1;
-      pointer-events: auto;
-    }
-    &--small {
-      max-width: 440px;
+            .dc-modal__container {
+                min-width: unset;
+                top: 2rem;
+            }
+            @include mobile {
+                left: 2.4rem;
+                width: calc(100vw - 4.8rem) !important;
+            }
+        }
+        &--is-vertical-top {
+            top: $HEADER_HEIGHT;
+            position: absolute;
+            @include mobile {
+                top: $MOBILE_HEADER_HEIGHT;
+                left: 1.6rem;
+                width: calc(100vw - 3.2rem) !important;
+            }
+        }
+        &--is-vertical-bottom {
+            bottom: $FOOTER_HEIGHT;
+            position: absolute;
+            @include mobile {
+                left: 1.6rem;
+                width: calc(100vw - 3.2rem) !important;
+            }
+        }
+        &--hide {
+            display: none;
+        }
+        &--enter,
+        &--exit {
+            transform: translateY(50px);
+            opacity: 0;
+            pointer-events: none;
+        }
+        &--enter-done {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        &--small {
+            max-width: 440px;
 
-      .dc-modal-header {
-        border-bottom: none;
-      }
+            .dc-modal-header {
+                border-bottom: none;
+            }
+        }
+        @include desktop {
+            min-width: 400px;
+            max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
+            max-width: 90vw;
+        }
     }
-    @include desktop {
-      min-width: 400px;
-      max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
-      max-width: 90vw;
-    }
-  }
-  /** @define dc-modal-header */
-  &-header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    line-height: 24px;
-    align-items: center;
-    border-bottom: 2px solid var(--general-section-2);
+    /** @define dc-modal-header */
+    &-header {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        line-height: 24px;
+        align-items: center;
+        border-bottom: 2px solid var(--general-section-2);
 
-    &__title {
-      @include typeface(--title-left-bold-black);
-      color: var(--text-prominent);
-      line-height: 24px;
-      padding: 1.2rem 1.6rem;
-      display: flex;
-      align-items: center;
-      @include mobile {
+        &__title {
+            @include typeface(--title-left-bold-black);
+            color: var(--text-prominent);
+            line-height: 24px;
+            padding: 1.2rem 1.6rem;
+            display: flex;
+            align-items: center;
+            @include mobile {
+                padding: 2.4rem;
+                line-height: 1;
+            }
+        }
+        &__section {
+            flex-grow: 1;
+            padding: 1.6rem;
+            line-height: 24px;
+            display: flex;
+            align-items: center;
+        }
+        &__close {
+            display: block;
+            cursor: pointer;
+            padding: 0.6rem 0.8rem;
+            @extend %inline-icon.white;
+            height: 30px;
+            width: 32px;
+            margin: 1.2rem 1.6rem 1.2rem auto;
+            @include mobile {
+                margin: 1.8rem;
+            }
+        }
+    }
+    /** @define dc-modal-body */
+    &-body {
         padding: 2.4rem;
-        line-height: 1;
-      }
+        font-size: 1.4rem;
+        line-height: 1.43;
+        color: var(--text-prominent);
     }
-    &__section {
-      flex-grow: 1;
-      padding: 1.6rem;
-      line-height: 24px;
-      display: flex;
-      align-items: center;
-    }
-    &__close {
-      display: block;
-      cursor: pointer;
-      padding: 0.6rem 0.8rem;
-      @extend %inline-icon.white;
-      height: 30px;
-      width: 32px;
-      margin: 1.2rem 1.6rem 1.2rem auto;
-      @include mobile {
-        margin: 1.8rem;
-      }
-    }
-  }
-  /** @define dc-modal-body */
-  &-body {
-    padding: 2.4rem;
-    font-size: 1.4rem;
-    line-height: 1.43;
-    color: var(--text-prominent);
-  }
-  /** @define dc-modal-footer; weak */
-  &-footer {
-    display: flex;
-    justify-content: flex-end;
-    padding: 1.6rem;
+    /** @define dc-modal-footer; weak */
+    &-footer {
+        display: flex;
+        justify-content: flex-end;
+        padding: 1.6rem;
 
-    .btn:nth-child(2) {
-      margin-left: 0.8rem;
+        .btn:nth-child(2) {
+            margin-left: 0.8rem;
+        }
     }
-  }
 }

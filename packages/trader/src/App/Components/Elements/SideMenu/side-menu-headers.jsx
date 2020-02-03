@@ -1,8 +1,7 @@
+import { Icon, VerticalTab } from '@deriv/components';
 import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Icon } from '@deriv/components';
-import { VerticalTabHeaders, VerticalTabHeader } from '../VerticalTabs';
 
 const MainHeaderLayout = ({ children }) => <div className='side-menu__main-header-layout'>{children}</div>;
 
@@ -14,7 +13,7 @@ const MainHeaders = ({ items, handleSubroute, active_title }) => (
             .filter(item => !item.is_hidden)
             .map(item => (
                 <div key={item.title} className='side-menu'>
-                    <VerticalTabHeader
+                    <VerticalTab.Header
                         item={item}
                         className={classNames('side-menu__header', {
                             'side-menu__header--active': item.title === active_title,
@@ -23,14 +22,14 @@ const MainHeaders = ({ items, handleSubroute, active_title }) => (
                         onChange={handleSubroute}
                     >
                         <Icon icon='IcChevronRight' className='side-menu__icon' />
-                    </VerticalTabHeader>
+                    </VerticalTab.Header>
                 </div>
             ))}
     </>
 );
 
 const SubHeaders = ({ items, onChange, selected, is_routed }) => (
-    <VerticalTabHeaders items={items} onChange={onChange} selected={selected} is_routed={is_routed} />
+    <VerticalTab.Headers items={items} onChange={onChange} selected={selected} is_routed={is_routed} />
 );
 
 class SideMenuHeaders extends React.PureComponent {

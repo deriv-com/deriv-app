@@ -1,59 +1,59 @@
-@import "../icon/icon.scss";
+@import '../icon/icon.scss';
 
 .dc-popover {
-  &__target {
-    &__icon .info {
-      @extend .dc-icon--secondary;
+    &__target {
+        &__icon .info {
+            @extend .dc-icon--secondary;
 
-      &:hover {
-        @extend .dc-icon;
-      }
-    }
-    &__icon--disabled .info {
-      @extend .dc-icon--disabled;
+            &:hover {
+                @extend .dc-icon;
+            }
+        }
+        &__icon--disabled .info {
+            @extend .dc-icon--disabled;
 
-      &:hover {
-        @extend .dc-icon--disabled;
-      }
+            &:hover {
+                @extend .dc-icon--disabled;
+            }
+        }
+        &__icon .counter {
+            color: var(--brand-red-coral);
+            font-size: 10px;
+            font-weight: bold;
+            line-height: 1.4em;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-65%);
+        }
     }
-    &__icon .counter {
-      color: var(--brand-red-coral);
-      font-size: 10px;
-      font-weight: bold;
-      line-height: 1.4em;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-65%);
-    }
-  }
-  &__bubble {
-    @include typeface(--small-center-normal-active, none);
-    cursor: help;
-    position: relative;
-    padding: 0.7em;
-    max-width: 280px;
-    border-radius: 4px;
-    display: flex;
-    flex-direction: row;
-    background: var(--general-active);
-    color: var(--text-prominent);
-    z-index: 1;
+    &__bubble {
+        @include typeface(--small-center-normal-active, none);
+        cursor: help;
+        position: relative;
+        padding: 0.7em;
+        max-width: 280px;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: row;
+        background: var(--general-active);
+        color: var(--text-prominent);
+        z-index: 1;
 
-    &__icon {
-      flex-grow: 1;
-      margin-right: 0.7em;
-      padding-top: 3px;
-    }
-    &__text {
-      flex-grow: 2;
-      text-align: left;
+        &__icon {
+            flex-grow: 1;
+            margin-right: 0.7em;
+            padding-top: 3px;
+        }
+        &__text {
+            flex-grow: 2;
+            text-align: left;
 
-      &--error {
-        color: var(--text-colored-background);
-      }
+            &--error {
+                color: var(--text-colored-background);
+            }
+        }
+        &--error {
+            background-color: var(--status-danger);
+        }
     }
-    &--error {
-      background-color: var(--status-danger);
-    }
-  }
 }

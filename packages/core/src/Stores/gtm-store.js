@@ -1,16 +1,12 @@
-import * as Cookies           from 'js-cookie';
-import {
-    action,
-    computed }                from 'mobx';
-import { getLanguage }        from '@deriv/translations';
-import BinarySocket           from '_common/base/socket_base';
-import { isLoginPages }       from '_common/base/login';
-import {
-    toMoment,
-    epochToMoment }           from 'Utils/Date';
-import BaseStore              from './base-store';
-import { getMT5AccountType }  from './Helpers/client';
-import { getAppId }           from '../config';
+import * as Cookies from 'js-cookie';
+import { action, computed } from 'mobx';
+import { getLanguage } from '@deriv/translations';
+import BinarySocket from '_common/base/socket_base';
+import { isLoginPages } from '_common/base/login';
+import { toMoment, epochToMoment } from 'Utils/Date';
+import BaseStore from './base-store';
+import { getMT5AccountType } from './Helpers/client';
+import { getAppId } from '../config';
 
 export default class GTMStore extends BaseStore {
     is_gtm_applicable = /^(16303|16929|19111|19112)$/.test(getAppId());
@@ -34,9 +30,9 @@ export default class GTMStore extends BaseStore {
     @computed
     get common_variables() {
         const platform = () => {
-            const url    = new URL(window.location.href);
+            const url = new URL(window.location.href);
             const domain = url.hostname;
-            const path   = url.pathname;
+            const path = url.pathname;
 
             if (/^(deriv.app|staging.deriv.app|localhost.binary.sx)$/.test(domain)) {
                 if (path === 'bot') {
@@ -50,21 +46,21 @@ export default class GTMStore extends BaseStore {
         };
         return {
             language: getLanguage(),
-            ...this.root_store.client.is_logged_in && {
+            ...(this.root_store.client.is_logged_in && {
                 visitorId: this.visitorId,
-                currency : this.root_store.client.currency,
-                userId   : this.root_store.client.user_id,
-            },
-            ...this.root_store.ui.is_dark_mode_on && {
+                currency: this.root_store.client.currency,
+                userId: this.root_store.client.user_id,
+            }),
+            ...(this.root_store.ui.is_dark_mode_on && {
                 theme: this.root_store.ui.is_dark_mode_on ? 'dark' : 'light',
-            },
+            }),
             platform: platform(),
         };
     }
 
     @action.bound
     accountSwitcherListener() {
-        return new Promise(async (resolve) => resolve(this.pushDataLayer({ event: 'account switch' })));
+        return new Promise(async resolve => resolve(this.pushDataLayer({ event: 'account switch' })));
     }
 
     /**
@@ -96,7 +92,7 @@ export default class GTMStore extends BaseStore {
         if (!response.transaction || !response.transaction.action) return;
         if (!['deposit', 'withdrawal'].includes(response.transaction.action)) return;
 
-        const moment_now  = toMoment();
+        const moment_now = toMoment();
         const storage_key = 'GTM_transactions';
 
         // Remove values from prev days so localStorage doesn't grow to infinity
@@ -110,13 +106,13 @@ export default class GTMStore extends BaseStore {
         const transactions_arr = gtm_transactions.transactions || [];
         if (!transactions_arr.includes(response.transaction.transaction_id)) {
             const data = {
-                event           : 'transaction',
+                event: 'transaction',
                 bom_account_type: this.root_store.client.account_type,
-                bom_today       : moment_now.unix(),
-                transaction     : {
-                    id    : response.transaction.transaction_id,
-                    type  : response.transaction.action,
-                    time  : response.transaction.transaction_time,
+                bom_today: moment_now.unix(),
+                transaction: {
+                    id: response.transaction.transaction_id,
+                    type: response.transaction.action,
+                    time: response.transaction.transaction_time,
                     amount: response.transaction.amount,
                 },
             };
@@ -125,7 +121,7 @@ export default class GTMStore extends BaseStore {
 
             transactions_arr.push(response.transaction.transaction_id);
             gtm_transactions.transactions = transactions_arr;
-            gtm_transactions.timestamp    = gtm_transactions.timestamp || moment_now.unix();
+            gtm_transactions.timestamp = gtm_transactions.timestamp || moment_now.unix();
 
             localStorage.setItem(storage_key, JSON.stringify(gtm_transactions));
         }
@@ -135,8 +131,8 @@ export default class GTMStore extends BaseStore {
     eventHandler(get_settings) {
         if (!this.is_gtm_applicable) return;
 
-        const login_event       = localStorage.getItem('GTM_login');
-        const is_new_account    = localStorage.getItem('GTM_new_account') === '1';
+        const login_event = localStorage.getItem('GTM_login');
+        const is_new_account = localStorage.getItem('GTM_new_account') === '1';
 
         localStorage.removeItem('GTM_login');
         localStorage.removeItem('GTM_new_account');
@@ -149,14 +145,14 @@ export default class GTMStore extends BaseStore {
         // Get current time (moment, set by server), else fallback to client time
         const moment_now = toMoment();
         const data = {
-            visitorId     : this.visitorId,
-            account_type  : this.root_store.client.account_type,
-            currency      : this.root_store.client.currency,
-            country       : get_settings.country,
+            visitorId: this.visitorId,
+            account_type: this.root_store.client.account_type,
+            currency: this.root_store.client.currency,
+            country: get_settings.country,
             country_abbrev: get_settings.country_code,
-            email         : get_settings.email,
-            url           : window.location.href,
-            today         : moment_now.unix(),
+            email: get_settings.email,
+            url: window.location.href,
+            today: moment_now.unix(),
         };
 
         if (is_new_account) {
@@ -166,10 +162,12 @@ export default class GTMStore extends BaseStore {
 
         if (login_event) {
             data.event = login_event;
-            BinarySocket.wait('mt5_login_list').then((response) => {
-                (response.mt5_login_list || []).forEach((obj) => {
+            BinarySocket.wait('mt5_login_list').then(response => {
+                (response.mt5_login_list || []).forEach(obj => {
                     const acc_type = (getMT5AccountType(obj.group) || '')
-                        .replace('real_vanuatu', 'financial').replace('vanuatu_', '').replace(/svg/, 'gaming'); // i.e. financial_cent, demo_cent, demo_gaming, real_gaming
+                        .replace('real_vanuatu', 'financial')
+                        .replace('vanuatu_', '')
+                        .replace(/svg/, 'gaming'); // i.e. financial_cent, demo_cent, demo_gaming, real_gaming
                     if (acc_type) {
                         data[`mt5_${acc_type}_id`] = obj.login;
                     }
@@ -191,7 +189,7 @@ export default class GTMStore extends BaseStore {
     @action.bound
     pushLoadPerformance(performance_metric, duration) {
         const data = {
-            'event': performance_metric,
+            event: performance_metric,
             duration,
         };
         dataLayer.push({

@@ -1,13 +1,9 @@
 import filesaver from 'file-saver';
-import {
-    observable,
-    action,
-}                from 'mobx';
-import { localize }  from '@deriv/translations';
-import { load }  from '@deriv/bot-skeleton';
+import { observable, action } from 'mobx';
+import { localize } from '@deriv/translations';
+import { load } from '@deriv/bot-skeleton';
 
 export default class SaveLoadModalStore {
-
     @observable is_saveload_modal_open = false;
     @observable is_save_modal = true;
     @observable button_status = 0; // 0 - none, 1 - loading, 2 - completed
@@ -29,7 +25,7 @@ export default class SaveLoadModalStore {
     @action.bound
     async onConfirmSave({ is_local, save_as_collection }) {
         this.setButtonStatus(1);
-        
+
         const { file_name } = this.root_store.toolbar;
         const { saveFile } = this.root_store.google_drive;
         const xml = Blockly.Xml.workspaceToDom(Blockly.derivWorkspace);
@@ -44,8 +40,8 @@ export default class SaveLoadModalStore {
             filesaver.saveAs(blob, `${file_name}.xml`);
         } else {
             await saveFile({
-                name    : file_name,
-                content : Blockly.Xml.domToPrettyText(xml),
+                name: file_name,
+                content: Blockly.Xml.domToPrettyText(xml),
                 mimeType: 'application/xml',
             });
 
@@ -57,7 +53,7 @@ export default class SaveLoadModalStore {
     @action.bound
     async onDriveConnect() {
         const { google_drive } = this.root_store;
-        
+
         if (google_drive.is_authorised) {
             google_drive.signOut();
         } else {
@@ -67,7 +63,6 @@ export default class SaveLoadModalStore {
 
     @action.bound
     async onLoadClick({ is_local }) {
-        
         const { onBotNameTyped } = this.root_store.toolbar;
         const { loadFile } = this.root_store.google_drive;
 
@@ -79,7 +74,7 @@ export default class SaveLoadModalStore {
 
             onBotNameTyped(file_name);
             load(xml_doc);
-            
+
             this.setButtonStatus(2);
             this.toggleSaveLoadModal();
         }
@@ -96,7 +91,7 @@ export default class SaveLoadModalStore {
         const { toolbar, journal } = this.root_store;
         const { onBotNameTyped } = toolbar;
         let files, drop_event;
-        
+
         if (event.type === 'drop') {
             event.stopPropagation();
             event.preventDefault();

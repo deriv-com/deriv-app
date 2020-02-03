@@ -1,4 +1,4 @@
-import { observer as globalObserver }   from './observer';
+import { observer as globalObserver } from './observer';
 
 export const createError = (name, message) => {
     const e = new Error(message);

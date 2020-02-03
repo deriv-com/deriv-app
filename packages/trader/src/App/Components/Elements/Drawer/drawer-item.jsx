@@ -1,6 +1,6 @@
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { connect }    from 'Stores/connect';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'Stores/connect';
 import { BinaryLink } from '../../Routes';
 
 class DrawerItem extends React.Component {
@@ -16,15 +16,21 @@ class DrawerItem extends React.Component {
 
         return (
             <div className='drawer__item' onClick={this.drawerItemClicked}>
-                {custom_action ?
+                {custom_action ? (
                     <a className='drawer__item-link' onClick={custom_action}>
-                        <span className='drawer__item-link-text'>{icon}{text}</span>
+                        <span className='drawer__item-link-text'>
+                            {icon}
+                            {text}
+                        </span>
                     </a>
-                    :
+                ) : (
                     <BinaryLink className='drawer__item-link' to={link_to}>
-                        <span className='drawer__item-link-text'>{icon}{text}</span>
+                        <span className='drawer__item-link-text'>
+                            {icon}
+                            {text}
+                        </span>
                     </BinaryLink>
-                }
+                )}
             </div>
         );
     }
@@ -33,11 +39,11 @@ class DrawerItem extends React.Component {
 DrawerItem.propTypes = {
     collapseItems: PropTypes.func,
     custom_action: PropTypes.func,
-    hideDrawers  : PropTypes.func,
-    href         : PropTypes.string,
-    icon         : PropTypes.node,
-    link_to      : PropTypes.string,
-    text         : PropTypes.string,
+    hideDrawers: PropTypes.func,
+    href: PropTypes.string,
+    icon: PropTypes.node,
+    link_to: PropTypes.string,
+    text: PropTypes.string,
 };
 
 const drawer_item_component = connect(({ ui }) => ({

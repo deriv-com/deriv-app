@@ -42,7 +42,7 @@
         }
         &--paragraph {
             @include typeface(--paragraph-left-normal-black, none);
-            color: var(--text-general)
+            color: var(--text-general);
         }
         &--hint {
             @include typeface(--xsmall-left-normal-black, none);
@@ -86,7 +86,8 @@
             display: flex;
             justify-content: space-between;
 
-            &--desktop, &--mobile {
+            &--desktop,
+            &--mobile {
                 display: flex;
                 flex-flow: column nowrap;
                 align-items: center;
@@ -164,7 +165,7 @@
     flex-grow: 1;
 
     &__data {
-    //height: 50vh;
+        //height: 50vh;
 
         &__table {
             //height: 50vh;
@@ -173,9 +174,12 @@
         }
         &__row {
             /*                     attribute   standard advanced synthetic */
-            grid-template-columns: 1.7fr       1fr      1fr      1fr;
+            grid-template-columns: 1.7fr 1fr 1fr 1fr;
         }
-        .attribute, .standard, .advanced, .synthetic {
+        .attribute,
+        .standard,
+        .advanced,
+        .synthetic {
             justify-content: flex-start;
             align-items: flex-start;
             text-align: left;
@@ -198,7 +202,8 @@
     }
 }
 
-.mt5-real-accounts-display, .mt5-demo-accounts-display {
+.mt5-real-accounts-display,
+.mt5-demo-accounts-display {
     margin-top: 2.4em;
     display: flex;
     justify-content: space-around;
@@ -359,7 +364,8 @@
         color: var(--text-less-prominent);
         padding: 1.333em 0;
     }
-    &__main-form, &__investor-wrapper {
+    &__main-form,
+    &__investor-wrapper {
         margin-top: 2.4rem;
     }
     &__investor-wrapper {

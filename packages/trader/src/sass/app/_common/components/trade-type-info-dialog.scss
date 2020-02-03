@@ -47,7 +47,6 @@
         span {
             @include typeface(--paragraph-center-bold-active);
         }
-
     }
     &__content {
         margin-top: 1.5em;
@@ -100,7 +99,8 @@
             @extend %inline-icon;
         }
     }
-    &--enter, &--exit {
+    &--enter,
+    &--exit {
         transform: translateX(50%);
         pointer-events: none;
         opacity: 0;

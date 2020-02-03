@@ -1,45 +1,38 @@
-import classNames             from 'classnames';
-import PropTypes              from 'prop-types';
-import React                  from 'react';
-import {
-    Button,
-    Dropdown,
-    Input,
-    Money }                   from '@deriv/components';
-import {
-    Field,
-    Formik,
-    Form }                    from 'formik';
-import CurrencyUtils          from '@deriv/shared/utils/currency';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Button, Dropdown, Input, Money } from '@deriv/components';
+import { Field, Formik, Form } from 'formik';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize, Localize } from '@deriv/translations';
-import { connect }            from 'Stores/connect';
-import {
-    validNumber,
-    getPreBuildDVRs }       from 'Utils/Validator/declarative-validation-rules';
-import Error                from '../Error/error.jsx';
-import PaymentAgentReceipt  from '../Receipt/payment-agent-receipt.jsx';
-import Loading              from '../../../../templates/_common/components/loading.jsx';
+import { connect } from 'Stores/connect';
+import { validNumber, getPreBuildDVRs } from 'Utils/Validator/declarative-validation-rules';
+import Error from '../Error/error.jsx';
+import PaymentAgentReceipt from '../Receipt/payment-agent-receipt.jsx';
+import Loading from '../../../../templates/_common/components/loading.jsx';
 
 const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
     const errors = {};
 
-    if (values.payment_method === 'payment_agent' && (!values.payment_agent || !/^[A-Za-z]+[0-9]+$/.test(values.payment_agent))) {
+    if (
+        values.payment_method === 'payment_agent' &&
+        (!values.payment_agent || !/^[A-Za-z]+[0-9]+$/.test(values.payment_agent))
+    ) {
         errors.payment_agent = localize('Please enter a valid payment agent ID.');
     }
 
     if (!values.amount) {
         errors.amount = localize('This field is required.');
-    } else if (!validNumber(
-        values.amount,
-        {
-            type    : 'float',
+    } else if (
+        !validNumber(values.amount, {
+            type: 'float',
             decimals: CurrencyUtils.getDecimalPlaces(currency),
             ...(payment_agent.min_withdrawal && {
                 min: payment_agent.min_withdrawal,
                 max: payment_agent.max_withdrawal,
             }),
-        },
-    )) {
+        })
+    ) {
         errors.amount = getPreBuildDVRs().number.message;
     } else if (+balance < +values.amount) {
         errors.amount = localize('Insufficient balance.');
@@ -49,11 +42,7 @@ const validateWithdrawal = (values, { balance, currency, payment_agent }) => {
 };
 
 // TODO: refactor this to use the main radio component for forms too if possible
-const Radio = ({
-    children,
-    field,
-    props,
-}) => (
+const Radio = ({ children, field, props }) => (
     <div>
         <input
             id={props.id}
@@ -66,26 +55,22 @@ const Radio = ({
         />
         <label htmlFor={props.id} className='payment-agent__radio-wrapper'>
             <span
-                className={ classNames('payment-agent__radio-circle', {
+                className={classNames('payment-agent__radio-circle', {
                     'payment-agent__radio-circle--selected': field.value === props.id,
-                }) }
+                })}
             />
             {children}
         </label>
     </div>
 );
 
-const RadioDropDown = ({
-    field,
-    values,
-    ...props
-}) => (
+const RadioDropDown = ({ field, values, ...props }) => (
     <Radio field={field} props={props}>
         <span className='payment-agent__radio-label cashier__paragraph'>
             <Localize i18n_default_text='By name' />
         </span>
         <Field name='payment_agents'>
-            {(params) => (
+            {params => (
                 <Dropdown
                     className='cashier__drop-down payment-agent__drop-down'
                     classNameDisplay='cashier__drop-down-display'
@@ -93,7 +78,7 @@ const RadioDropDown = ({
                     classNameItems='cashier__drop-down-items'
                     list={props.payment_agent_list}
                     value={values.payment_agents}
-                    onChange={(e) => {
+                    onChange={e => {
                         params.form.setFieldValue('payment_agents', e.target.value);
                     }}
                 />
@@ -102,26 +87,20 @@ const RadioDropDown = ({
     </Radio>
 );
 
-const RadioInput = ({
-    touched,
-    errors,
-    field,
-    values,
-    ...props
-}) => (
+const RadioInput = ({ touched, errors, field, values, ...props }) => (
     <Radio field={field} props={props}>
         <span className='payment-agent__radio-label cashier__paragraph'>
             <Localize i18n_default_text='By payment agent ID' />
         </span>
         <Field>
-            {(params) => (
+            {params => (
                 <Input
                     name='payment_agent'
                     className='payment-agent__input'
                     classNameError='payment-agent__input-error'
                     type='text'
                     placeholder='CR'
-                    error={ touched.payment_agent && errors.payment_agent }
+                    error={touched.payment_agent && errors.payment_agent}
                     autoComplete='off'
                     maxLength='20'
                     value={values.payment_agent}
@@ -145,21 +124,21 @@ class PaymentAgentWithdrawForm extends React.Component {
         this.props.resetPaymentAgent();
     }
 
-    validateWithdrawalPassthrough = (values) => (
+    validateWithdrawalPassthrough = values =>
         validateWithdrawal(values, {
-            balance      : this.props.balance,
-            currency     : this.props.currency,
-            payment_agent: values.payment_method === 'payment_agent'
-                ? {}
-                : this.props.payment_agent_list.find(pa => pa.value === values.payment_agents),
-        })
-    );
+            balance: this.props.balance,
+            currency: this.props.currency,
+            payment_agent:
+                values.payment_method === 'payment_agent'
+                    ? {}
+                    : this.props.payment_agent_list.find(pa => pa.value === values.payment_agents),
+        });
 
-    onWithdrawalPassthrough = (values) => {
+    onWithdrawalPassthrough = values => {
         this.props.requestPaymentAgentWithdraw({
-            loginid          : values[values.payment_method],
-            currency         : this.props.currency,
-            amount           : values.amount,
+            loginid: values[values.payment_method],
+            currency: this.props.currency,
+            amount: values.amount,
             verification_code: this.props.verification_code,
         });
     };
@@ -181,8 +160,8 @@ class PaymentAgentWithdrawForm extends React.Component {
                 </h2>
                 <Formik
                     initialValues={{
-                        amount        : '',
-                        payment_agent : '',
+                        amount: '',
+                        payment_agent: '',
                         payment_agents: (this.props.payment_agent_list[0] || {}).value,
                         payment_method: 'payment_agents',
                     }}
@@ -213,39 +192,51 @@ class PaymentAgentWithdrawForm extends React.Component {
                             <Field name='amount'>
                                 {({ field }) => (
                                     <Input
-                                        { ...field }
+                                        {...field}
                                         className='cashier__input cashier__input--short dc-input--no-placeholder'
                                         type='text'
                                         label={localize('Amount')}
-                                        error={ touched.amount && errors.amount }
+                                        error={touched.amount && errors.amount}
                                         required
-                                        leading_icon={<span className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)} />}
+                                        leading_icon={
+                                            <span
+                                                className={classNames(
+                                                    'symbols',
+                                                    `symbols--${this.props.currency.toLowerCase()}`
+                                                )}
+                                            />
+                                        }
                                         autoComplete='off'
                                         maxLength='30'
                                         hint={
                                             values.payment_method === 'payment_agents' &&
                                             this.props.payment_agent_list.find(
                                                 pa => pa.value === values.payment_agents
-                                            ) &&
-                                            <Localize
-                                                i18n_default_text='Withdrawal limits: <0 />-<1 />'
-                                                components={[
-                                                    <Money
-                                                        key={0}
-                                                        amount={this.props.payment_agent_list
-                                                            .find(pa => pa.value === values.payment_agents)
-                                                            .min_withdrawal}
-                                                        currency={this.props.currency}
-                                                    />,
-                                                    <Money
-                                                        key={1}
-                                                        amount={this.props.payment_agent_list
-                                                            .find(pa => pa.value === values.payment_agents)
-                                                            .max_withdrawal}
-                                                        currency={this.props.currency}
-                                                    />,
-                                                ]}
-                                            />
+                                            ) && (
+                                                <Localize
+                                                    i18n_default_text='Withdrawal limits: <0 />-<1 />'
+                                                    components={[
+                                                        <Money
+                                                            key={0}
+                                                            amount={
+                                                                this.props.payment_agent_list.find(
+                                                                    pa => pa.value === values.payment_agents
+                                                                ).min_withdrawal
+                                                            }
+                                                            currency={this.props.currency}
+                                                        />,
+                                                        <Money
+                                                            key={1}
+                                                            amount={
+                                                                this.props.payment_agent_list.find(
+                                                                    pa => pa.value === values.payment_agents
+                                                                ).max_withdrawal
+                                                            }
+                                                            currency={this.props.currency}
+                                                        />,
+                                                    ]}
+                                                />
+                                            )
                                         }
                                     />
                                 )}
@@ -270,28 +261,26 @@ class PaymentAgentWithdrawForm extends React.Component {
 }
 
 PaymentAgentWithdrawForm.propTypes = {
-    balance                    : PropTypes.string,
-    currency                   : PropTypes.string,
-    error_message_withdraw     : PropTypes.string,
-    is_loading                 : PropTypes.bool,
-    is_withdraw_successful     : PropTypes.bool,
-    onMount                    : PropTypes.func,
-    payment_agent_list         : PropTypes.array,
+    balance: PropTypes.string,
+    currency: PropTypes.string,
+    error_message_withdraw: PropTypes.string,
+    is_loading: PropTypes.bool,
+    is_withdraw_successful: PropTypes.bool,
+    onMount: PropTypes.func,
+    payment_agent_list: PropTypes.array,
     requestPaymentAgentWithdraw: PropTypes.func,
-    resetPaymentAgent          : PropTypes.func,
-    verification_code          : PropTypes.string,
+    resetPaymentAgent: PropTypes.func,
+    verification_code: PropTypes.string,
 };
 
-export default connect(
-    ({ client, modules }) => ({
-        balance                    : client.balance,
-        currency                   : client.currency,
-        error                      : modules.cashier.config.payment_agent.error,
-        is_loading                 : modules.cashier.is_loading,
-        is_withdraw_successful     : modules.cashier.config.payment_agent.is_withdraw_successful,
-        onMount                    : modules.cashier.onMountPaymentAgentWithdraw,
-        payment_agent_list         : modules.cashier.config.payment_agent.agents,
-        requestPaymentAgentWithdraw: modules.cashier.requestPaymentAgentWithdraw,
-        resetPaymentAgent          : modules.cashier.resetPaymentAgent,
-    })
-)(PaymentAgentWithdrawForm);
+export default connect(({ client, modules }) => ({
+    balance: client.balance,
+    currency: client.currency,
+    error: modules.cashier.config.payment_agent.error,
+    is_loading: modules.cashier.is_loading,
+    is_withdraw_successful: modules.cashier.config.payment_agent.is_withdraw_successful,
+    onMount: modules.cashier.onMountPaymentAgentWithdraw,
+    payment_agent_list: modules.cashier.config.payment_agent.agents,
+    requestPaymentAgentWithdraw: modules.cashier.requestPaymentAgentWithdraw,
+    resetPaymentAgent: modules.cashier.resetPaymentAgent,
+}))(PaymentAgentWithdrawForm);

@@ -3,4 +3,6 @@
 // eslint-disable-next-line import/no-mutable-exports
 export let ClientBase;
 
-export const setClientBase = (client_base) => { ClientBase = client_base; };
+export const setClientBase = client_base => {
+    ClientBase = client_base;
+};

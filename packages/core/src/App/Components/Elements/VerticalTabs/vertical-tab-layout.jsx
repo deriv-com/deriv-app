@@ -1,4 +1,4 @@
-import React      from 'react';
+import React from 'react';
 import classNames from 'classnames';
 
 const VerticalTabLayout = ({ children, is_full_width }) => (

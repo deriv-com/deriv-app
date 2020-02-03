@@ -1,16 +1,16 @@
-import { getRoundedNumber }           from '@deriv/shared/utils/currency';
-import { localize }                   from '@deriv/translations';
-import { info, log }               from '../utils/broadcast';
-import { createError }                from '../../../utils/error';
+import { getRoundedNumber } from '@deriv/shared/utils/currency';
+import { localize } from '@deriv/translations';
+import { info, log } from '../utils/broadcast';
+import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
 
 const skeleton = {
     totalProfit: 0,
-    totalWins  : 0,
+    totalWins: 0,
     totalLosses: 0,
-    totalStake : 0,
+    totalStake: 0,
     totalPayout: 0,
-    totalRuns  : 0,
+    totalRuns: 0,
 };
 
 const globalStat = {};
@@ -25,7 +25,7 @@ export default Engine =>
             globalObserver.register('summary.clear', this.clearSummary.bind(this));
         }
 
-        clearSummary () {
+        clearSummary() {
             this.sessionRuns = 0;
             this.sessionProfit = 0;
             if (!this.accountInfo) return;
@@ -57,11 +57,11 @@ export default Engine =>
             info({
                 profit,
                 contract,
-                accountID  : this.accountInfo.loginid,
+                accountID: this.accountInfo.loginid,
                 totalProfit: accountStat.totalProfit,
-                totalWins  : accountStat.totalWins,
+                totalWins: accountStat.totalWins,
                 totalLosses: accountStat.totalLosses,
-                totalStake : accountStat.totalStake,
+                totalStake: accountStat.totalStake,
                 totalPayout: accountStat.totalPayout,
             });
 
@@ -87,7 +87,7 @@ export default Engine =>
 
         getTotalProfit(toString, currency) {
             const accountStat = this.getAccountStat();
-            
+
             return toString && accountStat.totalProfit !== 0
                 ? getRoundedNumber(+accountStat.totalProfit, currency)
                 : +accountStat.totalProfit;

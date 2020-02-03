@@ -1,4 +1,4 @@
-import DBotStore      from '../dbot-store';
+import DBotStore from '../dbot-store';
 import PendingPromise from '../../utils/pending-promise';
 
 Blockly.Workspace.prototype.wait_events = [];
@@ -42,14 +42,14 @@ Blockly.Workspace.prototype.fireChangeListener = function(event) {
 
     // Copy listeners in case a listener attaches/detaches itself.
     const current_listeners = this.listeners_.slice();
-    
+
     current_listeners.forEach(listener => {
         listener(event);
     });
-/**
- * Gets a trade definition block instance and returns it.
- * @returns {Blockly.Block|null} The trade definition or null.
- */
+    /**
+     * Gets a trade definition block instance and returns it.
+     * @returns {Blockly.Block|null} The trade definition or null.
+     */
 };
 
 Blockly.Workspace.prototype.getTradeDefinitionBlock = function() {
@@ -62,7 +62,7 @@ Blockly.Workspace.prototype.waitForBlockEvent = function(block_id, opt_event_typ
     this.wait_events.push({
         blockId: block_id,
         promise: event_promise,
-        type   : opt_event_type,
+        type: opt_event_type,
     });
 
     return event_promise;
@@ -71,8 +71,7 @@ Blockly.Workspace.prototype.waitForBlockEvent = function(block_id, opt_event_typ
 Blockly.Workspace.prototype.dispatchBlockEventEffects = function(event) {
     this.wait_events.forEach((wait_event, idx) => {
         const is_subscribed_event =
-            wait_event.blockId === event.blockId &&
-            (wait_event.type === null || event.type === wait_event.type);
+            wait_event.blockId === event.blockId && (wait_event.type === null || event.type === wait_event.type);
 
         if (is_subscribed_event) {
             wait_event.promise.resolve();

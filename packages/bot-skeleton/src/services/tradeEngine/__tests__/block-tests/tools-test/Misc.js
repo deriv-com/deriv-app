@@ -1,5 +1,5 @@
-import { expect }                     from 'chai';
-import { runAndGetResult }            from '../../tools';
+import { expect } from 'chai';
+import { runAndGetResult } from '../../tools';
 import { observer as globalObserver } from '../../../../../utils/observer';
 
 describe('Misc. tools', () => {
@@ -47,7 +47,9 @@ describe('Misc. tools', () => {
     });
 
     it('Notify', () => {
-        const { notify: { className, message } } = observed;
+        const {
+            notify: { className, message },
+        } = observed;
 
         expect(className).equal('info');
         expect(message).equal('Test');

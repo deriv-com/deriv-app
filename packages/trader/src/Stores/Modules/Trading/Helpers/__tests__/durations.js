@@ -1,6 +1,6 @@
-import { expect }    from 'chai';
+import { expect } from 'chai';
 import * as Duration from '../duration.js';
-import moment        from 'moment';
+import moment from 'moment';
 
 describe('buildDurationConfig', () => {
     const contract = {
@@ -18,25 +18,27 @@ describe('buildDurationConfig', () => {
         sentiment: 'up',
         start_type: 'spot',
         submarket: 'major_pairs',
-        underlying_symbol: 'frxAUDJPY'
-    }
+        underlying_symbol: 'frxAUDJPY',
+    };
 
     const durations = {
         min_max: {
             spot: {
                 daily: {
                     min: 86400,
-                    max: 31536000
+                    max: 31536000,
                 },
-            }
+            },
         },
         units_display: {
-            spot: [{
-                text: 'days',
-                value: 'd'
-            }]
-        }
-    }
+            spot: [
+                {
+                    text: 'days',
+                    value: 'd',
+                },
+            ],
+        },
+    };
 
     it('Returns correct value when durations is not passed', () => {
         expect(Duration.buildDurationConfig(contract)).to.eql(durations);
@@ -45,16 +47,15 @@ describe('buildDurationConfig', () => {
     it('Returns correct value when durations passed', () => {
         expect(Duration.buildDurationConfig(contract, durations)).to.eql(durations);
     });
-
 });
 
 describe('convertDurationUnit', () => {
     it('Returns null if the arguments are empty value', () => {
-        expect(Duration.convertDurationUnit('','','')).to.be.null;
+        expect(Duration.convertDurationUnit('', '', '')).to.be.null;
     });
 
     it('Returns null if the arguments are invalid value', () => {
-        expect(Duration.convertDurationUnit('sdf','d','m')).to.be.null;
+        expect(Duration.convertDurationUnit('sdf', 'd', 'm')).to.be.null;
     });
 
     it('Returns null if there is no arguments', () => {
@@ -91,46 +92,47 @@ describe('getExpiryType', () => {
         root_store: {
             common: {
                 server_time: '2018-12-25 23:59:59',
-            }
+            },
         },
         duration_units_list: [
-            { "text": "ticks", "value": "t" },
-            { "text": "minutes", "value": "m" },
-            { "text": "hours", "value": "h" },
-            { "text": "days", "value": "d" }
+            { text: 'ticks', value: 't' },
+            { text: 'minutes', value: 'm' },
+            { text: 'hours', value: 'h' },
+            { text: 'days', value: 'd' },
         ],
-    }
+    };
 
     it('Return intraday if expiry date is today', () => {
         store.expiry_date = '2018-12-25';
-        store.expiry_type = 'endtime'
+        store.expiry_type = 'endtime';
         expect(Duration.getExpiryType(store)).to.eql('intraday');
     });
 
     it('Return daily if expiry date is tomorrow', () => {
-        store.expiry_date = moment().utc().add(1, 'days');
+        store.expiry_date = moment()
+            .utc()
+            .add(1, 'days');
         store.expiry_type = 'endtime';
         expect(Duration.getExpiryType(store)).to.eql('daily');
     });
 
     it('Return tick if duration unit is t', () => {
-        store.duration_unit = 't'
-        store.expiry_type = 'duration'
+        store.duration_unit = 't';
+        store.expiry_type = 'duration';
         expect(Duration.getExpiryType(store)).to.eql('tick');
     });
 
     it('Return intraday if duration unit is m', () => {
-        store.duration_unit = 'm'
-        store.expiry_type = 'duration'
+        store.duration_unit = 'm';
+        store.expiry_type = 'duration';
         expect(Duration.getExpiryType(store)).to.eql('intraday');
     });
 
     it('Return daily if duration unit is d', () => {
-        store.duration_unit = 'd'
-        store.expiry_type = 'duration'
+        store.duration_unit = 'd';
+        store.expiry_type = 'duration';
         expect(Duration.getExpiryType(store)).to.eql('daily');
     });
-
 });
 
 describe('convertDurationLimit', () => {
@@ -157,5 +159,4 @@ describe('convertDurationLimit', () => {
     it('Returns correct value for day unit', () => {
         expect(Duration.convertDurationLimit(86400, 'd')).to.eql(1);
     });
-
 });

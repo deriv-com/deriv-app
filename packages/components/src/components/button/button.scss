@@ -22,7 +22,8 @@
      */
     text-transform: none !important;
 
-    &__text, &__icon {
+    &__text,
+    &__icon {
         @include typeface(--paragraph-center-bold-black, unset);
         color: var(--text-general);
         display: flex;
@@ -43,11 +44,13 @@
         &:active:not([disabled]) {
             background: var(--button-primary-default);
         }
-        &:disabled, &[disabled] {
+        &:disabled,
+        &[disabled] {
             opacity: 0.32;
             cursor: not-allowed !important;
         }
-        .btn__text, .btn__icon {
+        .btn__text,
+        .btn__icon {
             color: var(--text-colored-background);
         }
     }
@@ -61,11 +64,13 @@
         &:active:not([disabled]) {
             border: 1px solid var(--button-secondary-default);
         }
-        &:disabled, &[disabled] {
+        &:disabled,
+        &[disabled] {
             opacity: 0.32;
             cursor: not-allowed !important;
         }
-        .btn__text, .btn__icon {
+        .btn__text,
+        .btn__icon {
             color: var(--text-prominent);
         }
     }
@@ -78,10 +83,12 @@
         &:active:not([disabled]) {
             background: var(--button-tertiary-default);
         }
-        .btn__text, .btn__icon {
+        .btn__text,
+        .btn__icon {
             color: var(--brand-red-coral);
         }
-        &:disabled, &[disabled] {
+        &:disabled,
+        &[disabled] {
             opacity: 0.32;
             cursor: not-allowed !important;
         }
@@ -96,7 +103,8 @@
         &:active:not([disabled]) {
             background: var(--status-success);
         }
-        .btn__text, .btn__icon {
+        .btn__text,
+        .btn__icon {
             color: var(--text-colored-background);
         }
     }

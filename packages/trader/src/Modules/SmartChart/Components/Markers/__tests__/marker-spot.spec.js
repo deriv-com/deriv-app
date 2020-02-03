@@ -1,8 +1,8 @@
-import React                  from 'react';
-import { expect }             from 'chai';
+import React from 'react';
+import { expect } from 'chai';
 import { configure, shallow } from 'enzyme';
-import Adapter                from 'enzyme-adapter-react-16';
-import MarkerSpot             from '../marker-spot.jsx';
+import Adapter from 'enzyme-adapter-react-16';
+import MarkerSpot from '../marker-spot.jsx';
 
 configure({ adapter: new Adapter() });
 
@@ -18,4 +18,3 @@ describe('MarkerSpot', () => {
         expect(wrapper.find('.chart-spot').exists()).to.be.true;
     });
 });
-

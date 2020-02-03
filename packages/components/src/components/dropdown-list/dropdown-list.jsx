@@ -1,47 +1,32 @@
-import classNames        from 'classnames';
-import React             from 'react';
+import classNames from 'classnames';
+import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import PropTypes         from 'prop-types';
-import ThemedScrollbars  from 'Components/themed-scrollbars';
+import PropTypes from 'prop-types';
+import ThemedScrollbars from 'Components/themed-scrollbars';
 
 const trackHorizontal = props => <div {...props} style={{ display: 'none' }} />;
 const thumbHorizontal = props => <div {...props} style={{ display: 'none' }} />;
 
-const ListItem = ({
-    is_active,
-    item,
-    child_ref,
-    onItemSelection,
-    is_object_list,
-}) => {
+const ListItem = ({ is_active, item, child_ref, onItemSelection, is_object_list }) => {
     return (
         <div
             ref={child_ref}
             // onMouseDown ensures the click handler runs before the onBlur event of Input
             onMouseDown={() => onItemSelection(item)}
-            className={classNames(
-                'dc-dropdown-list__item', {
-                    'dc-dropdown-list__item--active': is_active,
-                })}
+            className={classNames('dc-dropdown-list__item', {
+                'dc-dropdown-list__item--active': is_active,
+            })}
             value={is_object_list ? item.value : null}
         >
-            { is_object_list
-                ? item.component || item.text
-                : item
-            }
+            {is_object_list ? item.component || item.text : item}
         </div>
     );
 };
 
 const ListItems = React.forwardRef((props, ref) => {
-    const {
-        active_index,
-        list_items,
-        is_object_list,
-        onItemSelection,
-        not_found_text }  = props;
+    const { active_index, list_items, is_object_list, onItemSelection, not_found_text } = props;
     const is_grouped_list = list_items.some(list_item => !!list_item.group);
-    
+
     if (is_grouped_list) {
         const groups = {};
 
@@ -54,17 +39,17 @@ const ListItems = React.forwardRef((props, ref) => {
         });
 
         const group_names = Object.keys(groups);
-        let item_idx      = -1;
+        let item_idx = -1;
 
         return (
             <>
-                { group_names.map((group_name, group_idx) => {
-                    const group         = groups[group_name];
+                {group_names.map((group_name, group_idx) => {
+                    const group = groups[group_name];
                     const has_separator = !!group_names[group_idx + 1];
                     return (
                         <React.Fragment key={`group${group_idx}`}>
-                            <div className='dc-dropdown-list__group-header'>{ group_name }</div>
-                            { group.map((item) => {
+                            <div className='dc-dropdown-list__group-header'>{group_name}</div>
+                            {group.map(item => {
                                 item_idx++;
                                 return (
                                     <ListItem
@@ -77,7 +62,7 @@ const ListItems = React.forwardRef((props, ref) => {
                                     />
                                 );
                             })}
-                            { has_separator && <div className='dc-dropdown-list__separator' /> }
+                            {has_separator && <div className='dc-dropdown-list__separator' />}
                         </React.Fragment>
                     );
                 })}
@@ -87,8 +72,8 @@ const ListItems = React.forwardRef((props, ref) => {
 
     return (
         <>
-            { list_items.length
-                ? list_items.map((item, item_idx) =>
+            {list_items.length ? (
+                list_items.map((item, item_idx) => (
                     <ListItem
                         key={item_idx}
                         item={item}
@@ -97,9 +82,10 @@ const ListItems = React.forwardRef((props, ref) => {
                         is_object_list={is_object_list}
                         child_ref={item_idx === active_index ? ref : null}
                     />
-                )
-                : <div className={'dc-dropdown-list__item'}>{not_found_text}</div>
-            }
+                ))
+            ) : (
+                <div className={'dc-dropdown-list__item'}>{not_found_text}</div>
+            )}
         </>
     );
 });
@@ -112,7 +98,7 @@ const DropdownList = React.forwardRef((props, ref) => {
         throw Error('Dropdown received wrong data structure');
     }
 
-    const is_object       = !Array.isArray(list_items) && typeof list_items === 'object';
+    const is_object = !Array.isArray(list_items) && typeof list_items === 'object';
     const is_string_array = list_items.length && typeof list_items[0] === 'string';
 
     return (
@@ -120,9 +106,9 @@ const DropdownList = React.forwardRef((props, ref) => {
             in={is_visible}
             timeout={100}
             classNames={{
-                enter    : 'dc-dropdown-list--enter',
+                enter: 'dc-dropdown-list--enter',
                 enterDone: 'dc-dropdown-list--enter-done',
-                exit     : 'dc-dropdown-list--exit',
+                exit: 'dc-dropdown-list--exit',
             }}
             unmountOnExit
         >
@@ -135,8 +121,8 @@ const DropdownList = React.forwardRef((props, ref) => {
                     renderTrackHorizontal={trackHorizontal}
                     renderThumbHorizontal={thumbHorizontal}
                 >
-                    {is_object ?
-                        Object.keys(list_items).map((items, idx) =>
+                    {is_object ? (
+                        Object.keys(list_items).map((items, idx) => (
                             <ListItems
                                 key={idx}
                                 not_found_text={not_found_text}
@@ -145,7 +131,8 @@ const DropdownList = React.forwardRef((props, ref) => {
                                 ref={list_item_ref}
                                 onItemSelection={onItemSelection}
                             />
-                        ) :
+                        ))
+                    ) : (
                         <ListItems
                             not_found_text={not_found_text}
                             active_index={active_index}
@@ -154,7 +141,7 @@ const DropdownList = React.forwardRef((props, ref) => {
                             onItemSelection={onItemSelection}
                             is_object_list={!is_string_array}
                         />
-                    }
+                    )}
                 </ThemedScrollbars>
             </div>
         </CSSTransition>
@@ -166,20 +153,20 @@ export default DropdownList;
 
 const list_items_shape = PropTypes.arrayOf(
     PropTypes.shape({
-        text : PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
         value: PropTypes.string.isRequired,
     })
 );
 
 DropdownList.propTypes = {
     active_index: PropTypes.number,
-    is_visible  : PropTypes.bool,
-    list_items  : PropTypes.oneOfType([
+    is_visible: PropTypes.bool,
+    list_items: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.string),
         list_items_shape,
         PropTypes.objectOf(list_items_shape),
     ]),
-    not_found_text : PropTypes.string,
+    not_found_text: PropTypes.string,
     onItemSelection: PropTypes.func,
-    style          : PropTypes.object,
+    style: PropTypes.object,
 };

@@ -1,14 +1,14 @@
-export const help_content_types   = {
-    TEXT : 'text',
+export const help_content_types = {
+    TEXT: 'text',
     VIDEO: 'video',
     IMAGE: 'image',
     BLOCK: 'block',
 };
 
-const { TEXT, IMAGE, BLOCK }     = help_content_types;
+const { TEXT, IMAGE, BLOCK } = help_content_types;
 
 export const help_content_config = {
-//= ================= Functions ==================
+    //= ================= Functions ==================
     procedures_ifreturn: [
         { type: TEXT },
         { type: BLOCK },
@@ -25,7 +25,8 @@ export const help_content_config = {
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
-    ], math_single: [
+    ],
+    math_single: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
@@ -35,7 +36,8 @@ export const help_content_config = {
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
-    ], math_constrain: [
+    ],
+    math_constrain: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
@@ -52,20 +54,11 @@ export const help_content_config = {
     //     { type: IMAGE, url: 'https://d2.alternativeto.net/dist/s/scratch_830736_full.png?format=jpg&width=1600&height=1600&mode=min&upscale=false' },
     // ],
     //= ================= Text ==================
-    text_print: [
-        { type: TEXT },
-        { type: BLOCK },
-        { type: TEXT },
-    ], text_prompt_ext: [
-        { type: TEXT },
-        { type: BLOCK },
-        { type: TEXT },
-    ],
+    text_print: [{ type: TEXT }, { type: BLOCK }, { type: TEXT }],
+    text_prompt_ext: [{ type: TEXT }, { type: BLOCK }, { type: TEXT }],
     //= ================= Tick analysis ==================
-    tick_analysis: [
-        { type: TEXT },
-        { type: BLOCK },
-    ], read_details: [
+    tick_analysis: [{ type: TEXT }, { type: BLOCK }],
+    read_details: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
@@ -81,10 +74,8 @@ export const help_content_config = {
         { type: TEXT },
         { type: TEXT },
     ],
-    last_digit: [
-        { type: TEXT },
-        { type: BLOCK },
-    ], read_ohlc: [
+    last_digit: [{ type: TEXT }, { type: BLOCK }],
+    read_ohlc: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
@@ -94,35 +85,35 @@ export const help_content_config = {
         { type: TEXT },
         { type: TEXT },
         { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/in_candle_list_read.png` },
-    ], read_ohlc_obj: [
+    ],
+    read_ohlc_obj: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
         { type: TEXT },
         { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/read_candle_value.png` },
-    ], check_direction: [
-        { type: TEXT },
-        { type: BLOCK },
-        { type: TEXT },
-        { type: TEXT },
-        { type: TEXT },
-    ], get_ohlc: [
+    ],
+    check_direction: [{ type: TEXT }, { type: BLOCK }, { type: TEXT }, { type: TEXT }, { type: TEXT }],
+    get_ohlc: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
         { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/get_candle.png` },
         { type: TEXT },
-    ], ohlc: [
+    ],
+    ohlc: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
         { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/candle_list_1.png` },
-    ], ohlc_values: [
+    ],
+    ohlc_values: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
         { type: IMAGE, url: `${__webpack_public_path__}media/candle_list.png` },
-    ], is_candle_black: [
+    ],
+    is_candle_black: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
@@ -136,7 +127,8 @@ export const help_content_config = {
         { type: TEXT },
         { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/is_candle_black_1.jpeg` },
         { type: TEXT },
-    ], ohlc_values_in_list: [
+    ],
+    ohlc_values_in_list: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
@@ -154,7 +146,8 @@ export const help_content_config = {
         { type: TEXT },
         { type: TEXT },
         { type: TEXT },
-    ], variables_set: [
+    ],
+    variables_set: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
@@ -244,7 +237,6 @@ export const help_content_config = {
         { type: TEXT },
         { type: TEXT },
         { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_array_explanation.jpeg` },
-
     ],
     // =============== Root blocks ============
     trade_definition: [
@@ -267,15 +259,8 @@ export const help_content_config = {
         { type: TEXT },
         { type: BLOCK },
     ],
-    trade_definition_tradeoptions: [
-        { type: TEXT },
-        { type: BLOCK },
-    ],
-    before_purchase: [
-        { type: TEXT },
-        { type: BLOCK },
-        { type: TEXT },
-    ],
+    trade_definition_tradeoptions: [{ type: TEXT }, { type: BLOCK }],
+    before_purchase: [{ type: TEXT }, { type: BLOCK }, { type: TEXT }],
     during_purchase: [
         { type: TEXT },
         { type: BLOCK },
@@ -288,11 +273,7 @@ export const help_content_config = {
         { type: TEXT },
         { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sell_available.png` },
     ],
-    after_purchase: [
-        { type: TEXT },
-        { type: BLOCK },
-        { type: TEXT },
-    ],
+    after_purchase: [{ type: TEXT }, { type: BLOCK }, { type: TEXT }],
     trade_again: [
         { type: TEXT },
         { type: BLOCK },
@@ -306,7 +287,8 @@ export const help_content_config = {
         { type: TEXT },
         { type: TEXT },
         { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/check_result.png` },
-    ], sell_price: [
+    ],
+    sell_price: [
         { type: TEXT },
         { type: BLOCK },
         { type: TEXT },
@@ -365,4 +347,3 @@ export const help_content_config = {
         { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/continue.png` },
     ],
 };
-

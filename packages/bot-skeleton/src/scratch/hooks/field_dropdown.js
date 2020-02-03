@@ -42,9 +42,15 @@ Blockly.FieldDropdown.prototype.updateOptions = function(dropdown_options, optio
 
     // If "should_trigger_event" prop is omitted or set to true, fire an event.
     if (!options.should_trigger_event || options.should_trigger_event === true) {
-        const event      = new Blockly.Events.BlockChange(this.sourceBlock_, 'field', this.name, previous_value, this.getValue());
+        const event = new Blockly.Events.BlockChange(
+            this.sourceBlock_,
+            'field',
+            this.name,
+            previous_value,
+            this.getValue()
+        );
         event.recordUndo = false;
-        event.group      = options.event_group;
+        event.group = options.event_group;
         Blockly.Events.fire(event);
     }
 };
@@ -69,27 +75,34 @@ Blockly.FieldDropdown.prototype.init = function() {
     /** @type {Number} */
     this.arrowY_ = 11;
     this.arrow_ = Blockly.utils.createSvgElement('image', {
-        'height': `${this.arrowSize_  }px`,
-        'width' : `${this.arrowSize_  }px`,
+        height: `${this.arrowSize_}px`,
+        width: `${this.arrowSize_}px`,
     });
-    this.arrow_.setAttributeNS('http://www.w3.org/1999/xlink',
-        'xlink:href', `${Blockly.mainWorkspace.options.pathToMedia  }dropdown-arrow.svg`);
+    this.arrow_.setAttributeNS(
+        'http://www.w3.org/1999/xlink',
+        'xlink:href',
+        `${Blockly.mainWorkspace.options.pathToMedia}dropdown-arrow.svg`
+    );
     this.className_ += ' blocklyDropdownText';
-  
+
     Blockly.FieldDropdown.superClass_.init.call(this);
     // If not in a shadow block, draw a box.
     if (!this.sourceBlock_.isShadow()) {
-        this.box_ = Blockly.utils.createSvgElement('rect', {
-            'rx'          : Blockly.BlockSvg.CORNER_RADIUS * 4,
-            'ry'          : Blockly.BlockSvg.CORNER_RADIUS * 4,
-            'x'           : 0,
-            'y'           : 0,
-            'width'       : this.size_.width,
-            'height'      : this.size_.height,
-            'stroke'      : this.sourceBlock_.getColourTertiary(),
-            'fill'        : this.sourceBlock_.getColourTertiary(),
-            'fill-opacity': 1,
-        }, null);
+        this.box_ = Blockly.utils.createSvgElement(
+            'rect',
+            {
+                rx: Blockly.BlockSvg.CORNER_RADIUS * 4,
+                ry: Blockly.BlockSvg.CORNER_RADIUS * 4,
+                x: 0,
+                y: 0,
+                width: this.size_.width,
+                height: this.size_.height,
+                stroke: this.sourceBlock_.getColourTertiary(),
+                fill: this.sourceBlock_.getColourTertiary(),
+                'fill-opacity': 1,
+            },
+            null
+        );
         this.fieldGroup_.insertBefore(this.box_, this.textElement_);
     }
     // Force a reset of the text to add the arrow.

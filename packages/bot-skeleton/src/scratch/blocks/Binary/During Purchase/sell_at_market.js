@@ -4,22 +4,22 @@ Blockly.Blocks.sell_at_market = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
-            message0         : localize('Sell at market price'),
-            colour           : Blockly.Colours.Special1.colour,
-            colourSecondary  : Blockly.Colours.Special1.colourSecondary,
-            colourTertiary   : Blockly.Colours.Special1.colourTertiary,
+            message0: localize('Sell at market price'),
+            colour: Blockly.Colours.Special1.colour,
+            colourSecondary: Blockly.Colours.Special1.colourSecondary,
+            colourTertiary: Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
-            tooltip          : localize('Use this block to sell your contract at the market price.'),
-            category         : Blockly.Categories.During_Purchase,
+            nextStatement: null,
+            tooltip: localize('Use this block to sell your contract at the market price.'),
+            category: Blockly.Categories.During_Purchase,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Sell at market price'),
-            'description' : localize('Use this block to sell your contract at the market price.'),
+            display_name: localize('Sell at market price'),
+            description: localize('Use this block to sell your contract at the market price.'),
         };
     },
     restricted_parents: ['during_purchase'],

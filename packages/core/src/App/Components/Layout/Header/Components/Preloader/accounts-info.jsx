@@ -1,6 +1,6 @@
 import ContentLoader from 'react-content-loader';
-import React         from 'react';
-import PropTypes     from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const AccountsInfoLoader = ({ is_logged_in, speed }) => (
     <ContentLoader
@@ -10,7 +10,7 @@ const AccountsInfoLoader = ({ is_logged_in, speed }) => (
         primaryColor={'var(--general-section-1)'}
         secondaryColor={'var(--general-hover)'}
     >
-        {is_logged_in ?
+        {is_logged_in ? (
             <React.Fragment>
                 <circle cx='14' cy='22' r='12' />
                 <circle cx='58' cy='22' r='12' />
@@ -19,12 +19,12 @@ const AccountsInfoLoader = ({ is_logged_in, speed }) => (
                 <rect x='87' y='8' rx='4' ry='4' width='1' height='30' />
                 <rect x='250' y='8' rx='4' ry='4' width='82' height='32' />
             </React.Fragment>
-            :
+        ) : (
             <React.Fragment>
                 <rect x='166' y='8' rx='4' ry='4' width='66' height='32' />
                 <rect x='250' y='8' rx='4' ry='4' width='80' height='32' />
             </React.Fragment>
-        }
+        )}
     </ContentLoader>
 );
 

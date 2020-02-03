@@ -63,16 +63,15 @@ class App extends Component {
         this.setState({ parameters: null });
     };
 
-    setIsAgent = () =>
-        new Promise(async resolve => {
-            const agent_info = await requestWS({ p2p_agent_info: 1 });
+    setIsAgent = async () => {
+        const agent_info = await requestWS({ p2p_agent_info: 1 });
 
-            /* if there is no error means its an agent else its a client */
-            if (!agent_info.error) {
-                await this.setState({ agent_id: agent_info.p2p_agent_info.agent_id, is_agent: true });
-            }
-            resolve();
-        });
+        /* if there is no error means its an agent else its a client */
+        if (!agent_info.error) {
+            await this.setState({ agent_id: agent_info.p2p_agent_info.agent_id, is_agent: true });
+        }
+        return true;
+    };
 
     handleNotifications = updated_orders => {
         let notifications = 0;

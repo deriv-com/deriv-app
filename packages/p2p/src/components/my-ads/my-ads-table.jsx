@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Dialog, Table } from '@deriv/components';
-import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS } from 'Utils/websocket';
@@ -154,5 +153,3 @@ export class MyAdsTable extends React.Component {
 MyAdsTable.propTypes = {
     onClickEdit: PropTypes.func,
 };
-
-MyAdsTable.contextType = Dp2pContext;

@@ -12,10 +12,6 @@ class Tabs extends Component {
 
     onTabItemClick = index => {
         this.setState({ active_index: index });
-
-        if (typeof this.props.onTabItemClick === 'function') {
-            this.props.onTabItemClick(index);
-        }
     };
 
     componentDidUpdate(prev_props, prev_state) {

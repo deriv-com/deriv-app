@@ -1,75 +1,75 @@
 .dc-tabs {
-    position: relative;
-    display: grid;
+  position: relative;
+  display: grid;
 
-    //TODO send the tab count from outside
-    @for $i from 1 through 5 {
-        .dc-tabs__item:nth-child(#{$i}).dc-tabs__active ~ .dc-tabs__active-line {
-            left: calc(var(--tab-width) * #{$i} - var(--tab-width));
-        }
+  //TODO send the tab count from outside
+  @for $i from 1 through 5 {
+    .dc-tabs__item:nth-child(#{$i}).dc-tabs__active ~ .dc-tabs__active-line {
+      left: calc(var(--tab-width) * #{$i} - var(--tab-width));
     }
+  }
 
-    &__list {
-        width: 100%;
-        line-height: 35px;
-        display: flex;
-        justify-content: center;
+  &__list {
+    width: 100%;
+    line-height: 35px;
+    display: flex;
+    justify-content: center;
 
-        &--top {
-            order: 0;
-        }
-        &--bottom {
-            order: 1;
-        }
-        &--fit-content {
-            width: fit-content;
-        }
+    &--top {
+      order: 0;
     }
-    &__item {
-        list-style: none;
-        font-size: 14px;
-        text-align: center;
-        white-space: nowrap;
-        width: var(--tab-width);
-        color: var(--text-general);
+    &--bottom {
+      order: 1;
+    }
+    &--fit-content {
+      width: fit-content;
+    }
+  }
+  &__item {
+    list-style: none;
+    font-size: 14px;
+    text-align: center;
+    white-space: nowrap;
+    width: var(--tab-width);
+    color: var(--text-general);
 
-        &__counter {
-            display: inline-flex;
-            margin-left: 1rem;
-            vertical-align: middle;
-        }
-        &--top {
-            border-bottom: 1px solid var(--general-section-1);
-        }
-        &--bottom {
-            border-top: 1px solid var(--general-section-1);
-        }
-        &:not(.dc-tabs__active) {
-            cursor: pointer;
-            color: var(--text-general);
-        }
+    &__counter {
+      display: inline-flex;
+      margin-left: 1rem;
+      vertical-align: middle;
     }
-    &__active {
-        font-weight: 700;
-        color: var(--text-prominent);
+    &--top {
+      border-bottom: 1px solid var(--general-section-1);
     }
-    &__active-line {
-        display: block;
-        position: absolute;
-        left: 0;
-        width: var(--tab-width);
-        height: 2px;
-        background: var(--brand-red-coral);
-        transition: all ease-in-out 0.3s;
+    &--bottom {
+      border-top: 1px solid var(--general-section-1);
+    }
+    &:not(.dc-tabs__active) {
+      cursor: pointer;
+      color: var(--text-general);
+    }
+  }
+  &__active {
+    font-weight: 700;
+    color: var(--text-prominent);
+  }
+  &__active-line {
+    display: block;
+    position: absolute;
+    left: 0;
+    width: var(--tab-width);
+    height: 2px;
+    background: var(--brand-red-coral);
+    transition: all ease-in-out 0.3s;
 
-        &--top {
-            top: 34px;
-        }
-        &--bottom {
-            bottom: 34px;
-        }
-        &--fit-content {
-            width: 120px;
-        }
+    &--top {
+      top: 34px;
     }
+    &--bottom {
+      bottom: 34px;
+    }
+    &--fit-content {
+      width: 120px;
+    }
+  }
 }

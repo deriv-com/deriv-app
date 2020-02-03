@@ -1,8 +1,8 @@
-import classNames   from 'classnames';
-import React             from 'react';
+import classNames from 'classnames';
+import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import PropTypes         from 'prop-types';
-import ThemedScrollbars  from 'Components/themed-scrollbars';
+import PropTypes from 'prop-types';
+import ThemedScrollbars from 'Components/themed-scrollbars';
 
 const trackHorizontal = props => <div {...props} style={{ display: 'none' }} />;
 const thumbHorizontal = props => <div {...props} style={{ display: 'none' }} />;
@@ -12,7 +12,7 @@ const ListItems = React.forwardRef((props, ref) => {
 
     return (
         <>
-            {list_items.length ?
+            {list_items.length ? (
                 list_items.map((item, idx) => (
                     <div
                         ref={idx === active_index ? ref : null}
@@ -24,11 +24,12 @@ const ListItems = React.forwardRef((props, ref) => {
                         })}
                         value={is_object_list ? item.value : null}
                     >
-                        { is_object_list ? item.text : item }
+                        {is_object_list ? item.text : item}
                     </div>
-                )) :
+                ))
+            ) : (
                 <div className={'dc-dropdown-list__item'}>{not_found_text}</div>
-            }
+            )}
         </>
     );
 });
@@ -41,7 +42,7 @@ const DropdownList = React.forwardRef((props, ref) => {
         throw Error('Dropdown received wrong data structure');
     }
 
-    const is_object       = !Array.isArray(list_items) && typeof list_items === 'object';
+    const is_object = !Array.isArray(list_items) && typeof list_items === 'object';
     const is_string_array = list_items.length && typeof list_items[0] === 'string';
 
     return (
@@ -49,9 +50,9 @@ const DropdownList = React.forwardRef((props, ref) => {
             in={is_visible}
             timeout={100}
             classNames={{
-                enter    : 'dc-dropdown-list--enter',
+                enter: 'dc-dropdown-list--enter',
                 enterDone: 'dc-dropdown-list--enter-done',
-                exit     : 'dc-dropdown-list--exit',
+                exit: 'dc-dropdown-list--exit',
             }}
             unmountOnExit
         >
@@ -64,8 +65,8 @@ const DropdownList = React.forwardRef((props, ref) => {
                     renderTrackHorizontal={trackHorizontal}
                     renderThumbHorizontal={thumbHorizontal}
                 >
-                    {is_object ?
-                        Object.keys(list_items).map((items, idx) =>
+                    {is_object ? (
+                        Object.keys(list_items).map((items, idx) => (
                             <ListItems
                                 key={idx}
                                 not_found_text={not_found_text}
@@ -74,7 +75,8 @@ const DropdownList = React.forwardRef((props, ref) => {
                                 ref={list_item_ref}
                                 onItemSelection={onItemSelection}
                             />
-                        ) :
+                        ))
+                    ) : (
                         <ListItems
                             not_found_text={not_found_text}
                             active_index={active_index}
@@ -83,7 +85,7 @@ const DropdownList = React.forwardRef((props, ref) => {
                             onItemSelection={onItemSelection}
                             is_object_list={!is_string_array}
                         />
-                    }
+                    )}
                 </ThemedScrollbars>
             </div>
         </CSSTransition>
@@ -95,20 +97,20 @@ export default DropdownList;
 
 const list_items_shape = PropTypes.arrayOf(
     PropTypes.shape({
-        text : PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
         value: PropTypes.string.isRequired,
     })
 );
 
 DropdownList.propTypes = {
     active_index: PropTypes.number,
-    is_visible  : PropTypes.bool,
-    list_items  : PropTypes.oneOfType([
+    is_visible: PropTypes.bool,
+    list_items: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.string),
         list_items_shape,
         PropTypes.objectOf(list_items_shape),
     ]),
-    not_found_text : PropTypes.string,
+    not_found_text: PropTypes.string,
     onItemSelection: PropTypes.func,
-    style          : PropTypes.object,
+    style: PropTypes.object,
 };

@@ -1,9 +1,9 @@
-import React             from 'react';
-import PropTypes         from 'prop-types';
-import ContentLoader     from 'react-content-loader';
+import React from 'react';
+import PropTypes from 'prop-types';
+import ContentLoader from 'react-content-loader';
 import { Table, Button } from '@deriv/components';
-import Dp2pContext       from 'Components/context/dp2p-context';
-import { localize }      from 'Components/i18next';
+import Dp2pContext from 'Components/context/dp2p-context';
+import { localize } from 'Components/i18next';
 
 export const BuySellRowLoader = () => (
     <ContentLoader
@@ -33,13 +33,17 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) 
         <div style={style}>
             <Table.Row>
                 <Table.Cell>{data.advertiser_name}</Table.Cell>
-                <Table.Cell>{data.display_min_available}&ndash;{data.display_max_available}{' '}{data.offer_currency}</Table.Cell>
-                <Table.Cell className='buy-sell__price'>{data.display_price_rate}{' '}{data.transaction_currency}</Table.Cell>
+                <Table.Cell>
+                    {data.display_min_available}&ndash;{data.display_max_available} {data.offer_currency}
+                </Table.Cell>
+                <Table.Cell className='buy-sell__price'>
+                    {data.display_price_rate} {data.transaction_currency}
+                </Table.Cell>
                 <Table.Cell>{data.display_payment_method}</Table.Cell>
                 {!is_agent ? (
                     <Table.Cell>
                         <Button primary small onClick={() => setSelectedAd(data)}>
-                            {is_buy ? localize('Buy') : localize('Sell')}{' '}{data.offer_currency}
+                            {is_buy ? localize('Buy') : localize('Sell')} {data.offer_currency}
                         </Button>
                     </Table.Cell>
                 ) : null}
@@ -49,10 +53,10 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) 
 });
 
 RowComponent.propTypes = {
-    data         : PropTypes.object,
-    is_buy       : PropTypes.bool,
+    data: PropTypes.object,
+    is_buy: PropTypes.bool,
     setSelectedAd: PropTypes.func,
-    style        : PropTypes.object,
+    style: PropTypes.object,
 };
 
 RowComponent.displayName = 'RowComponent';

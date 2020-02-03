@@ -1,12 +1,10 @@
-import PropTypes                 from 'prop-types';
-import React                     from 'react';
-import { SideMenuHeaders }       from './side-menu-headers.jsx';
-import {
-    VerticalTabContentContainer,
-    VerticalTabLayout }          from '../VerticalTabs';
-import Loading                   from '../../../../templates/app/components/loading.jsx';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { SideMenuHeaders } from './side-menu-headers.jsx';
+import { VerticalTabContentContainer, VerticalTabLayout } from '../VerticalTabs';
+import Loading from '../../../../templates/app/components/loading.jsx';
 
-const SideMenuTitle = ({ title }) => (<h1 className='side-menu__title'>{title}</h1>);
+const SideMenuTitle = ({ title }) => <h1 className='side-menu__title'>{title}</h1>;
 
 class SideMenu extends React.PureComponent {
     render() {
@@ -35,8 +33,9 @@ class SideMenu extends React.PureComponent {
 
         return (
             <VerticalTabLayout is_full_width={is_full_width}>
-                {is_loading ?
-                    <Loading /> :
+                {is_loading ? (
+                    <Loading />
+                ) : (
                     <>
                         <SideMenuHeaders
                             active_title={active_title}
@@ -44,7 +43,7 @@ class SideMenu extends React.PureComponent {
                             items={list}
                             selected={selected_content}
                             is_routed={is_routed}
-                            onChange={()=>{}}
+                            onChange={() => {}}
                         />
                         <VerticalTabContentContainer
                             action_bar={action_bar_items}
@@ -56,7 +55,7 @@ class SideMenu extends React.PureComponent {
                             tab_container_classname={tab_container_classname}
                         />
                     </>
-                }
+                )}
             </VerticalTabLayout>
         );
     }
@@ -66,21 +65,21 @@ SideMenu.propTypes = {
     action_bar: PropTypes.arrayOf(
         PropTypes.shape({
             component: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-            icon     : PropTypes.string,
-            onClick  : PropTypes.func,
-            title    : PropTypes.string,
+            icon: PropTypes.string,
+            onClick: PropTypes.func,
+            title: PropTypes.string,
         })
     ),
     action_bar_classname: PropTypes.string,
-    id                  : PropTypes.string,
-    is_full_width       : PropTypes.bool,
-    list                : PropTypes.arrayOf(
+    id: PropTypes.string,
+    is_full_width: PropTypes.bool,
+    list: PropTypes.arrayOf(
         PropTypes.shape({
             default: PropTypes.bool,
-            icon   : PropTypes.string,
-            label  : PropTypes.string,
-            path   : PropTypes.string,
-            value  : PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+            icon: PropTypes.string,
+            label: PropTypes.string,
+            path: PropTypes.string,
+            value: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
         })
     ).isRequired,
     selected_content: PropTypes.object,

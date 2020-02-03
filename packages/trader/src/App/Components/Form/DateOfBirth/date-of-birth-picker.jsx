@@ -1,32 +1,27 @@
-import classNames         from 'classnames';
-import React              from 'react';
-import { Icon, Input }    from '@deriv/components';
-import { Field }          from 'formik';
-import { CSSTransition }  from 'react-transition-group';
-import { toMoment }       from 'Utils/Date';
+import classNames from 'classnames';
+import React from 'react';
+import { Icon, Input } from '@deriv/components';
+import { Field } from 'formik';
+import { CSSTransition } from 'react-transition-group';
+import { toMoment } from 'Utils/Date';
 import DatePickerCalendar from './date-of-birth-calendar.jsx';
 
-const InputField = (props) => {
+const InputField = props => {
     return (
         <Field name={props.name}>
-            {
-                ({
-                    field,
-                    form: { errors, touched },
-                }) => (
-                    <React.Fragment>
-                        <Input
-                            type='text'
-                            required
-                            autoComplete='off'
-                            maxLength='30'
-                            error={touched[field.name] && errors[field.name]}
-                            {...field}
-                            {...props}
-                        />
-                    </React.Fragment>
-                )
-            }
+            {({ field, form: { errors, touched } }) => (
+                <React.Fragment>
+                    <Input
+                        type='text'
+                        required
+                        autoComplete='off'
+                        maxLength='30'
+                        error={touched[field.name] && errors[field.name]}
+                        {...field}
+                        {...props}
+                    />
+                </React.Fragment>
+            )}
         </Field>
     );
 };
@@ -35,9 +30,11 @@ const InputField = (props) => {
 class DateOfBirth extends React.Component {
     state = {
         should_show_calendar: false,
-        max_date            : toMoment().subtract(18, 'years'),
-        min_date            : toMoment().subtract(100, 'years'),
-        date                : toMoment().subtract(18, 'years').unix(),
+        max_date: toMoment().subtract(18, 'years'),
+        min_date: toMoment().subtract(100, 'years'),
+        date: toMoment()
+            .subtract(18, 'years')
+            .unix(),
     };
 
     constructor(props) {
@@ -46,13 +43,16 @@ class DateOfBirth extends React.Component {
     }
 
     closeDatePicker = () => {
-        this.setState({
-            should_show_calendar: false,
-        }, () => {
-            if (this.props.onFocus) {
-                this.props.onFocus(false);
+        this.setState(
+            {
+                should_show_calendar: false,
+            },
+            () => {
+                if (this.props.onFocus) {
+                    this.props.onFocus(false);
+                }
             }
-        });
+        );
     };
 
     componentDidMount() {
@@ -63,29 +63,35 @@ class DateOfBirth extends React.Component {
         document.removeEventListener('mousedown', this.handleClick);
     }
 
-    handleClick = (e) => {
+    handleClick = e => {
         if (!this.reference.current) {
             return;
         }
         if (!this.reference.current.contains(e.target)) {
-            this.setState({
-                should_show_calendar: false,
-            }, () => {
-                if (this.props.onFocus) {
-                    this.props.onFocus(false);
+            this.setState(
+                {
+                    should_show_calendar: false,
+                },
+                () => {
+                    if (this.props.onFocus) {
+                        this.props.onFocus(false);
+                    }
                 }
-            });
+            );
         }
     };
 
     handleFocus = () => {
-        this.setState({
-            should_show_calendar: true,
-        }, () => {
-            if (this.props.onFocus) {
-                this.props.onFocus(true);
+        this.setState(
+            {
+                should_show_calendar: true,
+            },
+            () => {
+                if (this.props.onFocus) {
+                    this.props.onFocus(true);
+                }
             }
-        });
+        );
     };
 
     render() {
@@ -93,10 +99,7 @@ class DateOfBirth extends React.Component {
             <Field
                 id={this.props.id}
                 name={this.props.name}
-                render={({
-                    field: { name, value },
-                    form : { setFieldValue, handleBlur },
-                }) => (
+                render={({ field: { name, value }, form: { setFieldValue, handleBlur } }) => (
                     <div className='datepicker'>
                         <InputField
                             {...this.props}
@@ -113,16 +116,13 @@ class DateOfBirth extends React.Component {
                             in={this.state.should_show_calendar}
                             timeout={100}
                             classNames={{
-                                enter    : 'datepicker__picker--enter datepicker__picker--bottom-enter',
+                                enter: 'datepicker__picker--enter datepicker__picker--bottom-enter',
                                 enterDone: 'datepicker__picker--enter-done datepicker__picker--bottom-enter-done',
-                                exit     : 'datepicker__picker--exit datepicker__picker--bottom-exit',
+                                exit: 'datepicker__picker--exit datepicker__picker--bottom-exit',
                             }}
                             unmountOnExit
                         >
-                            <div
-                                className='datepicker__picker'
-                                ref={this.reference}
-                            >
+                            <div className='datepicker__picker' ref={this.reference}>
                                 <DatePickerCalendar
                                     max_date={this.state.max_date}
                                     min_date={this.state.min_date}

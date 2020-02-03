@@ -1,6 +1,6 @@
 import { getFormattedText } from '@deriv/shared/utils/currency';
-import { info }             from '../utils/broadcast';
-import DBotStore            from '../../../scratch/dbot-store';
+import { info } from '../utils/broadcast';
+import DBotStore from '../../../scratch/dbot-store';
 
 let balance_string = '';
 
@@ -20,10 +20,10 @@ export default Engine =>
 
         // eslint-disable-next-line class-methods-use-this
         getBalance(type) {
-            const { scope }  = this.store.getState();
+            const { scope } = this.store.getState();
             const { client } = DBotStore.instance;
-            const balance    = client && client.balance || 0;
-            let value        = balance;
+            const balance = (client && client.balance) || 0;
+            let value = balance;
 
             if (scope === 'BEFORE_PURCHASE') {
                 // Deduct trade amount in this scope for correct (🤦) value in balance-block

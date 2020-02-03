@@ -1,12 +1,10 @@
-import { Dropdown }             from '@deriv/components';
-import {
-    PropTypes as MobxPropTypes,
-    observer }                  from 'mobx-react';
-import PropTypes                from 'prop-types';
-import React                    from 'react';
-import { localize }             from '@deriv/translations';
-import Fieldset                 from 'App/Components/Form/fieldset.jsx';
-import TimePicker               from 'App/Components/Form/TimePicker';
+import { Dropdown } from '@deriv/components';
+import { PropTypes as MobxPropTypes, observer } from 'mobx-react';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { localize } from '@deriv/translations';
+import Fieldset from 'App/Components/Form/fieldset.jsx';
+import TimePicker from 'App/Components/Form/TimePicker';
 
 /* TODO:
     1. update sessions list when the selected one doesn’t have any enabled time
@@ -45,7 +43,7 @@ const StartDate = ({
                 value={start_date}
                 onChange={onChange}
             />
-            {(!is_today && start_time) &&
+            {!is_today && start_time && (
                 <TimePicker
                     onChange={onChange}
                     name='start_time'
@@ -56,19 +54,19 @@ const StartDate = ({
                     is_nativepicker={is_nativepicker}
                     validation_errors={validation_errors.start_time}
                 />
-            }
+            )}
         </Fieldset>
     );
 };
 
 StartDate.propTypes = {
-    is_minimized     : PropTypes.bool,
-    is_nativepicker  : PropTypes.bool,
-    onChange         : PropTypes.func,
-    sessions         : MobxPropTypes.arrayOrObservableArray,
-    start_date       : PropTypes.number,
-    start_dates_list : MobxPropTypes.arrayOrObservableArray,
-    start_time       : PropTypes.string,
+    is_minimized: PropTypes.bool,
+    is_nativepicker: PropTypes.bool,
+    onChange: PropTypes.func,
+    sessions: MobxPropTypes.arrayOrObservableArray,
+    start_date: PropTypes.number,
+    start_dates_list: MobxPropTypes.arrayOrObservableArray,
+    start_time: PropTypes.string,
     validation_errors: PropTypes.object,
 };
 

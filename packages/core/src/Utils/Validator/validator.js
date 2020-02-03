@@ -1,12 +1,12 @@
-import { template }        from '_common/utility';
+import { template } from '_common/utility';
 import { getPreBuildDVRs } from './declarative-validation-rules';
-import Error               from './errors';
+import Error from './errors';
 
 class Validator {
     constructor(input, rules, store = null) {
-        this.input  = input;
-        this.rules  = rules;
-        this.store  = store;
+        this.input = input;
+        this.rules = rules;
+        this.store = store;
         this.errors = new Error();
 
         this.error_count = 0;
@@ -21,7 +21,9 @@ class Validator {
     addFailure(attribute, rule) {
         let message = rule.options.message || getPreBuildDVRs()[rule.name].message;
         if (rule.name === 'length') {
-            message = template(message, [rule.options.min === rule.options.max ? rule.options.min : `${rule.options.min}-${rule.options.max}`]);
+            message = template(message, [
+                rule.options.min === rule.options.max ? rule.options.min : `${rule.options.min}-${rule.options.max}`,
+            ]);
         } else if (rule.name === 'min') {
             message = template(message, [rule.options.min]);
         } else if (rule.name === 'not_equal') {
@@ -90,7 +92,7 @@ class Validator {
     static getRuleObject(rule) {
         const is_rule_string = typeof rule === 'string';
         const rule_object = {
-            name   : is_rule_string ? rule : rule[0],
+            name: is_rule_string ? rule : rule[0],
             options: is_rule_string ? {} : rule[1] || {},
         };
 

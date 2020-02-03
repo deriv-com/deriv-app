@@ -1,20 +1,20 @@
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import { withRouter }    from 'react-router-dom';
-import { localize }      from '@deriv/translations';
-import { FadeWrapper }   from 'App/Components/Animations';
-import VerticalTab       from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
-import AppRoutes         from 'Constants/routes';
-import { connect }       from 'Stores/connect';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { localize } from '@deriv/translations';
+import { FadeWrapper } from 'App/Components/Animations';
+import VerticalTab from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
+import AppRoutes from 'Constants/routes';
+import { connect } from 'Stores/connect';
 import WalletInformation from './wallet-information.jsx';
 import 'Sass/app/modules/reports.scss';
 
 class Reports extends React.Component {
-    setWrapperRef = (node) => {
+    setWrapperRef = node => {
         this.wrapper_ref = node;
     };
 
-    handleClickOutside = (event) => {
+    handleClickOutside = event => {
         if (this.wrapper_ref && !this.wrapper_ref.contains(event.target)) {
             this.props.history.push(AppRoutes.trade);
         }
@@ -32,17 +32,17 @@ class Reports extends React.Component {
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
 
-    render () {
+    render() {
         const menu_options = () => {
             const options = [];
 
             this.props.routes.forEach(route => {
                 options.push({
                     default: route.default,
-                    icon   : route.icon_component,
-                    label  : route.title,
-                    value  : route.component,
-                    path   : route.path,
+                    icon: route.icon_component,
+                    label: route.title,
+                    value: route.component,
+                    path: route.path,
                 });
             });
 
@@ -55,12 +55,12 @@ class Reports extends React.Component {
                     this.props.history.push(AppRoutes.trade);
                     this.props.toggleReports(false);
                 },
-                icon : 'IcCross',
+                icon: 'IcCross',
                 title: localize('Close'),
             },
             {
                 component: () => <WalletInformation has_description has_loginid />,
-                title    : '',
+                title: '',
             },
         ];
         return (
@@ -90,19 +90,17 @@ class Reports extends React.Component {
 
 Reports.propTypes = {
     disableRouteMode: PropTypes.func,
-    enableRouteMode : PropTypes.func,
-    history         : PropTypes.object,
-    is_visible      : PropTypes.bool,
-    location        : PropTypes.object,
-    routes          : PropTypes.arrayOf(PropTypes.object),
-    toggleReports   : PropTypes.func,
+    enableRouteMode: PropTypes.func,
+    history: PropTypes.object,
+    is_visible: PropTypes.bool,
+    location: PropTypes.object,
+    routes: PropTypes.arrayOf(PropTypes.object),
+    toggleReports: PropTypes.func,
 };
 
-export default connect(
-    ({ ui }) => ({
-        disableRouteMode: ui.disableRouteModal,
-        enableRouteMode : ui.setRouteModal,
-        is_visible      : ui.is_reports_visible,
-        toggleReports   : ui.toggleReports,
-    })
-)(withRouter(Reports));
+export default connect(({ ui }) => ({
+    disableRouteMode: ui.disableRouteModal,
+    enableRouteMode: ui.setRouteModal,
+    is_visible: ui.is_reports_visible,
+    toggleReports: ui.toggleReports,
+}))(withRouter(Reports));

@@ -12,10 +12,7 @@
         padding: 13px 8px; // Equal l+r with transaction__item padding.
         height: 42px;
 
-        $header-grid-items: (
-            unquote('spot'),
-            unquote('profit'),
-        );
+        $header-grid-items: (unquote('spot'), unquote('profit'));
 
         @each $item in $header-grid-items {
             &-#{$item} {
@@ -31,8 +28,7 @@
         grid-template-rows: auto auto;
         grid-template-areas: (
             // TODO: Re-add "symbol" in place of "trade-type" once <Icon> is shared.
-            'trade-type entry-spot stake'
-            'trade-type exit-spot  profit'
+                'trade-type entry-spot stake' 'trade-type exit-spot  profit'
         );
         padding: 8px;
 
@@ -50,12 +46,12 @@
 
     $grid-items: (
         // TODO: Re-enable once <Icon> is shared.
-        // unquote('symbol'),
-        unquote('trade-type'),
+            // unquote('symbol'),
+            unquote('trade-type'),
         unquote('entry-spot'),
         unquote('exit-spot'),
         unquote('stake'),
-        unquote('profit'),
+        unquote('profit')
     );
 
     @each $item in $grid-items {

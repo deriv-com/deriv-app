@@ -1,13 +1,9 @@
-import {
-    Icon,
-    Popover }          from '@deriv/components';
-import PropTypes       from 'prop-types';
-import React           from 'react';
-import IconTradeType   from 'Assets/Trading/Types/icon-trade-types.jsx';
-import {
-    getMarketName,
-    getTradeTypeName } from '../Helpers/market-underlying';
-import Shortcode       from '../Helpers/shortcode';
+import { Icon, Popover } from '@deriv/components';
+import PropTypes from 'prop-types';
+import React from 'react';
+import IconTradeType from 'Assets/Trading/Types/icon-trade-types.jsx';
+import { getMarketName, getTradeTypeName } from '../Helpers/market-underlying';
+import Shortcode from '../Helpers/shortcode';
 
 const MarketSymbolIconRow = ({ payload, show_description }) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';
@@ -24,7 +20,14 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                         message={getMarketName(info_from_shortcode.underlying)}
                         disable_target_icon
                     >
-                        <Icon icon={info_from_shortcode.underlying ? `IcUnderlying${info_from_shortcode.underlying}` : 'IcUnknown'} size={32} />
+                        <Icon
+                            icon={
+                                info_from_shortcode.underlying
+                                    ? `IcUnderlying${info_from_shortcode.underlying}`
+                                    : 'IcUnknown'
+                            }
+                            size={32}
+                        />
                     </Popover>
                     {show_description && payload.display_name}
                 </div>
@@ -68,8 +71,8 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
 };
 
 MarketSymbolIconRow.propTypes = {
-    action          : PropTypes.string,
-    payload         : PropTypes.object,
+    action: PropTypes.string,
+    payload: PropTypes.object,
     show_description: PropTypes.bool,
 };
 

@@ -4,38 +4,46 @@ Blockly.Blocks.lists_sort = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('sort %1 %2 %3'),
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'TYPE',
-                    options: [[localize('numeric'), 'NUMERIC'], [localize('alphabetic'), 'TEXT']],
+                    type: 'field_dropdown',
+                    name: 'TYPE',
+                    options: [
+                        [localize('numeric'), 'NUMERIC'],
+                        [localize('alphabetic'), 'TEXT'],
+                    ],
                 },
                 {
-                    type   : 'field_dropdown',
-                    name   : 'DIRECTION',
-                    options: [[localize('ascending'), '1'], [localize('descending'), '-1']],
+                    type: 'field_dropdown',
+                    name: 'DIRECTION',
+                    options: [
+                        [localize('ascending'), '1'],
+                        [localize('descending'), '-1'],
+                    ],
                 },
                 {
                     type: 'input_value',
                     name: 'LIST',
                 },
             ],
-            output         : 'Array',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Array',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Sorts the items in a given list'),
-            category       : Blockly.Categories.List,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Sorts the items in a given list'),
+            category: Blockly.Categories.List,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Sort list'),
-            'description' : localize('Sorts the items in a given list, by their numeric or alphabetical value, in either ascending or descending order.'),
+            display_name: localize('Sort list'),
+            description: localize(
+                'Sorts the items in a given list, by their numeric or alphabetical value, in either ascending or descending order.'
+            ),
         };
     },
     getRequiredValueInputs() {

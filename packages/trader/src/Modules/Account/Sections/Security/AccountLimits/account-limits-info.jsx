@@ -1,6 +1,6 @@
-import PropTypes              from 'prop-types';
-import React                  from 'react';
-import { Icon }               from '@deriv/components';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
 const currency_name_map = {
@@ -17,40 +17,34 @@ const currency_name_map = {
     GBP: localize('Pound Sterling'),
 };
 
-const AccountLimitsInfo = ({
-    currency,
-    is_virtual,
-}) => (
+const AccountLimitsInfo = ({ currency, is_virtual }) => (
     <>
-        {!is_virtual &&
+        {!is_virtual && (
             <>
                 <Icon
                     className='account__inset_header-icon'
                     icon={currency ? `IcCurrency-${currency}` : 'IcCurrencyUnknown'}
                 />
                 <p className='account__inset_header-subheading'>
-                    {currency ?
+                    {currency ? (
                         <Localize
                             i18n_default_text='For your {{currency_name}} ({{currency}}) account'
                             values={{
                                 currency_name: currency_name_map[currency.toUpperCase()],
-                                currency     : currency.toUpperCase(),
+                                currency: currency.toUpperCase(),
                             }}
                         />
-                        :
-                        <Localize
-                            i18n_default_text='No currency has been set for this account'
-                        />
-                    }
+                    ) : (
+                        <Localize i18n_default_text='No currency has been set for this account' />
+                    )}
                 </p>
-
             </>
-        }
+        )}
     </>
 );
 
 AccountLimitsInfo.propTypes = {
-    currency  : PropTypes.string,
+    currency: PropTypes.string,
     is_virtual: PropTypes.bool,
 };
 

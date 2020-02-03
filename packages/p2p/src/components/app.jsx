@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ObjectUtils from '@deriv/shared/utils/object';
 import { Tabs } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
@@ -112,7 +113,8 @@ class App extends Component {
                     residence,
                     agent_id: this.state.agent_id,
                     is_agent: this.state.is_agent,
-                    email_domain: this.props.custom_strings.email_domain || 'deriv.com',
+                    email_domain:
+                        ObjectUtils.getPropertyValue(this.props.custom_strings, 'email_domain') || 'deriv.com',
                 }}
             >
                 <main className={classNames('deriv-p2p', className)}>

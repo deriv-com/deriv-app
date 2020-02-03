@@ -23,21 +23,6 @@ const path = {
     // my_profile: 3,
 };
 
-// const notifications_map = {
-//     pending: {
-//         is_agent_buyer: 0,
-//         is_agent_seller: 1,
-//         is_client_buyer: 1,
-//         is_client_seller: 0,
-//     },
-//     'buyer-confirmed': {
-//         is_agent_buyer: 1,
-//         is_agent_seller: 0,
-//         is_client_buyer: 0,
-//         is_client_seller: 1,
-//     },
-// };
-
 class App extends Component {
     constructor(props) {
         super(props);
@@ -51,7 +36,7 @@ class App extends Component {
             orders: [],
             parameters: null,
             is_agent: false,
-            notifications: 0,
+            notification_count: 0,
         };
     }
 
@@ -74,7 +59,7 @@ class App extends Component {
     };
 
     handleNotifications = updated_orders => {
-        let notifications = 0;
+        let notification_count = 0;
 
         updated_orders.forEach(order => {
             const modified_order = new OrderInfo(order);
@@ -84,14 +69,14 @@ class App extends Component {
             const is_client_seller = !this.state.is_agent && !modified_order.is_buyer;
 
             if (is_agent_buyer || is_client_seller) {
-                notifications += modified_order.is_buyer_confirmed && 1;
+                notification_count += modified_order.is_buyer_confirmed && 1;
             } else if (is_agent_seller || is_client_buyer) {
-                notifications += modified_order.is_pending && 1;
+                notification_count += modified_order.is_pending && 1;
             }
         });
 
-        this.setState({ notifications });
-        this.props.setP2pNotifications(notifications);
+        this.setState({ notification_count });
+        this.props.setNotificationCount(notification_count);
     };
 
     // API will send p2p_order_list first as a list of all orders
@@ -165,7 +150,7 @@ class App extends Component {
                             <div label={localize('Buy/Sell')}>
                                 <BuySell navigate={this.redirectTo} params={parameters} />
                             </div>
-                            <div count={this.state.notifications} label={localize('Incoming orders')}>
+                            <div count={this.state.notification_count} label={localize('Incoming orders')}>
                                 <Orders navigate={this.redirectTo} orders={orders} params={parameters} />
                             </div>
                             <div label={localize('My ads')}>
@@ -182,7 +167,7 @@ class App extends Component {
                                 <BuySell navigate={this.redirectTo} params={parameters} />
                             </div>
                             {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
-                            <div count={this.state.notifications} label={localize('My Orders')}>
+                            <div count={this.state.notification_count} label={localize('My Orders')}>
                                 <Orders navigate={this.redirectTo} orders={orders} params={parameters} />
                             </div>
                             {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
@@ -211,6 +196,7 @@ App.propTypes = {
         residence: PropTypes.string.isRequired,
     }),
     lang: PropTypes.string,
+    setNotificationCount: PropTypes.func,
     websocket_api: PropTypes.object.isRequired,
 };
 

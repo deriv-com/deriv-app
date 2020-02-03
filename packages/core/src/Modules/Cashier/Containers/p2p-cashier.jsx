@@ -7,13 +7,13 @@ import { connect } from 'Stores/connect';
 import ServerTime from '_common/base/server_time';
 
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
-const P2PCashier = ({ currency, local_currency_config, is_virtual, residence, setP2pNotifications }) => (
+const P2PCashier = ({ currency, local_currency_config, is_virtual, residence, setNotificationCount }) => (
     <P2P
         websocket_api={WS}
         lang={getLanguage()}
         client={{ currency, local_currency_config, is_virtual, residence }}
         server_time={ServerTime}
-        setP2pNotifications={setP2pNotifications}
+        setNotificationCount={setNotificationCount}
     />
 );
 
@@ -22,7 +22,7 @@ P2PCashier.propTypes = {
     local_currency_config: PropTypes.object,
     is_virtual: PropTypes.bool,
     residence: PropTypes.string,
-    setP2pNotifications: PropTypes.func,
+    setNotificationCount: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({
@@ -30,5 +30,5 @@ export default connect(({ client, modules }) => ({
     local_currency_config: client.local_currency_config,
     is_virtual: client.is_virtual,
     residence: client.residence,
-    setP2pNotifications: modules.cashier.setP2pNotifications,
+    setNotificationCount: modules.cashier.setNotificationCount,
 }))(P2PCashier);

@@ -176,7 +176,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setP2pNotifications(notification_count) {
+    setNotificationCount(notification_count) {
         this.notification_count = notification_count;
     }
 

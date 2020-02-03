@@ -53,8 +53,7 @@
             $list: append($list, $val_em, space);
         }
         @return $list;
-    }
-    @else {
+    } @else {
         @return ($px / $base) * 1em;
     }
 }
@@ -119,14 +118,11 @@
     }
     @if $size == 1.6rem {
         line-height: map-get($map: $LINEHEIGHTS, $key: 'large');
-    }
-    @else if $size == 1.4rem {
+    } @else if $size == 1.4rem {
         line-height: map-get($map: $LINEHEIGHTS, $key: 'medium');
-    }
-    @else if $size == 1.2rem {
+    } @else if $size == 1.2rem {
         line-height: map-get($map: $LINEHEIGHTS, $key: 'small');
-    }
-    @else {
+    } @else {
         line-height: unset;
     }
 }
@@ -140,7 +136,10 @@
    @include typeface(--paragraph-bold-black, uppercase, center);
  */
 @mixin typeface($var, $tt: none) {
-    $typeface_config: map-get($map: $TYPEFACES_LIST, $key: $var,);
+    $typeface_config: map-get(
+        $map: $TYPEFACES_LIST,
+        $key: $var,
+    );
 
     $size: nth($typeface_config, 1); // font-size
     $align: nth($typeface_config, 2); // text-align

@@ -115,6 +115,10 @@ export default class RunPanelStore {
     @action.bound
     setActiveTabIndex(index) {
         this.active_index = index;
+
+        if (this.active_index !== 1) {
+            this.root_store.transactions.setActiveTransactionId(null);
+        }
     }
     // #endregion
 

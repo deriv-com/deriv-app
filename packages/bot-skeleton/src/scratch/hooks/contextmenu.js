@@ -48,7 +48,7 @@ Blockly.ContextMenu.wsCleanupOption = function(ws, numTopBlocks) {
 Blockly.ContextMenu.wsCollapseOption = function(hasExpandedBlocks, topBlocks) {
     return {
         enabled: hasExpandedBlocks,
-        text: localize('Collapse Blocks'),
+        text: localize('Collapse All Blocks'),
         callback() {
             Blockly.ContextMenu.toggleCollapseFn_(topBlocks, true);
         },
@@ -67,9 +67,21 @@ Blockly.ContextMenu.wsCollapseOption = function(hasExpandedBlocks, topBlocks) {
 Blockly.ContextMenu.wsExpandOption = function(hasCollapsedBlocks, topBlocks) {
     return {
         enabled: hasCollapsedBlocks,
-        text: localize('Expand Blocks'),
+        text: localize('Expand All Blocks'),
         callback() {
             Blockly.ContextMenu.toggleCollapseFn_(topBlocks, false);
         },
     };
+};
+
+/**
+ * Helper function for toggling delete state on blocks on the workspace, to be
+ * called from a right-click menu.
+ * deriv-bot: Remove "animation".
+ * @param {!Array.<!Blockly.BlockSvg>} topBlocks The list of top blocks on the the workspace.
+ * @param {boolean} shouldCollapse True if the blocks should be collapsed, false if they should be expanded.
+ * @private
+ */
+Blockly.ContextMenu.toggleCollapseFn_ = function(blocks, shouldCollapse) {
+    blocks.forEach(block => block.setCollapsed(shouldCollapse));
 };

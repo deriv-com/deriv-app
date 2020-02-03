@@ -2,11 +2,11 @@ import PendingPromise from '../../utils/pending-promise';
 
 export default class TradingTimes {
     constructor({ ws, server_time }) {
-        this.init_promise   = new PendingPromise();
+        this.init_promise = new PendingPromise();
         this.is_initialised = false;
-        this.trading_times  = {};
-        this.ws             = ws;
-        this.server_time    = server_time.clone();
+        this.trading_times = {};
+        this.ws = ws;
+        this.server_time = server_time.clone();
     }
 
     async initialise() {
@@ -14,7 +14,7 @@ export default class TradingTimes {
             return this.init_promise;
         }
 
-        this.is_initialised     = true;
+        this.is_initialised = true;
         this.last_update_moment = this.server_time.local();
 
         if (!Object.keys(this.trading_times).length) {
@@ -31,7 +31,7 @@ export default class TradingTimes {
                 let next_update_date = this.nextUpdateDate();
 
                 if (!next_update_date) {
-                    const now_moment         = this.server_time.local();
+                    const now_moment = this.server_time.local();
                     const next_update_moment = this.last_update_moment.clone().add(1, 'days');
 
                     if (now_moment.isAfter(next_update_moment)) {
@@ -67,12 +67,11 @@ export default class TradingTimes {
         }
 
         return this.init_promise;
-
     }
 
     async updateTradingTimes() {
         const last_update_date = this.last_update_moment.format('YYYY-MM-DD');
-        const response         = await this.ws.tradingTimes(last_update_date);
+        const response = await this.ws.tradingTimes(last_update_date);
 
         if (response.error) {
             return;
@@ -83,13 +82,15 @@ export default class TradingTimes {
         const now = this.server_time.local().toDate();
         const date_str = now.toISOString().substring(0, 11);
         const getUTCDate = hour => new Date(`${date_str}${hour}Z`);
-        const { trading_times: { markets } } = response;
+        const {
+            trading_times: { markets },
+        } = response;
 
         if (!markets) {
             return;
         }
 
-        markets.forEach((market) => {
+        markets.forEach(market => {
             const { submarkets } = market;
 
             submarkets.forEach(submarket => {
@@ -97,15 +98,15 @@ export default class TradingTimes {
 
                 symbols.forEach(symbol_obj => {
                     const { times, symbol } = symbol_obj;
-                    const { open, close }   = times;
-                    const is_open_all_day   = open.length === 1 && open[0] === '00:00:00' && close[0] === '23:59:59';
+                    const { open, close } = times;
+                    const is_open_all_day = open.length === 1 && open[0] === '00:00:00' && close[0] === '23:59:59';
                     const is_closed_all_day = open.length === 1 && open[0] === '--' && close[0] === '--';
 
                     let processed_times;
 
                     if (!is_open_all_day && !is_closed_all_day) {
                         processed_times = open.map((open_time, index) => ({
-                            open : getUTCDate(open_time),
+                            open: getUTCDate(open_time),
                             close: getUTCDate(close[index]),
                         }));
                     }
@@ -124,7 +125,7 @@ export default class TradingTimes {
         const changes = {};
 
         Object.keys(this.trading_times).forEach(symbol_name => {
-            const is_opened  = this.calcIsMarketOpened(symbol_name);
+            const is_opened = this.calcIsMarketOpened(symbol_name);
             const symbol_obj = this.trading_times[symbol_name];
 
             if (symbol_obj.is_opened !== is_opened) {
@@ -138,11 +139,7 @@ export default class TradingTimes {
 
     calcIsMarketOpened(symbol_name) {
         const now = this.server_time.local().unix();
-        const {
-            times,
-            is_open_all_day,
-            is_closed_all_day,
-        } = this.trading_times[symbol_name];
+        const { times, is_open_all_day, is_closed_all_day } = this.trading_times[symbol_name];
 
         if (is_closed_all_day) {
             return false;
@@ -164,11 +161,7 @@ export default class TradingTimes {
         let nextDate;
 
         Object.keys(this.trading_times).forEach(symbol_name => {
-            const {
-                times,
-                is_open_all_day,
-                is_closed_all_day,
-            } = this.trading_times[symbol_name];
+            const { times, is_open_all_day, is_closed_all_day } = this.trading_times[symbol_name];
 
             if (is_open_all_day || is_closed_all_day) {
                 return;

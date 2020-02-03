@@ -10,7 +10,8 @@
     .color2-fill {
         fill: var(--brand-secondary);
     }
-    &-name, &-category {
+    &-name,
+    &-category {
         display: flex;
         justify-content: flex-start;
         width: 50%;

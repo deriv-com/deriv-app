@@ -1,6 +1,6 @@
-import { Map }                        from 'immutable';
-import { historyToTicks, getLast }    from 'binary-utils';
-import { doUntilDone, getUUID }       from '../tradeEngine/utils/helpers';
+import { Map } from 'immutable';
+import { historyToTicks, getLast } from 'binary-utils';
+import { doUntilDone, getUUID } from '../tradeEngine/utils/helpers';
 import { observer as globalObserver } from '../../utils/observer';
 
 const parseTick = tick => ({
@@ -9,9 +9,9 @@ const parseTick = tick => ({
 });
 
 const parseOhlc = ohlc => ({
-    open : +ohlc.open,
-    high : +ohlc.high,
-    low  : +ohlc.low,
+    open: +ohlc.open,
+    high: +ohlc.high,
+    low: +ohlc.low,
     close: +ohlc.close,
     epoch: +(ohlc.open_time || ohlc.epoch),
 });
@@ -182,7 +182,10 @@ export default class TicksService {
 
     observe() {
         this.api.events.on('tick', r => {
-            const { tick, tick: { symbol, id } } = r;
+            const {
+                tick,
+                tick: { symbol, id },
+            } = r;
 
             if (this.ticks.has(symbol)) {
                 this.subscriptions = this.subscriptions.setIn(['tick', symbol], id);
@@ -191,7 +194,10 @@ export default class TicksService {
         });
 
         this.api.events.on('ohlc', r => {
-            const { ohlc, ohlc: { symbol, granularity, id } } = r;
+            const {
+                ohlc,
+                ohlc: { symbol, granularity, id },
+            } = r;
 
             if (this.candles.hasIn([symbol, Number(granularity)])) {
                 this.subscriptions = this.subscriptions.setIn(['ohlc', symbol, Number(granularity)], id);
@@ -214,9 +220,9 @@ export default class TicksService {
         return new Promise((resolve, reject) => {
             doUntilDone(() =>
                 this.api.getTickHistory(symbol, {
-                    subscribe  : 1,
-                    end        : 'latest',
-                    count      : 1000,
+                    subscribe: 1,
+                    end: 'latest',
+                    count: 1000,
                     granularity: granularity ? Number(granularity) : undefined,
                     style,
                 })

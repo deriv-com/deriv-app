@@ -1,5 +1,5 @@
 import ObjectUtils from '@deriv/shared/utils/object';
-import { WS }      from 'Services/ws-methods';
+import { WS } from 'Services/ws-methods';
 
 const trading_events = {};
 export const getTradingEvents = async (date, underlying = null) => {

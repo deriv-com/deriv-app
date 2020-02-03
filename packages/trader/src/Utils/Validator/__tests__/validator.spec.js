@@ -1,6 +1,6 @@
-import { expect }           from 'chai';
-import { getPreBuildDVRs }  from '../declarative-validation-rules';
-import Validator            from '../validator';
+import { expect } from 'chai';
+import { getPreBuildDVRs } from '../declarative-validation-rules';
+import Validator from '../validator';
 
 describe('Validator', () => {
     let input;
@@ -9,16 +9,15 @@ describe('Validator', () => {
 
     beforeEach('Setting up validator', () => {
         input = 'TestInput';
-        validator = new Validator(
-            input,
-            rules,
-        );
+        validator = new Validator(input, rules);
     });
 
     describe('.addFailure', () => {
         it('should add failure to the error list if addFailure is used', () => {
             validator.addFailure(input, Validator.getRuleObject('length'));
-            expect(validator.errors.errors).to.have.property(input).with.lengthOf(1);
+            expect(validator.errors.errors)
+                .to.have.property(input)
+                .with.lengthOf(1);
         });
         it('should update error count if addFailure is used', () => {
             validator.addFailure(input, Validator.getRuleObject('length'));

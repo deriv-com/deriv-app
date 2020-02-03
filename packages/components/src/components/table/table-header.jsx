@@ -1,6 +1,6 @@
-import React      from 'react';
+import React from 'react';
 import classNames from 'classnames';
-import PropTypes  from 'prop-types';
+import PropTypes from 'prop-types';
 
 const Header = ({ children, className }) => (
     <div role='rowgroup' className={classNames('dc-table__header', className)}>
@@ -9,7 +9,7 @@ const Header = ({ children, className }) => (
 );
 
 Header.propTypes = {
-    children : PropTypes.node.isRequired,
+    children: PropTypes.node.isRequired,
     className: PropTypes.string,
 };
 

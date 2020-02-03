@@ -61,7 +61,8 @@
             .dc-dropdown-container {
                 margin-top: 0;
 
-                .dc-dropdown__display-text, .dc-list__item-text {
+                .dc-dropdown__display-text,
+                .dc-list__item-text {
                     text-transform: unset;
                 }
             }

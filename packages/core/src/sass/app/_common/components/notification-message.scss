@@ -25,7 +25,8 @@
         opacity: 1;
         transform: translateY(0);
     }
-    &--enter, &--exit {
+    &--enter,
+    &--exit {
         opacity: 0;
         transform: translateY(-16px);
     }
@@ -70,7 +71,8 @@
         cursor: pointer;
         z-index: 2;
 
-        &:focus, &:active {
+        &:focus,
+        &:active {
             outline: none;
         }
         &:after {

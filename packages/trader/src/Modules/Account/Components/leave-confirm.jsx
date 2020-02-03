@@ -1,16 +1,16 @@
-import React                  from 'react';
-import { withRouter }         from 'react-router-dom';
-import { FormikConsumer }     from 'formik';
-import { Button, Icon }       from '@deriv/components';
-import { localize }           from '@deriv/translations';
-import IconMessageContent     from './icon-message-content.jsx';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { FormikConsumer } from 'formik';
+import { Button, Icon } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import IconMessageContent from './icon-message-content.jsx';
 
 /**
  * Blocks routing if Formik form is dirty
  * Has to be a child of <Formik> for FormikConsumer to work
  */
 class TransitionBlocker extends React.Component {
-    state = { show: false }
+    state = { show: false };
 
     componentDidMount() {
         this.unblock = this.props.history.block(next_location => {
@@ -23,19 +23,18 @@ class TransitionBlocker extends React.Component {
             }
             return !this.props.dirty;
         });
-
     }
 
     leave = () => {
         const { pathname } = this.state.next_location;
         this.unblock();
         this.props.history.push(pathname);
-    }
+    };
 
     back = () => {
         this.setState({ nextLocation: null, show: false });
         this.props.onDirty(true);
-    }
+    };
 
     componentWillUnmount() {
         this.unblock();
@@ -46,7 +45,7 @@ class TransitionBlocker extends React.Component {
 
         return (
             <>
-                {show &&
+                {show && (
                     <>
                         <IconMessageContent
                             message={localize('You have unsaved changes')}
@@ -71,7 +70,7 @@ class TransitionBlocker extends React.Component {
                             </div>
                         </IconMessageContent>
                     </>
-                }
+                )}
             </>
         );
     }

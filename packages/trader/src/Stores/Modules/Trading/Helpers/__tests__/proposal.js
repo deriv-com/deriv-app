@@ -1,5 +1,5 @@
-import { expect }    from 'chai';
-import React         from 'react';
+import { expect } from 'chai';
+import React from 'react';
 import * as Proposal from '../proposal';
 
 describe('Proposal', () => {
@@ -25,8 +25,8 @@ describe('Proposal', () => {
             };
             const response = {
                 error: {
-                    message: 'This is error'
-                }
+                    message: 'This is error',
+                },
             };
             expect(Proposal.getProposalInfo(store, response, obj_prev_contract_basis)).to.deep.eql({
                 profit: '0.00',
@@ -52,8 +52,8 @@ describe('Proposal', () => {
                     display_value: 200,
                     payout: 300,
                     id: 'id1',
-                    longcode: 'This is a longcode'
-                }
+                    longcode: 'This is a longcode',
+                },
             };
             const obj_prev_contract_basis = {
                 text: 'payout',
@@ -69,7 +69,7 @@ describe('Proposal', () => {
                 has_error: false,
                 has_error_details: false,
                 has_increased: false,
-                obj_contract_basis : {
+                obj_contract_basis: {
                     text: 'Stake',
                     value: 200,
                 },
@@ -80,120 +80,120 @@ describe('Proposal', () => {
     describe('createProposalRequests', () => {
         it('should return request containing trade type which is not already in request', () => {
             const store = {
-                amount: "10",
-                basis: "payout",
-                currency: "USD",
-                symbol: "frxAUDJPY",
-                start_time: "12:30",
-                duration: "5",
-                duration_unit: "t",
+                amount: '10',
+                basis: 'payout',
+                currency: 'USD',
+                symbol: 'frxAUDJPY',
+                start_time: '12:30',
+                duration: '5',
+                duration_unit: 't',
                 trade_types: {
-                    CALL: "Higher",
-                    PUT: "Lower"
+                    CALL: 'Higher',
+                    PUT: 'Lower',
                 },
-                expiry_type: "duration",
-                form_components: ["duration", "amount", "start_date"],
+                expiry_type: 'duration',
+                form_components: ['duration', 'amount', 'start_date'],
                 root_store: {
                     client: {
-                        currency: "USD"
+                        currency: 'USD',
                     },
                 },
                 proposal_requests: {
                     CALL: {
                         amount: 10,
-                        basis: "payout",
-                        contract_type: "CALL",
-                        currency: "USD",
+                        basis: 'payout',
+                        contract_type: 'CALL',
+                        currency: 'USD',
                         duration: 5,
-                        duration_unit: "t",
+                        duration_unit: 't',
                         proposal: 1,
                         req_id: 7,
                         subscribe: 1,
-                        symbol: "frxAUDJPY"
-                    }
-                }
+                        symbol: 'frxAUDJPY',
+                    },
+                },
             };
 
             expect(Proposal.createProposalRequests(store)).to.deep.eql({
                 CALL: {
                     amount: 10,
-                    basis: "payout",
-                    contract_type: "CALL",
-                    currency: "USD",
+                    basis: 'payout',
+                    contract_type: 'CALL',
+                    currency: 'USD',
                     duration: 5,
-                    duration_unit: "t",
+                    duration_unit: 't',
                     proposal: 1,
                     subscribe: 1,
-                    symbol: "frxAUDJPY"
+                    symbol: 'frxAUDJPY',
                 },
                 PUT: {
                     proposal: 1,
                     subscribe: 1,
                     amount: 10,
-                    basis: "payout",
-                    contract_type: "PUT",
-                    currency: "USD",
-                    symbol: "frxAUDJPY",
+                    basis: 'payout',
+                    contract_type: 'PUT',
+                    currency: 'USD',
+                    symbol: 'frxAUDJPY',
                     duration: 5,
-                    duration_unit: "t",
-                }
+                    duration_unit: 't',
+                },
             });
         });
 
         it('should return request as before if all trade types already exist in request', () => {
             const store = {
-                amount: "10",
-                basis: "payout",
-                currency: "USD",
-                symbol: "frxAUDJPY",
-                start_time: "12:30",
-                duration: "5",
-                duration_unit: "t",
+                amount: '10',
+                basis: 'payout',
+                currency: 'USD',
+                symbol: 'frxAUDJPY',
+                start_time: '12:30',
+                duration: '5',
+                duration_unit: 't',
                 trade_types: {
-                    CALL: "Higher"
+                    CALL: 'Higher',
                 },
-                expiry_type: "duration",
-                form_components: ["duration", "amount", "start_date"],
+                expiry_type: 'duration',
+                form_components: ['duration', 'amount', 'start_date'],
                 root_store: {
                     client: {
-                        currency: "USD"
+                        currency: 'USD',
                     },
                 },
                 proposal_requests: {
                     CALL: {
                         amount: 10,
-                        basis: "payout",
-                        contract_type: "CALL",
-                        currency: "USD",
+                        basis: 'payout',
+                        contract_type: 'CALL',
+                        currency: 'USD',
                         duration: 5,
-                        duration_unit: "t",
+                        duration_unit: 't',
                         proposal: 1,
                         req_id: 7,
                         subscribe: 1,
-                        symbol: "frxAUDJPY"
-                    }
-                }
+                        symbol: 'frxAUDJPY',
+                    },
+                },
             };
 
             expect(Proposal.createProposalRequests(store)).to.deep.eql({
                 CALL: {
                     amount: 10,
-                    basis: "payout",
-                    contract_type: "CALL",
-                    currency: "USD",
+                    basis: 'payout',
+                    contract_type: 'CALL',
+                    currency: 'USD',
                     duration: 5,
-                    duration_unit: "t",
+                    duration_unit: 't',
                     proposal: 1,
                     subscribe: 1,
-                    symbol: "frxAUDJPY"
-                }
+                    symbol: 'frxAUDJPY',
+                },
             });
         });
 
         it('should return empty if there is no trade type', () => {
             const store = {
                 trade_types: {},
-                proposal_requests: {}
+                proposal_requests: {},
             };
 
             expect(Proposal.createProposalRequests(store)).to.be.empty;

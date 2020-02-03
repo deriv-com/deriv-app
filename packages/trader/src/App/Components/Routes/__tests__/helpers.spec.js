@@ -1,9 +1,9 @@
-import React           from 'react';
-import { expect }      from 'chai';
-import * as Helpers    from '../helpers';
-import routes          from '../../../../Constants/routes';
+import React from 'react';
+import { expect } from 'chai';
+import * as Helpers from '../helpers';
+import routes from '../../../../Constants/routes';
 import getRoutesConfig from '../../../Constants/routes-config';
-import Trade           from 'Modules/Trading';
+import Trade from 'Modules/Trading';
 
 describe('Helpers', () => {
     describe('normalizePath', () => {
@@ -27,14 +27,22 @@ describe('Helpers', () => {
                 path: routes.trade,
                 component: Trade,
                 title: 'Trade',
-                exact: true
+                exact: true,
             });
         });
         it('should return route_info of parent route when path is in routes_config child level and is nested', () => {
             const reports_routes_length = getRoutesConfig().find(r => r.path === routes.reports).routes.length;
-            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig())).to.have.all.keys('path', 'component', 'is_authenticated', 'routes', 'title');
+            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig())).to.have.all.keys(
+                'path',
+                'component',
+                'is_authenticated',
+                'routes',
+                'title'
+            );
             expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).routes).to.be.instanceof(Array);
-            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).routes).to.have.length(reports_routes_length);
+            expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).routes).to.have.length(
+                reports_routes_length
+            );
             expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).is_authenticated).to.be.equal(true);
             expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).path).to.be.equal(routes.reports);
         });
@@ -57,8 +65,15 @@ describe('Helpers', () => {
 
     describe('getPath', () => {
         it('should return param values in params as a part of path', () => {
-            expect(Helpers.getPath('/contract/:contract_id', { contract_id: 37511105068 })).to.equal('/contract/37511105068');
-            expect(Helpers.getPath('/something_made_up/:something_made_up_param1/:something_made_up_param2', { something_made_up_param1: '789', something_made_up_param2: '123456' })).to.equal('/something_made_up/789/123456');
+            expect(Helpers.getPath('/contract/:contract_id', { contract_id: 37511105068 })).to.equal(
+                '/contract/37511105068'
+            );
+            expect(
+                Helpers.getPath('/something_made_up/:something_made_up_param1/:something_made_up_param2', {
+                    something_made_up_param1: '789',
+                    something_made_up_param2: '123456',
+                })
+            ).to.equal('/something_made_up/789/123456');
         });
         it('should return path as before if there is no params', () => {
             expect(Helpers.getPath('/contract')).to.equal('/contract');

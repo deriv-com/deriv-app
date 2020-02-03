@@ -1,4 +1,4 @@
-import { expect }         from 'chai';
+import { expect } from 'chai';
 import * as CurrencyUtils from '../currency';
 
 describe('CurrencyUtils', () => {
@@ -7,9 +7,9 @@ describe('CurrencyUtils', () => {
             AUD: { fractional_digits: 2, type: 'fiat' },
             EUR: { fractional_digits: 2, type: 'fiat' },
             GBP: { fractional_digits: 2, type: 'fiat' },
-            USD: { fractional_digits: 2, type: 'fiat', transfer_between_accounts: { limits: { max: 2500, min: 1.00 } } },
+            USD: { fractional_digits: 2, type: 'fiat', transfer_between_accounts: { limits: { max: 2500, min: 1.0 } } },
             BTC: { fractional_digits: 8, type: 'crypto' },
-        }
+        },
     };
     beforeAll(() => {
         CurrencyUtils.setCurrencies(currencies_config);
@@ -21,11 +21,19 @@ describe('CurrencyUtils', () => {
             expect(CurrencyUtils.formatMoney('GBP', '123.55')).to.eq(`${CurrencyUtils.formatCurrency('GBP')}123.55`);
             expect(CurrencyUtils.formatMoney('EUR', '123.55')).to.eq(`${CurrencyUtils.formatCurrency('EUR')}123.55`);
             expect(CurrencyUtils.formatMoney('AUD', '123.55')).to.eq(`${CurrencyUtils.formatCurrency('AUD')}123.55`);
-            expect(CurrencyUtils.formatMoney('BTC', '0.005432110')).to.eq(`${CurrencyUtils.formatCurrency('BTC')}0.00543211`);
-            expect(CurrencyUtils.formatMoney('BTC', '0.005432116')).to.eq(`${CurrencyUtils.formatCurrency('BTC')}0.00543212`);
-            expect(CurrencyUtils.formatMoney('BTC', '0.00000001')).to.eq(`${CurrencyUtils.formatCurrency('BTC')}0.00000001`);
+            expect(CurrencyUtils.formatMoney('BTC', '0.005432110')).to.eq(
+                `${CurrencyUtils.formatCurrency('BTC')}0.00543211`
+            );
+            expect(CurrencyUtils.formatMoney('BTC', '0.005432116')).to.eq(
+                `${CurrencyUtils.formatCurrency('BTC')}0.00543212`
+            );
+            expect(CurrencyUtils.formatMoney('BTC', '0.00000001')).to.eq(
+                `${CurrencyUtils.formatCurrency('BTC')}0.00000001`
+            );
             // don't remove trailing zeroes for now
-            expect(CurrencyUtils.formatMoney('BTC', '0.00010000')).to.eq(`${CurrencyUtils.formatCurrency('BTC')}0.00010000`);
+            expect(CurrencyUtils.formatMoney('BTC', '0.00010000')).to.eq(
+                `${CurrencyUtils.formatCurrency('BTC')}0.00010000`
+            );
         });
 
         it('works with negative values', () => {
@@ -109,6 +117,6 @@ describe('CurrencyUtils', () => {
             expect(CurrencyUtils.getTransferLimits('USD', 'max')).to.eq('2500.00');
             expect(CurrencyUtils.getTransferLimits('BTC')).to.eq(undefined);
             expect(CurrencyUtils.getTransferLimits('BTC', 'max')).to.eq(undefined);
-        })
-    })
+        });
+    });
 });

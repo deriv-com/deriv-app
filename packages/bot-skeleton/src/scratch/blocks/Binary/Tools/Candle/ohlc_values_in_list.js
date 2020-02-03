@@ -1,17 +1,17 @@
 import { localize } from '@deriv/translations';
-import { config }   from '../../../../../constants/config';
+import { config } from '../../../../../constants/config';
 
 Blockly.Blocks.ohlc_values_in_list = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('Make a list of %1 values from candles list %2'),
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'OHLCFIELD_LIST',
+                    type: 'field_dropdown',
+                    name: 'OHLCFIELD_LIST',
                     options: config.ohlcFields,
                 },
                 {
@@ -19,19 +19,19 @@ Blockly.Blocks.ohlc_values_in_list = {
                     name: 'OHLCLIST',
                 },
             ],
-            output         : 'Array',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Array',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Returns a list of specific values from a given candle list'),
-            category       : Blockly.Categories.Candle,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Returns a list of specific values from a given candle list'),
+            category: Blockly.Categories.Candle,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Create a list of candle values (2)'),
-            'description' : localize('This block gives you the selected candle value from a list of candles.'),
+            display_name: localize('Create a list of candle values (2)'),
+            description: localize('This block gives you the selected candle value from a list of candles.'),
         };
     },
     getRequiredValueInputs() {

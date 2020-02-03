@@ -161,7 +161,10 @@
     &--disabled {
         position: relative;
 
-        h1, h2, h3, p {
+        h1,
+        h2,
+        h3,
+        p {
             color: var(--text-disabled);
         }
         .currency-list__item {

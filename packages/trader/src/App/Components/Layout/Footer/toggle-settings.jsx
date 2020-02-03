@@ -1,25 +1,30 @@
-import classNames   from 'classnames';
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import {
-    Icon,
-    Modal,
-    VerticalTab }   from '@deriv/components';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Icon, Modal, VerticalTab } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import UILoader     from 'App/Components/Elements/ui-loader.jsx';
-import Lazy         from 'App/Containers/Lazy';
-import                   'Sass/app/modules/settings.scss';
+import UILoader from 'App/Components/Elements/ui-loader.jsx';
+import Lazy from 'App/Containers/Lazy';
+import 'Sass/app/modules/settings.scss';
 
 const ThemeSetting = () => (
     <Lazy
-        ctor={() => import(/* webpackChunkName: "settings-theme", webpackPrefetch: true */'App/Containers/SettingsModal/settings-theme.jsx')}
+        ctor={() =>
+            import(
+                /* webpackChunkName: "settings-theme", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-theme.jsx'
+            )
+        }
         should_load={true}
         has_progress={true}
     />
 );
 const LanguageSettingContainer = () => (
     <Lazy
-        ctor={() => import(/* webpackChunkName: "settings-language", webpackPrefetch: true */'App/Containers/SettingsModal/settings-language.jsx')}
+        ctor={() =>
+            import(
+                /* webpackChunkName: "settings-language", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-language.jsx'
+            )
+        }
         should_load={true}
         has_progress={true}
     />
@@ -27,27 +32,33 @@ const LanguageSettingContainer = () => (
 
 const ChartSettingContainer = () => (
     <Lazy
-        ctor={() => import(/* webpackChunkName: "settings-chart", webpackPrefetch: true */'App/Containers/SettingsModal/settings-chart.jsx')}
+        ctor={() =>
+            import(
+                /* webpackChunkName: "settings-chart", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-chart.jsx'
+            )
+        }
     />
 );
 
-ChartSettingContainer.displayName    = 'ChartSettingContainer';
+ChartSettingContainer.displayName = 'ChartSettingContainer';
 LanguageSettingContainer.displayName = 'LanguageSettingContainer';
-ThemeSetting.displayName             = 'ThemeSettingContainer';
+ThemeSetting.displayName = 'ThemeSettingContainer';
 
 const ModalContent = () => {
     const content = [
         {
-            icon : 'IcTheme',
+            icon: 'IcTheme',
             label: localize('Themes'),
             // eslint-disable-next-line react/display-name
             value: ThemeSetting,
-        }, {
-            icon : 'IcLanguage',
+        },
+        {
+            icon: 'IcLanguage',
             label: localize('Language'),
             value: LanguageSettingContainer,
-        }, {
-            icon : 'IcChart',
+        },
+        {
+            icon: 'IcChart',
             label: localize('Charts'),
             value: ChartSettingContainer,
             // uncomment below lines to bring back purchase lock and purchase confirmation}
@@ -57,32 +68,16 @@ const ModalContent = () => {
             //     value: PurchaseSettings,
         },
     ];
-    return (
-        <VerticalTab
-            alignment='center'
-            classNameHeader='modal__tab-header'
-            id='modal'
-            list={content}
-        />
-    );
+    return <VerticalTab alignment='center' classNameHeader='modal__tab-header' id='modal' list={content} />;
 };
 
-const ToggleSettings = ({
-    enableApp,
-    is_settings_visible,
-    disableApp,
-    toggleSettings,
-}) => {
+const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSettings }) => {
     const toggle_settings_class = classNames('ic-settings', 'footer__link', {
         'ic-settings--active': is_settings_visible,
     });
     return (
         <React.Fragment>
-            <a
-                id='dt_settings_toggle'
-                onClick={toggleSettings}
-                className={toggle_settings_class}
-            >
+            <a id='dt_settings_toggle' onClick={toggleSettings} className={toggle_settings_class}>
                 <Icon icon='IcGear' className='footer__icon ic-settings__icon' />
             </a>
             <React.Suspense fallback={<UILoader />}>
@@ -105,10 +100,10 @@ const ToggleSettings = ({
 };
 
 ToggleSettings.propTypes = {
-    disableApp         : PropTypes.func,
-    enableApp          : PropTypes.func,
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
     is_settings_visible: PropTypes.bool,
-    toggleSettings     : PropTypes.func,
+    toggleSettings: PropTypes.func,
 };
 
 export { ToggleSettings };

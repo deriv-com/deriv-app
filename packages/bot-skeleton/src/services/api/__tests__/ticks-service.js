@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 import { logoutAllTokens, addTokenIfValid, generateLiveApiInstance } from '../appId';
-import TicksService                                                  from '../ticks_service';
- 
+import TicksService from '../ticks_service';
+
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 
 const ticksService = new TicksService(generateLiveApiInstance());
@@ -37,8 +37,7 @@ describe('Ticks Service', () => {
         });
     });
     describe('Get ticks', () => {
-        let ticks,
-            candles;
+        let ticks, candles;
         beforeAll(done => {
             ticksService
                 .request({ symbol: 'R_25' })

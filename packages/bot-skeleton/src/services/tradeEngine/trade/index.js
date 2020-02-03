@@ -1,29 +1,29 @@
-import { Map }                               from 'immutable';
-import { createStore, applyMiddleware }      from 'redux';
-import thunk                                 from 'redux-thunk';
-import { localize }                          from '@deriv/translations';
-import Balance                               from './Balance';
-import OpenContract                          from './OpenContract';
-import Proposal                              from './Proposal';
-import Purchase                              from './Purchase';
-import Sell                                  from './Sell';
-import { start }                             from './state/actions';
-import * as constants                        from './state/constants';
-import rootReducer                           from './state/reducers';
-import Ticks                                 from './Ticks';
-import Total                                 from './Total';
-import { doUntilDone }                       from '../utils/helpers';
+import { Map } from 'immutable';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import { localize } from '@deriv/translations';
+import Balance from './Balance';
+import OpenContract from './OpenContract';
+import Proposal from './Proposal';
+import Purchase from './Purchase';
+import Sell from './Sell';
+import { start } from './state/actions';
+import * as constants from './state/constants';
+import rootReducer from './state/reducers';
+import Ticks from './Ticks';
+import Total from './Total';
+import { doUntilDone } from '../utils/helpers';
 import { expectInitArg, expectTradeOptions } from '../utils/sanitize';
-import { createError }                       from '../../../utils/error';
-import { durationToSecond }                  from '../../../utils/date-time-helper';
-import { observer as globalObserver }        from '../../../utils/observer';
+import { createError } from '../../../utils/error';
+import { durationToSecond } from '../../../utils/date-time-helper';
+import { observer as globalObserver } from '../../../utils/observer';
 
 const watchBefore = store =>
     watchScope({
         store,
         stopScope: constants.DURING_PURCHASE,
         passScope: constants.BEFORE_PURCHASE,
-        passFlag : 'proposalsReady',
+        passFlag: 'proposalsReady',
     });
 
 const watchDuring = store =>
@@ -31,7 +31,7 @@ const watchDuring = store =>
         store,
         stopScope: constants.STOP,
         passScope: constants.DURING_PURCHASE,
-        passFlag : 'openContract',
+        passFlag: 'openContract',
     });
 
 /* The watchScope function is called randomly and resets the prevTick

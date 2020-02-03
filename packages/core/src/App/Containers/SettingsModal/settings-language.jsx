@@ -1,14 +1,11 @@
-import classNames        from 'classnames';
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import { Icon }          from '@deriv/components';
-import { Localize }      from '@deriv/translations';
-import {
-    getAllowedLanguages,
-    getURL,
-    currentLanguage }    from 'Utils/Language';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Icon } from '@deriv/components';
+import { Localize } from '@deriv/translations';
+import { getAllowedLanguages, getURL, currentLanguage } from 'Utils/Language';
 
-const isCurrentLanguage = (lang) => lang === currentLanguage;
+const isCurrentLanguage = lang => lang === currentLanguage;
 
 const NonClickableLink = ({ children, lang }) => (
     <div
@@ -46,24 +43,24 @@ const LanguageSettings = () => (
             </span>
         </div>
         <div className='settings-language__language-container'>
-            {Object.keys(getAllowedLanguages())
-                .map(key => (
-                    isCurrentLanguage(key) ?
-                        <NonClickableLink lang={key} key={key}>
-                            <LanguageLink lang={key} />
-                        </NonClickableLink>
-                        :
-                        <a
-                            id={`dt_settings_${key}_button`}
-                            key={key}
-                            href={getURL(key)}
-                            className={classNames('settings-language__language-link', {
-                                'settings-language__language-link--active': isCurrentLanguage(key),
-                            })}
-                        >
-                            <LanguageLink lang={key} key={key} />
-                        </a>
-                ))}
+            {Object.keys(getAllowedLanguages()).map(key =>
+                isCurrentLanguage(key) ? (
+                    <NonClickableLink lang={key} key={key}>
+                        <LanguageLink lang={key} />
+                    </NonClickableLink>
+                ) : (
+                    <a
+                        id={`dt_settings_${key}_button`}
+                        key={key}
+                        href={getURL(key)}
+                        className={classNames('settings-language__language-link', {
+                            'settings-language__language-link--active': isCurrentLanguage(key),
+                        })}
+                    >
+                        <LanguageLink lang={key} key={key} />
+                    </a>
+                )
+            )}
         </div>
     </div>
 );
@@ -73,10 +70,7 @@ LanguageLink.propTypes = {
 };
 
 NonClickableLink.propTypes = {
-    children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-    ]).isRequired,
+    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
     lang: PropTypes.string,
 };
 

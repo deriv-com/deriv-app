@@ -15,7 +15,7 @@ const FlyoutBlockGroup = ({ onInfoClick, block_node }) => {
                 <div className='flyout__item-label'>{display_name}</div>
                 <div className='flyout__item-buttons'>
                     <Button
-                        id={`gtm-${display_name.replace(/\s/gi, '-')}`}
+                        id={`db-flyout__add--${block_type}`}
                         className='flyout__button-add flyout__button-add--hide'
                         has_effect
                         onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}

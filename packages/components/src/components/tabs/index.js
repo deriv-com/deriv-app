@@ -1,4 +1,4 @@
-import Tabs from "./tabs.jsx";
-import "./tabs.scss";
+import Tabs from './tabs.jsx';
+import './tabs.scss';
 
 export default Tabs;

@@ -125,7 +125,7 @@ const localize = (string, values) => {
 };
 
 const loadIncontextTranslation = () => {
-    const is_ach = getLanguage() === 'ACH';
+    const is_ach = getLanguage().toUpperCase() === 'ACH';
     if (is_ach) {
         const jipt = document.createElement('script');
         jipt.type = 'text/javascript';

@@ -112,7 +112,7 @@ const Duration = ({
 
     return (
         <div>
-            <Tabs active_index={active_index} onTabItemClick={num => setDurationTabIdx(num)} top>
+            <Tabs active_index={active_index} onTabItemClick={setDurationTabIdx} top>
                 {
                     duration_units_list.map((duration_unit_option) => {
                         switch (duration_unit_option.value) {

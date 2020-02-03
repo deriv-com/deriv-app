@@ -1,9 +1,9 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes                      from 'prop-types';
 import React                          from 'react';
-import { Tabs, Numpad }               from '@deriv/components';
+import { Tabs }                       from '@deriv/components';
 import { localize }                   from '@deriv/translations';
-// import Amount                         from 'Modules/Trading/Components/Form/TradeParams/amount.jsx';
+import Amount                         from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
 // import Barrier                        from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
 // import LastDigit                      from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
 import { connect }                    from 'Stores/connect';
@@ -18,30 +18,6 @@ const DEFAULT_DURATION = Object.freeze({
     d: 1,
 });
 
-const Amount = () => {
-    const consoleOut = val => {
-        // eslint-disable-next-line no-console
-        console.log(val);
-    };
-
-    return (
-        <Numpad
-            value={0}
-            onSubmit={consoleOut}
-            is_currency
-            render={({ value: v, className }) => {
-                return (
-                    <div className={className}>{v}</div>
-                );
-            }}
-            pip_size={2}
-            submit_label={'OK'}
-            min={1}
-            max={1500}
-        />
-    );
-};
-
 const makeGetDefaultDuration = (trade_duration, trade_duration_unit) => duration_unit =>
     trade_duration_unit === duration_unit ? trade_duration : DEFAULT_DURATION[duration_unit];
 
@@ -55,6 +31,7 @@ class TradeParamsMobile extends React.Component {
         this.state = {
             active_tab_index: 0,
             duration_tab_idx: undefined,
+            amount_tab_idx  : undefined,
             // duration unit values
             t_duration      : getDefaultDuration('t'),
             s_duration      : getDefaultDuration('s'),
@@ -68,13 +45,15 @@ class TradeParamsMobile extends React.Component {
 
     setDurationTabIdx = duration_tab_idx => this.setState({ duration_tab_idx })
 
+    setAmountTabIdx = amount_tab_idx => this.setState({ amount_tab_idx })
+
     isVisible = component_key => this.props.form_components.includes(component_key);
 
     setSelectedDuration = (duration_unit, selected_duration) =>
         this.setState({ [`${duration_unit}_duration`]: selected_duration })
 
     render () {
-        const { active_tab_index, t_duration, s_duration, m_duration, h_duration, d_duration } = this.state;
+        const { active_tab_index, amount_tab_idx, t_duration, s_duration, m_duration, h_duration, d_duration } = this.state;
     
         return (
             <Tabs
@@ -100,9 +79,7 @@ class TradeParamsMobile extends React.Component {
                 }
                 {this.isVisible('amount') &&
                     <div label={localize('Amount')}>
-                        <div className='trade-params__amount-keypad'>
-                            <Amount />
-                        </div>
+                        <Amount amount_tab_idx={amount_tab_idx} setAmountTabIdx={this.setAmountTabIdx} />
                     </div>
                 }
             </Tabs>

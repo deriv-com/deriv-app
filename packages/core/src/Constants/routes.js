@@ -37,4 +37,6 @@ const routes = {
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
 };
 
+export const routing_control_key = 'routing_control';
+
 export default routes;

@@ -55,6 +55,7 @@ class VerticalTab extends React.Component {
         return (
             <div
                 className={classNames('dc-vertical-tab', {
+                    'dc-vertical-tab--floating': this.props.is_floating,
                     'dc-vertical-tab--full-screen': this.props.is_full_width,
                 })}
             >
@@ -64,6 +65,7 @@ class VerticalTab extends React.Component {
                         items={this.props.list}
                         onChange={this.changeSelected}
                         selected={selected}
+                        is_floating={this.props.is_floating}
                         is_routed={this.props.is_routed}
                         header_title={this.props.header_title}
                     />
@@ -71,9 +73,11 @@ class VerticalTab extends React.Component {
                 <VerticalTabContentContainer
                     action_bar={this.props.action_bar}
                     action_bar_classname={this.props.action_bar_classname}
+                    is_floating={this.props.is_floating}
                     items={this.props.list}
                     selected={selected}
                     is_routed={this.props.is_routed}
+                    is_scrollable={this.props.is_scrollable}
                 />
             </div>
         );
@@ -97,8 +101,10 @@ VerticalTab.propTypes = {
     current_path: PropTypes.string,
     header_classname: PropTypes.string,
     header_title: PropTypes.string,
+    is_floating: PropTypes.bool,
     is_full_width: PropTypes.bool,
     is_routed: PropTypes.bool,
+    is_scrollable: PropTypes.bool,
     is_sidebar_enabled: PropTypes.bool,
     list: PropTypes.arrayOf(
         PropTypes.shape({

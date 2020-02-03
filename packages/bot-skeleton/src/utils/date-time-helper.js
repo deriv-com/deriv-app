@@ -1,3 +1,5 @@
+import { localize } from '@deriv/translations';
+
 export const getUTCTime = date => {
     const dateObject = new Date(date);
     return `${`0${dateObject.getUTCHours()}`.slice(-2)}:${`0${dateObject.getUTCMinutes()}`.slice(
@@ -35,18 +37,21 @@ export const timeSince = timestamp => {
     const second_past = (now.getTime() - timestamp) / 1000;
 
     if (second_past < 60) {
-        return `${parseInt(second_past)}s ago`;
+        return localize('{{time_past}}s ago', { time_past: second_past });
     }
     if (second_past < 3600) {
-        return `${parseInt(second_past / 60)}m ago`;
+        return localize('{{time_past}}m ago', { time_past: parseInt(second_past / 60) });
     }
     if (second_past <= 86400) {
-        return `${parseInt(second_past / 3600)}h ago`;
+        return localize('{{time_past}}h ago', { time_past: parseInt(second_past / 3600) });
     }
 
     const timestamp_date = new Date(timestamp);
     const day = timestamp_date.getDate();
-    const month = timestamp_date.toDateString().match(/ [a-zA-Z]*/)[0].replace(' ', '');
+    const month = timestamp_date
+        .toDateString()
+        .match(/ [a-zA-Z]*/)[0]
+        .replace(' ', '');
     const year = `${timestamp_date.getFullYear() === now.getFullYear() ? '' : ' '}${timestamp_date.getFullYear()}`;
     return `${day} ${month}${year}`;
 };

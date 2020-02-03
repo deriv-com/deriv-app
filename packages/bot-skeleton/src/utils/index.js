@@ -3,7 +3,7 @@ import { createError, trackAndEmitError } from './error';
 import { observer } from './observer';
 import { importExternal } from './html-helper';
 import { onWorkspaceResize } from './workspace';
-import { getRecentFiles, saveWorkspaceToRecent } from './local-storage';
+import { getSavedWorkspaces, saveWorkspaceToRecent } from './local-storage';
 import { timeSince } from './date-time-helper';
 
 export default {
@@ -16,7 +16,7 @@ export default {
     getContractTypeName,
     observer,
     onWorkspaceResize,
-    getRecentFiles,
+    getSavedWorkspaces,
     saveWorkspaceToRecent,
     timeSince,
 };

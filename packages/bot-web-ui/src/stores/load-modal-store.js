@@ -1,21 +1,12 @@
-import {
-    observable,
-    action,
-}                         from 'mobx';
-import {
-    load,
-    config,
-    save_types,
-    getRecentFiles,
-}                         from '@deriv/bot-skeleton';
+import { observable, action } from 'mobx';
+import { load, config, save_types, getSavedWorkspaces } from '@deriv/bot-skeleton';
 
 export default class LoadModalStore {
-
     @observable is_load_modal_open = false;
     @observable active_index = 0;
     @observable recent_files = [];
-    @observable selected_file = '';
-    @observable explaination_expand = false;
+    @observable selected_file_id = '';
+    @observable is_explanation_expand = false;
     @observable loaded_local_file = null;
     recent_workspace;
     local_workspace;
@@ -30,7 +21,7 @@ export default class LoadModalStore {
         this.is_load_modal_open = !this.is_load_modal_open;
 
         if (this.is_load_modal_open) {
-            this.recent_files = getRecentFiles() || [];
+            this.recent_files = getSavedWorkspaces() || [];
         }
     }
 
@@ -38,16 +29,14 @@ export default class LoadModalStore {
     setActiveTabIndex(index) {
         this.active_index = index;
 
-        if (this.active_index !== 0 &&
-            this.recent_workspace &&
-            this.recent_workspace.rendered
-        ) {
+        if (this.active_index !== 0 && this.recent_workspace && this.recent_workspace.rendered) {
             this.recent_workspace.dispose();
         }
         if (this.active_index === 0 && this.recent_files.length) {
-            this.previewWorkspace({ id: this.selected_file });
+            this.previewWorkspace(this.selected_file_id);
         }
-        if (this.active_index !== 1 &&
+        if (
+            this.active_index !== 1 &&
             this.loaded_local_file &&
             this.local_workspace &&
             this.local_workspace.rendered
@@ -67,8 +56,8 @@ export default class LoadModalStore {
     @action.bound
     onMount() {
         if (this.recent_files.length && this.active_index === 0) {
-            this.selected_file = this.recent_files[0].id;
-            this.previewWorkspace({ id: this.selected_file });
+            this.selected_file_id = this.recent_files[0].id;
+            this.previewWorkspace(this.selected_file_id);
         }
     }
 
@@ -77,26 +66,26 @@ export default class LoadModalStore {
         if (this.recent_workspace && this.recent_workspace.rendered) {
             this.recent_workspace.dispose();
         }
-        this.selected_file = null;
+        this.selected_file_id = null;
         this.setActiveTabIndex(0);
     }
 
     @action.bound
-    previewWorkspace({ id }) {
-        const selected_file = this.recent_files.find(file => file.id === id);
-        if (!selected_file) {
+    previewWorkspace(id) {
+        const selected_file_id = this.recent_files.find(file => file.id === id);
+        if (!selected_file_id) {
             return;
         }
 
-        const xml_file = selected_file.xml;
-        this.selected_file = id;
-        
+        const xml_file = selected_file_id.xml;
+        this.selected_file_id = id;
+
         if (!this.recent_workspace || !this.recent_workspace.rendered) {
             const ref = document.getElementById('scratch_recent');
-            this.recent_workspace   = Blockly.inject(ref, {
-                media   : `${__webpack_public_path__}media/`, // eslint-disable-line
-                zoom : {
-                    wheel     : false,
+            this.recent_workspace = Blockly.inject(ref, {
+                media: `${__webpack_public_path__}media/`, // eslint-disable-line
+                zoom: {
+                    wheel: false,
                     startScale: config.workspaces.previewWorkspaceStartScale,
                 },
                 readOnly: true,
@@ -110,9 +99,6 @@ export default class LoadModalStore {
 
     @action.bound
     onZoomInOutClick(is_zoom_in) {
-        const metrics   = this.recent_workspace.getMetrics();
-        const addition  = is_zoom_in ? 1 : -1;
-
         let workspace;
         if (this.active_index === 0) {
             workspace = this.recent_workspace;
@@ -120,12 +106,12 @@ export default class LoadModalStore {
             workspace = this.local_workspace;
         }
 
-        workspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, addition);
+        workspace.zoomCenter(is_zoom_in ? 1 : 0);
     }
 
     @action.bound
     loadFileFromRecent() {
-        const selected_workspace = this.recent_files.find(file => file.id === this.selected_file);
+        const selected_workspace = this.recent_files.find(file => file.id === this.selected_file_id);
         if (!selected_workspace) {
             return;
         }
@@ -135,18 +121,25 @@ export default class LoadModalStore {
     }
 
     @action.bound
-    onExplainationToggle() {
-        this.explaination_expand = !this.explaination_expand;
+    onExplanationToggle() {
+        this.is_explanation_expand = !this.is_explanation_expand;
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    getRecentFileIcon(location) {
+    static getRecentFileIcon(location) {
         switch (location) {
-            case save_types.UNSAVED : return 'IcReports';
-            case save_types.LOCAL : return 'IcDesktop';
-            case save_types.GOOGLE_DRIVE : return 'IcGoogleDrive';
-            default : return 'IcReports';
+            case save_types.UNSAVED:
+                return 'IcReports';
+            case save_types.LOCAL:
+                return 'IcDesktop';
+            case save_types.GOOGLE_DRIVE:
+                return 'IcGoogleDrive';
+            default:
+                return 'IcReports';
         }
+    }
+
+    static getSaveType(save_type) {
+        return save_type.replace(/\b\w/g, l => l.toUpperCase());
     }
     /** --------- Recent Tab End --------- */
 
@@ -188,13 +181,13 @@ export default class LoadModalStore {
     // eslint-disable-next-line class-methods-use-this
     readFile(file, is_preview, drop_event) {
         const reader = new FileReader();
-        reader.onload = e =>  {
+        reader.onload = e => {
             if (is_preview) {
                 const ref = document.getElementById('scratch_local');
-                this.local_workspace   = Blockly.inject(ref, {
-                    media   : `${__webpack_public_path__}media/`, // eslint-disable-line
-                    zoom : {
-                        wheel     : false,
+                this.local_workspace = Blockly.inject(ref, {
+                    media: `${__webpack_public_path__}media/`, // eslint-disable-line
+                    zoom: {
+                        wheel: false,
                         startScale: config.workspaces.previewWorkspaceStartScale,
                     },
                     readOnly: true,
@@ -224,7 +217,7 @@ export default class LoadModalStore {
     @action.bound
     async onDriveConnect() {
         const { google_drive } = this.root_store;
-        
+
         if (google_drive.is_authorised) {
             google_drive.signOut();
         } else {
@@ -237,7 +230,7 @@ export default class LoadModalStore {
         const { google_drive, toolbar } = this.root_store;
         const { onBotNameTyped } = toolbar;
         const { loadFile } = google_drive;
-            
+
         const { xml_doc, file_name } = await loadFile();
 
         onBotNameTyped(file_name);

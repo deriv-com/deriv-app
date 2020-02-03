@@ -256,9 +256,9 @@ export const config = {
         [localize('Signal'), '2'],
     ],
     gd: {
-        cid: '762348641835-0vn7baqvt6ranmvj1lm23lk34uvbn9v1.apps.googleusercontent.com',
-        aid: 'famous-segment-254009',
-        api: 'AIzaSyC7bULpbdhEDKnknNBzsxe7KIbp65VnJHc',
+        cid: '828416594271-b4bhia944ecegn3j327oeb4l8o803bts.apps.googleusercontent.com',
+        aid: 'derivbot-248506',
+        api: 'AIzaSyA52MX2l8p75-w7nvab7fU6Lk6KwLqnyEI',
     },
     workspaces: {
         flyoutWorkspacesStartScale: 0.7,

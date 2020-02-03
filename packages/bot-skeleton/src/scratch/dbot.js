@@ -5,7 +5,7 @@ import { hasAllRequiredBlocks, updateDisabledBlocks } from './utils';
 import main_xml from './xml/main.xml';
 import toolbox_xml from './xml/toolbox.xml';
 import DBotStore from './dbot-store';
-import { getRecentFiles, saveWorkspaceToRecent } from '../utils/local-storage';
+import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
 import { onWorkspaceResize } from '../utils/workspace';
 import { config } from '../constants/config';
 import { save_types } from '../constants/save-type';
@@ -50,9 +50,9 @@ class DBot {
             this.addBeforeRunFunction(this.checkForRequiredBlocks.bind(this));
 
             // Push main.xml to workspace and reset the undo stack.
-            const has_recent_files = getRecentFiles();
+            const recent_files = getSavedWorkspaces();
             Blockly.Xml.domToWorkspace(
-                Blockly.Xml.textToDom(has_recent_files ? has_recent_files[0].xml : main_xml),
+                Blockly.Xml.textToDom(recent_files ? recent_files[0].xml : main_xml),
                 this.workspace
             );
             this.workspace.clearUndo();

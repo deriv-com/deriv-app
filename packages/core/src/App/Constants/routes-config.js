@@ -1,8 +1,10 @@
 import { lazy } from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
+import { LocalStore } from '_common/storage';
 import { Redirect } from 'App/Containers/Redirect';
 import { localize } from '@deriv/translations';
 import { routes } from 'Constants';
+import { routing_control_key } from 'Constants/routes';
 import { isBot } from 'Utils/PlatformSwitcher';
 import { getUrlBase } from '_common/url';
 
@@ -10,6 +12,9 @@ export const interceptAcrossBot = (route_to, action) => {
     const is_routing_to_bot = route_to.pathname.startsWith(routes.bot);
 
     if (action === 'PUSH' && ((!isBot() && is_routing_to_bot) || (isBot() && !is_routing_to_bot))) {
+        if (isBot() && !is_routing_to_bot) {
+            LocalStore.setObject(routing_control_key, { is_from_bot: true });
+        }
         window.location.href = getUrlBase(route_to.pathname); // If url base exists, use pathname with base
 
         return false;

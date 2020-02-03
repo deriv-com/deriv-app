@@ -19,10 +19,7 @@ class Cashier extends React.Component {
         this.props.toggleCashier();
     }
 
-    // TODO: [history-routing] handle going back as per user actions
-    onClickClose = () => {
-        this.props.history.push(routes.trade);
-    };
+    onClickClose = () => this.props.routeBackInApp(this.props.history);
 
     render() {
         const menu_options = () => {
@@ -90,7 +87,8 @@ Cashier.propTypes = {
     toggleCashier: PropTypes.func,
 };
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ common, modules, ui }) => ({
+    routeBackInApp: common.routeBackInApp,
     is_dp2p_visible: modules.cashier.is_dp2p_visible,
     is_visible: ui.is_cashier_visible,
     is_payment_agent_visible: !!(

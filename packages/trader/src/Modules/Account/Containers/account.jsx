@@ -50,11 +50,7 @@ class Account extends React.Component {
         this.props.toggleAccount(false);
     }
 
-    // TODO: [history-routing] handle going back as per user actions
-    onClickClose = () => {
-        this.props.toggleReports(false);
-        this.props.history.push(AppRoutes.trade);
-    };
+    onClickClose = () => this.props.routeBackInApp(this.props.history);
 
     render() {
         const { is_high_risk_client, is_loading, needs_verification } = this.state;
@@ -161,7 +157,8 @@ Account.propTypes = {
     toggleAccount: PropTypes.func,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client, common, ui }) => ({
+    routeBackInApp: common.routeBackInApp,
     account_status: client.account_status,
     currency: client.currency,
     is_high_risk: client.is_high_risk,

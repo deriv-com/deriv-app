@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import { PageOverlay, VerticalTab } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { FadeWrapper } from 'App/Components/Animations';
-import AppRoutes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 import 'Sass/app/modules/reports.scss';
 
@@ -17,11 +16,7 @@ class Reports extends React.Component {
         this.props.toggleReports(false);
     }
 
-    // TODO: [history-routing] handle going back as per user actions
-    onClickClose = () => {
-        this.props.toggleReports(false);
-        this.props.history.push(AppRoutes.trade);
-    };
+    onClickClose = () => this.props.routeBackInApp(this.props.history);
 
     render() {
         const menu_options = () => {
@@ -73,7 +68,8 @@ Reports.propTypes = {
     toggleReports: PropTypes.func,
 };
 
-export default connect(({ ui }) => ({
+export default connect(({ common, ui }) => ({
+    routeBackInApp: common.routeBackInApp,
     is_visible: ui.is_reports_visible,
     toggleReports: ui.toggleReports,
 }))(withRouter(Reports));

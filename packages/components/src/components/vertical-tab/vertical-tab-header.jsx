@@ -1,18 +1,19 @@
 import classNames from 'classnames';
-import { Counter, Icon } from '@deriv/components';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import Counter from 'Components/counter';
+import Icon from 'Components/icon';
 
 const HeaderIcon = ({ icon, is_active }) => (
     <Icon
         icon={icon}
-        className={classNames('vertical-tab__header__icon', {
-            'vertical-tab__header__icon--active': is_active,
+        className={classNames('dc-vertical-tab__header__icon', {
+            'dc-vertical-tab__header__icon--active': is_active,
         })}
     />
 );
 
-const Header = ({ text }) => <div className='vertical-tab__header__link'>{text}</div>;
+const Header = ({ text }) => <div className='dc-vertical-tab__header__link'>{text}</div>;
 
 const VerticalTabHeader = ({ children, className, is_routed, item, onChange, selected }) => {
     const label = item.label || item.title; // item.label.charAt(0).toUpperCase() + item.label.slice(1).toLowerCase();
@@ -27,24 +28,24 @@ const VerticalTabHeader = ({ children, className, is_routed, item, onChange, sel
             id={id}
             to={item.path}
             onClick={handleClick}
-            className={classNames('vertical-tab__header', {
-                'vertical-tab__header--disabled': is_disabled,
+            className={classNames('dc-vertical-tab__header', {
+                'dc-vertical-tab__header--disabled': is_disabled,
             })}
             activeClassName={classNames(className, {
-                'vertical-tab__header--active': is_active,
+                'dc-vertical-tab__header--active': is_active,
             })}
         >
             <HeaderIcon icon={item.icon} is_active={is_active} />
             <Header text={label} />
-            {!!count && <Counter count={count} className='vertical-tab__header__counter' />}
+            {!!count && <Counter count={count} className='dc-vertical-tab__header__counter' />}
             {children}
         </NavLink>
     ) : (
         <div
             id={id}
-            className={classNames('vertical-tab__header', className, {
-                'vertical-tab__header--active': is_active,
-                'vertical-tab__header--disabled': is_disabled,
+            className={classNames('dc-vertical-tab__header', className, {
+                'dc-vertical-tab__header--active': is_active,
+                'dc-vertical-tab__header--disabled': is_disabled,
             })}
             onClick={handleClick}
         >
@@ -55,10 +56,4 @@ const VerticalTabHeader = ({ children, className, is_routed, item, onChange, sel
     );
 };
 
-const VerticalTabHeaderTitle = ({ header_title }) => (
-    <div className='vertical-tab__header-title'>
-        <p>{header_title}</p>
-    </div>
-);
-
-export { VerticalTabHeader, VerticalTabHeaderTitle };
+export default VerticalTabHeader;

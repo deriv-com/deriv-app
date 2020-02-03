@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { DURING_PURCHASE } from './state/constants';
-import { contractStatus, log, error as notify_error } from '../utils/broadcast';
+import { contractStatus, log } from '../utils/broadcast';
 import { recoverFromError, doUntilDone } from '../utils/helpers';
 
 let delay_index = 0;
@@ -18,7 +18,7 @@ export default Engine =>
             }
 
             if (!this.isSellAtMarketAvailable()) {
-                notify_error(localize('Resale of this contract is not offered.'));
+                log(localize('Resale of this contract is not offered.'));
                 return Promise.resolve();
             }
 
@@ -43,7 +43,7 @@ export default Engine =>
                             // "InvalidOfferings" may occur when user tries to sell the contract too close
                             // to the expiry time. We shouldn't interrupt the bot but instead let the contract
                             // finish.
-                            notify_error(error.message);
+                            log(error.message);
                             return Promise.resolve();
                         }
                         // In all other cases, throw a custom error that will stop the bot (after the current contract has finished).

@@ -1,179 +1,179 @@
 /** @define btn */
 .btn {
-  vertical-align: middle;
-  align-items: center;
-  justify-content: center;
-  touch-action: manipulation;
-  cursor: pointer;
-  white-space: nowrap;
-  padding: 0 1.6rem;
-  display: inline-flex;
-  border: 0;
-  height: 3.2rem;
-  border-radius: 4px;
-  transition: all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1);
-  outline: 0;
-  position: relative;
-  text-decoration: none;
-  /*
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 0 1.6rem;
+    display: inline-flex;
+    border: 0;
+    height: 3.2rem;
+    border-radius: 4px;
+    transition: all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1);
+    outline: 0;
+    position: relative;
+    text-decoration: none;
+    /*
      * Text will be transformed to sentence case in JS
      * text-transform is declared in .btn instead of .btn__text
      * to ensure consistency (even for children) as per styleguide
      */
-  text-transform: none !important;
+    text-transform: none !important;
 
-  &__text,
-  &__icon {
-    @include typeface(--paragraph-center-bold-black, unset);
-    color: var(--text-general);
-    display: flex;
-  }
-  &__icon {
-    padding-right: 0.8rem;
-  }
-  &:not([disabled]):hover {
-    text-decoration: none;
-  }
-  &--primary {
-    background: var(--button-primary-default);
-    color: var(--text-colored-background);
+    &__text,
+    &__icon {
+        @include typeface(--paragraph-center-bold-black, unset);
+        color: var(--text-general);
+        display: flex;
+    }
+    &__icon {
+        padding-right: 0.8rem;
+    }
+    &:not([disabled]):hover {
+        text-decoration: none;
+    }
+    &--primary {
+        background: var(--button-primary-default);
+        color: var(--text-colored-background);
 
-    &:hover:not([disabled]) {
-      background: var(--button-primary-hover);
+        &:hover:not([disabled]) {
+            background: var(--button-primary-hover);
+        }
+        &:active:not([disabled]) {
+            background: var(--button-primary-default);
+        }
+        &:disabled,
+        &[disabled] {
+            opacity: 0.32;
+            cursor: not-allowed !important;
+        }
+        .btn__text,
+        .btn__icon {
+            color: var(--text-colored-background);
+        }
     }
-    &:active:not([disabled]) {
-      background: var(--button-primary-default);
-    }
-    &:disabled,
-    &[disabled] {
-      opacity: 0.32;
-      cursor: not-allowed !important;
-    }
-    .btn__text,
-    .btn__icon {
-      color: var(--text-colored-background);
-    }
-  }
-  &--secondary {
-    background: transparent;
-    border: 1px solid var(--button-secondary-default);
+    &--secondary {
+        background: transparent;
+        border: 1px solid var(--button-secondary-default);
 
-    &:hover:not([disabled]) {
-      background: var(--button-secondary-hover);
+        &:hover:not([disabled]) {
+            background: var(--button-secondary-hover);
+        }
+        &:active:not([disabled]) {
+            border: 1px solid var(--button-secondary-default);
+        }
+        &:disabled,
+        &[disabled] {
+            opacity: 0.32;
+            cursor: not-allowed !important;
+        }
+        .btn__text,
+        .btn__icon {
+            color: var(--text-prominent);
+        }
     }
-    &:active:not([disabled]) {
-      border: 1px solid var(--button-secondary-default);
-    }
-    &:disabled,
-    &[disabled] {
-      opacity: 0.32;
-      cursor: not-allowed !important;
-    }
-    .btn__text,
-    .btn__icon {
-      color: var(--text-prominent);
-    }
-  }
-  &--tertiary {
-    background: var(--button-tertiary-default);
+    &--tertiary {
+        background: var(--button-tertiary-default);
 
-    &:hover:not([disabled]) {
-      background: var(--button-tertiary-hover);
+        &:hover:not([disabled]) {
+            background: var(--button-tertiary-hover);
+        }
+        &:active:not([disabled]) {
+            background: var(--button-tertiary-default);
+        }
+        .btn__text,
+        .btn__icon {
+            color: var(--brand-red-coral);
+        }
+        &:disabled,
+        &[disabled] {
+            opacity: 0.32;
+            cursor: not-allowed !important;
+        }
     }
-    &:active:not([disabled]) {
-      background: var(--button-tertiary-default);
-    }
-    .btn__text,
-    .btn__icon {
-      color: var(--brand-red-coral);
-    }
-    &:disabled,
-    &[disabled] {
-      opacity: 0.32;
-      cursor: not-allowed !important;
-    }
-  }
-  /* TODO: confirm this button with designer are we still using this? */
-  &--green {
-    background: var(--status-success);
+    /* TODO: confirm this button with designer are we still using this? */
+    &--green {
+        background: var(--status-success);
 
-    &:hover:not([disabled]) {
-      background: var(--transparent-success);
+        &:hover:not([disabled]) {
+            background: var(--transparent-success);
+        }
+        &:active:not([disabled]) {
+            background: var(--status-success);
+        }
+        .btn__text,
+        .btn__icon {
+            color: var(--text-colored-background);
+        }
     }
-    &:active:not([disabled]) {
-      background: var(--status-success);
-    }
-    .btn__text,
-    .btn__icon {
-      color: var(--text-colored-background);
-    }
-  }
-  &__small {
-    height: 2.4rem;
-    border-width: 1px;
+    &__small {
+        height: 2.4rem;
+        border-width: 1px;
 
-    .btn__text {
-      font-size: 1.2rem;
+        .btn__text {
+            font-size: 1.2rem;
+        }
     }
-  }
-  &__medium {
-    height: 3.2rem;
-    border-width: 1px;
+    &__medium {
+        height: 3.2rem;
+        border-width: 1px;
 
-    .btn__text {
-      font-size: 1.4rem;
+        .btn__text {
+            font-size: 1.4rem;
+        }
     }
-  }
-  &__large {
-    height: 4rem;
-    border-width: 2px;
+    &__large {
+        height: 4rem;
+        border-width: 2px;
 
-    .btn__text {
-      font-size: 1.4rem;
+        .btn__text {
+            font-size: 1.4rem;
+        }
     }
-  }
-  &__effect:focus:not(:active):after {
-    content: "";
-    position: absolute;
-    top: -0.1em;
-    left: -0.1em;
-    bottom: -0.1em;
-    right: -0.1em;
-    border-radius: inherit;
-    border: 0 solid var(--brand-secondary);
-    opacity: 0.4;
-    animation: buttonEffect 0.4s;
-    animation-fill-mode: forwards;
-    display: block;
-  }
-  /* TODO: confirm this button with designer are we still using this? */
-  /* postcss-bem-linter: ignore */
-  .initial-loader--btn {
-    background-color: unset;
-
+    &__effect:focus:not(:active):after {
+        content: '';
+        position: absolute;
+        top: -0.1em;
+        left: -0.1em;
+        bottom: -0.1em;
+        right: -0.1em;
+        border-radius: inherit;
+        border: 0 solid var(--brand-secondary);
+        opacity: 0.4;
+        animation: buttonEffect 0.4s;
+        animation-fill-mode: forwards;
+        display: block;
+    }
+    /* TODO: confirm this button with designer are we still using this? */
     /* postcss-bem-linter: ignore */
-    .initial-loader__barspinner--rect {
-      background-color: var(--text-colored-background);
-    }
-    /* postcss-bem-linter: ignore */
-    .barspinner {
-      margin: 0.6rem 4px 0 -4px;
+    .initial-loader--btn {
+        background-color: unset;
 
-      /* postcss-bem-linter: ignore */
-      &__rect {
-        height: 35%;
-      }
+        /* postcss-bem-linter: ignore */
+        .initial-loader__barspinner--rect {
+            background-color: var(--text-colored-background);
+        }
+        /* postcss-bem-linter: ignore */
+        .barspinner {
+            margin: 0.6rem 4px 0 -4px;
+
+            /* postcss-bem-linter: ignore */
+            &__rect {
+                height: 35%;
+            }
+        }
     }
-  }
 }
 
 @keyframes buttonEffect {
-  to {
-    opacity: 0;
-    top: -0.6em;
-    left: -0.6em;
-    bottom: -0.6em;
-    right: -0.6em;
-    border-width: 6px;
-  }
+    to {
+        opacity: 0;
+        top: -0.6em;
+        left: -0.6em;
+        bottom: -0.6em;
+        right: -0.6em;
+        border-width: 6px;
+    }
 }

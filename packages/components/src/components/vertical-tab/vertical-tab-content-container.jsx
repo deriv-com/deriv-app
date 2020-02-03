@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Icon } from '@deriv/components';
+import Icon from 'Components/icon';
 
-class VerticalTabContentContainer extends React.PureComponent {
+export default class VerticalTabContentContainer extends React.PureComponent {
     render() {
         const {
             action_bar,
@@ -18,10 +18,10 @@ class VerticalTabContentContainer extends React.PureComponent {
         const TabContent = selected_item.value;
 
         return (
-            <div className='vertical-tab__content'>
+            <div className='dc-vertical-tab__content'>
                 {action_bar && (
                     <div
-                        className={classNames('vertical-tab__action-bar', {
+                        className={classNames('dc-vertical-tab__action-bar', {
                             [action_bar_classname]: !!action_bar_classname,
                         })}
                     >
@@ -32,17 +32,17 @@ class VerticalTabContentContainer extends React.PureComponent {
                             ) : (
                                 <div
                                     id={`dt_${id}_close_icon`}
-                                    className='vertical-tab__action-bar-wrapper'
+                                    className='dc-vertical-tab__action-bar-wrapper'
                                     key={idx}
                                     onClick={onClick}
                                 >
-                                    <Icon className='vertical-tab__action-bar--icon' icon={icon} />
+                                    <Icon className='dc-vertical-tab__action-bar--icon' icon={icon} />
                                 </div>
                             );
                         })}
                     </div>
                 )}
-                <div className={classNames('vertical-tab__content-container', tab_container_classname)}>
+                <div className={classNames('dc-vertical-tab__content-container', tab_container_classname)}>
                     {is_routed ? (
                         <Switch>
                             {items.map(({ value, component, path, icon }, idx) => {
@@ -60,5 +60,3 @@ class VerticalTabContentContainer extends React.PureComponent {
         );
     }
 }
-
-export { VerticalTabContentContainer };

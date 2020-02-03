@@ -23,20 +23,20 @@ const path = {
     // my_profile: 3,
 };
 
-const notifications_map = {
-    pending: {
-        is_agent_buyer: 0,
-        is_agent_seller: 1,
-        is_client_buyer: 1,
-        is_client_seller: 0,
-    },
-    'buyer-confirmed': {
-        is_agent_buyer: 1,
-        is_agent_seller: 0,
-        is_client_buyer: 0,
-        is_client_seller: 1,
-    },
-};
+// const notifications_map = {
+//     pending: {
+//         is_agent_buyer: 0,
+//         is_agent_seller: 1,
+//         is_client_buyer: 1,
+//         is_client_seller: 0,
+//     },
+//     'buyer-confirmed': {
+//         is_agent_buyer: 1,
+//         is_agent_seller: 0,
+//         is_client_buyer: 0,
+//         is_client_seller: 1,
+//     },
+// };
 
 class App extends Component {
     constructor(props) {
@@ -79,26 +79,16 @@ class App extends Component {
 
         updated_orders.forEach(order => {
             const modified_order = new OrderInfo(order);
+            const is_agent_buyer = this.state.is_agent && modified_order.is_buyer;
+            const is_agent_seller = this.state.is_agent && !modified_order.is_buyer;
+            const is_client_buyer = !this.state.is_agent && modified_order.is_buyer;
+            const is_client_seller = !this.state.is_agent && !modified_order.is_buyer;
 
-            const user_state = {
-                is_agent_buyer: this.state.is_agent && modified_order.is_buyer,
-                is_agent_seller: this.state.is_agent && !modified_order.is_buyer,
-                is_client_buyer: !this.state.is_agent && modified_order.is_buyer,
-                is_client_seller: !this.state.is_agent && !modified_order.is_buyer,
-            };
-
-            const order_state = {
-                pending: modified_order.is_pending,
-                'buyer-confirmed': modified_order.is_buyer_confirmed,
-            };
-
-            Object.keys(notifications_map).forEach(notif_state => {
-                if (order_state[notif_state]) {
-                    Object.keys(notifications_map[notif_state]).forEach(notif_condition => {
-                        notifications += user_state[notif_condition] && notifications_map[notif_state][notif_condition];
-                    });
-                }
-            });
+            if (is_agent_buyer || is_client_seller) {
+                notifications += modified_order.is_buyer_confirmed && 1;
+            } else if (is_agent_seller || is_client_buyer) {
+                notifications += modified_order.is_pending && 1;
+            }
         });
 
         this.setState({ notifications });
@@ -110,8 +100,7 @@ class App extends Component {
     handleOrderListResponse = order_response => {
         if (Array.isArray(order_response)) {
             // it's an array of orders from p2p_order_list
-            this.setState({ orders: order_response });
-            this.handleNotifications(order_response);
+            this.setState({ orders: order_response }, () => this.handleNotifications(order_response));
         } else {
             // it's a single order from p2p_order_info
             const idx_order_to_update = this.state.orders.findIndex(

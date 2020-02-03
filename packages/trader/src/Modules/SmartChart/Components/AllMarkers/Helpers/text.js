@@ -1,8 +1,8 @@
 export const shadowed_text = ({ ctx, is_dark_theme, text, left, top, scale }) => {
     ctx.textAlign = 'center';
     ctx.font = `bold ${Math.floor(scale * 10)}px IBM Plex Sans`;
-    
-    const is_firefox = (navigator.userAgent.search('Firefox') > 0);
+
+    const is_firefox = navigator.userAgent.search('Firefox') > 0;
     if (!is_firefox) {
         ctx.shadowColor = is_dark_theme ? 'rgba(16,19,31,1)' : 'rgba(255,255,255,1)';
         ctx.shadowBlur = 12;

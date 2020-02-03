@@ -1,6 +1,6 @@
-import React            from 'react';
-import MobileDialog     from './mobile-dialog.jsx';
-import TradeParams      from '../../Containers/trade-params.jsx';
+import React from 'react';
+import MobileDialog from './mobile-dialog.jsx';
+import TradeParams from '../../Containers/trade-params.jsx';
 
 class MobileWidget extends React.PureComponent {
     constructor(props) {
@@ -31,11 +31,7 @@ class MobileWidget extends React.PureComponent {
                     <TradeParams is_minimized />
                 </div>
 
-                <MobileDialog
-                    title='Set parameters'
-                    visible={this.state.open}
-                    onClose={this.handleDialogClose}
-                >
+                <MobileDialog title='Set parameters' visible={this.state.open} onClose={this.handleDialogClose}>
                     <TradeParams is_nativepicker />
                 </MobileDialog>
             </React.Fragment>

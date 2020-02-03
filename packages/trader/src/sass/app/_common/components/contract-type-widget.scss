@@ -17,7 +17,7 @@
         padding: 1.6em;
 
         /* postcss-bem-linter: ignore */
-        span[name=contract_type] {
+        span[name='contract_type'] {
             @include typeface(--paragraph-left-normal-black);
             color: var(--text-prominent);
             font-weight: bold;
@@ -25,7 +25,8 @@
             padding-left: 0.4em;
             white-space: pre-line;
         }
-        &:hover, &:focus {
+        &:hover,
+        &:focus {
             border-color: var(--border-hover);
             outline: none;
         }
@@ -86,7 +87,9 @@
     &:hover {
         border-color: var(--border-hover);
     }
-    &:active, &:focus, &--show {
+    &:active,
+    &:focus,
+    &--show {
         outline: none;
         border-radius: 4px;
         border-color: var(--border-active);

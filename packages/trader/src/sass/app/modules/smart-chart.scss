@@ -24,9 +24,23 @@
             background-color: var(--text-profit-success);
             border-color: var(--text-profit-success);
         }
-        &--won, &--lost {
+        &--won,
+        &--lost {
             color: $COLOR_WHITE;
         }
+    }
+    &__entry {
+        left: -12px;
+        top: -12px;
+        position: relative;
+        border: 6px solid var(--brand-red-coral);
+        background-color: var(--general-main-2);
+    }
+    &__spot,
+    &__entry {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
     }
     &__icon {
         border-radius: 50%;
@@ -69,7 +83,8 @@
                 opacity: 1;
                 transform: translateY(-3px);
             }
-            &--enter, &--exit {
+            &--enter,
+            &--exit {
                 opacity: 0;
                 transform: translateY(0);
             }
@@ -79,7 +94,8 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-            &--enter, &--exit {
+            &--enter,
+            &--exit {
                 opacity: 0;
                 transform: translateY(-8px);
             }
@@ -146,7 +162,8 @@
         &--won {
             background-color: var(--text-profit-success);
         }
-        &--won, &--lost {
+        &--won,
+        &--lost {
             /* postcss-bem-linter: ignore */
             p {
                 color: var(--text-colored-background);

@@ -1,19 +1,15 @@
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import PageError    from 'Modules/PageError';
+import PropTypes from 'prop-types';
+import React from 'react';
+import PageError from 'Modules/PageError';
 import { Localize } from '@deriv/translations';
 
-const LoginPrompt = ({
-    onLogin,
-    onSignup,
-    page_title,
-}) => (
+const LoginPrompt = ({ onLogin, onSignup, page_title }) => (
     <PageError
         header={
             <Localize
                 i18n_default_text='{{page_title}} page is only<0 />available for existing clients.'
                 values={{ page_title: page_title || 'This' }}
-                components={[ <br key={0} /> ]}
+                components={[<br key={0} />]}
             />
         }
         messages={[
@@ -30,10 +26,9 @@ const LoginPrompt = ({
 );
 
 LoginPrompt.propTypes = {
-    onLogin   : PropTypes.func,
-    onSignup  : PropTypes.func,
+    onLogin: PropTypes.func,
+    onSignup: PropTypes.func,
     page_title: PropTypes.string,
 };
 
 export default LoginPrompt;
-

@@ -3,9 +3,11 @@
 // All path commands *MUST* be absolute (MCLVQZ).
 // Use figma.com which by default exports paths as absolute.
 // Only <path /> tags is supported.
-const parse_svg = (markup) => {
+const parse_svg = markup => {
     // make tests pass
-    if (!window.DOMParser) { return null; }
+    if (!window.DOMParser) {
+        return null;
+    }
 
     const parser = new window.DOMParser();
     const svg = parser.parseFromString(markup, 'image/svg+xml').children[0];
@@ -17,10 +19,11 @@ const parse_svg = (markup) => {
     [].forEach.call(svg.children, p => {
         const { d, fill, stroke } = p.attributes;
         paths.push({
-            points: d.value.match(/M|C|H|A|L|V|([-+])?\d*(\.)?\d+(([eE]([-+])?)?\d+)?/g)
+            points: d.value
+                .match(/M|C|H|A|L|V|([-+])?\d*(\.)?\d+(([eE]([-+])?)?\d+)?/g)
                 .filter(e => e)
-                .map(e => 'MCHALV'.indexOf(e) === -1 ? e * 1 : e),
-            fill  : fill && fill.value,
+                .map(e => ('MCHALV'.indexOf(e) === -1 ? e * 1 : e)),
+            fill: fill && fill.value,
             stroke: stroke && stroke.value,
         });
     });
@@ -28,26 +31,24 @@ const parse_svg = (markup) => {
         return {
             width,
             height,
-            paths: paths
-                .map(({ points, fill, stroke }) => ({
-                    points,
-                    stroke,
-                    fill: fill !== 'white' ? color : bg_color,
-                })),
+            paths: paths.map(({ points, fill, stroke }) => ({
+                points,
+                stroke,
+                fill: fill !== 'white' ? color : bg_color,
+            })),
         };
     }
     function with_color_on_specific_paths(color_config) {
         return {
             width,
             height,
-            paths: paths
-                .map(({ points, fill, stroke }, index) => {
-                    return {
-                        points,
-                        stroke: color_config[index] && color_config[index].stroke || stroke,
-                        fill  : color_config[index] && color_config[index].fill || fill,
-                    };
-                }),
+            paths: paths.map(({ points, fill, stroke }, index) => {
+                return {
+                    points,
+                    stroke: (color_config[index] && color_config[index].stroke) || stroke,
+                    fill: (color_config[index] && color_config[index].fill) || fill,
+                };
+            }),
         };
     }
 

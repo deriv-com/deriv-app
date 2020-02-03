@@ -1,7 +1,7 @@
-import React              from 'react';
-import { Icon }           from '@deriv/components';
-import { localize }       from '@deriv/translations';
-import FileUploader       from './file-uploader.jsx';
+import React from 'react';
+import { Icon } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import FileUploader from './file-uploader.jsx';
 
 class FileUploaderContainer extends React.Component {
     constructor(props) {
@@ -41,15 +41,11 @@ class FileUploaderContainer extends React.Component {
                     </li>
                     <li className='account-poa__upload-box'>
                         <Icon icon='IcLessThanEight' className='account-poa__upload-icon' size={20} />
-                        <div className='account-poa__upload-item'>
-                            {localize('Less than 8MB')}
-                        </div>
+                        <div className='account-poa__upload-item'>{localize('Less than 8MB')}</div>
                     </li>
                     <li className='account-poa__upload-box'>
                         <Icon icon='IcClock' className='account-poa__upload-icon' size={20} />
-                        <div className='account-poa__upload-item'>
-                            {localize('1 - 6 months old')}
-                        </div>
+                        <div className='account-poa__upload-item'>{localize('1 - 6 months old')}</div>
                     </li>
                     <li className='account-poa__upload-box'>
                         <Icon icon='IcEye' className='account-poa__upload-icon' size={20} />
@@ -59,10 +55,7 @@ class FileUploaderContainer extends React.Component {
                     </li>
                 </ul>
                 <div className='account-poa__upload-file'>
-                    <FileUploader
-                        ref={this.ref}
-                        onFileDrop={this.props.onFileDrop}
-                    />
+                    <FileUploader ref={this.ref} onFileDrop={this.props.onFileDrop} />
                 </div>
             </div>
         );

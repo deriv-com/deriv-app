@@ -1,13 +1,8 @@
-import Svg2Canvas            from './svg2canvas';
-import { calc_scale }        from './calculations';
+import Svg2Canvas from './svg2canvas';
+import { calc_scale } from './calculations';
 import { MARKER_LINE_STYLE } from '../Constants/lines';
 
-export const draw_arc = ({
-    ctx,
-    position,
-    barrier,
-    line_style = 'solid',
-}) => {
+export const draw_arc = ({ ctx, position, barrier, line_style = 'solid' }) => {
     ctx.beginPath();
     ctx.setLineDash(MARKER_LINE_STYLE[line_style]);
     ctx.arc(position.left, barrier, 2, 0, Math.PI * 2);
@@ -15,12 +10,7 @@ export const draw_arc = ({
     ctx.stroke();
 };
 
-export const draw_line = ({
-    ctx,
-    start,
-    end,
-    line_style = 'solid',
-}) => {
+export const draw_line = ({ ctx, start, end, line_style = 'solid' }) => {
     ctx.beginPath();
     ctx.setLineDash(MARKER_LINE_STYLE[line_style]);
     ctx.moveTo(start.left, start.top);
@@ -28,53 +18,32 @@ export const draw_line = ({
     ctx.stroke();
 };
 
-export const draw_barrier_line_to_icon = ({
-    ctx,
-    exit,
-    barrier,
-    icon,
-}) => {
+export const draw_barrier_line_to_icon = ({ ctx, exit, barrier, icon }) => {
     const start = { left: exit.left, top: barrier };
 
     draw_line({ ctx, start, end: exit, line_style: 'dashed' });
     Svg2Canvas.render({ ctx, icon, position: exit });
 };
 
-export const draw_barrier_line = ({
-    ctx,
-    start,
-    exit,
-    barrier,
-    line_style,
-}) => {
+export const draw_barrier_line = ({ ctx, start, exit, barrier, line_style }) => {
     draw_line({
         ctx,
         start: { left: start.left, top: barrier },
-        end  : { left: exit.left, top: barrier },
+        end: { left: exit.left, top: barrier },
         line_style,
     });
     draw_arc({ ctx, position: start, barrier });
     draw_arc({ ctx, position: exit, barrier });
 };
 
-export const draw_vertical_labelled_line = ({
-    ctx,
-    text,
-    icon,
-    position: {
-        zoom,
-        left,
-        top,
-    },
-    line_style,
-}) => {
+export const draw_vertical_labelled_line = ({ ctx, text, icon, position: { zoom, left, top }, line_style }) => {
     // Render the label.
     const label_and_icon_offset = left - 5;
     if (icon) {
         const position = {
             zoom,
-            left: label_and_icon_offset - (icon.width / 2),
-            top : top - 15,
+            left: label_and_icon_offset - icon.width / 2,
+            top: top - 15,
         };
 
         Svg2Canvas.render({ ctx, icon, position });
@@ -94,7 +63,7 @@ export const draw_vertical_labelled_line = ({
     draw_line({
         ctx,
         start: { left, top: 0 },
-        end  : { left, top: ctx.canvas.height },
+        end: { left, top: ctx.canvas.height },
         line_style,
     });
 };

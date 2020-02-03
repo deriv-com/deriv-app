@@ -2,28 +2,21 @@ import { calc_scale } from './calculations';
 
 const Svg2Canvas = (() => {
     /** @param {CanvasRenderingContext2D} ctx */
-    const render = ({
-        ctx,
-        icon,
-        position: {
-            zoom,
-            top,
-            left,
-        },
-    }) => {
+    const render = ({ ctx, icon, position: { zoom, top, left } }) => {
         ctx.save();
         const scale = calc_scale(zoom);
 
-        ctx.translate(
-            left - icon.width * scale / 2,
-            top - icon.height * scale / 2 ,
-        );
+        ctx.translate(left - (icon.width * scale) / 2, top - (icon.height * scale) / 2);
 
         ctx.scale(scale, scale);
 
         icon.paths.forEach(({ points, fill, stroke }) => {
-            if (fill) { ctx.fillStyle = fill; }
-            if (stroke) { ctx.strokeStyle = stroke; }
+            if (fill) {
+                ctx.fillStyle = fill;
+            }
+            if (stroke) {
+                ctx.strokeStyle = stroke;
+            }
             ctx.beginPath();
             let prev_x, prev_y;
             for (let idx = 0; idx < points.length; idx++) {
@@ -68,8 +61,12 @@ const Svg2Canvas = (() => {
                 prev_y = y;
             }
             ctx.closePath();
-            if (fill) { ctx.fill(); }
-            if (stroke) { ctx.stroke(); }
+            if (fill) {
+                ctx.fill();
+            }
+            if (stroke) {
+                ctx.stroke();
+            }
         });
         ctx.scale(1, 1);
         ctx.restore();
@@ -88,4 +85,3 @@ const Svg2Canvas = (() => {
 })();
 
 export default Svg2Canvas;
-

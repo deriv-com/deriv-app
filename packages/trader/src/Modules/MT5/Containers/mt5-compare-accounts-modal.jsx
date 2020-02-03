@@ -1,23 +1,25 @@
 import { Button, Popover, Modal } from '@deriv/components';
-import React                      from 'react';
-import DataTable                  from 'App/Components/Elements/DataTable';
-import UILoader                   from 'App/Components/Elements/ui-loader.jsx';
-import { localize, Localize }     from '@deriv/translations';
-import { connect }                from 'Stores/connect';
+import React from 'react';
+import DataTable from 'App/Components/Elements/DataTable';
+import UILoader from 'App/Components/Elements/ui-loader.jsx';
+import { localize, Localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 
 const compareAccountsColumns = [
     {
-        title    : '',
+        title: '',
         col_index: 'attribute',
     },
     {
-        title    : <Localize i18n_default_text='Standard' />,
+        title: <Localize i18n_default_text='Standard' />,
         col_index: 'standard',
-    }, {
-        title    : <Localize i18n_default_text='Advanced' />,
+    },
+    {
+        title: <Localize i18n_default_text='Advanced' />,
         col_index: 'advanced',
-    }, {
-        title    : <Localize i18n_default_text='Synthetic Indices' />,
+    },
+    {
+        title: <Localize i18n_default_text='Synthetic Indices' />,
         col_index: 'synthetic',
     },
 ];
@@ -26,12 +28,7 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
     return tooltip ? (
         <React.Fragment>
             <p className='mt5-attribute-describer'>{name}</p>
-            <Popover
-                alignment='right'
-                icon='counter'
-                counter={counter}
-                message={tooltip}
-            />
+            <Popover alignment='right' icon='counter' counter={counter} message={tooltip} />
         </React.Fragment>
     ) : (
         <p className='mt5-attribute-describer'>{name}</p>
@@ -41,8 +38,8 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
 const compareAccountsData = [
     {
         attribute: <MT5AttributeDescriber name={localize('Account currency')} />,
-        standard : localize('USD'),
-        advanced : localize('USD'),
+        standard: localize('USD'),
+        advanced: localize('USD'),
         synthetic: localize('USD'),
     },
     {
@@ -51,11 +48,12 @@ const compareAccountsData = [
                 name={localize('Maximum leverage')}
                 counter={1}
                 tooltip={localize(
-                    'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.')}
+                    'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.'
+                )}
             />
         ),
-        standard : localize('Up to 1:1000'),
-        advanced : localize('Up to 1:100'),
+        standard: localize('Up to 1:1000'),
+        advanced: localize('Up to 1:100'),
         synthetic: localize('Up to 1:1000'),
     },
     {
@@ -64,11 +62,12 @@ const compareAccountsData = [
                 name={localize('Order execution')}
                 counter={2}
                 tooltip={localize(
-                    'All 3 account types use market execution. This means you agree with the broker\'s price in advance and will place orders at the broker\'s price.')}
+                    "All 3 account types use market execution. This means you agree with the broker's price in advance and will place orders at the broker's price."
+                )}
             />
         ),
-        standard : localize('Market'),
-        advanced : localize('Market'),
+        standard: localize('Market'),
+        advanced: localize('Market'),
         synthetic: localize('Market'),
     },
     {
@@ -77,11 +76,12 @@ const compareAccountsData = [
                 name={localize('Spread')}
                 counter={3}
                 tooltip={localize(
-                    'The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker\'s absolute discretion.')}
+                    "The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker's absolute discretion."
+                )}
             />
         ),
-        standard : localize('Variable'),
-        advanced : localize('Variable'),
+        standard: localize('Variable'),
+        advanced: localize('Variable'),
         synthetic: localize('Fixed/Variable'),
     },
     {
@@ -90,17 +90,18 @@ const compareAccountsData = [
                 name={localize('Commission')}
                 counter={4}
                 tooltip={localize(
-                    'Deriv charges no commission across all account types, except cryptocurrency accounts.')}
+                    'Deriv charges no commission across all account types, except cryptocurrency accounts.'
+                )}
             />
         ),
-        standard : localize('No'),
-        advanced : localize('No'),
+        standard: localize('No'),
+        advanced: localize('No'),
         synthetic: localize('No'),
     },
     {
         attribute: <MT5AttributeDescriber name={localize('Minimum deposit')} />,
-        standard : localize('No'),
-        advanced : localize('No'),
+        standard: localize('No'),
+        advanced: localize('No'),
         synthetic: localize('No'),
     },
     {
@@ -109,11 +110,12 @@ const compareAccountsData = [
                 name={localize('Margin call')}
                 counter={5}
                 tooltip={localize(
-                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.')}
+                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+                )}
             />
         ),
-        standard : localize('150%'),
-        advanced : localize('150%'),
+        standard: localize('150%'),
+        advanced: localize('150%'),
         synthetic: localize('100%'),
     },
     {
@@ -122,17 +124,18 @@ const compareAccountsData = [
                 name={localize('Stop out level')}
                 counter={6}
                 tooltip={localize(
-                    'If your account reaches the stop out level, then your account will be in stop out state. Trading positions and orders on your account are forcibly closed until there are no more open positions or until your margin level increases above the stop out level.')}
+                    'If your account reaches the stop out level, then your account will be in stop out state. Trading positions and orders on your account are forcibly closed until there are no more open positions or until your margin level increases above the stop out level.'
+                )}
             />
         ),
-        standard : localize('75%'),
-        advanced : localize('75%'),
+        standard: localize('75%'),
+        advanced: localize('75%'),
         synthetic: localize('50%'),
     },
     {
         attribute: <MT5AttributeDescriber name={localize('Number of assets')} />,
-        standard : localize('50+'),
-        advanced : localize('50+'),
+        standard: localize('50+'),
+        advanced: localize('50+'),
         synthetic: localize('10+'),
     },
     {
@@ -143,18 +146,14 @@ const compareAccountsData = [
                 tooltip={localize('Indicates the availability of cryptocurrency trading on a particular account.')}
             />
         ),
-        standard : localize('24/7'),
-        advanced : localize('N/A'),
+        standard: localize('24/7'),
+        advanced: localize('N/A'),
         synthetic: localize('N/A'),
     },
     {
-        attribute: (
-            <MT5AttributeDescriber
-                name={localize('Trading instruments')}
-            />
-        ),
-        standard : localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
-        advanced : localize('FX-majors, FX-minors, FX-exotics'),
+        attribute: <MT5AttributeDescriber name={localize('Trading instruments')} />,
+        standard: localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
+        advanced: localize('FX-majors, FX-minors, FX-exotics'),
         synthetic: localize('Synthetics'),
     },
 ];
@@ -167,22 +166,15 @@ const ModalContent = () => (
             columns={compareAccountsColumns}
             custom_height={700}
             custom_width={'100%'}
-            getRowSize={(index) => index + 1 === compareAccountsData.length ? 120 : 40}
+            getRowSize={index => (index + 1 === compareAccountsData.length ? 120 : 40)}
         />
         <p className='mt5-compare-account--hint'>
-            <Localize
-                i18n_default_text='Note: At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.'
-            />
+            <Localize i18n_default_text='Note: At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
         </p>
     </div>
 );
 
-const CompareAccountsModal = ({
-    disableApp,
-    enableApp,
-    is_compare_accounts_visible,
-    toggleCompareAccounts,
-}) => (
+const CompareAccountsModal = ({ disableApp, enableApp, is_compare_accounts_visible, toggleCompareAccounts }) => (
     <div className='mt5-compare-accounts-modal__wrapper'>
         <Button
             className='mt5-dashboard__welcome-message--button'
@@ -210,8 +202,8 @@ const CompareAccountsModal = ({
 );
 
 export default connect(({ modules, ui }) => ({
-    disableApp                 : ui.disableApp,
-    enableApp                  : ui.enableApp,
+    disableApp: ui.disableApp,
+    enableApp: ui.enableApp,
     is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
-    toggleCompareAccounts      : modules.mt5.toggleCompareAccountsModal,
+    toggleCompareAccounts: modules.mt5.toggleCompareAccountsModal,
 }))(CompareAccountsModal);

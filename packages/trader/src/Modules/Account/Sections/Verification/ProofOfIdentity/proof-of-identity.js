@@ -1,12 +1,12 @@
 export const onfido_status_codes = {
-    none       : 'onfido',
-    onfido     : 'onfido',
-    pending    : 'pending',
-    rejected   : 'rejected',
-    verified   : 'verified',
+    none: 'onfido',
+    onfido: 'onfido',
+    pending: 'pending',
+    rejected: 'rejected',
+    verified: 'verified',
     unsupported: 'unsupported',
-    expired    : 'expired',
-    suspected  : 'suspected',
+    expired: 'expired',
+    suspected: 'suspected',
 };
 
 export const getIdentityStatus = (identity, onfido_unsupported) => {

@@ -1,13 +1,9 @@
-import { toJS }       from 'mobx';
-import PropTypes      from 'prop-types';
-import React          from 'react';
+import { toJS } from 'mobx';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { FastMarker } from 'Modules/SmartChart';
 
-const ChartMarker = ({
-    marker_config,
-    marker_content_props,
-    is_bottom_widget_visible,
-}) => {
+const ChartMarker = ({ marker_config, marker_content_props, is_bottom_widget_visible }) => {
     const { ContentComponent, ...marker_props } = marker_config;
 
     // TODO:
@@ -19,8 +15,8 @@ const ChartMarker = ({
             if (!marker_props.y) {
                 const margin = is_bottom_widget_visible ? 115 : 0; // digit contracts have a widget at the bottom
 
-                ref.div.style.height =  `calc(100% - ${margin}px)`;
-                ref.div.style.left   = '-0.7px'; // To position the vertical line as center as possible.
+                ref.div.style.height = `calc(100% - ${margin}px)`;
+                ref.div.style.left = '-0.7px'; // To position the vertical line as center as possible.
                 ref.div.style.zIndex = '-1';
             }
             ref.setPosition({
@@ -31,16 +27,14 @@ const ChartMarker = ({
     };
 
     return (
-        <FastMarker
-            markerRef={onRef}
-        >
+        <FastMarker markerRef={onRef}>
             <ContentComponent {...toJS(marker_content_props)} />
         </FastMarker>
     );
 };
 
 ChartMarker.propTypes = {
-    marker_config       : PropTypes.object,
+    marker_config: PropTypes.object,
     marker_content_props: PropTypes.object,
 };
 

@@ -46,7 +46,6 @@
         span {
             @include typeface(--paragraph-center-bold-active);
         }
-
     }
     &__content {
         margin-top: 1.5em;
@@ -54,7 +53,8 @@
         overflow: hidden;
 
         /* postcss-bem-linter: ignore */
-        p, ul li {
+        p,
+        ul li {
             @include typeface(--paragraph-left-normal-black, none);
             @include toEm(margin-bottom, 8px, 1.4em);
             color: var(--text-general);
@@ -104,7 +104,8 @@
             @extend %inline-icon;
         }
     }
-    &--enter, &--exit {
+    &--enter,
+    &--exit {
         transform: translateX(50%);
         pointer-events: none;
         opacity: 0;

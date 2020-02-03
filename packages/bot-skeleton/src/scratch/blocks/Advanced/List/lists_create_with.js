@@ -1,27 +1,24 @@
-import { localize }     from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { plusIconDark } from '../../images';
-import {
-    runIrreversibleEvents,
-    runGroupedEvents,
-}                       from '../../../utils';
+import { runIrreversibleEvents, runGroupedEvents } from '../../../utils';
 
 Blockly.Blocks.lists_create_with = {
     protected_statements: ['STACK'],
-    allowed_children    : ['lists_statement'],
+    allowed_children: ['lists_statement'],
     init() {
         const field_image = new Blockly.FieldImage(plusIconDark, 25, 25, '', this.onIconClick.bind(this));
         this.jsonInit(this.definition());
         this.appendDummyInput('ADD_ICON').appendField(field_image);
         this.moveInputBefore('ADD_ICON', 'STACK');
     },
-    definition(){
+    definition() {
         return {
             message0: localize('set %1 to create list with'),
             message1: '%1',
-            args0   : [
+            args0: [
                 {
-                    type    : 'field_variable',
-                    name    : 'VARIABLE',
+                    type: 'field_variable',
+                    name: 'VARIABLE',
                     variable: localize('list'),
                 },
             ],
@@ -31,19 +28,19 @@ Blockly.Blocks.lists_create_with = {
                     name: 'STACK',
                 },
             ],
-            colour           : Blockly.Colours.Base.colour,
-            colourSecondary  : Blockly.Colours.Base.colourSecondary,
-            colourTertiary   : Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
-            tooltip          : localize('This block creates a list with strings and numbers.'),
-            category         : Blockly.Categories.List,
+            nextStatement: null,
+            tooltip: localize('This block creates a list with strings and numbers.'),
+            category: Blockly.Categories.List,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Create list'),
-            'description' : localize('This block creates a list with strings and numbers.'),
+            display_name: localize('Create list'),
+            description: localize('This block creates a list with strings and numbers.'),
         };
     },
     onIconClick() {
@@ -57,7 +54,7 @@ Blockly.Blocks.lists_create_with = {
             statement_block.setMovable(false);
             statement_block.initSvg();
             statement_block.render();
-    
+
             const connection = this.getLastConnectionInStatement('STACK');
             connection.connect(statement_block.previousConnection);
         });
@@ -84,12 +81,12 @@ Blockly.Blocks.lists_create_with = {
 // Head's up! This is also the code generation for the "text_join" block.
 Blockly.JavaScript.lists_create_with = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const var_name        = Blockly.JavaScript.variableDB_.getName(
+    const var_name = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
         Blockly.Variables.NAME_TYPE
     );
     const blocks_in_stack = block.getBlocksInStatement('STACK');
-    const elements        = blocks_in_stack.map(b => {
+    const elements = blocks_in_stack.map(b => {
         const value = Blockly.JavaScript[b.type](b);
         return Array.isArray(value) ? value[0] : value;
     });

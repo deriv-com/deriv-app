@@ -23,10 +23,12 @@
         justify-content: center;
         background-color: var(--overlay-inside-dialog);
 
-        &--won, &--won:after {
+        &--won,
+        &--won:after {
             background-image: var(--gradient-success);
         }
-        &--lost, &--lost:after {
+        &--lost,
+        &--lost:after {
             background-image: var(--gradient-danger);
         }
         &--lg {
@@ -47,7 +49,8 @@
             border-radius: $BORDER_RADIUS;
             z-index: 2;
         }
-        &--enter, &--exit {
+        &--enter,
+        &--exit {
             opacity: 0;
         }
         &--enter-done {
@@ -87,7 +90,8 @@
             opacity: 1;
             transform: translateY(0);
         }
-        &--enter, &--exit {
+        &--enter,
+        &--exit {
             opacity: 0;
             transform: translateY(-16px);
         }
@@ -135,7 +139,9 @@
             padding: 0.8rem;
         }
     }
-    &__purchase, &__payout, &__item {
+    &__purchase,
+    &__payout,
+    &__item {
         &-label {
             text-transform: none;
             font-size: 1rem;
@@ -204,7 +210,8 @@
             width: 16px;
             height: 16px;
 
-            &-complete, &-complete:after {
+            &-complete,
+            &-complete:after {
                 display: none;
             }
             &:after {
@@ -272,7 +279,8 @@
             opacity: 1;
             transform: translateY(0);
         }
-        &--enter, &--exit {
+        &--enter,
+        &--exit {
             opacity: 0;
             transform: translateY(-8px);
         }

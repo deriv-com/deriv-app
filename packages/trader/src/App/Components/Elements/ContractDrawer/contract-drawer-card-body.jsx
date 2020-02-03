@@ -1,32 +1,20 @@
-import classNames              from 'classnames';
-import PropTypes               from 'prop-types';
-import React                   from 'react';
-import { Icon, Money }         from '@deriv/components';
-import CurrencyUtils           from '@deriv/shared/utils/currency';
-import { localize }            from '@deriv/translations';
-import ContractCardBody        from 'App/Components/Elements/ContractCard/contract-card-body.jsx';
-import ContractCardItem        from 'App/Components/Elements/ContractCard/contract-card-item.jsx';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Icon, Money } from '@deriv/components';
+import CurrencyUtils from '@deriv/shared/utils/currency';
+import { localize } from '@deriv/translations';
+import ContractCardBody from 'App/Components/Elements/ContractCard/contract-card-body.jsx';
+import ContractCardItem from 'App/Components/Elements/ContractCard/contract-card-item.jsx';
 import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-orders';
-import {
-    getDealCancellationPrice,
-    getIndicativePrice }       from 'Stores/Modules/Contract/Helpers/logic';
+import { getDealCancellationPrice, getIndicativePrice } from 'Stores/Modules/Contract/Helpers/logic';
 
-const MultiplierCardBody = ({
-    contract_info,
-    currency,
-    status,
-}) => {
-    const {
-        buy_price,
-        is_sold,
-        profit,
-        multiplier,
-        limit_order,
-    } = contract_info;
+const MultiplierCardBody = ({ contract_info, currency, status }) => {
+    const { buy_price, is_sold, profit, multiplier, limit_order } = contract_info;
 
     const { take_profit, stop_loss } = getLimitOrderAmount(limit_order);
-    const deal_cancellation_price    = getDealCancellationPrice(contract_info);
-    
+    const deal_cancellation_price = getDealCancellationPrice(contract_info);
+
     return (
         <ContractCardBody>
             <ContractCardItem header={localize('Stake:')}>
@@ -39,72 +27,48 @@ const MultiplierCardBody = ({
                 is_won={+profit > 0}
             >
                 <Money amount={profit} currency={currency} />
-                <div className={classNames(
-                    'contract-card__indicative--movement', {
+                <div
+                    className={classNames('contract-card__indicative--movement', {
                         'contract-card__indicative--movement-complete': is_sold,
-                    },
-                )}
+                    })}
                 >
                     {status === 'profit' && <Icon icon='IcProfit' />}
-                    {status === 'loss'   && <Icon icon='IcLoss' />}
+                    {status === 'loss' && <Icon icon='IcLoss' />}
                 </div>
             </ContractCardItem>
 
-            <ContractCardItem header={localize('Multiplier:')}>
-                x{multiplier}
-            </ContractCardItem>
+            <ContractCardItem header={localize('Multiplier:')}>x{multiplier}</ContractCardItem>
             <ContractCardItem header={localize('Take profit:')}>
-                {take_profit ?
-                    <Money amount={take_profit} currency={currency} />
-                    :
-                    <strong>-</strong>
-                }
+                {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
             </ContractCardItem>
             <ContractCardItem header={localize('Deal cancel. fee:')}>
-                {deal_cancellation_price ?
+                {deal_cancellation_price ? (
                     <Money amount={deal_cancellation_price} currency={currency} />
-                    :
+                ) : (
                     <strong>-</strong>
-                }
+                )}
             </ContractCardItem>
             <ContractCardItem header={localize('Stop loss:')}>
-                {stop_loss ?
+                {stop_loss ? (
                     <React.Fragment>
                         <strong>-</strong>
                         <Money amount={stop_loss} currency={currency} />
                     </React.Fragment>
-                    :
+                ) : (
                     <strong>-</strong>
-                }
+                )}
             </ContractCardItem>
         </ContractCardBody>
     );
 };
 
-const CardBody = ({
-    contract_info,
-    currency,
-    is_multiplier,
-    status,
-}) => {
-    const {
-        buy_price,
-        is_sold,
-        sell_price,
-        payout,
-        profit,
-    } = contract_info;
+const CardBody = ({ contract_info, currency, is_multiplier, status }) => {
+    const { buy_price, is_sold, sell_price, payout, profit } = contract_info;
 
     const indicative = getIndicativePrice(contract_info);
-    
+
     if (is_multiplier) {
-        return (
-            <MultiplierCardBody
-                contract_info={contract_info}
-                currency={currency}
-                status={status}
-            />
-        );
+        return <MultiplierCardBody contract_info={contract_info} currency={currency} status={status} />;
     }
 
     return (
@@ -116,26 +80,24 @@ const CardBody = ({
                 is_won={+profit > 0}
             >
                 <Money amount={profit} currency={currency} />
-                <div className={classNames(
-                    'contract-card__indicative--movement', {
+                <div
+                    className={classNames('contract-card__indicative--movement', {
                         'contract-card__indicative--movement-complete': is_sold,
-                    },
-                )}
+                    })}
                 >
                     {status === 'profit' && <Icon icon='IcProfit' />}
-                    {status === 'loss'   && <Icon icon='IcLoss' />}
+                    {status === 'loss' && <Icon icon='IcLoss' />}
                 </div>
             </ContractCardItem>
             <ContractCardItem header={is_sold ? localize('Payout:') : localize('Indicative price:')}>
-                <Money currency={currency}  amount={sell_price || indicative} />
-                <div className={classNames(
-                    'contract-card__indicative--movement', {
+                <Money currency={currency} amount={sell_price || indicative} />
+                <div
+                    className={classNames('contract-card__indicative--movement', {
                         'contract-card__indicative--movement-complete': is_sold,
-                    },
-                )}
+                    })}
                 >
                     {status === 'profit' && <Icon icon='IcProfit' />}
-                    {status === 'loss'   && <Icon icon='IcLoss' />}
+                    {status === 'loss' && <Icon icon='IcLoss' />}
                 </div>
             </ContractCardItem>
             <ContractCardItem header={localize('Purchase price:')}>
@@ -150,9 +112,9 @@ const CardBody = ({
 
 CardBody.propTypes = {
     contract_info: PropTypes.object,
-    currency     : PropTypes.string,
+    currency: PropTypes.string,
     is_multiplier: PropTypes.bool,
-    status       : PropTypes.string,
+    status: PropTypes.string,
 };
 
 export default CardBody;

@@ -4,41 +4,44 @@ Blockly.Blocks.controls_whileUntil = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('repeat %1 %2'),
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'MODE',
-                    options: [[localize('while'), 'WHILE'], [localize('until'), 'UNTIL']],
+                    type: 'field_dropdown',
+                    name: 'MODE',
+                    options: [
+                        [localize('while'), 'WHILE'],
+                        [localize('until'), 'UNTIL'],
+                    ],
                 },
                 {
-                    type : 'input_value',
-                    name : 'BOOL',
+                    type: 'input_value',
+                    name: 'BOOL',
                     check: 'Boolean',
                 },
             ],
             message1: localize('do %1'),
-            args1   : [
+            args1: [
                 {
                     type: 'input_statement',
                     name: 'DO',
                 },
             ],
-            colour           : Blockly.Colours.Base.colour,
-            colourSecondary  : Blockly.Colours.Base.colourSecondary,
-            colourTertiary   : Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
-            tooltip          : localize('This block repeats instructions as long as a given condition is true'),
-            category         : Blockly.Categories.Loop,
+            nextStatement: null,
+            tooltip: localize('This block repeats instructions as long as a given condition is true'),
+            category: Blockly.Categories.Loop,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Repeat While/Until'),
-            'description' : localize('This block repeats instructions as long as a given condition is true.'),
+            display_name: localize('Repeat While/Until'),
+            description: localize('This block repeats instructions as long as a given condition is true.'),
         };
     },
     getRequiredValueInputs() {

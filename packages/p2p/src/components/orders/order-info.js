@@ -26,12 +26,12 @@ export default class OrderInfo {
     }
 
     static status_map = {
-        'pending'        : localize('Unpaid'),
+        pending: localize('Unpaid'),
         'buyer-confirmed': localize('Paid'),
-        'cancelled'      : localize('Cancelled'),
-        'timed-out'      : localize('Cancelled'),
-        'refunded'       : localize('Refunded'),
-        'completed'      : localize('Complete'),
+        cancelled: localize('Cancelled'),
+        'timed-out': localize('Cancelled'),
+        refunded: localize('Refunded'),
+        completed: localize('Completed'),
     };
 
     get display_status() {
@@ -66,7 +66,7 @@ export default class OrderInfo {
         return this.status === 'completed';
     }
 
-    setStatus = (value) => {
+    setStatus = value => {
         this.status = value;
-    }
+    };
 }

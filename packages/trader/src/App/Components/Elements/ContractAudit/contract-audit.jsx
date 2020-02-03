@@ -1,16 +1,16 @@
-import classNames      from 'classnames';
-import PropTypes       from 'prop-types';
-import React           from 'react';
-import { Tabs }        from '@deriv/components';
-import { localize }    from '@deriv/translations';
-import { WS }          from 'Services/ws-methods';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Tabs } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import { WS } from 'Services/ws-methods';
 import ContractDetails from './contract-details.jsx';
 import ContractHistory from './contract-history.jsx';
 
 class ContractAudit extends React.Component {
     state = {
         contract_update_history: [],
-    }
+    };
 
     static getDerivedStateFromProps({ is_multiplier, contract_update_history }, state) {
         if (!is_multiplier) return state;
@@ -22,7 +22,7 @@ class ContractAudit extends React.Component {
         return state;
     }
 
-    onTabItemClick = (tab_index) => {
+    onTabItemClick = tab_index => {
         this.props.toggleHistoryTab(tab_index);
         if (tab_index) {
             WS.contractUpdateHistory(this.props.contract_info.contract_id).then(response => {
@@ -31,14 +31,10 @@ class ContractAudit extends React.Component {
                 });
             });
         }
-    }
+    };
 
     render() {
-        const {
-            has_result,
-            is_multiplier,
-            contract_info,
-        } = this.props;
+        const { has_result, is_multiplier, contract_info } = this.props;
 
         if (!has_result) return null;
 
@@ -51,10 +47,11 @@ class ContractAudit extends React.Component {
         }
 
         return (
-            <div className={classNames('contract-audit__wrapper', {
-                'contract-audit__wrapper-tabs--active' : !contract_info.is_sold,
-                'contract-audit__wrapper-tabs--expired': contract_info.is_sold,
-            })}
+            <div
+                className={classNames('contract-audit__wrapper', {
+                    'contract-audit__wrapper-tabs--active': !contract_info.is_sold,
+                    'contract-audit__wrapper-tabs--expired': contract_info.is_sold,
+                })}
             >
                 <Tabs top className='contract-audit__tabs' onTabItemClick={this.onTabItemClick}>
                     <div label={localize('Details')}>
@@ -73,18 +70,15 @@ class ContractAudit extends React.Component {
 }
 
 ContractAudit.propTypes = {
-    contract_end_time: PropTypes.PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    contract_info          : PropTypes.object,
+    contract_end_time: PropTypes.PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    contract_info: PropTypes.object,
     contract_update_history: PropTypes.array,
-    duration               : PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    duration_unit          : PropTypes.string,
-    exit_spot              : PropTypes.string,
-    has_result             : PropTypes.bool,
-    is_multiplier          : PropTypes.bool,
-    toggleHistoryTab       : PropTypes.func,
+    duration: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    duration_unit: PropTypes.string,
+    exit_spot: PropTypes.string,
+    has_result: PropTypes.bool,
+    is_multiplier: PropTypes.bool,
+    toggleHistoryTab: PropTypes.func,
 };
 
 export default ContractAudit;

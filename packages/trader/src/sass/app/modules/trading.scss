@@ -21,12 +21,14 @@
 }
 
 .app-contents {
-    &--contract-mode, &--is-disabled {
+    &--contract-mode,
+    &--is-disabled {
         .trade-container {
             .popover {
                 display: none;
             }
-            .tooltip:before, .tooltip:after {
+            .tooltip:before,
+            .tooltip:after {
                 display: none;
             }
         }
@@ -35,7 +37,8 @@
         .popover {
             display: none;
         }
-        .tooltip:before, .tooltip:after {
+        .tooltip:before,
+        .tooltip:after {
             display: none;
         }
     }
@@ -83,7 +86,8 @@
                 opacity: 0.32;
             }
         }
-        &-tooltip-text, &-text {
+        &-tooltip-text,
+        &-text {
             margin-top: 0.8rem;
             font-size: 1.2rem;
             text-align: right;
@@ -107,7 +111,8 @@
         &:hover {
             border-color: var(--border-hover);
         }
-        &:active, &:focus {
+        &:active,
+        &:focus {
             border-color: var(--border-active);
         }
     }
@@ -151,7 +156,8 @@
             color: inherit;
         }
     }
-    &__price, &__order-input {
+    &__price,
+    &__order-input {
         line-height: 0.9rem;
         border: 0;
         width: 100%;
@@ -238,7 +244,8 @@
                 padding-right: 8px;
             }
         }
-        &--up, &--down {
+        &--up,
+        &--down {
             position: absolute;
             margin-top: 15px;
         }
@@ -299,7 +306,8 @@
                 padding-left: 1em;
             }
             /* postcss-bem-linter: ignore */
-            .dc-dropdown__display-text, .dc-list__item-text {
+            .dc-dropdown__display-text,
+            .dc-list__item-text {
                 text-transform: unset;
             }
         }

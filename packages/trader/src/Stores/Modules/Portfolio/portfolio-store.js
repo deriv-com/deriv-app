@@ -1,39 +1,23 @@
-import throttle                    from 'lodash.throttle';
-import {
-    action,
-    computed,
-    observable,
-    reaction }                     from 'mobx';
-import { createTransformer }       from 'mobx-utils';
-import { WS }                      from 'Services/ws-methods';
-import ObjectUtils                 from '@deriv/shared/utils/object';
+import throttle from 'lodash.throttle';
+import { action, computed, observable, reaction } from 'mobx';
+import { createTransformer } from 'mobx-utils';
+import { WS } from 'Services/ws-methods';
+import ObjectUtils from '@deriv/shared/utils/object';
 import { formatPortfolioPosition } from './Helpers/format-response';
-import {
-    contractCancelled,
-    contractSold }                 from './Helpers/portfolio-notifications';
-import {
-    getCurrentTick,
-    getDurationPeriod,
-    getDurationTime,
-    getDurationUnitText }          from './Helpers/details';
-import {
-    getDisplayStatus,
-    getEndTime,
-    isEnded,
-    isUserSold,
-    isValidToSell }                from '../Contract/Helpers/logic';
-import {
-    isMultiplierContract }         from '../Contract/Helpers/multiplier';
+import { contractCancelled, contractSold } from './Helpers/portfolio-notifications';
+import { getCurrentTick, getDurationPeriod, getDurationTime, getDurationUnitText } from './Helpers/details';
+import { getDisplayStatus, getEndTime, isEnded, isUserSold, isValidToSell } from '../Contract/Helpers/logic';
+import { isMultiplierContract } from '../Contract/Helpers/multiplier';
 
-import BaseStore                   from '../../base-store';
+import BaseStore from '../../base-store';
 
 export default class PortfolioStore extends BaseStore {
-    @observable.shallow positions  = [];
+    @observable.shallow positions = [];
     @observable.shallow all_positions = [];
     positionsMap = {};
     @observable is_loading = false;
-    @observable error      = '';
-    getPositionById        = createTransformer((id) => this.positions.find((position) => +position.id === +id));
+    @observable error = '';
+    getPositionById = createTransformer(id => this.positions.find(position => +position.id === +id));
 
     subscribers = {};
     responseQueue = [];
@@ -52,10 +36,10 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     clearTable() {
-        this.positions  = [];
+        this.positions = [];
         this.positionsMap = {};
         this.is_loading = false;
-        this.error      = '';
+        this.error = '';
         this.updatePositions();
         WS.forgetAll('proposal_open_contract', 'transaction');
     }
@@ -70,11 +54,10 @@ export default class PortfolioStore extends BaseStore {
         this.error = '';
         if (response.portfolio.contracts) {
             this.positions = response.portfolio.contracts
-                .map(pos => formatPortfolioPosition(pos,
-                    this.root_store.modules.trade.active_symbols))
+                .map(pos => formatPortfolioPosition(pos, this.root_store.modules.trade.active_symbols))
                 .sort((pos1, pos2) => pos2.reference - pos1.reference); // new contracts first
-            
-            this.positions.forEach((p)=>{
+
+            this.positions.forEach(p => {
                 this.positionsMap[p.id] = p;
             });
             this.updatePositions();
@@ -92,8 +75,10 @@ export default class PortfolioStore extends BaseStore {
             contract_type,
         };
         this.pushNewPosition(new_pos);
-        this.subscribers[contract_id] =
-            WS.subscribeProposalOpenContract(contract_id, this.proposalOpenContractQueueHandler);
+        this.subscribers[contract_id] = WS.subscribeProposalOpenContract(
+            contract_id,
+            this.proposalOpenContractQueueHandler
+        );
     }
 
     @action.bound
@@ -119,7 +104,7 @@ export default class PortfolioStore extends BaseStore {
                 return;
             }
             this.positions[i].is_loading = true;
-            const subscriber = WS.subscribeProposalOpenContract(contract_id, (poc) => {
+            const subscriber = WS.subscribeProposalOpenContract(contract_id, poc => {
                 this.updateContractTradeStore(poc);
                 this.populateResultDetails(poc);
                 subscriber.unsubscribe();
@@ -151,10 +136,10 @@ export default class PortfolioStore extends BaseStore {
         trade.updateLimitOrderBarriers(is_over, portfolio_position);
     }
 
-    proposalOpenContractQueueHandler = (response) => {
+    proposalOpenContractQueueHandler = response => {
         this.responseQueue.push(response);
         this.throttledUpdatePositions();
-    }
+    };
 
     @action.bound
     proposalOpenContractHandler(response) {
@@ -177,25 +162,27 @@ export default class PortfolioStore extends BaseStore {
         Object.assign(portfolio_position, formatted_position);
 
         const prev_indicative = portfolio_position.indicative;
-        const new_indicative  = +proposal.bid_price;
-        const profit_loss     = +proposal.profit;
+        const new_indicative = +proposal.bid_price;
+        const profit_loss = +proposal.profit;
 
         // fix for missing barrier and entry_spot in proposal_open_contract API response, only re-assign if valid
         if (proposal.barrier) portfolio_position.barrier = +proposal.barrier;
         if (proposal.entry_spot) portfolio_position.entry_spot = +proposal.entry_spot;
 
         // store contract proposal details that require modifiers
-        portfolio_position.indicative       = new_indicative;
-        portfolio_position.profit_loss      = profit_loss;
+        portfolio_position.indicative = new_indicative;
+        portfolio_position.profit_loss = profit_loss;
         portfolio_position.is_valid_to_sell = isValidToSell(proposal);
 
         // store contract proposal details that do not require modifiers
-        portfolio_position.contract_info    = proposal;
+        portfolio_position.contract_info = proposal;
 
         // for tick contracts
         if (proposal.tick_count) {
-            const current_tick = (portfolio_position.current_tick > getCurrentTick(proposal)) ?
-                portfolio_position.current_tick : getCurrentTick(proposal);
+            const current_tick =
+                portfolio_position.current_tick > getCurrentTick(proposal)
+                    ? portfolio_position.current_tick
+                    : getCurrentTick(proposal);
             portfolio_position.current_tick = current_tick;
         }
 
@@ -207,7 +194,7 @@ export default class PortfolioStore extends BaseStore {
             portfolio_position.status = null;
         }
 
-        if (this.hovered_position_id  === portfolio_position.id) {
+        if (this.hovered_position_id === portfolio_position.id) {
             if (portfolio_position.contract_info.is_sold === 1) {
                 this.updateTradeStore(false, portfolio_position);
             } else {
@@ -230,9 +217,7 @@ export default class PortfolioStore extends BaseStore {
                     });
                     this.root_store.ui.toggleServicesErrorModal(true);
                 } else {
-                    this.root_store.ui.addNotificationMessage(
-                        contractCancelled()
-                    );
+                    this.root_store.ui.addNotificationMessage(contractCancelled());
                 }
             });
         }
@@ -269,7 +254,7 @@ export default class PortfolioStore extends BaseStore {
             this.positions[i].is_sell_requested = false;
             // update contract store sell info after sell
             this.root_store.modules.contract_trade.sell_info = {
-                sell_price    : response.sell.sold_for,
+                sell_price: response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
             this.root_store.ui.addNotificationMessage(
@@ -279,7 +264,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
-    populateResultDetails = (response) => {
+    populateResultDetails = response => {
         const contract_response = response.proposal_open_contract;
         const i = this.getPositionIndexById(contract_response.contract_id);
 
@@ -287,20 +272,20 @@ export default class PortfolioStore extends BaseStore {
             return;
         }
 
-        this.positions[i].contract_info    = contract_response;
-        this.positions[i].duration         = getDurationTime(contract_response);
-        this.positions[i].duration_unit    = getDurationUnitText(getDurationPeriod(contract_response));
-        this.positions[i].exit_spot        = contract_response.exit_tick || contract_response.current_spot; // workaround if no exit_tick in proposal_open_contract, use latest spot
+        this.positions[i].contract_info = contract_response;
+        this.positions[i].duration = getDurationTime(contract_response);
+        this.positions[i].duration_unit = getDurationUnitText(getDurationPeriod(contract_response));
+        this.positions[i].exit_spot = contract_response.exit_tick || contract_response.current_spot; // workaround if no exit_tick in proposal_open_contract, use latest spot
         this.positions[i].is_valid_to_sell = isValidToSell(contract_response);
-        this.positions[i].result           = getDisplayStatus(contract_response);
-        this.positions[i].profit_loss      = +contract_response.profit;
-        this.positions[i].sell_time        = getEndTime(contract_response) || contract_response.current_spot_time; // same as exit_spot, use latest spot time if no exit_tick_time
-        this.positions[i].sell_price       = contract_response.sell_price;
-        this.positions[i].status           = 'complete';
+        this.positions[i].result = getDisplayStatus(contract_response);
+        this.positions[i].profit_loss = +contract_response.profit;
+        this.positions[i].sell_time = getEndTime(contract_response) || contract_response.current_spot_time; // same as exit_spot, use latest spot time if no exit_tick_time
+        this.positions[i].sell_price = contract_response.sell_price;
+        this.positions[i].status = 'complete';
 
         // fix for missing barrier and entry_spot
         if (!this.positions[i].contract_info.barrier || !this.positions[i].contract_info.entry_spot) {
-            this.positions[i].contract_info.barrier    = this.positions[i].barrier;
+            this.positions[i].contract_info.barrier = this.positions[i].barrier;
             this.positions[i].contract_info.entry_spot = this.positions[i].entry_spot;
         }
 
@@ -317,15 +302,14 @@ export default class PortfolioStore extends BaseStore {
                 delete this.subscribers[contract_response.contract_id];
             });
         }
-        if (this.hovered_position_id  === this.positions[i].id && this.positions[i].contract_info.is_sold) {
+        if (this.hovered_position_id === this.positions[i].id && this.positions[i].contract_info.is_sold) {
             this.updateTradeStore(false, this.positions[i]);
         }
     };
 
     @action.bound
     pushNewPosition(new_pos) {
-        const position = formatPortfolioPosition(new_pos,
-            this.root_store.modules.trade.active_symbols);
+        const position = formatPortfolioPosition(new_pos, this.root_store.modules.trade.active_symbols);
         this.positions.unshift(position);
         this.positionsMap[position.id] = position;
         this.updatePositions();
@@ -342,23 +326,28 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
-    accountSwitcherListener () {
-        return new Promise(async (resolve) => {
+    accountSwitcherListener() {
+        return new Promise(async resolve => {
             return resolve(this.initializePortfolio());
         });
     }
 
     @action.bound
-    onHoverPosition(is_over, position){
+    onHoverPosition(is_over, position) {
         const { symbol: underlying } = this.root_store.modules.trade;
-        if (position.contract_info.underlying !== underlying || isEnded(position.contract_info)
-            || !isMultiplierContract(position.type)) { return; }
+        if (
+            position.contract_info.underlying !== underlying ||
+            isEnded(position.contract_info) ||
+            !isMultiplierContract(position.type)
+        ) {
+            return;
+        }
 
         this.hovered_position_id = is_over ? position.id : null;
         this.updateTradeStore(is_over, position);
     }
-    
-    preSwitchAccountListener () {
+
+    preSwitchAccountListener() {
         this.clearTable();
 
         return Promise.resolve();
@@ -380,11 +369,14 @@ export default class PortfolioStore extends BaseStore {
             if (this.root_store.client.is_logged_in) {
                 this.initializePortfolio();
             } else {
-                reaction(() => this.root_store.client.is_logged_in, () => {
-                    if (this.root_store.client.is_logged_in) {
-                        this.initializePortfolio();
+                reaction(
+                    () => this.root_store.client.is_logged_in,
+                    () => {
+                        if (this.root_store.client.is_logged_in) {
+                            this.initializePortfolio();
+                        }
                     }
-                });
+                );
             }
         }
     }
@@ -407,13 +399,13 @@ export default class PortfolioStore extends BaseStore {
     @computed
     get totals() {
         let indicative = 0;
-        let payout     = 0;
-        let purchase   = 0;
+        let payout = 0;
+        let purchase = 0;
 
-        this.positions.forEach((portfolio_pos) => {
-            indicative += (+portfolio_pos.indicative);
-            payout     += (+portfolio_pos.payout);
-            purchase   += (+portfolio_pos.purchase);
+        this.positions.forEach(portfolio_pos => {
+            indicative += +portfolio_pos.indicative;
+            payout += +portfolio_pos.payout;
+            purchase += +portfolio_pos.purchase;
         });
         return {
             indicative,
@@ -432,7 +424,7 @@ export default class PortfolioStore extends BaseStore {
         this.responseQueue.forEach(res => this.proposalOpenContractHandler(res));
         this.responseQueue = [];
         this.setActivePositions();
-    }
+    };
 
     throttledUpdatePositions = throttle(this.updatePositions, 500);
 

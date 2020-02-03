@@ -28,7 +28,8 @@
     position: relative;
 
     &__input {
-        &::-ms-clear { // Edge: hide clear icon for incement input
+        &::-ms-clear {
+            // Edge: hide clear icon for incement input
             display: none;
         }
     }
@@ -95,7 +96,7 @@
     border: 1px solid var(--fill-normal);
     color: var(--text-prominent);
 
-    &[type=checkbox] {
+    &[type='checkbox'] {
         font-size: 1.2em;
         cursor: pointer;
         display: inline-block;
@@ -131,7 +132,8 @@
                 border-color: var(--brand-red-coral);
             }
         }
-        &::-ms-check { // IE/EDGE support
+        &::-ms-check {
+            // IE/EDGE support
             background: transparent;
             border-color: transparent;
             color: $COLOR_WHITE;
@@ -146,7 +148,7 @@
             display: none;
         }
     }
-    &:not([type=range]) {
+    &:not([type='range']) {
         touch-action: manipulation;
     }
     &[readonly] {
@@ -158,7 +160,8 @@
     &:hover {
         border-color: var(--border-hover);
     }
-    &:active, &:focus {
+    &:active,
+    &:focus {
         outline: 0;
         border-radius: $BORDER_RADIUS;
         border-color: var(--border-active);

@@ -1,25 +1,13 @@
 import { Checkbox } from '@deriv/components';
-import React        from 'react';
+import React from 'react';
 
 /*
  * This component is used with Formik's Field component.
  */
-const CheckboxField = ({
-    field: { name, value, onChange },
-    id,
-    label,
-    className,
-    ...props
-}) => {
+const CheckboxField = ({ field: { name, value, onChange }, id, label, className, ...props }) => {
     return (
         <div className={className}>
-            <Checkbox
-                value={value}
-                name={name}
-                label={label}
-                onChange={onChange}
-                {...props}
-            />
+            <Checkbox value={value} name={name} label={label} onChange={onChange} {...props} />
         </div>
     );
 };

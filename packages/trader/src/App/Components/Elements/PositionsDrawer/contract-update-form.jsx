@@ -1,9 +1,9 @@
-import React                   from 'react';
-import PropTypes               from 'prop-types';
-import { Button, Popover }     from '@deriv/components';
-import InputWithCheckbox       from 'App/Components/Form/InputField/input-with-checkbox.jsx';
-import { localize }            from '@deriv/translations';
-import { connect }             from 'Stores/connect';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Button, Popover } from '@deriv/components';
+import InputWithCheckbox from 'App/Components/Form/InputField/input-with-checkbox.jsx';
+import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-orders';
 
 class ContractUpdateForm extends React.Component {
@@ -15,38 +15,27 @@ class ContractUpdateForm extends React.Component {
         const contract = this.props.getContractById(this.props.contract_id);
 
         const {
-            contract_info: {
-                is_valid_to_cancel,
-                limit_order,
-            },
-            contract_update: {
-                has_stop_loss,
-                has_take_profit,
-                stop_loss,
-                take_profit,
-            },
+            contract_info: { is_valid_to_cancel, limit_order },
+            contract_update: { has_stop_loss, has_take_profit, stop_loss, take_profit },
         } = contract;
 
-        const {
-            stop_loss  : contract_info_stop_loss,
-            take_profit: contract_info_take_profit,
-        } = getLimitOrderAmount(limit_order);
+        const { stop_loss: contract_info_stop_loss, take_profit: contract_info_take_profit } = getLimitOrderAmount(
+            limit_order
+        );
 
-        const isValid = (val) => !(val === undefined || val === null);
+        const isValid = val => !(val === undefined || val === null);
 
-        const is_take_profit_valid = (has_take_profit ? take_profit > 0 : isValid(contract_info_take_profit));
-        const is_stop_loss_valid   = (has_stop_loss ? stop_loss > 0 : isValid(contract_info_stop_loss));
+        const is_take_profit_valid = has_take_profit ? take_profit > 0 : isValid(contract_info_take_profit);
+        const is_stop_loss_valid = has_stop_loss ? stop_loss > 0 : isValid(contract_info_stop_loss);
 
-        return (is_valid_to_cancel ? false : !!(is_take_profit_valid || is_stop_loss_valid));
+        return is_valid_to_cancel ? false : !!(is_take_profit_valid || is_stop_loss_valid);
     }
-    
+
     render() {
         const {
             contract_info: {
                 buy_price,
-                deal_cancellation: {
-                    ask_price: deal_cancellation_price = 0,
-                } = {},
+                deal_cancellation: { ask_price: deal_cancellation_price = 0 } = {},
                 is_valid_to_cancel,
             },
             contract_update: {
@@ -60,7 +49,7 @@ class ContractUpdateForm extends React.Component {
             },
         } = this.props.getContractById(this.props.contract_id);
 
-        const onChange = (e) => {
+        const onChange = e => {
             const { name, value } = e.target;
 
             const contract_update = {};
@@ -88,13 +77,13 @@ class ContractUpdateForm extends React.Component {
         };
 
         const {
-            contract_update_stop_loss  : stop_loss_error_messages,
+            contract_update_stop_loss: stop_loss_error_messages,
             contract_update_take_profit: take_profit_error_messages,
         } = this.props.validation_errors;
 
-        const has_error = ((has_stop_loss && stop_loss_error_messages && stop_loss_error_messages.length)
-            || (has_take_profit && take_profit_error_messages && take_profit_error_messages.length)
-        );
+        const has_error =
+            (has_stop_loss && stop_loss_error_messages && stop_loss_error_messages.length) ||
+            (has_take_profit && take_profit_error_messages && take_profit_error_messages.length);
 
         const take_profit_input = (
             <InputWithCheckbox
@@ -132,34 +121,34 @@ class ContractUpdateForm extends React.Component {
         return (
             <React.Fragment>
                 <div className='positions-drawer-dialog__input'>
-                    {is_valid_to_cancel ?
+                    {is_valid_to_cancel ? (
                         <Popover
                             alignment='right'
                             margin={4}
-                            message={localize('You may update your take profit amount after deal cancellation has expired.')}
+                            message={localize(
+                                'You may update your take profit amount after deal cancellation has expired.'
+                            )}
                         >
                             {take_profit_input}
                         </Popover>
-                        :
-                        <React.Fragment>
-                            {take_profit_input}
-                        </React.Fragment>
-                    }
+                    ) : (
+                        <React.Fragment>{take_profit_input}</React.Fragment>
+                    )}
                 </div>
                 <div className='positions-drawer-dialog__input'>
-                    {is_valid_to_cancel ?
+                    {is_valid_to_cancel ? (
                         <Popover
                             alignment='right'
                             margin={4}
-                            message={localize('You may update your stop loss amount after deal cancellation has expired.')}
+                            message={localize(
+                                'You may update your stop loss amount after deal cancellation has expired.'
+                            )}
                         >
                             {stop_loss_input}
                         </Popover>
-                        :
-                        <React.Fragment>
-                            {stop_loss_input}
-                        </React.Fragment>
-                    }
+                    ) : (
+                        <React.Fragment>{stop_loss_input}</React.Fragment>
+                    )}
                 </div>
                 <div className='positions-drawer-dialog__button'>
                     <Button
@@ -175,17 +164,15 @@ class ContractUpdateForm extends React.Component {
 }
 
 ContractUpdateForm.propTypes = {
-    contract_id        : PropTypes.number,
-    getContractById    : PropTypes.func,
+    contract_id: PropTypes.number,
+    getContractById: PropTypes.func,
     resetContractUpdate: PropTypes.func,
-    toggleDialog       : PropTypes.func,
-    validation_errors  : PropTypes.object,
+    toggleDialog: PropTypes.func,
+    validation_errors: PropTypes.object,
 };
 
-export default connect(
-    ({ modules }) => ({
-        getContractById    : modules.contract_replay.getContractById,
-        resetContractUpdate: modules.contract_replay.resetContractUpdate,
-        validation_errors  : modules.contract_trade.validation_errors,
-    })
-)(ContractUpdateForm);
+export default connect(({ modules }) => ({
+    getContractById: modules.contract_replay.getContractById,
+    resetContractUpdate: modules.contract_replay.resetContractUpdate,
+    validation_errors: modules.contract_trade.validation_errors,
+}))(ContractUpdateForm);

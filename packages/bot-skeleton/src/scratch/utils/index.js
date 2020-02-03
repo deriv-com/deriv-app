@@ -1,9 +1,9 @@
-import { localize }                   from '@deriv/translations';
-import { saveAs }                     from '../shared';
-import BlockConversion                from '../backward-compatibility';
-import { config }                     from '../../constants/config';
+import { localize } from '@deriv/translations';
+import { saveAs } from '../shared';
+import BlockConversion from '../backward-compatibility';
+import { config } from '../../constants/config';
 import { observer as globalObserver } from '../../utils/observer';
-import { removeLimitedBlocks }        from '../../utils/workspace';
+import { removeLimitedBlocks } from '../../utils/workspace';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 
@@ -15,30 +15,28 @@ export const oppositesToDropdownOptions = opposite_name => {
 };
 
 export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
-    const {
-        clientX = 0,
-        clientY = 0 }        = drop_event || {};
-    const toolbar_height     = 76;
-    const blockly_metrics    = Blockly.derivWorkspace.getMetrics();
+    const { clientX = 0, clientY = 0 } = drop_event || {};
+    const toolbar_height = 76;
+    const blockly_metrics = Blockly.derivWorkspace.getMetrics();
     const scale_cancellation = 1 / Blockly.derivWorkspace.scale;
-    const blockly_left       = blockly_metrics.absoluteLeft - blockly_metrics.viewLeft;
-    const blockly_top        = document.body.offsetHeight - blockly_metrics.viewHeight - blockly_metrics.viewTop;
-    const cursor_x           = clientX ? (clientX - blockly_left) * scale_cancellation : 0;
-    const cursor_y           = clientY ? (clientY - blockly_top - toolbar_height) * scale_cancellation : 0;
+    const blockly_left = blockly_metrics.absoluteLeft - blockly_metrics.viewLeft;
+    const blockly_top = document.body.offsetHeight - blockly_metrics.viewHeight - blockly_metrics.viewTop;
+    const cursor_x = clientX ? (clientX - blockly_left) * scale_cancellation : 0;
+    const cursor_y = clientY ? (clientY - blockly_top - toolbar_height) * scale_cancellation : 0;
 
     Blockly.derivWorkspace.cleanUp(cursor_x, cursor_y, blocks_to_clean);
 };
 
 export const setBlockTextColor = (block, event) => {
     const is_legal_event =
-        event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(block.id) ||
-        event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === block.id;
+        (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(block.id)) ||
+        (event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === block.id);
 
     if (!is_legal_event) {
         return;
     }
 
-    const addClassAttribute = (field) => {
+    const addClassAttribute = field => {
         const el_svg = field.getSvgRoot();
         if (el_svg) {
             el_svg.setAttribute('class', 'blocklyTextRootBlockHeader');
@@ -95,7 +93,7 @@ export const load = (block_string, drop_event, showIncompatibleStrategyDialog) =
 
     const blockConversion = new BlockConversion();
     xml = blockConversion.convertStrategy(xml, showIncompatibleStrategyDialog);
-    
+
     const blockly_xml = xml.querySelectorAll('block');
 
     // Check if there are any blocks in this strategy.
@@ -117,7 +115,10 @@ export const load = (block_string, drop_event, showIncompatibleStrategyDialog) =
         const event_group = `dbot-load${Date.now()}`;
 
         Blockly.Events.setGroup(event_group);
-        removeLimitedBlocks(Blockly.derivWorkspace, Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type')));
+        removeLimitedBlocks(
+            Blockly.derivWorkspace,
+            Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
+        );
 
         if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
             loadBlocks(xml, drop_event, event_group);
@@ -135,7 +136,7 @@ export const load = (block_string, drop_event, showIncompatibleStrategyDialog) =
 
         // Dispatch resize event for comments.
         window.dispatchEvent(new Event('resize'));
-        globalObserver.emit('ui.log.success' , localize('Blocks are loaded successfully'));
+        globalObserver.emit('ui.log.success', localize('Blocks are loaded successfully'));
     } catch (e) {
         console.log(e); // eslint-disable-line
         return showInvalidStrategyError();
@@ -147,8 +148,8 @@ export const load = (block_string, drop_event, showIncompatibleStrategyDialog) =
 const loadBlocks = (xml, drop_event, event_group) => {
     Blockly.Events.setGroup(event_group);
 
-    const workspace    = Blockly.derivWorkspace;
-    const block_ids    = Blockly.Xml.domToWorkspace(xml, workspace);
+    const workspace = Blockly.derivWorkspace;
+    const block_ids = Blockly.Xml.domToWorkspace(xml, workspace);
     const added_blocks = block_ids.map(block_id => workspace.getBlockById(block_id));
 
     if (drop_event && Object.keys(drop_event).length !== 0) {
@@ -185,19 +186,21 @@ const loadBlocksFromHeader = (xml_string, block) => {
                 reject(localize('Remote blocks to load must be a collection.'));
             }
 
-            addLoaderBlocksFirst(xml).then(() => {
-                Array.from(xml.children).forEach(el_block => addDomAsBlock(el_block, block));
-                resolve();
-            }).catch(() => {
-                reject();
-            });
+            addLoaderBlocksFirst(xml)
+                .then(() => {
+                    Array.from(xml.children).forEach(el_block => addDomAsBlock(el_block, block));
+                    resolve();
+                })
+                .catch(() => {
+                    reject();
+                });
         } catch (e) {
             reject(localize('Unable to load the block file.'));
         }
     });
 };
 
-export const loadBlocksFromRemote = (block) => {
+export const loadBlocksFromRemote = block => {
     // eslint-disable-next-line consistent-return
     return new Promise((resolve, reject) => {
         let url = block.getFieldValue('URL');
@@ -206,7 +209,7 @@ export const loadBlocksFromRemote = (block) => {
             url = `http://${url}`;
         }
 
-        const url_pattern                    = /[^/]*\.[a-zA-Z]{3}$/;
+        const url_pattern = /[^/]*\.[a-zA-Z]{3}$/;
         const has_possible_missing_index_xml = url.slice(-1)[0] === '/';
 
         if (!url.match(url_pattern) && !has_possible_missing_index_xml) {
@@ -224,23 +227,25 @@ export const loadBlocksFromRemote = (block) => {
 
         const onFetchError = () => reject(localize('An error occured while trying to load the URL'));
 
-        fetch(url).then(response => {
-            if (response.ok) {
-                response.text().then(xml_string => {
-                    loadBlocksFromHeader(xml_string, block)
-                        .then(() => resolve(block))
-                        .catch(onFetchError);
-                });
-            } else {
-                onFetchError();
-            }
-        }).catch(onFetchError);
+        fetch(url)
+            .then(response => {
+                if (response.ok) {
+                    response.text().then(xml_string => {
+                        loadBlocksFromHeader(xml_string, block)
+                            .then(() => resolve(block))
+                            .catch(onFetchError);
+                    });
+                } else {
+                    onFetchError();
+                }
+            })
+            .catch(onFetchError);
     });
 };
 
-export const addLoaderBlocksFirst = (xml) => {
+export const addLoaderBlocksFirst = xml => {
     return new Promise((resolve, reject) => {
-        const promises     = [];
+        const promises = [];
 
         Array.from(xml.children).forEach(el_block => {
             const block_type = el_block.getAttribute('type');
@@ -265,9 +270,9 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
         return Blockly.Xml.domToVariables(el_block, Blockly.derivWorkspace);
     }
 
-    const block_type       = el_block.getAttribute('type');
+    const block_type = el_block.getAttribute('type');
     const block_conversion = new BlockConversion();
-    const block_xml        = Blockly.Xml.blockToDom(block_conversion.convertBlockNode(el_block));
+    const block_xml = Blockly.Xml.blockToDom(block_conversion.convertBlockNode(el_block));
 
     // Fix legacy Blockly `varid` attribute.
     Array.from(block_xml.getElementsByTagName('arg')).forEach(el => {
@@ -287,11 +292,11 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
     return block;
 };
 
-export const hasAllRequiredBlocks = (workspace) => {
-    const blocks_in_workspace     = workspace.getAllBlocks();
+export const hasAllRequiredBlocks = workspace => {
+    const blocks_in_workspace = workspace.getAllBlocks();
     const { mandatoryMainBlocks } = config;
-    const required_block_types    = ['trade_definition_tradeoptions', ...mandatoryMainBlocks];
-    const all_block_types         = blocks_in_workspace.map(block => block.type);
+    const required_block_types = ['trade_definition_tradeoptions', ...mandatoryMainBlocks];
+    const all_block_types = blocks_in_workspace.map(block => block.type);
     const has_all_required_blocks = required_block_types.every(block_type => all_block_types.includes(block_type));
 
     return has_all_required_blocks;
@@ -304,9 +309,9 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
     let scroll_y = ws_metrics.viewTop - ws_metrics.contentTop;
 
     if (is_horizontal) {
-        scroll_x += (is_chronological ? scroll_amount : -scroll_amount);
+        scroll_x += is_chronological ? scroll_amount : -scroll_amount;
     } else {
-        scroll_y += (is_chronological ? scroll_amount : -scroll_amount);
+        scroll_y += is_chronological ? scroll_amount : -scroll_amount;
     }
 
     workspace.scrollbar.set(scroll_x, scroll_y);
@@ -319,7 +324,7 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
  * @param {Function} callbackFn Logic to execute as part of this event group.
  */
 export const runGroupedEvents = (use_existing_group, callbackFn, opt_group_name) => {
-    const group = use_existing_group && Blockly.Events.getGroup() || opt_group_name || true;
+    const group = (use_existing_group && Blockly.Events.getGroup()) || opt_group_name || true;
 
     Blockly.Events.setGroup(group);
     callbackFn();
@@ -334,8 +339,8 @@ export const runGroupedEvents = (use_existing_group, callbackFn, opt_group_name)
  * happening as part of the callbackFn logic cannot be undone.
  * @param {*} callbackFn Logic to execute as part of this event group.
  */
-export const runIrreversibleEvents = (callbackFn) => {
-    const { recordUndo }      = Blockly.Events;
+export const runIrreversibleEvents = callbackFn => {
+    const { recordUndo } = Blockly.Events;
     Blockly.Events.recordUndo = false;
 
     callbackFn();
@@ -348,7 +353,7 @@ export const runIrreversibleEvents = (callbackFn) => {
  * (Preference should be given to runIrreversibleEvents).
  * @param {*} callbackFn Logic to completely hide from Blockly
  */
-export const runInvisibleEvents = (callbackFn) => {
+export const runInvisibleEvents = callbackFn => {
     Blockly.Events.disable();
     callbackFn();
     Blockly.Events.enable();
@@ -365,20 +370,24 @@ export const updateDisabledBlocks = (workspace, event) => {
             if (restricted_parents.length === 0) {
                 return;
             }
-    
-            const should_disable = !(restricted_parents.some(restricted_parent =>
+
+            const should_disable = !restricted_parents.some(restricted_parent =>
                 block.isDescendantOf(restricted_parent)
-            ));
-    
-            runGroupedEvents(true, () => {
-                block.setDisabled(should_disable);
-            }, event.group);
+            );
+
+            runGroupedEvents(
+                true,
+                () => {
+                    block.setDisabled(should_disable);
+                },
+                event.group
+            );
 
             Blockly.Events.setGroup(false);
         });
     }
 };
 
-export const emptyTextValidator = (input) => {
-    return !input || input === '\'\'';
+export const emptyTextValidator = input => {
+    return !input || input === "''";
 };

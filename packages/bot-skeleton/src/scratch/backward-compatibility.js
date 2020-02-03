@@ -1,22 +1,20 @@
-import { localize }  from '@deriv/translations';
-import { config }    from '../constants/config';
-import ApiHelpers    from '../services/api/api-helpers';
+import { localize } from '@deriv/translations';
+import { config } from '../constants/config';
+import ApiHelpers from '../services/api/api-helpers';
 
 /* eslint-disable no-underscore-dangle */
 export default class BlockConversion {
     constructor() {
         this.blocks_pending_reconnect = {};
-        this.workspace                = this.createWorkspace();
-        this.workspace_variables      = {};
+        this.workspace = this.createWorkspace();
+        this.workspace_variables = {};
     }
 
     getConversions() {
         const generateGrowingListBlock = (block_node, block_type, variable_name, child_value_input_name) => {
-            const block             = this.workspace.newBlock(block_type);
+            const block = this.workspace.newBlock(block_type);
             const block_child_nodes = Array.from(block_node.children);
-            const mutation_dom      = block_child_nodes.find(child_node =>
-                child_node.tagName.toLowerCase() === 'mutation'
-            );
+            const mutation_dom = block_child_nodes.find(child_node => child_node.tagName.toLowerCase() === 'mutation');
 
             if (mutation_dom) {
                 const items_amount = parseInt(mutation_dom.getAttribute('items')) || 0;
@@ -32,16 +30,18 @@ export default class BlockConversion {
                     // user can have empty entries in their list!
                     block_child_nodes
                         .filter(child_node => child_node.tagName.toLowerCase() === 'value')
-                        .forEach((child_node) => {
-                            const value_input_name  = child_node.getAttribute('name');
+                        .forEach(child_node => {
+                            const value_input_name = child_node.getAttribute('name');
                             const value_input_index = parseInt(value_input_name.replace(/[^0-9]+/g, ''));
 
                             Array.from(child_node.children).forEach(value_block_node => {
                                 const value_block = this.convertBlockNode(value_block_node, block);
 
                                 // Now connect this converted block to the new text_statement.
-                                const statement_block = block.getBlocksInStatement('STACK').find((b, i) => value_input_index === i);
-                                const value_input     = statement_block.getInput(child_value_input_name);
+                                const statement_block = block
+                                    .getBlocksInStatement('STACK')
+                                    .find((b, i) => value_input_index === i);
+                                const value_input = statement_block.getInput(child_value_input_name);
 
                                 value_input.connection.connect(value_block.outputConnection);
                             });
@@ -59,37 +59,37 @@ export default class BlockConversion {
             block.setFieldValue(variable.getId(), 'VARIABLE');
 
             return {
-                block_to_attach : variable_block,
+                block_to_attach: variable_block,
                 statement_blocks: [block],
             };
         };
         const generateIndicatorBlock = (block_node, block_type, variable_name) => {
             const block = this.workspace.newBlock(block_type);
             const value_input_name_mappings = {
-                input_list       : [{ old: 'INPUT',             new: 'INPUT_LIST' }],
-                period           : [{ old: 'PERIOD',            new: 'PERIOD' }],
-                fast_ema_period  : [{ old: 'FAST_EMA_PERIOD',   new: 'FAST_EMA_PERIOD' }],
+                input_list: [{ old: 'INPUT', new: 'INPUT_LIST' }],
+                period: [{ old: 'PERIOD', new: 'PERIOD' }],
+                fast_ema_period: [{ old: 'FAST_EMA_PERIOD', new: 'FAST_EMA_PERIOD' }],
                 signal_ema_period: [
                     // https://github.com/binary-com/binary-bot/pull/1123
-                    { old: 'SMA_PERIOD',        new: 'SIGNAL_EMA_PERIOD' },
+                    { old: 'SMA_PERIOD', new: 'SIGNAL_EMA_PERIOD' },
                     { old: 'SIGNAL_EMA_PERIOD', new: 'SIGNAL_EMA_PERIOD' },
                 ],
-                slow_ema_period        : [{ old: 'SLOW_EMA_PERIOD',   new: 'SLOW_EMA_PERIOD' }],
-                std_dev_multiplier_up  : [{ old: 'UPMULTIPLIER',      new: 'UPMULTIPLIER' }],
-                std_dev_multiplier_down: [{ old: 'DOWNMULTIPLIER',    new: 'DOWNMULTIPLIER' }],
+                slow_ema_period: [{ old: 'SLOW_EMA_PERIOD', new: 'SLOW_EMA_PERIOD' }],
+                std_dev_multiplier_up: [{ old: 'UPMULTIPLIER', new: 'UPMULTIPLIER' }],
+                std_dev_multiplier_down: [{ old: 'DOWNMULTIPLIER', new: 'DOWNMULTIPLIER' }],
             };
 
             // Bollinger Bands + MACDA have some fields we need to carry over.
             switch (block_type) {
-                case ('bb_statement'):
-                case ('bba_statement'): {
+                case 'bb_statement':
+                case 'bba_statement': {
                     const bb_result_list = block.getField('BBRESULT_LIST');
                     if (bb_result_list) {
                         bb_result_list.setValue(this.getFieldValue(block_node, 'BBRESULT_LIST'));
                     }
                     break;
                 }
-                case ('macda_statement'): {
+                case 'macda_statement': {
                     const macd_fields_list = block.getField('MACDFIELDS_LIST');
                     if (macd_fields_list) {
                         macd_fields_list.setValue(this.getFieldValue(block_node, 'MACDFIELDS_LIST'));
@@ -104,7 +104,7 @@ export default class BlockConversion {
             const required_child_blocks = block.required_child_blocks || [];
 
             required_child_blocks.forEach(required_child_block_name => {
-                const child_block     = this.workspace.newBlock(required_child_block_name);
+                const child_block = this.workspace.newBlock(required_child_block_name);
                 const last_connection = block.getLastConnectionInStatement('STATEMENT');
 
                 last_connection.connect(child_block.previousConnection);
@@ -123,7 +123,7 @@ export default class BlockConversion {
                             const value_input = block_in_statement.getInput(value_name_mapping.new);
 
                             Array.from(el_value.children).forEach(el_value_child => {
-                                const converted_block  = this.convertBlockNode(el_value_child, block);
+                                const converted_block = this.convertBlockNode(el_value_child, block);
                                 const input_child_type = el_value_child.tagName.toLowerCase();
 
                                 if (input_child_type === 'shadow') {
@@ -140,20 +140,20 @@ export default class BlockConversion {
             });
 
             // Return variable block instead of statement.
-            const variable       = this.generateUniqueVariable(variable_name);
+            const variable = this.generateUniqueVariable(variable_name);
             const variable_block = this.workspace.newBlock('variables_get');
 
             variable_block.setFieldValue(variable.getId(), 'VAR');
             block.setFieldValue(variable.getId(), 'VARIABLE');
 
             return {
-                block_to_attach : variable_block,
+                block_to_attach: variable_block,
                 statement_blocks: [block],
             };
         };
         const tradeOptions = (block_node, is_symbol_type = false) => {
-            const block            = this.workspace.newBlock('trade_definition_tradeoptions');
-            const block_node_to_use  = block_node;
+            const block = this.workspace.newBlock('trade_definition_tradeoptions');
+            const block_node_to_use = block_node;
 
             // Legacy symbol blocks used a statement "CONDITION" populated with a trade type block.
             // This trade type block has the same structure as tradeOptions, hence we can use it here.
@@ -161,7 +161,12 @@ export default class BlockConversion {
                 return false;
             }
 
-            const fields            = ['DURATIONTYPE_LIST', 'CURRENCY_LIST', 'BARRIEROFFSETTYPE_LIST', 'SECONDBARRIEROFFSETTYPE_LIST'];
+            const fields = [
+                'DURATIONTYPE_LIST',
+                'CURRENCY_LIST',
+                'BARRIEROFFSETTYPE_LIST',
+                'SECONDBARRIEROFFSETTYPE_LIST',
+            ];
             const block_child_nodes = Array.from(block_node_to_use.children);
 
             let barrier_inputs = 0;
@@ -182,7 +187,7 @@ export default class BlockConversion {
             if (barrier_inputs > 0) {
                 block.createBarrierInputs({
                     allow_both_types: true,
-                    values          : [1, -1],
+                    values: [1, -1],
                 });
             }
 
@@ -200,24 +205,25 @@ export default class BlockConversion {
             return { block_to_attach: block };
         };
         const conversions = {
-            bb               : (block_node) => generateIndicatorBlock(block_node, 'bb_statement', 'bb'),
-            bba              : (block_node) => generateIndicatorBlock(block_node, 'bba_statement', 'bba'),
-            ema              : (block_node) => generateIndicatorBlock(block_node, 'ema_statement', 'ema'),
-            emaa             : (block_node) => generateIndicatorBlock(block_node, 'emaa_statement', 'emaa'),
-            lists_create_with: (block_node) => generateGrowingListBlock(block_node, 'lists_create_with', localize('list'), 'VALUE'),
-            macda            : (block_node) => generateIndicatorBlock(block_node, 'macda_statement', 'macda'),
-            market           : (block_node) => tradeOptions(block_node),
-            rsi              : (block_node) => generateIndicatorBlock(block_node, 'rsi_statement', 'rsi'),
-            rsia             : (block_node) => generateIndicatorBlock(block_node, 'rsia_statement', 'rsia'),
-            sma              : (block_node) => generateIndicatorBlock(block_node, 'sma_statement', 'sma'),
-            smaa             : (block_node) => generateIndicatorBlock(block_node, 'smaa_statement', 'smaa'),
-            text_join        : (block_node) => generateGrowingListBlock(block_node, 'text_join', localize('text'), 'TEXT'),
-            trade            : (block_node) => {
-                const block        = this.workspace.newBlock('trade_definition');
+            bb: block_node => generateIndicatorBlock(block_node, 'bb_statement', 'bb'),
+            bba: block_node => generateIndicatorBlock(block_node, 'bba_statement', 'bba'),
+            ema: block_node => generateIndicatorBlock(block_node, 'ema_statement', 'ema'),
+            emaa: block_node => generateIndicatorBlock(block_node, 'emaa_statement', 'emaa'),
+            lists_create_with: block_node =>
+                generateGrowingListBlock(block_node, 'lists_create_with', localize('list'), 'VALUE'),
+            macda: block_node => generateIndicatorBlock(block_node, 'macda_statement', 'macda'),
+            market: block_node => tradeOptions(block_node),
+            rsi: block_node => generateIndicatorBlock(block_node, 'rsi_statement', 'rsi'),
+            rsia: block_node => generateIndicatorBlock(block_node, 'rsia_statement', 'rsia'),
+            sma: block_node => generateIndicatorBlock(block_node, 'sma_statement', 'sma'),
+            smaa: block_node => generateIndicatorBlock(block_node, 'smaa_statement', 'smaa'),
+            text_join: block_node => generateGrowingListBlock(block_node, 'text_join', localize('text'), 'TEXT'),
+            trade: block_node => {
+                const block = this.workspace.newBlock('trade_definition');
                 const block_fields = {
-                    trade_definition_market        : ['MARKET_LIST', 'SUBMARKET_LIST', 'SYMBOL_LIST'],
-                    trade_definition_tradetype     : ['TRADETYPECAT_LIST', 'TRADETYPE_LIST'],
-                    trade_definition_contracttype  : ['TYPE_LIST'],
+                    trade_definition_market: ['MARKET_LIST', 'SUBMARKET_LIST', 'SYMBOL_LIST'],
+                    trade_definition_tradetype: ['TRADETYPECAT_LIST', 'TRADETYPE_LIST'],
+                    trade_definition_contracttype: ['TYPE_LIST'],
                     trade_definition_candleinterval: ['CANDLEINTERVAL_LIST'],
                     trade_definition_restartbuysell: ['TIME_MACHINE_ENABLED'],
                     trade_definition_restartonerror: ['RESTARTONERROR'],
@@ -256,7 +262,7 @@ export default class BlockConversion {
         // We don't convert these atm, as a workaround users can import to BBot, then export and load
         // into DBot.
         const { active_symbols } = ApiHelpers.instance.active_symbols;
-        const { opposites }      = config;
+        const { opposites } = config;
 
         active_symbols.forEach(active_symbol => {
             const symbol_name = active_symbol.symbol.toLowerCase();
@@ -273,14 +279,10 @@ export default class BlockConversion {
 
     // eslint-disable-next-line class-methods-use-this
     createWorkspace() {
-        const options          = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
-        const fragment         = document.createDocumentFragment();
+        const options = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
         const el_injection_div = document.createElement('div');
-
-        fragment.appendChild(el_injection_div);
-
-        const svg              = Blockly.createDom_(el_injection_div, options);
-        const workspace        = Blockly.createMainWorkspace_(svg, options, false, false);
+        const svg = Blockly.createDom_(el_injection_div, options);
+        const workspace = Blockly.createMainWorkspace_(svg, options, false, false);
 
         return workspace;
     }
@@ -294,7 +296,7 @@ export default class BlockConversion {
     // eslint-disable-next-line class-methods-use-this
     getFirstBlockInStack(block) {
         let current_previous_connection = block.previousConnection;
-        let previous_block              = block.getPreviousBlock();
+        let previous_block = block.getPreviousBlock();
 
         if (!current_previous_connection) {
             return block;
@@ -319,12 +321,12 @@ export default class BlockConversion {
                 volidx: 'synthetic_index',
             },
             TRADETYPECAT_LIST: {
-                endsinout   : 'inout',
-                staysinout  : 'inout',
+                endsinout: 'inout',
+                staysinout: 'inout',
                 callputequal: 'callput',
             },
             TRADETYPE_LIST: {
-                risefall      : 'callput',
+                risefall: 'callput',
                 risefallequals: 'callputequal',
             },
         };
@@ -373,8 +375,8 @@ export default class BlockConversion {
             return xml;
         }
 
-        const has_illegal_block = this.getIllegalBlocks().some(illegal_block_type =>
-            !!xml.querySelector(`block[type="${illegal_block_type}"]`)
+        const has_illegal_block = this.getIllegalBlocks().some(
+            illegal_block_type => !!xml.querySelector(`block[type="${illegal_block_type}"]`)
         );
 
         if (has_illegal_block) {
@@ -386,18 +388,18 @@ export default class BlockConversion {
         }
 
         const variable_nodes = [];
-        const block_nodes    = [];
+        const block_nodes = [];
 
         Array.from(xml.children).forEach(strategy_child_node => {
             const tag_name = strategy_child_node.nodeName.toLowerCase();
 
             switch (tag_name) {
-                case ('block'):
-                case ('shadow'): {
+                case 'block':
+                case 'shadow': {
                     block_nodes.push(strategy_child_node);
                     break;
                 }
-                case ('variables'): {
+                case 'variables': {
                     variable_nodes.push(...strategy_child_node.children);
                     break;
                 }
@@ -406,13 +408,18 @@ export default class BlockConversion {
             }
         });
 
-        const registerVariables = (el_variables) => {
+        const registerVariables = el_variables => {
             el_variables.forEach(el_variable => {
-                const variable_id   = el_variable.getAttribute('id');
+                const variable_id = el_variable.getAttribute('id');
                 const variable_name = el_variable.textContent;
 
                 if (!this.workspace_variables[variable_id]) {
-                    const variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, variable_id, variable_name, '');
+                    const variable = Blockly.Variables.getOrCreateVariablePackage(
+                        this.workspace,
+                        variable_id,
+                        variable_name,
+                        ''
+                    );
                     this.workspace_variables[variable.id_] = variable.name;
                 }
             });
@@ -431,13 +438,13 @@ export default class BlockConversion {
         // Re-connect blocks that have been transformed into multiples. i.e. in the case
         // of old multiline blocks converted to statement blocks.
         Object.keys(this.blocks_pending_reconnect).forEach(previous_sibling_id => {
-            const previous_sibling_block             = this.workspace.getBlockById(previous_sibling_id);
-            const child_blocks                       = this.blocks_pending_reconnect[previous_sibling_id];
-            const sibling_previous_connection        = previous_sibling_block.previousConnection;
+            const previous_sibling_block = this.workspace.getBlockById(previous_sibling_id);
+            const child_blocks = this.blocks_pending_reconnect[previous_sibling_id];
+            const sibling_previous_connection = previous_sibling_block.previousConnection;
 
             if (sibling_previous_connection) {
                 const sibling_previous_target_connection = sibling_previous_connection.targetConnection;
-                let highest_previous_connection          = sibling_previous_connection;
+                let highest_previous_connection = sibling_previous_connection;
 
                 // Connect all the blocks to be connected in reverse, we do this to maintain
                 // the original order of statement blocks, although the order mostly doesn't
@@ -488,17 +495,17 @@ export default class BlockConversion {
     }
 
     convertBlockNode(el_block, parent_block = null) {
-        const conversions  = this.getConversions();
-        const block_type   = el_block.getAttribute('type');
+        const conversions = this.getConversions();
+        const block_type = el_block.getAttribute('type');
         const is_old_block = Object.keys(conversions).includes(block_type);
-        let block          = null;
+        let block = null;
 
-        const is_collapsed   = el_block.getAttribute('collapsed') && el_block.getAttribute('collapsed') === 'true';
-        const is_immovable   = el_block.getAttribute('movable') && el_block.getAttribute('movable') === 'false';
+        const is_collapsed = el_block.getAttribute('collapsed') && el_block.getAttribute('collapsed') === 'true';
+        const is_immovable = el_block.getAttribute('movable') && el_block.getAttribute('movable') === 'false';
         const is_undeletable = el_block.getAttribute('deletable') && el_block.getAttribute('deletable') === 'false';
-        const is_disabled    = el_block.getAttribute('disabled') && el_block.getAttribute('disabled') === 'true';
+        const is_disabled = el_block.getAttribute('disabled') && el_block.getAttribute('disabled') === 'true';
 
-        const setBlockAttributes = (b) => {
+        const setBlockAttributes = b => {
             b.setCollapsed(is_collapsed);
             b.setMovable(!is_immovable);
             b.setDeletable(!is_undeletable);
@@ -544,8 +551,8 @@ export default class BlockConversion {
                 // we should ignore mutations on blocks that are already converted i.e mutations
                 // will be taken care of in conversion, not here.
                 if (block) {
-                    const mutation_dom = Array.from(el_block.children).find(child_node =>
-                        child_node.tagName.toLowerCase() === 'mutation'
+                    const mutation_dom = Array.from(el_block.children).find(
+                        child_node => child_node.tagName.toLowerCase() === 'mutation'
                     );
 
                     if (mutation_dom && block.domToMutation) {
@@ -570,15 +577,20 @@ export default class BlockConversion {
             const tag_name = el_block_child.tagName.toLowerCase();
 
             switch (tag_name) {
-                case ('field'): {
+                case 'field': {
                     const field_name = el_block_child.getAttribute('name');
-                    const field      = block.getField(field_name);
+                    const field = block.getField(field_name);
 
                     if (field) {
                         if (field instanceof Blockly.FieldVariable) {
                             const variable_id = el_block_child.getAttribute('id');
                             const variable_name = el_block_child.innerText.trim();
-                            const variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, variable_id, variable_name, '');
+                            const variable = Blockly.Variables.getOrCreateVariablePackage(
+                                this.workspace,
+                                variable_id,
+                                variable_name,
+                                ''
+                            );
                             this.workspace_variables[variable.id_] = variable_name;
                             field.setValue(variable.id_);
                         } else {
@@ -587,16 +599,16 @@ export default class BlockConversion {
                     }
                     break;
                 }
-                case ('value'): {
+                case 'value': {
                     this.processValueInputs(block, el_block_child);
                     break;
                 }
-                case ('statement'): {
+                case 'statement': {
                     const statement_name = el_block_child.getAttribute('name');
                     this.processStatementInputs(block, statement_name, el_block_child);
                     break;
                 }
-                case ('next'): {
+                case 'next': {
                     const closest_statement = el_block_child.closest('statement');
 
                     if (closest_statement) {
@@ -610,7 +622,7 @@ export default class BlockConversion {
                     }
                     break;
                 }
-                case ('comment'): {
+                case 'comment': {
                     const is_minimised = el_block_child.getAttribute('pinned') !== 'true';
                     const comment_text = el_block_child.innerText;
 
@@ -630,7 +642,7 @@ export default class BlockConversion {
     // eslint-disable-next-line consistent-return
     processValueInputs(block, el_input) {
         const input_name = el_input.getAttribute('name');
-        const input      = block.getInput(input_name);
+        const input = block.getInput(input_name);
 
         if (!input) {
             console.warn('Unrecognised value input', input_name); // eslint-disable-line no-console
@@ -663,7 +675,7 @@ export default class BlockConversion {
     // eslint-disable-next-line consistent-return
     processStatementInputs(block, statement_name, el_node_with_children, block_to_search = null) {
         const block_to_use = block_to_search || block;
-        const input        = block_to_use.getInput(statement_name);
+        const input = block_to_use.getInput(statement_name);
 
         if (!input) {
             console.warn('Unrecognised statement input', statement_name); // eslint-disable-line no-console
@@ -700,7 +712,7 @@ export default class BlockConversion {
             const blocks_in_statement = supposed_parent_block.getBlocksInStatement('STACK');
 
             if (blocks_in_statement.length === 0) {
-                const input         = supposed_parent_block.getInput('STACK');
+                const input = supposed_parent_block.getInput('STACK');
                 const useless_block = this.workspace.newBlock('useless_block');
 
                 input.connection.connect(useless_block.previousConnection);
@@ -711,14 +723,14 @@ export default class BlockConversion {
             return supposed_parent_block.getInputTargetBlock('STACK').previousConnection;
         }
 
-        let current_block          = this.getFirstBlockInStack(supposed_parent_block);
+        let current_block = this.getFirstBlockInStack(supposed_parent_block);
         let is_protected_statement = this.isConnectedToProtectedStatementInput(current_block);
 
         while (is_protected_statement) {
             const new_parent = current_block.getParent();
 
             if (new_parent) {
-                current_block          = new_parent;
+                current_block = new_parent;
                 is_protected_statement = this.isConnectedToProtectedStatementInput(current_block);
             }
         }
@@ -735,15 +747,15 @@ export default class BlockConversion {
     }
 
     isConnectedToProtectedStatementInput(block) {
-        const first_block         = this.getFirstBlockInStack(block);
+        const first_block = this.getFirstBlockInStack(block);
         const previous_connection = first_block.previousConnection;
 
         if (previous_connection) {
             const target_connection = previous_connection.targetConnection;
 
             if (target_connection) {
-                const target_block         = target_connection.sourceBlock_; // eslint-disable-line
-                const input                = target_block.getInputWithConnection(target_connection);
+                const target_block = target_connection.sourceBlock_; // eslint-disable-line
+                const input = target_block.getInputWithConnection(target_connection);
                 const protected_statements = target_block.protected_statements || [];
 
                 if (input && protected_statements.includes(input.name)) {

@@ -1,6 +1,6 @@
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import ReactDOM          from 'react-dom';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 
 class PositionsDrawerDialog extends React.Component {
@@ -17,7 +17,7 @@ class PositionsDrawerDialog extends React.Component {
         document.removeEventListener('mousedown', this.handleClickOutside, true);
     }
 
-    handleClickOutside = (event) => {
+    handleClickOutside = event => {
         if (this.ref && this.ref.current && this.props.is_visible) {
             if (this.ref.current.contains(event.target)) {
                 event.stopPropagation();
@@ -25,23 +25,18 @@ class PositionsDrawerDialog extends React.Component {
                 this.props.toggleDialog();
             }
         }
-    }
+    };
 
     render() {
-        const {
-            children,
-            is_visible,
-            left,
-            top,
-        } = this.props;
+        const { children, is_visible, left, top } = this.props;
 
         const dialog = (
             <CSSTransition
                 in={is_visible}
                 classNames={{
-                    enter    : 'positions-drawer-dialog--enter',
+                    enter: 'positions-drawer-dialog--enter',
                     enterDone: 'positions-drawer-dialog--enter-done',
-                    exit     : 'positions-drawer-dialog--exit',
+                    exit: 'positions-drawer-dialog--exit',
                 }}
                 timeout={150}
                 unmountOnExit
@@ -59,26 +54,20 @@ class PositionsDrawerDialog extends React.Component {
             </CSSTransition>
         );
 
-        return (
-            ReactDOM.createPortal(
-                dialog, // use portal to render dialog above ThemedScrollbars container
-                document.getElementById('deriv_app')
-            )
+        return ReactDOM.createPortal(
+            dialog, // use portal to render dialog above ThemedScrollbars container
+            document.getElementById('deriv_app')
         );
     }
 }
 
 PositionsDrawerDialog.propTypes = {
-    children: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-    ]),
-    is_visible  : PropTypes.bool,
-    left        : PropTypes.number,
-    toggle_ref  : PropTypes.object,
+    children: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+    is_visible: PropTypes.bool,
+    left: PropTypes.number,
+    toggle_ref: PropTypes.object,
     toggleDialog: PropTypes.func,
-    top         : PropTypes.number,
+    top: PropTypes.number,
 };
 
 export default PositionsDrawerDialog;

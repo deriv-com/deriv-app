@@ -4,40 +4,40 @@ Blockly.Blocks.math_modulo = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('remainder of %1 ÷ %2'),
-            args0   : [
+            args0: [
                 {
-                    type : 'input_value',
-                    name : 'DIVIDEND',
+                    type: 'input_value',
+                    name: 'DIVIDEND',
                     check: 'Number',
                 },
                 {
-                    type : 'input_value',
-                    name : 'DIVISOR',
+                    type: 'input_value',
+                    name: 'DIVISOR',
                     check: 'Number',
                 },
             ],
-            output         : 'Number',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Returns the remainder after a division'),
-            category       : Blockly.Categories.Mathematical,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Returns the remainder after a division'),
+            category: Blockly.Categories.Mathematical,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Remainder after division'),
-            'description' : localize(' Returns the remainder after the division of the given numbers.'),
+            display_name: localize('Remainder after division'),
+            description: localize(' Returns the remainder after the division of the given numbers.'),
         };
     },
     getRequiredValueInputs() {
         return {
             DIVIDEND: null,
-            DIVISOR : null,
+            DIVISOR: null,
         };
     },
 };

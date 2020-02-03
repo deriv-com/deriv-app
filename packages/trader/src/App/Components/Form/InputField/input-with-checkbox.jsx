@@ -1,15 +1,9 @@
-import PropTypes             from 'prop-types';
-import {
-    PropTypes as MobxPropTypes,
-}                            from 'mobx-react';
-import React, {
-    useEffect,
-    useRef,
-    useState,
-}                            from 'react';
+import PropTypes from 'prop-types';
+import { PropTypes as MobxPropTypes } from 'mobx-react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Checkbox, Popover } from '@deriv/components';
-import CurrencyUtils         from '@deriv/shared/utils/currency';
-import InputField            from './input-field.jsx';
+import CurrencyUtils from '@deriv/shared/utils/currency';
+import InputField from './input-field.jsx';
 
 const InputWithCheckbox = ({
     classNameInlinePrefix,
@@ -38,12 +32,12 @@ const InputWithCheckbox = ({
         setChecked(defaultChecked);
     }, [defaultChecked]);
 
-    const changeValue = (e) => {
+    const changeValue = e => {
         // e.target.checked is not reliable, we have to toggle its previous value
         onChange({ target: { name: e.target.name, value: !is_checked } });
     };
 
-    const enableInputOnClick = (e) => {
+    const enableInputOnClick = e => {
         if (!is_checked) {
             setChecked(true);
             onChange({ target: { name: checkboxName, value: true } });
@@ -98,7 +92,7 @@ const InputWithCheckbox = ({
     return (
         <React.Fragment>
             <div className='input-wrapper--inline'>
-                {checkbox_tooltip_label ?
+                {checkbox_tooltip_label ? (
                     <Popover
                         alignment='left'
                         classNameBubble='trade-container__popover'
@@ -108,12 +102,10 @@ const InputWithCheckbox = ({
                     >
                         {checkbox}
                     </Popover>
-                    :
-                    <React.Fragment>
-                        {checkbox}
-                    </React.Fragment>
-                }
-                {tooltip_label &&
+                ) : (
+                    <React.Fragment>{checkbox}</React.Fragment>
+                )}
+                {tooltip_label && (
                     <Popover
                         alignment='left'
                         icon='info'
@@ -121,7 +113,7 @@ const InputWithCheckbox = ({
                         message={tooltip_label}
                         margin={210}
                     />
-                }
+                )}
             </div>
             {input}
         </React.Fragment>
@@ -129,29 +121,22 @@ const InputWithCheckbox = ({
 };
 
 InputWithCheckbox.propTypes = {
-    checkbox_tooltip_label: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.object,
-        PropTypes.string,
-    ]),
-    className            : PropTypes.string,
+    checkbox_tooltip_label: PropTypes.oneOfType([PropTypes.node, PropTypes.object, PropTypes.string]),
+    className: PropTypes.string,
     classNameInlinePrefix: PropTypes.string,
-    classNameInput       : PropTypes.string,
-    classNamePrefix      : PropTypes.string,
-    currency             : PropTypes.string,
-    defaultChecked       : PropTypes.bool,
-    error_messages       : MobxPropTypes.arrayOrObservableArray,
-    is_negative_disabled : PropTypes.bool,
-    is_single_currency   : PropTypes.bool,
-    label                : PropTypes.string,
-    max_value            : PropTypes.number,
-    name                 : PropTypes.string,
-    onChange             : PropTypes.func,
-    tooltip_label        : PropTypes.string,
-    value                : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
+    classNameInput: PropTypes.string,
+    classNamePrefix: PropTypes.string,
+    currency: PropTypes.string,
+    defaultChecked: PropTypes.bool,
+    error_messages: MobxPropTypes.arrayOrObservableArray,
+    is_negative_disabled: PropTypes.bool,
+    is_single_currency: PropTypes.bool,
+    label: PropTypes.string,
+    max_value: PropTypes.number,
+    name: PropTypes.string,
+    onChange: PropTypes.func,
+    tooltip_label: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default InputWithCheckbox;

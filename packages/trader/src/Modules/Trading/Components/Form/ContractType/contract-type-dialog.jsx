@@ -1,54 +1,45 @@
-import classNames        from 'classnames';
-import PropTypes         from 'prop-types';
-import React             from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import MobileDialog      from '../../Elements/mobile-dialog.jsx';
+import MobileDialog from '../../Elements/mobile-dialog.jsx';
 
-const ContractTypeDialog = ({
-    children,
-    columns,
-    is_mobile,
-    open,
-    onClose,
-}) => (
-    is_mobile ?
+const ContractTypeDialog = ({ children, columns, is_mobile, open, onClose }) =>
+    is_mobile ? (
         <React.Fragment>
             <span className='contract-type-widget__select-arrow' />
-            <MobileDialog
-                title='Select Trading Type'
-                visible={open}
-                onClose={onClose}
-            >
+            <MobileDialog title='Select Trading Type' visible={open} onClose={onClose}>
                 {children}
             </MobileDialog>
         </React.Fragment>
-        :
+    ) : (
         <CSSTransition
             in={open}
             timeout={100}
             classNames={{
-                enter    : 'contracts-type-dialog--enter',
+                enter: 'contracts-type-dialog--enter',
                 enterDone: 'contracts-type-dialog--enterDone',
-                exit     : 'contracts-type-dialog--exit',
+                exit: 'contracts-type-dialog--exit',
             }}
             unmountOnExit
         >
             <div className='contracts-type-dialog'>
-                <div className={classNames('contracts-type-dialog__list-wrapper', {
-                    'contracts-type-dialog__list-wrapper--2-col': columns === 2,
-                })}
+                <div
+                    className={classNames('contracts-type-dialog__list-wrapper', {
+                        'contracts-type-dialog__list-wrapper--2-col': columns === 2,
+                    })}
                 >
                     {children}
                 </div>
             </div>
         </CSSTransition>
-);
+    );
 
 ContractTypeDialog.propTypes = {
-    children : PropTypes.element,
+    children: PropTypes.element,
     is_mobile: PropTypes.bool,
-    onClose  : PropTypes.func,
-    open     : PropTypes.bool,
+    onClose: PropTypes.func,
+    open: PropTypes.bool,
 };
 
 export default ContractTypeDialog;

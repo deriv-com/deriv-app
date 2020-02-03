@@ -1,42 +1,41 @@
-import {
-    observable,
-    action,
-    computed }             from 'mobx';
-import { isEnded ,
-    getIndicativePrice }   from '@deriv/bot-skeleton';
+import { observable, action, computed } from 'mobx';
+import { isEnded, getIndicativePrice } from '@deriv/bot-skeleton';
 import { contract_stages } from '../constants/contract-stage';
 
 export default class ContractCardStore {
-    @observable contract            = null;
+    @observable contract = null;
     @observable indicative_movement = '';
-    @observable profit_movement     = '';
+    @observable profit_movement = '';
 
-    contract_id                     = null;
-    profit                          = 0;
-    indicative                      = 0;
-    
+    contract_id = null;
+    profit = 0;
+    indicative = 0;
+
     constructor(root_store) {
-        this.root_store  = root_store;
+        this.root_store = root_store;
     }
 
     @computed
     get is_contract_completed() {
-        return this.contract &&
-        isEnded(this.contract) &&
-        (this.root_store.run_panel.contract_stage.index !== contract_stages.PURCHASE_RECEIVED.index);
+        return (
+            this.contract &&
+            isEnded(this.contract) &&
+            this.root_store.run_panel.contract_stage.index !== contract_stages.PURCHASE_RECEIVED.index
+        );
     }
 
     @computed
     get is_contract_loading() {
-        return  (this.root_store.run_panel.is_running && this.contract === null) ||
-        (this.root_store.run_panel.contract_stage.index === contract_stages.PURCHASE_SENT.index) ||
-        (this.root_store.run_panel.contract_stage.index === contract_stages.STARTING.index);
+        return (
+            (this.root_store.run_panel.is_running && this.contract === null) ||
+            this.root_store.run_panel.contract_stage.index === contract_stages.PURCHASE_SENT.index ||
+            this.root_store.run_panel.contract_stage.index === contract_stages.STARTING.index
+        );
     }
 
     @computed
     get is_contract_inactive() {
-        return !this.contract &&
-        !this.is_loading;
+        return !this.contract && !this.is_loading;
     }
 
     @computed
@@ -57,11 +56,11 @@ export default class ContractCardStore {
         if (this.contract_id !== contract.id) {
             this.clear(false);
             this.contract_id = contract.id;
-            this.profit      = profit;
-            this.indicative  = indicative;
+            this.profit = profit;
+            this.indicative = indicative;
         }
 
-        const movements  = { profit, indicative };
+        const movements = { profit, indicative };
 
         Object.keys(movements).forEach(name => {
             if (movements[name] !== this[name]) {
@@ -83,10 +82,10 @@ export default class ContractCardStore {
             this.contract = null;
         }
 
-        this.profit              = 0;
-        this.profit_loss         = 0;
-        this.indicative          = 0;
+        this.profit = 0;
+        this.profit_loss = 0;
+        this.indicative = 0;
         this.indicative_movement = '';
-        this.profit_movement     = '';
+        this.profit_movement = '';
     }
 }

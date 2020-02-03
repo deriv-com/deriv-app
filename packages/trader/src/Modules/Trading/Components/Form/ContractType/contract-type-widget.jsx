@@ -1,18 +1,18 @@
-import classNames          from 'classnames';
-import PropTypes           from 'prop-types';
-import React               from 'react';
-import { Icon }            from '@deriv/components';
-import IconTradeCategory   from 'Assets/Trading/Categories/icon-trade-categories.jsx';
-import ContractTypeDialog  from './contract-type-dialog.jsx';
-import ContractTypeList    from './contract-type-list.jsx';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Icon } from '@deriv/components';
+import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories.jsx';
+import ContractTypeDialog from './contract-type-dialog.jsx';
+import ContractTypeList from './contract-type-list.jsx';
 import TradeTypeInfoDialog from '../TradeTypeInfo/trade-type-info-dialog.jsx';
-import TradeTypeInfoItem   from '../TradeTypeInfo/trade-type-info-item.jsx';
+import TradeTypeInfoItem from '../TradeTypeInfo/trade-type-info-item.jsx';
 
 class ContractTypeWidget extends React.PureComponent {
     state = {
-        is_dialog_open     : false,
+        is_dialog_open: false,
         is_info_dialog_open: false,
-        item               : {},
+        item: {},
     };
 
     componentDidMount() {
@@ -30,27 +30,27 @@ class ContractTypeWidget extends React.PureComponent {
         this.handleVisibility();
     };
 
-    onSubmitButtonClick = (item) => {
+    onSubmitButtonClick = item => {
         if (item.value !== this.props.value) {
             this.props.onChange({ target: { name: this.props.name, value: item.value } });
         }
         this.handleInfoVisibility();
     };
 
-    handleInfoClick = (item) => {
+    handleInfoClick = item => {
         this.setState({ item });
         this.handleInfoVisibility();
         this.handleVisibility();
     };
 
-    handleNavigationClick = (item) => {
+    handleNavigationClick = item => {
         this.setState({ item });
     };
 
-    handleNextClick = (itemList) => {
+    handleNextClick = itemList => {
         const navigationLength = itemList.length;
         const item = this.state.item;
-        const currentIndex = itemList.findIndex((list_item) => list_item.value === item.value);
+        const currentIndex = itemList.findIndex(list_item => list_item.value === item.value);
         const nextIndex = currentIndex + 1;
         if (nextIndex < navigationLength) {
             this.handleNavigationClick(itemList[nextIndex]);
@@ -59,10 +59,10 @@ class ContractTypeWidget extends React.PureComponent {
         }
     };
 
-    handlePrevClick = (itemList) => {
+    handlePrevClick = itemList => {
         const navigationLength = itemList.length;
         const item = this.state.item;
-        const currentIndex = itemList.findIndex((list_item) => list_item.value === item.value);
+        const currentIndex = itemList.findIndex(list_item => list_item.value === item.value);
         const prevIndex = currentIndex - 1;
         if (prevIndex > -1) {
             this.handleNavigationClick(itemList[prevIndex]);
@@ -71,23 +71,23 @@ class ContractTypeWidget extends React.PureComponent {
         }
     };
 
-    setWrapperRef = (node) => {
+    setWrapperRef = node => {
         this.wrapper_ref = node;
     };
 
-    handleClickOutside = (event) => {
+    handleClickOutside = event => {
         if (this.wrapper_ref && !this.wrapper_ref.contains(event.target) && this.state.is_dialog_open) {
             this.setState({ is_dialog_open: false });
         } else if (this.wrapper_ref && !this.wrapper_ref.contains(event.target) && this.state.is_info_dialog_open) {
             this.setState({
-                is_dialog_open     : false,
+                is_dialog_open: false,
                 is_info_dialog_open: false,
             });
         }
     };
 
     handleInfoVisibility = () => {
-        this.setState((state) => ({
+        this.setState(state => ({
             is_info_dialog_open: !state.is_info_dialog_open,
         }));
     };
@@ -97,16 +97,16 @@ class ContractTypeWidget extends React.PureComponent {
     };
 
     onWidgetClick = () => {
-        this.setState((state) => ({ is_dialog_open: !state.is_dialog_open, is_info_dialog_open: false }));
+        this.setState(state => ({ is_dialog_open: !state.is_dialog_open, is_info_dialog_open: false }));
     };
 
     onBackButtonClick = () => {
-        this.setState((state) => ({ is_dialog_open: !state.is_dialog_open, is_info_dialog_open: false }));
+        this.setState(state => ({ is_dialog_open: !state.is_dialog_open, is_info_dialog_open: false }));
     };
 
     getDisplayText = () => {
         const { list, value } = this.props;
-        const findInArray = (arr_list) => (arr_list.find(item => item.value === value) || {}).text;
+        const findInArray = arr_list => (arr_list.find(item => item.value === value) || {}).text;
         let text = '';
         if (list) {
             Object.keys(list).some(key => {
@@ -117,24 +117,25 @@ class ContractTypeWidget extends React.PureComponent {
         return text;
     };
 
-    getItemIndex = (curr_item, itemList) => itemList.findIndex((list_item) => list_item.value === curr_item.value);
+    getItemIndex = (curr_item, itemList) => itemList.findIndex(list_item => list_item.value === curr_item.value);
 
     getItemList = () => {
         const itemList = [];
         const list = this.props.list;
         /* eslint-disable */
         Object.keys(list).map(key => {
-            !['In/Out', 'Asians'].includes(key) && list[key].map(contract => {
-                (contract.value !== 'rise_fall_equal') && itemList.push(contract);
-            });
+            !['In/Out', 'Asians'].includes(key) &&
+                list[key].map(contract => {
+                    contract.value !== 'rise_fall_equal' && itemList.push(contract);
+                });
         });
         /* eslint-disable */
         return itemList;
     };
 
     // TODO: remove this once new tradetype menu is ready
-    groupBinaryAndNonBinaryOptions = (contract_types) => {
-        let binary_opts_list     = {};
+    groupBinaryAndNonBinaryOptions = contract_types => {
+        let binary_opts_list = {};
         let non_binary_opts_list = {};
 
         Object.keys(contract_types).map(type => {
@@ -147,21 +148,18 @@ class ContractTypeWidget extends React.PureComponent {
 
         if (!Object.keys(non_binary_opts_list).length) return [binary_opts_list];
 
-        return [
-            non_binary_opts_list,
-            binary_opts_list
-        ];
+        return [non_binary_opts_list, binary_opts_list];
     };
 
     render() {
         const { is_dark_theme, is_equal, is_mobile, list, name, value } = this.props;
-        const { is_dialog_open, is_info_dialog_open, item }             = this.state;
-        const item_list        = this.getItemList();
-        const item_index       = this.getItemIndex(item, item_list);
+        const { is_dialog_open, is_info_dialog_open, item } = this.state;
+        const item_list = this.getItemList();
+        const item_index = this.getItemIndex(item, item_list);
         const item_list_length = item_list ? item_list.length : 0;
 
         const grouped_list = this.groupBinaryAndNonBinaryOptions(list);
-        const [non_binary_opts_list, binary_opts_list]  = grouped_list;
+        const [non_binary_opts_list, binary_opts_list] = grouped_list;
 
         return (
             <div
@@ -172,22 +170,20 @@ class ContractTypeWidget extends React.PureComponent {
             >
                 <div
                     className={classNames('contract-type-widget__display', {
-                        'contract-type-widget__display--clicked': (is_dialog_open || is_info_dialog_open),
+                        'contract-type-widget__display--clicked': is_dialog_open || is_info_dialog_open,
                     })}
                     onClick={this.onWidgetClick}
                 >
-                    <IconTradeCategory
-                        category={value}
-                        className='contract-type-widget__icon-wrapper'
-                    />
+                    <IconTradeCategory category={value} className='contract-type-widget__icon-wrapper' />
                     <span name={name} value={value}>
                         {this.getDisplayText()}
                     </span>
                     <Icon
                         icon='IcChevronDown'
                         className={classNames(
-                          'contract-type-widget__select-arrow',
-                          'contract-type-widget__select-arrow--left')}
+                            'contract-type-widget__select-arrow',
+                            'contract-type-widget__select-arrow--left'
+                        )}
                     />
                 </div>
 
@@ -197,7 +193,7 @@ class ContractTypeWidget extends React.PureComponent {
                     open={is_dialog_open}
                     columns={grouped_list.length}
                 >
-                    {grouped_list.length === 2 ?
+                    {grouped_list.length === 2 ? (
                         <React.Fragment>
                             <div>
                                 <ContractTypeList
@@ -220,7 +216,7 @@ class ContractTypeWidget extends React.PureComponent {
                                 />
                             </div>
                         </React.Fragment>
-                        :
+                    ) : (
                         <ContractTypeList
                             handleInfoClick={this.handleInfoClick}
                             handleSelect={this.handleSelect}
@@ -229,7 +225,7 @@ class ContractTypeWidget extends React.PureComponent {
                             name={name}
                             value={value}
                         />
-                    }
+                    )}
                 </ContractTypeDialog>
                 <TradeTypeInfoDialog
                     is_mobile={is_mobile}
@@ -258,15 +254,12 @@ class ContractTypeWidget extends React.PureComponent {
 
 ContractTypeWidget.propTypes = {
     is_dark_theme: PropTypes.bool,
-    is_equal           : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
+    is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     is_mobile: PropTypes.bool,
-    list     : PropTypes.object,
-    name     : PropTypes.string,
-    onChange : PropTypes.func,
-    value    : PropTypes.string,
+    list: PropTypes.object,
+    name: PropTypes.string,
+    onChange: PropTypes.func,
+    value: PropTypes.string,
 };
 
 export default ContractTypeWidget;

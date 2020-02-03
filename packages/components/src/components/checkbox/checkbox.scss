@@ -8,14 +8,14 @@
         display: none;
     }
     &__box {
-        display: block;
+        display: flex;
         width: 16px;
         height: 16px;
         transition: 0.3s ease-in-out;
         flex-shrink: 0;
         margin: 2px 8px 0 0;
         border-radius: 2px;
-        align-self: flex-start;
+        align-self: center;
         border: 2px solid var(--text-less-prominent);
 
         &--active {

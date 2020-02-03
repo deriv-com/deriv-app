@@ -1,8 +1,8 @@
-import React                     from 'react';
-import PropTypes                 from 'prop-types';
-import AutoSizer                 from 'react-virtualized-auto-sizer';
+import React from 'react';
+import PropTypes from 'prop-types';
+import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List } from 'react-window';
-import InfiniteLoader            from 'react-window-infinite-loader';
+import InfiniteLoader from 'react-window-infinite-loader';
 
 export const InfiniteLoaderList = ({
     items,
@@ -13,6 +13,7 @@ export const InfiniteLoaderList = ({
     has_more_items_to_load,
     item_size,
     RenderComponent,
+    row_actions,
     RowLoader,
     height: initial_height,
 }) => {
@@ -27,7 +28,7 @@ export const InfiniteLoaderList = ({
             );
         }
 
-        return <RenderComponent data={items[index]} num={index} style={style} />;
+        return <RenderComponent data={items[index]} num={index} style={style} row_actions={row_actions} />;
     };
     RowRenderer.propTypes = {
         index: PropTypes.number,
@@ -37,13 +38,9 @@ export const InfiniteLoaderList = ({
     const item_count = has_more_items_to_load ? items.length + 1 : items.length;
 
     return (
-        <InfiniteLoader
-            isItemLoaded={index => index < items.length}
-            itemCount={item_count}
-            loadMoreItems={loadMore}
-        >
+        <InfiniteLoader isItemLoaded={index => index < items.length} itemCount={item_count} loadMoreItems={loadMore}>
             {({ onItemsRendered, ref }) => (
-                <AutoSizer style={{ height: (initial_height || 600) }}>
+                <AutoSizer style={{ height: initial_height || 600 }}>
                     {({ height, width }) => (
                         <List
                             height={height}
@@ -63,13 +60,14 @@ export const InfiniteLoaderList = ({
 };
 
 InfiniteLoaderList.propTypes = {
-    children              : PropTypes.node,
+    children: PropTypes.node,
     has_more_items_to_load: PropTypes.bool,
-    height                : PropTypes.number,
-    is_loading_more_items : PropTypes.bool,
-    item_size             : PropTypes.number,
-    items                 : PropTypes.array,
-    loadMore              : PropTypes.func,
-    RenderComponent       : PropTypes.any,
-    RowLoader             : PropTypes.any.isRequired,
+    height: PropTypes.number,
+    is_loading_more_items: PropTypes.bool,
+    item_size: PropTypes.number,
+    items: PropTypes.array,
+    loadMore: PropTypes.func,
+    RenderComponent: PropTypes.any,
+    row_actions: PropTypes.object,
+    RowLoader: PropTypes.any.isRequired,
 };

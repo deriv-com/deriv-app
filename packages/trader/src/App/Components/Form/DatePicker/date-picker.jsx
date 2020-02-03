@@ -1,29 +1,23 @@
-import classNames           from 'classnames';
-import { observer }         from 'mobx-react';
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import { CSSTransition }    from 'react-transition-group';
-import { Icon }             from '@deriv/components';
-import InputField           from 'App/Components/Form/InputField';
-import {
-    addDays,
-    daysFromTodayTo,
-    formatDate,
-    getStartOfMonth,
-    isDateValid,
-    toMoment }              from 'Utils/Date';
-import { localize }         from '@deriv/translations';
+import classNames from 'classnames';
+import { observer } from 'mobx-react';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { CSSTransition } from 'react-transition-group';
+import { Icon } from '@deriv/components';
+import InputField from 'App/Components/Form/InputField';
+import { addDays, daysFromTodayTo, formatDate, getStartOfMonth, isDateValid, toMoment } from 'Utils/Date';
+import { localize } from '@deriv/translations';
 import { getTradingEvents } from './helpers';
-import Calendar             from '../../Elements/Calendar';
+import Calendar from '../../Elements/Calendar';
 
 class DatePicker extends React.Component {
     state = {
-        date_value           : '',
-        holidays             : [],
+        date_value: '',
+        holidays: [],
         is_datepicker_visible: false,
-        is_clear_btn_visible : false,
-        value                : this.props.value,
-        weekends             : [],
+        is_clear_btn_visible: false,
+        value: this.props.value,
+        weekends: [],
     };
 
     is_mounted = false;
@@ -33,7 +27,10 @@ class DatePicker extends React.Component {
 
         document.addEventListener('click', this.onClickOutside, true);
         const { mode, value } = this.props;
-        const initial_value = mode === 'duration' ? formatDate(addDays(toMoment(), value || 1), 'DD MMM YYYY') : formatDate(value, 'DD MMM YYYY');
+        const initial_value =
+            mode === 'duration'
+                ? formatDate(addDays(toMoment(), value || 1), 'DD MMM YYYY')
+                : formatDate(value, 'DD MMM YYYY');
 
         this.updateDatePickerValue(initial_value);
 
@@ -51,8 +48,8 @@ class DatePicker extends React.Component {
         this.setState(state => ({ is_datepicker_visible: !state.is_datepicker_visible }));
     };
 
-    onClickOutside = (e) => {
-        if (/purchase_/ig.test(e.target.id)) {
+    onClickOutside = e => {
+        if (/purchase_/gi.test(e.target.id)) {
             return;
         }
         if (!this.mainNode.contains(e.target) && this.state.is_datepicker_visible) {
@@ -61,7 +58,7 @@ class DatePicker extends React.Component {
     };
 
     onMouseEnter = () => {
-        if (this.state.value && (('is_clearable' in this.props) || this.props.is_clearable)) {
+        if (this.state.value && ('is_clearable' in this.props || this.props.is_clearable)) {
             this.setState({ is_clear_btn_visible: true });
         }
     };
@@ -72,7 +69,9 @@ class DatePicker extends React.Component {
 
     onSelectCalendar = (selected_date, is_datepicker_visible = true) => {
         let value = selected_date;
-        if (!isDateValid(value)) { value = ''; }
+        if (!isDateValid(value)) {
+            value = '';
+        }
 
         if (this.props.mode === 'duration') {
             this.updateDatePickerValue(value);
@@ -82,7 +81,7 @@ class DatePicker extends React.Component {
         this.setState({ is_datepicker_visible });
     };
 
-    onChangeInput = (e) => {
+    onChangeInput = e => {
         const value = e.target.value;
         const formatted_value = formatDate(addDays(toMoment(), value), 'DD MMM YYYY');
         this.updateDatePickerValue(formatted_value);
@@ -97,18 +96,18 @@ class DatePicker extends React.Component {
     };
 
     // TODO: handle cases where user inputs date before min_date and date after max_date
-    updateDatePickerValue = (value) => {
+    updateDatePickerValue = value => {
         const { date_format, mode, start_date } = this.props;
         this.setState({ value }, this.updateStore);
 
         if (mode === 'duration') {
-            const new_value      = daysFromTodayTo(value);
+            const new_value = daysFromTodayTo(value);
             const new_date_value = formatDate(value, 'DD MMM YYYY');
             this.setState({ value: new_value, date_value: new_date_value }, this.updateStore);
         }
 
         // update Calendar
-        const new_date = (mode === 'duration') ? formatDate(value, 'DD MMM YYYY') : value;
+        const new_date = mode === 'duration' ? formatDate(value, 'DD MMM YYYY') : value;
         if (this.calendar && (isDateValid(new_date) || !new_date)) {
             if (!new_date) {
                 const current_date = formatDate(start_date, date_format);
@@ -136,7 +135,7 @@ class DatePicker extends React.Component {
     async onChangeCalendarMonth(calendar_date) {
         const trading_events = await getTradingEvents(calendar_date, this.props.underlying);
         const holidays = [];
-        let weekends   = [];
+        let weekends = [];
         trading_events.forEach(events => {
             const dates = events.dates.split(', '); // convert dates str into array
             const idx = dates.indexOf('Fridays');
@@ -199,7 +198,12 @@ class DatePicker extends React.Component {
     render() {
         if (this.props.is_nativepicker) {
             return (
-                <div ref={node => { this.mainNode = node; }} className='datepicker'>
+                <div
+                    ref={node => {
+                        this.mainNode = node;
+                    }}
+                    className='datepicker'
+                >
                     <input
                         id={this.props.name}
                         name={this.props.name}
@@ -208,11 +212,13 @@ class DatePicker extends React.Component {
                         value={this.state.value}
                         min={this.props.min_date}
                         max={this.props.max_date}
-                        onChange={(e) => {
+                        onChange={e => {
                             // fix for ios issue: clear button doesn't work
                             // https://github.com/facebook/react/issues/8938
                             const target = e.nativeEvent.target;
-                            function iosClearDefault() { target.defaultValue = ''; }
+                            function iosClearDefault() {
+                                target.defaultValue = '';
+                            }
                             window.setTimeout(iosClearDefault, 0);
 
                             this.onSelectCalendar(e.target.value);
@@ -229,21 +235,23 @@ class DatePicker extends React.Component {
         return (
             <div
                 id={this.props.id}
-                ref={node => { this.mainNode = node; }}
+                ref={node => {
+                    this.mainNode = node;
+                }}
                 className='datepicker'
                 onMouseEnter={this.onMouseEnter}
                 onMouseLeave={this.onMouseLeave}
             >
-                { this.renderInputField() }
+                {this.renderInputField()}
                 <Icon
                     icon='IcCalendar'
                     className={classNames('datepicker__icon datepicker__icon--calendar', {
-                        'datepicker__icon--is-hidden' : this.state.is_clear_btn_visible,
+                        'datepicker__icon--is-hidden': this.state.is_clear_btn_visible,
                         'datepicker__icon--with-label': this.props.label,
                     })}
                     onClick={this.handleVisibility}
                 />
-                {this.props.is_clearable &&
+                {this.props.is_clearable && (
                     <Icon
                         icon='IcCross'
                         className={classNames('datepicker__icon datepicker__icon--clear', {
@@ -251,14 +259,14 @@ class DatePicker extends React.Component {
                         })}
                         onClick={this.state.is_clear_btn_visible ? this.clearDatePickerInput : undefined}
                     />
-                }
+                )}
                 <CSSTransition
                     in={this.state.is_datepicker_visible}
                     timeout={100}
                     classNames={{
-                        enter    : `datepicker__picker--enter datepicker__picker--${this.props.alignment}-enter`,
+                        enter: `datepicker__picker--enter datepicker__picker--${this.props.alignment}-enter`,
                         enterDone: `datepicker__picker--enter-done datepicker__picker--${this.props.alignment}-enter-done`,
-                        exit     : `datepicker__picker--exit datepicker__picker--${this.props.alignment}-exit`,
+                        exit: `datepicker__picker--exit datepicker__picker--${this.props.alignment}-exit`,
                     }}
                     unmountOnExit
                 >
@@ -268,10 +276,13 @@ class DatePicker extends React.Component {
                         })}
                     >
                         <Calendar
-                            ref={node => { this.calendar = node; }}
+                            ref={node => {
+                                this.calendar = node;
+                            }}
                             onSelect={this.onSelectCalendar}
-                            onChangeCalendarMonth={this.props.disable_trading_events ?
-                                this.onChangeCalendarMonth.bind(this) : undefined}
+                            onChangeCalendarMonth={
+                                this.props.disable_trading_events ? this.onChangeCalendarMonth.bind(this) : undefined
+                            }
                             holidays={this.state.holidays}
                             weekends={this.state.weekends}
                             duration_date={this.state.value}
@@ -293,13 +304,13 @@ class DatePicker extends React.Component {
 
 DatePicker.defaultProps = {
     date_format: Calendar.defaultProps.date_format,
-    mode       : 'date',
+    mode: 'date',
 };
 
 DatePicker.propTypes = {
     ...Calendar.propTypes,
     error_messages: PropTypes.array,
-    label         : PropTypes.string,
+    label: PropTypes.string,
 };
 
 export default observer(DatePicker);

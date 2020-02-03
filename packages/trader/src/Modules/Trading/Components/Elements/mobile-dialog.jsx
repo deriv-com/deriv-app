@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import PropTypes  from 'prop-types';
-import React      from 'react';
-import { Icon }   from '@deriv/components';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Icon } from '@deriv/components';
 
-const MobileDialog = (props) => {
+const MobileDialog = props => {
     const { title, visible, children, wrapperClassName } = props;
 
     const checkVisibility = () => {
@@ -26,7 +26,7 @@ const MobileDialog = (props) => {
     };
 
     // sometimes input is covered by virtual keyboard on mobile chrome, uc browser
-    const handleClick = (e) => {
+    const handleClick = e => {
         if (e.target.tagName === 'INPUT' && e.target.type === 'number') {
             const scrollToTarget = scrollToElement(e.currentTarget, e.target);
             window.addEventListener('resize', scrollToTarget, false);
@@ -48,32 +48,25 @@ const MobileDialog = (props) => {
             onClick={handleClick}
         >
             <div className='mobile-dialog__header'>
-                <h2 className='mobile-dialog__title'>
-                    {title}
-                </h2>
-                <div
-                    className='icons btn-close mobile-dialog__close-btn'
-                    onClick={props.onClose}
-                >
+                <h2 className='mobile-dialog__title'>{title}</h2>
+                <div className='icons btn-close mobile-dialog__close-btn' onClick={props.onClose}>
                     <Icon icon='IcCross' className='mobile-dialog__close-btn-icon' />
                 </div>
             </div>
             <div className='mobile-dialog__header-shadow-cover' />
             <div className='mobile-dialog__header-shadow' />
             <div className='mobile-dialog__content'>
-                <div className={`mobile-dialog__${wrapperClassName || 'contracts-modal-list'}`}>
-                    {children}
-                </div>
+                <div className={`mobile-dialog__${wrapperClassName || 'contracts-modal-list'}`}>{children}</div>
             </div>
         </div>
     );
 };
 
 MobileDialog.propTypes = {
-    children        : PropTypes.any,
-    onClose         : PropTypes.func,
-    title           : PropTypes.string,
-    visible         : PropTypes.bool,
+    children: PropTypes.any,
+    onClose: PropTypes.func,
+    title: PropTypes.string,
+    visible: PropTypes.bool,
     wrapperClassName: PropTypes.string,
 };
 

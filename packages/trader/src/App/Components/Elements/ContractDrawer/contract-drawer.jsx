@@ -1,41 +1,31 @@
-import classNames               from 'classnames';
-import PropTypes                from 'prop-types';
-import React, { Component }     from 'react';
-import { withRouter }           from 'react-router';
-import { Icon }                 from '@deriv/components';
-import { Localize }             from '@deriv/translations';
-import routes                   from 'Constants/routes';
-import ContractAudit            from 'App/Components/Elements/ContractAudit';
-import { PositionsCardLoader }  from 'App/Components/Elements/ContentLoader';
-import {
-    getDurationPeriod,
-    getDurationTime,
-    getDurationUnitText }       from 'Stores/Modules/Portfolio/Helpers/details';
-import {
-    getEndTime,
-    isUserSold     }            from 'Stores/Modules/Contract/Helpers/logic';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router';
+import { Icon } from '@deriv/components';
+import { Localize } from '@deriv/translations';
+import routes from 'Constants/routes';
+import ContractAudit from 'App/Components/Elements/ContractAudit';
+import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
+import { getDurationPeriod, getDurationTime, getDurationUnitText } from 'Stores/Modules/Portfolio/Helpers/details';
+import { getEndTime, isUserSold } from 'Stores/Modules/Contract/Helpers/logic';
 import { isMultiplierContract } from 'Stores/Modules/Contract/Helpers/multiplier';
-import ContractDrawerCard       from './contract-drawer-card.jsx';
+import ContractDrawerCard from './contract-drawer-card.jsx';
 
 class ContractDrawer extends Component {
     state = {
         is_shade_on: false,
     };
 
-    handleShade = (shade) => {
+    handleShade = shade => {
         this.setState({ is_shade_on: shade });
     };
 
     redirectBackToReports = () => this.props.history.push(routes.reports);
 
-    getBodyContent () {
-        const {
-            contract_type,
-            currency,
-            exit_tick_display_value,
-            is_sold,
-        } = this.props.contract_info;
-    
+    getBodyContent() {
+        const { contract_type, currency, exit_tick_display_value, is_sold } = this.props.contract_info;
+
         const {
             contract_info,
             contract_update_history,
@@ -47,7 +37,7 @@ class ContractDrawer extends Component {
         } = this.props;
 
         const is_multiplier = isMultiplierContract(contract_type);
-        const exit_spot     = isUserSold(contract_info) && !is_multiplier ? '-' : exit_tick_display_value;
+        const exit_spot = isUserSold(contract_info) && !is_multiplier ? '-' : exit_tick_display_value;
 
         return (
             <React.Fragment>
@@ -70,7 +60,7 @@ class ContractDrawer extends Component {
                     duration={getDurationTime(contract_info)}
                     duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                     exit_spot={exit_spot}
-                    has_result={!!(is_sold) || is_multiplier}
+                    has_result={!!is_sold || is_multiplier}
                     toggleHistoryTab={toggleHistoryTab}
                 />
             </React.Fragment>
@@ -94,33 +84,26 @@ class ContractDrawer extends Component {
 
         const body_content = (
             <React.Fragment>
-                {(this.props.contract_info.status || fallback_result) ?
+                {this.props.contract_info.status || fallback_result ? (
                     this.getBodyContent()
-                    :
+                ) : (
                     <div className='contract-card'>
-                        <PositionsCardLoader
-                            is_dark_theme={this.props.is_dark_theme}
-                            speed={2}
-                        />
+                        <PositionsCardLoader is_dark_theme={this.props.is_dark_theme} speed={2} />
                     </div>
-                }
+                )}
             </React.Fragment>
         );
         return (
             <div id='dt_contract_drawer' className={classNames('contract-drawer', {})}>
                 <div className='contract-drawer__heading'>
-                    {
-                        this.props.is_from_reports &&
-                        <div
-                            className='contract-drawer__heading-btn'
-                            onClick={this.redirectBackToReports}
-                        >
-                            <Icon
-                                icon='IcArrowLeftBold'
-                            />
+                    {this.props.is_from_reports && (
+                        <div className='contract-drawer__heading-btn' onClick={this.redirectBackToReports}>
+                            <Icon icon='IcArrowLeftBold' />
                         </div>
-                    }
-                    <h2><Localize i18n_default_text='Contract details' /></h2>
+                    )}
+                    <h2>
+                        <Localize i18n_default_text='Contract details' />
+                    </h2>
                 </div>
                 <div className='contract-drawer__body'>{body_content}</div>
             </div>
@@ -129,14 +112,14 @@ class ContractDrawer extends Component {
 }
 
 ContractDrawer.propTypes = {
-    contract_info        : PropTypes.object,
-    is_from_reports      : PropTypes.bool,
+    contract_info: PropTypes.object,
+    is_from_reports: PropTypes.bool,
     is_history_tab_active: PropTypes.bool,
-    is_sell_requested    : PropTypes.bool,
-    onClickCancel        : PropTypes.func,
+    is_sell_requested: PropTypes.bool,
+    onClickCancel: PropTypes.func,
     onClickContractUpdate: PropTypes.func,
-    onClickSell          : PropTypes.func,
-    status               : PropTypes.string,
+    onClickSell: PropTypes.func,
+    status: PropTypes.string,
 };
 
 export default withRouter(ContractDrawer);

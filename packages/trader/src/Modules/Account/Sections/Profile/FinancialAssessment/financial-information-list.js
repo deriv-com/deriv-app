@@ -2,298 +2,298 @@ import { localize } from '@deriv/translations';
 
 export const experience_list = [
     {
-        text : localize('0-1 year'),
+        text: localize('0-1 year'),
         value: '0-1 year',
     },
     {
-        text : localize('1-2 years'),
+        text: localize('1-2 years'),
         value: '1-2 years',
     },
     {
-        text : localize('Over 3 years'),
+        text: localize('Over 3 years'),
         value: 'Over 3 years',
     },
 ];
 
 export const income_source_list = [
     {
-        text : localize('Salaried Employee'),
+        text: localize('Salaried Employee'),
         value: 'Salaried Employee',
     },
     {
-        text : localize('Self-Employed'),
+        text: localize('Self-Employed'),
         value: 'Self-Employed',
     },
     {
-        text : localize('Investments & Dividends'),
+        text: localize('Investments & Dividends'),
         value: 'Investments & Dividends',
     },
     {
-        text : localize('Pension'),
+        text: localize('Pension'),
         value: 'Pension',
     },
     {
-        text : localize('State Benefits'),
+        text: localize('State Benefits'),
         value: 'State Benefits',
     },
     {
-        text : localize('Savings & Inheritance'),
+        text: localize('Savings & Inheritance'),
         value: 'Savings & Inheritance',
     },
 ];
 
 export const employment_status_list = [
     {
-        text : localize('Employed'),
+        text: localize('Employed'),
         value: 'Employed',
     },
     {
-        text : localize('Pensioner'),
+        text: localize('Pensioner'),
         value: 'Pensioner',
     },
     {
-        text : localize('Self-Employed'),
+        text: localize('Self-Employed'),
         value: 'Self-Employed',
     },
     {
-        text : localize('Student'),
+        text: localize('Student'),
         value: 'Student',
     },
     {
-        text : localize('Unemployed'),
+        text: localize('Unemployed'),
         value: 'Unemployed',
     },
 ];
 
 export const employment_industry_list = [
     {
-        text : localize('Construction'),
+        text: localize('Construction'),
         value: 'Construction',
     },
     {
-        text : localize('Education'),
+        text: localize('Education'),
         value: 'Education',
     },
     {
-        text : localize('Finance'),
+        text: localize('Finance'),
         value: 'Finance',
     },
     {
-        text : localize('Health'),
+        text: localize('Health'),
         value: 'Health',
     },
     {
-        text : localize('Tourism'),
+        text: localize('Tourism'),
         value: 'Tourism',
     },
     {
-        text : localize('Information & Communications Technology'),
+        text: localize('Information & Communications Technology'),
         value: 'Information & Communications Technology',
     },
     {
-        text : localize('Science & Engineering'),
+        text: localize('Science & Engineering'),
         value: 'Science & Engineering',
     },
     {
-        text : localize('Legal'),
+        text: localize('Legal'),
         value: 'Legal',
     },
     {
-        text : localize('Social & Cultural'),
+        text: localize('Social & Cultural'),
         value: 'Social & Cultural',
     },
     {
-        text : localize('Agriculture'),
+        text: localize('Agriculture'),
         value: 'Agriculture',
     },
     {
-        text : localize('Real Estate'),
+        text: localize('Real Estate'),
         value: 'Real Estate',
     },
     {
-        text : localize('Food Services'),
+        text: localize('Food Services'),
         value: 'Food Services',
     },
     {
-        text : localize('Manufacturing'),
+        text: localize('Manufacturing'),
         value: 'Manufacturing',
     },
     {
-        text : localize('Unemployed'),
+        text: localize('Unemployed'),
         value: 'Unemployed',
     },
 ];
 
 export const occupation_list = [
     {
-        text : localize('Chief Executives, Senior Officials and Legislators'),
+        text: localize('Chief Executives, Senior Officials and Legislators'),
         value: 'Chief Executives, Senior Officials and Legislators',
     },
     {
-        text : localize('Managers'),
+        text: localize('Managers'),
         value: 'Managers',
     },
     {
-        text : localize('Professionals'),
+        text: localize('Professionals'),
         value: 'Professionals',
     },
     {
-        text : localize('Clerks'),
+        text: localize('Clerks'),
         value: 'Clerks',
     },
     {
-        text : localize('Personal Care, Sales and Service Workers'),
+        text: localize('Personal Care, Sales and Service Workers'),
         value: 'Personal Care, Sales and Service Workers',
     },
     {
-        text : localize('Agricultural, Forestry and Fishery Workers'),
+        text: localize('Agricultural, Forestry and Fishery Workers'),
         value: 'Agricultural, Forestry and Fishery Workers',
     },
     {
-        text : localize('Craft, Metal, Electrical and Electronics Workers'),
+        text: localize('Craft, Metal, Electrical and Electronics Workers'),
         value: 'Craft, Metal, Electrical and Electronics Workers',
     },
     {
-        text : localize('Plant and Machine Operators and Assemblers'),
+        text: localize('Plant and Machine Operators and Assemblers'),
         value: 'Plant and Machine Operators and Assemblers',
     },
     {
-        text : localize('Cleaners and Helpers'),
+        text: localize('Cleaners and Helpers'),
         value: 'Cleaners and Helpers',
     },
     {
-        text : localize('Mining, Construction, Manufacturing and Transport Workers'),
+        text: localize('Mining, Construction, Manufacturing and Transport Workers'),
         value: 'Mining, Construction, Manufacturing and Transport Workers',
     },
     {
-        text : localize('Armed Forces'),
+        text: localize('Armed Forces'),
         value: 'Armed Forces',
     },
     {
-        text : localize('Government Officers'),
+        text: localize('Government Officers'),
         value: 'Government Officers',
     },
     {
-        text : localize('Students'),
+        text: localize('Students'),
         value: 'Students',
     },
     {
-        text : localize('Unemployed'),
+        text: localize('Unemployed'),
         value: 'Unemployed',
     },
 ];
 
 export const source_of_wealth_list = [
     {
-        text : localize('Accumulation of Income/Savings'),
+        text: localize('Accumulation of Income/Savings'),
         value: 'Accumulation of Income/Savings',
     },
     {
-        text : localize('Cash Business'),
+        text: localize('Cash Business'),
         value: 'Cash Business',
     },
     {
-        text : localize('Company Ownership'),
+        text: localize('Company Ownership'),
         value: 'Company Ownership',
     },
     {
-        text : localize('Divorce Settlement'),
+        text: localize('Divorce Settlement'),
         value: 'Divorce Settlement',
     },
     {
-        text : localize('Inheritance'),
+        text: localize('Inheritance'),
         value: 'Inheritance',
     },
     {
-        text : localize('Investment Income'),
+        text: localize('Investment Income'),
         value: 'Investment Income',
     },
     {
-        text : localize('Sale of Property'),
+        text: localize('Sale of Property'),
         value: 'Sale of Property',
     },
 ];
 
 export const education_level_list = [
     {
-        text : localize('Primary'),
+        text: localize('Primary'),
         value: 'Primary',
     },
     {
-        text : localize('Secondary'),
+        text: localize('Secondary'),
         value: 'Secondary',
     },
     {
-        text : localize('Tertiary'),
+        text: localize('Tertiary'),
         value: 'Tertiary',
     },
 ];
 
 export const net_income_list = [
     {
-        text : localize('Less than $25,000'),
+        text: localize('Less than $25,000'),
         value: 'Less than $25,000',
     },
     {
-        text : localize('$25,000 - $50,000'),
+        text: localize('$25,000 - $50,000'),
         value: '$25,000 - $50,000',
     },
     {
-        text : localize('$50,001 - $100,000'),
+        text: localize('$50,001 - $100,000'),
         value: '$50,001 - $100,000',
     },
     {
-        text : localize('$100,001 - $500,000'),
+        text: localize('$100,001 - $500,000'),
         value: '$100,001 - $500,000',
     },
     {
-        text : localize('Over $500,000'),
+        text: localize('Over $500,000'),
         value: 'Over $500,000',
     },
 ];
 
 export const estimated_worth_list = [
     {
-        text : localize('Less than $100,000'),
+        text: localize('Less than $100,000'),
         value: 'Less than $100,000',
     },
     {
-        text : localize('$100,000 - $250,000'),
+        text: localize('$100,000 - $250,000'),
         value: '$100,000 - $250,000',
     },
     {
-        text : localize('$250,001 - $500,000'),
+        text: localize('$250,001 - $500,000'),
         value: '$250,001 - $500,000',
     },
     {
-        text : localize('$500,001 - $1,000,000'),
+        text: localize('$500,001 - $1,000,000'),
         value: '$500,001 - $1,000,000',
     },
     {
-        text : localize('Over $1,000,000'),
+        text: localize('Over $1,000,000'),
         value: 'Over $1,000,000',
     },
 ];
 
 export const account_turnover_list = [
     {
-        text : localize('Less than $25,000'),
+        text: localize('Less than $25,000'),
         value: 'Less than $25,000',
     },
     {
-        text : localize('$25,000 - $50,000'),
+        text: localize('$25,000 - $50,000'),
         value: '$25,000 - $50,000',
     },
     {
-        text : localize('$50,001 - $100,000'),
+        text: localize('$50,001 - $100,000'),
         value: '$50,001 - $100,000',
     },
     {
-        text : localize('$100,001 - $500,000'),
+        text: localize('$100,001 - $500,000'),
         value: '$100,001 - $500,000',
     },
     {
-        text : localize('Over $500,000'),
+        text: localize('Over $500,000'),
         value: 'Over $500,000',
     },
 ];

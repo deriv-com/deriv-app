@@ -4,17 +4,17 @@ Blockly.Blocks.logic_compare = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: '%1 %2 %3',
-            args0   : [
+            args0: [
                 {
                     type: 'input_value',
                     name: 'A',
                 },
                 {
-                    type   : 'field_dropdown',
-                    name   : 'OP',
+                    type: 'field_dropdown',
+                    name: 'OP',
                     options: [
                         ['=', 'EQ'],
                         ['\u2260', 'NEQ'],
@@ -29,19 +29,19 @@ Blockly.Blocks.logic_compare = {
                     name: 'B',
                 },
             ],
-            output         : 'Boolean',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Boolean',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Compares two values'),
-            category       : Blockly.Categories.Logic,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Compares two values'),
+            category: Blockly.Categories.Logic,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Compare'),
-            'description' : localize('This block compares two values and is used to build a conditional structure.'),
+            display_name: localize('Compare'),
+            description: localize('This block compares two values and is used to build a conditional structure.'),
         };
     },
     getRequiredValueInputs() {
@@ -54,11 +54,11 @@ Blockly.Blocks.logic_compare = {
 
 Blockly.JavaScript.logic_compare = block => {
     const operatorMapping = {
-        EQ : '==',
+        EQ: '==',
         NEQ: '!=',
-        LT : '<',
+        LT: '<',
         LTE: '<=',
-        GT : '>',
+        GT: '>',
         GTE: '>=',
     };
 

@@ -1,7 +1,7 @@
-import classNames   from 'classnames';
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import { Button }   from '@deriv/components';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 const UpgradeButton = ({ className, onClick }) => (
@@ -16,7 +16,7 @@ const UpgradeButton = ({ className, onClick }) => (
 
 UpgradeButton.propTypes = {
     className: PropTypes.string,
-    onClick  : PropTypes.func,
+    onClick: PropTypes.func,
 };
 
 export { UpgradeButton };

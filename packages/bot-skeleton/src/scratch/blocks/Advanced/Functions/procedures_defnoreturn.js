@@ -1,4 +1,4 @@
-import { localize }      from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { plusIconLight } from '../../images';
 
 Blockly.Blocks.procedures_defnoreturn = {
@@ -21,7 +21,7 @@ Blockly.Blocks.procedures_defnoreturn = {
     definition() {
         return {
             message0: localize('function %1 %2'),
-            args0   : [
+            args0: [
                 {
                     type: 'field_input',
                     name: 'NAME',
@@ -33,17 +33,19 @@ Blockly.Blocks.procedures_defnoreturn = {
                     text: '',
                 },
             ],
-            colour         : Blockly.Colours.Special2.colour,
+            colour: Blockly.Colours.Special2.colour,
             colourSecondary: Blockly.Colours.Special2.colourSecondary,
-            colourTertiary : Blockly.Colours.Special2.colourTertiary,
-            tooltip        : localize('Function with no return value'),
-            category       : Blockly.Categories.Functions,
+            colourTertiary: Blockly.Colours.Special2.colourTertiary,
+            tooltip: localize('Function with no return value'),
+            category: Blockly.Categories.Functions,
         };
     },
     meta() {
         return {
-            'display_name': localize('Function'),
-            'description' : localize('This block creates a function, which is a group of instructions that can be executed at any time. Place other blocks in here to perform any kind of action that you need in your strategy. When all the instructions in a function have been carried out, your bot will continue with the remaining blocks in your strategy. Click the “do something” field to give it a name of your choice. Click the plus icon to send a value (as a named variable) to your function.'),
+            display_name: localize('Function'),
+            description: localize(
+                'This block creates a function, which is a group of instructions that can be executed at any time. Place other blocks in here to perform any kind of action that you need in your strategy. When all the instructions in a function have been carried out, your bot will continue with the remaining blocks in your strategy. Click the “do something” field to give it a name of your choice. Click the plus icon to send a value (as a named variable) to your function.'
+            ),
         };
     },
     /**
@@ -180,13 +182,13 @@ Blockly.Blocks.procedures_defnoreturn = {
      * @this Blockly.Block
      */
     domToMutation(xmlElement) {
-        this.arguments           = [];
+        this.arguments = [];
         this.argument_var_models = [];
 
         xmlElement.childNodes.forEach(childNode => {
             if (childNode.nodeName.toLowerCase() === 'arg') {
                 const var_name = childNode.getAttribute('name');
-                const var_id   = childNode.getAttribute('varid') || childNode.getAttribute('varId');
+                const var_id = childNode.getAttribute('varid') || childNode.getAttribute('varId');
                 const variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, var_id, var_name, '');
 
                 this.arguments.push(var_name);

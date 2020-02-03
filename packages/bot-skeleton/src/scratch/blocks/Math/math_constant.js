@@ -4,13 +4,13 @@ Blockly.Blocks.math_constant = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: '%1',
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'CONSTANT',
+                    type: 'field_dropdown',
+                    name: 'CONSTANT',
                     options: [
                         ['\u03C0', 'PI'],
                         ['\u2107', 'E'],
@@ -21,19 +21,19 @@ Blockly.Blocks.math_constant = {
                     ],
                 },
             ],
-            output         : 'Number',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('This block gives you the selected constant values.'),
-            category       : Blockly.Categories.Mathematical,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('This block gives you the selected constant values.'),
+            category: Blockly.Categories.Mathematical,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Mathematical constants'),
-            'description' : localize('This block gives you the selected constant values.'),
+            display_name: localize('Mathematical constants'),
+            description: localize('This block gives you the selected constant values.'),
         };
     },
 };
@@ -41,8 +41,7 @@ Blockly.Blocks.math_constant = {
 Blockly.JavaScript.math_constant = block => {
     const constant = block.getFieldValue('CONSTANT');
 
-    let code,
-        order;
+    let code, order;
 
     if (constant === 'PI') {
         code = 'Math.PI';

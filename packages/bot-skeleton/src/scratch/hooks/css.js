@@ -6,10 +6,10 @@ Blockly.Css.CONTENT = [
     'stroke: var(--status-danger);',
     'stroke-width: 3px;',
     '}',
-    
+
     '.blocklySvg {',
     'outline: none;',
-    'overflow: hidden;',  /* IE overflows by default. */
+    'overflow: hidden;' /* IE overflows by default. */,
     'position: absolute;',
     'display: block;',
     '}',
@@ -24,13 +24,13 @@ Blockly.Css.CONTENT = [
     '.blocklyWidgetDiv {',
     'display: none;',
     'position: absolute;',
-    'z-index: 99999;', /* big value for bootstrap3 compatibility */
+    'z-index: 99999;' /* big value for bootstrap3 compatibility */,
     '}',
 
     '.injectionDiv {',
     'height: 100%;',
     'position: relative;',
-    'overflow: hidden;', /* So blocks in drag surface disappear at edges */
+    'overflow: hidden;' /* So blocks in drag surface disappear at edges */,
     'touch-action: none',
     '}',
 
@@ -97,7 +97,7 @@ Blockly.Css.CONTENT = [
     'right: 0;',
     'bottom: 0;',
     'overflow: visible !important;',
-    'z-index: 50;', /* Display above the toolbox */
+    'z-index: 50;' /* Display above the toolbox */,
     '}',
 
     '.blocklyTooltipDiv {',
@@ -110,7 +110,7 @@ Blockly.Css.CONTENT = [
     'opacity: 0.9;',
     'padding: 2px;',
     'position: absolute;',
-    'z-index: 100000;', /* big value for bootstrap3 compatibility */
+    'z-index: 100000;' /* big value for bootstrap3 compatibility */,
     '}',
 
     '.blocklyDropDownDiv {',
@@ -121,7 +121,7 @@ Blockly.Css.CONTENT = [
     'display: none;',
     'border: 1px solid;',
     'border-radius: 4px;',
-    `box-shadow: 0px 0px 8px 1px ${  Blockly.Colours.dropDownShadow  };`,
+    `box-shadow: 0px 0px 8px 1px ${Blockly.Colours.dropDownShadow};`,
     'padding: 4px;',
     '-webkit-user-select: none;',
     'min-height: 15px',
@@ -156,11 +156,11 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyDropDownButtonHover {',
-    `box-shadow: 0px 0px 0px 4px ${  Blockly.Colours.fieldShadow  };`,
+    `box-shadow: 0px 0px 0px 4px ${Blockly.Colours.fieldShadow};`,
     '}',
 
     '.blocklyDropDownButton:active {',
-    `box-shadow: 0px 0px 0px 6px ${  Blockly.Colours.fieldShadow  };`,
+    `box-shadow: 0px 0px 0px 6px ${Blockly.Colours.fieldShadow};`,
     '}',
 
     '.blocklyDropDownButton > img {',
@@ -347,7 +347,7 @@ Blockly.Css.CONTENT = [
     '.blocklyNonEditableText>text {',
     'pointer-events: none;',
     '}',
-    
+
     '.blocklyNonEditableText>text,',
     '.blocklyEditableText>text {',
     // 'fill: $colour_text;',
@@ -651,9 +651,9 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyAngleCircle {',
-    `stroke: ${  Blockly.Colours.motion.tertiary  };`,
+    `stroke: ${Blockly.Colours.motion.tertiary};`,
     'stroke-width: 1;',
-    `fill: ${  Blockly.Colours.motion.secondary  };`,
+    `fill: ${Blockly.Colours.motion.secondary};`,
     '}',
 
     '.blocklyAngleCenterPoint {',
@@ -719,8 +719,8 @@ Blockly.Css.CONTENT = [
     'overflow-y: auto;',
     'position: absolute;',
     // 'font-family: "Helvetica Neue", Helvetica, sans-serif;',
-    'z-index: 40;', /* so blocks go over toolbox when dragging */
-    '-webkit-tap-highlight-color: transparent;', /* issue #1345 */
+    'z-index: 40;' /* so blocks go over toolbox when dragging */,
+    '-webkit-tap-highlight-color: transparent;' /* issue #1345 */,
     '}',
 
     '.blocklyTreeRoot {',
@@ -885,17 +885,17 @@ Blockly.Css.CONTENT = [
 
     /* Copied from: goog/css/menu.css */
     /*
-   * Copyright 2009 The Closure Library Authors. All Rights Reserved.
-   *
-   * Use of this source code is governed by the Apache License, Version 2.0.
-   * See the COPYING file for details.
-   */
+     * Copyright 2009 The Closure Library Authors. All Rights Reserved.
+     *
+     * Use of this source code is governed by the Apache License, Version 2.0.
+     * See the COPYING file for details.
+     */
 
     /**
-   * Standard styling for menus created by goog.ui.MenuRenderer.
-   *
-   * @author attila@google.com (Attila Bodis)
-   */
+     * Standard styling for menus created by goog.ui.MenuRenderer.
+     *
+     * @author attila@google.com (Attila Bodis)
+     */
 
     '.blocklyWidgetDiv .goog-menu {',
     'background: #fff;',
@@ -910,45 +910,45 @@ Blockly.Css.CONTENT = [
     'position: absolute;',
     'overflow-y: auto;',
     'overflow-x: hidden;',
-    'z-index: 20000;',  /* Arbitrary, but some apps depend on it... */
+    'z-index: 20000;' /* Arbitrary, but some apps depend on it... */,
     '}',
 
     '.blocklyDropDownDiv .goog-menu {',
     'cursor: default;',
     'font: normal 13px "Helvetica Neue", Helvetica, sans-serif;',
     'outline: none;',
-    'z-index: 20000;',  /* Arbitrary, but some apps depend on it... */
+    'z-index: 20000;' /* Arbitrary, but some apps depend on it... */,
     '}',
 
     /* Copied from: goog/css/menuitem.css */
     /*
-   * Copyright 2009 The Closure Library Authors. All Rights Reserved.
-   *
-   * Use of this source code is governed by the Apache License, Version 2.0.
-   * See the COPYING file for details.
-   */
+     * Copyright 2009 The Closure Library Authors. All Rights Reserved.
+     *
+     * Use of this source code is governed by the Apache License, Version 2.0.
+     * See the COPYING file for details.
+     */
 
     /**
-   * Standard styling for menus created by goog.ui.MenuItemRenderer.
-   *
-   * @author attila@google.com (Attila Bodis)
-   */
+     * Standard styling for menus created by goog.ui.MenuItemRenderer.
+     *
+     * @author attila@google.com (Attila Bodis)
+     */
 
     /**
-   * State: resting.
-   *
-   * NOTE(mleibman,chrishenry):
-   * The RTL support in Closure is provided via two mechanisms -- "rtl" CSS
-   * classes and BiDi flipping done by the CSS compiler.  Closure supports RTL
-   * with or without the use of the CSS compiler.  In order for them not
-   * to conflict with each other, the "rtl" CSS classes need to have the #noflip
-   * annotation.  The non-rtl counterparts should ideally have them as well, but,
-   * since .goog-menuitem existed without .goog-menuitem-rtl for so long before
-   * being added, there is a risk of people having templates where they are not
-   * rendering the .goog-menuitem-rtl class when in RTL and instead rely solely
-   * on the BiDi flipping by the CSS compiler.  That's why we're not adding the
-   * #noflip to .goog-menuitem.
-   */
+     * State: resting.
+     *
+     * NOTE(mleibman,chrishenry):
+     * The RTL support in Closure is provided via two mechanisms -- "rtl" CSS
+     * classes and BiDi flipping done by the CSS compiler.  Closure supports RTL
+     * with or without the use of the CSS compiler.  In order for them not
+     * to conflict with each other, the "rtl" CSS classes need to have the #noflip
+     * annotation.  The non-rtl counterparts should ideally have them as well, but,
+     * since .goog-menuitem existed without .goog-menuitem-rtl for so long before
+     * being added, there is a risk of people having templates where they are not
+     * rendering the .goog-menuitem-rtl class when in RTL and instead rely solely
+     * on the BiDi flipping by the CSS compiler.  That's why we're not adding the
+     * #noflip to .goog-menuitem.
+     */
     '.blocklyWidgetDiv .goog-menuitem {',
     'color: #000;',
     'font: normal 13px "Helvetica Neue", Helvetica, sans-serif;',
@@ -989,9 +989,9 @@ Blockly.Css.CONTENT = [
     '}',
 
     /*
-   * If a menu doesn't have items with shortcuts, leave just enough room for
-   * submenu arrows, if they are rendered.
-   */
+     * If a menu doesn't have items with shortcuts, leave just enough room for
+     * submenu arrows, if they are rendered.
+     */
     '.blocklyWidgetDiv .goog-menu-noaccel .goog-menuitem, ',
     '.blocklyDropDownDiv .goog-menu-noaccel .goog-menuitem {',
     'padding-right: 20px;',
@@ -1023,7 +1023,7 @@ Blockly.Css.CONTENT = [
     '.blocklyWidgetDiv .goog-menuitem-hover {',
     'background-color: #d6e9f8;',
     /* Use an explicit top and bottom border so that the selection is visible',
-      * in high contrast mode. */
+     * in high contrast mode. */
     'border-color: #d6e9f8;',
     'border-style: dotted;',
     'border-width: 1px 0;',
@@ -1056,7 +1056,7 @@ Blockly.Css.CONTENT = [
     '.blocklyDropDownDiv .goog-option-selected .goog-menuitem-icon {',
     /* Client apps may override the URL at which they serve the sprite. */
     'background: url(<<<PATH>>>/sprites.png) no-repeat -48px -16px !important;',
-    'position: static;', /* Scroll with the menu. */
+    'position: static;' /* Scroll with the menu. */,
     'float: left;',
     'margin-left: -24px;',
     '}',
@@ -1111,17 +1111,17 @@ Blockly.Css.CONTENT = [
 
     /* Copied from: goog/css/menuseparator.css */
     /*
-   * Copyright 2009 The Closure Library Authors. All Rights Reserved.
-   *
-   * Use of this source code is governed by the Apache License, Version 2.0.
-   * See the COPYING file for details.
-   */
+     * Copyright 2009 The Closure Library Authors. All Rights Reserved.
+     *
+     * Use of this source code is governed by the Apache License, Version 2.0.
+     * See the COPYING file for details.
+     */
 
     /**
-   * Standard styling for menus created by goog.ui.MenuSeparatorRenderer.
-   *
-   * @author attila@google.com (Attila Bodis)
-   */
+     * Standard styling for menus created by goog.ui.MenuSeparatorRenderer.
+     *
+     * @author attila@google.com (Attila Bodis)
+     */
 
     '.blocklyWidgetDiv .goog-menuseparator, ',
     '.blocklyDropDownDiv .goog-menuseparator {',
@@ -1136,8 +1136,8 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyFlyoutCheckbox.checked {',
-    `fill: ${  Blockly.Colours.motion.primary  };`,
-    `stroke: ${  Blockly.Colours.motion.tertiary  };`,
+    `fill: ${Blockly.Colours.motion.primary};`,
+    `stroke: ${Blockly.Colours.motion.tertiary};`,
     '}',
 
     '.blocklyFlyoutCheckboxPath {',

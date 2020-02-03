@@ -1,28 +1,26 @@
-import {
-    action,
-    observable }                 from 'mobx';
-import moment                     from 'moment';
-import { currentLanguage }       from 'Utils/Language/index';
-import BaseStore                  from './base-store';
-import { clientNotifications }    from './Helpers/client-notifications';
+import { action, observable } from 'mobx';
+import moment from 'moment';
+import { currentLanguage } from 'Utils/Language/index';
+import BaseStore from './base-store';
+import { clientNotifications } from './Helpers/client-notifications';
 
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
         super({ root_store });
     }
 
-    @observable server_time      = moment.utc();
+    @observable server_time = moment.utc();
     @observable current_language = currentLanguage;
-    @observable has_error        = false;
+    @observable has_error = false;
 
     @observable error = {
-        type   : 'info',
+        type: 'info',
         message: '',
     };
 
-    @observable network_status    = {};
+    @observable network_status = {};
     @observable is_network_online = false;
-    @observable is_socket_opened  = false;
+    @observable is_socket_opened = false;
     @observable was_socket_opened = false;
 
     @observable services_error = {};
@@ -34,10 +32,7 @@ export default class CommonStore extends BaseStore {
     setIsSocketOpened(is_socket_opened) {
         // note that it's not for account switch that we're doing this,
         // but rather to reset account related stores like portfolio and contract-trade
-        const should_broadcast_account_change =
-            this.was_socket_opened
-            && !this.is_socket_opened
-            && is_socket_opened;
+        const should_broadcast_account_change = this.was_socket_opened && !this.is_socket_opened && is_socket_opened;
 
         this.is_socket_opened = is_socket_opened;
         this.was_socket_opened = this.was_socket_opened || is_socket_opened;
@@ -50,14 +45,14 @@ export default class CommonStore extends BaseStore {
     @action.bound
     setNetworkStatus(status, is_online) {
         if (this.network_status.class) {
-            this.network_status.class   = status.class;
+            this.network_status.class = status.class;
             this.network_status.tooltip = status.tooltip;
         } else {
             this.network_status = status;
         }
         this.is_network_online = is_online;
 
-        const ui_store    = this.root_store.ui;
+        const ui_store = this.root_store.ui;
         if (!is_online) {
             ui_store.addNotificationMessage(clientNotifications().you_are_offline);
         } else {
@@ -68,13 +63,13 @@ export default class CommonStore extends BaseStore {
     @action.bound
     setError(has_error, error) {
         this.has_error = has_error;
-        this.error     = {
+        this.error = {
             type: error ? error.type : 'info',
             ...(error && {
-                header             : error.header,
-                message            : error.message,
-                redirect_label     : error.redirect_label,
-                redirectOnClick    : error.redirectOnClick,
+                header: error.header,
+                message: error.message,
+                redirect_label: error.redirect_label,
+                redirectOnClick: error.redirectOnClick,
                 should_show_refresh: error.should_show_refresh,
             }),
         };

@@ -4,34 +4,36 @@ Blockly.Blocks.ask_price = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('Ask Price %1'),
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'PURCHASE_LIST',
+                    type: 'field_dropdown',
+                    name: 'PURCHASE_LIST',
                     options: [['', '']],
                 },
             ],
-            output         : 'Number',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('This block returns the purchase price for the selected trade type.'),
-            category       : Blockly.Categories.Before_Purchase,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('This block returns the purchase price for the selected trade type.'),
+            category: Blockly.Categories.Before_Purchase,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Purchase price'),
-            'description' : localize('This block returns the purchase price for the selected trade type. This block can be used only in the "Purchase conditions" root block.'),
+            display_name: localize('Purchase price'),
+            description: localize(
+                'This block returns the purchase price for the selected trade type. This block can be used only in the "Purchase conditions" root block.'
+            ),
         };
     },
-    onchange            : Blockly.Blocks.purchase.onchange,
+    onchange: Blockly.Blocks.purchase.onchange,
     populatePurchaseList: Blockly.Blocks.purchase.populatePurchaseList,
-    enforceLimitations  : Blockly.Blocks.purchase.enforceLimitations,
+    enforceLimitations: Blockly.Blocks.purchase.enforceLimitations,
 };
 
 Blockly.JavaScript.ask_price = block => {

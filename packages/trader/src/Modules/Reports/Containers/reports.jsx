@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { VerticalTab } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { FadeWrapper } from 'App/Components/Animations';
-import VerticalTab from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
 import AppRoutes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 import WalletInformation from './wallet-information.jsx';
@@ -81,6 +81,8 @@ class Reports extends React.Component {
                         is_routed={true}
                         is_full_width={true}
                         list={menu_options()}
+                        vertical_tab_index={this.props.vertical_tab_index}
+                        setVerticalTabIndex={this.props.setVerticalTabIndex}
                     />
                 </div>
             </FadeWrapper>
@@ -95,12 +97,16 @@ Reports.propTypes = {
     is_visible: PropTypes.bool,
     location: PropTypes.object,
     routes: PropTypes.arrayOf(PropTypes.object),
+    setVerticalTabIndex: PropTypes.func,
     toggleReports: PropTypes.func,
+    vertical_tab_index: PropTypes.number,
 };
 
 export default connect(({ ui }) => ({
     disableRouteMode: ui.disableRouteModal,
     enableRouteMode: ui.setRouteModal,
     is_visible: ui.is_reports_visible,
+    setVerticalTabIndex: ui.setVerticalTabIndex,
     toggleReports: ui.toggleReports,
+    vertical_tab_index: ui.vertical_tab_index,
 }))(withRouter(Reports));

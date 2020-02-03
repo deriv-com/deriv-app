@@ -7,10 +7,10 @@ Blockly.Blocks.todatetime = {
     definition() {
         return {
             message0: `${localize('To date/time %1')}%2`,
-            args0   : [
+            args0: [
                 {
-                    type : 'input_value',
-                    name : 'TIMESTAMP',
+                    type: 'input_value',
+                    name: 'TIMESTAMP',
                     check: 'Number',
                 },
                 {
@@ -18,12 +18,12 @@ Blockly.Blocks.todatetime = {
                     type: 'input_dummy',
                 },
             ],
-            output         : 'String',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'String',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize(
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize(
                 'This block converts the number of seconds since the Unix Epoch (1 January 1970) into a string of text representing the date and time.'
             ),
             category: Blockly.Categories.Time,
@@ -31,8 +31,10 @@ Blockly.Blocks.todatetime = {
     },
     meta() {
         return {
-            'display_name': localize('Convert to date/time'),
-            'description' : localize('This block converts the number of seconds since the Unix Epoch (1 January 1970) into a string of text representing the date and time.'),
+            display_name: localize('Convert to date/time'),
+            description: localize(
+                'This block converts the number of seconds since the Unix Epoch (1 January 1970) into a string of text representing the date and time.'
+            ),
         };
     },
     getRequiredValueInputs() {

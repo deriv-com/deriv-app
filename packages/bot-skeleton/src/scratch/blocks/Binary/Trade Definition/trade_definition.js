@@ -1,10 +1,8 @@
-import { localize }         from '@deriv/translations';
-import { defineContract }   from '../../images';
-import DBotStore            from '../../../dbot-store';
-import {
-    setBlockTextColor,
-    runIrreversibleEvents } from '../../../utils';
-import { config }           from '../../../../constants/config';
+import { localize } from '@deriv/translations';
+import { defineContract } from '../../images';
+import DBotStore from '../../../dbot-store';
+import { setBlockTextColor, runIrreversibleEvents } from '../../../utils';
+import { config } from '../../../../constants/config';
 
 Blockly.Blocks.trade_definition = {
     init() {
@@ -18,13 +16,13 @@ Blockly.Blocks.trade_definition = {
             message3: '%1',
             message4: localize('%1Trade options: %2'),
             message5: '%1',
-            args0   : [
+            args0: [
                 {
-                    type  : 'field_image',
-                    src   : defineContract,
-                    width : 25,
+                    type: 'field_image',
+                    src: defineContract,
+                    width: 25,
                     height: 25,
-                    alt   : 'T',
+                    alt: 'T',
                 },
                 {
                     type: 'input_dummy',
@@ -38,9 +36,9 @@ Blockly.Blocks.trade_definition = {
             ],
             args2: [
                 {
-                    type  : 'field_image',
-                    src   : '', // this is here to add extra padding
-                    width : 4,
+                    type: 'field_image',
+                    src: '', // this is here to add extra padding
+                    width: 4,
                     height: 25,
                 },
                 {
@@ -49,16 +47,16 @@ Blockly.Blocks.trade_definition = {
             ],
             args3: [
                 {
-                    type : 'input_statement',
-                    name : 'INITIALIZATION',
+                    type: 'input_statement',
+                    name: 'INITIALIZATION',
                     check: null,
                 },
             ],
             args4: [
                 {
-                    type  : 'field_image',
-                    src   : '', // this is here to add extra padding
-                    width : 4,
+                    type: 'field_image',
+                    src: '', // this is here to add extra padding
+                    width: 4,
                     height: 25,
                 },
                 {
@@ -71,17 +69,17 @@ Blockly.Blocks.trade_definition = {
                     name: 'SUBMARKET',
                 },
             ],
-            colour         : Blockly.Colours.RootBlock.colour,
+            colour: Blockly.Colours.RootBlock.colour,
             colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
-            colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
-            tooltip        : localize('Here is where you define the parameters of your contract.'),
-            category       : Blockly.Categories.Trade_Definition,
+            colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
+            tooltip: localize('Here is where you define the parameters of your contract.'),
+            category: Blockly.Categories.Trade_Definition,
         };
     },
     meta() {
         return {
-            'display_name': localize('Trade parameters'),
-            'description' : localize('Here is where you define the parameters of your contract.'),
+            display_name: localize('Trade parameters'),
+            description: localize('Here is where you define the parameters of your contract.'),
         };
     },
     onchange(event) {
@@ -93,10 +91,7 @@ Blockly.Blocks.trade_definition = {
             return;
         }
 
-        if (
-            event.type === Blockly.Events.BLOCK_CHANGE ||
-            event.type === Blockly.Events.END_DRAG
-        ) {
+        if (event.type === Blockly.Events.BLOCK_CHANGE || event.type === Blockly.Events.END_DRAG) {
             // Enforce only trade_definition_<type> blocks in TRADE_OPTIONS statement.
             const blocks_in_trade_options = this.getBlocksInStatement('TRADE_OPTIONS');
 
@@ -124,29 +119,30 @@ Blockly.JavaScript.trade_definition = block => {
         throw new Error('Please login');
     }
 
-    const { loginid }                = client;
-    const account                    = client.getToken(loginid);
-    const market_block               = block.getChildByType('trade_definition_market');
-    const trade_type_block           = block.getChildByType('trade_definition_tradetype');
-    const contract_type_block        = block.getChildByType('trade_definition_contracttype');
-    const candle_interval_block      = block.getChildByType('trade_definition_candleinterval');
-    const restart_on_error_block     = block.getChildByType('trade_definition_restartonerror');
-    const restart_on_buy_sell_block  = block.getChildByType('trade_definition_restartbuysell');
+    const { loginid } = client;
+    const account = client.getToken(loginid);
+    const market_block = block.getChildByType('trade_definition_market');
+    const trade_type_block = block.getChildByType('trade_definition_tradetype');
+    const contract_type_block = block.getChildByType('trade_definition_contracttype');
+    const candle_interval_block = block.getChildByType('trade_definition_candleinterval');
+    const restart_on_error_block = block.getChildByType('trade_definition_restartonerror');
+    const restart_on_buy_sell_block = block.getChildByType('trade_definition_restartbuysell');
 
-    const symbol                     = market_block.getFieldValue('SYMBOL_LIST');
-    const trade_type                 = trade_type_block.getFieldValue('TRADETYPE_LIST');
-    const contract_type              = contract_type_block.getFieldValue('TYPE_LIST');
-    const candle_interval            = candle_interval_block.getFieldValue('CANDLEINTERVAL_LIST');
-    const should_restart_on_error    = restart_on_error_block.getFieldValue('RESTARTONERROR') !== 'FALSE';
+    const symbol = market_block.getFieldValue('SYMBOL_LIST');
+    const trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
+    const contract_type = contract_type_block.getFieldValue('TYPE_LIST');
+    const candle_interval = candle_interval_block.getFieldValue('CANDLEINTERVAL_LIST');
+    const should_restart_on_error = restart_on_error_block.getFieldValue('RESTARTONERROR') !== 'FALSE';
     const should_restart_on_buy_sell = restart_on_buy_sell_block.getFieldValue('TIME_MACHINE_ENABLED') !== 'FALSE';
 
-    const { opposites }              = config;
-    const contract_type_list         = contract_type === 'both'
-        ? opposites[trade_type.toUpperCase()].map(opposite => Object.keys(opposite)[0])
-        : [contract_type];
+    const { opposites } = config;
+    const contract_type_list =
+        contract_type === 'both'
+            ? opposites[trade_type.toUpperCase()].map(opposite => Object.keys(opposite)[0])
+            : [contract_type];
 
-    const initialization             = Blockly.JavaScript.statementToCode(block, 'INITIALIZATION');
-    const trade_options_statement    = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
+    const initialization = Blockly.JavaScript.statementToCode(block, 'INITIALIZATION');
+    const trade_options_statement = Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
 
     const code = `  
     BinaryBotPrivateInit = function BinaryBotPrivateInit() {

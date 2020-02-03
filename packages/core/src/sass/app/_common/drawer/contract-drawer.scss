@@ -72,7 +72,8 @@ $header-height: 4em;
     background-color: var(--general-main-1);
     color: var(--text-prominent);
 
-    .progress-slider, .progress-slider--completed {
+    .progress-slider,
+    .progress-slider--completed {
         margin: 0;
         border-bottom: 1px solid var(--general-section-1);
     }
@@ -108,7 +109,8 @@ $header-height: 4em;
             background: var(--general-hover);
         }
     }
-    .purchase-price, .potential-payout {
+    .purchase-price,
+    .potential-payout {
         &-container {
             display: flex;
             flex-direction: column;
@@ -207,7 +209,8 @@ $header-height: 4em;
             opacity: 1;
             transform: translateY(0);
         }
-        &--enter, &--exit {
+        &--enter,
+        &--exit {
             opacity: 0;
             transform: translateY(-8px);
         }

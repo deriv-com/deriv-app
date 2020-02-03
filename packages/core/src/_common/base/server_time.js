@@ -1,18 +1,13 @@
-const moment       = require('moment');
+const moment = require('moment');
 const BinarySocket = require('./socket_base');
 const PromiseClass = require('../utility').PromiseClass;
 
 const ServerTime = (() => {
     let clock_started = false;
     const pending = new PromiseClass();
-    let server_time,
-        performance_request_time,
-        get_time_interval,
-        update_time_interval,
-        onTimeUpdated;
+    let server_time, performance_request_time, get_time_interval, update_time_interval, onTimeUpdated;
 
-    const init = (fncTimeUpdated) => {
-
+    const init = fncTimeUpdated => {
         if (!clock_started) {
             onTimeUpdated = fncTimeUpdated;
             requestTime();
@@ -27,7 +22,7 @@ const ServerTime = (() => {
         BinarySocket.send({ time: 1 }).then(timeCounter);
     };
 
-    const timeCounter = (response) => {
+    const timeCounter = response => {
         if (response.error) return;
 
         if (!clock_started) {
@@ -40,7 +35,7 @@ const ServerTime = (() => {
         const start_timestamp = response.time;
         const performance_response_time = performance.now();
         const time_taken = performance_response_time - performance_request_time;
-        const server_time_at_response = ((start_timestamp * 1000) + time_taken);
+        const server_time_at_response = start_timestamp * 1000 + time_taken;
 
         const updateTime = () => {
             const time_since_response = performance.now() - performance_response_time;
@@ -55,7 +50,7 @@ const ServerTime = (() => {
         update_time_interval = setInterval(updateTime, 1000);
     };
 
-    const get = () => server_time ? server_time.clone() : undefined;
+    const get = () => (server_time ? server_time.clone() : undefined);
 
     return {
         init,

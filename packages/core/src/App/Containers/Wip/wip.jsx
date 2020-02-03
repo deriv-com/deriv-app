@@ -1,12 +1,12 @@
-import { Button, Icon }       from '@deriv/components';
-import React                  from 'react';
-import BinarySocket           from '_common/base/socket_base';
-import { urlFor }             from '_common/url';
+import { Button, Icon } from '@deriv/components';
+import React from 'react';
+import BinarySocket from '_common/base/socket_base';
+import { urlFor } from '_common/url';
 import { localize, Localize } from '@deriv/translations';
-import { connect }            from 'Stores/connect';
+import { connect } from 'Stores/connect';
 import 'Sass/app/_common/components/wip.scss';
 
-const onClick = (e) => {
+const onClick = e => {
     e.preventDefault();
     window.open(urlFor('trading', undefined, undefined, true), '_blank', 'noopener, noreferrer');
 };
@@ -38,9 +38,7 @@ const Wip = ({ is_dark_mode, pushDataLayer }) => {
     );
 };
 
-export default connect(({ ui, gtm }) => (
-    {
-        is_dark_mode : ui.is_dark_mode_on,
-        pushDataLayer: gtm.pushDataLayer,
-    }
-))(Wip);
+export default connect(({ ui, gtm }) => ({
+    is_dark_mode: ui.is_dark_mode_on,
+    pushDataLayer: gtm.pushDataLayer,
+}))(Wip);

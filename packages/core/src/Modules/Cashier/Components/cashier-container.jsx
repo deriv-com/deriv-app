@@ -1,32 +1,29 @@
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import Loading              from '../../../templates/_common/components/loading.jsx';
+import PropTypes from 'prop-types';
+import React from 'react';
+import Loading from '../../../templates/_common/components/loading.jsx';
 
 class CashierContainer extends React.Component {
     render() {
         return (
             <React.Fragment>
                 {this.props.is_loading && <Loading />}
-                {this.props.iframe_url &&
-                <iframe
-                    className='cashier__content'
-                    height={this.props.iframe_height}
-                    src={this.props.iframe_url}
-                    frameBorder='0'
-                    scrolling='auto'
-                />
-                }
+                {this.props.iframe_url && (
+                    <iframe
+                        className='cashier__content'
+                        height={this.props.iframe_height}
+                        src={this.props.iframe_url}
+                        frameBorder='0'
+                        scrolling='auto'
+                    />
+                )}
             </React.Fragment>
         );
     }
 }
 
 CashierContainer.propTypes = {
-    className    : PropTypes.string,
-    iframe_height: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
+    className: PropTypes.string,
+    iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     iframe_url: PropTypes.string,
     is_loading: PropTypes.bool,
 };

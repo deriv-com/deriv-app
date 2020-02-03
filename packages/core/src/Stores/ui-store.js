@@ -1,91 +1,83 @@
-import {
-    action,
-    autorun,
-    computed,
-    observable }             from 'mobx';
-import ObjectUtils           from '@deriv/shared/utils/object';
-import {
-    MAX_MOBILE_WIDTH,
-    MAX_TABLET_WIDTH }       from 'Constants/ui';
-import { LocalStore }        from '_common/storage';
+import { action, autorun, computed, observable } from 'mobx';
+import ObjectUtils from '@deriv/shared/utils/object';
+import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
+import { LocalStore } from '_common/storage';
 import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
-import { isBot }             from 'Utils/PlatformSwitcher';
-import {
-    clientNotifications,
-    excluded_notifications } from './Helpers/client-notifications';
-import BaseStore             from './base-store';
+import { isBot } from 'Utils/PlatformSwitcher';
+import { clientNotifications, excluded_notifications } from './Helpers/client-notifications';
+import BaseStore from './base-store';
 
 const store_name = 'ui_store';
 
 export default class UIStore extends BaseStore {
     @observable is_account_settings_visible = false;
-    @observable is_main_drawer_on           = false;
-    @observable is_notifications_visible    = false;
-    @observable is_positions_drawer_on      = false;
-    @observable is_reports_visible          = false;
-    @observable is_cashier_visible          = false;
+    @observable is_main_drawer_on = false;
+    @observable is_notifications_visible = false;
+    @observable is_positions_drawer_on = false;
+    @observable is_reports_visible = false;
+    @observable is_cashier_visible = false;
 
     // Extensions
-    @observable footer_extension         = undefined;
-    @observable settings_extension       = undefined;
+    @observable footer_extension = undefined;
+    @observable settings_extension = undefined;
     @observable notification_messages_ui = undefined;
 
-    @observable is_dark_mode_on         = false;
-    @observable is_settings_modal_on    = false;
+    @observable is_dark_mode_on = false;
+    @observable is_settings_modal_on = false;
     @observable is_accounts_switcher_on = false;
 
     @observable has_only_forward_starting_contracts = false;
 
     // Purchase Controls
     // @observable is_purchase_confirm_on    = false;
-    @observable is_services_error_visible             = false;
+    @observable is_services_error_visible = false;
     @observable is_unsupported_contract_modal_visible = false;
-    @observable is_account_signup_modal_visible       = false;
-    @observable is_set_residence_modal_visible        = false;
-    @observable is_reset_password_modal_visible       = false;
+    @observable is_account_signup_modal_visible = false;
+    @observable is_set_residence_modal_visible = false;
+    @observable is_reset_password_modal_visible = false;
     // @observable is_purchase_lock_on       = false;
 
     // SmartCharts Controls
     // TODO: enable asset information
     // @observable is_chart_asset_info_visible = true;
     @observable is_chart_countdown_visible = false;
-    @observable is_chart_layout_default    = true;
+    @observable is_chart_layout_default = true;
 
     // PWA event and config
     @observable pwa_prompt_event = null;
 
     @observable screen_width = window.innerWidth;
 
-    @observable notifications         = [];
+    @observable notifications = [];
     @observable notification_messages = [];
-    @observable marked_notifications  = [];
-    @observable push_notifications    = [];
+    @observable marked_notifications = [];
+    @observable push_notifications = [];
 
-    @observable is_advanced_duration   = false;
+    @observable is_advanced_duration = false;
     @observable advanced_duration_unit = 't';
-    @observable advanced_expiry_type   = 'duration';
-    @observable simple_duration_unit   = 't';
-    @observable duration_t             = 5;
-    @observable duration_s             = 15;
-    @observable duration_m             = 3;
-    @observable duration_h             = 1;
-    @observable duration_d             = 1;
+    @observable advanced_expiry_type = 'duration';
+    @observable simple_duration_unit = 't';
+    @observable duration_t = 5;
+    @observable duration_s = 15;
+    @observable duration_m = 3;
+    @observable duration_h = 1;
+    @observable duration_d = 1;
 
     // purchase button states
-    @observable purchase_states = [ false, false ];
+    @observable purchase_states = [false, false];
 
     // app states for modal
-    @observable is_app_disabled   = false;
+    @observable is_app_disabled = false;
     @observable is_route_modal_on = false;
 
     // real account signup
-    @observable is_real_acc_signup_on         = false;
+    @observable is_real_acc_signup_on = false;
     @observable has_real_account_signup_ended = false;
 
     // set currency modal
     @observable is_set_currency_modal_visible = false;
 
-    @observable modal_index = 0;
+    @observable vertical_tab_index = 0;
 
     // Mt5 topup
     @observable is_top_up_virtual_open = false;
@@ -94,16 +86,16 @@ export default class UIStore extends BaseStore {
     // Real account signup
     @observable real_account_signup = {
         active_modal_index: -1,
-        previous_currency : '',
-        current_currency  : '',
-        success_message   : '',
-        error_message     : '',
+        previous_currency: '',
+        current_currency: '',
+        success_message: '',
+        error_message: '',
     };
 
     // UI Focus retention
     @observable current_focus = null;
 
-    getDurationFromUnit = (unit) => this[`duration_${unit}`];
+    getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
         const local_storage_properties = [
@@ -223,7 +215,7 @@ export default class UIStore extends BaseStore {
         }
         // UI/UX wants button to remain green until transition is finished and only then disable buttons
         setTimeout(() => {
-            [].forEach.bind(el_purchase_buttons, (el) => {
+            [].forEach.bind(el_purchase_buttons, el => {
                 el.classList.add('btn-purchase--disabled');
             })();
         }, 250);
@@ -231,7 +223,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     resetPurchaseStates() {
-        this.purchase_states = [ false, false ];
+        this.purchase_states = [false, false];
     }
 
     @action.bound
@@ -287,8 +279,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    setModalIndex(index = 0) {
-        this.modal_index = index;
+    setVerticalTabIndex(index = 0) {
+        this.vertical_tab_index = index;
     }
 
     @action.bound
@@ -297,7 +289,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    openPositionsDrawer() { // show and hide Positions Drawer
+    openPositionsDrawer() {
+        // show and hide Positions Drawer
         this.is_positions_drawer_on = true;
     }
 
@@ -317,7 +310,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    togglePositionsDrawer() { // toggle Positions Drawer
+    togglePositionsDrawer() {
+        // toggle Positions Drawer
         this.is_positions_drawer_on = !this.is_positions_drawer_on;
     }
 
@@ -363,8 +357,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     updateNotifications(notifications_array) {
-        this.notifications =
-            notifications_array.filter((message) => !excluded_notifications.includes(message.key));
+        this.notifications = notifications_array.filter(message => !excluded_notifications.includes(message.key));
     }
 
     @action.bound
@@ -374,8 +367,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     removeNotificationByKey({ key }) {
-        this.notifications = this.notifications
-            .filter(n => n.key !== key);
+        this.notifications = this.notifications.filter(n => n.key !== key);
     }
 
     @action.bound
@@ -397,11 +389,12 @@ export default class UIStore extends BaseStore {
             }
             // Remove notification messages if it was already closed by user and exists in LocalStore
             const active_loginid = LocalStore.get('active_loginid');
-            const messages       = LocalStore.getObject('notification_messages');
+            const messages = LocalStore.getObject('notification_messages');
             if (active_loginid && !ObjectUtils.isEmptyObject(messages)) {
                 // Check if is existing message to remove already closed messages stored in LocalStore
-                const is_existing_message = Array.isArray(messages[active_loginid]) ?
-                    messages[active_loginid].includes(notification.key) : false;
+                const is_existing_message = Array.isArray(messages[active_loginid])
+                    ? messages[active_loginid].includes(notification.key)
+                    : false;
                 if (is_existing_message) {
                     this.markNotificationMessage({ key: notification.key });
                 }
@@ -411,8 +404,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     removeNotificationMessage({ key }) {
-        this.notification_messages = this.notification_messages
-            .filter(n => n.key !== key);
+        this.notification_messages = this.notification_messages.filter(n => n.key !== key);
         // Add notification messages to LocalStore when user closes, check for redundancy
         const active_loginid = LocalStore.get('active_loginid');
         if (!excluded_notifications.includes(key) && active_loginid) {
@@ -436,9 +428,9 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     removeAllNotificationMessages(should_close_persistent) {
-        this.notification_messages = should_close_persistent ? [] : [
-            ...this.notification_messages.filter((notifs) => notifs.is_persistent),
-        ];
+        this.notification_messages = should_close_persistent
+            ? []
+            : [...this.notification_messages.filter(notifs => notifs.is_persistent)];
     }
 
     @action.bound
@@ -478,7 +470,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    closeSuccessTopUpModal () {
+    closeSuccessTopUpModal() {
         this.is_top_up_virtual_success = false;
     }
 
@@ -504,10 +496,10 @@ export default class UIStore extends BaseStore {
     resetRealAccountSignupParams() {
         this.real_account_signup = {
             active_modal_index: -1,
-            previous_currency : '',
-            current_currency  : '',
-            success_message   : '',
-            error_message     : '',
+            previous_currency: '',
+            current_currency: '',
+            success_message: '',
+            error_message: '',
         };
     }
 

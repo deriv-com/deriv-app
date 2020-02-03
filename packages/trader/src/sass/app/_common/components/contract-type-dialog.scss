@@ -22,7 +22,8 @@
         background: var(--general-main-2);
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
     }
-    &--enter, &--exit {
+    &--enter,
+    &--exit {
         transform: translate3d(20%, 0, 0);
         pointer-events: none;
         opacity: 0;

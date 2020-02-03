@@ -122,7 +122,8 @@
             }
         }
     }
-    &:active:not(&--disabled):not([disabled]), &:focus:not(&--disabled):not([disabled]) {
+    &:active:not(&--disabled):not([disabled]),
+    &:focus:not(&--disabled):not([disabled]) {
         transform: translate3d(0, -4px, 0);
     }
     &--swoosh {
@@ -167,14 +168,17 @@
             }
         }
     }
-    &--disabled, &[disabled] {
+    &--disabled,
+    &[disabled] {
         cursor: default;
     }
     &--animated--slide {
-        .btn-purchase__icon_wrapper, .btn-purchase__text_wrapper {
+        .btn-purchase__icon_wrapper,
+        .btn-purchase__text_wrapper {
             @extend .loader;
         }
-        .btn-purchase__icon, .btn-purchase__text {
+        .btn-purchase__icon,
+        .btn-purchase__text {
             @extend .loader--loading;
         }
         .btn-purchase__icon_wrapper {

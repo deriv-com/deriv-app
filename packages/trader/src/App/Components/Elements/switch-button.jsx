@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import PropTypes  from 'prop-types';
-import React      from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const SwitchButton = ({ style, toggled }) => {
     const toggle_style = style || 'switch-button';
@@ -8,13 +8,11 @@ const SwitchButton = ({ style, toggled }) => {
         [`${toggle_style}--toggled`]: toggled,
     });
 
-    return (
-        <div className={icon_class} />
-    );
+    return <div className={icon_class} />;
 };
 
 SwitchButton.propTypes = {
-    style  : PropTypes.string,
+    style: PropTypes.string,
     toggled: PropTypes.bool,
 };
 

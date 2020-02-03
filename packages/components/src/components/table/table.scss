@@ -14,7 +14,8 @@
         border-bottom: 2px solid var(--general-section-1);
         height: 52px;
     }
-    &__cell, &__head {
+    &__cell,
+    &__head {
         font-size: 1.4rem;
         line-height: 1.43;
         display: flex;

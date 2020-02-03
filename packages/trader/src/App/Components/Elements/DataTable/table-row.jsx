@@ -1,10 +1,10 @@
-import classNames                from 'classnames';
-import PropTypes                 from 'prop-types';
-import React                     from 'react';
-import { NavLink }               from 'react-router-dom';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
-import TableCell                 from './table-cell.jsx';
-import TableRowInfo              from './table-row-info.jsx';
+import TableCell from './table-cell.jsx';
+import TableRowInfo from './table-row-info.jsx';
 
 const TableRow = ({
     className,
@@ -32,7 +32,11 @@ const TableRow = ({
         );
     });
 
-    const row_class_name = classNames('table__row', { 'table__row-link': to || replace }, { [`${className}__row`]: className });
+    const row_class_name = classNames(
+        'table__row',
+        { 'table__row-link': to || replace },
+        { [`${className}__row`]: className }
+    );
     if (!is_footer && !is_header && show_preloader) {
         return (
             <div className='table__row--preloader'>
@@ -40,39 +44,33 @@ const TableRow = ({
             </div>
         );
     }
-    return (
-        to ?
-            <NavLink
-                id={`dt_reports_contract_${id}`}
-                className={row_class_name}
-                to={{
-                    pathname: to,
-                    state   : {
-                        from_table_row: true,
-                    },
-                }}
-            >
-                {cells}
-            </NavLink>
-            :
-            <TableRowInfo
-                className={row_class_name}
-                cells={cells}
-                replace={replace}
-                is_footer={is_footer}
-            />
+    return to ? (
+        <NavLink
+            id={`dt_reports_contract_${id}`}
+            className={row_class_name}
+            to={{
+                pathname: to,
+                state: {
+                    from_table_row: true,
+                },
+            }}
+        >
+            {cells}
+        </NavLink>
+    ) : (
+        <TableRowInfo className={row_class_name} cells={cells} replace={replace} is_footer={is_footer} />
     );
 };
 
 TableRow.propTypes = {
     className: PropTypes.string,
-    columns  : PropTypes.array,
-    id       : PropTypes.number,
+    columns: PropTypes.array,
+    id: PropTypes.number,
     is_footer: PropTypes.bool,
     is_header: PropTypes.bool,
-    replace  : PropTypes.object,
-    row_obj  : PropTypes.object,
-    to       : PropTypes.string,
+    replace: PropTypes.object,
+    row_obj: PropTypes.object,
+    to: PropTypes.string,
 };
 
 export default TableRow;

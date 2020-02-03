@@ -1,20 +1,20 @@
-import classNames          from 'classnames';
-import PropTypes           from 'prop-types';
-import React               from 'react';
-import { Icon }            from '@deriv/components';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Icon } from '@deriv/components';
 
 class Tooltip extends React.PureComponent {
     state = {
         show_tooltip_balloon_icon: false,
-    }
+    };
 
     onMouseEnter = () => {
         this.setState({ show_tooltip_balloon_icon: true });
-    }
+    };
 
     onMouseLeave = () => {
         this.setState({ show_tooltip_balloon_icon: false });
-    }
+    };
 
     render() {
         const {
@@ -34,7 +34,7 @@ class Tooltip extends React.PureComponent {
                 data-tooltip={message || undefined}
                 data-tooltip-pos={alignment}
             >
-                {icon === 'info' &&
+                {icon === 'info' && (
                     <React.Fragment>
                         <Icon
                             icon='IcInfoOutline'
@@ -49,9 +49,9 @@ class Tooltip extends React.PureComponent {
                             })}
                         />
                     </React.Fragment>
-                }
+                )}
                 {icon === 'question' && <Icon icon='IcUnknown' className={icon_class} />}
-                {icon === 'dot'      && <Icon icon='IcCircle' className={icon_class} size={4} />}
+                {icon === 'dot' && <Icon icon='IcCircle' className={icon_class} size={4} />}
                 {children}
             </span>
         );
@@ -59,13 +59,13 @@ class Tooltip extends React.PureComponent {
 }
 
 Tooltip.propTypes = {
-    alignment    : PropTypes.string,
-    children     : PropTypes.node,
-    className    : PropTypes.string,
+    alignment: PropTypes.string,
+    children: PropTypes.node,
+    className: PropTypes.string,
     classNameIcon: PropTypes.string,
-    has_error    : PropTypes.bool,
-    icon         : PropTypes.string,
-    message      : PropTypes.string,
+    has_error: PropTypes.bool,
+    icon: PropTypes.string,
+    message: PropTypes.string,
 };
 
 export default Tooltip;

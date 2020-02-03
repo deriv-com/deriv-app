@@ -4,15 +4,14 @@
  * @param  {Object} stores    - the store objects to look for the property to get its value
  * @return {Object}
  */
-export const getComponentProperties = (Component, ...stores) => (
+export const getComponentProperties = (Component, ...stores) =>
     Object.getOwnPropertyNames(Component.propTypes || {}).reduce(
         (acc, prop) => ({
             ...acc,
             ...getPropFromStores(prop, ...stores),
         }),
         {}
-    )
-);
+    );
 
 /**
  * Find the property among provided stores and return an object {prop: value}
@@ -22,5 +21,5 @@ export const getComponentProperties = (Component, ...stores) => (
  */
 const getPropFromStores = (prop, ...stores) => {
     const store = stores.find(item => prop in item) || {};
-    return (prop in store ? { [prop]: store[prop] } : {});
+    return prop in store ? { [prop]: store[prop] } : {};
 };

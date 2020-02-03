@@ -1,36 +1,33 @@
 $category-colours: (
-    search             : #afffda,
-
-    trade_parameters   : #f3f3f3,
+    search: #afffda,
+    trade_parameters: #f3f3f3,
     purchase_conditions: #f3f3f3,
-    sell_conditions    : #f3f3f3,
-    trade_results      : #f3f3f3,
-
-    contract_details   : #f3f3f3,
-    analysis           : #f3f3f3,
-    tick_analysis      : #f3f3f3,
-    indicators         : #f3f3f3,
-    stats              : #f3f3f3,
-
-    utility            : #f3f3f3,
-    math               : #f3f3f3,
-    text               : #f3f3f3,
-    logic              : #f3f3f3,
-    lists              : #f3f3f3,
-    custom_functions   : #f3f3f3,
-    variables          : #f3f3f3,
-    loops              : #f3f3f3,
-    time               : #f3f3f3,
-    misc               : #f3f3f3,
-    notifications      : #f3f3f3
+    sell_conditions: #f3f3f3,
+    trade_results: #f3f3f3,
+    contract_details: #f3f3f3,
+    analysis: #f3f3f3,
+    tick_analysis: #f3f3f3,
+    indicators: #f3f3f3,
+    stats: #f3f3f3,
+    utility: #f3f3f3,
+    math: #f3f3f3,
+    text: #f3f3f3,
+    logic: #f3f3f3,
+    lists: #f3f3f3,
+    custom_functions: #f3f3f3,
+    variables: #f3f3f3,
+    loops: #f3f3f3,
+    time: #f3f3f3,
+    misc: #f3f3f3,
+    notifications: #f3f3f3,
 );
 
 .toolbox {
-    $toolbox         : &;
-    $white           : #fff;
-    $lightgrey       : #ebebeb;
-    $grey            : #f4f4f6;
-    $gray20          : #333;
+    $toolbox: &;
+    $white: #fff;
+    $lightgrey: #ebebeb;
+    $grey: #f4f4f6;
+    $gray20: #333;
     $category-text-spacing: 10px;
 
     background-color: $white;

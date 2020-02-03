@@ -2,12 +2,14 @@
 
 $FLOATING_PADDING: 2.4rem;
 $FLOATING_HEADER_HEIGHT: 41px;
-$MIN_HEIGHT_FLOATING: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - #{$FLOATING_PADDING});
+$MIN_HEIGHT_FLOATING: calc(
+    100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - #{$FLOATING_PADDING}
+);
 
 .account {
     margin: 0 16px;
 
-    .vertical-tab__content {
+    .dc-vertical-tab__content {
         height: $MIN_HEIGHT_FLOATING;
     }
     &__inset_header {
@@ -49,7 +51,8 @@ $MIN_HEIGHT_FLOATING: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FL
             .dc-dropdown-container {
                 margin-top: 0;
 
-                .dc-dropdown__display-text, .dc-list__item-text {
+                .dc-dropdown__display-text,
+                .dc-list__item-text {
                     text-transform: unset;
                 }
             }

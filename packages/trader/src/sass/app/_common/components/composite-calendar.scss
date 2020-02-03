@@ -33,20 +33,21 @@
                 &:hover {
                     border-color: var(--border-hover);
                 }
-                &:focus, &:active {
+                &:focus,
+                &:active {
                     border-color: var(--border-active);
                 }
                 &::placeholder {
                     color: var(--text-general);
                 }
             }
-
         }
         & > .input-field:not(:first-child) {
             margin-left: 8px;
         }
     }
-    & > .first-month, & > .second-month {
+    & > .first-month,
+    & > .second-month {
         .calendar__body {
             border-bottom: none;
         }

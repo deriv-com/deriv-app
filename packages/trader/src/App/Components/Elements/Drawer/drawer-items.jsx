@@ -1,6 +1,6 @@
-import classNames     from 'classnames';
-import PropTypes      from 'prop-types';
-import React          from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { DrawerItem } from './drawer-item.jsx';
 
 class DrawerItems extends React.Component {
@@ -30,10 +30,7 @@ class DrawerItems extends React.Component {
                 <div className='drawer__item' onClick={this.collapseItems}>
                     <span className={parent_item_class}>{text}</span>
                 </div>
-                <div
-                    className={drawer_items_class}
-                    style={list_is_collapsed}
-                >
+                <div className={drawer_items_class} style={list_is_collapsed}>
                     <div className='items-group'>
                         {items.map((item, idx) => (
                             <DrawerItem key={idx} {...item} collapseItems={this.collapseItems} />
@@ -47,7 +44,7 @@ class DrawerItems extends React.Component {
 
 DrawerItems.propTypes = {
     items: PropTypes.array,
-    text : PropTypes.string,
+    text: PropTypes.string,
 };
 
 export { DrawerItems };

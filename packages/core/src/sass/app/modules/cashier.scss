@@ -7,7 +7,8 @@
     &__wrapper {
         text-align: center;
 
-        &, &--align-left {
+        &,
+        &--align-left {
             color: var(--text-general);
             width: 100%;
             height: 100%;
@@ -103,7 +104,8 @@
                 align-items: center;
             }
         }
-        &-items, &-label {
+        &-items,
+        &-label {
             justify-content: left;
         }
         &-label {
@@ -221,7 +223,8 @@
         font-size: 1.6rem;
         line-height: 1.5;
     }
-    &__header, &__text {
+    &__header,
+    &__text {
         color: var(--text-general);
     }
     &__text {
@@ -259,7 +262,8 @@
                 color: var(--text-general);
             }
         }
-        &-resend, &-sent {
+        &-resend,
+        &-sent {
             &-text {
                 font-size: 1.4rem;
                 line-height: 1.43;
@@ -446,7 +450,8 @@
         width: auto;
         margin-bottom: 3.4rem;
     }
-    &__currency, &__balance {
+    &__currency,
+    &__balance {
         line-height: 1.43;
     }
     &__currency {
@@ -470,7 +475,8 @@
             margin: 0 0.8rem;
         }
         &-details {
-            &-from, &-to {
+            &-from,
+            &-to {
                 display: flex;
                 align-items: center;
             }

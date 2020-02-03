@@ -28,7 +28,8 @@
             outline: 0;
             border-color: var(--border-hover);
         }
-        &:active, &:focus {
+        &:active,
+        &:focus {
             outline: 0;
             border-color: var(--border-active);
         }
@@ -130,7 +131,9 @@
             height: 0.53em; // center content glyph
         }
     }
-    &:active, &:focus, &--show {
+    &:active,
+    &:focus,
+    &--show {
         outline: none;
         border-radius: $BORDER_RADIUS;
 
@@ -150,7 +153,8 @@
         transform: scale(1, 0);
         z-index: 999;
 
-        &--enter, &--exit {
+        &--enter,
+        &--exit {
             transform: scale(1, 0);
             opacity: 0;
         }
@@ -165,10 +169,10 @@
         &--left {
             top: -0.1em;
 
-            &--enter, &--exit {
+            &--enter,
+            &--exit {
                 transform: scale(1, 1) translate3d(2em, 0, 0px);
                 opacity: 0;
-
             }
             &--enter-done {
                 opacity: 1;

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import PropTypes  from 'prop-types';
-import React      from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const IconClose = ({ className, onClick }) => (
     <svg
@@ -20,7 +20,7 @@ const IconClose = ({ className, onClick }) => (
 
 IconClose.propTypes = {
     className: PropTypes.string,
-    onClick  : PropTypes.func,
+    onClick: PropTypes.func,
 };
 
 export default IconClose;

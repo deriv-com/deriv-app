@@ -84,7 +84,10 @@ $FLOATING_HEADER_HEIGHT: 41px;
         padding-bottom: 2.4rem;
 
         .contract-drawer {
-            height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - (#{$POSITIONS_DRAWER_MARGIN} * 6));
+            height: calc(
+                100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - (#{$POSITIONS_DRAWER_MARGIN} *
+                            6)
+            );
             border-bottom-right-radius: 0;
             border-top-right-radius: 0;
             z-index: 1;
@@ -108,7 +111,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 border-radius: $BORDER_RADIUS;
 
                 .ciq-chart {
-                    .cq-top-ui-widgets, & .info-box {
+                    .cq-top-ui-widgets,
+                    & .info-box {
                         transition: transform 0.25s ease;
 
                         .cq-symbols-display {
@@ -190,7 +194,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
             visibility: hidden;
             pointer-events: none;
 
-            .chart-marker-line__wrapper, .cq-chart-controls, .cq-symbols-display, .cq-bottom-ui-widgets, .cq-inchart-subholder {
+            .chart-marker-line__wrapper,
+            .cq-chart-controls,
+            .cq-symbols-display,
+            .cq-bottom-ui-widgets,
+            .cq-inchart-subholder {
                 display: none;
             }
         }
@@ -255,7 +263,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
         }
     }
     .ciq-chart {
-        .cq-top-ui-widgets, & .info-box {
+        .cq-top-ui-widgets,
+        & .info-box {
             transition: transform 0.25s ease;
 
             .cq-symbols-display {
@@ -344,7 +353,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
             & .tooltip--with-label {
                 display: none;
             }
-            & .tooltip--with-label:before, .tooltip--with-label:after {
+            & .tooltip--with-label:before,
+            .tooltip--with-label:after {
                 display: none;
             }
         }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-const FlyoutVideo = (props) => {
+const FlyoutVideo = props => {
     return (
         <div className='flyout__item'>
             <iframe
@@ -14,7 +14,6 @@ const FlyoutVideo = (props) => {
             />
         </div>
     );
-
 };
 
 FlyoutVideo.propTypes = {

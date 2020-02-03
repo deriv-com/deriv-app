@@ -6,11 +6,9 @@ let interval_id;
 function refreshOnUpdate() {
     return swRegistrationObject => {
         swRegistrationObject.onupdatefound = () => {
-            const updatingWorker         = swRegistrationObject.installing;
+            const updatingWorker = swRegistrationObject.installing;
             updatingWorker.onstatechange = () => {
-                if (updatingWorker.state === 'installed' &&
-                    navigator.serviceWorker.controller
-                ) {
+                if (updatingWorker.state === 'installed' && navigator.serviceWorker.controller) {
                     // eslint-disable-next-line no-console
                     console.log('New version is found, refreshing the page...');
                     clearInterval(interval_id);
@@ -20,7 +18,8 @@ function refreshOnUpdate() {
     };
 }
 
-export default function register() { // Register the service worker
+export default function register() {
+    // Register the service worker
     if (/* process.env.NODE_ENV === 'production' && */ 'serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             const sw_url = `${window.location.origin}${getUrlBase('/service-worker.js')}`;
@@ -28,13 +27,11 @@ export default function register() { // Register the service worker
                 .register(sw_url)
                 .then(registration => {
                     interval_id = setInterval(() => {
-                        registration
-                            .update()
-                            .then(refreshOnUpdate);
+                        registration.update().then(refreshOnUpdate);
                     }, EVERY_HOUR);
 
                     registration.onupdatefound = () => {
-                        const installingWorker         = registration.installing;
+                        const installingWorker = registration.installing;
                         installingWorker.onstatechange = () => {
                             if (installingWorker.state === 'installed') {
                                 if (navigator.serviceWorker.controller) {

@@ -1,20 +1,18 @@
-import PropTypes         from 'prop-types';
-import React             from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 // import React, { lazy }   from 'react';
-import {
-    withRouter,
-    Redirect }           from 'react-router-dom';
-import { PageOverlay }   from '@deriv/components';
+import { withRouter, Redirect } from 'react-router-dom';
+import { PageOverlay } from '@deriv/components';
 // import SideMenu          from 'App/Components/Elements/SideMenu';
-import { FadeWrapper }   from 'App/Components/Animations';
-import { localize }      from '@deriv/translations';
-import VerticalTab       from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
-import AppRoutes         from 'Constants/routes';
-import { connect }       from 'Stores/connect';
-import { WS }            from 'Services/ws-methods';
-import { flatten }       from '../Helpers/flatten';
-import AccountLimitInfo  from '../Sections/Security/AccountLimits/account-limits-info.jsx';
-import                        'Sass/app/modules/account.scss';
+import { FadeWrapper } from 'App/Components/Animations';
+import { localize } from '@deriv/translations';
+import VerticalTab from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
+import AppRoutes from 'Constants/routes';
+import { connect } from 'Stores/connect';
+import { WS } from 'Services/ws-methods';
+import { flatten } from '../Helpers/flatten';
+import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
+import 'Sass/app/modules/account.scss';
 
 // const DemoMessage = lazy(() => import(/* webpackChunkName: 'demo_message' */ 'Modules/Account/Sections/ErrorMessages/DemoMessage'));
 
@@ -29,9 +27,9 @@ class Account extends React.Component {
     is_mounted = false;
     state = {
         is_high_risk_client: false,
-        is_loading         : true,
-        needs_verification : false,
-    }
+        is_loading: true,
+        needs_verification: false,
+    };
 
     componentDidMount() {
         this.is_mounted = true;
@@ -39,7 +37,9 @@ class Account extends React.Component {
             if (this.props.account_status) {
                 const { authentication } = this.props.account_status;
                 const is_high_risk_client = this.props.is_high_risk;
-                const needs_verification = authentication.needs_verification.includes('identity') || authentication.needs_verification.includes('document');
+                const needs_verification =
+                    authentication.needs_verification.includes('identity') ||
+                    authentication.needs_verification.includes('document');
                 if (this.is_mounted) this.setState({ is_high_risk_client, is_loading: false, needs_verification });
             }
         });
@@ -57,19 +57,26 @@ class Account extends React.Component {
         this.props.history.push(AppRoutes.trade);
     };
 
-    render () {
+    render() {
         const { is_high_risk_client, is_loading, needs_verification } = this.state;
 
-        const subroutes      = flatten(this.props.routes.map(i => i.subroutes));
+        const subroutes = flatten(this.props.routes.map(i => i.subroutes));
         let selected_content = subroutes.filter(route => route.path === this.props.location.pathname)[0];
-        if (!selected_content) { // fallback
+        if (!selected_content) {
+            // fallback
             selected_content = subroutes[0];
             this.props.history.push(AppRoutes.personal_details);
         }
-        if (!is_loading && !needs_verification && !is_high_risk_client && /proof-of-identity|proof-of-address|financial-assessment/.test(selected_content.path)) return <Redirect to='/' />;
+        if (
+            !is_loading &&
+            !needs_verification &&
+            !is_high_risk_client &&
+            /proof-of-identity|proof-of-address|financial-assessment/.test(selected_content.path)
+        )
+            return <Redirect to='/' />;
 
         // TODO: modify account route to support disabled
-        this.props.routes.forEach((menu_item) => {
+        this.props.routes.forEach(menu_item => {
             if (menu_item.title === 'Verification') {
                 menu_item.is_hidden = !needs_verification;
             }
@@ -87,7 +94,7 @@ class Account extends React.Component {
                 onClick: () => {
                     this.props.history.push(AppRoutes.trade);
                 },
-                icon : 'IcCross',
+                icon: 'IcCross',
                 title: localize('Close'),
             },
         ];
@@ -125,11 +132,7 @@ class Account extends React.Component {
                     {/*    sub_list={subroutes} */}
                     {/*    tab_container_classname='account__tab_container' */}
                     {/* /> */}
-                    <PageOverlay
-                        has_side_note
-                        header={localize('Settings')}
-                        onClickClose={this.onClickClose}
-                    >
+                    <PageOverlay has_side_note header={localize('Settings')} onClickClose={this.onClickClose}>
                         <VerticalTab
                             // action_bar_classname='account__inset_header'
                             alignment='center'
@@ -149,23 +152,21 @@ class Account extends React.Component {
 
 Account.propTypes = {
     account_status: PropTypes.object,
-    currency      : PropTypes.string,
-    history       : PropTypes.object,
-    is_high_risk  : PropTypes.bool,
-    is_virtual    : PropTypes.bool,
-    is_visible    : PropTypes.bool,
-    location      : PropTypes.object,
-    routes        : PropTypes.arrayOf(PropTypes.object),
-    toggleAccount : PropTypes.func,
+    currency: PropTypes.string,
+    history: PropTypes.object,
+    is_high_risk: PropTypes.bool,
+    is_virtual: PropTypes.bool,
+    is_visible: PropTypes.bool,
+    location: PropTypes.object,
+    routes: PropTypes.arrayOf(PropTypes.object),
+    toggleAccount: PropTypes.func,
 };
 
-export default connect(
-    ({ client, ui }) => ({
-        account_status: client.account_status,
-        currency      : client.currency,
-        is_high_risk  : client.is_high_risk,
-        is_virtual    : client.is_virtual,
-        is_visible    : ui.is_account_settings_visible,
-        toggleAccount : ui.toggleAccountSettings,
-    })
-)(withRouter(Account));
+export default connect(({ client, ui }) => ({
+    account_status: client.account_status,
+    currency: client.currency,
+    is_high_risk: client.is_high_risk,
+    is_virtual: client.is_virtual,
+    is_visible: ui.is_account_settings_visible,
+    toggleAccount: ui.toggleAccountSettings,
+}))(withRouter(Account));

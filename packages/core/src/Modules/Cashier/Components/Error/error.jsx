@@ -1,56 +1,37 @@
-import PropTypes              from 'prop-types';
-import React                  from 'react';
-import { Button, Icon }       from '@deriv/components';
-import ButtonLink             from 'App/Components/Routes/button-link.jsx';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Button, Icon } from '@deriv/components';
+import ButtonLink from 'App/Components/Routes/button-link.jsx';
 import { localize, Localize } from '@deriv/translations';
-import { WS }                 from 'Services';
-import { connect }            from 'Stores/connect';
+import { WS } from 'Services';
+import { connect } from 'Stores/connect';
 
-const ErrorComponent = ({
-    header,
-    message,
-    button_link,
-    onClickButton,
-    button_text,
-    footer,
-}) => (
+const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }) => (
     <div className='cashier__wrapper'>
         <Icon icon='IcCashierError' className='cashier-error__icon' />
         {header && <h2 className='cashier-error__header'>{header}</h2>}
         {message && <p className='cashier__paragraph'>{message}</p>}
-        {button_link &&
-        <ButtonLink
-            className='cashier-error__button'
-            to={button_link}
-            onClick={onClickButton}
-            primary
-            large
-        >
-            <span className='btn__text'>{button_text}</span>
-        </ButtonLink>
-        }
-        {!button_link && button_text &&
-            <Button
-                className='cashier-error__button'
-                onClick={onClickButton}
-                text={button_text}
-                primary
-                large
-            />
-        }
+        {button_link && (
+            <ButtonLink className='cashier-error__button' to={button_link} onClick={onClickButton} primary large>
+                <span className='btn__text'>{button_text}</span>
+            </ButtonLink>
+        )}
+        {!button_link && button_text && (
+            <Button className='cashier-error__button' onClick={onClickButton} text={button_text} primary large />
+        )}
         {footer && <h2 className='cashier-error__footer'>{footer}</h2>}
     </div>
 );
 
 class Error extends React.Component {
     error_fields = {
-        address_city    : localize('Town/City'),
-        address_line_1  : localize('First line of home address'),
+        address_city: localize('Town/City'),
+        address_line_1: localize('First line of home address'),
         address_postcode: localize('Postal Code/ZIP'),
-        address_state   : localize('State/Province'),
-        email           : localize('Email address'),
-        phone           : localize('Telephone'),
-        residence       : localize('Country of Residence'),
+        address_state: localize('State/Province'),
+        email: localize('Email address'),
+        phone: localize('Telephone'),
+        residence: localize('Country of Residence'),
     };
 
     onClickButton = () => {
@@ -58,7 +39,7 @@ class Error extends React.Component {
             this.props.error.onClickButton();
         }
         this.clearErrorMessage();
-    }
+    };
 
     clearErrorMessage = () => {
         this.props.setErrorMessage('');
@@ -76,7 +57,9 @@ class Error extends React.Component {
                 AccountError = (
                     <ErrorComponent
                         header={localize('Identity confirmation failed')}
-                        message={<Localize i18n_default_text='It looks like your link is incorrect or no longer valid.' />}
+                        message={
+                            <Localize i18n_default_text='It looks like your link is incorrect or no longer valid.' />
+                        }
                         onClickButton={this.onClickButton}
                         button_text={localize('Request a new link')}
                     />
@@ -89,15 +72,15 @@ class Error extends React.Component {
                         message={
                             <Localize
                                 i18n_default_text='Please accept our updated <0>terms and conditions</0> to continue.'
-                                components={[ (
+                                components={[
                                     <a
                                         key={0}
                                         className='link'
                                         target='_blank'
                                         rel='noopener noreferrer'
                                         href='https://www.deriv.com/terms-and-conditions/#general'
-                                    />
-                                ) ]}
+                                    />,
+                                ]}
                             />
                         }
                         onClickButton={this.acceptTNC}
@@ -111,18 +94,25 @@ class Error extends React.Component {
                         header={localize('Update your personal details')}
                         message={
                             <React.Fragment>
-                                <Localize i18n_default_text={'We can\'t validate your personal details because there is some information missing.'} />&nbsp;
-                                {this.props.error.fields ?
+                                <Localize
+                                    i18n_default_text={
+                                        "We can't validate your personal details because there is some information missing."
+                                    }
+                                />
+                                &nbsp;
+                                {this.props.error.fields ? (
                                     <Localize
                                         i18n_default_text={'Please update your {{details}} to continue.'}
                                         values={{
-                                            details      : this.props.error.fields.map(field => (this.error_fields[field] || field)).join(', '),
+                                            details: this.props.error.fields
+                                                .map(field => this.error_fields[field] || field)
+                                                .join(', '),
                                             interpolation: { escapeValue: false },
                                         }}
                                     />
-                                    :
+                                ) : (
                                     <Localize i18n_default_text={'Please update your details to continue.'} />
-                                }
+                                )}
                             </React.Fragment>
                         }
                         button_link='/account/personal-details'
@@ -131,15 +121,15 @@ class Error extends React.Component {
                         footer={
                             <Localize
                                 i18n_default_text='Need help? <0>Contact us</0>.'
-                                components={[ (
+                                components={[
                                     <a
                                         key={0}
                                         className='link'
                                         target='_blank'
                                         rel='noopener noreferrer'
                                         href='https://www.deriv.com/help-centre/'
-                                    />
-                                ) ]}
+                                    />,
+                                ]}
                             />
                         }
                     />
@@ -163,12 +153,10 @@ class Error extends React.Component {
 }
 
 Error.propTypes = {
-    error          : PropTypes.object,
+    error: PropTypes.object,
     setErrorMessage: PropTypes.func,
 };
 
-export default connect(
-    ({ modules }) => ({
-        setErrorMessage: modules.cashier.setErrorMessage,
-    })
-)(Error);
+export default connect(({ modules }) => ({
+    setErrorMessage: modules.cashier.setErrorMessage,
+}))(Error);

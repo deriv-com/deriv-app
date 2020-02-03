@@ -1,15 +1,15 @@
-import PropTypes              from 'prop-types';
-import React                  from 'react';
-import { withRouter }         from 'react-router-dom';
-import { Button, Icon }       from '@deriv/components';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { Button, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import routes                 from 'Constants/routes';
-import { connect }            from 'Stores/connect';
+import routes from 'Constants/routes';
+import { connect } from 'Stores/connect';
 
 class NoBalance extends React.Component {
     onClickDeposit = () => {
         // index of deposit tab in the cashier modal is 0
-        this.props.setModalIndex(0);
+        this.props.setVerticalTabIndex(0);
         this.props.history.push(routes.cashier_deposit);
     };
 
@@ -17,8 +17,15 @@ class NoBalance extends React.Component {
         return (
             <div className='cashier__wrapper cashier__no-balance'>
                 <Icon icon='IcCashierNoBalance' className='cashier__no-balance-icon' size={116} />
-                <h2 className='withdraw__header'><Localize i18n_default_text='You have no funds in your {{currency}} account' values={{ currency: this.props.currency.toUpperCase() }} /></h2>
-                <p className='cashier__text'><Localize i18n_default_text='Please make a deposit to use this feature.' /></p>
+                <h2 className='withdraw__header'>
+                    <Localize
+                        i18n_default_text='You have no funds in your {{currency}} account'
+                        values={{ currency: this.props.currency.toUpperCase() }}
+                    />
+                </h2>
+                <p className='cashier__text'>
+                    <Localize i18n_default_text='Please make a deposit to use this feature.' />
+                </p>
                 <Button
                     className='cashier__no-balance-button'
                     has_effect
@@ -29,18 +36,15 @@ class NoBalance extends React.Component {
                 />
             </div>
         );
-    }
+    };
 }
 
 NoBalance.propTypes = {
-    currency     : PropTypes.string,
-    setModalIndex: PropTypes.func,
+    currency: PropTypes.string,
+    setVerticalTabIndex: PropTypes.func,
 };
 
-export default connect(
-    ({ client, ui }) => ({
-        currency     : client.currency,
-        setModalIndex: ui.setModalIndex,
-    })
-)(withRouter(NoBalance));
-
+export default connect(({ client, ui }) => ({
+    currency: client.currency,
+    setVerticalTabIndex: ui.setVerticalTabIndex,
+}))(withRouter(NoBalance));

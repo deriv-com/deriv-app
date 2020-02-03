@@ -53,7 +53,7 @@ $side-padding: 1.2em;
     }
     &__row {
         /*                     icon   refId tr_time  transaction cred/debt  balance */
-        grid-template-columns: 0.8fr  1.2fr 1fr      0.8fr         1fr        1fr;
+        grid-template-columns: 0.8fr 1.2fr 1fr 0.8fr 1fr 1fr;
 
         &--detail {
             overflow: hidden;
@@ -72,7 +72,8 @@ $side-padding: 1.2em;
             text-align: left;
         }
     }
-    .amount, .balance {
+    .amount,
+    .balance {
         justify-content: flex-end;
     }
     .amount {
@@ -152,10 +153,12 @@ $side-padding: 1.2em;
         vertical-align: middle;
     }
     &__amount {
-        &--sell, &--deposit {
+        &--sell,
+        &--deposit {
             color: var(--text-profit-success);
         }
-        &--buy, &--withdrawal {
+        &--buy,
+        &--withdrawal {
             color: var(--text-loss-danger);
         }
     }
@@ -204,12 +207,15 @@ $side-padding: 1.2em;
     }
     &__row {
         /*                     icon   refId buy_time  buy_price sell_time  sell_price profit/loss */
-        grid-template-columns: 0.8fr  1.2fr 1fr       0.8fr     1fr        1fr        1fr;
+        grid-template-columns: 0.8fr 1.2fr 1fr 0.8fr 1fr 1fr 1fr;
     }
-    .buy_price, .sell_price, .profit_loss {
+    .buy_price,
+    .sell_price,
+    .profit_loss {
         justify-content: flex-end;
     }
-    .sell_time, .purchase_time {
+    .sell_time,
+    .purchase_time {
         text-align: left;
     }
 }
@@ -248,7 +254,8 @@ $side-padding: 1.2em;
             width: 16px;
             height: 16px;
 
-            &-complete, &-complete:after {
+            &-complete,
+            &-complete:after {
                 display: none;
             }
             &:after {
@@ -282,10 +289,13 @@ $side-padding: 1.2em;
     }
     &__row {
         /*                     icon   refId buy_price  potential_payout potential_profit  indicative_price rem_time */
-        grid-template-columns: 0.8fr  1.2fr 1fr        1fr            1fr               1fr              1fr;
+        grid-template-columns: 0.8fr 1.2fr 1fr 1fr 1fr 1fr 1fr;
         width: 100%;
     }
-    .buy_price, .payout, .indicative, .profit {
+    .buy_price,
+    .payout,
+    .indicative,
+    .profit {
         justify-content: flex-end;
     }
     .type {

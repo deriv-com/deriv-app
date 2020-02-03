@@ -1,12 +1,12 @@
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import { withRouter }    from 'react-router-dom';
-import { PageOverlay }   from '@deriv/components';
-import { localize }      from '@deriv/translations';
-import { FadeWrapper }   from 'App/Components/Animations';
-import VerticalTab       from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
-import routes            from 'Constants/routes';
-import { connect }       from 'Stores/connect';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { PageOverlay } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import { FadeWrapper } from 'App/Components/Animations';
+import VerticalTab from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
+import routes from 'Constants/routes';
+import { connect } from 'Stores/connect';
 
 class Cashier extends React.Component {
     componentDidMount() {
@@ -25,23 +25,26 @@ class Cashier extends React.Component {
         this.props.history.push(routes.trade);
     };
 
-    render () {
+    render() {
         const menu_options = () => {
             const options = [];
 
             // TODO: remove show_dp2p hash check once released
             this.props.routes.forEach(route => {
-                if ((route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
+                if (
+                    (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                     (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible) &&
-                    (route.path !== routes.cashier_dp2p || (this.props.is_dp2p_visible && /show_dp2p/.test(this.props.location.hash)))) {
+                    (route.path !== routes.cashier_dp2p ||
+                        (this.props.is_dp2p_visible && /show_dp2p/.test(this.props.location.hash)))
+                ) {
                     options.push({
                         // TODO: [p2p-replace-with-api] You can pass 'count' for having notification counter in the tab, like this:
                         // count  : 1,
                         default: route.default,
-                        icon   : route.icon_component,
-                        label  : route.title,
-                        value  : route.component,
-                        path   : route.path,
+                        icon: route.icon_component,
+                        label: route.title,
+                        value: route.component,
+                        path: route.path,
                     });
                 }
             });
@@ -56,11 +59,7 @@ class Cashier extends React.Component {
                 keyname='cashier-page-wrapper'
             >
                 <div className='cashier'>
-                    <PageOverlay
-                        header={localize('Cashier')}
-                        onClickClose={this.onClickClose}
-                        has_side_note
-                    >
+                    <PageOverlay header={localize('Cashier')} onClickClose={this.onClickClose} has_side_note>
                         <VerticalTab
                             alignment='center'
                             id='cashier'
@@ -80,27 +79,26 @@ class Cashier extends React.Component {
 }
 
 Cashier.propTypes = {
-    history                          : PropTypes.object,
-    is_dp2p_visible                  : PropTypes.bool,
+    history: PropTypes.object,
+    is_dp2p_visible: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
-    is_payment_agent_visible         : PropTypes.bool,
-    is_visible                       : PropTypes.bool,
-    location                         : PropTypes.object,
-    onMount                          : PropTypes.func,
-    onUnmount                        : PropTypes.func,
-    routes                           : PropTypes.arrayOf(PropTypes.object),
-    toggleCashier                    : PropTypes.func,
+    is_payment_agent_visible: PropTypes.bool,
+    is_visible: PropTypes.bool,
+    location: PropTypes.object,
+    onMount: PropTypes.func,
+    onUnmount: PropTypes.func,
+    routes: PropTypes.arrayOf(PropTypes.object),
+    toggleCashier: PropTypes.func,
 };
 
-export default connect(
-    ({ modules, ui }) => ({
-        is_dp2p_visible         : modules.cashier.is_dp2p_visible,
-        is_visible              : ui.is_cashier_visible,
-        is_payment_agent_visible: !!(modules.cashier.config.payment_agent.filtered_list.length
-            || modules.cashier.config.payment_agent.agents.length),
-        is_payment_agent_transfer_visible: modules.cashier.config.payment_agent_transfer.is_payment_agent,
-        onMount                          : modules.cashier.onMountCommon,
-        onUnmount                        : modules.cashier.onUnmount,
-        toggleCashier                    : ui.toggleCashier,
-    })
-)(withRouter(Cashier));
+export default connect(({ modules, ui }) => ({
+    is_dp2p_visible: modules.cashier.is_dp2p_visible,
+    is_visible: ui.is_cashier_visible,
+    is_payment_agent_visible: !!(
+        modules.cashier.config.payment_agent.filtered_list.length || modules.cashier.config.payment_agent.agents.length
+    ),
+    is_payment_agent_transfer_visible: modules.cashier.config.payment_agent_transfer.is_payment_agent,
+    onMount: modules.cashier.onMountCommon,
+    onUnmount: modules.cashier.onUnmount,
+    toggleCashier: ui.toggleCashier,
+}))(withRouter(Cashier));

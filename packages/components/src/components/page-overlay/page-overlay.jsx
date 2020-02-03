@@ -1,6 +1,6 @@
-import React     from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import Icon      from '../icon';
+import Icon from '../icon';
 
 class PageOverlay extends React.Component {
     render() {
@@ -14,12 +14,10 @@ class PageOverlay extends React.Component {
 
         return (
             <div className='dc-page-overlay'>
-                { header &&
+                {header && (
                     <div className='dc-page-overlay__header'>
                         <div className='dc-page-overlay__header-wrapper'>
-                            <div className='dc-page-overlay__header-title'>
-                                { header }
-                            </div>
+                            <div className='dc-page-overlay__header-title'>{header}</div>
                             <div
                                 className='dc-page-overlay__header-close'
                                 onClick={onClickClose || window.history.back}
@@ -28,12 +26,10 @@ class PageOverlay extends React.Component {
                             </div>
                         </div>
                     </div>
-                }
+                )}
                 <div className='dc-page-overlay__content'>
-                    { children }
-                    { has_side_note &&
-                        <div className='dc-page-overlay__content-side-note' />
-                    }
+                    {children}
+                    {has_side_note && <div className='dc-page-overlay__content-side-note' />}
                 </div>
             </div>
         );
@@ -45,14 +41,8 @@ PageOverlay.defaultProps = {
 };
 
 PageOverlay.propTypes = {
-    children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-    ]),
-    header: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.node,
-    ]),
+    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+    header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     onClickClose: PropTypes.func,
 };
 

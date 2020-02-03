@@ -2,9 +2,11 @@ $MIN_HEIGHT_FULL_SCREEN: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT});
 
 $FLOATING_PADDING: 2.4rem;
 $FLOATING_HEADER_HEIGHT: 41px;
-$MIN_HEIGHT_FLOATING: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - #{$FLOATING_PADDING});
+$MIN_HEIGHT_FLOATING: calc(
+    100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - #{$FLOATING_PADDING}
+);
 
-.vertical-tab {
+.dc-vertical-tab {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
@@ -29,17 +31,17 @@ $MIN_HEIGHT_FLOATING: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FL
         min-height: $MIN_HEIGHT_FULL_SCREEN;
         width: 100%;
 
-        // .vertical-tab__tab {
+        // .dc-vertical-tab__tab {
         //     min-width: 15%;
         // }
     }
-    &--full-screen.vertical-tab--floating {
+    &--full-screen.dc-vertical-tab--floating {
         min-height: $MIN_HEIGHT_FLOATING;
     }
-    &:not(.vertical-tab--full-screen):not(.vertical-tab--floating) {
+    &:not(.dc-vertical-tab--full-screen):not(.dc-vertical-tab--floating) {
         // height: 600px;
 
-        .vertical-tab__content {
+        .dc-vertical-tab__content {
             @include toEm(padding, 24px);
         }
     }
@@ -50,6 +52,7 @@ $MIN_HEIGHT_FLOATING: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FL
         justify-content: space-between;
         align-items: center;
         padding: 16px;
+        box-sizing: border-box;
 
         &--icon {
             @include colorIcon(var(--text-general));
@@ -99,7 +102,7 @@ $MIN_HEIGHT_FLOATING: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FL
         transition: background-color 0.1s ease-in;
         text-decoration: none;
 
-        &:hover:not(.vertical-tab__header--active) {
+        &:hover:not(.dc-vertical-tab__header--active) {
             background-color: var(--state-hover);
         }
         &--active {
@@ -140,7 +143,7 @@ $MIN_HEIGHT_FLOATING: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FL
         position: relative;
         background-color: var(--general-main-1);
 
-        &.vertical-tab:not(.vertical-tab--full-screen) {
+        &.dc-vertical-tab:not(.dc-vertical-tab--full-screen) {
             @include toEm(padding, 24px);
             height: 100%;
         }

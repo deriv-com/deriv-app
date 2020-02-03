@@ -1,12 +1,5 @@
-import {
-    action,
-    computed,
-    observable }            from 'mobx';
-import {
-    BARRIER_COLORS,
-    BARRIER_LINE_STYLES,
-    CONTRACT_SHADES,
-    DEFAULT_SHADES }        from './Constants/barriers';
+import { action, computed, observable } from 'mobx';
+import { BARRIER_COLORS, BARRIER_LINE_STYLES, CONTRACT_SHADES, DEFAULT_SHADES } from './Constants/barriers';
 import { barriersToString } from './Helpers/barriers';
 
 export class ChartBarrierStore {
@@ -23,18 +16,14 @@ export class ChartBarrierStore {
 
     onChartBarrierChange;
 
-    constructor(
-        high_barrier,
-        low_barrier,
-        onChartBarrierChange = null,
-        { color, line_style, not_draggable } = {}
-    ) {
-        this.color     = color;
+    constructor(high_barrier, low_barrier, onChartBarrierChange = null, { color, line_style, not_draggable } = {}) {
+        this.color = color;
         this.lineStyle = line_style || BARRIER_LINE_STYLES.SOLID;
-        this.onChange  = this.onBarrierChange;
+        this.onChange = this.onBarrierChange;
 
         // trade_store's action to process new barriers on dragged
-        this.onChartBarrierChange = typeof onChartBarrierChange === 'function' ? onChartBarrierChange.bind(this) : () => {};
+        this.onChartBarrierChange =
+            typeof onChartBarrierChange === 'function' ? onChartBarrierChange.bind(this) : () => {};
 
         this.high = +high_barrier || 0; // 0 to follow the price
         if (low_barrier) {
@@ -43,19 +32,19 @@ export class ChartBarrierStore {
 
         this.shade = this.default_shade;
 
-        const has_barrier   = !!high_barrier;
-        this.relative       = !has_barrier || /^[+-]/.test(high_barrier);
-        this.draggable      = !not_draggable && has_barrier;
+        const has_barrier = !!high_barrier;
+        this.relative = !has_barrier || /^[+-]/.test(high_barrier);
+        this.draggable = !not_draggable && has_barrier;
         this.hidePriceLines = !has_barrier;
     }
 
     @action.bound
     updateBarriers(high, low, isFromChart = false) {
         if (!isFromChart) {
-            this.relative       = /^[+-]/.test(high);
+            this.relative = /^[+-]/.test(high);
         }
         this.high = +high || undefined;
-        this.low  = +low  || undefined;
+        this.low = +low || undefined;
     }
 
     @action.bound

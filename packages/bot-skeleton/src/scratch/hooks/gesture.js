@@ -12,9 +12,8 @@ Blockly.Gesture.prototype.updateIsDraggingFromFlyout_ = function() {
     if (this.targetBlock_.disabled) {
         return false;
     }
-    
-    if (!this.flyout_.isScrollable() ||
-        this.flyout_.isDragTowardWorkspace(this.currentDragDeltaXY_)) {
+
+    if (!this.flyout_.isScrollable() || this.flyout_.isDragTowardWorkspace(this.currentDragDeltaXY_)) {
         this.startWorkspace_ = this.flyout_.targetWorkspace_;
         this.startWorkspace_.updateScreenCalculationsIfScrolled();
 

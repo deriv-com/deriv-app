@@ -1,22 +1,22 @@
-import { localize }              from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { runIrreversibleEvents } from '../../../../utils';
 
 Blockly.Blocks.input_list = {
     init() {
         this.jsonInit({
             message0: localize('Input List %1'),
-            args0   : [
+            args0: [
                 {
-                    type : 'input_value',
-                    name : 'INPUT_LIST',
+                    type: 'input_value',
+                    name: 'INPUT_LIST',
                     check: 'Array',
                 },
             ],
-            colour           : Blockly.Colours.Base.colour,
-            colourSecondary  : Blockly.Colours.Base.colourSecondary,
-            colourTertiary   : Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
+            nextStatement: null,
         });
 
         this.setMovable(false);
@@ -39,8 +39,8 @@ Blockly.Blocks.input_list = {
         } else if (event.type === Blockly.Events.END_DRAG) {
             setParentId();
 
-            const surround_parent   = this.getSurroundParent();
-            const has_parent        = !!surround_parent;
+            const surround_parent = this.getSurroundParent();
+            const has_parent = !!surround_parent;
             const is_illegal_parent = !has_parent || surround_parent.id !== this.required_parent_id;
 
             if (!has_parent || is_illegal_parent) {
@@ -48,7 +48,7 @@ Blockly.Blocks.input_list = {
                     this.unplug(true);
 
                     // Attempt to re-connect this child to its original parent.
-                    const all_blocks   = this.workspace.getAllBlocks();
+                    const all_blocks = this.workspace.getAllBlocks();
                     const parent_block = all_blocks.find(block => block.id === this.required_parent_id);
 
                     if (parent_block) {

@@ -1,23 +1,23 @@
-import { localize }               from '@deriv/translations';
-import { config }                 from '../../../../constants/config';
+import { localize } from '@deriv/translations';
+import { config } from '../../../../constants/config';
 import { getContractTypeOptions } from '../../../shared';
 
 Blockly.Blocks.trade_definition_contracttype = {
     init() {
         this.jsonInit({
             message0: 'Contract Type: %1',
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'TYPE_LIST',
+                    type: 'field_dropdown',
+                    name: 'TYPE_LIST',
                     options: [['', '']],
                 },
             ],
-            colour           : Blockly.Colours.Special1.colour,
-            colourSecondary  : Blockly.Colours.Special1.colourSecondary,
-            colourTertiary   : Blockly.Colours.Special1.colourTertiary,
+            colour: Blockly.Colours.Special1.colour,
+            colourSecondary: Blockly.Colours.Special1.colourSecondary,
+            colourTertiary: Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
+            nextStatement: null,
         });
         this.setMovable(false);
         this.setDeletable(false);
@@ -31,8 +31,8 @@ Blockly.Blocks.trade_definition_contracttype = {
 
         if (Blockly.Events.BLOCK_CHANGE) {
             if (event.name === 'TRADETYPE_LIST') {
-                const trade_type            = event.newValue;
-                const contract_type_list    = this.getField('TYPE_LIST');
+                const trade_type = event.newValue;
+                const contract_type_list = this.getField('TYPE_LIST');
                 const contract_type_options = [];
 
                 const trade_types = getContractTypeOptions('both', trade_type);

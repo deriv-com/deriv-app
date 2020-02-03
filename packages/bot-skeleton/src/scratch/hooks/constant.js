@@ -5,22 +5,22 @@ import { localize } from '@deriv/translations';
  * @const
  */
 Blockly.Categories = {
-    'Trade_Definition': localize('trade_parameters'),
-    'Before_Purchase' : localize('purchase_conditions'),
-    'During_Purchase' : localize('sell_conditions'),
-    'After_Purchase'  : localize('trade_results'),
-    'Mathematical'    : localize('math'),
-    'Logic'           : localize('logic'),
-    'Text'            : localize('text'),
-    'Variables'       : localize('variables'),
-    'Functions'       : localize('custom_functions'),
-    'List'            : localize('lists'),
-    'Indicators'      : localize('indicators'),
-    'Time'            : localize('time'),
-    'Tick_Analysis'   : localize('technical_analysis'),
-    'Candle'          : localize('candle'),
-    'Miscellaneous'   : localize('miscellaneous'),
-    'Loop'            : localize('loops'),
+    Trade_Definition: localize('trade_parameters'),
+    Before_Purchase: localize('purchase_conditions'),
+    During_Purchase: localize('sell_conditions'),
+    After_Purchase: localize('trade_results'),
+    Mathematical: localize('math'),
+    Logic: localize('logic'),
+    Text: localize('text'),
+    Variables: localize('variables'),
+    Functions: localize('custom_functions'),
+    List: localize('lists'),
+    Indicators: localize('indicators'),
+    Time: localize('time'),
+    Tick_Analysis: localize('technical_analysis'),
+    Candle: localize('candle'),
+    Miscellaneous: localize('miscellaneous'),
+    Loop: localize('loops'),
 };
 /**
  * Number of pixels the mouse must move before a drag starts.

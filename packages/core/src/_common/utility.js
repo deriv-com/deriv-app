@@ -5,7 +5,7 @@ const template = (string, content) => {
     if (content && !Array.isArray(content)) {
         to_replace = [content];
     }
-    return string.replace(/\[_(\d+)]/g, (s, index) => to_replace[(+index) - 1]);
+    return string.replace(/\[_(\d+)]/g, (s, index) => to_replace[+index - 1]);
 };
 
 /**
@@ -17,7 +17,7 @@ const template = (string, content) => {
  */
 const createElement = (tag_name, attributes = {}) => {
     const el = document.createElement(tag_name);
-    Object.keys(attributes).forEach((attr) => {
+    Object.keys(attributes).forEach(attr => {
         const value = attributes[attr];
         if (attr === 'text') {
             el.textContent = value;
@@ -32,21 +32,22 @@ const createElement = (tag_name, attributes = {}) => {
 
 let static_hash;
 const getStaticHash = () => {
-    static_hash = static_hash || (document.querySelector('script[src*="main"]').getAttribute('src') || '').split('.')[1];
+    static_hash =
+        static_hash || (document.querySelector('script[src*="main"]').getAttribute('src') || '').split('.')[1];
     return static_hash;
 };
 
 class PromiseClass {
     constructor() {
         this.promise = new Promise((resolve, reject) => {
-            this.reject  = reject;
+            this.reject = reject;
             this.resolve = resolve;
         });
     }
 }
 
-const copyToClipboard = (text) => {
-    const textField     = document.createElement('textarea');
+const copyToClipboard = text => {
+    const textField = document.createElement('textarea');
     textField.innerText = text;
     document.body.appendChild(textField);
     textField.select();

@@ -15,7 +15,7 @@ In order to improve the clarity, quality and development time it is worth consid
 
 - [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript/blob/master/README.md) is partially being followed in our code base.
 
-- Most styling issues will be caught by ESLint, so before pushing your changes remember to run `grunt eslint` to catch and fix any issues that it finds.
+- Code formatting is handled entirely by Prettier. Run `npm run prettify` from the root of the project to format all code. Code is also automatically formatted [pre-commit](https://www.atlassian.com/git/tutorials/git-hooks).
 
 - Check below for the rules that are not caught by ESLint but should be followed.
 
@@ -23,7 +23,7 @@ In order to improve the clarity, quality and development time it is worth consid
 
 <a id="naming-conventions-variables"></a>
 **[Variables:](#naming-conventions-variables)** Variables should be lowercase words separated by `_`.
-    
+
 ```JavaScript
 const field_name = '...';
 ```
@@ -57,17 +57,6 @@ const is_updated = true;
 const has_crypto = false;
 ```
 
-<a id="naming-conventions-form-elements"></a>
-**[Form elements:](#naming-conventions-form-elements)** Consider prefixes for form elements to make it more obvious what type of field they are, such as:
-
-```JavaScript
-const fields = {
-    txt_name  : { id: '#txt_name' },
-    chk_tnc   : { id: '#chk_tnc' },
-    ddl_agents: { id: '#ddl_agents' },
-};
-```
-
 ---
 
 ### Commenting
@@ -76,7 +65,7 @@ const fields = {
 **[Explanations:](#commenting-explanations)** Feel free to add comments to explain any code that is confusing.
 
 <a id="commenting-todo"></a>
-**[To do:](#commenting-todo)** Use `TODO: ...` comments anywhere that needs consideration or attention in the future.
+**[To do:](#commenting-todo)** Use `TODO: [search-key] - {explanation}` comments anywhere that needs consideration or attention in the future. Please use a unique key per issue that a TODO addresses so that we can find all TODOs of similar nature by searching for the key. 
 
 <a id="commenting-api-requests"></a>
 **[API requests:](#commenting-api-requests)** Comments should be added to highlight logic that is hardcoded in the front-end and should move to API:
@@ -98,19 +87,7 @@ const fields = {
 ### Import Rules
 
 <a id="import-rules-require"></a>
-**[Require:](#import-rules-require)** Use `require` instead of `import` to stay consistent with the current codebase. We could change it to `import` when switching to React.
-
-<a id="import-rules-align-by-equal"></a>
-**[Align by equal:](#import-rules-align-by-equal)** Assignments are generally aligned by `=` for readability purposes.
-
-```JavaScript
-const moment             = require('moment');                       // moment is an npm package
-const CookieStorage      = require('./storage').CookieStorage;      // our own function
-const applyToAllElements = require('./utility').applyToAllElements; // our own function
-const createElement      = require('./utility').createElement;      // our own function
-require('../../_common/lib/polyfills/array.includes');              // polyfill from lib folder
-require('../../_common/lib/polyfills/string.includes');             // polyfill from lib folder
-```
+**[Require:](#import-rules-require)** Prefer `import` in import statements.
 
 <a id="import-rules-alphabetical-ordering"></a>
 **[Alphabetical ordering:](#import-rules-alphabetical-ordering)** The order is important; it should be sorted alphabetically according to path: 
@@ -120,83 +97,32 @@ require('../../_common/lib/polyfills/string.includes');             // polyfill 
 - Both `applyToAllElements` and `createElement` are from the same file, but `a` is before `c`
 - Unassigned `require` goes to the end 
 
+Imports are grouped by: 3rd-party first, then local absolute imports, then local relative
+
 <a id="import-rules-combining-require"></a>
 **[Combining require:](#import-rules-combining-require)** When there are many functions being imported from the same file, consider combining it into one import line.
 
 ```JavaScript
-const Utility = require('./utility');
+import React from 'react';
 
 ...
 
-Utility.handleHash();
-Utility.createElement('div');
+class ABC extends React.Component { ... }
+...
+React.useCallback(...);
+React.useEffect(...);
 ...
 ```
 
 JSX Rules
 =============
 
-- Use functional stateless components (`FSC`).
 - Use destructuring to capture parameters if needed.
 - Use `{condition && <el/> ...</el>}` syntax to conditionally render an element.
 - Use `<el attr={value || undefined}` to conditionally render an attribute, React omits attributes with null or undefined values.
-- Use `localize('...')` for translations.
-- Use `url_for('...')` to build URLs.
+- Use `localize('...')` or `<Localize i18n_default_text='...'` for translations.
 - Use `website_name` constant instead of `Deriv`.
 - Do NOT use `<Element attributeName={true} />`; just use `<Element attributeName />`.
-- Components with less than four arguments should stay list all in one line, for example:
-
-```JavaScript
-export const List = ({ items, id, className }) => (
-    <React.Fragment>
-        { items.length ?
-          <ul id={id} className={className}>
-              {items.map((item, idx) => <Li key={idx} {...item} />)}
-          </ul>
-        :
-          undefined
-        }
-    </React.Fragment>
-
-);
-```
-
-- Components with more than four arguments need to be broken down to separate lines, for example:
-
-```JavaScript
-export const Li = ({
-    className,
-    id,
-    href,
-    param = '',
-    target,
-    text,
-    header,
-    p,
-}) => {
-    const content = p ? <p>{text}</p> : text;
-
-    return (
-        <li id={id} className={className}>
-            { header && (
-                text ? <strong>{header}</strong> : <h3>{header}</h3>
-            )}
-            { href ?
-                <a
-                    href={`${href}${param}`}
-                    rel={/^http/.test(href) ? 'noopener noreferrer' : undefined}
-                    target={target || undefined}
-                >
-                    {content}
-                </a>
-                : content
-            }
-        </li>
-    );
-};
-```
-
-- Imports with four or more arguments need to be broken down to separate lines, but lower than that should stay in one line.
 - Always name your components before default exporting them, for example:
 
 ```JavaScript
@@ -221,12 +147,3 @@ localize('{{opening_tag}}Deriv App{{closing_tag}}', {
     interpolation: { escapeValue: false },
 }),
 ```
-
-- Blocks need to have a single space after `{`, for example:
-
-```JavaScript
-{ array.map[() => ())}
-```
-
-- Functions should be named using CamelCase.
-- Variable should be named using lower_case.

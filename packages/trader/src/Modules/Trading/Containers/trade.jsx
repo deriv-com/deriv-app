@@ -1,20 +1,16 @@
-import React                 from 'react';
-import {
-    DesktopWrapper,
-    Div100vhContainer }      from '@deriv/components';
-import {
-    isDesktop,
-    isMobile }               from '@deriv/shared/utils/screen';
-import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
-import { connect }           from 'Stores/connect';
-import PositionsDrawer       from 'App/Components/Elements/PositionsDrawer';
+import React from 'react';
+import { DesktopWrapper, Div100vhContainer } from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
+import { connect } from 'Stores/connect';
+import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
-import Digits                from 'Modules/Contract/Components/Digits';
-import Test                  from './test.jsx';
-import TopWidgets            from '../../SmartChart/Components/top-widgets.jsx';
-import FormLayout            from '../Components/Form/form-layout.jsx';
-import { symbolChange }      from '../../SmartChart/Helpers/symbol';
-import AllMarkers            from '../../SmartChart/Components/all-markers.jsx';
+import Digits from 'Modules/Contract/Components/Digits';
+import Test from './test.jsx';
+import TopWidgets from '../../SmartChart/Components/top-widgets.jsx';
+import FormLayout from '../Components/Form/form-layout.jsx';
+import { symbolChange } from '../../SmartChart/Helpers/symbol';
+import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 
 class Trade extends React.Component {
     componentDidMount() {
@@ -28,7 +24,7 @@ class Trade extends React.Component {
     render() {
         const { NotificationMessages } = this.props;
         const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
-        const is_trade_enabled = (this.props.form_components.length > 0) && this.props.is_trade_enabled;
+        const is_trade_enabled = this.props.form_components.length > 0 && this.props.is_trade_enabled;
         return (
             <div id='trade_container' className='trade-container'>
                 <DesktopWrapper>
@@ -37,21 +33,12 @@ class Trade extends React.Component {
                 {/* Div100vhContainer is workaround for browsers on devices
                     with toolbars covering screen height,
                     using css vh is not returning correct screen height */}
-                <Div100vhContainer
-                    className='chart-container'
-                    is_disabled={isDesktop()}
-                    height_offset='260px'
-                >
+                <Div100vhContainer className='chart-container' is_disabled={isDesktop()} height_offset='260px'>
                     <DesktopWrapper>
                         <NotificationMessages />
                     </DesktopWrapper>
                     <React.Suspense
-                        fallback={
-                            <ChartLoader
-                                is_dark={this.props.is_dark_theme}
-                                is_visible={!this.props.symbol}
-                            />
-                        }
+                        fallback={<ChartLoader is_dark={this.props.is_dark_theme} is_visible={!this.props.symbol} />}
                     >
                         <ChartLoader is_visible={this.props.is_chart_loading} />
                         <ChartTrade />
@@ -62,28 +49,23 @@ class Trade extends React.Component {
                 </Div100vhContainer>
                 <div className={form_wrapper_class}>
                     {this.props.is_market_closed && <MarketIsClosedOverlay />}
-                    <FormLayout
-                        is_market_closed={this.props.is_market_closed}
-                        is_trade_enabled={is_trade_enabled}
-                    />
+                    <FormLayout is_market_closed={this.props.is_market_closed} is_trade_enabled={is_trade_enabled} />
                 </div>
             </div>
         );
     }
 }
 
-export default connect(
-    ({ modules, ui }) => ({
-        form_components     : modules.trade.form_components,
-        is_chart_loading    : modules.trade.is_chart_loading,
-        is_market_closed    : modules.trade.is_market_closed,
-        is_trade_enabled    : modules.trade.is_trade_enabled,
-        onMount             : modules.trade.onMount,
-        onUnmount           : modules.trade.onUnmount,
-        purchase_info       : modules.trade.purchase_info,
-        NotificationMessages: ui.notification_messages_ui,
-    })
-)(Trade);
+export default connect(({ modules, ui }) => ({
+    form_components: modules.trade.form_components,
+    is_chart_loading: modules.trade.is_chart_loading,
+    is_market_closed: modules.trade.is_market_closed,
+    is_trade_enabled: modules.trade.is_trade_enabled,
+    onMount: modules.trade.onMount,
+    onUnmount: modules.trade.onUnmount,
+    purchase_info: modules.trade.purchase_info,
+    NotificationMessages: ui.notification_messages_ui,
+}))(Trade);
 
 // CHART (ChartTrade)--------------------------------------------------------
 
@@ -118,16 +100,14 @@ const BottomDigits = ({
     </div>
 );
 
-const ChartBottomWidgets = connect(
-    ({ modules }) => ({
-        contract_info    : modules.contract_trade.last_contract.contract_info || { },
-        digits_info      : modules.contract_trade.last_contract.digits_info || { },
-        display_status   : modules.contract_trade.last_contract.display_status,
-        is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
-        is_ended         : modules.contract_trade.last_contract.is_ended,
-        underlying       : modules.trade.symbol,
-    })
-)(BottomDigits);
+const ChartBottomWidgets = connect(({ modules }) => ({
+    contract_info: modules.contract_trade.last_contract.contract_info || {},
+    digits_info: modules.contract_trade.last_contract.digits_info || {},
+    display_status: modules.contract_trade.last_contract.display_status,
+    is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
+    is_ended: modules.contract_trade.last_contract.is_ended,
+    underlying: modules.trade.symbol,
+}))(BottomDigits);
 
 // ---- InfoBox for chart
 const LazyTopWidgets = ({ onSymbolChange }) => (
@@ -139,19 +119,12 @@ const LazyTopWidgets = ({ onSymbolChange }) => (
     />
 );
 
-const ChartTopWidgets = connect(
-    ({ modules }) => ({
-        onSymbolChange: modules.trade.onChange,
-    })
-)(LazyTopWidgets);
+const ChartTopWidgets = connect(({ modules }) => ({
+    onSymbolChange: modules.trade.onChange,
+}))(LazyTopWidgets);
 
 // ChartMarkers --------------------------
-const Markers = ({
-    markers_array,
-    is_dark_theme,
-    granularity,
-    currency,
-}) => (
+const Markers = ({ markers_array, is_dark_theme, granularity, currency }) =>
     markers_array.map(marker => {
         const Marker = AllMarkers[marker.type];
         return (
@@ -163,30 +136,21 @@ const Markers = ({
                 {...marker}
             />
         );
-    })
-);
-const ChartMarkers = connect(
-    ({ modules, ui, client }) => ({
-        markers_array    : modules.contract_trade.markers_array,
-        is_digit_contract: modules.contract_trade.is_digit_contract,
-        granularity      : modules.contract_trade.granularity,
-        is_dark_theme    : ui.is_dark_mode_on,
-        currency         : client.currency,
-    })
-)(Markers);
+    });
+const ChartMarkers = connect(({ modules, ui, client }) => ({
+    markers_array: modules.contract_trade.markers_array,
+    is_digit_contract: modules.contract_trade.is_digit_contract,
+    granularity: modules.contract_trade.granularity,
+    is_dark_theme: ui.is_dark_mode_on,
+    currency: client.currency,
+}))(Markers);
 
 class ChartTradeClass extends React.Component {
-
     chartControlsWidgets = () => (
-        <ControlWidgets
-            updateChartType={this.props.updateChartType}
-            updateGranularity={this.props.updateGranularity}
-        />
+        <ControlWidgets updateChartType={this.props.updateChartType} updateGranularity={this.props.updateGranularity} />
     );
 
-    bottomWidgets = ({ digits, tick }) => (
-        <ChartBottomWidgets digits={digits} tick={tick} />
-    );
+    bottomWidgets = ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />;
 
     componentDidMount() {
         performance.mark('smart-charts-mounted');
@@ -196,11 +160,7 @@ class ChartTradeClass extends React.Component {
     }
 
     render() {
-        const {
-            show_digits_stats,
-            main_barrier,
-            should_refresh,
-        } = this.props;
+        const { show_digits_stats, main_barrier, should_refresh } = this.props;
 
         const barriers = main_barrier ? [main_barrier] : [];
         // smartcharts only way to refresh active-symbols is to reset the connection.
@@ -209,11 +169,11 @@ class ChartTradeClass extends React.Component {
         return (
             <SmartChart
                 barriers={barriers}
-                bottomWidgets={(show_digits_stats && isDesktop()) ? this.bottomWidgets : null}
+                bottomWidgets={show_digits_stats && isDesktop() ? this.bottomWidgets : null}
                 crosshairState={isMobile() ? 0 : undefined}
                 showLastDigitStats={isDesktop() ? show_digits_stats : false}
                 chartControlsWidgets={isDesktop() ? this.chartControlsWidgets : null}
-                chartStatusListener={(v) => this.props.setChartStatus(!v)}
+                chartStatusListener={v => this.props.setChartStatus(!v)}
                 chartType={this.props.chart_type}
                 id='trade'
                 isMobile={isMobile()}
@@ -239,37 +199,35 @@ class ChartTradeClass extends React.Component {
     }
 }
 
-const ChartTrade = connect(
-    ({ modules, ui, common }) => ({
-        is_socket_opened : common.is_socket_opened,
-        updateChartType  : modules.contract_trade.updateChartType,
-        updateGranularity: modules.contract_trade.updateGranularity,
-        granularity      : modules.contract_trade.granularity,
-        chart_type       : modules.contract_trade.chart_type,
-        settings         : {
-            assetInformation            : false, // ui.is_chart_asset_info_visible,
-            countdown                   : ui.is_chart_countdown_visible,
-            isHighestLowestMarkerEnabled: false, // TODO: Pending UI,
-            lang                        : common.current_language,
-            position                    : ui.is_chart_layout_default ? 'bottom' : 'left',
-            theme                       : ui.is_dark_mode_on ? 'dark' : 'light',
-        },
-        last_contract: {
-            is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
-            is_ended         : modules.contract_trade.last_contract.is_ended,
-        },
-        main_barrier     : modules.trade.main_barrier_flattened,
-        show_digits_stats: modules.trade.show_digits_stats,
-        contract_type    : modules.trade.contract_type,
-        symbol           : modules.trade.symbol,
-        exportLayout     : modules.trade.exportLayout,
-        setChartStatus   : modules.trade.setChartStatus,
-        chart_layout     : modules.trade.chart_layout,
-        wsForget         : modules.trade.wsForget,
-        wsForgetStream   : modules.trade.wsForgetStream,
-        wsSendRequest    : modules.trade.wsSendRequest,
-        wsSubscribe      : modules.trade.wsSubscribe,
-        should_refresh   : modules.trade.should_refresh_active_symbols,
-        resetRefresh     : modules.trade.resetRefresh,
-    })
-)(ChartTradeClass);
+const ChartTrade = connect(({ modules, ui, common }) => ({
+    is_socket_opened: common.is_socket_opened,
+    updateChartType: modules.contract_trade.updateChartType,
+    updateGranularity: modules.contract_trade.updateGranularity,
+    granularity: modules.contract_trade.granularity,
+    chart_type: modules.contract_trade.chart_type,
+    settings: {
+        assetInformation: false, // ui.is_chart_asset_info_visible,
+        countdown: ui.is_chart_countdown_visible,
+        isHighestLowestMarkerEnabled: false, // TODO: Pending UI,
+        lang: common.current_language,
+        position: ui.is_chart_layout_default ? 'bottom' : 'left',
+        theme: ui.is_dark_mode_on ? 'dark' : 'light',
+    },
+    last_contract: {
+        is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
+        is_ended: modules.contract_trade.last_contract.is_ended,
+    },
+    main_barrier: modules.trade.main_barrier_flattened,
+    show_digits_stats: modules.trade.show_digits_stats,
+    contract_type: modules.trade.contract_type,
+    symbol: modules.trade.symbol,
+    exportLayout: modules.trade.exportLayout,
+    setChartStatus: modules.trade.setChartStatus,
+    chart_layout: modules.trade.chart_layout,
+    wsForget: modules.trade.wsForget,
+    wsForgetStream: modules.trade.wsForgetStream,
+    wsSendRequest: modules.trade.wsSendRequest,
+    wsSubscribe: modules.trade.wsSubscribe,
+    should_refresh: modules.trade.should_refresh_active_symbols,
+    resetRefresh: modules.trade.resetRefresh,
+}))(ChartTradeClass);

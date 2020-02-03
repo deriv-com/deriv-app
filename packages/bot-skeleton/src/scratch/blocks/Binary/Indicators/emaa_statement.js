@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 
 Blockly.Blocks.emaa_statement = {
-    protected_statements : ['STATEMENT'],
+    protected_statements: ['STATEMENT'],
     required_child_blocks: ['input_list', 'period'],
     init() {
         this.jsonInit(this.definition());
@@ -10,10 +10,10 @@ Blockly.Blocks.emaa_statement = {
         return {
             message0: localize('set %1 to Exponentional Moving Average Array %2'),
             message1: '%1',
-            args0   : [
+            args0: [
                 {
-                    type    : 'field_variable',
-                    name    : 'VARIABLE',
+                    type: 'field_variable',
+                    name: 'VARIABLE',
                     variable: 'emaa',
                 },
                 {
@@ -22,24 +22,26 @@ Blockly.Blocks.emaa_statement = {
             ],
             args1: [
                 {
-                    type : 'input_statement',
-                    name : 'STATEMENT',
+                    type: 'input_statement',
+                    name: 'STATEMENT',
                     check: null,
                 },
             ],
-            colour           : Blockly.Colours.Base.colour,
-            colourSecondary  : Blockly.Colours.Base.colourSecondary,
-            colourTertiary   : Blockly.Colours.Base.colourTertiary,
-            tooltip          : localize('Calculates Exponential Moving Average (EMA) list from a list of values with a period'),
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Calculates Exponential Moving Average (EMA) list from a list of values with a period'),
             previousStatement: null,
-            nextStatement    : null,
-            category         : Blockly.Categories.Indicators,
+            nextStatement: null,
+            category: Blockly.Categories.Indicators,
         };
     },
     meta() {
         return {
-            'display_name': localize('Exponential Moving Average Array (EMAA)'),
-            'description' : localize('This block is similar to EMA, except that it gives you the entire EMA line based on the input list and the given period.'),
+            display_name: localize('Exponential Moving Average Array (EMAA)'),
+            description: localize(
+                'This block is similar to EMA, except that it gives you the entire EMA line based on the input list and the given period.'
+            ),
         };
     },
     onchange: Blockly.Blocks.bb_statement.onchange,
@@ -47,10 +49,13 @@ Blockly.Blocks.emaa_statement = {
 
 Blockly.JavaScript.emaa_statement = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const var_name = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VARIABLE'), Blockly.Variables.NAME_TYPE);
-    const input    = block.childValueToCode('input_list', 'INPUT_LIST');
-    const period   = block.childValueToCode('period', 'PERIOD');
-    const code     = `${var_name} = Bot.emaa(${input}, ${period});\n`;
+    const var_name = Blockly.JavaScript.variableDB_.getName(
+        block.getFieldValue('VARIABLE'),
+        Blockly.Variables.NAME_TYPE
+    );
+    const input = block.childValueToCode('input_list', 'INPUT_LIST');
+    const period = block.childValueToCode('period', 'PERIOD');
+    const code = `${var_name} = Bot.emaa(${input}, ${period});\n`;
 
     return code;
 };

@@ -1,5 +1,5 @@
-import { expect }   from 'chai';
-import Errors       from '../errors';
+import { expect } from 'chai';
+import Errors from '../errors';
 
 describe('Error', () => {
     let errors;
@@ -11,20 +11,22 @@ describe('Error', () => {
     describe('.add', () => {
         it('should add error to errors', () => {
             errors.add('Error', 101);
-            expect(errors.errors).to.have.property('Error').with.length(2);
+            expect(errors.errors)
+                .to.have.property('Error')
+                .with.length(2);
         });
         it('should not add error if already existed', () => {
             errors.add('Error', 100);
-            expect(errors.errors).to.have.property('Error').with.length(1);
+            expect(errors.errors)
+                .to.have.property('Error')
+                .with.length(1);
         });
     });
 
     describe('.all', () => {
         it('should return all errors', () => {
             expect(errors.all()).to.be.eql({
-                Error: [
-                    100,
-                ]
+                Error: [100],
             });
         });
     });

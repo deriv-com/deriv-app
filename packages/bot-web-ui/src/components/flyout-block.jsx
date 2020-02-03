@@ -1,13 +1,10 @@
-
-import React            from 'react';
-import PropTypes        from 'prop-types';
-import { connect }      from '../stores/connect';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from '../stores/connect';
 
 class FlyoutBlock extends React.PureComponent {
     render() {
-        return (
-            <div ref={el => this.el_block_workspace = el} className='flyout__block-workspace' />
-        );
+        return <div ref={el => (this.el_block_workspace = el)} className='flyout__block-workspace' />;
     }
 
     componentDidMount() {
@@ -17,8 +14,8 @@ class FlyoutBlock extends React.PureComponent {
 }
 
 FlyoutBlock.propTypes = {
-    block_node         : PropTypes.any,
-    initBlockWorkspace : PropTypes.func,
+    block_node: PropTypes.any,
+    initBlockWorkspace: PropTypes.func,
     should_center_block: PropTypes.bool,
 };
 

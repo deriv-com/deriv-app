@@ -1,9 +1,7 @@
 import ContentLoader from 'react-content-loader';
-import React         from 'react';
-import PropTypes     from 'prop-types';
-import {
-    DesktopWrapper,
-    MobileWrapper }  from '@deriv/components';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 
 const TradeParamsLoader = ({ speed }) => (
     <>

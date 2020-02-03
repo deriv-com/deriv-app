@@ -1,11 +1,6 @@
 import { getRoundedNumber } from '@deriv/shared/utils/currency';
 import { sell, openContractReceived } from './state/actions';
-import {
-    contractStatus,
-    contractSettled,
-    contract as
-    broadcastContract,
-}                      from '../utils/broadcast';
+import { contractStatus, contractSettled, contract as broadcastContract } from '../utils/broadcast';
 import { doUntilDone } from '../utils/helpers';
 
 const AFTER_FINISH_TIMEOUT = 5;
@@ -31,7 +26,7 @@ export default Engine =>
                     this.contractId = '';
                     this.updateTotals(contract);
                     contractStatus({
-                        id  : 'contract.sold',
+                        id: 'contract.sold',
                         data: contract.transaction_ids.sell,
                         contract,
                     });

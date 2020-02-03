@@ -1,8 +1,5 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 export const positionPropType = {
-    position: PropTypes.oneOf([
-        'top',
-        'bottom',
-    ]),
+  position: PropTypes.oneOf(["top", "bottom"])
 };

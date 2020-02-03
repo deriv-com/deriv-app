@@ -4,29 +4,31 @@ Blockly.Blocks.lists_isEmpty = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('list %1 is empty'),
-            args0   : [
+            args0: [
                 {
-                    type : 'input_value',
-                    name : 'VALUE',
+                    type: 'input_value',
+                    name: 'VALUE',
                     check: ['Array'],
                 },
             ],
-            output         : 'Boolean',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Boolean',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Checks if a given list is empty'),
-            category       : Blockly.Categories.List,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Checks if a given list is empty'),
+            category: Blockly.Categories.List,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Is list empty?'),
-            'description' : localize('This block checks if a given list is empty. It returns “True” if the list is empty, “False” if otherwise.'),
+            display_name: localize('Is list empty?'),
+            description: localize(
+                'This block checks if a given list is empty. It returns “True” if the list is empty, “False” if otherwise.'
+            ),
         };
     },
     getRequiredValueInputs() {

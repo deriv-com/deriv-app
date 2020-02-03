@@ -1,103 +1,31 @@
-import React, {
-    Fragment,
-    Component }               from 'react';
-import PropTypes              from 'prop-types';
-import {
-    Formik,
-    Field,
-    Form }                    from 'formik';
-import {
-    Input,
-    Button,
-    ThemedScrollbars }        from '@deriv/components';
-import CurrencyUtils          from '@deriv/shared/utils/currency';
-import IconBack               from 'Assets/icon-back.jsx';
-import IconClose              from 'Assets/icon-close.jsx';
-import { localize }           from 'Components/i18next';
+import React, { Fragment, Component } from 'react';
+import PropTypes from 'prop-types';
+import { Formik, Field, Form } from 'formik';
+import { Input, Button, ThemedScrollbars } from '@deriv/components';
+import CurrencyUtils from '@deriv/shared/utils/currency';
+import IconClose from 'Assets/icon-close.jsx';
+import { localize, Localize } from 'Components/i18next';
 import { countDecimalPlaces } from 'Utils/string';
-import { requestWS }          from 'Utils/websocket';
-import FormError              from '../form/error.jsx';
-
-const SendField = ({
-    calculateReceiveAmount,
-    error,
-    handleChange,
-    is_buy,
-    send_currency,
-    setFieldValue,
-}) => {
-    return (
-        <Field name='send'>
-            {({ field }) => (
-                <Input
-                    {...field}
-                    data-lpignore='true'
-                    type='number'
-                    error={error}
-                    label={localize('Send')}
-                    className='buy-sell__popup-field'
-                    placeholder={localize('Send amount')}
-                    trailing_icon={<span className='buy-sell__popup-field--trailing'>{send_currency}</span>}
-                    onChange={(e) => {
-                        const send = isNaN(e.target.value) ? 0 : e.target.value;
-                        const receive_amount =
-                            calculateReceiveAmount(send, is_buy);
-
-                        setFieldValue('receive', receive_amount);
-                        handleChange(e);
-                    }}
-                    required
-                />
-            )}
-        </Field>
-    );
-};
-
-const ReceiveField = ({
-    calculateSendAmount,
-    error,
-    handleChange,
-    is_buy,
-    receive_currency,
-    setFieldValue,
-}) => {
-    return (
-        <Field name='receive'>
-            {({ field }) => (
-                <Input
-                    {...field}
-                    data-lpignore='true'
-                    type='number'
-                    error={error}
-                    label={localize('Receive')}
-                    className='buy-sell__popup-field'
-                    placeholder={localize('Receive amount')}
-                    trailing_icon={<span className='buy-sell__popup-field--trailing'>{receive_currency}</span>}
-                    onChange={(e) => {
-                        const receive =
-                            isNaN(e.target.value) ? 0 : e.target.value;
-                        const send_amount =
-                            calculateSendAmount(receive, is_buy);
-
-                        setFieldValue('send', send_amount);
-                        handleChange(e);
-                    }}
-                    required
-                />
-            )}
-        </Field>
-    );
-};
+import { requestWS } from 'Utils/websocket';
+import FormError from '../form/error.jsx';
 
 class Popup extends Component {
+    state = {
+        total_amount: undefined,
+    };
+
+    componentDidMount() {
+        this.setTotalAmount(this.props.ad.min_transaction);
+    }
+
     handleSubmit = async (values, { setStatus, setSubmitting }) => {
         const { ad } = this.props;
         setStatus({ error_message: '' });
 
         const order = await requestWS({
             p2p_order_create: 1,
-            amount          : ad.type === 'buy' ? values.receive : values.send,
-            offer_id        : ad.offer_id,
+            amount: values.amount,
+            offer_id: ad.offer_id,
         });
 
         if (!order.error) {
@@ -109,64 +37,21 @@ class Popup extends Component {
             setSubmitting(false);
             setStatus({ error_message: order.error.message });
         }
-
     };
 
-    getInitialValues = (is_buy) => {
+    setTotalAmount = amount => {
         const { ad } = this.props;
-
-        const amount_asset = +((ad.min_transaction * ad.price_rate).toFixed(ad.transaction_currency_decimals));
-        const max_amount = +((ad.max_transaction * ad.price_rate).toFixed(ad.transaction_currency_decimals));
-
-        const buy_initial_values = {
-            initial_receive : ad.min_transaction,
-            initial_send    : amount_asset,
-            max_receive     : ad.max_transaction,
-            max_send        : max_amount,
-            receive_currency: ad.offer_currency,
-            receive_decimals: ad.offer_currency_decimals,
-            send_currency   : ad.transaction_currency,
-            send_decimals   : ad.transaction_currency_decimals,
-        };
-        const sell_initial_values = {
-            initial_receive : amount_asset,
-            initial_send    : ad.min_transaction,
-            max_receive     : max_amount,
-            max_send        : ad.max_transaction,
-            receive_currency: ad.transaction_currency,
-            receive_decimals: ad.transaction_currency_decimals,
-            send_currency   : ad.offer_currency,
-            send_decimals   : ad.offer_currency_decimals,
-        };
-
-        return is_buy ? buy_initial_values : sell_initial_values;
-    }
-
-    calculateReceiveAmount = (send_amount, is_buy) => {
-        const { ad } = this.props;
-        return is_buy ?
-            +((send_amount / ad.price_rate).toFixed(ad.transaction_currency_decimals))
-            :
-            +((send_amount * ad.price_rate).toFixed(ad.transaction_currency_decimals));
-    };
-
-    calculateSendAmount = (receive_amount, is_buy) => {
-        const { ad } = this.props;
-        return is_buy ?
-            +((receive_amount * ad.price_rate).toFixed(ad.transaction_currency_decimals))
-            :
-            +((receive_amount / ad.price_rate).toFixed(ad.transaction_currency_decimals));
+        const total_amount = CurrencyUtils.formatMoney(
+            ad.transaction_currency,
+            +amount * ad.price_rate,
+            true,
+            ad.transaction_currency_decimals
+        );
+        this.setState({ total_amount });
     };
 
     render() {
         const { ad, handleClose } = this.props;
-        const is_buy = ad.type === 'buy';
-        const {
-            initial_receive,
-            initial_send,
-            send_currency,
-            receive_currency,
-        } = this.getInitialValues(is_buy);
 
         return (
             <Fragment>
@@ -179,86 +64,104 @@ class Popup extends Component {
                     </div>
                     <Formik
                         validate={this.validatePopup}
-                        initialValues={{ send: initial_send, receive: initial_receive }}
+                        initialValues={{ amount: ad.min_transaction }}
                         onSubmit={this.handleSubmit}
                     >
-                        {({
-                            errors,
-                            isSubmitting,
-                            setFieldValue,
-                            handleChange,
-                            status,
-                        }) => (
+                        {({ errors, isSubmitting, handleChange, status }) => (
                             <Form noValidate>
-                                <ThemedScrollbars
-                                    autoHide
-                                    style={{ height: '307px' }}
-                                >
+                                <ThemedScrollbars autoHide style={{ height: '307px' }}>
                                     <div className='buy-sell__popup-content'>
+                                        <div className='buy-sell__popup-info'>
+                                            <span className='buy-sell__popup-info--title'>{localize('Price')}</span>
+                                            <p className='buy-sell__popup-info--text'>
+                                                {ad.display_price_rate} {ad.transaction_currency}
+                                            </p>
+                                        </div>
                                         <div className='buy-sell__popup-field_wrapper'>
-                                            {is_buy ?
-                                                <SendField
-                                                    calculateReceiveAmount={this.calculateReceiveAmount}
-                                                    error={errors.send}
-                                                    handleChange={handleChange}
-                                                    is_buy={is_buy}
-                                                    send_currency={send_currency}
-                                                    setFieldValue={setFieldValue}
-                                                />
-                                                :
-                                                <ReceiveField
-                                                    calculateSendAmount={this.calculateSendAmount}
-                                                    error={errors.recieve}
-                                                    handleChange={handleChange}
-                                                    is_buy={is_buy}
-                                                    receive_currency={receive_currency}
-                                                    setFieldValue={setFieldValue}
-                                                />
-                                            }
-                                            <IconBack className='buy-sell__popup-field--icon' />
-                                            {is_buy ?
-                                                <ReceiveField
-                                                    calculateSendAmount={this.calculateSendAmount}
-                                                    error={errors.recieve}
-                                                    handleChange={handleChange}
-                                                    is_buy={is_buy}
-                                                    receive_currency={receive_currency}
-                                                    setFieldValue={setFieldValue}
-                                                />
-                                                :
-                                                <SendField
-                                                    calculateReceiveAmount={this.calculateReceiveAmount}
-                                                    error={errors.send}
-                                                    handleChange={handleChange}
-                                                    is_buy={is_buy}
-                                                    send_currency={send_currency}
-                                                    setFieldValue={setFieldValue}
-                                                />
-                                            }
+                                            <div className='buy-sell__popup-field'>
+                                                <span className='buy-sell__popup-info--title'>
+                                                    {ad.type === 'buy' ? localize('Seller') : localize('Buyer')}
+                                                </span>
+                                                <p className='buy-sell__popup-info--text'>{ad.advertiser_name}</p>
+                                            </div>
+                                            <div className='buy-sell__popup-field'>
+                                                <span className='buy-sell__popup-info--title'>
+                                                    {localize('Payment method')}
+                                                </span>
+                                                <p className='buy-sell__popup-info--text'>
+                                                    {ad.display_payment_method}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div className='buy-sell__popup-info'>
-                                            <span className='buy-sell__popup-info--title'>{ad.type === 'buy' ? localize('Seller') : localize('Buyer')}</span>
-                                            <p className='buy-sell__popup-info--text'>{ad.advertiser}</p>
+                                        <div className='buy-sell__popup-info buy-sell__popup-info_notes'>
+                                            <span className='buy-sell__popup-info--title'>
+                                                {localize('Advertiser notes')}
+                                            </span>
+                                            {ad.advertiser_notes.split('\n').map((text, idx) => (
+                                                <p className='buy-sell__popup-info--text' key={idx}>
+                                                    {text}
+                                                </p>
+                                            ))}
                                         </div>
-                                        <div className='buy-sell__popup-info'>
-                                            <span className='buy-sell__popup-info--title'>{localize('Payment method')}</span>
-                                            <p className='buy-sell__popup-info--text'>{ad.payment_method}</p>
+                                        <div className='buy-sell__popup-field_wrapper'>
+                                            <Field name='amount'>
+                                                {({ field }) => (
+                                                    <Input
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        type='number'
+                                                        error={errors.amount}
+                                                        label={localize('Amount')}
+                                                        hint={
+                                                            <Localize
+                                                                i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
+                                                                values={{
+                                                                    min: ad.min_transaction,
+                                                                    max: ad.max_transaction,
+                                                                    currency: ad.offer_currency,
+                                                                }}
+                                                            />
+                                                        }
+                                                        className='buy-sell__popup-field'
+                                                        trailing_icon={
+                                                            <span className='buy-sell__popup-field--trailing'>
+                                                                {ad.offer_currency}
+                                                            </span>
+                                                        }
+                                                        onChange={e => {
+                                                            // typing more than 15 characters will break the layout
+                                                            // max doesn't disable typing, so we will use this to restrict length
+                                                            if (e.target.value.length > 15) {
+                                                                e.target.value = e.target.value.slice(0, 15);
+                                                                return;
+                                                            }
+                                                            const amount = isNaN(e.target.value) ? 0 : e.target.value;
+                                                            this.setTotalAmount(amount);
+                                                            handleChange(e);
+                                                        }}
+                                                        required
+                                                    />
+                                                )}
+                                            </Field>
+                                            <div className='buy-sell__popup-field'>
+                                                <span className='buy-sell__popup-info--title'>
+                                                    {ad.type === 'buy' ? localize('You send') : localize('You receive')}
+                                                </span>
+                                                <p className='buy-sell__popup-info--text buy-sell__popup-info--strong'>
+                                                    {this.state.total_amount} {ad.transaction_currency}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div className='buy-sell__popup-info'>
-                                            <span className='buy-sell__popup-info--title'>{localize('Advertiser notes')}</span>
-                                            {
-                                                ad.advertiser_note.split('\n').map((text, idx) => (
-                                                    <p className='buy-sell__popup-info--text' key={idx}>{text}</p>
-                                                ))
-                                            }
-                                        </div>
-
                                     </div>
                                 </ThemedScrollbars>
                                 <div className='buy-sell__popup-footer'>
                                     {status && status.error_message && <FormError message={status.error_message} />}
-                                    <Button secondary type='button' onClick={handleClose}>{localize('Cancel')}</Button>
-                                    <Button is_disabled={isSubmitting || errors.send || errors.receive} primary>{localize('Confirm')}</Button>
+                                    <Button secondary type='button' onClick={handleClose}>
+                                        {localize('Cancel')}
+                                    </Button>
+                                    <Button is_disabled={!!(isSubmitting || errors.amount)} primary>
+                                        {localize('Confirm')}
+                                    </Button>
                                 </div>
                             </Form>
                         )}
@@ -268,81 +171,66 @@ class Popup extends Component {
         );
     }
 
-    validatePopup = (values) => {
+    validatePopup = values => {
         const { ad } = this.props;
-        const is_buy = ad.type === 'buy';
-        const {
-            initial_send,
-            initial_receive,
-            max_receive,
-            max_send,
-            receive_decimals,
-            receive_currency,
-            send_currency,
-            send_decimals,
-        } = this.getInitialValues(is_buy);
 
         const validations = {
-            send: [
+            amount: [
                 v => !!v,
-                v => v >= initial_send,
-                v => v <= max_send,
-                v => countDecimalPlaces(v) <= send_decimals,
-            ],
-            receive: [
-                v => !!v,
-                v => v >= initial_receive,
-                v => v <= max_receive,
-                v => countDecimalPlaces(v) <= receive_decimals,
+                v => v >= ad.min_transaction,
+                v => v <= ad.max_transaction,
+                v => countDecimalPlaces(v) <= ad.offer_currency_decimals,
             ],
         };
 
-        const common_messages  = (field) => ([
+        const display_initial_amount = CurrencyUtils.formatMoney(
+            ad.offer_currency,
+            ad.min_transaction,
+            true,
+            ad.offer_currency_decimals
+        );
+
+        const display_max_amount = CurrencyUtils.formatMoney(
+            ad.offer_currency,
+            ad.max_transaction,
+            true,
+            ad.offer_currency_decimals
+        );
+
+        const common_messages = [
             localize('Enter a valid amount'),
-            localize('Minimum is {{currency}} {{value}}',
-                {
-                    currency: field === 'send' ? send_currency : receive_currency,
-                    value   : field === 'send' ?
-                        CurrencyUtils.formatMoney(send_currency, initial_send, true, send_decimals)
-                        :
-                        CurrencyUtils.formatMoney(receive_currency, initial_receive, true, receive_decimals),
-                }),
-            localize('Maximum is {{currency}} {{value}}',
-                {
-                    currency: field === 'send' ? send_currency : receive_currency,
-                    value   : field === 'send' ?
-                        CurrencyUtils.formatMoney(send_currency, max_send, true, send_decimals)
-                        :
-                        CurrencyUtils.formatMoney(receive_currency, max_receive, true, receive_decimals),
-                }),
+            localize('Minimum is {{value}} {{currency}}', {
+                currency: ad.offer_currency,
+                value: display_initial_amount,
+            }),
+            localize('Maximum is {{value}} {{currency}}', { currency: ad.offer_currency, value: display_max_amount }),
             localize('Enter a valid amount'),
-        ]);
+        ];
 
-        const errors    = {};
+        const errors = {};
 
-        Object.entries(validations)
-            .forEach(([key, rules]) => {
-                const error_index = rules.findIndex(v => {
-                    return !v(values[key]);
-                });
+        Object.entries(validations).forEach(([key, rules]) => {
+            const error_index = rules.findIndex(v => {
+                return !v(values[key]);
+            });
 
-                if (error_index !== -1) {
-                    switch (key) {
-                        default: {
-                            errors[key] = common_messages(key)[error_index];
-                            break;
-                        }
+            if (error_index !== -1) {
+                switch (key) {
+                    default: {
+                        errors[key] = common_messages[error_index];
+                        break;
                     }
                 }
-            });
+            }
+        });
 
         return errors;
     };
 }
 
 Popup.propTypes = {
-    ad           : PropTypes.object,
-    handleClose  : PropTypes.func,
+    ad: PropTypes.object,
+    handleClose: PropTypes.func,
     handleConfirm: PropTypes.func,
 };
 

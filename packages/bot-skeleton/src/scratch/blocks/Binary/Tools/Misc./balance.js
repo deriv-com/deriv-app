@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import  { config }  from '../../../../../constants/config';
+import { config } from '../../../../../constants/config';
 
 Blockly.Blocks.balance = {
     init() {
@@ -16,29 +16,31 @@ Blockly.Blocks.balance = {
             return undefined;
         });
     },
-    definition(){
+    definition() {
         return {
             message0: localize('Balance: %1'),
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'BALANCE_TYPE',
+                    type: 'field_dropdown',
+                    name: 'BALANCE_TYPE',
                     options: config.lists.BALANCE_TYPE,
                 },
             ],
-            output         : null,
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: null,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('This block returns account balance'),
-            category       : Blockly.Categories.Miscellaneous,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('This block returns account balance'),
+            category: Blockly.Categories.Miscellaneous,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Account balance'),
-            'description' : localize('This block gives you the balance of your account either as a number or a string of text.'),
+            display_name: localize('Account balance'),
+            description: localize(
+                'This block gives you the balance of your account either as a number or a string of text.'
+            ),
         };
     },
 };

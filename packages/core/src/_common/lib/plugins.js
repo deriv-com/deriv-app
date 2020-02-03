@@ -18,7 +18,8 @@ if (!('remove' in Element.prototype)) {
 }
 
 Element.prototype.toggleClass = function(class_name, should_add) {
-    if (typeof should_add === 'undefined') { // toggle
+    if (typeof should_add === 'undefined') {
+        // toggle
         should_add = !this.classList.contains(class_name);
     }
     this.classList[should_add ? 'add' : 'remove'](class_name);
@@ -29,7 +30,6 @@ Element.prototype.setVisibility = function(make_visible) {
     this.toggleClass('invisible', !make_visible);
     return this;
 };
-
 
 Element.prototype.html = function(content) {
     if (typeof content === 'object') {

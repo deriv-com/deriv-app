@@ -1,10 +1,10 @@
-import classNames          from 'classnames';
-import PropTypes           from 'prop-types';
-import React               from 'react';
-import { Modal }           from '@deriv/components';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Modal } from '@deriv/components';
 import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
 
-const AccountSwitcherMobile = (props) => {
+const AccountSwitcherMobile = props => {
     const { disableApp, enableApp, is_visible, is_upgrade_enabled, toggle } = props;
     return (
         <Modal
@@ -19,27 +19,18 @@ const AccountSwitcherMobile = (props) => {
             height='auto'
             width='calc(100vw - 32px)'
         >
-            <div
-                className={classNames(
-                    'acc-switcher__wrapper',
-                    'acc-switcher__wrapper--is-mobile')}
-            >
-                <AccountSwitcher
-                    is_mobile
-                    is_visible={true}
-                    toggle={toggle}
-                    is_upgrade_enabled={is_upgrade_enabled}
-                />
+            <div className={classNames('acc-switcher__wrapper', 'acc-switcher__wrapper--is-mobile')}>
+                <AccountSwitcher is_mobile is_visible={true} toggle={toggle} is_upgrade_enabled={is_upgrade_enabled} />
             </div>
         </Modal>
     );
 };
 
 AccountSwitcherMobile.propTypes = {
-    children        : PropTypes.any,
-    onClose         : PropTypes.func,
-    title           : PropTypes.string,
-    visible         : PropTypes.bool,
+    children: PropTypes.any,
+    onClose: PropTypes.func,
+    title: PropTypes.string,
+    visible: PropTypes.bool,
     wrapperClassName: PropTypes.string,
 };
 

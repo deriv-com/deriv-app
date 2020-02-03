@@ -1,5 +1,5 @@
-import PropTypes          from 'prop-types';
-import React              from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { DesktopWrapper } from '@deriv/components';
 import {
     ChartSize,
@@ -10,12 +10,10 @@ import {
     Share,
     StudyLegend,
     Timeperiod,
-    Views }               from 'Modules/SmartChart';
+    Views,
+} from 'Modules/SmartChart';
 
-const ControlWidgets = ({
-    updateChartType,
-    updateGranularity,
-}) => (
+const ControlWidgets = ({ updateChartType, updateGranularity }) => (
     <React.Fragment>
         <DesktopWrapper>
             <CrosshairToggle enabled />
@@ -34,7 +32,7 @@ const ControlWidgets = ({
 );
 
 ControlWidgets.propTypes = {
-    updateChartType  : PropTypes.func,
+    updateChartType: PropTypes.func,
     updateGranularity: PropTypes.func,
 };
 

@@ -1,21 +1,18 @@
-import * as PropTypes       from 'prop-types';
+import * as PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import {
-    Button,
-    DesktopWrapper,
-    Icon,
-    MobileWrapper,
-    Popover }               from '@deriv/components';
-import { localize }         from '@deriv/translations';
-import CurrencyUtils        from '@deriv/shared/utils/currency';
-import routes               from 'Constants/routes';
-import { LoginButton }      from './login-button.jsx';
-import { SignupButton }     from './signup-button.jsx';
-import ToggleNotifications  from './toggle-notifications.jsx';
-import { BinaryLink }       from '../../Routes';
-import                           'Sass/app/_common/components/account-switcher.scss';
+import { Button, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import CurrencyUtils from '@deriv/shared/utils/currency';
+import routes from 'Constants/routes';
+import { LoginButton } from './login-button.jsx';
+import { SignupButton } from './signup-button.jsx';
+import ToggleNotifications from './toggle-notifications.jsx';
+import { BinaryLink } from '../../Routes';
+import 'Sass/app/_common/components/account-switcher.scss';
 
-const AccountInfo = React.lazy(() => import(/* webpackChunkName: "account-info", webpackPreload: true */'App/Components/Layout/Header/account-info.jsx'));
+const AccountInfo = React.lazy(() =>
+    import(/* webpackChunkName: "account-info", webpackPreload: true */ 'App/Components/Layout/Header/account-info.jsx')
+);
 
 export class AccountActions extends Component {
     shouldComponentUpdate(nextProps) {
@@ -61,7 +58,11 @@ export class AccountActions extends Component {
                         />
                         <React.Suspense fallback={<div />}>
                             <AccountInfo
-                                balance={typeof balance === 'undefined' ? balance : CurrencyUtils.formatMoney(currency, balance, true)}
+                                balance={
+                                    typeof balance === 'undefined'
+                                        ? balance
+                                        : CurrencyUtils.formatMoney(currency, balance, true)
+                                }
                                 is_upgrade_enabled={can_upgrade}
                                 disableApp={disableApp}
                                 enableApp={enableApp}
@@ -84,16 +85,17 @@ export class AccountActions extends Component {
                             alignment='bottom'
                             message={localize('Manage account settings')}
                         >
-                            <BinaryLink
-                                className='account-settings-toggle'
-                                to={ routes.personal_details }
-                            >
+                            <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
                                 <Icon icon='IcUserOutline' />
                             </BinaryLink>
                         </Popover>
                         <React.Suspense fallback={<div />}>
                             <AccountInfo
-                                balance={typeof balance === 'undefined' ? balance : CurrencyUtils.formatMoney(currency, balance, true)}
+                                balance={
+                                    typeof balance === 'undefined'
+                                        ? balance
+                                        : CurrencyUtils.formatMoney(currency, balance, true)
+                                }
                                 is_upgrade_enabled={can_upgrade}
                                 is_virtual={is_virtual}
                                 currency={currency}
@@ -101,7 +103,7 @@ export class AccountActions extends Component {
                                 toggleDialog={toggleAccountsDialog}
                             />
                         </React.Suspense>
-                        {!is_virtual && !currency &&
+                        {!is_virtual && !currency && (
                             <div className='set-currency'>
                                 <Button
                                     onClick={openRealAccountSignup}
@@ -111,16 +113,16 @@ export class AccountActions extends Component {
                                     primary
                                 />
                             </div>
-                        }
-                        {currency &&
-                        <Button
-                            className='acc-info__button'
-                            has_effect
-                            text={localize('Deposit')}
-                            onClick={onClickDeposit}
-                            primary
-                        />
-                        }
+                        )}
+                        {currency && (
+                            <Button
+                                className='acc-info__button'
+                                has_effect
+                                text={localize('Deposit')}
+                                onClick={onClickDeposit}
+                                primary
+                            />
+                        )}
                     </DesktopWrapper>
                 </React.Fragment>
             );
@@ -135,19 +137,19 @@ export class AccountActions extends Component {
 }
 
 AccountActions.propTypes = {
-    balance                 : PropTypes.any,
-    can_upgrade             : PropTypes.any,
-    can_upgrade_to          : PropTypes.any,
-    currency                : PropTypes.any,
-    disableApp              : PropTypes.any,
-    enableApp               : PropTypes.any,
-    is_acc_switcher_on      : PropTypes.any,
-    is_logged_in            : PropTypes.any,
+    balance: PropTypes.any,
+    can_upgrade: PropTypes.any,
+    can_upgrade_to: PropTypes.any,
+    currency: PropTypes.any,
+    disableApp: PropTypes.any,
+    enableApp: PropTypes.any,
+    is_acc_switcher_on: PropTypes.any,
+    is_logged_in: PropTypes.any,
     is_notifications_visible: PropTypes.any,
-    is_virtual              : PropTypes.any,
-    notifications_count     : PropTypes.any,
-    onClickDeposit          : PropTypes.func,
-    openRealAccountSignup   : PropTypes.func,
-    toggleAccountsDialog    : PropTypes.any,
-    toggleNotifications     : PropTypes.any,
+    is_virtual: PropTypes.any,
+    notifications_count: PropTypes.any,
+    onClickDeposit: PropTypes.func,
+    openRealAccountSignup: PropTypes.func,
+    toggleAccountsDialog: PropTypes.any,
+    toggleNotifications: PropTypes.any,
 };

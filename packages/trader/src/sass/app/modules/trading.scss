@@ -21,12 +21,14 @@
 }
 
 .app-contents {
-    &--contract-mode, &--is-disabled {
+    &--contract-mode,
+    &--is-disabled {
         .trade-container {
             .popover {
                 display: none;
             }
-            .tooltip:before, .tooltip:after {
+            .tooltip:before,
+            .tooltip:after {
                 display: none;
             }
         }
@@ -35,7 +37,8 @@
         .popover {
             display: none;
         }
-        .tooltip:before, .tooltip:after {
+        .tooltip:before,
+        .tooltip:after {
             display: none;
         }
     }
@@ -83,7 +86,8 @@
         &:hover {
             border-color: var(--border-hover);
         }
-        &:active, &:focus {
+        &:active,
+        &:focus {
             border-color: var(--border-active);
         }
     }
@@ -214,7 +218,8 @@
                 padding-right: 8px;
             }
         }
-        &--up, &--down {
+        &--up,
+        &--down {
             position: absolute;
             margin-top: 15px;
         }

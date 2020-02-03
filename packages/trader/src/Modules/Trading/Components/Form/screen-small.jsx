@@ -1,8 +1,8 @@
-import PropTypes    from 'prop-types';
-import React        from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import MobileWidget from '../Elements/mobile-widget.jsx';
 import ContractType from '../../Containers/contract-type.jsx';
-import Purchase     from '../../Containers/purchase.jsx';
+import Purchase from '../../Containers/purchase.jsx';
 import 'Sass/app/_common/mobile-widget.scss';
 
 const ScreenSmall = (/* { is_trade_enabled } */) => (

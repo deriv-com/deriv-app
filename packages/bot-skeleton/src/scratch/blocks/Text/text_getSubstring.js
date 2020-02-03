@@ -1,4 +1,4 @@
-import { localize }           from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_getSubstring = {
@@ -21,14 +21,14 @@ Blockly.Blocks.text_getSubstring = {
     definition() {
         return {
             message0: localize('in text %1 get substring from %2 %3 to %4 %5'),
-            args0   : [
+            args0: [
                 {
                     type: 'input_value',
                     name: 'STRING',
                 },
                 {
-                    type   : 'field_dropdown',
-                    name   : 'WHERE1',
+                    type: 'field_dropdown',
+                    name: 'WHERE1',
                     options: this.WHERE_OPTIONS_1,
                 },
                 {
@@ -36,8 +36,8 @@ Blockly.Blocks.text_getSubstring = {
                     name: 'AT1',
                 },
                 {
-                    type   : 'field_dropdown',
-                    name   : 'WHERE2',
+                    type: 'field_dropdown',
+                    name: 'WHERE2',
                     options: this.WHERE_OPTIONS_2,
                 },
                 {
@@ -45,19 +45,19 @@ Blockly.Blocks.text_getSubstring = {
                     name: 'AT2',
                 },
             ],
-            output         : 'String',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'String',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Returns a specific portion of a given string of text.'),
-            category       : Blockly.Categories.Text,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Returns a specific portion of a given string of text.'),
+            category: Blockly.Categories.Text,
         };
     },
     meta() {
         return {
             display_name: localize('Get substring'),
-            description : localize('Returns a specific portion of a given string of text.'),
+            description: localize('Returns a specific portion of a given string of text.'),
         };
     },
     mutationToDom() {
@@ -92,10 +92,8 @@ Blockly.Blocks.text_getSubstring = {
             this.removeInput(`AT${n}`);
         }
 
-        const new_input = is_at ?
-            this.appendValueInput(`AT${n}`).setCheck('Number') :
-            this.appendDummyInput(`AT${n}`);
-        
+        const new_input = is_at ? this.appendValueInput(`AT${n}`).setCheck('Number') : this.appendDummyInput(`AT${n}`);
+
         if (old_label_text) {
             new_input.insertFieldAt(0, new Blockly.FieldLabel(old_label_text));
         }
@@ -109,12 +107,12 @@ Blockly.Blocks.text_getSubstring = {
 
                 return null;
             }
-            
+
             return undefined;
         });
 
         this.getInput(`AT${n}`).appendField(menu, `WHERE${n}`);
-        
+
         if (n === 1) {
             this.moveInputBefore('AT1', 'AT2');
         }
@@ -125,20 +123,18 @@ Blockly.Blocks.text_getSubstring = {
     getRequiredValueInputs() {
         return {
             STRING: emptyTextValidator,
-            AT1   : emptyTextValidator,
-            AT2   : emptyTextValidator,
+            AT1: emptyTextValidator,
+            AT2: emptyTextValidator,
         };
     },
 };
 
 Blockly.JavaScript.text_getSubstring = block => {
-    const text   = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_FUNCTION_CALL) || '\'\'';
+    const text = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_FUNCTION_CALL) || "''";
     const where1 = block.getFieldValue('WHERE1');
     const where2 = block.getFieldValue('WHERE2');
 
-    let at1,
-        at2,
-        code;
+    let at1, at2, code;
 
     if (where1 === 'FIRST' && where2 === 'LAST') {
         code = text;
@@ -147,16 +143,16 @@ Blockly.JavaScript.text_getSubstring = block => {
         (where1 !== 'FROM_END' && where1 !== 'LAST' && where2 !== 'FROM_END' && where2 !== 'LAST')
     ) {
         switch (where1) {
-            case ('FROM_START'): {
+            case 'FROM_START': {
                 at1 = Blockly.JavaScript.getAdjusted(block, 'AT1');
                 break;
             }
-            case ('FROM_END'): {
+            case 'FROM_END': {
                 at1 = Blockly.JavaScript.getAdjusted(block, 'AT1', 1, false, Blockly.JavaScript.ORDER_SUBTRACTION);
                 at1 = `${text}.length - ${at1}`;
                 break;
             }
-            case ('FIRST'): {
+            case 'FIRST': {
                 at1 = '0';
                 break;
             }
@@ -165,16 +161,16 @@ Blockly.JavaScript.text_getSubstring = block => {
         }
 
         switch (where2) {
-            case ('FROM_START'): {
+            case 'FROM_START': {
                 at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 1);
                 break;
             }
-            case ('FROM_END'): {
+            case 'FROM_END': {
                 at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 0, false, Blockly.JavaScript.ORDER_SUBTRACTION);
                 at2 = `${text}.length - ${at2}`;
                 break;
             }
-            case ('LAST'): {
+            case 'LAST': {
                 at2 = `${text}.length`;
                 break;
             }
@@ -198,10 +194,10 @@ Blockly.JavaScript.text_getSubstring = block => {
             return opt_at;
         };
         const where_pascal_case = {
-            FIRST     : 'First',
-            LAST      : 'Last',
+            FIRST: 'First',
+            LAST: 'Last',
             FROM_START: 'FromStart',
-            FROM_END  : 'FromEnd',
+            FROM_END: 'FromEnd',
         };
         // eslint-disable-next-line no-underscore-dangle
         const functionName = Blockly.JavaScript.provideFunction_(

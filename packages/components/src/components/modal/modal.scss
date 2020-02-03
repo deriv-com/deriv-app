@@ -2,98 +2,100 @@
  * @define dc-modal
  */
 .dc-modal {
-    &__container {
-        display: flex;
-        flex-direction: column;
-        min-width: 400px;
-        position: relative;
-        overflow: hidden;
-        border-radius: 8px;
-        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
-        background-color: var(--general-main-2);
-        box-shadow: 0 4px 6px 0 var(--shadow-menu);
-        max-height: calc(100vh - 48px - 36px);
-        max-width: 90vw;
-        opacity: 0;
+  &__container {
+    display: flex;
+    flex-direction: column;
+    min-width: 400px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25),
+      opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+    background-color: var(--general-main-2);
+    box-shadow: 0 4px 6px 0 var(--shadow-menu);
+    max-height: calc(100vh - 48px - 36px);
+    max-width: 90vw;
+    opacity: 0;
 
-        &--hide {
-            display: none;
-        }
-        &--enter, &--exit {
-            transform: translateY(50px);
-            opacity: 0;
-            pointer-events: none;
-        }
-        &--enter-done {
-            transform: translateY(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
-        &--small {
-            max-width: 440px;
-
-            /* postcss-bem-linter: ignore */
-            .dc-modal-header {
-                border-bottom: none;
-            }
-        }
+    &--hide {
+      display: none;
     }
-    /**
+    &--enter,
+    &--exit {
+      transform: translateY(50px);
+      opacity: 0;
+      pointer-events: none;
+    }
+    &--enter-done {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    &--small {
+      max-width: 440px;
+
+      /* postcss-bem-linter: ignore */
+      .dc-modal-header {
+        border-bottom: none;
+      }
+    }
+  }
+  /**
      * @define dc-modal-header
      */
-    &-header {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        line-height: 24px;
-        align-items: center;
-        border-bottom: 2px solid var(--general-section-2);
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    line-height: 24px;
+    align-items: center;
+    border-bottom: 2px solid var(--general-section-2);
 
-        &__title {
-            @include typeface(--title-left-bold-black);
-            color: var(--text-prominent);
-            line-height: 24px;
-            padding: 1.2rem 1.6rem;
-            display: flex;
-            align-items: center;
-        }
-        &__section {
-            flex-grow: 1;
-            padding: 1.6rem;
-            line-height: 24px;
-            display: flex;
-            align-items: center;
-        }
-        &__close {
-            display: block;
-            cursor: pointer;
-            padding: 0.6rem 0.8rem;
-            @extend %inline-icon.white;
-            height: 30px;
-            width: 32px;
-            margin: 1.2rem 1.6rem 1.2rem auto;
-        }
+    &__title {
+      @include typeface(--title-left-bold-black);
+      color: var(--text-prominent);
+      line-height: 24px;
+      padding: 1.2rem 1.6rem;
+      display: flex;
+      align-items: center;
     }
-    /**
+    &__section {
+      flex-grow: 1;
+      padding: 1.6rem;
+      line-height: 24px;
+      display: flex;
+      align-items: center;
+    }
+    &__close {
+      display: block;
+      cursor: pointer;
+      padding: 0.6rem 0.8rem;
+      @extend %inline-icon.white;
+      height: 30px;
+      width: 32px;
+      margin: 1.2rem 1.6rem 1.2rem auto;
+    }
+  }
+  /**
      * @define dc-modal-body
      */
-    &-body {
-        padding: 2.4rem;
-        font-size: 1.4rem;
-        line-height: 1.43;
-        color: var(--text-prominent);
-    }
-    /**
+  &-body {
+    padding: 2.4rem;
+    font-size: 1.4rem;
+    line-height: 1.43;
+    color: var(--text-prominent);
+  }
+  /**
      * @define dc-modal-footer
      */
-    &-footer {
-        display: flex;
-        justify-content: flex-end;
-        padding: 1.6rem;
+  &-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1.6rem;
 
-        /* postcss-bem-linter: ignore */
-        .btn:nth-child(2) {
-            margin-left: 0.8rem;
-        }
+    /* postcss-bem-linter: ignore */
+    .btn:nth-child(2) {
+      margin-left: 0.8rem;
     }
+  }
 }

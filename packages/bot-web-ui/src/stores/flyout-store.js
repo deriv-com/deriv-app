@@ -1,16 +1,16 @@
 /* eslint-disable no-underscore-dangle */
 import { observable, action } from 'mobx';
-import { config }             from '@deriv/bot-skeleton';
+import { config } from '@deriv/bot-skeleton';
 
 export default class FlyoutStore {
-    block_listeners  = [];
+    block_listeners = [];
     block_workspaces = [];
     flyout_min_width = 500;
-    options          = {
-        css   : false,
-        media : `${__webpack_public_path__}media/`,
-        move  : { scrollbars: false, drag: true, wheel: false },
-        zoom  : { startScale: config.workspaces.flyoutWorkspacesStartScale },
+    options = {
+        css: false,
+        media: `${__webpack_public_path__}media/`,
+        move: { scrollbars: false, drag: true, wheel: false },
+        zoom: { startScale: config.workspaces.flyoutWorkspacesStartScale },
         sounds: false,
     };
 
@@ -106,16 +106,18 @@ export default class FlyoutStore {
         // addind 1px to highet and then moving the block 1px down to make block top border visible
         el_block_workspace.style.height = `${Math.ceil(block_hw.height * this.options.zoom.startScale) + 1}px`;
         el_block_workspace.style.width = `${Math.ceil(block_hw.width * this.options.zoom.startScale) + 1}px`;
-        block.moveBy(1,1);
+        block.moveBy(1, 1);
 
         // Use original Blockly flyout functionality to create block on drag.
         const blockly_flyout = Blockly.derivWorkspace.getToolbox().flyout_;
         const block_svg_root = block.getSvgRoot();
 
         this.block_listeners.push(
-            Blockly.bindEventWithChecks_(block_svg_root, 'mousedown', null, (event) => blockly_flyout.blockMouseDown_(block)(event)),
+            Blockly.bindEventWithChecks_(block_svg_root, 'mousedown', null, event =>
+                blockly_flyout.blockMouseDown_(block)(event)
+            ),
             Blockly.bindEvent_(block_svg_root, 'mouseout', block, block.removeSelect),
-            Blockly.bindEvent_(block_svg_root, 'mouseover', block, block.addSelect),
+            Blockly.bindEvent_(block_svg_root, 'mouseover', block, block.addSelect)
         );
 
         this.block_workspaces.push(workspace);
@@ -131,7 +133,7 @@ export default class FlyoutStore {
     @action.bound setFlyoutWidth(xmlList) {
         let longest_block_width = 0;
 
-        xmlList.forEach((node) => {
+        xmlList.forEach(node => {
             const tag_name = node.tagName.toUpperCase();
 
             if (tag_name === Blockly.Xml.NODE_BLOCK) {
@@ -160,10 +162,10 @@ export default class FlyoutStore {
             return;
         }
 
-        const toolbox         = workspace.getToolbox();
+        const toolbox = workspace.getToolbox();
         const is_flyout_click = event.path.some(el => el.classList && el.classList.contains('flyout'));
         const is_search_focus = this.root_store.toolbar.is_search_focus;
-        const isToolboxClick  = () => toolbox.HtmlDiv.contains(event.target);
+        const isToolboxClick = () => toolbox.HtmlDiv.contains(event.target);
 
         if (!is_flyout_click && !isToolboxClick() && !is_search_focus) {
             toolbox.clearSelection();

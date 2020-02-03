@@ -1,25 +1,23 @@
-import React                  from 'react';
-import { expect }             from 'chai';
+import React from 'react';
+import { expect } from 'chai';
 import { configure, shallow } from 'enzyme';
-import Adapter                from 'enzyme-adapter-react-16';
-import ContractTypeWidget     from '../contract-type-widget.jsx';
+import Adapter from 'enzyme-adapter-react-16';
+import ContractTypeWidget from '../contract-type-widget.jsx';
 
 configure({ adapter: new Adapter() });
 
 describe('ContractTypeWidget', () => {
     const list = {
         'Up/Down': [
-            { value:'rise_fall', text:'Rise/Fall' },
-            { value:'high_low', text:'Higher/Lower' },
+            { value: 'rise_fall', text: 'Rise/Fall' },
+            { value: 'high_low', text: 'Higher/Lower' },
         ],
-        'Touch/No Touch': [
-            { value:'touch', text:'Touch/No Touch' }
-        ]
+        'Touch/No Touch': [{ value: 'touch', text: 'Touch/No Touch' }],
     };
     const itemList = [
-        { value:'rise_fall', text:'Rise/Fall' },
-        { value:'high_low', text:'Higher/Lower' },
-        { value:'touch', text:'Touch/No Touch' }
+        { value: 'rise_fall', text: 'Rise/Fall' },
+        { value: 'high_low', text: 'Higher/Lower' },
+        { value: 'touch', text: 'Touch/No Touch' },
     ];
     it('should render one <ContractTypeWidget /> component', () => {
         const wrapper = shallow(<ContractTypeWidget list={list} />);
@@ -63,55 +61,55 @@ describe('ContractTypeWidget', () => {
         const wrapper = shallow(<ContractTypeWidget list={list} value='rise_fall' />);
         wrapper.setState({ is_dialog_open: true });
         const instance = wrapper.instance();
-        instance.handleSelect({ value:'rise_fall', text:'Rise/Fall' }, {target: { id: 'something' }});
+        instance.handleSelect({ value: 'rise_fall', text: 'Rise/Fall' }, { target: { id: 'something' } });
         expect(wrapper.state('is_dialog_open')).to.be.false;
     });
     it('should toggle is_info_dialog_open in state on onSubmitButtonClick', () => {
         const wrapper = shallow(<ContractTypeWidget list={list} value='rise_fall' />);
         wrapper.setState({ is_info_dialog_open: true });
         const instance = wrapper.instance();
-        instance.onSubmitButtonClick({ value:'rise_fall', text:'Rise/Fall' });
+        instance.onSubmitButtonClick({ value: 'rise_fall', text: 'Rise/Fall' });
         expect(wrapper.state('is_info_dialog_open')).to.be.false;
     });
     it('should change state correctly on handleInfoClick', () => {
         const wrapper = shallow(<ContractTypeWidget list={list} value='rise_fall' />);
         wrapper.setState({ is_info_dialog_open: true, is_dialog_open: false });
         const instance = wrapper.instance();
-        instance.handleInfoClick({ value:'high_low', text:'Higher/Lower' });
-        expect(wrapper.state('item')).to.deep.eql({ value:'high_low', text:'Higher/Lower' });
+        instance.handleInfoClick({ value: 'high_low', text: 'Higher/Lower' });
+        expect(wrapper.state('item')).to.deep.eql({ value: 'high_low', text: 'Higher/Lower' });
         expect(wrapper.state('is_info_dialog_open')).to.be.false;
         expect(wrapper.state('is_dialog_open')).to.be.true;
     });
     it('should set item in state on handleNavigationClick', () => {
         const wrapper = shallow(<ContractTypeWidget list={list} value='rise_fall' />);
-        wrapper.setState({ item: { value:'rise_fall', text:'Rise/Fall' } });
+        wrapper.setState({ item: { value: 'rise_fall', text: 'Rise/Fall' } });
         const instance = wrapper.instance();
-        instance.handleNavigationClick({ value:'high_low', text:'Higher/Lower' });
-        expect(wrapper.state('item')).to.deep.eql({ value:'high_low', text:'Higher/Lower' });
+        instance.handleNavigationClick({ value: 'high_low', text: 'Higher/Lower' });
+        expect(wrapper.state('item')).to.deep.eql({ value: 'high_low', text: 'Higher/Lower' });
     });
     it('should set next item in state on handleNextClick', () => {
         const wrapper = shallow(<ContractTypeWidget list={list} value='rise_fall' />);
-        wrapper.setState({ item: { value:'rise_fall', text:'Rise/Fall' } });
+        wrapper.setState({ item: { value: 'rise_fall', text: 'Rise/Fall' } });
         const instance = wrapper.instance();
         instance.handleNextClick(itemList);
-        expect(wrapper.state('item')).to.deep.eql({ value:'high_low', text:'Higher/Lower' });
+        expect(wrapper.state('item')).to.deep.eql({ value: 'high_low', text: 'Higher/Lower' });
         instance.handleNextClick(itemList);
-        expect(wrapper.state('item')).to.deep.eql({ value:'touch', text:'Touch/No Touch' });
+        expect(wrapper.state('item')).to.deep.eql({ value: 'touch', text: 'Touch/No Touch' });
         instance.handleNextClick(itemList);
-        expect(wrapper.state('item')).to.deep.eql({ value:'rise_fall', text:'Rise/Fall' });
+        expect(wrapper.state('item')).to.deep.eql({ value: 'rise_fall', text: 'Rise/Fall' });
     });
     it('should set previous item in state on handlePrevClick', () => {
         const wrapper = shallow(<ContractTypeWidget list={list} value='rise_fall' />);
-        wrapper.setState({ item: { value:'rise_fall', text:'Rise/Fall' } });
+        wrapper.setState({ item: { value: 'rise_fall', text: 'Rise/Fall' } });
         const instance = wrapper.instance();
         instance.handlePrevClick(itemList);
-        expect(wrapper.state('item')).to.deep.eql({ value:'touch', text:'Touch/No Touch' });
+        expect(wrapper.state('item')).to.deep.eql({ value: 'touch', text: 'Touch/No Touch' });
         instance.handlePrevClick(itemList);
-        expect(wrapper.state('item')).to.deep.eql({ value:'high_low', text:'Higher/Lower' });
+        expect(wrapper.state('item')).to.deep.eql({ value: 'high_low', text: 'Higher/Lower' });
         instance.handlePrevClick(itemList);
-        expect(wrapper.state('item')).to.deep.eql({ value:'rise_fall', text:'Rise/Fall' });
+        expect(wrapper.state('item')).to.deep.eql({ value: 'rise_fall', text: 'Rise/Fall' });
     });
-    it('should return the name of item getDisplayText() which it\'s value is passed as value in props', () => {
+    it("should return the name of item getDisplayText() which it's value is passed as value in props", () => {
         const wrapper = shallow(<ContractTypeWidget list={list} value='rise_fall' />);
         const instance = wrapper.instance();
         expect(instance.getDisplayText()).to.eql('Rise/Fall');

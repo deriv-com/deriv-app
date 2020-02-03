@@ -1,29 +1,23 @@
 // import PropTypes from 'prop-types';
-import React                  from 'react';
-import { Formik }             from 'formik';
-import {
-    Button,
-    PasswordInput,
-    PasswordMeter }           from '@deriv/components';
-import { withRouter }         from 'react-router-dom';
-import { localize }           from '@deriv/translations';
-import AppRoutes              from 'Constants/routes';
-import { WS }                 from 'Services/ws-methods';
-import { connect }            from 'Stores/connect';
+import React from 'react';
+import { Formik } from 'formik';
+import { Button, PasswordInput, PasswordMeter } from '@deriv/components';
+import { withRouter } from 'react-router-dom';
+import { localize } from '@deriv/translations';
+import AppRoutes from 'Constants/routes';
+import { WS } from 'Services/ws-methods';
+import { connect } from 'Stores/connect';
 import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
-import {
-    FormSubHeader,
-    FormBody,
-    FormFooter }              from '../../../Components/layout-components.jsx';
-import Loading                from '../../../../../templates/app/components/loading.jsx';
+import { FormSubHeader, FormBody, FormFooter } from '../../../Components/layout-components.jsx';
+import Loading from '../../../../../templates/app/components/loading.jsx';
 
 class ChangePasswordForm extends React.Component {
     state = {
-        is_loading  : false,
+        is_loading: false,
         new_pw_input: '',
     };
 
-    updateNewPassword = (string) => {
+    updateNewPassword = string => {
         this.setState({ new_pw_input: string });
     };
 
@@ -31,10 +25,10 @@ class ChangePasswordForm extends React.Component {
         this.props.history.push(AppRoutes.trade);
     };
 
-    onSubmit = (values, { setSubmitting, setStatus })  => {
+    onSubmit = (values, { setSubmitting, setStatus }) => {
         setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
-        WS.authorized.storage.changePassword(values).then((data) => {
+        WS.authorized.storage.changePassword(values).then(data => {
             this.setState({ is_btn_loading: false });
             if (data.error) {
                 setStatus({ msg: data.error.message });
@@ -93,11 +87,11 @@ class ChangePasswordForm extends React.Component {
                         isSubmitting,
                     }) => (
                         <form className='account-form' onSubmit={handleSubmit}>
-                            {this.state.is_loading ?
+                            {this.state.is_loading ? (
                                 <FormBody>
                                     <Loading is_fullscreen={false} className='account___intial-loader' />;
                                 </FormBody>
-                                :
+                            ) : (
                                 <FormBody scroll_offset='55px'>
                                     <FormSubHeader title={localize('Change your Deriv password')} />
                                     <fieldset className='account-form__fieldset'>
@@ -122,7 +116,7 @@ class ChangePasswordForm extends React.Component {
                                                 name='new_password'
                                                 value={values.new_password}
                                                 onBlur={handleBlur}
-                                                onChange={(e) => {
+                                                onChange={e => {
                                                     const input = e.target;
                                                     setFieldTouched('new_password', true);
                                                     if (input) this.updateNewPassword(input.value);
@@ -132,7 +126,7 @@ class ChangePasswordForm extends React.Component {
                                         </PasswordMeter>
                                     </fieldset>
                                 </FormBody>
-                            }
+                            )}
                             <FormFooter>
                                 {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                 <Button
@@ -146,9 +140,14 @@ class ChangePasswordForm extends React.Component {
                                 <Button
                                     className='account-form__footer-btn'
                                     type='submit'
-                                    is_disabled={isSubmitting ||
-                                        !!((errors.new_password || !values.new_password) ||
-                                        (errors.old_password || !values.old_password))
+                                    is_disabled={
+                                        isSubmitting ||
+                                        !!(
+                                            errors.new_password ||
+                                            !values.new_password ||
+                                            errors.old_password ||
+                                            !values.old_password
+                                        )
                                     }
                                     is_loading={this.state.is_btn_loading}
                                     is_submit_success={this.state.is_submit_success}
@@ -167,8 +166,6 @@ class ChangePasswordForm extends React.Component {
 }
 
 // ChangePasswordForm.propTypes = {};
-export default connect(
-    ({ client }) => ({
-        logout: client.logout,
-    })
-)(withRouter(ChangePasswordForm));
+export default connect(({ client }) => ({
+    logout: client.logout,
+}))(withRouter(ChangePasswordForm));

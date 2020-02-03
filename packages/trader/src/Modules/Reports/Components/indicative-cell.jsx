@@ -1,8 +1,6 @@
-import {
-    Icon,
-    Money }         from '@deriv/components';
-import PropTypes    from 'prop-types';
-import React        from 'react';
+import { Icon, Money } from '@deriv/components';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { localize } from '@deriv/translations';
 
 class IndicativeCell extends React.PureComponent {
@@ -10,14 +8,14 @@ class IndicativeCell extends React.PureComponent {
         super(props);
         this.state = {
             movement: null,
-            amount  : 0,
+            amount: 0,
         };
     }
 
     componentDidUpdate(prevProps) {
         this.setState(() => ({
             movement: prevProps.amount >= this.state.amount ? 'profit' : 'loss',
-            amount  : prevProps.amount,
+            amount: prevProps.amount,
         }));
     }
 
@@ -25,31 +23,31 @@ class IndicativeCell extends React.PureComponent {
         const { amount, currency, status } = this.props;
         const { movement } = this.state;
         return (
-            <div className='open-positions__indicative' >
+            <div className='open-positions__indicative'>
                 <div className='open-positions__indicative--amount'>
                     <Money amount={Math.abs(amount)} currency={currency} />
-                    {status !== 'no-resale' && amount !== 0 &&
+                    {status !== 'no-resale' && amount !== 0 && (
                         <React.Fragment>
                             {movement === 'profit' && <Icon icon='IcProfit' />}
-                            {movement === 'loss'   && <Icon icon='IcLoss' />}
+                            {movement === 'loss' && <Icon icon='IcLoss' />}
                         </React.Fragment>
-                    }
+                    )}
                 </div>
 
-                {status === 'no-resale' &&
-                <div className='open-positions__indicative-no-resale-msg indicative__no-resale-msg'>
-                    {localize('Resale not offered')}
-                </div>
-                }
+                {status === 'no-resale' && (
+                    <div className='open-positions__indicative-no-resale-msg indicative__no-resale-msg'>
+                        {localize('Resale not offered')}
+                    </div>
+                )}
             </div>
         );
     }
 }
 
 IndicativeCell.propTypes = {
-    amount  : PropTypes.number,
+    amount: PropTypes.number,
     currency: PropTypes.string,
-    status  : PropTypes.string,
+    status: PropTypes.string,
 };
 
 export default IndicativeCell;

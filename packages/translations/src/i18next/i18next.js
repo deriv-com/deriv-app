@@ -1,21 +1,21 @@
-import { str as crc32 }     from 'crc-32';
-import i18n                 from 'i18next';
+import { str as crc32 } from 'crc-32';
+import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import withI18n             from '../components';
+import withI18n from '../components';
 
-const LANGUAGE_KEY     = 'i18n_language';
+const LANGUAGE_KEY = 'i18n_language';
 const DEFAULT_LANGUAGE = 'EN';
-const ALL_LANGUAGES    = Object.freeze({
-    ACH  : 'Translations',
-    EN   : 'English',
-    ES   : 'Español',
-    FR   : 'Français',
-    ID   : 'Indonesia',
-    IT   : 'Italiano',
-    PL   : 'Polish',
-    PT   : 'Português',
-    RU   : 'Русский',
-    VI   : 'Tiếng Việt',
+const ALL_LANGUAGES = Object.freeze({
+    ACH: 'Translations',
+    EN: 'English',
+    ES: 'Español',
+    FR: 'Français',
+    ID: 'Indonesia',
+    IT: 'Italiano',
+    PL: 'Polish',
+    PT: 'Português',
+    RU: 'Русский',
+    VI: 'Tiếng Việt',
     ZH_CN: '简体中文',
     ZH_TW: '繁體中文',
 });
@@ -30,7 +30,7 @@ const getUrlBase = (path = '') => {
 
 const isStaging = () => /staging\.deriv\.app/i.test(window.location.hostname);
 
-const isLanguageAvailable = (lang) => {
+const isLanguageAvailable = lang => {
     if (!lang) return false;
 
     const selected_language = lang.toUpperCase();
@@ -49,7 +49,7 @@ const getAllLanguages = () => ALL_LANGUAGES;
 const getInitialLanguage = () => {
     const url_params = new URLSearchParams(window.location.search);
     const query_lang = url_params.get('lang');
-    const local_storage_language  = localStorage.getItem(LANGUAGE_KEY);
+    const local_storage_language = localStorage.getItem(LANGUAGE_KEY);
 
     if (query_lang) {
         if (isLanguageAvailable(query_lang)) {
@@ -67,7 +67,7 @@ const getInitialLanguage = () => {
     return DEFAULT_LANGUAGE;
 };
 
-const loadLanguageJson = async (lang) => {
+const loadLanguageJson = async lang => {
     if (!i18n.hasResourceBundle(lang, 'translations') && lang !== DEFAULT_LANGUAGE) {
         const response = await fetch(getUrlBase(`/public/i18n/${lang.toLowerCase()}.json`));
         const lang_json = await response.text();
@@ -83,14 +83,13 @@ const i18n_config = {
             return crc32(defaultValue);
         },
     },
-    lng        : initial_language,
+    lng: initial_language,
     fallbackLng: 'EN',
-    ns         : ['translations'],
-    defaultNS  : 'translations',
+    ns: ['translations'],
+    defaultNS: 'translations',
 };
 
-i18n
-    .use(initReactI18next) // passes i18n down to react-i18next
+i18n.use(initReactI18next) // passes i18n down to react-i18next
     .init(i18n_config);
 
 const initializeTranslations = async () => {

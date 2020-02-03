@@ -1,4 +1,4 @@
-import { localize }           from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { emptyTextValidator } from '../../utils';
 
 Blockly.Blocks.text_prompt_ext = {
@@ -16,33 +16,38 @@ Blockly.Blocks.text_prompt_ext = {
             return undefined;
         });
     },
-    definition(){
+    definition() {
         return {
             message0: localize('prompt for %1 with message %2'),
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'TYPE',
-                    options: [[localize('string'), 'TEXT'], [localize('number'), 'NUMBER']],
+                    type: 'field_dropdown',
+                    name: 'TYPE',
+                    options: [
+                        [localize('string'), 'TEXT'],
+                        [localize('number'), 'NUMBER'],
+                    ],
                 },
                 {
                     type: 'input_value',
                     name: 'TEXT',
                 },
             ],
-            output         : 'String',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Special3.colour,
+            output: 'String',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Special3.colour,
             colourSecondary: Blockly.Colours.Special3.colourSecondary,
-            colourTertiary : Blockly.Colours.Special3.colourTertiary,
-            tooltip        : localize('Request an input'),
-            category       : Blockly.Categories.Text,
+            colourTertiary: Blockly.Colours.Special3.colourTertiary,
+            tooltip: localize('Request an input'),
+            category: Blockly.Categories.Text,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Request an input'),
-            'description' : localize('This block creates a dialog box that uses a customised message to prompt for an input. The input can be either a string of text or a number.'),
+            display_name: localize('Request an input'),
+            description: localize(
+                'This block creates a dialog box that uses a customised message to prompt for an input. The input can be either a string of text or a number.'
+            ),
         };
     },
     getRequiredValueInputs() {
@@ -53,8 +58,7 @@ Blockly.Blocks.text_prompt_ext = {
 };
 
 Blockly.JavaScript.text_prompt_ext = block => {
-    let msg,
-        code;
+    let msg, code;
 
     if (block.getField('TEXT')) {
         // Internal message
@@ -62,7 +66,7 @@ Blockly.JavaScript.text_prompt_ext = block => {
         msg = Blockly.JavaScript.quote_(block.getFieldValue('TEXT'));
     } else {
         // External message
-        msg = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_NONE) || '\'\'';
+        msg = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_NONE) || "''";
     }
 
     if (block.getFieldValue('TYPE') === 'NUMBER') {

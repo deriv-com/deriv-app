@@ -1,4 +1,4 @@
-import Collapsible from './collapsible.jsx';
-import                  './collapsible.scss';
+import Collapsible from "./collapsible.jsx";
+import "./collapsible.scss";
 
 export default Collapsible;

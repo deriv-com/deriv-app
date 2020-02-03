@@ -1,26 +1,25 @@
-import PropTypes                    from 'prop-types';
-import React                        from 'react';
-import ReactDOM                     from 'react-dom';
-import { Prompt }                   from 'react-router';
-import { BrowserRouter as Router }  from 'react-router-dom';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Prompt } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
-import { i18n,
-    loadIncontextTranslation }      from '@deriv/translations';
-import Client                       from '_common/base/client_base';
-import WS                           from 'Services/ws-methods';
-import { MobxProvider }             from 'Stores/connect';
-import ErrorBoundary                from './Components/Elements/Errors/error-boundary.jsx';
-import AppContents                  from './Containers/Layout/app-contents.jsx';
-import Footer                       from './Containers/Layout/footer.jsx';
-import Header                       from './Containers/Layout/header.jsx';
-import NotificationMessages         from './Containers/notification-messages.jsx';
-import AppModals                    from './Containers/Modals';
-import Lazy                         from './Containers/Lazy';
-import Routes                       from './Containers/Routes/routes.jsx';
-import { interceptAcrossBot }       from './Constants/routes-config';
+import { initializeTranslations } from '@deriv/translations';
+import Client from '_common/base/client_base';
+import WS from 'Services/ws-methods';
+import { MobxProvider } from 'Stores/connect';
+import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
+import AppContents from './Containers/Layout/app-contents.jsx';
+import Footer from './Containers/Layout/footer.jsx';
+import Header from './Containers/Layout/header.jsx';
+import NotificationMessages from './Containers/notification-messages.jsx';
+import AppModals from './Containers/Modals';
+import Lazy from './Containers/Lazy';
+import Routes from './Containers/Routes/routes.jsx';
+import { interceptAcrossBot } from './Constants/routes-config';
 // eslint-disable-next-line import/extensions
-import initStore                   from './app.js';
+import initStore from './app.js';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 
@@ -30,10 +29,9 @@ const App = ({ root_store }) => {
     const has_base = /^\/(br_)/.test(l.pathname);
     const url_params = new URLSearchParams(l.search);
 
-    const is_staging = /staging\.deriv\.app/i.test(l.hostname);
-    if (is_staging) {
-        loadIncontextTranslation();
-    }
+    React.useEffect(() => {
+        initializeTranslations();
+    }, []);
 
     const platform_passthrough = {
         root_store,
@@ -42,24 +40,28 @@ const App = ({ root_store }) => {
     };
 
     return (
-        <Router basename={ has_base ? `/${base}` : null}>
+        <Router basename={has_base ? `/${base}` : null}>
             <MobxProvider store={root_store}>
                 <React.Fragment>
                     <Header />
                     <ErrorBoundary>
                         <AppContents>
                             {/* TODO: [trader-remove-client-base] */}
-                            <Routes passthrough={ platform_passthrough } />
-                            <Prompt when={ true } message={ interceptAcrossBot } />
+                            <Routes passthrough={platform_passthrough} />
+                            <Prompt when={true} message={interceptAcrossBot} />
                             <Lazy
-                                ctor={() => import(/* webpackChunkName: "push-notification" */'./Containers/push-notification.jsx')}
+                                ctor={() =>
+                                    import(
+                                        /* webpackChunkName: "push-notification" */ './Containers/push-notification.jsx'
+                                    )
+                                }
                                 should_load={!root_store.ui.is_loading}
                                 has_progress={false}
                             />
                         </AppContents>
                     </ErrorBoundary>
                     {!root_store.ui.is_mobile && <Footer />}
-                    <AppModals url_action_param={ url_params.get('action') } />
+                    <AppModals url_action_param={url_params.get('action')} />
                 </React.Fragment>
             </MobxProvider>
         </Router>

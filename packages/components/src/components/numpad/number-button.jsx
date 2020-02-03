@@ -1,13 +1,9 @@
 import classNames from 'classnames';
-import React      from 'react';
-import PropTypes  from 'prop-types';
-import Button     from '../button/button.jsx';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Button from '../button/button.jsx';
 
-const NumberButton = ({
-    onSelect,
-    className,
-    number,
-}) => (
+const NumberButton = ({ onSelect, className, number }) => (
     <Button
         className={classNames('dc-numpad__number', className, {
             'dc-numpad__number--zero': number === 0,
@@ -22,11 +18,8 @@ const NumberButton = ({
 );
 
 NumberButton.propTypes = {
-    className: PropTypes.oneOf([
-        PropTypes.string,
-        PropTypes.object,
-    ]),
-    number  : PropTypes.number,
+    className: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
+    number: PropTypes.number,
     onSelect: PropTypes.func,
 };
 

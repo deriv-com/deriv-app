@@ -23,7 +23,8 @@
             background-color: var(--text-profit-success);
             border-color: var(--text-profit-success);
         }
-        &--won, &--lost {
+        &--won,
+        &--lost {
             color: $COLOR_WHITE;
         }
     }
@@ -34,7 +35,8 @@
         border: 6px solid var(--brand-red-coral);
         background-color: var(--general-main-2);
     }
-    &__spot, &__entry {
+    &__spot,
+    &__entry {
         width: 24px;
         height: 24px;
         border-radius: 50%;
@@ -117,7 +119,8 @@
         &--won {
             background-color: var(--text-profit-success);
         }
-        &--won, &--lost {
+        &--won,
+        &--lost {
             color: var(--text-colored-background);
         }
     }

@@ -1,29 +1,18 @@
-import classNames       from 'classnames';
-import PropTypes        from 'prop-types';
-import React            from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 import HighlightWrapper from './button-highlight-wrapper.jsx';
-import Button           from '../button';
+import Button from '../button';
 
-const ButtonToggle = ({
-    buttons_arr,
-    className,
-    id,
-    is_animated,
-    name,
-    onChange,
-    value,
-}) => {
-    const changeValue = (selected_value) => {
+const ButtonToggle = ({ buttons_arr, className, id, is_animated, name, onChange, value }) => {
+    const changeValue = selected_value => {
         if (value === selected_value) return;
         onChange({ target: { value: selected_value, name } });
     };
     const menu = buttons_arr.map((val, idx) => {
-        const menuClassNames = classNames(
-            'dc-button-menu__button',
-            {
-                'dc-button-menu__button--active': val.value === value,
-            },
-        );
+        const menuClassNames = classNames('dc-button-menu__button', {
+            'dc-button-menu__button--active': val.value === value,
+        });
         return (
             <Button
                 id={`dc_${val.value}_toggle_item`}
@@ -35,34 +24,20 @@ const ButtonToggle = ({
         );
     });
     return (
-        <div
-            id={id}
-            className={classNames('dc-button-menu', className)}
-        >
-            {is_animated ?
-                <HighlightWrapper>
-                    {menu}
-                </HighlightWrapper>
-                :
-                <React.Fragment>
-                    {menu}
-                </React.Fragment>
-            }
+        <div id={id} className={classNames('dc-button-menu', className)}>
+            {is_animated ? <HighlightWrapper>{menu}</HighlightWrapper> : <React.Fragment>{menu}</React.Fragment>}
         </div>
     );
 };
 
 ButtonToggle.propTypes = {
     buttons_arr: PropTypes.array,
-    className  : PropTypes.string,
-    id         : PropTypes.string,
+    className: PropTypes.string,
+    id: PropTypes.string,
     is_animated: PropTypes.bool,
-    name       : PropTypes.string,
-    onChange   : PropTypes.func,
-    value      : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
+    name: PropTypes.string,
+    onChange: PropTypes.func,
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default ButtonToggle;

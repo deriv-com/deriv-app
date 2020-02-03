@@ -1,13 +1,12 @@
-import React                 from 'react';
-import { TransitionGroup,
-    CSSTransition }          from 'react-transition-group';
-import { NavLink }           from 'react-router-dom';
-import { Icon, Modal }       from '@deriv/components';
-import { localize }          from '@deriv/translations';
-import routes                from 'Constants/routes';
+import React from 'react';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { NavLink } from 'react-router-dom';
+import { Icon, Modal } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import routes from 'Constants/routes';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
-import PositionsDrawerCard   from 'App/Components/Elements/PositionsDrawer/positions-drawer-card.jsx';
-import TogglePositions       from './toggle-positions.jsx';
+import PositionsDrawerCard from 'App/Components/Elements/PositionsDrawer/positions-drawer-card.jsx';
+import TogglePositions from './toggle-positions.jsx';
 
 class TogglePositionsMobile extends React.PureComponent {
     constructor(props) {
@@ -18,9 +17,10 @@ class TogglePositionsMobile extends React.PureComponent {
         };
     }
 
-    togglePositions = () => this.setState({
-        is_positions_visible: !this.state.is_positions_visible,
-    });
+    togglePositions = () =>
+        this.setState({
+            is_positions_visible: !this.state.is_positions_visible,
+        });
 
     render() {
         const {
@@ -36,17 +36,17 @@ class TogglePositionsMobile extends React.PureComponent {
         const body_content = (
             <React.Fragment>
                 <TransitionGroup component='div'>
-                    {all_positions.slice(0, 5).map((portfolio_position) => (
+                    {all_positions.slice(0, 5).map(portfolio_position => (
                         <CSSTransition
                             appear
                             key={portfolio_position.id}
                             in={true}
                             timeout={150}
                             classNames={{
-                                appear   : 'positions-drawer-card__wrapper--enter',
-                                enter    : 'positions-drawer-card__wrapper--enter',
+                                appear: 'positions-drawer-card__wrapper--enter',
+                                enter: 'positions-drawer-card__wrapper--enter',
                                 enterDone: 'positions-drawer-card__wrapper--enter-done',
-                                exit     : 'positions-drawer-card__wrapper--exit',
+                                exit: 'positions-drawer-card__wrapper--exit',
                             }}
                             unmountOnExit
                         >
@@ -89,28 +89,19 @@ class TogglePositionsMobile extends React.PureComponent {
                                 <Icon icon='IcPortfolio' className='positions-modal__title-icon' />
                                 {localize('Recent Positions')}
                             </span>
-                            <div
-                                className='positions-modal__close-btn'
-                                onClick={this.togglePositions}
-                            >
+                            <div className='positions-modal__close-btn' onClick={this.togglePositions}>
                                 <Icon icon='IcMinusBold' />
                             </div>
                         </div>
                         <div className='positions-modal__body'>
-                            {(is_empty || error) ?
-                                <EmptyPortfolioMessage error={error} />
-                                :
-                                body_content
-                            }
+                            {is_empty || error ? <EmptyPortfolioMessage error={error} /> : body_content}
                         </div>
                         <div className='positions-modal__footer'>
                             <NavLink
                                 className='btn btn--secondary btn__large positions-modal__footer-btn'
                                 to={routes.reports}
                             >
-                                <span className='btn__text'>
-                                    {localize('Go to Reports')}
-                                </span>
+                                <span className='btn__text'>{localize('Go to Reports')}</span>
                             </NavLink>
                         </div>
                     </div>

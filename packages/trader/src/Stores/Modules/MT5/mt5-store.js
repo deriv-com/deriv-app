@@ -1,26 +1,19 @@
-import {
-    action,
-    computed,
-    observable,
-    runInAction }         from 'mobx';
-import { WS }             from 'Services/ws-methods';
-import BaseStore          from 'Stores/base-store';
-import {
-    getMt5GroupConfig,
-    getAccountTypeFields,
-    getMtCompanies }      from './Helpers/mt5-config';
+import { action, computed, observable, runInAction } from 'mobx';
+import { WS } from 'Services/ws-methods';
+import BaseStore from 'Stores/base-store';
+import { getMt5GroupConfig, getAccountTypeFields, getMtCompanies } from './Helpers/mt5-config';
 
 export default class MT5Store extends BaseStore {
     @observable is_compare_accounts_visible = false;
-    @observable account_type                = {
+    @observable account_type = {
         category: undefined,
-        type    : undefined,
+        type: undefined,
     };
 
     @observable new_account_response = {};
-    @observable map_type             = {};
-    @observable has_mt5_error        = false;
-    @observable error_message        = '';
+    @observable map_type = {};
+    @observable has_mt5_error = false;
+    @observable error_message = '';
 
     @observable is_mt5_success_dialog_enabled = false;
     @observable is_mt5_password_modal_enabled = false;
@@ -48,7 +41,7 @@ export default class MT5Store extends BaseStore {
         const list = [];
 
         this.root_store.client.mt5_login_list.forEach(login => {
-            const { type, category }    = getMt5GroupConfig(login.group);
+            const { type, category } = getMt5GroupConfig(login.group);
             list[`${category}.${type}`] = Object.assign({}, login);
         });
 
@@ -82,8 +75,8 @@ export default class MT5Store extends BaseStore {
 
     @action.bound
     clearMt5Error() {
-        this.error_message                 = '';
-        this.has_mt5_error                 = false;
+        this.error_message = '';
+        this.has_mt5_error = false;
         this.is_mt5_password_modal_enabled = false;
     }
 
@@ -135,22 +128,22 @@ export default class MT5Store extends BaseStore {
 
     @action.bound
     getName() {
-        const { first_name } = (this.root_store.client.account_settings && this.root_store.client.account_settings);
+        const { first_name } = this.root_store.client.account_settings && this.root_store.client.account_settings;
         const title = this.mt5_companies[this.account_type.category][this.account_type.type].title;
 
         // First name is not set when user has no real account
-        return first_name ? [ first_name, title ].join(' ') : title;
+        return first_name ? [first_name, title].join(' ') : title;
     }
 
     @action.bound
     openAccount(mt5_password) {
-        const name         = this.getName();
-        const leverage     = this.mt5_companies[this.account_type.category][this.account_type.type].leverage;
+        const name = this.getName();
+        const leverage = this.mt5_companies[this.account_type.category][this.account_type.type].leverage;
         const type_request = getAccountTypeFields(this.account_type);
 
         return WS.mt5NewAccount({
             mainPassword: mt5_password,
-            email       : this.root_store.client.email_address,
+            email: this.root_store.client.email_address,
             leverage,
             name,
             ...type_request,
@@ -165,9 +158,7 @@ export default class MT5Store extends BaseStore {
 
     realMt5Signup() {
         // Check if the user has real account
-        if (!this.root_store.client.has_active_real_account
-            || !this.root_store.client.currency
-        ) {
+        if (!this.root_store.client.has_active_real_account || !this.root_store.client.currency) {
             this.beginRealSignupForMt5();
         } else {
             switch (this.account_type.type) {
@@ -225,7 +216,7 @@ export default class MT5Store extends BaseStore {
             runInAction(() => {
                 this.setMt5Account(response.mt5_new_account);
                 this.root_store.ui.is_mt5_password_modal_enabled = false;
-                this.has_mt5_error                               = false;
+                this.has_mt5_error = false;
                 setTimeout(() => this.setMt5SuccessDialog(true), 300);
             });
         } else {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 class Theme extends Component {
-    render () {
+    render() {
         return (
             <div
                 className={this.props.is_dark ? 'theme--dark' : 'theme--light'}

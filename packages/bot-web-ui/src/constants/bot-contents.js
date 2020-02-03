@@ -1,4 +1,4 @@
 export const tabs_title = {
-    CHART    : 'Chart',
+    CHART: 'Chart',
     WORKSPACE: 'Workspace',
 };

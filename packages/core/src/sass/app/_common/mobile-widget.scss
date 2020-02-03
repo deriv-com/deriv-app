@@ -11,7 +11,9 @@
     grid-template-areas: 'a b' 'c d';
     font-size: 0.7em;
 
-    &:hover, &:focus, &:active {
+    &:hover,
+    &:focus,
+    &:active {
         cursor: pointer;
         border: solid 1px var(--border-active);
     }

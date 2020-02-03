@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
-import moment               from 'moment';
-import CalendarHeader       from 'App/Components/Elements/Calendar/calendar-header.jsx';
-import CalendarBody         from 'App/Components/Elements/Calendar/calendar-body.jsx';
-import { toMoment }         from 'Utils/Date';
+import moment from 'moment';
+import CalendarHeader from 'App/Components/Elements/Calendar/calendar-header.jsx';
+import CalendarBody from 'App/Components/Elements/Calendar/calendar-body.jsx';
+import { toMoment } from 'Utils/Date';
 
 class DatePickerCalendar extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            date : toMoment(props.date).unix(),
-            view : 'year',
-            year : undefined,
+            date: toMoment(props.date).unix(),
+            view: 'year',
+            year: undefined,
             month: undefined,
         };
     }
 
-    navigateTo = (to) => {
+    navigateTo = to => {
         this.setState({
             date: to.unix(),
         });
@@ -29,7 +29,7 @@ class DatePickerCalendar extends Component {
         return !(e.isAfter(this.props.min_date) && e.isBefore(this.props.max_date));
     };
 
-    switchView = (view) => {
+    switchView = view => {
         this.setState({
             view,
         });
@@ -37,8 +37,8 @@ class DatePickerCalendar extends Component {
 
     updateSelectedDate = (e, type) => {
         const map_mode = {
-            month : 'date',
-            year  : 'month',
+            month: 'date',
+            year: 'month',
             decade: 'year',
         };
         if (type === 'year') {
@@ -47,9 +47,9 @@ class DatePickerCalendar extends Component {
         if (type === 'day') {
             this.props.onChange(moment.utc(e.currentTarget.dataset.date, 'YYYY-MM-DD').unix(), 'day');
         } else {
-            const date = toMoment(this.props.value)[type === 'decade'
-                ? 'year'
-                : type](e.target.dataset[type].split('-')[0]).unix();
+            const date = toMoment(this.props.value)
+                [type === 'decade' ? 'year' : type](e.target.dataset[type].split('-')[0])
+                .unix();
 
             this.setState({
                 date,

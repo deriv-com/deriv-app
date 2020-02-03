@@ -2,13 +2,17 @@ import { localize } from '@deriv/translations';
 
 export default {
     text: [
-        localize('This block is mandatory. It\'s added to your strategy by default when you create new strategy. You can not add more than one copy of this block to the canvas.'),
+        localize(
+            "This block is mandatory. It's added to your strategy by default when you create new strategy. You can not add more than one copy of this block to the canvas."
+        ),
         localize('1. Market'),
         localize('Select your desired market and asset type. For example, Forex > Major pairs > AUD/JPY'),
         localize('2. Trade Type'),
         localize('Select your desired trade type. For example, Up/Down > Rise/Fall'),
         localize('3. Contract Type'),
-        localize('Choose what type of contract you want to trade. For example, for the Rise/Fall trade type you can choose on of three options: Rise, Fall, or Both. Selected option will determine available options for the Purchase block.'),
+        localize(
+            'Choose what type of contract you want to trade. For example, for the Rise/Fall trade type you can choose on of three options: Rise, Fall, or Both. Selected option will determine available options for the Purchase block.'
+        ),
         localize('4. Default Candle Interval'),
         localize('Sets the default time interval for blocks that read list of candles.'),
         localize('5. Restart buy/sell on error'),

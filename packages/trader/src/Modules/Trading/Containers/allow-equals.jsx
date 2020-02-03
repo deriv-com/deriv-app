@@ -1,18 +1,12 @@
-import classNames   from 'classnames';
-import PropTypes    from 'prop-types';
-import React        from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { Checkbox } from '@deriv/components';
-import {
-    Localize,
-    localize }      from '@deriv/translations';
-import { connect }  from 'Stores/connect';
+import { Localize, localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 
-const AllowEquals = ({
-    onChange,
-    is_allow_equal,
-    className,
-}) => {
-    const handleOnChange = (e) => {
+const AllowEquals = ({ onChange, is_allow_equal, className }) => {
+    const handleOnChange = e => {
         e.persist();
         const { name, checked } = e.target;
         onChange({ target: { name, value: Number(checked) } });
@@ -27,9 +21,7 @@ const AllowEquals = ({
                 onChange={handleOnChange}
             />
             <p className='allow-equals__subtitle'>
-                <Localize
-                    i18n_default_text='Win payout if exit spot is also equal to entry spot.'
-                />
+                <Localize i18n_default_text='Win payout if exit spot is also equal to entry spot.' />
             </p>
         </div>
     );
@@ -37,10 +29,10 @@ const AllowEquals = ({
 
 AllowEquals.propTypes = {
     is_allow_equal: PropTypes.bool,
-    onChange      : PropTypes.func,
+    onChange: PropTypes.func,
 };
 
 export default connect(({ modules }) => ({
     is_allow_equal: !!modules.trade.is_equal,
-    onChange      : modules.trade.onChange,
+    onChange: modules.trade.onChange,
 }))(AllowEquals);

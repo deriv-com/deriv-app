@@ -1,17 +1,10 @@
-import PropTypes         from 'prop-types';
-import React             from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import {
-    DesktopWrapper,
-    MobileDialog,
-    MobileWrapper }      from '@deriv/components';
-import { localize }      from '@deriv/translations';
+import { DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
+import { localize } from '@deriv/translations';
 
-const ContractTypeDialog = ({
-    children,
-    open,
-    onClose,
-}) => (
+const ContractTypeDialog = ({ children, open, onClose }) => (
     <React.Fragment>
         <MobileWrapper>
             <span className='contract-type-widget__select-arrow' />
@@ -30,16 +23,14 @@ const ContractTypeDialog = ({
                 in={open}
                 timeout={100}
                 classNames={{
-                    enter    : 'contracts-type-dialog--enter',
+                    enter: 'contracts-type-dialog--enter',
                     enterDone: 'contracts-type-dialog--enterDone',
-                    exit     : 'contracts-type-dialog--exit',
+                    exit: 'contracts-type-dialog--exit',
                 }}
                 unmountOnExit
             >
                 <div className='contracts-type-dialog'>
-                    <div className='contracts-type-dialog__list-wrapper'>
-                        {children}
-                    </div>
+                    <div className='contracts-type-dialog__list-wrapper'>{children}</div>
                 </div>
             </CSSTransition>
         </DesktopWrapper>
@@ -48,8 +39,8 @@ const ContractTypeDialog = ({
 
 ContractTypeDialog.propTypes = {
     children: PropTypes.element,
-    onClose : PropTypes.func,
-    open    : PropTypes.bool,
+    onClose: PropTypes.func,
+    open: PropTypes.bool,
 };
 
 export default ContractTypeDialog;

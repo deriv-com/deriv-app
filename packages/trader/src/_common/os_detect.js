@@ -1,7 +1,7 @@
-const { localize }  = require('@deriv/translations');
+const { localize } = require('@deriv/translations');
 
 const systems = {
-    mac  : ['Mac68K', 'MacIntel', 'MacPPC'],
+    mac: ['Mac68K', 'MacIntel', 'MacPPC'],
     linux: [
         'HP-UX',
         'Linux i686',
@@ -15,26 +15,14 @@ const systems = {
         'FreeBSD amd64',
         'X11',
     ],
-    ios: [
-        'iPhone',
-        'iPod',
-        'iPad',
-        'iPhone Simulator',
-        'iPod Simulator',
-        'iPad Simulator',
-    ],
+    ios: ['iPhone', 'iPod', 'iPad', 'iPhone Simulator', 'iPod Simulator', 'iPad Simulator'],
     android: [
         'Android',
         'Linux armv7l', // Samsung galaxy s2 ~ s5, nexus 4/5
         'Linux armv8l',
         null,
     ],
-    windows: [
-        'Win16',
-        'Win32',
-        'Win64',
-        'WinCE',
-    ],
+    windows: ['Win16', 'Win32', 'Win64', 'WinCE'],
 };
 
 const isDesktop = () => {

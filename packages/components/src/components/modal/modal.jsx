@@ -1,16 +1,16 @@
-import classNames        from 'classnames';
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import ReactDOM          from 'react-dom';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import Body              from './modal-body.jsx';
-import Footer            from './modal-footer.jsx';
-import Icon              from '../icon';
+import Body from './modal-body.jsx';
+import Footer from './modal-footer.jsx';
+import Icon from '../icon';
 
 class ModalElement extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.el    = document.createElement('div');
+        this.el = document.createElement('div');
         this.state = {
             modal_root: document.getElementById('modal_root'),
         };
@@ -31,9 +31,13 @@ class ModalElement extends React.PureComponent {
         this.state.modal_root.removeChild(this.el);
     };
 
-    handleClickOutside = (event) => {
-        if (this.props.has_close_icon && this.wrapper_ref &&
-            !this.wrapper_ref.contains(event.target) && this.props.is_open) {
+    handleClickOutside = event => {
+        if (
+            this.props.has_close_icon &&
+            this.wrapper_ref &&
+            !this.wrapper_ref.contains(event.target) &&
+            this.props.is_open
+        ) {
             this.props.toggleModal();
         }
     };
@@ -51,66 +55,63 @@ class ModalElement extends React.PureComponent {
             has_close_icon,
             height,
             toggleModal,
-            width } = this.props;
+            width,
+        } = this.props;
 
         return ReactDOM.createPortal(
             <div
                 ref={this.setWrapperRef}
                 id={id}
-                className={classNames(
-                    'dc-modal__container', {
-                        [`dc-modal__container_${className}`]       : className,
-                        'dc-modal__container--small'               : this.props.small,
-                        'dc-modal__container--is-vertical-centered': is_vertical_centered,
-                        'dc-modal__container--is-vertical-bottom'  : is_vertical_bottom,
-                        'dc-modal__container--is-vertical-top'     : is_vertical_top,
-                    }
-                )}
+                className={classNames('dc-modal__container', {
+                    [`dc-modal__container_${className}`]: className,
+                    'dc-modal__container--small': this.props.small,
+                    'dc-modal__container--is-vertical-centered': is_vertical_centered,
+                    'dc-modal__container--is-vertical-bottom': is_vertical_bottom,
+                    'dc-modal__container--is-vertical-top': is_vertical_top,
+                })}
                 style={{
                     height: height || 'auto',
-                    width : width || 'auto',
+                    width: width || 'auto',
                 }}
             >
-                {(header || title) &&
-                <div className={classNames('dc-modal-header', {
-                    [`dc-modal-header--${className}`]: className,
-                }
-                )}
-                >
-                    {title &&
-                    <h3 className={classNames('dc-modal-header__title', {
-                        [`dc-modal-header__title--${className}`]: className,
-                    }
-                    )}
-                    >{title}
-                    </h3>
-                    }
-                    {header &&
-                    <div className={classNames('dc-modal-header__section', {
-                        [`dc-modal-header__section--${className}`]: className,
-                    }
-                    )}
-                    >
-                        {header}
-                    </div>
-                    }
-                    {has_close_icon &&
+                {(header || title) && (
                     <div
-                        onClick={toggleModal}
-                        className='dc-modal-header__close'
+                        className={classNames('dc-modal-header', {
+                            [`dc-modal-header--${className}`]: className,
+                        })}
                     >
-                        <Icon icon='IcCross' />
+                        {title && (
+                            <h3
+                                className={classNames('dc-modal-header__title', {
+                                    [`dc-modal-header__title--${className}`]: className,
+                                })}
+                            >
+                                {title}
+                            </h3>
+                        )}
+                        {header && (
+                            <div
+                                className={classNames('dc-modal-header__section', {
+                                    [`dc-modal-header__section--${className}`]: className,
+                                })}
+                            >
+                                {header}
+                            </div>
+                        )}
+                        {has_close_icon && (
+                            <div onClick={toggleModal} className='dc-modal-header__close'>
+                                <Icon icon='IcCross' />
+                            </div>
+                        )}
                     </div>
-                    }
-                </div>
-                }
+                )}
                 {children}
             </div>,
-            this.el,
+            this.el
         );
     }
 
-    setWrapperRef = (node) => {
+    setWrapperRef = node => {
         this.wrapper_ref = node;
     };
 }
@@ -120,17 +121,14 @@ ModalElement.defaultProps = {
 };
 
 ModalElement.propTypes = {
-    children      : PropTypes.node,
-    className     : PropTypes.string,
+    children: PropTypes.node,
+    className: PropTypes.string,
     has_close_icon: PropTypes.bool,
-    header        : PropTypes.node,
-    id            : PropTypes.string,
-    is_open       : PropTypes.bool,
-    small         : PropTypes.bool,
-    title         : PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-    ]),
+    header: PropTypes.node,
+    id: PropTypes.string,
+    is_open: PropTypes.bool,
+    small: PropTypes.bool,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     toggleModal: PropTypes.func,
 };
 
@@ -155,10 +153,10 @@ const Modal = ({
         in={is_open}
         timeout={250}
         classNames={{
-            appear   : 'dc-modal__container--enter',
-            enter    : 'dc-modal__container--enter',
+            appear: 'dc-modal__container--enter',
+            enter: 'dc-modal__container--enter',
             enterDone: 'dc-modal__container--enter-done',
-            exit     : 'dc-modal__container--exit',
+            exit: 'dc-modal__container--exit',
         }}
         unmountOnExit
     >
@@ -190,23 +188,20 @@ Modal.defaultProps = {
 };
 
 Modal.propTypes = {
-    children            : PropTypes.node,
-    className           : PropTypes.string,
-    has_close_icon      : PropTypes.bool,
-    header              : PropTypes.node,
-    height              : PropTypes.string,
-    id                  : PropTypes.string,
-    is_open             : PropTypes.bool,
-    is_vertical_bottom  : PropTypes.bool,
+    children: PropTypes.node,
+    className: PropTypes.string,
+    has_close_icon: PropTypes.bool,
+    header: PropTypes.node,
+    height: PropTypes.string,
+    id: PropTypes.string,
+    is_open: PropTypes.bool,
+    is_vertical_bottom: PropTypes.bool,
     is_vertical_centered: PropTypes.bool,
-    is_vertical_top     : PropTypes.bool,
-    small               : PropTypes.bool,
-    title               : PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-    ]),
+    is_vertical_top: PropTypes.bool,
+    small: PropTypes.bool,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     toggleModal: PropTypes.func,
-    width      : PropTypes.string,
+    width: PropTypes.string,
 };
 
 export default Modal;

@@ -85,7 +85,9 @@
                 font-weight: 500;
                 color: var(--status-info);
             }
-            &:hover, &:focus, &:active {
+            &:hover,
+            &:focus,
+            &:active {
                 text-decoration: underline;
                 color: var(--text-prominent);
             }

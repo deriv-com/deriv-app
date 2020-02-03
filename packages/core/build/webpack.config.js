@@ -1,41 +1,36 @@
-const path                          = require('path');
-const {
-    ALIASES,
-    IS_RELEASE,
-    MINIMIZERS,
-    plugins,
-    rules }                         = require('./constants');
+const path = require('path');
+const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants');
 const { openChromeBasedOnPlatform } = require('./helpers');
 
-module.exports = function (env, argv) {
+module.exports = function(env, argv) {
     const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
 
     return {
-        context     : path.resolve(__dirname, '../src'),
-        devServer   : {
-            open              : openChromeBasedOnPlatform(process.platform),
-            host              : 'localhost.binary.sx',
-            https             : true,
-            port              : 443,
+        context: path.resolve(__dirname, '../src'),
+        devServer: {
+            open: openChromeBasedOnPlatform(process.platform),
+            host: 'localhost.binary.sx',
+            https: true,
+            port: 443,
             historyApiFallback: true,
-            stats             : {
+            stats: {
                 colors: true,
-            }
+            },
         },
-        devtool     : IS_RELEASE ? 'source-map' : 'cheap-module-eval-source-map',
-        entry       : './index.js',
-        mode        : IS_RELEASE ? 'production' : 'development',
-        module      : {
-            rules: rules()
+        devtool: IS_RELEASE ? 'source-map' : 'cheap-module-eval-source-map',
+        entry: './index.js',
+        mode: IS_RELEASE ? 'production' : 'development',
+        module: {
+            rules: rules(),
         },
-        resolve     : {
-            alias     : ALIASES,
-            extensions: ['.js', '.jsx']
+        resolve: {
+            alias: ALIASES,
+            extensions: ['.js', '.jsx'],
         },
         optimization: {
             namedChunks: true,
-            minimize   : IS_RELEASE,
-            minimizer  : MINIMIZERS,
+            minimize: IS_RELEASE,
+            minimizer: MINIMIZERS,
             splitChunks: {
                 chunks: 'all',
                 minSize: 30000,
@@ -49,20 +44,20 @@ module.exports = function (env, argv) {
                 cacheGroups: {
                     vendors: {
                         test: /[\\/]node_modules[\\/]/,
-                        priority: -10
+                        priority: -10,
                     },
                     default: {
                         minChunks: 2,
                         priority: -20,
-                        reuseExistingChunk: true
-                    }
-                }
-            }
+                        reuseExistingChunk: true,
+                    },
+                },
+            },
         },
-        output      : {
-            filename  : 'js/core.[name].[contenthash].js',
+        output: {
+            filename: 'js/core.[name].[contenthash].js',
             publicPath: base,
         },
-        plugins     : plugins(base, false),
+        plugins: plugins(base, false),
     };
 };

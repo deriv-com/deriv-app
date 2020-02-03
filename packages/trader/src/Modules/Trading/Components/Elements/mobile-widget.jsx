@@ -1,9 +1,9 @@
-import React                 from 'react';
-import { Money, Modal }      from '@deriv/components';
-import { localize }          from '@deriv/translations';
-import { connect }           from 'Stores/connect';
+import React from 'react';
+import { Money, Modal } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
-import TradeParamsMobile     from '../../Containers/trade-params-mobile.jsx';
+import TradeParamsMobile from '../../Containers/trade-params-mobile.jsx';
 
 class MobileWidget extends React.Component {
     constructor(props) {
@@ -17,11 +17,11 @@ class MobileWidget extends React.Component {
         this.setState({
             is_open: !this.state.is_open,
         });
-    }
+    };
 
     getHumanReadableDuration() {
         const { duration, duration_unit } = this.props;
-        const lookup                      = {
+        const lookup = {
             t: [localize('tick'), localize('ticks')],
             s: [localize('second'), localize('seconds')],
             m: [localize('min'), localize('mins')],
@@ -34,11 +34,7 @@ class MobileWidget extends React.Component {
     }
 
     render() {
-        const {
-            amount,
-            basis,
-            currency,
-        } = this.props;
+        const { amount, basis, currency } = this.props;
 
         const localized_basis = getLocalizedBasis();
 
@@ -56,18 +52,11 @@ class MobileWidget extends React.Component {
         return (
             <React.Fragment>
                 <div className='mobile-widget' onClick={this.toggleWidget}>
-                    <div className='mobile-widget__duration'>
-                        {this.getHumanReadableDuration()}
-                    </div>
+                    <div className='mobile-widget__duration'>{this.getHumanReadableDuration()}</div>
                     <div className='mobile-widget__amount'>
-                        <Money
-                            amount={amount}
-                            currency={currency}
-                        />
+                        <Money amount={amount} currency={currency} />
                     </div>
-                    <div className='mobile-widget__type'>
-                        {stakeOrPayout()}
-                    </div>
+                    <div className='mobile-widget__type'>{stakeOrPayout()}</div>
                 </div>
                 <Modal
                     id='dt_trade_parameters_mobile'
@@ -90,11 +79,11 @@ class MobileWidget extends React.Component {
 }
 
 export default connect(({ modules, ui }) => ({
-    amount       : modules.trade.amount,
-    basis        : modules.trade.basis,
-    currency     : modules.trade.currency,
-    duration     : modules.trade.duration,
+    amount: modules.trade.amount,
+    basis: modules.trade.basis,
+    currency: modules.trade.currency,
+    duration: modules.trade.duration,
     duration_unit: modules.trade.duration_unit,
-    enableApp    : ui.enableApp,
-    disableApp   : ui.disableApp,
+    enableApp: ui.enableApp,
+    disableApp: ui.disableApp,
 }))(MobileWidget);

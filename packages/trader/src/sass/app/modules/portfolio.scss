@@ -14,7 +14,10 @@
         grid-template-columns: 6.5em 7em 1fr 6em 9em 6em 5em;
     }
     /* postcss-bem-linter: ignore */
-    .payout, .indicative, .purchase, .remaining_time {
+    .payout,
+    .indicative,
+    .purchase,
+    .remaining_time {
         justify-content: flex-end;
     }
     .container {

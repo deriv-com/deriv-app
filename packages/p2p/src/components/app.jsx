@@ -58,20 +58,21 @@ class App extends Component {
         return true;
     };
 
-    handleNotifications = updated_orders => {
+    handleNotifications = orders => {
         let notification_count = 0;
 
-        updated_orders.forEach(order => {
+        orders.forEach(order => {
             const modified_order = new OrderInfo(order);
             const is_agent_buyer = this.state.is_agent && modified_order.is_buyer;
             const is_agent_seller = this.state.is_agent && !modified_order.is_buyer;
             const is_client_buyer = !this.state.is_agent && modified_order.is_buyer;
             const is_client_seller = !this.state.is_agent && !modified_order.is_buyer;
 
-            if (is_agent_buyer || is_client_seller) {
-                notification_count += modified_order.is_buyer_confirmed && 1;
-            } else if (is_agent_seller || is_client_buyer) {
-                notification_count += modified_order.is_pending && 1;
+            if (
+                (modified_order.is_buyer_confirmed && (is_agent_buyer || is_client_seller)) ||
+                (modified_order.is_pending && (is_agent_seller || is_client_buyer))
+            ) {
+                notification_count++;
             }
         });
 

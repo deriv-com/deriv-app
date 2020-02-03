@@ -38,7 +38,7 @@ export const saveWorkspaceToRecent = (save_type, event = {}) => {
             timestamp: current_timestamp,
             name: toolbar.file_name,
             xml: current_xml,
-            save_type: save_type,
+            save_type,
         });
     }
 

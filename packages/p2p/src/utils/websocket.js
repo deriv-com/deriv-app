@@ -113,11 +113,12 @@ const getModifiedP2POrder = response => {
     };
 };
 
-const getModifiedP2POrderList = response => {
+export const getModifiedP2POrderList = response => {
     const modified_response = [];
-    response.list.forEach((list_item, idx) => {
+    response.forEach((list_item, idx) => {
         modified_response[idx] = getModifiedP2POrder(list_item);
     });
+
     return modified_response;
 };
 

@@ -5,7 +5,7 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import { Tabs } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
-import { init, requestWS, subscribeWS } from 'Utils/websocket';
+import { init, requestWS, getModifiedP2POrderList } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
@@ -58,16 +58,24 @@ class App extends Component {
 
     componentDidMount() {
         this.setIsAgent();
+        if (this.props.p2p_order_list.length) {
+            this.setState({ orders: getModifiedP2POrderList(this.props.p2p_order_list) });
+        }
+    }
+
+    componentDidUpdate(prev_props) {
+        if (prev_props.p2p_order_list !== this.props.p2p_order_list) {
+            this.setState({ orders: getModifiedP2POrderList(this.props.p2p_order_list) });
+        }
     }
 
     render() {
-        const { active_index, parameters } = this.state;
+        const { active_index, orders, parameters } = this.state;
         const {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
             custom_strings,
             notification_count,
-            p2p_order_list,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -97,7 +105,7 @@ class App extends Component {
                                 <BuySell navigate={this.redirectTo} params={parameters} />
                             </div>
                             <div count={notification_count} label={localize('Incoming orders')}>
-                                <Orders navigate={this.redirectTo} orders={p2p_order_list} params={parameters} />
+                                <Orders navigate={this.redirectTo} orders={orders} params={parameters} />
                             </div>
                             <div label={localize('My ads')}>
                                 <MyAds navigate={this.redirectTo} params={parameters} />
@@ -114,7 +122,7 @@ class App extends Component {
                             </div>
                             {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
                             <div count={notification_count} label={localize('My Orders')}>
-                                <Orders navigate={this.redirectTo} orders={p2p_order_list} params={parameters} />
+                                <Orders navigate={this.redirectTo} orders={orders} params={parameters} />
                             </div>
                             {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
                             {/* <div label={localize('My profile')}>

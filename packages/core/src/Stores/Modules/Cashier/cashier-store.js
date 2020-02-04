@@ -20,7 +20,6 @@ class Config {
 
     constructor({ container }) {
         this.container = container;
-        console.log('hi');
     }
 }
 
@@ -115,6 +114,32 @@ export default class CashierStore extends BaseStore {
         [this.config.payment_agent.container]: 'payment_agent_withdraw',
     };
 
+    constructor(root_store) {
+        super(root_store);
+    }
+
+    @action.bound
+    async init() {
+        // show dp2p if:
+        // 1. we have not already checked this before, and
+        // 2. client is not virtual, and
+        // 3. they are an agent, or
+        // 4. there is at least one offer available
+        if (
+            !this.is_dp2p_visible &&
+            ObjectUtils.isEmptyObject(this.p2p_offer_list) &&
+            !this.root_store.client.is_virtual
+        ) {
+            this.is_agent = !(await WS.p2pAgentInfo()).error;
+
+            if (this.is_agent || (await this.hasP2pOffer())) {
+                this.setIsDp2pVisible(true);
+
+                WS.p2pSubscribe({ p2p_order_list: 1, subscribe: 1 }, this.setDp2pOrderList);
+            }
+        }
+    }
+
     @action.bound
     resetValuesIfNeeded() {
         if (this.current_client && this.current_client !== this.root_store.client.loginid) {
@@ -148,25 +173,6 @@ export default class CashierStore extends BaseStore {
         if (!this.config.account_transfer.accounts_list.length) {
             this.sortAccountsTransfer();
         }
-
-        // show dp2p if:
-        // 1. we have not already checked this before, and
-        // 2. client is not virtual, and
-        // 3. they are an agent, or
-        // 4. there is at least one offer available
-        if (
-            !this.is_dp2p_visible &&
-            ObjectUtils.isEmptyObject(this.p2p_offer_list) &&
-            !this.root_store.client.is_virtual
-        ) {
-            this.is_agent = !(await WS.p2pAgentInfo()).error;
-
-            if (this.is_agent || (await this.hasP2pOffer())) {
-                this.setIsDp2pVisible(true);
-
-                WS.p2pSubscribe({ p2p_order_list: 1, subscribe: 1 }, this.setDp2pOrderList);
-            }
-        }
     }
 
     @action.bound
@@ -189,7 +195,6 @@ export default class CashierStore extends BaseStore {
                 updated_orders[idx_order_to_update] = order_response.p2p_order_info;
             }
             // trigger re-rendering by setting orders again
-            console.log(orde);
             this.p2p_order_list = updated_orders;
             this.handleNotifications(updated_orders);
         }

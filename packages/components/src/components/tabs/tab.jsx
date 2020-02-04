@@ -10,7 +10,7 @@ class Tab extends Component {
     };
 
     render() {
-        const { count, is_active, label, top, bottom } = this.props;
+        const { count, id, is_active, label, top, bottom } = this.props;
 
         const classes = classNames('dc-tabs__item', {
             'dc-tabs__active': is_active,
@@ -18,7 +18,7 @@ class Tab extends Component {
             'dc-tabs__item--bottom': bottom,
         });
         return (
-            <li className={classes} onClick={this.onClick}>
+            <li id={id} className={classes} onClick={this.onClick}>
                 {label}
                 {!!count && <Counter className='dc-tabs__item__counter' count={count} />}
             </li>

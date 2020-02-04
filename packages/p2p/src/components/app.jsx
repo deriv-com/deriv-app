@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Tabs } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
+import { Tabs } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
 import { init, requestWS, subscribeWS } from 'Utils/websocket';
@@ -95,7 +95,6 @@ class App extends Component {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
         } = this.props;
-        const email_domain = ObjectUtils.getPropertyValue(this.props.custom_strings, 'email_domain') || 'deriv.com';
 
         // TODO: remove allowed_currency check once we publish this to everyone
         if (is_virtual || currency !== allowed_currency) {
@@ -110,10 +109,11 @@ class App extends Component {
             <Dp2pProvider
                 value={{
                     currency,
-                    email_domain,
                     local_currency_config,
                     residence,
                     is_agent: this.state.is_agent,
+                    email_domain:
+                        ObjectUtils.getPropertyValue(this.props.custom_strings, 'email_domain') || 'deriv.com',
                 }}
             >
                 <main className={classNames('deriv-p2p', className)}>

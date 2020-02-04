@@ -116,8 +116,8 @@ class Popup extends Component {
                                                             <Localize
                                                                 i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
                                                                 values={{
-                                                                    min: ad.min_available,
-                                                                    max: ad.max_available,
+                                                                    min: ad.display_min_available,
+                                                                    max: ad.display_max_available,
                                                                     currency: ad.offer_currency,
                                                                 }}
                                                             />
@@ -192,7 +192,7 @@ class Popup extends Component {
 
         const display_max_amount = CurrencyUtils.formatMoney(
             ad.offer_currency,
-            ad.max_transaction,
+            ad.max_available,
             true,
             ad.offer_currency_decimals
         );

@@ -1,7 +1,7 @@
-import fs                             from 'fs';
-import readline                       from 'readline';
-import program                        from 'commander';
-import { createInterpreter }          from './cliTools';
+import fs from 'fs';
+import readline from 'readline';
+import program from 'commander';
+import { createInterpreter } from './cliTools';
 import { observer as globalObserver } from '../../../utils/observer';
 
 const log = (...args) => console.log(`${new Date().toLocaleTimeString()}:`, ...args); // eslint-disable-line no-console
@@ -30,7 +30,7 @@ const interpreter = createInterpreter();
 
 globalObserver.register('Error', e => log(e));
 
-globalObserver.register('Notify', ({ className, message }) => log(`${className.toUpperCase()}: ${message}`));
+globalObserver.register('ui.log.success', ({ className, message }) => log(`${className.toUpperCase()}: ${message}`));
 
 lineReader
     .on('line', line => {

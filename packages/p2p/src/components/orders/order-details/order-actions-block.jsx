@@ -1,8 +1,8 @@
-import React         from 'react';
-import PropTypes     from 'prop-types';
-import { Button }    from '@deriv/components';
-import Dp2pContext   from 'Components/context/dp2p-context';
-import { localize }  from 'Components/i18next';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Button } from '@deriv/components';
+import Dp2pContext from 'Components/context/dp2p-context';
+import { localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 
 const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
@@ -21,7 +21,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     let buttons_to_render = null;
 
     const cancelOrder = () => {
-        const cancel = async (setFormStatus) => {
+        const cancel = async setFormStatus => {
             setFormStatus({ error_message: '' });
             const cancel_response = await requestWS({ p2p_order_cancel: 1, order_id });
 
@@ -33,16 +33,16 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             }
         };
         const options = {
-            title         : localize('Cancel this order?'),
-            message       : localize('If you have paid, please do not cancel the order.'),
-            confirm_text  : localize('Cancel this order'),
+            title: localize('Cancel this order?'),
+            message: localize('If you have paid, please do not cancel the order.'),
+            confirm_text: localize('Cancel this order'),
             onClickConfirm: cancel,
         };
         showPopup(options);
     };
 
     const paidOrder = () => {
-        const payOrder = async (setFormStatus) => {
+        const payOrder = async setFormStatus => {
             setFormStatus({ error_message: '' });
 
             const update_response = await requestWS({
@@ -57,18 +57,20 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             }
         };
         const options = {
-            title         : localize('Confirm this payment?'),
-            message       : localize('Make sure you have successfully sent the funds to the seller’s bank account or e-wallet mentioned above.'),
-            has_cancel    : true,
-            cancel_text   : localize('I didn\'t pay yet'),
-            confirm_text  : localize('I\'ve paid'),
+            title: localize('Confirm this payment?'),
+            message: localize(
+                'Make sure you have successfully sent the funds to the seller’s bank account or e-wallet mentioned above.'
+            ),
+            has_cancel: true,
+            cancel_text: localize("I didn't pay yet"),
+            confirm_text: localize("I've paid"),
             onClickConfirm: payOrder,
         };
         showPopup(options);
     };
 
     const receivedFunds = () => {
-        const receive = async (setFormStatus) => {
+        const receive = async setFormStatus => {
             setFormStatus({ error_message: '' });
 
             const update_response = await requestWS({
@@ -83,10 +85,12 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
             }
         };
         const options = {
-            title            : localize('Have you received funds?'),
-            message          : localize('Make sure that you have logged in your bank account or other e-wallet to check the receipt.'),
+            title: localize('Have you received funds?'),
+            message: localize(
+                'Make sure that you have logged in your bank account or other e-wallet to check the receipt.'
+            ),
             need_confirmation: true,
-            order            : {
+            order: {
                 display_offer_amount,
                 offer_currency,
                 transaction_currency,
@@ -99,15 +103,21 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
 
     if (is_agent && is_buyer_confirmed && is_buyer) {
         buttons_to_render = (
-            <Button className='order-details__actions-button' large primary onClick={receivedFunds}>{ localize('I\'ve received funds') }</Button>
+            <Button className='order-details__actions-button' large primary onClick={receivedFunds}>
+                {localize("I've received funds")}
+            </Button>
         );
     }
 
     if (is_agent && is_pending && !is_buyer) {
         buttons_to_render = (
             <React.Fragment>
-                <Button className='order-details__actions-button' large secondary onClick={cancelOrder}>{ localize('Cancel order') }</Button>
-                <Button className='order-details__actions-button' large primary onClick={paidOrder}>{ localize('I\'ve paid') }</Button>
+                <Button className='order-details__actions-button' large secondary onClick={cancelOrder}>
+                    {localize('Cancel order')}
+                </Button>
+                <Button className='order-details__actions-button' large primary onClick={paidOrder}>
+                    {localize("I've paid")}
+                </Button>
             </React.Fragment>
         );
     }
@@ -115,15 +125,21 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     if (!is_agent && is_pending && is_buyer) {
         buttons_to_render = (
             <React.Fragment>
-                <Button className='order-details__actions-button' large secondary onClick={cancelOrder}>{ localize('Cancel order') }</Button>
-                <Button className='order-details__actions-button' large primary onClick={paidOrder}>{ localize('I\'ve paid') }</Button>
+                <Button className='order-details__actions-button' large secondary onClick={cancelOrder}>
+                    {localize('Cancel order')}
+                </Button>
+                <Button className='order-details__actions-button' large primary onClick={paidOrder}>
+                    {localize("I've paid")}
+                </Button>
             </React.Fragment>
         );
     }
 
     if (!is_agent && is_buyer_confirmed && !is_buyer) {
         buttons_to_render = (
-            <Button className='order-details__actions-button' large primary onClick={receivedFunds}>{ localize('I\'ve received funds') }</Button>
+            <Button className='order-details__actions-button' large primary onClick={receivedFunds}>
+                {localize("I've received funds")}
+            </Button>
         );
     }
 
@@ -131,9 +147,9 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
 };
 
 OrderActionsBlock.propTypes = {
-    cancelPopup  : PropTypes.func,
+    cancelPopup: PropTypes.func,
     order_details: PropTypes.object,
-    showPopup    : PropTypes.func,
+    showPopup: PropTypes.func,
 };
 
 export default OrderActionsBlock;

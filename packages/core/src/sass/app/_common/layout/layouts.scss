@@ -69,7 +69,8 @@
             & .tooltip--with-label {
                 display: none;
             }
-            & .tooltip--with-label:before, .tooltip--with-label:after {
+            & .tooltip--with-label:before,
+            .tooltip--with-label:after {
                 display: none;
             }
         }

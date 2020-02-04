@@ -4,29 +4,32 @@ Blockly.Blocks.logic_boolean = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: '%1',
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'BOOL',
-                    options: [[localize('true'), 'TRUE'], [localize('false'), 'FALSE']],
+                    type: 'field_dropdown',
+                    name: 'BOOL',
+                    options: [
+                        [localize('true'), 'TRUE'],
+                        [localize('false'), 'FALSE'],
+                    ],
                 },
             ],
-            output         : 'Boolean',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Boolean',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Returns either True or False'),
-            category       : Blockly.Categories.Logic,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Returns either True or False'),
+            category: Blockly.Categories.Logic,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('True-False'),
-            'description' : localize('This is a single block that returns a boolean value, either true or false.'),
+            display_name: localize('True-False'),
+            description: localize('This is a single block that returns a boolean value, either true or false.'),
         };
     },
 };

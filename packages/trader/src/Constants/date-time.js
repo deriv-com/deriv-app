@@ -16,34 +16,34 @@ export const month_headers = {
 };
 
 export const week_headers = {
-    Monday   : localize('Monday'),
-    Tuesday  : localize('Tuesday'),
+    Monday: localize('Monday'),
+    Tuesday: localize('Tuesday'),
     Wednesday: localize('Wednesday'),
-    Thursday : localize('Thursday'),
-    Friday   : localize('Friday'),
-    Saturday : localize('Saturday'),
-    Sunday   : localize('Sunday'),
+    Thursday: localize('Thursday'),
+    Friday: localize('Friday'),
+    Saturday: localize('Saturday'),
+    Sunday: localize('Sunday'),
 };
 
 export const week_headers_abbr = {
-    Monday   : localize('M'),
-    Tuesday  : localize('T'),
+    Monday: localize('M'),
+    Tuesday: localize('T'),
     Wednesday: localize('W'),
-    Thursday : localize('T'),
-    Friday   : localize('F'),
-    Saturday : localize('S'),
-    Sunday   : localize('S'),
+    Thursday: localize('T'),
+    Friday: localize('F'),
+    Saturday: localize('S'),
+    Sunday: localize('S'),
 };
 
-export const getDaysOfTheWeek = (day) => {
+export const getDaysOfTheWeek = day => {
     const days_of_the_week = {
-        'Mondays'   : 1,
-        'Tuesdays'  : 2,
-        'Wednesdays': 3,
-        'Thursdays' : 4,
-        'Fridays'   : 5,
-        'Saturdays' : 6,
-        'Sundays'   : 0,
+        Mondays: 1,
+        Tuesdays: 2,
+        Wednesdays: 3,
+        Thursdays: 4,
+        Fridays: 5,
+        Saturdays: 6,
+        Sundays: 0,
     };
 
     return days_of_the_week[day];

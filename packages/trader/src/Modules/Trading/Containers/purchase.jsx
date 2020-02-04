@@ -1,17 +1,10 @@
-import PropTypes                   from 'prop-types';
-import React                       from 'react';
-import ObjectUtils                 from '@deriv/shared/utils/object';
-import PurchaseFieldset            from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ObjectUtils from '@deriv/shared/utils/object';
+import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
 import { getContractTypePosition } from 'Constants/contract';
-import { measurePerformance }      from 'Services/performance-checker';
-import { connect }                 from 'Stores/connect';
-
-const getSortedIndex = (index, type) => {
-    if (getContractTypePosition(type) === 'top') return 0;
-    if (getContractTypePosition(type) === 'bottom') return 1;
-
-    return index;
-};
+import { measurePerformance } from 'Services/performance-checker';
+import { connect } from 'Stores/connect';
 
 const Purchase = ({
     basis,
@@ -42,8 +35,13 @@ const Purchase = ({
 
     const components = [];
     Object.keys(trade_types).map((type, index) => {
-        const info              = proposal_info[type] || {};
-        const is_disabled       = !is_trade_enabled || !info.id || !is_client_allowed_to_visit;
+        const getSortedIndex = () => {
+            if (getContractTypePosition(type) === 'top') return 0;
+            if (getContractTypePosition(type) === 'bottom') return 1;
+            return index;
+        };
+        const info = proposal_info[type] || {};
+        const is_disabled = !is_trade_enabled || !info.id || !is_client_allowed_to_visit;
         const is_proposal_error = info.has_error;
         const purchase_fieldset = (
             <PurchaseFieldset
@@ -83,10 +81,7 @@ const Purchase = ({
         }
     });
 
-    if (components &&
-        components.length === 2 &&
-        !components[0].props.is_disabled &&
-        !components[1].props.is_disabled) {
+    if (components && components.length === 2 && !components[0].props.is_disabled && !components[1].props.is_disabled) {
         // the moment that both purchase buttons are enabled
         measurePerformance(pushLoadPerformance);
     }
@@ -94,44 +89,42 @@ const Purchase = ({
 };
 
 Purchase.propTypes = {
-    basis                     : PropTypes.string,
-    currency                  : PropTypes.string,
+    basis: PropTypes.string,
+    currency: PropTypes.string,
     is_client_allowed_to_visit: PropTypes.bool,
-    is_mobile                 : PropTypes.bool,
+    is_mobile: PropTypes.bool,
     // is_purchase_confirm_on    : PropTypes.bool,
-    is_purchase_locked        : PropTypes.bool,
-    is_trade_enabled          : PropTypes.bool,
-    onClickPurchase           : PropTypes.func,
-    onHoverPurchase           : PropTypes.func,
-    proposal_info             : PropTypes.object,
-    purchase_info             : PropTypes.object,
-    purchased_states_arr      : PropTypes.array,
-    pushLoadPerformance       : PropTypes.func,
-    setPurchaseState          : PropTypes.func,
+    is_purchase_locked: PropTypes.bool,
+    is_trade_enabled: PropTypes.bool,
+    onClickPurchase: PropTypes.func,
+    onHoverPurchase: PropTypes.func,
+    proposal_info: PropTypes.object,
+    purchase_info: PropTypes.object,
+    purchased_states_arr: PropTypes.array,
+    pushLoadPerformance: PropTypes.func,
+    setPurchaseState: PropTypes.func,
     // togglePurchaseLock        : PropTypes.func,
-    trade_types               : PropTypes.object,
-    validation_errors         : PropTypes.object,
+    trade_types: PropTypes.object,
+    validation_errors: PropTypes.object,
 };
 
-export default connect(
-    ({ client, modules, ui, gtm }) => ({
-        currency                  : client.currency,
-        is_client_allowed_to_visit: client.is_client_allowed_to_visit,
-        is_mobile                 : ui.is_mobile,
-        basis                     : modules.trade.basis,
-        contract_type             : modules.trade.contract_type,
-        pushLoadPerformance       : gtm.pushLoadPerformance,
-        is_trade_enabled          : modules.trade.is_trade_enabled,
-        onClickPurchase           : modules.trade.onPurchase,
-        onHoverPurchase           : modules.trade.onHoverPurchase,
-        proposal_info             : modules.trade.proposal_info,
-        purchase_info             : modules.trade.purchase_info,
-        trade_types               : modules.trade.trade_types,
-        validation_errors         : modules.trade.validation_errors,
-        purchased_states_arr      : ui.purchase_states,
-        setPurchaseState          : ui.setPurchaseState,
-        // is_purchase_confirm_on    : ui.is_purchase_confirm_on,
-        // is_purchase_locked        : ui.is_purchase_lock_on,
-        // togglePurchaseLock        : ui.togglePurchaseLock,
-    }),
-)(Purchase);
+export default connect(({ client, modules, ui, gtm }) => ({
+    currency: client.currency,
+    is_client_allowed_to_visit: client.is_client_allowed_to_visit,
+    basis: modules.trade.basis,
+    contract_type: modules.trade.contract_type,
+    pushLoadPerformance: gtm.pushLoadPerformance,
+    is_trade_enabled: modules.trade.is_trade_enabled,
+    onClickPurchase: modules.trade.onPurchase,
+    onHoverPurchase: modules.trade.onHoverPurchase,
+    proposal_info: modules.trade.proposal_info,
+    purchase_info: modules.trade.purchase_info,
+    trade_types: modules.trade.trade_types,
+    validation_errors: modules.trade.validation_errors,
+    is_mobile: ui.is_mobile,
+    purchased_states_arr: ui.purchase_states,
+    setPurchaseState: ui.setPurchaseState,
+    // is_purchase_confirm_on    : ui.is_purchase_confirm_on,
+    // is_purchase_locked        : ui.is_purchase_lock_on,
+    // togglePurchaseLock        : ui.togglePurchaseLock,
+}))(Purchase);

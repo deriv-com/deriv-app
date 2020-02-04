@@ -4,30 +4,30 @@ Blockly.Blocks.variables_get = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
-            type    : 'variables_get',
+            type: 'variables_get',
             message0: '%1',
-            args0   : [
+            args0: [
                 {
-                    type    : 'field_variable',
-                    name    : 'VAR',
+                    type: 'field_variable',
+                    name: 'VAR',
                     variable: localize('item'),
                 },
             ],
-            output         : null,
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Special2.colour,
+            output: null,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Special2.colour,
             colourSecondary: Blockly.Colours.Special2.colourSecondary,
-            colourTertiary : Blockly.Colours.Special2.colourTertiary,
-            tooltip        : localize('Gets variable value'),
-            category       : Blockly.Categories.Variables,
+            colourTertiary: Blockly.Colours.Special2.colourTertiary,
+            tooltip: localize('Gets variable value'),
+            category: Blockly.Categories.Variables,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('User-defined variable'),
-            'description' : localize(''),
+            display_name: localize('User-defined variable'),
+            description: localize(''),
         };
     },
 };

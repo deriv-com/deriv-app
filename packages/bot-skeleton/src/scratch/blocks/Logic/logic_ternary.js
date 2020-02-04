@@ -4,15 +4,15 @@ Blockly.Blocks.logic_ternary = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('test %1'),
             message1: localize('if true %1'),
             message2: localize('if false %1'),
-            args0   : [
+            args0: [
                 {
-                    type : 'input_value',
-                    name : 'IF',
+                    type: 'input_value',
+                    name: 'IF',
                     check: 'Boolean',
                 },
             ],
@@ -28,24 +28,28 @@ Blockly.Blocks.logic_ternary = {
                     name: 'ELSE',
                 },
             ],
-            output         : null,
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: null,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('This block tests if a given value is true or false and returns “True” or “False” accordingly.'),
-            category       : Blockly.Categories.Logic,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize(
+                'This block tests if a given value is true or false and returns “True” or “False” accordingly.'
+            ),
+            category: Blockly.Categories.Logic,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Test value'),
-            'description' : localize('This block tests if a given value is true or false and returns “True” or “False” accordingly.'),
+            display_name: localize('Test value'),
+            description: localize(
+                'This block tests if a given value is true or false and returns “True” or “False” accordingly.'
+            ),
         };
     },
     getRequiredValueInputs() {
         return {
-            IF  : null,
+            IF: null,
             THEN: null,
             ELSE: null,
         };

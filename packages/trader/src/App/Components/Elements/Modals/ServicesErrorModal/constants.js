@@ -1,6 +1,6 @@
-import { localize }  from '@deriv/translations';
+import { localize } from '@deriv/translations';
 
 export const title = {
-    buy : localize('Purchase Error'),
+    buy: localize('Purchase Error'),
     sell: localize('Sell Error'),
 };

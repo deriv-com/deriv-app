@@ -1,31 +1,26 @@
-const path      = require('path');
-const {
-    ALIASES,
-    IS_RELEASE,
-    MINIMIZERS,
-    plugins,
-    rules }     = require('./constants');
+const path = require('path');
+const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants');
 
-module.exports = function (env, argv) {
+module.exports = function(env, argv) {
     const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
 
     return {
-        context     : path.resolve(__dirname, '../src'),
-        devtool     : IS_RELEASE ? 'source-map' : 'cheap-module-eval-source-map',
-        entry       : path.resolve(__dirname, '../src', 'index.js'),
-        mode        : IS_RELEASE ? 'production' : 'development',
-        module      : {
-            rules: rules()
+        context: path.resolve(__dirname, '../src'),
+        devtool: IS_RELEASE ? 'source-map' : 'cheap-module-eval-source-map',
+        entry: path.resolve(__dirname, '../src', 'index.js'),
+        mode: IS_RELEASE ? 'production' : 'development',
+        module: {
+            rules: rules(),
         },
-        resolve     : {
-            alias     : ALIASES,
-            extensions: ['.js', '.jsx']
+        resolve: {
+            alias: ALIASES,
+            extensions: ['.js', '.jsx'],
         },
         optimization: {
             namedChunks: true,
             namedModules: true,
-            minimize   : IS_RELEASE,
-            minimizer  : MINIMIZERS,
+            minimize: IS_RELEASE,
+            minimizer: MINIMIZERS,
             // splitChunks: {
             //     chunks: 'all',
             //     minSize: 30000,
@@ -49,8 +44,8 @@ module.exports = function (env, argv) {
             //     }
             // }
         },
-        output      : {
-            filename  : 'js/trader.main.js',
+        output: {
+            filename: 'js/trader.main.js',
             publicPath: base,
             path: path.resolve(__dirname, '../dist'),
             chunkFilename: 'js/trader.[name].[contenthash].js',
@@ -60,20 +55,22 @@ module.exports = function (env, argv) {
         },
         externals: [
             {
-                'react': 'react',
+                react: 'react',
                 'react-dom': 'react-dom',
                 'react-router-dom': 'react-router-dom',
                 'react-router': 'react-router',
-                'mobx': 'mobx',
+                mobx: 'mobx',
                 'mobx-react': 'mobx-react',
                 '@deriv/shared': '@deriv/shared',
                 '@deriv/components': '@deriv/components',
+                '@deriv/translations': '@deriv/translations',
                 'smartcharts-beta': 'smartcharts-beta',
             },
             /^@deriv\/shared\/.+$/,
-            /^@deriv\/components\/.+$/
+            /^@deriv\/components\/.+$/,
+            /^@deriv\/translations\/.+$/,
         ],
         target: 'web',
-        plugins     : plugins(base, false),
+        plugins: plugins(base, false),
     };
 };

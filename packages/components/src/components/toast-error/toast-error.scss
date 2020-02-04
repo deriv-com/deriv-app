@@ -20,7 +20,8 @@
         color: var(--text-colored-background);
         border-radius: 4px;
     }
-    &--enter, &--exit {
+    &--enter,
+    &--exit {
         transform: scale(1, 0);
         opacity: 0;
     }

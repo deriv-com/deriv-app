@@ -26,7 +26,8 @@
         margin: initial;
         height: 70px;
 
-        &__top, &__bottom {
+        &__top,
+        &__bottom {
             height: 50%;
             flex: 1 1 auto;
             display: flex;
@@ -151,7 +152,8 @@
             }
         }
     }
-    &:active:not(&--disabled):not([disabled]), &:focus:not(&--disabled):not([disabled]) {
+    &:active:not(&--disabled):not([disabled]),
+    &:focus:not(&--disabled):not([disabled]) {
         transform: translate3d(0, -4px, 0);
     }
     &--swoosh {
@@ -184,7 +186,13 @@
 
         @include mobile {
             background: var(--purchase-section-1);
-            background: linear-gradient(0deg, var(--purchase-section-1) 0%, var(--purchase-section-1) 50%, var(--purchase-main-1) 50%, var(--purchase-main-1) 100%);
+            background: linear-gradient(
+                0deg,
+                var(--purchase-section-1) 0%,
+                var(--purchase-section-1) 50%,
+                var(--purchase-main-1) 50%,
+                var(--purchase-main-1) 100%
+            );
         }
     }
     &--2 {
@@ -202,17 +210,26 @@
         }
         @include mobile {
             background: var(--purchase-section-2);
-            background: linear-gradient(0deg, var(--purchase-section-2) 0%, var(--purchase-section-2) 50%, var(--purchase-main-2) 50%, var(--purchase-main-2) 100%);
+            background: linear-gradient(
+                0deg,
+                var(--purchase-section-2) 0%,
+                var(--purchase-section-2) 50%,
+                var(--purchase-main-2) 50%,
+                var(--purchase-main-2) 100%
+            );
         }
     }
-    &--disabled, &[disabled] {
+    &--disabled,
+    &[disabled] {
         cursor: default;
     }
     &--animated--slide {
-        .btn-purchase__icon_wrapper, .btn-purchase__text_wrapper {
+        .btn-purchase__icon_wrapper,
+        .btn-purchase__text_wrapper {
             @extend .loader;
         }
-        .btn-purchase__icon, .btn-purchase__text {
+        .btn-purchase__icon,
+        .btn-purchase__text {
             @extend .loader--loading;
         }
         .btn-purchase__icon_wrapper {

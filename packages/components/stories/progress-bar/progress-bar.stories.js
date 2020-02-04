@@ -1,7 +1,7 @@
-import React         from 'react';
+import React from 'react';
 import { storiesOf } from '@storybook/react';
-import ProgressBar   from '../../src/components/progress-bar/index';
-import Theme         from '../shared/theme';
+import ProgressBar from '../../src/components/progress-bar/index';
+import Theme from '../shared/theme';
 
 const progress_bars = [
     {
@@ -34,37 +34,27 @@ const progress_bars = [
         label: 'Success',
         is_dark: true,
     },
-]
+];
 
-storiesOf('Progress Bar', module)
-    .add(
-        'Basic usage',
-        () => (
-            <div
-                style={{
-                    display       : 'grid',
-                    width         : '100%',
-                    height        : '100%',
-                    justifyContent: 'center',
-                    alignItems    : 'center',
-                    flexDirection : 'column',
-                    gridGap       : '10px',
-                    paddingTop    : '10px',
-                }}
-            >
-                {progress_bars.map((item, index) => {
-                    return (
-                        <Theme
-                            is_dark={item.is_dark}
-                            key={index}
-                        >
-                            <ProgressBar
-                                value={item.value}
-                                label={item.label}
-                            />
-                        </Theme>
-                    )
-                })}
-            </div>
-        )
-    );
+storiesOf('Progress Bar', module).add('Basic usage', () => (
+    <div
+        style={{
+            display: 'grid',
+            width: '100%',
+            height: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            gridGap: '10px',
+            paddingTop: '10px',
+        }}
+    >
+        {progress_bars.map((item, index) => {
+            return (
+                <Theme is_dark={item.is_dark} key={index}>
+                    <ProgressBar value={item.value} label={item.label} />
+                </Theme>
+            );
+        })}
+    </div>
+));

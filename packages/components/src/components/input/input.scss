@@ -29,6 +29,7 @@
         width: 100%;
         height: 3.8rem;
         display: block;
+        min-width: 0;
 
         &::placeholder {
             line-height: 1.5;
@@ -39,7 +40,9 @@
             opacity: 0.2;
         }
         /* Not empty fields */
-        &:focus, &:disabled, &:not(:focus):not([value='']) {
+        &:focus,
+        &:disabled,
+        &:not(:focus):not([value='']) {
             outline: none;
 
             & ~ label {
@@ -82,11 +85,15 @@
                 color: var(--text-general);
             }
         }
-        &[type=number]::-webkit-inner-spin-button, &[type=number]::-webkit-outer-spin-button {
+        &[type='number']::-webkit-inner-spin-button,
+        &[type='number']::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
-        &[type=textarea] {
+        &[type='number'] {
+            -moz-appearance: textfield;
+        }
+        &[type='textarea'] {
             height: 9.6rem;
             border: none;
             resize: none;
@@ -101,7 +108,9 @@
             -webkit-box-shadow: 0 0 0 30px var(--fill-normal) inset !important;
             -webkit-text-fill-color: var(--text-prominent) !important;
 
-            &:hover, &:focus, &:active {
+            &:hover,
+            &:focus,
+            &:active {
                 -webkit-box-shadow: 0 0 0 30px var(--fill-normal) inset !important;
             }
         }
@@ -126,10 +135,14 @@
             &--usd + .dc-input__field {
                 padding-left: calc(1.6rem + 3px);
             }
-            &--eur + .dc-input__field, &--gbp + .dc-input__field, &--eth + .dc-input__field, &--etc + .dc-input__field {
+            &--eur + .dc-input__field,
+            &--gbp + .dc-input__field,
+            &--eth + .dc-input__field,
+            &--etc + .dc-input__field {
                 padding-left: calc(1.6rem + 4px);
             }
-            &--btc + .dc-input__field, &--ltc + .dc-input__field {
+            &--btc + .dc-input__field,
+            &--ltc + .dc-input__field {
                 padding-left: calc(1.6rem + 5px);
             }
             &--ust + .dc-input__field {

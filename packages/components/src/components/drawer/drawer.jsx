@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import PropTypes  from 'prop-types';
-import React      from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 // TODO: use-from-shared - Use this icon from icons' shared package
 const IconDrawer = () => (
@@ -20,7 +20,6 @@ const IconDrawer = () => (
 );
 
 class Drawer extends React.PureComponent {
-
     constructor(props) {
         super(props);
         this.state = { is_open: props.is_open };
@@ -33,48 +32,36 @@ class Drawer extends React.PureComponent {
     }
 
     toggleDrawer = () => {
-        this.setState((prev_state) => ({
-            is_open: !prev_state.is_open,
-        }), () => {
-            if (this.props.toggleDrawer) {
-                this.props.toggleDrawer(this.state.is_open);
+        this.setState(
+            prev_state => ({
+                is_open: !prev_state.is_open,
+            }),
+            () => {
+                if (this.props.toggleDrawer) {
+                    this.props.toggleDrawer(this.state.is_open);
+                }
             }
-        }
         );
     };
 
     render() {
-        const {
-            children,
-            className,
-            footer,
-            header,
-        } = this.props;
+        const { children, className, footer, header } = this.props;
 
         return (
-            <div className={classNames(
-                'dc-drawer', className, {
+            <div
+                className={classNames('dc-drawer', className, {
                     'dc-drawer--open': this.state.is_open,
                 })}
             >
                 <div className='dc-drawer__container'>
-                    {header &&
-                        <div className='dc-drawer__header'>
-                            {header}
-                        </div>
-                    }
-                    <div className='dc-drawer__content'>
-                        {children}
-                    </div>
-                    {footer &&
-                        <div className='dc-drawer__footer'>
-                            {footer}
-                        </div>
-                    }
+                    {header && <div className='dc-drawer__header'>{header}</div>}
+                    <div className='dc-drawer__content'>{children}</div>
+                    {footer && <div className='dc-drawer__footer'>{footer}</div>}
                 </div>
                 <div
-                    className={classNames('dc-drawer__toggle',
-                        { 'dc-drawer__toggle--open': this.state.is_open })}
+                    className={classNames('dc-drawer__toggle', {
+                        'dc-drawer__toggle--open': this.state.is_open,
+                    })}
                     onClick={this.toggleDrawer}
                 >
                     <IconDrawer />
@@ -85,18 +72,9 @@ class Drawer extends React.PureComponent {
 }
 
 Drawer.propTypes = {
-    children: PropTypes.oneOfType([
-        PropTypes.array,
-        PropTypes.object,
-    ]),
-    footer: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.string,
-    ]),
-    header: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.string,
-    ]),
+    children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+    footer: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+    header: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     is_open: PropTypes.bool,
 };
 

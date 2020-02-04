@@ -4,36 +4,38 @@ Blockly.Blocks.controls_repeat_ext = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('repeat %1 times'),
-            args0   : [
+            args0: [
                 {
-                    type : 'input_value',
-                    name : 'TIMES',
+                    type: 'input_value',
+                    name: 'TIMES',
                     check: 'Number',
                 },
             ],
             message1: localize('do %1'),
-            args1   : [
+            args1: [
                 {
                     type: 'input_statement',
                     name: 'DO',
                 },
             ],
-            colour           : Blockly.Colours.Base.colour,
-            colourSecondary  : Blockly.Colours.Base.colourSecondary,
-            colourTertiary   : Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
-            tooltip          : localize('Repeats inside instructions specified number of times'),
-            category         : Blockly.Categories.Loop,
+            nextStatement: null,
+            tooltip: localize('Repeats inside instructions specified number of times'),
+            category: Blockly.Categories.Loop,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Repeat (2)'),
-            'description' : localize('This block is similar to the block above, except that the number of times it repeats is determined by a given variable.'),
+            display_name: localize('Repeat (2)'),
+            description: localize(
+                'This block is similar to the block above, except that the number of times it repeats is determined by a given variable.'
+            ),
         };
     },
     getRequiredValueInputs() {

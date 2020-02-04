@@ -2,7 +2,10 @@ import { localize } from '@deriv/translations';
 
 Blockly.Blocks.lists_setIndex = {
     init() {
-        this.MODE_OPTIONS = [[localize('set'), 'SET'], [localize('insert at'), 'INSERT']];
+        this.MODE_OPTIONS = [
+            [localize('set'), 'SET'],
+            [localize('insert at'), 'INSERT'],
+        ];
         this.WHERE_OPTIONS = [
             [localize('#'), 'FROM_START'],
             [localize('# from end'), 'FROM_END'],
@@ -26,14 +29,20 @@ Blockly.Blocks.lists_setIndex = {
         );
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
-        this.setTooltip(localize('This block replaces a specific item in a list with another given item. It can also insert the new item in the list at a specific position.'));
+        this.setTooltip(
+            localize(
+                'This block replaces a specific item in a list with another given item. It can also insert the new item in the list at a specific position.'
+            )
+        );
         this.updateAt(true);
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Set list item'),
-            'description' : localize('This block replaces a specific item in a list with another given item. It can also insert the new item in the list at a specific position.'),
-            'category'    : Blockly.Categories.List,
+            display_name: localize('Set list item'),
+            description: localize(
+                'This block replaces a specific item in a list with another given item. It can also insert the new item in the list at a specific position.'
+            ),
+            category: Blockly.Categories.List,
         };
     },
     mutationToDom() {

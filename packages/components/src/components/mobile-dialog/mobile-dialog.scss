@@ -12,7 +12,8 @@
     background: var(--general-section-2);
     // transform here would break fixed header
 
-    &--enter, &--exit {
+    &--enter,
+    &--exit {
         opacity: 0;
         pointer-events: none;
 
@@ -22,7 +23,6 @@
         & .dc-mobile-dialog__header {
             transform: translateY(-100%);
         }
-
     }
     &--enter-done {
         opacity: 1;

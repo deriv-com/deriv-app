@@ -1,14 +1,8 @@
-import PropTypes         from 'prop-types';
-import React             from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 
-const ToastError = ({
-    children,
-    is_open = true,
-    onClose,
-    onClick,
-    timeout = 0,
-}) => {
+const ToastError = ({ children, is_open = true, onClose, onClick, timeout = 0 }) => {
     const [is_visible, setVisible] = React.useState(false);
 
     React.useEffect(() => {
@@ -34,20 +28,14 @@ const ToastError = ({
                 setVisible(false);
             }}
             classNames={{
-                appear   : 'dc-toast-error--enter',
-                enter    : 'dc-toast-error--enter',
+                appear: 'dc-toast-error--enter',
+                enter: 'dc-toast-error--enter',
                 enterDone: 'dc-toast-error--enter-done',
-                exit     : 'dc-toast-error--exit',
+                exit: 'dc-toast-error--exit',
             }}
         >
-
-            <div
-                className='dc-toast-error'
-                onClick={onClick}
-            >
-                <div className='dc-toast-error__message'>
-                    {children}
-                </div>
+            <div className='dc-toast-error' onClick={onClick}>
+                <div className='dc-toast-error__message'>{children}</div>
             </div>
         </CSSTransition>
     );

@@ -19,7 +19,9 @@
 }
 
 @keyframes sk-stretchdelay {
-    0%, 40%, 100% {
+    0%,
+    40%,
+    100% {
         transform: scaleY(1);
     }
     20% {

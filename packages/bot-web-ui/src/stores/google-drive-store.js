@@ -1,8 +1,5 @@
-import {
-    observable,
-    action,
-}                                 from 'mobx';
-import { localize, getLanguage }  from '@deriv/translations';
+import { observable, action } from 'mobx';
+import { localize, getLanguage } from '@deriv/translations';
 import { importExternal, config } from '@deriv/bot-skeleton';
 
 export default class GoogleDriveStore {
@@ -12,8 +9,7 @@ export default class GoogleDriveStore {
         this.google_auth = null;
         this.setKey();
 
-        importExternal('https://apis.google.com/js/api.js')
-            .then(() => this.initialise());
+        importExternal('https://apis.google.com/js/api.js').then(() => this.initialise());
     }
 
     @observable is_authorised = false;
@@ -23,16 +19,16 @@ export default class GoogleDriveStore {
         this.client_id = cid;
         this.app_id = aid;
         this.api_key = api;
-    }
+    };
 
     initialise() {
         gapi.load('client:auth2:picker', {
             callback: () => {
                 gapi.client
                     .init({
-                        apiKey       : this.api_key,
-                        clientId     : this.client_id,
-                        scope        : 'https://www.googleapis.com/auth/drive',
+                        apiKey: this.api_key,
+                        clientId: this.client_id,
+                        scope: 'https://www.googleapis.com/auth/drive',
                         discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
                     })
                     .then(
@@ -61,13 +57,12 @@ export default class GoogleDriveStore {
             return Promise.resolve();
         }
 
-        return this.google_auth.signIn({ prompt: 'select_account' })
-            .catch(response => {
-                if (response.error === 'access_denied') {
-                    // TODO
-                    console.error('Please grant permission to view and manage Google Drive folders created with Deriv Bot'); // eslint-disable-line
-                }
-            });
+        return this.google_auth.signIn({ prompt: 'select_account' }).catch(response => {
+            if (response.error === 'access_denied') {
+                // TODO
+                console.error('Please grant permission to view and manage Google Drive folders created with Deriv Bot'); // eslint-disable-line
+            }
+        });
     }
 
     signOut() {
@@ -100,7 +95,10 @@ export default class GoogleDriveStore {
     @action.bound
     async loadFile() {
         await this.signIn();
-        const xml_doc = await this.createLoadFilePicker(['text/xml', 'application/xml'], localize('Select a Deriv Bot Strategy'));
+        const xml_doc = await this.createLoadFilePicker(
+            ['text/xml', 'application/xml'],
+            localize('Select a Deriv Bot Strategy')
+        );
 
         return xml_doc;
     }
@@ -117,9 +115,9 @@ export default class GoogleDriveStore {
 
         await files.create({
             resource: {
-                name    : this.bot_folder_name,
+                name: this.bot_folder_name,
                 mimeType: mime_type,
-                fields  : 'id',
+                fields: 'id',
             },
         });
     }
@@ -132,9 +130,9 @@ export default class GoogleDriveStore {
                     const folder_id = data.docs[0].id;
                     const strategy_file = new Blob([options.content], { type: options.mimeType });
                     const strategy_file_metadata = JSON.stringify({
-                        name    : options.name,
+                        name: options.name,
                         mimeType: options.mimeType,
-                        parents : [folder_id],
+                        parents: [folder_id],
                     });
 
                     const form_data = new FormData();
@@ -174,7 +172,7 @@ export default class GoogleDriveStore {
                     const { files } = gapi.client.drive;
 
                     const response = await files.get({
-                        alt     : 'media',
+                        alt: 'media',
                         fileId,
                         mimeType: 'text/plain',
                     });
@@ -212,4 +210,3 @@ export default class GoogleDriveStore {
             .setVisible(true);
     }
 }
-

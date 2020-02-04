@@ -1,15 +1,13 @@
 import classNames from 'classnames';
-import React      from 'react';
-import PropTypes  from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const Header = ({ className, children }) => (
-    <div className={classNames('dc-mobile-drawer__subheader', className)}>
-        {children}
-    </div>
+    <div className={classNames('dc-mobile-drawer__subheader', className)}>{children}</div>
 );
 
 Header.propTypes = {
-    children : PropTypes.node,
+    children: PropTypes.node,
     className: PropTypes.string,
 };
 

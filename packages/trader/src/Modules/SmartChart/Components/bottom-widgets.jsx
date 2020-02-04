@@ -1,13 +1,7 @@
-import PropTypes      from 'prop-types';
-import React          from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 
-const BottomWidgets = ({
-    Digits,
-}) => (
-    <div className='bottom-widgets'>
-        {Digits}
-    </div>
-);
+const BottomWidgets = ({ Digits }) => <div className='bottom-widgets'>{Digits}</div>;
 
 BottomWidgets.propTypes = {
     Digits: PropTypes.node,

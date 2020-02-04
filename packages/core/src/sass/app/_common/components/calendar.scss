@@ -1,4 +1,3 @@
-
 /** @define calendar */
 .calendar {
     position: absolute;
@@ -11,7 +10,8 @@
     background: var(--general-main-2);
     box-shadow: 0 2px 8px 0 var(--shadow-menu);
 
-    &__header, &__footer {
+    &__header,
+    &__footer {
         position: relative;
         display: flex;
         align-items: center;
@@ -26,7 +26,10 @@
         border-top: 0.1em solid var(--general-section-2);
         border-bottom: 0.1em solid var(--general-section-2);
 
-        &--date, &--month, &--year, &--decade {
+        &--date,
+        &--month,
+        &--year,
+        &--decade {
             display: grid;
             grid-gap: 1.2em;
             padding: 0.8em 2em;
@@ -47,7 +50,9 @@
                 height: 100%;
             }
         }
-        &--month, &--year, &--decade {
+        &--month,
+        &--year,
+        &--decade {
             grid-template-columns: repeat(3, minmax(7.2em, 1fr));
             grid-auto-rows: minmax(4.2em, auto);
 
@@ -162,7 +167,8 @@
         &--disabled:hover {
             cursor: default;
         }
-        &--disabled:not(.calendar__cell--today), &--other:not(.calendar__cell--today) {
+        &--disabled:not(.calendar__cell--today),
+        &--other:not(.calendar__cell--today) {
             color: var(--text-disabled);
             transition: none;
         }

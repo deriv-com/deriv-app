@@ -15,13 +15,13 @@
         margin-bottom: 4px;
     }
     /* overriding firefox shadow pseudo element */
-    &__track[type=range]::-moz-focus-outer {
+    &__track[type='range']::-moz-focus-outer {
         border: 0;
     }
     // TODO: remove once we have proper styling for input slider validation error
     &__error {
         .range-slider {
-            &__track[type=range] {
+            &__track[type='range'] {
                 // Range Handle Thumb - Chrome / Webkit based browsers
                 &::-webkit-slider-thumb {
                     background: var(--text-loss-danger);
@@ -40,12 +40,12 @@
             }
         }
     }
-    &__track[type=range] {
+    &__track[type='range'] {
         position: relative;
         // removal of !important is pending refactor in main trading sass file that overrides rules for input els
         appearance: none !important;
         width: 100% !important;
-        height: 2px;  // !important had to be removed to fix disappearing thumb on MS Edge
+        height: 2px; // !important had to be removed to fix disappearing thumb on MS Edge
         border-radius: 5px;
         outline: none;
         padding: 0;
@@ -55,7 +55,7 @@
         border: none;
 
         // Handles Track - MS Edge and IE
-        @supports (-ms-ime-align:auto) {
+        @supports (-ms-ime-align: auto) {
             height: 14px;
             position: relative;
             top: -6px;
@@ -75,17 +75,20 @@
             @include thumbStyle();
             background: var(--state-active);
         }
-        &:hover, &:focus, &:active {
+        &:hover,
+        &:focus,
+        &:active {
             border: 0;
             outline: none;
         }
-        &:active, &:focus {
+        &:active,
+        &:focus {
             box-shadow: none !important;
         }
         &::-ms-tooltip {
             display: none;
         }
-        &[type=range]::-ms-track {
+        &[type='range']::-ms-track {
             /*example */
             width: 100%;
             height: 2px;
@@ -94,11 +97,11 @@
             border-color: var(--general-section-1);
             color: var(--state-active);
         }
-        &[type=range]::-ms-fill-upper {
+        &[type='range']::-ms-fill-upper {
             height: 2px;
             background: var(--state-active);
         }
-        &[type=range]::-ms-fill-lower {
+        &[type='range']::-ms-fill-lower {
             height: 2px;
             background: var(--state-active);
         }
@@ -121,7 +124,8 @@
             border: 4px solid var(--state-normal);
             background: var(--state-normal);
 
-            &--active, &--marked {
+            &--active,
+            &--marked {
                 background: var(--state-active);
                 border-color: var(--state-active);
             }

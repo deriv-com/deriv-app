@@ -1,9 +1,9 @@
-import PropTypes  from 'prop-types';
-import React      from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import classNames from 'classnames';
-import Button     from 'Components/button';
+import Button from 'Components/button/button.jsx';
 import NumberGrid from './number-grid.jsx';
-import StepInput  from './step-input.jsx';
+import StepInput from './step-input.jsx';
 
 const concatenate = (number, default_value) => default_value.toString().concat(number);
 
@@ -22,12 +22,12 @@ const Numpad = ({
     format,
     onValueChange,
 }) => {
-    const [is_float, setFloat]      = React.useState(false);
+    const [is_float, setFloat] = React.useState(false);
     const [default_value, setValue] = React.useState(value);
-    const isFloat                   = (v) => v % 1 !== 0;
-    const formatNumber              = (v) => typeof format === 'function' ? format(v) : v;
+    const isFloat = v => v % 1 !== 0;
+    const formatNumber = v => (typeof format === 'function' ? format(v) : v);
 
-    const onSelect = (num) => {
+    const onSelect = num => {
         switch (num) {
             // backspace
             case -1:
@@ -50,7 +50,7 @@ const Numpad = ({
                 if (default_value === 0) {
                     setValue(concatenate(num, ''));
                 } else {
-                    const regex   = /(?:\d+\.)(\d+)$/;
+                    const regex = /(?:\d+\.)(\d+)$/;
                     const matches = regex.exec(default_value);
 
                     if (matches !== null && is_float) {
@@ -78,7 +78,7 @@ const Numpad = ({
     React.useEffect(() => {
         if (is_currency && typeof pip_size === 'undefined') {
             // eslint-disable-next-line no-console
-            console.error('Warning: property pip_size is required when using currency type <Numpad pip_size=\'2\' />');
+            console.error("Warning: property pip_size is required when using currency type <Numpad pip_size='2' />");
         }
     });
 
@@ -87,9 +87,9 @@ const Numpad = ({
     }, [default_value]);
 
     return (
-        <div className={
-            classNames('dc-numpad', className, {
-                'dc-numpad--is-regular' : is_regular || is_default_enabled,
+        <div
+            className={classNames('dc-numpad', className, {
+                'dc-numpad--is-regular': is_regular || is_default_enabled,
                 'dc-numpad--is-currency': is_currency && !is_default_enabled,
             })}
         >
@@ -97,7 +97,7 @@ const Numpad = ({
                 pip_size={pip_size}
                 value={default_value}
                 render={render}
-                onChange={(v) => {
+                onChange={v => {
                     if (!isFloat(v)) {
                         setFloat(false);
                     }
@@ -108,17 +108,12 @@ const Numpad = ({
                 label={label}
             />
             <NumberGrid onSelect={onSelect} />
-            {is_currency &&
-            <Button
-                type='secondary'
-                className='dc-numpad__number'
-                has_effect
-                onClick={() => onSelect('.')}
-            >.
-            </Button>}
-            <div
-                className='dc-numpad__bkspace'
-            >
+            {is_currency && (
+                <Button type='secondary' className='dc-numpad__number' has_effect onClick={() => onSelect('.')}>
+                    .
+                </Button>
+            )}
+            <div className='dc-numpad__bkspace'>
                 <Button
                     type='secondary'
                     has_effect
@@ -129,9 +124,7 @@ const Numpad = ({
                     ⌫
                 </Button>
             </div>
-            <div
-                className='dc-numpad__ok'
-            >
+            <div className='dc-numpad__ok'>
                 <Button
                     type='secondary'
                     has_effect
@@ -149,20 +142,17 @@ const Numpad = ({
 };
 
 Numpad.propTypes = {
-    currency    : PropTypes.string,
-    format      : PropTypes.func,
-    is_currency : PropTypes.bool,
-    is_regular  : PropTypes.bool,
-    max         : PropTypes.number,
-    min         : PropTypes.number,
-    onSubmit    : PropTypes.func,
-    pip_size    : PropTypes.number,
-    render      : PropTypes.func,
+    currency: PropTypes.string,
+    format: PropTypes.func,
+    is_currency: PropTypes.bool,
+    is_regular: PropTypes.bool,
+    max: PropTypes.number,
+    min: PropTypes.number,
+    onSubmit: PropTypes.func,
+    pip_size: PropTypes.number,
+    render: PropTypes.func,
     submit_label: PropTypes.string,
-    value       : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default Numpad;

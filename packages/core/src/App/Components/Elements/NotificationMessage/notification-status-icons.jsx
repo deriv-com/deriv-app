@@ -1,7 +1,7 @@
-import classNames     from 'classnames';
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import { Icon }       from '@deriv/components';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Icon } from '@deriv/components';
 import { icon_types } from './constants';
 
 const NotificationStatusIcons = ({ type, class_suffix }) => {
@@ -19,7 +19,7 @@ const NotificationStatusIcons = ({ type, class_suffix }) => {
     }
     return (
         <React.Fragment>
-            { !!type &&
+            {!!type && (
                 <Icon
                     icon={icon_types[type]}
                     className={classNames('notification__icon-type', {
@@ -27,14 +27,14 @@ const NotificationStatusIcons = ({ type, class_suffix }) => {
                     })}
                     color={type === 'success' ? 'green' : undefined}
                 />
-            }
+            )}
         </React.Fragment>
     );
 };
 
 NotificationStatusIcons.propTypes = {
     class_suffix: PropTypes.string,
-    type        : PropTypes.string,
+    type: PropTypes.string,
 };
 
 export default NotificationStatusIcons;

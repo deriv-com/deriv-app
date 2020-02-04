@@ -4,41 +4,43 @@ Blockly.Blocks.controls_forEach = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('for each item %1 in list %2'),
-            args0   : [
+            args0: [
                 {
-                    type    : 'field_variable',
-                    name    : 'VAR',
+                    type: 'field_variable',
+                    name: 'VAR',
                     variable: null,
                 },
                 {
-                    type : 'input_value',
-                    name : 'LIST',
+                    type: 'input_value',
+                    name: 'LIST',
                     check: 'Array',
                 },
             ],
             message1: localize('do %1'),
-            args1   : [
+            args1: [
                 {
                     type: 'input_statement',
                     name: 'DO',
                 },
             ],
-            colour           : Blockly.Colours.Base.colour,
-            colourSecondary  : Blockly.Colours.Base.colourSecondary,
-            colourTertiary   : Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
-            tooltip          : localize('Iterates through a given list'),
-            category         : Blockly.Categories.Loop,
+            nextStatement: null,
+            tooltip: localize('Iterates through a given list'),
+            category: Blockly.Categories.Loop,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Iterate (2)'),
-            'description' : localize('This block uses the variable "i" to control the iterations. With each iteration, the value of "i" is determined by the items in a given list.'),
+            display_name: localize('Iterate (2)'),
+            description: localize(
+                'This block uses the variable "i" to control the iterations. With each iteration, the value of "i" is determined by the items in a given list.'
+            ),
         };
     },
     getRequiredValueInputs() {

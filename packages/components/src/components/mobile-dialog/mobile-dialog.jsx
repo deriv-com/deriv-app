@@ -1,12 +1,12 @@
-import classNames        from 'classnames';
-import PropTypes         from 'prop-types';
-import React             from 'react';
-import ReactDOM          from 'react-dom';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Div100vhContainer from '../div100vh-container';
-import Icon              from '../icon';
+import Icon from '../icon';
 
-const MobileDialog = (props) => {
+const MobileDialog = props => {
     const { title, visible, children, portal_element_id, wrapper_classname } = props;
 
     const checkVisibility = () => {
@@ -29,7 +29,7 @@ const MobileDialog = (props) => {
     };
 
     // sometimes input is covered by virtual keyboard on mobile chrome, uc browser
-    const handleClick = (e) => {
+    const handleClick = e => {
         if (e.target.tagName === 'INPUT' && e.target.type === 'number') {
             const scrollToTarget = scrollToElement(e.currentTarget, e.target);
             window.addEventListener('resize', scrollToTarget, false);
@@ -48,35 +48,25 @@ const MobileDialog = (props) => {
             in={visible}
             timeout={250}
             classNames={{
-                enter    : 'dc-mobile-dialog--enter',
+                enter: 'dc-mobile-dialog--enter',
                 enterDone: 'dc-mobile-dialog--enter-done',
-                exit     : 'dc-mobile-dialog--exit',
+                exit: 'dc-mobile-dialog--exit',
             }}
             unmountOnExit
         >
-            <div
-                className='dc-mobile-dialog'
-                onClick={handleClick}
-            >
+            <div className='dc-mobile-dialog' onClick={handleClick}>
                 <Div100vhContainer height_offset='8px'>
                     <div className='dc-mobile-dialog__header'>
-                        <h2 className='dc-mobile-dialog__title'>
-                            {title}
-                        </h2>
-                        <div
-                            className='icons btn-close dc-mobile-dialog__close-btn'
-                            onClick={props.onClose}
-                        >
-                            <Icon
-                                icon='IcCross'
-                                className='dc-mobile-dialog__close-btn-icon'
-                            />
+                        <h2 className='dc-mobile-dialog__title'>{title}</h2>
+                        <div className='icons btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
+                            <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
                         </div>
                     </div>
                     <div className='dc-mobile-dialog__content'>
-                        <div className={classNames({
-                            [`dc-mobile-dialog__${wrapper_classname}`]: wrapper_classname },
-                        )}
+                        <div
+                            className={classNames({
+                                [`dc-mobile-dialog__${wrapper_classname}`]: wrapper_classname,
+                            })}
                         >
                             {children}
                         </div>
@@ -89,11 +79,11 @@ const MobileDialog = (props) => {
 };
 
 MobileDialog.propTypes = {
-    children         : PropTypes.any,
-    onClose          : PropTypes.func,
+    children: PropTypes.any,
+    onClose: PropTypes.func,
     portal_element_id: PropTypes.string.isRequired,
-    title            : PropTypes.string,
-    visible          : PropTypes.bool,
+    title: PropTypes.string,
+    visible: PropTypes.bool,
     wrapper_classname: PropTypes.string,
 };
 

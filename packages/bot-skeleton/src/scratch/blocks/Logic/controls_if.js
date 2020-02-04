@@ -1,8 +1,5 @@
 import { localize } from '@deriv/translations';
-import {
-    plusIconDark,
-    minusIconDark,
-}                   from '../images';
+import { plusIconDark, minusIconDark } from '../images';
 
 Blockly.Blocks.controls_if = {
     init() {
@@ -14,14 +11,14 @@ Blockly.Blocks.controls_if = {
         const addInputIcon = this.getAddInputIcon();
         this.appendDummyInput('MUTATOR').appendField(addInputIcon);
     },
-    definition(){
+    definition() {
         return {
             message0: localize('if %1 then'),
             message1: '%1',
-            args0   : [
+            args0: [
                 {
-                    type : 'input_value',
-                    name : 'IF0',
+                    type: 'input_value',
+                    name: 'IF0',
                     check: 'Boolean',
                 },
             ],
@@ -31,19 +28,21 @@ Blockly.Blocks.controls_if = {
                     name: 'DO0',
                 },
             ],
-            colour           : Blockly.Colours.Base.colour,
-            colourSecondary  : Blockly.Colours.Base.colourSecondary,
-            colourTertiary   : Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
-            tooltip          : localize('Conditional block'),
-            category         : Blockly.Categories.Logic,
+            nextStatement: null,
+            tooltip: localize('Conditional block'),
+            category: Blockly.Categories.Logic,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Conditional block'),
-            'description' : localize('This block evaluates a statement and will perform an action only when the statement is true.'),
+            display_name: localize('Conditional block'),
+            description: localize(
+                'This block evaluates a statement and will perform an action only when the statement is true.'
+            ),
         };
     },
     /**
@@ -122,7 +121,7 @@ Blockly.Blocks.controls_if = {
             }
 
             const old_mutation_dom = this.mutationToDom();
-            const new_input_num    = this.else_if_count + 1;
+            const new_input_num = this.else_if_count + 1;
 
             if (this.else_count === 0) {
                 // No `elseif`, just add an `else`-statement
@@ -231,7 +230,7 @@ Blockly.Blocks.controls_if = {
         const required_inputs = {};
         this.inputList
             .filter(input => /^IF[0-9]*?$/.test(input.name))
-            .forEach(input => required_inputs[input.name] = null);
+            .forEach(input => (required_inputs[input.name] = null));
 
         return required_inputs;
     },

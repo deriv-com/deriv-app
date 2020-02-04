@@ -1,10 +1,8 @@
-import { expect }        from 'chai';
-import {
-    mount,
-    shallow }            from 'enzyme';
-import React             from 'react';
-import { fake }          from 'sinon';
-import ToggleButton      from '../toggle-button.jsx';
+import { expect } from 'chai';
+import { mount, shallow } from 'enzyme';
+import React from 'react';
+import { fake } from 'sinon';
+import ToggleButton from '../toggle-button.jsx';
 import ToggleButtonGroup from '../toggle-button-group.jsx';
 
 describe('<ToggleButtonGroup />', () => {
@@ -15,47 +13,61 @@ describe('<ToggleButtonGroup />', () => {
             </ToggleButtonGroup>
         );
 
-        expect(wrapper.find('div').childAt(0).type()).to.equal(ToggleButton);
+        expect(
+            wrapper
+                .find('div')
+                .childAt(0)
+                .type()
+        ).to.equal(ToggleButton);
     });
 
     describe('prop: onChange', () => {
         it('should be called when one of the toggle_buttons is clicked', () => {
             const callback = fake();
-            const wrapper  = mount(
+            const wrapper = mount(
                 <ToggleButtonGroup onChange={callback}>
                     <ToggleButton value='test-one'>Test One</ToggleButton>
                     <ToggleButton value='test-two'>Test Two</ToggleButton>
                 </ToggleButtonGroup>
             );
 
-            wrapper.find(ToggleButton).at(0).simulate('click');
+            wrapper
+                .find(ToggleButton)
+                .at(0)
+                .simulate('click');
             expect(callback.callCount).to.equal(1);
         });
 
         describe('single choice', () => {
             it('should be called when one of the toggle_buttons is clicked with value of the button', () => {
                 const callback = fake();
-                const wrapper  = mount(
+                const wrapper = mount(
                     <ToggleButtonGroup onChange={callback}>
                         <ToggleButton value='test-one'>Test One</ToggleButton>
                         <ToggleButton value='test-two'>Test Two</ToggleButton>
                     </ToggleButtonGroup>
                 );
 
-                wrapper.find(ToggleButton).at(0).simulate('click');
+                wrapper
+                    .find(ToggleButton)
+                    .at(0)
+                    .simulate('click');
                 expect(callback.callCount).to.equal(1);
                 expect(callback.args[0][1]).to.equal('test-one');
             });
             it('should be called when one of the toggle_buttons is clicked with null value', () => {
                 const callback = fake();
-                const wrapper  = mount(
+                const wrapper = mount(
                     <ToggleButtonGroup onChange={callback} value='test-one'>
                         <ToggleButton value='test-one'>Test One</ToggleButton>
                         <ToggleButton value='test-two'>Test Two</ToggleButton>
                     </ToggleButtonGroup>
                 );
 
-                wrapper.find(ToggleButton).at(0).simulate('click');
+                wrapper
+                    .find(ToggleButton)
+                    .at(0)
+                    .simulate('click');
                 expect(callback.callCount).to.equal(1);
                 expect(callback.args[0][1]).to.equal(null);
             });
@@ -64,28 +76,34 @@ describe('<ToggleButtonGroup />', () => {
         describe('multiple choice', () => {
             it('should be called when one of the toggle_buttons is clicked with value of the button', () => {
                 const callback = fake();
-                const wrapper  = mount(
+                const wrapper = mount(
                     <ToggleButtonGroup onChange={callback} multiple>
                         <ToggleButton value='test-one'>Test One</ToggleButton>
                         <ToggleButton value='test-two'>Test Two</ToggleButton>
                     </ToggleButtonGroup>
                 );
 
-                wrapper.find(ToggleButton).at(0).simulate('click');
+                wrapper
+                    .find(ToggleButton)
+                    .at(0)
+                    .simulate('click');
                 expect(callback.callCount).to.equal(1);
                 expect(callback.args[0][1].length).to.equal(1);
                 expect(callback.args[0][1].slice(-1)).to.eql(['test-one']);
             });
             it('should be called when the first ToggleButton is clicked with an empty array', () => {
                 const callback = fake();
-                const wrapper  = mount(
+                const wrapper = mount(
                     <ToggleButtonGroup onChange={callback} value={['test-one']} multiple>
                         <ToggleButton value='test-one'>Test One</ToggleButton>
                         <ToggleButton value='test-two'>Test Two</ToggleButton>
                     </ToggleButtonGroup>
                 );
 
-                wrapper.find(ToggleButton).at(0).simulate('click');
+                wrapper
+                    .find(ToggleButton)
+                    .at(0)
+                    .simulate('click');
                 expect(callback.callCount).to.equal(1);
                 expect(callback.args[0][1]).to.be.an('array');
                 expect(callback.args[0][1].length).to.equal(0);
@@ -96,7 +114,7 @@ describe('<ToggleButtonGroup />', () => {
     describe('Check the button selection', () => {
         it('should select the button Test One in single mode', () => {
             const callback = fake();
-            const wrapper  = mount(
+            const wrapper = mount(
                 <ToggleButtonGroup onChange={callback} value={'test-one'}>
                     <ToggleButton value='test-one'>Test One</ToggleButton>
                     <ToggleButton value='test-two'>Test Two</ToggleButton>
@@ -110,7 +128,7 @@ describe('<ToggleButtonGroup />', () => {
 
         it('should select the button Test One in multiple mode', () => {
             const callback = fake();
-            const wrapper  = mount(
+            const wrapper = mount(
                 <ToggleButtonGroup onChange={callback} value={['test-two', 'test-one']}>
                     <ToggleButton value='test-one'>Test One</ToggleButton>
                     <ToggleButton value='test-two'>Test Two</ToggleButton>

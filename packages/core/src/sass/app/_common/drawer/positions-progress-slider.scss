@@ -60,11 +60,13 @@
             &:last-child {
                 margin-right: 0;
             }
-            &:first-child, &:first-child:before {
+            &:first-child,
+            &:first-child:before {
                 border-top-left-radius: $BORDER_RADIUS;
                 border-bottom-left-radius: $BORDER_RADIUS;
             }
-            &:last-child, &:last-child:before {
+            &:last-child,
+            &:last-child:before {
                 border-top-right-radius: $BORDER_RADIUS;
                 border-bottom-right-radius: $BORDER_RADIUS;
             }
@@ -113,7 +115,8 @@
         &--indeterminate {
             background-color: var(--state-active);
 
-            &:before, &:after {
+            &:before,
+            &:after {
                 content: '';
                 position: absolute;
                 background-color: inherit;

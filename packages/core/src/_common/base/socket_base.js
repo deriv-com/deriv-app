@@ -281,7 +281,6 @@ const BinarySocketBase = (() => {
         newAccountVirtual,
         newAccountReal,
         p2pAgentInfo,
-        p2pOfferList,
         p2pSubscribe,
         profitTable,
         statement,

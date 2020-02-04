@@ -77,7 +77,6 @@ class VerticalTab extends React.Component {
                     items={this.props.list}
                     selected={selected}
                     is_routed={this.props.is_routed}
-                    is_scrollable={this.props.is_scrollable}
                 />
             </div>
         );
@@ -104,7 +103,6 @@ VerticalTab.propTypes = {
     is_floating: PropTypes.bool,
     is_full_width: PropTypes.bool,
     is_routed: PropTypes.bool,
-    is_scrollable: PropTypes.bool,
     is_sidebar_enabled: PropTypes.bool,
     list: PropTypes.arrayOf(
         PropTypes.shape({

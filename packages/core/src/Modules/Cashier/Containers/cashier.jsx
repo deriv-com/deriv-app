@@ -41,6 +41,7 @@ class Cashier extends React.Component {
                         label: route.title,
                         value: route.component,
                         path: route.path,
+                        has_side_note: route.path !== routes.cashier_dp2p, // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
                     });
                 }
             });
@@ -64,7 +65,6 @@ class Cashier extends React.Component {
                             is_floating
                             is_full_width
                             is_routed
-                            is_scrollable
                             list={menu_options()}
                         />
                     </PageOverlay>

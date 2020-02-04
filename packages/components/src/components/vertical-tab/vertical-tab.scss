@@ -19,11 +19,14 @@ $MIN_HEIGHT_FLOATING: calc(
     &--floating {
         justify-content: center;
     }
-    &__content-container {
+    &__content-container,
+    &__content-inner {
         position: relative;
         height: 100%;
         width: 100%;
         display: flex;
+    }
+    &__content-container {
         flex-flow: column nowrap;
         flex-grow: 1;
     }
@@ -80,6 +83,8 @@ $MIN_HEIGHT_FLOATING: calc(
             min-width: 256px;
             padding: 0.8rem;
             border-radius: #{$BORDER_RADIUS * 2};
+            position: sticky;
+            top: 2.4rem;
         }
     }
     &__header-title {
@@ -143,6 +148,10 @@ $MIN_HEIGHT_FLOATING: calc(
         position: relative;
         background-color: var(--general-main-1);
 
+        &-side-note {
+            min-width: 256px;
+            margin-left: 2.4rem;
+        }
         &.dc-vertical-tab:not(.dc-vertical-tab--full-screen) {
             @include toEm(padding, 24px);
             height: 100%;

@@ -1,14 +1,17 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'Stores/connect';
-import { VerticalTabContentContainer } from './vertical-tab-content-container.jsx';
-import { VerticalTabHeaders } from './vertical-tab-headers.jsx';
+import VerticalTabContentContainer from 'Components/vertical-tab/vertical-tab-content-container.jsx';
+import VerticalTabHeader from 'Components/vertical-tab/vertical-tab-header.jsx';
+import VerticalTabHeaders from 'Components/vertical-tab/vertical-tab-headers.jsx';
+import VerticalTabHeaderTitle from 'Components/vertical-tab/vertical-tab-header-title.jsx';
+import VerticalTabLayout from 'Components/vertical-tab/vertical-tab-layout.jsx';
+import VerticalTabWrapper from 'Components/vertical-tab/vertical-tab-wrapper.jsx';
 
 class VerticalTab extends React.Component {
     constructor(props) {
         super(props);
-        this.setSelectedIndex(props);
+        this.state = { vertical_tab_index: props.vertical_tab_index || 0 };
     }
 
     setSelectedIndex = ({ list, selected_index, is_routed, current_path }) => {
@@ -16,9 +19,14 @@ class VerticalTab extends React.Component {
         if (typeof selected_index === 'undefined') {
             index = is_routed ? list.indexOf(list.find(item => item.path === (current_path || item.default))) || 0 : 0;
         } else {
-            index = selected_index;
+            index = typeof selected_index === 'object' ? list.indexOf(selected_index) : selected_index;
         }
-        this.props.setModalIndex(typeof index === 'object' ? list.indexOf(index) : index);
+
+        this.setState({ vertical_tab_index: index });
+
+        if (typeof this.props.setVerticalTabIndex === 'function') {
+            this.props.setVerticalTabIndex(index);
+        }
     };
 
     changeSelected = e => {
@@ -27,6 +35,10 @@ class VerticalTab extends React.Component {
             selected_index: e,
         });
     };
+
+    componentDidMount() {
+        this.setSelectedIndex(this.props);
+    }
 
     componentDidUpdate(prevProps) {
         if (this.props.list.length !== prevProps.list.length) {
@@ -39,16 +51,16 @@ class VerticalTab extends React.Component {
     }
 
     render() {
-        const selected = this.props.list[this.props.modal_index] || this.props.list[0];
+        const selected = this.props.list[this.state.vertical_tab_index] || this.props.list[0];
         return (
             <div
-                className={classNames('vertical-tab', {
-                    'vertical-tab--full-screen': this.props.is_full_width,
+                className={classNames('dc-vertical-tab', {
+                    'dc-vertical-tab--full-screen': this.props.is_full_width,
                 })}
             >
                 {this.props.is_sidebar_enabled && (
                     <VerticalTabHeaders
-                        className={this.props.classNameHeader}
+                        className={this.props.header_classname}
                         items={this.props.list}
                         onChange={this.changeSelected}
                         selected={selected}
@@ -82,8 +94,8 @@ VerticalTab.propTypes = {
         })
     ),
     action_bar_classname: PropTypes.string,
-    classNameHeader: PropTypes.string,
     current_path: PropTypes.string,
+    header_classname: PropTypes.string,
     header_title: PropTypes.string,
     is_full_width: PropTypes.bool,
     is_routed: PropTypes.bool,
@@ -97,12 +109,16 @@ VerticalTab.propTypes = {
             value: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
         })
     ).isRequired,
-    modal_index: PropTypes.number,
     selected_index: PropTypes.number,
-    setModalIndex: PropTypes.func,
+    setVerticalTabIndex: PropTypes.func,
+    vertical_tab_index: PropTypes.number,
 };
 
-export default connect(({ ui }) => ({
-    setModalIndex: ui.setModalIndex,
-    modal_index: ui.modal_index,
-}))(VerticalTab);
+VerticalTab.ContentContainer = VerticalTabContentContainer;
+VerticalTab.Header = VerticalTabHeader;
+VerticalTab.Headers = VerticalTabHeaders;
+VerticalTab.HeaderTitle = VerticalTabHeaderTitle;
+VerticalTab.Layout = VerticalTabLayout;
+VerticalTab.Wrapper = VerticalTabWrapper;
+
+export default VerticalTab;

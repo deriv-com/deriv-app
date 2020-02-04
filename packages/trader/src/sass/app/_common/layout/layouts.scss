@@ -72,7 +72,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 display: none;
             }
             @include mobile {
-                width: 100%;
                 height: 214px;
                 border-bottom-right-radius: $BORDER_RADIUS;
                 border-top-right-radius: $BORDER_RADIUS;

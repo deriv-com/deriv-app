@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Button from '../button';
+import Button from 'Components/button/button.jsx';
 import Icon from '../icon';
 
 const TickPicker = ({

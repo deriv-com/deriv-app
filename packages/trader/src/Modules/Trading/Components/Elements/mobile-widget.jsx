@@ -1,9 +1,9 @@
 import React from 'react';
-import { Money, Modal } from '@deriv/components';
+import { Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
-import TradeParamsMobile from '../../Containers/trade-params-mobile.jsx';
+import TradeParamsModal from '../../Containers/trade-params-mobile.jsx';
 
 class MobileWidget extends React.Component {
     constructor(props) {
@@ -58,32 +58,16 @@ class MobileWidget extends React.Component {
                     </div>
                     <div className='mobile-widget__type'>{stakeOrPayout()}</div>
                 </div>
-                <Modal
-                    id='dt_trade_parameters_mobile'
-                    className='trade-params'
-                    enableApp={this.props.enableApp}
-                    is_open={this.state.is_open}
-                    is_vertical_top
-                    disableApp={this.props.disableApp}
-                    toggleModal={this.toggleWidget}
-                    height='auto'
-                    width='calc(100vw - 32px)'
-                >
-                    <div className='mobile-widget-dialog__wrapper'>
-                        <TradeParamsMobile toggleModal={this.toggleWidget} is_nativepicker />
-                    </div>
-                </Modal>
+                <TradeParamsModal is_open={this.state.is_open} toggleModal={this.toggleWidget} />
             </React.Fragment>
         );
     }
 }
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules }) => ({
     amount: modules.trade.amount,
     basis: modules.trade.basis,
     currency: modules.trade.currency,
     duration: modules.trade.duration,
     duration_unit: modules.trade.duration_unit,
-    enableApp: ui.enableApp,
-    disableApp: ui.disableApp,
 }))(MobileWidget);

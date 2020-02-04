@@ -2,7 +2,7 @@ import RawMarkerMaker from './Helpers/raw-marker-maker.jsx';
 import Svg2Canvas from './Helpers/svg2canvas';
 import { get_color, get_hex_opacity } from './Helpers/colors';
 import { shadowed_text } from './Helpers/text';
-import { draw_vertical_labelled_line, draw_barrier_line_to_icon, draw_barrier_line, draw_line } from './Helpers/lines';
+import { draw_vertical_labelled_line, draw_barrier_line, draw_line } from './Helpers/lines';
 import { draw_shade } from './Helpers/shade';
 import { calc_scale, calc_opacity } from './Helpers/calculations';
 import * as ICONS from '../icons';
@@ -113,23 +113,23 @@ const TickContract = RawMarkerMaker(
         ctx.fillStyle = background_color;
         if (is_reset_barrier_expired) {
             if (is_sold) {
-                draw_line({
+                draw_line(
                     ctx,
-                    start: { left: reset_time.left, top: entry_tick_top },
-                    end: { left: reset_time.left, top: barrier },
-                    line_style: 'dashed',
-                });
+                    { left: reset_time.left, top: entry_tick_top },
+                    { left: reset_time.left, top: barrier },
+                    'dashed'
+                );
             }
 
             ctx.strokeStyle = foreground_color;
-            draw_barrier_line({ ctx, start, exit: reset_time, barrier: entry_tick_top, line_style: 'dashed' });
+            draw_barrier_line(ctx, start, reset_time, entry_tick_top, 'dashed');
             ctx.strokeStyle = status_color_with_opacity;
-            draw_barrier_line({ ctx, start: reset_time, exit, barrier });
+            draw_barrier_line(ctx, reset_time, exit, barrier);
         } else {
             ctx.strokeStyle = foreground_color;
-            draw_barrier_line({ ctx, start, exit: entry, barrier, line_style: 'dashed' });
+            draw_barrier_line(ctx, start, entry, barrier, 'dashed');
             ctx.strokeStyle = status_color_with_opacity;
-            draw_barrier_line({ ctx, start: entry, exit, barrier, line_style: 'solid' });
+            draw_barrier_line(ctx, entry, exit, barrier, 'solid');
         }
 
         if (is_last_contract && !is_sold) {
@@ -180,7 +180,8 @@ const TickContract = RawMarkerMaker(
             });
 
             ctx.strokeStyle = status_color_with_opacity;
-            draw_barrier_line_to_icon({ ctx, exit, barrier, icon });
+            draw_line(ctx, { left: exit.left, top: barrier }, exit, 'dashed');
+            Svg2Canvas.render({ ctx, icon, position: exit });
         }
 
         ctx.restore();

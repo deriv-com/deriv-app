@@ -4,39 +4,45 @@ Blockly.Blocks.math_arithmetic = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: '%1 %2 %3',
-            args0   : [
+            args0: [
                 {
-                    type : 'input_value',
-                    name : 'A',
+                    type: 'input_value',
+                    name: 'A',
                     check: 'Number',
                 },
                 {
-                    type   : 'field_dropdown',
-                    name   : 'OP',
-                    options: [['+', 'ADD'], ['-', 'MINUS'], ['*', 'MULTIPLY'], ['/', 'DIVIDE'], ['^', 'POWER']],
+                    type: 'field_dropdown',
+                    name: 'OP',
+                    options: [
+                        ['+', 'ADD'],
+                        ['-', 'MINUS'],
+                        ['*', 'MULTIPLY'],
+                        ['/', 'DIVIDE'],
+                        ['^', 'POWER'],
+                    ],
                 },
                 {
-                    type : 'input_value',
-                    name : 'B',
+                    type: 'input_value',
+                    name: 'B',
                     check: 'Number',
                 },
             ],
-            output         : 'Number',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('This block performs arithmetic operations between two numbers.'),
-            category       : Blockly.Categories.Mathematical,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('This block performs arithmetic operations between two numbers.'),
+            category: Blockly.Categories.Mathematical,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Arithmetical operations'),
-            'description' : localize('This block performs arithmetic operations between two numbers.'),
+            display_name: localize('Arithmetical operations'),
+            description: localize('This block performs arithmetic operations between two numbers.'),
         };
     },
     getRequiredValueInputs() {
@@ -49,11 +55,11 @@ Blockly.Blocks.math_arithmetic = {
 
 Blockly.JavaScript.math_arithmetic = block => {
     const operators = {
-        ADD     : ['+', Blockly.JavaScript.ORDER_ADDITION],
-        MINUS   : ['-', Blockly.JavaScript.ORDER_SUBTRACTION],
+        ADD: ['+', Blockly.JavaScript.ORDER_ADDITION],
+        MINUS: ['-', Blockly.JavaScript.ORDER_SUBTRACTION],
         MULTIPLY: ['*', Blockly.JavaScript.ORDER_MULTIPLICATION],
-        DIVIDE  : ['/', Blockly.JavaScript.ORDER_DIVISION],
-        POWER   : [null, Blockly.JavaScript.ORDER_COMMA], // Handle power separately.
+        DIVIDE: ['/', Blockly.JavaScript.ORDER_DIVISION],
+        POWER: [null, Blockly.JavaScript.ORDER_COMMA], // Handle power separately.
     };
 
     const tuple = operators[block.getFieldValue('OP')];

@@ -45,7 +45,7 @@ Blockly.Variables.generateVariableFieldDom = function(variableModel) {
      * <field name="VAR" id="goKTKmYJ8DhVHpruv" variabletype="int">foo</field>
      */
     const field = Blockly.utils.xml.createElement('field');
-    
+
     field.setAttribute('name', 'VAR');
     field.setAttribute('id', variableModel.getId());
     field.setAttribute('variabletype', variableModel.type);

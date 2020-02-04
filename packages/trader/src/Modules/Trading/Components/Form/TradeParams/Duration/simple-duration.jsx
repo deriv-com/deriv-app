@@ -1,11 +1,11 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
-import PropTypes                      from 'prop-types';
-import React, { Fragment }            from 'react';
-import ButtonToggleMenu               from 'App/Components/Form/ButtonToggleMenu';
-import InputField                     from 'App/Components/Form/InputField';
-import RangeSlider                    from 'App/Components/Form/RangeSlider';
-import { connect }                    from 'Stores/connect';
-import TradingDatePicker              from '../../DatePicker';
+import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
+import ButtonToggleMenu from 'App/Components/Form/ButtonToggleMenu';
+import InputField from 'App/Components/Form/InputField';
+import RangeSlider from 'App/Components/Form/RangeSlider';
+import { connect } from 'Stores/connect';
+import TradingDatePicker from '../../DatePicker';
 
 const SimpleDuration = ({
     contract_expiry_type,
@@ -18,7 +18,7 @@ const SimpleDuration = ({
     simple_duration_unit,
     validation_errors,
 }) => {
-    const filterMinutesAndTicks = (arr) => {
+    const filterMinutesAndTicks = arr => {
         const filtered_arr = arr.filter(du => du.value === 't' || du.value === 'm');
         if (filtered_arr.length <= 1) return [];
 
@@ -28,7 +28,7 @@ const SimpleDuration = ({
 
     return (
         <Fragment>
-            { duration_units_list.length > 1 &&
+            {duration_units_list.length > 1 && (
                 <ButtonToggleMenu
                     id='dt_simple_duration_toggle'
                     buttons_arr={filterMinutesAndTicks(duration_units_list)}
@@ -37,23 +37,12 @@ const SimpleDuration = ({
                     onChange={changeDurationUnit}
                     value={simple_duration_unit}
                 />
-            }
-            { simple_duration_unit === 't' && contract_expiry_type === 'tick' &&
-                <RangeSlider
-                    name='duration'
-                    value={duration_t}
-                    ticks={10}
-                    {...shared_input_props}
-                />
-            }
-            { simple_duration_unit === 'd' &&
-                <TradingDatePicker
-                    alignment='left'
-                    mode='duration'
-                    name='duration'
-                />
-            }
-            { (simple_duration_unit !== 't' && simple_duration_unit !== 'd') &&
+            )}
+            {simple_duration_unit === 't' && contract_expiry_type === 'tick' && (
+                <RangeSlider name='duration' value={duration_t} ticks={10} {...shared_input_props} />
+            )}
+            {simple_duration_unit === 'd' && <TradingDatePicker alignment='left' mode='duration' name='duration' />}
+            {simple_duration_unit !== 't' && simple_duration_unit !== 'd' && (
                 <InputField
                     id='dt_simple_duration_input'
                     classNameInput='trade-container__input'
@@ -64,26 +53,24 @@ const SimpleDuration = ({
                     {...number_input_props}
                     {...shared_input_props}
                 />
-            }
+            )}
         </Fragment>
     );
 };
 
 SimpleDuration.propTypes = {
-    changeDurationUnit  : PropTypes.func,
+    changeDurationUnit: PropTypes.func,
     contract_expiry_type: PropTypes.string,
-    duration_t          : PropTypes.number,
-    duration_units_list : MobxPropTypes.arrayOrObservableArray,
-    getDurationFromUnit : PropTypes.func,
-    number_input_props  : PropTypes.object,
-    shared_input_props  : PropTypes.object,
+    duration_t: PropTypes.number,
+    duration_units_list: MobxPropTypes.arrayOrObservableArray,
+    getDurationFromUnit: PropTypes.func,
+    number_input_props: PropTypes.object,
+    shared_input_props: PropTypes.object,
     simple_duration_unit: PropTypes.string,
-    validation_errors   : PropTypes.object,
+    validation_errors: PropTypes.object,
 };
 
-export default connect(
-    ({ modules }) => ({
-        contract_expiry_type: modules.trade.contract_expiry_type,
-        validation_errors   : modules.trade.validation_errors,
-    })
-)(SimpleDuration);
+export default connect(({ modules }) => ({
+    contract_expiry_type: modules.trade.contract_expiry_type,
+    validation_errors: modules.trade.validation_errors,
+}))(SimpleDuration);

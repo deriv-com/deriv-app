@@ -1,12 +1,12 @@
-import PropTypes    from 'prop-types';
-import React        from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import ContractType from './contract-type.jsx';
 
 class ContractTypeWidget extends React.PureComponent {
     state = {
-        is_dialog_open     : false,
+        is_dialog_open: false,
         is_info_dialog_open: false,
-        list               : this.props.list,
+        list: this.props.list,
     };
 
     componentDidMount() {
@@ -19,39 +19,42 @@ class ContractTypeWidget extends React.PureComponent {
 
     handleSelect = (item, e) => {
         if (e.target.id !== 'info-icon') {
-            this.setState({
-                is_dialog_open     : false,
-                is_info_dialog_open: false,
-                item,
-            }, () => {
-                if (item.value !== this.props.value) {
-                    this.props.onChange({ target: { name: this.props.name, value: item.value } });
+            this.setState(
+                {
+                    is_dialog_open: false,
+                    is_info_dialog_open: false,
+                    item,
+                },
+                () => {
+                    if (item.value !== this.props.value) {
+                        this.props.onChange({ target: { name: this.props.name, value: item.value } });
+                    }
                 }
-            });
+            );
         }
     };
 
-    handleInfoClick = (item) => {
+    handleInfoClick = item => {
         this.setState(state => ({
             is_info_dialog_open: !state.is_info_dialog_open,
             item,
         }));
     };
 
-    handleNavigationClick = (item) => {
+    handleNavigationClick = item => {
         this.setState({ item });
     };
 
-    setWrapperRef = (node) => {
+    setWrapperRef = node => {
         this.wrapper_ref = node;
     };
 
-    handleClickOutside = (event) => {
+    handleClickOutside = event => {
         if (this.wrapper_ref && !this.wrapper_ref.contains(event.target)) {
             this.setState({
-                is_dialog_open     : false,
+                is_dialog_open: false,
                 is_info_dialog_open: false,
-                item               : { value: this.props.value },
+                item: { value: this.props.value },
             });
         }
     };
@@ -62,9 +65,9 @@ class ContractTypeWidget extends React.PureComponent {
 
     onWidgetClick = () => {
         this.setState(state => ({
-            is_dialog_open     : !state.is_dialog_open,
+            is_dialog_open: !state.is_dialog_open,
             is_info_dialog_open: false,
-            item               : { value: this.props.value },
+            item: { value: this.props.value },
         }));
     };
 
@@ -72,10 +75,10 @@ class ContractTypeWidget extends React.PureComponent {
         this.setState({ is_info_dialog_open: false, item: { value: this.props.value } });
     };
 
-    onChangeInput = (list) => {
+    onChangeInput = list => {
         this.setState({ list });
-    }
-    
+    };
+
     render() {
         const { is_equal, is_mobile, name, value } = this.props;
         const { is_dialog_open, is_info_dialog_open, item, list } = this.state;
@@ -104,7 +107,7 @@ class ContractTypeWidget extends React.PureComponent {
                     onClose={this.handleVisibility}
                     onChangeInput={this.onChangeInput}
                 >
-                    {!is_info_dialog_open ?
+                    {!is_info_dialog_open ? (
                         <ContractType.List
                             handleInfoClick={this.handleInfoClick}
                             handleSelect={this.handleSelect}
@@ -113,14 +116,14 @@ class ContractTypeWidget extends React.PureComponent {
                             name={name}
                             value={value}
                         />
-                        :
+                    ) : (
                         <ContractType.Info
                             handleNavigationClick={this.handleNavigationClick}
                             handleSelect={this.handleSelect}
                             item={item || { value }}
                             list={list}
                         />
-                    }
+                    )}
                 </ContractType.Dialog>
             </div>
         );
@@ -128,18 +131,12 @@ class ContractTypeWidget extends React.PureComponent {
 }
 
 ContractTypeWidget.propTypes = {
-    is_equal: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
+    is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     is_mobile: PropTypes.bool,
-    list     : PropTypes.oneOfType([
-        PropTypes.array,
-        PropTypes.object,
-    ]),
-    name    : PropTypes.string,
+    list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+    name: PropTypes.string,
     onChange: PropTypes.func,
-    value   : PropTypes.string,
+    value: PropTypes.string,
 };
 
 export default ContractTypeWidget;

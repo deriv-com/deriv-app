@@ -62,6 +62,7 @@ import './common/ic-cross.svg';
 import './common/ic-demo.svg';
 import './common/ic-desktop.svg';
 import './common/ic-digits.svg';
+import './common/ic-download.svg';
 import './common/ic-dp2p.svg';
 import './common/ic-driving-license.svg';
 import './common/ic-edit.svg';

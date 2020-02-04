@@ -1,8 +1,8 @@
-import React                  from 'react';
-import { expect }             from 'chai';
+import React from 'react';
+import { expect } from 'chai';
 import { configure, shallow } from 'enzyme';
-import Adapter                from 'enzyme-adapter-react-16';
-import MarkerSpotLabel        from '../marker-spot-label.jsx';
+import Adapter from 'enzyme-adapter-react-16';
+import MarkerSpotLabel from '../marker-spot-label.jsx';
 
 configure({ adapter: new Adapter() });
 
@@ -27,7 +27,7 @@ describe('MarkerSpotLabel', () => {
     it('should toggle label on hover if has_hover_toggle is passed in props', () => {
         const wrapper = shallow(<MarkerSpotLabel has_hover_toggle={true} />);
         expect(wrapper.state('show_label')).to.be.false;
-    
+
         wrapper.find('.marker-hover-container').simulate('mouseenter');
         expect(wrapper.state('show_label')).to.be.true;
 
@@ -48,4 +48,3 @@ describe('MarkerSpotLabel', () => {
         expect(wrapper.find('.chart-spot-label__value-container--lost').exists()).to.be.true;
     });
 });
-

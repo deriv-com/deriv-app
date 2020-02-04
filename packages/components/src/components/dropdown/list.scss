@@ -11,7 +11,8 @@
     &--left {
         width: unset;
 
-        .dc-list__item-text, .dc-list__item-symbol {
+        .dc-list__item-text,
+        .dc-list__item-symbol {
             padding-left: 2.286em;
             padding-right: 2.286em;
             overflow: hidden;
@@ -33,7 +34,8 @@
         width: 100%;
         cursor: pointer;
 
-        &-text, &-symbol {
+        &-text,
+        &-symbol {
             @include typeface(--paragraph-left-normal-black);
             line-height: 1.43;
             color: var(--text-general);
@@ -52,7 +54,9 @@
             background-color: var(--state-hover);
             color: var(--text-general);
         }
-        &--selected .dc-list__item-text, &--selected .dc-list__item-symbol, &--selected .dc-list__item-tooltip {
+        &--selected .dc-list__item-text,
+        &--selected .dc-list__item-symbol,
+        &--selected .dc-list__item-tooltip {
             @include typeface(--paragraph-left-bold-active);
             line-height: 1.43;
             color: var(--text-prominent);
@@ -76,7 +80,6 @@
             justify-content: center;
             display: flex;
             color: var(--text-general);
-
         }
     }
     &__separator {
@@ -87,8 +90,9 @@
     }
 
     // fix for safari bug with overflow-x not working in dropdown
-    @media not all and (min-resolution: 0.001dpcm) { // stylelint-disable-line
-        @supports (-webkit-appearance:none) {
+    @media not all and (min-resolution: 0.001dpcm) {
+        // stylelint-disable-line
+        @supports (-webkit-appearance: none) {
             /* postcss-bem-linter: ignore */
             & > div:nth-child(1) > div:nth-child(1) {
                 overflow-y: scroll !important;

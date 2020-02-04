@@ -1,4 +1,4 @@
-import ObjectUtils             from '@deriv/shared/utils/object';
+import ObjectUtils from '@deriv/shared/utils/object';
 import {
     createMarkerEndTime,
     createMarkerPurchaseTime,
@@ -6,16 +6,14 @@ import {
     createMarkerSpotExit,
     createMarkerStartTime,
     createMarkerSpotMiddle,
-    getSpotCount }             from './chart-marker-helpers';
-import {
-    getChartType,
-    getEndTime }               from './logic';
+    getSpotCount,
+} from './chart-marker-helpers';
+import { getChartType, getEndTime } from './logic';
 import { MARKER_TYPES_CONFIG } from '../../SmartChart/Constants/markers';
 
-export const createChartMarkers = (contract_info) => {
+export const createChartMarkers = contract_info => {
     let markers = [];
     if (contract_info) {
-
         const end_time = getEndTime(contract_info);
         const chart_type = getChartType(contract_info.date_start, end_time);
 
@@ -23,15 +21,10 @@ export const createChartMarkers = (contract_info) => {
             const tick_markers = createTickMarkers(contract_info);
             markers.push(...tick_markers);
         } else if (chart_type !== 'candle') {
-
-            const spot_markers = Object.keys(marker_spots).map(
-                type => marker_spots[type](contract_info)
-            );
+            const spot_markers = Object.keys(marker_spots).map(type => marker_spots[type](contract_info));
             markers.push(...spot_markers);
         }
-        const line_markers = Object.keys(marker_lines).map(
-            type => marker_lines[type](contract_info)
-        );
+        const line_markers = Object.keys(marker_lines).map(type => marker_lines[type](contract_info));
         markers.push(...line_markers);
 
         markers = markers.filter(m => !!m);
@@ -46,12 +39,12 @@ export const createChartMarkers = (contract_info) => {
 
 const marker_spots = {
     [MARKER_TYPES_CONFIG.SPOT_ENTRY.type]: createMarkerSpotEntry,
-    [MARKER_TYPES_CONFIG.SPOT_EXIT.type] : createMarkerSpotExit,
+    [MARKER_TYPES_CONFIG.SPOT_EXIT.type]: createMarkerSpotExit,
 };
 
 const marker_lines = {
-    [MARKER_TYPES_CONFIG.LINE_START.type]   : createMarkerStartTime,
-    [MARKER_TYPES_CONFIG.LINE_END.type]     : createMarkerEndTime,
+    [MARKER_TYPES_CONFIG.LINE_START.type]: createMarkerStartTime,
+    [MARKER_TYPES_CONFIG.LINE_END.type]: createMarkerEndTime,
     [MARKER_TYPES_CONFIG.LINE_PURCHASE.type]: createMarkerPurchaseTime,
 };
 
@@ -67,14 +60,15 @@ const addLabelAlignment = (tick, idx, arr) => {
     return tick;
 };
 
-const createTickMarkers = (contract_info) => {
+const createTickMarkers = contract_info => {
     const tick_stream = ObjectUtils.unique(contract_info.tick_stream, 'epoch').map(addLabelAlignment);
     const result = [];
 
     tick_stream.forEach((tick, idx) => {
-        const is_entry_spot  = idx === 0 && +tick.epoch !== contract_info.exit_tick_time;
+        const is_entry_spot = idx === 0 && +tick.epoch !== contract_info.exit_tick_time;
         const is_middle_spot = idx > 0 && +tick.epoch !== +contract_info.exit_tick_time;
-        const is_exit_spot   = +tick.epoch === +contract_info.exit_tick_time ||
+        const is_exit_spot =
+            +tick.epoch === +contract_info.exit_tick_time ||
             getSpotCount(contract_info, idx) === contract_info.tick_count;
 
         let marker_config;

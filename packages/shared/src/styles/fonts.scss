@@ -8,42 +8,33 @@ $BASE_FONT_SIZE: 10px;
     Variables
 */
 $FONT_SIZES: (
-    'heading'   3rem,
-    'large'     2.8rem,
-    'title'     1.6rem,
+    'heading' 3rem,
+    'large' 2.8rem,
+    'title' 1.6rem,
     'paragraph' 1.4rem,
-    'small'     1.2rem,
-    'xsmall'    1rem,
-    'xxsmall'   0.8rem,
-    'xxxsmall'  0.6rem,
+    'small' 1.2rem,
+    'xsmall' 1rem,
+    'xxsmall' 0.8rem,
+    'xxxsmall' 0.6rem
 );
 
 $FONT_COLORS: (
-    'active'   var(--text-colored-background),
-    'black'    var(--text-general),
-    'grey'     var(--text-less-prominent),
+    'active' var(--text-colored-background),
+    'black' var(--text-general),
+    'grey' var(--text-less-prominent),
     'disabled' var(--text-disabled),
-    'green'    var(--text-profit-success),
-    'red'      var(--text-loss-danger),
+    'green' var(--text-profit-success),
+    'red' var(--text-loss-danger)
 );
 
-$FONT_WEIGHTS: (
-    'bold'     700,
-    'semibold' 500,
-    'normal'   400,
-    'light'    300,
-);
+$FONT_WEIGHTS: ('bold' 700, 'semibold' 500, 'normal' 400, 'light' 300);
 
-$TEXT_ALIGN: (
-    'center' center,
-    'left'   left,
-    'right'  right,
-);
+$TEXT_ALIGN: ('center' center, 'left' left, 'right' right);
 
 $LINEHEIGHTS: (
-    'large' : 1.75,
+    'large': 1.75,
     'medium': 1.5,
-    'small' : 1.25,
+    'small': 1.25,
 );
 
 /*

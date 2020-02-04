@@ -1,15 +1,9 @@
-import PropTypes    from 'prop-types';
-import React        from 'react';
-import {
-    Icon,
-    Input }         from '@deriv/components';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Icon, Input } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-const SearchInput = ({
-    onChange,
-    onClickClearInput,
-    value,
-}) => (
+const SearchInput = ({ onChange, onClickClearInput, value }) => (
     <Input
         autoFocus
         data-lpignore='true'
@@ -23,9 +17,9 @@ const SearchInput = ({
 );
 
 SearchInput.propTypes = {
-    onChange         : PropTypes.func,
+    onChange: PropTypes.func,
     onClickClearInput: PropTypes.func,
-    value            : PropTypes.string,
+    value: PropTypes.string,
 };
 
 export default React.memo(SearchInput);

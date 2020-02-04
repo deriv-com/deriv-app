@@ -1,9 +1,9 @@
-import React                         from 'react';
-import { expect }                    from 'chai';
-import { configure, shallow }        from 'enzyme';
-import Adapter                       from 'enzyme-adapter-react-16';
+import React from 'react';
+import { expect } from 'chai';
+import { configure, shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import { ToggleNotificationsDrawer } from '../toggle-notifications-drawer.jsx';
-import { Notifications }             from '../../../Elements/Notifications';
+import { Notifications } from '../../../Elements/Notifications';
 
 configure({ adapter: new Adapter() });
 

@@ -11,7 +11,7 @@ Blockly.Bubble.prototype.positionBubble_ = function() {
     let left = this.anchorXY_.x;
 
     if (this.workspace_.RTL) {
-        left -= this.relativeLeft_ ;
+        left -= this.relativeLeft_;
     } else {
         left += this.relativeLeft_;
     }

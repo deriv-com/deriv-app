@@ -1,15 +1,11 @@
-import PropTypes    from 'prop-types';
-import React        from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { localize } from '@deriv/translations';
 
 const NoResultsMessage = ({ text }) => (
     <div className='no-results-found'>
-        <h2 className='no-results-found__title'>
-            {localize('No results for "{{text}}"', { text })}
-        </h2>
-        <p className='no-results-found__subtitle'>
-            {localize('Try checking your spelling or use a different term')}
-        </p>
+        <h2 className='no-results-found__title'>{localize('No results for "{{text}}"', { text })}</h2>
+        <p className='no-results-found__subtitle'>{localize('Try checking your spelling or use a different term')}</p>
     </div>
 );
 

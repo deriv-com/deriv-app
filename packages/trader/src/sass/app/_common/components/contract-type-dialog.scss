@@ -27,7 +27,7 @@
         overflow: hidden;
 
         /* postcss-bem-linter: ignore */
-        .vertical-tab__action-bar {
+        .dc-vertical-tab__action-bar {
             flex-flow: row;
             border-bottom: 2px solid var(--general-section-1);
             height: 56px;
@@ -53,20 +53,21 @@
             }
         }
         /* postcss-bem-linter: ignore */
-        .vertical-tab__content {
+        .dc-vertical-tab__content {
             padding: 0 !important;
         }
         /* postcss-bem-linter: ignore */
-        .vertical-tab__tab {
+        .dc-vertical-tab__tab {
             min-width: 240px;
 
             /* postcss-bem-linter: ignore */
-            .vertical-tab__header-title {
+            .dc-vertical-tab__header-title {
                 height: 56px;
             }
         }
     }
-    &--enter, &--exit {
+    &--enter,
+    &--exit {
         transform: translate3d(20%, 0, 0);
         pointer-events: none;
         opacity: 0;

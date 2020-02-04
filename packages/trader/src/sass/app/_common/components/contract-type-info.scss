@@ -34,7 +34,8 @@
             color: var(--text-prominent);
         }
         /* postcss-bem-linter: ignore */
-        p, ul li {
+        p,
+        ul li {
             @include typeface(--paragraph-left-normal-black, none);
             margin-bottom: 1.6rem;
             color: var(--text-general);

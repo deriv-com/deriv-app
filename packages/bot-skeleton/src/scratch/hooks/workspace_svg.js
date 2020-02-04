@@ -1,4 +1,6 @@
 import { config } from '../../constants/config';
+import { removeLimitedBlocks } from '../../utils/workspace';
+
 /**
  * Handle a mouse-down on SVG drawing surface.
  * deriv-bot: We bubble the mousedown event for Core to be reactive.
@@ -42,7 +44,7 @@ Blockly.WorkspaceSvg.prototype.centerOnBlock = function(id, hideChaff = true) {
 
     // In RTL the block's position is the top right of the block, not top left.
     const multiplier = this.RTL ? -1 : 1;
-    const blockCenterX = xy.x + (multiplier * heightWidth.width / 2);
+    const blockCenterX = xy.x + (multiplier * heightWidth.width) / 2;
 
     // Workspace scale, used to convert from workspace coordinates to pixels.
     const scale = this.scale;
@@ -81,18 +83,18 @@ Blockly.WorkspaceSvg.prototype.centerOnBlock = function(id, hideChaff = true) {
  * @param {Element} block_node
  * @public
  */
-Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
-    const toolbox    = this.getToolbox();
-    const flyout     = toolbox.flyout_;
-    const block      = Blockly.Xml.domToBlock(block_node, flyout.workspace_);
+Blockly.WorkspaceSvg.prototype.addBlockNode = function(block_node) {
+    const toolbox = this.getToolbox();
+    const flyout = toolbox.flyout_;
+    const block = Blockly.Xml.domToBlock(block_node, flyout.workspace_);
     const top_blocks = this.getTopBlocks(true);
-    const new_block  = flyout.createBlock(false, block);
+    const new_block = flyout.createBlock(false, block);
 
     if (top_blocks.length) {
-        const last_block    = top_blocks[top_blocks.length - 1];
+        const last_block = top_blocks[top_blocks.length - 1];
         const last_block_xy = last_block.getRelativeToSurfaceXY();
-        const extra_spacing = (last_block.startHat_ ? Blockly.BlockSvg.START_HAT_HEIGHT : 0);
-        const y             = last_block_xy.y + last_block.getHeightWidth().height + extra_spacing + 30;
+        const extra_spacing = last_block.startHat_ ? Blockly.BlockSvg.START_HAT_HEIGHT : 0;
+        const y = last_block_xy.y + last_block.getHeightWidth().height + extra_spacing + 30;
         new_block.moveBy(last_block_xy.x, y);
     }
 
@@ -116,10 +118,12 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean 
 
     const is_import = blocks_to_clean.length !== 0;
     const top_blocks = is_import ? blocks_to_clean : this.getTopBlocks(true);
-    const root_blocks = top_blocks.filter(block => block.isMainBlock()).sort((a, b) => {
-        const blockIndex = (block) => config.mainBlocks.findIndex(main_block_type => main_block_type === block.type);
-        return blockIndex(a) - blockIndex(b);
-    });
+    const root_blocks = top_blocks
+        .filter(block => block.isMainBlock())
+        .sort((a, b) => {
+            const blockIndex = block => config.mainBlocks.findIndex(main_block_type => main_block_type === block.type);
+            return blockIndex(a) - blockIndex(b);
+        });
     const column_count = 2;
     const blocks_per_column = Math.ceil(root_blocks.length / column_count);
 
@@ -144,11 +148,9 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean 
                 const start = (column_index - 1) * blocks_per_column;
                 const fat_neighbour_block = root_blocks
                     .slice(start, start + blocks_per_column)
-                    .reduce((a, b) => a.getHeightWidth().width > b.getHeightWidth().width ? a : b);
+                    .reduce((a, b) => (a.getHeightWidth().width > b.getHeightWidth().width ? a : b));
 
-                let position_x = cursor_x +
-                            fat_neighbour_block.getHeightWidth().width +
-                            Blockly.BlockSvg.MIN_BLOCK_X;
+                let position_x = cursor_x + fat_neighbour_block.getHeightWidth().width + Blockly.BlockSvg.MIN_BLOCK_X;
                 if (!is_import) {
                     position_x += fat_neighbour_block.getRelativeToSurfaceXY().x;
                 }
@@ -159,9 +161,7 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean 
             block.snapToGrid();
 
             original_cursor_y =
-              block.getRelativeToSurfaceXY().y +
-              block.getHeightWidth().height +
-              Blockly.BlockSvg.MIN_BLOCK_Y;
+                block.getRelativeToSurfaceXY().y + block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
         });
 
         const lowest_root_block = root_blocks.reduce((a, b) => {
@@ -171,9 +171,9 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean 
         });
 
         original_cursor_y =
-          lowest_root_block.getRelativeToSurfaceXY().y +
-          lowest_root_block.getHeightWidth().height +
-          Blockly.BlockSvg.MIN_BLOCK_Y;
+            lowest_root_block.getRelativeToSurfaceXY().y +
+            lowest_root_block.getHeightWidth().height +
+            Blockly.BlockSvg.MIN_BLOCK_Y;
     }
 
     const filtered_top_blocks = top_blocks.filter(block => !block.isMainBlock());
@@ -187,9 +187,7 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean 
         block.snapToGrid();
 
         original_cursor_y =
-          block.getRelativeToSurfaceXY().y +
-          block.getHeightWidth().height +
-          Blockly.BlockSvg.MIN_BLOCK_Y;
+            block.getRelativeToSurfaceXY().y + block.getHeightWidth().height + Blockly.BlockSvg.MIN_BLOCK_Y;
     });
 
     Blockly.Events.setGroup(false);
@@ -229,10 +227,7 @@ Blockly.WorkspaceSvg.getTopLevelWorkspaceMetrics_ = function() {
     const svg_size = Blockly.svgSize(this.getParentSvg());
 
     if (this.toolbox_) {
-        if (
-            this.toolboxPosition === Blockly.TOOLBOX_AT_TOP ||
-          this.toolboxPosition === Blockly.TOOLBOX_AT_BOTTOM
-        ) {
+        if (this.toolboxPosition === Blockly.TOOLBOX_AT_TOP || this.toolboxPosition === Blockly.TOOLBOX_AT_BOTTOM) {
             svg_size.height -= toolbox_dimensions.height;
         } else if (
             this.toolboxPosition === Blockly.TOOLBOX_AT_LEFT ||
@@ -258,22 +253,43 @@ Blockly.WorkspaceSvg.getTopLevelWorkspaceMetrics_ = function() {
     }
 
     const metrics = {
-        contentHeight  : content_dimensions.height,
-        contentWidth   : content_dimensions.width,
-        contentTop     : content_dimensions.top,
-        contentLeft    : content_dimensions.left,
-        viewHeight     : svg_size.height,
-        viewWidth      : svg_size.width,
-        viewTop        : -this.scrollY,   // Must be in pixels, somehow.
-        viewLeft       : -this.scrollX,  // Must be in pixels, somehow.
-        absoluteTop    : absolute_top,
-        absoluteLeft   : absolute_left,
-        toolboxWidth   : toolbox_dimensions.width,
-        toolboxHeight  : toolbox_dimensions.height,
-        flyoutWidth    : flyout_dimensions.width,
-        flyoutHeight   : flyout_dimensions.height,
+        contentHeight: content_dimensions.height,
+        contentWidth: content_dimensions.width,
+        contentTop: content_dimensions.top,
+        contentLeft: content_dimensions.left,
+        viewHeight: svg_size.height,
+        viewWidth: svg_size.width,
+        viewTop: -this.scrollY, // Must be in pixels, somehow.
+        viewLeft: -this.scrollX, // Must be in pixels, somehow.
+        absoluteTop: absolute_top,
+        absoluteLeft: absolute_left,
+        toolboxWidth: toolbox_dimensions.width,
+        toolboxHeight: toolbox_dimensions.height,
+        flyoutWidth: flyout_dimensions.width,
+        flyoutHeight: flyout_dimensions.height,
         toolboxPosition: this.toolboxPosition,
     };
 
     return metrics;
+};
+
+/**
+ * Paste the provided block onto the workspace.
+ * @param {!Element} xml_block XML block element.
+ */
+Blockly.WorkspaceSvg.prototype.paste = function(xml_block) {
+    if (!this.rendered) {
+        return;
+    }
+
+    if (this.currentGesture_) {
+        this.currentGesture_.cancel(); // Dragging while pasting?  No.
+    }
+
+    if (xml_block.tagName.toLowerCase() === 'comment') {
+        this.pasteWorkspaceComment_(xml_block);
+    } else {
+        removeLimitedBlocks(this, xml_block.getAttribute('type'));
+        this.pasteBlock_(xml_block);
+    }
 };

@@ -1,9 +1,9 @@
-import { action }       from 'mobx';
-import { getLanguage }  from '@deriv/translations';
-import BinarySocket     from '_common/base/socket_base';
+import { action } from 'mobx';
+import { getLanguage } from '@deriv/translations';
+import BinarySocket from '_common/base/socket_base';
 import { isLoginPages } from '_common/base/login';
-import BaseStore        from './base-store';
-import { getAppId }     from '../config';
+import BaseStore from './base-store';
+import { getAppId } from '../config';
 
 export default class SegmentStore extends BaseStore {
     // only available on production (bot and deriv)
@@ -22,26 +22,27 @@ export default class SegmentStore extends BaseStore {
      * @param {object} data
      */
     @action.bound
-    identifyEvent = async (data) => new Promise((resolve) => {
-        if (this.is_applicable && !isLoginPages() && !this.has_identified) {
-            BinarySocket.wait('authorize').then(() => {
-                const user_id = this.root_store.client.user_id;
-                if (user_id) {
-                    window.analytics.identify(user_id, {
-                        language: getLanguage().toLowerCase(),
-                        ...data,
-                    });
-                    this.has_identified = true;
-                    this.pageView();
+    identifyEvent = async data =>
+        new Promise(resolve => {
+            if (this.is_applicable && !isLoginPages() && !this.has_identified) {
+                BinarySocket.wait('authorize').then(() => {
+                    const user_id = this.root_store.client.user_id;
+                    if (user_id) {
+                        window.analytics.identify(user_id, {
+                            language: getLanguage().toLowerCase(),
+                            ...data,
+                        });
+                        this.has_identified = true;
+                        this.pageView();
 
+                        resolve();
+                    }
                     resolve();
-                }
+                });
+            } else {
                 resolve();
-            });
-        } else {
-            resolve();
-        }
-    })
+            }
+        });
 
     /**
      * Pushes page view track event to segment

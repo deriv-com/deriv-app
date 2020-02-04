@@ -65,7 +65,7 @@ Blockly.Procedures.populateDynamicProcedures = function(tuple) {
     const populateProcedures = (procedureList, templateName) => {
         const xml = [];
 
-        if (!procedureList){
+        if (!procedureList) {
             return xml;
         }
 

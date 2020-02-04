@@ -1,21 +1,13 @@
-import classNames               from 'classnames';
-import PropTypes                from 'prop-types';
-import React                    from 'react';
-import { Icon }                 from '@deriv/components';
-import IconTradeCategory        from 'Assets/Trading/Categories/icon-trade-categories.jsx';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Icon } from '@deriv/components';
+import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories.jsx';
 import { findContractCategory } from '../../../Helpers/contract-type';
 
-const Display = ({
-    is_open,
-    list,
-    name,
-    onClick,
-    value,
-}) => {
-    const getDisplayText = () => (
-        findContractCategory(list, { value })
-            .contract_types.find(item => item.value === value).text
-    );
+const Display = ({ is_open, list, name, onClick, value }) => {
+    const getDisplayText = () =>
+        findContractCategory(list, { value }).contract_types.find(item => item.value === value).text;
 
     return (
         <div
@@ -24,34 +16,24 @@ const Display = ({
             })}
             onClick={onClick}
         >
-            <IconTradeCategory
-                category={value}
-                className='contract-type-widget__icon-wrapper'
-            />
+            <IconTradeCategory category={value} className='contract-type-widget__icon-wrapper' />
             <span name={name} value={value}>
                 {getDisplayText()}
             </span>
             <Icon
                 icon='IcChevronDown'
-                className={classNames(
-                    'contract-type-widget__select-arrow',
-                    'contract-type-widget__select-arrow--left',
-                )}
+                className={classNames('contract-type-widget__select-arrow', 'contract-type-widget__select-arrow--left')}
             />
         </div>
-    )
-    ;
+    );
 };
 
 Display.propTypes = {
     is_open: PropTypes.bool,
-    list   : PropTypes.oneOfType([
-        PropTypes.array,
-        PropTypes.object,
-    ]),
-    name    : PropTypes.string,
+    list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+    name: PropTypes.string,
     onChange: PropTypes.func,
-    value   : PropTypes.string,
+    value: PropTypes.string,
 };
 
 export default Display;

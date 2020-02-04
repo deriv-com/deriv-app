@@ -1,7 +1,7 @@
-import PropTypes        from 'prop-types';
-import React            from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import ContractTypeMenu from './ContractTypeMenu';
-import MobileDialog     from '../../Elements/mobile-dialog.jsx';
+import MobileDialog from '../../Elements/mobile-dialog.jsx';
 
 const ContractTypeDialog = ({
     children,
@@ -18,11 +18,7 @@ const ContractTypeDialog = ({
         return (
             <React.Fragment>
                 <span className='contract-type-widget__select-arrow' />
-                <MobileDialog
-                    title='Select Trading Type'
-                    visible={is_open}
-                    onClose={onClose}
-                >
+                <MobileDialog title='Select Trading Type' visible={is_open} onClose={onClose}>
                     {children}
                 </MobileDialog>
             </React.Fragment>
@@ -44,10 +40,10 @@ const ContractTypeDialog = ({
 };
 
 ContractTypeDialog.propTypes = {
-    children : PropTypes.element,
+    children: PropTypes.element,
     is_mobile: PropTypes.bool,
-    onClose  : PropTypes.func,
-    open     : PropTypes.bool,
+    onClose: PropTypes.func,
+    open: PropTypes.bool,
 };
 
 export default ContractTypeDialog;

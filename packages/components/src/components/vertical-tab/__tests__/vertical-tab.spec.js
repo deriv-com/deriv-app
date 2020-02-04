@@ -1,6 +1,6 @@
-import { expect }  from 'chai';
-import { mount }   from 'enzyme';
-import React       from 'react';
+import { expect } from 'chai';
+import { mount } from 'enzyme';
+import React from 'react';
 import VerticalTab from '../vertical-tab.jsx';
 
 describe('<VerticalTab />', () => {
@@ -8,18 +8,17 @@ describe('<VerticalTab />', () => {
         {
             icon: '',
             label: 'Label 1',
-            value: () => <svg />
+            value: () => <svg />,
         },
         {
             icon: '',
             label: 'Label 2',
-            value: () => <svg />
-        }
+            value: () => <svg />,
+        },
     ];
     // TODO: fix these
     it.skip('should render single div', () => {
-        const wrapper = mount(<VerticalTab list={valid_tab_items}
-        />);
+        const wrapper = mount(<VerticalTab list={valid_tab_items} />);
         expect(wrapper.find('div.vertical-tab').length).to.be.equal(1);
     });
 
@@ -27,5 +26,5 @@ describe('<VerticalTab />', () => {
         const wrapper = mount(<VerticalTab list={valid_tab_items} />);
         expect(wrapper.find('div.vertical-tab__content').length).to.be.equal(1);
         expect(wrapper.find('div.vertical-tab__header').length).to.be.equal(2);
-    })
+    });
 });

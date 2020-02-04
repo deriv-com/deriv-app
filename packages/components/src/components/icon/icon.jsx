@@ -53,6 +53,7 @@ const Icon = ({
                 'dc-icon--disabled': color === 'disabled',
                 'dc-icon--green': color === 'green' || icon === 'IcProfit',
                 'dc-icon--red': color === 'red' || icon === 'IcLoss',
+                'dc-icon--yellow': color === 'yellow',
                 'dc-icon--secondary': color === 'secondary',
                 'dc-icon--brand': color === 'brand',
             })}

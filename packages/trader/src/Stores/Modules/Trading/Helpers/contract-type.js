@@ -104,7 +104,7 @@ const ContractType = (() => {
 
                 // set config values
                 config.has_spot = config.has_spot || contract.start_type === 'spot';
-                config.durations = buildDurationConfig(contract, config.durations);
+                config.durations = !config.hide_duration && buildDurationConfig(contract, config.durations);
                 config.trade_types = buildTradeTypesConfig(contract, config.trade_types);
                 config.barriers = buildBarriersConfig(contract, config.barriers);
                 config.forward_starting_dates = buildForwardStartingConfig(contract, config.forward_starting_dates);

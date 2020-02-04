@@ -12,6 +12,7 @@ class Dialog extends React.PureComponent {
     dialog_ref = React.createRef();
     scrollbar_ref = React.createRef();
     vertical_tab_headers = [];
+    is_user_scroll = false;
 
     state = {
         is_filtered_list_empty: false,
@@ -42,7 +43,7 @@ class Dialog extends React.PureComponent {
             if (!this.vertical_tab_headers.length) {
                 this.vertical_tab_headers = this.getVerticalTabHeaders();
             }
-            if (this.scrollbar_ref.current && !this.scrollbar_ref.current.getScrollTop()) {
+            if (this.should_scroll) {
                 this.scroll();
             }
         }
@@ -63,6 +64,7 @@ class Dialog extends React.PureComponent {
     };
 
     onScroll = e => {
+        this.is_user_scroll = true;
         const offset_top = e.target.scrollTop + 20; // add 20px of padding top and bottom
         const closest = this.vertical_tab_headers.reduce((prev, curr) => (curr.offset_top < offset_top ? curr : prev));
         if (closest !== -1) {
@@ -72,6 +74,10 @@ class Dialog extends React.PureComponent {
                 },
             });
         }
+    };
+
+    onScrollStop = () => {
+        this.is_user_scroll = false;
     };
 
     onChangeInput = e => {
@@ -132,6 +138,12 @@ class Dialog extends React.PureComponent {
         return this.vertical_tab_headers.filter(header => header.label === this.selected.label)[0].offset_top;
     }
 
+    get should_scroll() {
+        if (!this.scrollbar_ref.current || this.is_user_scroll) return false;
+
+        return this.offset_top !== Math.ceil(this.scrollbar_ref.current.getScrollTop());
+    }
+
     render() {
         const { children, is_info_dialog_open, is_open, item, list, onBackButtonClick } = this.props;
 
@@ -175,6 +187,7 @@ class Dialog extends React.PureComponent {
                                         <ThemedScrollbars
                                             list_ref={this.scrollbar_ref}
                                             onScroll={this.onScroll}
+                                            onScrollStop={this.onScrollStop}
                                             renderView={props => (
                                                 <div style={{ paddingBottom: '50vh', ...props.style }} />
                                             )}

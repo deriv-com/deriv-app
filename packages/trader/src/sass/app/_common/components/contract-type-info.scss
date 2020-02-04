@@ -15,7 +15,13 @@
         height: 100%;
     }
     &__card {
-        min-height: calc(100vh - 368px);
+        min-height: calc(100vh - 268px);
+        @media screen and (min-height: 768px) and (max-height: 820px) {
+            min-height: calc(100vh - 288px);
+        }
+        @media screen and (min-height: 821px) {
+            min-height: 535px;
+        }
         width: 272px;
         margin-right: 2.4rem;
         display: flex;

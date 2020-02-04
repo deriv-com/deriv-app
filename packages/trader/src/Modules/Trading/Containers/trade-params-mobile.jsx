@@ -1,9 +1,7 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { Tabs, Numpad } from '@deriv/components';
+import { Tabs, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
-// import Amount                         from 'Modules/Trading/Components/Form/TradeParams/amount.jsx';
+import Amount from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
 // import Barrier                        from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
 // import LastDigit                      from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
 import { connect } from 'Stores/connect';
@@ -18,103 +16,148 @@ const DEFAULT_DURATION = Object.freeze({
     d: 1,
 });
 
-const Amount = () => {
-    const consoleOut = val => {
-        // eslint-disable-next-line no-console
-        console.log(val);
-    };
-
-    return (
-        <Numpad
-            value={0}
-            onSubmit={consoleOut}
-            is_currency
-            render={({ value: v, className }) => {
-                return <div className={className}>{v}</div>;
-            }}
-            pip_size={2}
-            submit_label={'OK'}
-            min={1}
-            max={1500}
-        />
-    );
-};
-
 const makeGetDefaultDuration = (trade_duration, trade_duration_unit) => duration_unit =>
     trade_duration_unit === duration_unit ? trade_duration : DEFAULT_DURATION[duration_unit];
 
-class TradeParamsMobile extends React.Component {
+class TradeParamsModal extends React.Component {
     constructor(props) {
         super(props);
-
-        const { duration, duration_unit } = this.props;
+        const { amount, duration, duration_unit } = this.props;
         const getDefaultDuration = makeGetDefaultDuration(duration, duration_unit);
 
         this.state = {
-            active_tab_index: 0,
+            trade_param_tab_idx: 0,
             duration_tab_idx: undefined,
+            amount_tab_idx: undefined,
             // duration unit values
             t_duration: getDefaultDuration('t'),
             s_duration: getDefaultDuration('s'),
             m_duration: getDefaultDuration('m'),
             h_duration: getDefaultDuration('h'),
             d_duration: getDefaultDuration('d'),
+            // amount values
+            stake_value: amount,
+            payout_value: amount,
         };
     }
 
-    updateTabIndex = active_tab_index => this.setState({ active_tab_index });
+    setTradeParamTabIdx = trade_param_tab_idx => this.setState({ trade_param_tab_idx });
 
     setDurationTabIdx = duration_tab_idx => this.setState({ duration_tab_idx });
 
-    isVisible = component_key => this.props.form_components.includes(component_key);
+    setAmountTabIdx = amount_tab_idx => this.setState({ amount_tab_idx });
+
+    setSelectedAmount = (basis, selected_basis_value) => this.setState({ [`${basis}_value`]: selected_basis_value });
 
     setSelectedDuration = (duration_unit, selected_duration) =>
         this.setState({ [`${duration_unit}_duration`]: selected_duration });
 
-    render() {
-        const { active_tab_index, t_duration, s_duration, m_duration, h_duration, d_duration } = this.state;
+    isVisible = component_key => this.props.form_components.includes(component_key);
 
+    render() {
         return (
-            <Tabs
-                active_index={active_tab_index}
-                className='trade-params-duration-amount'
-                onTabItemClick={this.updateTabIndex}
-                top
+            <Modal
+                id='dt_trade_parameters_mobile'
+                className='trade-params'
+                enableApp={this.props.enableApp}
+                is_open={this.props.is_open}
+                is_vertical_top
+                disableApp={this.props.disableApp}
+                toggleModal={this.props.toggleModal}
+                height='auto'
+                width='calc(100vw - 32px)'
             >
-                {this.isVisible('duration') && (
-                    <div label={localize('Duration')}>
-                        <DurationMobile
-                            toggleModal={this.props.toggleModal}
-                            duration_tab_idx={this.state.duration_tab_idx}
-                            setDurationTabIdx={this.setDurationTabIdx}
-                            setSelectedDuration={this.setSelectedDuration}
-                            t_duration={t_duration}
-                            s_duration={s_duration}
-                            m_duration={m_duration}
-                            h_duration={h_duration}
-                            d_duration={d_duration}
-                        />
-                    </div>
-                )}
-                {this.isVisible('amount') && (
-                    <div label={localize('Amount')}>
-                        <div className='trade-params__amount-keypad'>
-                            <Amount />
-                        </div>
-                    </div>
-                )}
-            </Tabs>
+                <div className='mobile-widget-dialog__wrapper'>
+                    <TradeParamsMobile
+                        toggleModal={this.props.toggleModal}
+                        isVisible={this.isVisible}
+                        setTradeParamTabIdx={this.setTradeParamTabIdx}
+                        trade_param_tab_idx={this.state.trade_param_tab_idx}
+                        setDurationTabIdx={this.setDurationTabIdx}
+                        duration_tab_idx={this.state.duration_tab_idx}
+                        setAmountTabIdx={this.setAmountTabIdx}
+                        amount_tab_idx={this.state.amount_tab_idx}
+                        // amount
+                        setSelectedAmount={this.setSelectedAmount}
+                        stake_value={this.state.stake_value}
+                        payout_value={this.state.payout_value}
+                        // duration
+                        setSelectedDuration={this.setSelectedDuration}
+                        t_duration={this.state.t_duration}
+                        s_duration={this.state.s_duration}
+                        m_duration={this.state.m_duration}
+                        h_duration={this.state.h_duration}
+                        d_duration={this.state.d_duration}
+                    />
+                </div>
+            </Modal>
         );
     }
 }
-TradeParamsMobile.propTypes = {
-    form_components: MobxPropTypes.arrayOrObservableArray,
-    is_minimized: PropTypes.bool,
-};
 
-export default connect(({ modules }) => ({
+export default connect(({ modules, ui }) => ({
+    amount: modules.trade.amount,
     form_components: modules.trade.form_components,
     duration: modules.trade.duration,
     duration_unit: modules.trade.duration_unit,
     expiry_type: modules.trade.expiry_type,
-}))(TradeParamsMobile);
+    enableApp: ui.enableApp,
+    disableApp: ui.disableApp,
+}))(TradeParamsModal);
+
+const TradeParamsMobile = ({
+    toggleModal,
+    isVisible,
+    setAmountTabIdx,
+    amount_tab_idx,
+    setTradeParamTabIdx,
+    trade_param_tab_idx,
+    setDurationTabIdx,
+    duration_tab_idx,
+    // amount
+    setSelectedAmount,
+    stake_value,
+    payout_value,
+    // duration
+    setSelectedDuration,
+    t_duration,
+    s_duration,
+    m_duration,
+    h_duration,
+    d_duration,
+}) => (
+    <Tabs
+        active_index={trade_param_tab_idx}
+        className='trade-params-duration-amount'
+        onTabItemClick={setTradeParamTabIdx}
+        top
+    >
+        {isVisible('duration') && (
+            <div label={localize('Duration')}>
+                <DurationMobile
+                    toggleModal={toggleModal}
+                    duration_tab_idx={duration_tab_idx}
+                    setDurationTabIdx={setDurationTabIdx}
+                    setSelectedDuration={setSelectedDuration}
+                    t_duration={t_duration}
+                    s_duration={s_duration}
+                    m_duration={m_duration}
+                    h_duration={h_duration}
+                    d_duration={d_duration}
+                />
+            </div>
+        )}
+        {isVisible('amount') && (
+            <div label={localize('Amount')}>
+                <Amount
+                    toggleModal={toggleModal}
+                    amount_tab_idx={amount_tab_idx}
+                    setAmountTabIdx={setAmountTabIdx}
+                    setSelectedAmount={setSelectedAmount}
+                    stake_value={stake_value}
+                    payout_value={payout_value}
+                />
+            </div>
+        )}
+    </Tabs>
+);

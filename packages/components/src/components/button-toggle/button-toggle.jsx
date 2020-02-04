@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Button           from 'Components/button/button.jsx';
+import Button from 'Components/button/button.jsx';
 import HighlightWrapper from './button-highlight-wrapper.jsx';
 
 const ButtonToggle = ({ buttons_arr, className, id, is_animated, name, onChange, value }) => {

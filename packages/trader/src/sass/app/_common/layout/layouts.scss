@@ -55,10 +55,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
         padding-bottom: 2.4rem;
 
         .contract-drawer {
-            height: calc(
-                100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - (#{$POSITIONS_DRAWER_MARGIN} *
-                            6)
-            );
+            /* prettier-ignore */
+            height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - (#{$POSITIONS_DRAWER_MARGIN} * 6));
             border-bottom-right-radius: 0;
             border-top-right-radius: 0;
             z-index: 1;

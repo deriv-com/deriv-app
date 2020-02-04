@@ -84,7 +84,7 @@ $MIN_HEIGHT_FLOATING: calc(
             padding: 0.8rem;
             border-radius: #{$BORDER_RADIUS * 2};
             position: sticky;
-            top: 2.4rem;
+            top: calc(2.4rem + 41px); // 41px for the header of PageOverlay
         }
     }
     &__header-title {

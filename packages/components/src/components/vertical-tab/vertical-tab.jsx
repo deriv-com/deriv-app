@@ -55,7 +55,7 @@ class VerticalTab extends React.Component {
         return (
             <div
                 className={classNames('dc-vertical-tab', {
-                    'dc-vertical-tab--floating': this.props.is_floating,
+                    'dc-vertical-tab--floating': this.props.is_floating, // This is currently only configured for use in PageOverlay
                     'dc-vertical-tab--full-screen': this.props.is_full_width,
                 })}
             >

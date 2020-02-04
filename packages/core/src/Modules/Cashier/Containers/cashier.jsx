@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { VerticalTab } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { FadeWrapper } from 'App/Components/Animations';
-import VerticalTab from 'App/Components/Elements/VerticalTabs/vertical-tab.jsx';
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 import WalletInformation from '../../Reports/Containers/wallet-information.jsx';
@@ -91,6 +91,8 @@ class Cashier extends React.Component {
                         is_routed={true}
                         is_full_width={true}
                         list={menu_options()}
+                        vertical_tab_index={this.props.vertical_tab_index}
+                        setVerticalTabIndex={this.props.setVerticalTabIndex}
                     />
                 </div>
             </FadeWrapper>
@@ -109,7 +111,9 @@ Cashier.propTypes = {
     location: PropTypes.object,
     onMount: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
+    setVerticalTabIndex: PropTypes.func,
     toggleCashier: PropTypes.func,
+    vertical_tab_index: PropTypes.number,
 };
 
 export default connect(({ modules, ui }) => ({
@@ -122,5 +126,7 @@ export default connect(({ modules, ui }) => ({
     ),
     is_payment_agent_transfer_visible: modules.cashier.config.payment_agent_transfer.is_payment_agent,
     onMount: modules.cashier.onMountCommon,
+    setVerticalTabIndex: ui.setVerticalTabIndex,
     toggleCashier: ui.toggleCashier,
+    vertical_tab_index: ui.vertical_tab_index,
 }))(withRouter(Cashier));

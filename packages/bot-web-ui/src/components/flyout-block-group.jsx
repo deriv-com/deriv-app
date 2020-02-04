@@ -1,14 +1,10 @@
+import { Button } from '@deriv/components';
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import { localize } from '@deriv/translations';
+import FlyoutBlock from './flyout-block.jsx';
 
-import { Button }           from '@deriv/components';
-import React                from 'react';
-import { PropTypes }        from 'prop-types';
-import { localize }         from '@deriv/translations';
-import FlyoutBlock          from './flyout-block.jsx';
-
-const FlyoutBlockGroup = ({
-    onInfoClick,
-    block_node,
-}) => {
+const FlyoutBlockGroup = ({ onInfoClick, block_node }) => {
     const block_type = block_node.getAttribute('type');
     const block_meta = Blockly.Blocks[block_type].meta();
     const { display_name, description } = block_meta;
@@ -19,7 +15,7 @@ const FlyoutBlockGroup = ({
                 <div className='flyout__item-label'>{display_name}</div>
                 <div className='flyout__item-buttons'>
                     <Button
-                        id={`gtm-${  display_name.replace(/\s/ig, '-')}`}
+                        id={`db-flyout__add--${block_type}`}
                         className='flyout__button-add flyout__button-add--hide'
                         has_effect
                         onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}
@@ -31,20 +27,13 @@ const FlyoutBlockGroup = ({
             </div>
             <div className='flyout__item-description'>
                 {description}
-                {onInfoClick
-                    &&
-                    <a
-                        id={display_name.replace(/\s/ig, '-')}
-                        className='flyout__item-info'
-                        onClick={onInfoClick}
-                    >{localize('Learn more')}
+                {onInfoClick && (
+                    <a id={display_name.replace(/\s/gi, '-')} className='flyout__item-info' onClick={onInfoClick}>
+                        {localize('Learn more')}
                     </a>
-                }
+                )}
             </div>
-            <FlyoutBlock
-                should_center_block={true}
-                block_node={block_node}
-            />
+            <FlyoutBlock should_center_block={true} block_node={block_node} />
         </div>
     );
 };

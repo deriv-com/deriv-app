@@ -1,8 +1,8 @@
-import { render } from '@testing-library/react'
-import React      from 'react';
+import { render } from '@testing-library/react';
+import React from 'react';
 // import sinon      from 'sinon';
 import RadioGroup from '../radio-group.jsx';
-import                 '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom/extend-expect';
 
 // Tests WIP
 
@@ -25,11 +25,11 @@ describe('<RadioGroup />', () => {
         {
             label: 'Item 1',
             value: false,
-        }, {
+        },
+        {
             label: 'Item 2',
             value: true,
         },
-
     ];
 
     // const invalid_items = [
@@ -39,13 +39,7 @@ describe('<RadioGroup />', () => {
     // ];
 
     it('should load radio buttons based on input', () => {
-        const { container } = render(<RadioGroup
-            items={valid_items}
-            selected={true}
-            onToggle={() => (
-                {}
-            )}
-        />);
+        const { container } = render(<RadioGroup items={valid_items} selected={true} onToggle={() => ({})} />);
         expect(container.querySelectorAll('label.dc-radio-group__item')).toHaveLength(2);
     });
 

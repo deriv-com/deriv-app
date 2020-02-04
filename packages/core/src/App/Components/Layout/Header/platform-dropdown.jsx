@@ -1,14 +1,14 @@
-import classNames     from 'classnames';
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import ReactDOM       from 'react-dom';
-import { Icon }       from '@deriv/components';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Icon } from '@deriv/components';
 import { BinaryLink } from 'App/Components/Routes';
-import routes         from 'Constants/routes';
+import routes from 'Constants/routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 
 class PlatformDropdown extends React.PureComponent {
-    handleClickOutside = (event) => {
+    handleClickOutside = event => {
         if (!event.target.closest('.platform_dropdown__list') && !event.target.closest('.platform_switcher')) {
             this.props.closeDrawer();
         }
@@ -25,10 +25,7 @@ class PlatformDropdown extends React.PureComponent {
     }
 
     render() {
-        const {
-            platform_config,
-            closeDrawer,
-        } = this.props;
+        const { platform_config, closeDrawer } = this.props;
 
         const platform_dropdown = (
             <div className='platform_dropdown'>
@@ -37,12 +34,10 @@ class PlatformDropdown extends React.PureComponent {
                         <BinaryLink
                             to={platform.link_to}
                             // This is here because in routes-config it needs to have children, but not in menu
-                            exact={ platform.link_to === routes.trade }
+                            exact={platform.link_to === routes.trade}
                             key={idx}
                             onClick={closeDrawer}
-                            className={classNames(
-                                'platform_dropdown__list__platform',
-                            )}
+                            className={classNames('platform_dropdown__list__platform')}
                         >
                             <div className='platform_dropdown__list__platform__background' />
                             <Icon className='platform_dropdown__list__platform__icon' icon={platform.icon} size={32} />

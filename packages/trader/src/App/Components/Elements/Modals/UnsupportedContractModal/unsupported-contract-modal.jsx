@@ -1,9 +1,9 @@
-import { Dialog }             from '@deriv/components';
-import PropTypes              from 'prop-types';
-import React                  from 'react';
+import { Dialog } from '@deriv/components';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { localize, Localize } from '@deriv/translations';
-import { connect }            from 'Stores/connect';
-import { website_name }       from '../../../../Constants/app-config';
+import { connect } from 'Stores/connect';
+import { website_name } from '../../../../Constants/app-config';
 
 class UnsupportedContractModal extends React.Component {
     render() {
@@ -32,17 +32,15 @@ class UnsupportedContractModal extends React.Component {
 
 UnsupportedContractModal.propTypes = {
     disableApp: PropTypes.func,
-    enableApp : PropTypes.func,
+    enableApp: PropTypes.func,
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
-    onClose   : PropTypes.func,
-    onConfirm : PropTypes.func,
+    onClose: PropTypes.func,
+    onConfirm: PropTypes.func,
 };
 
-export default connect(
-    ({ ui }) => ({
-        disableApp: ui.disableApp,
-        enableApp : ui.enableApp,
-        is_loading: ui.is_loading,
-    }),
-)(UnsupportedContractModal);
+export default connect(({ ui }) => ({
+    disableApp: ui.disableApp,
+    enableApp: ui.enableApp,
+    is_loading: ui.is_loading,
+}))(UnsupportedContractModal);

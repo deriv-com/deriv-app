@@ -1,6 +1,6 @@
-import classNames           from 'classnames';
-import PropTypes            from 'prop-types';
-import React                from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { ThemedScrollbars } from '@deriv/components';
 
 export default class TableRowInfo extends React.Component {
@@ -24,32 +24,26 @@ export default class TableRowInfo extends React.Component {
                 onClick={this.props.is_footer || !this.props.replace ? undefined : this.toggleDetails}
                 className={classNames(this.props.className, { 'statement__row--detail': this.state.showDetails })}
             >
-                {
-                    this.state.showDetails ?
-                        <ThemedScrollbars
-                            autoHeight
-                            autoHide
-                            autoHeightMax='63px'
-                        >
-                            <div>
-                                {this.props.replace.component ?
-                                    this.props.replace.component
-                                    :
-                                    <p className='statement__row--detail-text'>
-                                        {this.props.replace.message}
-                                    </p>
-                                }
-                            </div>
-                        </ThemedScrollbars>
-                        : this.props.cells
-                }
+                {this.state.showDetails ? (
+                    <ThemedScrollbars autoHeight autoHide autoHeightMax='63px'>
+                        <div>
+                            {this.props.replace.component ? (
+                                this.props.replace.component
+                            ) : (
+                                <p className='statement__row--detail-text'>{this.props.replace.message}</p>
+                            )}
+                        </div>
+                    </ThemedScrollbars>
+                ) : (
+                    this.props.cells
+                )}
             </div>
         );
     }
 }
 
 TableRowInfo.propTypes = {
-    cells    : PropTypes.arrayOf(PropTypes.node),
+    cells: PropTypes.arrayOf(PropTypes.node),
     className: PropTypes.string,
-    replace  : PropTypes.object,
+    replace: PropTypes.object,
 };

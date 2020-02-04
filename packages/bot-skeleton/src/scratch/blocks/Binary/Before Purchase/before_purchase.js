@@ -1,5 +1,5 @@
-import { localize }          from '@deriv/translations';
-import { purchase }          from '../../images';
+import { localize } from '@deriv/translations';
+import { purchase } from '../../images';
 import { setBlockTextColor } from '../../../utils';
 
 Blockly.Blocks.before_purchase = {
@@ -10,13 +10,13 @@ Blockly.Blocks.before_purchase = {
         return {
             message0: localize('%1 2. Purchase conditions %2'),
             message1: '%1',
-            args0   : [
+            args0: [
                 {
-                    type  : 'field_image',
-                    src   : purchase,
-                    width : 25,
+                    type: 'field_image',
+                    src: purchase,
+                    width: 25,
                     height: 25,
-                    alt   : 'P',
+                    alt: 'P',
                 },
                 {
                     type: 'input_dummy',
@@ -24,22 +24,24 @@ Blockly.Blocks.before_purchase = {
             ],
             args1: [
                 {
-                    type : 'input_statement',
-                    name : 'BEFOREPURCHASE_STACK',
+                    type: 'input_statement',
+                    name: 'BEFOREPURCHASE_STACK',
                     check: 'Purchase',
                 },
             ],
-            colour         : Blockly.Colours.RootBlock.colour,
+            colour: Blockly.Colours.RootBlock.colour,
             colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
-            colourTertiary : Blockly.Colours.RootBlock.colourTertiary,
-            tooltip        : localize('Specify contract type and purchase conditions.'),
-            category       : Blockly.Categories.Before_Purchase,
+            colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
+            tooltip: localize('Specify contract type and purchase conditions.'),
+            category: Blockly.Categories.Before_Purchase,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Purchase conditions'),
-            'description' : localize('This block is mandatory. Only one copy of this block is allowed. You can place the Purchase block (see below) here as well as conditional blocks to define your purchase conditions.'),
+            display_name: localize('Purchase conditions'),
+            description: localize(
+                'This block is mandatory. Only one copy of this block is allowed. You can place the Purchase block (see below) here as well as conditional blocks to define your purchase conditions.'
+            ),
         };
     },
     onchange(event) {

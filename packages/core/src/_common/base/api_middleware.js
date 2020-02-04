@@ -27,15 +27,17 @@ class APIMiddleware {
 
         this.debounced_calls[key] = promise;
 
-        promise.then(() => { delete this.debounced_calls[key]; });
+        promise.then(() => {
+            delete this.debounced_calls[key];
+        });
 
         return promise;
     }
 }
 
 // Delegate error handling to the callback
-function promiseRejectToResolve (promise) {
-    return new Promise((r) => {
+function promiseRejectToResolve(promise) {
+    return new Promise(r => {
         promise.then(r, r);
     });
 }

@@ -8,7 +8,7 @@
 }
 
 .flyout {
-    $flyout        : &;
+    $flyout: &;
     $default-margin: 15px;
     $button-padding: 5px 20px;
 
@@ -119,7 +119,6 @@
         width: 100%;
         height: auto;
         border-radius: 0.5em;
-
     }
     &__video {
         width: 100%;

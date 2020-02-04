@@ -1,5 +1,5 @@
-import { 
-    epochToMoment, 
+import {
+    epochToMoment,
     toMoment,
     setTime,
     convertToUnix,
@@ -21,11 +21,11 @@ import {
     subYears,
     minDate,
     getStartOfMonth,
-    formatMiliseconds
+    formatMiliseconds,
 } from './date-time';
 
-export default { 
-    epochToMoment, 
+export default {
+    epochToMoment,
     toMoment,
     setTime,
     convertToUnix,
@@ -47,5 +47,5 @@ export default {
     subYears,
     minDate,
     getStartOfMonth,
-    formatMiliseconds
+    formatMiliseconds,
 };

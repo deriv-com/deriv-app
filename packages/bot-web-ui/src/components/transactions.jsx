@@ -1,11 +1,11 @@
-import { ThemedScrollbars }     from '@deriv/components';
-import { localize }             from '@deriv/translations';
-import { PropTypes }            from 'prop-types';
-import React                    from 'react';
-import Transaction              from './transaction.jsx';
+import { ThemedScrollbars } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import { PropTypes } from 'prop-types';
+import React from 'react';
+import Transaction from './transaction.jsx';
 import { transaction_elements } from '../constants/transactions';
-import { connect }              from '../stores/connect';
-import                           '../assets/sass/transactions.scss';
+import { connect } from '../stores/connect';
+import '../assets/sass/transactions.scss';
 
 class Transactions extends React.PureComponent {
     componentDidMount() {
@@ -29,22 +29,14 @@ class Transactions extends React.PureComponent {
                     </span>
                 </div>
                 <div className='transactions__content'>
-                    <ThemedScrollbars
-                        autoHide
-                        style={{ height: 'var(--drawer-scroll-height)' }}
-                    >
-                        { elements.map((element, index) => {
+                    <ThemedScrollbars autoHide style={{ height: 'var(--drawer-scroll-height)' }}>
+                        {elements.map((element, index) => {
                             switch (element.type) {
-                                case (transaction_elements.CONTRACT): {
+                                case transaction_elements.CONTRACT: {
                                     const contract = element.data;
-                                    return (
-                                        <Transaction
-                                            key={`${contract.reference_id}${index}`}
-                                            contract={contract}
-                                        />
-                                    );
+                                    return <Transaction key={`${contract.reference_id}${index}`} contract={contract} />;
                                 }
-                                case (transaction_elements.DIVIDER): {
+                                case transaction_elements.DIVIDER: {
                                     const run_id = element.data;
                                     return (
                                         <div key={run_id} className='transactions__divider'>
@@ -56,7 +48,7 @@ class Transactions extends React.PureComponent {
                                     return null;
                                 }
                             }
-                        }) }
+                        })}
                     </ThemedScrollbars>
                 </div>
             </div>
@@ -65,13 +57,13 @@ class Transactions extends React.PureComponent {
 }
 
 Transactions.propTypes = {
-    elements : PropTypes.array,
-    onMount  : PropTypes.func,
+    elements: PropTypes.array,
+    onMount: PropTypes.func,
     onUnmount: PropTypes.func,
 };
 
 export default connect(({ transactions }) => ({
-    elements : transactions.elements,
-    onMount  : transactions.onMount,
+    elements: transactions.elements,
+    onMount: transactions.onMount,
     onUnmount: transactions.onUnmount,
 }))(Transactions);

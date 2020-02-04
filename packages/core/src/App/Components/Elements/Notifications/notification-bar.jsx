@@ -1,8 +1,8 @@
-import classNames        from 'classnames';
-import PropTypes         from 'prop-types';
-import React             from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Icon }          from '@deriv/components';
+import { Icon } from '@deriv/components';
 
 class NotificationBar extends React.Component {
     state = {};
@@ -50,22 +50,17 @@ class NotificationBar extends React.Component {
                     })}
                 >
                     <div className='notification-bar__message'>
-                        {
-                            has_content_close ?
-                                React.Children.map(content, child =>
-                                    React.cloneElement(child, { onClose: this.onClose.bind(this) })
-                                )
-                                : content
-                        }
+                        {has_content_close
+                            ? React.Children.map(content, child =>
+                                  React.cloneElement(child, { onClose: this.onClose.bind(this) })
+                              )
+                            : content}
                     </div>
-                    { !has_content_close &&
-                        <div
-                            onClick={this.onClose.bind(this)}
-                            className='notification-bar__button'
-                        >
+                    {!has_content_close && (
+                        <div onClick={this.onClose.bind(this)} className='notification-bar__button'>
                             <Icon icon='IcCross' className='notification-bar__icon' />
                         </div>
-                    }
+                    )}
                 </div>
             </CSSTransition>
         );
@@ -74,12 +69,9 @@ class NotificationBar extends React.Component {
 
 NotificationBar.propTypes = {
     className: PropTypes.string,
-    content  : PropTypes.oneOfType([
-        PropTypes.object,
-        PropTypes.string,
-    ]),
+    content: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     has_content_close: PropTypes.bool,
-    type             : PropTypes.string,
+    type: PropTypes.string,
 };
 
 export default NotificationBar;

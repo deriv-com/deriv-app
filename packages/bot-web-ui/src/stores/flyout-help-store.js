@@ -1,9 +1,5 @@
-import {
-    observable,
-    action,
-    runInAction,
-}                   from 'mobx';
-import { config }   from '@deriv/bot-skeleton';
+import { observable, action, runInAction } from 'mobx';
+import { config } from '@deriv/bot-skeleton';
 
 export default class FlyoutHelpStore {
     constructor(root_store) {
@@ -11,10 +7,10 @@ export default class FlyoutHelpStore {
     }
 
     options = {
-        css   : false,
-        media : `${__webpack_public_path__}media/`,
-        move  : { scrollbars: false, drag: true, wheel: false },
-        zoom  : { startScale: config.workspaces.flyoutWorkspacesStartScale },
+        css: false,
+        media: `${__webpack_public_path__}media/`,
+        move: { scrollbars: false, drag: true, wheel: false },
+        zoom: { startScale: config.workspaces.flyoutWorkspacesStartScale },
         sounds: false,
     };
 
@@ -27,32 +23,32 @@ export default class FlyoutHelpStore {
 
     @action.bound
     setHelpContent = async block_node => {
-        const block_hw        = Blockly.Block.getDimensions(block_node);
-        const block_type      = block_node.getAttribute('type');
-        const title           = Blockly.Blocks[block_type].meta().display_name;
-       
+        const block_hw = Blockly.Block.getDimensions(block_node);
+        const block_type = block_node.getAttribute('type');
+        const title = Blockly.Blocks[block_type].meta().display_name;
+
         /* TODO break each help-string a separate chunk and load it on demand, for this we need to loop
         through the folder in bot-skeleton webpack and create entrypoint of each file. then import them as :
         const help_string_obj = await import(/* webpackChunkName: `[request]` `@deriv/bot-skeleton/${block_type}`; */
         const help_string_obj = await import(/* webpackChunkName: `[request]` */ '@deriv/bot-skeleton');
-        const start_scale     = config.workspaces.flyoutWorkspacesStartScale;
+        const start_scale = config.workspaces.flyoutWorkspacesStartScale;
 
         block_node.setAttribute('width', block_hw.width * start_scale);
         block_node.setAttribute('height', block_hw.height * start_scale);
 
-        const { flyout }       = this.root_store;
+        const { flyout } = this.root_store;
         runInAction(() => {
             flyout.is_help_content = true;
-            this.block_node        = block_node;
-            this.block_type        = block_type;
-            this.title             = title;
-            this.help_string       = help_string_obj.default[block_type];
+            this.block_node = block_node;
+            this.block_type = block_type;
+            this.title = title;
+            this.help_string = help_string_obj.default[block_type];
         });
 
         if (!flyout.is_search_flyout) {
             this.updateSequenceButtons();
         }
-    }
+    };
 
     @action.bound
     onBackClick() {
@@ -60,7 +56,7 @@ export default class FlyoutHelpStore {
         const toolbox = Blockly.derivWorkspace.toolbox_;
         const { toolbar, flyout } = this.root_store;
 
-        if (flyout.is_search_flyout){
+        if (flyout.is_search_flyout) {
             const search = document.getElementsByName('search')[0].value;
 
             toolbar.onSearch({ search });
@@ -93,11 +89,11 @@ export default class FlyoutHelpStore {
                 await import(/* webpackChunkName: `[request]` */ '@deriv/bot-skeleton');
                 return block_type;
             } catch (e) {
-                return getNextBlock(xml,next_index,direction);
+                return getNextBlock(xml, next_index, direction);
             }
         };
 
-        const block_type = await getNextBlock(this.xml_list_group,current_block_index,should_go_next);
+        const block_type = await getNextBlock(this.xml_list_group, current_block_index, should_go_next);
         if (block_type) {
             const target_blocks = this.xml_list_group[block_type];
             this.setHelpContent(target_blocks[0]);
@@ -117,21 +113,23 @@ export default class FlyoutHelpStore {
     @action.bound
     updateSequenceButtons() {
         const current_block = this.xml_list.find(xml => xml.getAttribute('type') === this.block_type);
-        const current_index = Object.keys(this.xml_list_group).findIndex(key => current_block.getAttribute('type') === key);
+        const current_index = Object.keys(this.xml_list_group).findIndex(
+            key => current_block.getAttribute('type') === key
+        );
         this.should_previous_disable = current_index === 0;
-        this.should_next_disable = current_index === (Object.keys(this.xml_list_group).length - 1);
+        this.should_next_disable = current_index === Object.keys(this.xml_list_group).length - 1;
     }
 
     // eslint-disable-next-line
     groupBy(nodes, should_include_block_only = false) {
-        return nodes.reduce(function (block_group, node) {
+        return nodes.reduce(function(block_group, node) {
             const type = node.getAttribute('type');
 
             if (should_include_block_only && type === null) {
                 return block_group;
             }
 
-            if (!block_group[type]){
+            if (!block_group[type]) {
                 block_group[type] = [];
             }
 

@@ -71,7 +71,7 @@ Blockly.FieldImage.prototype.init = function() {
         'image',
         {
             height: `${this.height_}px`,
-            width : `${this.width_}px`,
+            width: `${this.width_}px`,
         },
         this.fieldGroup_
     );

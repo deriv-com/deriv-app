@@ -13,22 +13,22 @@ class ResponseQueue {
         this.size = 3;
     }
 
-    add (response) {
+    add(response) {
         this.list.unshift(response);
     }
 
-    remove () {
+    remove() {
         this.list.pop();
     }
 
-    push (response) {
+    push(response) {
         if (this.list.length >= this.size) {
             this.remove();
         }
         this.add(response);
     }
 
-    fresh () {
+    fresh() {
         this.list = [];
     }
 }
@@ -47,30 +47,33 @@ export const ApiCallProxyHandler = {
                 return function(...args) {
                     const result = target_value.apply(this, args);
                     if (result instanceof Promise) {
-                        return new Promise((resolve) => {
+                        return new Promise(resolve => {
                             let return_value;
-                            result.then(response => {
-                                if (response.error) {
-                                    queue.push(response);
-                                    if (window.TrackJS) window.TrackJS.console.log(queue.list);
-                                    queue.fresh();
-                                    if (
-                                        window.TrackJS &&
-                                        !ignored_responses_in_trackjs.some(item => item === response.error.code)
-                                    ) {
-                                        window.TrackJS.track(response.error.code);
+                            result
+                                .then(response => {
+                                    if (response.error) {
+                                        queue.push(response);
+                                        if (window.TrackJS) window.TrackJS.console.log(queue.list);
+                                        queue.fresh();
+                                        if (
+                                            window.TrackJS &&
+                                            !ignored_responses_in_trackjs.some(item => item === response.error.code)
+                                        ) {
+                                            window.TrackJS.track(response.error.code);
+                                        }
                                     }
-                                }
-                                queue.push(response);
-                                return_value = response;
-                            }).catch(error => {
-                                if (window.TrackJS) {
-                                    window.TrackJS.console.log(queue.list);
-                                    window.TrackJS.track(error.getMessage());
-                                }
-                            }).then(() => {
-                                resolve(return_value);
-                            });
+                                    queue.push(response);
+                                    return_value = response;
+                                })
+                                .catch(error => {
+                                    if (window.TrackJS) {
+                                        window.TrackJS.console.log(queue.list);
+                                        window.TrackJS.track(error.getMessage());
+                                    }
+                                })
+                                .then(() => {
+                                    resolve(return_value);
+                                });
                         });
                     }
                     return result;
@@ -83,4 +86,4 @@ export const ApiCallProxyHandler = {
     },
 };
 
-export const trackJSNetworkMonitor = (obj) => new Proxy(obj, ApiCallProxyHandler);
+export const trackJSNetworkMonitor = obj => new Proxy(obj, ApiCallProxyHandler);

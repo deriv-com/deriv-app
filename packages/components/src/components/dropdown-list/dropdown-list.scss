@@ -10,7 +10,8 @@
     cursor: pointer;
     background-color: var(--state-normal);
 
-    &--enter, &--exit {
+    &--enter,
+    &--exit {
         transform: scale(1, 0);
         opacity: 0;
     }

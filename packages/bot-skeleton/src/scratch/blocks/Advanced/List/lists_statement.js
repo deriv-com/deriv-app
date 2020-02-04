@@ -1,40 +1,37 @@
-import { localize }      from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { minusIconDark } from '../../images';
-import {
-    runIrreversibleEvents,
-    runGroupedEvents,
-}                        from '../../../utils';
+import { runIrreversibleEvents, runGroupedEvents } from '../../../utils';
 
 Blockly.Blocks.lists_statement = {
     required_parent_type: 'lists_create_with',
     init() {
         this.required_parent_id = '';
-        const field_image       = new Blockly.FieldImage(minusIconDark, 25, 25, '', () => this.onIconClick());
+        const field_image = new Blockly.FieldImage(minusIconDark, 25, 25, '', () => this.onIconClick());
         this.jsonInit(this.definition());
         this.appendDummyInput('REMOVE_ICON').appendField(field_image);
     },
-    definition(){
+    definition() {
         return {
             message0: '%1',
-            args0   : [
+            args0: [
                 {
                     type: 'input_value',
                     name: 'VALUE',
                 },
             ],
-            colour           : Blockly.Colours.Base.colour,
-            colourSecondary  : Blockly.Colours.Base.colourSecondary,
-            colourTertiary   : Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
-            tooltip          : localize('List Statement Tooltip'),
-            category         : Blockly.Categories.List,
+            nextStatement: null,
+            tooltip: localize('List Statement Tooltip'),
+            category: Blockly.Categories.List,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('List Statement'),
-            'description' : localize('List Statement Description'),
+            display_name: localize('List Statement'),
+            description: localize('List Statement Description'),
         };
     },
     onIconClick() {
@@ -66,7 +63,7 @@ Blockly.Blocks.lists_statement = {
                 // Someone pretending to be this child's parent. Find original parent and reconnect.
                 // Happens when someone tries to connect a statement block and Blockly automagically
                 // reconnects the children to this foreign statement block.
-                const all_blocks      = this.workspace.getAllBlocks();
+                const all_blocks = this.workspace.getAllBlocks();
                 const original_parent = all_blocks.find(block => block.id === this.required_parent_id);
 
                 if (original_parent) {

@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ObjectUtils from '@deriv/shared/utils/object';
 import { Tabs } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { Dp2pProvider } from 'Components/context/dp2p-context';

@@ -13,13 +13,13 @@ import '../assets/sass/run-panel.scss';
 const drawerContent = ({ active_index, setActiveTabIndex }) => {
     return (
         <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
-            <div label={localize('Summary')}>
+            <div id='db-run-panel-tab__summary' label={localize('Summary')}>
                 <Summary />
             </div>
-            <div label={localize('Transactions')}>
+            <div id='db-run-panel-tab__transactions' label={localize('Transactions')}>
                 <Transactions />
             </div>
-            <div label={localize('Journal')}>
+            <div id='db-run-panel-tab__journal' label={localize('Journal')}>
                 <Journal />
             </div>
         </Tabs>
@@ -44,6 +44,7 @@ const drawerFooter = ({
             <TradeAnimation className='run-panel__animation' should_show_overlay={active_index > 0} />
             <div className='run-panel__buttons'>
                 <Button
+                    id='db-run-panel__clear-button'
                     is_disabled={is_clear_stat_disabled}
                     text={localize('Clear stat')}
                     onClick={onClearStatClick}
@@ -54,7 +55,7 @@ const drawerFooter = ({
                 {is_stop_button_visible ? (
                     <Button
                         is_disabled={is_stop_button_disabled}
-                        id='gtm-stop-bot'
+                        id='db-run-panel__stop-button'
                         text={localize('Stop bot')}
                         icon={<Icon icon='IcPause' className='run-panel__button--icon' color='active' />}
                         onClick={onStopButtonClick}
@@ -63,7 +64,7 @@ const drawerFooter = ({
                     />
                 ) : (
                     <Button
-                        id='gtm-run-bot'
+                        id='db-run-panel__run-button'
                         text={localize('Run bot')}
                         icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
                         onClick={onRunButtonClick}
@@ -83,7 +84,7 @@ const drawerFooter = ({
                     )}
                     zIndex={5}
                 >
-                    <Icon icon='IcInfoOutline' className='run-panel__icon-info' />
+                    <Icon icon='IcInfoOutline' id='db-run-panel__clear-stat' className='run-panel__icon-info' />
                 </Popover>
             </div>
             {is_dialog_open && (

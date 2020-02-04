@@ -11,7 +11,6 @@ import FlyoutBlock from '../flyout-block.jsx';
 import { connect } from '../../stores/connect';
 
 const HelpBase = ({ block_node, block_type, help_string, is_search_flyout, onBackClick, onSequenceClick, title }) => {
-    const { display_name } = Blockly.Blocks[block_type].meta();
     const block_help_component = help_string && help_content_config[block_type];
     let text_count = 0;
 
@@ -26,7 +25,7 @@ const HelpBase = ({ block_node, block_type, help_string, is_search_flyout, onBac
                     <Button
                         className='flyout__button-add'
                         has_effect
-                        id={`gtm-${display_name.replace(/\s/gi, '-')}`}
+                        id={`db-flyout-help__add--${block_type}`}
                         onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}
                         primary
                         text={localize('Add')}
@@ -63,6 +62,7 @@ const HelpBase = ({ block_node, block_type, help_string, is_search_flyout, onBac
             {!is_search_flyout && (
                 <div className='flyout__help-footer'>
                     <Button
+                        id='db-flyout-help__previous-button'
                         className='flyout__button-previous'
                         has_effect
                         onClick={() => onSequenceClick(false)}
@@ -70,6 +70,7 @@ const HelpBase = ({ block_node, block_type, help_string, is_search_flyout, onBac
                         type='button'
                     />
                     <Button
+                        id='db-flyout-help__next-button'
                         className='flyout__button-next'
                         has_effect
                         onClick={() => onSequenceClick(false)}

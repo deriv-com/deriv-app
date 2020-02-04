@@ -1,15 +1,8 @@
-import filesaver                 from 'file-saver';
-import {
-    observable,
-    action,
-}                                from 'mobx';
-import {
-    saveWorkspaceToRecent,
-    save_types,
-}                                from '@deriv/bot-skeleton';
+import filesaver from 'file-saver';
+import { observable, action } from 'mobx';
+import { saveWorkspaceToRecent, save_types } from '@deriv/bot-skeleton';
 
 export default class SaveModalStore {
-
     @observable is_save_modal_open = false;
     @observable button_status = 0; // 0 - none, 1 - loading, 2 - completed
 
@@ -29,7 +22,7 @@ export default class SaveModalStore {
     @action.bound
     async onConfirmSave({ is_local, save_as_collection }) {
         this.setButtonStatus(1);
-        
+
         const { file_name } = this.root_store.toolbar;
         const { saveFile } = this.root_store.google_drive;
         const xml = Blockly.Xml.workspaceToDom(Blockly.derivWorkspace);
@@ -44,8 +37,8 @@ export default class SaveModalStore {
             filesaver.saveAs(blob, `${file_name}.xml`);
         } else {
             await saveFile({
-                name    : file_name,
-                content : Blockly.Xml.domToPrettyText(xml),
+                name: file_name,
+                content: Blockly.Xml.domToPrettyText(xml),
                 mimeType: 'application/xml',
             });
 
@@ -58,7 +51,7 @@ export default class SaveModalStore {
     @action.bound
     async onDriveConnect() {
         const { google_drive } = this.root_store;
-        
+
         if (google_drive.is_authorised) {
             google_drive.signOut();
         } else {

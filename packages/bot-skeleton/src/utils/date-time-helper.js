@@ -37,7 +37,7 @@ export const timeSince = timestamp => {
     const second_past = (now.getTime() - timestamp) / 1000;
 
     if (second_past < 60) {
-        return localize('{{time_past}}s ago', { time_past: second_past });
+        return localize('{{time_past}}s ago', { time_past: parseInt(second_past) });
     }
     if (second_past < 3600) {
         return localize('{{time_past}}m ago', { time_past: parseInt(second_past / 60) });

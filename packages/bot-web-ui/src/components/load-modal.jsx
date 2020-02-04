@@ -172,18 +172,18 @@ const GoogleDrive = ({ is_authorised, onDriveConnect, onDriveOpen }) => (
             size={116}
         />
         <div className={classnames('gd__text', { 'gd__text--disabled': !is_authorised })}>
-            {localize('Google Drive')}
+            {is_authorised ? localize('You are connected to Google Drive') : localize('Google Drive')}
         </div>
         {is_authorised ? (
             <div className='gd__buttons'>
+                <Button className='gd__open' text={localize('Open')} onClick={onDriveOpen} has_effect primary />
                 <Button
                     className='gd__disconnect'
                     text={localize('Disconnect')}
                     onClick={onDriveConnect}
                     has_effect
-                    primary
+                    secondary
                 />
-                <Button className='gd__open' text={localize('Open')} onClick={onDriveOpen} has_effect secondary />
             </div>
         ) : (
             <Button className='gd__connect' text={localize('Connect')} onClick={onDriveConnect} has_effect primary />

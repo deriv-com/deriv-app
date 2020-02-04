@@ -106,7 +106,7 @@ export default class LoadModalStore {
             workspace = this.local_workspace;
         }
 
-        workspace.zoomCenter(is_zoom_in ? 1 : 0);
+        workspace.zoomCenter(is_zoom_in ? 1 : -1);
     }
 
     @action.bound

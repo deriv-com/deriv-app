@@ -137,12 +137,7 @@ const NonTickContract = RawMarkerMaker(
         }
 
         if (is_last_contract && !is_sold) {
-            draw_shade({
-                ctx,
-                start: is_reset_barrier_expired ? reset_time : entry,
-                exit: current_spot,
-                color: status_color,
-            });
+            draw_shade(ctx, is_reset_barrier_expired ? reset_time : entry, current_spot, status_color);
         }
 
         // entry markers

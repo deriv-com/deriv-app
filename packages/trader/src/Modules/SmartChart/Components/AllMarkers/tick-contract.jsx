@@ -133,7 +133,7 @@ const TickContract = RawMarkerMaker(
         }
 
         if (is_last_contract && !is_sold) {
-            draw_shade({ ctx, start: is_reset_barrier_expired ? reset_time : entry, exit, color: status_color });
+            draw_shade(ctx, is_reset_barrier_expired ? reset_time : entry, exit, status_color);
         }
 
         // ticks for last contract

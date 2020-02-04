@@ -1,6 +1,6 @@
 import { get_hex_opacity } from './colors';
 
-export const draw_shade = ({ ctx, start, exit, color }) => {
+export const draw_shade = (ctx, start, exit, color) => {
     const is_bottom_shade = start.top < exit.top;
     const shade_height = 120;
 

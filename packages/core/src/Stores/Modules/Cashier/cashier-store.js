@@ -287,11 +287,6 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    onUnmount() {
-        WS.send({ forget_all: 'p2p_order_list' });
-    }
-
-    @action.bound
     async checkIframeLoaded() {
         this.removeOnIframeLoaded();
         this.config[this.active_container].onIframeLoaded = function(e) {

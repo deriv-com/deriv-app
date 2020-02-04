@@ -102,7 +102,6 @@ export default class CashierStore extends BaseStore {
     active_container = this.config.deposit.container;
     current_client;
     is_populating_values = false;
-    p2p_offer_list = {};
 
     containers = [this.config.deposit.container, this.config.withdraw.container];
 
@@ -148,24 +147,13 @@ export default class CashierStore extends BaseStore {
         // show dp2p if:
         // 1. we have not already checked this before, and
         // 2. client is not virtual, and
-        // 3. they are an agent, or
-        // 4. there is at least one offer available
-        if (
-            !this.is_dp2p_visible &&
-            ObjectUtils.isEmptyObject(this.p2p_offer_list) &&
-            !this.root_store.client.is_virtual
-        ) {
+        // 3. p2p call return error code `PermissionDenied`
+        if (!this.is_dp2p_visible && !this.root_store.client.is_virtual) {
             const agent_error = ObjectUtils.getPropertyValue(await WS.p2pAgentInfo(), ['error', 'code']);
             if (!(agent_error === 'PermissionDenied')) {
                 this.setIsDp2pVisible(true);
             }
         }
-    }
-
-    @action.bound
-    async hasP2pOffer() {
-        this.p2p_offer_list = await WS.p2pOfferList();
-        return (ObjectUtils.getPropertyValue(this.p2p_offer_list, ['p2p_offer_list', 'list']) || []).length;
     }
 
     @action.bound
@@ -945,6 +933,5 @@ export default class CashierStore extends BaseStore {
         this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
         this.is_populating_values = false;
         this.setIsDp2pVisible(false);
-        this.p2p_offer_list = {};
     }
 }

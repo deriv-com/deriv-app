@@ -3,6 +3,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { PageOverlay } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import { FadeWrapper } from 'App/Components/Animations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
@@ -162,17 +163,19 @@ class Chart extends React.Component {
         return (
             <SmartChart
                 barriers={this.props.barriers_array}
-                bottomWidgets={this.props.is_digit_contract ? this.bottomWidgets : null}
+                bottomWidgets={this.props.is_digit_contract && isDesktop() ? this.bottomWidgets : null}
                 chartControlsWidgets={null}
                 chartType={this.props.chart_type}
                 endEpoch={this.props.end_epoch}
                 margin={this.props.margin || null}
-                isMobile={this.props.is_mobile}
-                enabledNavigationWidget={true}
+                isMobile={isMobile()}
+                enabledNavigationWidget={isDesktop()}
                 granularity={this.props.granularity}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}
                 requestForgetStream={this.props.wsForgetStream}
+                crosshairState={isMobile() ? 0 : undefined}
+                maxTick={isMobile() ? 8 : undefined}
                 requestSubscribe={this.props.wsSubscribe}
                 settings={this.props.settings}
                 startEpoch={this.props.start_epoch}

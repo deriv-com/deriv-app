@@ -8,6 +8,12 @@
             text-align: center;
             font-size: var(--text-size-m);
             font-weight: bold;
+            color: var(--text-general);
+
+            @include mobile {
+                font-size: 1.4rem;
+                flex: unset;
+            }
         }
         &-close {
             cursor: pointer;
@@ -28,6 +34,9 @@
         &-side-note {
             min-width: 256px;
             margin-left: 2.4rem;
+        }
+        @include mobile {
+            padding: 0;
         }
     }
     &__header-wrapper,

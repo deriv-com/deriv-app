@@ -12,7 +12,7 @@ import * as ICONS from '../icons';
 const NonTickContract = RawMarkerMaker(
     ({
         ctx: context,
-        points: [start, expiry, entry, exit, current_time, reset_time],
+        points: [start, expiry, entry, exit, current_spot, reset_time],
         is_last_contract,
         prices: [barrier, entry_tick_top, exit_tick_top], // TODO: support two barrier contracts
         is_dark_theme,
@@ -128,22 +128,21 @@ const NonTickContract = RawMarkerMaker(
                 draw_barrier_line({ ctx, start, exit: reset_time, barrier: entry_tick_top, line_style: 'dashed' });
                 ctx.strokeStyle = status_color_with_opacity;
                 draw_barrier_line({ ctx, start: reset_time, exit: expiry, barrier });
-                draw_shade({ ctx, is_sold, start: reset_time, end: current_time, color: status_color });
             } else {
                 ctx.strokeStyle = foreground_color;
                 draw_barrier_line({ ctx, start, exit: entry, barrier, line_style: 'dashed' });
                 ctx.strokeStyle = status_color_with_opacity;
                 draw_barrier_line({ ctx, start: entry, exit: expiry, barrier, line_style: 'solid' });
-                draw_shade({
-                    color: status_color,
-                    ctx,
-                    end: current_time,
-                    is_last_contract,
-                    is_sold,
-                    left: has_reset_time && reset_time.left,
-                    start: entry,
-                });
             }
+        }
+
+        if (is_last_contract && !is_sold) {
+            draw_shade({
+                ctx,
+                start: is_reset_barrier_expired ? reset_time : entry,
+                exit: current_spot,
+                color: status_color,
+            });
         }
 
         // entry markers

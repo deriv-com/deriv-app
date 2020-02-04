@@ -48,6 +48,12 @@
                 color: var(--text-prominent);
                 text-align: left !important;
             }
+            .dc-numpad__bkspace,
+            .dc-numpad__ok {
+                .dc-numpad__number {
+                    height: 100%;
+                }
+            }
         }
     }
 }

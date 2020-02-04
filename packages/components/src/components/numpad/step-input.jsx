@@ -20,7 +20,7 @@ const StepInput = ({ max, min, value, onChange, render, pip_size = 0 }) => {
         if (is_lt_min) return;
 
         const parsed_value = parseFloat(value);
-        const decremented_value = Number.isNaN(parsed_value) ? min : parsed_value + 1;
+        const decremented_value = Number.isNaN(parsed_value) ? min : parsed_value - 1;
 
         onChange(decremented_value, pip_size);
     };

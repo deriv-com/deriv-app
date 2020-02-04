@@ -22,8 +22,9 @@ P2PCashier.propTypes = {
     currency: PropTypes.string,
     local_currency_config: PropTypes.object,
     is_virtual: PropTypes.bool,
-    residence: PropTypes.string,
     notification_count: PropTypes.number,
+    p2p_order_list: PropTypes.array,
+    residence: PropTypes.string,
 };
 
 export default connect(({ client, modules }) => ({

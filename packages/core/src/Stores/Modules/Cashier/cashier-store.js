@@ -114,10 +114,6 @@ export default class CashierStore extends BaseStore {
         [this.config.payment_agent.container]: 'payment_agent_withdraw',
     };
 
-    constructor(root_store) {
-        super(root_store);
-    }
-
     @action.bound
     async init() {
         // show dp2p if:

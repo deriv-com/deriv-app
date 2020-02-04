@@ -351,7 +351,7 @@ class FormAds extends Component {
             advertiser_notes: [
                 v => !!v,
                 v => v.length < 400,
-                v => /^[\p{L}\p{Nd}\s'.,:+;()@#/-]{1,500}$/u.exec(v) !== null,
+                v => /^[\p{L}\p{Nd}\s'.,:;()@#/-]{1,500}$/u.exec(v) !== null,
             ],
             max_transaction: [
                 v => !!v,

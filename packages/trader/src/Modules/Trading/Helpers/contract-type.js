@@ -86,7 +86,7 @@ export const getFilteredList = (contract_types_list, filtered_items_array) => {
             }
             return undefined;
         })
-        .filter(key => !!key);
+        .filter(Boolean);
 
     return filtered_list;
 };

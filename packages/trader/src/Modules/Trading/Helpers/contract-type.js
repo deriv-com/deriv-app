@@ -25,13 +25,23 @@ export const contract_category_icon = {
     [localize('Multiplier option')]: 'IcMultiplier',
 };
 
+/**
+ * Returns a list of contracts in the following format:
+ * {
+ *      label: '', // contract category label
+ *      contract_types: [], // list of contract types
+ *      icon: '', // contract categoty icon
+ * }
+ * @param {object} contract_types_list  - list of all contracts
+ * @param {array}  unsupported_list - list of unsupported contract types
+ */
 export const getAvailableContractTypes = (contract_types_list, unsupported_list) => {
     const list = Object.keys(contract_types_list)
         .map(key => {
             const contract_types = contract_types_list[key];
             const available_contract_types = contract_types.filter(type =>
                 type.value &&
-                // TODO: remove this check once all contracts are supported
+                // TODO: remove this check once all contract types are supported
                 !unsupported_list.includes(type.value)
                     ? type
                     : undefined
@@ -50,7 +60,7 @@ export const getAvailableContractTypes = (contract_types_list, unsupported_list)
             }
             return undefined;
         })
-        .filter(key => !!key);
+        .filter(Boolean);
 
     return list;
 };

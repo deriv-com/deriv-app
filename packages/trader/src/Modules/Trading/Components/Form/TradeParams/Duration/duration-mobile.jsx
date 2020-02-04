@@ -76,7 +76,7 @@ const Numbers = ({
                         <div className={className}>{v}</div>
                     );
                 }}
-                pip_size={2}
+                pip_size={0}
                 submit_label={submit_label}
                 min={min}
                 max={max}

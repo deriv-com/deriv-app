@@ -25,7 +25,7 @@ class TradeParamsMobile extends React.Component {
     constructor(props) {
         super(props);
 
-        const { duration, duration_unit } = this.props;
+        const { amount, duration, duration_unit } = this.props;
         const getDefaultDuration = makeGetDefaultDuration(duration, duration_unit);
 
         this.state = {
@@ -38,6 +38,9 @@ class TradeParamsMobile extends React.Component {
             m_duration      : getDefaultDuration('m'),
             h_duration      : getDefaultDuration('h'),
             d_duration      : getDefaultDuration('d'),
+            // amount values
+            stake_value     : amount,
+            payout_value    : amount,
         };
     }
 
@@ -51,9 +54,12 @@ class TradeParamsMobile extends React.Component {
 
     setSelectedDuration = (duration_unit, selected_duration) =>
         this.setState({ [`${duration_unit}_duration`]: selected_duration })
-
+    
+    setSelectedAmount = (basis, selected_basis_value) =>
+        this.setState({ [`${basis}_value`]: selected_basis_value })
+ 
     render () {
-        const { active_tab_index, amount_tab_idx, t_duration, s_duration, m_duration, h_duration, d_duration } = this.state;
+        const { active_tab_index, amount_tab_idx, t_duration, s_duration, m_duration, h_duration, d_duration, stake_value, payout_value } = this.state;
     
         return (
             <Tabs
@@ -79,7 +85,14 @@ class TradeParamsMobile extends React.Component {
                 }
                 {this.isVisible('amount') &&
                     <div label={localize('Amount')}>
-                        <Amount amount_tab_idx={amount_tab_idx} setAmountTabIdx={this.setAmountTabIdx} />
+                        <Amount
+                            toggleModal={this.props.toggleModal}
+                            amount_tab_idx={amount_tab_idx}
+                            setAmountTabIdx={this.setAmountTabIdx}
+                            setSelectedAmount={this.setSelectedAmount}
+                            stake_value={stake_value}
+                            payout_value={payout_value}
+                        />
                     </div>
                 }
             </Tabs>
@@ -92,6 +105,7 @@ TradeParamsMobile.propTypes = {
 };
 
 export default connect(({ modules }) => ({
+    amount         : modules.trade.amount,
     form_components: modules.trade.form_components,
     duration       : modules.trade.duration,
     duration_unit  : modules.trade.duration_unit,

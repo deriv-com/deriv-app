@@ -1,38 +1,57 @@
 import React                          from 'react';
 import { Tabs, Numpad }               from '@deriv/components';
+import CurrencyUtils                  from '@deriv/shared/utils/currency';
 import { connect }                    from 'Stores/connect';
 
-const AmountWrapper = ({ consoleOut }) => {
+const Basis = ({ toggleModal, basis, selected_basis, setSelectedAmount, onChangeMultiple, currency }) => {
+    const user_currency_decimal_places = CurrencyUtils.getDecimalPlaces(currency);
+    const onNumberChange = num => setSelectedAmount(basis, num);
+    
+    const setBasisAndAmount = amount => {
+        onChangeMultiple({ basis, amount });
+        toggleModal();
+    };
+
     return (
         <div className='trade-params__amount-keypad'>
             <Numpad
-                value={5}
-                onSubmit={consoleOut}
+                value={selected_basis}
+                onSubmit={setBasisAndAmount}
                 is_currency
                 render={({ value: v, className }) => {
                     return (
                         <div className={className}>{v}</div>
                     );
                 }}
-                pip_size={2}
+                pip_size={user_currency_decimal_places}
                 min={0}
                 max={1000}
-                onValueChange={() => {}}
+                onValueChange={onNumberChange}
             />
         </div>
     );
 };
 
-const Amount = ({ basis_list, basis, amount_tab_idx, setAmountTabIdx }) => {
-    console.log('basis: ', basis);
+const AmountWrapper = connect(
+    ({ modules, client }) => ({
+        onChangeMultiple: modules.trade.onChangeMultiple,
+        currency        : client.currency,
+    })
+)(Basis);
+
+const Amount = ({
+    toggleModal,
+    basis_list,
+    basis,
+    amount_tab_idx,
+    setAmountTabIdx,
+    setSelectedAmount,
+    stake_value,
+    payout_value,
+}) => {
     const has_selected_tab_idx = typeof amount_tab_idx !== 'undefined';
     const active_index = has_selected_tab_idx ?
         amount_tab_idx : basis_list.findIndex(b => b.value === basis);
-
-    const consoleOut = val => {
-        // eslint-disable-next-line no-console
-        console.log(val);
-    };
 
     return (
         <div>
@@ -43,13 +62,13 @@ const Amount = ({ basis_list, basis, amount_tab_idx, setAmountTabIdx }) => {
                             case 'stake':
                                 return (
                                     <div label={basis_option.text} key={basis_option.value}>
-                                        <AmountWrapper consoleOut={consoleOut} />
+                                        <AmountWrapper toggleModal={toggleModal} basis={basis_option.value} selected_basis={stake_value} setSelectedAmount={setSelectedAmount} />
                                     </div>
                                 );
                             case 'payout':
                                 return (
                                     <div  label={basis_option.text} key={basis_option.value}>
-                                        <AmountWrapper consoleOut={consoleOut} />
+                                        <AmountWrapper toggleModal={toggleModal} basis={basis_option.value} selected_basis={payout_value} setSelectedAmount={setSelectedAmount} />
                                     </div>
                                 );
                             default:
@@ -65,4 +84,5 @@ const Amount = ({ basis_list, basis, amount_tab_idx, setAmountTabIdx }) => {
 export default connect(({ modules }) => ({
     basis              : modules.trade.basis,
     basis_list         : modules.trade.basis_list,
+    onChangeMultiple   : modules.trade.onChangeMultiple,
 }))(Amount);

@@ -11,11 +11,27 @@ const StepInput = ({
     render,
     pip_size = 0,
 }) => {
+
     const is_gt_max = parseFloat(value) + 1 > max;
     const is_lt_min = (parseFloat(value) - 1) < min;
 
-    const increment = () => !is_gt_max ? onChange(parseFloat(value) + 1, pip_size) : undefined;
-    const decrement = () => !is_lt_min ? onChange(parseFloat(value) - 1, pip_size) : undefined;
+    const increment = () => {
+        if (is_gt_max) return;
+
+        const parsed_value = parseFloat(value);
+        const incremented_value = Number.isNaN(parsed_value) ? min : parsed_value + 1;
+
+        onChange(incremented_value, pip_size);
+    };
+
+    const decrement = () => {
+        if (is_lt_min) return;
+
+        const parsed_value = parseFloat(value);
+        const decremented_value = Number.isNaN(parsed_value) ? min : parsed_value + 1;
+
+        onChange(decremented_value, pip_size);
+    };
 
     return (
         <div className='dc-numpad__input-area'>

@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
 import { localize, getLanguage } from '@deriv/translations';
 import { importExternal, config } from '@deriv/bot-skeleton';
+import { button_status } from '../constants/button-status';
 
 export default class GoogleDriveStore {
     constructor(root_store) {
@@ -148,12 +149,12 @@ export default class GoogleDriveStore {
                             this.signOut();
                         }
 
-                        setButtonStatus(0);
+                        setButtonStatus(button_status.NORMAL);
                         resolve();
                     };
                     xhr.send(form_data);
                 } else if (data.action === google.picker.Action.CANCEL) {
-                    setButtonStatus(0);
+                    setButtonStatus(button_status.NORMAL);
                 }
             };
 

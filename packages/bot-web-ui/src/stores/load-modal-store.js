@@ -29,12 +29,17 @@ export default class LoadModalStore {
     setActiveTabIndex(index) {
         this.active_index = index;
 
+        // dispose workspace in recent tab when switch tab
         if (this.active_index !== 0 && this.recent_workspace && this.recent_workspace.rendered) {
             this.recent_workspace.dispose();
         }
+
+        // preview workspace when switch to recent tab
         if (this.active_index === 0 && this.recent_files.length) {
             this.previewWorkspace(this.selected_file_id);
         }
+
+        // dispose workspace in local tab when switch tab
         if (
             this.active_index !== 1 &&
             this.loaded_local_file &&
@@ -44,8 +49,10 @@ export default class LoadModalStore {
             this.local_workspace.dispose();
             this.loaded_local_file = null;
         }
+
+        // add drag and drop event listerner when switch to local tab
         if (this.active_index === 1) {
-            this.drop_zone = document.getElementsByClassName('local__dragndrop')[0];
+            this.drop_zone = document.getElementsByClassName('load-local__dragndrop')[0];
             this.drop_zone.addEventListener('drop', e => this.handleFileChange(e, false));
         } else if (this.drop_zone) {
             this.drop_zone.removeEventListener('drop', e => this.handleFileChange(e, false));
@@ -81,7 +88,7 @@ export default class LoadModalStore {
         this.selected_file_id = id;
 
         if (!this.recent_workspace || !this.recent_workspace.rendered) {
-            const ref = document.getElementById('scratch_recent');
+            const ref = document.getElementById('load-recent__scratch');
             this.recent_workspace = Blockly.inject(ref, {
                 media: `${__webpack_public_path__}media/`, // eslint-disable-line
                 zoom: {
@@ -185,7 +192,7 @@ export default class LoadModalStore {
         const reader = new FileReader();
         reader.onload = e => {
             if (is_preview) {
-                const ref = document.getElementById('scratch_local');
+                const ref = document.getElementById('load-local__scratch');
                 this.local_workspace = Blockly.inject(ref, {
                     media: `${__webpack_public_path__}media/`, // eslint-disable-line
                     zoom: {

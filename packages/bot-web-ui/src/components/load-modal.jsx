@@ -9,9 +9,9 @@ import { connect } from '../stores/connect';
 import '../assets/sass/load-modal.scss';
 
 const WorkspaceControl = ({ onZoomInOutClick }) => (
-    <div className='recent__preview-controls'>
-        <Icon icon={'IcAddRounded'} className='recent__preview-icon' onClick={() => onZoomInOutClick(true)} />
-        <Icon icon={'IcMinusRounded'} className='recent__preview-icon' onClick={() => onZoomInOutClick(false)} />
+    <div className='load-recent__preview-controls'>
+        <Icon icon={'IcAddRounded'} className='load-recent__preview-icon' onClick={() => onZoomInOutClick(true)} />
+        <Icon icon={'IcMinusRounded'} className='load-recent__preview-icon' onClick={() => onZoomInOutClick(false)} />
     </div>
 );
 
@@ -20,56 +20,57 @@ const Recent = ({
     getRecentFileIcon,
     getSaveType,
     loadFileFromRecent,
-    onExplainationToggle,
+    onExplanationToggle,
     previewWorkspace,
     recent_files,
     selected_file_id,
     ...props
 }) => (
-    <div className='recent__container'>
+    <div className='load-recent__container'>
         {recent_files.length ? (
             <>
-                <div className='recent__content'>
-                    <div className='recent__files load__content-with-footer'>
-                        <div className='recent__title'>{localize('Recent')}</div>
-                        <div className='recent__list'>
+                <div className='load-recent__content'>
+                    <div className='load-recent__files load__content-with-footer'>
+                        <div className='load-recent__title'>{localize('Recent')}</div>
+                        <div className='load-recent__list'>
                             {recent_files.map(file => {
                                 return (
                                     <div
-                                        className={classnames('recent__item', {
-                                            'recent__item--selected': selected_file_id === file.id,
+                                        className={classnames('load-recent__item', {
+                                            'load-recent__item--selected': selected_file_id === file.id,
                                         })}
                                         key={file.id}
                                         onClick={() => previewWorkspace(file.id)}
                                     >
-                                        <div className='recent__item-text'>
-                                            <span className='recent__item-title'>{file.name}</span>
-                                            <span className='recent__item-time'>{timeSince(file.timestamp)}</span>
+                                        <div className='load-recent__item-text'>
+                                            <div className='load-recent__item-title'>{file.name}</div>
+                                            <div className='load-recent__item-time'>{timeSince(file.timestamp)}</div>
                                         </div>
-                                        <div className='recent__item-location'>
+                                        <div className='load-recent__item-location'>
                                             <Icon
                                                 icon={getRecentFileIcon(file.save_type)}
                                                 className={classnames({
-                                                    'gd__icon--active': file.save_type === save_types.GOOGLE_DRIVE,
+                                                    'load-google-drive__icon--active':
+                                                        file.save_type === save_types.GOOGLE_DRIVE,
                                                 })}
                                             />
-                                            <div className='recent__item-saved'>{getSaveType(file.save_type)}</div>
+                                            <div className='load-recent__item-saved'>{getSaveType(file.save_type)}</div>
                                         </div>
                                     </div>
                                 );
                             })}
                         </div>
                     </div>
-                    <div className='recent__preview load__content-with-footer'>
-                        <div className='recent__title'>{localize('Preview')}</div>
-                        <div id='scratch_recent' className='recent__preview-workspace'>
+                    <div className='load-recent__preview load__content-with-footer'>
+                        <div className='load-recent__title'>{localize('Preview')}</div>
+                        <div id='load-recent__scratch' className='load-recent__preview-workspace'>
                             <WorkspaceControl {...props} />
                         </div>
                     </div>
                 </div>
-                <div className='recent__footer'>
+                <div className='load-recent__footer'>
                     <Button
-                        className='recent__footer-open'
+                        className='load-recent__footer-open'
                         text={localize('Open')}
                         onClick={loadFileFromRecent}
                         has_effect
@@ -78,24 +79,24 @@ const Recent = ({
                 </div>
             </>
         ) : (
-            <div className='recent__empty'>
-                <Icon icon='IcEmptyFolder' className='recent__empty-icon' size={116} />
-                <div className='recent__empty-title'>{localize('You do not have any recent bots')}</div>
-                <div className='recent__empty-desc'>
+            <div className='load-recent__empty'>
+                <Icon icon='IcEmptyFolder' className='load-recent__empty-icon' size={116} />
+                <div className='load-recent__empty-title'>{localize('You do not have any recent bots')}</div>
+                <div className='load-recent__empty-desc'>
                     {localize('Create one or upload one from your local drive or Google Drive.')}
                 </div>
-                <div className='recent__empty-expand' onClick={onExplainationToggle}>
+                <div className='load-recent__empty-expand' onClick={onExplanationToggle}>
                     {localize("Why can't I see my recent bots?")}
                 </div>
                 <div
-                    className={classnames('recent__empty-explain', {
-                        'recent__empty-explain--show': is_explanation_expand,
+                    className={classnames('load-recent__empty-explain', {
+                        'load-recent__empty-explain--show': is_explanation_expand,
                     })}
                 >
-                    <span>
+                    <div>
                         {localize("If you've recently used bots but don't see them in this list. It may because you:")}
-                    </span>
-                    <ol className='recent__explain-list'>
+                    </div>
+                    <ol className='load-recent__explain-list'>
                         <li>{localize('1. Logged in from a different device')}</li>
                         <li>{localize('2. Logged in from a different browser')}</li>
                         <li>{localize('3. Cleared your browser cache')}</li>
@@ -109,15 +110,15 @@ const Recent = ({
 const Local = ({ closePreview, handleFileChange, loaded_local_file, loadFileFromLocal, ...props }) => {
     let file_input_ref = useRef(null);
     return (
-        <div className='local__container'>
+        <div className='load-local__container'>
             <div
-                className={classnames('local__preview', 'load__content-with-footer', {
-                    'local__preview--hidden': !loaded_local_file,
+                className={classnames('load-local__preview', 'load__content-with-footer', {
+                    'load-local__preview--hidden': !loaded_local_file,
                 })}
             >
-                <div className='local__preview-title'>{localize('Preview')}</div>
-                <div id='scratch_local' className='local__preview-workspace'>
-                    <div className='local__preview-close'>
+                <div className='load-local__preview-title'>{localize('Preview')}</div>
+                <div id='load-local__scratch' className='load-local__preview-workspace'>
+                    <div className='load-local__preview-close'>
                         <Icon icon={'IcCross'} onClick={closePreview} />
                     </div>
                     <WorkspaceControl {...props} />
@@ -132,12 +133,12 @@ const Local = ({ closePreview, handleFileChange, loaded_local_file, loadFileFrom
                         style={{ display: 'none' }}
                         onChange={e => handleFileChange(e, false)}
                     />
-                    <div id='import_dragndrop' className='local__dragndrop'>
-                        <Icon icon={'IcPc'} className='local__icon' size={116} />
-                        <span className='local__title'>{localize('Drag your file here')}</span>
-                        <span className='local__desc'>{localize('or, if you prefer...')}</span>
+                    <div id='import_dragndrop' className='load-local__dragndrop'>
+                        <Icon icon={'IcPc'} className='load-local__icon' size={116} />
+                        <div className='load-local__title'>{localize('Drag your file here')}</div>
+                        <div className='load-local__desc'>{localize('or, if you prefer...')}</div>
                         <Button
-                            className='local__upload'
+                            className='load-local__upload'
                             text={localize('Select a file from your device')}
                             onClick={() => file_input_ref.click()}
                             has_effect
@@ -147,9 +148,9 @@ const Local = ({ closePreview, handleFileChange, loaded_local_file, loadFileFrom
                     </div>
                 </>
             ) : (
-                <div className='local__footer'>
+                <div className='load-local__footer'>
                     <Button
-                        className='local__footer-open'
+                        className='load-local__footer-open'
                         text={localize('Open')}
                         onClick={loadFileFromLocal}
                         has_effect
@@ -162,23 +163,29 @@ const Local = ({ closePreview, handleFileChange, loaded_local_file, loadFileFrom
 };
 
 const GoogleDrive = ({ is_authorised, onDriveConnect, onDriveOpen }) => (
-    <div className='gd__container'>
+    <div className='load-google-drive__container'>
         <Icon
             icon={'IcGoogleDrive'}
             className={classnames({
-                'gd__icon--active': is_authorised,
-                'gd__icon--disabled': !is_authorised,
+                'load-google-drive__icon--active': is_authorised,
+                'load-google-drive__icon--disabled': !is_authorised,
             })}
             size={116}
         />
-        <div className={classnames('gd__text', { 'gd__text--disabled': !is_authorised })}>
+        <div className={classnames('load-google-drive__text', { 'load-google-drive__text--disabled': !is_authorised })}>
             {is_authorised ? localize('You are connected to Google Drive') : localize('Google Drive')}
         </div>
         {is_authorised ? (
-            <div className='gd__buttons'>
-                <Button className='gd__open' text={localize('Open')} onClick={onDriveOpen} has_effect primary />
+            <div className='load-google-drive__buttons'>
                 <Button
-                    className='gd__disconnect'
+                    className='load-google-drive__open'
+                    text={localize('Open')}
+                    onClick={onDriveOpen}
+                    has_effect
+                    primary
+                />
+                <Button
+                    className='load-google-drive__disconnect'
                     text={localize('Disconnect')}
                     onClick={onDriveConnect}
                     has_effect
@@ -186,7 +193,13 @@ const GoogleDrive = ({ is_authorised, onDriveConnect, onDriveOpen }) => (
                 />
             </div>
         ) : (
-            <Button className='gd__connect' text={localize('Connect')} onClick={onDriveConnect} has_effect primary />
+            <Button
+                className='load-google-drive__connect'
+                text={localize('Connect')}
+                onClick={onDriveConnect}
+                has_effect
+                primary
+            />
         )}
     </div>
 );
@@ -239,7 +252,7 @@ LoadModal.propTypes = {
     loadFileFromRecent: PropTypes.func,
     onDriveConnect: PropTypes.func,
     onDriveOpen: PropTypes.func,
-    onExplainationToggle: PropTypes.func,
+    onExplanationToggle: PropTypes.func,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     onZoomInOutClick: PropTypes.func,
@@ -262,7 +275,7 @@ export default connect(({ load_modal, google_drive }) => ({
     loadFileFromLocal: load_modal.loadFileFromLocal,
     loadFileFromRecent: load_modal.loadFileFromRecent,
     loaded_local_file: load_modal.loaded_local_file,
-    onExplainationToggle: load_modal.onExplainationToggle,
+    onExplanationToggle: load_modal.onExplanationToggle,
     onDriveConnect: load_modal.onDriveConnect,
     onDriveOpen: load_modal.onDriveOpen,
     onMount: load_modal.onMount,

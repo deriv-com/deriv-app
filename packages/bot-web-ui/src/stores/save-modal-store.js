@@ -1,10 +1,10 @@
-import filesaver from 'file-saver';
 import { observable, action } from 'mobx';
-import { saveWorkspaceToRecent, save_types } from '@deriv/bot-skeleton';
+import { saveWorkspaceToRecent, save_types, save } from '@deriv/bot-skeleton';
+import { button_status } from '../constants/button-status';
 
 export default class SaveModalStore {
     @observable is_save_modal_open = false;
-    @observable button_status = 0; // 0 - none, 1 - loading, 2 - completed
+    @observable button_status = button_status.NORMAL;
 
     constructor(root_store) {
         this.root_store = root_store;
@@ -13,7 +13,7 @@ export default class SaveModalStore {
     @action.bound
     toggleSaveModal() {
         if (!this.is_save_modal_open) {
-            this.setButtonStatus(0);
+            this.setButtonStatus(button_status.NORMAL);
         }
 
         this.is_save_modal_open = !this.is_save_modal_open;
@@ -21,7 +21,7 @@ export default class SaveModalStore {
 
     @action.bound
     async onConfirmSave({ is_local, save_as_collection }) {
-        this.setButtonStatus(1);
+        this.setButtonStatus(button_status.LOADING);
 
         const { file_name } = this.root_store.toolbar;
         const { saveFile } = this.root_store.google_drive;
@@ -31,10 +31,7 @@ export default class SaveModalStore {
         xml.setAttribute('collection', save_as_collection ? 'true' : 'false');
 
         if (is_local) {
-            const data = Blockly.Xml.domToPrettyText(xml);
-            const blob = new Blob([data], { type: 'text/xml;charset=utf-8' });
-
-            filesaver.saveAs(blob, `${file_name}.xml`);
+            save(file_name, save_as_collection, xml);
         } else {
             await saveFile({
                 name: file_name,
@@ -42,7 +39,7 @@ export default class SaveModalStore {
                 mimeType: 'application/xml',
             });
 
-            this.setButtonStatus(2);
+            this.setButtonStatus(button_status.COMPLETED);
         }
         saveWorkspaceToRecent(is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
         this.toggleSaveModal();

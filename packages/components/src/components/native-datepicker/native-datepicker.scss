@@ -1,0 +1,16 @@
+#dc-native-datepicker {
+    width: 100%;
+    text-align: center;
+
+    span {
+        color: var(--purchase-main-2);
+        font-size: var(--text-size-xs);
+        font-weight: bold;
+        line-height: 1.43;
+        cursor: pointer;
+    }
+    // input {
+    //     transform: scale(0);
+    //     position: absolute;
+    // }
+}

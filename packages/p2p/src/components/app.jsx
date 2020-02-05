@@ -120,7 +120,6 @@ class App extends Component {
                             <div label={localize('Buy/Sell')}>
                                 <BuySell navigate={this.redirectTo} params={parameters} />
                             </div>
-                            {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
                             <div count={notification_count} label={localize('My Orders')}>
                                 <Orders navigate={this.redirectTo} orders={orders} params={parameters} />
                             </div>

@@ -20,9 +20,7 @@ class VerticalTabHeaders extends React.PureComponent {
     get offset_top() {
         const { selected } = this.props;
 
-        const selected_el = [...this.headers].filter(
-            header => header.innerText === (selected.label || selected.title)
-        )[0];
+        const selected_el = [...this.headers].find(header => header.innerText === (selected.label || selected.title));
 
         return selected_el ? selected_el.offsetTop - 10 : 0;
     }

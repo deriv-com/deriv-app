@@ -135,7 +135,7 @@ class Dialog extends React.PureComponent {
     }
 
     get offset_top() {
-        return this.vertical_tab_headers.filter(header => header.label === this.selected.label)[0].offset_top;
+        return this.vertical_tab_headers.find(header => header.label === this.selected.label).offset_top;
     }
 
     get should_scroll() {

@@ -13,16 +13,9 @@ import { requestWS } from 'Utils/websocket';
 
 class FormAds extends Component {
     state = {
-        advertiser_notes: '',
         country: '',
         currency: '',
-        max_transaction: '',
-        min_transaction: '',
-        offer_amount: '',
         offer_currency: '',
-        payment_method: 'bank_transfer',
-        price_rate: '',
-        type: 'buy',
         error_message: '',
         is_loading: true,
     };
@@ -75,16 +68,16 @@ class FormAds extends Component {
                 ) : (
                     <Formik
                         initialValues={{
-                            advertiser_notes: this.state.advertiser_notes,
+                            advertiser_notes: '',
                             country: this.state.country,
                             currency: this.state.currency,
-                            max_transaction: this.state.max_transaction,
-                            min_transaction: this.state.min_transaction,
-                            offer_amount: this.state.offer_amount,
+                            max_transaction: '',
+                            min_transaction: '',
+                            offer_amount: '',
                             offer_currency: this.state.offer_currency,
-                            payment_method: this.state.payment_method,
-                            price_rate: this.state.price_rate,
-                            type: this.state.type,
+                            payment_method: 'bank_transfer',
+                            price_rate: '',
+                            type: 'buy',
                         }}
                         onSubmit={this.handleSubmit}
                         validate={this.validateFormAds}

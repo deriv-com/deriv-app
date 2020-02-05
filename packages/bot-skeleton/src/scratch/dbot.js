@@ -262,6 +262,10 @@ class DBot {
 
         Blockly.JavaScript.init(this.workspace);
 
+        if (force_check) {
+            Blockly.hideChaff(false);
+        }
+
         const isGlobalEndDragEvent = () => event.type === Blockly.Events.END_DRAG;
         const isGlobalDeleteEvent = () => event.type === Blockly.Events.BLOCK_DELETE;
         const isGlobalCreateEvent = () => event.type === Blockly.Events.BLOCK_CREATE;
@@ -355,6 +359,7 @@ class DBot {
                         // If a custom validator was supplied, use this to determine whether
                         // the block should be highlighted.
                         if (typeof inputValidatorFn === 'function') {
+                            console.log({ input_name: value });
                             return !!inputValidatorFn(value);
                         }
 
@@ -371,7 +376,7 @@ class DBot {
                     block.removeSelect();
                 }
 
-                block.setErrorHighlighted(should_highlight);
+                block.setErrorHighlighted(should_highlight, block.error_message || undefined);
 
                 // Automatically expand blocks that have been highlighted.
                 if (force_check && (block.is_error_highlighted || block.hasErrorHighlightedDescendant())) {

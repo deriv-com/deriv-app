@@ -53,6 +53,9 @@ class Dialog extends React.PureComponent {
         if (this.props.is_info_dialog_open) {
             this.props.onBackButtonClick();
         }
+        if (this.state.input_value) {
+            this.onClickClearInput();
+        }
         this.setState(
             {
                 selected: e,

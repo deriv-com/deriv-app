@@ -22,7 +22,7 @@ class Dialog extends React.PureComponent {
     };
 
     static getDerivedStateFromProps(props, state) {
-        if (props.item.value !== state.value) {
+        if (props.is_info_dialog_open && props.item.value !== state.value) {
             return {
                 selected: {
                     label: getContractCategoryLabel(props.list, props.item),
@@ -139,6 +139,7 @@ class Dialog extends React.PureComponent {
     }
 
     get should_scroll() {
+        if (!this.state.selected) return true;
         if (!this.scrollbar_ref.current || this.is_user_scroll) return false;
 
         return this.offset_top !== Math.ceil(this.scrollbar_ref.current.getScrollTop());

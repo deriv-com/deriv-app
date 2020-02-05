@@ -37,13 +37,13 @@ export const timeSince = timestamp => {
     const second_past = (now.getTime() - timestamp) / 1000;
 
     if (second_past < 60) {
-        return localize('{{time_past}}s ago', { time_past: parseInt(second_past) });
+        return localize('{{second_past}}s ago', { second_past: parseInt(second_past) });
     }
     if (second_past < 3600) {
-        return localize('{{time_past}}m ago', { time_past: parseInt(second_past / 60) });
+        return localize('{{minute_past}}m ago', { minute_past: parseInt(second_past / 60) });
     }
     if (second_past <= 86400) {
-        return localize('{{time_past}}h ago', { time_past: parseInt(second_past / 3600) });
+        return localize('{{hour_past}}h ago', { hour_past: parseInt(second_past / 3600) });
     }
 
     const timestamp_date = new Date(timestamp);

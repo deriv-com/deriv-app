@@ -62,7 +62,6 @@ const Numbers = ({
             <Numpad
                 value={selected_duration}
                 onSubmit={setDuration}
-                is_currency
                 render={({ value: v, className }) => {
                     return <div className={className}>{v}</div>;
                 }}

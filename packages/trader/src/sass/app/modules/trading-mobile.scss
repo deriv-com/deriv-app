@@ -31,7 +31,8 @@
             align-items: center;
             justify-content: center;
 
-            .dc-numpad--is-currency {
+            .dc-numpad--is-currency,
+            .dc-numpad--is-regular {
                 max-width: 100%;
                 grid-template-columns: repeat(4, 1fr);
                 grid-gap: 16px;

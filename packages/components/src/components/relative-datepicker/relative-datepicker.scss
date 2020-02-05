@@ -1,4 +1,4 @@
-#dc-native-datepicker {
+#dc-relative-datepicker {
     width: 100%;
     text-align: center;
 
@@ -9,8 +9,9 @@
         line-height: 1.43;
         cursor: pointer;
     }
-    // input {
-    //     transform: scale(0);
-    //     position: absolute;
-    // }
+    // This css is for make date input field invisible
+    input {
+        transform: scale(0);
+        position: absolute;
+    }
 }

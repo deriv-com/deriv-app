@@ -34,7 +34,7 @@ module.exports = {
         'mobile-wrapper'                : 'Components/mobile-wrapper',
         modal                           : 'Components/modal',
         money                           : 'Components/money',
-        'native-datepicker'             : 'Components/native-datepicker',
+        'relative-datepicker'           : 'Components/relative-datepicker',
         'password-input'                : 'Components/password-input',
         'password-meter'                : 'Components/password-meter',
         numpad                          : 'Components/numpad/',

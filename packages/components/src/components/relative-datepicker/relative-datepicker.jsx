@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { toMoment, daysFromTodayTo } from '@deriv/shared/src/utils/date/date-time';
 
-const NativeDatePicker = props => {
+const RelativeDatePicker = props => {
     const myRef = useRef();
     const clickHandler = () => {
         myRef.current.click();
@@ -12,7 +12,7 @@ const NativeDatePicker = props => {
     const min_date = props.min_date ? toMoment(props.min_date).format('YYYY-MM-DD') : toMoment().format('YYYY-MM-DD');
     const max_date = props.max_date ? toMoment(props.max_date).format('YYYY-MM-DD') : null;
     return (
-        <div id='dc-native-datepicker'>
+        <div id='dc-relative-datepicker'>
             <span onClick={clickHandler}>Pick an end date</span>
             <input
                 type='date'
@@ -25,4 +25,4 @@ const NativeDatePicker = props => {
         </div>
     );
 };
-export default NativeDatePicker;
+export default RelativeDatePicker;

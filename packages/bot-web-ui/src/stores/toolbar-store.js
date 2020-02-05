@@ -102,7 +102,7 @@ export default class ToolbarStore {
             false,
             () => {
                 workspace.clear();
-                Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.blocksXmlStr), workspace);
+                Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.cached_xml.main), workspace);
             },
             'reset'
         );

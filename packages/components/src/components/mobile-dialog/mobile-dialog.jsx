@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
+import Icon from 'Components/icon/icon.jsx';
 import Div100vhContainer from '../div100vh-container';
-import Icon from '../icon';
 
 const MobileDialog = props => {
     const { title, visible, children, portal_element_id, wrapper_classname } = props;

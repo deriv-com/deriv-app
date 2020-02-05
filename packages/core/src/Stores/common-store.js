@@ -1,5 +1,7 @@
 import { action, observable } from 'mobx';
 import moment from 'moment';
+import { LocalStore } from '_common/storage';
+import AppRoutes, { routing_control_key } from 'Constants/routes';
 import { currentLanguage } from 'Utils/Language/index';
 import BaseStore from './base-store';
 import { clientNotifications } from './Helpers/client-notifications';
@@ -7,6 +9,16 @@ import { clientNotifications } from './Helpers/client-notifications';
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
         super({ root_store });
+
+        if (LocalStore.get(routing_control_key)) {
+            const route_control = JSON.parse(LocalStore.get(routing_control_key));
+
+            if (route_control.is_from_bot) {
+                this.setRoutedInternally(true);
+                delete route_control.is_from_bot;
+                LocalStore.setObject(routing_control_key, route_control);
+            }
+        }
     }
 
     @observable server_time = moment.utc();
@@ -27,6 +39,8 @@ export default class CommonStore extends BaseStore {
 
     @observable deposit_url = '';
     @observable withdraw_url = '';
+
+    @observable has_routed_internally = false;
 
     @action.bound
     setIsSocketOpened(is_socket_opened) {
@@ -95,5 +109,19 @@ export default class CommonStore extends BaseStore {
     @action.bound
     setWithdrawURL(withdraw_url) {
         this.withdraw_url = withdraw_url;
+    }
+
+    @action.bound
+    setRoutedInternally(has_routed_internally) {
+        this.has_routed_internally = has_routed_internally;
+    }
+
+    @action.bound
+    routeBackInApp(history) {
+        if (this.has_routed_internally) {
+            history.goBack();
+        } else {
+            history.push(AppRoutes.trade);
+        }
     }
 }

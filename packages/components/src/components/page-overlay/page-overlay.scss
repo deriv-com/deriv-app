@@ -1,0 +1,48 @@
+.dc-page-overlay {
+    &__header {
+        padding: 0.8rem 2.4rem;
+        border-bottom: 1px solid var(--general-section-1);
+
+        &-title {
+            flex: 1;
+            text-align: center;
+            font-size: var(--text-size-m);
+            font-weight: bold;
+            color: var(--text-general);
+
+            @include mobile {
+                font-size: 1.4rem;
+                flex: unset;
+            }
+        }
+        &-close {
+            cursor: pointer;
+            height: 16px;
+            position: absolute;
+            right: 0;
+        }
+        &-wrapper {
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+    }
+    &__content {
+        padding: 2.4rem 0 0;
+        display: flex;
+
+        &-side-note {
+            min-width: 256px;
+            margin-left: 2.4rem;
+        }
+        @include mobile {
+            padding: 0;
+        }
+    }
+    &__header-wrapper,
+    &__content {
+        max-width: 1232px;
+        margin: auto;
+        position: relative;
+    }
+}

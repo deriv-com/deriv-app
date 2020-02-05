@@ -19,10 +19,9 @@ class TradeHeaderExtensions extends React.Component {
             positions_currency,
             positions_error,
             populateHeaderExtensions,
-            show_positions_toggle,
         } = this.props;
 
-        const header_items = is_logged_in && show_positions_toggle && (
+        const header_items = is_logged_in && (
             <MobileWrapper>
                 <TogglePositionsMobile
                     active_positions_count={active_positions_count}
@@ -64,7 +63,6 @@ class TradeHeaderExtensions extends React.Component {
 TradeHeaderExtensions.propTypes = {
     is_logged_in: PropTypes.bool,
     populateHeaderExtensions: PropTypes.func,
-    show_positions_toggle: PropTypes.bool,
 };
 
 export default connect(({ client, modules, ui }) => ({
@@ -80,7 +78,6 @@ export default connect(({ client, modules, ui }) => ({
     active_positions_count: modules.portfolio.active_positions_count,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
-    show_positions_toggle: ui.show_positions_toggle,
     populateHeaderExtensions: ui.populateHeaderExtensions,
     toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
 }))(TradeHeaderExtensions);

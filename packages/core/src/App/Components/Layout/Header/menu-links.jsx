@@ -37,7 +37,6 @@ const MenuLinks = ({ is_logged_in, items }) => (
                 )}
             </div>
         )}
-        )
     </React.Fragment>
 );
 

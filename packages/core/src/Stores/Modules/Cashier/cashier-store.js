@@ -82,7 +82,10 @@ class ConfigVerification {
 
 export default class CashierStore extends BaseStore {
     @observable is_loading = false;
-    @observable is_dp2p_visible = false;
+    @observable is_p2p_visible = false;
+    @observable p2p_notification_count = 0;
+    @observable p2p_order_list = [];
+    @observable is_p2p_advertiser = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -110,6 +113,39 @@ export default class CashierStore extends BaseStore {
         [this.config.withdraw.container]: 'payment_withdraw',
         [this.config.payment_agent.container]: 'payment_agent_withdraw',
     };
+
+    map_type = {
+        buy: 'sell',
+        sell: 'buy',
+    };
+
+    @action.bound
+    async init() {
+        // show dp2p if:
+        // 1. we have not already checked this before, and
+        // 2. client is not virtual, and
+        // 3. they are an advertiser, or
+        // 4. there is at least one offer available
+        if (
+            !this.is_p2p_visible &&
+            ObjectUtils.isEmptyObject(this.p2p_offer_list) &&
+            !this.root_store.client.is_virtual
+        ) {
+            const p2p_advertiser_info = await WS.p2pAgentInfo();
+            this.is_p2p_advertiser = !p2p_advertiser_info.error;
+
+            if (this.is_p2p_advertiser || (await this.hasP2pOffer())) {
+                this.setIsP2pVisible(true);
+
+                WS.p2pSubscribe({ p2p_order_list: 1, subscribe: 1 }, response => {
+                    this.setP2pOrderList(
+                        response,
+                        ObjectUtils.getPropertyValue(p2p_advertiser_info, ['p2p_agent_info', 'agent_id'])
+                    );
+                });
+            }
+        }
+    }
 
     @action.bound
     resetValuesIfNeeded() {
@@ -144,24 +180,53 @@ export default class CashierStore extends BaseStore {
         if (!this.config.account_transfer.accounts_list.length) {
             this.sortAccountsTransfer();
         }
+    }
 
-        // show dp2p if:
-        // 1. we have not already checked this before, and
-        // 2. client is not virtual, and
-        // 3. they are an agent, or
-        // 4. there is at least one offer available
-        if (
-            !this.is_dp2p_visible &&
-            ObjectUtils.isEmptyObject(this.p2p_offer_list) &&
-            !this.root_store.client.is_virtual
-        ) {
-            const is_advertiser = !(await WS.p2pAgentInfo()).error;
-
-            if (is_advertiser || (await this.hasP2pOffer())) {
-                this.setIsDp2pVisible(true);
+    @action.bound
+    setP2pOrderList(order_response, advertiser_id) {
+        if (order_response.p2p_order_list) {
+            // it's an array of orders from p2p_order_list
+            this.p2p_order_list = order_response.p2p_order_list.list;
+            this.handleNotifications(this.p2p_order_list, advertiser_id);
+        } else {
+            // it's a single order from p2p_order_info
+            const idx_order_to_update = this.p2p_order_list.findIndex(
+                order => order.order_id === order_response.p2p_order_info.order_id
+            );
+            const updated_orders = [...this.p2p_order_list];
+            // if it's a new order, add it to the top of the list
+            if (idx_order_to_update < 0) {
+                updated_orders.unshift(order_response.p2p_order_info);
+            } else {
+                // otherwise, update the correct order
+                updated_orders[idx_order_to_update] = order_response.p2p_order_info;
             }
+            // trigger re-rendering by setting orders again
+            this.p2p_order_list = updated_orders;
+            this.handleNotifications(updated_orders, advertiser_id);
         }
     }
+
+    @action.bound
+    handleNotifications = (orders, advertiser_id) => {
+        let p2p_notification_count = 0;
+
+        orders.forEach(order => {
+            // TODO: [p2p-replace-with-api] once API sends this data, use that instead of internal check
+            const is_incoming_order = order.agent_id === advertiser_id;
+            // TODO: [p2p-replace-with-api] once API sends this data, use that instead of map
+            const type = is_incoming_order ? order.type : this.map_type[order.type];
+            const is_buyer = type === 'buy';
+            const is_buyer_confirmed = order.status === 'buyer-confirmed';
+            const is_pending = order.status === 'pending';
+
+            if ((is_buyer_confirmed && !is_buyer) || (is_pending && is_buyer)) {
+                p2p_notification_count++;
+            }
+        });
+
+        this.p2p_notification_count = p2p_notification_count;
+    };
 
     @action.bound
     async hasP2pOffer() {
@@ -170,8 +235,8 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setIsDp2pVisible(is_dp2p_visible) {
-        this.is_dp2p_visible = is_dp2p_visible;
+    setIsP2pVisible(is_p2p_visible) {
+        this.is_p2p_visible = is_p2p_visible;
     }
 
     @action.bound
@@ -945,7 +1010,7 @@ export default class CashierStore extends BaseStore {
         this.config.account_transfer = new ConfigAccountTransfer();
         this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
         this.is_populating_values = false;
-        this.setIsDp2pVisible(false);
+        this.setIsP2pVisible(false);
         this.p2p_offer_list = {};
     }
 }

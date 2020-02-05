@@ -1,4 +1,5 @@
 import { Table } from '@deriv/components';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from 'Components/i18next';
@@ -14,16 +15,35 @@ const BuyOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
         order_purchase_datetime,
         offer_currency,
         transaction_currency,
+        is_buyer_confirmed,
+        is_buyer_cancelled,
+        is_expired,
+        is_pending,
+        is_completed,
     } = data;
 
     return (
-        <div onClick={() => onOpenDetails(data)} style={style} className='orders__table-row'>
+        <div
+            onClick={() => onOpenDetails(data)}
+            style={style}
+            className={classNames('orders__table-row', {
+                'orders__table-row--attention': is_pending,
+            })}
+        >
             <Table.Row>
                 <Table.Cell>
                     {localize('Buy')} {order_id}
                 </Table.Cell>
                 <Table.Cell>{order_purchase_datetime}</Table.Cell>
-                <Table.Cell>{display_status}</Table.Cell>
+                <Table.Cell
+                    className={classNames('orders__table-cell', {
+                        'orders__table-cell--primary': is_pending || is_buyer_confirmed,
+                        'orders__table-cell--success': is_completed,
+                        'orders__table-cell--disabled': is_buyer_cancelled || is_expired,
+                    })}
+                >
+                    {display_status}
+                </Table.Cell>
                 <Table.Cell>
                     {display_transaction_amount} {transaction_currency}
                 </Table.Cell>

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
+import { localize } from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { requestWS } from 'Utils/websocket';
@@ -46,7 +47,11 @@ export class SellTable extends React.Component {
 
         if (api_error_message) return <TableError message={api_error_message} />;
 
-        return <InfiniteLoaderList items={items} RenderComponent={Row} RowLoader={BuySellRowLoader} />;
+        return items.length ? (
+            <InfiniteLoaderList items={items} RenderComponent={Row} RowLoader={BuySellRowLoader} />
+        ) : (
+            <div className='deriv-p2p__empty'>{localize('No ads found')}</div>
+        );
     }
 }
 

@@ -32,7 +32,7 @@ const OrderDetails = ({ order_details }) => {
     const [show_popup, setShowPopup] = React.useState(false);
     const [popup_options, setPopupOptions] = React.useState({});
 
-    const { is_agent, email_domain } = React.useContext(Dp2pContext);
+    const { email_domain } = React.useContext(Dp2pContext);
     const onCancelClick = () => setShowPopup(false);
 
     const handleShowPopup = options => {
@@ -58,18 +58,10 @@ const OrderDetails = ({ order_details }) => {
                         <OrderInfoBlock label={localize('Advertiser notes')} value={advertiser_notes} />
                         <div className='order-details__info-columns'>
                             <div className='order-details__info--left'>
-                                {is_agent && (
-                                    <OrderInfoBlock
-                                        label={is_buyer ? localize('Receive') : localize('Send')}
-                                        value={`${display_transaction_amount} ${transaction_currency}`}
-                                    />
-                                )}
-                                {!is_agent && (
-                                    <OrderInfoBlock
-                                        label={is_buyer ? localize('Send') : localize('Receive')}
-                                        value={`${display_transaction_amount} ${transaction_currency}`}
-                                    />
-                                )}
+                                <OrderInfoBlock
+                                    label={is_buyer ? localize('Send') : localize('Receive')}
+                                    value={`${display_transaction_amount} ${transaction_currency}`}
+                                />
                                 <OrderInfoBlock
                                     label={localize('Price')}
                                     value={`${display_price_rate} ${transaction_currency}`}
@@ -77,24 +69,11 @@ const OrderDetails = ({ order_details }) => {
                                 <OrderInfoBlock label={localize('Order ID')} value={order_id} />
                             </div>
                             <div className='order-details__info--right'>
-                                {is_agent && (
-                                    <OrderInfoBlock
-                                        label={is_buyer ? localize('Send') : localize('Receive')}
-                                        value={`${display_offer_amount} ${offer_currency}`}
-                                    />
-                                )}
-                                {!is_agent && (
-                                    <OrderInfoBlock
-                                        label={is_buyer ? localize('Receive') : localize('Send')}
-                                        value={`${display_offer_amount} ${offer_currency}`}
-                                    />
-                                )}
-                                {is_agent && !is_buyer && (
-                                    <OrderInfoBlock label={localize('Seller')} value={advertiser_name} />
-                                )}
-                                {!is_agent && is_buyer && (
-                                    <OrderInfoBlock label={localize('Seller')} value={advertiser_name} />
-                                )}
+                                <OrderInfoBlock
+                                    label={is_buyer ? localize('Receive') : localize('Send')}
+                                    value={`${display_offer_amount} ${offer_currency}`}
+                                />
+                                {is_buyer && <OrderInfoBlock label={localize('Seller')} value={advertiser_name} />}
                                 <OrderInfoBlock label={localize('Time')} value={order_purchase_datetime} />
                             </div>
                         </div>

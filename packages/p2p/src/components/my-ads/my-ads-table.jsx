@@ -39,14 +39,6 @@ const RowComponent = React.memo(({ data, row_actions, style }) => (
             </Table.Cell>
             <Table.Cell>{data.display_payment_method}</Table.Cell>
             <Table.Cell>
-                <Button
-                    secondary
-                    small
-                    onClick={() => row_actions.onClickEdit(data)}
-                    className='p2p-my-ads__table-button'
-                >
-                    {localize('Edit')}
-                </Button>
                 <Button secondary small onClick={() => row_actions.onClickDelete(data.offer_id)}>
                     {localize('Delete')}
                 </Button>
@@ -75,7 +67,7 @@ export class MyAdsTable extends React.Component {
     componentDidMount() {
         this.is_mounted = true;
 
-        requestWS({ p2p_offer_list: 1, agent_id: this.context.agent_id }).then(response => {
+        requestWS({ p2p_offer_list: 1, agent_id: this.context.advertiser_id }).then(response => {
             if (this.is_mounted) {
                 this.setState({ items: response, is_loading: false });
             }
@@ -120,15 +112,16 @@ export class MyAdsTable extends React.Component {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        <InfiniteLoaderList
-                            items={items}
-                            row_actions={{
-                                onClickDelete: this.onClickDelete,
-                                onClickEdit: this.props.onClickEdit,
-                            }}
-                            RenderComponent={RowComponent}
-                            RowLoader={MyAdsLoader}
-                        />
+                        {items.length ? (
+                            <InfiniteLoaderList
+                                items={items}
+                                row_actions={{ onClickDelete: this.onClickDelete }}
+                                RenderComponent={RowComponent}
+                                RowLoader={MyAdsLoader}
+                            />
+                        ) : (
+                            <div className='deriv-p2p__empty'>{localize("You haven't posted any ads yet")}</div>
+                        )}
                     </Table.Body>
                 </Table>
                 {this.state.show_popup && (
@@ -150,9 +143,5 @@ export class MyAdsTable extends React.Component {
         );
     }
 }
-
-MyAdsTable.propTypes = {
-    onClickEdit: PropTypes.func,
-};
 
 MyAdsTable.contextType = Dp2pContext;

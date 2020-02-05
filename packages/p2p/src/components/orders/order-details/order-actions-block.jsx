@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@deriv/components';
-import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 
 const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
-    const { is_agent } = React.useContext(Dp2pContext);
     const {
         display_offer_amount,
         display_transaction_amount,
@@ -101,7 +99,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         showPopup(options);
     };
 
-    if (is_agent && is_buyer_confirmed && is_buyer) {
+    if (is_buyer_confirmed && !is_buyer) {
         buttons_to_render = (
             <Button className='order-details__actions-button' large primary onClick={receivedFunds}>
                 {localize("I've received funds")}
@@ -109,7 +107,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         );
     }
 
-    if (is_agent && is_pending && !is_buyer) {
+    if (is_pending && is_buyer) {
         buttons_to_render = (
             <React.Fragment>
                 <Button className='order-details__actions-button' large secondary onClick={cancelOrder}>
@@ -119,27 +117,6 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
                     {localize("I've paid")}
                 </Button>
             </React.Fragment>
-        );
-    }
-
-    if (!is_agent && is_pending && is_buyer) {
-        buttons_to_render = (
-            <React.Fragment>
-                <Button className='order-details__actions-button' large secondary onClick={cancelOrder}>
-                    {localize('Cancel order')}
-                </Button>
-                <Button className='order-details__actions-button' large primary onClick={paidOrder}>
-                    {localize("I've paid")}
-                </Button>
-            </React.Fragment>
-        );
-    }
-
-    if (!is_agent && is_buyer_confirmed && !is_buyer) {
-        buttons_to_render = (
-            <Button className='order-details__actions-button' large primary onClick={receivedFunds}>
-                {localize("I've received funds")}
-            </Button>
         );
     }
 

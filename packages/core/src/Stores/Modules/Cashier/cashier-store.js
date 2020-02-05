@@ -155,9 +155,9 @@ export default class CashierStore extends BaseStore {
             ObjectUtils.isEmptyObject(this.p2p_offer_list) &&
             !this.root_store.client.is_virtual
         ) {
-            const is_agent = !(await WS.p2pAgentInfo()).error;
+            const is_advertiser = !(await WS.p2pAgentInfo()).error;
 
-            if (is_agent || (await this.hasP2pOffer())) {
+            if (is_advertiser || (await this.hasP2pOffer())) {
                 this.setIsDp2pVisible(true);
             }
         }

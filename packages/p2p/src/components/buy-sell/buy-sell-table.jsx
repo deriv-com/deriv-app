@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table } from '@deriv/components';
-import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import { BuyTable } from './buy-table.jsx';
 import { SellTable } from './sell-table.jsx';
 
 export const BuySellTable = ({ setSelectedAd, table_type }) => {
     const is_buy = table_type === 'buy';
-    const { is_agent } = React.useContext(Dp2pContext);
 
     // TODO: [p2p-cleanup] cleanup repetition of header
     return (
@@ -19,7 +17,7 @@ export const BuySellTable = ({ setSelectedAd, table_type }) => {
                     <Table.Head>{localize('Limits')}</Table.Head>
                     <Table.Head>{localize('Price')}</Table.Head>
                     <Table.Head>{localize('Payment method')}</Table.Head>
-                    {!is_agent ? <Table.Head>{localize('Trade')}</Table.Head> : null}
+                    <Table.Head>{localize('Trade')}</Table.Head>
                 </Table.Row>
             </Table.Header>
             <Table.Body>

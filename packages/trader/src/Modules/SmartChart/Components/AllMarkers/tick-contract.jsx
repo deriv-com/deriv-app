@@ -1,10 +1,11 @@
+import { localize } from '@deriv/translations';
 import RawMarkerMaker from './Helpers/raw-marker-maker.jsx';
-import Svg2Canvas from './Helpers/svg2canvas';
-import { get_color, get_hex_opacity } from './Helpers/colors';
-import { shadowed_text } from './Helpers/text';
-import { draw_vertical_labelled_line, draw_barrier_line, draw_line } from './Helpers/lines';
-import { draw_shade } from './Helpers/shade';
-import { calc_scale, calc_opacity } from './Helpers/calculations';
+import renderSvg2Canvas from './Helpers/svg2canvas';
+import { getColor, getHexOpacity } from './Helpers/colors';
+import { shadowedText } from './Helpers/text';
+import { drawVerticalLabelledLine, drawBarrierLine, drawLine } from './Helpers/lines';
+import { drawShade } from './Helpers/shade';
+import { getScale, getChartOpacity } from './Helpers/calculations';
 import * as ICONS from '../icons';
 
 const TickContract = RawMarkerMaker(
@@ -15,24 +16,16 @@ const TickContract = RawMarkerMaker(
         is_last_contract,
         is_dark_theme,
         granularity,
-        contract_info: {
-            // contract_type,
-            // exit_tick_time,
-            status,
-            profit,
-            is_sold,
-            // tick_stream,
-            tick_count,
-        },
+        contract_info: { status, profit, is_sold, tick_count },
     }) => {
         /** @type {CanvasRenderingContext2D} */
         const ctx = context;
 
-        const foreground_color = get_color({ is_dark_theme, status: 'fg' }).concat(
-            is_last_contract ? '' : get_hex_opacity(0.4)
+        const foreground_color = getColor({ is_dark_theme, status: 'fg' }).concat(
+            is_last_contract ? '' : getHexOpacity(0.4)
         );
-        const background_color = get_color({ is_dark_theme, status: 'bg' });
-        const scale = calc_scale(start.zoom);
+        const background_color = getColor({ is_dark_theme, status: 'bg' });
+        const scale = getScale(start.zoom);
         const canvas_height = ctx.canvas.height / window.devicePixelRatio;
 
         ctx.save();
@@ -50,25 +43,25 @@ const TickContract = RawMarkerMaker(
 
         const exit = ticks[ticks.length - 1];
         const entry = ticks[0];
-        const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
-        const status_color = get_color({ status, is_dark_theme, profit });
-        const status_color_with_opacity = status_color.concat(is_last_contract ? '' : get_hex_opacity(0.4));
+        const opacity = is_sold ? getChartOpacity(start.left, exit.left) : '';
+        const status_color = getColor({ status, is_dark_theme, profit });
+        const status_color_with_opacity = status_color.concat(is_last_contract ? '' : getHexOpacity(0.4));
 
         const has_reset_time = reset_time && reset_time.epoch;
         const should_draw_vertical_line = is_last_contract && !is_sold;
         if (should_draw_vertical_line) {
             if (start.visible) {
                 ctx.fillStyle = foreground_color;
-                draw_vertical_labelled_line({
+                drawVerticalLabelledLine({
                     ctx,
-                    text: 'Buy\nTime',
+                    text: localize('Buy Time'),
                     position: {
                         zoom: start.zoom,
                         left: start.left,
                         top: canvas_height - 50,
                     },
                     line_style: 'dashed',
-                    icon: ICONS.BUY_SELL.with_color_on_specific_paths({
+                    icon: ICONS.BUY_SELL.withColorOnSpecificPaths({
                         0: { fill: background_color },
                         1: { fill: foreground_color },
                     }),
@@ -76,30 +69,30 @@ const TickContract = RawMarkerMaker(
             }
             if (has_reset_time) {
                 ctx.fillStyle = foreground_color;
-                draw_vertical_labelled_line({
+                drawVerticalLabelledLine({
                     ctx,
-                    text: 'Reset\nTime',
+                    text: localize('Reset Time'),
                     position: {
                         zoom: reset_time.zoom,
                         left: reset_time.left,
                         top: canvas_height - 50,
                     },
                     line_style: 'dashed',
-                    icon: ICONS.RESET.with_color(foreground_color, background_color),
+                    icon: ICONS.RESET.withColor(foreground_color, background_color),
                 });
             }
             if (exit.visible && tick_count === ticks.length - 1) {
                 ctx.strokeStyle = status_color_with_opacity;
-                draw_vertical_labelled_line({
+                drawVerticalLabelledLine({
                     ctx,
-                    text: 'Sell\nTime',
+                    text: localize('Sell Time'),
                     position: {
                         zoom: exit.zoom,
                         left: exit.left,
                         top: canvas_height - 50,
                     },
                     line_style: 'solid',
-                    icon: ICONS.BUY_SELL.with_color_on_specific_paths({
+                    icon: ICONS.BUY_SELL.withColorOnSpecificPaths({
                         0: { fill: background_color },
                         1: { fill: status_color_with_opacity },
                     }),
@@ -113,7 +106,7 @@ const TickContract = RawMarkerMaker(
         ctx.fillStyle = background_color;
         if (is_reset_barrier_expired) {
             if (is_sold) {
-                draw_line(
+                drawLine(
                     ctx,
                     { left: reset_time.left, top: entry_tick_top },
                     { left: reset_time.left, top: barrier },
@@ -122,18 +115,18 @@ const TickContract = RawMarkerMaker(
             }
 
             ctx.strokeStyle = foreground_color;
-            draw_barrier_line(ctx, start, reset_time, entry_tick_top, 'dashed');
+            drawBarrierLine(ctx, start, reset_time, entry_tick_top, 'dashed');
             ctx.strokeStyle = status_color_with_opacity;
-            draw_barrier_line(ctx, reset_time, exit, barrier);
+            drawBarrierLine(ctx, reset_time, exit, barrier);
         } else {
             ctx.strokeStyle = foreground_color;
-            draw_barrier_line(ctx, start, entry, barrier, 'dashed');
+            drawBarrierLine(ctx, start, entry, barrier, 'dashed');
             ctx.strokeStyle = status_color_with_opacity;
-            draw_barrier_line(ctx, entry, exit, barrier, 'solid');
+            drawBarrierLine(ctx, entry, exit, barrier, 'solid');
         }
 
         if (is_last_contract && !is_sold) {
-            draw_shade(ctx, is_reset_barrier_expired ? reset_time : entry, exit, status_color);
+            drawShade(ctx, is_reset_barrier_expired ? reset_time : entry, exit, status_color);
         }
 
         // ticks for last contract
@@ -141,7 +134,7 @@ const TickContract = RawMarkerMaker(
             ticks
                 .filter(tick => tick.visible)
                 .forEach(tick => {
-                    const clr = tick === exit ? foreground_color : get_color({ status: 'fg', is_dark_theme });
+                    const clr = tick === exit ? foreground_color : getColor({ status: 'fg', is_dark_theme });
                     ctx.fillStyle = clr + opacity;
                     ctx.beginPath();
                     ctx.arc(tick.left - 1 * scale, tick.top, 1.5 * scale, 0, Math.PI * 2);
@@ -151,10 +144,10 @@ const TickContract = RawMarkerMaker(
         }
         // entry markers
         if (granularity === 0 && entry && entry.visible) {
-            Svg2Canvas.render({
+            renderSvg2Canvas({
                 ctx,
                 position: entry,
-                icon: ICONS.ENTRY_SPOT.with_color_on_specific_paths({
+                icon: ICONS.ENTRY_SPOT.withColorOnSpecificPaths({
                     0: { fill: background_color },
                     1: { fill: foreground_color },
                 }),
@@ -162,7 +155,7 @@ const TickContract = RawMarkerMaker(
         }
         // count down
         if (start.visible && !is_sold) {
-            shadowed_text({
+            shadowedText({
                 ctx,
                 scale,
                 is_dark_theme,
@@ -174,14 +167,14 @@ const TickContract = RawMarkerMaker(
         // status marker
         if (exit.visible && is_sold) {
             // Draw a line from barrier to icon.
-            const icon = ICONS.END.with_color_on_specific_paths({
+            const icon = ICONS.END.withColorOnSpecificPaths({
                 0: { fill: background_color + (is_sold ? opacity : '') },
                 1: { fill: status_color_with_opacity },
             });
 
             ctx.strokeStyle = status_color_with_opacity;
-            draw_line(ctx, { left: exit.left, top: barrier }, exit, 'dashed');
-            Svg2Canvas.render({ ctx, icon, position: exit });
+            drawLine(ctx, { left: exit.left, top: barrier }, exit, 'dashed');
+            renderSvg2Canvas({ ctx, icon, position: exit });
         }
 
         ctx.restore();

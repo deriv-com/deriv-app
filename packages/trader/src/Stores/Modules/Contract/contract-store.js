@@ -1,5 +1,5 @@
 import { action, extendObservable, observable, toJS } from 'mobx';
-import { get_color } from 'Modules/SmartChart/Components/AllMarkers/Helpers/colors';
+import { getColor } from 'Modules/SmartChart/Components/AllMarkers/Helpers/colors';
 import { createChartMarkers } from './Helpers/chart-markers';
 import { getDigitInfo, isDigitContract } from './Helpers/digits';
 import { getChartConfig, getDisplayStatus, getEndTime, isEnded, isContractWaiting } from './Helpers/logic';
@@ -78,7 +78,7 @@ export default class ContractStore {
 
             if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
                 main_barrier.shade = getBarrierShade(contract_info);
-                main_barrier.shadeColor = get_color({
+                main_barrier.shadeColor = getColor({
                     status,
                     profit,
                     is_dark_mode: this.root_store.ui.is_dark_mode_on,
@@ -103,7 +103,7 @@ export default class ContractStore {
                     not_draggable: true,
                 });
                 main_barrier.shade = getBarrierShade(contract_info);
-                main_barrier.shadeColor = get_color({
+                main_barrier.shadeColor = getColor({
                     status,
                     profit,
                     is_dark_mode: this.root_store.ui.is_dark_mode_on,

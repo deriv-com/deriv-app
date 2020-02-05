@@ -58,6 +58,7 @@ const Icon = ({
                 'dc-icon--brand': color === 'brand',
             })}
             height={height || size}
+            id={id}
             width={width || size}
             onClick={onClick}
             onMouseEnter={onMouseEnter}

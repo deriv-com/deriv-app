@@ -1,10 +1,10 @@
-import { get_hex_opacity } from './colors';
+import { getHexOpacity } from './colors';
 
-export const draw_shade = (ctx, start, exit, color) => {
+export const drawShade = (ctx, start, exit, color) => {
     const is_bottom_shade = start.top < exit.top;
     const shade_height = 120;
 
-    const color_with_opacity = `${color}${get_hex_opacity(16)}`;
+    const color_with_opacity = `${color}${getHexOpacity(16)}`;
     const shade_left_point = start.left;
 
     const top = is_bottom_shade ? start.top : Math.max(start.top - shade_height, 0);

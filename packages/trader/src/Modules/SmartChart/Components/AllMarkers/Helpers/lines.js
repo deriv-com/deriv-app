@@ -1,8 +1,8 @@
-import Svg2Canvas from './svg2canvas';
-import { calc_scale } from './calculations';
+import renderSvg2Canvas from './svg2canvas';
+import { getScale } from './calculations';
 import { MARKER_LINE_STYLE } from '../Constants/lines';
 
-export const draw_ring = (ctx, position, barrier, line_style = 'solid') => {
+export const drawRing = (ctx, position, barrier, line_style = 'solid') => {
     ctx.beginPath();
     ctx.setLineDash(MARKER_LINE_STYLE[line_style]);
     ctx.arc(position.left, barrier, 2, 0, Math.PI * 2);
@@ -10,7 +10,7 @@ export const draw_ring = (ctx, position, barrier, line_style = 'solid') => {
     ctx.stroke();
 };
 
-export const draw_line = (ctx, start, end, line_style = 'solid') => {
+export const drawLine = (ctx, start, end, line_style = 'solid') => {
     ctx.beginPath();
     ctx.setLineDash(MARKER_LINE_STYLE[line_style]);
     ctx.moveTo(start.left, start.top);
@@ -18,13 +18,13 @@ export const draw_line = (ctx, start, end, line_style = 'solid') => {
     ctx.stroke();
 };
 
-export const draw_barrier_line = (ctx, start, exit, barrier, line_style) => {
-    draw_line(ctx, { left: start.left, top: barrier }, { left: exit.left, top: barrier }, line_style);
-    draw_ring(ctx, start, barrier);
-    draw_ring(ctx, exit, barrier);
+export const drawBarrierLine = (ctx, start, exit, barrier, line_style) => {
+    drawLine(ctx, { left: start.left, top: barrier }, { left: exit.left, top: barrier }, line_style);
+    drawRing(ctx, start, barrier);
+    drawRing(ctx, exit, barrier);
 };
 
-export const draw_vertical_labelled_line = ({ ctx, text, icon, position: { zoom, left, top }, line_style }) => {
+export const drawVerticalLabelledLine = ({ ctx, text, icon, position: { zoom, left, top }, line_style }) => {
     // Render the label.
     const label_and_icon_offset = left - 5;
     if (icon) {
@@ -34,13 +34,13 @@ export const draw_vertical_labelled_line = ({ ctx, text, icon, position: { zoom,
             top: top - 15,
         };
 
-        Svg2Canvas.render({ ctx, icon, position });
+        renderSvg2Canvas({ ctx, icon, position });
     }
 
-    const scale = calc_scale(zoom);
+    const scale = getScale(zoom);
     const font_size = Math.floor(scale * 8);
     ctx.font = `lighter ${font_size}px IBM Plex Sans`;
-    text.split(/\n/).forEach((line, index) => {
+    text.split(/ /).forEach((line, index) => {
         const text_width = Math.ceil(ctx.measureText(line).width);
         const text_x = label_and_icon_offset - text_width;
         const text_y = top + index * font_size + 1;
@@ -48,5 +48,5 @@ export const draw_vertical_labelled_line = ({ ctx, text, icon, position: { zoom,
     });
 
     // Render the vertical line.
-    draw_line(ctx, { left, top: 0 }, { left, top: ctx.canvas.height }, line_style);
+    drawLine(ctx, { left, top: 0 }, { left, top: ctx.canvas.height }, line_style);
 };

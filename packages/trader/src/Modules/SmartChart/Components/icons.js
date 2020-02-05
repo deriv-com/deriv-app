@@ -27,7 +27,7 @@ const parse_svg = markup => {
             stroke: stroke && stroke.value,
         });
     });
-    function with_color(color, bg_color = 'white') {
+    function withColor(color, bg_color = 'white') {
         return {
             width,
             height,
@@ -38,7 +38,7 @@ const parse_svg = markup => {
             })),
         };
     }
-    function with_color_on_specific_paths(color_config) {
+    function withColorOnSpecificPaths(color_config) {
         return {
             width,
             height,
@@ -56,8 +56,8 @@ const parse_svg = markup => {
         width,
         height,
         paths,
-        with_color,
-        with_color_on_specific_paths,
+        withColor,
+        withColorOnSpecificPaths,
     };
 };
 

@@ -110,9 +110,9 @@ export const getEndTime = contract_info => {
     return date_expiry > exit_tick_time && !+is_path_dependent ? date_expiry : exit_tick_time;
 };
 
-export const isContractWaiting = proposal_open_contract =>
+export const isContractWaiting = contract_info =>
     !!(
-        /settlement|This market is presently closed/.test(proposal_open_contract.validation_error) &&
-        proposal_open_contract.status === 'open' &&
-        proposal_open_contract.is_sold === 0
+        /settlement|This market is presently closed/.test(contract_info.validation_error) &&
+        contract_info.status === 'open' &&
+        contract_info.is_sold === 0
     );

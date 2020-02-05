@@ -1,4 +1,4 @@
-export const shadowed_text = ({ ctx, is_dark_theme, text, left, top, scale }) => {
+export const shadowedText = ({ ctx, is_dark_theme, text, left, top, scale }) => {
     ctx.textAlign = 'center';
     ctx.font = `bold ${Math.floor(scale * 10)}px IBM Plex Sans`;
 

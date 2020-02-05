@@ -129,7 +129,7 @@ export default class CashierStore extends BaseStore {
             this.is_p2p_agent = !(await WS.p2pAgentInfo()).error;
 
             if (this.is_p2p_agent || (await this.hasP2pOffer())) {
-                this.setIsDp2pVisible(true);
+                this.setIsP2pVisible(true);
 
                 WS.p2pSubscribe({ p2p_order_list: 1, subscribe: 1 }, this.setP2pOrderList);
             }
@@ -227,7 +227,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setIsDp2pVisible(is_p2p_visible) {
+    setIsP2pVisible(is_p2p_visible) {
         this.is_p2p_visible = is_p2p_visible;
     }
 
@@ -1002,7 +1002,7 @@ export default class CashierStore extends BaseStore {
         this.config.account_transfer = new ConfigAccountTransfer();
         this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
         this.is_populating_values = false;
-        this.setIsDp2pVisible(false);
+        this.setIsP2pVisible(false);
         this.p2p_offer_list = {};
     }
 }

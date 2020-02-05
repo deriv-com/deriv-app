@@ -1,4 +1,3 @@
-import { localize } from '@deriv/translations';
 import { config } from '../../constants/config';
 import { removeLimitedBlocks } from '../../utils/workspace';
 
@@ -307,8 +306,6 @@ Blockly.WorkspaceSvg.prototype.showContextMenu_ = function(e) {
     const menu_options = [];
     const top_blocks = this.getTopBlocks(true);
     const all_blocks = this.getAllBlocks(true);
-    const event_group = Blockly.utils.genUid();
-    const ws = this;
 
     // Options to undo/redo previous action.
     menu_options.push(Blockly.ContextMenu.wsUndoOption(this));
@@ -332,52 +329,7 @@ Blockly.WorkspaceSvg.prototype.showContextMenu_ = function(e) {
         menu_options.push(Blockly.ContextMenu.workspaceCommentOption(this, e));
     }
 
-    // Option to delete all blocks.
-    // Count the number of blocks that are deletable.
-    const delete_list = Blockly.WorkspaceSvg.buildDeleteList_(top_blocks);
-
-    // Scratch-specific: don't count shadow blocks in delete count
-    const delete_count = delete_list.filter(block => !block.isShadow()).length;
-
-    const DELAY = 10;
-    const deleteNext = () => {
-        Blockly.Events.setGroup(event_group);
-        const block = delete_list.shift();
-
-        if (block) {
-            if (block.workspace) {
-                block.dispose(false, true);
-                setTimeout(deleteNext, DELAY);
-            } else {
-                deleteNext();
-            }
-        }
-        Blockly.Events.setGroup(false);
-    };
-
-    const delete_option = {
-        text:
-            delete_count === 1
-                ? localize('Delete Block')
-                : localize('Delete {{ delete_count }} Blocks', { delete_count }),
-        enabled: delete_count > 0,
-        callback() {
-            if (ws.currentGesture_) {
-                ws.currentGesture_.cancel();
-            }
-            if (delete_count < 2) {
-                deleteNext();
-            } else {
-                const msg = localize('Delete all {{ delete_count }} blocks?', { delete_count });
-                Blockly.confirm(msg, function(ok) {
-                    if (ok) {
-                        deleteNext();
-                    }
-                });
-            }
-        },
-    };
-    menu_options.push(delete_option);
+    menu_options.push(Blockly.ContextMenu.wsDeleteOption(this, top_blocks));
 
     Blockly.ContextMenu.show(e, menu_options, this.RTL);
 };

@@ -75,8 +75,10 @@
             background-color: var(--general-section-1);
             display: flex;
 
-            &:focus {
-                outline: none;
+            &:disabled {
+                .btn__text {
+                    color: var(--text-disabled);
+                }
             }
         }
     }

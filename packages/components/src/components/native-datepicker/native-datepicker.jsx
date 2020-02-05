@@ -7,9 +7,7 @@ const NativeDatePicker = props => {
         myRef.current.click();
     };
     const onChangeHandler = e => {
-        props.onChange(e.target.value);
-        console.log('today: ' + toMoment().format('YYYY-MM-DD'));
-        console.log('diff: ' + daysFromTodayTo(e.target.value));
+        props.onChange(daysFromTodayTo(e.target.value));
     };
     const min_date = props.min_date ? toMoment(props.min_date).format('YYYY-MM-DD') : toMoment().format('YYYY-MM-DD');
     const max_date = props.max_date ? toMoment(props.max_date).format('YYYY-MM-DD') : null;

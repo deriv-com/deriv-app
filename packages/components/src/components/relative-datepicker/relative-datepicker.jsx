@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { toMoment, daysFromTodayTo } from '@deriv/shared/src/utils/date/date-time';
 
-const RelativeDatePicker = props => {
+const RelativeDatepicker = props => {
     const myRef = useRef();
     const clickHandler = () => {
         myRef.current.click();
@@ -25,4 +25,4 @@ const RelativeDatePicker = props => {
         </div>
     );
 };
-export default RelativeDatePicker;
+export default RelativeDatepicker;

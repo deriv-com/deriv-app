@@ -1,4 +1,4 @@
-import RelativeDatePicker from './relative-datepicker.jsx';
+import RelativeDatepicker from './relative-datepicker.jsx';
 import './relative-datepicker.scss';
 
-export default RelativeDatePicker;
+export default RelativeDatepicker;

@@ -21,9 +21,11 @@ const Numpad = ({
     value,
     format,
     onValueChange,
+    related_date,
 }) => {
     const [is_float, setFloat] = React.useState(false);
     const [default_value, setValue] = React.useState(value);
+
     const isFloat = v => v % 1 !== 0;
     const formatNumber = v => (typeof format === 'function' ? format(v) : v);
 
@@ -85,6 +87,10 @@ const Numpad = ({
     React.useEffect(() => {
         if (onValueChange) onValueChange(default_value);
     }, [default_value]);
+
+    React.useEffect(() => {
+        setValue(related_date);
+    }, [related_date]);
 
     return (
         <div

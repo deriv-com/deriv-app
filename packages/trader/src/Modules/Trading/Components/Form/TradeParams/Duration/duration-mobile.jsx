@@ -1,5 +1,5 @@
-import React from 'react';
-import { Tabs, TickPicker, Numpad } from '@deriv/components';
+import React, { useState } from 'react';
+import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
@@ -45,6 +45,7 @@ const Numbers = ({
     duration_unit_option,
     contract_expiry = 'intraday',
     selected_duration,
+    related_date,
     setSelectedDuration,
 }) => {
     const { value: duration_unit } = duration_unit_option;
@@ -70,6 +71,7 @@ const Numbers = ({
                 min={min}
                 max={max}
                 onValueChange={onNumberChange}
+                related_date={related_date}
             />
         </div>
     );
@@ -97,7 +99,10 @@ const Duration = ({
     const active_index = has_selected_tab_idx
         ? duration_tab_idx
         : duration_units_list.findIndex(d => d.value === duration_unit);
-
+    const [related_date, setRelatedDate] = useState(d_duration);
+    const handleRelativeChange = related_date => {
+        setSelectedDuration(setRelatedDate(related_date));
+    };
     return (
         <div>
             <Tabs active_index={active_index} onTabItemClick={num => setDurationTabIdx(num)} top>
@@ -155,7 +160,9 @@ const Duration = ({
                                         contract_expiry='daily'
                                         selected_duration={d_duration}
                                         setSelectedDuration={setSelectedDuration}
+                                        related_date={related_date}
                                     />
+                                    <RelativeDatepicker onChange={handleRelativeChange} />
                                 </div>
                             );
                         default:

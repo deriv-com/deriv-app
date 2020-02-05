@@ -3,7 +3,7 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { toMoment } from '@deriv/shared/src/utils/date/date-time';
 import { withInfo } from '@storybook/addon-info';
 import React from 'react';
-import RelativeDatePicker from 'Components/relative-datepicker';
+import RelativeDatepicker from 'Components/relative-datepicker';
 import { action } from '@storybook/addon-actions';
 import Theme from '../shared/theme';
 
@@ -13,6 +13,6 @@ stories.addDecorator(withKnobs).addDecorator(withInfo);
 
 stories.add('basic usage', () => (
     <Theme is_dark={boolean('Theme', true)}>
-        <RelativeDatePicker onChange={action(date => date)} min_date={toMoment()} />
+        <RelativeDatepicker onChange={action(date => date)} min_date={toMoment()} />
     </Theme>
 ));

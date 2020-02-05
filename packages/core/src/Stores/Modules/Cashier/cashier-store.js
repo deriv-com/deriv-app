@@ -82,7 +82,10 @@ class ConfigVerification {
 
 export default class CashierStore extends BaseStore {
     @observable is_loading = false;
-    @observable is_dp2p_visible = false;
+    @observable is_p2p_visible = false;
+    @observable p2p_notification_count = 0;
+    @observable p2p_order_list = [];
+    @observable is_p2p_agent = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -109,6 +112,22 @@ export default class CashierStore extends BaseStore {
         [this.config.withdraw.container]: 'payment_withdraw',
         [this.config.payment_agent.container]: 'payment_agent_withdraw',
     };
+
+    @action.bound
+    async init() {
+        // show p2p if:
+        // 1. we have not already checked this before, and
+        // 2. client is not virtual, and
+        // 3. p2p call does not return error code `PermissionDenied`
+        if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
+            const agent_error = ObjectUtils.getPropertyValue(await WS.p2pAgentInfo(), ['error', 'code']);
+            if (!(agent_error === 'PermissionDenied')) {
+                this.setIsP2pVisible(true);
+
+                WS.p2pSubscribe({ p2p_order_list: 1, subscribe: 1 }, this.setP2pOrderList);
+            }
+        }
+    }
 
     @action.bound
     resetValuesIfNeeded() {
@@ -143,22 +162,60 @@ export default class CashierStore extends BaseStore {
         if (!this.config.account_transfer.accounts_list.length) {
             this.sortAccountsTransfer();
         }
+    }
 
-        // show dp2p if:
-        // 1. we have not already checked this before, and
-        // 2. client is not virtual, and
-        // 3. p2p call return error code `PermissionDenied`
-        if (!this.is_dp2p_visible && !this.root_store.client.is_virtual) {
-            const agent_error = ObjectUtils.getPropertyValue(await WS.p2pAgentInfo(), ['error', 'code']);
-            if (!(agent_error === 'PermissionDenied')) {
-                this.setIsDp2pVisible(true);
+    @action.bound
+    setP2pOrderList(order_response) {
+        if (order_response.p2p_order_list) {
+            // it's an array of orders from p2p_order_list
+            this.p2p_order_list = order_response.p2p_order_list.list;
+            this.handleNotifications(this.p2p_order_list);
+        } else {
+            // it's a single order from p2p_order_info
+            const idx_order_to_update = this.p2p_order_list.findIndex(
+                order => order.order_id === order_response.p2p_order_info.order_id
+            );
+            const updated_orders = [...this.p2p_order_list];
+            // if it's a new order, add it to the top of the list
+            if (idx_order_to_update < 0) {
+                updated_orders.unshift(order_response.p2p_order_info);
+            } else {
+                // otherwise, update the correct order
+                updated_orders[idx_order_to_update] = order_response.p2p_order_info;
             }
+            // trigger re-rendering by setting orders again
+            this.p2p_order_list = updated_orders;
+            this.handleNotifications(updated_orders);
         }
     }
 
     @action.bound
-    setIsDp2pVisible(is_dp2p_visible) {
-        this.is_dp2p_visible = is_dp2p_visible;
+    handleNotifications = orders => {
+        let p2p_notification_count = 0;
+
+        orders.forEach(order => {
+            const is_buyer = order.type === 'buy';
+            const is_buyer_confirmed = order.status === 'buyer-confirmed';
+            const is_pending = order.status === 'pending';
+            const is_agent_buyer = this.is_p2p_agent && is_buyer;
+            const is_agent_seller = this.is_p2p_agent && !is_buyer;
+            const is_client_buyer = !this.is_p2p_agent && is_buyer;
+            const is_client_seller = !this.is_p2p_agent && !is_buyer;
+
+            if (
+                (is_buyer_confirmed && (is_agent_buyer || is_client_seller)) ||
+                (is_pending && (is_agent_seller || is_client_buyer))
+            ) {
+                p2p_notification_count++;
+            }
+        });
+
+        this.p2p_notification_count = p2p_notification_count;
+    };
+
+    @action.bound
+    setIsP2pVisible(is_p2p_visible) {
+        this.is_p2p_visible = is_p2p_visible;
     }
 
     @action.bound
@@ -932,6 +989,6 @@ export default class CashierStore extends BaseStore {
         this.config.account_transfer = new ConfigAccountTransfer();
         this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
         this.is_populating_values = false;
-        this.setIsDp2pVisible(false);
+        this.setIsP2pVisible(false);
     }
 }

@@ -2,6 +2,7 @@ import { observable, action, computed } from 'mobx';
 import { localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared/utils/date';
 import { message_types } from '@deriv/bot-skeleton';
+import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { storeSetting, getSetting } from '../utils/settings';
 
 export default class JournalStore {
@@ -35,6 +36,12 @@ export default class JournalStore {
     @action.bound
     onNotify(data) {
         this.pushMessage(data, message_types.NOTIFY);
+
+        const { sound } = data;
+        if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
+            const audio = document.getElementById(sound);
+            audio.play();
+        }
     }
 
     @action.bound

@@ -15,6 +15,7 @@ module.exports = {
         button                          : 'Components/button',
         'button-toggle'                 : 'Components/button-toggle',
         checkbox                        : 'Components/checkbox',
+        'circular-progress'             : 'Components/circular-progress',
         collapsible                     : 'Components/collapsible',
         counter                         : 'Components/counter',
         'desktop-wrapper'               : 'Components/desktop-wrapper',

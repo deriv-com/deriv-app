@@ -1,0 +1,12 @@
+.dc-circular-progress {
+    circle {
+        transform: scaleX(-1) rotate(-90deg);
+        transform-origin: 50% 50%;
+        transition: stroke-dashoffset 1s;
+        stroke: var(--brand-secondary);
+
+        &.clockwise {
+            transform: rotate(-90deg);
+        }
+    }
+}

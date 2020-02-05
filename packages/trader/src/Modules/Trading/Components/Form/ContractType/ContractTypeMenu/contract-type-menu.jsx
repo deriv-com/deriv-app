@@ -10,6 +10,7 @@ import { getContractCategoryLabel, getContractsList, getFilteredList } from '../
 
 class Dialog extends React.PureComponent {
     dialog_ref = React.createRef();
+    input_ref = React.createRef();
     scrollbar_ref = React.createRef();
     vertical_tab_headers = [];
     is_user_scroll = false;
@@ -93,6 +94,7 @@ class Dialog extends React.PureComponent {
     };
 
     onClickClearInput = () => {
+        this.input_ref.current.focus();
         this.setState({
             input_value: '',
             selected: null,
@@ -159,6 +161,7 @@ class Dialog extends React.PureComponent {
             <Header title={item.text} onClickGoBack={onBackButtonClick} />
         ) : (
             <SearchInput
+                ref={this.input_ref}
                 onChange={this.onChangeInput}
                 onClickClearInput={this.onClickClearInput}
                 value={this.state.input_value}

@@ -3,8 +3,9 @@ import React from 'react';
 import { Icon, Input } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-const SearchInput = ({ onChange, onClickClearInput, value }) => (
+const SearchInput = React.forwardRef(({ onChange, onClickClearInput, value }, ref) => (
     <Input
+        ref={ref}
         autoFocus
         data-lpignore='true'
         leading_icon={<Icon icon='IcSearch' />}
@@ -14,12 +15,14 @@ const SearchInput = ({ onChange, onClickClearInput, value }) => (
         onChange={onChange}
         value={value}
     />
-);
+));
 
 SearchInput.propTypes = {
     onChange: PropTypes.func,
     onClickClearInput: PropTypes.func,
     value: PropTypes.string,
 };
+
+SearchInput.displayName = 'SearchInput';
 
 export default React.memo(SearchInput);

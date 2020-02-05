@@ -43,12 +43,14 @@ export default class JournalStore {
         const time = formatDate(this.getServerTime(), 'HH:mm:ss [GMT]');
 
         let error_message = data;
+        let classname = '';
         if (typeof data !== 'string') {
             const { error, message } = data;
+            ({ className: classname } = data);
             error_message = error && error.error ? error.error.message : message;
         }
 
-        this.unfiltered_messages.unshift({ date, time, message: error_message, message_type });
+        this.unfiltered_messages.unshift({ date, time, message: error_message, message_type, classname });
     }
 
     @computed

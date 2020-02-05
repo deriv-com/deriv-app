@@ -359,7 +359,6 @@ class DBot {
                         // If a custom validator was supplied, use this to determine whether
                         // the block should be highlighted.
                         if (typeof inputValidatorFn === 'function') {
-                            console.log({ input_name: value });
                             return !!inputValidatorFn(value);
                         }
 

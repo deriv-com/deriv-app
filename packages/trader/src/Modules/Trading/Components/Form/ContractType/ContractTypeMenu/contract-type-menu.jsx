@@ -84,6 +84,7 @@ class Dialog extends React.PureComponent {
     };
 
     onChangeInput = e => {
+        this.is_user_scroll = true; // set to true to prevent calling this.scroll() when input changes
         this.setState({
             input_value: e.target.value,
         });
@@ -102,7 +103,10 @@ class Dialog extends React.PureComponent {
     filterList = filtered_items => {
         const filtered_list = getFilteredList(this.props.list, filtered_items);
         this.props.onChangeInput(filtered_list);
-        this.setState({ is_filtered_list_empty: !filtered_list.length });
+        this.setState({
+            is_filtered_list_empty: !filtered_list.length,
+            selected: filtered_list[0],
+        });
     };
 
     getVerticalTabHeaders = () => {

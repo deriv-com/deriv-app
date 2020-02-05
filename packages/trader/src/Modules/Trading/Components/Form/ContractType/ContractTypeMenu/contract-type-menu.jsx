@@ -44,7 +44,7 @@ class Dialog extends React.PureComponent {
             if (!this.vertical_tab_headers.length) {
                 this.vertical_tab_headers = this.getVerticalTabHeaders();
             }
-            if (this.should_scroll) {
+            if (this.scrollbar_ref.current && !this.is_user_scroll && this.should_scroll) {
                 this.scroll();
             }
         }
@@ -123,7 +123,6 @@ class Dialog extends React.PureComponent {
     };
 
     scroll() {
-        if (!this.scrollbar_ref.current) return;
         this.scrollbar_ref.current.scrollTop(this.offset_top); // scroll to selected contract category label
     }
 
@@ -150,7 +149,6 @@ class Dialog extends React.PureComponent {
 
     get should_scroll() {
         if (!this.state.selected) return true;
-        if (!this.is_user_scroll) return false;
 
         return this.offset_top !== Math.ceil(this.scrollbar_ref.current.getScrollTop());
     }

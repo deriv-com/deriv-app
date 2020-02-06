@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
+import Icon from 'Components/icon/icon.jsx';
 import Body from './modal-body.jsx';
 import Footer from './modal-footer.jsx';
-import Icon from '../icon';
 
 class ModalElement extends React.PureComponent {
     constructor(props) {

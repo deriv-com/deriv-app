@@ -13,12 +13,11 @@ const TradeParamsLoader = ({ speed }) => (
                 primaryColor={'var(--general-section-1)'}
                 secondaryColor={'var(--general-hover)'}
             >
-                <rect x='148' y='6' rx='3' ry='3' width='40' height='4' />
-                <rect x='8' y='18' rx='4' ry='4' width='328' height='40' />
-                <rect x='8' y='66' rx='4' ry='4' width='235' height='40' />
-                <rect x='250' y='66' rx='4' ry='4' width='85' height='40' />
-                <rect x='8' y='114' rx='4' ry='4' width='160' height='70' />
-                <rect x='176' y='114' rx='4' ry='4' width='160' height='70' />
+                <rect x='148' y='24' rx='3' ry='3' width='40' height='4' />
+                <rect x='8' y='40' rx='4' ry='4' width='328' height='40' />
+                <rect x='8' y='88' rx='4' ry='4' width='328' height='40' />
+                <rect x='8' y='136' rx='4' ry='4' width='160' height='70' />
+                <rect x='176' y='136' rx='4' ry='4' width='160' height='70' />
             </ContentLoader>
         </MobileWrapper>
         <DesktopWrapper>

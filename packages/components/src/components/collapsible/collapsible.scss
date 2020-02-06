@@ -23,7 +23,8 @@
 }
 
 .dc-collapsible {
-    padding: 0.8rem;
+    padding: 0 0.8rem 0.8rem;
+    margin-bottom: 0.8rem;
     border-radius: 0.4rem;
     background-color: var(--general-section-1);
 
@@ -50,12 +51,12 @@
         }
     }
     &__item {
-        animation-name: SlideIn;
-        animation-duration: 0.3s;
+        //animation-name: SlideIn;
+        //animation-duration: 0.3s;
 
         &--collapsed {
-            animation-name: SlideOut;
-            animation-duration: 0.3s;
+            //animation-name: SlideOut;
+            //animation-duration: 0.3s;
             opacity: 0;
             max-height: 0;
             overflow: hidden;
@@ -63,7 +64,7 @@
             padding: initial !important;
         }
     }
-    &__content {
-        transition: all 0.3s ease;
-    }
+    //&__content {
+    //    transition: all 0.3s ease;
+    //}
 }

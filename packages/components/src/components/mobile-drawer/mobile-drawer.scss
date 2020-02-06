@@ -3,35 +3,16 @@
     position: absolute;
     top: 0;
     left: 0;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
 
-    &--right {
-        left: unset;
-        right: 0;
-    }
     &__container {
         display: flex;
         flex-direction: column;
         position: relative;
         overflow: hidden;
-        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
         background-color: var(--general-main-2);
         box-shadow: 0 16px 16px 0 var(--shadow-menu), 0 0 16px 0 var(--shadow-menu);
-
-        &--enter,
-        &--exit {
-            transform: translateX(-100%);
-            opacity: 0;
-            pointer-events: none;
-
-            &-right {
-                transform: translateX(100%);
-            }
-        }
-        &--enter-done {
-            transform: translateX(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
     }
     &__header {
         display: flex;
@@ -169,5 +150,8 @@
         justify-content: flex-start;
         align-items: center;
         padding: 1.6rem;
+    }
+    &__wrapper {
+        z-index: 9999 !important;
     }
 }

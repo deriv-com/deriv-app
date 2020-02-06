@@ -1,3 +1,10 @@
+/** @define deriv-app; weak */
+.deriv-app {
+    @include mobile {
+        overscroll-behavior: none;
+    }
+}
+
 /** @define app-contents; weak */
 .app-contents {
     margin: $HEADER_HEIGHT 0 $FOOTER_HEIGHT;
@@ -26,10 +33,6 @@
         background-color: var(--overlay-outside-dialog);
     }
     @include mobile {
-        margin: $MOBILE_HEADER_HEIGHT 0 $FOOTER_HEIGHT;
-        height: calc(100vh - #{$MOBILE_HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
-    }
-    @media screen and (max-width: 768px) {
         // no footer:
         margin-bottom: 0;
         height: calc(100vh - #{$HEADER_HEIGHT});

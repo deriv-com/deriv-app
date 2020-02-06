@@ -10,7 +10,9 @@ import 'Sass/app/_common/mobile-widget.scss';
 
 const ScreenSmall = ({ is_trade_enabled }) =>
     !is_trade_enabled ? (
-        <TradeParamsLoader speed={2} />
+        <div className='mobile-wrapper__content-loader'>
+            <TradeParamsLoader speed={2} />
+        </div>
     ) : (
         <Collapsible position='top' is_collapsed>
             <ContractType />

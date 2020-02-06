@@ -166,6 +166,7 @@ module.exports = {
             'classnames'                : 'classnames',
             '@contentpass/zxcvbn'       : '@contentpass/zxcvbn',
             'react-div-100vh'           : 'react-div-100vh',
+            'react-drag-drawer'         : 'react-drag-drawer',
             'react-pose'                : 'react-pose',
             'babel-polyfill'            : 'babel-polyfill',
             'prop-types'                : 'prop-types',

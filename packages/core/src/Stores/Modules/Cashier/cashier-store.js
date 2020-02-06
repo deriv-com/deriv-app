@@ -105,7 +105,6 @@ export default class CashierStore extends BaseStore {
     active_container = this.config.deposit.container;
     current_client;
     is_populating_values = false;
-    p2p_offer_list = {};
 
     containers = [this.config.deposit.container, this.config.withdraw.container];
 
@@ -116,19 +115,13 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async init() {
-        // show dp2p if:
+        // show p2p if:
         // 1. we have not already checked this before, and
         // 2. client is not virtual, and
-        // 3. they are an agent, or
-        // 4. there is at least one offer available
-        if (
-            !this.is_p2p_visible &&
-            ObjectUtils.isEmptyObject(this.p2p_offer_list) &&
-            !this.root_store.client.is_virtual
-        ) {
-            this.is_p2p_agent = !(await WS.p2pAgentInfo()).error;
-
-            if (this.is_p2p_agent || (await this.hasP2pOffer())) {
+        // 3. p2p call does not return error code `PermissionDenied`
+        if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
+            const agent_error = ObjectUtils.getPropertyValue(await WS.p2pAgentInfo(), ['error', 'code']);
+            if (!(agent_error === 'PermissionDenied')) {
                 this.setIsP2pVisible(true);
 
                 WS.p2pSubscribe({ p2p_order_list: 1, subscribe: 1 }, this.setP2pOrderList);
@@ -219,12 +212,6 @@ export default class CashierStore extends BaseStore {
 
         this.p2p_notification_count = p2p_notification_count;
     };
-
-    @action.bound
-    async hasP2pOffer() {
-        this.p2p_offer_list = await WS.p2pOfferList();
-        return (ObjectUtils.getPropertyValue(this.p2p_offer_list, ['p2p_offer_list', 'list']) || []).length;
-    }
 
     @action.bound
     setIsP2pVisible(is_p2p_visible) {
@@ -1003,6 +990,5 @@ export default class CashierStore extends BaseStore {
         this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
         this.is_populating_values = false;
         this.setIsP2pVisible(false);
-        this.p2p_offer_list = {};
     }
 }

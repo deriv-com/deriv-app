@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -45,8 +45,8 @@ const Numbers = ({
     duration_unit_option,
     contract_expiry = 'intraday',
     selected_duration,
-    related_date,
     setSelectedDuration,
+    relative_date,
 }) => {
     const { value: duration_unit } = duration_unit_option;
     const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry, duration_unit);
@@ -71,7 +71,7 @@ const Numbers = ({
                 min={min}
                 max={max}
                 onValueChange={onNumberChange}
-                related_date={related_date}
+                relative_date={relative_date}
             />
         </div>
     );
@@ -87,6 +87,7 @@ const Duration = ({
     duration_units_list,
     duration_unit,
     duration_tab_idx,
+    duration_min_max,
     setDurationTabIdx,
     t_duration,
     s_duration,
@@ -94,14 +95,16 @@ const Duration = ({
     h_duration,
     d_duration,
     setSelectedDuration,
+    relative_date,
+    setRelativeDate,
 }) => {
     const has_selected_tab_idx = typeof duration_tab_idx !== 'undefined';
     const active_index = has_selected_tab_idx
         ? duration_tab_idx
         : duration_units_list.findIndex(d => d.value === duration_unit);
-    const [related_date, setRelatedDate] = useState(d_duration);
-    const handleRelativeChange = related_date => {
-        setSelectedDuration(setRelatedDate(related_date));
+    const [min, max] = getDurationMinMaxValues(duration_min_max, 'daily', 'd');
+    const handleRelativeChange = date => {
+        setRelativeDate(date);
     };
     return (
         <div>
@@ -160,9 +163,9 @@ const Duration = ({
                                         contract_expiry='daily'
                                         selected_duration={d_duration}
                                         setSelectedDuration={setSelectedDuration}
-                                        related_date={related_date}
+                                        relative_date={relative_date}
                                     />
-                                    <RelativeDatepicker onChange={handleRelativeChange} />
+                                    <RelativeDatepicker onChange={handleRelativeChange} min={min} max={max} />
                                 </div>
                             );
                         default:
@@ -177,4 +180,7 @@ const Duration = ({
 export default connect(({ modules }) => ({
     duration_units_list: modules.trade.duration_units_list,
     duration_unit: modules.trade.duration_unit,
+    relative_date: modules.trade.relative_date,
+    setRelativeDate: modules.trade.setRelativeDate,
+    duration_min_max: modules.trade.duration_min_max,
 }))(Duration);

@@ -59,6 +59,7 @@ export default class TradeStore extends BaseStore {
     @observable expiry_date = '';
     @observable expiry_time = '';
     @observable expiry_type = 'duration';
+    @observable relative_date = 1;
 
     // Barrier
     @observable barrier_1 = '';
@@ -173,6 +174,10 @@ export default class TradeStore extends BaseStore {
         );
     }
 
+    @action.bound
+    setRelativeDate(date) {
+        this.relative_date = date;
+    }
     @action.bound
     setTradeStatus(status) {
         this.is_trade_enabled = status;

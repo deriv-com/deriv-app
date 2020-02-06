@@ -21,7 +21,7 @@ const Numpad = ({
     value,
     format,
     onValueChange,
-    related_date,
+    relative_date,
 }) => {
     const [is_float, setFloat] = React.useState(false);
     const [default_value, setValue] = React.useState(value);
@@ -83,14 +83,13 @@ const Numpad = ({
             console.error("Warning: property pip_size is required when using currency type <Numpad pip_size='2' />");
         }
     });
+    React.useEffect(() => {
+        if (relative_date) setValue(relative_date);
+    }, [relative_date]);
 
     React.useEffect(() => {
         if (onValueChange) onValueChange(default_value);
     }, [default_value]);
-
-    React.useEffect(() => {
-        setValue(related_date);
-    }, [related_date]);
 
     return (
         <div

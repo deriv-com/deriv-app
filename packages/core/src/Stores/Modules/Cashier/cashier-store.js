@@ -119,9 +119,10 @@ export default class CashierStore extends BaseStore {
         // 1. we have not already checked this before, and
         // 2. client is not virtual, and
         // 3. p2p call does not return error code `PermissionDenied`
+        await BinarySocket.wait('authorize');
         if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
             const agent_error = ObjectUtils.getPropertyValue(await WS.p2pAgentInfo(), ['error', 'code']);
-            if (!(agent_error === 'PermissionDenied')) {
+            if (agent_error !== 'PermissionDenied') {
                 this.setIsP2pVisible(true);
 
                 WS.p2pSubscribe({ p2p_order_list: 1, subscribe: 1 }, this.setP2pOrderList);

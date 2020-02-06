@@ -42,6 +42,7 @@
                     padding: 0.8rem 1.2rem 0.8rem 3.6rem;
                     height: 3.2rem;
 
+                    /* postcss-bem-linter: ignore */
                     &::-moz-placeholder {
                         line-height: 16px;
                     }

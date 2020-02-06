@@ -17,34 +17,61 @@ const progresses = [
     {
         is_clockwise: true,
         is_dark: true,
-        value: 75,
+        value: 50,
     },
     {
         is_clockwise: true,
         is_dark: true,
-        value: 25,
+        value: 100,
     },
 ];
 
-storiesOf('Circular Progress', module).add('Basic usage', () => (
-    <div
-        style={{
-            display: 'grid',
-            width: '100%',
-            height: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
-            gridGap: '10px',
-            paddingTop: '10px',
-        }}
-    >
-        {progresses.map((item, index) => {
-            return (
-                <Theme is_dark={item.is_dark} key={index}>
-                    <CircularProgress progress={item.value} />
-                </Theme>
-            );
-        })}
-    </div>
-));
+storiesOf('Circular Progress', module)
+    .add('Basic usage', () => (
+        <div
+            style={{
+                display: 'grid',
+                width: '100%',
+                height: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+                gridGap: '10px',
+                paddingTop: '10px',
+            }}
+        >
+            {progresses.map((item, index) => {
+                return (
+                    <Theme is_dark={item.is_dark} key={index}>
+                        <CircularProgress progress={item.value} />
+                    </Theme>
+                );
+            })}
+        </div>
+    ))
+    .add('Timer', () => {
+        const initial_time = 3600; // 3600 seconds == 1 hour
+        const [remaining_time, setRemainingTime] = React.useState(initial_time);
+        return (
+            <div
+                style={{
+                    display: 'grid',
+                    width: '100%',
+                    height: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'column',
+                    gridGap: '10px',
+                    paddingTop: '10px',
+                }}
+            >
+                {progresses.map((item, index) => {
+                    return (
+                        <Theme is_dark={item.is_dark} key={index}>
+                            <CircularProgress progress={item.value} />
+                        </Theme>
+                    );
+                })}
+            </div>
+        );
+    });

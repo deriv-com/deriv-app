@@ -1,12 +1,24 @@
 .dc-circular-progress {
-    circle {
+    position: relative;
+    line-height: 0;
+
+    &__bar {
         transform: scaleX(-1) rotate(-90deg);
         transform-origin: 50% 50%;
         transition: stroke-dashoffset 1s;
         stroke: var(--brand-secondary);
+    }
 
-        &.clockwise {
-            transform: rotate(-90deg);
-        }
+    &--clockwise {
+        transform: rotate(-90deg);
+    }
+
+    &__icon {
+        position: absolute;
+        width: 1.6rem;
+        height: 100%;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
     }
 }

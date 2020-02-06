@@ -1,6 +1,6 @@
 {
   "name": "@deriv/p2p",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "p2p cashier",
   "main": "lib/index.js",
   "private": false,

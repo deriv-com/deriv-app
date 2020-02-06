@@ -4,6 +4,11 @@
     box-shadow: 18px 8px 8px var(--shadow-menu);
     border-radius: 4px;
 
+    &__counter {
+        position: absolute;
+        top: 0.4rem;
+        right: -1.5rem;
+    }
     &__content {
         width: 100%;
         background: var(--status-default);

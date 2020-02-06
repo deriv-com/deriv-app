@@ -116,11 +116,12 @@ const getModifiedP2POrder = response => {
     };
 };
 
-const getModifiedP2POrderList = response => {
+export const getModifiedP2POrderList = response => {
     const modified_response = [];
-    response.list.forEach((list_item, idx) => {
+    response.forEach((list_item, idx) => {
         modified_response[idx] = getModifiedP2POrder(list_item);
     });
+
     return modified_response;
 };
 
@@ -137,8 +138,6 @@ const getModifiedResponse = response => {
 
     if (response.p2p_offer_list || response.p2p_agent_offers) {
         modified_response = getModifiedP2POfferList(response.p2p_offer_list || response.p2p_agent_offers);
-    } else if (response.p2p_order_list) {
-        modified_response = getModifiedP2POrderList(response.p2p_order_list);
     } else if (response.p2p_order_info) {
         modified_response = getModifiedP2POrder(response.p2p_order_info);
     }

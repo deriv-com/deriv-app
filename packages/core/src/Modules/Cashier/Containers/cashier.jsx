@@ -40,7 +40,7 @@ class Cashier extends React.Component {
                         label: route.title,
                         value: route.component,
                         path: route.path,
-                        has_side_note: route.path !== routes.cashier_dp2p, // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
+                        has_side_note: route.path !== routes.cashier_p2p, // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
                     });
                 }
             });

@@ -62,6 +62,7 @@ class TradeParamsModal extends React.Component {
                 enableApp={this.props.enableApp}
                 is_open={this.props.is_open}
                 is_vertical_top
+                header={<div />}
                 disableApp={this.props.disableApp}
                 toggleModal={this.props.toggleModal}
                 height='auto'

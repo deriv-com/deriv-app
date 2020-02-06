@@ -84,6 +84,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         }
         &__link {
             font-weight: normal;
+            margin-right: 0.4rem;
         }
         &__icon {
             margin-right: 1.6rem;

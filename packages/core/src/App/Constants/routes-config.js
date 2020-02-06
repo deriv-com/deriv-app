@@ -109,7 +109,7 @@ const initRoutesConfig = () => [
                 icon_component: 'IcAccountTransfer',
             },
             // To work with P2P please uncomment this line
-            { path: routes.cashier_dp2p, component: P2PCashier, title: localize('P2P'), icon_component: 'IcDp2p' },
+            { path: routes.cashier_p2p, component: P2PCashier, title: localize('P2P'), icon_component: 'IcDp2p' },
         ],
     },
     ...modules,

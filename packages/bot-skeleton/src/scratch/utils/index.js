@@ -14,17 +14,18 @@ export const oppositesToDropdownOptions = opposite_name => {
     });
 };
 
-export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
+export const cleanUpOnLoad = (blocks_to_clean, drop_event, preview_workspace) => {
+    const workspace = preview_workspace || Blockly.derivWorkspace;
     const { clientX = 0, clientY = 0 } = drop_event || {};
     const toolbar_height = 76;
-    const blockly_metrics = Blockly.derivWorkspace.getMetrics();
-    const scale_cancellation = 1 / Blockly.derivWorkspace.scale;
+    const blockly_metrics = workspace.getMetrics();
+    const scale_cancellation = 1 / workspace.scale;
     const blockly_left = blockly_metrics.absoluteLeft - blockly_metrics.viewLeft;
     const blockly_top = document.body.offsetHeight - blockly_metrics.viewHeight - blockly_metrics.viewTop;
     const cursor_x = clientX ? (clientX - blockly_left) * scale_cancellation : 0;
     const cursor_y = clientY ? (clientY - blockly_top - toolbar_height) * scale_cancellation : 0;
 
-    Blockly.derivWorkspace.cleanUp(cursor_x, cursor_y, blocks_to_clean);
+    workspace.cleanUp(cursor_x, cursor_y, blocks_to_clean);
 };
 
 export const setBlockTextColor = (block, event) => {
@@ -65,7 +66,7 @@ export const save = (filename = '@deriv/bot', collection = false, xmlDom) => {
     saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
 };
 
-export const load = (block_string, drop_event, showIncompatibleStrategyDialog) => {
+export const load = (block_string, drop_event, preview_workspace = null, showIncompatibleStrategyDialog) => {
     const showInvalidStrategyError = () => {
         const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
         globalObserver.emit('Error', error_message);
@@ -113,22 +114,23 @@ export const load = (block_string, drop_event, showIncompatibleStrategyDialog) =
 
     try {
         const event_group = `dbot-load${Date.now()}`;
+        const workspace = preview_workspace || Blockly.derivWorkspace;
 
         Blockly.Events.setGroup(event_group);
         removeLimitedBlocks(
-            Blockly.derivWorkspace,
+            workspace,
             Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
         );
 
         if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-            loadBlocks(xml, drop_event, event_group);
+            loadBlocks(xml, drop_event, event_group, preview_workspace);
         } else {
-            loadWorkspace(xml, event_group);
+            loadWorkspace(xml, event_group, preview_workspace);
         }
 
         // Set user disabled state on all disabled blocks. This ensures we don't change the disabled
         // state through code, which was implemented for user experience.
-        Blockly.derivWorkspace.getAllBlocks().forEach(block => {
+        workspace.getAllBlocks().forEach(block => {
             if (block.disabled) {
                 block.is_user_disabled_state = true;
             }
@@ -145,22 +147,22 @@ export const load = (block_string, drop_event, showIncompatibleStrategyDialog) =
     return true;
 };
 
-const loadBlocks = (xml, drop_event, event_group) => {
+const loadBlocks = (xml, drop_event, event_group, preview_workspace) => {
     Blockly.Events.setGroup(event_group);
 
-    const workspace = Blockly.derivWorkspace;
+    const workspace = preview_workspace || Blockly.derivWorkspace;
     const block_ids = Blockly.Xml.domToWorkspace(xml, workspace);
     const added_blocks = block_ids.map(block_id => workspace.getBlockById(block_id));
 
     if (drop_event && Object.keys(drop_event).length !== 0) {
-        cleanUpOnLoad(added_blocks, drop_event);
+        cleanUpOnLoad(added_blocks, drop_event, preview_workspace);
     } else {
         workspace.cleanUp();
     }
 };
 
-const loadWorkspace = (xml, event_group) => {
-    const workspace = Blockly.derivWorkspace;
+const loadWorkspace = (xml, event_group, preview_workspace) => {
+    const workspace = preview_workspace || Blockly.derivWorkspace;
 
     Blockly.Events.setGroup(event_group);
     workspace.clear();

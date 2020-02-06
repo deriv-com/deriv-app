@@ -52,7 +52,7 @@ export default class LoadModalStore {
 
         // add drag and drop event listerner when switch to local tab
         if (this.active_index === 1) {
-            this.drop_zone = document.getElementsByClassName('load-local__dragndrop')[0];
+            this.drop_zone = document.getElementById('import_dragndrop');
             this.drop_zone.addEventListener('drop', e => this.handleFileChange(e, false));
         } else if (this.drop_zone) {
             this.drop_zone.removeEventListener('drop', e => this.handleFileChange(e, false));
@@ -101,7 +101,7 @@ export default class LoadModalStore {
             this.recent_workspace.clear();
         }
 
-        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(xml_file), this.recent_workspace);
+        load(xml_file, {}, this.recent_workspace);
     }
 
     @action.bound
@@ -119,10 +119,13 @@ export default class LoadModalStore {
     @action.bound
     loadFileFromRecent() {
         const selected_workspace = this.recent_files.find(file => file.id === this.selected_file_id);
+        const { onBotNameTyped } = this.root_store.toolbar;
+
         if (!selected_workspace) {
             return;
         }
 
+        onBotNameTyped(selected_workspace.name);
         load(selected_workspace.xml);
         this.toggleLoadModal();
     }
@@ -190,8 +193,9 @@ export default class LoadModalStore {
     // eslint-disable-next-line class-methods-use-this
     readFile(file, is_preview, drop_event) {
         const reader = new FileReader();
-        reader.onload = e => {
+        reader.onload = action(e => {
             if (is_preview) {
+                this.is_local_workspace_loading = true;
                 const ref = document.getElementById('load-local__scratch');
                 this.local_workspace = Blockly.inject(ref, {
                     media: `${__webpack_public_path__}media/`, // eslint-disable-line
@@ -201,11 +205,12 @@ export default class LoadModalStore {
                     },
                     readOnly: true,
                 });
-                Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(e.target.result), this.local_workspace);
+                load(e.target.result, drop_event, this.local_workspace);
+                this.is_local_workspace_loading = false;
             } else {
                 load(e.target.result, drop_event);
             }
-        };
+        });
         reader.readAsText(file);
     }
 

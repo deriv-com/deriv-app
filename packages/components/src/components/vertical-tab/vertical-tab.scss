@@ -118,6 +118,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &__link {
             font-weight: normal;
+            margin-right: 0.4rem;
         }
         &--active &__link {
             font-weight: bold;

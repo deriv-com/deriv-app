@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 export const getDisplayText = (list, value) => {
-    const findInArray = (arr_list) => (arr_list.find(item => item.value === value) || {}).text;
+    const findInArray = arr_list => (arr_list.find(item => item.value === value) || {}).text;
     let text = '';
     if (Array.isArray(list)) {
         text = findInArray(list);
@@ -15,7 +15,7 @@ export const getDisplayText = (list, value) => {
 };
 
 export const getItemFromValue = (list, value) => {
-    const findInArray = (arr_list) => arr_list.findIndex(item => item.value === value);
+    const findInArray = arr_list => arr_list.findIndex(item => item.value === value);
     let item = {};
     if (Array.isArray(list)) {
         item = { number: findInArray(list), length: list.length };
@@ -29,7 +29,7 @@ export const getItemFromValue = (list, value) => {
 };
 
 export const getValueFromIndex = (list, index) => {
-    const findInArray = (arr_list) => arr_list[index];
+    const findInArray = arr_list => arr_list[index];
     let result;
     if (Array.isArray(list)) {
         result = findInArray(list);
@@ -43,25 +43,25 @@ export const getValueFromIndex = (list, index) => {
 };
 
 export const getPrevIndex = (index, length) => {
-    const prev_index = (index - 1) < 0 ? (length - 1) : index - 1;
+    const prev_index = index - 1 < 0 ? length - 1 : index - 1;
     return prev_index;
 };
 
 export const getNextIndex = (index, length) => {
-    const next_index = (index + 1) === length ? 0 : index + 1;
+    const next_index = index + 1 === length ? 0 : index + 1;
     return next_index;
 };
 
-export const listPropType = () => PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.shape({
-        disabled   : PropTypes.bool,
-        has_tooltip: PropTypes.bool,
-        text       : PropTypes.string,
-        tooltip    : PropTypes.string,
-        value      : PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number,
-        ]),
-    })),
-    PropTypes.object,
-]);
+export const listPropType = () =>
+    PropTypes.oneOfType([
+        PropTypes.arrayOf(
+            PropTypes.shape({
+                disabled: PropTypes.bool,
+                has_tooltip: PropTypes.bool,
+                text: PropTypes.string,
+                tooltip: PropTypes.string,
+                value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+            })
+        ),
+        PropTypes.object,
+    ]);

@@ -1,8 +1,8 @@
-import React              from 'react';
-import PropTypes          from 'prop-types';
-import { localize }       from 'Components/i18next';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { localize } from 'Components/i18next';
 import { secondsToTimer } from 'Utils/date-time';
-import ServerTime         from 'Utils/server-time';
+import ServerTime from 'Utils/server-time';
 
 const OrderDetailsTimerBlock = ({ order_details }) => {
     const [remaining_time, setRemainingTime] = React.useState();
@@ -29,12 +29,10 @@ const OrderDetailsTimerBlock = ({ order_details }) => {
         };
     }, []);
 
-    return (order_details.is_pending || order_details.is_buyer_confirmed) ? (
+    return order_details.is_pending || order_details.is_buyer_confirmed ? (
         <div className='order-details__header-timer'>
             <p>{localize('Time left')}</p>
-            <p className='order-details__header-timer-counter'>
-                { remaining_time }
-            </p>
+            <p className='order-details__header-timer-counter'>{remaining_time}</p>
         </div>
     ) : null;
 };

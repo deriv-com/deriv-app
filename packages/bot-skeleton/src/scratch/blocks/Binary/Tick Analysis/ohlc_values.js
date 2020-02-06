@@ -1,38 +1,42 @@
 import { localize } from '@deriv/translations';
-import { config }   from '../../../../constants/config';
+import { config } from '../../../../constants/config';
 
 Blockly.Blocks.ohlc_values = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('Make a List of %1 values in candles list with interval: %2'),
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'OHLCFIELD_LIST',
+                    type: 'field_dropdown',
+                    name: 'OHLCFIELD_LIST',
                     options: config.ohlcFields,
                 },
                 {
-                    type   : 'field_dropdown',
-                    name   : 'CANDLEINTERVAL_LIST',
+                    type: 'field_dropdown',
+                    name: 'CANDLEINTERVAL_LIST',
                     options: config.candleIntervals,
                 },
             ],
-            output         : 'Array',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Array',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('Returns a list of specific values from a candle list according to selected time interval'),
-            category       : Blockly.Categories.Tick_Analysis,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize(
+                'Returns a list of specific values from a candle list according to selected time interval'
+            ),
+            category: Blockly.Categories.Tick_Analysis,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Create a list of candle values (1)'),
-            'description' : localize('This block gives you the selected candle value from a list of candles within the selected time interval.'),
+            display_name: localize('Create a list of candle values (1)'),
+            description: localize(
+                'This block gives you the selected candle value from a list of candles within the selected time interval.'
+            ),
         };
     },
 };

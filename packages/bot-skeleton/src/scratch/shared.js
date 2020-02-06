@@ -1,4 +1,4 @@
-import filesaver  from 'file-saver';
+import filesaver from 'file-saver';
 import { config } from '../constants/config';
 
 export const saveAs = ({ data, filename, type }) => {
@@ -22,4 +22,3 @@ export const getContractTypeOptions = (contract_type, trade_type) => {
 
     return contract_options;
 };
-

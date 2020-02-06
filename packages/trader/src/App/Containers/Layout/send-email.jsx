@@ -1,17 +1,15 @@
-import PropTypes      from 'prop-types';
-import React          from 'react';
-import {
-    Button,
-    Icon }            from '@deriv/components';
-import { localize }   from '@deriv/translations';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Button, Icon } from '@deriv/components';
+import { localize } from '@deriv/translations';
 
 class SendEmailTemplate extends React.Component {
     resend_interval = null;
 
     state = {
         is_email_not_received_clicked: false,
-        resend_timeout               : this.props.resend_timeout || 60,
-    }
+        resend_timeout: this.props.resend_timeout || 60,
+    };
 
     componentWillUnmount() {
         clearInterval(this.resend_interval);
@@ -19,53 +17,52 @@ class SendEmailTemplate extends React.Component {
 
     onClickEmailNotReceived = () => {
         this.setState({ is_email_not_received_clicked: true });
-    }
+    };
 
     onClickResendEmail = () => {
         this.startCountdownTimer();
         this.props.onClickSendEmail();
-    }
+    };
 
     startCountdownTimer = () => {
-        this.setState(prevState => ({
-            resend_timeout: prevState.resend_timeout - 1,
-        }), () => {
-            this.resend_interval = setInterval(() => {
-                if (this.state.resend_timeout === 1) {
-                    this.setState({ resend_timeout: 60 });
-                    clearInterval(this.resend_interval);
-                } else {
-                    this.setState(prevState => (
-                        { resend_timeout: prevState.resend_timeout - 1 }
-                    ));
-                }
-            }, 1000);
-        });
-    }
+        this.setState(
+            prevState => ({
+                resend_timeout: prevState.resend_timeout - 1,
+            }),
+            () => {
+                this.resend_interval = setInterval(() => {
+                    if (this.state.resend_timeout === 1) {
+                        this.setState({ resend_timeout: 60 });
+                        clearInterval(this.resend_interval);
+                    } else {
+                        this.setState(prevState => ({ resend_timeout: prevState.resend_timeout - 1 }));
+                    }
+                }, 1000);
+            }
+        );
+    };
 
     render() {
         const is_resend_btn_disabled = this.state.resend_timeout < 60;
-        const resend_email_btn_text  = (this.state.resend_timeout < 60 ?
-            localize('Resend email in {{seconds}}s', { seconds: this.state.resend_timeout })
-            :
-            localize('Resend email')
-        );
+        const resend_email_btn_text =
+            this.state.resend_timeout < 60
+                ? localize('Resend email in {{seconds}}s', { seconds: this.state.resend_timeout })
+                : localize('Resend email');
 
         return (
             <div className='send-email-template'>
                 <div className='send-email-template__sent'>
                     <Icon icon='IcEmailSent' className='send-email-template__icon' size={128} />
-                    <h1 className='send-email-template__title'>{localize('We\'ve sent you an email')}</h1>
+                    <h1 className='send-email-template__title'>{localize("We've sent you an email")}</h1>
                     <p className='send-email-template__subtitle'>{this.props.subtitle}</p>
                     <Button
                         className='send-email-template__btn'
                         onClick={this.onClickEmailNotReceived}
-                        text={localize('Didn\'t receive the email?')}
+                        text={localize("Didn't receive the email?")}
                         tertiary
                     />
                 </div>
-                {
-                    this.state.is_email_not_received_clicked &&
+                {this.state.is_email_not_received_clicked && (
                     <>
                         <div className={`send-email-template__resend ${this.props.className}`}>
                             {this.props.children}
@@ -81,16 +78,16 @@ class SendEmailTemplate extends React.Component {
                             />
                         </div>
                     </>
-                }
+                )}
             </div>
         );
     }
 }
 
 SendEmailTemplate.propTypes = {
-    is_disabled     : PropTypes.bool,
+    is_disabled: PropTypes.bool,
     onClickSendEmail: PropTypes.func,
-    subtitle        : PropTypes.string,
+    subtitle: PropTypes.string,
 };
 
 export default SendEmailTemplate;

@@ -1,9 +1,9 @@
-import React           from 'react';
-import { expect }      from 'chai';
-import * as Helpers    from '../helpers';
-import routes          from '../../../../Constants/routes';
+import React from 'react';
+import { expect } from 'chai';
+import * as Helpers from '../helpers';
+import routes from '../../../../Constants/routes';
 import getRoutesConfig from '../../../Constants/routes-config';
-import Redirect        from 'App/Containers/Redirect/redirect.jsx';
+import Redirect from 'App/Containers/Redirect/redirect.jsx';
 
 describe('Helpers', () => {
     describe('normalizePath', () => {
@@ -26,7 +26,7 @@ describe('Helpers', () => {
             expect(Helpers.findRouteByPath(routes.redirect, getRoutesConfig())).to.eql({
                 path: routes.redirect,
                 component: Redirect,
-                title: 'Redirect'
+                title: 'Redirect',
             });
         });
         // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
@@ -57,8 +57,15 @@ describe('Helpers', () => {
 
     describe('getPath', () => {
         it('should return param values in params as a part of path', () => {
-            expect(Helpers.getPath('/contract/:contract_id', { contract_id: 37511105068 })).to.equal('/contract/37511105068');
-            expect(Helpers.getPath('/something_made_up/:something_made_up_param1/:something_made_up_param2', { something_made_up_param1: '789', something_made_up_param2: '123456' })).to.equal('/something_made_up/789/123456');
+            expect(Helpers.getPath('/contract/:contract_id', { contract_id: 37511105068 })).to.equal(
+                '/contract/37511105068'
+            );
+            expect(
+                Helpers.getPath('/something_made_up/:something_made_up_param1/:something_made_up_param2', {
+                    something_made_up_param1: '789',
+                    something_made_up_param2: '123456',
+                })
+            ).to.equal('/something_made_up/789/123456');
         });
         it('should return path as before if there is no params', () => {
             expect(Helpers.getPath('/contract')).to.equal('/contract');

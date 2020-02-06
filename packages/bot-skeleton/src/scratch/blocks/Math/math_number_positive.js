@@ -1,12 +1,12 @@
 import { localize } from '@deriv/translations';
 
 Blockly.Blocks.math_number_positive = {
-    init      : Blockly.Blocks.math_number.init,
+    init: Blockly.Blocks.math_number.init,
     definition: Blockly.Blocks.math_number.definition,
     meta() {
         return {
-            'display_name': localize('Math Number Positive'),
-            'description' : localize('Math Number Description'),
+            display_name: localize('Math Number Positive'),
+            description: localize('Math Number Description'),
         };
     },
     numberValidator(input) {

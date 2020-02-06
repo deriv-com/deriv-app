@@ -1,19 +1,13 @@
-import React                  from 'react';
-import PropTypes              from 'prop-types';
-import classNames             from 'classnames';
-import {
-    Formik,
-    Form }                    from 'formik';
-import {
-    Button,
-    Dialog,
-    PasswordInput,
-    PasswordMeter }           from '@deriv/components';
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import { Formik, Form } from 'formik';
+import { Button, Dialog, PasswordInput, PasswordMeter } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { connect }            from 'Stores/connect';
-import { validPassword }      from 'Utils/Validator/declarative-validation-rules';
-import { redirectToLogin }    from '_common/base/login';
-import { WS }                 from 'Services/index';
+import { connect } from 'Stores/connect';
+import { validPassword } from 'Utils/Validator/declarative-validation-rules';
+import { redirectToLogin } from '_common/base/login';
+import { WS } from 'Services/index';
 
 const resetInitialValues = { password: '' };
 
@@ -41,7 +35,7 @@ class ResetPassword extends React.Component {
         const { verification_code } = this.props;
         const api_request = {
             reset_password: 1,
-            new_password  : values.password,
+            new_password: values.password,
             verification_code,
         };
 
@@ -52,9 +46,9 @@ class ResetPassword extends React.Component {
                 this.onResetComplete(null, actions);
             }
         });
-    }
+    };
 
-    validateReset = (values) => {
+    validateReset = values => {
         const errors = {};
         const min_password_length = 6;
 
@@ -83,9 +77,7 @@ class ResetPassword extends React.Component {
                                             <Localize i18n_default_text='Your password has been changed' />
                                         </p>
                                         <p className='reset-password__subtext'>
-                                            <Localize
-                                                i18n_default_text='We will now redirect you to the login page.'
-                                            />
+                                            <Localize i18n_default_text='We will now redirect you to the login page.' />
                                         </p>
                                     </div>
                                 ) : (
@@ -118,14 +110,15 @@ class ResetPassword extends React.Component {
                                                     values={{ error_msg: status.error_msg }}
                                                 />
                                             ) : (
-                                                <Localize
-                                                    i18n_default_text='Strong passwords contain at least 6 characters, combine uppercase and lowercase letters, numbers, and symbols.'
-                                                />
+                                                <Localize i18n_default_text='Strong passwords contain at least 6 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                             )}
                                         </p>
 
                                         <Button
-                                            className={classNames('reset-password__btn', { 'reset-password__btn--disabled': !values.password || errors.password || isSubmitting })}
+                                            className={classNames('reset-password__btn', {
+                                                'reset-password__btn--disabled':
+                                                    !values.password || errors.password || isSubmitting,
+                                            })}
                                             type='submit'
                                             is_disabled={!values.password || errors.password || isSubmitting}
                                             primary
@@ -134,7 +127,6 @@ class ResetPassword extends React.Component {
                                         </Button>
                                     </div>
                                 )}
-
                             </React.Fragment>
                         </Form>
                     )}
@@ -145,8 +137,8 @@ class ResetPassword extends React.Component {
 }
 
 ResetPassword.propTypes = {
-    enableApp        : PropTypes.func,
-    isModalVisible   : PropTypes.func,
+    enableApp: PropTypes.func,
+    isModalVisible: PropTypes.func,
     verification_code: PropTypes.string,
 };
 
@@ -160,12 +152,7 @@ const ResetPasswordModal = ({
     toggleResetPasswordModal,
 }) => {
     return (
-        <Dialog
-            is_visible={is_visible}
-            disableApp={disableApp}
-            enableApp={enableApp}
-            is_loading={is_loading}
-        >
+        <Dialog is_visible={is_visible} disableApp={disableApp} enableApp={enableApp} is_loading={is_loading}>
             <ResetPassword
                 verification_code={verification_code}
                 isModalVisible={toggleResetPasswordModal}
@@ -177,23 +164,21 @@ const ResetPasswordModal = ({
 };
 
 ResetPasswordModal.propTypes = {
-    disableApp              : PropTypes.func,
-    enableApp               : PropTypes.func,
-    is_loading              : PropTypes.bool,
-    is_visible              : PropTypes.bool,
-    logoutClient            : PropTypes.func,
+    disableApp: PropTypes.func,
+    enableApp: PropTypes.func,
+    is_loading: PropTypes.bool,
+    is_visible: PropTypes.bool,
+    logoutClient: PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
-    verification_code       : PropTypes.string,
+    verification_code: PropTypes.string,
 };
 
-export default connect(
-    ({ ui, client }) => ({
-        is_visible              : ui.is_reset_password_modal_visible,
-        enableApp               : ui.enableApp,
-        disableApp              : ui.disableApp,
-        is_loading              : ui.is_loading,
-        logoutClient            : client.logout,
-        toggleResetPasswordModal: ui.toggleResetPasswordModal,
-        verification_code       : client.verification_code.reset_password,
-    }),
-)(ResetPasswordModal);
+export default connect(({ ui, client }) => ({
+    is_visible: ui.is_reset_password_modal_visible,
+    enableApp: ui.enableApp,
+    disableApp: ui.disableApp,
+    is_loading: ui.is_loading,
+    logoutClient: client.logout,
+    toggleResetPasswordModal: ui.toggleResetPasswordModal,
+    verification_code: client.verification_code.reset_password,
+}))(ResetPasswordModal);

@@ -3,17 +3,18 @@ import { localize } from '@deriv/translations';
 import { flatten } from 'Modules/Account/Helpers/flatten';
 
 export const unsupported_contract_types_list = [
-    // TODO: uncomment before merge
-    // 'run_high_low',
-    // 'reset',
-    // 'asian',
-    // 'tick_high_low',
-    // 'end',
-    // 'stay',
-    // 'lb_call',
-    // 'lb_put',
-    // 'lb_high_low',
-    // 'multiplier',
+    // TODO: remove these once all contract types are supported
+    'callputspread',
+    'run_high_low',
+    'reset',
+    'asian',
+    'tick_high_low',
+    'end',
+    'stay',
+    'lb_call',
+    'lb_put',
+    'lb_high_low',
+    'multiplier',
 ];
 
 export const contract_category_icon = {

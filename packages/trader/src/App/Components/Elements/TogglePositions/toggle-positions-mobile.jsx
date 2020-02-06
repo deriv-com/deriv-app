@@ -1,7 +1,7 @@
 import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { NavLink } from 'react-router-dom';
-import { Icon, Modal } from '@deriv/components';
+import { Icon, Div100vhContainer, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
@@ -80,10 +80,9 @@ class TogglePositionsMobile extends React.PureComponent {
                     has_close_icon={false}
                     enableApp={this.props.enableApp}
                     disableApp={this.props.disableApp}
-                    height='calc(100vh - 48px)'
                     width='calc(100vw - 32px)'
                 >
-                    <div className='positions-modal'>
+                    <Div100vhContainer className='positions-modal' height_offset='48px'>
                         <div className='positions-modal__header'>
                             <span className='positions-modal__title'>
                                 <Icon icon='IcPortfolio' className='positions-modal__title-icon' />
@@ -104,7 +103,7 @@ class TogglePositionsMobile extends React.PureComponent {
                                 <span className='btn__text'>{localize('Go to Reports')}</span>
                             </NavLink>
                         </div>
-                    </div>
+                    </Div100vhContainer>
                 </Modal>
             </React.Fragment>
         );

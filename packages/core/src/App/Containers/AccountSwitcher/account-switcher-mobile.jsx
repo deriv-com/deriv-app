@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Modal } from '@deriv/components';
+import { Div100vhContainer, Modal } from '@deriv/components';
 import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
 
 const AccountSwitcherMobile = props => {
@@ -19,9 +19,12 @@ const AccountSwitcherMobile = props => {
             height='auto'
             width='calc(100vw - 32px)'
         >
-            <div className={classNames('acc-switcher__wrapper', 'acc-switcher__wrapper--is-mobile')}>
+            <Div100vhContainer
+                className={classNames('acc-switcher__wrapper', 'acc-switcher__wrapper--is-mobile')}
+                max_autoheight_offset='48px'
+            >
                 <AccountSwitcher is_mobile is_visible={true} toggle={toggle} is_upgrade_enabled={is_upgrade_enabled} />
-            </div>
+            </Div100vhContainer>
         </Modal>
     );
 };

@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Icon } from '@deriv/components';
+import { Div100vhContainer, Icon } from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { BinaryLink } from 'App/Components/Routes';
 import routes from 'Constants/routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
@@ -25,15 +26,11 @@ class PlatformDropdown extends React.PureComponent {
     }
 
     render() {
-        const { is_mobile, platform_config, closeDrawer } = this.props;
+        const { platform_config, closeDrawer } = this.props;
 
         const platform_dropdown = (
-            <div
-                className={classNames('platform-dropdown', {
-                    'platform-dropdown--is-mobile': is_mobile,
-                })}
-            >
-                <div className='platform-dropdown__list'>
+            <div className='platform-dropdown'>
+                <Div100vhContainer className='platform-dropdown__list' height_offset='238px' is_disabled={isDesktop()}>
                     {platform_config.map((platform, idx) => (
                         <BinaryLink
                             to={platform.link_to}
@@ -52,12 +49,13 @@ class PlatformDropdown extends React.PureComponent {
                             </div>
                         </BinaryLink>
                     ))}
-                </div>
+                </Div100vhContainer>
             </div>
         );
 
-        if (is_mobile)
+        if (isMobile()) {
             return ReactDOM.createPortal(platform_dropdown, document.getElementById('mobile_platform_switcher'));
+        }
         return ReactDOM.createPortal(platform_dropdown, document.getElementById('deriv_app'));
     }
 }

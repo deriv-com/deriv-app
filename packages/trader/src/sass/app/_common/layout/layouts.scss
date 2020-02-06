@@ -167,6 +167,19 @@ $FLOATING_HEADER_HEIGHT: 41px;
     flex-direction: column;
     height: 214px;
     position: relative;
+
+    &__content-loader {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0.4rem;
+
+        svg {
+            height: 100%;
+            width: 100%;
+        }
+    }
 }
 
 /** @define chart-container; weak */

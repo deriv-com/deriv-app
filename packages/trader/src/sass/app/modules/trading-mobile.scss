@@ -48,6 +48,9 @@
                 line-height: 1.75;
                 color: var(--text-prominent);
                 text-align: left !important;
+                user-select: none;
+                -webkit-touch-callout: none;
+                -webkit-tap-highlight-color: transparent;
             }
             .dc-numpad__bkspace,
             .dc-numpad__ok {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tabs, Numpad } from '@deriv/components';
+import { localize } from '@deriv/translations';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { connect } from 'Stores/connect';
 
@@ -7,7 +8,8 @@ const Basis = ({ toggleModal, basis, selected_basis, setSelectedAmount, onChange
     const user_currency_decimal_places = CurrencyUtils.getDecimalPlaces(currency);
     const onNumberChange = num => setSelectedAmount(basis, num);
 
-    const setBasisAndAmount = amount => {
+    const setBasisAndAmount = value => {
+        const amount = !isNaN(value) ? Number(value).toFixed(user_currency_decimal_places) : value;
         onChangeMultiple({ basis, amount });
         toggleModal();
     };
@@ -24,6 +26,7 @@ const Basis = ({ toggleModal, basis, selected_basis, setSelectedAmount, onChange
                 pip_size={user_currency_decimal_places}
                 min={0}
                 max={1000}
+                submit_label={localize('OK')}
                 onValueChange={onNumberChange}
             />
         </div>

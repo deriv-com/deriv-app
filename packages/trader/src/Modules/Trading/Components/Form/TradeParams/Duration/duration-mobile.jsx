@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
 
-const submit_label = localize('Ok');
+const submit_label = localize('OK');
 
 const Ticks = ({ toggleModal, onChangeMultiple, duration_min_max, selected_duration, setSelectedDuration }) => {
     const [min_tick, max_tick] = getDurationMinMaxValues(duration_min_max, 'tick', 't');

@@ -124,6 +124,7 @@ export default class CashierStore extends BaseStore {
             const agent_error = ObjectUtils.getPropertyValue(await WS.p2pAgentInfo(), ['error', 'code']);
             if (agent_error !== 'PermissionDenied') {
                 this.setIsP2pVisible(true);
+                this.is_p2p_agent = !agent_error;
 
                 WS.p2pSubscribe({ p2p_order_list: 1, subscribe: 1 }, this.setP2pOrderList);
             }

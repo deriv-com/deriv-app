@@ -164,7 +164,16 @@ const ContractType = (() => {
         };
     };
 
-    const getComponents = c_type => ({ form_components: ['duration', 'amount', ...contract_types[c_type].components] });
+    const getComponents = c_type => ({
+        form_components: ['duration', 'amount', ...contract_types[c_type].components].filter(
+            component =>
+                !(
+                    component === 'duration' &&
+                    contract_types[c_type].config &&
+                    contract_types[c_type].config.hide_duration
+                )
+        ),
+    });
 
     const getDurationUnitsList = (contract_type, contract_start_type) => ({
         duration_units_list:
@@ -433,7 +442,7 @@ const ContractType = (() => {
     };
 
     const getBasis = (contract_type, basis) => {
-        const arr_basis = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'basis']) || {};
+        const arr_basis = ObjectUtils.getPropertyValue(available_contract_types, [contract_type, 'basis']) || [];
         const localized_basis = getLocalizedBasis();
         const basis_list = arr_basis.reduce((cur, bas) => [...cur, { text: localized_basis[bas], value: bas }], []);
 

@@ -22,7 +22,7 @@ export const contract_category_icon = {
     [localize('Ins & Outs')]: 'IcInsOuts',
     [localize('Look Backs')]: 'IcLookbacks',
     [localize('Digits')]: 'IcDigits',
-    [localize('Multiplier option')]: 'IcMultiplier',
+    [localize('Multiplier options')]: 'IcMultiplier',
 };
 
 /**
@@ -53,7 +53,7 @@ export const getAvailableContractTypes = (contract_types_list, unsupported_list)
                     contract_types: available_contract_types,
                     icon: contract_category_icon[key],
                     component:
-                        key === localize('Multiplier option') ? (
+                        key === localize('Multiplier options') ? (
                             <span className='dc-vertical-tab__header--new'>{localize('NEW!')}</span>
                         ) : null,
                 };

@@ -117,5 +117,5 @@ export const getContractCategoriesConfig = () => ({
     [localize('Ins & Outs')]: ['end', 'stay'],
     [localize('Look Backs')]: ['lb_high_low', 'lb_put', 'lb_call'],
     [localize('Digits')]: ['match_diff', 'even_odd', 'over_under'],
-    [localize('Multiplier option')]: ['multiplier'],
+    [localize('Multiplier options')]: ['multiplier'],
 });

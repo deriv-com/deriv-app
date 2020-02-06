@@ -125,7 +125,7 @@ const initRoutesConfig = () => [
                 title: localize('Transfer to client'),
                 icon_component: 'IcAccountTransfer',
             },
-            { path: routes.cashier_dp2p, component: P2PCashier, title: localize('P2P'), icon_component: 'IcDp2p' },
+            { path: routes.cashier_p2p, component: P2PCashier, title: localize('P2P'), icon_component: 'IcDp2p' },
         ],
     },
     ...modules,

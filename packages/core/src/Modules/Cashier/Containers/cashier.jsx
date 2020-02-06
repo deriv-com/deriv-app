@@ -30,8 +30,8 @@ class Cashier extends React.Component {
                 if (
                     (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                     (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible) &&
-                    (route.path !== routes.cashier_dp2p ||
-                        (this.props.is_p2p_visible && /show_dp2p/.test(this.props.location.hash)))
+                    (route.path !== routes.cashier_p2p ||
+                        (this.props.is_p2p_visible && /show_p2p/.test(this.props.location.hash)))
                 ) {
                     options.push({
                         ...(route.path === routes.cashier_dp2p && { count: this.props.p2p_notification_count }),

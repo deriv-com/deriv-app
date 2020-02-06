@@ -199,7 +199,7 @@ class Dialog extends React.PureComponent {
                                             onScroll={this.onScroll}
                                             onScrollStop={this.onScrollStop}
                                             renderView={props => (
-                                                <div style={{ paddingBottom: '50vh', ...props.style }} />
+                                                <div style={{ paddingBottom: 'calc(100% + 100px)', ...props.style }} />
                                             )}
                                         >
                                             {children}

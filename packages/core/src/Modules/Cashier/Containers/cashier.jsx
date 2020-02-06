@@ -34,7 +34,7 @@ class Cashier extends React.Component {
                         (this.props.is_p2p_visible && /show_p2p/.test(this.props.location.hash)))
                 ) {
                     options.push({
-                        ...(route.path === routes.cashier_dp2p && { count: this.props.p2p_notification_count }),
+                        ...(route.path === routes.cashier_p2p && { count: this.props.p2p_notification_count }),
                         default: route.default,
                         icon: route.icon_component,
                         label: route.title,

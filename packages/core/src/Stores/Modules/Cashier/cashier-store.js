@@ -119,9 +119,10 @@ export default class CashierStore extends BaseStore {
         // 1. we have not already checked this before, and
         // 2. client is not virtual, and
         // 3. p2p call does not return error code `PermissionDenied`
+        await BinarySocket.wait('authorize');
         if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
             const agent_error = ObjectUtils.getPropertyValue(await WS.p2pAgentInfo(), ['error', 'code']);
-            if (!(agent_error === 'PermissionDenied')) {
+            if (agent_error !== 'PermissionDenied') {
                 this.setIsP2pVisible(true);
 
                 WS.p2pSubscribe({ p2p_order_list: 1, subscribe: 1 }, this.setP2pOrderList);
@@ -160,26 +161,29 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setP2pOrderList(order_response) {
-        if (order_response.p2p_order_list) {
-            // it's an array of orders from p2p_order_list
-            this.p2p_order_list = order_response.p2p_order_list.list;
-            this.handleNotifications(this.p2p_order_list);
-        } else {
-            // it's a single order from p2p_order_info
-            const idx_order_to_update = this.p2p_order_list.findIndex(
-                order => order.order_id === order_response.p2p_order_info.order_id
-            );
-            const updated_orders = [...this.p2p_order_list];
-            // if it's a new order, add it to the top of the list
-            if (idx_order_to_update < 0) {
-                updated_orders.unshift(order_response.p2p_order_info);
+        // check if there is any error
+        if (!order_response.error) {
+            if (order_response.p2p_order_list) {
+                // it's an array of orders from p2p_order_list
+                this.p2p_order_list = order_response.p2p_order_list.list;
+                this.handleNotifications(this.p2p_order_list);
             } else {
-                // otherwise, update the correct order
-                updated_orders[idx_order_to_update] = order_response.p2p_order_info;
+                // it's a single order from p2p_order_info
+                const idx_order_to_update = this.p2p_order_list.findIndex(
+                    order => order.order_id === order_response.p2p_order_info.order_id
+                );
+                const updated_orders = [...this.p2p_order_list];
+                // if it's a new order, add it to the top of the list
+                if (idx_order_to_update < 0) {
+                    updated_orders.unshift(order_response.p2p_order_info);
+                } else {
+                    // otherwise, update the correct order
+                    updated_orders[idx_order_to_update] = order_response.p2p_order_info;
+                }
+                // trigger re-rendering by setting orders again
+                this.p2p_order_list = updated_orders;
+                this.handleNotifications(updated_orders);
             }
-            // trigger re-rendering by setting orders again
-            this.p2p_order_list = updated_orders;
-            this.handleNotifications(updated_orders);
         }
     }
 

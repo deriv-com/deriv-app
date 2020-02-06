@@ -6,6 +6,7 @@ import {
     createMarkerSpotExit,
     createMarkerStartTime,
     createMarkerSpotMiddle,
+    createMarkerSpotTooltip,
     createMarkerResetTime,
     getSpotCount,
 } from './chart-marker-helpers';
@@ -21,6 +22,7 @@ export const createChartMarkers = contract_info => {
         if (contract_info.tick_count) {
             const tick_markers = createTickMarkers(contract_info);
             markers.push(...tick_markers);
+            markers.push(createMarkerSpotTooltip({ contract_info, tick_markers }));
         } else if (chart_type !== 'candle') {
             const spot_markers = Object.keys(marker_spots).map(type => marker_spots[type](contract_info));
             markers.push(...spot_markers);

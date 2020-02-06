@@ -2,6 +2,7 @@ import { localize } from '@deriv/translations';
 import MarkerLine from 'Modules/SmartChart/Components/Markers/marker-line.jsx';
 import MarkerSpotLabel from 'Modules/SmartChart/Components/Markers/marker-spot-label.jsx';
 import MarkerSpot from 'Modules/SmartChart/Components/Markers/marker-spot.jsx';
+import MarkerSpotTooltip from 'Modules/SmartChart/Components/Markers/marker-spot-tooltip.jsx';
 
 export const MARKER_TYPES_CONFIG = {
     LINE_END: {
@@ -44,7 +45,6 @@ export const MARKER_TYPES_CONFIG = {
         content_config: {
             spot_className: 'chart-spot__icon',
             icon: 'IcContractEntrySpotCircle',
-            has_hover_toggle: true,
         },
     },
     SPOT_SELL: {
@@ -62,7 +62,6 @@ export const MARKER_TYPES_CONFIG = {
         content_config: {
             spot_className: 'chart-spot__icon',
             icon: 'IcContractExitSpotCircle',
-            has_hover_toggle: true,
         },
     },
     SPOT_MIDDLE: {
@@ -70,6 +69,13 @@ export const MARKER_TYPES_CONFIG = {
         marker_config: {
             ContentComponent: MarkerSpotLabel,
         },
-        content_config: { spot_className: 'chart-spot__spot', has_hover_toggle: true },
+        content_config: { spot_className: 'chart-spot__spot' },
+    },
+    SPOT_TOOLTIP: {
+        type: 'SPOT_TOOLTIP',
+        marker_config: {
+            ContentComponent: MarkerSpotTooltip,
+        },
+        content_config: {},
     },
 };

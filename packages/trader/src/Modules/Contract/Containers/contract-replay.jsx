@@ -204,6 +204,7 @@ class Chart extends React.Component {
                         key={marker.react_key}
                         marker_config={marker.marker_config}
                         marker_content_props={marker.content_config}
+                        marker_type={marker.type}
                         is_bottom_widget_visible={this.props.is_digit_contract}
                     />
                 ))}

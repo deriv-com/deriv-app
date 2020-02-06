@@ -115,3 +115,11 @@ export const createMarkerSpotMiddle = (contract_info, tick, idx) => {
 
     return marker_config;
 };
+
+export const createMarkerSpotTooltip = ({ contract_info, tick_markers }) => {
+    const marker_config = createMarkerConfig(MARKER_TYPES_CONFIG.SPOT_TOOLTIP.type, 1, 1, {
+        status: contract_info.status,
+    });
+    marker_config.content_config.tick_markers = tick_markers;
+    return marker_config;
+};

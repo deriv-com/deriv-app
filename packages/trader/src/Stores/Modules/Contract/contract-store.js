@@ -32,7 +32,7 @@ export default class ContractStore {
     // ---- chart props
     @observable margin;
     @observable barriers_array = [];
-    @observable markers_array = [];
+    @observable.shallow markers_array = [];
     @observable marker = null;
 
     // ---- Normal properties ---

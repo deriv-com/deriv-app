@@ -21,6 +21,7 @@ const Card = ({ contract_type, onClick }) => (
                 }}
             />
         )}
+        renderView={props => <div {...props} style={{ ...props.style, width: '272px', overflowX: 'hidden' }} />}
     >
         <div className='contract-type-info__card'>
             <div className='contract-type-info__gif'>

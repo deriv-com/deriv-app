@@ -41,6 +41,10 @@
                 &__field {
                     padding: 0.8rem 1.2rem 0.8rem 3.6rem;
                     height: 3.2rem;
+
+                    &::-moz-placeholder {
+                        line-height: 16px;
+                    }
                 }
                 /* postcss-bem-linter: ignore */
                 &__leading-icon {

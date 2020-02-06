@@ -256,8 +256,6 @@ const BinarySocketBase = (() => {
 
     const cancelContract = contract_id => deriv_api.send({ cancel: contract_id });
 
-    const p2pOfferList = () => deriv_api.send({ p2p_offer_list: 1 });
-
     const p2pAgentInfo = () => deriv_api.send({ p2p_agent_info: 1 });
 
     // subscribe method export for P2P use only
@@ -301,7 +299,6 @@ const BinarySocketBase = (() => {
         newAccountVirtual,
         newAccountReal,
         p2pAgentInfo,
-        p2pOfferList,
         p2pSubscribe,
         profitTable,
         statement,

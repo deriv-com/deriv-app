@@ -18,7 +18,6 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                         classNameBubble='market-symbol-icon__popover-bubble'
                         alignment='top'
                         message={getMarketName(info_from_shortcode.underlying)}
-                        disable_target_icon
                     >
                         <Icon
                             icon={
@@ -38,7 +37,6 @@ const MarketSymbolIconRow = ({ payload, show_description }) => {
                         classNameBubble='category-type-icon__popover-bubble'
                         alignment='top'
                         message={getTradeTypeName(info_from_shortcode.category)}
-                        disable_target_icon
                     >
                         <IconTradeType
                             type={

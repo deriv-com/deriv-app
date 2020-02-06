@@ -28,7 +28,6 @@ class Popover extends React.PureComponent {
             classNameTargetIcon,
             counter,
             disable_message_icon,
-            disable_target_icon,
             has_error,
             icon,
             id,
@@ -40,6 +39,59 @@ class Popover extends React.PureComponent {
 
         const has_external_open_state = is_open !== undefined;
         const icon_class_name = classNames(classNameTargetIcon, icon);
+
+        const popover_content = ({ position, targetRect, popoverRect }) => (
+            <ArrowContainer
+                position={position}
+                targetRect={targetRect}
+                popoverRect={popoverRect}
+                arrowColor={has_error ? 'var(--status-danger)' : 'var(--general-active)'}
+                arrowSize={5}
+            >
+                <div
+                    id={id}
+                    className={classNames(classNameBubble, 'dc-popover__bubble', {
+                        'dc-popover__bubble--error': has_error,
+                    })}
+                >
+                    {!disable_message_icon && icon === 'info' && (
+                        <i className='dc-popover__bubble__icon'>
+                            <Icon icon='IcInfoBlue' />
+                        </i>
+                    )}
+                    <span
+                        className={classNames('dc-popover__bubble__text', {
+                            'dc-popover__bubble__text--error': has_error,
+                        })}
+                    >
+                        {message}
+                    </span>
+                </div>
+            </ArrowContainer>
+        );
+
+        const popover_target = (
+            <div
+                className={classNames('dc-popover', className)}
+                id={id}
+                onMouseEnter={has_external_open_state ? undefined : this.toggleOpen}
+                onMouseLeave={has_external_open_state ? undefined : this.toggleClose}
+            >
+                <div className={classNames(classNameTarget, 'dc-popover__target')}>
+                    {icon && (
+                        <i className={message ? 'dc-popover__target__icon' : 'dc-popover__target__icon--disabled'}>
+                            {icon === 'info' && <Icon icon='IcInfoOutline' className={icon_class_name} />}
+                            {icon === 'question' && <Icon icon='IcUnknown' className={icon_class_name} />}
+                            {icon === 'dot' && <Icon icon='IcCircle' className={icon_class_name} size={4} />}
+                            {icon === 'counter' && <span className={icon_class_name}>{counter}</span>}
+                        </i>
+                    )}
+
+                    {children}
+                </div>
+            </div>
+        );
+
         return (
             <TinyPopover
                 isOpen={has_external_open_state ? is_open : this.state.is_open}
@@ -47,55 +99,9 @@ class Popover extends React.PureComponent {
                 transitionDuration={0.25}
                 padding={margin + 8}
                 containerStyle={{ zIndex: zIndex || 1 }}
-                content={({ position, targetRect, popoverRect }) => (
-                    <ArrowContainer
-                        position={position}
-                        targetRect={targetRect}
-                        popoverRect={popoverRect}
-                        arrowColor={has_error ? 'var(--status-danger)' : 'var(--general-active)'}
-                        arrowSize={5}
-                    >
-                        <div
-                            id={id}
-                            className={classNames(classNameBubble, 'dc-popover__bubble', {
-                                'dc-popover__bubble--error': has_error,
-                            })}
-                        >
-                            {!disable_message_icon && icon === 'info' && (
-                                <i className='dc-popover__bubble__icon'>
-                                    <Icon icon='IcInfoBlue' />
-                                </i>
-                            )}
-                            <span
-                                className={classNames('dc-popover__bubble__text', {
-                                    'dc-popover__bubble__text--error': has_error,
-                                })}
-                            >
-                                {message}
-                            </span>
-                        </div>
-                    </ArrowContainer>
-                )}
+                content={popover_content}
             >
-                <div
-                    className={classNames('dc-popover', className)}
-                    id={id}
-                    onMouseEnter={has_external_open_state ? undefined : this.toggleOpen}
-                    onMouseLeave={has_external_open_state ? undefined : this.toggleClose}
-                >
-                    <div className={classNames(classNameTarget, 'dc-popover__target')}>
-                        {!disable_target_icon && (
-                            <i className={message ? 'dc-popover__target__icon' : 'dc-popover__target__icon--disabled'}>
-                                {icon === 'info' && <Icon icon='IcInfoOutline' className={icon_class_name} />}
-                                {icon === 'question' && <Icon icon='IcUnknown' className={icon_class_name} />}
-                                {icon === 'dot' && <Icon icon='IcCircle' className={icon_class_name} size={4} />}
-                                {icon === 'counter' && <span className={icon_class_name}>{counter}</span>}
-                            </i>
-                        )}
-
-                        {children}
-                    </div>
-                </div>
+                {popover_target}
             </TinyPopover>
         );
     }
@@ -114,7 +120,6 @@ Popover.propTypes = {
     classNameTarget: PropTypes.string,
     classNameTargetIcon: PropTypes.string,
     counter: PropTypes.number,
-    disable_message_icon: PropTypes.bool,
     disable_target_icon: PropTypes.bool,
     has_error: PropTypes.bool,
     icon: PropTypes.oneOf(['info', 'question', 'dot', 'counter']),

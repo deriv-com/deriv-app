@@ -280,6 +280,7 @@ Blockly.Toolbox.prototype.showSearch = function(search) {
  * @private
  */
 Blockly.Toolbox.prototype.showCategory_ = function(category_id) {
+    const { flyout } = DBotStore.instance;
     const selected_category = this.categoryMenu_.categories_.find(category => category.id_ === category_id);
     let flyout_content = selected_category.getContents();
 
@@ -289,9 +290,6 @@ Blockly.Toolbox.prototype.showCategory_ = function(category_id) {
         flyout_content = fnToApply(this.workspace_);
     }
 
-    const {
-        instance: { flyout },
-    } = DBotStore;
     flyout.setIsSearchFlyout(false);
     flyout.setContents(flyout_content);
 };

@@ -22,6 +22,7 @@ export default class FlyoutStore {
     @observable is_search_flyout = false;
     @observable is_loading = false;
     @observable search_term = '';
+    @observable has_changed_category = false;
 
     constructor(root_store) {
         this.root_store = root_store;
@@ -35,6 +36,7 @@ export default class FlyoutStore {
      * @memberof FlyoutStore
      */
     @action.bound setContents(xml_list, search_term = '') {
+        this.setHasChangedCategory(true);
         const text_limit = 20;
         const processed_xml = xml_list;
         this.block_listeners.forEach(listener => Blockly.unbindEvent_(listener));
@@ -56,6 +58,7 @@ export default class FlyoutStore {
         const self = this;
         setTimeout(function() {
             self.setFlyoutWidth(processed_xml);
+            self.setHasChangedCategory(false);
         }, 50);
     }
 
@@ -83,6 +86,15 @@ export default class FlyoutStore {
      */
     @action.bound setIsSearchFlyout(is_search) {
         this.is_search_flyout = is_search;
+    }
+
+    /**
+     * For animation purpose.
+     * @param {boolean} has_changed_category
+     * @memberof FlyoutStore
+     */
+    @action.bound setHasChangedCategory(has_changed_category) {
+        this.has_changed_category = has_changed_category;
     }
 
     /**

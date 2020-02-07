@@ -13,7 +13,7 @@ import '../assets/sass/toolbar.scss';
 
 const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, onSearchKeyUp }) => (
     <div className='toolbar__form'>
-        <Formik initialValues={{ search: '' }} onSubmit={values => onSearch(values)}>
+        <Formik initialValues={{ search: '' }} onSubmit={onSearch}>
             {({ submitForm, values: { search }, setFieldValue }) => (
                 <Form>
                     <Field name='search'>

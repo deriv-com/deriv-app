@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Checkbox, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { message_types } from '@deriv/bot-skeleton';
 import { connect } from '../stores/connect';
 import '../assets/sass/journal.scss';
@@ -118,24 +119,32 @@ const Journal = ({ filtered_messages, ...props }) => {
                     </thead>
                     <tbody className='journal__table--body'>
                         {filtered_messages.length ? (
-                            filtered_messages.map((item, index) => {
-                                const { date, time, message, message_type } = item;
-                                const date_el = DateItem({ date, time });
-                                const message_el = MessageItem({ message });
+                            <TransitionGroup>
+                                {filtered_messages.map(item => {
+                                    const { date, time, message, message_type } = item;
+                                    const date_el = DateItem({ date, time });
+                                    const message_el = MessageItem({ message });
 
-                                return (
-                                    <tr className='journal__table--tr' key={`${item.date}-${index}`}>
-                                        <td className='journal__table--td'>{date_el}</td>
-                                        <td
-                                            className={classnames('journal__table--td', {
-                                                'journal__table--red': message_type === message_types.ERROR,
-                                            })}
+                                    return (
+                                        <CSSTransition
+                                            key={`${date}__${time}`}
+                                            timeout={500}
+                                            classNames='journal__animation'
                                         >
-                                            {message_el}
-                                        </td>
-                                    </tr>
-                                );
-                            })
+                                            <tr className='journal__table--tr'>
+                                                <td className='journal__table--td'>{date_el}</td>
+                                                <td
+                                                    className={classnames('journal__table--td', {
+                                                        'journal__table--red': message_type === message_types.ERROR,
+                                                    })}
+                                                >
+                                                    {message_el}
+                                                </td>
+                                            </tr>
+                                        </CSSTransition>
+                                    );
+                                })}
+                            </TransitionGroup>
                         ) : (
                             <tr className='journal-empty__container'>
                                 <td className='journal-empty'>

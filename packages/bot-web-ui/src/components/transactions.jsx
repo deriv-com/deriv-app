@@ -31,9 +31,9 @@ class Transactions extends React.PureComponent {
                 </div>
                 <div className='transactions__content'>
                     <ThemedScrollbars autoHide style={{ height: 'var(--drawer-scroll-height)' }}>
-                        <TransitionGroup>
-                            {elements.lenght ? (
-                                elements.map(element => {
+                        {elements.length ? (
+                            <TransitionGroup>
+                                {elements.map(element => {
                                     switch (element.type) {
                                         case transaction_elements.CONTRACT: {
                                             const { data: contract } = element;
@@ -60,30 +60,30 @@ class Transactions extends React.PureComponent {
                                             return null;
                                         }
                                     }
-                                })
-                            ) : (
-                                <div className='transactions-empty__container'>
-                                    <div className='transactions-empty'>
-                                        <Icon
-                                            icon='IcBox'
-                                            className='transactions-empty__icon'
-                                            size={64}
-                                            color='secondary'
-                                        />
-                                        <h4 className='transactions-empty__header'>
-                                            {localize('There are no messages to display')}
-                                        </h4>
-                                        <div className='transactions-empty__message'>
-                                            <span>{localize('Here are the possible reasons:')}</span>
-                                            <ul className='transactions-empty__list'>
-                                                <li>{localize('The bot is not running')}</li>
-                                                <li>{localize('The stats are cleared')}</li>
-                                            </ul>
-                                        </div>
+                                })}
+                            </TransitionGroup>
+                        ) : (
+                            <div className='transactions-empty__container'>
+                                <div className='transactions-empty'>
+                                    <Icon
+                                        icon='IcBox'
+                                        className='transactions-empty__icon'
+                                        size={64}
+                                        color='secondary'
+                                    />
+                                    <h4 className='transactions-empty__header'>
+                                        {localize('There are no messages to display')}
+                                    </h4>
+                                    <div className='transactions-empty__message'>
+                                        <span>{localize('Here are the possible reasons:')}</span>
+                                        <ul className='transactions-empty__list'>
+                                            <li>{localize('The bot is not running')}</li>
+                                            <li>{localize('The stats are cleared')}</li>
+                                        </ul>
                                     </div>
                                 </div>
-                            )}
-                        </TransitionGroup>
+                            </div>
+                        )}
                     </ThemedScrollbars>
                 </div>
             </div>

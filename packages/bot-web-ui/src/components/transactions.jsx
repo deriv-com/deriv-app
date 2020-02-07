@@ -1,4 +1,4 @@
-import { ThemedScrollbars } from '@deriv/components';
+import { ThemedScrollbars, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { PropTypes } from 'prop-types';
 import React from 'react';
@@ -32,30 +32,57 @@ class Transactions extends React.PureComponent {
                 <div className='transactions__content'>
                     <ThemedScrollbars autoHide style={{ height: 'var(--drawer-scroll-height)' }}>
                         <TransitionGroup>
-                            {elements.map((element, index) => {
-                                switch (element.type) {
-                                    case transaction_elements.CONTRACT: {
-                                        const { data: contract } = element;
-                                        const { buy } = contract.transaction_ids;
-                                        return (
-                                            <CSSTransition key={buy} timeout={500} classNames='transactions__animation'>
-                                                <Transaction contract={contract} />
-                                            </CSSTransition>
-                                        );
+                            {elements.lenght ? (
+                                elements.map(element => {
+                                    switch (element.type) {
+                                        case transaction_elements.CONTRACT: {
+                                            const { data: contract } = element;
+                                            const { buy } = contract.transaction_ids;
+                                            return (
+                                                <CSSTransition
+                                                    key={buy}
+                                                    timeout={500}
+                                                    classNames='transactions__animation'
+                                                >
+                                                    <Transaction contract={contract} />
+                                                </CSSTransition>
+                                            );
+                                        }
+                                        case transaction_elements.DIVIDER: {
+                                            const { data: run_id } = element;
+                                            return (
+                                                <div key={run_id} className='transactions__divider'>
+                                                    <div className='transactions__divider-line' />
+                                                </div>
+                                            );
+                                        }
+                                        default: {
+                                            return null;
+                                        }
                                     }
-                                    case transaction_elements.DIVIDER: {
-                                        const { data: run_id } = element;
-                                        return (
-                                            <div key={run_id} className='transactions__divider'>
-                                                <div className='transactions__divider-line' />
-                                            </div>
-                                        );
-                                    }
-                                    default: {
-                                        return null;
-                                    }
-                                }
-                            })}
+                                })
+                            ) : (
+                                <div className='transactions-empty__container'>
+                                    <div className='transactions-empty'>
+                                        <Icon
+                                            icon='IcBox'
+                                            className='transactions-empty__icon'
+                                            size={64}
+                                            color='secondary'
+                                        />
+                                        <h4 className='transactions-empty__header'>
+                                            {localize('There are no messages to display')}
+                                        </h4>
+                                        <div className='transactions-empty__message'>
+                                            <span>{localize('Here are the possible reasons:')}</span>
+                                            <ul className='transactions-empty__list'>
+                                                <li>{localize('The bot is not running')}</li>
+                                                <li>{localize('The stats are cleared')}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </TransitionGroup>
                     </ThemedScrollbars>
                 </div>

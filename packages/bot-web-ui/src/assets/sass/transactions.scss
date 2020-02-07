@@ -1,13 +1,45 @@
-@keyframes slide-in {
-    100% {
-        transform: translateX(0%);
-    }
-}
-
 .transactions {
     $transaction: &;
     $grid-template-columns: 40px 1fr 1fr; // 16px (icon) + 24px (spacing)
 
+    &-empty {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+
+        &__container {
+            -webkit-box-flex: 1;
+            flex-grow: 1;
+            display: -webkit-box;
+            display: flex;
+            flex-direction: column;
+            -webkit-box-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            width: 345px;
+            margin-top: 50%;
+        }
+        &__header {
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: center;
+            color: var(--text-less-prominent);
+            padding: 8px;
+        }
+        &__icon {
+            align-self: center;
+        }
+        &__message {
+            line-height: 1.5;
+            font-size: 1.2rem;
+            color: var(--text-less-prominent);
+            margin: 0 auto;
+        }
+        &__list {
+            list-style-type: circle;
+            margin-left: 20px;
+        }
+    }
     &__animation-enter {
         height: 0;
         transform: translateX(200%);

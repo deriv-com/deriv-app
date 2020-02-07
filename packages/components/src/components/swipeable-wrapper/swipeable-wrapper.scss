@@ -1,0 +1,13 @@
+.dc-swipeable {
+    display: flex;
+    flex-direction: row;
+    transition: transform 0.2s linear;
+    width: max-content;
+    height: 100%;
+
+    &__item {
+        position: relative;
+        display: inline-flex;
+        width: 100vw;
+    }
+}

@@ -17,6 +17,7 @@ const WorkspaceControl = ({ onZoomInOutClick }) => (
 
 const Recent = ({
     is_explanation_expand,
+    is_open_button_loading,
     getRecentFileIcon,
     getSaveType,
     loadFileFromRecent,
@@ -73,6 +74,7 @@ const Recent = ({
                         className='load-recent__footer-open'
                         text={localize('Open')}
                         onClick={loadFileFromRecent}
+                        is_loading={is_open_button_loading}
                         has_effect
                         primary
                     />
@@ -107,7 +109,14 @@ const Recent = ({
     </div>
 );
 
-const Local = ({ closePreview, handleFileChange, loaded_local_file, loadFileFromLocal, ...props }) => {
+const Local = ({
+    closePreview,
+    handleFileChange,
+    is_open_button_loading,
+    loaded_local_file,
+    loadFileFromLocal,
+    ...props
+}) => {
     let file_input_ref = useRef(null);
     return (
         <div className='load-local__container'>
@@ -153,6 +162,7 @@ const Local = ({ closePreview, handleFileChange, loaded_local_file, loadFileFrom
                         className='load-local__footer-open'
                         text={localize('Open')}
                         onClick={loadFileFromLocal}
+                        is_loading={is_open_button_loading}
                         has_effect
                         primary
                     />
@@ -162,7 +172,7 @@ const Local = ({ closePreview, handleFileChange, loaded_local_file, loadFileFrom
     );
 };
 
-const GoogleDrive = ({ is_authorised, onDriveConnect, onDriveOpen }) => (
+const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, onDriveOpen }) => (
     <div className='load-google-drive__container'>
         <Icon
             icon={'IcGoogleDrive'}
@@ -181,6 +191,7 @@ const GoogleDrive = ({ is_authorised, onDriveConnect, onDriveOpen }) => (
                     className='load-google-drive__open'
                     text={localize('Open')}
                     onClick={onDriveOpen}
+                    is_loading={is_open_button_loading}
                     has_effect
                     primary
                 />
@@ -247,6 +258,7 @@ LoadModal.propTypes = {
     handleFileChange: PropTypes.func,
     is_authorised: PropTypes.bool,
     is_load_modal_open: PropTypes.bool,
+    is_open_button_loading: PropTypes.bool,
     loaded_local_file: PropTypes.object,
     loadFileFromLocal: PropTypes.func,
     loadFileFromRecent: PropTypes.func,
@@ -272,6 +284,7 @@ export default connect(({ load_modal, google_drive }) => ({
     handleFileChange: load_modal.handleFileChange,
     is_authorised: google_drive.is_authorised,
     is_load_modal_open: load_modal.is_load_modal_open,
+    is_open_button_loading: load_modal.is_open_button_loading,
     loadFileFromLocal: load_modal.loadFileFromLocal,
     loadFileFromRecent: load_modal.loadFileFromRecent,
     loaded_local_file: load_modal.loaded_local_file,

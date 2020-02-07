@@ -8,6 +8,7 @@ export default class LoadModalStore {
     @observable selected_file_id = '';
     @observable is_explanation_expand = false;
     @observable loaded_local_file = null;
+    @observable is_open_button_loading = false;
     recent_workspace;
     local_workspace;
     drop_zone;
@@ -118,6 +119,7 @@ export default class LoadModalStore {
 
     @action.bound
     loadFileFromRecent() {
+        this.is_open_button_loading = true;
         const selected_workspace = this.recent_files.find(file => file.id === this.selected_file_id);
         const { onBotNameTyped } = this.root_store.toolbar;
 
@@ -127,6 +129,7 @@ export default class LoadModalStore {
 
         onBotNameTyped(selected_workspace.name);
         load(selected_workspace.xml);
+        this.is_open_button_loading = false;
         this.toggleLoadModal();
     }
 
@@ -216,7 +219,9 @@ export default class LoadModalStore {
 
     @action.bound
     loadFileFromLocal() {
+        this.is_open_button_loading = true;
         this.handleFilefromLocal(this.loaded_local_file);
+        this.is_open_button_loading = false;
         this.toggleLoadModal();
     }
 

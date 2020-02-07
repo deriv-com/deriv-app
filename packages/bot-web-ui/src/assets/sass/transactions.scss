@@ -1,7 +1,22 @@
+@keyframes slide-in {
+    100% {
+        transform: translateX(0%);
+    }
+}
+
 .transactions {
     $transaction: &;
     $grid-template-columns: 40px 1fr 1fr; // 16px (icon) + 24px (spacing)
 
+    &__animation-enter {
+        height: 0;
+        transform: translateX(200%);
+    }
+    &__animation-enter-active {
+        height: 55px;
+        transform: translateX(0%);
+        transition: height 500ms, transform 500ms;
+    }
     &__header {
         border-bottom: 1px solid var(--general-section-1);
         display: grid;

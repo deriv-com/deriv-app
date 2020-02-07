@@ -2,6 +2,7 @@ import { ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { PropTypes } from 'prop-types';
 import React from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Transaction from './transaction.jsx';
 import { transaction_elements } from '../constants/transactions';
 import { connect } from '../stores/connect';
@@ -30,25 +31,32 @@ class Transactions extends React.PureComponent {
                 </div>
                 <div className='transactions__content'>
                     <ThemedScrollbars autoHide style={{ height: 'var(--drawer-scroll-height)' }}>
-                        {elements.map((element, index) => {
-                            switch (element.type) {
-                                case transaction_elements.CONTRACT: {
-                                    const contract = element.data;
-                                    return <Transaction key={`${contract.reference_id}${index}`} contract={contract} />;
+                        <TransitionGroup>
+                            {elements.map((element, index) => {
+                                switch (element.type) {
+                                    case transaction_elements.CONTRACT: {
+                                        const { data: contract } = element;
+                                        const { buy } = contract.transaction_ids;
+                                        return (
+                                            <CSSTransition key={buy} timeout={500} classNames='transactions__animation'>
+                                                <Transaction contract={contract} />
+                                            </CSSTransition>
+                                        );
+                                    }
+                                    case transaction_elements.DIVIDER: {
+                                        const { data: run_id } = element;
+                                        return (
+                                            <div key={run_id} className='transactions__divider'>
+                                                <div className='transactions__divider-line' />
+                                            </div>
+                                        );
+                                    }
+                                    default: {
+                                        return null;
+                                    }
                                 }
-                                case transaction_elements.DIVIDER: {
-                                    const run_id = element.data;
-                                    return (
-                                        <div key={run_id} className='transactions__divider'>
-                                            <div className='transactions__divider-line' />
-                                        </div>
-                                    );
-                                }
-                                default: {
-                                    return null;
-                                }
-                            }
-                        })}
+                            })}
+                        </TransitionGroup>
                     </ThemedScrollbars>
                 </div>
             </div>

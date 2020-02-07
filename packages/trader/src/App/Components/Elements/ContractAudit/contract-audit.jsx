@@ -74,7 +74,7 @@ class ContractAudit extends React.PureComponent {
                     label: localize('Buy time'),
                     value: toGMTFormat(epochToMoment(contract_info.purchase_time)),
                 },
-                shouldShow: is_reset_call_put,
+                shouldShow: true,
             },
             {
                 containerId: 'dt_entry_spot_label',

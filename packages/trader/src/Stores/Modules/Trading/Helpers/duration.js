@@ -5,8 +5,8 @@ export const getDurationMaps = () => ({
     t: { display: localize('Ticks'), order: 1 },
     s: { display: localize('Seconds'), order: 2, to_second: 1 },
     m: { display: localize('Minutes'), order: 3, to_second: 60 },
-    h: { display: localize('Hours'), order: 4, to_second: 60 * 60 },
-    d: { display: localize('Days'), order: 5, to_second: 60 * 60 * 24 },
+    h: { display: localize('Hours'), order: 4, to_second: 60 * 60, to_minute: 60 },
+    d: { display: localize('Days'), order: 5, to_second: 60 * 60 * 24, to_minute: 24 * 60, to_hour: 24 },
 });
 
 export const buildDurationConfig = (contract, durations = { min_max: {}, units_display: {} }) => {

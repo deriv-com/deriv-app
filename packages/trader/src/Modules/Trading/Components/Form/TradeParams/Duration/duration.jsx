@@ -129,10 +129,30 @@ const Duration = ({
         },
     };
 
-    const reset_value = Math.floor(
-        getDurationFromUnit(is_advanced_duration ? advanced_duration_unit : simple_duration_unit) / 2
-    );
-    const unit_name = getDurationMaps()[is_advanced_duration ? advanced_duration_unit : simple_duration_unit].display;
+    const duration_value = getDurationFromUnit(duration_unit);
+
+    let display_reset_value = duration_value;
+    let display_reset_unit = getDurationMaps()[duration_unit].display;
+    if (duration_value === 1) {
+        switch (duration_unit) {
+            case 'm':
+                display_reset_value = getDurationMaps().m.to_second * duration_value;
+                display_reset_unit = getDurationMaps().s.display;
+                break;
+            case 'h':
+                display_reset_value = getDurationMaps().h.to_minute * duration_value;
+                display_reset_unit = getDurationMaps().m.display;
+                break;
+            case 'd':
+                display_reset_value = getDurationMaps().d.to_hour * duration_value;
+                display_reset_unit = getDurationMaps().h.display;
+                break;
+            default:
+                break;
+        }
+    }
+
+    display_reset_value = Math.floor(display_reset_value / 2);
 
     // e.g. digit contracts only has range slider - does not have toggle between advanced / simple
     const has_toggle = expiry_list.length > 1 || duration_units_list.length > 1;
@@ -180,7 +200,10 @@ const Duration = ({
 
                     {contract_type === 'reset_call_put' && expiry_type !== 'endtime' && (
                         <span className='trade-container__fieldset-info--minor'>
-                            {localize('Reset time : {{reset_value}} {{ unit_name }}', { reset_value, unit_name })}
+                            {localize('Reset time : {{ display_reset_value }} {{ display_reset_unit }}', {
+                                display_reset_value,
+                                display_reset_unit,
+                            })}
                         </span>
                     )}
                     <DurationToggle

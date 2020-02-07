@@ -158,6 +158,7 @@ export const icons = {
         'IcContractFlag',
         'IcContractId',
         'IcContractResetTimeCircle',
+        'IcContractTarget',
     ],
     currency: [
         'IcCurrencyAud',

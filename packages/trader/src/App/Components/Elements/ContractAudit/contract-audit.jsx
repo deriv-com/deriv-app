@@ -51,7 +51,10 @@ class ContractAudit extends React.PureComponent {
             {
                 containerId: 'dt_bt_label',
                 contractAuditItemProps: {
-                    icon: is_digit ? 'IcContractTarget' : 'IcContractBarrierDotted',
+                    icon: (() => {
+                        if (is_digit) return 'IcContractTarget';
+                        return is_reset_call_put ? 'IcContractBarrierDotted' : 'IcContractBarrierSolid';
+                    })(),
                     label: getBarrierLabel(contract_info),
                     value: is_reset_call_put
                         ? addCommaToNumber(contract_info.entry_spot)

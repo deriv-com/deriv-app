@@ -139,11 +139,7 @@ class MT5Dashboard extends React.Component {
                                 <div className='mt5-dashboard__download-center-options--desktop-devices'>
                                     <Icon icon='IcMt5DeviceDesktop' width={118} height={85} />
                                     <Icon icon='IcMt5DeviceLaptop' width={75} height={51} />
-                                    <a
-                                        href='https://trade.mql5.com/trade?servers=Binary.com-Server&trade_server=Binary.com-Server'
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                    >
+                                    <a href='https://trade.mql5.com/trade' target='_blank' rel='noopener noreferrer'>
                                         <Icon icon='IcInstallationWeb' width={196} height={28} />
                                     </a>
                                 </div>

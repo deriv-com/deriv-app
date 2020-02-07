@@ -4,11 +4,13 @@ import { Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { epochToMoment, toGMTFormat } from 'Utils/Date';
 import { addCommaToNumber, getBarrierLabel, getBarrierValue } from 'App/Components/Elements/PositionsDrawer/helpers';
+import { getResetDisplayValues } from 'Stores/Modules/Trading/Helpers/reset-time';
+import { getDurationUnitText, getDurationUnit } from 'Stores/Modules/Portfolio/Helpers/details';
 import ContractAuditItem from './contract-audit-item.jsx';
 
 class ContractAudit extends React.PureComponent {
     render() {
-        const { contract_end_time, contract_info, duration, duration_unit, exit_spot, has_result } = this.props;
+        const { contract_end_time, contract_info, duration, duration_period, exit_spot, has_result } = this.props;
 
         if (!has_result) return null;
 
@@ -20,7 +22,7 @@ class ContractAudit extends React.PureComponent {
 
         const is_tick = contract_info.tick_count > 0;
         const contract_time = is_tick ? contract_info.tick_count : duration;
-        const contract_unit = is_tick ? localize('ticks') : duration_unit;
+        const contract_unit = is_tick ? localize('ticks') : getDurationUnitText(duration_period);
 
         const contract_audit_item_config_list = [
             {
@@ -40,10 +42,10 @@ class ContractAudit extends React.PureComponent {
                     label: localize('Duration'),
                     value: `${contract_time} ${contract_unit}`,
                     valueHint: is_reset_call_put
-                        ? localize('The reset time is {{reset_time}} {{contract_unit}}', {
-                              reset_time: Math.floor(contract_time / 2),
-                              contract_unit,
-                          })
+                        ? localize(
+                              'The reset time is {{ reset_value }} {{ reset_unit }}',
+                              getResetDisplayValues(contract_time, getDurationUnit(duration_period))
+                          )
                         : undefined,
                 },
                 shouldShow: true,
@@ -161,7 +163,7 @@ ContractAudit.propTypes = {
     contract_end_time: PropTypes.PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     contract_info: PropTypes.object,
     duration: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    duration_unit: PropTypes.string,
+    duration_period: PropTypes.object,
     exit_spot: PropTypes.string,
     has_result: PropTypes.bool,
     is_dark_theme: PropTypes.bool,

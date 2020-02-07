@@ -12,12 +12,7 @@ import ContractTypeCell from 'App/Components/Elements/PositionsDrawer/contract-t
 import ProgressSlider from 'App/Components/Elements/PositionsDrawer/ProgressSlider';
 import ProfitLossCardContent from 'Modules/Reports/Components/profit-loss-card-content.jsx';
 import Shortcode from 'Modules/Reports/Helpers/shortcode';
-import {
-    getCurrentTick,
-    getDurationPeriod,
-    getDurationTime,
-    getDurationUnitText,
-} from 'Stores/Modules/Portfolio/Helpers/details';
+import { getCurrentTick, getDurationPeriod, getDurationTime } from 'Stores/Modules/Portfolio/Helpers/details';
 import { getIndicativePrice, getEndTime, isUserSold, isValidToSell } from 'Stores/Modules/Contract/Helpers/logic';
 import ContractCardBody from './contract-card-body.jsx';
 import ContractCardFooter from './contract-card-footer.jsx';
@@ -154,7 +149,7 @@ class ContractDrawer extends Component {
                         is_open={true}
                         is_shade_visible={this.handleShade}
                         duration={getDurationTime(contract_info)}
-                        duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
+                        duration_period={getDurationPeriod(contract_info)}
                         exit_spot={exit_spot}
                         has_result={!!is_sold}
                     />

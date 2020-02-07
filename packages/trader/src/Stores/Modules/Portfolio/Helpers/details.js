@@ -37,6 +37,23 @@ export const getDurationUnitValue = obj_duration => {
 
 export const isEndTime = duration => duration % 1 !== 0;
 
+export const getDurationUnit = obj_duration => {
+    const duration_ms = obj_duration.asMilliseconds() / 1000;
+    if (duration_ms) {
+        if (duration_ms >= 86400000) {
+            return 'd';
+        } else if (duration_ms >= 3600000 && duration_ms < 86400000) {
+            return 'h';
+        } else if (duration_ms >= 60000 && duration_ms < 3600000) {
+            return 'm';
+        } else if (duration_ms >= 1000 && duration_ms < 60000) {
+            return 's';
+        }
+    }
+
+    return undefined;
+};
+
 export const getDurationUnitText = obj_duration => {
     const unit_map = {
         d: { name_plural: localize('days'), name_singular: localize('day') },

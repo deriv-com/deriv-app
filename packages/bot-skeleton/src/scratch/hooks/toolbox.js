@@ -19,7 +19,7 @@ Blockly.Toolbox.prototype.init = function() {
      * HTML container for the Toolbox menu.
      * @type {Element}
      */
-    this.HtmlDiv = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox');
+    this.HtmlDiv = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox toolbox--hidden');
     this.HtmlDiv.setAttribute('id', 'gtm-toolbox');
     this.HtmlDiv.setAttribute('dir', workspace.RTL ? 'RTL' : 'LTR');
 
@@ -64,7 +64,6 @@ Blockly.Toolbox.prototype.init = function() {
         this.categoryMenu_.allCategories_.push(clone_category);
     });
     this.position();
-    this.toggle();
 };
 
 /**
@@ -644,7 +643,7 @@ Blockly.Toolbox.prototype.refreshCategory = function() {
 Blockly.Toolbox.prototype.toggle = function() {
     const { toolbar, flyout } = DBotStore.instance;
     if (!toolbar.is_toolbox_open) {
-        this.addStyle('hidden');
+        this.addStyle('toolbox--hidden');
 
         flyout.setVisibility(false);
 
@@ -654,6 +653,6 @@ Blockly.Toolbox.prototype.toggle = function() {
         }
     } else {
         flyout.setVisibility(false);
-        this.removeStyle('hidden');
+        this.removeStyle('toolbox--hidden');
     }
 };

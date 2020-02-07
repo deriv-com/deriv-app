@@ -30,16 +30,19 @@ export default class ToolbarStore {
         }
 
         toolbox.toggle();
+        const toolbox_width = toolbox.HtmlDiv.clientWidth;
+        const { left } = workspace.svgBlockCanvas_.getBoundingClientRect();
+        let scroll_distance = 0;
         if (this.is_toolbox_open) {
-            const toolbox_width = toolbox.HtmlDiv.clientWidth;
-            const block_canvas_rect = workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
-
-            if (block_canvas_rect.left < toolbox_width) {
-                const scroll_distance = toolbox_width - block_canvas_rect.left + toolbox.width;
-                scrollWorkspace(workspace, scroll_distance, true, false);
+            if (left < toolbox_width) {
+                scroll_distance = toolbox_width - left + toolbox.width;
             }
             this.root_store.core.gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
+        } else if (toolbox_width + 50 > left && left > toolbox_width) {
+            scroll_distance = left - toolbox_width - left;
         }
+
+        scrollWorkspace(workspace, scroll_distance, true, false);
     }
 
     @action.bound

@@ -49,6 +49,7 @@ module.exports = {
         'themed-scrollbars'             : 'Components/themed-scrollbars',
         'toggle-switch'                 : 'Components/toggle-switch',
         'tick-picker'                   : 'Components/tick-picker',
+        'tick-progress'                 : 'Components/tick-progress',
         'vertical-tab'                  : 'Components/vertical-tab',
     },
     output: {

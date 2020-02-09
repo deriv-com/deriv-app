@@ -1,6 +1,7 @@
 .dc-circular-progress {
     position: relative;
     line-height: 0;
+    width: fit-content;
 
     &__bar {
         transform: scaleX(-1) rotate(-90deg);

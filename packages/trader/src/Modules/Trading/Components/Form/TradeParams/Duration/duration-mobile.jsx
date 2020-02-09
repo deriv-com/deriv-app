@@ -47,11 +47,13 @@ const Numbers = ({
     selected_duration,
     setSelectedDuration,
     relative_date,
+    setRelativeDate,
 }) => {
     const { value: duration_unit } = duration_unit_option;
     const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry, duration_unit);
 
     const setDuration = duration => {
+        setRelativeDate(duration);
         onChangeMultiple({ duration_unit, duration });
         toggleModal();
     };
@@ -164,6 +166,7 @@ const Duration = ({
                                         selected_duration={d_duration}
                                         setSelectedDuration={setSelectedDuration}
                                         relative_date={relative_date}
+                                        setRelativeDate={setRelativeDate}
                                     />
                                     <RelativeDatepicker onChange={handleRelativeChange} min={min} max={max} />
                                 </div>

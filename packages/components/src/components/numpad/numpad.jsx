@@ -21,11 +21,10 @@ const Numpad = ({
     value,
     format,
     onValueChange,
-    relative_date,
+    calendar_date,
 }) => {
     const [is_float, setFloat] = React.useState(false);
     const [default_value, setValue] = React.useState(value);
-    const [relative_date_validation, setRelativeDateValidation] = React.useState(false);
     const isFloat = v => v % 1 !== 0;
     const formatNumber = v => (typeof format === 'function' ? format(v) : v);
 
@@ -84,9 +83,8 @@ const Numpad = ({
         }
     });
     React.useEffect(() => {
-        if (relative_date_validation) setValue(relative_date);
-        setRelativeDateValidation(true);
-    }, [relative_date]);
+        if (calendar_date) setValue(calendar_date);
+    }, [calendar_date]);
 
     React.useEffect(() => {
         if (onValueChange) onValueChange(default_value);

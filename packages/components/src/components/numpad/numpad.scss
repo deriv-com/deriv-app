@@ -20,9 +20,9 @@ $SQUARE_SIZE: 48px;
     &--is-regular {
         grid-template-areas: /* numpad-layout */
             'np np np np'
-            'n n n b'
-            'n n n b'
-            'n n n o'
+            'r3 r3 r3 b'
+            'r2 r2 r2 b'
+            'r1 r1 r1 o'
             'z z z o';
         grid-template-columns: min-content min-content min-content minmax($SQUARE_SIZE, 1fr);
         max-width: min-content;
@@ -30,9 +30,9 @@ $SQUARE_SIZE: 48px;
     &--is-currency {
         grid-template-areas: /* numpad--with-currency layout */
             'np np np np'
-            'n n n b'
-            'n n n b'
-            'n n n o'
+            'r3 r3 r3 b'
+            'r2 r2 r2 b'
+            'r1 r1 r1 o'
             'z z p o';
         grid-template-columns: min-content min-content min-content minmax($SQUARE_SIZE, 1fr);
         max-width: min-content;
@@ -88,6 +88,15 @@ $SQUARE_SIZE: 48px;
         color: var(--text-prominent);
         text-align: left !important;
 
+        &--r3 {
+            grid-row: 2 / 2;
+        }
+        &--r2 {
+            grid-row: 3 / 3;
+        }
+        &--r1 {
+            grid-row: 4 / 4;
+        }
         &--zero {
             grid-area: z;
             width: 100% !important;

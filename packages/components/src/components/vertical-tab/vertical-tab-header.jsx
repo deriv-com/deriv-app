@@ -52,6 +52,7 @@ const VerticalTabHeader = ({ children, className, is_routed, item, onChange, sel
             <HeaderIcon icon={item.icon} is_active={is_active} />
             <Header text={label} />
             {children}
+            {item.component}
         </div>
     );
 };

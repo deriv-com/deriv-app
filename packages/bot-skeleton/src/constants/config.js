@@ -140,7 +140,7 @@ export const config = {
                 TICKLOW: localize('Low Tick'),
             },
         ],
-        RESET: [
+        RESET_CALL_PUT: [
             {
                 RESETCALL: localize('Reset Call'),
             },
@@ -206,7 +206,7 @@ export const config = {
         inout: ['endsinout', 'staysinout'],
         asian: ['asians'],
         digits: ['matchesdiffers', 'evenodd', 'overunder'],
-        reset: ['reset'],
+        reset_call_put: ['reset_call_put'],
         callputspread: ['callputspread'],
         highlowticks: ['highlowticks'],
         runs: ['runs'],
@@ -217,7 +217,7 @@ export const config = {
         inout: localize('In/Out'),
         asian: localize('Asians'),
         digits: localize('Digits'),
-        reset: localize('Reset Call/Reset Put'),
+        reset_call_put: localize('Reset Call/Reset Put'),
         callputspread: localize('Call Spread/Put Spread'),
         highlowticks: localize('High/Low Ticks'),
         runs: localize('Only Ups/Only Downs'),
@@ -228,7 +228,7 @@ export const config = {
         american: ['staysinout', 'touchnotouch', 'highlowticks', 'runs'],
         non_financial: ['digits', 'overunder', 'evenodd', 'matchesdiffers'],
         asian: ['asians'],
-        reset: ['reset'],
+        reset_call_put: ['reset_call_put'],
         lookback: ['lookback'],
     },
     DEFAULT_DURATION_DROPDOWN_OPTIONS: [

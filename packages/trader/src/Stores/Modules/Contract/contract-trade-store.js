@@ -53,6 +53,7 @@ export default class ContractTradeStore extends BaseStore {
         if (!trade_type || !underlying) {
             return [];
         }
+        console.log(trade_type);
         let { trade_types } = getContractTypesConfig()[trade_type];
         const is_call_put = trade_type === 'rise_fall' || trade_type === 'rise_fall_equal' || trade_type === 'high_low';
         if (is_call_put) {

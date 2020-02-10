@@ -100,7 +100,7 @@ const Duration = ({
         : duration_units_list.findIndex(d => d.value === duration_unit);
     const [min, max] = getDurationMinMaxValues(duration_min_max, 'daily', 'd');
     const handleRelativeChange = date => {
-        setSelectedDuration(duration_unit, date);
+        setSelectedDuration('d', date);
     };
     return (
         <div>

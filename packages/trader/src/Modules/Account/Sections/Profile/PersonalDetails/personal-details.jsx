@@ -119,7 +119,6 @@ class PersonalDetailsForm extends React.Component {
             'last_name',
             'phone',
             // 'account_opening_reason',
-            'place_of_birth',
             'address_line_1',
             'address_city',
             'address_postcode',

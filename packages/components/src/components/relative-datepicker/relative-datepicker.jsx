@@ -20,8 +20,17 @@ const RelativeDatepicker = props => {
         : null;
     return (
         <div className='dc-relative-datepicker'>
-            <span onClick={clickHandler}>{props.title}</span>
-            <input type='date' ref={hidden_input_ref} onChange={onChangeHandler} min={min_date} max={max_date} />
+            <span onClick={clickHandler} className='dc-relative-datepicker__span'>
+                {props.title}
+            </span>
+            <input
+                type='date'
+                ref={hidden_input_ref}
+                onChange={onChangeHandler}
+                min={min_date}
+                max={max_date}
+                className='dc-relative-datepicker__input'
+            />
         </div>
     );
 };

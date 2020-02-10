@@ -3,14 +3,14 @@
     text-align: center;
     padding-bottom: 16px;
 
-    span {
+    &__span {
         @include typeface(--paragraph-center-bold-black);
         color: var(--purchase-main-2);
         line-height: 1.43;
         cursor: pointer;
     }
     // This css is for make date input field invisible
-    input {
+    &__input {
         transform: scale(0);
         position: absolute;
     }

@@ -41,6 +41,7 @@ export default class QuickStrategyStore {
 
     @action.bound
     async createStrategy(values) {
+        const { toolbar } = this.root_store;
         const { contracts_for } = ApiHelpers.instance;
         const { symbol, trade_type, duration_type, duration, stake, size, loss, profit } = values;
         const market = await contracts_for.getMarketBySymbol(symbol);
@@ -94,6 +95,7 @@ export default class QuickStrategyStore {
         });
 
         load(Blockly.Xml.domToText(strategy_dom));
+        toolbar.onBotNameTyped(`My ${strategies[strategy_name].label}`);
         this.toggleStrategyModal();
     }
 

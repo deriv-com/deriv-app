@@ -113,11 +113,6 @@ export default class CashierStore extends BaseStore {
         [this.config.payment_agent.container]: 'payment_agent_withdraw',
     };
 
-    map_type = {
-        buy: 'sell',
-        sell: 'buy',
-    };
-
     @action.bound
     async init() {
         // show p2p if:
@@ -126,18 +121,12 @@ export default class CashierStore extends BaseStore {
         // 3. p2p call does not return error code `PermissionDenied`
         await BinarySocket.wait('authorize');
         if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
-            const p2p_advertiser_info = await WS.p2pAgentInfo();
-            const advertiser_error = ObjectUtils.getPropertyValue(p2p_advertiser_info, ['error', 'code']);
+            const advertiser_error = ObjectUtils.getPropertyValue(await WS.p2pAgentInfo(), ['error', 'code']);
             if (advertiser_error === 'PermissionDenied') return;
 
             this.is_p2p_advertiser = !advertiser_error;
             this.setIsP2pVisible(true);
-            WS.p2pSubscribe({ p2p_order_list: 1, subscribe: 1 }, response => {
-                this.setP2pOrderList(
-                    response,
-                    ObjectUtils.getPropertyValue(p2p_advertiser_info, ['p2p_agent_info', 'agent_id'])
-                );
-            });
+            WS.p2pSubscribe({ p2p_order_list: 1, subscribe: 1 }, this.setP2pOrderList);
         }
     }
 
@@ -177,13 +166,13 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setP2pOrderList(order_response, advertiser_id) {
+    setP2pOrderList(order_response) {
         // check if there is any error
         if (!order_response.error) {
             if (order_response.p2p_order_list) {
                 // it's an array of orders from p2p_order_list
                 this.p2p_order_list = order_response.p2p_order_list.list;
-                this.handleNotifications(this.p2p_order_list, advertiser_id);
+                this.handleNotifications(this.p2p_order_list);
             } else {
                 // it's a single order from p2p_order_info
                 const idx_order_to_update = this.p2p_order_list.findIndex(
@@ -199,21 +188,17 @@ export default class CashierStore extends BaseStore {
                 }
                 // trigger re-rendering by setting orders again
                 this.p2p_order_list = updated_orders;
-                this.handleNotifications(updated_orders, advertiser_id);
+                this.handleNotifications(updated_orders);
             }
         }
     }
 
     @action.bound
-    handleNotifications = (orders, advertiser_id) => {
+    handleNotifications = orders => {
         let p2p_notification_count = 0;
 
         orders.forEach(order => {
-            // TODO: [p2p-replace-with-api] once API sends this data, use that instead of internal check
-            const is_incoming_order = order.agent_id === advertiser_id;
-            // TODO: [p2p-replace-with-api] once API sends this data, use that instead of map
-            const type = is_incoming_order ? this.map_type[order.type] : order.type;
-            const is_buyer = type === 'buy';
+            const is_buyer = order.type === 'buy';
             const is_buyer_confirmed = order.status === 'buyer-confirmed';
             const is_pending = order.status === 'pending';
 

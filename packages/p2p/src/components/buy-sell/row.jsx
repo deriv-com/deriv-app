@@ -40,14 +40,14 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) 
                     {data.display_price_rate} {data.transaction_currency}
                 </Table.Cell>
                 <Table.Cell>{data.display_payment_method}</Table.Cell>
-                {!is_own_ad ? (
+                {is_own_ad ? (
+                    <Table.Cell />
+                ) : (
                     <Table.Cell>
                         <Button primary small onClick={() => setSelectedAd(data)}>
                             {is_buy ? localize('Buy') : localize('Sell')} {data.offer_currency}
                         </Button>
                     </Table.Cell>
-                ) : (
-                    <Table.Cell />
                 )}
             </Table.Row>
         </div>

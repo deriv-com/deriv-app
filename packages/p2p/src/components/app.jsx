@@ -49,7 +49,7 @@ class App extends Component {
     setIsAdvertiser = async () => {
         const advertiser_info = await requestWS({ p2p_agent_info: 1 });
 
-        /* if there is no error means its an advertiser else its a client */
+        /* if there is no error means it's an advertiser else it's a client */
         if (!advertiser_info.error) {
             await this.setState({ advertiser_id: advertiser_info.p2p_agent_info.agent_id, is_advertiser: true });
         }

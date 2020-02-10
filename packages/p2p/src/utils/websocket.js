@@ -87,11 +87,6 @@ const getModifiedP2POfferList = response => {
     return modified_response;
 };
 
-const map_type = {
-    buy: 'sell',
-    sell: 'buy',
-};
-
 const getModifiedP2POrder = response => {
     const offer_currency = response.account_currency;
     const transaction_currency = response.local_currency;
@@ -102,9 +97,6 @@ const getModifiedP2POrder = response => {
     const payment_method = map_payment_method.bank_transfer; // TODO: [p2p-replace-with-api] add payment method to order details once API has it
     // const payment_method = response.method;
 
-    // TODO: [p2p-replace-with-api] once API sends this data, use that instead of internal check
-    const is_incoming_order = true;
-
     return {
         offer_amount,
         offer_currency,
@@ -112,7 +104,6 @@ const getModifiedP2POrder = response => {
         transaction_amount,
         transaction_currency,
         advertiser_name: response.agent_name,
-        advertiser_id: response.agent_id,
         advertiser_notes: response.offer_description,
         display_offer_amount: formatMoney(offer_currency, offer_amount),
         display_payment_method: map_payment_method[payment_method] || payment_method,
@@ -122,7 +113,7 @@ const getModifiedP2POrder = response => {
         order_id: response.order_id,
         order_purchase_datetime: getFormattedDateString(new Date(convertToMillis(response.created_time))),
         status: response.status,
-        type: is_incoming_order ? map_type[response.type] : response.type, // TODO: [p2p-replace-with-api] once API sends this data, use that instead of map
+        type: response.type,
     };
 };
 

@@ -7,6 +7,9 @@ const NumberButton = ({ onSelect, className, number }) => (
     <Button
         className={classNames('dc-numpad__number', className, {
             'dc-numpad__number--zero': number === 0,
+            'dc-numpad__number--r3': number > 6 && number < 10,
+            'dc-numpad__number--r2': number > 3 && number < 7,
+            'dc-numpad__number--r1': number > 0 && number < 4,
         })}
         type='secondary'
         classNameSpan='dc-numpad__number--is-left-aligned'

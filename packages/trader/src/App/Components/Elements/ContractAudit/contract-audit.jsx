@@ -43,7 +43,7 @@ class ContractAudit extends React.PureComponent {
                     value: `${contract_time} ${contract_unit}`,
                     valueHint: is_reset_call_put
                         ? localize(
-                              'The reset time is {{ reset_value }} {{ reset_unit }}',
+                              'The reset time is {{ reset_display_value }}',
                               getResetDisplayValues(contract_time, getDurationUnit(duration_period))
                           )
                         : undefined,

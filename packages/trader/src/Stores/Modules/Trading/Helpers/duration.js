@@ -2,11 +2,24 @@ import { localize } from '@deriv/translations';
 import { toMoment } from 'Utils/Date';
 
 export const getDurationMaps = () => ({
-    t: { display: localize('Ticks'), order: 1 },
-    s: { display: localize('Seconds'), order: 2, to_second: 1 },
-    m: { display: localize('Minutes'), order: 3, to_second: 60 },
-    h: { display: localize('Hours'), order: 4, to_second: 60 * 60, to_minute: 60 },
-    d: { display: localize('Days'), order: 5, to_second: 60 * 60 * 24, to_minute: 24 * 60, to_hour: 24 },
+    t: { order: 1, display_singular: localize('Tick'), display_plural: localize('Ticks') },
+    s: { order: 2, display_singular: localize('Second'), display_plural: localize('Seconds'), to_second: 1 },
+    m: { order: 3, display_singular: localize('Minute'), display_plural: localize('Minutes'), to_second: 60 },
+    h: {
+        order: 4,
+        display_singular: localize('Hour'),
+        display_plural: localize('Hours'),
+        to_second: 60 * 60,
+        to_minute: 60,
+    },
+    d: {
+        order: 5,
+        display_singular: localize('Day'),
+        display_plural: localize('Days'),
+        to_second: 60 * 60 * 24,
+        to_minute: 24 * 60,
+        to_hour: 24,
+    },
 });
 
 export const buildDurationConfig = (contract, durations = { min_max: {}, units_display: {} }) => {
@@ -47,7 +60,7 @@ export const buildDurationConfig = (contract, durations = { min_max: {}, units_d
 
     durations.units_display[contract.start_type] = arr_units
         .sort((a, b) => (duration_maps[a].order > duration_maps[b].order ? 1 : -1))
-        .reduce((o, c) => [...o, { text: duration_maps[c].display, value: c }], []);
+        .reduce((o, c) => [...o, { text: duration_maps[c].display_plural, value: c }], []);
 
     return durations;
 };

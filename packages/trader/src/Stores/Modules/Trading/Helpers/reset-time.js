@@ -1,28 +1,34 @@
 import { getDurationMaps } from 'Stores/Modules/Trading/Helpers/duration';
 
 export const getResetDisplayValues = (reset_value, reset_unit) => {
-    let reset_display_values = {
-        reset_value,
-        reset_unit: getDurationMaps()[reset_unit].display,
-    };
+    let reset_time_str = '';
+    let val;
 
-    if (reset_value === 1 && reset_unit === 'm') {
-        reset_display_values = {
-            reset_value: getDurationMaps().m.to_second * reset_value,
-            reset_unit: getDurationMaps().s.display,
-        };
-    } else if (reset_value === 1 && reset_unit === 'h') {
-        reset_display_values = {
-            reset_value: getDurationMaps().h.to_minute * reset_value,
-            reset_unit: getDurationMaps().m.display,
-        };
-    } else if (reset_value === 1 && reset_unit === 'd') {
-        reset_display_values = {
-            reset_value: getDurationMaps().d.to_hour * reset_value,
-            reset_unit: getDurationMaps().h.display,
-        };
+    const mid_point = reset_value / 2; // a Reset happens at midpoint
+
+    const duration_map = getDurationMaps();
+
+    if (mid_point % 1 !== 0 && /[mh]/.test(reset_unit)) {
+        val = Math.floor(mid_point);
+        switch (reset_unit) {
+            case 'm':
+                reset_time_str = `${
+                    val ? `${val} ${val > 1 ? duration_map.m.display_plural : duration_map.m.display_singular}` : ''
+                } 30 ${duration_map.s.display_plural}`;
+                break;
+            case 'h':
+                reset_time_str = `${val || ''} 30 ${
+                    val > 1 ? duration_map.m.display_plural : duration_map.m.display_singular
+                }`;
+                break;
+            default: // no default
+        }
+    } else {
+        val = reset_unit === 't' ? Math.floor(mid_point) : Math.ceil(mid_point);
+        reset_time_str = `${val} ${
+            val > 1 ? duration_map[reset_unit].display_plural : duration_map[reset_unit].display_singular
+        }`;
     }
 
-    reset_display_values.reset_value = Math.floor(reset_display_values.reset_value / 2);
-    return reset_display_values;
+    return { reset_display_value: reset_time_str };
 };

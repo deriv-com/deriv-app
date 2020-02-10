@@ -175,7 +175,7 @@ const Duration = ({
                     {contract_type === 'reset_call_put' && expiry_type !== 'endtime' && (
                         <span className='trade-container__fieldset-info--minor'>
                             {localize(
-                                'Reset time : {{ reset_value }} {{ reset_unit }}',
+                                'Reset time : {{ reset_display_value }}',
                                 getResetDisplayValues(getDurationFromUnit(duration_unit), duration_unit)
                             )}
                         </span>

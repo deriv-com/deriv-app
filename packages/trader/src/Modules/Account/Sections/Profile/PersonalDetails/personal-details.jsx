@@ -60,7 +60,6 @@ class PersonalDetailsForm extends React.Component {
         const request = this.makeSettingsRequest(values);
 
         this.setState({ is_btn_loading: true });
-
         WS.setSettings(request).then(data => {
             this.setState({ is_btn_loading: false });
 
@@ -653,6 +652,7 @@ class PersonalDetailsForm extends React.Component {
                 'is_authenticated_payment_agent',
                 'user_hash',
                 'country',
+                'salutation',
                 'request_professional_status',
             ];
             const form_initial_values = removeObjProperties(hidden_settings, account_settings);

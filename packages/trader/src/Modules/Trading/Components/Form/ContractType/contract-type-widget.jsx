@@ -146,6 +146,16 @@ class ContractTypeWidget extends React.PureComponent {
                 ref={this.setWrapperRef}
                 tabIndex='0'
             >
+                <ContractTypeDialog is_mobile={is_mobile} onClose={this.handleVisibility} open={is_dialog_open}>
+                    <ContractTypeList
+                        handleInfoClick={this.handleInfoClick}
+                        handleSelect={this.handleSelect}
+                        is_equal={is_equal}
+                        list={list}
+                        name={name}
+                        value={value}
+                    />
+                </ContractTypeDialog>
                 <div
                     className={classNames('contract-type-widget__display', {
                         'contract-type-widget__display--clicked': is_dialog_open || is_info_dialog_open,
@@ -165,16 +175,6 @@ class ContractTypeWidget extends React.PureComponent {
                     />
                 </div>
 
-                <ContractTypeDialog is_mobile={is_mobile} onClose={this.handleVisibility} open={is_dialog_open}>
-                    <ContractTypeList
-                        handleInfoClick={this.handleInfoClick}
-                        handleSelect={this.handleSelect}
-                        is_equal={is_equal}
-                        list={list}
-                        name={name}
-                        value={value}
-                    />
-                </ContractTypeDialog>
                 <TradeTypeInfoDialog
                     is_mobile={is_mobile}
                     onClose={this.handleInfoClick}

@@ -30,7 +30,8 @@
         z-index: 2;
         background-color: var(--general-main-2);
 
-        &--enter, &--exit {
+        &--enter,
+        &--exit {
             opacity: 0;
             transform: scale(1, 1) translate3d(-225px, 0, 0);
         }
@@ -51,7 +52,8 @@
             width: 80px;
             border-radius: 0 5px 5px 0;
         }
-        &--hours, &--minutes {
+        &--hours,
+        &--minutes {
             display: inline-block;
             height: 228px;
             overflow: hidden;

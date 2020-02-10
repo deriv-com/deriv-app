@@ -1,25 +1,25 @@
-import PropTypes                    from 'prop-types';
-import React                        from 'react';
-import ReactDOM                     from 'react-dom';
-import { Prompt }                   from 'react-router';
-import { BrowserRouter as Router }  from 'react-router-dom';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Prompt } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
-import { initializeTranslations }   from '@deriv/translations';
-import Client                       from '_common/base/client_base';
-import WS                           from 'Services/ws-methods';
-import { MobxProvider }             from 'Stores/connect';
-import ErrorBoundary                from './Components/Elements/Errors/error-boundary.jsx';
-import AppContents                  from './Containers/Layout/app-contents.jsx';
-import Footer                       from './Containers/Layout/footer.jsx';
-import Header                       from './Containers/Layout/header.jsx';
-import NotificationMessages         from './Containers/notification-messages.jsx';
-import AppModals                    from './Containers/Modals';
-import Lazy                         from './Containers/Lazy';
-import Routes                       from './Containers/Routes/routes.jsx';
-import { interceptAcrossBot }       from './Constants/routes-config';
+import { initializeTranslations } from '@deriv/translations';
+import Client from '_common/base/client_base';
+import WS from 'Services/ws-methods';
+import { MobxProvider } from 'Stores/connect';
+import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
+import AppContents from './Containers/Layout/app-contents.jsx';
+import Footer from './Containers/Layout/footer.jsx';
+import Header from './Containers/Layout/header.jsx';
+import NotificationMessages from './Containers/notification-messages.jsx';
+import AppModals from './Containers/Modals';
+import Lazy from './Containers/Lazy';
+import Routes from './Containers/Routes/routes.jsx';
+import { interceptAcrossBot } from './Constants/routes-config';
 // eslint-disable-next-line import/extensions
-import initStore                   from './app.js';
+import initStore from './app.js';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 // Check if device is touch capable
@@ -42,33 +42,37 @@ const App = ({ root_store }) => {
     };
 
     return (
-        <Router basename={ has_base ? `/${base}` : null}>
+        <Router basename={has_base ? `/${base}` : null}>
             <MobxProvider store={root_store}>
-                {
-                    root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice) ?
-                        <Lazy
-                            ctor={() => import(/* webpackChunkName: "work-in-progress" */'./Containers/Wip')}
-                            should_load={root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice)}
-                            has_progress={true}
-                        /> :
-                        <React.Fragment>
-                            <Header />
-                            <ErrorBoundary>
-                                <AppContents>
-                                    {/* TODO: [trader-remove-client-base] */}
-                                    <Routes passthrough={ platform_passthrough } />
-                                    <Prompt when={ true } message={ interceptAcrossBot } />
-                                    <Lazy
-                                        ctor={() => import(/* webpackChunkName: "push-notification" */'./Containers/push-notification.jsx')}
-                                        should_load={!root_store.ui.is_loading}
-                                        has_progress={false}
-                                    />
-                                </AppContents>
-                            </ErrorBoundary>
-                            <Footer />
-                            <AppModals url_action_param={ url_params.get('action') } />
-                        </React.Fragment>
-                }
+                {root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice) ? (
+                    <Lazy
+                        ctor={() => import(/* webpackChunkName: "work-in-progress" */ './Containers/Wip')}
+                        should_load={root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice)}
+                        has_progress={true}
+                    />
+                ) : (
+                    <React.Fragment>
+                        <Header />
+                        <ErrorBoundary>
+                            <AppContents>
+                                {/* TODO: [trader-remove-client-base] */}
+                                <Routes passthrough={platform_passthrough} />
+                                <Prompt when={true} message={interceptAcrossBot} />
+                                <Lazy
+                                    ctor={() =>
+                                        import(
+                                            /* webpackChunkName: "push-notification" */ './Containers/push-notification.jsx'
+                                        )
+                                    }
+                                    should_load={!root_store.ui.is_loading}
+                                    has_progress={false}
+                                />
+                            </AppContents>
+                        </ErrorBoundary>
+                        <Footer />
+                        <AppModals url_action_param={url_params.get('action')} />
+                    </React.Fragment>
+                )}
             </MobxProvider>
         </Router>
     );

@@ -1,6 +1,6 @@
-import classNames   from 'classnames';
-import PropTypes    from 'prop-types';
-import React        from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const Input = ({
     changeValue,
@@ -35,10 +35,10 @@ const Input = ({
         }
     });
 
-    const onBlur  = () => setCurrentFocus(null);
+    const onBlur = () => setCurrentFocus(null);
     const onFocus = () => setCurrentFocus(name);
 
-    const onChange = (e) => {
+    const onChange = e => {
         /**
          * fix for Safari
          * we have to keep track of the current cursor position, update the value in store,
@@ -47,7 +47,7 @@ const Input = ({
         // TODO: find better ways to target browsers
         if (navigator.userAgent.indexOf('Safari') !== -1 && type !== 'checkbox') {
             const cursor = e.target.selectionStart;
-            changeValue(e, (evt) => {
+            changeValue(e, evt => {
                 evt.target.selectionEnd = cursor; // reset the cursor position in callback
             });
         } else {
@@ -57,11 +57,17 @@ const Input = ({
 
     return (
         <React.Fragment>
-            {!!inline_prefix &&
-            <div className={classNameInlinePrefix}>
-                <span className={classNames(classNameInlinePrefix ? `${classNameInlinePrefix}--symbol` : '', 'symbols', `symbols--${inline_prefix.toLowerCase()}`)} />
-            </div>
-            }
+            {!!inline_prefix && (
+                <div className={classNameInlinePrefix}>
+                    <span
+                        className={classNames(
+                            classNameInlinePrefix ? `${classNameInlinePrefix}--symbol` : '',
+                            'symbols',
+                            `symbols--${inline_prefix.toLowerCase()}`
+                        )}
+                    />
+                </div>
+            )}
             <input
                 autoComplete={is_autocomplete_disabled ? 'off' : undefined}
                 checked={checked}
@@ -92,42 +98,30 @@ const Input = ({
 
 Input.propTypes = {
     changeValue: PropTypes.func,
-    checked    : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    className            : PropTypes.string,
+    checked: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    className: PropTypes.string,
     classNameInlinePrefix: PropTypes.string,
-    current_focus        : PropTypes.string,
-    data_tip             : PropTypes.string,
-    data_value           : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    display_value: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
-    fractional_digits       : PropTypes.number,
-    id                      : PropTypes.string,
-    inline_prefix           : PropTypes.string,
+    current_focus: PropTypes.string,
+    data_tip: PropTypes.string,
+    data_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    display_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    fractional_digits: PropTypes.number,
+    id: PropTypes.string,
+    inline_prefix: PropTypes.string,
     is_autocomplete_disabled: PropTypes.bool,
-    is_disabled             : PropTypes.string,
-    is_hj_whitelisted       : PropTypes.bool,
-    is_incrementable        : PropTypes.bool,
-    is_read_only            : PropTypes.bool,
-    max_length              : PropTypes.number,
-    name                    : PropTypes.string,
-    onClick                 : PropTypes.func,
-    onKeyPressed            : PropTypes.func,
-    placeholder             : PropTypes.string,
-    required                : PropTypes.bool,
-    setCurrentFocus         : PropTypes.func,
-    type                    : PropTypes.string,
-    value                   : PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-    ]),
+    is_disabled: PropTypes.string,
+    is_hj_whitelisted: PropTypes.bool,
+    is_incrementable: PropTypes.bool,
+    is_read_only: PropTypes.bool,
+    max_length: PropTypes.number,
+    name: PropTypes.string,
+    onClick: PropTypes.func,
+    onKeyPressed: PropTypes.func,
+    placeholder: PropTypes.string,
+    required: PropTypes.bool,
+    setCurrentFocus: PropTypes.func,
+    type: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default Input;

@@ -1,6 +1,6 @@
-import { expect }                       from 'chai';
-import { formatStatementTransaction }   from '../format-response';
-import { toTitleCase }                  from '_common/string_util';
+import { expect } from 'chai';
+import { formatStatementTransaction } from '../format-response';
+import { toTitleCase } from '_common/string_util';
 
 describe('formatStatementTransaction', () => {
     const constant = {
@@ -10,31 +10,31 @@ describe('formatStatementTransaction', () => {
 
     const currency = 'USD';
     let transaction = {
-        action_type     : constant.action_type,
+        action_type: constant.action_type,
         transaction_time: 123456789,
-        transaction_id  : constant.id,
-        payout          : 1000,
-        amount          : 2000,
-        balance_after   : 3000,
-        longcode        : 'test \n test \n test',
-        contract_id     : constant.id,
-        app_id          : constant.id,
-        shortcode       : 'shortcode',
+        transaction_id: constant.id,
+        payout: 1000,
+        amount: 2000,
+        balance_after: 3000,
+        longcode: 'test \n test \n test',
+        contract_id: constant.id,
+        app_id: constant.id,
+        shortcode: 'shortcode',
     };
 
     let expected_result = {
-        action      : toTitleCase(constant.action_type),
-        action_type : constant.action_type,
-        date        : '29 Nov 1973 21:33:09',
+        action: toTitleCase(constant.action_type),
+        action_type: constant.action_type,
+        date: '29 Nov 1973 21:33:09',
         display_name: '',
-        refid       : constant.id,
-        payout      : '1,000.00',
-        amount      : '2,000.00',
-        balance     : '3,000.00',
-        desc        : 'test <br /> test <br /> test',
-        id          : constant.id,
-        app_id      : constant.id,
-        shortcode   : 'shortcode',
+        refid: constant.id,
+        payout: '1,000.00',
+        amount: '2,000.00',
+        balance: '3,000.00',
+        desc: 'test <br /> test <br /> test',
+        id: constant.id,
+        app_id: constant.id,
+        shortcode: 'shortcode',
     };
 
     it('should return an object with values of object passed as argument', () => {
@@ -52,5 +52,4 @@ describe('formatStatementTransaction', () => {
 
         expect(formatStatementTransaction(transaction, currency)).to.eql(expected_result);
     });
-
 });

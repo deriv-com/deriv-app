@@ -1,41 +1,42 @@
 import { runIrreversibleEvents } from '../../../utils';
-import ApiHelpers                from '../../../../services/api/api-helpers';
+import ApiHelpers from '../../../../services/api/api-helpers';
 
 /* eslint-disable */
 Blockly.Blocks.trade_definition_market = {
     init() {
         this.jsonInit({
             message0: 'Market: %1 > %2 > %3',
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'MARKET_LIST',
+                    type: 'field_dropdown',
+                    name: 'MARKET_LIST',
                     options: [['', '']],
                 },
                 {
-                    type   : 'field_dropdown',
-                    name   : 'SUBMARKET_LIST',
+                    type: 'field_dropdown',
+                    name: 'SUBMARKET_LIST',
                     options: [['', '']],
                 },
                 {
-                    type   : 'field_dropdown',
-                    name   : 'SYMBOL_LIST',
+                    type: 'field_dropdown',
+                    name: 'SYMBOL_LIST',
                     options: [['', '']],
                 },
             ],
-            colour           : Blockly.Colours.Special1.colour,
-            colourSecondary  : Blockly.Colours.Special1.colourSecondary,
-            colourTertiary   : Blockly.Colours.Special1.colourTertiary,
+            colour: Blockly.Colours.Special1.colour,
+            colourSecondary: Blockly.Colours.Special1.colourSecondary,
+            colourTertiary: Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
-            nextStatement    : null,
+            nextStatement: null,
         });
-        
+
         this.setMovable(false);
         this.setDeletable(false);
     },
     onchange(event) {
-        const allowed_events   = ['BLOCK_CREATE', 'BLOCK_CHANGE', 'END_DRAG'];
-        const is_allowed_event = allowed_events.findIndex(event_name => event.type === Blockly.Events[event_name]) !== -1;
+        const allowed_events = ['BLOCK_CREATE', 'BLOCK_CHANGE', 'END_DRAG'];
+        const is_allowed_event =
+            allowed_events.findIndex(event_name => event.type === Blockly.Events[event_name]) !== -1;
 
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging() || !is_allowed_event) {
             return;
@@ -44,12 +45,12 @@ Blockly.Blocks.trade_definition_market = {
         this.enforceLimitations();
 
         const { active_symbols } = ApiHelpers.instance;
-        const market_dropdown    = this.getField('MARKET_LIST');
+        const market_dropdown = this.getField('MARKET_LIST');
         const submarket_dropdown = this.getField('SUBMARKET_LIST');
-        const symbol_dropdown    = this.getField('SYMBOL_LIST');
-        const market             = market_dropdown.getValue();
-        const submarket          = submarket_dropdown.getValue();
-        const symbol             = symbol_dropdown.getValue();
+        const symbol_dropdown = this.getField('SYMBOL_LIST');
+        const market = market_dropdown.getValue();
+        const submarket = submarket_dropdown.getValue();
+        const symbol = symbol_dropdown.getValue();
 
         const populateMarketDropdown = () => {
             active_symbols.getMarketDropdownOptions().then(market_options => {
@@ -59,7 +60,7 @@ Blockly.Blocks.trade_definition_market = {
                     event_group: event.group,
                 });
             });
-        }
+        };
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             populateMarketDropdown();
@@ -82,7 +83,7 @@ Blockly.Blocks.trade_definition_market = {
                 });
             }
         } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.getRootBlock().id) {
-            if (market_dropdown.isEmpty() || submarket_dropdown.isEmpty() || symbol_dropdown.isEmpty()) {;
+            if (market_dropdown.isEmpty() || submarket_dropdown.isEmpty() || symbol_dropdown.isEmpty()) {
                 populateMarketDropdown();
             }
         }
@@ -91,10 +92,10 @@ Blockly.Blocks.trade_definition_market = {
         runIrreversibleEvents(() => {
             if (!this.isDescendantOf('trade_definition')) {
                 this.unplug(false); // Unplug without reconnecting siblings
-    
+
                 const top_blocks = this.workspace.getTopBlocks();
                 const trade_definition_block = top_blocks.find(block => block.type === 'trade_definition');
-    
+
                 // Reconnect self to trade definition block.
                 if (trade_definition_block) {
                     const connection = trade_definition_block.getLastConnectionInStatement('TRADE_OPTIONS');

@@ -1,13 +1,13 @@
-const DerivAPIBasic    = require('@deriv/deriv-api/dist/DerivAPIBasic');
-const ObjectUtils      = require('@deriv/shared/utils/object');
-const { getLanguage }  = require('@deriv/translations');
-const website_name     = require('App/Constants/app-config').website_name;
-const ClientBase       = require('./client_base');
-const SocketCache      = require('./socket_cache');
-const APIMiddleware    = require('./api_middleware');
-const { State }        = require('../storage');
-const getAppId         = require('../../config').getAppId;
-const getSocketURL     = require('../../config').getSocketURL;
+const DerivAPIBasic = require('@deriv/deriv-api/dist/DerivAPIBasic');
+const ObjectUtils = require('@deriv/shared/utils/object');
+const { getLanguage } = require('@deriv/translations');
+const website_name = require('App/Constants/app-config').website_name;
+const ClientBase = require('./client_base');
+const SocketCache = require('./socket_cache');
+const APIMiddleware = require('./api_middleware');
+const { State } = require('../storage');
+const getAppId = require('../../config').getAppId;
+const getSocketURL = require('../../config').getSocketURL;
 
 /*
  * An abstraction layer over native javascript WebSocket,
@@ -15,21 +15,19 @@ const getSocketURL     = require('../../config').getSocketURL;
  * reopen the closed connection and process the buffered requests
  */
 const BinarySocketBase = (() => {
-    let deriv_api,
-        binary_socket,
-        middleware;
+    let deriv_api, binary_socket, middleware;
 
-    let config               = {};
-    let wrong_app_id         = 0;
-    let is_available         = true;
+    let config = {};
+    let wrong_app_id = 0;
+    let is_available = true;
     let is_disconnect_called = false;
-    let is_connected_before  = false;
+    let is_connected_before = false;
 
     const socket_url = `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
-    const timeouts        = {};
+    const timeouts = {};
 
     const clearTimeouts = () => {
-        Object.keys(timeouts).forEach((key) => {
+        Object.keys(timeouts).forEach(key => {
             clearTimeout(timeouts[key]);
             delete timeouts[key];
         });
@@ -41,12 +39,12 @@ const BinarySocketBase = (() => {
 
     const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
 
-    const init = (options) => {
+    const init = options => {
         if (wrong_app_id === getAppId()) {
             return;
         }
         if (typeof options === 'object' && config !== options) {
-            config     = options;
+            config = options;
             middleware = new APIMiddleware(config);
         }
         clearTimeouts();
@@ -57,7 +55,7 @@ const BinarySocketBase = (() => {
             binary_socket = new WebSocket(socket_url);
             deriv_api = new DerivAPIBasic({
                 connection: binary_socket,
-                storage   : SocketCache,
+                storage: SocketCache,
                 middleware,
             });
         }
@@ -107,7 +105,7 @@ const BinarySocketBase = (() => {
         });
     };
 
-    const availability = (status) => {
+    const availability = status => {
         if (typeof status !== 'undefined') {
             is_available = !!status;
         }
@@ -116,15 +114,13 @@ const BinarySocketBase = (() => {
 
     const excludeAuthorize = type => !(type === 'authorize' && !ClientBase.isLoggedIn());
 
-    const wait = (...responses) =>
-        deriv_api.expectResponse(...responses.filter(excludeAuthorize));
+    const wait = (...responses) => deriv_api.expectResponse(...responses.filter(excludeAuthorize));
 
-    const subscribe = (request, cb) =>
-        deriv_api.subscribe(request).subscribe(cb, cb); // Delegate error handling to the callback
+    const subscribe = (request, cb) => deriv_api.subscribe(request).subscribe(cb, cb); // Delegate error handling to the callback
 
     const balanceAll = () => deriv_api.send({ balance: 1, account: 'all' });
 
-    const subscribeBalanceAll = (cb) => subscribe({ balance: 1, account: 'all' }, cb);
+    const subscribeBalanceAll = cb => subscribe({ balance: 1, account: 'all' }, cb);
 
     const subscribeProposal = (req, cb) => subscribe({ proposal: 1, ...req }, cb);
 
@@ -135,12 +131,12 @@ const BinarySocketBase = (() => {
 
     const subscribeTicksHistory = (request_object, cb) => subscribe(request_object, cb);
 
-    const subscribeTransaction = (cb) => subscribe({ transaction: 1 }, cb);
+    const subscribeTransaction = cb => subscribe({ transaction: 1 }, cb);
 
-    const subscribeWebsiteStatus = (cb) => subscribe({ website_status: 1 }, cb);
+    const subscribeWebsiteStatus = cb => subscribe({ website_status: 1 }, cb);
 
-    const buyAndSubscribe = (request) => {
-        return new Promise((resolve) => {
+    const buyAndSubscribe = request => {
+        return new Promise(resolve => {
             let called = false;
             const subscriber = subscribe(request, response => {
                 if (!called) {
@@ -152,11 +148,9 @@ const BinarySocketBase = (() => {
         });
     };
 
-    const buy = ({ proposal_id, price }) =>
-        deriv_api.send({ buy: proposal_id, price });
+    const buy = ({ proposal_id, price, passthrough }) => deriv_api.send({ buy: proposal_id, price, passthrough });
 
-    const sell = (contract_id, bid_price) =>
-        deriv_api.send({ sell: contract_id, price: bid_price });
+    const sell = (contract_id, bid_price) => deriv_api.send({ sell: contract_id, price: bid_price });
 
     const cashier = (action, verification_code) =>
         deriv_api.send({ cashier: action, ...(verification_code && { verification_code }) });
@@ -176,13 +170,13 @@ const BinarySocketBase = (() => {
             ...(passthrough && { passthrough }),
         });
 
-    const newAccountReal = (values) =>
+    const newAccountReal = values =>
         deriv_api.send({
             new_account_real: 1,
             ...values,
         });
 
-    const mt5NewAccount = (values) =>
+    const mt5NewAccount = values =>
         deriv_api.send({
             mt5_new_account: 1,
             ...values,
@@ -204,8 +198,7 @@ const BinarySocketBase = (() => {
     const statement = (limit, offset, date_boundaries) =>
         deriv_api.send({ statement: 1, description: 1, limit, offset, ...date_boundaries });
 
-    const verifyEmail = (email, type) =>
-        deriv_api.send({ verify_email: email, type });
+    const verifyEmail = (email, type) => deriv_api.send({ verify_email: email, type });
 
     const paymentAgentList = (country, currency) =>
         deriv_api.send({ paymentagent_list: country, ...(currency && { currency }) });
@@ -216,8 +209,8 @@ const BinarySocketBase = (() => {
             currency,
             verification_code,
             paymentagent_withdraw: 1,
-            dry_run              : 0,
-            paymentagent_loginid : loginid,
+            dry_run: 0,
+            paymentagent_loginid: loginid,
         });
 
     const paymentAgentTransfer = ({ amount, currency, description, transfer_to }) =>
@@ -227,7 +220,7 @@ const BinarySocketBase = (() => {
             description,
             transfer_to,
             paymentagent_transfer: 1,
-            dry_run              : 0,
+            dry_run: 0,
         });
 
     const activeSymbols = (mode = 'brief') => deriv_api.activeSymbols(mode);
@@ -235,7 +228,7 @@ const BinarySocketBase = (() => {
     const transferBetweenAccounts = (account_from, account_to, currency, amount) =>
         deriv_api.send({
             transfer_between_accounts: 1,
-            accounts                 : 'all',
+            accounts: 'all',
             ...(account_from && {
                 account_from,
                 account_to,
@@ -244,22 +237,15 @@ const BinarySocketBase = (() => {
             }),
         });
 
-    const forgetStream = (id) =>
-        deriv_api.forget(id);
+    const forgetStream = id => deriv_api.forget(id);
 
-    const tncApproval = () =>
-        deriv_api.send({ tnc_approval: '1' });
+    const tncApproval = () => deriv_api.send({ tnc_approval: '1' });
 
-    const p2pOfferList = () =>
-        deriv_api.send({ p2p_offer_list: 1 });
-
-    const p2pAgentInfo = () =>
-        deriv_api.send({ p2p_agent_info: 1 });
+    const p2pAgentInfo = () => deriv_api.send({ p2p_agent_info: 1 });
 
     // subscribe method export for P2P use only
     // so that subscribe remains private
-    const p2pSubscribe = (request, cb) =>
-        subscribe(request, cb);
+    const p2pSubscribe = (request, cb) => subscribe(request, cb);
 
     return {
         init,
@@ -268,16 +254,24 @@ const BinarySocketBase = (() => {
         clearTimeouts,
         availability,
         hasReadyState,
-        clear             : () => {},
-        sendBuffered      : () => {},
-        getSocket         : () => binary_socket,
-        get               : () => deriv_api,
-        setOnDisconnect   : (onDisconnect) => { config.onDisconnect = onDisconnect; },
-        setOnReconnect    : (onReconnect) => { config.onReconnect = onReconnect; },
-        removeOnReconnect : () => { delete config.onReconnect; },
-        removeOnDisconnect: () => { delete config.onDisconnect; },
-        cache             : delegateToObject({}, () => deriv_api.cache),
-        storage           : delegateToObject({}, () => deriv_api.storage),
+        clear: () => {},
+        sendBuffered: () => {},
+        getSocket: () => binary_socket,
+        get: () => deriv_api,
+        setOnDisconnect: onDisconnect => {
+            config.onDisconnect = onDisconnect;
+        },
+        setOnReconnect: onReconnect => {
+            config.onReconnect = onReconnect;
+        },
+        removeOnReconnect: () => {
+            delete config.onReconnect;
+        },
+        removeOnDisconnect: () => {
+            delete config.onDisconnect;
+        },
+        cache: delegateToObject({}, () => deriv_api.cache),
+        storage: delegateToObject({}, () => deriv_api.storage),
         buy,
         buyAndSubscribe,
         sell,
@@ -287,7 +281,6 @@ const BinarySocketBase = (() => {
         newAccountVirtual,
         newAccountReal,
         p2pAgentInfo,
-        p2pOfferList,
         p2pSubscribe,
         profitTable,
         statement,
@@ -315,9 +308,8 @@ function delegateToObject(base_obj, extending_obj_getter) {
         get(target, field) {
             if (target[field]) return target[field];
 
-            const extending_obj = typeof extending_obj_getter === 'function'
-                ? extending_obj_getter()
-                : extending_obj_getter;
+            const extending_obj =
+                typeof extending_obj_getter === 'function' ? extending_obj_getter() : extending_obj_getter;
 
             if (!extending_obj) return undefined;
 
@@ -336,16 +328,15 @@ function delegateToObject(base_obj, extending_obj_getter) {
 
 const proxied_socket_base = delegateToObject(BinarySocketBase, () => BinarySocketBase.get());
 
-const proxyForAuthorize = obj => new Proxy(obj, {
-    get(target, field) {
-        if (typeof target[field] !== 'function') {
-            return proxyForAuthorize(target[field], proxied_socket_base[field]);
-        }
-        return (...args) => (
-            BinarySocketBase.wait('authorize')
-                .then(() => target[field](...args)));
-    },
-});
+const proxyForAuthorize = obj =>
+    new Proxy(obj, {
+        get(target, field) {
+            if (typeof target[field] !== 'function') {
+                return proxyForAuthorize(target[field], proxied_socket_base[field]);
+            }
+            return (...args) => BinarySocketBase.wait('authorize').then(() => target[field](...args));
+        },
+    });
 
 BinarySocketBase.authorized = proxyForAuthorize(proxied_socket_base);
 

@@ -1,33 +1,33 @@
-import { localize }  from '@deriv/translations';
-import { config }    from '../../../../constants/config';
+import { localize } from '@deriv/translations';
+import { config } from '../../../../constants/config';
 
 Blockly.Blocks.contract_check_result = {
     init() {
         this.jsonInit(this.definition());
     },
-    definition(){
+    definition() {
         return {
             message0: localize('Result is %1'),
-            args0   : [
+            args0: [
                 {
-                    type   : 'field_dropdown',
-                    name   : 'CHECK_RESULT',
+                    type: 'field_dropdown',
+                    name: 'CHECK_RESULT',
                     options: config.lists.CHECK_RESULT,
                 },
             ],
-            output         : 'Boolean',
-            outputShape    : Blockly.OUTPUT_SHAPE_ROUND,
-            colour         : Blockly.Colours.Base.colour,
+            output: 'Boolean',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary : Blockly.Colours.Base.colourTertiary,
-            tooltip        : localize('True if the result of the last trade matches the selection'),
-            category       : Blockly.Categories.After_Purchase,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('True if the result of the last trade matches the selection'),
+            category: Blockly.Categories.After_Purchase,
         };
     },
-    meta(){
+    meta() {
         return {
-            'display_name': localize('Last trade result'),
-            'description' : localize('You can check the result of the last trade with this block.'),
+            display_name: localize('Last trade result'),
+            description: localize('You can check the result of the last trade with this block.'),
         };
     },
     onchange(event) {

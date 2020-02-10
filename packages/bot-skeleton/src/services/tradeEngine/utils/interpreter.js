@@ -1,19 +1,19 @@
-import clone                          from 'clone';
-import JSInterpreter                  from 'js-interpreter';
-import { createScope }                from './cliTools';
-import Interface                      from '../Interface';
-import { unrecoverable_errors }       from '../../../constants/messages';
+import clone from 'clone';
+import JSInterpreter from 'js-interpreter';
+import { createScope } from './cliTools';
+import Interface from '../Interface';
+import { unrecoverable_errors } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 
 JSInterpreter.prototype.takeStateSnapshot = function() {
-    const newStateStack = clone(this.stateStack, undefined, undefined, undefined, true)
+    const newStateStack = clone(this.stateStack, undefined, undefined, undefined, true);
     return newStateStack;
-  };
+};
 
 JSInterpreter.prototype.restoreStateSnapshot = function(snapshot) {
-    this.stateStack = clone(snapshot, undefined, undefined, undefined, true)
-    this.global = this.stateStack[0].scope
-    this.initFunc_(this, this.global)
+    this.stateStack = clone(snapshot, undefined, undefined, undefined, true);
+    this.global = this.stateStack[0].scope;
+    this.initFunc_(this, this.global);
 };
 
 const botInitialized = bot => bot && bot.tradeEngine.options;
@@ -22,7 +22,7 @@ const shouldRestartOnError = (bot, errorName = '') =>
     !unrecoverable_errors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 
 const shouldStopOnError = (bot, errorName = '') => {
-    const stopErrors = ['SellNotAvailable'];
+    const stopErrors = ['SellNotAvailableCustom'];
     if (stopErrors.includes(errorName) && botInitialized(bot)) {
         return true;
     }
@@ -81,7 +81,10 @@ export default class Interpreter {
 
             interpreter.setProperty(scope, 'Bot', pseudoBotIf);
 
-            interpreter.setProperty(scope, 'watch', this.createAsync(interpreter, watchName => {
+            interpreter.setProperty(
+                scope,
+                'watch',
+                this.createAsync(interpreter, watchName => {
                     const { watch } = this.bot.getInterface();
 
                     if (timeMachineEnabled(this.bot)) {
@@ -108,7 +111,7 @@ export default class Interpreter {
 
                 if (shouldStopOnError(this.bot, e.name)) {
                     globalObserver.emit('ui.log.error', e.message);
-                    this.stop();
+                    globalObserver.emit('bot.click_stop');
                     return;
                 }
 

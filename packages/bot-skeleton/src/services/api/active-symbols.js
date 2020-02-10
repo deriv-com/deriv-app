@@ -1,17 +1,17 @@
 import PendingPromise from '../../utils/pending-promise';
-import { config }     from '../../constants/config';
+import { config } from '../../constants/config';
 
 export default class ActiveSymbols {
     constructor(ws, trading_times) {
-        this.active_symbols      = [];
-        this.disabled_markets    = [];
-        this.disabled_symbols    = ['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK']; // These are only forward-starting.
+        this.active_symbols = [];
+        this.disabled_markets = [];
+        this.disabled_symbols = ['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK']; // These are only forward-starting.
         this.disabled_submarkets = ['energy']; // These are only forward-starting.
-        this.init_promise        = new PendingPromise();
-        this.is_initialised      = false;
-        this.processed_symbols   = {};
-        this.trading_times       = trading_times;
-        this.ws                  = ws;
+        this.init_promise = new PendingPromise();
+        this.is_initialised = false;
+        this.processed_symbols = {};
+        this.trading_times = trading_times;
+        this.ws = ws;
     }
 
     async retrieveActiveSymbols(is_forced_update = false) {
@@ -28,7 +28,7 @@ export default class ActiveSymbols {
 
         this.active_symbols = active_symbols;
         this.processed_symbols = this.processActiveSymbols();
-        this.trading_times.onMarketOpenCloseChanged = (changes) => {
+        this.trading_times.onMarketOpenCloseChanged = changes => {
             Object.keys(changes).forEach(symbol_name => {
                 const symbol_obj = this.active_symbols[symbol_name];
 
@@ -61,7 +61,7 @@ export default class ActiveSymbols {
             if (!isExistingValue(processed_symbols, 'market')) {
                 processed_symbols[symbol.market] = {
                     display_name: symbol.market_display_name,
-                    submarkets  : {},
+                    submarkets: {},
                 };
             }
 
@@ -70,7 +70,7 @@ export default class ActiveSymbols {
             if (!isExistingValue(submarkets, 'submarket')) {
                 submarkets[symbol.submarket] = {
                     display_name: symbol.submarket_display_name,
-                    symbols     : {},
+                    symbols: {},
                 };
             }
 
@@ -79,8 +79,8 @@ export default class ActiveSymbols {
             if (!isExistingValue(symbols, 'symbol')) {
                 symbols[symbol.symbol] = {
                     display_name: symbol.display_name,
-                    pip_size    : `${symbol.pip}`.length - 2,
-                    is_active   : (!symbol.is_trading_suspended && symbol.exchange_is_open),
+                    pip_size: `${symbol.pip}`.length - 2,
+                    is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
                 };
             }
 
@@ -100,14 +100,14 @@ export default class ActiveSymbols {
             });
         });
 
-        return (all_market_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : all_market_options);
+        return all_market_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : all_market_options;
     }
 
     // eslint-disable-next-line class-methods-use-this
     getAllSymbolDropdownOptions(submarket) {
         return Object.keys(submarket.symbols).map(key => {
             return {
-                name : submarket.symbols[key].display_name,
+                name: submarket.symbols[key].display_name,
                 value: key,
             };
         });
@@ -122,14 +122,14 @@ export default class ActiveSymbols {
             market_options.push([market.display_name, market_name]);
         });
 
-        return (market_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : market_options);
+        return market_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : market_options;
     }
 
     async getSubmarketDropdownOptions(market) {
         await this.retrieveActiveSymbols();
 
         const submarket_options = [];
-        const market_obj        = this.processed_symbols[market];
+        const market_obj = this.processed_symbols[market];
 
         if (market_obj) {
             const { submarkets } = market_obj;
@@ -139,7 +139,7 @@ export default class ActiveSymbols {
             });
         }
 
-        return (submarket_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : submarket_options);
+        return submarket_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : submarket_options;
     }
 
     async getSymbolDropdownOptions(submarket) {
@@ -160,6 +160,6 @@ export default class ActiveSymbols {
             return accumulator;
         }, []);
 
-        return (symbol_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : symbol_options);
+        return symbol_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : symbol_options;
     }
 }

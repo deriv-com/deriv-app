@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import PropTypes  from 'prop-types';
-import React      from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 class Radio extends React.Component {
     constructor(props) {
@@ -12,9 +12,9 @@ class Radio extends React.Component {
     }
 
     /*
-    * We use componentDidUpdate here to tell the Radio component to update itself
-    * when it's no longer selected
-    * This is because we're handling the state of what's selected in RadioGroup with the defaultChecked prop
+     * We use componentDidUpdate here to tell the Radio component to update itself
+     * when it's no longer selected
+     * This is because we're handling the state of what's selected in RadioGroup with the defaultChecked prop
      */
     componentDidUpdate(prevProps) {
         if (this.props.defaultChecked === prevProps.defaultChecked) {
@@ -24,7 +24,7 @@ class Radio extends React.Component {
         this.setState({ checked: this.props.defaultChecked });
     }
 
-    onChange = (e) => {
+    onChange = e => {
         this.setState({ checked: e.target.checked });
         this.props.onChange(e);
     };
@@ -44,18 +44,16 @@ class Radio extends React.Component {
                 <input
                     className='dc-radio-group__input'
                     type='radio'
-                    id={ id }
-                    onChange={ this.onChange }
-                    { ...otherProps }
+                    id={id}
+                    onChange={this.onChange}
+                    {...otherProps}
                 />
                 <span
-                    className={ classNames('dc-radio-group__circle', {
+                    className={classNames('dc-radio-group__circle', {
                         'dc-radio-group__circle--selected': this.state.checked,
-                    }) }
+                    })}
                 />
-                <span className={classNames('dc-radio-group__label', classNameLabel)}>
-                    { children }
-                </span>
+                <span className={classNames('dc-radio-group__label', classNameLabel)}>{children}</span>
             </label>
         );
     }
@@ -63,10 +61,10 @@ class Radio extends React.Component {
 
 Radio.propTypes = {
     children: PropTypes.node,
-    id      : PropTypes.string,
-    onClick : PropTypes.func,
+    id: PropTypes.string,
+    onClick: PropTypes.func,
     selected: PropTypes.bool,
-    value   : PropTypes.bool,
+    value: PropTypes.bool,
 };
 
 export default Radio;

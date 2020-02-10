@@ -1,18 +1,14 @@
-import {
-    isFirefox,
-    isSafari,
-    isEdge,
-} from '_common/browser_detect';
+import { isFirefox, isSafari, isEdge } from '_common/browser_detect';
 
 const performance_metrics = {
-    start               : 'started',
+    start: 'started',
     firstContentfulPaint: 'first-contentful-paint',
-    smartChartMounted   : 'smart-charts-mounted',
-    purchaseStart       : 'purchase-started',
-    purchaseEnd         : 'purchase-ended',
-    purchaseEnabled     : 'purchase-enabled',
-    tradeEngineStart    : 'trade-engine-started',
-    tradeEngineReady    : 'trade-engine-enabled',
+    smartChartMounted: 'smart-charts-mounted',
+    purchaseStart: 'purchase-started',
+    purchaseEnd: 'purchase-ended',
+    purchaseEnabled: 'purchase-enabled',
+    tradeEngineStart: 'trade-engine-started',
+    tradeEngineReady: 'trade-engine-enabled',
 };
 
 let is_data_sent = false;
@@ -22,7 +18,7 @@ function measurePerformance(pushLoadPerformance) {
         if (is_data_sent) {
             return;
         }
-        
+
         if (isFirefox() || isSafari() || isEdge()) {
             // start --- firstContentfulPaint
             performance.measure(
@@ -52,10 +48,8 @@ function measurePerformance(pushLoadPerformance) {
         );
 
         if (
-            performance.getEntriesByName(performance_metrics.purchaseStart, 'mark')
-                .length > 0 &&
-      performance.getEntriesByName(performance_metrics.purchaseEnd, 'mark')
-          .length > 0
+            performance.getEntriesByName(performance_metrics.purchaseStart, 'mark').length > 0 &&
+            performance.getEntriesByName(performance_metrics.purchaseEnd, 'mark').length > 0
         ) {
             performance.measure(
                 performance_metrics.purchaseEnd,

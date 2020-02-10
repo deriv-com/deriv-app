@@ -34,7 +34,9 @@
         box-shadow: 0 8px 16px 0 var(--shadow-menu);
         background: var(--general-main-2);
     }
-    &:focus, &:focus-within, &:active {
+    &:focus,
+    &:focus-within,
+    &:active {
         outline: 0;
 
         .dc-input:not(.dc-input--error) {

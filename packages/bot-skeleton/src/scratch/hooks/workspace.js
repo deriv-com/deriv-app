@@ -39,14 +39,14 @@ Blockly.Workspace.prototype.fireChangeListener = function(event) {
 
     // Copy listeners in case a listener attaches/detaches itself.
     const current_listeners = this.listeners_.slice();
-    
+
     current_listeners.forEach(listener => {
         listener(event);
     });
-/**
- * Gets a trade definition block instance and returns it.
- * @returns {Blockly.Block|null} The trade definition or null.
- */
+    /**
+     * Gets a trade definition block instance and returns it.
+     * @returns {Blockly.Block|null} The trade definition or null.
+     */
 };
 
 Blockly.Workspace.prototype.getTradeDefinitionBlock = function() {

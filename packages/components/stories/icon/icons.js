@@ -1,15 +1,8 @@
 // auto-generated file. DO NOT MODIFY.
 
-export const icons =
-{
-    'brand': [
-        'IcBrandDbot',
-        'IcBrandDeriv',
-        'IcBrandDmt5',
-        'IcBrandDtrader',
-        'IcGoogleDrive'
-    ],
-    'cashier': [
+export const icons = {
+    brand: ['IcBrandDbot', 'IcBrandDeriv', 'IcBrandDmt5', 'IcBrandDtrader', 'IcGoogleDrive'],
+    cashier: [
         'IcCashierAuthenticate',
         'IcCashierDeposit',
         'IcCashierDp2p',
@@ -17,9 +10,9 @@ export const icons =
         'IcCashierNoBalance',
         'IcCashierTransferDone',
         'IcCashierWallet',
-        'IcCashierWithdrawal'
+        'IcCashierWithdrawal',
     ],
-    'common': [
+    common: [
         'IcAccountError',
         'IcAccountMissingDetails',
         'IcAccountTransfer',
@@ -68,6 +61,7 @@ export const icons =
         'IcCross',
         'IcDemo',
         'IcDesktop',
+        'IcDigits',
         'IcDownload',
         'IcDp2p',
         'IcDrivingLicense',
@@ -83,10 +77,12 @@ export const icons =
         'IcFullScreen',
         'IcGear',
         'IcHamburger',
+        'IcHighsLows',
         'IcIdentityCard',
         'IcInfoBlue',
         'IcInfoOutline',
         'IcInfo',
+        'IcInsOuts',
         'IcInstallationApple',
         'IcInstallationGoogle',
         'IcInstallationLinux',
@@ -97,11 +93,13 @@ export const icons =
         'IcLessThanEight',
         'IcLock',
         'IcLogout',
+        'IcLookbacks',
         'IcLoss',
         'IcMinusBold',
         'IcMinusRounded',
         'IcMinus',
         'IcMoneyTransfer',
+        'IcMultiplier',
         'IcNewFile',
         'IcOpenPositions',
         'IcPassport',
@@ -143,6 +141,7 @@ export const icons =
         'IcUnknownOutline',
         'IcUnknown',
         'IcUnsavedChanges',
+        'IcUpsDowns',
         'IcUserOutline',
         'IcUser',
         'IcUtility',
@@ -152,9 +151,9 @@ export const icons =
         'IcWebsite',
         'IcWip',
         'IcZoomIn',
-        'IcZoomOut'
+        'IcZoomOut',
     ],
-    'contract': [
+    contract: [
         'IcContractBarrier',
         'IcContractBuyPrice',
         'IcContractDuration',
@@ -166,9 +165,9 @@ export const icons =
         'IcContractId',
         'IcContractStartTimeCircle',
         'IcContractStartTime',
-        'IcContractTarget'
+        'IcContractTarget',
     ],
-    'currency': [
+    currency: [
         'IcCurrencyAud',
         'IcCurrencyBch',
         'IcCurrencyBtc',
@@ -180,9 +179,9 @@ export const icons =
         'IcCurrencyUnknown',
         'IcCurrencyUsd',
         'IcCurrencyUst',
-        'IcCurrencyVirtual'
+        'IcCurrencyVirtual',
     ],
-    'flag': [
+    flag: [
         'IcFlagCnSimplified',
         'IcFlagCnTraditional',
         'IcFlagDe',
@@ -196,18 +195,18 @@ export const icons =
         'IcFlagRu',
         'IcFlagTh',
         'IcFlagUk',
-        'IcFlagVi'
+        'IcFlagVi',
     ],
-    'mt5': [
+    mt5: [
         'IcMt5Advanced',
         'IcMt5DeviceDesktop',
         'IcMt5DeviceLaptop',
         'IcMt5DevicePhone',
         'IcMt5DeviceTablet',
         'IcMt5Standard',
-        'IcMt5SyntheticIndices'
+        'IcMt5SyntheticIndices',
     ],
-    'tradetype': [
+    tradetype: [
         'IcTradetypeAsiand',
         'IcTradetypeAsianu',
         'IcTradetypeCallBarrier',
@@ -223,6 +222,11 @@ export const icons =
         'IcTradetypeExpirymiss',
         'IcTradetypeExpiryrange',
         'IcTradetypeExpiryrangee',
+        'IcTradetypeLbcall',
+        'IcTradetypeLbhighlow',
+        'IcTradetypeLbput',
+        'IcTradetypeMultdown',
+        'IcTradetypeMultup',
         'IcTradetypeNotouch',
         'IcTradetypeOnetouch',
         'IcTradetypePutBarrier',
@@ -235,9 +239,9 @@ export const icons =
         'IcTradetypeRunlow',
         'IcTradetypeTickhigh',
         'IcTradetypeTicklow',
-        'IcTradetypeUpordown'
+        'IcTradetypeUpordown',
     ],
-    'underlying': [
+    underlying: [
         'IcUnderlying1HZ100V',
         'IcUnderlying1HZ10V',
         'IcUnderlyingFRXAUDCAD',
@@ -300,6 +304,6 @@ export const icons =
         'IcUnderlyingWLDAUD',
         'IcUnderlyingWLDEUR',
         'IcUnderlyingWLDGBP',
-        'IcUnderlyingWLDUSD'
-    ]
-}
+        'IcUnderlyingWLDUSD',
+    ],
+};

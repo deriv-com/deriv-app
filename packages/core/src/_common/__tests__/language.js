@@ -1,6 +1,6 @@
-const { expect }         = require('./tests_common');
-const Language           = require('../language');
-const Url                = require('../url');
+const { expect } = require('./tests_common');
+const Language = require('../language');
+const Url = require('../url');
 
 describe('Language', () => {
     const website_url = Url.websiteUrl();

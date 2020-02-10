@@ -1,25 +1,13 @@
-import {
-    action,
-    extendObservable,
-    observable,
-    toJS,
-} from 'mobx';
+import { action, extendObservable, observable, toJS } from 'mobx';
 import { createChartMarkers } from './Helpers/chart-markers';
-import {
-    getDigitInfo,
-    isDigitContract }         from './Helpers/digits';
-import {
-    getChartConfig,
-    getDisplayStatus,
-    getEndTime,
-    isEnded }                 from './Helpers/logic';
+import { getDigitInfo, isDigitContract } from './Helpers/digits';
+import { getChartConfig, getDisplayStatus, getEndTime, isEnded } from './Helpers/logic';
 
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
 import { isBarrierSupported } from '../SmartChart/Helpers/barriers';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 
 export default class ContractStore {
-
     constructor(root_store, { contract_id }) {
         this.root_store = root_store;
         this.contract_id = contract_id;
@@ -27,7 +15,7 @@ export default class ContractStore {
 
     // --- Observable properties ---
     @observable digits_info = observable.object({});
-    @observable sell_info   = observable.object({});
+    @observable sell_info = observable.object({});
 
     @observable contract_config = observable.object({});
     @observable display_status = 'purchased';
@@ -37,7 +25,7 @@ export default class ContractStore {
     // TODO: see how to handle errors.
     @observable error_message = '';
 
-    @observable contract_info   = observable.object({});
+    @observable contract_info = observable.object({});
     @observable is_static_chart = false;
     @observable end_time = null;
 
@@ -57,10 +45,7 @@ export default class ContractStore {
         this.end_time = getEndTime(this.contract_info);
 
         // TODO: don't update the barriers & markers if they are not changed
-        this.updateBarriersArray(
-            contract_info,
-            this.root_store.ui.is_dark_mode_on
-        );
+        this.updateBarriersArray(contract_info, this.root_store.ui.is_dark_mode_on);
         this.markers_array = createChartMarkers(this.contract_info);
         this.marker = calculate_marker(this.contract_info);
 
@@ -74,10 +59,7 @@ export default class ContractStore {
         }
 
         if (this.is_digit_contract) {
-            extendObservable(
-                this.digits_info,
-                getDigitInfo(this.digits_info, this.contract_info)
-            );
+            extendObservable(this.digits_info, getDigitInfo(this.digits_info, this.contract_info));
         }
     }
 
@@ -92,10 +74,7 @@ export default class ContractStore {
             const { contract_type, barrier, high_barrier, low_barrier } = contract_info;
 
             if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
-                main_barrier.updateBarriers(
-                    barrier || high_barrier,
-                    low_barrier,
-                );
+                main_barrier.updateBarriers(barrier || high_barrier, low_barrier);
                 main_barrier.updateBarrierColor(is_dark_mode);
             }
         }
@@ -108,26 +87,24 @@ export default class ContractStore {
 
             if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
                 // create barrier only when it's available in response
-                const main_barrier = new ChartBarrierStore(
-                    barrier || high_barrier,
-                    low_barrier,
-                    null,
-                    {   color        : is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
-                        line_style   : BARRIER_LINE_STYLES.SOLID,
-                        not_draggable: true,
-                    },
-                );
+                const main_barrier = new ChartBarrierStore(barrier || high_barrier, low_barrier, null, {
+                    color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
+                    line_style: BARRIER_LINE_STYLES.SOLID,
+                    not_draggable: true,
+                });
 
                 main_barrier.updateBarrierShade(true, contract_type);
-                result = [ main_barrier ];
+                result = [main_barrier];
             }
         }
         return result;
-    }
+    };
 }
 
 function calculate_marker(contract_info) {
-    if (!contract_info) { return null; }
+    if (!contract_info) {
+        return null;
+    }
     const {
         transaction_ids,
         tick_stream,
@@ -159,18 +136,24 @@ function calculate_marker(contract_info) {
         price_array = [+low_barrier, +high_barrier];
     }
 
-    if (entry_tick) { price_array.push(entry_tick); }
-    if (exit_tick) { price_array.push(exit_tick); }
+    if (entry_tick) {
+        price_array.push(entry_tick);
+    }
+    if (exit_tick) {
+        price_array.push(exit_tick);
+    }
 
-    if (!date_start) { return null; }
+    if (!date_start) {
+        return null;
+    }
     // if we have not yet received the first POC response
     if (!transaction_ids) {
         const type = is_digit_contract ? 'DigitContract' : 'TickContract';
         return {
             type,
             contract_info: toJS(contract_info),
-            key          : `${contract_id}-date_start`,
-            epoch_array  : [date_start],
+            key: `${contract_id}-date_start`,
+            epoch_array: [date_start],
             price_array,
         };
     }
@@ -180,18 +163,18 @@ function calculate_marker(contract_info) {
             // TickContract
             return {
                 contract_info: toJS(contract_info),
-                type         : 'TickContract',
-                key          : `${contract_id}-date_start`,
-                epoch_array  : [date_start, ...ticks_epoch_array],
+                type: 'TickContract',
+                key: `${contract_id}-date_start`,
+                epoch_array: [date_start, ...ticks_epoch_array],
                 price_array,
             };
         }
         // DigitContract
         return {
             contract_info: toJS(contract_info),
-            type         : 'DigitContract',
-            key          : `${contract_id}-date_start`,
-            epoch_array  : [date_start, ...ticks_epoch_array],
+            type: 'DigitContract',
+            key: `${contract_id}-date_start`,
+            epoch_array: [date_start, ...ticks_epoch_array],
             price_array,
         };
     }
@@ -201,12 +184,16 @@ function calculate_marker(contract_info) {
         const end_time = getEndTime(contract_info) || date_expiry;
         // the order of items in epoch_array matches the NonTickContract params.
         const epoch_array = [date_start, end_time];
-        if (entry_tick_time) { epoch_array.push(entry_tick_time); }
-        if (exit_tick_time) { epoch_array.push(exit_tick_time); }
+        if (entry_tick_time) {
+            epoch_array.push(entry_tick_time);
+        }
+        if (exit_tick_time) {
+            epoch_array.push(exit_tick_time);
+        }
         return {
             contract_info: toJS(contract_info),
-            type         : 'NonTickContract',
-            key          : `${contract_id}-date_start`,
+            type: 'NonTickContract',
+            key: `${contract_id}-date_start`,
             epoch_array,
             price_array,
         };

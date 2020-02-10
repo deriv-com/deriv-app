@@ -18,7 +18,8 @@
         &--hide {
             display: none;
         }
-        &--enter, &--exit {
+        &--enter,
+        &--exit {
             transform: translateY(50px);
             opacity: 0;
             pointer-events: none;

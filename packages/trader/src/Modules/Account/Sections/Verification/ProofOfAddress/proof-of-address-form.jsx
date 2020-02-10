@@ -1,25 +1,17 @@
 // import PropTypes           from 'prop-types';
-import React                  from 'react';
-import {
-    Button,
-    Input }                   from '@deriv/components';
-import { Formik }             from 'formik';
-import { localize }           from '@deriv/translations';
-import { WS }                 from 'Services/ws-methods';
-import { connect }            from 'Stores/connect';
-import {
-    validAddress,
-    validPostCode,
-    validLetterSymbol }       from 'Utils/Validator/declarative-validation-rules';
-import FileUploaderContainer  from './file-uploader-container.jsx';
+import React from 'react';
+import { Button, Input } from '@deriv/components';
+import { Formik } from 'formik';
+import { localize } from '@deriv/translations';
+import { WS } from 'Services/ws-methods';
+import { connect } from 'Stores/connect';
+import { validAddress, validPostCode, validLetterSymbol } from 'Utils/Validator/declarative-validation-rules';
+import FileUploaderContainer from './file-uploader-container.jsx';
 import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
-import LoadErrorMessage       from '../../ErrorMessages/LoadErrorMessage';
-import {
-    FormFooter,
-    FormBody,
-    FormSubHeader }           from '../../../Components/layout-components.jsx';
-import { LeaveConfirm }       from '../../../Components/leave-confirm.jsx';
-import Loading                from '../../../../../templates/app/components/loading.jsx';
+import LoadErrorMessage from '../../ErrorMessages/LoadErrorMessage';
+import { FormFooter, FormBody, FormSubHeader } from '../../../Components/layout-components.jsx';
+import { LeaveConfirm } from '../../../Components/leave-confirm.jsx';
+import Loading from '../../../../../templates/app/components/loading.jsx';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
@@ -32,10 +24,10 @@ class ProofOfAddressForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            document_file     : [],
+            document_file: [],
             file_error_message: null,
-            is_loading        : true,
-            show_form         : true,
+            is_loading: true,
+            show_form: true,
         };
     }
 
@@ -61,7 +53,7 @@ class ProofOfAddressForm extends React.Component {
     }
 
     // TODO: standardize validations and refactor this
-    validateFields = (values) => {
+    validateFields = values => {
         this.setState({ is_submit_success: false });
         const errors = {};
         const validateValues = validate(errors, values);
@@ -69,8 +61,10 @@ class ProofOfAddressForm extends React.Component {
         const required_fields = ['address_line_1', 'address_city', 'address_postcode'];
         validateValues(val => val, required_fields, localize('This field is required'));
 
-        const permitted_characters = '- . \' # ; : ( ) , @ /';
-        const address_validation_message = localize(`Only letters, numbers, space, and these special characters are allowed: ${permitted_characters}`);
+        const permitted_characters = "- . ' # ; : ( ) , @ /";
+        const address_validation_message = localize(
+            `Only letters, numbers, space, and these special characters are allowed: ${permitted_characters}`
+        );
 
         if (values.address_line_1 && !validAddress(values.address_line_1)) {
             errors.address_line_1 = address_validation_message;
@@ -79,7 +73,9 @@ class ProofOfAddressForm extends React.Component {
             errors.address_line_2 = address_validation_message;
         }
 
-        const validation_letter_symbol_message = localize('Only letters, space, hyphen, period, and apostrophe are allowed.');
+        const validation_letter_symbol_message = localize(
+            'Only letters, space, hyphen, period, and apostrophe are allowed.'
+        );
 
         if (values.address_city && !validLetterSymbol(values.address_city)) {
             errors.address_city = validation_letter_symbol_message;
@@ -100,19 +96,20 @@ class ProofOfAddressForm extends React.Component {
 
     onFileDrop = ({ document_file, file_error_message }) => {
         this.setState({ document_file, file_error_message });
-    }
+    };
 
     // Settings update is handled here
     onSubmit = (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
 
-        WS.setSettings(values).then((data) => {
+        WS.setSettings(values).then(data => {
             if (data.error) {
                 setStatus({ msg: data.error.message });
             } else {
                 // force request to update settings cache since settings have been updated
-                WS.authorized.storage.getSettings()
+                WS.authorized.storage
+                    .getSettings()
                     .then(({ error, get_settings }) => {
                         if (error) {
                             this.setState({ api_initial_load_error: error.message });
@@ -137,46 +134,58 @@ class ProofOfAddressForm extends React.Component {
                     })
                     .then(() => {
                         // upload files
-                        this.file_uploader_ref.current.upload().then((api_response) => {
-                            if (api_response.warning) {
-                                setStatus({ msg: api_response.message });
-                                this.setState({ is_btn_loading: false });
-                            } else {
-                                WS.authorized.storage.getAccountStatus().then(({ error, get_account_status }) => {
-                                    if (error) {
-                                        this.setState({ api_initial_load_error: error.message });
-                                        return;
-                                    }
-                                    this.setState({
-                                        is_btn_loading   : false,
-                                        is_submit_success: true,
-                                    }, () => {
-                                        const { identity, needs_verification } = get_account_status.authentication;
-                                        const has_poi   = !(identity && identity.status === 'none');
-                                        // TODO: clean all of this up by simplifying the manually toggled notifications functions
-                                        const needs_poi = needs_verification.length && needs_verification.includes('identity');
-                                        this.props.onSubmit({ has_poi });
-                                        this.props.removeNotificationMessage({ key: 'authenticate' });
-                                        this.props.removeNotificationByKey({ key: 'authenticate' });
-                                        this.props.removeNotificationMessage({ key: 'needs_poa' });
-                                        this.props.removeNotificationByKey({ key: 'needs_poa' });
-                                        this.props.removeNotificationMessage({ key: 'poa_expired' });
-                                        this.props.removeNotificationByKey({ key: 'poa_expired' });
-                                        if (needs_poi) {
-                                            this.props.addNotificationByKey('needs_poi');
+                        this.file_uploader_ref.current
+                            .upload()
+                            .then(api_response => {
+                                if (api_response.warning) {
+                                    setStatus({ msg: api_response.message });
+                                    this.setState({ is_btn_loading: false });
+                                } else {
+                                    WS.authorized.storage.getAccountStatus().then(({ error, get_account_status }) => {
+                                        if (error) {
+                                            this.setState({ api_initial_load_error: error.message });
+                                            return;
                                         }
+                                        this.setState(
+                                            {
+                                                is_btn_loading: false,
+                                                is_submit_success: true,
+                                            },
+                                            () => {
+                                                const {
+                                                    identity,
+                                                    needs_verification,
+                                                } = get_account_status.authentication;
+                                                const has_poi = !(identity && identity.status === 'none');
+                                                // TODO: clean all of this up by simplifying the manually toggled notifications functions
+                                                const needs_poi =
+                                                    needs_verification.length &&
+                                                    needs_verification.includes('identity');
+                                                this.props.onSubmit({ has_poi });
+                                                this.props.removeNotificationMessage({ key: 'authenticate' });
+                                                this.props.removeNotificationByKey({ key: 'authenticate' });
+                                                this.props.removeNotificationMessage({ key: 'needs_poa' });
+                                                this.props.removeNotificationByKey({ key: 'needs_poa' });
+                                                this.props.removeNotificationMessage({ key: 'poa_expired' });
+                                                this.props.removeNotificationByKey({ key: 'poa_expired' });
+                                                if (needs_poi) {
+                                                    this.props.addNotificationByKey('needs_poi');
+                                                }
+                                            }
+                                        );
                                     });
-                                });
-                            }
-                        }).catch((error) => {
-                            setStatus({ msg: error.message });
-                        }).then(() => {
-                            setSubmitting(false);
-                        });
+                                }
+                            })
+                            .catch(error => {
+                                setStatus({ msg: error.message });
+                            })
+                            .then(() => {
+                                setSubmitting(false);
+                            });
                     });
             }
         });
-    }
+    };
 
     render() {
         const {
@@ -211,16 +220,7 @@ class ProofOfAddressForm extends React.Component {
                 onSubmit={this.onSubmit}
                 validate={this.validateFields}
             >
-                {({
-                    values,
-                    errors,
-                    status,
-                    touched,
-                    handleChange,
-                    handleBlur,
-                    handleSubmit,
-                    isSubmitting,
-                }) => (
+                {({ values, errors, status, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
                     <>
                         <LeaveConfirm onDirty={this.showForm} />
                         {show_form && (
@@ -230,7 +230,9 @@ class ProofOfAddressForm extends React.Component {
                                     <div className='account-poa__details-section'>
                                         <div className='account-poa__details-description'>
                                             <span className='account-poa__details-text'>
-                                                {localize('Please ensure that this address is the same as in your proof of address')}
+                                                {localize(
+                                                    'Please ensure that this address is the same as in your proof of address'
+                                                )}
                                             </span>
                                         </div>
                                         <div className='account-poa__details-fields'>
@@ -310,7 +312,7 @@ class ProofOfAddressForm extends React.Component {
                                     </div>
                                     <FormSubHeader title={localize('Please upload one of the following:')} />
                                     <FileUploaderContainer
-                                        onRef={ref => this.file_uploader_ref = ref}
+                                        onRef={ref => (this.file_uploader_ref = ref)}
                                         onFileDrop={this.onFileDrop}
                                     />
                                 </FormBody>
@@ -319,14 +321,20 @@ class ProofOfAddressForm extends React.Component {
                                     <Button
                                         className='account-form__footer-btn'
                                         type='submit'
-                                        is_disabled={isSubmitting || (
-                                            !!((errors.address_line_1 || !values.address_line_1) ||
-                                            (errors.address_line_2) ||
-                                            (errors.address_city || !values.address_city) ||
-                                            (errors.address_postcode || !values.address_postcode)) ||
-                                            ((document_file && document_file.length < 1) ||
-                                            !!file_error_message)
-                                        )}
+                                        is_disabled={
+                                            isSubmitting ||
+                                            !!(
+                                                errors.address_line_1 ||
+                                                !values.address_line_1 ||
+                                                errors.address_line_2 ||
+                                                errors.address_city ||
+                                                !values.address_city ||
+                                                errors.address_postcode ||
+                                                !values.address_postcode
+                                            ) ||
+                                            (document_file && document_file.length < 1) ||
+                                            !!file_error_message
+                                        }
                                         has_effect
                                         is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
@@ -345,11 +353,9 @@ class ProofOfAddressForm extends React.Component {
 
 // ProofOfAddressForm.propTypes = {};
 
-export default connect(
-    ({ client, ui }) => ({
-        account_settings         : client.account_settings,
-        addNotificationByKey     : ui.addNotificationMessageByKey,
-        removeNotificationMessage: ui.removeNotificationMessage,
-        removeNotificationByKey  : ui.removeNotificationByKey,
-    }),
-)(ProofOfAddressForm);
+export default connect(({ client, ui }) => ({
+    account_settings: client.account_settings,
+    addNotificationByKey: ui.addNotificationMessageByKey,
+    removeNotificationMessage: ui.removeNotificationMessage,
+    removeNotificationByKey: ui.removeNotificationByKey,
+}))(ProofOfAddressForm);

@@ -13,7 +13,7 @@ const getPlatformMt5DownloadLink = () => {
         case 'android':
             return 'https://download.mql5.com/cdn/mobile/mt5/android?server=Binary.com-Server';
         default:
-            return 'https://trade.mql5.com/trade'; // Web
+            return 'https://trade.mql5.com/trade?servers=Binary.com-Server&trade_server=Binary.com-Server'; // Web
     }
 };
 

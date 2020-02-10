@@ -2,9 +2,9 @@ import React, { useRef } from 'react';
 import { toMoment, daysFromTodayTo } from '@deriv/shared/utils/date';
 
 const RelativeDatepicker = props => {
-    const myRef = useRef();
+    const hidden_input_ref = useRef();
     const clickHandler = () => {
-        myRef.current.click();
+        hidden_input_ref.current.click();
     };
     const onChangeHandler = e => {
         props.onChange(daysFromTodayTo(e.target.value));
@@ -24,7 +24,7 @@ const RelativeDatepicker = props => {
             <input
                 type='date'
                 id='native-calender'
-                ref={myRef}
+                ref={hidden_input_ref}
                 onChange={onChangeHandler}
                 min={min_date}
                 max={max_date}

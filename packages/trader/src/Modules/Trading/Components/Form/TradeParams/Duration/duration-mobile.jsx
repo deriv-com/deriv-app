@@ -160,7 +160,12 @@ const Duration = ({
                                         selected_duration={d_duration}
                                         setSelectedDuration={setSelectedDuration}
                                     />
-                                    <RelativeDatepicker onChange={handleRelativeChange} min={min} max={max} />
+                                    <RelativeDatepicker
+                                        onChange={handleRelativeChange}
+                                        min={min}
+                                        max={max}
+                                        title='Pick an end date'
+                                    />
                                 </div>
                             );
                         default:

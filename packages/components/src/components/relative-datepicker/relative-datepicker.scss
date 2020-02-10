@@ -4,9 +4,8 @@
     padding-bottom: 16px;
 
     span {
+        @include typeface(--paragraph-center-bold-black);
         color: var(--purchase-main-2);
-        font-size: var(--text-size-xs);
-        font-weight: bold;
         line-height: 1.43;
         cursor: pointer;
     }

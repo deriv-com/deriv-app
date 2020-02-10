@@ -5,30 +5,30 @@ import React from 'react';
 import { Icon } from '@deriv/components';
 import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories.jsx';
 
-const ContractTypeItem = ({ contracts, name, value, is_equal, handleInfoClick, handleSelect }) =>
-    contracts.map((contract, idx) => (
+const Item = ({ contract_types, handleInfoClick, handleSelect, is_equal, name, value }) =>
+    contract_types.map((type, idx) => (
         <div
-            id={`dt_contract_${contract.value}_item`}
+            id={`dt_contract_${type.value}_item`}
             key={idx}
             className={classNames('contract-type-item', {
-                'contract-type-item--selected': value === contract.value,
+                'contract-type-item--selected': value === type.value,
                 'contract-type-item--invisible':
-                    (contract.value === 'rise_fall' && is_equal) || (contract.value === 'rise_fall_equal' && !is_equal),
+                    (type.value === 'rise_fall' && is_equal) || (type.value === 'rise_fall_equal' && !is_equal),
             })}
             name={name}
-            value={contract.value}
-            onClick={e => handleSelect(contract, e)}
+            value={type.value}
+            onClick={e => handleSelect(type, e)}
         >
-            <IconTradeCategory category={contract.value} className='contract-type-item__icon-wrapper' />
-            <span className='contract-type-item__title'>{contract.text}</span>
-            <div id='info-icon' className='contract-type-item__icon' onClick={() => handleInfoClick(contract)}>
+            <IconTradeCategory category={type.value} className='contract-type-item__icon-wrapper' />
+            <span className='contract-type-item__title'>{type.text}</span>
+            <div id='info-icon' className='contract-type-item__icon' onClick={() => handleInfoClick(type)}>
                 <Icon icon='IcInfoOutline' />
             </div>
         </div>
     ));
 
-ContractTypeItem.propTypes = {
-    contracts: MobxPropTypes.arrayOrObservableArray,
+Item.propTypes = {
+    contract_types: MobxPropTypes.arrayOrObservableArray,
     handleInfoClick: PropTypes.func,
     handleSelect: PropTypes.func,
     is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -36,4 +36,4 @@ ContractTypeItem.propTypes = {
     value: PropTypes.string,
 };
 
-export default ContractTypeItem;
+export default Item;

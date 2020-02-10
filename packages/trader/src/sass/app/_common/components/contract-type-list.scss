@@ -1,18 +1,16 @@
 /** @define contract-type-list; */
 .contract-type-list {
-    padding: 1.6em 1.6em 0em;
-    border-bottom: 4px solid var(--general-section-2);
+    padding: 1.6rem;
+    border-bottom: 4px solid var(--general-section-1);
 
     &__label {
         @include typeface(--paragraph-left-bold-black);
         color: var(--text-prominent);
-        margin-bottom: 0.6em;
+        margin-bottom: 0.8rem;
+        margin-left: 1.6rem;
     }
     &:last-child {
         border-bottom: none;
-    }
-    &__contracts-wrapper {
-        margin-bottom: 1.4rem;
     }
 }
 
@@ -23,9 +21,8 @@
     display: inline-flex;
     flex-direction: row;
     align-items: center;
-    padding: 0.8em;
+    padding: 0.8rem 1.6rem;
     box-sizing: border-box;
-    margin-bottom: 0.1em;
     transition: transform 0.3s opacity 0.3s;
     color: var(--text-general);
     border-radius: 4px;
@@ -40,24 +37,20 @@
     &__title {
         @include typeface(--paragraph-left-normal-black);
         color: var(--text-general);
-        padding-left: 0.4em;
+        padding-left: 1.6rem;
     }
     &__icon {
         display: none;
-        height: 16px;
-        width: 16px;
         margin-left: auto;
 
         /* postcss-bem-linter: ignore */
-        svg {
+        .dc-icon {
             pointer-events: none;
-            @extend %inline-icon.secondary;
         }
         &:hover {
             /* postcss-bem-linter: ignore */
-            svg {
+            .dc-icon {
                 pointer-events: none;
-                @extend %inline-icon.white;
             }
         }
     }
@@ -71,28 +64,19 @@
         &:hover {
             background: var(--state-active);
         }
-        /* postcss-bem-linter: ignore */
-        span {
+        .contract-type-item__title {
             font-weight: bold;
             color: var(--text-prominent);
         }
         .contract-type-item__icon {
             /* postcss-bem-linter: ignore */
-            svg {
+            .dc-icon {
                 pointer-events: none;
-                //stylelint-disable-next-line
-                .color1-fill {
-                    fill: var(--text-prominent);
-                }
             }
             &:hover {
                 /* postcss-bem-linter: ignore */
-                svg {
+                .dc-icon {
                     pointer-events: none;
-
-                    .color1-fill {
-                        fill: var(--text-prominent) !important;
-                    }
                 }
             }
         }
@@ -101,27 +85,10 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        margin-right: 0.7em;
 
         /* postcss-bem-linter: ignore */
-        .category-wrapper {
-            margin: 0 0.2em;
-            background-color: var(--general-section-1);
-
-            svg {
-                /* postcss-bem-linter: ignore */
-                .transparent {
-                    fill: var(--general-section-1);
-                }
-                /* postcss-bem-linter: ignore */
-                .color1-fill {
-                    fill: var(--brand-red-coral);
-                }
-                /* postcss-bem-linter: ignore */
-                .color2-fill {
-                    fill: var(--brand-secondary);
-                }
-            }
+        .category-wrapper + .category-wrapper {
+            margin-left: 0.4rem;
         }
     }
 }

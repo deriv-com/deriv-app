@@ -1,8 +1,20 @@
+import clone                          from 'clone';
 import JSInterpreter                  from 'js-interpreter';
 import { createScope }                from './cliTools';
 import Interface                      from '../Interface';
 import { unrecoverable_errors }       from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
+
+JSInterpreter.prototype.takeStateSnapshot = function() {
+    const newStateStack = clone(this.stateStack, undefined, undefined, undefined, true)
+    return newStateStack;
+  };
+
+JSInterpreter.prototype.restoreStateSnapshot = function(snapshot) {
+    this.stateStack = clone(snapshot, undefined, undefined, undefined, true)
+    this.global = this.stateStack[0].scope
+    this.initFunc_(this, this.global)
+};
 
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
@@ -69,10 +81,7 @@ export default class Interpreter {
 
             interpreter.setProperty(scope, 'Bot', pseudoBotIf);
 
-            interpreter.setProperty(
-                scope,
-                'watch',
-                this.createAsync(interpreter, watchName => {
+            interpreter.setProperty(scope, 'watch', this.createAsync(interpreter, watchName => {
                     const { watch } = this.bot.getInterface();
 
                     if (timeMachineEnabled(this.bot)) {
@@ -161,7 +170,7 @@ export default class Interpreter {
     }
 
     createAsync(interpreter, func) {
-        return interpreter.createAsyncFunction((...args) => {
+        const asyncFunc = (...args) => {
             const callback = args.pop();
 
             func(...args.map(arg => interpreter.pseudoToNative(arg)))
@@ -170,7 +179,11 @@ export default class Interpreter {
                     this.loop();
                 })
                 .catch(e => this.$scope.observer.emit('Error', e));
-        });
+        };
+
+        // Manually assign length prop so JS-Interpreter doesn't ignore args.
+        Object.defineProperty(asyncFunc, 'length', { value: func.length + 1 });
+        return interpreter.createAsyncFunction(asyncFunc);
     }
 
     hasStarted() {

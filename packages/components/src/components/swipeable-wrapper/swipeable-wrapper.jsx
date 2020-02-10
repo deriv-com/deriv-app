@@ -7,7 +7,7 @@ const SwipeableWrapper = ({ children, className, ...props }) => {
     const [active_index, setActiveIndex] = useState(0);
 
     const swipedLeft = () => {
-        const is_reached_end = active_index + 1 === React.Children.count(children);
+        const is_reached_end = active_index + 1 === React.Children.toArray(children).length;
         if (!is_reached_end) {
             setActiveIndex(active_index + 1);
         }

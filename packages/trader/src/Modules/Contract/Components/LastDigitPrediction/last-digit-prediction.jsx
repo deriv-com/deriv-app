@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { isDesktop } from '@deriv/shared/utils/screen';
 import DigitDisplay from './digit-display.jsx';
 import LastDigitPointer from './last-digit-pointer.jsx';
 
@@ -64,7 +65,7 @@ class LastDigitPrediction extends React.Component {
         // latest last digit refers to digit and spot values from latest price
         // latest contract digit refers to digit and spot values from last digit contract in contracts array
         const latest_tick_pip_size = tick ? +tick.pip_size : null;
-        const latest_tick_ask_price = tick ? tick.ask.toFixed(latest_tick_pip_size) : null;
+        const latest_tick_ask_price = tick && tick.ask ? tick.ask.toFixed(latest_tick_pip_size) : null;
         const latest_tick_digit = latest_tick_ask_price ? +latest_tick_ask_price.split('').pop() : null;
         const position = tick
             ? this.digit_left_offset[latest_tick_digit]
@@ -91,7 +92,14 @@ class LastDigitPrediction extends React.Component {
                         value={idx}
                     />
                 ))}
-                <LastDigitPointer is_lost={is_lost} is_trade_page={is_trade_page} is_won={is_won} position={position} />
+                {isDesktop() && (
+                    <LastDigitPointer
+                        is_lost={is_lost}
+                        is_trade_page={is_trade_page}
+                        is_won={is_won}
+                        position={position}
+                    />
+                )}
             </div>
         );
     }

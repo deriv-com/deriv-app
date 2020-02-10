@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { toJS } from 'mobx';
 import { Popover } from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import { isContractElapsed } from 'Stores/Modules/Contract/Helpers/logic';
 import { SlideIn } from 'App/Components/Animations';
@@ -52,6 +53,11 @@ class Digits extends React.PureComponent {
                 };
             }
         }
+
+        const popover_message = localize(
+            `Last digit stats for latest 1000 ticks for ${getMarketNamesMap()[underlying.toUpperCase()]}`
+        );
+
         return (
             <SlideIn
                 is_visible={(digits_array || is_digit_contract) && this.state.mounted}
@@ -59,7 +65,7 @@ class Digits extends React.PureComponent {
                 keyname='digits'
                 type='bottom'
             >
-                {underlying && (
+                {underlying && isDesktop() && (
                     <div className='digits__tooltip-container'>
                         <Popover
                             alignment='top'
@@ -67,11 +73,7 @@ class Digits extends React.PureComponent {
                             icon='info'
                             id='dt_last_digits_info_tooltip'
                             margin={4}
-                            message={localize(
-                                `Last digit stats for latest 1000 ticks for ${
-                                    getMarketNamesMap()[underlying.toUpperCase()]
-                                }`
-                            )}
+                            message={popover_message}
                         />
                     </div>
                 )}
@@ -90,6 +92,7 @@ class Digits extends React.PureComponent {
                     status={!is_contract_elapsed && is_tick_ready ? display_status : null}
                     tick={tick}
                 />
+                {isMobile() && <span className='digits__tooltip-text'>{popover_message}</span>}
             </SlideIn>
         );
     }

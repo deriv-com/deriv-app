@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, Div100vhContainer } from '@deriv/components';
+import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import { connect } from 'Stores/connect';
@@ -13,6 +13,11 @@ import { symbolChange } from '../../SmartChart/Helpers/symbol';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 
 class Trade extends React.Component {
+    state = {
+        digits: [],
+        tick: {},
+    };
+
     componentDidMount() {
         this.props.onMount();
     }
@@ -20,6 +25,15 @@ class Trade extends React.Component {
     componentWillUnmount() {
         this.props.onUnmount();
     }
+
+    bottomWidgets = ({ digits, tick }) => {
+        this.setState({
+            digits,
+            tick,
+        });
+
+        return null; // render nothing for bottom widgets on chart in mobile
+    };
 
     render() {
         const { NotificationMessages } = this.props;
@@ -41,7 +55,19 @@ class Trade extends React.Component {
                         fallback={<ChartLoader is_dark={this.props.is_dark_theme} is_visible={!this.props.symbol} />}
                     >
                         <ChartLoader is_visible={this.props.is_chart_loading} />
-                        <ChartTrade />
+                        <DesktopWrapper>
+                            <ChartTrade />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            {this.props.show_digits_stats ? (
+                                <SwipeableWrapper>
+                                    <ChartTrade mobileBottomWidgets={this.bottomWidgets} />
+                                    <ChartBottomWidgets digits={this.state.digits} tick={this.state.tick} />
+                                </SwipeableWrapper>
+                            ) : (
+                                <ChartTrade />
+                            )}
+                        </MobileWrapper>
                     </React.Suspense>
 
                     {/* Remove Test component for debugging below for production release */}
@@ -60,6 +86,7 @@ export default connect(({ modules, ui }) => ({
     form_components: modules.trade.form_components,
     is_chart_loading: modules.trade.is_chart_loading,
     is_market_closed: modules.trade.is_market_closed,
+    show_digits_stats: modules.trade.show_digits_stats,
     is_trade_enabled: modules.trade.is_trade_enabled,
     onMount: modules.trade.onMount,
     onUnmount: modules.trade.onUnmount,
@@ -155,6 +182,7 @@ class ChartTradeClass extends React.Component {
     componentDidMount() {
         performance.mark('smart-charts-mounted');
     }
+
     componentDidUpdate(prevProps) {
         if (prevProps.should_refresh) this.props.resetRefresh();
     }
@@ -169,7 +197,7 @@ class ChartTradeClass extends React.Component {
         return (
             <SmartChart
                 barriers={barriers}
-                bottomWidgets={show_digits_stats && isDesktop() ? this.bottomWidgets : null}
+                bottomWidgets={show_digits_stats && isDesktop() ? this.bottomWidgets : this.props.mobileBottomWidgets}
                 crosshairState={isMobile() ? 0 : undefined}
                 showLastDigitStats={isDesktop() ? show_digits_stats : false}
                 chartControlsWidgets={isDesktop() ? this.chartControlsWidgets : null}

@@ -274,6 +274,21 @@
             fill: var(--text-loss-danger);
         }
     }
+    @include mobile {
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 2rem auto;
+        max-width: 260px;
+
+        &__container {
+            margin: 2.4rem;
+            text-align: center;
+        }
+        &__tooltip-text {
+            font-size: 1.2rem;
+            color: var(--text-general);
+        }
+    }
 }
 
 @keyframes blinking {

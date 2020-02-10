@@ -49,15 +49,19 @@ const getModifiedP2POfferList = response => {
             'fractional_digits',
         ]);
 
-        const available_amount = +filtered_list[i].amount - +filtered_list[i].amount_used;
+        const available_amount = +filtered_list[i].remaining_amount;
         const offer_amount = +filtered_list[i].amount;
-        const min_transaction = +filtered_list[i].min_amount;
-        const max_transaction = +filtered_list[i].max_amount;
+        const min_transaction = +filtered_list[i].min_amount; // for agent usage in offer creation/update
+        const max_transaction = +filtered_list[i].max_amount; // for agent usage in offer creation/update
+        const min_available = +filtered_list[i].min_amount_limit; // for client usage in order creation
+        const max_available = +filtered_list[i].max_amount_limit; // for client usage in order creation
         const price_rate = +filtered_list[i].rate;
         const payment_method = filtered_list[i].method;
 
         modified_response[i] = {
             available_amount,
+            min_available,
+            max_available,
             max_transaction,
             min_transaction,
             offer_amount,
@@ -71,8 +75,8 @@ const getModifiedP2POfferList = response => {
             advertiser_id: filtered_list[i].agent_id,
             advertiser_notes: filtered_list[i].offer_description,
             display_available_amount: formatMoney(offer_currency, available_amount),
-            display_max_transaction: formatMoney(offer_currency, max_transaction),
-            display_min_transaction: formatMoney(offer_currency, min_transaction),
+            display_max_available: formatMoney(offer_currency, max_available), // for displaying limit fields in buy/sell and ads table
+            display_min_available: formatMoney(offer_currency, min_available), // for displaying limit fields in buy/sell and ads table
             display_offer_amount: formatMoney(offer_currency, offer_amount),
             display_payment_method: map_payment_method[payment_method] || payment_method,
             display_price_rate: formatMoney(transaction_currency, price_rate),
@@ -144,8 +148,8 @@ const getModifiedResponse = response => {
 
     if (response.p2p_agent_info) {
         advertiser_id = response.p2p_agent_info.agent_id;
-    } else if (response.p2p_offer_list) {
-        modified_response = getModifiedP2POfferList(response.p2p_offer_list);
+    } else if (response.p2p_offer_list || response.p2p_agent_offers) {
+        modified_response = getModifiedP2POfferList(response.p2p_offer_list || response.p2p_agent_offers);
     } else if (response.p2p_order_info) {
         modified_response = getModifiedP2POrder(response.p2p_order_info);
     }

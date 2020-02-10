@@ -128,7 +128,7 @@ class PersonalDetailsForm extends React.Component {
         validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
 
         const { residence_list } = this.props;
-        const residence_fields = ['place_of_birth', 'citizen'];
+        const residence_fields = ['citizen'];
         const validateResidence = val => getLocation(residence_list, val, 'value');
         validateValues(validateResidence, residence_fields, true);
 

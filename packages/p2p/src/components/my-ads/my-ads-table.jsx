@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Dialog, Table } from '@deriv/components';
+import { Button, Dialog, Loading, Table } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS } from 'Utils/websocket';
@@ -56,6 +56,7 @@ export class MyAdsTable extends React.Component {
     is_mounted = false;
 
     state = {
+        is_loading: true,
         items: [],
         selected_ad_id: '',
         show_popup: false,
@@ -110,18 +111,22 @@ export class MyAdsTable extends React.Component {
                             ))}
                         </Table.Row>
                     </Table.Header>
-                    <Table.Body>
-                        {items.length ? (
-                            <InfiniteLoaderList
-                                items={items}
-                                row_actions={{ onClickDelete: this.onClickDelete }}
-                                RenderComponent={RowComponent}
-                                RowLoader={MyAdsLoader}
-                            />
-                        ) : (
-                            <div className='deriv-p2p__empty'>{localize("You haven't posted any ads yet")}</div>
-                        )}
-                    </Table.Body>
+                    {this.state.is_loading ? (
+                        <Loading is_fullscreen={false} />
+                    ) : (
+                        <Table.Body>
+                            {items.length ? (
+                                <InfiniteLoaderList
+                                    items={items}
+                                    row_actions={{ onClickDelete: this.onClickDelete }}
+                                    RenderComponent={RowComponent}
+                                    RowLoader={MyAdsLoader}
+                                />
+                            ) : (
+                                <div className='deriv-p2p__empty'>{localize("You haven't posted any ads yet.")}</div>
+                            )}
+                        </Table.Body>
+                    )}
                 </Table>
                 {this.state.show_popup && (
                     <div className='orders__dialog'>

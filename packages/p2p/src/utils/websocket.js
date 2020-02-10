@@ -3,7 +3,7 @@ import ObjectUtils from '@deriv/shared/utils/object';
 import { localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 
-let ws, transaction_currency_decimals, advertiser_id;
+let ws, transaction_currency_decimals;
 
 const initial_responses = {};
 
@@ -103,7 +103,7 @@ const getModifiedP2POrder = response => {
     // const payment_method = response.method;
 
     // TODO: [p2p-replace-with-api] once API sends this data, use that instead of internal check
-    const is_incoming_order = response.agent_id === advertiser_id;
+    const is_incoming_order = true;
 
     return {
         offer_amount,
@@ -122,7 +122,7 @@ const getModifiedP2POrder = response => {
         order_id: response.order_id,
         order_purchase_datetime: getFormattedDateString(new Date(convertToMillis(response.created_time))),
         status: response.status,
-        type: is_incoming_order ? response.type : map_type[response.type], // TODO: [p2p-replace-with-api] once API sends this data, use that instead of map
+        type: is_incoming_order ? map_type[response.type] : response.type, // TODO: [p2p-replace-with-api] once API sends this data, use that instead of map
     };
 };
 
@@ -146,9 +146,7 @@ export const requestWS = async request => {
 const getModifiedResponse = response => {
     let modified_response = response;
 
-    if (response.p2p_agent_info) {
-        advertiser_id = response.p2p_agent_info.agent_id;
-    } else if (response.p2p_offer_list || response.p2p_agent_offers) {
+    if (response.p2p_offer_list || response.p2p_agent_offers) {
         modified_response = getModifiedP2POfferList(response.p2p_offer_list || response.p2p_agent_offers);
     } else if (response.p2p_order_info) {
         modified_response = getModifiedP2POrder(response.p2p_order_info);

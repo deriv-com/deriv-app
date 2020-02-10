@@ -50,7 +50,9 @@ export class SellTable extends React.Component {
         return items.length ? (
             <InfiniteLoaderList items={items} RenderComponent={Row} RowLoader={BuySellRowLoader} />
         ) : (
-            <div className='deriv-p2p__empty'>{localize('No ads found')}</div>
+            <div className='deriv-p2p__empty'>
+                {localize("No ads yet. If someone posts an ad, you'll see it here.")}
+            </div>
         );
     }
 }

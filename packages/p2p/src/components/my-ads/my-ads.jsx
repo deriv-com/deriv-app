@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Button } from '@deriv/components';
 import Dp2pContext from 'Components/context/dp2p-context';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import FormAds from './form-ads.jsx';
 import { MyAdsTable } from './my-ads-table.jsx';
@@ -53,7 +53,23 @@ class MyAds extends Component {
                 </div>
             );
         }
-        return <div className='deriv-p2p__empty'>{localize('Apply to become an advertiser')}</div>;
+        return (
+            <div className='deriv-p2p__empty'>
+                <Localize
+                    i18n_default_text='Contact us at <0>{{support_email}}</0> to become an advertiser.'
+                    values={{ support_email: `support@${this.context.email_domain}` }}
+                    components={[
+                        <a
+                            key={0}
+                            className='link'
+                            rel='noopener noreferrer'
+                            target='_blank'
+                            href={`mailto:support@${this.context.email_domain}`}
+                        />,
+                    ]}
+                />
+            </div>
+        );
     }
 }
 

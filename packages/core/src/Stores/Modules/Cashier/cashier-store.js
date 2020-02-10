@@ -212,7 +212,7 @@ export default class CashierStore extends BaseStore {
             // TODO: [p2p-replace-with-api] once API sends this data, use that instead of internal check
             const is_incoming_order = order.agent_id === advertiser_id;
             // TODO: [p2p-replace-with-api] once API sends this data, use that instead of map
-            const type = is_incoming_order ? order.type : this.map_type[order.type];
+            const type = is_incoming_order ? this.map_type[order.type] : order.type;
             const is_buyer = type === 'buy';
             const is_buyer_confirmed = order.status === 'buyer-confirmed';
             const is_pending = order.status === 'pending';

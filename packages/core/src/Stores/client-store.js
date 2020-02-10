@@ -60,7 +60,7 @@ export default class ClientStore extends BaseStore {
 
     @observable local_currency_config = {
         currency: '',
-        decimal_places: '',
+        decimal_places: undefined,
     };
 
     is_mt5_account_list_updated = false;

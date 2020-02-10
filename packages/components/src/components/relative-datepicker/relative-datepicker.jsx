@@ -20,7 +20,7 @@ const RelativeDatepicker = props => {
         : null;
     return (
         <div id='dc-relative-datepicker'>
-            <span onClick={clickHandler}>Pick an end date</span>
+            <span onClick={clickHandler}>{props.title}</span>
             <input
                 type='date'
                 id='native-calender'

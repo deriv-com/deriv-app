@@ -121,6 +121,11 @@ export class MyAdsTable extends React.Component {
                     </Table.Header>
                     <Table.Body>
                         <InfiniteLoaderList
+                            // screen size - header size - footer size - page overlay header - page overlay content padding -
+                            // tabs height - padding of tab content - toggle height - toggle margin - table header height
+                            initial_height={
+                                'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 2.4rem - 50px - 1.6rem - 52px)'
+                            }
                             items={items}
                             row_actions={{
                                 onClickDelete: this.onClickDelete,

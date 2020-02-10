@@ -105,7 +105,6 @@ export default class CashierStore extends BaseStore {
     active_container = this.config.deposit.container;
     current_client;
     is_populating_values = false;
-    p2p_offer_list = {};
 
     containers = [this.config.deposit.container, this.config.withdraw.container];
 
@@ -116,23 +115,18 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async init() {
-        // show dp2p if:
+        // show p2p if:
         // 1. we have not already checked this before, and
         // 2. client is not virtual, and
-        // 3. they are an agent, or
-        // 4. there is at least one offer available
-        if (
-            !this.is_p2p_visible &&
-            ObjectUtils.isEmptyObject(this.p2p_offer_list) &&
-            !this.root_store.client.is_virtual
-        ) {
-            this.is_p2p_agent = !(await WS.p2pAgentInfo()).error;
+        // 3. p2p call does not return error code `PermissionDenied`
+        await BinarySocket.wait('authorize');
+        if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
+            const agent_error = ObjectUtils.getPropertyValue(await WS.p2pAgentInfo(), ['error', 'code']);
+            if (agent_error === 'PermissionDenied') return;
 
-            if (this.is_p2p_agent || (await this.hasP2pOffer())) {
-                this.setIsP2pVisible(true);
-
-                WS.p2pSubscribe({ p2p_order_list: 1, subscribe: 1 }, this.setP2pOrderList);
-            }
+            this.is_p2p_agent = !agent_error;
+            this.setIsP2pVisible(true);
+            WS.p2pSubscribe({ p2p_order_list: 1, subscribe: 1 }, this.setP2pOrderList);
         }
     }
 
@@ -173,26 +167,29 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setP2pOrderList(order_response) {
-        if (order_response.p2p_order_list) {
-            // it's an array of orders from p2p_order_list
-            this.p2p_order_list = order_response.p2p_order_list.list;
-            this.handleNotifications(this.p2p_order_list);
-        } else {
-            // it's a single order from p2p_order_info
-            const idx_order_to_update = this.p2p_order_list.findIndex(
-                order => order.order_id === order_response.p2p_order_info.order_id
-            );
-            const updated_orders = [...this.p2p_order_list];
-            // if it's a new order, add it to the top of the list
-            if (idx_order_to_update < 0) {
-                updated_orders.unshift(order_response.p2p_order_info);
+        // check if there is any error
+        if (!order_response.error) {
+            if (order_response.p2p_order_list) {
+                // it's an array of orders from p2p_order_list
+                this.p2p_order_list = order_response.p2p_order_list.list;
+                this.handleNotifications(this.p2p_order_list);
             } else {
-                // otherwise, update the correct order
-                updated_orders[idx_order_to_update] = order_response.p2p_order_info;
+                // it's a single order from p2p_order_info
+                const idx_order_to_update = this.p2p_order_list.findIndex(
+                    order => order.order_id === order_response.p2p_order_info.order_id
+                );
+                const updated_orders = [...this.p2p_order_list];
+                // if it's a new order, add it to the top of the list
+                if (idx_order_to_update < 0) {
+                    updated_orders.unshift(order_response.p2p_order_info);
+                } else {
+                    // otherwise, update the correct order
+                    updated_orders[idx_order_to_update] = order_response.p2p_order_info;
+                }
+                // trigger re-rendering by setting orders again
+                this.p2p_order_list = updated_orders;
+                this.handleNotifications(updated_orders);
             }
-            // trigger re-rendering by setting orders again
-            this.p2p_order_list = updated_orders;
-            this.handleNotifications(updated_orders);
         }
     }
 
@@ -219,12 +216,6 @@ export default class CashierStore extends BaseStore {
 
         this.p2p_notification_count = p2p_notification_count;
     };
-
-    @action.bound
-    async hasP2pOffer() {
-        this.p2p_offer_list = await WS.p2pOfferList();
-        return (ObjectUtils.getPropertyValue(this.p2p_offer_list, ['p2p_offer_list', 'list']) || []).length;
-    }
 
     @action.bound
     setIsP2pVisible(is_p2p_visible) {
@@ -1003,6 +994,5 @@ export default class CashierStore extends BaseStore {
         this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
         this.is_populating_values = false;
         this.setIsP2pVisible(false);
-        this.p2p_offer_list = {};
     }
 }

@@ -35,6 +35,7 @@ const Duration = ({
     server_time,
     start_date,
     market_open_times,
+    validation_errors,
 }) => {
     const expiry_list = [{ text: localize('Duration'), value: 'duration' }];
 
@@ -158,6 +159,7 @@ const Duration = ({
                             server_time={server_time}
                             shared_input_props={props.shared_input}
                             start_date={start_date}
+                            validation_errors={validation_errors}
                         />
                     )}
                     {!is_advanced_duration && (
@@ -169,17 +171,20 @@ const Duration = ({
                             number_input_props={props.number_input}
                             shared_input_props={props.shared_input}
                             simple_duration_unit={simple_duration_unit}
+                            validation_errors={validation_errors}
                         />
                     )}
 
-                    {contract_type === 'reset_call_put' && expiry_type !== 'endtime' && (
-                        <span className='trade-container__fieldset-info--minor'>
-                            {localize(
-                                'Reset time : {{ reset_display_value }}',
-                                getResetDisplayValues(getDurationFromUnit(duration_unit), duration_unit)
-                            )}
-                        </span>
-                    )}
+                    {contract_type === 'reset_call_put' &&
+                        expiry_type !== 'endtime' &&
+                        !validation_errors.duration.length && (
+                            <span className='trade-container__fieldset-info--minor'>
+                                {localize(
+                                    'Reset time : {{ reset_display_value }}',
+                                    getResetDisplayValues(getDurationFromUnit(duration_unit), duration_unit)
+                                )}
+                            </span>
+                        )}
                     <DurationToggle
                         name={'is_advanced_duration'}
                         onChange={onToggleDurationType}

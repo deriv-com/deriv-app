@@ -72,5 +72,4 @@ SimpleDuration.propTypes = {
 
 export default connect(({ modules }) => ({
     contract_expiry_type: modules.trade.contract_expiry_type,
-    validation_errors: modules.trade.validation_errors,
 }))(SimpleDuration);

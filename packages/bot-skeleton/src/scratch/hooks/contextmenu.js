@@ -48,7 +48,7 @@ Blockly.ContextMenu.wsCleanupOption = function(ws, numTopBlocks) {
 Blockly.ContextMenu.wsCollapseOption = function(hasExpandedBlocks, topBlocks) {
     return {
         enabled: hasExpandedBlocks,
-        text: localize('Collapse Blocks'),
+        text: localize('Collapse All Blocks'),
         callback() {
             Blockly.ContextMenu.toggleCollapseFn_(topBlocks, true);
         },
@@ -67,9 +67,71 @@ Blockly.ContextMenu.wsCollapseOption = function(hasExpandedBlocks, topBlocks) {
 Blockly.ContextMenu.wsExpandOption = function(hasCollapsedBlocks, topBlocks) {
     return {
         enabled: hasCollapsedBlocks,
-        text: localize('Expand Blocks'),
+        text: localize('Expand All Blocks'),
         callback() {
             Blockly.ContextMenu.toggleCollapseFn_(topBlocks, false);
+        },
+    };
+};
+
+/**
+ * Helper function for toggling delete state on blocks on the workspace, to be
+ * called from a right-click menu.
+ * deriv-bot: Remove "animation".
+ * @param {!Array.<!Blockly.BlockSvg>} topBlocks The list of top blocks on the the workspace.
+ * @param {boolean} shouldCollapse True if the blocks should be collapsed, false if they should be expanded.
+ * @private
+ */
+Blockly.ContextMenu.toggleCollapseFn_ = function(blocks, shouldCollapse) {
+    blocks.forEach(block => block.setCollapsed(shouldCollapse));
+};
+
+Blockly.ContextMenu.wsDeleteOption = function(ws, blocks) {
+    // Option to delete all blocks.
+    // Count the number of blocks that are deletable.
+    const delete_list = Blockly.WorkspaceSvg.buildDeleteList_(blocks);
+
+    // Scratch-specific: don't count shadow blocks in delete count
+    const delete_count = delete_list.filter(block => !block.isShadow()).length;
+
+    const event_group = Blockly.utils.genUid();
+    const DELAY = 10;
+
+    const deleteNext = () => {
+        Blockly.Events.setGroup(event_group);
+        const block = delete_list.shift();
+
+        if (block) {
+            if (block.workspace) {
+                block.dispose(false, true);
+                setTimeout(deleteNext, DELAY);
+            } else {
+                deleteNext();
+            }
+        }
+        Blockly.Events.setGroup(false);
+    };
+
+    return {
+        text:
+            delete_count === 1
+                ? localize('Delete Block')
+                : localize('Delete {{ delete_count }} Blocks', { delete_count }),
+        enabled: delete_count > 0,
+        callback() {
+            if (ws.currentGesture_) {
+                ws.currentGesture_.cancel();
+            }
+            if (delete_count < 2) {
+                deleteNext();
+            } else {
+                const msg = localize('Delete all {{ delete_count }} blocks?', { delete_count });
+                Blockly.confirm(msg, function(ok) {
+                    if (ok) {
+                        deleteNext();
+                    }
+                });
+            }
         },
     };
 };

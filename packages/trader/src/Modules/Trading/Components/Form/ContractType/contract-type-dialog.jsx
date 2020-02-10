@@ -1,32 +1,43 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { CSSTransition } from 'react-transition-group';
+import ContractTypeMenu from './ContractTypeMenu';
 import MobileDialog from '../../Elements/mobile-dialog.jsx';
 
-const ContractTypeDialog = ({ children, is_mobile, open, onClose }) =>
-    is_mobile ? (
-        <React.Fragment>
-            <span className='contract-type-widget__select-arrow' />
-            <MobileDialog title='Select Trading Type' visible={open} onClose={onClose}>
-                {children}
-            </MobileDialog>
-        </React.Fragment>
-    ) : (
-        <CSSTransition
-            in={open}
-            timeout={100}
-            classNames={{
-                enter: 'contracts-type-dialog--enter',
-                enterDone: 'contracts-type-dialog--enterDone',
-                exit: 'contracts-type-dialog--exit',
-            }}
-            unmountOnExit
+const ContractTypeDialog = ({
+    children,
+    is_info_dialog_open,
+    is_mobile,
+    is_open,
+    item,
+    list,
+    onBackButtonClick,
+    onClose,
+    onChangeInput,
+}) => {
+    if (is_mobile) {
+        return (
+            <React.Fragment>
+                <span className='contract-type-widget__select-arrow' />
+                <MobileDialog title='Select Trading Type' visible={is_open} onClose={onClose}>
+                    {children}
+                </MobileDialog>
+            </React.Fragment>
+        );
+    }
+
+    return (
+        <ContractTypeMenu
+            is_info_dialog_open={is_info_dialog_open}
+            is_open={is_open}
+            item={item}
+            list={list}
+            onBackButtonClick={onBackButtonClick}
+            onChangeInput={onChangeInput}
         >
-            <div className='contracts-type-dialog'>
-                <div className='contracts-type-dialog__list-wrapper'>{children}</div>
-            </div>
-        </CSSTransition>
+            {children}
+        </ContractTypeMenu>
     );
+};
 
 ContractTypeDialog.propTypes = {
     children: PropTypes.element,

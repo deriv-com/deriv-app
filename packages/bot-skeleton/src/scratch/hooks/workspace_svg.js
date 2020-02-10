@@ -293,3 +293,43 @@ Blockly.WorkspaceSvg.prototype.paste = function(xml_block) {
         this.pasteBlock_(xml_block);
     }
 };
+
+/**
+ * Show the context menu for the workspace.
+ * @param {!Event} e Mouse event.
+ * @private
+ */
+Blockly.WorkspaceSvg.prototype.showContextMenu_ = function(e) {
+    if (this.options.readOnly || this.isFlyout) {
+        return;
+    }
+    const menu_options = [];
+    const top_blocks = this.getTopBlocks(true);
+    const all_blocks = this.getAllBlocks(true);
+
+    // Options to undo/redo previous action.
+    menu_options.push(Blockly.ContextMenu.wsUndoOption(this));
+    menu_options.push(Blockly.ContextMenu.wsRedoOption(this));
+
+    // Option to clean up blocks.
+    if (this.scrollbar) {
+        menu_options.push(Blockly.ContextMenu.wsCleanupOption(this, top_blocks.length));
+    }
+
+    if (this.options.collapse) {
+        const has_collapsed_blocks = all_blocks.some(block => block.isCollapsed());
+        const has_expanded_blocks = all_blocks.some(block => !block.isCollapsed());
+
+        menu_options.push(Blockly.ContextMenu.wsExpandOption(has_collapsed_blocks, all_blocks));
+        menu_options.push(Blockly.ContextMenu.wsCollapseOption(has_expanded_blocks, all_blocks));
+    }
+
+    // Option to add a workspace comment.
+    if (this.options.comments) {
+        menu_options.push(Blockly.ContextMenu.workspaceCommentOption(this, e));
+    }
+
+    menu_options.push(Blockly.ContextMenu.wsDeleteOption(this, top_blocks));
+
+    Blockly.ContextMenu.show(e, menu_options, this.RTL);
+};

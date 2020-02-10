@@ -17,9 +17,7 @@ export const getResetDisplayValues = (reset_value, reset_unit) => {
                 } 30 ${duration_map.s.display_plural}`;
                 break;
             case 'h':
-                reset_time_str = `${val || ''} 30 ${
-                    val > 1 ? duration_map.m.display_plural : duration_map.m.display_singular
-                }`;
+                reset_time_str = `${val || ''} 30 ${duration_map.m.display_plural}`;
                 break;
             default: // no default
         }

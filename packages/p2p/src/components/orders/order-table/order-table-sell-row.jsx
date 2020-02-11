@@ -9,7 +9,7 @@ const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
         display_transaction_amount,
         display_offer_amount,
         display_status,
-        order_id,
+        id,
         order_purchase_datetime,
         offer_currency,
         transaction_currency,
@@ -30,7 +30,7 @@ const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
         >
             <Table.Row>
                 <Table.Cell>
-                    {localize('Sell')} {order_id}
+                    {localize('Sell')} {id}
                 </Table.Cell>
                 <Table.Cell>{order_purchase_datetime}</Table.Cell>
                 <Table.Cell
@@ -59,7 +59,7 @@ SellOrderRowComponent.propTypes = {
         display_status: PropTypes.string,
         display_transaction_amount: PropTypes.string,
         offer_currency: PropTypes.string,
-        order_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         order_purchase_datetime: PropTypes.string,
         transaction_currency: PropTypes.string,
     }),

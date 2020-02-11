@@ -25,7 +25,7 @@ const RowComponent = React.memo(({ data, row_actions, style }) => (
     <div style={style}>
         <Table.Row>
             <Table.Cell>
-                {type[data.type]} {data.offer_id}
+                {type[data.type]} {data.advert_id}
             </Table.Cell>
             <Table.Cell>
                 {data.display_available_amount} {data.offer_currency}
@@ -38,7 +38,7 @@ const RowComponent = React.memo(({ data, row_actions, style }) => (
             </Table.Cell>
             <Table.Cell>{data.display_payment_method}</Table.Cell>
             <Table.Cell>
-                <Button secondary small onClick={() => row_actions.onClickDelete(data.offer_id)}>
+                <Button secondary small onClick={() => row_actions.onClickDelete(data.advert_id)}>
                     {localize('Delete')}
                 </Button>
             </Table.Cell>
@@ -67,7 +67,7 @@ export class MyAdsTable extends React.Component {
     componentDidMount() {
         this.is_mounted = true;
 
-        requestWS({ p2p_agent_offers: 1 }).then(response => {
+        requestWS({ p2p_advertiser_adverts: 1 }).then(response => {
             if (this.is_mounted) {
                 this.setState({ items: response, is_loading: false });
             }
@@ -78,8 +78,8 @@ export class MyAdsTable extends React.Component {
         this.is_mounted = false;
     }
 
-    onClickDelete = offer_id => {
-        this.setState({ selected_ad_id: offer_id, show_popup: true });
+    onClickDelete = advert_id => {
+        this.setState({ selected_ad_id: advert_id, show_popup: true });
     };
 
     onClickCancel = () => {
@@ -87,12 +87,14 @@ export class MyAdsTable extends React.Component {
     };
 
     onClickConfirm = showError => {
-        requestWS({ p2p_offer_update: 1, offer_id: this.state.selected_ad_id, is_active: 0 }).then(response => {
+        requestWS({ p2p_advert_update: 1, id: this.state.selected_ad_id, is_adverts_active: 0 }).then(response => {
             if (response.error) {
                 showError({ error_message: response.error.message });
             } else {
                 // remove the deleted ad from the list of items
-                const updated_items = this.state.items.filter(ad => ad.offer_id !== response.p2p_offer_update.offer_id);
+                const updated_items = this.state.items.filter(
+                    ad => ad.advert_id !== response.p2p_advert_update.advert_id
+                );
                 this.setState({ items: updated_items, show_popup: false });
             }
         });

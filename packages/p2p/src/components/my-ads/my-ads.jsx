@@ -21,9 +21,9 @@ class MyAds extends Component {
 
     componentDidMount() {
         if (this.context.is_advertiser) {
-            requestWS({ p2p_agent_info: 1 }).then(response => {
+            requestWS({ p2p_advertiser_info: 1 }).then(response => {
                 if (!response.error) {
-                    this.setState({ is_enabled: !!response.p2p_agent_info.is_active, is_loading: false });
+                    this.setState({ is_enabled: !!response.p2p_advertiser_info.is_adverts_active, is_loading: false });
                 }
             });
         }

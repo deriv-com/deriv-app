@@ -12,7 +12,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
         is_buyer_confirmed,
         is_pending,
         offer_currency,
-        order_id,
+        id,
         setStatus,
         transaction_currency,
     } = order_details;
@@ -21,7 +21,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
     const cancelOrder = () => {
         const cancel = async setFormStatus => {
             setFormStatus({ error_message: '' });
-            const cancel_response = await requestWS({ p2p_order_cancel: 1, order_id });
+            const cancel_response = await requestWS({ p2p_order_cancel: 1, id });
 
             if (!cancel_response.error) {
                 setStatus(cancel_response.p2p_order_cancel.status);
@@ -45,7 +45,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
 
             const update_response = await requestWS({
                 p2p_order_confirm: 1,
-                order_id,
+                id,
             });
             if (!update_response.error) {
                 setStatus(update_response.p2p_order_confirm.status);
@@ -73,7 +73,7 @@ const OrderActionsBlock = ({ cancelPopup, order_details, showPopup }) => {
 
             const update_response = await requestWS({
                 p2p_order_confirm: 1,
-                order_id,
+                id,
             });
             if (!update_response.error) {
                 setStatus(update_response.p2p_order_confirm.status);

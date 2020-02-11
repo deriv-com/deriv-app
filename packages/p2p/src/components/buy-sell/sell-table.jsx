@@ -22,7 +22,7 @@ export class SellTable extends React.Component {
     componentDidMount() {
         this.is_mounted = true;
 
-        requestWS({ p2p_offer_list: 1, type: 'sell' }).then(response => {
+        requestWS({ p2p_advert_list: 1, type: 'sell' }).then(response => {
             if (this.is_mounted) {
                 if (!response.error) {
                     this.setState({ items: response, is_loading: false });

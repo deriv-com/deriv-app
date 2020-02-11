@@ -25,7 +25,7 @@ const OrderDetails = ({ order_details }) => {
         is_buyer_confirmed,
         is_expired,
         offer_currency,
-        order_id,
+        id,
         order_purchase_datetime,
         transaction_currency,
     } = order_details;
@@ -66,7 +66,7 @@ const OrderDetails = ({ order_details }) => {
                                     label={localize('Price')}
                                     value={`${display_price_rate} ${transaction_currency}`}
                                 />
-                                <OrderInfoBlock label={localize('Order ID')} value={order_id} />
+                                <OrderInfoBlock label={localize('Order ID')} value={id} />
                             </div>
                             <div className='order-details__info--right'>
                                 <OrderInfoBlock

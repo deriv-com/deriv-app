@@ -27,15 +27,14 @@ class FormAds extends Component {
         this.setState({ error_message: '' });
 
         requestWS({
-            p2p_offer_create: 1,
-            amount: values.offer_amount,
-            local_currency: this.context.local_currency_config.currency,
-            method: values.payment_method,
-            max_amount: values.max_transaction,
-            min_amount: values.min_transaction,
-            offer_description: values.advertiser_notes,
-            rate: values.price_rate,
+            p2p_advert_create: 1,
+            description: values.advertiser_notes,
             type: values.type,
+            amount: values.offer_amount,
+            max_order_amount: values.max_transaction,
+            min_order_amount: values.min_transaction,
+            payment_method: values.payment_method,
+            rate: values.price_rate,
         }).then(response => {
             // If we get an error we should let the user submit the form again else we just go back to the list of ads
             if (response.error) {

@@ -3,6 +3,7 @@ import React from 'react';
 import { Collapsible } from '@deriv/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals.jsx';
+import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
 import MobileWidget from '../Elements/mobile-widget.jsx';
 import ContractType from '../../Containers/contract-type.jsx';
 import Purchase from '../../Containers/purchase.jsx';
@@ -16,8 +17,11 @@ const ScreenSmall = ({ is_trade_enabled }) =>
     ) : (
         <Collapsible position='top' is_collapsed>
             <ContractType />
+            <div collapsible='true'>
+                <LastDigit />
+            </div>
             <MobileWidget />
-            <AllowEqualsMobile collapsible />
+            <AllowEqualsMobile collapsible='true' />
             <div className='purchase-container'>
                 <Purchase />
             </div>

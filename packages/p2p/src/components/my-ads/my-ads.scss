@@ -39,16 +39,18 @@
             & .dc-input__hint {
                 padding-top: 0.4rem;
             }
+            & .dc-input__field[type='textarea'] ~ .dc-field-error {
+                top: 9.7rem;
+            }
             &--single {
                 width: 18.9rem;
             }
             &--textarea {
-                width: 57rem;
-                height: 12.6rem;
+                width: 67.2rem;
+                height: 9.6rem;
 
-                .dc-input__hint,
-                .dc-field-error {
-                    top: 12.5rem;
+                .dc-input__hint {
+                    top: 9.7rem;
                 }
             }
             &--trailing {

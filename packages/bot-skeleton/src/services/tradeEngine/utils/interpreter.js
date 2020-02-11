@@ -178,7 +178,7 @@ export default class Interpreter {
 
             // Workaround for unknown number of args
             const reversed_args = args.slice().reverse();
-            let first_defined_arg_idx = reversed_args.findIndex(arg => arg !== undefined);
+            const first_defined_arg_idx = reversed_args.findIndex(arg => arg !== undefined);
 
             // Remove extra undefined args from end of the args
             const function_args = first_defined_arg_idx < 0 ? [] : reversed_args.slice(first_defined_arg_idx).reverse();

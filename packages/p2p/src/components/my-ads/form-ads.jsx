@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { Autocomplete, Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
-import ObjectUtils from '@deriv/shared/utils/object';
+import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import Dp2pContext from 'Components/context/dp2p-context';
 import FooterActions from 'Components/footer-actions/footer-actions.jsx';
@@ -10,28 +9,17 @@ import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { countDecimalPlaces } from 'Utils/string';
 import { requestWS } from 'Utils/websocket';
+import AdSummary from './my-ads-summary.jsx';
 
 class FormAds extends Component {
     state = {
-        country: '',
-        currency: '',
-        offer_currency: '',
         error_message: '',
         is_loading: true,
     };
 
     async componentDidMount() {
-        const residence_response = await requestWS({ residence_list: 1 });
-        const current_residence = residence_response.residence_list.find(
-            residence => residence.value === this.context.residence
-        );
-        const display_residence = ObjectUtils.getPropertyValue(current_residence, 'text') || '';
-
         this.setState({
             is_loading: false,
-            country: display_residence,
-            currency: this.context.local_currency_config.currency,
-            offer_currency: this.context.currency,
         });
     }
 
@@ -41,7 +29,7 @@ class FormAds extends Component {
         requestWS({
             p2p_offer_create: 1,
             amount: values.offer_amount,
-            local_currency: values.transaction_currency,
+            local_currency: this.context.local_currency_config.currency,
             method: values.payment_method,
             max_amount: values.max_transaction,
             min_amount: values.min_transaction,
@@ -69,12 +57,9 @@ class FormAds extends Component {
                     <Formik
                         initialValues={{
                             advertiser_notes: '',
-                            country: this.state.country,
-                            currency: this.state.currency,
                             max_transaction: '',
                             min_transaction: '',
                             offer_amount: '',
-                            offer_currency: this.state.offer_currency,
                             payment_method: 'bank_transfer',
                             price_rate: '',
                             type: 'buy',
@@ -82,7 +67,7 @@ class FormAds extends Component {
                         onSubmit={this.handleSubmit}
                         validate={this.validateFormAds}
                     >
-                        {({ isSubmitting, errors, touched, isValid, setFieldValue, values }) => (
+                        {({ isSubmitting, errors, touched, isValid, values }) => (
                             <div className='p2p-my-ads__form'>
                                 <Form noValidate>
                                     <ThemedScrollbars
@@ -94,38 +79,15 @@ class FormAds extends Component {
                                         autoHide
                                         autoHeightMax={440}
                                     >
-                                        <div className='p2p-my-ads__form-container'>
-                                            <Field name='country'>
-                                                {({ field }) => (
-                                                    <Autocomplete
-                                                        {...field}
-                                                        type='text'
-                                                        className='p2p-my-ads__form-field'
-                                                        label={localize('Country')}
-                                                        list_items={[]}
-                                                        disabled
-                                                        onItemSelection={({ value, text }) =>
-                                                            setFieldValue('country', value ? text : '', true)
-                                                        }
-                                                    />
-                                                )}
-                                            </Field>
-                                            <Field name='currency'>
-                                                {({ field }) => (
-                                                    <Autocomplete
-                                                        {...field}
-                                                        type='text'
-                                                        className='p2p-my-ads__form-field'
-                                                        label={localize('Local currency')}
-                                                        list_items={[]}
-                                                        disabled
-                                                        onItemSelection={({ value, text }) =>
-                                                            setFieldValue('currency', value ? text : '', true)
-                                                        }
-                                                    />
-                                                )}
-                                            </Field>
-                                        </div>
+                                        <p className='p2p-my-ads__form-summary'>
+                                            <AdSummary
+                                                offer_amount={values.offer_amount}
+                                                offer_currency={this.context.currency}
+                                                transaction_currency={this.context.local_currency_config.currency}
+                                                price_rate={values.price_rate}
+                                                type={values.type}
+                                            />
+                                        </p>
                                         <div className='p2p-my-ads__form-container'>
                                             <Field name='type'>
                                                 {({ field }) => (
@@ -142,29 +104,24 @@ class FormAds extends Component {
                                                     />
                                                 )}
                                             </Field>
-                                            <Field name='offer_currency'>
+                                            <Field name='offer_amount'>
                                                 {({ field }) => (
-                                                    <Autocomplete
+                                                    <Input
                                                         {...field}
-                                                        type='text'
+                                                        data-lpignore='true'
+                                                        type='number'
+                                                        error={touched.offer_amount && errors.offer_amount}
+                                                        label={localize('Total amount')}
                                                         className='p2p-my-ads__form-field'
-                                                        disabled
-                                                        label={localize('Asset')}
-                                                        hint={
-                                                            values.type === 'buy'
-                                                                ? localize('Currency client is buying')
-                                                                : localize('Currency client is selling')
+                                                        trailing_icon={
+                                                            <span className='p2p-my-ads__form-field--trailing'>
+                                                                {this.context.currency}
+                                                            </span>
                                                         }
-                                                        list_items={[]}
                                                         required
-                                                        onItemSelection={({ value, text }) =>
-                                                            setFieldValue('offer_currency', value ? text : '', true)
-                                                        }
                                                     />
                                                 )}
                                             </Field>
-                                        </div>
-                                        <div className='p2p-my-ads__form-container'>
                                             <Field name='price_rate'>
                                                 {({ field }) => (
                                                     <Input
@@ -173,30 +130,13 @@ class FormAds extends Component {
                                                         type='number'
                                                         error={touched.price_rate && errors.price_rate}
                                                         label={localize('Fixed price')}
-                                                        hint={localize('Price per 1 {{currency}}', {
-                                                            currency: values.offer_currency,
+                                                        hint={localize('Per 1 {{currency}}', {
+                                                            currency: this.context.currency,
                                                         })}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={
-                                                            <span className='p2p-my-ads__form-field--trailing'>{`${values.currency}/${values.offer_currency}`}</span>
-                                                        }
-                                                        required
-                                                    />
-                                                )}
-                                            </Field>
-                                            <Field name='offer_amount'>
-                                                {({ field }) => (
-                                                    <Input
-                                                        {...field}
-                                                        data-lpignore='true'
-                                                        type='number'
-                                                        error={touched.offer_amount && errors.offer_amount}
-                                                        label={localize('Amount')}
-                                                        hint={localize('Total asset offered')}
-                                                        className='p2p-my-ads__form-field'
-                                                        trailing_icon={
                                                             <span className='p2p-my-ads__form-field--trailing'>
-                                                                {values.offer_currency}
+                                                                {this.context.local_currency_config.currency}
                                                             </span>
                                                         }
                                                         required
@@ -205,6 +145,18 @@ class FormAds extends Component {
                                             </Field>
                                         </div>
                                         <div className='p2p-my-ads__form-container'>
+                                            <Field name='payment_method'>
+                                                {({ field }) => (
+                                                    <Dropdown
+                                                        {...field}
+                                                        placeholder={localize('Payment method')}
+                                                        is_align_text_left
+                                                        className='p2p-my-ads__form-field'
+                                                        list={[{ text: 'Bank transfer', value: 'bank_transfer' }]}
+                                                        error={touched.payment_method && errors.payment_method}
+                                                    />
+                                                )}
+                                            </Field>
                                             <Field name='min_transaction'>
                                                 {({ field }) => (
                                                     <Input
@@ -212,12 +164,11 @@ class FormAds extends Component {
                                                         data-lpignore='true'
                                                         type='number'
                                                         error={touched.min_transaction && errors.min_transaction}
-                                                        label={localize('Min limit')}
-                                                        hint={localize('Minimum order from client')}
+                                                        label={localize('Min order')}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={
                                                             <span className='p2p-my-ads__form-field--trailing'>
-                                                                {values.offer_currency}
+                                                                {this.context.currency}
                                                             </span>
                                                         }
                                                         required
@@ -230,12 +181,11 @@ class FormAds extends Component {
                                                         {...field}
                                                         type='number'
                                                         error={touched.max_transaction && errors.max_transaction}
-                                                        label={localize('Max limit')}
-                                                        hint={localize('Maximum order from client')}
+                                                        label={localize('Max order')}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={
                                                             <span className='p2p-my-ads__form-field--trailing'>
-                                                                {values.offer_currency}
+                                                                {this.context.currency}
                                                             </span>
                                                         }
                                                         required
@@ -243,18 +193,6 @@ class FormAds extends Component {
                                                 )}
                                             </Field>
                                         </div>
-                                        <Field name='payment_method'>
-                                            {({ field }) => (
-                                                <Dropdown
-                                                    {...field}
-                                                    placeholder={localize('Payment method')}
-                                                    is_align_text_left
-                                                    className='p2p-my-ads__form-field p2p-my-ads__form-field--single'
-                                                    list={[{ text: 'Bank transfer', value: 'bank_transfer' }]}
-                                                    error={touched.payment_method && errors.payment_method}
-                                                />
-                                            )}
-                                        </Field>
                                         <Field name='advertiser_notes'>
                                             {({ field }) => (
                                                 <Input
@@ -314,13 +252,13 @@ class FormAds extends Component {
             ],
             max_transaction: [
                 v => !!v,
-                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(values.offer_currency),
+                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
                 v => (values.offer_amount ? v <= values.offer_amount : true),
                 v => (values.min_transaction ? v >= values.min_transaction : true),
             ],
             min_transaction: [
                 v => !!v,
-                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(values.offer_currency),
+                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
                 v => (values.offer_amount ? v <= values.offer_amount : true),
                 v => (values.max_transaction ? v <= values.max_transaction : true),
             ],
@@ -329,7 +267,7 @@ class FormAds extends Component {
                 // TODO: uncomment this when we have available_price
                 // v => v > available_price,
                 // TODO: remove v > 0 check when we have available_price
-                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(values.offer_currency),
+                v => v > 0 && countDecimalPlaces(v) <= CurrencyUtils.getDecimalPlaces(this.context.currency),
                 v => (values.min_transaction ? v >= values.min_transaction : true),
                 v => (values.max_transaction ? v >= values.max_transaction : true),
             ],

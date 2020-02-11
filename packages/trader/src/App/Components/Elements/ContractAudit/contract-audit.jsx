@@ -22,7 +22,6 @@ class ContractAudit extends React.PureComponent {
 
         const is_tick = contract_info.tick_count > 0;
         const contract_time = is_tick ? contract_info.tick_count : duration;
-        const contract_unit = is_tick ? localize('ticks') : getDurationUnitText(duration_period);
 
         const contract_audit_item_config_list = [
             {
@@ -40,11 +39,11 @@ class ContractAudit extends React.PureComponent {
                 contractAuditItemProps: {
                     icon: 'IcContractDurationCircle',
                     label: localize('Duration'),
-                    value: `${contract_time} ${contract_unit}`,
+                    value: `${contract_time} ${getDurationUnitText(duration_period, is_tick).toLowerCase()}`,
                     valueHint: is_reset_call_put
                         ? localize(
                               'The reset time is {{ reset_display_value }}',
-                              getResetDisplayValues(contract_time, getDurationUnit(duration_period))
+                              getResetDisplayValues(contract_time, getDurationUnit(duration_period, is_tick))
                           )
                         : undefined,
                 },

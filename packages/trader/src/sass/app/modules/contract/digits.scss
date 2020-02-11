@@ -275,12 +275,16 @@
         }
     }
     @include mobile {
-        flex-wrap: wrap;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-gap: 1rem 0.2rem;
+        align-items: center;
         margin: 2rem auto;
+        padding-top: 7.8rem;
         max-width: 260px;
 
         &__container {
+            width: 100%;
             margin: 2.4rem;
             text-align: center;
         }

@@ -20,6 +20,14 @@ class Digits extends React.PureComponent {
         this.setState({ mounted: true });
     }
 
+    get popover_message() {
+        return localize(
+            `Last digit stats for latest 1000 ticks for ${
+                getMarketNamesMap()[this.props.contract_info.underlying.toUpperCase()]
+            }`
+        );
+    }
+
     render() {
         const {
             contract_info,
@@ -29,7 +37,6 @@ class Digits extends React.PureComponent {
             is_digit_contract,
             is_ended,
             is_trade_page,
-            underlying,
         } = this.props;
 
         const has_contract = contract_info.date_start;
@@ -54,10 +61,6 @@ class Digits extends React.PureComponent {
             }
         }
 
-        const popover_message = localize(
-            `Last digit stats for latest 1000 ticks for ${getMarketNamesMap()[underlying.toUpperCase()]}`
-        );
-
         return (
             <SlideIn
                 is_visible={(digits_array || is_digit_contract) && this.state.mounted}
@@ -65,7 +68,7 @@ class Digits extends React.PureComponent {
                 keyname='digits'
                 type='bottom'
             >
-                {underlying && isDesktop() && (
+                {contract_info.underlying && isDesktop() && (
                     <div className='digits__tooltip-container'>
                         <Popover
                             alignment='top'
@@ -73,7 +76,7 @@ class Digits extends React.PureComponent {
                             icon='info'
                             id='dt_last_digits_info_tooltip'
                             margin={4}
-                            message={popover_message}
+                            message={this.popover_message}
                         />
                     </div>
                 )}
@@ -92,7 +95,9 @@ class Digits extends React.PureComponent {
                     status={!is_contract_elapsed && is_tick_ready ? display_status : null}
                     tick={tick}
                 />
-                {isMobile() && <span className='digits__tooltip-text'>{popover_message}</span>}
+                {isMobile() && contract_info.underlying && (
+                    <span className='digits__tooltip-text'>{this.popover_message}</span>
+                )}
             </SlideIn>
         );
     }

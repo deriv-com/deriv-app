@@ -9,6 +9,9 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
     justify-content: space-between;
     width: 100%;
 
+    @include mobile {
+        left: 0;
+    }
     &-button:hover {
         cursor: pointer;
     }

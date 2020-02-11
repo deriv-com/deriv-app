@@ -176,7 +176,15 @@ export default class Interpreter {
         const asyncFunc = (...args) => {
             const callback = args.pop();
 
-            func(...args.map(arg => interpreter.pseudoToNative(arg)))
+            // Workaround for unknown number of args
+            const reversed_args = args.slice().reverse();
+            let first_defined_arg_idx = reversed_args.findIndex(arg => arg !== undefined);
+
+            // Remove extra undefined args from end of the args
+            const function_args = first_defined_arg_idx < 0 ? [] : reversed_args.slice(first_defined_arg_idx).reverse();
+            // End of workaround
+
+            func(...function_args.map(arg => interpreter.pseudoToNative(arg)))
                 .then(rv => {
                     callback(interpreter.nativeToPseudo(rv));
                     this.loop();
@@ -184,8 +192,10 @@ export default class Interpreter {
                 .catch(e => this.$scope.observer.emit('Error', e));
         };
 
-        // Manually assign length prop so JS-Interpreter doesn't ignore args.
-        Object.defineProperty(asyncFunc, 'length', { value: func.length + 1 });
+        // TODO: This is a workaround, create issue on original repo, once fixed
+        // remove this. We don't know how many args are going to be passed, so we
+        // assume a max of 100.
+        Object.defineProperty(asyncFunc, 'length', { value: 100 });
         return interpreter.createAsyncFunction(asyncFunc);
     }
 

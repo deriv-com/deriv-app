@@ -44,7 +44,12 @@
             }
             &--textarea {
                 width: 57rem;
-                height: 9.6rem;
+                height: 12.6rem;
+
+                .dc-input__hint,
+                .dc-field-error {
+                    top: 12.5rem;
+                }
             }
             &--trailing {
                 font-size: var(--text-size-xxs);

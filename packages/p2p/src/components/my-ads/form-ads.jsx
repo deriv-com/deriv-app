@@ -56,11 +56,11 @@ class FormAds extends Component {
                     <Formik
                         initialValues={{
                             advertiser_notes: '',
-                            max_transaction: '',
-                            min_transaction: '',
-                            offer_amount: '',
+                            max_transaction: undefined,
+                            min_transaction: undefined,
+                            offer_amount: undefined,
                             payment_method: 'bank_transfer',
-                            price_rate: '',
+                            price_rate: undefined,
                             type: 'buy',
                         }}
                         onSubmit={this.handleSubmit}
@@ -200,8 +200,9 @@ class FormAds extends Component {
                                                     type='textarea'
                                                     error={touched.advertiser_notes && errors.advertiser_notes}
                                                     label={localize('Advertiser notes')}
+                                                    hint={'This information will be visible to everyone'}
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                    placeholder='Your contact and payment info'
+                                                    placeholder='Payment and contact details'
                                                     required
                                                 />
                                             )}

@@ -83,8 +83,16 @@ export default class ContractTradeStore extends BaseStore {
             .map(c => c.marker)
             .filter(m => m)
             .map(m => toJS(m));
+
+        // Set last contract to the last running contract.
         if (markers.length) {
-            markers[markers.length - 1].is_last_contract = true;
+            for (let i = markers.length - 1; i >= 0; i--) {
+                const marker = markers[i];
+                if (!marker.contract_info.is_sold) {
+                    marker.is_last_contract = true;
+                    break;
+                }
+            }
         }
         return markers;
     }

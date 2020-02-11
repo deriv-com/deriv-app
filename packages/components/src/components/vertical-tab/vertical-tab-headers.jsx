@@ -8,17 +8,14 @@ class VerticalTabHeaders extends React.PureComponent {
     headers = [];
     state = { top: 0 };
 
-    componentDidMount() {
-        this.headers = this.ref.current.querySelectorAll('.dc-vertical-tab__header__link');
-        this.setState({ top: this.offset_top });
-    }
-
     componentDidUpdate() {
         this.setState({ top: this.offset_top });
     }
 
     get offset_top() {
         const { selected } = this.props;
+
+        this.headers = this.ref.current.querySelectorAll('.dc-vertical-tab__header__link');
 
         const selected_el = [...this.headers].find(header => header.innerText === (selected.label || selected.title));
 

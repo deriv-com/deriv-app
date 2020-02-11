@@ -1,5 +1,5 @@
 import { observable, action } from 'mobx';
-import { load, config, save_types, getSavedWorkspaces } from '@deriv/bot-skeleton';
+import { load, config, save_types, getSavedWorkspaces, removeExistingWorkspace } from '@deriv/bot-skeleton';
 
 export default class LoadModalStore {
     @observable is_load_modal_open = false;
@@ -54,7 +54,9 @@ export default class LoadModalStore {
         // add drag and drop event listerner when switch to local tab
         if (this.active_index === 1) {
             this.drop_zone = document.getElementById('import_dragndrop');
-            this.drop_zone.addEventListener('drop', e => this.handleFileChange(e, false));
+            if (this.drop_zone) {
+                this.drop_zone.addEventListener('drop', e => this.handleFileChange(e, false));
+            }
         } else if (this.drop_zone) {
             this.drop_zone.removeEventListener('drop', e => this.handleFileChange(e, false));
         }
@@ -102,7 +104,7 @@ export default class LoadModalStore {
             this.recent_workspace.clear();
         }
 
-        load(xml_file, {}, this.recent_workspace);
+        load({ block_string: xml_file, drop_event: {}, preview_workspace: this.recent_workspace });
     }
 
     @action.bound
@@ -121,14 +123,17 @@ export default class LoadModalStore {
     loadFileFromRecent() {
         this.is_open_button_loading = true;
         const selected_workspace = this.recent_files.find(file => file.id === this.selected_file_id);
-        const { onBotNameTyped } = this.root_store.toolbar;
 
         if (!selected_workspace) {
             return;
         }
 
-        onBotNameTyped(selected_workspace.name);
-        load(selected_workspace.xml);
+        removeExistingWorkspace(selected_workspace.id);
+        load({
+            block_string: selected_workspace.xml,
+            strategy_id: selected_workspace.id,
+            file_name: selected_workspace.name,
+        });
         this.is_open_button_loading = false;
         this.toggleLoadModal();
     }
@@ -172,33 +177,17 @@ export default class LoadModalStore {
         }
 
         files = Array.from(files);
-        this.loaded_local_file = files[0];
-        this.handleFilefromLocal(files[0], !is_body, event);
+        this.readFile(!is_body, event, files[0]);
         event.target.value = '';
     }
 
-    @action.bound
-    handleFilefromLocal(file, is_preview, drop_event) {
-        const { onBotNameTyped } = this.root_store.toolbar;
-
-        if (!file.type.match('text/xml')) {
-            return;
-        }
-
-        this.readFile(file, is_preview, drop_event);
-
-        if (!is_preview) {
-            const file_name = file.name.replace(/\.[^/.]+$/, '');
-            onBotNameTyped(file_name);
-        }
-    }
-
     // eslint-disable-next-line class-methods-use-this
-    readFile(file, is_preview, drop_event) {
+    readFile(is_preview, drop_event, file) {
+        const file_name = file.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
         reader.onload = action(e => {
             if (is_preview) {
-                this.is_local_workspace_loading = true;
+                this.loaded_local_file = file;
                 const ref = document.getElementById('load-local__scratch');
                 this.local_workspace = Blockly.inject(ref, {
                     media: `${__webpack_public_path__}media/`, // eslint-disable-line
@@ -208,10 +197,9 @@ export default class LoadModalStore {
                     },
                     readOnly: true,
                 });
-                load(e.target.result, drop_event, this.local_workspace);
-                this.is_local_workspace_loading = false;
+                load({ block_string: e.target.result, drop_event, preview_workspace: this.local_workspace });
             } else {
-                load(e.target.result, drop_event);
+                load({ block_string: e.target.result, drop_event, file_name });
             }
         });
         reader.readAsText(file);
@@ -220,7 +208,7 @@ export default class LoadModalStore {
     @action.bound
     loadFileFromLocal() {
         this.is_open_button_loading = true;
-        this.handleFilefromLocal(this.loaded_local_file);
+        this.readFile(false, {});
         this.is_open_button_loading = false;
         this.toggleLoadModal();
     }
@@ -246,14 +234,12 @@ export default class LoadModalStore {
 
     @action.bound
     async onDriveOpen() {
-        const { google_drive, toolbar } = this.root_store;
-        const { onBotNameTyped } = toolbar;
+        const { google_drive } = this.root_store;
         const { loadFile } = google_drive;
 
         const { xml_doc, file_name } = await loadFile();
 
-        onBotNameTyped(file_name);
-        load(xml_doc);
+        load({ block_string: xml_doc, file_name });
         this.toggleLoadModal();
     }
     /** --------- GD Tab End --------- */

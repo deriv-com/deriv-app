@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 import { localize } from '@deriv/translations';
-import { scrollWorkspace, runGroupedEvents } from '@deriv/bot-skeleton';
+import { scrollWorkspace, runGroupedEvents, load } from '@deriv/bot-skeleton';
 import { tabs_title } from '../constants/bot-contents';
 
 export default class ToolbarStore {
@@ -96,13 +96,13 @@ export default class ToolbarStore {
 
     @action.bound
     onResetOkButtonClick() {
-        const workspace = Blockly.derivWorkspace;
-
         runGroupedEvents(
             false,
             () => {
+                const workspace = Blockly.derivWorkspace;
                 workspace.clear();
-                Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.cached_xml.main), workspace);
+                workspace.currentStrategy = Blockly.utils.genUid();
+                load({ block_string: workspace.cached_xml.main, file_name: localize('Untitled Bot') });
             },
             'reset'
         );

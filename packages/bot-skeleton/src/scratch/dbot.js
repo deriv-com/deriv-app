@@ -43,7 +43,7 @@ class DBot {
 
             this.workspace.addChangeListener(event => saveWorkspaceToRecent(save_types.UNSAVED, event));
             this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
-            this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
+            this.workspace.addChangeListener(updateDisabledBlocks);
             this.addBeforeRunFunction(this.unselectBlocks.bind(this));
             this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
             this.addBeforeRunFunction(this.checkForErroredBlocks.bind(this));
@@ -51,10 +51,14 @@ class DBot {
 
             // Push main.xml to workspace and reset the undo stack.
             const recent_files = getSavedWorkspaces();
-            Blockly.Xml.domToWorkspace(
-                Blockly.Xml.textToDom(recent_files ? recent_files[0].xml : main_xml),
-                this.workspace
-            );
+            this.workspace.currentStrategy = Blockly.utils.genUid();
+            let strategy_to_load = main_xml;
+            if (recent_files) {
+                const latest_file = recent_files[0];
+                strategy_to_load = latest_file.xml;
+                Blockly.derivWorkspace.currentStrategy = latest_file.id;
+            }
+            Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy_to_load), this.workspace);
             this.workspace.clearUndo();
 
             const { handleFileChange } = DBotStore.instance;

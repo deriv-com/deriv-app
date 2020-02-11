@@ -7,16 +7,16 @@ import { save_types } from '../constants/save-type';
  * @param {Blockly.Events} event // Blockly event object
  */
 export const saveWorkspaceToRecent = (save_type, event = {}) => {
-    if (event.recordUndo === false) {
+    if (event.recordUndo === false || event.group === 'load_collections') {
         return;
     }
 
     const { toolbar } = DBotStore.instance;
-    const workspace_id = Blockly.derivWorkspace.id;
+    const workspace_id = Blockly.derivWorkspace.currentStrategy || Blockly.utils.genUid();
     const workspaces = JSON.parse(localStorage.getItem('saved_workspaces')) || [];
     const current_xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.derivWorkspace));
     const current_timestamp = Date.now();
-    const current_workspace_index = workspaces.findIndex(workspace => workspace.id === `${workspace_id}_${save_type}`);
+    const current_workspace_index = workspaces.findIndex(workspace => workspace.id === workspace_id);
 
     if (current_workspace_index >= 0) {
         const current_workspace = workspaces[current_workspace_index];
@@ -25,16 +25,8 @@ export const saveWorkspaceToRecent = (save_type, event = {}) => {
         current_workspace.timestamp = current_timestamp;
         current_workspace.save_type = save_type;
     } else {
-        const unsaved_workspace_index = workspaces.findIndex(
-            workspace => workspace.id === `${workspace_id}_${save_types.UNSAVED}`
-        );
-
-        if (unsaved_workspace_index >= 0) {
-            workspaces.splice(unsaved_workspace_index, 1);
-        }
-
         workspaces.push({
-            id: `${workspace_id}_${save_type}`,
+            id: workspace_id,
             timestamp: current_timestamp,
             name: toolbar.file_name,
             xml: current_xml,
@@ -57,4 +49,15 @@ export const saveWorkspaceToRecent = (save_type, event = {}) => {
 
 export const getSavedWorkspaces = () => {
     return JSON.parse(localStorage.getItem('saved_workspaces'));
+};
+
+export const removeExistingWorkspace = workspace_id => {
+    const workspaces = JSON.parse(localStorage.getItem('saved_workspaces')) || [];
+    const current_workspace_index = workspaces.findIndex(workspace => workspace.id === workspace_id);
+
+    if (current_workspace_index >= 0) {
+        workspaces.splice(current_workspace_index, 1);
+    }
+
+    localStorage.setItem('saved_workspaces', JSON.stringify(workspaces));
 };

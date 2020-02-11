@@ -4,6 +4,9 @@ import BlockConversion from '../backward-compatibility';
 import { config } from '../../constants/config';
 import { observer as globalObserver } from '../../utils/observer';
 import { removeLimitedBlocks } from '../../utils/workspace';
+import DBotStore from '../dbot-store';
+import { saveWorkspaceToRecent } from '../../utils/local-storage';
+import { save_types } from '../../constants/save-type';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 
@@ -66,7 +69,14 @@ export const save = (filename = '@deriv/bot', collection = false, xmlDom) => {
     saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
 };
 
-export const load = (block_string, drop_event, preview_workspace = null, showIncompatibleStrategyDialog) => {
+export const load = ({
+    block_string,
+    drop_event,
+    file_name,
+    strategy_id,
+    preview_workspace,
+    showIncompatibleStrategyDialog,
+}) => {
     const showInvalidStrategyError = () => {
         const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
         globalObserver.emit('Error', error_message);
@@ -113,7 +123,8 @@ export const load = (block_string, drop_event, preview_workspace = null, showInc
     }
 
     try {
-        const event_group = `dbot-load${Date.now()}`;
+        const is_collection = xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true';
+        const event_group = is_collection ? 'load_collection' : `dbot-load${Date.now()}`;
         const workspace = preview_workspace || Blockly.derivWorkspace;
 
         Blockly.Events.setGroup(event_group);
@@ -122,10 +133,19 @@ export const load = (block_string, drop_event, preview_workspace = null, showInc
             Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
         );
 
-        if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-            loadBlocks(xml, drop_event, event_group, preview_workspace);
+        if (is_collection) {
+            loadBlocks(xml, drop_event, event_group, workspace);
         } else {
-            loadWorkspace(xml, event_group, preview_workspace);
+            loadWorkspace(xml, event_group, workspace);
+
+            if (!preview_workspace) {
+                const { onBotNameTyped } = DBotStore.instance;
+                onBotNameTyped(file_name);
+
+                workspace.clearUndo();
+                workspace.currentStrategy = strategy_id || Blockly.utils.genUid();
+                saveWorkspaceToRecent(save_types.UNSAVED);
+            }
         }
 
         // Set user disabled state on all disabled blocks. This ensures we don't change the disabled
@@ -147,23 +167,20 @@ export const load = (block_string, drop_event, preview_workspace = null, showInc
     return true;
 };
 
-const loadBlocks = (xml, drop_event, event_group, preview_workspace) => {
+const loadBlocks = (xml, drop_event, event_group, workspace) => {
     Blockly.Events.setGroup(event_group);
 
-    const workspace = preview_workspace || Blockly.derivWorkspace;
     const block_ids = Blockly.Xml.domToWorkspace(xml, workspace);
     const added_blocks = block_ids.map(block_id => workspace.getBlockById(block_id));
 
     if (drop_event && Object.keys(drop_event).length !== 0) {
-        cleanUpOnLoad(added_blocks, drop_event, preview_workspace);
+        cleanUpOnLoad(added_blocks, drop_event, workspace);
     } else {
         workspace.cleanUp();
     }
 };
 
-const loadWorkspace = (xml, event_group, preview_workspace) => {
-    const workspace = preview_workspace || Blockly.derivWorkspace;
-
+const loadWorkspace = (xml, event_group, workspace) => {
     Blockly.Events.setGroup(event_group);
     workspace.clear();
 
@@ -361,7 +378,8 @@ export const runInvisibleEvents = callbackFn => {
     Blockly.Events.enable();
 };
 
-export const updateDisabledBlocks = (workspace, event) => {
+export const updateDisabledBlocks = event => {
+    const workspace = Blockly.derivWorkspace;
     if (event.type === Blockly.Events.END_DRAG) {
         workspace.getAllBlocks().forEach(block => {
             if (!block.getParent() || block.is_user_disabled_state) {

@@ -95,7 +95,7 @@ export default class QuickStrategyStore {
         });
 
         load(Blockly.Xml.domToText(strategy_dom));
-        toolbar.onBotNameTyped(`My ${strategies[strategy_name].label}`);
+        toolbar.onBotNameTyped(strategies[strategy_name].label);
         this.toggleStrategyModal();
     }
 

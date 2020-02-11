@@ -73,7 +73,7 @@ $modal_container_height: calc(100vh - 210px);
             margin-bottom: 25px;
             display: flex;
             justify-content: space-between;
-            min-height: 500px;
+            height: 100%;
         }
         &__files {
             width: 30%;
@@ -87,6 +87,7 @@ $modal_container_height: calc(100vh - 210px);
             display: flex;
             justify-content: space-between;
             border-bottom: solid 1px var(--border-normal);
+            height: 100px;
 
             &-text {
                 margin-left: 10px;
@@ -194,7 +195,7 @@ $modal_container_height: calc(100vh - 210px);
             width: fit-content;
         }
         &__preview {
-            height: 100%;
+            height: calc(100% - 30px);
 
             &-title {
                 text-align: left;

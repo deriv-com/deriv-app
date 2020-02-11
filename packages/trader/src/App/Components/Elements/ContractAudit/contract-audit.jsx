@@ -54,7 +54,12 @@ class ContractAudit extends React.PureComponent {
                 contractAuditItemProps: {
                     icon: (() => {
                         if (is_digit) return 'IcContractTarget';
-                        return is_reset_call_put ? 'IcContractBarrierDotted' : 'IcContractBarrierSolid';
+                        if (
+                            is_reset_call_put &&
+                            addCommaToNumber(contract_info.entry_spot) !== getBarrierValue(contract_info)
+                        )
+                            return 'IcContractBarrierDotted';
+                        return 'IcContractBarrierSolid';
                     })(),
                     label: getBarrierLabel(contract_info),
                     value: is_reset_call_put
@@ -69,7 +74,8 @@ class ContractAudit extends React.PureComponent {
                     label: localize('Reset barrier'),
                     value: getBarrierValue(contract_info),
                 },
-                shouldShow: is_reset_call_put,
+                shouldShow:
+                    is_reset_call_put && addCommaToNumber(contract_info.entry_spot) !== getBarrierValue(contract_info),
             },
             {
                 containerId: 'dt_start_time_label',

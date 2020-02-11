@@ -20,7 +20,7 @@ export class BuyTable extends React.Component {
     componentDidMount() {
         this.is_mounted = true;
 
-        requestWS({ p2p_advert_list: 1, type: 'buy' }).then(response => {
+        requestWS({ p2p_advert_list: 1, counterparty_type: 'buy' }).then(response => {
             if (this.is_mounted) {
                 if (!response.error) {
                     this.setState({ items: response, is_loading: false });

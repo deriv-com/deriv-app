@@ -81,7 +81,7 @@ const getModifiedP2PAdvertList = response => {
             display_offer_amount: formatMoney(offer_currency, offer_amount),
             display_payment_method: map_payment_method[payment_method] || payment_method,
             display_price_rate: formatMoney(transaction_currency, price_rate),
-            type: filtered_list[i].type,
+            type: filtered_list[i].counterparty_type,
         };
     }
     return modified_response;

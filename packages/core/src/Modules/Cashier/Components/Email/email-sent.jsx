@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon } from '@deriv/components';
-import { BinaryLink } from 'App/Components/Routes';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -51,9 +50,12 @@ class EmailSent extends React.Component {
                             />
                         </React.Fragment>
                     ) : (
-                        <BinaryLink className='withdraw__email-resend-text' onClick={this.onClickVerification}>
-                            <Localize i18n_default_text={"Didn't receive the email?"} />
-                        </BinaryLink>
+                        <Button
+                            className='withdraw__email-resend-text'
+                            text={localize("Didn't receive the email?")}
+                            onClick={this.onClickVerification}
+                            tertiary
+                        />
                     )}
                 </div>
             </div>

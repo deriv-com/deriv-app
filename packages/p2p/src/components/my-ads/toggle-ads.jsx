@@ -27,10 +27,10 @@ class ToggleAds extends Component {
     };
 
     handleToggle = () => {
-        const is_adverts_active = this.state.is_enabled ? 0 : 1;
+        const is_listed = this.state.is_enabled ? 0 : 1;
         this.setState({ is_enabled: !this.state.is_enabled });
 
-        requestWS({ p2p_advertiser_update: 1, is_adverts_active }).then(response => {
+        requestWS({ p2p_advertiser_update: 1, is_listed }).then(response => {
             if (response.error) {
                 this.setState({ error: response.error.message, is_enabled: !this.state.is_enabled });
             }

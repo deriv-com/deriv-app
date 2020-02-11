@@ -87,7 +87,7 @@ export class MyAdsTable extends React.Component {
     };
 
     onClickConfirm = showError => {
-        requestWS({ p2p_advert_update: 1, id: this.state.selected_ad_id, is_adverts_active: 0 }).then(response => {
+        requestWS({ p2p_advert_update: 1, id: this.state.selected_ad_id, is_listed: 0 }).then(response => {
             if (response.error) {
                 showError({ error_message: response.error.message });
             } else {

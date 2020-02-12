@@ -1,6 +1,6 @@
 @include mobile {
     /** disabling pull to refresh on iOS / Android browsers */
-    /** @define deriv-app; weak */
+    /* postcss-bem-linter: ignore */
     body,
     .deriv-app,
     .modal-root,

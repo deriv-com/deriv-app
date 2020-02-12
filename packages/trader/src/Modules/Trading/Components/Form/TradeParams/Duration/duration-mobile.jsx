@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, TickPicker, Numpad } from '@deriv/components';
+import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -153,6 +153,7 @@ const Duration = ({
     duration_units_list,
     duration_unit,
     duration_tab_idx,
+    duration_min_max,
     setDurationTabIdx,
     t_duration,
     s_duration,
@@ -168,6 +169,10 @@ const Duration = ({
     const active_index = has_selected_tab_idx
         ? duration_tab_idx
         : duration_units_list.findIndex(d => d.value === duration_unit);
+    const [min, max] = getDurationMinMaxValues(duration_min_max, 'daily', 'd');
+    const handleRelativeChange = date => {
+        setSelectedDuration('d', date);
+    };
     const selected_basis_option = () => {
         if (amount_tab_idx === 0) {
             return 'stake';
@@ -255,6 +260,12 @@ const Duration = ({
                                         stake_value={stake_value}
                                         payout_value={payout_value}
                                     />
+                                    <RelativeDatepicker
+                                        onChange={handleRelativeChange}
+                                        min={min}
+                                        max={max}
+                                        title='Pick an end date'
+                                    />
                                 </div>
                             );
                         default:
@@ -268,6 +279,7 @@ const Duration = ({
 
 export default connect(({ modules }) => ({
     duration_units_list: modules.trade.duration_units_list,
+    duration_min_max: modules.trade.duration_min_max,
     duration_unit: modules.trade.duration_unit,
     trade_basis: modules.trade.basis,
 }))(Duration);

@@ -9,6 +9,10 @@ class VerticalTabHeaders extends React.PureComponent {
     headers = [];
     state = { top: 0 };
 
+    componentDidMount() {
+        this.setState({ top: this.offset_top });
+    }
+
     componentDidUpdate() {
         this.setState({ top: this.offset_top });
     }

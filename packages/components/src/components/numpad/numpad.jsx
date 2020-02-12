@@ -83,9 +83,12 @@ const Numpad = ({
     });
 
     React.useEffect(() => {
+        if (value) setValue(value);
+    }, [value]);
+
+    React.useEffect(() => {
         if (onValueChange) onValueChange(default_value);
     }, [default_value]);
-
     return (
         <div
             className={classNames('dc-numpad', className, {

@@ -181,7 +181,6 @@ const Duration = ({
         }
         return trade_basis;
     };
-
     return (
         <div>
             <Tabs
@@ -260,12 +259,19 @@ const Duration = ({
                                         stake_value={stake_value}
                                         payout_value={payout_value}
                                     />
-                                    <RelativeDatepicker
-                                        onChange={handleRelativeChange}
-                                        min={min}
-                                        max={max}
-                                        title='Pick an end date'
-                                    />
+                                    <RelativeDatepicker onChange={handleRelativeChange} min={min} max={max}>
+                                        <div
+                                            style={{
+                                                fontSize: '1.4em',
+                                                color: 'var(--purchase-main-2)',
+                                                lineHeight: '1.43',
+                                                fontWeight: 'bold',
+                                                paddingBottom: '16px',
+                                            }}
+                                        >
+                                            {localize('Pick a end time')}
+                                        </div>
+                                    </RelativeDatepicker>
                                 </div>
                             );
                         default:

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -74,7 +75,12 @@ class LastDigitPrediction extends React.Component {
             ? { digit: latest_tick_digit, spot: latest_tick_ask_price }
             : last_contract_digit;
         return (
-            <div ref={node => (this.node = node)} className='digits'>
+            <div
+                ref={node => (this.node = node)}
+                className={classNames('digits', {
+                    'digits--trade': is_trade_page,
+                })}
+            >
                 {display_array.map(idx => (
                     <DigitDisplay
                         barrier={this.getBarrier(idx)}

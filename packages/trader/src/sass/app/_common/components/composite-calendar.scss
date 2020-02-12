@@ -21,6 +21,13 @@
         display: flex;
         border-radius: $BORDER_RADIUS;
 
+        &--fill {
+            width: 100%;
+            & > .input-field {
+                width: 100%;
+            }
+        }
+
         & > .input-field {
             margin: 0;
             @include colorIcon(var(--text-prominent));
@@ -72,6 +79,63 @@
 
             &:hover:not(.composite-calendar__prepopulated-list--is-active) {
                 background: var(--state-hover);
+            }
+        }
+    }
+    @include mobile {
+        &-modal {
+            padding: 16px;
+            &__actions {
+                display: flex;
+                > * {
+                    flex: 1;
+                    margin: 8px;
+                }
+
+                &__today {
+                    width: 100%;
+                    margin-top: 40px;
+                }
+            }
+            &__radio-group {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+            &__radio {
+                display: flex;
+                align-items: center;
+                padding: 7px 8px;
+                border: 1px solid;
+                border-color: var(--border-normal);
+                border-radius: 4px;
+                margin: 8px;
+                font-size: 1.4rem;
+                &__input {
+                    display: none;
+                }
+                &__circle {
+                    border: 2px solid var(--border-normal);
+                    border-radius: 50%;
+                    box-shadow: 0 0 1px 0 var(--shadow-menu);
+                    width: 16px;
+                    height: 16px;
+                    transition: all 0.3s ease-in-out;
+                    margin-right: 8px;
+                    align-self: center;
+
+                    &--selected {
+                        border-width: 4px;
+                        border-color: var(--brand-red-coral);
+                        background: var(--text-prominent);
+                    }
+                }
+                &__label {
+                    color: var(--text-prominent);
+                }
+                &--selected {
+                    border-color: var(--brand-secondary);
+                    font-weight: bold;
+                }
             }
         }
     }

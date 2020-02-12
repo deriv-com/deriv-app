@@ -12,16 +12,14 @@ const RelativeDatepicker = ({ onChange, min, max, title }) => {
         onChange(daysFromTodayTo(e.target.value));
     };
 
-    const min_date = min
-        ? toMoment()
-              .add(min, 'd')
-              .format('YYYY-MM-DD')
-        : null;
-    const max_date = max
-        ? toMoment()
-              .add(max, 'd')
-              .format('YYYY-MM-DD')
-        : null;
+    const InputDateFormat = date => {
+        console.log(date);
+        return date
+            ? toMoment()
+                  .add(date, 'd')
+                  .format('YYYY-MM-DD')
+            : null;
+    };
     return (
         <div className='dc-relative-datepicker' onClick={clickHandler}>
             <span className='dc-relative-datepicker__span'>{title}</span>
@@ -29,8 +27,8 @@ const RelativeDatepicker = ({ onChange, min, max, title }) => {
                 type='date'
                 ref={hidden_input_ref}
                 onChange={onChangeHandler}
-                min={min_date}
-                max={max_date}
+                min={InputDateFormat(min)}
+                max={InputDateFormat(max)}
                 className='dc-relative-datepicker__input'
             />
         </div>
@@ -38,8 +36,8 @@ const RelativeDatepicker = ({ onChange, min, max, title }) => {
 };
 
 RelativeDatepicker.propTypes = {
-    max: PropTypes.string,
-    min: PropTypes.string,
+    max: PropTypes.number,
+    min: PropTypes.number,
     onChange: PropTypes.func,
     title: PropTypes.string,
 };

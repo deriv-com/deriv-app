@@ -1,20 +1,20 @@
 labelPRBasedOnFilePath:
   Bot:
-    - ./packages/bot-*/**/*
+    - packages/bot-*/**/*
   Components:
-    - ./packages/components/**/*
+    - packages/components/**/*
   Core:
-    - ./packages/core/**/*
+    - packages/core/**/*
   P2P:
-    - ./packages/p2p/**/*
+    - packages/p2p/**/*
   Repo:
-    - ./*
+    - ./../*
   Shared:
-    - ./packages/shared/**/*
+    - packages/shared/**/*
   Trader:
-    - ./packages/trader/**/*
+    - packages/trader/**/*
   Translations:
-    - ./packages/translations/**/*
+    - packages/translations/**/*
   Docs:
-    - ./*.md
-    - ./**/*.md
+    - ./../*.md
+    - ./../**/*.md

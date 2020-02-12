@@ -210,8 +210,27 @@ Blockly.BlockSvg.prototype.setCollapsed = function(collapsed) {
         icons.forEach(icon => icon.setVisible(false));
 
         const text = this.toString(Blockly.COLLAPSE_CHARS);
+
+        // Ensure class persists through collapse. Falls back to first
+        // field that has a class. Doesn't work when multiple
+        // field_labels on a block have different classes. So far we
+        // don't have a situation like that, so it works. 👍
+        let field_class = null;
+
+        this.inputList.some(input =>
+            input.fieldRow.some(field => {
+                if (field.class_) {
+                    field_class = field.class_;
+                    return true;
+                }
+                return false;
+            })
+        );
+
+        const field_label = new Blockly.FieldLabel(text, field_class);
+
         this.appendDummyInput(COLLAPSED_INPUT_NAME)
-            .appendField(text)
+            .appendField(field_label)
             .init();
     } else {
         this.removeInput(COLLAPSED_INPUT_NAME);

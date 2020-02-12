@@ -27,36 +27,6 @@ export const cleanUpOnLoad = (blocks_to_clean, drop_event) => {
     Blockly.derivWorkspace.cleanUp(cursor_x, cursor_y, blocks_to_clean);
 };
 
-export const setBlockTextColor = (block, event) => {
-    const is_legal_event =
-        (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(block.id)) ||
-        (event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === block.id);
-
-    if (!is_legal_event) {
-        return;
-    }
-
-    const addClassAttribute = field => {
-        const el_svg = field.getSvgRoot();
-        if (el_svg) {
-            el_svg.setAttribute('class', 'blocklyTextRootBlockHeader');
-        }
-    };
-
-    block.inputList.forEach(input => {
-        input.fieldRow.forEach(field => {
-            if (field instanceof Blockly.FieldLabel) {
-                addClassAttribute(field);
-            }
-        });
-    });
-
-    const field = block.getField();
-    if (field) {
-        addClassAttribute(field);
-    }
-};
-
 export const save = (filename = '@deriv/bot', collection = false, xmlDom) => {
     xmlDom.setAttribute('is_dbot', 'true');
     xmlDom.setAttribute('collection', collection ? 'true' : 'false');

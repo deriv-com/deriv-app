@@ -2,10 +2,12 @@ import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { urlFor } from '_common/url';
 import { website_name } from 'App/Constants/app-config';
 import DataTable from 'App/Components/Elements/DataTable';
+import DataList from 'App/Components/Elements/DataList';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { getSupportedContracts } from 'Constants';
@@ -24,6 +26,42 @@ class ProfitTable extends React.Component {
     componentWillUnmount() {
         this.props.onUnmount();
     }
+
+    mobileRowRenderer = ({ index }) => {
+        const { data } = this.props;
+        const row = data[index];
+        return (
+            <>
+                <div className='data-list__row'>
+                    <DataList.Cell row={row} column={this.columns_map.action_type} />
+                </div>
+                <div className='data-list__row'>
+                    <DataList.Cell row={row} column={this.columns_map.transaction_id} />
+                    <DataList.Cell
+                        className='data-list__row__cell--amount'
+                        row={row}
+                        column={this.columns_map.buy_price}
+                    />
+                </div>
+                <div className='data-list__row'>
+                    <DataList.Cell row={row} column={this.columns_map.purchase_time} />
+                    <DataList.Cell
+                        className='data-list__row__cell--amount'
+                        row={row}
+                        column={this.columns_map.sell_price}
+                    />
+                </div>
+                <div className='data-list__row'>
+                    <DataList.Cell row={row} column={this.columns_map.sell_time} />
+                    <DataList.Cell
+                        className='data-list__row__cell--amount'
+                        row={row}
+                        column={this.columns_map.profit_loss}
+                    />
+                </div>
+            </>
+        );
+    };
 
     getRowAction = row_obj =>
         getSupportedContracts()[Shortcode.extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()]
@@ -71,7 +109,11 @@ class ProfitTable extends React.Component {
             </React.Fragment>
         );
 
-        const columns = getProfitTableColumnsTemplate(currency, data.length);
+        this.columns = getProfitTableColumnsTemplate(currency, data.length);
+        this.columns_map = this.columns.reduce((map, item) => {
+            map[item.col_index] = item;
+            return map;
+        }, {});
 
         return (
             <React.Fragment>
@@ -93,19 +135,36 @@ class ProfitTable extends React.Component {
                         localized_period_message={localize('You have no trading activity for this period.')}
                     />
                 ) : (
-                    <DataTable
-                        className='profit-table'
-                        data_source={data}
-                        columns={columns}
-                        onScroll={handleScroll}
-                        footer={totals}
-                        is_empty={is_empty}
-                        getRowAction={this.getRowAction}
-                        custom_width={'100%'}
-                        getRowSize={() => 63}
-                    >
-                        <PlaceholderComponent is_loading={is_loading} />
-                    </DataTable>
+                    <>
+                        <DesktopWrapper>
+                            <DataTable
+                                className='profit-table'
+                                data_source={data}
+                                columns={this.columns}
+                                onScroll={handleScroll}
+                                footer={totals}
+                                is_empty={is_empty}
+                                getRowAction={this.getRowAction}
+                                custom_width={'100%'}
+                                getRowSize={() => 63}
+                            >
+                                <PlaceholderComponent is_loading={is_loading} />
+                            </DataTable>
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <DataList
+                                className='profit-table'
+                                data_source={data}
+                                rowRenderer={this.mobileRowRenderer}
+                                getRowAction={this.getRowAction}
+                                onScroll={handleScroll}
+                                custom_width={'100%'}
+                                getRowSize={() => 204}
+                            >
+                                <PlaceholderComponent is_loading={is_loading} />
+                            </DataList>
+                        </MobileWrapper>
+                    </>
                 )}
             </React.Fragment>
         );

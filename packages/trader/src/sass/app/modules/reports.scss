@@ -6,10 +6,10 @@ $side-padding: 1.2em;
 
 /** @define reports; weak */
 .reports {
+    height: 100%;
     &__meta {
         width: 100%;
         display: flex;
-        align-items: center;
         justify-content: space-between;
         padding: 0 24px 16px;
 
@@ -22,18 +22,37 @@ $side-padding: 1.2em;
             &--paragraph {
                 @include typeface(--paragraph-left-normal-black, none);
                 color: var(--text-general);
+                @include mobile {
+                    padding: 16px;
+                }
             }
         }
         &-filter {
             position: relative;
             display: flex;
         }
+
+        @include desktop {
+            align-items: center;
+        }
+
+        @include mobile {
+            flex-direction: column;
+        }
+    }
+    &__mobile-wrapper {
+        display: flex;
+        flex-direction: column;
     }
     .unknown-icon {
         margin-left: 8px;
         fill: var(--text-general);
         border-radius: $BORDER_RADIUS;
     }
+}
+
+.reports-page-wrapper {
+    height: 100%;
 }
 
 /** @define statement; weak */
@@ -194,6 +213,11 @@ $side-padding: 1.2em;
 .profit-table {
     height: 100%;
 
+    @include mobile {
+        padding: 0 24px;
+        flex: 1;
+    }
+
     &__content {
         width: 100%;
         max-height: 100%;
@@ -217,6 +241,20 @@ $side-padding: 1.2em;
     .sell_time,
     .purchase_time {
         text-align: left;
+    }
+    .transaction_id {
+        @include mobile {
+            display: flex;
+            flex-direction: row;
+        }
+        &__row__title {
+            margin-right: 4px;
+        }
+    }
+    .market-symbol-icon {
+        @include mobile {
+            width: 80px;
+        }
     }
 }
 

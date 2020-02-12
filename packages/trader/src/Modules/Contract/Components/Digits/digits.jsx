@@ -21,10 +21,11 @@ class Digits extends React.PureComponent {
     }
 
     get popover_message() {
+        const { contract_info, is_trade_page, underlying } = this.props;
+        const underlying_name = is_trade_page ? underlying : contract_info.underlying;
+
         return localize(
-            `Last digit stats for latest 1000 ticks for ${
-                getMarketNamesMap()[this.props.contract_info.underlying.toUpperCase()]
-            }`
+            `Last digit stats for latest 1000 ticks for ${getMarketNamesMap()[underlying_name.toUpperCase()]}`
         );
     }
 
@@ -68,7 +69,7 @@ class Digits extends React.PureComponent {
                 keyname='digits'
                 type='bottom'
             >
-                {contract_info.underlying && isDesktop() && (
+                {isDesktop() && (
                     <div className='digits__tooltip-container'>
                         <Popover
                             alignment='top'
@@ -95,9 +96,7 @@ class Digits extends React.PureComponent {
                     status={!is_contract_elapsed && is_tick_ready ? display_status : null}
                     tick={tick}
                 />
-                {isMobile() && contract_info.underlying && (
-                    <span className='digits__tooltip-text'>{this.popover_message}</span>
-                )}
+                {isMobile() && <span className='digits__tooltip-text'>{this.popover_message}</span>}
             </SlideIn>
         );
     }

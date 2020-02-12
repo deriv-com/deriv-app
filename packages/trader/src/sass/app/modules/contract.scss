@@ -12,6 +12,7 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
     @include mobile {
         left: 0;
     }
+
     &-button:hover {
         cursor: pointer;
     }

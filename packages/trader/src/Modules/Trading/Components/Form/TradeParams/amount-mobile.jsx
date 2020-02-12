@@ -1,16 +1,40 @@
 import React from 'react';
 import { Tabs, Numpad } from '@deriv/components';
+import ObjectUtils from '@deriv/shared/utils/object';
 import { localize } from '@deriv/translations';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { connect } from 'Stores/connect';
 
-const Basis = ({ toggleModal, basis, selected_basis, setSelectedAmount, onChangeMultiple, currency }) => {
+const Basis = ({
+    duration_unit,
+    duration_value,
+    toggleModal,
+    basis,
+    selected_basis,
+    setSelectedAmount,
+    onChangeMultiple,
+    currency,
+    trade_basis,
+    trade_duration,
+    trade_duration_unit,
+}) => {
     const user_currency_decimal_places = CurrencyUtils.getDecimalPlaces(currency);
     const onNumberChange = num => setSelectedAmount(basis, num);
 
     const setBasisAndAmount = value => {
         const amount = !isNaN(value) ? Number(value).toFixed(user_currency_decimal_places) : value;
-        onChangeMultiple({ basis, amount });
+        const on_change_obj = {};
+
+        // Check for any duration changes in Duration trade params Tab before sending onChange object
+        if (duration_unit !== trade_duration_unit) on_change_obj.duration_unit = duration_unit;
+        if (duration_value !== trade_duration) on_change_obj.duration = duration_value;
+
+        if (selected_basis !== amount || basis !== trade_basis) {
+            on_change_obj.basis = basis;
+            on_change_obj.amount = amount;
+        }
+
+        if (!ObjectUtils.isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
         toggleModal();
     };
 
@@ -35,6 +59,9 @@ const Basis = ({ toggleModal, basis, selected_basis, setSelectedAmount, onChange
 
 const AmountWrapper = connect(({ modules, client }) => ({
     onChangeMultiple: modules.trade.onChangeMultiple,
+    trade_basis: modules.trade.basis,
+    trade_duration_unit: modules.trade.duration_unit,
+    trade_duration: modules.trade.duration,
     currency: client.currency,
 }))(Basis);
 
@@ -42,6 +69,8 @@ const Amount = ({
     toggleModal,
     basis_list,
     basis,
+    duration_value,
+    duration_unit,
     amount_tab_idx,
     setAmountTabIdx,
     setSelectedAmount,
@@ -61,6 +90,8 @@ const Amount = ({
                                 <div label={basis_option.text} key={basis_option.value}>
                                     <AmountWrapper
                                         toggleModal={toggleModal}
+                                        duration_value={duration_value}
+                                        duration_unit={duration_unit}
                                         basis={basis_option.value}
                                         selected_basis={stake_value}
                                         setSelectedAmount={setSelectedAmount}
@@ -72,6 +103,8 @@ const Amount = ({
                                 <div label={basis_option.text} key={basis_option.value}>
                                     <AmountWrapper
                                         toggleModal={toggleModal}
+                                        duration_value={duration_value}
+                                        duration_unit={duration_unit}
                                         basis={basis_option.value}
                                         selected_basis={payout_value}
                                         setSelectedAmount={setSelectedAmount}

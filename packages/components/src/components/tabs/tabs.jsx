@@ -25,7 +25,7 @@ class Tabs extends Component {
     }
 
     render() {
-        const { children, className, top, bottom, fit_content } = this.props;
+        const { children, className, top, bottom, fit_content, single_tab_has_no_label } = this.props;
         const { active_index } = this.state;
         const tab_width = (100 / children.length).toFixed(2);
 
@@ -51,6 +51,7 @@ class Tabs extends Component {
                                 count={count}
                                 is_active={index === active_index}
                                 key={label}
+                                is_label_hidden={children.length === 1 && single_tab_has_no_label}
                                 label={label}
                                 top={top}
                                 bottom={bottom}
@@ -63,6 +64,7 @@ class Tabs extends Component {
                             'dc-tabs__active-line--top': top,
                             'dc-tabs__active-line--bottom': bottom,
                             'dc-tabs__active-line--fit-content': fit_content,
+                            'dc-tabs__active-line--is-hidden': children.length === 1 && single_tab_has_no_label,
                         })}
                     />
                 </ul>

@@ -1,4 +1,8 @@
 .dc-page-overlay {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
     &__header {
         padding: 0.8rem 2.4rem;
         border-bottom: 1px solid var(--general-section-1);
@@ -30,6 +34,7 @@
     &__content {
         padding: 2.4rem 0 0;
         display: flex;
+        flex: 1;
 
         &-side-note {
             min-width: 256px;
@@ -44,5 +49,6 @@
         max-width: 1232px;
         margin: auto;
         position: relative;
+        width: 100%;
     }
 }

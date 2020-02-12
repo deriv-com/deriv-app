@@ -125,6 +125,9 @@ There is a 4th type of release: releasing npm registry packages (currently `@der
 
 ## PR Guidelines
 1. Use the `developer 1|developer 2/task_name` format for PR titles. (e.g.: `dev1|dev2/fixed_emoji_issue`, `dev1/added_superfast_jellyfish`)
+    - Title should match `^([a-z]{2,}(\|[a-z]{2,})?)\/([a-z0-9]{3,}((_[a-z0-9]+)+)?)(\s\[\w+\])?$`.
+    - Title cannot end with `_`.
+    - Optional square bracket tag (e.g. `[WIP]`) should be at the end.
 2. Use the appropriate package labels available on the repo to indicate which packages your PR modifies.
 3. Use Draft PRs if you don't mean to request for reviews yet. [Read more here.](https://github.blog/2019-02-14-introducing-draft-pull-requests/)
 

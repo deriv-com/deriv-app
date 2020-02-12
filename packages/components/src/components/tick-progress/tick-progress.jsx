@@ -22,7 +22,7 @@ const TickProgress = ({ className, rows, columns, size, value }) => {
             }}
         >
             {new Array(size).fill(null).map((item, index) => {
-                return <Tick is_on={index < value} />;
+                return <Tick is_on={index < value} key={index} />;
             })}
         </div>
     );

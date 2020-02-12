@@ -413,11 +413,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
 @mixin contract_type_icon_wrapper {
     width: 2.4em;
     height: 2.4em;
-    border-radius: 3px;
+    border-radius: $BORDER_RADIUS;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--general-main-2);
+    background: var(--general-section-1);
 }
 
 /** @define category-wrapper */

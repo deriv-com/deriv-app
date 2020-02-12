@@ -83,6 +83,11 @@ $MIN_HEIGHT_FLOATING: calc(
             border-radius: #{$BORDER_RADIUS * 2};
             position: sticky;
             top: calc(2.4rem + 41px); // 41px for the header of PageOverlay
+
+            .dc-vertical-tab__header--highlight {
+                width: calc(100% - 1.6rem);
+                border-radius: $BORDER_RADIUS;
+            }
         }
     }
     &__header-title {

@@ -24,18 +24,15 @@ export const getTimePercentage = (server_time, start_time, expiry_time) => {
     return Math.round(percentage);
 };
 
-export const getBarrierLabel = contract_info => {
-    if (/DIGIT/.test(contract_info.contract_type)) {
-        return localize('Target');
-    }
-    return localize('Barrier');
-};
+export const getBarrierLabel = is_digit => (is_digit ? localize('Target') : localize('Barrier'));
 
-export const getBarrierValue = contract_info => {
-    if (/DIGIT/.test(contract_info.contract_type)) {
-        return digitTypeMap(contract_info)[contract_info.contract_type];
-    }
-    return addCommaToNumber(contract_info.barrier);
+export const getBarrierValue = (contract_info, is_digit) =>
+    is_digit ? digitTypeMap(contract_info)[contract_info.contract_type] : addCommaToNumber(contract_info.barrier);
+
+export const getBarrierIcon = (is_digit, is_reset_call_put, is_entry_spot_equal_barriers) => {
+    if (is_digit) return 'IcContractTarget';
+    if (is_reset_call_put && !is_entry_spot_equal_barriers) return 'IcContractBarrierDotted';
+    return 'IcContractBarrierSolid';
 };
 
 const digitTypeMap = contract_info => ({

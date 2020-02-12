@@ -3,7 +3,12 @@ import React from 'react';
 import { Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { epochToMoment, toGMTFormat } from 'Utils/Date';
-import { addCommaToNumber, getBarrierLabel, getBarrierValue } from 'App/Components/Elements/PositionsDrawer/helpers';
+import {
+    addCommaToNumber,
+    getBarrierIcon,
+    getBarrierLabel,
+    getBarrierValue,
+} from 'App/Components/Elements/PositionsDrawer/helpers';
 import { getResetDisplayValues } from 'Stores/Modules/Trading/Helpers/reset-time';
 import { getDurationUnitText, getDurationUnit } from 'Stores/Modules/Portfolio/Helpers/details';
 import ContractAuditItem from './contract-audit-item.jsx';
@@ -11,16 +16,16 @@ import ContractAuditItem from './contract-audit-item.jsx';
 class ContractAudit extends React.PureComponent {
     render() {
         const { contract_end_time, contract_info, duration, duration_period, exit_spot, has_result } = this.props;
-
         if (!has_result) return null;
 
-        // Contract type checks
         const is_digit = /DIGIT/.test(contract_info.contract_type);
         const is_reset_call_put = /RESET(CALL|PUT)/.test(contract_info.contract_type);
 
-        const is_profit = contract_info.profit >= 0;
-
         const is_tick = contract_info.tick_count > 0;
+        const is_profit = contract_info.profit >= 0;
+        const is_entry_spot_equal_barrier =
+            addCommaToNumber(contract_info.entry_spot_display_value) === getBarrierValue(contract_info);
+
         const contract_time = is_tick ? contract_info.tick_count : duration;
 
         const contract_audit_item_config_list = [
@@ -52,19 +57,11 @@ class ContractAudit extends React.PureComponent {
             {
                 containerId: 'dt_bt_label',
                 contractAuditItemProps: {
-                    icon: (() => {
-                        if (is_digit) return 'IcContractTarget';
-                        if (
-                            is_reset_call_put &&
-                            addCommaToNumber(contract_info.entry_spot) !== getBarrierValue(contract_info)
-                        )
-                            return 'IcContractBarrierDotted';
-                        return 'IcContractBarrierSolid';
-                    })(),
-                    label: getBarrierLabel(contract_info),
+                    icon: getBarrierIcon(is_digit, is_reset_call_put, is_entry_spot_equal_barrier),
+                    label: getBarrierLabel(is_digit),
                     value: is_reset_call_put
-                        ? addCommaToNumber(contract_info.entry_spot)
-                        : getBarrierValue(contract_info),
+                        ? addCommaToNumber(contract_info.entry_spot_display_value)
+                        : getBarrierValue(contract_info, is_digit),
                 },
                 shouldShow: true,
             },
@@ -74,8 +71,7 @@ class ContractAudit extends React.PureComponent {
                     label: localize('Reset barrier'),
                     value: getBarrierValue(contract_info),
                 },
-                shouldShow:
-                    is_reset_call_put && addCommaToNumber(contract_info.entry_spot) !== getBarrierValue(contract_info),
+                shouldShow: is_reset_call_put && !is_entry_spot_equal_barrier,
             },
             {
                 containerId: 'dt_start_time_label',
@@ -132,6 +128,7 @@ class ContractAudit extends React.PureComponent {
                 <ThemedScrollbars style={{ width: '100%', height: '100%' }} autoHide>
                     {contract_audit_item_config_list.map((contract_audit_item_config, index) => {
                         const {
+                            containerId,
                             icon,
                             iconColor,
                             label,
@@ -141,11 +138,7 @@ class ContractAudit extends React.PureComponent {
                         } = contract_audit_item_config.contractAuditItemProps;
 
                         const contract_audit_item = (
-                            <div
-                                key={index}
-                                id={contract_audit_item_config.containerId}
-                                className='contract-audit__grid'
-                            >
+                            <div key={index} id={containerId} className='contract-audit__grid'>
                                 <ContractAuditItem
                                     icon={<Icon icon={icon} color={iconColor} />}
                                     label={label}

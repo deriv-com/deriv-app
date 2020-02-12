@@ -16,12 +16,14 @@ describe('positions-helper', () => {
             expect(PositionsHelper.getTimePercentage(current_time, date_start, expiry_time)).to.eql(100);
         });
     });
+
+    const is_digit = /DIGIT/.test(contract_info.contract_type);
     describe('getBarrierLabel', () => {
         it('should return Target label if contract has a digit contract type', () => {
             const contract_info = {
                 contract_type: 'DIGITDIFF',
             };
-            expect(PositionsHelper.getBarrierLabel(contract_info)).to.eql('Target');
+            expect(PositionsHelper.getBarrierLabel(is_digit)).to.eql('Target');
         });
     });
     describe('getBarrierValue', () => {
@@ -30,7 +32,7 @@ describe('positions-helper', () => {
                 contract_type: 'DIGITDIFF',
                 barrier: '1',
             };
-            expect(PositionsHelper.getBarrierValue(contract_info)).to.eql('Not 1');
+            expect(PositionsHelper.getBarrierValue(contract_info, is_digit)).to.eql('Not 1');
         });
     });
 });

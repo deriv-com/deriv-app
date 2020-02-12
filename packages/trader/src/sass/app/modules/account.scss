@@ -10,12 +10,6 @@ $MIN_HEIGHT_FLOATING: calc(
     margin: 0 16px;
 
     .dc-vertical-tab {
-        height: calc(100vh - 83px);
-        max-width: calc(100vw - 32px);
-
-        &__tab {
-            min-width: 240px;
-        }
         &__content {
             height: $MIN_HEIGHT_FLOATING;
         }
@@ -69,7 +63,6 @@ $MIN_HEIGHT_FLOATING: calc(
     &-form {
         overflow: hidden;
         height: 100%;
-        min-height: 500px;
         width: 100%;
 
         &__header {

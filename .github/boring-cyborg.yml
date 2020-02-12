@@ -1,0 +1,20 @@
+labelPRBasedOnFilePath:
+  Bot:
+    - packages/bot-*/**/*
+  Components:
+    - packages/components/**/*
+  Core:
+    - packages/core/**/*
+  P2P:
+    - packages/p2p/**/*
+  Repo:
+    - ./../*
+  Shared:
+    - packages/shared/**/*
+  Trader:
+    - packages/trader/**/*
+  Translations:
+    - packages/translations/**/*
+  Docs:
+    - ./../*.md
+    - ./../**/*.md

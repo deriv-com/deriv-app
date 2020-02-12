@@ -44,7 +44,10 @@ class ContractAudit extends React.PureComponent {
                 contractAuditItemProps: {
                     icon: 'IcContractDurationCircle',
                     label: localize('Duration'),
-                    value: `${contract_time} ${getDurationUnitText(duration_period, is_tick).toLowerCase()}`,
+                    value: `${contract_time} ${getDurationUnitText(
+                        duration_period,
+                        contract_info.tick_count
+                    ).toLowerCase()}`,
                     valueHint: is_reset_call_put
                         ? localize(
                               'The reset time is {{ reset_display_value }}',

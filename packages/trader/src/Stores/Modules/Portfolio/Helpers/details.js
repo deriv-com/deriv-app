@@ -56,9 +56,9 @@ export const getDurationUnit = (obj_duration, is_tick = false) => {
     return undefined;
 };
 
-export const getDurationUnitText = (obj_duration, is_tick = false) => {
+export const getDurationUnitText = (obj_duration, tick_count = 0) => {
     const unit_map = getDurationMaps();
-    if (is_tick) return unit_map.t.display_plural;
+    if (tick_count > 0) return tick_count === 1 ? unit_map.t.display_singular : unit_map.t.display_plural;
     const duration_ms = obj_duration.asMilliseconds() / 1000;
     // return empty suffix string if duration is End Time set except for days and seconds, refer to L18 and L19
 
@@ -73,7 +73,7 @@ export const getDurationUnitText = (obj_duration, is_tick = false) => {
             if (isEndTime(duration_ms / (1000 * 60))) return '';
             return duration_ms === 60000 ? unit_map.m.display_singular : unit_map.m.display_plural;
         } else if (duration_ms >= 1000 && duration_ms < 60000) {
-            return unit_map.s.display_plural;
+            return duration_ms <= 1000 ? unit_map.s.display_singular : unit_map.s.display_plural;
         }
     }
     return unit_map.s.name;

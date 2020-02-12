@@ -9,8 +9,16 @@ $MIN_HEIGHT_FLOATING: calc(
 .account {
     margin: 0 16px;
 
-    .dc-vertical-tab__content {
-        height: $MIN_HEIGHT_FLOATING;
+    .dc-vertical-tab {
+        height: calc(100vh - 83px);
+        max-width: calc(100vw - 32px);
+
+        &__tab {
+            min-width: 240px;
+        }
+        &__content {
+            height: $MIN_HEIGHT_FLOATING;
+        }
     }
     &__inset_header {
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);

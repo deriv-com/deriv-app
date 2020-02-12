@@ -153,5 +153,6 @@
     }
     &__wrapper {
         z-index: 9999 !important;
+        background-color: var(--overlay-outside-dialog) !important;
     }
 }

@@ -63,15 +63,20 @@ $side-padding: 1.2em;
         /*                     icon   refId tr_time  transaction cred/debt  balance */
         grid-template-columns: 0.8fr 1.2fr 1fr 0.8fr 1fr 1fr;
 
-        &--detail {
+        // we need higher specificity than just &--detail here
+        // because otherwise table styling will override statement styling on first load
+        /* postcss-bem-linter: ignore */
+        &.statement__row--detail {
             overflow: hidden;
             max-height: 63px;
+            min-height: 53px;
             display: flex;
             align-items: center;
             padding: 0;
             justify-content: center;
             background-color: var(--general-section-1);
 
+            /* postcss-bem-linter: ignore */
             &-text {
                 padding: 1.12em;
             }

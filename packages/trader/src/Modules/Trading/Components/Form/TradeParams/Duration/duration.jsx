@@ -37,6 +37,7 @@ const Duration = ({
     market_open_times,
     validation_errors,
 }) => {
+    const is_reset_call_put = /reset_call_put/.test(contract_type);
     const expiry_list = [{ text: localize('Duration'), value: 'duration' }];
 
     const has_end_time = expiry_list.find(expiry => expiry.value === 'endtime');
@@ -44,8 +45,10 @@ const Duration = ({
         if (has_end_time) {
             expiry_list.pop(); // remove end time for contracts with only tick duration
         }
-    } else if (!has_end_time) {
+    } else if (!has_end_time && !is_reset_call_put) {
         expiry_list.push({ text: localize('End time'), value: 'endtime' });
+    } else if (has_end_time && is_reset_call_put) {
+        expiry_list.pop();
     }
 
     if (is_minimized) {
@@ -134,6 +137,8 @@ const Duration = ({
     const has_toggle = expiry_list.length > 1 || duration_units_list.length > 1;
     return (
         <Fieldset
+            header={is_advanced_duration && is_reset_call_put ? localize('Duration') : undefined}
+            is_center={true}
             className={classNames('trade-container__fieldset', {
                 'trade-container__fieldset--advanced': is_advanced_duration,
             })}
@@ -160,6 +165,7 @@ const Duration = ({
                             shared_input_props={props.shared_input}
                             start_date={start_date}
                             validation_errors={validation_errors}
+                            is_reset_call_put={is_reset_call_put}
                         />
                     )}
                     {!is_advanced_duration && (
@@ -175,16 +181,14 @@ const Duration = ({
                         />
                     )}
 
-                    {contract_type === 'reset_call_put' &&
-                        expiry_type !== 'endtime' &&
-                        !validation_errors.duration.length && (
-                            <span className='trade-container__fieldset-info--minor'>
-                                {localize(
-                                    'Reset time : {{ reset_display_value }}',
-                                    getResetDisplayValues(getDurationFromUnit(duration_unit), duration_unit)
-                                )}
-                            </span>
-                        )}
+                    {is_reset_call_put && expiry_type !== 'endtime' && !validation_errors.duration.length && (
+                        <span className='trade-container__fieldset-info--minor'>
+                            {localize(
+                                'Reset time : {{ reset_display_value }}',
+                                getResetDisplayValues(getDurationFromUnit(duration_unit), duration_unit)
+                            )}
+                        </span>
+                    )}
                     <DurationToggle
                         name={'is_advanced_duration'}
                         onChange={onToggleDurationType}

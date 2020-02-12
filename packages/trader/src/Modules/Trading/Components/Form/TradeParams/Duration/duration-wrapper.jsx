@@ -97,6 +97,7 @@ class DurationWrapper extends React.Component {
     componentWillReact() {
         const {
             advanced_expiry_type,
+            contract_type,
             duration,
             duration_unit,
             expiry_type,
@@ -112,6 +113,11 @@ class DurationWrapper extends React.Component {
         // simple only has expiry type duration
         if (simple_is_not_type_duration) {
             onChange({ target: { name: 'expiry_type', value: 'duration' } });
+        }
+
+        if (contract_type === 'reset_call_put' && advanced_expiry_type === 'endtime') {
+            onChange({ target: { name: 'expiry_type', value: 'duration' } });
+            onChangeUiStore({ name: 'advanced_expiry_type', value: 'duration' });
         }
 
         if (this.advancedHasWrongExpiry()) {

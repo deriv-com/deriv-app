@@ -4,7 +4,6 @@ import {
     ChartSize,
     ChartTypes,
     Comparison,
-    CrosshairToggle,
     DrawTools,
     Share,
     StudyLegend,
@@ -14,7 +13,6 @@ import {
 
 const ControlWidgets = ({ updateChartType, updateGranularity }) => (
     <React.Fragment>
-        <CrosshairToggle />
         <ChartTypes onChange={updateChartType} />
         <StudyLegend searchInputClassName='data-hj-whitelist' />
         <Comparison searchInputClassName='data-hj-whitelist' />

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Dialog, Table } from '@deriv/components';
-import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS } from 'Utils/websocket';
@@ -32,7 +31,7 @@ const RowComponent = React.memo(({ data, row_actions, style }) => (
                 {data.display_available_amount} {data.offer_currency}
             </Table.Cell>
             <Table.Cell>
-                {data.display_min_transaction}-{data.display_max_transaction} {data.offer_currency}
+                {data.display_min_available}-{data.display_max_available} {data.offer_currency}
             </Table.Cell>
             <Table.Cell className='p2p-my-ads__table-price'>
                 {data.display_price_rate} {data.transaction_currency}
@@ -75,7 +74,7 @@ export class MyAdsTable extends React.Component {
     componentDidMount() {
         this.is_mounted = true;
 
-        requestWS({ p2p_offer_list: 1, agent_id: this.context.agent_id }).then(response => {
+        requestWS({ p2p_agent_offers: 1 }).then(response => {
             if (this.is_mounted) {
                 this.setState({ items: response, is_loading: false });
             }
@@ -154,5 +153,3 @@ export class MyAdsTable extends React.Component {
 MyAdsTable.propTypes = {
     onClickEdit: PropTypes.func,
 };
-
-MyAdsTable.contextType = Dp2pContext;

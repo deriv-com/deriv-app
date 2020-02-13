@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { Button } from '@deriv/components';
-import Dp2pContext from 'Components/context/dp2p-context';
 
 import { localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
@@ -57,7 +56,5 @@ class MyAds extends Component {
         );
     }
 }
-
-MyAds.contextType = Dp2pContext;
 
 export default MyAds;

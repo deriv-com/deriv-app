@@ -157,7 +157,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.appendDummyInput('PREDICTION_LABEL').appendField(localize('Prediction:'));
 
                 const prediction_input = this.appendValueInput('PREDICTION');
-                const shadow_block = this.workspace.newBlock('math_number');
+                const shadow_block = this.workspace.newBlock('math_number_positive');
 
                 shadow_block.setShadow(true);
                 shadow_block.setFieldValue(prediction_range[0], 'NUM');
@@ -182,7 +182,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                         .appendField(label, `${input_names[i]}_LABEL`)
                         .appendField(new Blockly.FieldDropdown(config.BARRIER_TYPES), `${input_names[i]}TYPE_LIST`);
 
-                    const shadow_block = this.workspace.newBlock('math_number');
+                    const shadow_block = this.workspace.newBlock('math_number_positive');
 
                     shadow_block.setShadow(true);
                     shadow_block.setFieldValue(barriers.values[i], 'NUM');

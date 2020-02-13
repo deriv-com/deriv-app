@@ -194,7 +194,168 @@ const TradeCategories = ({ category }) => {
                     </React.Fragment>
                 );
                 break;
-            case 'mult':
+            case 'run_high_low':
+                TradeTypeTemplate = (
+                    <React.Fragment>
+                        <p>
+                            {localize(
+                                'If you select "Only Ups", you win the payout if consecutive ticks rise successively after the entry spot. No payout if any tick falls or is equal to any of the previous ticks.'
+                            )}
+                        </p>
+                        <p>
+                            {localize(
+                                'If you select "Only Downs", you win the payout if consecutive ticks fall successively after the entry spot. No payout if any tick rises or is equal to any of the previous ticks.'
+                            )}
+                        </p>
+                    </React.Fragment>
+                );
+                break;
+            case 'reset':
+                TradeTypeTemplate = (
+                    <React.Fragment>
+                        <p>
+                            {localize(
+                                'If you select "Reset-Up”, you win the payout if the exit spot is strictly higher than either the entry spot or the spot at reset time.'
+                            )}
+                        </p>
+                        <p>
+                            {localize(
+                                'If you select "Reset-Down”, you win the payout if the exit spot is strictly lower than either the entry spot or the spot at reset time.'
+                            )}
+                        </p>
+                        <p>
+                            {localize(
+                                "If the exit spot is equal to the barrier or the new barrier (if a reset occurs), you don't win the payout."
+                            )}
+                        </p>
+                    </React.Fragment>
+                );
+                break;
+            case 'callputspread':
+                TradeTypeTemplate = (
+                    <React.Fragment>
+                        <h2>{localize('Spread Up')}</h2>
+                        <p>
+                            {localize(
+                                'Win maximum payout if the exit spot is higher than or equal to the upper barrier.'
+                            )}
+                        </p>
+                        <p>
+                            {localize(
+                                'Win up to maximum payout if exit spot is between lower and upper barrier, in proportion to the difference between exit spot and lower barrier.'
+                            )}
+                        </p>
+                        <p>{localize('No payout if exit spot is below or equal to the lower barrier.')}</p>
+                        <h2>{localize('Spread Down')}</h2>
+                        <p>
+                            {localize(
+                                'Win maximum payout if the exit spot is lower than or equal to the lower barrier.'
+                            )}
+                        </p>
+                        <p>
+                            {localize(
+                                'Win up to maximum payout if exit spot is between lower and upper barrier, in proportion to the difference between upper barrier and exit spot.'
+                            )}
+                        </p>
+                        <p>{localize('No payout if exit spot is above or equal to the upper barrier.')}</p>
+                    </React.Fragment>
+                );
+                break;
+            case 'tick_high_low':
+                TradeTypeTemplate = (
+                    <React.Fragment>
+                        <p>
+                            {localize(
+                                'If you select "High Tick", you win the payout if the selected tick is the highest among the next five ticks.'
+                            )}
+                        </p>
+                        <p>
+                            {localize(
+                                'If you select "Low Tick", you win the payout if the selected tick is the lowest among the next five ticks.'
+                            )}
+                        </p>
+                    </React.Fragment>
+                );
+                break;
+            case 'lb_high_low':
+                TradeTypeTemplate = (
+                    <React.Fragment>
+                        <p>
+                            {localize(
+                                'By purchasing the "High-to-Low" contract, you\'ll win the multiplier times the difference between the high and low over the duration of the contract.'
+                            )}
+                        </p>
+                        <p>
+                            {localize(
+                                'The high is the highest point ever reached by the market during the contract period.'
+                            )}
+                        </p>
+                        <p>
+                            {localize(
+                                'The low is the lowest point ever reached by the market during the contract period.'
+                            )}
+                        </p>
+                        <p>
+                            {localize(
+                                'The close is the latest tick at or before the end time. If you selected a specific end time, the end time is the selected time.'
+                            )}
+                        </p>
+                    </React.Fragment>
+                );
+                break;
+            case 'lb_put':
+                TradeTypeTemplate = (
+                    <React.Fragment>
+                        <p>
+                            {localize(
+                                'By purchasing the "High-to-Close" contract, you\'ll win the multiplier times the difference between the high and close over the duration of the contract.'
+                            )}
+                        </p>
+                        <p>
+                            {localize(
+                                'The high is the highest point ever reached by the market during the contract period.'
+                            )}
+                        </p>
+                        <p>
+                            {localize(
+                                'The low is the lowest point ever reached by the market during the contract period.'
+                            )}
+                        </p>
+                        <p>
+                            {localize(
+                                'The close is the latest tick at or before the end time. If you selected a specific end time, the end time is the selected time.'
+                            )}
+                        </p>
+                    </React.Fragment>
+                );
+                break;
+            case 'lb_call':
+                TradeTypeTemplate = (
+                    <React.Fragment>
+                        <p>
+                            {localize(
+                                'By purchasing the "Close-to-Low" contract, you\'ll win the multiplier times the difference between the close and low over the duration of the contract.'
+                            )}
+                        </p>
+                        <p>
+                            {localize(
+                                'The high is the highest point ever reached by the market during the contract period.'
+                            )}
+                        </p>
+                        <p>
+                            {localize(
+                                'The low is the lowest point ever reached by the market during the contract period.'
+                            )}
+                        </p>
+                        <p>
+                            {localize(
+                                'The close is the latest tick at or before the end time. If you selected a specific end time, the end time is the selected time.'
+                            )}
+                        </p>
+                    </React.Fragment>
+                );
+                break;
+            case 'multiplier':
                 TradeTypeTemplate = (
                     <React.Fragment>
                         <p>
@@ -266,7 +427,7 @@ const TradeCategories = ({ category }) => {
                 break;
         }
     }
-    return <div>{TradeTypeTemplate}</div>;
+    return <>{TradeTypeTemplate}</>;
 };
 
 TradeCategories.propTypes = {

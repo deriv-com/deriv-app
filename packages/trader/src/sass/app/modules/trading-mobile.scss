@@ -3,6 +3,23 @@
     &__container_trade-params {
         border-radius: 2px;
         box-shadow: 0 16px 16px 0 var(--shadow-menu-2), 0 0 16px 0 var(--shadow-menu-2);
+
+        /* postcss-bem-linter: ignore */
+        .dc-relative-datepicker {
+            margin-top: -0.8rem;
+            max-width: 110px;
+            margin-left: auto;
+            margin-right: auto;
+
+            /* iPhone SE screen height fixes due to UI space restrictions */
+            @media only screen and (max-height: 480px) {
+                margin-top: -4.3rem;
+            }
+        }
+        /* iPhone SE screen height fixes due to UI space restrictions */
+        @media only screen and (max-height: 480px) {
+            top: 0.4rem;
+        }
     }
     &-header {
         /* postcss-bem-linter: ignore */
@@ -23,7 +40,7 @@
 .trade-params {
     &__duration {
         &-tickpicker {
-            height: 400px;
+            height: 328px;
 
             .dc-tick-picker {
                 max-width: 100%;
@@ -36,8 +53,10 @@
     &__amount {
         &-keypad {
             width: 100%;
-            min-height: 380px;
-            padding: 16px;
+            padding: 1.6rem;
+            height: auto;
+            margin-top: 0.8rem;
+            margin-bottom: 0.8rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -74,6 +93,11 @@
                 .dc-numpad__number {
                     height: 100%;
                 }
+            }
+            /* iPhone SE screen height fixes due to UI space restrictions */
+            @media only screen and (max-height: 480px) {
+                transform: scale(0.92);
+                transform-origin: top;
             }
         }
     }

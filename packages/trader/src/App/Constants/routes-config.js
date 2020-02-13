@@ -1,29 +1,21 @@
 import { lazy } from 'react';
 import { localize } from '@deriv/translations';
 import { routes } from 'Constants';
-
-import PersonalDetails from 'Modules/Account/Sections/Profile/PersonalDetails';
-import FinancialAssessment from 'Modules/Account/Sections/Profile/FinancialAssessment';
-import ProofOfIdentity from 'Modules/Account/Sections/Verification/ProofOfIdentity';
-import ProofOfAddress from 'Modules/Account/Sections/Verification/ProofOfAddress';
-import DerivPassword from 'Modules/Account/Sections/Security/DerivPassword';
-import AccountLimits from 'Modules/Account/Sections/Security/AccountLimits';
-import OpenPositions from 'Modules/Reports/Containers/open-positions.jsx';
-import ProfitTable from 'Modules/Reports/Containers/profit-table.jsx';
-import Statement from 'Modules/Reports/Containers/statement.jsx';
-
 import Trade from 'Modules/Trading';
+import Account, {
+    PersonalDetails,
+    FinancialAssessment,
+    ProofOfAddress,
+    ProofOfIdentity,
+    DerivPassword,
+    AccountLimits,
+} from 'Modules/Account';
+import Reports, { OpenPositions, ProfitTable, Statement } from 'Modules/Reports';
 
 const ContractDetails = lazy(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'));
 
 // MT5 Routes
 const MT5 = lazy(() => import(/* webpackChunkName: "mt5", webpackPrefetch: true */ 'Modules/MT5'));
-
-// Reports Routes
-const Reports = lazy(() => import(/* webpackChunkName: "reports" */ 'Modules/Reports'));
-
-// Account Management Routes
-const Account = lazy(() => import(/* webpackChunkName: "account" */ 'Modules/Account'));
 
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));

@@ -4,6 +4,7 @@ import { toMoment, daysFromTodayTo } from '@deriv/shared/utils/date';
 
 const RelativeDatepicker = ({ onChange, min_date, max_date, title }) => {
     const hidden_input_ref = useRef();
+
     const clickHandler = () => {
         hidden_input_ref.current.click();
     };
@@ -20,10 +21,8 @@ const RelativeDatepicker = ({ onChange, min_date, max_date, title }) => {
               .format('YYYY-MM-DD')
         : null;
     return (
-        <div className='dc-relative-datepicker'>
-            <span onClick={clickHandler} className='dc-relative-datepicker__span'>
-                {title}
-            </span>
+        <div className='dc-relative-datepicker' onClick={clickHandler}>
+            <span className='dc-relative-datepicker__span'>{title}</span>
             <input
                 type='date'
                 ref={hidden_input_ref}

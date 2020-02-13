@@ -177,17 +177,19 @@ export default class LoadModalStore {
         }
 
         files = Array.from(files);
-        this.readFile(!is_body, event, files[0]);
+        if (!is_body) {
+            this.loaded_local_file = files[0];
+        }
+        this.readFile(!is_body, event);
         event.target.value = '';
     }
 
     // eslint-disable-next-line class-methods-use-this
-    readFile(is_preview, drop_event, file) {
-        const file_name = file.name.replace(/\.[^/.]+$/, '');
+    readFile(is_preview, drop_event) {
+        const file_name = this.loaded_local_file.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
         reader.onload = action(e => {
             if (is_preview) {
-                this.loaded_local_file = file;
                 const ref = document.getElementById('load-local__scratch');
                 this.local_workspace = Blockly.inject(ref, {
                     media: `${__webpack_public_path__}media/`, // eslint-disable-line
@@ -202,7 +204,7 @@ export default class LoadModalStore {
                 load({ block_string: e.target.result, drop_event, file_name });
             }
         });
-        reader.readAsText(file);
+        reader.readAsText(this.loaded_local_file);
     }
 
     @action.bound

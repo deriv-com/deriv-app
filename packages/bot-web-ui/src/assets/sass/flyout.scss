@@ -27,10 +27,6 @@
     min-width: 400px;
     visibility: hidden;
 
-    &__animation {
-        visibility: visible;
-        animation: fade-in 500ms;
-    }
     &__item:hover {
         .flyout__button-add--hide {
             display: flex !important;

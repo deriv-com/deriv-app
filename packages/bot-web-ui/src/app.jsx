@@ -54,6 +54,10 @@ class App extends React.Component {
 
         this.disposeReactions();
         this.disposeOnAccountSwitch();
+
+        // Ensure account switch is re-enabled.
+        const { ui } = this.root_store.core;
+        ui.setAccountSwitcherDisabledMessage(false);
     }
 
     /**

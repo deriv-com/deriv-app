@@ -8,7 +8,7 @@ const Tick = ({ is_on }) => {
             className={classNames('dc-tick-progress__tick', {
                 'dc-tick-progress__tick--on': is_on,
             })}
-        ></div>
+        />
     );
 };
 

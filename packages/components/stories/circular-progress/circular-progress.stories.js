@@ -38,7 +38,7 @@ const progresses = [
         icon: 'IcBrandDtrader',
         is_clockwise: true,
         is_dark: false,
-        value: 25,
+        value: 20,
     },
     {
         icon: 'IcLock',

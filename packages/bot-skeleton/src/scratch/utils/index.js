@@ -97,7 +97,8 @@ export const load = (block_string, drop_event, showIncompatibleStrategyDialog) =
         }
 
         // Set user disabled state on all disabled blocks. This ensures we don't change the disabled
-        // state through code, which was implemented for user experience.
+        // state through code, which was implemented for user experience. This is required for when
+        // a user imports a strategy with disabled blocks in valid scopes, we need to maintain those states.
         Blockly.derivWorkspace.getAllBlocks().forEach(block => {
             if (block.disabled) {
                 block.is_user_disabled_state = true;

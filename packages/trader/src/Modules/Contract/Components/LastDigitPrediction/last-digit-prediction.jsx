@@ -96,6 +96,7 @@ class LastDigitPrediction extends React.Component {
                         status={status}
                         latest_digit={is_trade_page ? latest_digit : last_contract_digit}
                         value={idx}
+                        onLastDigitSpot={this.props.onLastDigitSpot}
                     />
                 ))}
                 {isDesktop() && (

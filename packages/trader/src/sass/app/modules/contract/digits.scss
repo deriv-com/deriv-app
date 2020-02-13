@@ -160,6 +160,20 @@
                     background: var(--text-loss-danger);
                 }
             }
+            @include mobile {
+                position: relative;
+                top: 0;
+                left: 0;
+                right: 0;
+
+                &-value,
+                &-last {
+                    font-size: 1.6rem;
+                }
+                &-last {
+                    padding: 0 7px;
+                }
+            }
         }
     }
     &__pie-container {
@@ -279,16 +293,16 @@
         grid-template-columns: repeat(5, 1fr);
         grid-gap: 1.6rem;
         align-items: center;
-        margin: 2.4rem 0 1.6rem;
+        margin: 1.6rem 0;
 
         &--trade {
             grid-gap: 0.8rem 1.2rem;
-            margin: 0 0 0.8rem;
+            margin: 1.2rem 0 0.8rem;
         }
         &__container {
             width: 100%;
             margin: 0;
-            padding: 3.2rem;
+            padding: 1.6rem 3.2rem;
             display: flex;
             flex-direction: column;
             justify-content: center;

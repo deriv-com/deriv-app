@@ -20,12 +20,18 @@ const DigitDisplay = ({
     status,
     stats,
     value,
+    onLastDigitSpot,
 }) => {
     const { digit, spot } = latest_digit;
     const is_latest = value === digit;
     const is_selected = value === barrier;
     const is_selected_winning = digit === barrier;
     const percentage = stats ? (stats * 100) / 1000 : null;
+
+    if (onLastDigitSpot) {
+        onLastDigitSpot({ spot, is_lost, is_selected_winning, is_latest, is_won });
+    }
+
     return (
         <div
             className={classNames('digits__digit', {

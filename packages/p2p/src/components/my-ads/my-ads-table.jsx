@@ -25,7 +25,7 @@ const RowComponent = React.memo(({ data, row_actions, style }) => (
     <div style={style}>
         <Table.Row>
             <Table.Cell>
-                {type[data.type]} {data.advert_id}
+                {type[data.type]} {data.id}
             </Table.Cell>
             <Table.Cell>
                 {data.display_available_amount} {data.offer_currency}
@@ -38,7 +38,7 @@ const RowComponent = React.memo(({ data, row_actions, style }) => (
             </Table.Cell>
             <Table.Cell>{data.display_payment_method}</Table.Cell>
             <Table.Cell>
-                <Button secondary small onClick={() => row_actions.onClickDelete(data.advert_id)}>
+                <Button secondary small onClick={() => row_actions.onClickDelete(data.id)}>
                     {localize('Delete')}
                 </Button>
             </Table.Cell>
@@ -78,8 +78,8 @@ export class MyAdsTable extends React.Component {
         this.is_mounted = false;
     }
 
-    onClickDelete = advert_id => {
-        this.setState({ selected_ad_id: advert_id, show_popup: true });
+    onClickDelete = id => {
+        this.setState({ selected_ad_id: id, show_popup: true });
     };
 
     onClickCancel = () => {
@@ -87,14 +87,12 @@ export class MyAdsTable extends React.Component {
     };
 
     onClickConfirm = showError => {
-        requestWS({ p2p_advert_update: 1, id: this.state.selected_ad_id, is_listed: 0 }).then(response => {
+        requestWS({ p2p_advert_update: 1, id: this.state.selected_ad_id, is_active: 0 }).then(response => {
             if (response.error) {
                 showError({ error_message: response.error.message });
             } else {
                 // remove the deleted ad from the list of items
-                const updated_items = this.state.items.filter(
-                    ad => ad.advert_id !== response.p2p_advert_update.advert_id
-                );
+                const updated_items = this.state.items.filter(ad => ad.id !== response.p2p_advert_update.id);
                 this.setState({ items: updated_items, show_popup: false });
             }
         });

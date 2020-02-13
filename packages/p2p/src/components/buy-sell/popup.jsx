@@ -24,7 +24,7 @@ class Popup extends Component {
 
         const order = await requestWS({
             p2p_order_create: 1,
-            advert_id: ad.advert_id,
+            advert_id: ad.id,
             amount: values.amount,
         });
 

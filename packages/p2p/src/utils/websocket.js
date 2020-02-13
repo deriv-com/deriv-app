@@ -31,7 +31,7 @@ const map_payment_method = {
     bank_transfer: localize('Bank transfer'),
 };
 
-const getModifiedP2PAdvertList = response => {
+const getModifiedP2PAdvertList = (response, is_from_my_ads) => {
     // only show active adverts
     const filtered_list = response.list.filter(offer => !!+offer.is_active);
 
@@ -71,7 +71,6 @@ const getModifiedP2PAdvertList = response => {
             price_rate,
             transaction_currency,
             transaction_currency_decimals,
-            advert_id: filtered_list[i].advert_id,
             advertiser_name: ObjectUtils.getPropertyValue(filtered_list[i], ['advertiser_details', 'name']),
             advertiser_id: ObjectUtils.getPropertyValue(filtered_list[i], ['advertiser_details', 'id']),
             advertiser_notes: filtered_list[i].description,
@@ -81,7 +80,10 @@ const getModifiedP2PAdvertList = response => {
             display_offer_amount: formatMoney(offer_currency, offer_amount),
             display_payment_method: map_payment_method[payment_method] || payment_method,
             display_price_rate: formatMoney(transaction_currency, price_rate),
-            type: filtered_list[i].counterparty_type,
+            id: filtered_list[i].id,
+            // for view in my ads tab, we should show the real type of the ad
+            // for view in buy/sell table, we should show flip the ad type
+            type: is_from_my_ads ? filtered_list[i].type : filtered_list[i].counterparty_type,
         };
     }
     return modified_response;
@@ -138,7 +140,10 @@ const getModifiedResponse = response => {
     let modified_response = response;
 
     if (response.p2p_advert_list || response.p2p_advertiser_adverts) {
-        modified_response = getModifiedP2PAdvertList(response.p2p_advert_list || response.p2p_advertiser_adverts);
+        modified_response = getModifiedP2PAdvertList(
+            response.p2p_advert_list || response.p2p_advertiser_adverts,
+            response.p2p_advertiser_adverts
+        );
     } else if (response.p2p_order_info) {
         modified_response = getModifiedP2POrder(response.p2p_order_info);
     }

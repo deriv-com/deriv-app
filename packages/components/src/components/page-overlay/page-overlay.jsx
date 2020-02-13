@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from '../icon';
+import Icon from 'Components/icon/icon.jsx';
 
 class PageOverlay extends React.Component {
     render() {

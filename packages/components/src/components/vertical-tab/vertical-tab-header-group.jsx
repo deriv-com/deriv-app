@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import Icon from 'Components/icon';
+import Icon from 'Components/icon/icon.jsx';
 
 const HeaderIcon = ({ icon, is_active }) => (
     <Icon

@@ -1,11 +1,8 @@
 import { localize } from '@deriv/translations';
 import RawMarkerMaker from './Helpers/raw-marker-maker.jsx';
-import renderSvg2Canvas from './Helpers/svg2canvas';
 import { getColor, getHexOpacity } from './Helpers/colors';
-import { shadowedText } from './Helpers/text';
-import { drawVerticalLabelledLine, drawBarrierLine, drawLine } from './Helpers/lines';
-import { drawShade } from './Helpers/shade';
 import { getScale, getChartOpacity } from './Helpers/calculations';
+import BasicCanvasElements from './Helpers/canvas';
 import * as ICONS from '../icons';
 
 const TickContract = RawMarkerMaker(
@@ -52,51 +49,42 @@ const TickContract = RawMarkerMaker(
         if (should_draw_vertical_line) {
             if (start.visible) {
                 ctx.fillStyle = foreground_color;
-                drawVerticalLabelledLine({
+                BasicCanvasElements.VerticalLabelledLine(
                     ctx,
-                    text: localize('Buy Time'),
-                    position: {
-                        zoom: start.zoom,
-                        left: start.left,
-                        top: canvas_height - 50,
-                    },
-                    line_style: 'dashed',
-                    icon: ICONS.BUY_SELL.withColorOnSpecificPaths({
+                    [start.left, canvas_height - 50],
+                    start.zoom,
+                    localize('Buy Time'),
+                    ICONS.BUY_SELL.withColorOnSpecificPaths({
                         0: { fill: background_color },
                         1: { fill: foreground_color },
                     }),
-                });
+                    'dashed'
+                );
             }
             if (has_reset_time) {
                 ctx.fillStyle = foreground_color;
-                drawVerticalLabelledLine({
+                BasicCanvasElements.VerticalLabelledLine(
                     ctx,
-                    text: localize('Reset Time'),
-                    position: {
-                        zoom: reset_time.zoom,
-                        left: reset_time.left,
-                        top: canvas_height - 50,
-                    },
-                    line_style: 'dashed',
-                    icon: ICONS.RESET.withColor(foreground_color, background_color),
-                });
+                    [reset_time.left, canvas_height - 50],
+                    reset_time.zoom,
+                    localize('Reset Time'),
+                    ICONS.RESET.withColor(foreground_color, background_color),
+                    'dashed'
+                );
             }
             if (exit.visible && tick_count === ticks.length - 1) {
                 ctx.strokeStyle = status_color_with_opacity;
-                drawVerticalLabelledLine({
+                BasicCanvasElements.VerticalLabelledLine(
                     ctx,
-                    text: localize('Sell Time'),
-                    position: {
-                        zoom: exit.zoom,
-                        left: exit.left,
-                        top: canvas_height - 50,
-                    },
-                    line_style: 'solid',
-                    icon: ICONS.BUY_SELL.withColorOnSpecificPaths({
+                    [exit.left, canvas_height - 50],
+                    exit.zoom,
+                    localize('Sell Time'),
+                    ICONS.BUY_SELL.withColorOnSpecificPaths({
                         0: { fill: background_color },
                         1: { fill: status_color_with_opacity },
                     }),
-                });
+                    'solid'
+                );
             }
         }
 
@@ -105,28 +93,29 @@ const TickContract = RawMarkerMaker(
         // barrier line
         ctx.fillStyle = background_color;
         if (is_reset_barrier_expired) {
-            if (is_sold) {
-                drawLine(
-                    ctx,
-                    { left: reset_time.left, top: entry_tick_top },
-                    { left: reset_time.left, top: barrier },
-                    'dashed'
-                );
-            }
+            BasicCanvasElements.Line(ctx, [reset_time.left, entry_tick_top, reset_time.left, barrier], 'dashed');
 
             ctx.strokeStyle = foreground_color;
-            drawBarrierLine(ctx, start, reset_time, entry_tick_top, 'dashed');
+            BasicCanvasElements.BarrierLine(
+                ctx,
+                [start.left, entry_tick_top, reset_time.left, entry_tick_top],
+                'dashed'
+            );
             ctx.strokeStyle = status_color_with_opacity;
-            drawBarrierLine(ctx, reset_time, exit, barrier);
+            BasicCanvasElements.BarrierLine(ctx, [reset_time.left, barrier, exit.left, barrier], 'solid');
         } else {
             ctx.strokeStyle = foreground_color;
-            drawBarrierLine(ctx, start, entry, barrier, 'dashed');
+            BasicCanvasElements.BarrierLine(ctx, [start.left, barrier, entry.left, barrier], 'dashed');
             ctx.strokeStyle = status_color_with_opacity;
-            drawBarrierLine(ctx, entry, exit, barrier, 'solid');
+            BasicCanvasElements.BarrierLine(ctx, [entry.left, barrier, exit.left, barrier], 'solid');
         }
 
         if (is_last_contract && !is_sold) {
-            drawShade(ctx, is_reset_barrier_expired ? reset_time : entry, exit, status_color);
+            const points = is_reset_barrier_expired
+                ? [reset_time.left, reset_time.top, exit.left, exit.top]
+                : [entry.left, entry.top, exit.left, exit.top];
+
+            BasicCanvasElements.Shade(ctx, points, status_color);
         }
 
         // ticks for last contract
@@ -144,25 +133,22 @@ const TickContract = RawMarkerMaker(
         }
         // entry markers
         if (granularity === 0 && entry && entry.visible) {
-            renderSvg2Canvas({
+            BasicCanvasElements.SVG(
                 ctx,
-                position: entry,
-                icon: ICONS.ENTRY_SPOT.withColorOnSpecificPaths({
+                ICONS.ENTRY_SPOT.withColorOnSpecificPaths({
                     0: { fill: background_color },
                     1: { fill: foreground_color },
                 }),
-            });
+                [entry.left, entry.top],
+                entry.zoom
+            );
         }
         // count down
         if (start.visible && !is_sold) {
-            shadowedText({
-                ctx,
-                scale,
-                is_dark_theme,
-                text: `${ticks.length - 1}/${tick_count}`,
-                left: start.left,
-                top: barrier - 28 * scale,
-            });
+            const points = [start.left, barrier - 28 * scale];
+            const text = `${ticks.length - 1}/${tick_count}`;
+
+            BasicCanvasElements.Text(ctx, points, text, scale);
         }
         // status marker
         if (exit.visible && is_sold) {
@@ -173,8 +159,8 @@ const TickContract = RawMarkerMaker(
             });
 
             ctx.strokeStyle = status_color_with_opacity;
-            drawLine(ctx, { left: exit.left, top: barrier }, exit, 'dashed');
-            renderSvg2Canvas({ ctx, icon, position: exit });
+            BasicCanvasElements.Line(ctx, [exit.left, barrier, exit.left, exit.top], 'dashed');
+            BasicCanvasElements.SVG(ctx, icon, [exit.left, exit.top], exit.zoom);
         }
 
         ctx.restore();

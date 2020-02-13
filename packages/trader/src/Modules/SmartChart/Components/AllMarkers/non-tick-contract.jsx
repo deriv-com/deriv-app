@@ -1,12 +1,8 @@
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize } from '@deriv/translations';
 import RawMarkerMaker from './Helpers/raw-marker-maker.jsx';
-import renderSvg2Canvas from './Helpers/svg2canvas';
-import { CURRENCY_SYMBOLS } from './Constants/currency_symbols';
 import { getColor, getHexOpacity } from './Helpers/colors';
-import { shadowedText } from './Helpers/text';
-import { drawVerticalLabelledLine, drawBarrierLine, drawLine } from './Helpers/lines';
-import { drawShade } from './Helpers/shade';
+import BasicCanvasElements from './Helpers/canvas';
 import { getScale, getChartOpacity } from './Helpers/calculations';
 import * as ICONS from '../icons';
 
@@ -21,6 +17,20 @@ const NonTickContract = RawMarkerMaker(
         currency,
         contract_info: { is_sold, status, profit },
     }) => {
+        const CURRENCY_SYMBOLS = {
+            AUD: '\u0041\u0024',
+            EUR: '\u20AC',
+            GBP: '\u00A3',
+            JPY: '\u00A5',
+            USD: '\u0024',
+            BTC: '\u0042',
+            BCH: '\ue901',
+            ETH: '\u0045',
+            ETC: '\ue900',
+            LTC: '\u004c',
+            UST: '\ue903',
+        };
+
         /** @type {CanvasRenderingContext2D} */
         const ctx = context;
 
@@ -60,53 +70,44 @@ const NonTickContract = RawMarkerMaker(
         if (should_draw_vertical_line) {
             if (start.visible) {
                 ctx.fillStyle = foreground_color;
-                drawVerticalLabelledLine({
+                BasicCanvasElements.VerticalLabelledLine(
                     ctx,
-                    text: localize('Buy Time'),
-                    position: {
-                        zoom: start.zoom,
-                        left: start.left,
-                        top: canvas_height - 50,
-                    },
-                    line_style: 'dashed',
-                    icon: ICONS.BUY_SELL.withColorOnSpecificPaths({
+                    [start.left, canvas_height - 50],
+                    start.zoom,
+                    localize('Buy Time'),
+                    ICONS.BUY_SELL.withColorOnSpecificPaths({
                         0: { fill: background_color },
                         1: { fill: foreground_color },
                     }),
-                });
+                    'dashed'
+                );
             }
 
             if (has_reset_time) {
                 ctx.fillStyle = foreground_color;
-                drawVerticalLabelledLine({
+                BasicCanvasElements.VerticalLabelledLine(
                     ctx,
-                    text: localize('Reset Time'),
-                    position: {
-                        zoom: reset_time.zoom,
-                        left: reset_time.left,
-                        top: canvas_height - 50,
-                    },
-                    line_style: 'dashed',
-                    icon: ICONS.RESET.withColor(foreground_color, background_color),
-                });
+                    [reset_time.left, canvas_height - 50],
+                    reset_time.zoom,
+                    localize('Reset Time'),
+                    ICONS.RESET.withColor(foreground_color, background_color),
+                    'dashed'
+                );
             }
 
             if (expiry.visible) {
                 ctx.strokeStyle = status_color_with_opacity;
-                drawVerticalLabelledLine({
+                BasicCanvasElements.VerticalLabelledLine(
                     ctx,
-                    text: localize('Sell Time'),
-                    position: {
-                        zoom: expiry.zoom,
-                        left: expiry.left,
-                        top: canvas_height - 50,
-                    },
-                    line_style: 'solid',
-                    icon: ICONS.BUY_SELL.withColorOnSpecificPaths({
+                    [expiry.left, canvas_height - 50],
+                    expiry.zoom,
+                    localize('Sell Time'),
+                    ICONS.BUY_SELL.withColorOnSpecificPaths({
                         0: { fill: background_color },
                         1: { fill: status_color_with_opacity },
                     }),
-                });
+                    'solid'
+                );
             }
         }
 
@@ -116,41 +117,43 @@ const NonTickContract = RawMarkerMaker(
         if (barrier && entry && (start.visible || expiry.visible || Math.sign(start.left) !== Math.sign(expiry.left))) {
             ctx.fillStyle = background_color;
             if (is_reset_barrier_expired) {
-                if (is_sold) {
-                    drawLine(
-                        ctx,
-                        { left: reset_time.left, top: entry_tick_top },
-                        { left: reset_time.left, top: barrier },
-                        'dashed'
-                    );
-                }
+                BasicCanvasElements.Line(ctx, [reset_time.left, entry_tick_top, reset_time.left, barrier], 'dashed');
 
                 ctx.strokeStyle = foreground_color;
-                drawBarrierLine(ctx, start, reset_time, entry_tick_top, 'dashed');
+                BasicCanvasElements.BarrierLine(
+                    ctx,
+                    [start.left, entry_tick_top, reset_time.left, entry_tick_top],
+                    'dashed'
+                );
                 ctx.strokeStyle = status_color_with_opacity;
-                drawBarrierLine(ctx, reset_time, expiry, barrier);
+                BasicCanvasElements.BarrierLine(ctx, [reset_time.left, barrier, expiry.left, barrier], 'solid');
             } else {
                 ctx.strokeStyle = foreground_color;
-                drawBarrierLine(ctx, start, entry, barrier, 'dashed');
+                BasicCanvasElements.BarrierLine(ctx, [start.left, barrier, entry.left, barrier], 'dashed');
                 ctx.strokeStyle = status_color_with_opacity;
-                drawBarrierLine(ctx, entry, expiry, barrier, 'solid');
+                BasicCanvasElements.BarrierLine(ctx, [entry.left, barrier, expiry.left, barrier], 'solid');
             }
         }
 
         if (is_last_contract && !is_sold) {
-            drawShade(ctx, is_reset_barrier_expired ? reset_time : entry, current_spot, status_color);
+            const points = is_reset_barrier_expired
+                ? [reset_time.left, reset_time.top, current_spot.left, current_spot.top]
+                : [entry.left, entry.top, current_spot.left, current_spot.top];
+
+            BasicCanvasElements.Shade(ctx, points, status_color);
         }
 
         // entry markers
         if (granularity === 0 && entry && entry.visible) {
-            renderSvg2Canvas({
+            BasicCanvasElements.SVG(
                 ctx,
-                position: entry,
-                icon: ICONS.ENTRY_SPOT.withColorOnSpecificPaths({
+                ICONS.ENTRY_SPOT.withColorOnSpecificPaths({
                     0: { fill: background_color },
                     1: { fill: foreground_color },
                 }),
-            });
+                [entry.left, entry.top],
+                entry.zoom
+            );
         }
 
         // show the profit
@@ -160,14 +163,8 @@ const NonTickContract = RawMarkerMaker(
             const sign = profit < 0 ? '-' : profit > 0 ? '+' : ' '; // eslint-disable-line
             const text = `${sign}${symbol}${Math.abs(profit).toFixed(decimal_places)}`;
             ctx.fillStyle = status_color_with_opacity;
-            shadowedText({
-                ctx,
-                scale,
-                text,
-                is_dark_theme,
-                left: start.left,
-                top: barrier - 28 * scale,
-            });
+
+            BasicCanvasElements.Text(ctx, [start.left, barrier - 28 * scale], text, scale);
         }
         // status marker
         if (expiry.visible && is_sold) {
@@ -178,8 +175,8 @@ const NonTickContract = RawMarkerMaker(
             });
 
             ctx.strokeStyle = status_color_with_opacity;
-            drawLine(ctx, { left: exit.left, top: barrier }, exit, 'dashed');
-            renderSvg2Canvas({ ctx, icon, position: exit });
+            BasicCanvasElements.Line(ctx, [exit.left, barrier, exit.left, exit.top], 'dashed');
+            BasicCanvasElements.SVG(ctx, icon, [exit.left, exit.top], exit.zoom);
         }
 
         ctx.restore();

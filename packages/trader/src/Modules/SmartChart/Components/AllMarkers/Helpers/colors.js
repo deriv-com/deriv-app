@@ -1,6 +1,21 @@
-import { DARK, LIGHT } from '../Constants/colors';
-
 export const getColor = ({ status, profit, is_dark_theme }) => {
+    const DARK = {
+        open: '#377cfc',
+        won: '#00a79e',
+        lost: '#cc2e3d',
+        sold: '#ffad3a',
+        fg: '#ffffff',
+        bg: '#0e0e0e',
+    };
+
+    const LIGHT = {
+        open: '#377cfc',
+        won: '#4bb4b3',
+        lost: '#ec3f3f',
+        sold: '#ffad3a',
+        fg: '#333333',
+        bg: '#ffffff',
+    };
     const colors = is_dark_theme ? DARK : LIGHT;
 
     let color = colors[status || 'open'];

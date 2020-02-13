@@ -1,7 +1,6 @@
 import RawMarkerMaker from './Helpers/raw-marker-maker.jsx';
-import renderSvg2Canvas from './Helpers/svg2canvas';
 import { getColor } from './Helpers/colors';
-import { shadowedText } from './Helpers/text';
+import BasicCanvasElements from './Helpers/canvas';
 import { getScale, getChartOpacity } from './Helpers/calculations';
 import * as ICONS from '../icons';
 
@@ -58,29 +57,24 @@ const DigitContract = RawMarkerMaker(
 
         // count down
         if (start.visible && start.top && !is_sold) {
-            shadowedText({
+            BasicCanvasElements.Text(
                 ctx,
-                scale,
-                is_dark_theme,
-                text: `${ticks.length}/${tick_count}`,
-                left: start.left - 1 * scale,
-                top: start.top - 27 * scale,
-            });
+                [start.left - 1 * scale, start.top - 28 * scale],
+                `${ticks.length}/${tick_count}`,
+                scale
+            );
         }
         // start-time marker
         if (start.visible && (granularity === 0 || !is_sold)) {
-            renderSvg2Canvas({
+            BasicCanvasElements.SVG(
                 ctx,
-                position: {
-                    top: start.top - 9 * scale,
-                    left: start.left - 1 * scale,
-                    zoom: start.zoom,
-                },
-                icon: ICONS.END.withColorOnSpecificPaths({
+                ICONS.END.withColorOnSpecificPaths({
                     0: { fill: getColor({ status: 'bg', is_dark_theme }) + opacity },
                     1: { fill: color + opacity },
                 }),
-            });
+                [start.top - 9 * scale, start.left - 1 * scale],
+                start.zoom
+            );
         }
         // remaining ticks
         ticks.forEach((tick, idx) => {
@@ -118,18 +112,15 @@ const DigitContract = RawMarkerMaker(
         // status marker
         if (expiry.visible && is_sold) {
             ctx.fillStyle = color;
-            renderSvg2Canvas({
+            BasicCanvasElements.SVG(
                 ctx,
-                position: {
-                    top: expiry.top - 16 * scale,
-                    left: expiry.left + 8 * scale,
-                    zoom: expiry.zoom,
-                },
-                icon: ICONS.END.withColorOnSpecificPaths({
+                ICONS.END.withColorOnSpecificPaths({
                     0: { fill: getColor({ status: 'bg', is_dark_theme }) },
                     1: { fill: color },
                 }),
-            });
+                [expiry.top - 16 * scale, expiry.left + 8 * scale],
+                expiry.zoom
+            );
         }
         ctx.restore();
     }

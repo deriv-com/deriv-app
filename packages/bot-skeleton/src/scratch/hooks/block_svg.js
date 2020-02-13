@@ -106,7 +106,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
         const disable_option = {
             text: this.disabled ? localize('Enable Block') : localize('Disable Block'),
             enabled:
-                !this.getInheritedDisabled() &&
+                restricted_parents.length === 0 ||
                 restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent)),
             callback: () => {
                 const group = Blockly.Events.getGroup();

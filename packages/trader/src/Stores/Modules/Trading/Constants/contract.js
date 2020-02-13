@@ -75,7 +75,7 @@ export const getContractTypesConfig = () => ({
         components: ['last_digit'],
     },
     reset_call_put: {
-        title: localize('Reset Up/ \nReset Down'),
+        title: localize('Reset Up/Reset Down'),
         trade_types: ['RESETCALL', 'RESETPUT'],
         basis: ['stake', 'payout'],
         components: [],

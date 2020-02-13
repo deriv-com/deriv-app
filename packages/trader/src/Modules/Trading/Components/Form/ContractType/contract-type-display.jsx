@@ -9,6 +9,16 @@ const Display = ({ is_open, list, name, onClick, value }) => {
     const getDisplayText = () =>
         findContractCategory(list, { value }).contract_types.find(item => item.value === value).text;
 
+    let text = getDisplayText();
+
+    // Reset Call/Reset Puts needs to be broken into 2 lines as
+    // per design but we can't do that in the config because it adds
+    // a space when we force into one line when used in other components.
+    if (value === 'reset_call_put') {
+        const text_split = text.split('/');
+        text = `${text_split[0]}/\n${text_split[1]}`;
+    }
+
     return (
         <div
             className={classNames('contract-type-widget__display', {
@@ -18,7 +28,7 @@ const Display = ({ is_open, list, name, onClick, value }) => {
         >
             <IconTradeCategory category={value} className='contract-type-widget__icon-wrapper' />
             <span name={name} value={value}>
-                {getDisplayText()}
+                {text}
             </span>
             <Icon
                 icon='IcChevronDown'

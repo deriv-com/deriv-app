@@ -1,17 +1,59 @@
 import React from 'react';
-import { Tabs, TickPicker, Numpad } from '@deriv/components';
+import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
+import ObjectUtils from '@deriv/shared/utils/object';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
 
 const submit_label = localize('OK');
 
-const Ticks = ({ toggleModal, onChangeMultiple, duration_min_max, selected_duration, setSelectedDuration }) => {
+const updateAmountChanges = (obj, stake_value, payout_value, basis, trade_basis, trade_amount) => {
+    // TODO: Move onChangeMultiple outside of duration and amount
+    //  and unify all trade parameter components to use same onMultipleChange func onSubmit
+    // Checks if Amount tab was changed to stake and stake value was updated
+    if (basis === 'stake' && stake_value !== trade_amount) {
+        obj.basis = 'stake';
+        obj.amount = stake_value;
+        // Checks if Amount tab was changed to payout and payout value was updated
+    } else if (basis === 'payout' && payout_value !== trade_amount) {
+        obj.basis = 'payout';
+        obj.amount = payout_value;
+        // Checks if Amount tab was changed but payout or stake value was not updated
+    } else if (trade_basis !== basis) {
+        obj.basis = basis;
+        obj.amount = trade_amount;
+    }
+};
+
+const Ticks = ({
+    basis_option,
+    toggleModal,
+    onChangeMultiple,
+    duration_min_max,
+    trade_duration,
+    trade_basis,
+    trade_amount,
+    trade_duration_unit,
+    payout_value,
+    stake_value,
+    selected_duration,
+    setSelectedDuration,
+}) => {
     const [min_tick, max_tick] = getDurationMinMaxValues(duration_min_max, 'tick', 't');
 
     const setTickDuration = value => {
         const { value: duration } = value.target;
-        onChangeMultiple({ duration_unit: 't', duration });
+        const on_change_obj = {};
+
+        // check for any amount changes from Amount trade params tab before submitting onChange object
+        updateAmountChanges(on_change_obj, stake_value, payout_value, basis_option, trade_basis, trade_amount);
+
+        if (trade_duration !== duration || trade_duration_unit !== 't') {
+            on_change_obj.duration_unit = 't';
+            on_change_obj.duration = duration;
+        }
+
+        if (!ObjectUtils.isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
         toggleModal();
     };
 
@@ -36,14 +78,25 @@ const Ticks = ({ toggleModal, onChangeMultiple, duration_min_max, selected_durat
 const TicksWrapper = connect(({ modules }) => ({
     duration_min_max: modules.trade.duration_min_max,
     onChangeMultiple: modules.trade.onChangeMultiple,
+    trade_basis: modules.trade.basis,
+    trade_amount: modules.trade.amount,
+    trade_duration: modules.trade.duration,
+    trade_duration_unit: modules.trade.duration_unit,
 }))(Ticks);
 
 const Numbers = ({
+    basis_option,
     toggleModal,
     onChangeMultiple,
     duration_min_max,
     duration_unit_option,
     contract_expiry = 'intraday',
+    payout_value,
+    stake_value,
+    trade_amount,
+    trade_basis,
+    trade_duration_unit,
+    trade_duration,
     selected_duration,
     setSelectedDuration,
 }) => {
@@ -51,7 +104,17 @@ const Numbers = ({
     const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry, duration_unit);
 
     const setDuration = duration => {
-        onChangeMultiple({ duration_unit, duration });
+        const on_change_obj = {};
+
+        // check for any amount changes from Amount trade params tab before submitting onChange object
+        updateAmountChanges(on_change_obj, stake_value, payout_value, basis_option, trade_basis, trade_amount);
+
+        if (trade_duration !== duration || trade_duration_unit !== duration_unit) {
+            on_change_obj.duration_unit = duration_unit;
+            on_change_obj.duration = duration;
+        }
+
+        if (!ObjectUtils.isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
         toggleModal();
     };
 
@@ -77,14 +140,20 @@ const Numbers = ({
 
 const NumpadWrapper = connect(({ modules }) => ({
     duration_min_max: modules.trade.duration_min_max,
+    trade_duration: modules.trade.duration,
+    trade_duration_unit: modules.trade.duration_unit,
+    trade_basis: modules.trade.basis,
+    trade_amount: modules.trade.amount,
     onChangeMultiple: modules.trade.onChangeMultiple,
 }))(Numbers);
 
 const Duration = ({
+    amount_tab_idx,
     toggleModal,
     duration_units_list,
     duration_unit,
     duration_tab_idx,
+    duration_min_max,
     setDurationTabIdx,
     t_duration,
     s_duration,
@@ -92,24 +161,47 @@ const Duration = ({
     h_duration,
     d_duration,
     setSelectedDuration,
+    trade_basis,
+    stake_value,
+    payout_value,
 }) => {
     const has_selected_tab_idx = typeof duration_tab_idx !== 'undefined';
     const active_index = has_selected_tab_idx
         ? duration_tab_idx
         : duration_units_list.findIndex(d => d.value === duration_unit);
+    const [min, max] = getDurationMinMaxValues(duration_min_max, 'daily', 'd');
+    const handleRelativeChange = date => {
+        setSelectedDuration('d', date);
+    };
+    const selected_basis_option = () => {
+        if (amount_tab_idx === 0) {
+            return 'stake';
+        } else if (amount_tab_idx === 1) {
+            return 'payout';
+        }
+        return trade_basis;
+    };
 
     return (
         <div>
-            <Tabs active_index={active_index} onTabItemClick={num => setDurationTabIdx(num)} top>
+            <Tabs
+                active_index={active_index}
+                onTabItemClick={num => setDurationTabIdx(num)}
+                single_tab_has_no_label
+                top
+            >
                 {duration_units_list.map(duration_unit_option => {
                     switch (duration_unit_option.value) {
                         case 't':
                             return (
                                 <div label={duration_unit_option.text} key={duration_unit_option.value}>
                                     <TicksWrapper
+                                        basis_option={selected_basis_option()}
                                         toggleModal={toggleModal}
                                         selected_duration={t_duration}
                                         setSelectedDuration={setSelectedDuration}
+                                        stake_value={stake_value}
+                                        payout_value={payout_value}
                                     />
                                 </div>
                             );
@@ -117,10 +209,13 @@ const Duration = ({
                             return (
                                 <div label={duration_unit_option.text} key={duration_unit_option.value}>
                                     <NumpadWrapper
+                                        basis_option={selected_basis_option()}
                                         toggleModal={toggleModal}
                                         duration_unit_option={duration_unit_option}
                                         selected_duration={s_duration}
                                         setSelectedDuration={setSelectedDuration}
+                                        stake_value={stake_value}
+                                        payout_value={payout_value}
                                     />
                                 </div>
                             );
@@ -128,10 +223,13 @@ const Duration = ({
                             return (
                                 <div label={duration_unit_option.text} key={duration_unit_option.value}>
                                     <NumpadWrapper
+                                        basis_option={selected_basis_option()}
                                         toggleModal={toggleModal}
                                         duration_unit_option={duration_unit_option}
                                         selected_duration={m_duration}
                                         setSelectedDuration={setSelectedDuration}
+                                        stake_value={stake_value}
+                                        payout_value={payout_value}
                                     />
                                 </div>
                             );
@@ -139,10 +237,13 @@ const Duration = ({
                             return (
                                 <div label={duration_unit_option.text} key={duration_unit_option.value}>
                                     <NumpadWrapper
+                                        basis_option={selected_basis_option()}
                                         toggleModal={toggleModal}
                                         duration_unit_option={duration_unit_option}
                                         selected_duration={h_duration}
                                         setSelectedDuration={setSelectedDuration}
+                                        stake_value={stake_value}
+                                        payout_value={payout_value}
                                     />
                                 </div>
                             );
@@ -150,11 +251,20 @@ const Duration = ({
                             return (
                                 <div label={duration_unit_option.text} key={duration_unit_option.value}>
                                     <NumpadWrapper
+                                        basis_option={selected_basis_option()}
                                         toggleModal={toggleModal}
                                         duration_unit_option={duration_unit_option}
                                         contract_expiry='daily'
                                         selected_duration={d_duration}
                                         setSelectedDuration={setSelectedDuration}
+                                        stake_value={stake_value}
+                                        payout_value={payout_value}
+                                    />
+                                    <RelativeDatepicker
+                                        onChange={handleRelativeChange}
+                                        min={min}
+                                        max={max}
+                                        title='Pick an end date'
                                     />
                                 </div>
                             );
@@ -169,5 +279,7 @@ const Duration = ({
 
 export default connect(({ modules }) => ({
     duration_units_list: modules.trade.duration_units_list,
+    duration_min_max: modules.trade.duration_min_max,
     duration_unit: modules.trade.duration_unit,
+    trade_basis: modules.trade.basis,
 }))(Duration);

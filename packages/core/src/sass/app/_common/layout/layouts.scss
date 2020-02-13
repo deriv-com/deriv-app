@@ -1,7 +1,32 @@
-/** @define deriv-app; weak */
-.deriv-app {
-    @include mobile {
+@include mobile {
+    /** disabling pull to refresh on iOS / Android browsers */
+    /* postcss-bem-linter: ignore */
+    body,
+    .deriv-app,
+    .modal-root,
+    .dc-mobile-drawer__wrapper {
+        /* Break the flow */
+        position: absolute;
+        top: 0px;
+
+        /* Give them all the available space */
+        width: 100%;
+        height: 100%;
+
+        /* Remove the margins if any */
+        margin: 0;
+
+        /* Allow them to scroll down the document */
+        overflow-y: hidden;
+    }
+    .body {
+        /* Sending body at the bottom of the stack */
+        z-index: 1;
+    }
+    .deriv-app {
+        /* Making the wrapper stack above the body */
         overscroll-behavior: none;
+        z-index: 2;
     }
 }
 

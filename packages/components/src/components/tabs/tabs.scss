@@ -44,6 +44,9 @@
         &--bottom {
             border-top: 1px solid var(--general-section-1);
         }
+        &--is-hidden {
+            display: none;
+        }
         &:not(.dc-tabs__active) {
             cursor: pointer;
             color: var(--text-general);
@@ -70,6 +73,9 @@
         }
         &--fit-content {
             width: 120px;
+        }
+        &--is-hidden {
+            display: none;
         }
     }
 }

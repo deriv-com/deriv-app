@@ -1,12 +1,13 @@
 import React from 'react';
 import { Tabs, Modal } from '@deriv/components';
+import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
-import Amount from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
+import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
+import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile.jsx';
 // import Barrier                        from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
-import { connect } from 'Stores/connect';
-import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile.jsx';
 import 'Sass/app/modules/trading-mobile.scss';
+import Div100vhContainer from '@deriv/components/src/components/div100vh-container';
 
 const DEFAULT_DURATION = Object.freeze({
     t: 5,
@@ -30,6 +31,8 @@ class TradeParamsModal extends React.Component {
             duration_tab_idx: undefined,
             amount_tab_idx: undefined,
             // duration unit values
+            curr_duration_unit: undefined,
+            curr_duration_value: undefined,
             t_duration: getDefaultDuration('t'),
             s_duration: getDefaultDuration('s'),
             m_duration: getDefaultDuration('m'),
@@ -49,8 +52,13 @@ class TradeParamsModal extends React.Component {
 
     setSelectedAmount = (basis, selected_basis_value) => this.setState({ [`${basis}_value`]: selected_basis_value });
 
-    setSelectedDuration = (duration_unit, selected_duration) =>
-        this.setState({ [`${duration_unit}_duration`]: selected_duration });
+    setSelectedDuration = (duration_unit, selected_duration) => {
+        this.setState({
+            [`${duration_unit}_duration`]: selected_duration,
+            curr_duration_unit: duration_unit,
+            curr_duration_value: selected_duration,
+        });
+    };
 
     isVisible = component_key => this.props.form_components.includes(component_key);
 
@@ -68,7 +76,7 @@ class TradeParamsModal extends React.Component {
                 height='auto'
                 width='calc(100vw - 32px)'
             >
-                <div className='mobile-widget-dialog__wrapper'>
+                <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='48px'>
                     <TradeParamsMobile
                         toggleModal={this.props.toggleModal}
                         isVisible={this.isVisible}
@@ -82,6 +90,8 @@ class TradeParamsModal extends React.Component {
                         setSelectedAmount={this.setSelectedAmount}
                         stake_value={this.state.stake_value}
                         payout_value={this.state.payout_value}
+                        duration_unit={this.state.curr_duration_unit}
+                        duration_value={this.state.curr_duration_value}
                         // duration
                         setSelectedDuration={this.setSelectedDuration}
                         t_duration={this.state.t_duration}
@@ -90,7 +100,7 @@ class TradeParamsModal extends React.Component {
                         h_duration={this.state.h_duration}
                         d_duration={this.state.d_duration}
                     />
-                </div>
+                </Div100vhContainer>
             </Modal>
         );
     }
@@ -114,6 +124,8 @@ const TradeParamsMobile = ({
     setTradeParamTabIdx,
     trade_param_tab_idx,
     setDurationTabIdx,
+    duration_unit,
+    duration_value,
     duration_tab_idx,
     // amount
     setSelectedAmount,
@@ -137,6 +149,7 @@ const TradeParamsMobile = ({
             <div label={localize('Duration')}>
                 <DurationMobile
                     toggleModal={toggleModal}
+                    amount_tab_idx={amount_tab_idx}
                     duration_tab_idx={duration_tab_idx}
                     setDurationTabIdx={setDurationTabIdx}
                     setSelectedDuration={setSelectedDuration}
@@ -145,12 +158,16 @@ const TradeParamsMobile = ({
                     m_duration={m_duration}
                     h_duration={h_duration}
                     d_duration={d_duration}
+                    stake_value={stake_value}
+                    payout_value={payout_value}
                 />
             </div>
         )}
         {isVisible('amount') && (
             <div label={localize('Amount')}>
-                <Amount
+                <AmountMobile
+                    duration_unit={duration_unit}
+                    duration_value={duration_value}
                     toggleModal={toggleModal}
                     amount_tab_idx={amount_tab_idx}
                     setAmountTabIdx={setAmountTabIdx}

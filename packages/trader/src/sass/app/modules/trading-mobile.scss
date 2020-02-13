@@ -53,7 +53,6 @@
                 background-color: var(--general-section-2);
                 width: 48px;
                 height: 48px;
-                font-size: 1.6rem;
                 font-weight: 700;
                 text-transform: none;
                 line-height: 1.75;
@@ -62,6 +61,13 @@
                 user-select: none;
                 -webkit-touch-callout: none;
                 -webkit-tap-highlight-color: transparent;
+
+                .btn__text {
+                    font-size: 1.8rem;
+                }
+                &--is-left-aligned {
+                    padding: 0 0 0 0.2rem;
+                }
             }
             .dc-numpad__bkspace,
             .dc-numpad__ok {

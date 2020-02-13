@@ -3,22 +3,12 @@
     max-width: 300px;
     height: 328px;
     background-color: inherit;
-    opacity: 0.64;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
 
     div {
         display: flex;
-    }
-    button {
-        background-color: var(--general-main-1);
-        width: 100%;
-        max-width: 112px;
-
-        span {
-            color: var(--text-prominent);
-        }
     }
     &__calculation {
         margin-bottom: 28px;
@@ -30,22 +20,39 @@
             flex-direction: column;
             justify-content: center;
             text-align: center;
+            margin: 0 1.4rem;
 
             &--large {
                 font-size: 96px;
             }
             &--small {
-                font-size: 16px;
+                font-size: 1.6rem;
+                font-weight: bold;
             }
         }
         .operator {
-            background-color: var(--general-main-1);
+            background-color: var(--general-section-2);
             width: 48px;
             height: 48px;
+
+            .btn__text {
+                transform: scale(1.5);
+            }
         }
     }
     &__submit-wrapper {
-        margin-bottom: 16px;
+        margin-bottom: 1.6rem;
         justify-content: center;
+
+        button {
+            background-color: var(--general-section-2);
+            height: 48px;
+            width: 112px;
+
+            span {
+                color: var(--text-prominent);
+                font-size: 1.6rem;
+            }
+        }
     }
 }

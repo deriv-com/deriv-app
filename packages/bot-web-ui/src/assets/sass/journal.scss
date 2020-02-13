@@ -40,15 +40,6 @@
             margin-left: 20px;
         }
     }
-    &__animation-enter {
-        height: 0;
-        transform: translateX(200%);
-    }
-    &__animation-enter-active {
-        height: 48px;
-        transform: translateX(0%);
-        transition: height 500ms, transform 500ms;
-    }
     &__table {
         display: block;
         font-size: 10px;

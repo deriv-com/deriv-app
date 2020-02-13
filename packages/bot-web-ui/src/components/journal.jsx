@@ -129,7 +129,7 @@ const Journal = ({ filtered_messages, ...props }) => {
                                         <CSSTransition
                                             key={`${date}__${time}`}
                                             timeout={500}
-                                            classNames='journal__animation'
+                                            classNames='list__animation'
                                         >
                                             <tr className='journal__table--tr'>
                                                 <td className='journal__table--td'>{date_el}</td>

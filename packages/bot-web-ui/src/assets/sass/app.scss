@@ -6,3 +6,17 @@
     --bot-content-width: calc(100vw - 366px); //run-panel is open by default
     --drawer-scroll-height: calc(100vh - 365px);
 }
+
+//animation
+.list__animation {
+    &-enter {
+        height: 0;
+        transform: translateX(200%);
+
+        &-active {
+            height: 55px;
+            transform: translateX(0%);
+            transition: height 500ms, transform 500ms;
+        }
+    }
+}

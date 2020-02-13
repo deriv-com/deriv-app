@@ -39,11 +39,7 @@ class Transactions extends React.PureComponent {
                                             const { data: contract } = element;
                                             const { buy } = contract.transaction_ids;
                                             return (
-                                                <CSSTransition
-                                                    key={buy}
-                                                    timeout={500}
-                                                    classNames='transactions__animation'
-                                                >
+                                                <CSSTransition key={buy} timeout={500} classNames='list__animation'>
                                                     <Transaction contract={contract} />
                                                 </CSSTransition>
                                             );

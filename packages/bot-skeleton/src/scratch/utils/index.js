@@ -143,7 +143,7 @@ export const load = ({
                 onBotNameTyped(file_name);
 
                 workspace.clearUndo();
-                workspace.currentStrategy = strategy_id || Blockly.utils.genUid();
+                workspace.currentStrategyID = strategy_id || Blockly.utils.genUid();
                 saveWorkspaceToRecent(save_types.UNSAVED);
             }
         }
@@ -378,8 +378,7 @@ export const runInvisibleEvents = callbackFn => {
     Blockly.Events.enable();
 };
 
-export const updateDisabledBlocks = event => {
-    const workspace = Blockly.derivWorkspace;
+export const updateDisabledBlocks = (workspace, event) => {
     if (event.type === Blockly.Events.END_DRAG) {
         workspace.getAllBlocks().forEach(block => {
             if (!block.getParent() || block.is_user_disabled_state) {

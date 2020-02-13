@@ -11,7 +11,7 @@ export const saveWorkspaceToRecent = (save_type, event = {}) => {
     }
 
     const { toolbar } = DBotStore.instance;
-    const workspace_id = Blockly.derivWorkspace.currentStrategy || Blockly.utils.genUid();
+    const workspace_id = Blockly.derivWorkspace.currentStrategyID || Blockly.utils.genUid();
     const workspaces = JSON.parse(localStorage.getItem('saved_workspaces')) || [];
     const current_xml = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.derivWorkspace));
     const current_timestamp = Date.now();

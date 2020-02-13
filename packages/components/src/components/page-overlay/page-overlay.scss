@@ -13,9 +13,9 @@
             font-size: var(--text-size-m);
             color: var(--text-prominent);
             font-weight: bold;
-            color: var(--text-general);
 
             @include mobile {
+                color: var(--text-general);
                 font-size: 1.4rem;
                 flex: unset;
             }

@@ -453,7 +453,6 @@ export default class ClientStore extends BaseStore {
     realAccountSignup(form_values) {
         return new Promise(async (resolve, reject) => {
             form_values.residence = this.residence;
-            form_values.salutation = 'Mr'; // TODO remove this once the api for salutation is optional.
             const response = await WS.newAccountReal(form_values);
             if (!response.error) {
                 await this.accountRealReaction(response);
@@ -492,14 +491,13 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     createCryptoAccount(crr) {
-        const { date_of_birth, first_name, last_name, salutation } = this.account_settings;
+        const { date_of_birth, first_name, last_name } = this.account_settings;
         const residence = this.residence;
 
         return new Promise(async (resolve, reject) => {
             const response = await WS.newAccountReal({
                 first_name,
                 last_name,
-                salutation,
                 residence,
                 currency: crr,
                 date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),

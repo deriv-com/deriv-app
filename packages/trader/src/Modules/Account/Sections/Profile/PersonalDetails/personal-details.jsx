@@ -60,7 +60,6 @@ class PersonalDetailsForm extends React.Component {
         const request = this.makeSettingsRequest(values);
 
         this.setState({ is_btn_loading: true });
-
         WS.setSettings(request).then(data => {
             this.setState({ is_btn_loading: false });
 
@@ -120,7 +119,6 @@ class PersonalDetailsForm extends React.Component {
             'last_name',
             'phone',
             // 'account_opening_reason',
-            'place_of_birth',
             'address_line_1',
             'address_city',
             'address_postcode',
@@ -130,7 +128,7 @@ class PersonalDetailsForm extends React.Component {
         validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
 
         const { residence_list } = this.props;
-        const residence_fields = ['place_of_birth', 'citizen'];
+        const residence_fields = ['citizen'];
         const validateResidence = val => getLocation(residence_list, val, 'value');
         validateValues(validateResidence, residence_fields, true);
 
@@ -653,6 +651,7 @@ class PersonalDetailsForm extends React.Component {
                 'is_authenticated_payment_agent',
                 'user_hash',
                 'country',
+                'salutation',
                 'request_professional_status',
             ];
             const form_initial_values = removeObjProperties(hidden_settings, account_settings);

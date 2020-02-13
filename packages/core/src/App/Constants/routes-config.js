@@ -5,6 +5,14 @@ import { localize } from '@deriv/translations';
 import { routes } from 'Constants';
 import { isBot } from 'Utils/PlatformSwitcher';
 import { getUrlBase } from '_common/url';
+import Cashier, {
+    Deposit,
+    Withdrawal,
+    PaymentAgent,
+    AccountTransfer,
+    PaymentAgentTransfer,
+    P2PCashier,
+} from 'Modules/Cashier';
 
 export const interceptAcrossBot = (route_to, action) => {
     const is_routing_to_bot = route_to.pathname.startsWith(routes.bot);
@@ -17,26 +25,6 @@ export const interceptAcrossBot = (route_to, action) => {
 
     return true;
 };
-
-// Cashier components
-const Cashier = lazy(() => import(/* webpackChunkName: "cashier-deposit" */ 'Modules/Cashier/Containers/cashier.jsx'));
-const Deposit = lazy(() => import(/* webpackChunkName: "cashier-deposit" */ 'Modules/Cashier/Containers/deposit.jsx'));
-const Withdrawal = lazy(() =>
-    import(/* webpackChunkName: "cashier-withdrawal" */ 'Modules/Cashier/Containers/withdrawal.jsx')
-);
-const AccountTransfer = lazy(() =>
-    import(/* webpackChunkName: "cashier-account-transfer" */ 'Modules/Cashier/Containers/account-transfer.jsx')
-);
-const PaymentAgent = lazy(() =>
-    import(/* webpackChunkName: "cashier-pa" */ 'Modules/Cashier/Containers/payment-agent.jsx')
-);
-const PaymentAgentTransfer = lazy(() =>
-    import(/* webpackChunkName: "cashier-pa-transfer" */ 'Modules/Cashier/Containers/payment-agent-transfer.jsx')
-);
-// To work with P2P please uncomment this line
-const P2PCashier = lazy(() =>
-    import(/* webpackChunkName: "cashier-p2p" */ 'Modules/Cashier/Containers/p2p-cashier.jsx')
-);
 
 // Error Routes
 const Page404 = lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));

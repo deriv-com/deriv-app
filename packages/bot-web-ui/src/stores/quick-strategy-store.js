@@ -94,8 +94,9 @@ export default class QuickStrategyStore {
             }
         });
 
-        load(Blockly.Xml.domToText(strategy_dom));
-        toolbar.onBotNameTyped(strategies[strategy_name].label);
+        const file_name = strategies[strategy_name].label;
+        load({ block_string: Blockly.Xml.domToText(strategy_dom), file_name });
+        toolbar.onBotNameTyped(file_name);
         this.toggleStrategyModal();
     }
 

@@ -209,7 +209,6 @@ class DatePicker extends React.Component {
                         name={this.props.name}
                         className='input trade-container__input datepicker__input'
                         type='date'
-                        value={this.state.value}
                         min={this.props.min_date}
                         max={this.props.max_date}
                         onChange={e => {

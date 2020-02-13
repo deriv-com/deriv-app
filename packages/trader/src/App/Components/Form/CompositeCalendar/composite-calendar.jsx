@@ -310,7 +310,7 @@ class CompositeCalendar extends React.PureComponent {
                                 />
                                 <DatePicker
                                     name='composite-calendar-modal__radio__custom__start-date'
-                                    is_nativepicker={false}
+                                    is_nativepicker={true}
                                     placeholder={localize('Start Date')}
                                     value={this.state.from}
                                     onChange={e => {

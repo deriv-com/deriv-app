@@ -7,8 +7,6 @@ labelPRBasedOnFilePath:
     - packages/core/**/*
   P2P:
     - packages/p2p/**/*
-  Repo:
-    - ./../*
   Shared:
     - packages/shared/**/*
   Trader:
@@ -16,5 +14,6 @@ labelPRBasedOnFilePath:
   Translations:
     - packages/translations/**/*
   Docs:
-    - ./../*.md
-    - ./../**/*.md
+    - README.md
+    - docs/**/*.md
+    - packages/**/*.md

@@ -1,3 +1,4 @@
+import { localize } from '@deriv/translations';
 import { getMarketNamesMap, getContractConfig } from 'Constants';
 
 /**
@@ -24,3 +25,13 @@ export const getMarketInformation = shortcode => {
 export const getMarketName = underlying => (underlying ? getMarketNamesMap()[underlying.toUpperCase()] : null);
 
 export const getTradeTypeName = category => (category ? getContractConfig()[category.toUpperCase()].name : null);
+
+export const getContractDurationType = longcode => {
+    const duration_pattern = new RegExp('ticks|seconds|minutes|hours');
+    const extracted = duration_pattern.exec(longcode);
+    if (extracted != null) {
+        const duration_type = extracted[0];
+        return duration_type[0].toUpperCase() + duration_type.slice(1);
+    }
+    return 'Days';
+};

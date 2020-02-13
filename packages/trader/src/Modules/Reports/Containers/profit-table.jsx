@@ -1,3 +1,4 @@
+import classNames from 'classNames';
 import PropTypes from 'prop-types';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
@@ -5,6 +6,7 @@ import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { urlFor } from '_common/url';
+import { getContractDurationType } from 'Modules/Reports/Helpers/market-underlying';
 import { website_name } from 'App/Constants/app-config';
 import DataTable from 'App/Components/Elements/DataTable';
 import DataList from 'App/Components/Elements/DataList';
@@ -30,10 +32,16 @@ class ProfitTable extends React.Component {
     mobileRowRenderer = ({ index }) => {
         const { data } = this.props;
         const row = data[index];
+        const duration_type = getContractDurationType(row.longcode);
+        const duration_classname = `duration-type__${duration_type.toLowerCase()}`;
         return (
             <>
                 <div className='data-list__row'>
                     <DataList.Cell row={row} column={this.columns_map.action_type} />
+                    <div className={classNames('duration-type', duration_classname)}>
+                        <div className={classNames('duration-type__background', `${duration_classname}__background`)} />
+                        <span className={`${duration_classname}__label`}>{localize(duration_type)}</span>
+                    </div>
                 </div>
                 <div className='data-list__row'>
                     <DataList.Cell row={row} column={this.columns_map.transaction_id} />

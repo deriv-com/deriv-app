@@ -84,9 +84,10 @@
     }
     @include mobile {
         &-modal {
-            padding: 16px;
             &__actions {
                 display: flex;
+                padding: 16px;
+                border-top: 2px solid var(--general-section-1);
                 > * {
                     flex: 1;
                     margin: 8px;
@@ -98,8 +99,10 @@
                 }
             }
             &__radio-group {
+                padding: 16px 16px 24px;
                 display: grid;
                 grid-template-columns: 1fr 1fr;
+                border-bottom: 2px solid var(--general-section-1);
             }
             &__radio {
                 display: flex;
@@ -112,6 +115,9 @@
                 font-size: 1.4rem;
                 &__input {
                     display: none;
+                }
+                &__custom {
+                    display: inline-flex;
                 }
                 &__circle {
                     border: 2px solid var(--border-normal);
@@ -136,6 +142,9 @@
                     border-color: var(--brand-secondary);
                     font-weight: bold;
                 }
+            }
+            &__custom-date-range {
+                padding: 16px;
             }
         }
     }

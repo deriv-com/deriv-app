@@ -9,11 +9,11 @@ import Lazy from 'App/Containers/Lazy';
 import { daysFromTodayTo, epochToMoment, toMoment } from 'Utils/Date';
 import SideList from './side-list.jsx';
 
-export const RadioButton = ({ id, selected_value, value, label, onChange }) => {
+export const RadioButton = ({ id, className, selected_value, value, label, onChange }) => {
     return (
         <label
             htmlFor={id}
-            className={classNames('composite-calendar-modal__radio', {
+            className={classNames('composite-calendar-modal__radio', className, {
                 'composite-calendar-modal__radio--selected': selected_value === value,
             })}
             onClick={() => onChange({ label, value })}
@@ -193,10 +193,33 @@ class CompositeCalendar extends React.PureComponent {
         return date - 1 >= this.props.to;
     }
 
+    getMobileFooter() {
+        return (
+            <div className='composite-calendar-modal__actions'>
+                <Button
+                    className='composite-calendar-modal__actions__cancel'
+                    text={localize('Cancel')}
+                    onClick={() => this.setState({ open: false })}
+                    has_effect
+                    secondary
+                    large
+                />
+                <Button
+                    className='composite-calendar-modal__actions__ok'
+                    text={localize('OK')}
+                    onClick={this.applyDateRange}
+                    has_effect
+                    primary
+                    large
+                />
+            </div>
+        );
+    }
+
     render() {
         const { show_from, show_to, list } = this.state;
-
         const { to, from } = this.props;
+
         return (
             // eslint-disable-next-line react/no-children-prop
             <>
@@ -261,6 +284,7 @@ class CompositeCalendar extends React.PureComponent {
                         title={localize('Please select duration')}
                         visible={this.state.open}
                         onClose={() => this.setState({ open: false })}
+                        footer={this.getMobileFooter()}
                     >
                         <div className='composite-calendar-modal'>
                             <div className='composite-calendar-modal__radio-group'>
@@ -278,6 +302,7 @@ class CompositeCalendar extends React.PureComponent {
                             <div className='composite-calendar-modal__custom-date-range'>
                                 <RadioButton
                                     id={'composite-calendar-modal__radio__custom'}
+                                    className='composite-calendar-modal__radio__custom'
                                     value={'custom'}
                                     label={localize('Custom')}
                                     selected_value={this.state.selected_date_range.value}
@@ -306,24 +331,6 @@ class CompositeCalendar extends React.PureComponent {
                                 tertiary
                                 large
                             />
-                            <div className='composite-calendar-modal__actions'>
-                                <Button
-                                    className='composite-calendar-modal__actions__cancel'
-                                    text={localize('Cancel')}
-                                    onClick={() => this.setState({ open: false })}
-                                    has_effect
-                                    secondary
-                                    large
-                                />
-                                <Button
-                                    className='composite-calendar-modal__actions__ok'
-                                    text={localize('OK')}
-                                    onClick={this.applyDateRange}
-                                    has_effect
-                                    primary
-                                    large
-                                />
-                            </div>
                         </div>
                     </MobileDialog>
                 </MobileWrapper>

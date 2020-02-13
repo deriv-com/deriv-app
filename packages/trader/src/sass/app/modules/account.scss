@@ -10,17 +10,6 @@
         &__tab {
             min-width: 240px;
         }
-        &__header {
-            .dc-vertical-tab__header__link {
-                margin-left: 4px;
-            }
-            &--active {
-                /* postcss-bem-linter: ignore */
-                .dc-vertical-tab__header__link {
-                    margin-left: 0;
-                }
-            }
-        }
     }
     &__inset_header {
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);

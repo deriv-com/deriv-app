@@ -35,6 +35,16 @@ const IconTradeType = ({ type, className, ...props }) => {
         case 'expiryrangee':
         case 'expiryrange':
             return <Icon icon='IcTradetypeExpiryrange' className={className} color='brand' {...props} />;
+        case 'lbfloatcall':
+            return <Icon icon='IcTradetypeLbcall' className={className} color='brand' {...props} />;
+        case 'lbfloatput':
+            return <Icon icon='IcTradetypeLbput' className={className} color='brand' {...props} />;
+        case 'lbhighlow':
+            return <Icon icon='IcTradetypeLbhighlow' className={className} color='brand' {...props} />;
+        case 'multdown':
+            return <Icon icon='IcTradetypeMultdown' className={className} color='brand' {...props} />;
+        case 'multup':
+            return <Icon icon='IcTradetypeMultup' className={className} color='brand' {...props} />;
         case 'notouch':
             return <Icon icon='IcTradetypeNotouch' className={className} color='brand' {...props} />;
         case 'onetouch':

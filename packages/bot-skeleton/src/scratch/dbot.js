@@ -38,7 +38,12 @@ class DBot {
 
             this.workspace.cached_xml = { main: main_xml, toolbox: toolbox_xml };
             Blockly.derivWorkspace = this.workspace;
-
+            const window_width = window.innerWidth;
+            if (window_width < 1440) {
+                const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
+                const zoom_scale = scratch_div_width / window_width;
+                Blockly.derivWorkspace.setScale(zoom_scale);
+            }
             this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
             this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
             this.addBeforeRunFunction(this.unselectBlocks.bind(this));
@@ -49,7 +54,7 @@ class DBot {
             // Push main.xml to workspace and reset the undo stack.
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), this.workspace);
             this.workspace.clearUndo();
-
+            this.workspace.cleanUp();
             const { handleFileChange } = DBotStore.instance;
             const drop_zone = document.body;
 

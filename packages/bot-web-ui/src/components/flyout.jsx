@@ -24,7 +24,6 @@ class Flyout extends React.PureComponent {
             is_search_flyout,
             flyout_content,
             flyout_width,
-            has_changed_category,
             is_visible,
             search_term,
             setHelpContent,
@@ -43,7 +42,7 @@ class Flyout extends React.PureComponent {
                     hidden: !is_visible,
                     flyout__search: is_search_flyout,
                     flyout__help: is_help_content,
-                    flyout__normal: !has_changed_category && !is_help_content && !is_search_flyout,
+                    flyout__normal: !is_help_content && !is_search_flyout,
                 })}
                 style={{ width: `${flyout_width}px` }}
             >
@@ -142,7 +141,6 @@ class Flyout extends React.PureComponent {
 Flyout.propTypes = {
     flyout_content: PropTypes.any,
     flyout_width: PropTypes.number,
-    has_changed_category: PropTypes.bool,
     initialiseFlyoutHelp: PropTypes.func,
     is_help_content: PropTypes.bool,
     is_search_flyout: PropTypes.bool,
@@ -158,7 +156,6 @@ export default connect(({ flyout, flyout_help, gtm }) => ({
     flyout_content: flyout.flyout_content,
     flyout_width: flyout.flyout_width,
     initialiseFlyoutHelp: flyout_help.initialiseFlyoutHelp,
-    has_changed_category: flyout.has_changed_category,
     is_help_content: flyout.is_help_content,
     is_search_flyout: flyout.is_search_flyout,
     is_visible: flyout.is_visible,

@@ -31,3 +31,17 @@
         margin: 0 16px;
     }
 }
+
+//animation
+.list__animation {
+    &-enter {
+        height: 0;
+        transform: translateX(200%);
+
+        &-active {
+            height: 55px;
+            transform: translateX(0%);
+            transition: height 500ms, transform 500ms;
+        }
+    }
+}

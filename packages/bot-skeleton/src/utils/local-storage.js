@@ -1,5 +1,4 @@
 import DBotStore from '../scratch/dbot-store';
-import { save_types } from '../constants/save-type';
 
 /**
  * Save workspace to localStorage

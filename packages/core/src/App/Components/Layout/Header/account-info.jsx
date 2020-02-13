@@ -8,7 +8,7 @@ import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
 
 const AccountInfoWrapper = ({ is_disabled, disabled_message, children }) =>
     is_disabled && disabled_message ? (
-        <Popover alignment='bottom' message={disabled_message} zIndex={99999}>
+        <Popover alignment='bottom' message={disabled_message} zIndex={5}>
             {children}
         </Popover>
     ) : (

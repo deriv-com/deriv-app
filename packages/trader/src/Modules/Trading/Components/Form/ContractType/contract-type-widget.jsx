@@ -100,7 +100,6 @@ class ContractTypeWidget extends React.PureComponent {
                 />
                 <ContractType.Dialog
                     is_info_dialog_open={is_info_dialog_open}
-                    is_mobile={is_mobile}
                     is_open={is_dialog_open}
                     item={item || { value }}
                     list={this.props.list}

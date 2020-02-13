@@ -7,7 +7,6 @@ import ContractTypeMenu from './ContractTypeMenu';
 const ContractTypeDialog = ({
     children,
     is_info_dialog_open,
-    open,
     onClose,
     is_open,
     item,
@@ -22,7 +21,7 @@ const ContractTypeDialog = ({
                 portal_element_id='deriv_app'
                 title={localize('Trade type')}
                 wrapper_classname='contracts-modal-list'
-                visible={open}
+                visible={is_open}
                 onClose={onClose}
             >
                 {children}

@@ -210,7 +210,7 @@ export default class LoadModalStore {
     @action.bound
     loadFileFromLocal() {
         this.is_open_button_loading = true;
-        this.readFile(false, {});
+        this.readFile(false, {}, this.loaded_local_file);
         this.is_open_button_loading = false;
         this.toggleLoadModal();
     }

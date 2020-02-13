@@ -180,13 +180,13 @@ export default class LoadModalStore {
         if (!is_body) {
             this.loaded_local_file = files[0];
         }
-        this.readFile(!is_body, event);
+        this.readFile(!is_body, event, files[0]);
         event.target.value = '';
     }
 
     // eslint-disable-next-line class-methods-use-this
-    readFile(is_preview, drop_event) {
-        const file_name = this.loaded_local_file.name.replace(/\.[^/.]+$/, '');
+    readFile(is_preview, drop_event, file) {
+        const file_name = file.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
         reader.onload = action(e => {
             if (is_preview) {
@@ -204,7 +204,7 @@ export default class LoadModalStore {
                 load({ block_string: e.target.result, drop_event, file_name });
             }
         });
-        reader.readAsText(this.loaded_local_file);
+        reader.readAsText(file);
     }
 
     @action.bound

@@ -45,6 +45,7 @@ class App extends React.Component {
         DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store);
         this.registerCurrencyReaction();
         this.registerOnAccountSwitch();
+        this.registerClickOutsideBlockly();
     }
 
     componentWillUnmount() {
@@ -53,7 +54,6 @@ class App extends React.Component {
         }
 
         this.disposeReactions();
-        this.disposeOnAccountSwitch();
 
         // Ensure account switch is re-enabled.
         const { ui } = this.root_store.core;
@@ -115,7 +115,21 @@ class App extends React.Component {
     };
 
     /**
-     * Dispose the reactions
+     * Ensures inputs are closed when clicking on non-Blockly elements.
+     */
+    onClickOutsideBlockly = event => {
+        const is_click_outside_blockly = !event.path.some(el => el.classList && el.classList.contains('injectionDiv'));
+        if (is_click_outside_blockly) {
+            Blockly.hideChaff(/* allowToolbox */ false);
+        }
+    };
+
+    registerClickOutsideBlockly() {
+        window.addEventListener('click', this.onClickOutsideBlockly);
+    }
+
+    /**
+     * Dispose Mobx reactions & event listeners.
      */
     disposeReactions() {
         if (typeof this.disposeCurrencyReaction === 'function') {
@@ -124,6 +138,7 @@ class App extends React.Component {
         if (typeof this.disposeSwitchAccountListener === 'function') {
             this.disposeSwitchAccountListener();
         }
+        window.removeEventListener('click', this.onClickOutsideBlockly);
     }
 
     render() {

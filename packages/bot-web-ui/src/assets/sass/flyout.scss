@@ -7,32 +7,6 @@
     }
 }
 
-@keyframes fade-in-from-top {
-    0% {
-        opacity: 0;
-        transform: translateY(-50px);
-        pointer-events: none;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-        pointer-events: auto;
-    }
-}
-
-@keyframes fade-in-from-left {
-    0% {
-        opacity: 0;
-        transform: translateX(-50px);
-        pointer-events: none;
-    }
-    100% {
-        transform: translateX(0);
-        opacity: 1;
-        pointer-events: auto;
-    }
-}
-
 .flyout {
     $flyout: &;
     $default-margin: 15px;
@@ -191,7 +165,6 @@
         left: 0;
         padding: 0;
         visibility: visible;
-        animation: fade-in-from-top 500ms;
 
         &-header {
             padding: 20px;
@@ -219,7 +192,6 @@
     }
     &__normal {
         visibility: visible;
-        animation: fade-in-from-left 500ms;
 
         &-content {
             height: 100%;

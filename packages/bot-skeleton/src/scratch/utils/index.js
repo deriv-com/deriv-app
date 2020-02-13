@@ -143,7 +143,7 @@ export const load = ({
                 onBotNameTyped(file_name);
 
                 workspace.clearUndo();
-                workspace.currentStrategyID = strategy_id || Blockly.utils.genUid();
+                workspace.current_strategy_id = strategy_id || Blockly.utils.genUid();
                 saveWorkspaceToRecent(save_types.UNSAVED);
             }
         }

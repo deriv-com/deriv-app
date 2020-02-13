@@ -51,12 +51,12 @@ class DBot {
 
             // Push main.xml to workspace and reset the undo stack.
             const recent_files = getSavedWorkspaces();
-            this.workspace.currentStrategyID = Blockly.utils.genUid();
+            this.workspace.current_strategy_id = Blockly.utils.genUid();
             let strategy_to_load = main_xml;
             if (recent_files) {
                 const latest_file = recent_files[0];
                 strategy_to_load = latest_file.xml;
-                Blockly.derivWorkspace.currentStrategyID = latest_file.id;
+                Blockly.derivWorkspace.current_strategy_id = latest_file.id;
             }
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy_to_load), this.workspace);
             this.workspace.clearUndo();

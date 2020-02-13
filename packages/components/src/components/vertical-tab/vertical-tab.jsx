@@ -52,6 +52,7 @@ class VerticalTab extends React.Component {
 
     render() {
         const selected = this.props.list[this.state.vertical_tab_index] || this.props.list[0];
+
         return (
             <div
                 className={classNames('dc-vertical-tab', {

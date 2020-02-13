@@ -20,7 +20,7 @@ Blockly.BlockSvg.prototype.addSelect = function() {
  * @param {boolean} disabled True if disabled.
  * @deriv/bot: Call updateDisabled() when setDisabled is called.
  */
-Blockly.BlockSvg.prototype.setDisabled = function(disabled, is_user_action = false) {
+Blockly.BlockSvg.prototype.setDisabled = function(disabled) {
     if (this.disabled !== disabled) {
         Blockly.BlockSvg.superClass_.setDisabled.call(this, disabled);
 
@@ -111,7 +111,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
                     Blockly.Events.setGroup(true);
                 }
 
-                block.setDisabled(!block.disabled, true);
+                block.setDisabled(!block.disabled);
 
                 if (!group) {
                     Blockly.Events.setGroup(false);

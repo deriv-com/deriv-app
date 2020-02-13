@@ -52,10 +52,11 @@ class VerticalTab extends React.Component {
 
     render() {
         const selected = this.props.list[this.state.vertical_tab_index] || this.props.list[0];
+
         return (
             <div
                 className={classNames('dc-vertical-tab', {
-                    'dc-vertical-tab--floating': this.props.is_floating,
+                    'dc-vertical-tab--floating': this.props.is_floating, // This is currently only configured for use in PageOverlay
                     'dc-vertical-tab--full-screen': this.props.is_full_width,
                 })}
             >
@@ -77,7 +78,6 @@ class VerticalTab extends React.Component {
                     items={this.props.list}
                     selected={selected}
                     is_routed={this.props.is_routed}
-                    is_scrollable={this.props.is_scrollable}
                 />
             </div>
         );
@@ -104,7 +104,6 @@ VerticalTab.propTypes = {
     is_floating: PropTypes.bool,
     is_full_width: PropTypes.bool,
     is_routed: PropTypes.bool,
-    is_scrollable: PropTypes.bool,
     is_sidebar_enabled: PropTypes.bool,
     list: PropTypes.arrayOf(
         PropTypes.shape({

@@ -75,13 +75,18 @@ class Account extends React.Component {
             if (menu_item.title === 'Verification') {
                 menu_item.is_hidden = !needs_verification;
             }
-            if (menu_item.title === 'Profile') {
-                menu_item.subroutes.forEach(route => {
-                    if (route.path === AppRoutes.financial_assessment) {
-                        route.is_disabled = !is_high_risk_client;
-                    }
-                });
-            }
+            menu_item.subroutes.forEach(route => {
+                if (route.path === AppRoutes.financial_assessment) {
+                    route.is_disabled = !is_high_risk_client;
+                }
+
+                if (
+                    !needs_verification &&
+                    !is_high_risk_client &&
+                    /proof-of-identity|proof-of-address|financial-assessment/.test(route.path)
+                )
+                    route.is_disabled = true;
+            });
         });
 
         const action_bar_items = [

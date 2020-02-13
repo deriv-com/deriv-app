@@ -11,11 +11,11 @@ export const InfiniteLoaderList = ({
     is_loading_more_items,
     loadMore,
     has_more_items_to_load,
+    initial_height,
     item_size,
     RenderComponent,
     row_actions,
     RowLoader,
-    height: initial_height,
 }) => {
     const RowRenderer = ({ index, style }) => {
         const is_loading = index === items.length;
@@ -40,7 +40,13 @@ export const InfiniteLoaderList = ({
     return (
         <InfiniteLoader isItemLoaded={index => index < items.length} itemCount={item_count} loadMoreItems={loadMore}>
             {({ onItemsRendered, ref }) => (
-                <AutoSizer style={{ height: initial_height || 600 }}>
+                <AutoSizer
+                    style={{
+                        // screen size - header size - footer size - page overlay header - page overlay content padding -
+                        // tabs height - table header height
+                        height: initial_height || 'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 52px)',
+                    }}
+                >
                     {({ height, width }) => (
                         <List
                             height={height}

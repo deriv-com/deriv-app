@@ -27,10 +27,6 @@ Blockly.BlockSvg.prototype.setDisabled = function(disabled, is_user_action = fal
         if (this.rendered) {
             this.updateDisabled();
         }
-
-        // Distinguish user + code disabled states. i.e. when user disabled a block, we
-        // shouldn't enable it through code, only enable when user re-enables it.
-        this.is_user_disabled_state = is_user_action;
     }
 };
 
@@ -106,6 +102,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
         const disable_option = {
             text: this.disabled ? localize('Enable Block') : localize('Disable Block'),
             enabled:
+                !this.disabled ||
                 restricted_parents.length === 0 ||
                 restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent)),
             callback: () => {

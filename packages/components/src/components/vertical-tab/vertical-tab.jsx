@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import VerticalTabContentContainer from 'Components/vertical-tab/vertical-tab-content-container.jsx';
 import VerticalTabHeader from 'Components/vertical-tab/vertical-tab-header.jsx';
+import VerticalTabHeaderGroup from 'Components/vertical-tab/vertical-tab-header-group.jsx';
 import VerticalTabHeaders from 'Components/vertical-tab/vertical-tab-headers.jsx';
 import VerticalTabHeaderTitle from 'Components/vertical-tab/vertical-tab-header-title.jsx';
 import VerticalTabLayout from 'Components/vertical-tab/vertical-tab-layout.jsx';
@@ -58,12 +59,14 @@ class VerticalTab extends React.Component {
                 className={classNames('dc-vertical-tab', {
                     'dc-vertical-tab--floating': this.props.is_floating, // This is currently only configured for use in PageOverlay
                     'dc-vertical-tab--full-screen': this.props.is_full_width,
+                    'dc-vertical-tab--grouped': Array.isArray(this.props.list_groups),
                 })}
             >
                 {this.props.is_sidebar_enabled && (
                     <VerticalTabHeaders
                         className={this.props.header_classname}
                         items={this.props.list}
+                        item_groups={this.props.list_groups}
                         onChange={this.changeSelected}
                         selected={selected}
                         is_floating={this.props.is_floating}
@@ -114,6 +117,13 @@ VerticalTab.propTypes = {
             value: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
         })
     ).isRequired,
+    list_groups: PropTypes.arrayOf(
+        PropTypes.shape({
+            icon: PropTypes.string,
+            label: PropTypes.string,
+            subitems: PropTypes.arrayOf(PropTypes.number),
+        })
+    ),
     selected_index: PropTypes.number,
     setVerticalTabIndex: PropTypes.func,
     vertical_tab_index: PropTypes.number,
@@ -121,6 +131,7 @@ VerticalTab.propTypes = {
 
 VerticalTab.ContentContainer = VerticalTabContentContainer;
 VerticalTab.Header = VerticalTabHeader;
+VerticalTab.HeaderGroup = VerticalTabHeaderGroup;
 VerticalTab.Headers = VerticalTabHeaders;
 VerticalTab.HeaderTitle = VerticalTabHeaderTitle;
 VerticalTab.Layout = VerticalTabLayout;

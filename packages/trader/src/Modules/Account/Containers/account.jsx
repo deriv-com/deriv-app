@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-// import React, { lazy }   from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 import { PageOverlay, VerticalTab } from '@deriv/components';
-// import SideMenu          from 'App/Components/Elements/SideMenu';
 import { FadeWrapper } from 'App/Components/Animations';
 import { localize } from '@deriv/translations';
 import AppRoutes from 'Constants/routes';
@@ -12,14 +10,6 @@ import { WS } from 'Services/ws-methods';
 import { flatten } from '../Helpers/flatten';
 import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
 import 'Sass/app/modules/account.scss';
-
-// const DemoMessage = lazy(() => import(/* webpackChunkName: 'demo_message' */ 'Modules/Account/Sections/ErrorMessages/DemoMessage'));
-
-// const fallback_content = {
-//     path     : AppRoutes.personal_details,
-//     component: DemoMessage,
-//     title    : localize('Personal details'),
-// };
 
 class Account extends React.Component {
     // TODO: find better fix for no-op issue
@@ -56,6 +46,12 @@ class Account extends React.Component {
         const { is_high_risk_client, is_loading, needs_verification } = this.state;
 
         const subroutes = flatten(this.props.routes.map(i => i.subroutes));
+        let list_groups = [...this.props.routes];
+        list_groups = list_groups.map(route_group => ({
+            icon: route_group.icon,
+            label: route_group.title,
+            subitems: route_group.subroutes.map(sub => subroutes.indexOf(sub)),
+        }));
         let selected_content = subroutes.filter(route => route.path === this.props.location.pathname)[0];
         if (!selected_content) {
             // fallback
@@ -106,10 +102,6 @@ class Account extends React.Component {
             });
         }
 
-        // const { title: active_title } = this.props.routes
-        //     .find(route => route.subroutes
-        //         .find(sub_route => sub_route.title === selected_content.title));
-
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}
@@ -117,24 +109,8 @@ class Account extends React.Component {
                 keyname='account-page-wrapper'
             >
                 <div className='account'>
-                    {/* <SideMenu */}
-                    {/*    active_title={active_title} */}
-                    {/*    action_bar={action_bar_items} */}
-                    {/*    action_bar_classname='account__inset_header' */}
-                    {/*    alignment='center' */}
-                    {/*    fallback_content={fallback_content} */}
-                    {/*    header_title={localize('Settings')} */}
-                    {/*    is_routed={true} */}
-                    {/*    is_full_width={true} */}
-                    {/*    is_loading={is_loading} */}
-                    {/*    list={this.props.routes} */}
-                    {/*    selected_content={selected_content} */}
-                    {/*    sub_list={subroutes} */}
-                    {/*    tab_container_classname='account__tab_container' */}
-                    {/* /> */}
                     <PageOverlay has_side_note header={localize('Settings')} onClickClose={this.onClickClose}>
                         <VerticalTab
-                            // action_bar_classname='account__inset_header'
                             alignment='center'
                             is_floating
                             classNameHeader='account__inset_header'
@@ -142,6 +118,7 @@ class Account extends React.Component {
                             is_routed
                             is_full_width
                             list={subroutes}
+                            list_groups={list_groups}
                         />
                     </PageOverlay>
                 </div>

@@ -227,7 +227,7 @@ class DatePicker extends React.Component {
                     />
                     <label className='datepicker-native__overlay' htmlFor={this.props.name}>
                         <Icon icon='IcCalendarDatefrom' className='datepicker__arrowhead' />
-                        <span className='datepicker-native__overlay__text'>
+                        <span className='datepicker-native__overlay-text'>
                             {this.state.value || this.props.placeholder}
                         </span>
                     </label>

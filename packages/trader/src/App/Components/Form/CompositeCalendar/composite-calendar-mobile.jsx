@@ -31,10 +31,14 @@ const CUSTOM_KEY = 'custom';
 class CompositeCalendarMobile extends React.PureComponent {
     constructor(props) {
         super(props);
-        const { duration_list, input_date_range } = this.props;
+        const { duration_list, input_date_range, from, to } = this.props;
+        const from_date = from && toMoment(from).format('DD MMM YYYY');
+        const to_date = from && toMoment(to).format('DD MMM YYYY');
 
         const date_range = input_date_range || duration_list.find(range => range.value === 'all_time');
         this.state = {
+            from: from_date,
+            to: to_date,
             applied_date_range: date_range,
             selected_date_range: date_range,
         };
@@ -63,16 +67,19 @@ class CompositeCalendarMobile extends React.PureComponent {
     }
 
     selectCustomDateRange() {
-        const date_range = this.state.selected_date_range;
-        date_range.label = `${this.state.from} - ${this.state.to}`;
+        const { from, to, selected_date_range } = this.state;
+
+        const date_range = Object.assign(selected_date_range, {
+            label: `${this.state.from} - ${this.state.to}`,
+        });
 
         this.props.onChange(
             {
-                from: toMoment(this.state.from, 'DD MMM YYYY')
+                from: toMoment(from, 'DD MMM YYYY')
                     .startOf('day')
                     .add(1, 's')
                     .unix(),
-                to: toMoment(this.state.to, 'DD MMM YYYY')
+                to: toMoment(to, 'DD MMM YYYY')
                     .endOf('day')
                     .unix(),
             },
@@ -155,7 +162,8 @@ class CompositeCalendarMobile extends React.PureComponent {
         const { open, applied_date_range, selected_date_range } = this.state;
         const { duration_list } = this.props;
 
-        const max_date = this.state.to && toMoment(this.state.to, 'DD MMM YYYY').format('YYYY-MM-DD');
+        const today = toMoment().format('YYYY-MM-DD');
+        const max_date = this.state.to ? toMoment(this.state.to, 'DD MMM YYYY').format('YYYY-MM-DD') : today;
         const min_date = this.state.from && toMoment(this.state.from, 'DD MMM YYYY').format('YYYY-MM-DD');
 
         return (
@@ -212,6 +220,7 @@ class CompositeCalendarMobile extends React.PureComponent {
                                     is_nativepicker={true}
                                     placeholder={localize('End Date')}
                                     value={this.state.to}
+                                    max_date={today}
                                     min_date={min_date}
                                     onChange={e => this.selectDate(e, 'to')}
                                 />

@@ -3,21 +3,20 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@deriv/components';
 import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories.jsx';
-import { findContractCategory } from '../../../Helpers/contract-type';
 
-const Display = ({ is_open, list, name, onClick, value }) => {
-    const getDisplayText = () =>
-        findContractCategory(list, { value }).contract_types.find(item => item.value === value).text;
+const Display = ({ is_open, name, onClick, value, text }) => {
+    // const getDisplayText = () =>
+    //     findContractCategory(list, { value }).contract_types.find(item => item.value === value).text;
 
-    let text = getDisplayText();
+    // let text = getDisplayText();
 
-    // Reset Call/Reset Puts needs to be broken into 2 lines as
-    // per design but we can't do that in the config because it adds
-    // a space when we force into one line when used in other components.
-    if (value === 'reset_call_put') {
-        const text_split = text.split('/');
-        text = `${text_split[0]}/\n${text_split[1]}`;
-    }
+    // // Reset Call/Reset Puts needs to be broken into 2 lines as
+    // // per design but we can't do that in the config because it adds
+    // // a space when we force into one line when used in other components.
+    // if (value === 'reset_call_put') {
+    //     const text_split = text.split('/');
+    //     text = `${text_split[0]}/\n${text_split[1]}`;
+    // }
 
     return (
         <div

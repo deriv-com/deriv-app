@@ -12,18 +12,21 @@ const BasicCanvasElements = (() => {
         @param {Array} coordinates [x1, y1, x2, y2]
         @param {String} line_style
     */
-    const Line = (ctx, points, line_style) => {
+    const Line = (ctx, points, line_style, stroke_style) => {
         ctx.beginPath();
         ctx.setLineDash(MARKER_LINE_STYLE[line_style]);
         ctx.moveTo(points[0], points[1]);
         ctx.lineTo(points[2], points[3]);
+        if (stroke_style) ctx.strokeStyle = stroke_style;
         ctx.stroke();
     };
 
-    const Circle = (ctx, points, line_style) => {
+    const Circle = (ctx, points, radius, line_style, stroke_style, fill_style) => {
         ctx.beginPath();
         ctx.setLineDash(MARKER_LINE_STYLE[line_style]);
-        ctx.arc(points[0], points[1], 2, 0, Math.PI * 2);
+        ctx.arc(points[0], points[1], radius, 0, Math.PI * 2);
+        if (stroke_style) ctx.strokeStyle = stroke_style;
+        if (fill_style) ctx.fillStyle = fill_style;
         ctx.fill();
         ctx.stroke();
     };
@@ -51,9 +54,10 @@ const BasicCanvasElements = (() => {
         );
     };
 
-    const Text = (ctx, points, text, scale) => {
+    const Text = (ctx, points, text, scale, fill_style) => {
         ctx.textAlign = 'center';
         ctx.font = `bold ${Math.floor(scale * 10)}px IBM Plex Sans`;
+        if (fill_style) ctx.fillStyle = fill_style;
         ctx.fillText(text, points[0], points[1]);
     };
 
@@ -123,13 +127,13 @@ const BasicCanvasElements = (() => {
     };
 
     // not really basic but we put them here for now
-    const BarrierLine = (ctx, points, line_style) => {
-        Line(ctx, points, line_style);
-        Circle(ctx, [points[0], points[1]], 'solid');
-        Circle(ctx, [points[2], points[3]], 'solid');
+    const BarrierLine = (ctx, points, line_style, stroke_style, fill_style) => {
+        Line(ctx, points, line_style, stroke_style);
+        Circle(ctx, [points[0], points[1]], 2, 'solid', stroke_style, fill_style);
+        Circle(ctx, [points[2], points[3]], 2, 'solid', stroke_style, fill_style);
     };
 
-    const VerticalLabelledLine = (ctx, points, zoom, text, icon, line_style) => {
+    const VerticalLabelledLine = (ctx, points, zoom, text, icon, line_style, stroke_style, fill_style) => {
         const label_and_icon_offset = points[0] - 5;
         if (icon) {
             SVG(ctx, icon, [label_and_icon_offset - icon.width / 2, points[1] - 15], zoom);
@@ -138,6 +142,7 @@ const BasicCanvasElements = (() => {
         const scale = getScale(zoom);
         const font_size = Math.floor(scale * 8);
 
+        if (fill_style) ctx.fillStyle = fill_style;
         ctx.font = `lighter ${font_size}px IBM Plex Sans`;
         text.split(/ /).forEach((line, index) => {
             const text_width = Math.ceil(ctx.measureText(line).width);
@@ -146,7 +151,7 @@ const BasicCanvasElements = (() => {
             ctx.fillText(line, text_x, text_y);
         });
 
-        Line(ctx, [points[0], 0, points[0], ctx.canvas.height], line_style);
+        Line(ctx, [points[0], 0, points[0], ctx.canvas.height], line_style, stroke_style);
     };
 
     return {

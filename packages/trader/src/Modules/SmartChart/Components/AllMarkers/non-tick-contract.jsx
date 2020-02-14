@@ -55,8 +55,6 @@ const NonTickContract = RawMarkerMaker(
         const canvas_height = ctx.canvas.height / window.devicePixelRatio;
 
         ctx.save();
-        ctx.strokeStyle = foreground_color;
-        ctx.fillStyle = background_color;
 
         const show_profit = is_last_contract && !is_sold && profit && start.visible && barrier;
         const opacity = is_sold ? getChartOpacity(start.left, expiry.left) : '';
@@ -69,7 +67,6 @@ const NonTickContract = RawMarkerMaker(
         const should_draw_vertical_line = is_last_contract && !is_sold;
         if (should_draw_vertical_line) {
             if (start.visible) {
-                ctx.fillStyle = foreground_color;
                 BasicCanvasElements.VerticalLabelledLine(
                     ctx,
                     [start.left, canvas_height - 50],
@@ -79,24 +76,26 @@ const NonTickContract = RawMarkerMaker(
                         0: { fill: background_color },
                         1: { fill: foreground_color },
                     }),
-                    'dashed'
+                    'dashed',
+                    foreground_color,
+                    foreground_color
                 );
             }
 
             if (has_reset_time) {
-                ctx.fillStyle = foreground_color;
                 BasicCanvasElements.VerticalLabelledLine(
                     ctx,
                     [reset_time.left, canvas_height - 50],
                     reset_time.zoom,
                     localize('Reset Time'),
                     ICONS.RESET.withColor(foreground_color, background_color),
-                    'dashed'
+                    'dashed',
+                    foreground_color,
+                    foreground_color
                 );
             }
 
             if (expiry.visible) {
-                ctx.strokeStyle = status_color_with_opacity;
                 BasicCanvasElements.VerticalLabelledLine(
                     ctx,
                     [expiry.left, canvas_height - 50],
@@ -106,7 +105,9 @@ const NonTickContract = RawMarkerMaker(
                         0: { fill: background_color },
                         1: { fill: status_color_with_opacity },
                     }),
-                    'solid'
+                    'solid',
+                    status_color_with_opacity,
+                    background_color
                 );
             }
         }
@@ -115,23 +116,44 @@ const NonTickContract = RawMarkerMaker(
 
         // barrier line
         if (barrier && entry && (start.visible || expiry.visible || Math.sign(start.left) !== Math.sign(expiry.left))) {
-            ctx.fillStyle = background_color;
             if (is_reset_barrier_expired) {
-                BasicCanvasElements.Line(ctx, [reset_time.left, entry_tick_top, reset_time.left, barrier], 'dashed');
-
-                ctx.strokeStyle = foreground_color;
+                if (!is_last_contract) {
+                    BasicCanvasElements.Line(
+                        ctx,
+                        [reset_time.left, entry_tick_top, reset_time.left, barrier],
+                        'dashed',
+                        foreground_color
+                    );
+                }
                 BasicCanvasElements.BarrierLine(
                     ctx,
                     [start.left, entry_tick_top, reset_time.left, entry_tick_top],
-                    'dashed'
+                    'dashed',
+                    foreground_color,
+                    background_color
                 );
-                ctx.strokeStyle = status_color_with_opacity;
-                BasicCanvasElements.BarrierLine(ctx, [reset_time.left, barrier, expiry.left, barrier], 'solid');
+                BasicCanvasElements.BarrierLine(
+                    ctx,
+                    [reset_time.left, barrier, expiry.left, barrier],
+                    'solid',
+                    status_color_with_opacity,
+                    background_color
+                );
             } else {
-                ctx.strokeStyle = foreground_color;
-                BasicCanvasElements.BarrierLine(ctx, [start.left, barrier, entry.left, barrier], 'dashed');
-                ctx.strokeStyle = status_color_with_opacity;
-                BasicCanvasElements.BarrierLine(ctx, [entry.left, barrier, expiry.left, barrier], 'solid');
+                BasicCanvasElements.BarrierLine(
+                    ctx,
+                    [start.left, barrier, entry.left, barrier],
+                    'dashed',
+                    foreground_color,
+                    background_color
+                );
+                BasicCanvasElements.BarrierLine(
+                    ctx,
+                    [entry.left, barrier, expiry.left, barrier],
+                    'solid',
+                    status_color_with_opacity,
+                    background_color
+                );
             }
         }
 
@@ -162,9 +184,8 @@ const NonTickContract = RawMarkerMaker(
             const decimal_places = CurrencyUtils.getDecimalPlaces(currency);
             const sign = profit < 0 ? '-' : profit > 0 ? '+' : ' '; // eslint-disable-line
             const text = `${sign}${symbol}${Math.abs(profit).toFixed(decimal_places)}`;
-            ctx.fillStyle = status_color_with_opacity;
 
-            BasicCanvasElements.Text(ctx, [start.left, barrier - 28 * scale], text, scale);
+            BasicCanvasElements.Text(ctx, [start.left, barrier - 28 * scale], text, scale, status_color_with_opacity);
         }
         // status marker
         if (expiry.visible && is_sold) {
@@ -174,8 +195,12 @@ const NonTickContract = RawMarkerMaker(
                 1: { fill: status_color_with_opacity },
             });
 
-            ctx.strokeStyle = status_color_with_opacity;
-            BasicCanvasElements.Line(ctx, [exit.left, barrier, exit.left, exit.top], 'dashed');
+            BasicCanvasElements.Line(
+                ctx,
+                [exit.left, barrier, exit.left, exit.top],
+                'dashed',
+                status_color_with_opacity
+            );
             BasicCanvasElements.SVG(ctx, icon, [exit.left, exit.top], exit.zoom);
         }
 

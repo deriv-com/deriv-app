@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ContractType from './contract-type.jsx';
+import { findContractCategory } from '../../../Helpers/contract-type';
 
 class ContractTypeWidget extends React.PureComponent {
     state = {
@@ -79,6 +80,21 @@ class ContractTypeWidget extends React.PureComponent {
         this.setState({ list });
     };
 
+    get contract_type_name() {
+        const { list, value } = this.props;
+        let text = findContractCategory(list, { value }).contract_types.find(item => item.value === value).text;
+
+        // Reset Call/Reset Puts needs to be broken into 2 lines as
+        // per design but we can't do that in the config because it adds
+        // a space when we force into one line when used in other components.
+        if (value === 'reset_call_put') {
+            const text_split = text.split('/');
+            text = `${text_split[0]}/\n${text_split[1]}`;
+        }
+
+        return text;
+    }
+
     render() {
         const { is_equal, is_mobile, name, value } = this.props;
         const { is_dialog_open, is_info_dialog_open, item, list } = this.state;
@@ -120,10 +136,10 @@ class ContractTypeWidget extends React.PureComponent {
                 </ContractType.Dialog>
                 <ContractType.Display
                     is_open={is_dialog_open || is_info_dialog_open}
-                    list={this.props.list}
                     name={name}
                     onClick={this.onWidgetClick}
                     value={value}
+                    text={this.contract_type_name}
                 />
             </div>
         );

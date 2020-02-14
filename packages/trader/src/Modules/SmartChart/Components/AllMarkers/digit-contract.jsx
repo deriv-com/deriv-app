@@ -1,5 +1,6 @@
+import { localize } from '@deriv/translations';
 import RawMarkerMaker from './Helpers/raw-marker-maker.jsx';
-import { getColor } from './Helpers/colors';
+import { getColor, getHexOpacity } from './Helpers/colors';
 import BasicCanvasElements from './Helpers/canvas';
 import { getScale, getChartOpacity } from './Helpers/calculations';
 import * as ICONS from '../icons';
@@ -17,42 +18,63 @@ const DigitContract = RawMarkerMaker(
         /** @type {CanvasRenderingContext2D} */
         const ctx = context;
 
-        const color = getColor({
-            is_dark_theme,
-            status,
-            profit: is_sold ? profit : null,
-        });
+        const foreground_color = getColor({ is_dark_theme, status: 'fg' }).concat(
+            is_last_contract ? '' : getHexOpacity(0.4)
+        );
+        const background_color = getColor({ is_dark_theme, status: 'bg' });
+        const status_color = getColor({ status, is_dark_theme, profit });
+        const status_color_with_opacity = status_color.concat(is_last_contract ? '' : getHexOpacity(0.4));
 
         ctx.save();
-        ctx.strokeStyle = color;
-        ctx.fillStyle = color;
 
-        const draw_start_line = is_last_contract && start.visible && !is_sold;
         const scale = getScale(start.zoom);
 
         if (granularity !== 0 && start && entry_tick_top) {
             start.top = entry_tick_top;
         }
-        if (draw_start_line) {
-            ctx.beginPath();
-            ctx.setLineDash([3, 3]);
-            ctx.moveTo(start.left - 1 * scale, 0);
-            if (ticks.length) {
-                ctx.lineTo(start.left - 1 * scale, start.top - 34 * scale);
-                ctx.moveTo(start.left - 1 * scale, start.top + 4 * scale);
-            }
-            ctx.lineTo(start.left - 1 * scale, ctx.canvas.height);
-            ctx.stroke();
-        }
-
         if (!ticks.length) {
             ctx.restore();
             return;
         }
+
         const expiry = ticks[ticks.length - 1];
-        const opacity = is_sold ? getChartOpacity(start.left, expiry.left) : '';
         if (granularity !== 0 && expiry && exit_tick_top) {
             expiry.top = exit_tick_top;
+        }
+
+        const canvas_height = ctx.canvas.height / window.devicePixelRatio;
+        const should_draw_vertical_line = is_last_contract && !is_sold;
+        if (should_draw_vertical_line) {
+            if (start.visible) {
+                BasicCanvasElements.VerticalLabelledLine(
+                    ctx,
+                    [start.left, canvas_height - 50],
+                    start.zoom,
+                    localize('Buy Time'),
+                    ICONS.BUY_SELL.withColorOnSpecificPaths({
+                        0: { fill: background_color },
+                        1: { fill: foreground_color },
+                    }),
+                    'dashed',
+                    foreground_color,
+                    foreground_color
+                );
+            }
+            if (expiry.visible && is_sold) {
+                BasicCanvasElements.VerticalLabelledLine(
+                    ctx,
+                    [expiry.left, canvas_height - 50],
+                    expiry.zoom,
+                    localize('Sell Time'),
+                    ICONS.BUY_SELL.withColorOnSpecificPaths({
+                        0: { fill: background_color },
+                        1: { fill: status_color_with_opacity },
+                    }),
+                    'solid',
+                    status_color_with_opacity,
+                    foreground_color
+                );
+            }
         }
 
         // count down
@@ -65,63 +87,48 @@ const DigitContract = RawMarkerMaker(
             );
         }
         // start-time marker
-        if (start.visible && (granularity === 0 || !is_sold)) {
+        const opacity = is_sold ? getChartOpacity(start.left, expiry.left) : '';
+        if (start.visible && granularity === 0 && !is_sold) {
             BasicCanvasElements.SVG(
                 ctx,
                 ICONS.END.withColorOnSpecificPaths({
                     0: { fill: getColor({ status: 'bg', is_dark_theme }) + opacity },
-                    1: { fill: color + opacity },
+                    1: { fill: status_color + opacity },
                 }),
-                [start.top - 9 * scale, start.left - 1 * scale],
+                [start.left, start.top],
                 start.zoom
             );
         }
         // remaining ticks
         ticks.forEach((tick, idx) => {
-            if (tick !== expiry) {
+            if (
+                tick !== expiry ||
+                !tick.visible ||
+                (granularity !== 0 && tick !== expiry) ||
+                (granularity !== 0 && tick === expiry && !is_sold)
+            )
                 return;
-            }
-            if (!tick.visible) {
-                return;
-            }
-            if (granularity !== 0 && tick !== expiry) {
-                return;
-            }
-            if (granularity !== 0 && tick === expiry && !is_sold) {
-                return;
-            }
-            const fill_color = tick !== expiry ? getColor({ status: 'fg', is_dark_theme }) : color;
-            ctx.beginPath();
-            ctx.fillStyle = fill_color;
-            ctx.arc(tick.left, tick.top, 7 * scale, 0, Math.PI * 2);
-            ctx.fill();
 
-            ctx.beginPath();
-            ctx.fillStyle = is_sold ? color : getColor({ status: 'bg', is_dark_theme });
-            ctx.arc(tick.left, tick.top, 6 * scale, 0, Math.PI * 2);
-            ctx.fill();
-
-            const last_tick = tick_stream[idx];
-            const last_digit = last_tick.tick_display_value.slice(-1);
-            ctx.fillStyle = is_sold ? 'white' : fill_color;
-            ctx.textAlign = 'center';
-            ctx.shadowBlur = 0;
-            ctx.font = `bold ${12 * scale}px BinarySymbols, Roboto`;
-            ctx.fillText(last_digit, tick.left, tick.top);
-        });
-        // status marker
-        if (expiry.visible && is_sold) {
-            ctx.fillStyle = color;
-            BasicCanvasElements.SVG(
+            BasicCanvasElements.Circle(ctx, [tick.left, tick.top], 7 * scale, 'solid', status_color, foreground_color);
+            BasicCanvasElements.Circle(
                 ctx,
-                ICONS.END.withColorOnSpecificPaths({
-                    0: { fill: getColor({ status: 'bg', is_dark_theme }) },
-                    1: { fill: color },
-                }),
-                [expiry.top - 16 * scale, expiry.left + 8 * scale],
-                expiry.zoom
+                [tick.left, tick.top],
+                6 * scale,
+                'solid',
+                status_color,
+                is_sold ? status_color : background_color
             );
-        }
+
+            const last_digit = tick_stream[idx].tick_display_value.slice(-1);
+            BasicCanvasElements.Text(
+                ctx,
+                [tick.left, tick.top + 1],
+                last_digit,
+                scale,
+                is_sold ? 'white' : status_color
+            );
+        });
+
         ctx.restore();
     }
 );

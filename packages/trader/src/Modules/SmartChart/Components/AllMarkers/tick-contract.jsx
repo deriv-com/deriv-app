@@ -26,8 +26,6 @@ const TickContract = RawMarkerMaker(
         const canvas_height = ctx.canvas.height / window.devicePixelRatio;
 
         ctx.save();
-        ctx.strokeStyle = foreground_color;
-        ctx.fillStyle = background_color;
 
         if (barrier) {
             barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
@@ -48,7 +46,6 @@ const TickContract = RawMarkerMaker(
         const should_draw_vertical_line = is_last_contract && !is_sold;
         if (should_draw_vertical_line) {
             if (start.visible) {
-                ctx.fillStyle = foreground_color;
                 BasicCanvasElements.VerticalLabelledLine(
                     ctx,
                     [start.left, canvas_height - 50],
@@ -58,22 +55,24 @@ const TickContract = RawMarkerMaker(
                         0: { fill: background_color },
                         1: { fill: foreground_color },
                     }),
-                    'dashed'
+                    'dashed',
+                    foreground_color,
+                    foreground_color
                 );
             }
             if (has_reset_time) {
-                ctx.fillStyle = foreground_color;
                 BasicCanvasElements.VerticalLabelledLine(
                     ctx,
                     [reset_time.left, canvas_height - 50],
                     reset_time.zoom,
                     localize('Reset Time'),
                     ICONS.RESET.withColor(foreground_color, background_color),
-                    'dashed'
+                    'dashed',
+                    foreground_color,
+                    foreground_color
                 );
             }
             if (exit.visible && tick_count === ticks.length - 1) {
-                ctx.strokeStyle = status_color_with_opacity;
                 BasicCanvasElements.VerticalLabelledLine(
                     ctx,
                     [exit.left, canvas_height - 50],
@@ -83,7 +82,9 @@ const TickContract = RawMarkerMaker(
                         0: { fill: background_color },
                         1: { fill: status_color_with_opacity },
                     }),
-                    'solid'
+                    'solid',
+                    status_color_with_opacity,
+                    foreground_color
                 );
             }
         }
@@ -91,23 +92,45 @@ const TickContract = RawMarkerMaker(
         const is_reset_barrier_expired = has_reset_time && entry_tick_top !== barrier;
 
         // barrier line
-        ctx.fillStyle = background_color;
         if (is_reset_barrier_expired) {
-            BasicCanvasElements.Line(ctx, [reset_time.left, entry_tick_top, reset_time.left, barrier], 'dashed');
+            if (!is_last_contract) {
+                BasicCanvasElements.Line(
+                    ctx,
+                    [reset_time.left, entry_tick_top, reset_time.left, barrier],
+                    'dashed',
+                    foreground_color
+                );
+            }
 
-            ctx.strokeStyle = foreground_color;
             BasicCanvasElements.BarrierLine(
                 ctx,
                 [start.left, entry_tick_top, reset_time.left, entry_tick_top],
-                'dashed'
+                'dashed',
+                foreground_color,
+                background_color
             );
-            ctx.strokeStyle = status_color_with_opacity;
-            BasicCanvasElements.BarrierLine(ctx, [reset_time.left, barrier, exit.left, barrier], 'solid');
+            BasicCanvasElements.BarrierLine(
+                ctx,
+                [reset_time.left, barrier, exit.left, barrier],
+                'solid',
+                status_color_with_opacity,
+                background_color
+            );
         } else {
-            ctx.strokeStyle = foreground_color;
-            BasicCanvasElements.BarrierLine(ctx, [start.left, barrier, entry.left, barrier], 'dashed');
-            ctx.strokeStyle = status_color_with_opacity;
-            BasicCanvasElements.BarrierLine(ctx, [entry.left, barrier, exit.left, barrier], 'solid');
+            BasicCanvasElements.BarrierLine(
+                ctx,
+                [start.left, barrier, entry.left, barrier],
+                'dashed',
+                foreground_color,
+                background_color
+            );
+            BasicCanvasElements.BarrierLine(
+                ctx,
+                [entry.left, barrier, exit.left, barrier],
+                'solid',
+                status_color_with_opacity,
+                background_color
+            );
         }
 
         if (is_last_contract && !is_sold) {
@@ -124,12 +147,15 @@ const TickContract = RawMarkerMaker(
                 .filter(tick => tick.visible)
                 .forEach(tick => {
                     const clr = tick === exit ? foreground_color : getColor({ status: 'fg', is_dark_theme });
-                    ctx.fillStyle = clr + opacity;
-                    ctx.beginPath();
-                    ctx.arc(tick.left - 1 * scale, tick.top, 1.5 * scale, 0, Math.PI * 2);
-                    ctx.fill();
+                    BasicCanvasElements.Circle(
+                        ctx,
+                        [tick.left - 1 * scale, tick.top],
+                        1 * scale,
+                        'solid',
+                        foreground_color,
+                        clr + opacity
+                    );
                 });
-            ctx.fillStyle = foreground_color;
         }
         // entry markers
         if (granularity === 0 && entry && entry.visible) {
@@ -148,7 +174,7 @@ const TickContract = RawMarkerMaker(
             const points = [start.left, barrier - 28 * scale];
             const text = `${ticks.length - 1}/${tick_count}`;
 
-            BasicCanvasElements.Text(ctx, points, text, scale);
+            BasicCanvasElements.Text(ctx, points, text, scale, foreground_color);
         }
         // status marker
         if (exit.visible && is_sold) {
@@ -158,8 +184,12 @@ const TickContract = RawMarkerMaker(
                 1: { fill: status_color_with_opacity },
             });
 
-            ctx.strokeStyle = status_color_with_opacity;
-            BasicCanvasElements.Line(ctx, [exit.left, barrier, exit.left, exit.top], 'dashed');
+            BasicCanvasElements.Line(
+                ctx,
+                [exit.left, barrier, exit.left, exit.top],
+                'dashed',
+                status_color_with_opacity
+            );
             BasicCanvasElements.SVG(ctx, icon, [exit.left, exit.top], exit.zoom);
         }
 

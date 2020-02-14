@@ -25,7 +25,7 @@ class Reports extends React.Component {
         }
 
         const Content = route.component;
-        return <Content />;
+        return <Content component_icon={route.icon_component} />;
     }
 
     render() {

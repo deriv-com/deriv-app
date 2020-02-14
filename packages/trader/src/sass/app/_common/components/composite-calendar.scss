@@ -116,9 +116,6 @@
                 &__input {
                     display: none;
                 }
-                &__custom {
-                    display: inline-flex;
-                }
                 &__circle {
                     border: 2px solid var(--border-normal);
                     border-radius: 50%;
@@ -143,8 +140,23 @@
                     font-weight: bold;
                 }
             }
-            &__custom-date-range {
+            &__custom {
                 padding: 16px;
+                &__radio {
+                    display: inline-flex;
+                }
+                &__date-range {
+                    margin: 8px;
+                    display: flex;
+                    flex-direction: column;
+
+                    &__start-date {
+                        margin: 16px 0px;
+                    }
+                    &__end-date {
+                        margin-bottom: 8px;
+                    }
+                }
             }
         }
     }

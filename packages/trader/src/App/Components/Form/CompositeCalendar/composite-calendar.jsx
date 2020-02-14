@@ -1,33 +1,12 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, DesktopWrapper, MobileDialog, MobileWrapper, Button } from '@deriv/components';
+import { Icon, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import DatePicker from 'App/Components/Form/DatePicker';
 import InputField from 'App/Components/Form/InputField/input-field.jsx';
 import Lazy from 'App/Containers/Lazy';
 import { daysFromTodayTo, epochToMoment, toMoment } from 'Utils/Date';
+import CompositeCalendarMobile from './composite-calendar-mobile.jsx';
 import SideList from './side-list.jsx';
-
-export const RadioButton = ({ id, className, selected_value, value, label, onChange }) => {
-    return (
-        <label
-            htmlFor={id}
-            className={classNames('composite-calendar-modal__radio', className, {
-                'composite-calendar-modal__radio--selected': selected_value === value,
-            })}
-            onClick={() => onChange({ label, value })}
-        >
-            <input className='composite-calendar-modal__radio__input' id={id} type='radio' value={value} />
-            <span
-                className={classNames('composite-calendar-modal__radio__circle', {
-                    'composite-calendar-modal__radio__circle--selected': selected_value === value,
-                })}
-            />
-            <p className='composite-calendar-modal__radio__label'>{label}</p>
-        </label>
-    );
-};
 
 class CompositeCalendar extends React.PureComponent {
     constructor(props) {
@@ -68,7 +47,6 @@ class CompositeCalendar extends React.PureComponent {
                 },
             ],
         };
-        this.state.selected_date_range = this.state.list.find(range => range.value === 'all_time');
 
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
@@ -77,7 +55,7 @@ class CompositeCalendar extends React.PureComponent {
     selectDateRange(from) {
         this.hideCalendar();
         this.applyBatch({
-            from: Number.isFinite(from)
+            from: from
                 ? toMoment()
                       .startOf('day')
                       .subtract(from, 'day')
@@ -160,25 +138,6 @@ class CompositeCalendar extends React.PureComponent {
         });
     }
 
-    applyDateRange = () => {
-        const { selected_date_range } = this.state;
-        const selected_range = this.state.list.find(r => selected_date_range && r.value === selected_date_range.value);
-        if (selected_range && selected_range.onClick) {
-            selected_range.onClick();
-        }
-        this.setState({ open: false });
-    };
-
-    selectToday = () => {
-        this.selectDateRange(0);
-        this.setState({
-            selected_date_range: {
-                label: localize('Today'),
-            },
-            open: false,
-        });
-    };
-
     isPeriodDisabledTo(date) {
         return (
             date + 1 <= this.props.from ||
@@ -191,29 +150,6 @@ class CompositeCalendar extends React.PureComponent {
 
     isPeriodDisabledFrom(date) {
         return date - 1 >= this.props.to;
-    }
-
-    getMobileFooter() {
-        return (
-            <div className='composite-calendar-modal__actions'>
-                <Button
-                    className='composite-calendar-modal__actions__cancel'
-                    text={localize('Cancel')}
-                    onClick={() => this.setState({ open: false })}
-                    has_effect
-                    secondary
-                    large
-                />
-                <Button
-                    className='composite-calendar-modal__actions__ok'
-                    text={localize('OK')}
-                    onClick={this.applyDateRange}
-                    has_effect
-                    primary
-                    large
-                />
-            </div>
-        );
     }
 
     render() {
@@ -270,69 +206,7 @@ class CompositeCalendar extends React.PureComponent {
                     )}
                 </DesktopWrapper>
                 <MobileWrapper>
-                    <div className='composite-calendar__input-fields composite-calendar__input-fields--fill'>
-                        <InputField
-                            id='dt_calendar_input'
-                            is_read_only={true}
-                            icon={() => <Icon icon='IcCalendarDatefrom' className='inline-icon' />}
-                            onClick={() => this.setState({ open: true })}
-                            value={this.state.selected_date_range.label}
-                        />
-                    </div>
-                    <MobileDialog
-                        portal_element_id='deriv_app'
-                        title={localize('Please select duration')}
-                        visible={this.state.open}
-                        onClose={() => this.setState({ open: false })}
-                        footer={this.getMobileFooter()}
-                    >
-                        <div className='composite-calendar-modal'>
-                            <div className='composite-calendar-modal__radio-group'>
-                                {this.state.list.map(duration => (
-                                    <RadioButton
-                                        id={`composite-calendar-modal__radio__${duration.value}`}
-                                        key={duration.value}
-                                        value={duration.value}
-                                        label={duration.label}
-                                        selected_value={this.state.selected_date_range.value}
-                                        onChange={date_range => this.setState({ selected_date_range: date_range })}
-                                    />
-                                ))}
-                            </div>
-                            <div className='composite-calendar-modal__custom-date-range'>
-                                <RadioButton
-                                    id={'composite-calendar-modal__radio__custom'}
-                                    className='composite-calendar-modal__radio__custom'
-                                    value={'custom'}
-                                    label={localize('Custom')}
-                                    selected_value={this.state.selected_date_range.value}
-                                    onChange={date_range => this.setState({ selected_date_range: date_range })}
-                                />
-                                <DatePicker
-                                    name='composite-calendar-modal__radio__custom__start-date'
-                                    is_nativepicker={true}
-                                    placeholder={localize('Start Date')}
-                                    value={this.state.from}
-                                    onChange={e => {
-                                        this.setState({ from: e.target.value });
-                                    }}
-                                />
-                                <DatePicker
-                                    name='composite-calendar-modal__radio__custom__end-date'
-                                    is_nativepicker={false}
-                                    placeholder={localize('End Date')}
-                                />
-                            </div>
-                            <Button
-                                className='composite-calendar-modal__actions__today'
-                                text={localize('Back to today')}
-                                onClick={this.selectToday}
-                                has_effect
-                                tertiary
-                                large
-                            />
-                        </div>
-                    </MobileDialog>
+                    <CompositeCalendarMobile duration_list={this.state.list} {...this.props} />
                 </MobileWrapper>
             </>
         );

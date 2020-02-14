@@ -101,6 +101,7 @@ class ProfitTable extends React.Component {
             data,
             date_from,
             date_to,
+            filtered_date_range,
             is_empty,
             is_loading,
             error,
@@ -113,7 +114,12 @@ class ProfitTable extends React.Component {
 
         const filter_component = (
             <React.Fragment>
-                <CompositeCalendar onChange={handleDateChange} from={date_from} to={date_to} />
+                <CompositeCalendar
+                    input_date_range={filtered_date_range}
+                    onChange={handleDateChange}
+                    from={date_from}
+                    to={date_to}
+                />
             </React.Fragment>
         );
 
@@ -203,6 +209,7 @@ export default connect(({ modules, client }) => ({
     date_from: modules.profit_table.date_from,
     date_to: modules.profit_table.date_to,
     error: modules.profit_table.error,
+    filtered_date_range: modules.profit_table.filtered_date_range,
     handleScroll: modules.profit_table.handleScroll,
     handleDateChange: modules.profit_table.handleDateChange,
     has_selected_date: modules.profit_table.has_selected_date,

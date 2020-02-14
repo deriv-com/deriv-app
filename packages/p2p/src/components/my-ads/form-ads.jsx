@@ -90,10 +90,10 @@ class FormAds extends Component {
                                     >
                                         <p className='p2p-my-ads__form-summary'>
                                             <AdSummary
-                                                offer_amount={values.offer_amount}
+                                                offer_amount={errors.offer_amount ? '' : values.offer_amount}
                                                 offer_currency={this.context.currency}
                                                 transaction_currency={this.context.local_currency_config.currency}
-                                                price_rate={values.price_rate}
+                                                price_rate={errors.price_rate ? '' : values.price_rate}
                                                 type={values.type}
                                             />
                                         </p>

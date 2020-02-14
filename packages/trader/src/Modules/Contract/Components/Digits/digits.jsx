@@ -3,7 +3,7 @@ import React from 'react';
 import { toJS } from 'mobx';
 import { Popover } from '@deriv/components';
 import { isMobile } from '@deriv/shared/utils/screen';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { isContractElapsed } from 'Stores/Modules/Contract/Helpers/logic';
 import { Bounce, SlideIn } from 'App/Components/Animations';
 import { getMarketNamesMap } from 'Constants';
@@ -39,19 +39,20 @@ const DigitsWrapper = ({
                 bid: t.tick,
                 epoch: t.epoch,
                 pip_size: t.tick_display_value.split('.')[1].length,
+                current_tick: tick_stream.length,
             };
         }
     }
 
     if (props.onChangeStatus) {
-        props.onChangeStatus({ status });
+        props.onChangeStatus({ status, current_tick: tick ? tick.current_tick : null });
     }
 
     return (
         <LastDigitPrediction
             // dimension of a single digit widget including margin/padding (number)
             // i.e - 40px + 6px left and 6px right padding/margin = 52
-            dimension={52}
+            dimension={isMobile() ? 64 : 52}
             has_entry_spot={!!contract_info.entry_tick}
             barrier={!is_contract_elapsed && is_tick_ready ? +contract_info.barrier : null}
             contract_type={!is_contract_elapsed && is_tick_ready ? contract_info.contract_type : null}
@@ -77,8 +78,8 @@ class Digits extends React.PureComponent {
         this.setState({ mounted: true });
     }
 
-    onChangeStatus = ({ status }) => {
-        this.setState({ status });
+    onChangeStatus = ({ status, current_tick }) => {
+        this.setState({ status, current_tick });
     };
 
     onLastDigitSpot = ({ spot, is_lost, is_selected_winning, is_latest, is_won }) => {
@@ -96,7 +97,7 @@ class Digits extends React.PureComponent {
 
     render() {
         const { contract_info, digits_array, is_digit_contract, is_trade_page } = this.props;
-        const { status, spot, is_lost, is_selected_winning, is_latest, is_won } = this.state;
+        const { status, spot, is_lost, is_selected_winning, is_latest, is_won, current_tick } = this.state;
 
         if (isMobile()) {
             return (
@@ -106,6 +107,11 @@ class Digits extends React.PureComponent {
                         className='digits__digit-spot'
                         keyname='digits__digit-spot'
                     >
+                        {is_trade_page && (
+                            <span className='digits__digit-spot-value'>
+                                <Localize i18n_default_text='Tick {{current_tick}} - ' values={{ current_tick }} />
+                            </span>
+                        )}
                         <DigitSpot
                             current_spot={spot}
                             is_lost={is_lost}

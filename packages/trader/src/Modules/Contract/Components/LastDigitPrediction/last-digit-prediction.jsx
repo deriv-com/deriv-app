@@ -2,24 +2,37 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper } from '@deriv/components';
+import { isMobile } from '@deriv/shared/utils/screen';
 import DigitDisplay from './digit-display.jsx';
 import LastDigitPointer from './last-digit-pointer.jsx';
 
 const display_array = Array.from(Array(10).keys()); // digits array [0 - 9]
 
 class LastDigitPrediction extends React.Component {
-    digit_left_offset = {
-        0: 6,
-        1: 6 + this.props.dimension * 1,
-        2: 6 + this.props.dimension * 2,
-        3: 6 + this.props.dimension * 3,
-        4: 6 + this.props.dimension * 4,
-        5: 6 + this.props.dimension * 5,
-        6: 6 + this.props.dimension * 6,
-        7: 6 + this.props.dimension * 7,
-        8: 6 + this.props.dimension * 8,
-        9: 6 + this.props.dimension * 9,
+    digit_offset = {
+        0: { left: 6, top: 0 },
+        1: { left: 6 + this.props.dimension * 1, top: 0 },
+        2: { left: 6 + this.props.dimension * 2, top: 0 },
+        3: { left: 6 + this.props.dimension * 3, top: 0 },
+        4: { left: 6 + this.props.dimension * 4, top: 0 },
+        5: { left: 6 + this.props.dimension * 5, top: 0 },
+        6: { left: 6 + this.props.dimension * 6, top: 0 },
+        7: { left: 6 + this.props.dimension * 7, top: 0 },
+        8: { left: 6 + this.props.dimension * 8, top: 0 },
+        9: { left: 6 + this.props.dimension * 9, top: 0 },
+    };
+
+    digit_offset_mobile = {
+        0: { left: 6, top: -60 },
+        1: { left: 6 + this.props.dimension * 1, top: -60 },
+        2: { left: 6 + this.props.dimension * 2, top: -60 },
+        3: { left: 6 + this.props.dimension * 3, top: -60 },
+        4: { left: 6 + this.props.dimension * 4, top: -60 },
+        5: { left: 6 + this.props.dimension * 0, top: 8 },
+        6: { left: 6 + this.props.dimension * 1, top: 8 },
+        7: { left: 6 + this.props.dimension * 2, top: 8 },
+        8: { left: 6 + this.props.dimension * 3, top: 8 },
+        9: { left: 6 + this.props.dimension * 4, top: 8 },
     };
 
     getBarrier = num => {
@@ -36,6 +49,10 @@ class LastDigitPrediction extends React.Component {
         if (!contract_type || !barrier_map[contract_type]) return null;
         return barrier_map[contract_type](num) ? num : null;
     };
+
+    get offset() {
+        return isMobile() ? this.digit_offset_mobile : this.digit_offset;
+    }
 
     render() {
         const {
@@ -68,9 +85,7 @@ class LastDigitPrediction extends React.Component {
         const latest_tick_pip_size = tick ? +tick.pip_size : null;
         const latest_tick_ask_price = tick && tick.ask ? tick.ask.toFixed(latest_tick_pip_size) : null;
         const latest_tick_digit = latest_tick_ask_price ? +latest_tick_ask_price.split('').pop() : null;
-        const position = tick
-            ? this.digit_left_offset[latest_tick_digit]
-            : this.digit_left_offset[last_contract_digit.digit];
+        const position = tick ? this.offset[latest_tick_digit] : this.offset[last_contract_digit.digit];
         const latest_digit = !(is_won || is_lost)
             ? { digit: latest_tick_digit, spot: latest_tick_ask_price }
             : last_contract_digit;
@@ -99,14 +114,7 @@ class LastDigitPrediction extends React.Component {
                         onLastDigitSpot={this.props.onLastDigitSpot}
                     />
                 ))}
-                <DesktopWrapper>
-                    <LastDigitPointer
-                        is_lost={is_lost}
-                        is_trade_page={is_trade_page}
-                        is_won={is_won}
-                        position={position}
-                    />
-                </DesktopWrapper>
+                <LastDigitPointer is_lost={is_lost} is_trade_page={is_trade_page} is_won={is_won} position={position} />
             </div>
         );
     }

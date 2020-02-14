@@ -42,8 +42,8 @@ class App extends Component {
         this.setState({ active_index: path[path_name], parameters: params });
     };
 
-    handleTabClick = () => {
-        this.setState({ parameters: null });
+    handleTabClick = idx => {
+        this.setState({ active_index: idx, parameters: null });
     };
 
     setIsAdvertiser = async () => {

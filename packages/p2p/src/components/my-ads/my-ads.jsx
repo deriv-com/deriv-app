@@ -9,6 +9,9 @@ import ToggleAds from './toggle-ads.jsx';
 import './my-ads.scss';
 
 class MyAds extends Component {
+    // TODO: Find a better solution for handling no-op instead of using is_mounted flags
+    is_mounted = false;
+
     state = {
         is_enabled: false,
         is_loading: true,
@@ -20,9 +23,11 @@ class MyAds extends Component {
     };
 
     componentDidMount() {
+        this.is_mounted = true;
+
         if (this.context.is_advertiser) {
             requestWS({ p2p_advertiser_info: 1 }).then(response => {
-                if (!response.error) {
+                if (this.is_mounted && !response.error) {
                     this.setState({ is_enabled: !!response.p2p_advertiser_info.is_listed, is_loading: false });
                 }
             });

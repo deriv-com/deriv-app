@@ -52,15 +52,16 @@ class Trade extends React.Component {
                     <React.Suspense
                         fallback={<ChartLoader is_dark={this.props.is_dark_theme} is_visible={!this.props.symbol} />}
                     >
-                        <ChartLoader is_visible={this.props.is_chart_loading} />
                         <DesktopWrapper>
+                            <ChartLoader is_visible={this.props.is_chart_loading} />
                             <ChartTrade />
                         </DesktopWrapper>
                         <MobileWrapper>
+                            <ChartLoader is_visible={this.props.is_chart_loading} />
                             {this.props.show_digits_stats ? (
                                 <SwipeableWrapper>
-                                    <ChartTrade bottomWidgets={this.bottomWidgets} />
                                     <DigitsWidget digits={this.state.digits} tick={this.state.tick} />
+                                    <ChartTrade bottomWidgets={this.bottomWidgets} />
                                 </SwipeableWrapper>
                             ) : (
                                 <ChartTrade />

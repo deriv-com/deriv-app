@@ -79,8 +79,8 @@ class ContractReplay extends React.Component {
                                     <InfoBoxWidget />
                                     {is_digit_contract ? (
                                         <SwipeableWrapper>
-                                            <ReplayChart />
                                             <DigitsWidget />
+                                            <ReplayChart />
                                         </SwipeableWrapper>
                                     ) : (
                                         <ReplayChart />

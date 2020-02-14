@@ -10,6 +10,7 @@ const TopWidgets = ({ InfoBox, is_mobile, is_title_enabled = true, onSymbolChang
             onChange={onSymbolChange}
             searchInputClassName='data-hj-whitelist'
             portalNodeId={is_mobile ? 'deriv_app' : undefined}
+            containerId={is_mobile ? 'app_contents' : undefined}
         />
         <AssetInformation />
     </React.Fragment>

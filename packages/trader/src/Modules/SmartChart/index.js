@@ -18,6 +18,7 @@ export const SmartChart = React.lazy(load('SmartChart'));
 export const AssetInformation = React.lazy(load('AssetInformation'));
 export const ChartTitle = React.lazy(load('ChartTitle'));
 
+export const ChartMode = React.lazy(load('ChartMode'));
 export const ChartSize = React.lazy(load('ChartSize'));
 export const ChartTypes = React.lazy(load('ChartTypes'));
 export const Comparison = React.lazy(load('Comparison'));

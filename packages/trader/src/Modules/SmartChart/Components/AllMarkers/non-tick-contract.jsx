@@ -102,7 +102,7 @@ const NonTickContract = RawMarkerMaker(
                     }),
                     'solid',
                     status_color_with_opacity,
-                    background_color
+                    status_color_with_opacity
                 );
             }
         }

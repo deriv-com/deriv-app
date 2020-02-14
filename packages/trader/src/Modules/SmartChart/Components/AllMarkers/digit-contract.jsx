@@ -80,7 +80,8 @@ const DigitContract = RawMarkerMaker(
                 ctx,
                 [start.left - 1 * scale, start.top - 28 * scale],
                 `${ticks.length}/${tick_count}`,
-                scale
+                scale,
+                status_color
             );
         }
         // start-time marker

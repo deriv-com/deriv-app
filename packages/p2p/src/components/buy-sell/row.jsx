@@ -44,7 +44,12 @@ export const RowComponent = React.memo(({ data, is_buy, setSelectedAd, style }) 
                     <Table.Cell />
                 ) : (
                     <Table.Cell>
-                        <Button primary small onClick={() => setSelectedAd(data)}>
+                        <Button
+                            className='deriv-p2p__button--right-aligned'
+                            primary
+                            small
+                            onClick={() => setSelectedAd(data)}
+                        >
                             {is_buy ? localize('Buy') : localize('Sell')} {data.offer_currency}
                         </Button>
                     </Table.Cell>

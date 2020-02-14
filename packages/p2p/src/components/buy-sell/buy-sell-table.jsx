@@ -8,7 +8,7 @@ import { SellTable } from './sell-table.jsx';
 export const BuySellTable = ({ setSelectedAd, table_type }) => {
     const is_buy = table_type === 'buy';
 
-    // TODO: [p2p-cleanup] cleanup repetition of header
+    // last column is an empty header
     return (
         <Table>
             <Table.Header>
@@ -17,7 +17,7 @@ export const BuySellTable = ({ setSelectedAd, table_type }) => {
                     <Table.Head>{localize('Limits')}</Table.Head>
                     <Table.Head>{localize('Price')}</Table.Head>
                     <Table.Head>{localize('Payment method')}</Table.Head>
-                    <Table.Head>{localize('Trade')}</Table.Head>
+                    <Table.Head>{''}</Table.Head>
                 </Table.Row>
             </Table.Header>
             <Table.Body>

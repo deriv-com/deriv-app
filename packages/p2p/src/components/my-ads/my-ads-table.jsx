@@ -13,7 +13,7 @@ const headers = [
     { text: localize('Limits') },
     { text: localize('Price') },
     { text: localize('Payment method') },
-    { text: localize('Actions') },
+    { text: '' }, // empty header
 ];
 
 const type = {
@@ -38,7 +38,12 @@ const RowComponent = React.memo(({ data, row_actions, style }) => (
             </Table.Cell>
             <Table.Cell>{data.display_payment_method}</Table.Cell>
             <Table.Cell>
-                <Button secondary small onClick={() => row_actions.onClickDelete(data.id)}>
+                <Button
+                    className='deriv-p2p__button--right-aligned'
+                    secondary
+                    small
+                    onClick={() => row_actions.onClickDelete(data.id)}
+                >
                     {localize('Delete')}
                 </Button>
             </Table.Cell>

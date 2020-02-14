@@ -1,10 +1,19 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import ContractTypeMenu from './ContractTypeMenu';
 
-const ContractTypeDialog = ({ children, open, onClose }) => (
+const ContractTypeDialog = ({
+    children,
+    is_info_dialog_open,
+    onClose,
+    is_open,
+    item,
+    list,
+    onBackButtonClick,
+    onChangeInput,
+}) => (
     <React.Fragment>
         <MobileWrapper>
             <span className='contract-type-widget__select-arrow' />
@@ -12,27 +21,23 @@ const ContractTypeDialog = ({ children, open, onClose }) => (
                 portal_element_id='deriv_app'
                 title={localize('Trade type')}
                 wrapper_classname='contracts-modal-list'
-                visible={open}
+                visible={is_open}
                 onClose={onClose}
             >
                 {children}
             </MobileDialog>
         </MobileWrapper>
         <DesktopWrapper>
-            <CSSTransition
-                in={open}
-                timeout={100}
-                classNames={{
-                    enter: 'contracts-type-dialog--enter',
-                    enterDone: 'contracts-type-dialog--enterDone',
-                    exit: 'contracts-type-dialog--exit',
-                }}
-                unmountOnExit
+            <ContractTypeMenu
+                is_info_dialog_open={is_info_dialog_open}
+                is_open={is_open}
+                item={item}
+                list={list}
+                onBackButtonClick={onBackButtonClick}
+                onChangeInput={onChangeInput}
             >
-                <div className='contracts-type-dialog'>
-                    <div className='contracts-type-dialog__list-wrapper'>{children}</div>
-                </div>
-            </CSSTransition>
+                {children}
+            </ContractTypeMenu>
         </DesktopWrapper>
     </React.Fragment>
 );

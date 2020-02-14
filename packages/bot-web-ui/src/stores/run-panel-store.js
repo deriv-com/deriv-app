@@ -72,10 +72,10 @@ export default class RunPanelStore {
     onStopButtonClick() {
         this.dbot.stopBot();
         this.is_running = false;
+
         if (this.error_type) {
             // when user click stop button when there is a error but bot is retrying
             this.setContractStage(contract_stages.NOT_RUNNING);
-            this.error_type = undefined;
         } else if (this.has_open_contract) {
             // when user click stop button when bot is running
             this.setContractStage(contract_stages.IS_STOPPING);
@@ -83,6 +83,10 @@ export default class RunPanelStore {
             // when user click stop button before bot start running
             this.setContractStage(contract_stages.NOT_RUNNING);
             RunPanelStore.unregisterBotListeners();
+        }
+
+        if (this.error_type) {
+            this.error_type = undefined;
         }
     }
 
@@ -192,7 +196,6 @@ export default class RunPanelStore {
         observer.register('bot.contract', this.onBotContractEvent);
         observer.register('bot.contract', contract_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
-        observer.register('ui.log.success', journal.onLogSuccess);
         observer.register('ui.log.error', this.onError);
         observer.register('Error', this.onError);
         observer.register('ui.log.notify', journal.onNotify);
@@ -288,7 +291,6 @@ export default class RunPanelStore {
         observer.unregisterAll('bot.trade_again');
         observer.unregisterAll('contract.status');
         observer.unregisterAll('bot.contract');
-        observer.unregisterAll('ui.log.success');
         observer.unregisterAll('ui.log.error');
         observer.unregisterAll('Error');
         observer.unregisterAll('ui.log.notify');

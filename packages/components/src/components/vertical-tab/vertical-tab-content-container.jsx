@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Icon from 'Components/icon';
-import ThemedScrollbars from 'Components/themed-scrollbars';
 
 const Content = ({ is_routed, items, selected }) => {
     const selected_item = items.find(item => item.label === selected.label);
@@ -19,6 +18,7 @@ const Content = ({ is_routed, items, selected }) => {
             ) : (
                 <TabContent key={selected_item.label} className='item-id' />
             )}
+            {selected_item.has_side_note && <div className='dc-vertical-tab__content-side-note' />}
         </React.Fragment>
     );
 };
@@ -31,7 +31,6 @@ export default class VerticalTabContentContainer extends React.PureComponent {
             id,
             is_floating,
             is_routed,
-            is_scrollable,
             items,
             selected,
             tab_container_classname,
@@ -67,14 +66,10 @@ export default class VerticalTabContentContainer extends React.PureComponent {
                     </div>
                 )}
                 <div className={classNames('dc-vertical-tab__content-container', tab_container_classname)}>
-                    {is_scrollable ? (
-                        <ThemedScrollbars
-                            autoHeight
-                            autoHide
-                            autoHeightMax={'calc(100vh - 2.4rem - 40px - 48px - 36px)'}
-                        >
+                    {selected.has_side_note ? (
+                        <div className='dc-vertical-tab__content-inner'>
                             <Content is_routed={is_routed} items={items} selected={selected} />
-                        </ThemedScrollbars>
+                        </div>
                     ) : (
                         <Content is_routed={is_routed} items={items} selected={selected} />
                     )}

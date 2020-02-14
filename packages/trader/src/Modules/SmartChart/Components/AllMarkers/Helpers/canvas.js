@@ -1,5 +1,4 @@
-import { getScale } from './calculations';
-import { getHexOpacity } from './colors';
+import { calculateScale, calculateHexOpacity } from './calculations';
 
 const BasicCanvasElements = (() => {
     const MARKER_LINE_STYLE = {
@@ -42,7 +41,7 @@ const BasicCanvasElements = (() => {
             should_shade_be_above ? points[1] - shade_height : points[1] + shade_height
         );
 
-        gradient.addColorStop(0, `${color}${getHexOpacity(0.16)}`);
+        gradient.addColorStop(0, `${color}${calculateHexOpacity(0.16)}`);
         gradient.addColorStop(1, 'transparent');
         ctx.fillStyle = gradient;
 
@@ -64,7 +63,7 @@ const BasicCanvasElements = (() => {
     const SVG = (ctx, icon, svg_points, zoom) => {
         ctx.save();
 
-        const scale = getScale(zoom);
+        const scale = calculateScale(zoom);
         ctx.translate(svg_points[0] - (icon.width * scale) / 2, svg_points[1] - (icon.height * scale) / 2);
         ctx.scale(scale, scale);
 
@@ -139,7 +138,7 @@ const BasicCanvasElements = (() => {
             SVG(ctx, icon, [label_and_icon_offset - icon.width / 2, points[1] - 15], zoom);
         }
 
-        const scale = getScale(zoom);
+        const scale = calculateScale(zoom);
         const font_size = Math.floor(scale * 8);
 
         if (fill_style) ctx.fillStyle = fill_style;

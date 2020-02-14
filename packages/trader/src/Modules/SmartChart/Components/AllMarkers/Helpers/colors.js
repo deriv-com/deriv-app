@@ -1,4 +1,6 @@
-export const getColor = ({ status, profit, is_dark_theme }) => {
+import { calculateHexOpacity, calculateFadeHexOpacity } from './calculations';
+
+export const getColor = (status, is_dark_theme, profit) => {
     const DARK = {
         open: '#377cfc',
         won: '#00a79e',
@@ -26,8 +28,15 @@ export const getColor = ({ status, profit, is_dark_theme }) => {
     return color;
 };
 
-// Accepts decimals or percentages.
-export const getHexOpacity = opacity => {
-    const percentages = opacity >= 0 && opacity <= 1 ? opacity * 100 : opacity;
-    return parseInt((percentages * 255) / 100).toString(16);
+export const getOpacity = (is_last_contract, is_sold, points) => {
+    let opacity = '';
+    if (is_last_contract) {
+        if (is_sold) {
+            opacity = calculateFadeHexOpacity(points[0], points[1]);
+        }
+    } else {
+        opacity = calculateHexOpacity(0.4);
+    }
+
+    return opacity;
 };

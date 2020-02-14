@@ -78,11 +78,7 @@ export default class ContractStore {
 
             if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
                 main_barrier.shade = getBarrierShade(contract_info);
-                main_barrier.shadeColor = getColor({
-                    status,
-                    profit,
-                    is_dark_mode: this.root_store.ui.is_dark_mode_on,
-                });
+                main_barrier.shadeColor = getColor(status, this.root_store.ui.is_dark_mode_on, profit);
 
                 main_barrier.updateBarriers(barrier || high_barrier, low_barrier);
                 main_barrier.updateBarrierColor(is_dark_mode);
@@ -103,11 +99,7 @@ export default class ContractStore {
                     not_draggable: true,
                 });
                 main_barrier.shade = getBarrierShade(contract_info);
-                main_barrier.shadeColor = getColor({
-                    status,
-                    profit,
-                    is_dark_mode: this.root_store.ui.is_dark_mode_on,
-                });
+                main_barrier.shadeColor = getColor(status, this.root_store.ui.is_dark_mode_on, profit);
 
                 main_barrier.updateBarrierShade(true, contract_type);
                 result = [main_barrier];

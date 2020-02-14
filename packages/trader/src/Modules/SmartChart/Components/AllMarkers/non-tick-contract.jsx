@@ -1,14 +1,14 @@
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize } from '@deriv/translations';
 import RawMarkerMaker from './Helpers/raw-marker-maker.jsx';
-import { getColor, getHexOpacity } from './Helpers/colors';
+import { getColor, getOpacity } from './Helpers/colors';
+import { calculateScale } from './Helpers/calculations';
 import BasicCanvasElements from './Helpers/canvas';
-import { getScale, getChartOpacity } from './Helpers/calculations';
 import * as ICONS from '../icons';
 
 const NonTickContract = RawMarkerMaker(
     ({
-        ctx: context,
+        ctx,
         points: [start, expiry, entry, exit, current_spot, reset_time],
         is_last_contract,
         prices: [barrier, entry_tick_top, exit_tick_top], // TODO: support two barrier contracts
@@ -17,6 +17,8 @@ const NonTickContract = RawMarkerMaker(
         currency,
         contract_info: { is_sold, status, profit },
     }) => {
+        ctx.save();
+
         const CURRENCY_SYMBOLS = {
             AUD: '\u0041\u0024',
             EUR: '\u20AC',
@@ -31,9 +33,6 @@ const NonTickContract = RawMarkerMaker(
             UST: '\ue903',
         };
 
-        /** @type {CanvasRenderingContext2D} */
-        const ctx = context;
-
         // the y value reported for candles is not accurate
         if (granularity !== 0) {
             if (entry) {
@@ -44,20 +43,16 @@ const NonTickContract = RawMarkerMaker(
             }
         }
 
-        const foreground_color = getColor({ is_dark_theme, status: 'fg' }).concat(
-            is_last_contract ? '' : getHexOpacity(0.4)
-        );
-        const background_color = getColor({ is_dark_theme, status: 'bg' });
-        const status_color = getColor({ status, is_dark_theme, profit });
-        const status_color_with_opacity = status_color.concat(is_last_contract ? '' : getHexOpacity(0.4));
-
-        const scale = getScale(start.zoom);
+        const opacity = getOpacity(is_last_contract, is_sold, [start.left, expiry.left]);
+        const scale = calculateScale(start.zoom);
         const canvas_height = ctx.canvas.height / window.devicePixelRatio;
 
-        ctx.save();
+        const foreground_color = getColor('fg', is_dark_theme).concat(opacity);
+        const background_color = getColor('bg', is_dark_theme).concat(opacity);
+        const status_color = getColor(status, is_dark_theme, profit);
+        const status_color_with_opacity = status_color.concat(opacity);
 
         const show_profit = is_last_contract && !is_sold && profit && start.visible && barrier;
-        const opacity = is_sold ? getChartOpacity(start.left, expiry.left) : '';
 
         if (barrier) {
             barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
@@ -188,10 +183,10 @@ const NonTickContract = RawMarkerMaker(
             BasicCanvasElements.Text(ctx, [start.left, barrier - 28 * scale], text, scale, status_color_with_opacity);
         }
         // status marker
-        if (expiry.visible && is_sold) {
+        if (exit && exit.visible && is_sold) {
             // Draw a line from barrier to icon.
             const icon = ICONS.END.withColorOnSpecificPaths({
-                0: { fill: background_color + (is_sold ? opacity : '') },
+                0: { fill: background_color },
                 1: { fill: status_color_with_opacity },
             });
 

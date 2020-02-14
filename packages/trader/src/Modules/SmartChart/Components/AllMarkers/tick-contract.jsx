@@ -1,13 +1,13 @@
 import { localize } from '@deriv/translations';
 import RawMarkerMaker from './Helpers/raw-marker-maker.jsx';
-import { getColor, getHexOpacity } from './Helpers/colors';
-import { getScale, getChartOpacity } from './Helpers/calculations';
+import { getColor, getOpacity } from './Helpers/colors';
+import { calculateScale } from './Helpers/calculations';
 import BasicCanvasElements from './Helpers/canvas';
 import * as ICONS from '../icons';
 
 const TickContract = RawMarkerMaker(
     ({
-        ctx: context,
+        ctx,
         points: [start, reset_time, ...ticks],
         prices: [barrier, entry_tick_top], // TODO: support two barrier contracts
         is_last_contract,
@@ -15,18 +15,9 @@ const TickContract = RawMarkerMaker(
         granularity,
         contract_info: { status, profit, is_sold, tick_count },
     }) => {
-        /** @type {CanvasRenderingContext2D} */
-        const ctx = context;
-
-        const foreground_color = getColor({ is_dark_theme, status: 'fg' }).concat(
-            is_last_contract ? '' : getHexOpacity(0.4)
-        );
-        const background_color = getColor({ is_dark_theme, status: 'bg' });
-        const scale = getScale(start.zoom);
-        const canvas_height = ctx.canvas.height / window.devicePixelRatio;
-
         ctx.save();
 
+        const canvas_height = ctx.canvas.height / window.devicePixelRatio;
         if (barrier) {
             barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
         }
@@ -38,9 +29,14 @@ const TickContract = RawMarkerMaker(
 
         const exit = ticks[ticks.length - 1];
         const entry = ticks[0];
-        const opacity = is_sold ? getChartOpacity(start.left, exit.left) : '';
-        const status_color = getColor({ status, is_dark_theme, profit });
-        const status_color_with_opacity = status_color.concat(is_last_contract ? '' : getHexOpacity(0.4));
+
+        const scale = calculateScale(start.zoom);
+        const opacity = getOpacity(is_last_contract, is_sold, [start.left, exit.left]);
+
+        const foreground_color = getColor('fg', is_dark_theme).concat(opacity);
+        const background_color = getColor('bg', is_dark_theme).concat(opacity);
+        const status_color = getColor(status, is_dark_theme, profit);
+        const status_color_with_opacity = status_color.concat(opacity);
 
         const has_reset_time = reset_time && reset_time.epoch;
         const should_draw_vertical_line = is_last_contract && !is_sold;
@@ -146,14 +142,14 @@ const TickContract = RawMarkerMaker(
             ticks
                 .filter(tick => tick.visible)
                 .forEach(tick => {
-                    const clr = tick === exit ? foreground_color : getColor({ status: 'fg', is_dark_theme });
+                    const clr = tick === exit ? foreground_color : getColor('fg', is_dark_theme);
                     BasicCanvasElements.Circle(
                         ctx,
                         [tick.left - 1 * scale, tick.top],
                         1 * scale,
                         'solid',
                         foreground_color,
-                        clr + opacity
+                        clr
                     );
                 });
         }
@@ -180,7 +176,7 @@ const TickContract = RawMarkerMaker(
         if (exit.visible && is_sold) {
             // Draw a line from barrier to icon.
             const icon = ICONS.END.withColorOnSpecificPaths({
-                0: { fill: background_color + (is_sold ? opacity : '') },
+                0: { fill: background_color },
                 1: { fill: status_color_with_opacity },
             });
 

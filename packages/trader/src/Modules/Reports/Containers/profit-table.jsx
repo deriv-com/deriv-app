@@ -29,11 +29,24 @@ class ProfitTable extends React.Component {
         this.props.onUnmount();
     }
 
-    mobileRowRenderer = ({ index }) => {
-        const { data } = this.props;
-        const row = data[index];
+    mobileRowRenderer = ({ row, is_footer }) => {
         const duration_type = getContractDurationType(row.longcode);
         const duration_classname = `duration-type__${duration_type.toLowerCase()}`;
+
+        if (is_footer) {
+            return (
+                <div className='data-list__row'>
+                    <DataList.Cell row={row} column={this.columns_map.action_type} is_footer={is_footer} />
+                    <DataList.Cell
+                        className='data-list__row__cell--amount'
+                        row={row}
+                        column={this.columns_map.profit_loss}
+                        is_footer={is_footer}
+                    />
+                </div>
+            );
+        }
+
         return (
             <>
                 <div className='data-list__row'>
@@ -172,6 +185,7 @@ class ProfitTable extends React.Component {
                                 rowRenderer={this.mobileRowRenderer}
                                 getRowAction={this.getRowAction}
                                 onScroll={handleScroll}
+                                footer={totals}
                                 custom_width={'100%'}
                                 getRowSize={() => 204}
                             >

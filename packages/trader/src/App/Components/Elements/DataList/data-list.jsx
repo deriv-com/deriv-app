@@ -40,16 +40,21 @@ class DataList extends React.PureComponent {
 
     componentDidMount() {
         this.setState({
-            height: this.props.custom_height || this.el_table_body.clientHeight,
-            width: this.props.custom_width || this.el_table_body.clientWidth,
+            height: this.props.custom_height || this.el_list_body.clientHeight,
+            width: this.props.custom_width || this.el_list_body.clientWidth,
         });
     }
 
+    footerRowRenderer = () => {
+        const { footer, rowRenderer } = this.props;
+        return <React.Fragment>{rowRenderer({ row: footer, is_footer: true })}</React.Fragment>;
+    };
+
     rowRenderer = ({ style, ...args }) => {
         const { data_source, rowRenderer, getRowAction } = this.props;
-        const item = data_source[args.index];
-        const to = getRowAction && getRowAction(item);
-        const contract_id = item.contract_id || item.id;
+        const row = data_source[args.index];
+        const to = getRowAction && getRowAction(row);
+        const contract_id = row.contract_id || row.id;
         return typeof to === 'string' ? (
             <NavLink
                 id={`dt_reports_contract_${contract_id}`}
@@ -62,11 +67,11 @@ class DataList extends React.PureComponent {
                 }}
                 style={style}
             >
-                <div className='data-list__item'>{rowRenderer({ ...args })}</div>
+                <div className='data-list__item'>{rowRenderer({ row, ...args })}</div>
             </NavLink>
         ) : (
             <div className='data-list__item--wrapper' style={style}>
-                <div className='data-list__item'>{rowRenderer({ ...args })}</div>
+                <div className='data-list__item'>{rowRenderer({ row, ...args })}</div>
             </div>
         );
     };
@@ -75,22 +80,26 @@ class DataList extends React.PureComponent {
         const { className, children, data_source, getRowSize, is_empty, onScroll } = this.props;
 
         return (
-            <div
-                className={classNames(className, 'data-list')}
-                ref={ref => (this.el_table_body = ref)}
-                onScroll={onScroll}
-            >
-                <List
-                    className={className}
-                    height={this.state.height}
-                    itemCount={data_source.length}
-                    itemSize={getRowSize}
-                    width={this.state.width}
-                    outerElementType={is_empty ? null : ListScrollbar}
+            <div className={classNames(className, 'data-list', `${className}__data-list`)} onScroll={onScroll}>
+                <div
+                    className={classNames('data-list__body', `${className}__data-list__body`)}
+                    ref={ref => (this.el_list_body = ref)}
                 >
-                    {this.rowRenderer}
-                </List>
-                {children}
+                    <List
+                        className={className}
+                        height={this.state.height}
+                        itemCount={data_source.length}
+                        itemSize={getRowSize}
+                        width={this.state.width}
+                        outerElementType={is_empty ? null : ListScrollbar}
+                    >
+                        {this.rowRenderer}
+                    </List>
+                    {children}
+                </div>
+                <div className={classNames('data-list__footer', `${className}__data-list__footer`)}>
+                    {this.footerRowRenderer()}
+                </div>
             </div>
         );
     }

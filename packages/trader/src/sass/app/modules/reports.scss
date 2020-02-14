@@ -211,11 +211,31 @@ $side-padding: 1.2em;
 
 /** @define profit-table; weak */
 .profit-table {
-    height: 100%;
+    @include desktop {
+        height: 100%;
+    }
 
     @include mobile {
-        padding: 0 24px;
         flex: 1;
+        &__data-list__body,
+        &__data-list__footer {
+            padding: 0 24px;
+        }
+
+        &__data-list__body {
+            height: calc(100% - 50px);
+        }
+
+        &__data-list__footer {
+            height: 50px;
+            min-height: 50px;
+            font-weight: bold;
+
+            .data-list__row__content {
+                font-size: 1.2rem;
+                color: var(--text-prominent);
+            }
+        }
     }
 
     &__content {

@@ -9,9 +9,10 @@ import { clientNotifications } from './Helpers/client-notifications';
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
         super({ root_store });
+        const routing_control_raw = LocalStore.get(routing_control_key);
 
-        if (LocalStore.get(routing_control_key)) {
-            const route_control = JSON.parse(LocalStore.get(routing_control_key));
+        if (routing_control_raw) {
+            const route_control = JSON.parse(routing_control_raw);
 
             if (route_control.is_from_bot) {
                 this.setRoutedInternally(true);

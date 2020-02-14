@@ -7,7 +7,7 @@ import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 
-const MenuLink = ({ link_to, icon, suffix_icon, text }) => (
+const MenuLink = ({ link_to, icon, suffix_icon, text, onClickLink }) => (
     <React.Fragment>
         {!link_to ? (
             <div className='header__menu-mobile-link'>
@@ -20,6 +20,7 @@ const MenuLink = ({ link_to, icon, suffix_icon, text }) => (
                 to={link_to}
                 className='header__menu-mobile-link'
                 active_class='header__menu-mobile-link--active'
+                onClick={onClickLink}
             >
                 <Icon className='header__menu-mobile-link-icon' icon={icon} />
                 <span className='header__menu-mobile-link-text'>{text}</span>
@@ -64,7 +65,12 @@ class ToggleMenuDrawer extends React.PureComponent {
                         <MobileDrawer.Body>
                             <div className='header__menu-mobile-platform-switcher' id='mobile_platform_switcher' />
                             <MobileDrawer.Item>
-                                <MenuLink link_to={routes.trade} icon='IcTrade' text={localize('Trade')} />
+                                <MenuLink
+                                    link_to={routes.trade}
+                                    icon='IcTrade'
+                                    text={localize('Trade')}
+                                    onClickLink={this.toggleDrawer}
+                                />
                             </MobileDrawer.Item>
                             {this.props.is_logged_in && (
                                 <MobileDrawer.SubMenu
@@ -78,6 +84,7 @@ class ToggleMenuDrawer extends React.PureComponent {
                                             link_to={routes.positions}
                                             icon='IcPortfolio'
                                             text={localize('Open positions')}
+                                            onClickLink={this.toggleDrawer}
                                         />
                                     </MobileDrawer.Item>
                                     <MobileDrawer.Item>
@@ -85,6 +92,7 @@ class ToggleMenuDrawer extends React.PureComponent {
                                             link_to={routes.profit}
                                             icon='IcProfitTable'
                                             text={localize('Profit table')}
+                                            onClickLink={this.toggleDrawer}
                                         />
                                     </MobileDrawer.Item>
                                     <MobileDrawer.Item>
@@ -92,6 +100,7 @@ class ToggleMenuDrawer extends React.PureComponent {
                                             link_to={routes.statement}
                                             icon='IcStatement'
                                             text={localize('Statements')}
+                                            onClickLink={this.toggleDrawer}
                                         />
                                     </MobileDrawer.Item>
                                 </MobileDrawer.SubMenu>

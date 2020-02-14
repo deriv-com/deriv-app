@@ -17,8 +17,7 @@ export const oppositesToDropdownOptions = opposite_name => {
     });
 };
 
-export const cleanUpOnLoad = (blocks_to_clean, drop_event, preview_workspace) => {
-    const workspace = preview_workspace || Blockly.derivWorkspace;
+export const cleanUpOnLoad = (blocks_to_clean, drop_event, workspace) => {
     const { clientX = 0, clientY = 0 } = drop_event || {};
     const toolbar_height = 76;
     const blockly_metrics = workspace.getMetrics();
@@ -74,7 +73,7 @@ export const load = ({
     drop_event,
     file_name,
     strategy_id,
-    preview_workspace,
+    workspace,
     showIncompatibleStrategyDialog,
 }) => {
     const showInvalidStrategyError = () => {
@@ -125,7 +124,6 @@ export const load = ({
     try {
         const is_collection = xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true';
         const event_group = is_collection ? 'load_collection' : `dbot-load${Date.now()}`;
-        const workspace = preview_workspace || Blockly.derivWorkspace;
 
         Blockly.Events.setGroup(event_group);
         removeLimitedBlocks(
@@ -138,7 +136,8 @@ export const load = ({
         } else {
             loadWorkspace(xml, event_group, workspace);
 
-            if (!preview_workspace) {
+            const is_main_workspace = workspace === Blockly.derivWorkspace;
+            if (is_main_workspace) {
                 const { onBotNameTyped } = DBotStore.instance;
                 onBotNameTyped(file_name);
 

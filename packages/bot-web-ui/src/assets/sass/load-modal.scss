@@ -98,6 +98,7 @@ $modal_container_height: calc(100vh - 210px);
             }
             &-title {
                 font-size: var(--text-size-s);
+                word-break: break-all;
             }
             &-time {
                 margin-top: 5px;
@@ -105,6 +106,7 @@ $modal_container_height: calc(100vh - 210px);
             &-location {
                 display: flex;
                 width: 50%;
+                margin-left: 10px;
 
                 > * {
                     align-self: center;

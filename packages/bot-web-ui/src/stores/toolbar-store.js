@@ -102,7 +102,11 @@ export default class ToolbarStore {
                 const workspace = Blockly.derivWorkspace;
                 workspace.clear();
                 workspace.current_strategy_id = Blockly.utils.genUid();
-                load({ block_string: workspace.cached_xml.main, file_name: localize('Untitled Bot') });
+                load({
+                    block_string: workspace.cached_xml.main,
+                    file_name: localize('Untitled Bot'),
+                    workspace: Blockly.derivWorkspace,
+                });
             },
             'reset'
         );

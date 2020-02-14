@@ -104,7 +104,7 @@ export default class LoadModalStore {
             this.recent_workspace.clear();
         }
 
-        load({ block_string: xml_file, drop_event: {}, preview_workspace: this.recent_workspace });
+        load({ block_string: xml_file, drop_event: {}, workspace: this.recent_workspace });
     }
 
     @action.bound
@@ -133,6 +133,7 @@ export default class LoadModalStore {
             block_string: selected_workspace.xml,
             strategy_id: selected_workspace.id,
             file_name: selected_workspace.name,
+            workspace: Blockly.derivWorkspace,
         });
         this.is_open_button_loading = false;
         this.toggleLoadModal();
@@ -186,9 +187,10 @@ export default class LoadModalStore {
 
     // eslint-disable-next-line class-methods-use-this
     readFile(is_preview, drop_event, file) {
-        const file_name = file.name.replace(/\.[^/.]+$/, '');
+        const file_name = file && file.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
         reader.onload = action(e => {
+            const load_options = { block_string: e.target.result, drop_event };
             if (is_preview) {
                 const ref = document.getElementById('load-local__scratch');
                 this.local_workspace = Blockly.inject(ref, {
@@ -199,10 +201,12 @@ export default class LoadModalStore {
                     },
                     readOnly: true,
                 });
-                load({ block_string: e.target.result, drop_event, preview_workspace: this.local_workspace });
+                load_options.workspace = this.local_workspace;
             } else {
-                load({ block_string: e.target.result, drop_event, file_name });
+                load_options.workspace = Blockly.derivWorkspace;
+                load_options.file_name = file_name;
             }
+            load(load_options);
         });
         reader.readAsText(file);
     }
@@ -241,7 +245,7 @@ export default class LoadModalStore {
 
         const { xml_doc, file_name } = await loadFile();
 
-        load({ block_string: xml_doc, file_name });
+        load({ block_string: xml_doc, file_name, workspace: Blockly.derivWorkspace });
         this.toggleLoadModal();
     }
     /** --------- GD Tab End --------- */

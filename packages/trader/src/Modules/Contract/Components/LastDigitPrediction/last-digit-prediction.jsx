@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { DesktopWrapper } from '@deriv/components';
 import DigitDisplay from './digit-display.jsx';
 import LastDigitPointer from './last-digit-pointer.jsx';
 
@@ -99,14 +99,14 @@ class LastDigitPrediction extends React.Component {
                         onLastDigitSpot={this.props.onLastDigitSpot}
                     />
                 ))}
-                {isDesktop() && (
+                <DesktopWrapper>
                     <LastDigitPointer
                         is_lost={is_lost}
                         is_trade_page={is_trade_page}
                         is_won={is_won}
                         position={position}
                     />
-                )}
+                </DesktopWrapper>
             </div>
         );
     }

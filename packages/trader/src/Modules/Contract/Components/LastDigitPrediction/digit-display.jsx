@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { isDesktop } from '@deriv/shared/utils/screen';
+import { DesktopWrapper } from '@deriv/components';
 import { Bounce } from 'App/Components/Animations';
 import Digit from './digit.jsx';
 import DigitSpot from './digit-spot.jsx';
@@ -41,7 +41,7 @@ const DigitDisplay = ({
             })}
         >
             <LastDigitStat is_min={is_min} is_max={is_max} is_selected={is_selected} percentage={percentage} />
-            {isDesktop() && (
+            <DesktopWrapper>
                 <Bounce
                     is_visible={!!(is_digit_contract && is_latest && spot && status && has_entry_spot)}
                     className='digits__digit-spot'
@@ -55,7 +55,7 @@ const DigitDisplay = ({
                         is_won={is_won}
                     />
                 </Bounce>
-            )}
+            </DesktopWrapper>
             <Digit
                 is_latest={is_latest}
                 is_lost={is_lost}

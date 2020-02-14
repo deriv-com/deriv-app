@@ -46,6 +46,16 @@ class FormAds extends Component {
         });
     };
 
+    restrictLength = (e, handleChange) => {
+        // typing more than 15 characters will break the layout
+        // max doesn't disable typing, so we will use this to restrict length
+        if (e.target.value.length > 15) {
+            e.target.value = e.target.value.slice(0, 15);
+            return;
+        }
+        handleChange(e);
+    };
+
     render() {
         return (
             <Fragment>
@@ -56,17 +66,17 @@ class FormAds extends Component {
                     <Formik
                         initialValues={{
                             advertiser_notes: '',
-                            max_transaction: undefined,
-                            min_transaction: undefined,
-                            offer_amount: undefined,
+                            max_transaction: '',
+                            min_transaction: '',
+                            offer_amount: '',
                             payment_method: 'bank_transfer',
-                            price_rate: undefined,
+                            price_rate: '',
                             type: 'buy',
                         }}
                         onSubmit={this.handleSubmit}
                         validate={this.validateFormAds}
                     >
-                        {({ isSubmitting, errors, touched, isValid, values }) => (
+                        {({ isSubmitting, errors, handleChange, touched, isValid, values }) => (
                             <div className='p2p-my-ads__form'>
                                 <Form noValidate>
                                     <ThemedScrollbars
@@ -117,6 +127,9 @@ class FormAds extends Component {
                                                                 {this.context.currency}
                                                             </span>
                                                         }
+                                                        onChange={e => {
+                                                            this.restrictLength(e, handleChange);
+                                                        }}
                                                         required
                                                     />
                                                 )}
@@ -138,6 +151,9 @@ class FormAds extends Component {
                                                                 {this.context.local_currency_config.currency}
                                                             </span>
                                                         }
+                                                        onChange={e => {
+                                                            this.restrictLength(e, handleChange);
+                                                        }}
                                                         required
                                                     />
                                                 )}
@@ -170,6 +186,9 @@ class FormAds extends Component {
                                                                 {this.context.currency}
                                                             </span>
                                                         }
+                                                        onChange={e => {
+                                                            this.restrictLength(e, handleChange);
+                                                        }}
                                                         required
                                                     />
                                                 )}
@@ -187,6 +206,9 @@ class FormAds extends Component {
                                                                 {this.context.currency}
                                                             </span>
                                                         }
+                                                        onChange={e => {
+                                                            this.restrictLength(e, handleChange);
+                                                        }}
                                                         required
                                                     />
                                                 )}

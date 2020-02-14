@@ -44,9 +44,9 @@ const AdSummary = ({ offer_amount, offer_currency, transaction_currency, price_r
 };
 
 AdSummary.propTypes = {
-    offer_amount: PropTypes.number,
+    offer_amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     offer_currency: PropTypes.string,
-    price_rate: PropTypes.number,
+    price_rate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     transaction_currency: PropTypes.string,
     type: PropTypes.string,
 };

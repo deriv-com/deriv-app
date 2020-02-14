@@ -1,11 +1,10 @@
-/** @define statement; weak */
+/** @define data-list; weak */
 .data-list {
     position: relative;
 
     &__body {
         flex: 1;
     }
-
     &__footer {
         width: 100%;
         background: var(--general-main-1);
@@ -15,7 +14,6 @@
         bottom: 0px;
         left: 0px;
     }
-
     &__item {
         height: calc(100% - 8px);
         margin-bottom: 8px;
@@ -34,14 +32,12 @@
         > * {
             flex: 1;
         }
-
-        &__content {
+        &-content {
             font-size: 1.4rem;
             line-height: 2rem;
             color: var(--text-general);
         }
-
-        &__cell {
+        &-cell {
             &--amount {
                 display: flex;
                 flex-direction: column;
@@ -49,8 +45,7 @@
                 flex: none;
             }
         }
-
-        &__title {
+        &-title {
             font-size: 1.4rem;
             font-weight: bold;
             color: var(--text-prominent);

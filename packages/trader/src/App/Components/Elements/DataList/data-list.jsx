@@ -82,7 +82,7 @@ class DataList extends React.PureComponent {
         return (
             <div className={classNames(className, 'data-list', `${className}__data-list`)} onScroll={onScroll}>
                 <div
-                    className={classNames('data-list__body', `${className}__data-list__body`)}
+                    className={classNames('data-list-body', `${className}__data-list-body`)}
                     ref={ref => (this.el_list_body = ref)}
                 >
                     <List
@@ -97,7 +97,7 @@ class DataList extends React.PureComponent {
                     </List>
                     {children}
                 </div>
-                <div className={classNames('data-list__footer', `${className}__data-list__footer`)}>
+                <div className={classNames('data-list-footer', `${className}__data-list-footer`)}>
                     {this.footerRowRenderer()}
                 </div>
             </div>

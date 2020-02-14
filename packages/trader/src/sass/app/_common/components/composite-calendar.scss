@@ -23,11 +23,11 @@
 
         &--fill {
             width: 100%;
+
             & > .input-field {
                 width: 100%;
             }
         }
-
         & > .input-field {
             margin: 0;
             @include colorIcon(var(--text-prominent));
@@ -82,80 +82,84 @@
             }
         }
     }
+}
+
+/* @define composite-calendar-modal; weak; */
+.composite-calendar-modal {
     @include mobile {
-        &-modal {
-            &__actions {
-                display: flex;
-                padding: 16px;
-                border-top: 2px solid var(--general-section-1);
-                > * {
-                    flex: 1;
-                    margin: 8px;
-                }
+        &__actions {
+            display: flex;
+            padding: 16px;
+            border-top: 2px solid var(--general-section-1);
 
-                &__today {
-                    width: 100%;
-                    margin-top: 40px;
-                }
-            }
-            &__radio-group {
-                padding: 16px 16px 24px;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                border-bottom: 2px solid var(--general-section-1);
-            }
-            &__radio {
-                display: flex;
-                align-items: center;
-                padding: 7px 8px;
-                border: 1px solid;
-                border-color: var(--border-normal);
-                border-radius: 4px;
+            > * {
+                flex: 1;
                 margin: 8px;
-                font-size: 1.4rem;
-                &__input {
-                    display: none;
-                }
-                &__circle {
-                    border: 2px solid var(--border-normal);
-                    border-radius: 50%;
-                    box-shadow: 0 0 1px 0 var(--shadow-menu);
-                    width: 16px;
-                    height: 16px;
-                    transition: all 0.3s ease-in-out;
-                    margin-right: 8px;
-                    align-self: center;
+            }
+            &-today {
+                width: 100%;
+                margin-top: 40px;
+            }
+        }
+        &__radio-group {
+            padding: 16px 16px 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 2px solid var(--general-section-1);
+        }
+        &__radio {
+            display: flex;
+            align-items: center;
+            padding: 7px 8px;
+            border: 1px solid;
+            border-color: var(--border-normal);
+            border-radius: 4px;
+            margin: 8px;
+            font-size: 1.4rem;
 
-                    &--selected {
-                        border-width: 4px;
-                        border-color: var(--brand-red-coral);
-                        background: var(--text-prominent);
-                    }
-                }
-                &__label {
-                    color: var(--text-prominent);
-                }
+            &-input {
+                display: none;
+            }
+            &-circle {
+                border: 2px solid var(--border-normal);
+                border-radius: 50%;
+                box-shadow: 0 0 1px 0 var(--shadow-menu);
+                width: 16px;
+                height: 16px;
+                transition: all 0.3s ease-in-out;
+                margin-right: 8px;
+                align-self: center;
+
                 &--selected {
-                    border-color: var(--brand-secondary);
-                    font-weight: bold;
+                    border-width: 4px;
+                    border-color: var(--brand-red-coral);
+                    background: var(--text-prominent);
                 }
             }
-            &__custom {
-                padding: 16px;
-                &__radio {
-                    display: inline-flex;
-                }
-                &__date-range {
-                    margin: 8px;
-                    display: flex;
-                    flex-direction: column;
+            &-label {
+                color: var(--text-prominent);
+            }
+            &--selected {
+                border-color: var(--brand-secondary);
+                font-weight: bold;
+            }
+        }
+        &__custom {
+            padding: 16px;
 
-                    &__start-date {
-                        margin: 16px 0px;
-                    }
-                    &__end-date {
-                        margin-bottom: 8px;
-                    }
+            &-radio {
+                display: inline-flex;
+            }
+            &-date-range {
+                margin: 8px;
+                display: flex;
+                flex-direction: column;
+
+                &-start-date {
+                    margin: 16px 0px;
+                }
+                &-end-date {
+                    margin-bottom: 8px;
                 }
             }
         }

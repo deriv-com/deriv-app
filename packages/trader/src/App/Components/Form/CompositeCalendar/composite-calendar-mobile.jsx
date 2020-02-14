@@ -16,13 +16,13 @@ export const RadioButton = ({ id, className, selected_value, value, label, onCha
             })}
             onClick={() => onChange({ label, value })}
         >
-            <input className='composite-calendar-modal__radio__input' id={id} type='radio' value={value} />
+            <input className='composite-calendar-modal__radio-input' id={id} type='radio' value={value} />
             <span
-                className={classNames('composite-calendar-modal__radio__circle', {
-                    'composite-calendar-modal__radio__circle--selected': selected_value === value,
+                className={classNames('composite-calendar-modal__radio-circle', {
+                    'composite-calendar-modal__radio-circle--selected': selected_value === value,
                 })}
             />
-            <p className='composite-calendar-modal__radio__label'>{label}</p>
+            <p className='composite-calendar-modal__radio-label'>{label}</p>
         </label>
     );
 };
@@ -191,16 +191,16 @@ class CompositeCalendarMobile extends React.PureComponent {
                         </div>
                         <div className='composite-calendar-modal__custom'>
                             <RadioButton
-                                id={'composite-calendar-modal__custom__radio'}
-                                className='composite-calendar-modal__custom__radio'
+                                id={'composite-calendar-modal__custom-radio'}
+                                className='composite-calendar-modal__custom-radio'
                                 value={CUSTOM_KEY}
                                 label={localize('Custom')}
                                 selected_value={selected_date_range.value}
                                 onChange={this.onDateRangeChange}
                             />
-                            <div className='composite-calendar-modal__custom__date-range'>
+                            <div className='composite-calendar-modal__custom-date-range'>
                                 <DatePicker
-                                    className='composite-calendar-modal__custom__date-range__start-date'
+                                    className='composite-calendar-modal__custom-date-range-start-date'
                                     is_nativepicker={true}
                                     placeholder={localize('Start Date')}
                                     value={this.state.from}
@@ -208,7 +208,7 @@ class CompositeCalendarMobile extends React.PureComponent {
                                     onChange={e => this.selectDate(e, 'from')}
                                 />
                                 <DatePicker
-                                    className='composite-calendar-modal__custom__date-range__end-date'
+                                    className='composite-calendar-modal__custom-date-range-end-date'
                                     is_nativepicker={true}
                                     placeholder={localize('End Date')}
                                     value={this.state.to}
@@ -218,7 +218,7 @@ class CompositeCalendarMobile extends React.PureComponent {
                             </div>
                         </div>
                         <Button
-                            className='composite-calendar-modal__actions__today'
+                            className='composite-calendar-modal__actions-today'
                             text={localize('Back to today')}
                             onClick={this.selectToday}
                             has_effect

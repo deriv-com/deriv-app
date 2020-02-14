@@ -7,6 +7,7 @@ $side-padding: 1.2em;
 /** @define reports; weak */
 .reports {
     height: 100%;
+
     &__meta {
         width: 100%;
         display: flex;
@@ -51,6 +52,7 @@ $side-padding: 1.2em;
     }
 }
 
+/** @define reports-page-wrapper; weak */
 .reports-page-wrapper {
     height: 100%;
 }
@@ -225,16 +227,15 @@ $side-padding: 1.2em;
 
     @include mobile {
         flex: 1;
-        &__data-list__body,
-        &__data-list__footer {
+
+        &__data-list-body,
+        &__data-list-footer {
             padding: 0 24px;
         }
-
-        &__data-list__body {
+        &__data-list-body {
             height: calc(100% - 50px);
         }
-
-        &__data-list__footer {
+        &__data-list-footer {
             height: 50px;
             min-height: 50px;
             font-weight: bold;
@@ -275,6 +276,7 @@ $side-padding: 1.2em;
             display: flex;
             flex-direction: row;
         }
+
         &__row__title {
             margin-right: 4px;
         }
@@ -294,6 +296,7 @@ $side-padding: 1.2em;
         padding: 0px 16px;
         font-size: 1.4rem;
         font-weight: bold;
+
         &__background {
             position: absolute;
             height: 100%;
@@ -303,6 +306,7 @@ $side-padding: 1.2em;
         }
         &__ticks {
             color: $color-yellow;
+
             &__background {
                 background: $color-yellow;
             }
@@ -312,6 +316,7 @@ $side-padding: 1.2em;
         &__hours,
         &__days {
             color: $color-blue-1;
+
             &__background {
                 background: $color-blue-1;
             }

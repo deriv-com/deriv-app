@@ -38,7 +38,7 @@ class ProfitTable extends React.Component {
                 <div className='data-list__row'>
                     <DataList.Cell row={row} column={this.columns_map.action_type} is_footer={is_footer} />
                     <DataList.Cell
-                        className='data-list__row__cell--amount'
+                        className='data-list__row-cell--amount'
                         row={row}
                         column={this.columns_map.profit_loss}
                         is_footer={is_footer}
@@ -59,7 +59,7 @@ class ProfitTable extends React.Component {
                 <div className='data-list__row'>
                     <DataList.Cell row={row} column={this.columns_map.transaction_id} />
                     <DataList.Cell
-                        className='data-list__row__cell--amount'
+                        className='data-list__row-cell--amount'
                         row={row}
                         column={this.columns_map.buy_price}
                     />
@@ -67,7 +67,7 @@ class ProfitTable extends React.Component {
                 <div className='data-list__row'>
                     <DataList.Cell row={row} column={this.columns_map.purchase_time} />
                     <DataList.Cell
-                        className='data-list__row__cell--amount'
+                        className='data-list__row-cell--amount'
                         row={row}
                         column={this.columns_map.sell_price}
                     />
@@ -75,7 +75,7 @@ class ProfitTable extends React.Component {
                 <div className='data-list__row'>
                     <DataList.Cell row={row} column={this.columns_map.sell_time} />
                     <DataList.Cell
-                        className='data-list__row__cell--amount'
+                        className='data-list__row-cell--amount'
                         row={row}
                         column={this.columns_map.profit_loss}
                     />

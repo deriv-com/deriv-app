@@ -9,9 +9,7 @@ const Collapsible = ({ as, is_collapsed, position = 'top', children }) => {
     const toggleExpand = () => expand(!is_open);
     const arrow_button = <ArrowButton is_open={is_open} position={position} onClick={toggleExpand} />;
     const CustomTag = as || 'div';
-    useEffect(() => {
-        setShouldShowCollapsible(Children.toArray(children).some(element => element.props.collapsible));
-    });
+    useEffect(() => setShouldShowCollapsible(Children.toArray(children).some(({ props }) => 'collapsible' in props)));
     return (
         <CustomTag
             className={classNames('dc-collapsible', {

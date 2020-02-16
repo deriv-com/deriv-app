@@ -38,7 +38,7 @@ storiesOf('Collapsible', module)
         }
     )
     .add(
-        'Empty Collapsible',
+        'Static',
         () => (
             <Collapsible position='top' is_collapsed>
                 <li>Item 2</li>

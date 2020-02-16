@@ -72,16 +72,14 @@ const HelpBase = ({
             {!is_search_flyout && (
                 <div className='flyout__help-footer'>
                     <Button
-                        className='flyout__button-previous'
-                        has_effect
+                        className='btn--secondary flyout__button-previous'
                         onClick={() => onSequenceClick(false)}
                         text={localize('Previous')}
                         type='button'
                         is_disabled={should_previous_disable}
                     />
                     <Button
-                        className='flyout__button-next'
-                        has_effect
+                        className='btn--secondary  flyout__button-next '
                         onClick={() => onSequenceClick(true)}
                         text={localize('Next')}
                         type='button'

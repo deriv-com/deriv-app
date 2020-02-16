@@ -10,13 +10,12 @@
 
     &__wrapper {
         padding: 0.8em;
-        margin: 0 1em 1em 1em;
+        margin: 0 1em 1em;
         border-radius: $BORDER_RADIUS;
         transition: transform 0.25s ease, opacity 0.25s linear;
         position: relative;
         background: var(--general-main-1);
     }
-
     &__grid {
         display: grid;
 
@@ -25,13 +24,11 @@
             grid-template-columns: 1fr 1fr 1fr;
             padding-bottom: 1rem;
         }
-
         &-body {
             grid-template-columns: 2fr 1fr;
             grid-template-rows: auto auto;
             display: grid;
         }
-
         &-underlying-trade {
             grid-template-columns: 1fr 1fr 1fr;
         }

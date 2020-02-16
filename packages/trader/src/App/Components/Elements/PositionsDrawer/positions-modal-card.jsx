@@ -10,9 +10,9 @@ import { localize } from '@deriv/translations';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell from './contract-type-cell.jsx';
 import ProgressSliderMobile from './ProgressSliderMobile';
-// import ResultOverlay from './result-overlay.jsx';
+import ResultOverlay from './result-overlay.jsx';
 
-const PositionsDrawerCard = ({
+const PositionsModalCard = ({
     className,
     contract_info,
     currency,
@@ -168,14 +168,15 @@ const PositionsDrawerCard = ({
     return (
         <div id={`dt_drawer_card_${id}`} className={classNames('positions-drawer-modal__wrapper', className)}>
             {/* TODO: Discuss about this overlay on mobile */}
-            {/* <ResultOverlay
+            <ResultOverlay
                 contract_id={id}
                 is_unsupported={is_unsupported}
                 is_visible={!!contract_info.is_sold}
                 onClickRemove={onClickRemove}
                 onClick={() => toggleUnsupportedContractModal(true)}
                 result={result || fallback_result}
-            /> */}
+            />
+            {/* TODO: Discuss about this navlink on mobile */}
             <div className={classNames('positions-drawer-modal')}>
                 {contract_info.underlying ? contract_el : loader_el}
             </div>
@@ -209,7 +210,7 @@ const PositionsDrawerCard = ({
     );
 };
 
-PositionsDrawerCard.propTypes = {
+PositionsModalCard.propTypes = {
     className: PropTypes.string,
     contract_info: PropTypes.object,
     currency: PropTypes.string,
@@ -233,4 +234,4 @@ PositionsDrawerCard.propTypes = {
     type: PropTypes.string,
 };
 
-export default PositionsDrawerCard;
+export default PositionsModalCard;

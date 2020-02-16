@@ -5,7 +5,7 @@ import { Icon, Div100vhContainer, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
-import PositionsDrawerCard from 'App/Components/Elements/PositionsDrawer/positions-drawer-card.jsx';
+import PositionsModalCard from 'App/Components/Elements/PositionsDrawer/positions-modal-card.jsx';
 import TogglePositions from './toggle-positions.jsx';
 
 class TogglePositionsMobile extends React.PureComponent {
@@ -50,8 +50,7 @@ class TogglePositionsMobile extends React.PureComponent {
                             }}
                             unmountOnExit
                         >
-                            {/* TODO: Update positions card design for mobile here */}
-                            <PositionsDrawerCard
+                            <PositionsModalCard
                                 onClickSell={onClickSell}
                                 onClickRemove={onClickRemove}
                                 key={portfolio_position.id}

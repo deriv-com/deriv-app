@@ -3,12 +3,7 @@
     text-align: center;
     // This css is for make date input field invisible
     &__input {
-        opacity: 0;
+        transform: scale(0);
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 2;
     }
 }

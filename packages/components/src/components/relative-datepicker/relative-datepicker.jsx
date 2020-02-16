@@ -1,6 +1,6 @@
-import React, { useRef, Children } from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { toMoment, daysFromTodayTo } from '@deriv/shared/utils/date';
+import { toMoment } from '@deriv/shared/utils/date';
 
 const RelativeDatepicker = ({ onChange, min, max, children }) => {
     const hidden_input_ref = useRef();
@@ -9,7 +9,7 @@ const RelativeDatepicker = ({ onChange, min, max, children }) => {
         hidden_input_ref.current.click();
     };
     const onChangeHandler = e => {
-        onChange(daysFromTodayTo(e.target.value));
+        onChange(toMoment(e.target.value));
     };
 
     const inputDateFormat = date => {

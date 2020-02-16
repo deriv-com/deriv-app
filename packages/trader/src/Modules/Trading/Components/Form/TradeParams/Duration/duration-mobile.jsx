@@ -3,6 +3,7 @@ import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components'
 import ObjectUtils from '@deriv/shared/utils/object';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { daysFromTodayTo } from '@deriv/shared/utils/date';
 import { getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
 
 const submit_label = localize('OK');
@@ -170,9 +171,7 @@ const Duration = ({
         ? duration_tab_idx
         : duration_units_list.findIndex(d => d.value === duration_unit);
     const [min, max] = getDurationMinMaxValues(duration_min_max, 'daily', 'd');
-    const handleRelativeChange = date => {
-        setSelectedDuration('d', date);
-    };
+    const handleRelativeChange = date => setSelectedDuration('d', daysFromTodayTo(date));
     const selected_basis_option = () => {
         if (amount_tab_idx === 0) {
             return 'stake';

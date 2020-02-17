@@ -1,3 +1,6 @@
+// If possible, please put any business logic into the *-contract.jsx files.
+// Try to keep this as declarative as possible.
+
 import { calculateScale, calculateHexOpacity } from './calculations';
 
 const CanvasElements = (() => {

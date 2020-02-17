@@ -91,10 +91,8 @@ export default connect(({ common, modules, ui }) => ({
     routeBackInApp: common.routeBackInApp,
     is_p2p_visible: modules.cashier.is_p2p_visible,
     is_visible: ui.is_cashier_visible,
-    is_payment_agent_visible: !!(
-        modules.cashier.config.payment_agent.filtered_list.length || modules.cashier.config.payment_agent.agents.length
-    ),
-    is_payment_agent_transfer_visible: modules.cashier.config.payment_agent_transfer.is_payment_agent,
+    is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
+    is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     onMount: modules.cashier.onMountCommon,
     onUnmount: modules.cashier.onUnmount,
     p2p_notification_count: modules.cashier.p2p_notification_count,

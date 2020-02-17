@@ -42,6 +42,7 @@ export default class CommonStore extends BaseStore {
     @observable withdraw_url = '';
 
     @observable app_routing_history = [];
+    @observable app_router = { history: null };
 
     @action.bound
     setIsSocketOpened(is_socket_opened) {
@@ -110,6 +111,16 @@ export default class CommonStore extends BaseStore {
     @action.bound
     setWithdrawURL(withdraw_url) {
         this.withdraw_url = withdraw_url;
+    }
+
+    @action.bound
+    setAppRouterHistory(history) {
+        this.app_router.history = history;
+    }
+
+    @action.bound
+    routeTo(pathname) {
+        if (this.app_router.history) this.app_router.history.push(pathname);
     }
 
     @action.bound

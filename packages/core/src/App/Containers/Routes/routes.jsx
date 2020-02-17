@@ -18,6 +18,8 @@ class Routes extends React.Component {
         this.unlisten_to_change = this.props.history.listen((route_to, action) => {
             if (action === 'PUSH') this.props.addRouteHistoryItem({ ...route_to, action });
         });
+
+        this.props.setAppRouterHistory(this.props.history);
     }
 
     componentWillUnmount() {
@@ -60,6 +62,7 @@ export default withRouter(
         is_logged_in: client.is_logged_in,
         error: common.error,
         has_error: common.has_error,
+        setAppRouterHistory: common.setAppRouterHistory,
         addRouteHistoryItem: common.addRouteHistoryItem,
     }))(Routes)
 );

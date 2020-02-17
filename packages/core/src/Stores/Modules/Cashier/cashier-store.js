@@ -1,8 +1,9 @@
-import { action, observable, toJS } from 'mobx';
+import { action, computed, observable, toJS } from 'mobx';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import BinarySocket from '_common/base/socket_base';
 import { localize } from '@deriv/translations';
+import AppRoutes from 'Constants/routes';
 import { WS } from 'Services';
 import BaseStore from '../../base-store';
 import { getMT5AccountDisplay } from '../../Helpers/client';
@@ -113,6 +114,16 @@ export default class CashierStore extends BaseStore {
         [this.config.payment_agent.container]: 'payment_agent_withdraw',
     };
 
+    @computed
+    get is_payment_agent_visible() {
+        return !!(this.config.payment_agent.filtered_list.length || this.config.payment_agent.agents.length);
+    }
+
+    @computed
+    get is_payment_agent_transfer_visible() {
+        return this.config.payment_agent_transfer.is_payment_agent;
+    }
+
     @action.bound
     async init() {
         // show p2p if:
@@ -214,6 +225,9 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setIsP2pVisible(is_p2p_visible) {
         this.is_p2p_visible = is_p2p_visible;
+        if (!is_p2p_visible && window.location.pathname.startsWith(AppRoutes.cashier_p2p)) {
+            this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+        }
     }
 
     @action.bound
@@ -546,6 +560,9 @@ export default class CashierStore extends BaseStore {
         } else {
             this.config.payment_agent.filtered_list = this.config.payment_agent.list;
         }
+        if (!this.is_payment_agent_visible && this.active_container === this.config.payment_agent.container) {
+            this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+        }
     }
 
     @action.bound
@@ -571,6 +588,12 @@ export default class CashierStore extends BaseStore {
             payment_agent_list.paymentagent_list.list.forEach(payment_agent => {
                 this.addPaymentAgent(payment_agent);
             });
+            if (
+                !payment_agent_list.paymentagent_list.list.length &&
+                this.active_container === this.config.payment_agent.container
+            ) {
+                this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+            }
         }
 
         this.setLoading(false);
@@ -940,6 +963,9 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsPaymentAgent(is_payment_agent) {
+        if (!is_payment_agent && this.active_container === this.config.payment_agent_transfer.container) {
+            this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+        }
         this.config.payment_agent_transfer.is_payment_agent = !!is_payment_agent;
     }
 
@@ -998,6 +1024,7 @@ export default class CashierStore extends BaseStore {
         this.is_populating_values = false;
         this.setIsP2pVisible(false);
 
+        this.init();
         this.onRemount();
 
         return Promise.resolve();

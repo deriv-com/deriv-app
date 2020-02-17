@@ -265,7 +265,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async prepareTradeStore() {
-        // Revert to 'rise_fall' if client is not virtual and current contract_type is 'mult'
+        // Revert to 'rise_fall' if client is not virtual and current contract_type is 'multiplier'
         // TODO: remove this, when multiplier is available for real account & logged-out
         if (this.root_store.client.is_logged_in && !this.root_store.client.is_virtual && this.is_multiplier) {
             this.processNewValuesAsync({ contract_type: 'rise_fall' });
@@ -1037,11 +1037,11 @@ export default class TradeStore extends BaseStore {
 
     @computed
     get has_alternative_source() {
-        return this.contract_type === 'mult' && !!this.hovered_contract_type;
+        return this.contract_type === 'multiplier' && !!this.hovered_contract_type;
     }
 
     @computed
     get is_multiplier() {
-        return this.contract_type === 'mult';
+        return this.contract_type === 'multiplier';
     }
 }

@@ -1,4 +1,4 @@
-import { observable, action, runInAction } from 'mobx';
+import { computed, observable, action } from 'mobx';
 import { localize } from '@deriv/translations';
 import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
 
@@ -7,31 +7,39 @@ export default class QuickStrategyStore {
         this.root_store = root_store;
     }
 
-    initial_values = {
-        symbol: 'WLDAUD',
-        trade_type: 'callput',
-        duration_type: 't',
-        duration: 5,
-        stake: '',
-        size: '',
-        loss: '',
-        profit: '',
-    };
+    @observable selected_symbol = '';
+    @observable selected_trade_type = '';
+    @observable selected_duration_unit = '';
+    @observable input_duration_value = '';
+    @observable input_stake = '';
+    @observable input_size = '';
+    @observable input_loss = '';
+    @observable input_profit = '';
 
     @observable is_strategy_modal_open = false;
     @observable active_index = 0;
-    @observable market_dropdown = {};
-    @observable trade_type_dropdown = {};
-    @observable duration_dropdown = [];
+    @observable symbol_dropdown = [];
+    @observable trade_type_dropdown = [];
+    @observable duration_unit_dropdown = [];
 
-    @action.bound
-    toggleStrategyModal() {
-        this.root_store.flyout.setVisibility(false);
-        this.is_strategy_modal_open = !this.is_strategy_modal_open;
+    @computed
+    get initial_values() {
+        return {
+            'quick-strategy__symbol': this.selected_symbol && this.selected_symbol.text,
+            'quick-strategy__trade-type': this.selected_trade_type && this.selected_trade_type.text,
+            'quick-strategy__duration-unit': this.selected_duration_unit && this.selected_duration_unit.text,
+            'quick-strategy__duration-value': this.input_duration_value,
+            'quick-strategy__stake': this.input_stake,
+            'quick-strategy__size': this.input_size,
+            'quick-strategy__loss': this.input_loss,
+            'quick-strategy__profit': this.input_profit,
+        };
+    }
 
-        if (this.is_strategy_modal_open) {
-            this.onModalOpen();
-        }
+    @computed
+    get initial_errors() {
+        // Persist errors through tab switch + remount.
+        return this.validateQuickStrategy(this.initial_values, true);
     }
 
     @action.bound
@@ -40,16 +48,131 @@ export default class QuickStrategyStore {
     }
 
     @action.bound
-    async createStrategy(values) {
+    setDurationUnitDropdown(duration_unit_options) {
+        this.duration_unit_dropdown = duration_unit_options;
+    }
+
+    @action.bound
+    setSymbolDropdown(symbol_options) {
+        this.symbol_dropdown = symbol_options;
+    }
+
+    @action.bound
+    setTradeTypeDropdown(trade_type_options) {
+        this.trade_type_dropdown = trade_type_options;
+    }
+
+    @action.bound
+    setSelectedDurationUnit(duration_unit) {
+        this.selected_duration_unit = duration_unit;
+    }
+
+    @action.bound
+    setSelectedSymbol(symbol) {
+        this.selected_symbol = symbol;
+    }
+
+    @action.bound
+    setSelectedTradeType(trade_type) {
+        this.selected_trade_type = trade_type;
+    }
+
+    @action.bound
+    setDurationInputValue(duration_value) {
+        this.input_duration_value = duration_value;
+    }
+
+    @action.bound
+    onChangeDropdownItem(type, value, setFieldValue) {
+        if (!value) {
+            return;
+        }
+
+        const field_map = this.getFieldMap(type);
+
+        if (type === 'symbol') {
+            this.updateTradeTypeDropdown(value, setFieldValue);
+
+            const symbol = this.symbol_dropdown.find(item => item.value === value);
+            this.setSelectedSymbol(symbol);
+
+            if (symbol) {
+                setFieldValue(field_map.field_name, symbol.text);
+            }
+        } else if (type === 'trade-type') {
+            this.updateDurationDropdown(this.selected_symbol.value, value, setFieldValue);
+
+            const trade_type = this.trade_type_dropdown.find(item => item.value === value);
+            this.setSelectedTradeType(trade_type);
+
+            if (trade_type) {
+                setFieldValue(field_map.field_name, trade_type.text);
+            }
+        } else if (type === 'duration-unit') {
+            this.updateDurationValue(value, setFieldValue);
+
+            const duration_unit = this.duration_unit_dropdown.find(item => item.value === value);
+            this.setSelectedDurationUnit(duration_unit);
+
+            if (duration_unit) {
+                setFieldValue('quick-strategy__duration-unit', duration_unit.text);
+            }
+        }
+    }
+
+    @action.bound
+    onChangeInputValue(field, event) {
+        this[field] = event.currentTarget.value;
+    }
+
+    @action.bound
+    onHideDropdownList(type, value, setFieldValue) {
+        const field_map = this.getFieldMap(type);
+        const item = field_map.dropdown.find(i => i.text.toLowerCase() === value.toLowerCase()) || field_map.selected;
+
+        // Don't allow bogus input.
+        if (!item) {
+            setFieldValue(field_map.field_name, '');
+            return;
+        }
+        // Restore value if user closed list.
+        if (item.text !== value) {
+            setFieldValue(field_map.field_name, item.text);
+        }
+        // Update item if different item was typed.
+        if (item !== field_map.selected) {
+            field_map.setSelected(item);
+        }
+    }
+
+    @action.bound
+    async toggleStrategyModal() {
+        this.root_store.flyout.setVisibility(false);
+        this.is_strategy_modal_open = !this.is_strategy_modal_open;
+
+        if (this.is_strategy_modal_open) {
+            await this.updateSymbolDropdown();
+        }
+    }
+
+    @action.bound
+    async createStrategy({ button }) {
+        const symbol = this.selected_symbol.value;
+        const trade_type = this.selected_trade_type.value;
+        const duration_unit = this.selected_duration_unit.value;
+        const duration_value = this.input_duration_value;
+        const stake = this.input_stake;
+        const size = this.input_size;
+        const loss = this.input_loss;
+        const profit = this.input_profit;
+
         const { contracts_for } = ApiHelpers.instance;
-        const { symbol, trade_type, duration_type, duration, stake, size, loss, profit } = values;
         const market = await contracts_for.getMarketBySymbol(symbol);
         const submarket = await contracts_for.getSubmarketBySymbol(symbol);
         const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(trade_type);
+
         const { strategies } = config;
-        const strategy_name = Object.keys(strategies).find(
-            strategy => strategies[strategy].index === this.active_index
-        );
+        const strategy_name = Object.keys(strategies).find(s => strategies[s].index === this.active_index);
         const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${strategy_name}.xml`);
         const strategy_dom = Blockly.Xml.textToDom(strategy_xml.default);
 
@@ -75,8 +198,8 @@ export default class QuickStrategyStore {
             symbol,
             tradetype: trade_type,
             tradetypecat: trade_type_cat,
-            durationtype: duration_type,
-            duration,
+            durationtype: duration_unit,
+            duration: duration_value,
             stake,
             size,
             loss,
@@ -94,7 +217,168 @@ export default class QuickStrategyStore {
         });
 
         load(Blockly.Xml.domToText(strategy_dom));
-        this.toggleStrategyModal();
+
+        if (button === 'run') {
+            const workspace = Blockly.derivWorkspace;
+            const trade_definition_block = workspace.getTradeDefinitionBlock();
+
+            workspace.waitForBlockEvent(trade_definition_block.id, Blockly.Events.BLOCK_CREATE).then(() => {
+                this.toggleStrategyModal();
+                this.root_store.run_panel.onRunButtonClick();
+            });
+        } else {
+            this.toggleStrategyModal();
+        }
+    }
+
+    @action.bound
+    async updateSymbolDropdown() {
+        const { active_symbols } = ApiHelpers.instance;
+        const symbols = active_symbols.getAllSymbols();
+        const symbol_options = symbols.map(symbol => ({
+            group: symbol.submarket_display,
+            text: symbol.symbol_display,
+            value: symbol.symbol,
+        }));
+
+        this.setSymbolDropdown(symbol_options);
+
+        if (!this.selected_symbol && symbol_options.length) {
+            this.selected_symbol = symbol_options[0];
+            await this.updateTradeTypeDropdown(this.selected_symbol.value);
+        }
+    }
+
+    @action.bound
+    async updateTradeTypeDropdown(symbol, setFieldValue) {
+        const { contracts_for } = ApiHelpers.instance;
+        const trade_type_options = [];
+        const market = contracts_for.getMarketBySymbol(symbol);
+        const submarket = contracts_for.getSubmarketBySymbol(symbol);
+        const trade_type_categories = await contracts_for.getTradeTypeCategories(market, submarket, symbol);
+
+        for (let i = 0; i < trade_type_categories.length; i++) {
+            const trade_type_category = trade_type_categories[i]; // e.g. ['Up/Down', 'callput']
+            // eslint-disable-next-line no-await-in-loop
+            const trade_types = await contracts_for.getTradeTypeByTradeCategory(
+                market,
+                submarket,
+                symbol,
+                trade_type_category[1]
+            );
+
+            trade_types.forEach(trade_type => {
+                trade_type_options.push({
+                    text: trade_type.name,
+                    value: trade_type.value,
+                    group: trade_type_category[0],
+                    icon: trade_type.icon,
+                });
+            });
+        }
+
+        this.setTradeTypeDropdown(trade_type_options);
+        const first_trade_type = trade_type_options[0];
+
+        if (first_trade_type) {
+            this.setSelectedTradeType(first_trade_type);
+            await this.updateDurationDropdown(
+                this.selected_symbol.value,
+                this.selected_trade_type.value,
+                setFieldValue
+            );
+
+            if (setFieldValue) {
+                setFieldValue('quick-strategy__trade-type', first_trade_type.text);
+            }
+        }
+    }
+
+    @action.bound
+    async updateDurationDropdown(symbol, trade_type, setFieldValue) {
+        const { contracts_for } = ApiHelpers.instance;
+        const durations = await contracts_for.getDurations(symbol, trade_type);
+        const duration_options = durations.map(duration => ({
+            text: duration.display,
+            value: duration.unit,
+            min: duration.min,
+            max: duration.max,
+        }));
+
+        this.setDurationUnitDropdown(duration_options);
+        const first_duration_unit = duration_options[0];
+
+        if (first_duration_unit) {
+            this.setSelectedDurationUnit(first_duration_unit);
+            this.updateDurationValue(this.selected_duration_unit.value, setFieldValue);
+
+            if (setFieldValue) {
+                setFieldValue('quick-strategy__duration-unit', first_duration_unit.text);
+            }
+        }
+    }
+
+    @action.bound
+    async updateDurationValue(duration_type, setFieldValue) {
+        const { contracts_for } = ApiHelpers.instance;
+        const durations = await contracts_for.getDurations(this.selected_symbol.value, this.selected_trade_type.value);
+        const min_duration = durations.find(duration => duration.unit === duration_type);
+
+        if (min_duration) {
+            this.setDurationInputValue(min_duration.min);
+
+            if (setFieldValue) {
+                setFieldValue('quick-strategy__duration-value', min_duration.min);
+            }
+        }
+    }
+
+    @action.bound
+    validateQuickStrategy(values, should_ignore_empty = false) {
+        const errors = {};
+        const number_fields = [
+            'quick-strategy__duration-value',
+            'quick-strategy__stake',
+            'quick-strategy__size',
+            'quick-strategy__profit',
+            'quick-strategy__loss',
+        ];
+
+        Object.keys(values).forEach(key => {
+            const value = values[key];
+
+            if (should_ignore_empty && !value) {
+                return;
+            }
+
+            if (number_fields.includes(key)) {
+                if (isNaN(value)) {
+                    errors[key] = localize('Must be a number');
+                } else if (value <= 0) {
+                    errors[key] = localize('Must be a number higher than 0');
+                } else if (/^0+(?=\d)/.test(value)) {
+                    errors[key] = localize('Invalid number format');
+                }
+            }
+
+            if (value === '') {
+                errors[key] = localize('Field cannot be empty');
+            }
+        });
+
+        const duration = this.duration_unit_dropdown.find(d => d.text === values['quick-strategy__duration-unit']);
+
+        if (duration) {
+            const { min, max } = duration;
+
+            if (values['quick-strategy__duration-value'] < min) {
+                errors['quick-strategy__duration-value'] = localize('Minimum duration: {{ min }}', { min });
+            } else if (values['quick-strategy__duration-value'] > max) {
+                errors['quick-strategy__duration-value'] = localize('Maximum duration: {{ max }}', { max });
+            }
+        }
+
+        return errors;
     }
 
     getSizeDesc = index => {
@@ -122,119 +406,27 @@ export default class QuickStrategyStore {
         }
     };
 
-    validateQuickStrategy = values => {
-        const errors = {};
-        const number_field = ['duration', 'stake', 'size', 'profit', 'loss'];
-
-        Object.keys(values).forEach(key => {
-            const value = values[key];
-
-            if (number_field.includes(key)) {
-                if (isNaN(value)) {
-                    errors[key] = localize('Must be a number');
-                } else if (value <= 0) {
-                    errors[key] = localize('Must be a number higher than 0');
-                } else if (/^0+(?=\d)/.test(value)) {
-                    errors[key] = localize('Invalid number format');
-                }
-            }
-
-            if (value === '') {
-                errors[key] = localize('Field cannot be empty');
-            }
-        });
-
-        const { min, max } = this.duration_dropdown.filter(duration => duration.unit === values.duration_type)[0];
-        if (values.duration < min) {
-            errors.duration = `${localize('Minimum duration:')} ${min}`;
-        } else if (values.duration > max) {
-            errors.duration = `${localize('Maximum duration:')} ${max}`;
-        }
-
-        return errors;
+    getFieldMap = type => {
+        const field_mapping = {
+            symbol: {
+                field_name: 'quick-strategy__symbol',
+                dropdown: this.symbol_dropdown,
+                selected: this.selected_symbol,
+                setSelected: this.setSelectedSymbol,
+            },
+            'trade-type': {
+                field_name: 'quick-strategy__trade-type',
+                dropdown: this.trade_type_dropdown,
+                selected: this.selected_trade_type,
+                setSelected: this.setSelectedTradeType,
+            },
+            'duration-unit': {
+                field_name: 'quick-strategy__duration-unit',
+                dropdown: this.duration_unit_dropdown,
+                selected: this.selected_duration_unit,
+                setSelected: this.setSelectedDurationUnit,
+            },
+        };
+        return field_mapping[type];
     };
-
-    @action.bound
-    async onModalOpen() {
-        const { active_symbols } = ApiHelpers.instance;
-        const market_options = await active_symbols.getAssetOptions();
-
-        await this.updateTradetypeDropdown();
-        await this.updateDurationDropdown();
-        await this.updateDurationValue();
-
-        runInAction(() => {
-            this.market_dropdown = market_options;
-        });
-    }
-
-    @action.bound
-    // eslint-disable-next-line
-    async onChangeMarketDropdown(setFieldValue, value) {
-        setFieldValue('symbol', value);
-        await this.updateTradetypeDropdown(setFieldValue, value);
-
-        const first_trade_type_option = this.trade_type_dropdown[Object.keys(this.trade_type_dropdown)[0]][0].value;
-
-        setFieldValue('trade_type', first_trade_type_option);
-    }
-
-    @action.bound
-    async updateTradetypeDropdown(setFieldValue = null, symbol = this.initial_values.symbol) {
-        const { contracts_for } = ApiHelpers.instance;
-        const trade_type_options = await contracts_for.getGroupedTradeTypes(symbol);
-        const first_trade_type_option = trade_type_options[Object.keys(trade_type_options)[0]][0].value;
-
-        runInAction(() => (this.trade_type_dropdown = trade_type_options));
-
-        if (setFieldValue) {
-            setFieldValue('trade_type', first_trade_type_option);
-
-            await this.updateDurationDropdown(setFieldValue, symbol, first_trade_type_option);
-        }
-    }
-
-    @action.bound
-    // eslint-disable-next-line
-    async onChangeTradeTypeDropdown(setFieldValue, symbol, trade_type) {
-        setFieldValue('trade_type', trade_type);
-
-        await this.updateDurationDropdown(setFieldValue, symbol, trade_type);
-    }
-
-    @action.bound
-    async updateDurationDropdown(
-        setFieldValue = null,
-        symbol = this.initial_values.symbol,
-        trade_type = this.initial_values.trade_type
-    ) {
-        const { contracts_for } = ApiHelpers.instance;
-        const durations = await contracts_for.getDurations(symbol, trade_type);
-        const first_duration_option = durations[Object.keys(durations)[0]].unit;
-
-        runInAction(() => (this.duration_dropdown = durations));
-
-        if (setFieldValue) {
-            setFieldValue('duration_type', first_duration_option);
-
-            this.updateDurationValue(setFieldValue, first_duration_option);
-        }
-    }
-
-    @action.bound
-    // eslint-disable-next-line
-    async onChangeDurationDropdown(setFieldValue, duration_type) {
-        setFieldValue('duration_type', duration_type);
-
-        this.updateDurationValue(setFieldValue, duration_type);
-    }
-
-    @action.bound
-    async updateDurationValue(setFieldValue = null, duration_type = this.initial_values.duration_type) {
-        const min_duration = this.duration_dropdown.filter(duration => duration.unit === duration_type)[0].min;
-
-        if (setFieldValue) {
-            setFieldValue('duration', min_duration);
-        }
-    }
 }

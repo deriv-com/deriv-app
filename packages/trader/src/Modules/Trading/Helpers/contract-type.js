@@ -14,7 +14,6 @@ export const unsupported_contract_types_list = [
     'lb_call',
     'lb_put',
     'lb_high_low',
-    'multiplier',
 ];
 
 export const contract_category_icon = {

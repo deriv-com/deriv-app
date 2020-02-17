@@ -30,7 +30,7 @@ export const getStatementTableColumnsTemplate = currency => [
     {
         key: 'icon',
         title: '',
-        col_index: 'action_type',
+        col_index: 'icon',
         renderCellContent: ({ cell_value, row_obj }) => (
             <MarketSymbolIconRow action={cell_value} key={row_obj.transaction_id} payload={row_obj} />
         ),

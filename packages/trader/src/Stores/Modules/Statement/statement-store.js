@@ -20,6 +20,7 @@ export default class StatementStore extends BaseStore {
         .subtract(1, 's')
         .unix();
     @observable error = '';
+    @observable filtered_date_range;
 
     // `client_loginid` is only used to detect if this is in sync with the client-store, don't rely on
     // this for calculations. Use the client.currency instead.
@@ -105,11 +106,10 @@ export default class StatementStore extends BaseStore {
     }
 
     @action.bound
-    handleDateChange(date_values) {
+    handleDateChange(date_values, { date_range } = {}) {
+        this.filtered_date_range = date_range;
         Object.keys(date_values).forEach(key => {
-            if (date_values[key]) {
-                this[`date_${key}`] = date_values[key];
-            }
+            this[`date_${key}`] = date_values[key];
         });
         this.clearTable();
         this.fetchNextBatch();

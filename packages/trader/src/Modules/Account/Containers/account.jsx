@@ -79,9 +79,11 @@ class Account extends React.Component {
                 if (
                     !needs_verification &&
                     !is_high_risk_client &&
+                    !is_loading &&
                     /proof-of-identity|proof-of-address|financial-assessment/.test(route.path)
-                )
+                ) {
                     route.is_disabled = true;
+                }
             });
         });
 

@@ -1,6 +1,6 @@
 import { calculateScale, calculateHexOpacity } from './calculations';
 
-const BasicCanvasElements = (() => {
+const CanvasElements = (() => {
     const MARKER_LINE_STYLE = {
         dashed: [2, 2],
         solid: [],
@@ -125,17 +125,26 @@ const BasicCanvasElements = (() => {
         ctx.restore();
     };
 
-    // not really basic but we put them here for now
+    return {
+        Line,
+        Circle,
+        Shade,
+        Text,
+        SVG,
+    };
+})();
+
+const CanvasCompounds = (() => {
     const BarrierLine = (ctx, points, line_style, stroke_style, fill_style) => {
-        Line(ctx, points, line_style, stroke_style);
-        Circle(ctx, [points[0], points[1]], 2, 'solid', stroke_style, fill_style);
-        Circle(ctx, [points[2], points[3]], 2, 'solid', stroke_style, fill_style);
+        CanvasElements.Line(ctx, points, line_style, stroke_style);
+        CanvasElements.Circle(ctx, [points[0], points[1]], 2, 'solid', stroke_style, fill_style);
+        CanvasElements.Circle(ctx, [points[2], points[3]], 2, 'solid', stroke_style, fill_style);
     };
 
     const VerticalLabelledLine = (ctx, points, zoom, text, icon, line_style, stroke_style, fill_style) => {
         const label_and_icon_offset = points[0] - 5;
         if (icon) {
-            SVG(ctx, icon, [label_and_icon_offset - icon.width / 2, points[1] - 15], zoom);
+            CanvasElements.SVG(ctx, icon, [label_and_icon_offset - icon.width / 2, points[1] - 15], zoom);
         }
 
         const scale = calculateScale(zoom);
@@ -150,18 +159,60 @@ const BasicCanvasElements = (() => {
             ctx.fillText(line, text_x, text_y);
         });
 
-        Line(ctx, [points[0], 0, points[0], ctx.canvas.height], line_style, stroke_style);
+        CanvasElements.Line(ctx, [points[0], 0, points[0], ctx.canvas.height], line_style, stroke_style);
     };
 
     return {
-        Line,
-        Circle,
-        Shade,
-        Text,
-        SVG,
         BarrierLine,
         VerticalLabelledLine,
     };
 })();
 
-export default BasicCanvasElements;
+const Canvas = (() => {
+    const draw_queue = [];
+
+    const addToQueue = (type, layer, parameter) => {
+        const draw_item = { type, layer, parameter };
+        draw_queue.push(draw_item);
+    };
+
+    const drawLine = (layer, parameter) => addToQueue('Line', layer, parameter);
+
+    const drawCircle = (layer, parameter) => addToQueue('Circle', layer, parameter);
+
+    const drawShade = (layer, parameter) => addToQueue('Shade', layer, parameter);
+
+    const drawText = (layer, parameter) => addToQueue('Text', layer, parameter);
+
+    const drawSVG = (layer, parameter) => addToQueue('SVG', layer, parameter);
+
+    const drawBarrierLine = (layer, parameter) => addToQueue('BarrierLine', layer, parameter);
+
+    const drawVerticalLabelledLine = (layer, parameter) => addToQueue('VerticalLabelledLine', layer, parameter);
+
+    const render = () => {
+        draw_queue.sort((a, b) => a.layer - b.layer);
+        draw_queue.map(draw_item => {
+            const canvas_element = CanvasElements[draw_item.type];
+            if (canvas_element) canvas_element(...draw_item.parameter);
+
+            const canvas_compound = CanvasCompounds[draw_item.type];
+            if (canvas_compound) canvas_compound(...draw_item.parameter);
+        });
+
+        draw_queue.length = 0;
+    };
+
+    return {
+        drawLine,
+        drawCircle,
+        drawShade,
+        drawText,
+        drawSVG,
+        drawBarrierLine,
+        drawVerticalLabelledLine,
+        render,
+    };
+})();
+
+export default Canvas;

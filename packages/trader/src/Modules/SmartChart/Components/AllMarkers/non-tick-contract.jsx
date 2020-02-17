@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import RawMarkerMaker from './Helpers/raw-marker-maker.jsx';
 import { getColor, getOpacity } from './Helpers/colors';
 import { calculateScale } from './Helpers/calculations';
-import BasicCanvasElements from './Helpers/canvas';
+import Canvas from './Helpers/canvas';
 import * as ICONS from '../icons';
 
 const NonTickContract = RawMarkerMaker(
@@ -62,7 +62,7 @@ const NonTickContract = RawMarkerMaker(
         const should_draw_vertical_line = is_last_contract && !is_sold;
         if (should_draw_vertical_line) {
             if (start.visible) {
-                BasicCanvasElements.VerticalLabelledLine(
+                Canvas.drawVerticalLabelledLine(0, [
                     ctx,
                     [start.left, canvas_height - 50],
                     start.zoom,
@@ -73,12 +73,12 @@ const NonTickContract = RawMarkerMaker(
                     }),
                     'dashed',
                     foreground_color,
-                    foreground_color
-                );
+                    foreground_color,
+                ]);
             }
 
             if (has_reset_time) {
-                BasicCanvasElements.VerticalLabelledLine(
+                Canvas.drawVerticalLabelledLine(0, [
                     ctx,
                     [reset_time.left, canvas_height - 50],
                     reset_time.zoom,
@@ -86,12 +86,12 @@ const NonTickContract = RawMarkerMaker(
                     ICONS.RESET.withColor(foreground_color, background_color),
                     'dashed',
                     foreground_color,
-                    foreground_color
-                );
+                    foreground_color,
+                ]);
             }
 
             if (expiry.visible) {
-                BasicCanvasElements.VerticalLabelledLine(
+                Canvas.drawVerticalLabelledLine(0, [
                     ctx,
                     [expiry.left, canvas_height - 50],
                     expiry.zoom,
@@ -102,8 +102,8 @@ const NonTickContract = RawMarkerMaker(
                     }),
                     'solid',
                     status_color_with_opacity,
-                    status_color_with_opacity
-                );
+                    status_color_with_opacity,
+                ]);
             }
         }
 
@@ -113,42 +113,42 @@ const NonTickContract = RawMarkerMaker(
         if (barrier && entry && (start.visible || expiry.visible || Math.sign(start.left) !== Math.sign(expiry.left))) {
             if (is_reset_barrier_expired) {
                 if (!is_last_contract) {
-                    BasicCanvasElements.Line(
+                    Canvas.drawLine(0, [
                         ctx,
                         [reset_time.left, entry_tick_top, reset_time.left, barrier],
                         'dashed',
-                        foreground_color
-                    );
+                        foreground_color,
+                    ]);
                 }
-                BasicCanvasElements.BarrierLine(
+                Canvas.drawBarrierLine(0, [
                     ctx,
                     [start.left, entry_tick_top, reset_time.left, entry_tick_top],
                     'dashed',
                     foreground_color,
-                    background_color
-                );
-                BasicCanvasElements.BarrierLine(
+                    background_color,
+                ]);
+                Canvas.drawBarrierLine(0, [
                     ctx,
                     [reset_time.left, barrier, expiry.left, barrier],
                     'solid',
                     status_color_with_opacity,
-                    background_color
-                );
+                    background_color,
+                ]);
             } else {
-                BasicCanvasElements.BarrierLine(
+                Canvas.drawBarrierLine(0, [
                     ctx,
                     [start.left, barrier, entry.left, barrier],
                     'dashed',
                     foreground_color,
-                    background_color
-                );
-                BasicCanvasElements.BarrierLine(
+                    background_color,
+                ]);
+                Canvas.drawBarrierLine(0, [
                     ctx,
                     [entry.left, barrier, expiry.left, barrier],
                     'solid',
                     status_color_with_opacity,
-                    background_color
-                );
+                    background_color,
+                ]);
             }
         }
 
@@ -157,20 +157,20 @@ const NonTickContract = RawMarkerMaker(
                 ? [reset_time.left, reset_time.top, current_spot.left, current_spot.top]
                 : [entry.left, entry.top, current_spot.left, current_spot.top];
 
-            BasicCanvasElements.Shade(ctx, points, status_color);
+            Canvas.drawShade(0, [ctx, points, status_color]);
         }
 
         // entry markers
         if (granularity === 0 && entry && entry.visible) {
-            BasicCanvasElements.SVG(
+            Canvas.drawSVG(0, [
                 ctx,
                 ICONS.ENTRY_SPOT.withColorOnSpecificPaths({
                     0: { fill: background_color },
                     1: { fill: foreground_color },
                 }),
                 [entry.left, entry.top],
-                entry.zoom
-            );
+                entry.zoom,
+            ]);
         }
 
         // show the profit
@@ -180,7 +180,7 @@ const NonTickContract = RawMarkerMaker(
             const sign = profit < 0 ? '-' : profit > 0 ? '+' : ' '; // eslint-disable-line
             const text = `${sign}${symbol}${Math.abs(profit).toFixed(decimal_places)}`;
 
-            BasicCanvasElements.Text(ctx, [start.left, barrier - 28 * scale], text, scale, status_color_with_opacity);
+            Canvas.drawText(0, [ctx, [start.left, barrier - 28 * scale], text, scale, status_color_with_opacity]);
         }
         // status marker
         if (exit && exit.visible && is_sold) {
@@ -190,15 +190,11 @@ const NonTickContract = RawMarkerMaker(
                 1: { fill: status_color_with_opacity },
             });
 
-            BasicCanvasElements.Line(
-                ctx,
-                [exit.left, barrier, exit.left, exit.top],
-                'dashed',
-                status_color_with_opacity
-            );
-            BasicCanvasElements.SVG(ctx, icon, [exit.left, exit.top], exit.zoom);
+            Canvas.drawLine(0, [ctx, [exit.left, barrier, exit.left, exit.top], 'dashed', status_color_with_opacity]);
+            Canvas.drawSVG(0, [ctx, icon, [exit.left, exit.top], exit.zoom]);
         }
 
+        Canvas.render();
         ctx.restore();
     }
 );

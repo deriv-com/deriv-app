@@ -2,7 +2,7 @@ import { localize } from '@deriv/translations';
 import RawMarkerMaker from './Helpers/raw-marker-maker.jsx';
 import { getColor, getOpacity } from './Helpers/colors';
 import { calculateScale } from './Helpers/calculations';
-import BasicCanvasElements from './Helpers/canvas';
+import Canvas from './Helpers/canvas';
 import * as ICONS from '../icons';
 
 const DigitContract = RawMarkerMaker(
@@ -43,7 +43,7 @@ const DigitContract = RawMarkerMaker(
         const should_draw_vertical_line = is_last_contract && !is_sold;
         if (should_draw_vertical_line) {
             if (start.visible) {
-                BasicCanvasElements.VerticalLabelledLine(
+                Canvas.drawVerticalLabelledLine(0, [
                     ctx,
                     [start.left, canvas_height - 50],
                     start.zoom,
@@ -54,11 +54,11 @@ const DigitContract = RawMarkerMaker(
                     }),
                     'dashed',
                     foreground_color,
-                    foreground_color
-                );
+                    foreground_color,
+                ]);
             }
             if (expiry.visible && is_sold) {
-                BasicCanvasElements.VerticalLabelledLine(
+                Canvas.drawVerticalLabelledLine(0, [
                     ctx,
                     [expiry.left, canvas_height - 50],
                     expiry.zoom,
@@ -69,32 +69,32 @@ const DigitContract = RawMarkerMaker(
                     }),
                     'solid',
                     status_color_with_opacity,
-                    foreground_color
-                );
+                    foreground_color,
+                ]);
             }
         }
 
         // count down
         if (start.visible && start.top && !is_sold) {
-            BasicCanvasElements.Text(
+            Canvas.drawText(0, [
                 ctx,
                 [start.left - 1 * scale, start.top - 28 * scale],
                 `${ticks.length}/${tick_count}`,
                 scale,
-                status_color
-            );
+                status_color,
+            ]);
         }
         // start-time marker
         if (start.visible && granularity === 0 && !is_sold) {
-            BasicCanvasElements.SVG(
+            Canvas.drawSVG(0, [
                 ctx,
                 ICONS.END.withColorOnSpecificPaths({
                     0: { fill: getColor('bg', is_dark_theme) },
                     1: { fill: status_color },
                 }),
                 [start.left, start.top],
-                start.zoom
-            );
+                start.zoom,
+            ]);
         }
         // remaining ticks
         ticks.forEach((tick, idx) => {
@@ -106,26 +106,21 @@ const DigitContract = RawMarkerMaker(
             )
                 return;
 
-            BasicCanvasElements.Circle(ctx, [tick.left, tick.top], 7 * scale, 'solid', status_color, foreground_color);
-            BasicCanvasElements.Circle(
+            Canvas.drawCircle(0, [ctx, [tick.left, tick.top], 7 * scale, 'solid', status_color, foreground_color]);
+            Canvas.drawCircle(0, [
                 ctx,
                 [tick.left, tick.top],
                 6 * scale,
                 'solid',
                 status_color,
-                is_sold ? status_color : background_color
-            );
+                is_sold ? status_color : background_color,
+            ]);
 
             const last_digit = tick_stream[idx].tick_display_value.slice(-1);
-            BasicCanvasElements.Text(
-                ctx,
-                [tick.left, tick.top + 1],
-                last_digit,
-                scale,
-                is_sold ? 'white' : status_color
-            );
+            Canvas.drawText(0, [ctx, [tick.left, tick.top + 1], last_digit, scale, is_sold ? 'white' : status_color]);
         });
 
+        Canvas.render();
         ctx.restore();
     }
 );

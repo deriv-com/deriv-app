@@ -9,10 +9,6 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
     justify-content: space-between;
     width: 100%;
 
-    @include mobile {
-        left: 0;
-    }
-
     &-button:hover {
         cursor: pointer;
     }
@@ -172,5 +168,8 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
         z-index: 11;
         right: 0;
         top: 0;
+    }
+    @include mobile {
+        left: 0;
     }
 }

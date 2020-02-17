@@ -32,7 +32,9 @@ class DatePicker extends React.Component {
                 ? formatDate(addDays(toMoment(), value || 1), 'DD MMM YYYY')
                 : formatDate(value, 'DD MMM YYYY');
 
-        this.updateDatePickerValue(initial_value);
+        if (!this.props.is_nativepicker) {
+            this.updateDatePickerValue(initial_value);
+        }
 
         if (this.props.disable_trading_events) {
             this.onChangeCalendarMonth(getStartOfMonth(this.state.value));
@@ -202,14 +204,13 @@ class DatePicker extends React.Component {
                     ref={node => {
                         this.mainNode = node;
                     }}
-                    className='datepicker'
+                    className={classNames('datepicker-native', this.props.className)}
                 >
                     <input
                         id={this.props.name}
                         name={this.props.name}
-                        className='input trade-container__input datepicker__input'
+                        className='input datepicker-native__input'
                         type='date'
-                        value={this.state.value}
                         min={this.props.min_date}
                         max={this.props.max_date}
                         onChange={e => {
@@ -224,9 +225,11 @@ class DatePicker extends React.Component {
                             this.onSelectCalendar(e.target.value);
                         }}
                     />
-                    <label className='datepicker__native-overlay' htmlFor={this.props.name}>
-                        {this.state.value || this.props.placeholder}
-                        <Icon icon='IcChevronDown' className='datepicker__arrowhead' />
+                    <label className='datepicker-native__overlay' htmlFor={this.props.name}>
+                        <Icon icon='IcCalendarDatefrom' className='datepicker__arrowhead' />
+                        <span className='datepicker-native__overlay-text'>
+                            {this.state.value || this.props.placeholder}
+                        </span>
                     </label>
                 </div>
             );

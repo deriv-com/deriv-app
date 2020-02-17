@@ -1,4 +1,10 @@
 .dc-page-overlay {
+    @include mobile {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
     &__header {
         position: sticky;
         top: 0;
@@ -41,6 +47,7 @@
             margin-left: 2.4rem;
         }
         @include mobile {
+            flex: 1;
             padding: 0;
         }
     }
@@ -49,5 +56,8 @@
         max-width: 1232px;
         margin: auto;
         position: relative;
+        @include mobile {
+            width: 100%;
+        }
     }
 }

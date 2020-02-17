@@ -98,6 +98,14 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
     {
         title: localize('Sell time'),
         col_index: 'sell_time',
+        renderHeader: ({ title }) => {
+            return (
+                <>
+                    <span>{title}</span>
+                    <Icon icon='IcContractFlag' />
+                </>
+            );
+        },
     },
     {
         title: localize('Sell price'),

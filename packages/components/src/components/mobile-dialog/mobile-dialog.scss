@@ -62,6 +62,12 @@
         transition-delay: 0.2s;
         border-bottom: 1px solid var(--border-disabled);
     }
+    &__footer {
+        position: fixed;
+        width: 100%;
+        bottom: 0px;
+        z-index: 4;
+    }
     &__title {
         padding: 1.2rem 1.2rem 1.2rem 0.4rem;
         font-size: 1.4rem;

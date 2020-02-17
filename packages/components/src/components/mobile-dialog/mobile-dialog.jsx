@@ -7,7 +7,7 @@ import Icon from 'Components/icon/icon.jsx';
 import Div100vhContainer from '../div100vh-container';
 
 const MobileDialog = props => {
-    const { title, visible, children, portal_element_id, wrapper_classname } = props;
+    const { title, visible, children, portal_element_id, wrapper_classname, footer } = props;
 
     const checkVisibility = () => {
         if (props.visible) {
@@ -71,6 +71,7 @@ const MobileDialog = props => {
                             {children}
                         </div>
                     </div>
+                    {footer && <div className='dc-mobile-dialog__footer'>{footer}</div>}
                 </Div100vhContainer>
             </div>
         </CSSTransition>,

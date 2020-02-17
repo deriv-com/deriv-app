@@ -32,6 +32,16 @@ class Autocomplete extends React.PureComponent {
         active_index: null,
     };
 
+    componentDidUpdate(prev_props) {
+        if (prev_props.list_items !== this.props.list_items) {
+            this.setState({
+                input_value: '',
+                active_index: null,
+                filtered_items: this.props.list_items,
+            });
+        }
+    }
+
     setInputWrapperRef = node => (this.input_wrapper_ref = node);
 
     onKeyPressed = event => {
@@ -163,7 +173,13 @@ class Autocomplete extends React.PureComponent {
             }
         });
 
-    hideDropdownList = () => this.setState({ should_show_list: false });
+    hideDropdownList = () => {
+        this.setState({ should_show_list: false });
+
+        if (typeof this.props.onHideDropdownList === 'function') {
+            this.props.onHideDropdownList();
+        }
+    };
 
     filterList = e => {
         const val = e.target.value.toLowerCase();
@@ -183,6 +199,7 @@ class Autocomplete extends React.PureComponent {
             value,
             list_items,
             autoComplete,
+            onHideDropdownList,
             ...otherProps
         } = this.props;
 
@@ -254,5 +271,6 @@ Autocomplete.propTypes = {
         ),
     ]),
     not_found_text: PropTypes.string,
+    onHideDropdownList: PropTypes.func,
     onItemSelection: PropTypes.func,
 };

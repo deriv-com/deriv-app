@@ -198,11 +198,14 @@ export default class CashierStore extends BaseStore {
         let p2p_notification_count = 0;
 
         orders.forEach(order => {
-            const is_buyer = order.type === 'buy';
-            const is_buyer_confirmed = order.status === 'buyer-confirmed';
-            const is_pending = order.status === 'pending';
+            const type = order.is_incoming
+                ? ObjectUtils.getPropertyValue(order, ['advert_details', 'type'])
+                : order.type;
 
-            if ((is_buyer_confirmed && !is_buyer) || (is_pending && is_buyer)) {
+            // show notifications for:
+            // 1. buy orders that are pending buyer payment, or
+            // 2. sell orders that are pending seller confirmation
+            if (type === 'buy' ? order.status === 'pending' : order.status === 'buyer-confirmed') {
                 p2p_notification_count++;
             }
         });

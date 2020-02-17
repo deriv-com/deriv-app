@@ -32,14 +32,7 @@ class ContractReplay extends React.Component {
         this.props.onUnmount();
     }
 
-    // TODO: [history-routing] handle going back as per user actions
-    onClickClose = () => {
-        this.setState({ is_visible: false });
-        const is_from_table_row = !ObjectUtils.isEmptyObject(this.props.location.state)
-            ? this.props.location.state.from_table_row
-            : false;
-        return this.props.history.push(is_from_table_row ? this.props.history.goBack() : AppRoutes.trade);
-    };
+    onClickClose = () => this.props.routeBackInApp(this.props.history);
 
     render() {
         const {
@@ -128,10 +121,11 @@ ContractReplay.propTypes = {
 };
 
 export default withRouter(
-    connect(({ modules, ui }) => {
+    connect(({ common, modules, ui }) => {
         const contract_replay = modules.contract_replay;
         const contract_store = contract_replay.contract_store;
         return {
+            routeBackInApp: common.routeBackInApp,
             contract_info: contract_store.contract_info,
             digits_info: contract_store.digits_info,
             display_status: contract_store.display_status,

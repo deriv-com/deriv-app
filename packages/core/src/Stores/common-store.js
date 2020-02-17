@@ -15,7 +15,7 @@ export default class CommonStore extends BaseStore {
             const route_control = JSON.parse(routing_control_raw);
 
             if (route_control.is_from_bot) {
-                this.setRoutedInternally(true);
+                this.addRouteHistoryItem({ pathname: AppRoutes.bot, action: 'PUSH' });
                 delete route_control.is_from_bot;
                 LocalStore.setObject(routing_control_key, route_control);
             }
@@ -41,7 +41,7 @@ export default class CommonStore extends BaseStore {
     @observable deposit_url = '';
     @observable withdraw_url = '';
 
-    @observable has_routed_internally = false;
+    @observable app_routing_history = [];
 
     @action.bound
     setIsSocketOpened(is_socket_opened) {
@@ -113,14 +113,31 @@ export default class CommonStore extends BaseStore {
     }
 
     @action.bound
-    setRoutedInternally(has_routed_internally) {
-        this.has_routed_internally = has_routed_internally;
+    addRouteHistoryItem(router_action) {
+        const check_existing = this.app_routing_history.findIndex(
+            i => i.pathname === router_action.pathname && i.action === 'PUSH'
+        );
+        if (check_existing > -1) {
+            this.app_routing_history.splice(check_existing, 1);
+        }
+        this.app_routing_history.unshift(router_action);
     }
 
     @action.bound
     routeBackInApp(history) {
-        if (this.has_routed_internally) {
-            history.goBack();
+        if (this.app_routing_history.length > 0) {
+            const route_to_item = this.app_routing_history.find(
+                history_item =>
+                    history_item.action === 'PUSH' &&
+                    history.location.pathname.split('/')[1] !== history_item.pathname.split('/')[1]
+            );
+
+            if (route_to_item) {
+                this.app_routing_history.splice(0, this.app_routing_history.indexOf(route_to_item) + 1);
+                history.push(route_to_item.pathname);
+            } else {
+                history.push(AppRoutes.trade);
+            }
         } else {
             history.push(AppRoutes.trade);
         }

@@ -5,6 +5,7 @@ import { ChartMode, Comparison, DrawTools, Share, StudyLegend, Timeperiod, Views
 const ControlWidgets = ({ updateChartType, updateGranularity }) => (
     <React.Fragment>
         <ChartMode
+            portalNodeId='modal_root'
             onChartType={type => updateChartType(type)}
             onGranularity={granularity => updateGranularity(granularity)}
         />
@@ -12,7 +13,7 @@ const ControlWidgets = ({ updateChartType, updateGranularity }) => (
         <Comparison searchInputClassName='data-hj-whitelist' />
         <DrawTools />
         <Views searchInputClassName='data-hj-whitelist' />
-        <Share />
+        <Share portalNodeId='modal_root' />
     </React.Fragment>
 );
 

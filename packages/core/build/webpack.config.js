@@ -3,12 +3,14 @@ const { ALIASES, IS_RELEASE, MINIMIZERS, plugins, rules } = require('./constants
 const { openChromeBasedOnPlatform } = require('./helpers');
 
 module.exports = function(env, argv) {
-    const base = env && env.base && env.base != true ? '/' + env.base + '/' : '/';
+    const base = env && env.base && env.base !== true ? '/' + env.base + '/' : '/';
+    const sub_path = env && env.package && env.package !== true ? env.package : '';
 
     return {
         context: path.resolve(__dirname, '../src'),
         devServer: {
             open: openChromeBasedOnPlatform(process.platform),
+            openPage: sub_path,
             host: 'localhost.binary.sx',
             https: true,
             port: 443,

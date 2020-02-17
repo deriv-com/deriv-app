@@ -20,6 +20,7 @@ const Collapsible = ({ as, is_collapsed, position = 'top', children }) => {
             {should_show_collapsible && position === 'top' && arrow_button}
             <div className='dc-collapsible__content'>
                 {Children.map(children, element => {
+                    if (!element) return element;
                     const collapsed_class = classNames('dc-collapsible__item', element.props.className, {
                         'dc-collapsible__item--collapsed': 'collapsible' in element.props && !is_open,
                     });
@@ -46,4 +47,4 @@ Collapsible.propTypes = {
 
 Collapsible.displayName = 'Collapsible';
 
-export default React.memo(Collapsible, ['position']);
+export default Collapsible;

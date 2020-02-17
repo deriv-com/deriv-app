@@ -169,4 +169,7 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
         right: 0;
         top: 0;
     }
+    @include mobile {
+        left: 0;
+    }
 }

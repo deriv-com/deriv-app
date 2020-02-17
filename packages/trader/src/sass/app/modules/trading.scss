@@ -67,6 +67,7 @@
         color: var(--text-general);
         @include mobile {
             padding: 0;
+            margin-bottom: 0.8rem;
         }
 
         &-header {

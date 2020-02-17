@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
 import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile.jsx';
 // import Barrier                        from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
-// import LastDigit                      from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
+import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
 import 'Sass/app/modules/trading-mobile.scss';
 import Div100vhContainer from '@deriv/components/src/components/div100vh-container';
 
@@ -179,3 +179,7 @@ const TradeParamsMobile = ({
         )}
     </Tabs>
 );
+
+export const LastDigitMobile = connect(({ modules }) => ({
+    form_components: modules.trade.form_components,
+}))(({ form_components }) => form_components.includes('last_digit') && <LastDigit />);

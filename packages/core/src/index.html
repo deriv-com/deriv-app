@@ -2,10 +2,8 @@
 <html>
 <head>
     <script>
-        try {
+        if (window.performance) {
             performance.mark('started');
-        } catch (error) {
-            // ignore error to pervent showing on console
         }
     </script>
     <!-- Set skeleton theme color properties -->

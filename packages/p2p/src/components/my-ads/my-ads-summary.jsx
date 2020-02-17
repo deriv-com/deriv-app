@@ -20,7 +20,7 @@ const AdSummary = ({ offer_amount, offer_currency, transaction_currency, price_r
                     buy_or_sell: type,
                 }}
             />
-            {!offer_amount && !price_rate ? '...' : ' '}
+            {!offer_amount ? '...' : ' '}
             {offer_amount && (
                 <span className='p2p-my-ads__form-summary--bold'>
                     {display_offer_amount} {offer_currency}

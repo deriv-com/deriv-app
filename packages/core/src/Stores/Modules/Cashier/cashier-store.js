@@ -176,7 +176,7 @@ export default class CashierStore extends BaseStore {
             } else {
                 // it's a single order from p2p_order_info
                 const idx_order_to_update = this.p2p_order_list.findIndex(
-                    order => order.order_id === order_response.p2p_order_info.order_id
+                    order => order.id === order_response.p2p_order_info.id
                 );
                 const updated_orders = [...this.p2p_order_list];
                 // if it's a new order, add it to the top of the list

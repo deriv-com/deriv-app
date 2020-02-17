@@ -106,7 +106,7 @@ const getModifiedP2POrder = response => {
         transaction_amount,
         transaction_currency,
         advertiser_name: ObjectUtils.getPropertyValue(response, ['advertiser_details', 'name']),
-        advertiser_notes: response.description,
+        advertiser_notes: ObjectUtils.getPropertyValue(response, ['advert_details', 'description']),
         display_offer_amount: formatMoney(offer_currency, offer_amount),
         display_payment_method: map_payment_method[payment_method] || payment_method,
         display_price_rate: formatMoney(offer_currency, price_rate),
@@ -115,7 +115,7 @@ const getModifiedP2POrder = response => {
         id: response.id,
         order_purchase_datetime: getFormattedDateString(new Date(convertToMillis(response.created_time))),
         status: response.status,
-        type: response.is_incoming ? response.advert_details.type : response.type,
+        type: response.is_incoming ? ObjectUtils.getPropertyValue(response, ['advert_details', 'type']) : response.type,
     };
 };
 

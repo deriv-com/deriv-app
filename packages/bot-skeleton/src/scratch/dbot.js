@@ -41,6 +41,8 @@ class DBot {
 
             this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
             this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
+            this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
+
             this.addBeforeRunFunction(this.unselectBlocks.bind(this));
             this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
             this.addBeforeRunFunction(this.checkForErroredBlocks.bind(this));

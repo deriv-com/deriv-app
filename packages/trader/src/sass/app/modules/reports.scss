@@ -234,6 +234,15 @@ $side-padding: 1.2em;
         }
         &__data-list-body {
             height: calc(100% - 50px);
+
+            .sell_time__row-title {
+                display: flex;
+                align-items: center;
+
+                .dc-icon {
+                    margin-left: 4px;
+                }
+            }
         }
         &__data-list-footer {
             height: 50px;
@@ -277,7 +286,7 @@ $side-padding: 1.2em;
             flex-direction: row;
         }
 
-        &__row__title {
+        &__row-title {
             margin-right: 4px;
         }
     }

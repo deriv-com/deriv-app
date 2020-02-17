@@ -12,10 +12,10 @@ import { popover_zindex } from '../constants/z-indexes';
 const TransactionIconWithText = ({ icon, title, message, className }) => (
     <React.Fragment>
         <Popover
-            zIndex={popover_zindex.TRANSACTION}
             className={classNames(className, 'transactions__icon')}
             alignment='left'
             message={title}
+            zIndex={popover_zindex.TRANSACTION}
         >
             {icon}
         </Popover>

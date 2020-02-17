@@ -53,8 +53,8 @@ class DBot {
 
             // Push main.xml to workspace and reset the undo stack.
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), this.workspace);
-            this.workspace.clearUndo();
             this.workspace.cleanUp();
+            this.workspace.clearUndo();
             const { handleFileChange } = DBotStore.instance;
             const drop_zone = document.body;
 

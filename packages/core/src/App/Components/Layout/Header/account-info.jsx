@@ -12,7 +12,7 @@ const AccountInfoWrapper = ({ is_disabled, disabled_message, children }) =>
             {children}
         </Popover>
     ) : (
-        <React.Fragment>{children}</React.Fragment>
+        children
     );
 
 const AccountInfo = ({

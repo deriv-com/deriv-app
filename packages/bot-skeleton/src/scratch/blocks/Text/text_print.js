@@ -26,7 +26,9 @@ Blockly.Blocks.text_print = {
     meta() {
         return {
             display_name: localize('Print'),
-            description: localize('This block displays a dialog window with a given message.'),
+            description: localize(
+                'This block displays a dialog box with a customised message. When the dialog box is displayed, your strategy is paused and will only resume after you click "OK".'
+            ),
         };
     },
     getRequiredValueInputs() {

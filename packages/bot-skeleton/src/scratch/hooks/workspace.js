@@ -1,4 +1,7 @@
 import DBotStore from '../dbot-store';
+import PendingPromise from '../../utils/pending-promise';
+
+Blockly.Workspace.prototype.wait_events = [];
 
 /**
  * Clear the undo/redo stacks.
@@ -51,4 +54,28 @@ Blockly.Workspace.prototype.fireChangeListener = function(event) {
 
 Blockly.Workspace.prototype.getTradeDefinitionBlock = function() {
     return this.getAllBlocks(true).find(b => b.type === 'trade_definition');
+};
+
+Blockly.Workspace.prototype.waitForBlockEvent = function(block_id, opt_event_type = null) {
+    const event_promise = new PendingPromise();
+
+    this.wait_events.push({
+        blockId: block_id,
+        promise: event_promise,
+        type: opt_event_type,
+    });
+
+    return event_promise;
+};
+
+Blockly.Workspace.prototype.dispatchBlockEventEffects = function(event) {
+    this.wait_events.forEach((wait_event, idx) => {
+        const is_subscribed_event =
+            wait_event.blockId === event.blockId && (wait_event.type === null || event.type === wait_event.type);
+
+        if (is_subscribed_event) {
+            wait_event.promise.resolve();
+            this.wait_events.splice(idx, 1);
+        }
+    });
 };

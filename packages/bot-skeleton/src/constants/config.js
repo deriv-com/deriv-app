@@ -293,4 +293,5 @@ export const config = {
         toolbar: '5',
         run_panel_tooltips: '5',
     },
+    default_file_name: localize('Untitled Bot'),
 };

@@ -3,6 +3,7 @@ import { localize } from '@deriv/translations';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { config } from '@deriv/bot-skeleton';
 import Dialog from './dialog.jsx';
 import LoadModal from './load-modal.jsx';
 import SaveModal from './save-modal.jsx';
@@ -72,7 +73,7 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
                                         submitForm();
                                     }}
                                     label={localize('Bot name')}
-                                    placeholder={localize('Untitled Bot')}
+                                    placeholder={config.default_file_name}
                                     trailing_icon={<Icon icon='IcEdit' />}
                                 />
                             )}

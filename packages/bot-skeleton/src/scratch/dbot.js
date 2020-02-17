@@ -29,6 +29,8 @@ class DBot {
             ApiHelpers.setInstance(api_helpers_store);
             DBotStore.setInstance(store);
 
+            const { handleFileChange, onBotNameTyped } = DBotStore.instance;
+
             const el_scratch_div = document.getElementById('scratch_div');
             this.workspace = Blockly.inject(el_scratch_div, {
                 grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
@@ -53,15 +55,16 @@ class DBot {
             const recent_files = getSavedWorkspaces();
             this.workspace.current_strategy_id = Blockly.utils.genUid();
             let strategy_to_load = main_xml;
+            let file_name = config.default_file_name;
             if (recent_files) {
                 const latest_file = recent_files[0];
                 strategy_to_load = latest_file.xml;
+                file_name = latest_file.name;
                 Blockly.derivWorkspace.current_strategy_id = latest_file.id;
             }
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy_to_load), this.workspace);
+            onBotNameTyped(file_name);
             this.workspace.clearUndo();
-
-            const { handleFileChange } = DBotStore.instance;
 
             window.addEventListener('resize', () => onWorkspaceResize());
             window.dispatchEvent(new Event('resize'));

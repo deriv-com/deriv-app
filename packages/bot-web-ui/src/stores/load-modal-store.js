@@ -190,7 +190,7 @@ export default class LoadModalStore {
         const file_name = file && file.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
         reader.onload = action(e => {
-            const load_options = { block_string: e.target.result, drop_event };
+            const load_options = { block_string: e.target.result, drop_event, from: save_types.LOCAL };
             if (is_preview) {
                 const ref = document.getElementById('load-local__scratch');
                 this.local_workspace = Blockly.inject(ref, {
@@ -245,7 +245,7 @@ export default class LoadModalStore {
 
         const { xml_doc, file_name } = await loadFile();
 
-        load({ block_string: xml_doc, file_name, workspace: Blockly.derivWorkspace });
+        load({ block_string: xml_doc, file_name, workspace: Blockly.derivWorkspace, from: save_types.GOOGLE_DRIVE });
         this.toggleLoadModal();
     }
     /** --------- GD Tab End --------- */

@@ -6,7 +6,6 @@ import { observer as globalObserver } from '../../utils/observer';
 import { removeLimitedBlocks } from '../../utils/workspace';
 import DBotStore from '../dbot-store';
 import { saveWorkspaceToRecent } from '../../utils/local-storage';
-import { save_types } from '../../constants/save-type';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 
@@ -73,6 +72,7 @@ export const load = ({
     drop_event,
     file_name,
     strategy_id,
+    from,
     workspace,
     showIncompatibleStrategyDialog,
 }) => {
@@ -143,7 +143,7 @@ export const load = ({
 
                 workspace.clearUndo();
                 workspace.current_strategy_id = strategy_id || Blockly.utils.genUid();
-                saveWorkspaceToRecent(save_types.UNSAVED);
+                saveWorkspaceToRecent(from);
             }
         }
 

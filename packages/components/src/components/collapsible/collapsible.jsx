@@ -1,13 +1,15 @@
 import classNames from 'classnames';
-import React, { useState, Children } from 'react';
+import React, { useState, useEffect, Children } from 'react';
 import { positionPropType } from './utils';
 import ArrowButton from './arrow-button.jsx';
 
 const Collapsible = ({ as, is_collapsed, position = 'top', children }) => {
     const [is_open, expand] = useState(!is_collapsed);
+    const [should_show_collapsible, setShouldShowCollapsible] = useState(false);
     const toggleExpand = () => expand(!is_open);
     const arrow_button = <ArrowButton is_open={is_open} position={position} onClick={toggleExpand} />;
     const CustomTag = as || 'div';
+    useEffect(() => setShouldShowCollapsible(Children.toArray(children).some(({ props }) => 'collapsible' in props)));
     return (
         <CustomTag
             className={classNames('dc-collapsible', {
@@ -15,7 +17,7 @@ const Collapsible = ({ as, is_collapsed, position = 'top', children }) => {
                 'dc-collapsible--is-collapsed': !is_open,
             })}
         >
-            {position === 'top' && arrow_button}
+            {should_show_collapsible && position === 'top' && arrow_button}
             <div className='dc-collapsible__content'>
                 {Children.map(children, element => {
                     const collapsed_class = classNames('dc-collapsible__item', element.props.className, {
@@ -33,7 +35,7 @@ const Collapsible = ({ as, is_collapsed, position = 'top', children }) => {
                     return React.cloneElement(element, props);
                 })}
             </div>
-            {position === 'bottom' && arrow_button}
+            {should_show_collapsible && position === 'bottom' && arrow_button}
         </CustomTag>
     );
 };

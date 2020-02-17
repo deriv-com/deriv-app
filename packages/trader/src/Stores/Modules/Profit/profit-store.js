@@ -20,6 +20,7 @@ export default class ProfitTableStore extends BaseStore {
     @observable error = '';
     @observable has_loaded_all = false;
     @observable is_loading = false;
+    @observable filtered_date_range;
 
     // `client_loginid` is only used to detect if this is in sync with the client-store, don't rely on
     // this for calculations. Use the client.currency instead.
@@ -170,7 +171,8 @@ export default class ProfitTableStore extends BaseStore {
     }
 
     @action.bound
-    handleDateChange(date_values) {
+    handleDateChange(date_values, { date_range } = {}) {
+        this.filtered_date_range = date_range;
         Object.keys(date_values).forEach(key => {
             this[`date_${key}`] = date_values[key];
         });

@@ -4,23 +4,6 @@ import Collapsible from 'Components/collapsible';
 // import 'Components/dropdown/dropdown.scss';
 import notes from './README.md';
 
-const items = [
-    {
-        text: 'Apple',
-        value: 1,
-        has_tooltip: false,
-        tooltip: '',
-        disabled: false,
-    },
-    {
-        text: 'Orange',
-        value: 2,
-        has_tooltip: false,
-        tooltip: '',
-        disabled: false,
-    },
-];
-
 storiesOf('Collapsible', module)
     .add(
         'Top',
@@ -45,6 +28,20 @@ storiesOf('Collapsible', module)
                 <li collapsible>Will be collapsed</li>
                 <li>Item 2</li>
                 <li collapsible>Will be collapsed</li>
+                <li>Item 4</li>
+                <li>Item 5</li>
+                <li>Item 1</li>
+            </Collapsible>
+        ),
+        {
+            notes,
+        }
+    )
+    .add(
+        'Static',
+        () => (
+            <Collapsible position='top' is_collapsed>
+                <li>Item 2</li>
                 <li>Item 4</li>
                 <li>Item 5</li>
                 <li>Item 1</li>

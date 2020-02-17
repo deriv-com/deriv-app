@@ -17,6 +17,7 @@
     "prettify": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run --silent prettify ;}; f",
     "publish:p2p": "f () { lerna publish from-package ;}; f",
     "serve": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run serve ;}; f",
+    "serve:bot": "f () { lerna exec --scope @deriv/core --scope @deriv/bot-web-ui --parallel -- npm run serve ;}; f",
     "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
     "test": "f () { lerna exec --scope=@deriv/${1:-'*'} --parallel -- npm run test ;}; f",
     "test:eslint": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:eslint ;}; f",

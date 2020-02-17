@@ -1,11 +1,12 @@
 import DBotStore from '../scratch/dbot-store';
+import { save_types } from '../constants/save-type';
 
 /**
  * Save workspace to localStorage
  * @param {String} save_type // constants/save_types.js (unsaved, local, googledrive)
  * @param {Blockly.Events} event // Blockly event object
  */
-export const saveWorkspaceToRecent = (save_type, event = {}) => {
+export const saveWorkspaceToRecent = (save_type = save_types.UNSAVED, event = {}) => {
     if (event.recordUndo === false || event.group === 'load_collections') {
         return;
     }

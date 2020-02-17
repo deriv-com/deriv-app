@@ -88,29 +88,37 @@ export default class ActiveSymbols {
         }, {});
     }
 
-    async getAssetOptions() {
-        await this.retrieveActiveSymbols();
-        const all_market_options = {};
+    /**
+     * Retrieves all symbols and returns an array of symbol objects consisting of symbol and their linked market + submarket.
+     * @returns {Array} Symbols and their submarkets + markets.
+     */
+    getAllSymbols() {
+        const all_symbols = [];
 
         Object.keys(this.processed_symbols).forEach(market_name => {
-            const { submarkets } = this.processed_symbols[market_name];
-            Object.keys(submarkets).forEach(key => {
-                const submarket = submarkets[key];
-                all_market_options[submarket.display_name] = this.getAllSymbolDropdownOptions(submarket);
+            const market = this.processed_symbols[market_name];
+            const { submarkets } = market;
+
+            Object.keys(submarkets).forEach(submarket_name => {
+                const submarket = submarkets[submarket_name];
+                const { symbols } = submarket;
+
+                Object.keys(symbols).forEach(symbol_name => {
+                    const symbol = symbols[symbol_name];
+
+                    all_symbols.push({
+                        market: market_name,
+                        market_display: market.display_name,
+                        submarket: submarket_name,
+                        submarket_display: submarket.display_name,
+                        symbol: symbol_name,
+                        symbol_display: symbol.display_name,
+                    });
+                });
             });
         });
 
-        return all_market_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : all_market_options;
-    }
-
-    // eslint-disable-next-line class-methods-use-this
-    getAllSymbolDropdownOptions(submarket) {
-        return Object.keys(submarket.symbols).map(key => {
-            return {
-                name: submarket.symbols[key].display_name,
-                value: key,
-            };
-        });
+        return all_symbols;
     }
 
     async getMarketDropdownOptions() {

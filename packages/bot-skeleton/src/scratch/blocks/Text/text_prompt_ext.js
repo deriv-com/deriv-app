@@ -46,7 +46,7 @@ Blockly.Blocks.text_prompt_ext = {
         return {
             display_name: localize('Request an input'),
             description: localize(
-                'This block creates a dialog box that uses a customised message to prompt for an input. The input can be either a string of text or a number and can be assigned to a variable. When the dialog box is displayed, your strategy is paused and will only resume after you enter a response and click "OK".'
+                'This block displays a dialog box that uses a customised message to prompt for an input. The input can be either a string of text or a number and can be assigned to a variable. When the dialog box is displayed, your strategy is paused and will only resume after you enter a response and click "OK".'
             ),
         };
     },

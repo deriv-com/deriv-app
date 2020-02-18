@@ -9,6 +9,7 @@ import {
     hasDurationForCallPutEqual,
     isRiseFallEqual,
 } from 'Stores/Modules/Trading/Helpers/allow-equals';
+import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import MobileWidget from '../Elements/mobile-widget.jsx';
 import ContractType from '../../Containers/contract-type.jsx';
 import { LastDigitMobile } from '../../Containers/trade-params-mobile.jsx';
@@ -33,6 +34,8 @@ const ScreenSmall = ({
     const has_allow_equals =
         isRiseFallEqual(contract_type) && (has_callputequal_duration || expiry_type === 'endtime') && has_callputequal;
 
+    const is_digit_type = isDigitTradeType(contract_type);
+
     return !is_trade_enabled ? (
         <div className='mobile-wrapper__content-loader'>
             <TradeParamsLoader speed={2} />
@@ -40,9 +43,11 @@ const ScreenSmall = ({
     ) : (
         <Collapsible position='top' is_collapsed>
             <ContractType />
-            <div collapsible>
-                <LastDigitMobile />
-            </div>
+            {is_digit_type && (
+                <div collapsible='true'>
+                    <LastDigitMobile />
+                </div>
+            )}
             <MobileWidget />
             {has_allow_equals && <AllowEqualsMobile collapsible='true' />}
             <div className='purchase-container'>

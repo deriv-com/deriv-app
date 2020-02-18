@@ -227,6 +227,7 @@ export default class RunPanelStore {
             this.setContractStage(contract_stages.NOT_RUNNING);
             this.error_type = undefined;
             this.is_running = false;
+            ui.setAccountSwitcherDisabledMessage(false);
             RunPanelStore.unregisterBotListeners();
         } else if (this.has_open_contract) {
             // When bot was running and it closes now

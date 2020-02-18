@@ -35,7 +35,7 @@ export default class ContractsFor {
             { trade_type_category: 'lookback' },
             { trade_type_category: 'callputspread' },
         ];
-        (this.quick_strategy_disabled_options = [
+        this.quick_strategy_disabled_options = [
             {
                 trade_type: 'touchnotouch',
             },
@@ -57,8 +57,8 @@ export default class ContractsFor {
             {
                 trade_type: 'overunder',
             },
-        ]),
-            (this.retrieving_contracts_for = {});
+        ];
+        this.retrieving_contracts_for = {};
     }
 
     async getBarriers(symbol, trade_type, duration, barrier_types) {

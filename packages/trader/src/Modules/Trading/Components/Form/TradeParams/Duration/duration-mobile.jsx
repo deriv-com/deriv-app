@@ -62,7 +62,7 @@ const Ticks = ({
     return (
         <div className='trade-params__duration-tickpicker'>
             <TickPicker
-                default_value={selected_duration}
+                default_value={trade_duration_unit === 't' ? trade_duration : selected_duration}
                 submit_label={submit_label}
                 max_value={max_tick}
                 min_value={min_tick}

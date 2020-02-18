@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { PageOverlay } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, PageOverlay, SwipeableWrapper } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
@@ -9,13 +9,10 @@ import { FadeWrapper } from 'App/Components/Animations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import AppRoutes from 'Constants/routes';
-import Digits from 'Modules/Contract/Components/Digits';
-import InfoBox from 'Modules/Contract/Components/InfoBox';
 import { SmartChart } from 'Modules/SmartChart';
 import { connect } from 'Stores/connect';
-import BottomWidgets from '../../SmartChart/Components/bottom-widgets.jsx';
+import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
 import ChartMarker from '../../SmartChart/Components/Markers/marker.jsx';
-import TopWidgets from '../../SmartChart/Components/top-widgets.jsx';
 
 class ContractReplay extends React.Component {
     state = {
@@ -45,19 +42,16 @@ class ContractReplay extends React.Component {
     render() {
         const {
             contract_info,
-            digits_info,
-            display_status,
-            error_message,
             is_chart_loading,
             is_dark_theme,
             is_digit_contract,
-            is_ended,
             is_sell_requested,
             NotificationMessages,
             onClickSell,
-            removeError,
             indicative_status,
         } = this.props;
+
+        if (!contract_info.underlying) return null;
 
         return (
             <FadeWrapper
@@ -78,27 +72,20 @@ class ContractReplay extends React.Component {
                             <div className='replay-chart__container'>
                                 <NotificationMessages />
                                 <ChartLoader is_dark={is_dark_theme} is_visible={is_chart_loading} />
-                                {contract_info.underlying && (
-                                    <ReplayChart
-                                        Digits={
-                                            <Digits
-                                                is_digit_contract={is_digit_contract}
-                                                is_ended={is_ended}
-                                                contract_info={contract_info}
-                                                digits_info={digits_info}
-                                                display_status={display_status}
-                                            />
-                                        }
-                                        InfoBox={
-                                            <InfoBox
-                                                contract_info={contract_info}
-                                                error_message={error_message}
-                                                removeError={removeError}
-                                            />
-                                        }
-                                        symbol={contract_info.underlying}
-                                    />
-                                )}
+                                <DesktopWrapper>
+                                    <ReplayChart />
+                                </DesktopWrapper>
+                                <MobileWrapper>
+                                    <InfoBoxWidget />
+                                    {is_digit_contract ? (
+                                        <SwipeableWrapper>
+                                            <DigitsWidget />
+                                            <ReplayChart />
+                                        </SwipeableWrapper>
+                                    ) : (
+                                        <ReplayChart />
+                                    )}
+                                </MobileWrapper>
                             </div>
                         </React.Suspense>
                     </div>
@@ -111,19 +98,14 @@ class ContractReplay extends React.Component {
 ContractReplay.propTypes = {
     contract_id: PropTypes.number,
     contract_info: PropTypes.object,
-    digits_info: PropTypes.object,
-    display_status: PropTypes.string,
-    error_message: PropTypes.string,
     history: PropTypes.object,
     indicative_status: PropTypes.string,
     is_chart_loading: PropTypes.bool,
     is_dark_theme: PropTypes.bool,
     is_digit_contract: PropTypes.bool,
-    is_ended: PropTypes.bool,
     location: PropTypes.object,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
-    removeError: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
     server_time: PropTypes.object,
 };
@@ -134,16 +116,11 @@ export default withRouter(
         const contract_store = contract_replay.contract_store;
         return {
             contract_info: contract_store.contract_info,
-            digits_info: contract_store.digits_info,
-            display_status: contract_store.display_status,
-            error_message: contract_replay.error_message,
             is_digit_contract: contract_store.is_digit_contract,
-            is_ended: contract_store.is_ended,
             is_sell_requested: contract_replay.is_sell_requested,
             onClickSell: contract_replay.onClickSell,
             onMount: contract_replay.onMount,
             onUnmount: contract_replay.onUnmount,
-            removeError: contract_replay.removeErrorMessage,
             indicative_status: contract_replay.indicative_status,
             is_chart_loading: contract_replay.is_chart_loading,
             is_dark_theme: ui.is_dark_mode_on,
@@ -155,15 +132,11 @@ export default withRouter(
 // CHART -----------------------------------------
 
 class Chart extends React.Component {
-    topWidgets = () => <TopWidgets InfoBox={this.props.InfoBox} is_title_enabled={false} />;
-
-    bottomWidgets = () => <BottomWidgets Digits={this.props.Digits} />;
-
     render() {
         return (
             <SmartChart
                 barriers={this.props.barriers_array}
-                bottomWidgets={this.props.is_digit_contract && isDesktop() ? this.bottomWidgets : null}
+                bottomWidgets={this.props.is_digit_contract && isDesktop() ? ChartBottomWidgets : null}
                 chartControlsWidgets={null}
                 chartType={this.props.chart_type}
                 endEpoch={this.props.end_epoch}
@@ -182,7 +155,7 @@ class Chart extends React.Component {
                 scrollToEpoch={this.props.scroll_to_epoch}
                 chartStatusListener={this.props.setIsChartReady}
                 symbol={this.props.symbol}
-                topWidgets={this.topWidgets}
+                topWidgets={ChartTopWidgets}
                 isConnectionOpened={this.props.is_socket_opened}
                 isStaticChart={false}
                 shouldFetchTradingTimes={!this.props.end_epoch}
@@ -192,7 +165,7 @@ class Chart extends React.Component {
                         key={marker.react_key}
                         marker_config={marker.marker_config}
                         marker_content_props={marker.content_config}
-                        is_bottom_widget_visible={this.props.is_digit_contract}
+                        is_bottom_widget_visible={isDesktop() && this.props.is_digit_contract}
                     />
                 ))}
             </SmartChart>
@@ -252,6 +225,7 @@ const ReplayChart = connect(({ modules, ui, common }) => {
         is_static_chart: contract_replay.is_static_chart,
         barriers_array: contract_store.barriers_array,
         markers_array: contract_store.markers_array,
+        symbol: contract_store.contract_info.underlying,
         wsForget: trade.wsForget,
         wsSubscribe: trade.wsSubscribe,
         wsSendRequest: trade.wsSendRequest,

@@ -323,14 +323,17 @@ export default class PortfolioStore extends BaseStore {
     get active_positions_totals() {
         let indicative = 0;
         let purchase = 0;
+        let profit_loss = 0;
 
         this.active_positions.forEach(portfolio_pos => {
             indicative += +portfolio_pos.indicative;
             purchase += +portfolio_pos.purchase;
+            profit_loss += portfolio_pos.profit_loss;
         });
         return {
             indicative,
             purchase,
+            profit_loss,
         };
     }
 

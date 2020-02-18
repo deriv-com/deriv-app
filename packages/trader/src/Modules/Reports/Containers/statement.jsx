@@ -182,6 +182,7 @@ Statement.propTypes = {
     date_from: PropTypes.number,
     date_to: PropTypes.number,
     error: PropTypes.string,
+    filtered_date_range: PropTypes.object,
     handleScroll: PropTypes.func,
     has_selected_date: PropTypes.bool,
     history: PropTypes.object,

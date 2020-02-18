@@ -112,6 +112,7 @@
     "react-dropzone": "^9.0.0",
     "react-pose": "^4.0.8",
     "react-router-dom": "^5.1.2",
+    "react-swipeable": "^5.5.1",
     "react-tiny-popover": "^3.4.5",
     "react-transition-group": "^4.2.2",
     "tt-react-custom-scrollbars": "^4.2.1-tt2"

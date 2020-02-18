@@ -11,6 +11,7 @@ import {
 } from 'Stores/Modules/Trading/Helpers/allow-equals';
 import MobileWidget from '../Elements/mobile-widget.jsx';
 import ContractType from '../../Containers/contract-type.jsx';
+import { LastDigitMobile } from '../../Containers/trade-params-mobile.jsx';
 import Purchase from '../../Containers/purchase.jsx';
 import 'Sass/app/_common/mobile-widget.scss';
 
@@ -39,8 +40,11 @@ const ScreenSmall = ({
     ) : (
         <Collapsible position='top' is_collapsed>
             <ContractType />
+            <div collapsible>
+                <LastDigitMobile />
+            </div>
             <MobileWidget />
-            {has_allow_equals && <AllowEqualsMobile collapsible />}
+            {has_allow_equals && <AllowEqualsMobile collapsible='true' />}
             <div className='purchase-container'>
                 <Purchase />
             </div>

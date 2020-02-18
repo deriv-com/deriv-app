@@ -1,18 +1,21 @@
 import React from 'react';
-import { DesktopWrapper, Div100vhContainer } from '@deriv/components';
+import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import { connect } from 'Stores/connect';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
-import Digits from 'Modules/Contract/Components/Digits';
 import Test from './test.jsx';
-import TopWidgets from '../../SmartChart/Components/top-widgets.jsx';
+import { ChartBottomWidgets, ChartControlWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
 import FormLayout from '../Components/Form/form-layout.jsx';
-import { symbolChange } from '../../SmartChart/Helpers/symbol';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 
 class Trade extends React.Component {
+    state = {
+        digits: [],
+        tick: {},
+    };
+
     componentDidMount() {
         this.props.onMount();
     }
@@ -20,6 +23,15 @@ class Trade extends React.Component {
     componentWillUnmount() {
         this.props.onUnmount();
     }
+
+    bottomWidgets = ({ digits, tick }) => {
+        this.setState({
+            digits,
+            tick,
+        });
+
+        return null; // render nothing for bottom widgets on chart in mobile
+    };
 
     render() {
         const { NotificationMessages } = this.props;
@@ -40,8 +52,21 @@ class Trade extends React.Component {
                     <React.Suspense
                         fallback={<ChartLoader is_dark={this.props.is_dark_theme} is_visible={!this.props.symbol} />}
                     >
-                        <ChartLoader is_visible={this.props.is_chart_loading} />
-                        <ChartTrade />
+                        <DesktopWrapper>
+                            <ChartLoader is_visible={this.props.is_chart_loading} />
+                            <ChartTrade />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <ChartLoader is_visible={this.props.is_chart_loading} />
+                            {this.props.show_digits_stats ? (
+                                <SwipeableWrapper>
+                                    <DigitsWidget digits={this.state.digits} tick={this.state.tick} />
+                                    <ChartTrade bottomWidgets={this.bottomWidgets} />
+                                </SwipeableWrapper>
+                            ) : (
+                                <ChartTrade />
+                            )}
+                        </MobileWrapper>
                     </React.Suspense>
 
                     {/* Remove Test component for debugging below for production release */}
@@ -60,6 +85,7 @@ export default connect(({ modules, ui }) => ({
     form_components: modules.trade.form_components,
     is_chart_loading: modules.trade.is_chart_loading,
     is_market_closed: modules.trade.is_market_closed,
+    show_digits_stats: modules.trade.show_digits_stats,
     is_trade_enabled: modules.trade.is_trade_enabled,
     onMount: modules.trade.onMount,
     onUnmount: modules.trade.onUnmount,
@@ -70,58 +96,7 @@ export default connect(({ modules, ui }) => ({
 // CHART (ChartTrade)--------------------------------------------------------
 
 /* eslint-disable */
-import ControlWidgets from '../../SmartChart/Components/control-widgets.jsx';
 import { SmartChart } from 'Modules/SmartChart';
-
-// --- BottomWidgets for chart
-// TODO: fix bottom widgets jumps
-const BottomDigits = ({
-    is_digit_contract,
-    contract_info,
-    digits,
-    digits_info,
-    display_status,
-    is_ended,
-    tick,
-    underlying,
-}) => (
-    <div className='bottom-widgets'>
-        <Digits
-            tick={tick}
-            digits_array={digits}
-            is_trade_page
-            contract_info={contract_info}
-            digits_info={digits_info}
-            display_status={display_status}
-            is_digit_contract={is_digit_contract}
-            is_ended={is_ended}
-            underlying={underlying}
-        />
-    </div>
-);
-
-const ChartBottomWidgets = connect(({ modules }) => ({
-    contract_info: modules.contract_trade.last_contract.contract_info || {},
-    digits_info: modules.contract_trade.last_contract.digits_info || {},
-    display_status: modules.contract_trade.last_contract.display_status,
-    is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
-    is_ended: modules.contract_trade.last_contract.is_ended,
-    underlying: modules.trade.symbol,
-}))(BottomDigits);
-
-// ---- InfoBox for chart
-const LazyTopWidgets = ({ onSymbolChange }) => (
-    <TopWidgets
-        InfoBox={null}
-        is_mobile={isMobile()}
-        is_title_enabled={true}
-        onSymbolChange={symbolChange(onSymbolChange)}
-    />
-);
-
-const ChartTopWidgets = connect(({ modules }) => ({
-    onSymbolChange: modules.trade.onChange,
-}))(LazyTopWidgets);
 
 // ChartMarkers --------------------------
 const Markers = ({ markers_array, is_dark_theme, granularity, currency }) =>
@@ -137,6 +112,7 @@ const Markers = ({ markers_array, is_dark_theme, granularity, currency }) =>
             />
         );
     });
+
 const ChartMarkers = connect(({ modules, ui, client }) => ({
     markers_array: modules.contract_trade.markers_array,
     is_digit_contract: modules.contract_trade.is_digit_contract,
@@ -146,15 +122,12 @@ const ChartMarkers = connect(({ modules, ui, client }) => ({
 }))(Markers);
 
 class ChartTradeClass extends React.Component {
-    chartControlsWidgets = () => (
-        <ControlWidgets updateChartType={this.props.updateChartType} updateGranularity={this.props.updateGranularity} />
-    );
-
     bottomWidgets = ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />;
 
     componentDidMount() {
         performance.mark('smart-charts-mounted');
     }
+
     componentDidUpdate(prevProps) {
         if (prevProps.should_refresh) this.props.resetRefresh();
     }
@@ -169,10 +142,10 @@ class ChartTradeClass extends React.Component {
         return (
             <SmartChart
                 barriers={barriers}
-                bottomWidgets={show_digits_stats && isDesktop() ? this.bottomWidgets : null}
+                bottomWidgets={show_digits_stats && isDesktop() ? this.bottomWidgets : this.props.bottomWidgets}
                 crosshairState={isMobile() ? 0 : undefined}
                 showLastDigitStats={isDesktop() ? show_digits_stats : false}
-                chartControlsWidgets={isDesktop() ? this.chartControlsWidgets : null}
+                chartControlsWidgets={isDesktop() ? ChartControlWidgets : null}
                 chartStatusListener={v => this.props.setChartStatus(!v)}
                 chartType={this.props.chart_type}
                 id='trade'
@@ -201,8 +174,6 @@ class ChartTradeClass extends React.Component {
 
 const ChartTrade = connect(({ modules, ui, common }) => ({
     is_socket_opened: common.is_socket_opened,
-    updateChartType: modules.contract_trade.updateChartType,
-    updateGranularity: modules.contract_trade.updateGranularity,
     granularity: modules.contract_trade.granularity,
     chart_type: modules.contract_trade.chart_type,
     settings: {

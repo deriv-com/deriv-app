@@ -6,12 +6,12 @@ import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { urlFor } from '_common/url';
-import { getContractDurationType } from 'Modules/Reports/Helpers/market-underlying';
 import { website_name } from 'App/Constants/app-config';
 import DataTable from 'App/Components/Elements/DataTable';
 import DataList from 'App/Components/Elements/DataList';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar';
 import { getContractPath } from 'App/Components/Routes/helpers';
+import { getContractDurationType } from 'Modules/Reports/Helpers/market-underlying';
 import { getSupportedContracts } from 'Constants';
 import { connect } from 'Stores/connect';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
@@ -206,6 +206,7 @@ ProfitTable.propTypes = {
     date_from: PropTypes.number,
     date_to: PropTypes.number,
     error: PropTypes.string,
+    filtered_date_range: PropTypes.object,
     handleDateChange: PropTypes.func,
     handleScroll: PropTypes.func,
     has_selected_date: PropTypes.bool,

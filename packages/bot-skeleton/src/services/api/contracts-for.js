@@ -35,7 +35,30 @@ export default class ContractsFor {
             { trade_type_category: 'lookback' },
             { trade_type_category: 'callputspread' },
         ];
-        this.retrieving_contracts_for = {};
+        (this.quick_strategy_disabled_options = [
+            {
+                trade_type: 'touchnotouch',
+            },
+            {
+                trade_type: 'endinout',
+            },
+            {
+                trade_type: 'staysinout',
+            },
+            {
+                trade_type: 'highlowticks',
+            },
+            {
+                trade_type: 'higherlower',
+            },
+            {
+                trade_type: 'matchesdiffers',
+            },
+            {
+                trade_type: 'overunder',
+            },
+        ]),
+            (this.retrieving_contracts_for = {});
     }
 
     async getBarriers(symbol, trade_type, duration, barrier_types) {
@@ -390,7 +413,7 @@ export default class ContractsFor {
         return trade_type_options;
     }
 
-    async getTradeTypeByTradeCategory(market, submarket, symbol, trade_type_category) {
+    async getTradeTypeByTradeCategory(market, submarket, symbol, trade_type_category, is_quick_strategy = false) {
         const { NOT_AVAILABLE_DURATIONS, TRADE_TYPE_CATEGORIES, opposites } = config;
         const subcategories = TRADE_TYPE_CATEGORIES[trade_type_category];
         const dropdown_options = [];
@@ -400,13 +423,16 @@ export default class ContractsFor {
                 const trade_type = subcategories[i];
                 const durations = await this.getDurations(symbol, trade_type); // eslint-disable-line no-await-in-loop
                 const has_durations = JSON.stringify(durations) !== JSON.stringify(NOT_AVAILABLE_DURATIONS);
-                const is_disabled = this.isDisabledOption({
-                    market,
-                    submarket,
-                    symbol,
-                    trade_type_category,
-                    trade_type,
-                });
+                const is_disabled = this.isDisabledOption(
+                    {
+                        market,
+                        submarket,
+                        symbol,
+                        trade_type_category,
+                        trade_type,
+                    },
+                    is_quick_strategy
+                );
 
                 if (!is_disabled && has_durations) {
                     const types = opposites[trade_type.toUpperCase()];
@@ -422,7 +448,7 @@ export default class ContractsFor {
         return dropdown_options;
     }
 
-    async getTradeTypeCategories(market, submarket, symbol) {
+    async getTradeTypeCategories(market, submarket, symbol, is_quick_strategy = false) {
         const { TRADE_TYPE_CATEGORY_NAMES, NOT_AVAILABLE_DROPDOWN_OPTIONS } = config;
         const contracts = await this.getContractsFor(symbol);
         const trade_type_categories = [];
@@ -432,12 +458,15 @@ export default class ContractsFor {
             const trade_type_category_name = this.getTradeTypeCategoryNameByTradeType(contract.contract_category);
 
             if (trade_type_category_name) {
-                const is_disabled = this.isDisabledOption({
-                    market,
-                    submarket,
-                    symbol,
-                    trade_type_category,
-                });
+                const is_disabled = this.isDisabledOption(
+                    {
+                        market,
+                        submarket,
+                        symbol,
+                        trade_type_category,
+                    },
+                    is_quick_strategy
+                );
 
                 if (!is_disabled) {
                     const is_existing_category =
@@ -492,10 +521,19 @@ export default class ContractsFor {
         return trade_types.length > 0 ? trade_types : config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
     }
 
-    isDisabledOption(compare_obj) {
-        return this.disabled_options.some(disabled_obj =>
+    isDisabledOption(compare_obj, is_quick_strategy = false) {
+        const should_disabled = this.disabled_options.some(disabled_obj =>
             Object.keys(disabled_obj).every(prop => compare_obj[prop] === disabled_obj[prop])
         );
+
+        let should_disabled_in_quick_strategy = false;
+        if (is_quick_strategy) {
+            should_disabled_in_quick_strategy = this.quick_strategy_disabled_options.some(disabled_obj =>
+                Object.keys(disabled_obj).every(prop => compare_obj[prop] === disabled_obj[prop])
+            );
+        }
+
+        return should_disabled_in_quick_strategy || should_disabled;
     }
 
     disposeCache() {

@@ -169,7 +169,7 @@ export default class QuickStrategyStore {
         const { contracts_for } = ApiHelpers.instance;
         const market = await contracts_for.getMarketBySymbol(symbol);
         const submarket = await contracts_for.getSubmarketBySymbol(symbol);
-        const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(trade_type);
+        const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(trade_type, true);
 
         const { strategies } = config;
         const strategy_name = Object.keys(strategies).find(s => strategies[s].index === this.active_index);
@@ -253,9 +253,9 @@ export default class QuickStrategyStore {
     async updateTradeTypeDropdown(symbol, setFieldValue) {
         const { contracts_for } = ApiHelpers.instance;
         const trade_type_options = [];
-        const market = contracts_for.getMarketBySymbol(symbol);
-        const submarket = contracts_for.getSubmarketBySymbol(symbol);
-        const trade_type_categories = await contracts_for.getTradeTypeCategories(market, submarket, symbol);
+        const market = contracts_for.getMarketBySymbol(symbol, true);
+        const submarket = contracts_for.getSubmarketBySymbol(symbol, true);
+        const trade_type_categories = await contracts_for.getTradeTypeCategories(market, submarket, symbol, true);
 
         for (let i = 0; i < trade_type_categories.length; i++) {
             const trade_type_category = trade_type_categories[i]; // e.g. ['Up/Down', 'callput']
@@ -264,7 +264,8 @@ export default class QuickStrategyStore {
                 market,
                 submarket,
                 symbol,
-                trade_type_category[1]
+                trade_type_category[1],
+                true
             );
 
             trade_types.forEach(trade_type => {
@@ -297,7 +298,7 @@ export default class QuickStrategyStore {
     @action.bound
     async updateDurationDropdown(symbol, trade_type, setFieldValue) {
         const { contracts_for } = ApiHelpers.instance;
-        const durations = await contracts_for.getDurations(symbol, trade_type);
+        const durations = await contracts_for.getDurations(symbol, trade_type, true);
         const duration_options = durations.map(duration => ({
             text: duration.display,
             value: duration.unit,

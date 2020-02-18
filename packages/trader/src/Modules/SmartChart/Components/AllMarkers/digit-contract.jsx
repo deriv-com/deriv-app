@@ -10,7 +10,7 @@ const DigitContract = RawMarkerMaker(
         ctx,
         points: [start, ...ticks],
         prices: [entry_tick_top, exit_tick_top],
-        is_last_contract,
+        should_highlight_contract,
         is_dark_theme,
         granularity,
         contract_info: { status, profit, is_sold, tick_stream, tick_count },
@@ -31,7 +31,7 @@ const DigitContract = RawMarkerMaker(
             expiry.top = exit_tick_top;
         }
 
-        const opacity = getOpacity(is_last_contract, is_sold, [start.left, expiry.left]);
+        const opacity = getOpacity(should_highlight_contract);
         const scale = calculateScale(start.zoom);
         const canvas_height = ctx.canvas.height / window.devicePixelRatio;
 
@@ -40,7 +40,7 @@ const DigitContract = RawMarkerMaker(
         const status_color = getColor(status, is_dark_theme, profit);
         const status_color_with_opacity = status_color.concat(opacity);
 
-        const should_draw_vertical_line = is_last_contract && !is_sold;
+        const should_draw_vertical_line = should_highlight_contract && !is_sold;
         if (should_draw_vertical_line) {
             if (start.visible) {
                 Canvas.drawVerticalLabelledLine(0, [

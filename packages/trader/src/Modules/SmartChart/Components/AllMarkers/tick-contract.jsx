@@ -10,7 +10,7 @@ const TickContract = RawMarkerMaker(
         ctx,
         points: [start, reset_time, ...ticks],
         prices: [barrier, entry_tick_top], // TODO: support two barrier contracts
-        is_last_contract,
+        should_highlight_contract,
         is_dark_theme,
         granularity,
         contract_info: { status, profit, is_sold, tick_count },
@@ -31,7 +31,7 @@ const TickContract = RawMarkerMaker(
         const entry = ticks[0];
 
         const scale = calculateScale(start.zoom);
-        const opacity = getOpacity(is_last_contract, is_sold, [start.left, exit.left]);
+        const opacity = getOpacity(should_highlight_contract);
 
         const foreground_color = getColor('fg', is_dark_theme).concat(opacity);
         const background_color = getColor('bg', is_dark_theme).concat(opacity);
@@ -39,7 +39,7 @@ const TickContract = RawMarkerMaker(
         const status_color_with_opacity = status_color.concat(opacity);
 
         const has_reset_time = reset_time && reset_time.epoch;
-        const should_draw_vertical_line = is_last_contract && !is_sold;
+        const should_draw_vertical_line = should_highlight_contract && !is_sold;
         if (should_draw_vertical_line) {
             if (start.visible) {
                 Canvas.drawVerticalLabelledLine(0, [
@@ -89,7 +89,7 @@ const TickContract = RawMarkerMaker(
 
         // barrier line
         if (is_reset_barrier_expired) {
-            if (!is_last_contract) {
+            if (is_sold) {
                 Canvas.drawLine(0, [
                     ctx,
                     [reset_time.left, entry_tick_top, reset_time.left, barrier],
@@ -129,7 +129,7 @@ const TickContract = RawMarkerMaker(
             ]);
         }
 
-        if (is_last_contract && !is_sold) {
+        if (should_highlight_contract && !is_sold) {
             const points = is_reset_barrier_expired
                 ? [reset_time.left, reset_time.top, exit.left, exit.top]
                 : [entry.left, entry.top, exit.left, exit.top];
@@ -138,7 +138,7 @@ const TickContract = RawMarkerMaker(
         }
 
         // ticks for last contract
-        if (granularity === 0 && is_last_contract && !is_sold) {
+        if (granularity === 0 && should_highlight_contract && !is_sold) {
             ticks
                 .filter(tick => tick.visible)
                 .forEach(tick => {

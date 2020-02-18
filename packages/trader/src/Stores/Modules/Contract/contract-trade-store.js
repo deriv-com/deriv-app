@@ -84,16 +84,22 @@ export default class ContractTradeStore extends BaseStore {
             .filter(m => m)
             .map(m => toJS(m));
 
-        // Set last contract to the last running contract.
+        // The following contains logic to should highlight on chart.
         if (markers.length) {
-            for (let i = markers.length - 1; i >= 0; i--) {
-                const marker = markers[i];
-                if (!marker.contract_info.is_sold) {
-                    marker.is_last_contract = true;
+            let should_highlight_contract_index;
+
+            for (let index = markers.length - 1; index >= 0; index--) {
+                if (!markers[index].contract_info.is_sold) {
+                    should_highlight_contract_index = index;
                     break;
+                } else {
+                    should_highlight_contract_index = markers.length - 1;
                 }
             }
+
+            markers[should_highlight_contract_index].should_highlight_contract = true;
         }
+
         return markers;
     }
 

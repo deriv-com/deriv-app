@@ -1,4 +1,4 @@
-import { calculateHexOpacity, calculateFadeHexOpacity } from './calculations';
+import { calculateHexOpacity } from './calculations';
 
 export const getColor = (status, is_dark_theme, profit) => {
     const DARK = {
@@ -28,15 +28,7 @@ export const getColor = (status, is_dark_theme, profit) => {
     return color;
 };
 
-export const getOpacity = (is_last_contract, is_sold, points) => {
-    let opacity = '';
-    if (is_last_contract) {
-        if (is_sold) {
-            opacity = calculateFadeHexOpacity(points[0], points[1]);
-        }
-    } else {
-        opacity = calculateHexOpacity(0.4);
-    }
-
-    return opacity;
+export const getOpacity = should_highlight_contract => {
+    if (!should_highlight_contract) return calculateHexOpacity(0.4);
+    return '';
 };

@@ -10,7 +10,7 @@ const NonTickContract = RawMarkerMaker(
     ({
         ctx,
         points: [start, expiry, entry, exit, current_spot, reset_time],
-        is_last_contract,
+        should_highlight_contract,
         prices: [barrier, entry_tick_top, exit_tick_top], // TODO: support two barrier contracts
         is_dark_theme,
         granularity,
@@ -43,7 +43,7 @@ const NonTickContract = RawMarkerMaker(
             }
         }
 
-        const opacity = getOpacity(is_last_contract, is_sold, [start.left, expiry.left]);
+        const opacity = getOpacity(should_highlight_contract);
         const scale = calculateScale(start.zoom);
         const canvas_height = ctx.canvas.height / window.devicePixelRatio;
 
@@ -52,14 +52,14 @@ const NonTickContract = RawMarkerMaker(
         const status_color = getColor(status, is_dark_theme, profit);
         const status_color_with_opacity = status_color.concat(opacity);
 
-        const show_profit = is_last_contract && !is_sold && profit && start.visible && barrier;
+        const show_profit = should_highlight_contract && !is_sold && profit && start.visible && barrier;
 
         if (barrier) {
             barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
         }
 
         const has_reset_time = reset_time && reset_time.epoch;
-        const should_draw_vertical_line = is_last_contract && !is_sold;
+        const should_draw_vertical_line = should_highlight_contract && !is_sold;
         if (should_draw_vertical_line) {
             if (start.visible) {
                 Canvas.drawVerticalLabelledLine(0, [
@@ -112,7 +112,7 @@ const NonTickContract = RawMarkerMaker(
         // barrier line
         if (barrier && entry && (start.visible || expiry.visible || Math.sign(start.left) !== Math.sign(expiry.left))) {
             if (is_reset_barrier_expired) {
-                if (!is_last_contract) {
+                if (is_sold) {
                     Canvas.drawLine(0, [
                         ctx,
                         [reset_time.left, entry_tick_top, reset_time.left, barrier],
@@ -152,7 +152,7 @@ const NonTickContract = RawMarkerMaker(
             }
         }
 
-        if (is_last_contract && !is_sold) {
+        if (should_highlight_contract && !is_sold) {
             const points = is_reset_barrier_expired
                 ? [reset_time.left, reset_time.top, current_spot.left, current_spot.top]
                 : [entry.left, entry.top, current_spot.left, current_spot.top];

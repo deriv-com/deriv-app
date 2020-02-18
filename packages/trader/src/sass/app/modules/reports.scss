@@ -374,7 +374,59 @@ $side-padding: 1.2em;
 
 /** @define open-positions; weak */
 .open-positions {
-    height: 100%;
+    @include desktop {
+        height: 100%;
+    }
+
+    @include mobile {
+        flex: 1;
+
+        &__data-list-body,
+        &__data-list-footer {
+            padding: 0 24px;
+        }
+        &__data-list-body {
+            height: 100%;
+            height: calc(100% - 95px);
+
+            .dc-progress-bar__container {
+                max-width: 120px;
+            }
+        }
+        &__data-list-footer {
+            height: 95px;
+            min-height: 95px;
+            font-weight: bold;
+            align-items: flex-start;
+            padding: 16px 40px 0px;
+
+            &--title {
+                font-size: 1.4rem;
+                font-weight: bold;
+                color: var(--text-prominent);
+            }
+            &--content {
+                flex: 1;
+                padding-left: 32px;
+                display: flex;
+                justify-content: space-between;
+
+                .purchase,
+                .indicative {
+                    padding-bottom: 8px;
+                }
+            }
+            .data-list__row-title {
+                font-size: 1rem;
+                line-height: 1.4rem;
+            }
+            .data-list__row-content {
+                font-size: 1rem;
+                line-height: 1.4rem;
+                color: var(--text-prominent);
+            }
+        }
+    }
 
     &__content {
         width: 100%;
@@ -444,11 +496,18 @@ $side-padding: 1.2em;
         grid-template-columns: 0.8fr 1.2fr 1fr 1fr 1fr 1fr 1fr;
         width: 100%;
     }
+    &__reports-meta {
+        @include mobile {
+            padding-bottom: 0px;
+        }
+    }
     .buy_price,
     .payout,
     .indicative,
     .profit {
-        justify-content: flex-end;
+        @include desktop {
+            justify-content: flex-end;
+        }
     }
     .type {
         padding-right: 0;
@@ -472,6 +531,21 @@ $side-padding: 1.2em;
                 padding: 0;
                 margin-right: 8px;
                 white-space: nowrap;
+            }
+        }
+    }
+    .market-symbol-icon {
+        @include mobile {
+            width: 80px;
+        }
+    }
+    .reference {
+        @include mobile {
+            display: flex;
+            flex-direction: row;
+
+            &__row-title {
+                margin-right: 4px;
             }
         }
     }

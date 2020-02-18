@@ -1,10 +1,11 @@
 import classNames from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
+import PropTypes from 'prop-types';
+import React, { useCallback } from 'react';
 import { VariableSizeList as List } from 'react-window';
 import { NavLink } from 'react-router-dom';
 import { ThemedScrollbars } from '@deriv/components';
-import PropTypes from 'prop-types';
-import React, { useCallback } from 'react';
+import { isMobile } from '@deriv/shared/utils/screen';
 import DataListCell from './data-list-cell.jsx';
 
 const ListScrollbar = React.forwardRef((props, ref) => <ExtendedScrollbars {...props} forwardedRef={ref} />);
@@ -99,7 +100,7 @@ class DataList extends React.PureComponent {
                         itemCount={data_source.length}
                         itemSize={getRowSize}
                         width={this.state.width}
-                        outerElementType={is_empty ? null : ListScrollbar}
+                        outerElementType={is_empty || isMobile() ? null : ListScrollbar}
                     >
                         {this.rowRenderer}
                     </List>

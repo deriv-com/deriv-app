@@ -1,6 +1,12 @@
 # Collapsible component
 Renders a collapsible component on a list of children. 
-Can also be used dynamically in situations where there might be no collapsible item. In that case, it will just renders a static box. 
+Can also be used dynamically in situations where there might be no collapsible item. In that case, it will just renders a static box.
+
+#### Supported Gestures:
+- DragUp
+- DragDown
+- SwipeUp
+- SwipeDown 
 ## Usage
  
 ```jsx

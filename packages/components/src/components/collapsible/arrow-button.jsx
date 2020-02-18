@@ -1,12 +1,21 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { positionPropType } from './utils';
 import Icon from '../icon';
 
 const IconArrow = props => <Icon icon='IcChevronDownBold' {...props} />;
 
-const ArrowButton = ({ position, onClick, is_open }) => {
+const ArrowButton = ({ position, onClick }) => {
+    const [is_open, expand] = useState(false);
+
+    const toggleExpand = () => {
+        expand(!is_open);
+        if (typeof onClick === 'function') {
+            onClick(!is_open);
+        }
+    };
+
     let icon_arrow;
     switch (position) {
         case 'top':
@@ -31,7 +40,7 @@ const ArrowButton = ({ position, onClick, is_open }) => {
     }
 
     return (
-        <div className='dc-collapsible__button' onClick={onClick}>
+        <div className='dc-collapsible__button' onClick={toggleExpand}>
             {icon_arrow}
         </div>
     );

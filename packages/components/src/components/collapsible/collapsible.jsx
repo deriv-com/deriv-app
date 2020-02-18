@@ -6,8 +6,8 @@ import ArrowButton from './arrow-button.jsx';
 const Collapsible = ({ as, is_collapsed, position = 'top', children }) => {
     const [is_open, expand] = useState(!is_collapsed);
     const [should_show_collapsible, setShouldShowCollapsible] = useState(false);
-    const toggleExpand = () => expand(!is_open);
-    const arrow_button = <ArrowButton is_open={is_open} position={position} onClick={toggleExpand} />;
+    const toggleExpand = v => expand(v);
+    const arrow_button = <ArrowButton position={position} onClick={toggleExpand} />;
     const CustomTag = as || 'div';
     useEffect(() => setShouldShowCollapsible(Children.toArray(children).some(({ props }) => 'collapsible' in props)));
     return (

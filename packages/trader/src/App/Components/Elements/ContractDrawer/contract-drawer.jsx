@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
-import { Button, DesktopWrapper, MobileWrapper, Icon, Money } from '@deriv/components';
+import { Button, Collapsible, DesktopWrapper, MobileWrapper, Icon, Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import ContractAudit from 'App/Components/Elements/ContractAudit';
@@ -27,10 +27,15 @@ import ContractCard from './contract-card.jsx';
 class ContractDrawer extends Component {
     state = {
         is_shade_on: false,
+        should_show_contract_audit: false,
     };
 
     handleShade = shade => {
         this.setState({ is_shade_on: shade });
+    };
+
+    toggleContractAudit = is_open => {
+        this.setState({ should_show_contract_audit: is_open });
     };
 
     getBodyContent() {
@@ -144,6 +149,7 @@ class ContractDrawer extends Component {
                     )}
                 </DesktopWrapper>
                 <MobileWrapper>
+                    {!!is_sold && <Collapsible.ArrowButton position='top' onClick={this.toggleContractAudit} />}
                     <ContractCard contract_info={contract_info} profit_loss={+profit} is_sold={!!is_sold}>
                         <ContractCardHeader>
                             <div className={classNames('contract-card__grid', 'contract-card__grid-underlying-trade')}>

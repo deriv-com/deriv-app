@@ -1,11 +1,9 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Localize } from '@deriv/translations';
 import { TickProgress } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 
 const ProgressTicksMobile = ({ current_tick, ticks_count }) => {
-    const arr_ticks = [...Array(ticks_count).keys()];
     return (
         <div className='progress-slider__ticks'>
             <span className='progress-slider__ticks-caption'>

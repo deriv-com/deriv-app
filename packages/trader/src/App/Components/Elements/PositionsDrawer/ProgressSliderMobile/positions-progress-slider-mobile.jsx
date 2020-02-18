@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { CircularProgress } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import ProgressTicksMobile from './progress-ticks-mobile.jsx';
 import { getTimePercentage } from '../helpers';
 import RemainingTime from '../../../../Containers/remaining-time.jsx';
-import { CircularProgress } from '@deriv/components';
 
 const ProgressSliderMobile = ({
     className,

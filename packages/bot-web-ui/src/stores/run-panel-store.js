@@ -224,9 +224,11 @@ export default class RunPanelStore {
             this.error_type = undefined;
         } else if (this.error_type === error_types.UNRECOVERABLE_ERRORS) {
             // When error happens and its recoverable_errors, bot should stop
-            this.setContractStage(contract_stages.NOT_RUNNING);
+            const { ui } = this.root_store.core;
             this.error_type = undefined;
             this.is_running = false;
+
+            this.setContractStage(contract_stages.NOT_RUNNING);
             ui.setAccountSwitcherDisabledMessage(false);
             RunPanelStore.unregisterBotListeners();
         } else if (this.has_open_contract) {

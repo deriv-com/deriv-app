@@ -37,16 +37,13 @@ export default class ContractsFor {
         ];
         this.quick_strategy_disabled_options = [
             {
-                trade_type: 'touchnotouch',
+                trade_type_category: 'touchnotouch',
             },
             {
-                trade_type: 'endinout',
+                trade_type_category: 'inout',
             },
             {
-                trade_type: 'staysinout',
-            },
-            {
-                trade_type: 'highlowticks',
+                trade_type_category: 'highlowticks',
             },
             {
                 trade_type: 'higherlower',

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { DesktopWrapper, MobileWrapper, PageOverlay, SwipeableWrapper } from '@deriv/components';
+import { DesktopWrapper, Div100vhContainer, MobileWrapper, PageOverlay, SwipeableWrapper } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
@@ -60,7 +60,12 @@ class ContractReplay extends React.Component {
                 keyname='contract-details-wrapper'
             >
                 <PageOverlay header={localize('Contract details')} onClickClose={this.onClickClose}>
-                    <div id='dt_contract_replay_container' className='trade-container__replay'>
+                    <Div100vhContainer
+                        id='dt_contract_replay_container'
+                        className='trade-container__replay'
+                        is_disabled={isDesktop()}
+                        height_offset='80px' // * 80px = header + contract details header heights in mobile
+                    >
                         <ContractDrawer
                             contract_info={contract_info}
                             is_dark_theme={is_dark_theme}
@@ -88,7 +93,7 @@ class ContractReplay extends React.Component {
                                 </MobileWrapper>
                             </div>
                         </React.Suspense>
-                    </div>
+                    </Div100vhContainer>
                 </PageOverlay>
             </FadeWrapper>
         );

@@ -60,12 +60,14 @@
     @include mobile {
         // no footer:
         margin-bottom: 0;
-        height: calc(100vh - #{$HEADER_HEIGHT});
+        height: calc(100vh - #{$MOBILE_HEADER_HEIGHT});
         position: relative;
+        margin-top: $MOBILE_HEADER_HEIGHT;
 
         .ciq-menu {
             position: absolute;
             top: 0;
+            margin: 0.8rem;
         }
         .cq-symbol-select-btn {
             padding: 0.3rem 0.9rem;
@@ -92,6 +94,9 @@
             height: 100%;
             z-index: 1;
             top: 0;
+        }
+        .contract-details-wrapper {
+            height: inherit;
         }
     }
 }

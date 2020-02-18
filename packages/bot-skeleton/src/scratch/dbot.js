@@ -26,24 +26,26 @@ class DBot {
             __webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
             ApiHelpers.setInstance(api_helpers_store);
             DBotStore.setInstance(store);
+            const window_width = window.innerWidth;
+            let workspaceScale = 1;
 
+            if (window_width < 1440) {
+                const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
+                const zoom_scale = scratch_div_width / window_width;
+                workspaceScale = zoom_scale;
+            }
             const el_scratch_div = document.getElementById('scratch_div');
             this.workspace = Blockly.inject(el_scratch_div, {
                 grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
                 media: `${__webpack_public_path__}media/`, // eslint-disable-line
                 toolbox: toolbox_xml,
                 trashcan: true,
-                zoom: { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
+                zoom: { wheel: true, startScale: workspaceScale },
             });
 
             this.workspace.cached_xml = { main: main_xml, toolbox: toolbox_xml };
             Blockly.derivWorkspace = this.workspace;
-            const window_width = window.innerWidth;
-            if (window_width < 1440) {
-                const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
-                const zoom_scale = scratch_div_width / window_width;
-                Blockly.derivWorkspace.setScale(zoom_scale);
-            }
+
             this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
             this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
             this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
@@ -55,7 +57,9 @@ class DBot {
 
             // Push main.xml to workspace and reset the undo stack.
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), this.workspace);
-            this.workspace.cleanUp();
+            if (window_width < 1440) {
+                this.workspace.cleanUp();
+            }
             this.workspace.clearUndo();
             const { handleFileChange } = DBotStore.instance;
             const drop_zone = document.body;

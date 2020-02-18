@@ -3,6 +3,7 @@ import { Provider } from 'mobx-react';
 import React from 'react';
 import { runIrreversibleEvents, ApiHelpers, DBot, ServerTime } from '@deriv/bot-skeleton';
 import './public-path'; // Leave this here! OK boss!
+import Audio from './components/audio.jsx';
 import FooterExtension from './components/footer-extension.jsx';
 import MainContent from './components/main-content.jsx';
 import NotificationMessages from './components/notification-messages.jsx';
@@ -163,6 +164,7 @@ class App extends React.Component {
                     <RunPanel />
                     <QuickStrategy />
                     <FooterExtension />
+                    <Audio />
                 </div>
             </Provider>
         );

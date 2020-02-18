@@ -97,6 +97,12 @@ export default class ContractTradeStore extends BaseStore {
                 }
             }
 
+            markers.map((marker, index) => {
+                if (marker.contract_info.is_hover) {
+                    should_highlight_contract_index = index;
+                }
+            });
+
             markers[should_highlight_contract_index].should_highlight_contract = true;
         }
 
@@ -104,7 +110,7 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     @action.bound
-    addContract({ barrier, contract_id, contract_type, start_time, longcode, underlying, is_tick_contract }) {
+    addContract({ barrier, contract_id, contract_type, start_time, longcode, underlying, is_tick_contract, is_hover }) {
         const contract_exists = this.contracts.filter(c => c.contract_id === contract_id).length;
         if (contract_exists) {
             return; /* do nothing */
@@ -117,6 +123,7 @@ export default class ContractTradeStore extends BaseStore {
             contract_type,
             longcode,
             underlying,
+            is_hover,
         });
         this.contracts.push(contract);
 
@@ -165,6 +172,15 @@ export default class ContractTradeStore extends BaseStore {
                 }
             });
         }
+    }
+
+    @action.bound
+    updateContract(new_contract) {
+        this.contracts.forEach(contract => {
+            if (contract.contract_id === new_contract.contract_id) {
+                contract.populateConfig(new_contract);
+            }
+        });
     }
 
     @computed

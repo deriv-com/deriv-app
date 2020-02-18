@@ -29,6 +29,7 @@ class PositionsDrawer extends React.Component {
             is_positions_drawer_on,
             onClickSell,
             onClickRemove,
+            onHoverPosition,
             toggleDrawer,
             toggleUnsupportedContractModal,
         } = this.props;
@@ -56,6 +57,7 @@ class PositionsDrawer extends React.Component {
                                 onClickRemove={onClickRemove}
                                 key={portfolio_position.id}
                                 currency={currency}
+                                onHoverPosition={onHoverPosition}
                                 toggleUnsupportedContractModal={toggleUnsupportedContractModal}
                                 {...portfolio_position}
                             />
@@ -118,6 +120,7 @@ PositionsDrawer.propTypes = {
     is_positions_drawer_on: PropTypes.bool,
     onClickRemove: PropTypes.func,
     onClickSell: PropTypes.func,
+    onHoverPosition: PropTypes.func,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     toggleDrawer: PropTypes.func,
@@ -131,6 +134,7 @@ export default connect(({ modules, client, ui }) => ({
     is_loading: modules.portfolio.is_loading,
     onClickSell: modules.portfolio.onClickSell,
     onClickRemove: modules.portfolio.removePositionById,
+    onHoverPosition: modules.portfolio.onHoverPosition,
     onMount: modules.portfolio.onMount,
     onUnmount: modules.portfolio.onUnmount,
     is_positions_drawer_on: ui.is_positions_drawer_on,

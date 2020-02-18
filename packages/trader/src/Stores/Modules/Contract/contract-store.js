@@ -54,7 +54,7 @@ export default class ContractStore {
         this.display_status = getDisplayStatus(this.contract_info);
         this.is_ended = isEnded(this.contract_info);
         this.is_digit_contract = isDigitContract(this.contract_info.contract_type);
-        this.is_contract_waiting = isContractWaiting(contract_info);
+        this.is_contract_waiting = isContractWaiting(this.contract_info);
 
         // API doesn't return barrier for digit contracts (sometimes), remove this check once resolved
         if (!this.contract_info.barrier && prev_contract_info.barrier && this.is_digit_contract) {
@@ -142,6 +142,7 @@ function calculate_marker(contract_info) {
         low_barrier,
         reset_time,
     } = contract_info;
+
     const ticks_epoch_array = tick_stream ? tick_stream.map(t => t.epoch) : [];
     const is_digit_contract = isDigitContract(contract_type);
 

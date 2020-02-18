@@ -13,6 +13,7 @@ export default class PortfolioStore extends BaseStore {
     @observable is_loading = false;
     @observable error = '';
     getPositionById = createTransformer(id => this.positions.find(position => +position.id === +id));
+    hovered_position = {};
 
     subscribers = {};
 
@@ -99,10 +100,29 @@ export default class PortfolioStore extends BaseStore {
         const has_poc = !ObjectUtils.isEmptyObject(response.proposal_open_contract);
         const has_error = !!response.error;
         if (!has_poc && !has_error) return;
+
+        // This is here so that is_hover will exist when the proposal updates.
+        response.proposal_open_contract.is_hover =
+            response.proposal_open_contract.contract_id === this.hovered_position.position_id
+                ? this.hovered_position.is_hover
+                : false;
+
         if (has_poc) {
             contract_trade.addContract(this.deepClone(response.proposal_open_contract));
             contract_trade.updateProposal(this.deepClone(response));
         }
+    }
+
+    @action.bound
+    onHoverPosition(position_id, is_hover) {
+        this.hovered_position = { position_id, is_hover };
+
+        // Updates the is_hover field in contract which is hovered.
+        const contract = this.positions.find(position => position.id === position_id);
+        contract.contract_info.is_hover = is_hover;
+
+        const contract_trade = this.root_store.modules.contract_trade;
+        contract_trade.updateContract(contract.contract_info);
     }
 
     @action.bound

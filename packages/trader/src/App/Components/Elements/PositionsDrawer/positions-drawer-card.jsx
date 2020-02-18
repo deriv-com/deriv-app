@@ -32,6 +32,7 @@ const PositionsDrawerCard = ({
     status,
     toggleUnsupportedContractModal,
     type,
+    onHoverPosition,
 }) => {
     const loader_el = (
         <div className='positions-drawer-card__content-loader'>
@@ -135,7 +136,12 @@ const PositionsDrawerCard = ({
     );
 
     return (
-        <div id={`dt_drawer_card_${id}`} className={classNames('positions-drawer-card__wrapper', className)}>
+        <div
+            id={`dt_drawer_card_${id}`}
+            className={classNames('positions-drawer-card__wrapper', className)}
+            onMouseEnter={() => onHoverPosition(id, true)}
+            onMouseLeave={() => onHoverPosition(id, false)}
+        >
             <ResultOverlay
                 contract_id={id}
                 is_unsupported={is_unsupported}
@@ -221,6 +227,7 @@ PositionsDrawerCard.propTypes = {
     status: PropTypes.string,
     toggleUnsupportedContractModal: PropTypes.func,
     type: PropTypes.string,
+    onHoverPosition: PropTypes.func,
 };
 
 export default PositionsDrawerCard;

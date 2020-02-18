@@ -43,7 +43,7 @@ class VerticalTab extends React.Component {
     componentDidUpdate(prevProps) {
         if (
             this.props.list.length !== prevProps.list.length ||
-            this.props.vertical_tab_index !== this.state.vertical_tab_index
+            this.props.vertical_tab_index !== prevProps.vertical_tab_index
         ) {
             this.setSelectedIndex({
                 current_path: this.props.current_path,

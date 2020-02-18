@@ -51,10 +51,10 @@ export default class JournalStore {
 
         let error_message = data;
         let classname = '';
-        if (typeof data !== 'string') {
+        if (typeof data === 'object') {
             const { error, message } = data;
             ({ className: classname } = data);
-            error_message = error && error.error ? error.error.message : message;
+            error_message = error && error.error ? error.error.message : message.toString();
         }
 
         this.unfiltered_messages.unshift({ date, time, message: error_message, message_type, classname });

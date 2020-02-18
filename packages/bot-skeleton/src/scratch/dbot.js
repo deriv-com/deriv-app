@@ -6,7 +6,6 @@ import main_xml from './xml/main.xml';
 import toolbox_xml from './xml/toolbox.xml';
 import DBotStore from './dbot-store';
 import { onWorkspaceResize } from '../utils/workspace';
-import { config } from '../constants/config';
 import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
 import { observer as globalObserver } from '../utils/observer';

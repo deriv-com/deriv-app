@@ -44,6 +44,20 @@
         &:hover {
             transform: none !important;
         }
+        &--disabled,
+        &[disabled] {
+            background: var(--border-disabled);
+            background: linear-gradient(
+                0deg,
+                var(--border-disabled) 0%,
+                var(--border-disabled) 50%,
+                var(--border-normal) 50%,
+                var(--border-normal) 100%
+            ) !important;
+        }
+        &--swoosh {
+            transform: none !important;
+        }
     }
 
     &__icon_wrapper {

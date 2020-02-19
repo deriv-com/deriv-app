@@ -1,3 +1,12 @@
+/** @define dc-swipeable; weak */
+.dc-swipeable {
+    &__item {
+        .chartContainer {
+            pointer-events: none;
+        }
+    }
+}
+
 /** @define dc-modal; weak */
 .dc-modal {
     &__container_trade-params {

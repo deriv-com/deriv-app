@@ -1,0 +1,35 @@
+.media {
+    margin: 0 0 24px;
+
+    &__heading {
+        @include typeface(--paragraph-left-bold-black);
+        color: var(--text-prominent);
+        margin: 0 0 16px;
+        text-transform: none;
+    }
+    &__icon {
+        height: 120px;
+        @include toEm(margin-right, 16px);
+        border-radius: $BORDER_RADIUS;
+        min-width: 160px;
+
+        &:empty {
+            background-color: var(--general-disabled);
+        }
+    }
+    &__description {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        @include typeface(--paragraph-left-normal-black);
+        color: var(--text-prominent);
+    }
+    &__form {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        text-transform: initial;
+        color: var(--text-prominent);
+    }
+}

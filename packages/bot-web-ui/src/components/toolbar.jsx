@@ -193,21 +193,23 @@ const Toolbar = props => {
                 <div className='toolbar__section'>
                     {is_stop_button_visible ? (
                         <Button
-                            className='toolbar__btn'
+                            className='db-toolbar__stop-button'
                             is_disabled={is_stop_button_disabled}
                             text={localize('Stop bot')}
                             icon={<Icon icon='IcPause' className='run-panel__button--icon' color='active' />}
                             onClick={onStopButtonClick}
                             has_effect
                             primary
+                            large
                         />
                     ) : (
                         <Button
-                            className='toolbar__btn'
+                            className='db-toolbar__run-button'
                             text={localize('Run bot')}
                             icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
                             onClick={onRunButtonClick}
                             has_effect
+                            large
                             green
                         />
                     )}

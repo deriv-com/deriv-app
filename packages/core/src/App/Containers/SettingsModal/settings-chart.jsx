@@ -1,9 +1,8 @@
-import { Checkbox, RadioGroup } from '@deriv/components';
+import { Checkbox, Media, RadioGroup } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import MediaItem, { MediaHeading, MediaIcon, MediaDescription } from 'App/Components/Elements/Media';
 import ChartPositionEnabledLightIcon from 'Assets/SvgComponents/settings/bottom.svg';
 
 // TODO: enable asset information
@@ -31,12 +30,12 @@ const ChartSettings = ({
     setChartLayout,
 }) => (
     <div className='settings-chart'>
-        <MediaItem>
-            <MediaHeading>
+        <Media>
+            <Media.Heading>
                 <Localize i18n_default_text='Toolbar position' />
-            </MediaHeading>
-            <MediaDescription>
-                <MediaIcon
+            </Media.Heading>
+            <Media.Description>
+                <Media.Icon
                     disabled={is_dark_mode ? ChartPositionDisabledDarkIcon : ChartPositionDisabledLightIcon}
                     enabled={is_dark_mode ? ChartPositionEnabledDarkIcon : ChartPositionEnabledLightIcon}
                     id='dt_settings_position_image'
@@ -67,18 +66,18 @@ const ChartSettings = ({
                         }}
                     />
                 </div>
-            </MediaDescription>
-        </MediaItem>
+            </Media.Description>
+        </Media>
         {/* TODO: enable asset information
-            <MediaItem>
-            <MediaHeading>
+            <Media>
+            <Media.Heading>
                 <Localize
                     i18n_default_text='Open-high-low-close <0>(OHLC) information</0>'
                     components={[ <div key={0} /> ]}
                 />
-            </MediaHeading>
-            <MediaDescription>
-                <MediaIcon
+            </Media.Heading>
+            <Media.Description>
+                <Media.Icon
                     disabled={is_dark_mode ? OHLCDisabledDarkIcon : OHLCDisabledLightIcon }
                     enabled={is_dark_mode ? OHLCEnabledDarkIcon : OHLCEnabledLightIcon}
                     is_enabled={is_asset_visible}
@@ -90,14 +89,14 @@ const ChartSettings = ({
                         onChange={(e) => { setAsset(e.target.checked); }}
                     />
                 </div>
-            </MediaDescription>
-        </MediaItem> */}
-        <MediaItem>
-            <MediaHeading>
+            </Media.Description>
+        </Media> */}
+        <Media>
+            <Media.Heading>
                 <Localize i18n_default_text='Interval duration' />
-            </MediaHeading>
-            <MediaDescription>
-                <MediaIcon
+            </Media.Heading>
+            <Media.Description>
+                <Media.Icon
                     disabled={is_dark_mode ? IntervalDurationDisabledDarkIcon : IntervalDurationDisabledLightIcon}
                     enabled={is_dark_mode ? IntervalDurationEnabledDarkIcon : IntervalDurationEnabledLightIcon}
                     id='dt_settings_interval_image'
@@ -113,8 +112,8 @@ const ChartSettings = ({
                         }}
                     />
                 </div>
-            </MediaDescription>
-        </MediaItem>
+            </Media.Description>
+        </Media>
     </div>
 );
 

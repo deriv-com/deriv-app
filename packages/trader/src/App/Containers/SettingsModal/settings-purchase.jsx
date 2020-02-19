@@ -1,12 +1,7 @@
-// import { Checkbox }                  from '@deriv/components';
+// import { Checkbox, Media }           from '@deriv/components';
 // import PropTypes                     from 'prop-types';
 // import React                         from 'react';
 // import { localize }                  from '@deriv/translations';
-// import MediaItem, {
-//     MediaDescription,
-//     MediaHeading,
-//     MediaIcon,
-// }                                    from 'App/Components/Elements/Media';
 // import ConfirmationDisabledLightIcon from 'Assets/SvgComponents/settings/confirmation-disabled.svg';
 // import ConfirmationEnabledLightIcon  from 'Assets/SvgComponents/settings/confirmation-enabled.svg';
 // import ConfirmationDisabledDarkIcon  from 'Assets/SvgComponents/settings/dark/confirmation-disabled.svg';
@@ -25,12 +20,12 @@
 //     togglePurchaseConfirmation,
 // }) => (
 //     <div className='settings-modal__purchase'>
-//         <MediaItem>
-//             <MediaHeading>
+//         <Media>
+//             <Media.Heading>
 //                 <Localize i18n_default_text='Purchase confirmation' />
-//             </MediaHeading>
-//             <MediaDescription>
-//                 <MediaIcon
+//             </Media.Heading>
+//             <Media.Description>
+//                 <Media.Icon
 //                     disabled={is_dark_mode ? ConfirmationDisabledDarkIcon : ConfirmationDisabledLightIcon }
 //                     enabled={is_dark_mode ? ConfirmationEnabledDarkIcon : ConfirmationEnabledLightIcon }
 //                     is_enabled={is_purchase_confirmed}
@@ -42,14 +37,14 @@
 //                         onClick={togglePurchaseConfirmation}
 //                     />
 //                 </div>
-//             </MediaDescription>
-//         </MediaItem>
-//         <MediaItem>
-//             <MediaHeading>
+//             </Media.Description>
+//         </Media>
+//         <Media>
+//             <Media.Heading>
 //                 <Localize i18n_default_text='Purchase lock' />
-//             </MediaHeading>
-//             <MediaDescription>
-//                 <MediaIcon
+//             </Media.Heading>
+//             <Media.Description>
+//                 <Media.Icon
 //                     disabled={is_dark_mode ? LockDisabledDarkIcon : LockDisabledLightIcon}
 //                     enabled={is_dark_mode ? LockEnabledDarkIcon : LockEnabledLightIcon}
 //                     is_enabled={is_purchase_locked}
@@ -61,8 +56,8 @@
 //                         onChange={(e) => { setPurchaseLock(e.target.checked); }}
 //                     />
 //                 </div>
-//             </MediaDescription>
-//         </MediaItem>
+//             </Media.Description>
+//         </Media>
 //     </div>
 // );
 //

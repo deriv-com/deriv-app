@@ -9,7 +9,7 @@ const GoogleOptimizer = () => (
                 __html: `(function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;
         h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
         (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);
-        })(window,document.documentElement,'async-hide','dataLayer',4000,{'GTM-NF7884S':true});`,
+        })(window,document.documentElement,'async-hide','dataLayer',4000,{'GTM-TWCC2R9':true});`,
             }}
         />
     </React.Fragment>

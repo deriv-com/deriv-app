@@ -26,6 +26,7 @@ module.exports = {
         input: 'Components/input',
         label: 'Components/label',
         loading: 'Components/loading',
+        media: 'Components/media',
         modal: 'Components/modal',
         money: 'Components/money',
         'password-input': 'Components/password-input',

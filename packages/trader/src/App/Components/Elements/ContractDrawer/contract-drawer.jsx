@@ -25,14 +25,13 @@ import ContractCardFooter from './contract-card-footer.jsx';
 import ContractCardHeader from './contract-card-header.jsx';
 import ContractCard from './contract-card.jsx';
 
-const ContractAuditCardWrapper = ({ children }) => {
-    return ReactDOM.createPortal(
-        <Div100vhContainer className='contract-audit-card' height_offset='238px'>
+const ContractAuditCardWrapper = ({ children }) =>
+    ReactDOM.createPortal(
+        <Div100vhContainer className='contract-audit-card' height_offset='228px'>
             {children}
         </Div100vhContainer>,
         document.getElementById('dt_contract_replay_container')
     );
-};
 
 class ContractDrawer extends Component {
     state = {

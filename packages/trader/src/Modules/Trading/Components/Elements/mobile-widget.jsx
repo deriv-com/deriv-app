@@ -63,7 +63,7 @@ class MobileWidget extends React.Component {
                     <div className='mobile-widget__type'>{stakeOrPayout()}</div>
                 </div>
                 <TradeParamsModal is_open={this.state.is_open} toggleModal={this.toggleWidget} />
-                {this.isVisible('last_digit') && (
+                {this.isVisible('last_digit') && this.props.is_collapsed && (
                     <div className='mobile-widget' onClick={this.props.toggleDigitsWidget}>
                         <div className='mobile-widget__amount'>
                             <Localize i18n_default_text='Digit: {{last_digit}} ' values={{ last_digit }} />

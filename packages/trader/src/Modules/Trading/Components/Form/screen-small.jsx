@@ -18,6 +18,10 @@ import 'Sass/app/_common/mobile-widget.scss';
 const CollapsibleTradeParams = ({ form_components, has_allow_equals }) => {
     const [is_collapsed, setIsCollapsed] = useState(true);
 
+    const onClick = e => {
+        setIsCollapsed(!e);
+    };
+
     const toggleDigitsWidget = () => {
         setIsCollapsed(!is_collapsed);
     };
@@ -25,7 +29,7 @@ const CollapsibleTradeParams = ({ form_components, has_allow_equals }) => {
     const isVisible = component => form_components.includes(component);
 
     return (
-        <Collapsible position='top' is_collapsed={is_collapsed}>
+        <Collapsible position='top' is_collapsed={is_collapsed} onClick={onClick}>
             <ContractType />
             {isVisible('last_digit') && (
                 <div collapsible='true'>

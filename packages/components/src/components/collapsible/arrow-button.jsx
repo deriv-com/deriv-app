@@ -7,17 +7,17 @@ import Icon from '../icon';
 const IconArrow = props => <Icon width={30} height={9} icon='IcChevronUp' {...props} />;
 
 const ArrowButton = ({ is_collapsed, position, onClick }) => {
-    const [is_open, expand] = useState(!is_collapsed || false);
+    const [is_open, expand] = useState(!is_collapsed);
 
     const toggleExpand = () => {
         expand(!is_open);
         if (typeof onClick === 'function') {
-            onClick(!is_open);
+            onClick();
         }
     };
 
     useEffect(() => {
-        expand(!is_collapsed);
+        expand(is_collapsed);
     }, [is_collapsed]);
 
     let icon_arrow;

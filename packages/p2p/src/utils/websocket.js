@@ -31,7 +31,7 @@ const map_payment_method = {
     bank_transfer: localize('Bank transfer'),
 };
 
-const getModifiedP2PAdvertList = (response, is_from_my_ads) => {
+const getModifiedP2PAdvertList = (response, is_original) => {
     // only show active adverts
     const filtered_list = response.list.filter(offer => !!+offer.is_active);
 
@@ -81,9 +81,9 @@ const getModifiedP2PAdvertList = (response, is_from_my_ads) => {
             display_payment_method: map_payment_method[payment_method] || payment_method,
             display_price_rate: formatMoney(transaction_currency, price_rate),
             id: filtered_list[i].id,
-            // for view in my ads tab, we should show the real type of the ad
-            // for view in buy/sell table, we should show flip the ad type
-            type: is_from_my_ads ? filtered_list[i].type : filtered_list[i].counterparty_type,
+            // for view in my ads tab (advertiser perspective), we should show the original type of the ad
+            // for view in buy/sell table (client perspective), we should show the counter-party type
+            type: is_original ? filtered_list[i].type : filtered_list[i].counterparty_type,
         };
     }
     return modified_response;

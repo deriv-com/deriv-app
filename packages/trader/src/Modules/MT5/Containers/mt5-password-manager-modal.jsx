@@ -1,9 +1,8 @@
-import { Modal, Tabs, PasswordInput, PasswordMeter, Button } from '@deriv/components';
+import { Modal, Tabs, PasswordInput, PasswordMeter, Button, UILoader } from '@deriv/components';
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { urlFor } from '_common/url';
-import UILoader from 'App/Components/Elements/ui-loader.jsx';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';

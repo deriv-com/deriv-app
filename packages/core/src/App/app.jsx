@@ -5,6 +5,7 @@ import { Prompt } from 'react-router';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
+import { Lazy } from '@deriv/components';
 import { initializeTranslations } from '@deriv/translations';
 import Client from '_common/base/client_base';
 import WS from 'Services/ws-methods';
@@ -15,7 +16,6 @@ import Footer from './Containers/Layout/footer.jsx';
 import Header from './Containers/Layout/header.jsx';
 import NotificationMessages from './Containers/notification-messages.jsx';
 import AppModals from './Containers/Modals';
-import Lazy from './Containers/Lazy';
 import Routes from './Containers/Routes/routes.jsx';
 import { interceptAcrossBot } from './Constants/routes-config';
 // eslint-disable-next-line import/extensions

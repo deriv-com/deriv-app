@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Lazy } from '@deriv/components';
 import { withRouter } from 'react-router-dom';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
-import Lazy from 'App/Containers/Lazy';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import { connect } from 'Stores/connect';

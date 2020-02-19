@@ -2,7 +2,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import UILoader from '../ui-loader.jsx';
+import { UILoader } from '@deriv/components';
 
 configure({ adapter: new Adapter() });
 

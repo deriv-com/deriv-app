@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Lazy from 'App/Containers/Lazy';
+import { Lazy } from '@deriv/components';
 import ScreenLarge from './screen-large.jsx';
 
 const FormLayout = ({ is_dark_theme, is_market_closed, is_mobile, is_trade_enabled }) =>

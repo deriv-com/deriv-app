@@ -1,9 +1,9 @@
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Lazy } from '@deriv/components';
 import { withRouter } from 'react-router';
 import BinaryRoutes from 'App/Components/Routes';
-import Lazy from 'App/Containers/Lazy';
 import { connect } from 'Stores/connect';
 
 const Routes = props => {

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Lazy from 'App/Containers/Lazy';
+import { Lazy } from '@deriv/components';
 import Routes from 'App/Containers/Routes/routes.jsx';
 import TradeFooterExtensions from 'App/Containers/trade-footer-extensions.jsx';
 import TradeSettingsExtensions from 'App/Containers/trade-settings-extensions.jsx';

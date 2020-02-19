@@ -25,6 +25,7 @@ module.exports = {
         'icon/js/icons': 'Components/icon/icons.js',
         input: 'Components/input',
         label: 'Components/label',
+        lazy: 'Components/lazy',
         loading: 'Components/loading',
         media: 'Components/media',
         modal: 'Components/modal',
@@ -37,6 +38,7 @@ module.exports = {
         tabs: 'Components/tabs',
         'themed-scrollbars': 'Components/themed-scrollbars',
         'toggle-switch': 'Components/toggle-switch',
+        'ui-loader': 'Components/ui-loader',
         'vertical-tab': 'Components/vertical-tab',
     },
     output: {

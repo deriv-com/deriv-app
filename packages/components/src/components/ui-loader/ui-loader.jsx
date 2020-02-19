@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const UILoader = ({ className, classNameBlock }) => {
-    const block_class = classNames(classNameBlock, 'block-ui');
-    const loading_class = classNames('block-ui__loading', className);
+    const block_class = classNames(classNameBlock, 'dc-block-ui');
+    const loading_class = classNames('dc-block-ui__loading', className);
     return (
         <div className={block_class}>
             <div className={loading_class}>
-                <div className='block-ui__loading-spinner'>
-                    <svg className='block-ui__loading-spinner-circular' viewBox='25 25 50 50'>
+                <div className='dc-block-ui__loading-spinner'>
+                    <svg className='dc-block-ui__loading-spinner-circular' viewBox='25 25 50 50'>
                         <circle
-                            className='block-ui__loading-spinner-path'
+                            className='dc-block-ui__loading-spinner-path'
                             cx='50'
                             cy='50'
                             r='20'

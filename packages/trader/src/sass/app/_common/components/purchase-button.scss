@@ -46,14 +46,7 @@
         }
         &--disabled,
         &[disabled] {
-            background: var(--border-disabled);
-            background: linear-gradient(
-                0deg,
-                var(--border-disabled) 0%,
-                var(--border-disabled) 50%,
-                var(--border-normal) 50%,
-                var(--border-normal) 100%
-            ) !important;
+            opacity: 0.32;
         }
         &--swoosh {
             transform: none !important;

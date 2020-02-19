@@ -124,7 +124,8 @@ class App extends React.Component {
      * Ensures inputs are closed when clicking on non-Blockly elements.
      */
     onClickOutsideBlockly = event => {
-        const is_click_outside_blockly = !event.path.some(el => el.classList && el.classList.contains('injectionDiv'));
+        const path = event.path || (event.composedPath && event.composedPath());
+        const is_click_outside_blockly = !path.some(el => el.classList && el.classList.contains('injectionDiv'));
         if (is_click_outside_blockly) {
             Blockly.hideChaff(/* allowToolbox */ false);
         }

@@ -1,13 +1,13 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { positionPropType } from './utils';
 import Icon from '../icon';
 
 const IconArrow = props => <Icon width={30} height={9} icon='IcChevronUp' {...props} />;
 
-const ArrowButton = ({ position, onClick }) => {
-    const [is_open, expand] = useState(false);
+const ArrowButton = ({ is_collapsed, position, onClick }) => {
+    const [is_open, expand] = useState(!is_collapsed || false);
 
     const toggleExpand = () => {
         expand(!is_open);
@@ -15,6 +15,10 @@ const ArrowButton = ({ position, onClick }) => {
             onClick(!is_open);
         }
     };
+
+    useEffect(() => {
+        expand(!is_collapsed);
+    }, [is_collapsed]);
 
     let icon_arrow;
     switch (position) {

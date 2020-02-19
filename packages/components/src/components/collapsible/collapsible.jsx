@@ -7,9 +7,15 @@ const Collapsible = ({ as, is_collapsed, position = 'top', children }) => {
     const [is_open, expand] = useState(!is_collapsed);
     const [should_show_collapsible, setShouldShowCollapsible] = useState(false);
     const toggleExpand = v => expand(v);
-    const arrow_button = <ArrowButton position={position} onClick={toggleExpand} />;
-    const CustomTag = as || 'div';
+
+    useEffect(() => {
+        expand(!is_collapsed);
+        setShouldShowCollapsible(Children.toArray(children).some(({ props }) => 'collapsible' in props));
+    }, [is_collapsed]);
     useEffect(() => setShouldShowCollapsible(Children.toArray(children).some(({ props }) => 'collapsible' in props)));
+
+    const arrow_button = <ArrowButton is_collapsed={is_collapsed} position={position} onClick={toggleExpand} />;
+    const CustomTag = as || 'div';
     return (
         <CustomTag
             className={classNames('dc-collapsible', {

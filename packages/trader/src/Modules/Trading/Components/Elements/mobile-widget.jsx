@@ -1,6 +1,6 @@
 import React from 'react';
 import { Money } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
 import TradeParamsModal from '../../Containers/trade-params-mobile.jsx';
@@ -33,8 +33,12 @@ class MobileWidget extends React.Component {
         return `${duration} ${formatted_duration_unit}`;
     }
 
+    isVisible = component => {
+        return this.props.form_components.includes(component);
+    };
+
     render() {
-        const { amount, basis, currency } = this.props;
+        const { amount, basis, currency, last_digit } = this.props;
 
         const localized_basis = getLocalizedBasis();
 
@@ -50,7 +54,7 @@ class MobileWidget extends React.Component {
         };
 
         return (
-            <React.Fragment>
+            <div className='mobile-widget__wrapper'>
                 <div className='mobile-widget' onClick={this.toggleWidget}>
                     <div className='mobile-widget__duration'>{this.getHumanReadableDuration()}</div>
                     <div className='mobile-widget__amount'>
@@ -59,7 +63,14 @@ class MobileWidget extends React.Component {
                     <div className='mobile-widget__type'>{stakeOrPayout()}</div>
                 </div>
                 <TradeParamsModal is_open={this.state.is_open} toggleModal={this.toggleWidget} />
-            </React.Fragment>
+                {this.isVisible('last_digit') && (
+                    <div className='mobile-widget' onClick={this.props.toggleDigitsWidget}>
+                        <div className='mobile-widget__amount'>
+                            <Localize i18n_default_text='Digit: {{last_digit}} ' values={{ last_digit }} />
+                        </div>
+                    </div>
+                )}
+            </div>
         );
     }
 }
@@ -70,4 +81,6 @@ export default connect(({ modules }) => ({
     currency: modules.trade.currency,
     duration: modules.trade.duration,
     duration_unit: modules.trade.duration_unit,
+    form_components: modules.trade.form_components,
+    last_digit: modules.trade.last_digit,
 }))(MobileWidget);

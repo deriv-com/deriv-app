@@ -152,6 +152,9 @@ export default class CashierStore extends BaseStore {
 
         this.is_populating_values = true;
 
+        // cashier inits once and tries to stay active until switching account
+        // since cashier calls take a long time to respond or display in iframe
+        // so we don't have any unmount function here and everything gets reset on switch instead
         this.disposeSwitchAccount();
         this.onSwitchAccount(this.accountSwitcherListener);
 

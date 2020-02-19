@@ -74,6 +74,7 @@ Blockly.Workspace.prototype.dispatchBlockEventEffects = function(event) {
             wait_event.blockId === event.blockId && (wait_event.type === null || event.type === wait_event.type);
 
         if (is_subscribed_event) {
+            // TODO: Find proper solution, e.g. promise chain.
             setTimeout(() => {
                 wait_event.promise.resolve();
                 this.wait_events.splice(idx, 1);

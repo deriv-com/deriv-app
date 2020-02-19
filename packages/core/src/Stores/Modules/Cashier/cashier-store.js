@@ -473,19 +473,15 @@ export default class CashierStore extends BaseStore {
         this.onRemount = this.onMountPaymentAgentList;
         await this.onMountCommon();
 
-        if (!this.config.payment_agent.list.length) {
-            const payment_agent_list = await BinarySocket.wait('paymentagent_list');
-            if (!this.config.payment_agent.list.length) {
-                this.setPaymentAgentList(payment_agent_list);
-            }
-        }
-
-        this.filterPaymentAgentList();
         this.setLoading(false);
     }
 
     @action.bound
     async getPaymentAgentList() {
+        if (this.config.payment_agent.list.length) {
+            return BinarySocket.wait('paymentagent_list');
+        }
+
         const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
         const currency = this.root_store.client.currency;
         return WS.paymentAgentList(residence, currency);
@@ -560,7 +556,7 @@ export default class CashierStore extends BaseStore {
         } else {
             this.config.payment_agent.filtered_list = this.config.payment_agent.list;
         }
-        if (!this.is_payment_agent_visible && this.active_container === this.config.payment_agent.container) {
+        if (!this.is_payment_agent_visible && window.location.pathname.startsWith(AppRoutes.cashier_pa)) {
             this.root_store.common.routeTo(AppRoutes.cashier_deposit);
         }
     }
@@ -582,15 +578,13 @@ export default class CashierStore extends BaseStore {
         this.setReceipt({});
 
         if (!this.config.payment_agent.agents.length) {
-            const payment_agent_list = this.config.payment_agent.list.length
-                ? await BinarySocket.wait('paymentagent_list')
-                : await this.getPaymentAgentList();
+            const payment_agent_list = await this.getPaymentAgentList();
             payment_agent_list.paymentagent_list.list.forEach(payment_agent => {
                 this.addPaymentAgent(payment_agent);
             });
             if (
                 !payment_agent_list.paymentagent_list.list.length &&
-                this.active_container === this.config.payment_agent.container
+                window.location.pathname.startsWith(AppRoutes.cashier_pa)
             ) {
                 this.root_store.common.routeTo(AppRoutes.cashier_deposit);
             }
@@ -943,7 +937,7 @@ export default class CashierStore extends BaseStore {
         await this.onMountCommon();
 
         if (!this.config.payment_agent_transfer.transfer_limit.min_withdrawal) {
-            const response = await BinarySocket.wait('paymentagent_list');
+            const response = await this.getPaymentAgentList();
             const current_payment_agent = this.getCurrentPaymentAgent(response);
             this.setMinMaxPaymentAgentTransfer(current_payment_agent);
         }
@@ -965,7 +959,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsPaymentAgent(is_payment_agent) {
-        if (!is_payment_agent && this.active_container === this.config.payment_agent_transfer.container) {
+        if (!is_payment_agent && window.location.pathname.startsWith(AppRoutes.cashier_pa_transfer)) {
             this.root_store.common.routeTo(AppRoutes.cashier_deposit);
         }
         this.config.payment_agent_transfer.is_payment_agent = !!is_payment_agent;

@@ -9,6 +9,8 @@ import { clientNotifications } from './Helpers/client-notifications';
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
         super({ root_store });
+        // Since we refresh the page on routing across bot, we need to identify
+        // if launch was from bot so we can redirect back to bot as platform
         const routing_control_raw = LocalStore.get(routing_control_key);
 
         if (routing_control_raw) {
@@ -136,19 +138,20 @@ export default class CommonStore extends BaseStore {
 
     @action.bound
     routeBackInApp(history) {
-        if (this.app_routing_history.length > 0) {
-            const route_to_item = this.app_routing_history.find(
-                history_item =>
-                    history_item.action === 'PUSH' &&
-                    history.location.pathname.split('/')[1] !== history_item.pathname.split('/')[1]
-            );
-
-            if (route_to_item) {
-                this.app_routing_history.splice(0, this.app_routing_history.indexOf(route_to_item) + 1);
-                history.push(route_to_item.pathname);
-            } else {
-                history.push(AppRoutes.trade);
+        let route_to_item_idx = -1;
+        const route_to_item = this.app_routing_history.find((history_item, idx) => {
+            const parent_path = history_item.pathname.split('/')[1];
+            const platform_parent_paths = [AppRoutes.mt5.split('/')[1], AppRoutes.bot.split('/')[1]];
+            if (history_item.action === 'PUSH' && platform_parent_paths.includes(parent_path)) {
+                route_to_item_idx = idx;
+                return true;
             }
+            return false;
+        });
+
+        if (route_to_item && route_to_item_idx > -1) {
+            this.app_routing_history.splice(0, route_to_item_idx + 1);
+            history.push(route_to_item.pathname);
         } else {
             history.push(AppRoutes.trade);
         }

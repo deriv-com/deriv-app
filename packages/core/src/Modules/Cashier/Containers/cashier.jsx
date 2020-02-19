@@ -15,7 +15,6 @@ class Cashier extends React.Component {
     }
 
     componentWillUnmount() {
-        this.props.onUnmount();
         this.props.toggleCashier();
     }
 
@@ -81,7 +80,6 @@ Cashier.propTypes = {
     is_visible: PropTypes.bool,
     location: PropTypes.object,
     onMount: PropTypes.func,
-    onUnmount: PropTypes.func,
     p2p_notification_count: PropTypes.number,
     routes: PropTypes.arrayOf(PropTypes.object),
     toggleCashier: PropTypes.func,
@@ -94,7 +92,6 @@ export default connect(({ common, modules, ui }) => ({
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     onMount: modules.cashier.onMountCommon,
-    onUnmount: modules.cashier.onUnmount,
     p2p_notification_count: modules.cashier.p2p_notification_count,
     toggleCashier: ui.toggleCashier,
 }))(withRouter(Cashier));

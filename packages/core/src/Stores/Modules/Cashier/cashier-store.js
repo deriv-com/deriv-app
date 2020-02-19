@@ -1025,9 +1025,4 @@ export default class CashierStore extends BaseStore {
 
         return Promise.resolve();
     }
-
-    @action.bound
-    onUnmount() {
-        this.disposeSwitchAccount();
-    }
 }

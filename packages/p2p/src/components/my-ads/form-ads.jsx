@@ -49,8 +49,9 @@ class FormAds extends Component {
     restrictLength = (e, handleChange) => {
         // typing more than 15 characters will break the layout
         // max doesn't disable typing, so we will use this to restrict length
-        if (e.target.value.length > 15) {
-            e.target.value = e.target.value.slice(0, 15);
+        const max_characters = 15;
+        if (e.target.value.length > max_characters) {
+            e.target.value = e.target.value.slice(0, max_characters);
             return;
         }
         handleChange(e);

@@ -695,20 +695,22 @@ export default class CashierStore extends BaseStore {
             this.setHasNoAccountsBalance(false);
         }
 
-        if (!this.config.account_transfer.accounts_list.length || has_updated_account_balance) {
-            const transfer_between_accounts = await WS.transferBetweenAccounts();
-            if (transfer_between_accounts.error) {
-                this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
-                this.setLoading(false);
-                return;
-            }
-            if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
-                return;
-            }
-            this.sortAccountsTransfer(transfer_between_accounts);
-        } else if (!this.canDoAccountTransfer(this.config.account_transfer.accounts_list)) {
+        const transfer_between_accounts =
+            !this.config.account_transfer.accounts_list.length || has_updated_account_balance
+                ? await WS.transferBetweenAccounts()
+                : await WS.authorized.cache.transferBetweenAccounts({ accounts: 'all' }); // load from cache to get the latest updates
+
+        if (transfer_between_accounts.error) {
+            this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
+            this.setLoading(false);
             return;
         }
+
+        if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
+            return;
+        }
+
+        this.sortAccountsTransfer(transfer_between_accounts);
         this.setTransferFee();
         this.setMinimumFee();
         this.setTransferLimit();
@@ -1032,7 +1034,6 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     onUnmount() {
-        this.disposePreSwitchAccount();
         this.disposeSwitchAccount();
     }
 }

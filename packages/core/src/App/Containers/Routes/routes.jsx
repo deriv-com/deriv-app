@@ -15,6 +15,7 @@ class Routes extends React.Component {
             this.initial_route = this.props.location.pathname;
         }
 
+        this.props.addRouteHistoryItem({ ...this.props.history.location, action: 'PUSH' });
         this.unlisten_to_change = this.props.history.listen((route_to, action) => {
             if (action === 'PUSH') this.props.addRouteHistoryItem({ ...route_to, action });
         });

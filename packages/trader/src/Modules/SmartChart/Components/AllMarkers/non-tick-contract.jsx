@@ -154,11 +154,18 @@ const NonTickContract = RawMarkerMaker(
         }
 
         if (should_highlight_contract && !is_sold) {
-            const points = is_reset_barrier_expired
-                ? [reset_time.left, reset_time.top, current_spot.left, current_spot.top]
-                : [entry.left, entry.top, current_spot.left, current_spot.top];
+            if (is_reset_barrier_expired) {
+                const points = [reset_time.left, reset_time.top, current_spot.left, current_spot.top];
+                Canvas.drawShade(layer, [ctx, points, status_color]);
+            } else {
+                const points = [entry.left, entry.top, current_spot.left, current_spot.top];
 
-            Canvas.drawShade(layer, [ctx, points, status_color]);
+                // The default value if entry doesn't exists is 0, this prevents it from rendering
+                // if it doesn't have the entry data from the api.
+                if (entry.left !== 0 && entry.top !== 0) {
+                    Canvas.drawShade(layer, [ctx, points, status_color]);
+                }
+            }
         }
 
         // entry markers

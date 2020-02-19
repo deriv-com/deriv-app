@@ -1,6 +1,4 @@
-export const calculateScale = zoom => {
-    return zoom ? Math.max(Math.min(Math.sqrt(zoom / 18), 1.2), 0.8) : 1;
-};
+export const calculateScale = zoom => (zoom ? Math.max(Math.min(Math.sqrt(zoom / 18), 1.2), 0.8) : 1);
 
 // Accepts decimals or percentages.
 export const calculateHexOpacity = opacity => {

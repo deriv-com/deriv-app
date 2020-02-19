@@ -215,8 +215,8 @@ export default class ActiveSymbols {
     }
 
     isSubmarketClosed(submarket_name) {
-        const market_name = Object.keys(this.processed_symbols).find(market_name => {
-            const market = this.processed_symbols[market_name];
+        const market_name = Object.keys(this.processed_symbols).find(name => {
+            const market = this.processed_symbols[name];
             return Object.keys(market.submarkets).includes(submarket_name);
         });
 

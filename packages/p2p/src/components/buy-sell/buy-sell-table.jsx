@@ -8,7 +8,7 @@ import { SellTable } from './sell-table.jsx';
 export const BuySellTable = ({ setSelectedAd, table_type }) => {
     const is_buy = table_type === 'buy';
 
-    // last column is an empty header
+    // last column has an empty header
     return (
         <Table>
             <Table.Header>

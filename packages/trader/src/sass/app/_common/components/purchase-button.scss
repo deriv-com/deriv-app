@@ -44,6 +44,13 @@
         &:hover {
             transform: none !important;
         }
+        &--disabled,
+        &[disabled] {
+            opacity: 0.32;
+        }
+        &--swoosh {
+            transform: none !important;
+        }
     }
 
     &__icon_wrapper {

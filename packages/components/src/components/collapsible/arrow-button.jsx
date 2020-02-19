@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { positionPropType } from './utils';
 import Icon from '../icon';
 
-const IconArrow = props => <Icon icon='IcChevronDownBold' {...props} />;
+const IconArrow = props => <Icon width={30} height={9} icon='IcChevronUp' {...props} />;
 
 const ArrowButton = ({ position, onClick }) => {
     const [is_open, expand] = useState(false);

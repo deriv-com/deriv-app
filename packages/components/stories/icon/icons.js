@@ -51,6 +51,7 @@ export const icons = {
         'IcChevronLeft',
         'IcChevronRight',
         'IcChevronUpBold',
+        'IcChevronUp',
         'IcCircle',
         'IcClipboard',
         'IcClockOutline',

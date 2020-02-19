@@ -22,8 +22,7 @@
 
             @include mobile {
                 color: var(--text-general);
-                font-size: 1.4rem;
-                flex: unset;
+                font-size: 1.6rem;
             }
         }
         &-close {
@@ -40,6 +39,9 @@
             @include mobile {
                 height: 100%;
             }
+        }
+        @include mobile {
+            height: 4rem;
         }
     }
     &__content {

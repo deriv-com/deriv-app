@@ -1,9 +1,10 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
-import { Button, Collapsible, DesktopWrapper, MobileWrapper, Icon, Money } from '@deriv/components';
+import { Button, Collapsible, DesktopWrapper, Div100vhContainer, MobileWrapper, Icon, Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import ContractAudit from 'App/Components/Elements/ContractAudit';
@@ -24,6 +25,15 @@ import ContractCardFooter from './contract-card-footer.jsx';
 import ContractCardHeader from './contract-card-header.jsx';
 import ContractCard from './contract-card.jsx';
 
+const ContractAuditCardWrapper = ({ children }) => {
+    return ReactDOM.createPortal(
+        <Div100vhContainer className='contract-audit-card' height_offset='238px'>
+            {children}
+        </Div100vhContainer>,
+        document.getElementById('dt_contract_replay_container')
+    );
+};
+
 class ContractDrawer extends Component {
     state = {
         is_shade_on: false,
@@ -34,8 +44,8 @@ class ContractDrawer extends Component {
         this.setState({ is_shade_on: shade });
     };
 
-    toggleContractAudit = is_open => {
-        this.setState({ should_show_contract_audit: is_open });
+    toggleContractAuditDrawer = () => {
+        this.setState({ should_show_contract_audit: !this.state.should_show_contract_audit });
     };
 
     getBodyContent() {
@@ -149,7 +159,7 @@ class ContractDrawer extends Component {
                     )}
                 </DesktopWrapper>
                 <MobileWrapper>
-                    {!!is_sold && <Collapsible.ArrowButton position='top' onClick={this.toggleContractAudit} />}
+                    {!!is_sold && <Collapsible.ArrowButton position='top' onClick={this.toggleContractAuditDrawer} />}
                     <ContractCard contract_info={contract_info} profit_loss={+profit} is_sold={!!is_sold}>
                         <ContractCardHeader>
                             <div className={classNames('contract-card__grid', 'contract-card__grid-underlying-trade')}>
@@ -232,6 +242,30 @@ class ContractDrawer extends Component {
                             </CSSTransition>
                         </ContractCardFooter>
                     </ContractCard>
+                    <CSSTransition
+                        in={this.state.should_show_contract_audit}
+                        timeout={100}
+                        classNames={{
+                            enter: 'contract-audit-card-enter',
+                            enterDone: 'contract-audit-card--enterDone',
+                            exit: 'contract-audit-card--exit',
+                        }}
+                        unmountOnExit
+                    >
+                        <ContractAuditCardWrapper>
+                            <ContractAudit
+                                contract_info={contract_info}
+                                contract_end_time={getEndTime(contract_info)}
+                                is_dark_theme={is_dark_theme}
+                                is_open={true}
+                                is_shade_visible={this.handleShade}
+                                duration={getDurationTime(contract_info)}
+                                duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
+                                exit_spot={exit_spot}
+                                has_result={!!is_sold}
+                            />
+                        </ContractAuditCardWrapper>
+                    </CSSTransition>
                 </MobileWrapper>
             </React.Fragment>
         );
@@ -260,7 +294,12 @@ class ContractDrawer extends Component {
             </React.Fragment>
         );
         return (
-            <div id='dt_contract_drawer' className={classNames('contract-drawer', {})}>
+            <div
+                id='dt_contract_drawer'
+                className={classNames('contract-drawer', {
+                    'contract-drawer--with-collapsible-btn': !!this.props.contract_info.is_sold,
+                })}
+            >
                 <div className='contract-drawer__body'>{body_content}</div>
             </div>
         );

@@ -59,9 +59,12 @@ class ContractReplay extends React.Component {
                 className='contract-details-wrapper'
                 keyname='contract-details-wrapper'
             >
-                <PageOverlay header={localize('Contract details')} onClickClose={this.onClickClose}>
+                <PageOverlay
+                    id='dt_contract_replay_container'
+                    header={localize('Contract details')}
+                    onClickClose={this.onClickClose}
+                >
                     <Div100vhContainer
-                        id='dt_contract_replay_container'
                         className='trade-container__replay'
                         is_disabled={isDesktop()}
                         height_offset='80px' // * 80px = header + contract details header heights in mobile

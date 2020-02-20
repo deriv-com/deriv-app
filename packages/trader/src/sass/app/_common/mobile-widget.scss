@@ -27,7 +27,7 @@
     &__wrapper {
         display: flex;
 
-        div:last-child:not(:only-child) {
+        .mobile-widget:last-child:not(:only-child) {
             margin-left: 0.8rem;
             flex: unset;
         }

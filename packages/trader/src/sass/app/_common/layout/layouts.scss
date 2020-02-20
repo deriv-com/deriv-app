@@ -78,9 +78,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 margin-bottom: 0.8rem;
 
                 .contract-card__grid-underlying-trade,
-                .contract-card__footer-wrapper,
-                .pl-card {
-                    grid-template-columns: 1.5fr 1fr 1fr;
+                .contract-card__footer-wrapper {
+                    grid-template-columns: 1fr 1fr 0.7fr;
                 }
                 &--with-collapsible-btn {
                     padding-top: 0;

@@ -4,7 +4,7 @@ const { openChromeBasedOnPlatform } = require('./helpers');
 
 module.exports = function(env, argv) {
     const base = env && env.base && env.base !== true ? '/' + env.base + '/' : '/';
-    const sub_path = env && env.package && env.package !== true ? env.package : '';
+    const sub_path = env && env.open && env.open !== true ? env.open : '';
 
     return {
         context: path.resolve(__dirname, '../src'),

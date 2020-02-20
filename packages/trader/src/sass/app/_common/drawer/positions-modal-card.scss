@@ -1,6 +1,6 @@
-/** @define positions-drawer-modal; weak */
+/** @define positions-modal-card; weak */
 
-.positions-drawer-modal {
+.positions-modal-card {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -8,6 +8,43 @@
     position: relative;
     color: var(--text-general);
 
+    &__result {
+        &--enter,
+        &--exit {
+            opacity: 0;
+        }
+        &--enter-done {
+            opacity: 1;
+        }
+    }
+    &__caption {
+        font-size: 1.6em;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.25s ease;
+        cursor: pointer;
+        width: 100%;
+
+        &--won {
+            color: var(--text-profit-success);
+        }
+        &--lost {
+            color: var(--text-loss-danger);
+        }
+        &-wrapper {
+            cursor: pointer;
+            width: 100%;
+            grid-row: 1 / -1;
+            align-self: center;
+            justify-self: center;
+            text-decoration: none;
+        }
+    }
+    &__icon {
+        margin-left: 4px;
+    }
     &__wrapper {
         padding: 0.8em;
         margin: 0 1em 1em;

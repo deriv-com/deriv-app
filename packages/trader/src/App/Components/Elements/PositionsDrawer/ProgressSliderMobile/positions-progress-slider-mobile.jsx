@@ -23,7 +23,7 @@ const ProgressSliderMobile = ({
                 <ProgressTicksMobile current_tick={current_tick} ticks_count={ticks_count} />
             ) : (
                 <React.Fragment>
-                    <span className='positions-drawer-modal__remaining-time'>
+                    <span className='positions-modal-card__remaining-time'>
                         <RemainingTime end_time={expiry_time} />
                     </span>
                     {is_loading || percentage < 1 ? (
@@ -33,7 +33,7 @@ const ProgressSliderMobile = ({
                         </div>
                     ) : (
                         <CircularProgress
-                            className='positions-drawer-modal__timer'
+                            className='positions-modal-card__timer'
                             danger_limit={20}
                             icon='IcClockOutline'
                             progress={percentage}

@@ -29,6 +29,7 @@
         z-index: 2;
     }
     /* temporary landscape blocker */
+    /** @define landscape-blocker; weak */
     .landscape-blocker {
         display: none;
         position: fixed;
@@ -52,9 +53,8 @@
             padding: 1.6rem 11rem;
             line-height: 1.4;
         }
-        @media all and (orientation: landscape) {
+        @include mobile-landscape {
             display: flex;
-            /* Style adjustments for landscape mode goes here */
         }
     }
 }

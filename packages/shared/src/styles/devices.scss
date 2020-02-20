@@ -40,3 +40,9 @@ $desktop-width: 1024px;
         @content;
     }
 }
+
+@mixin mobile-landscape {
+    @media only screen and (min-width: #{$mobile-width}) and (max-width: #{$tablet-width - 1}) and (orientation: landscape) {
+        @content;
+    }
+}

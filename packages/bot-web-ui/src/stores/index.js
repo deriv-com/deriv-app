@@ -1,3 +1,4 @@
+import BotSettingsStore from './bot-settings-store';
 import ChartStore from './chart-store';
 import ContractCardStore from './contract-card-store';
 import FlyoutStore from './flyout-store';
@@ -20,6 +21,7 @@ export default class RootStore {
         this.ws = ws;
         this.dbot = dbot;
         this.server_time = core.common.server_time;
+        this.bot_settings = new BotSettingsStore(this);
         this.contract_card = new ContractCardStore(this);
         this.flyout = new FlyoutStore(this);
         this.flyout_help = new FlyoutHelpStore(this);

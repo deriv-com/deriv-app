@@ -1,4 +1,4 @@
-import UILoader from './ui-loader.jsx';
+import UiLoader from './ui-loader.jsx';
 import './ui-loader.scss';
 
-export default UILoader;
+export default UiLoader;

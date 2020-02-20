@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const UILoader = ({ className, classNameBlock }) => {
+const UiLoader = ({ className, classNameBlock }) => {
     const block_class = classNames(classNameBlock, 'dc-block-ui');
     const loading_class = classNames('dc-block-ui__loading', className);
     return (
@@ -26,9 +26,9 @@ const UILoader = ({ className, classNameBlock }) => {
     );
 };
 
-UILoader.propTypes = {
+UiLoader.propTypes = {
     className: PropTypes.string,
     classNameBlock: PropTypes.string,
 };
 
-export default UILoader;
+export default UiLoader;

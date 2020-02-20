@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, Lazy, Modal, UILoader, VerticalTab } from '@deriv/components';
+import { Icon, Lazy, Modal, UiLoader, VerticalTab } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import 'Sass/app/modules/settings.scss';
 
@@ -59,7 +59,7 @@ const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSett
             <a id='dt_settings_toggle' onClick={toggleSettings} className={toggle_settings_class}>
                 <Icon icon='IcGear' className='footer__icon ic-settings__icon' />
             </a>
-            <React.Suspense fallback={<UILoader />}>
+            <React.Suspense fallback={<UiLoader />}>
                 <Modal
                     id='dt_settings_modal'
                     className='modal-settings'

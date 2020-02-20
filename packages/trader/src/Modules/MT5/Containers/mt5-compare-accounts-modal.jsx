@@ -1,4 +1,4 @@
-import { Button, Popover, Modal, UILoader } from '@deriv/components';
+import { Button, Popover, Modal, UiLoader } from '@deriv/components';
 import React from 'react';
 import DataTable from 'App/Components/Elements/DataTable';
 import { localize, Localize } from '@deriv/translations';
@@ -182,7 +182,7 @@ const CompareAccountsModal = ({ disableApp, enableApp, is_compare_accounts_visib
             onClick={toggleCompareAccounts}
             tertiary
         />
-        <React.Suspense fallback={<UILoader />}>
+        <React.Suspense fallback={<UiLoader />}>
             <Modal
                 className='mt5-dashboard__compare-accounts'
                 disableApp={disableApp}

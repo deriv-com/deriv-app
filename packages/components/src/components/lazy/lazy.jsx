@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import UILoader from '../ui-loader';
+import UiLoader from '../ui-loader';
 
 class Lazy extends React.PureComponent {
     render() {
@@ -13,7 +13,7 @@ class Lazy extends React.PureComponent {
         const LazyLoadedComponent = React.lazy(ctor);
 
         return (
-            <React.Suspense fallback={has_progress ? <UILoader /> : <div />}>
+            <React.Suspense fallback={has_progress ? <UiLoader /> : <div />}>
                 <LazyLoadedComponent {...component_props} />
             </React.Suspense>
         );

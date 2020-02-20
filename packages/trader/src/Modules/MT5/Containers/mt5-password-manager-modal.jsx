@@ -1,4 +1,4 @@
-import { Modal, Tabs, PasswordInput, PasswordMeter, Button, UILoader } from '@deriv/components';
+import { Modal, Tabs, PasswordInput, PasswordMeter, Button, UiLoader } from '@deriv/components';
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -238,7 +238,7 @@ class MT5PasswordManagerModal extends React.Component {
         };
 
         return (
-            <React.Suspense fallback={<UILoader />}>
+            <React.Suspense fallback={<UiLoader />}>
                 <Modal
                     className='mt5-password-manager__modal'
                     disableApp={disableApp}

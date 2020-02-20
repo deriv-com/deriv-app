@@ -86,7 +86,7 @@ export default class CashierStore extends BaseStore {
     @observable is_p2p_visible = false;
     @observable p2p_notification_count = 0;
     @observable p2p_order_list = [];
-    @observable is_p2p_agent = false;
+    @observable is_p2p_advertiser = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -132,10 +132,10 @@ export default class CashierStore extends BaseStore {
         // 3. p2p call does not return error code `PermissionDenied`
         await BinarySocket.wait('authorize');
         if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
-            const agent_error = ObjectUtils.getPropertyValue(await WS.p2pAgentInfo(), ['error', 'code']);
-            if (agent_error === 'PermissionDenied') return;
+            const advertiser_error = ObjectUtils.getPropertyValue(await WS.p2pAdvertiserInfo(), ['error', 'code']);
+            if (advertiser_error === 'PermissionDenied') return;
 
-            this.is_p2p_agent = !agent_error;
+            this.is_p2p_advertiser = !advertiser_error;
             this.setIsP2pVisible(true);
             WS.p2pSubscribe({ p2p_order_list: 1, subscribe: 1 }, this.setP2pOrderList);
         }
@@ -184,7 +184,7 @@ export default class CashierStore extends BaseStore {
             } else {
                 // it's a single order from p2p_order_info
                 const idx_order_to_update = this.p2p_order_list.findIndex(
-                    order => order.order_id === order_response.p2p_order_info.order_id
+                    order => order.id === order_response.p2p_order_info.id
                 );
                 const updated_orders = [...this.p2p_order_list];
                 // if it's a new order, add it to the top of the list
@@ -206,18 +206,14 @@ export default class CashierStore extends BaseStore {
         let p2p_notification_count = 0;
 
         orders.forEach(order => {
-            const is_buyer = order.type === 'buy';
-            const is_buyer_confirmed = order.status === 'buyer-confirmed';
-            const is_pending = order.status === 'pending';
-            const is_agent_buyer = this.is_p2p_agent && is_buyer;
-            const is_agent_seller = this.is_p2p_agent && !is_buyer;
-            const is_client_buyer = !this.is_p2p_agent && is_buyer;
-            const is_client_seller = !this.is_p2p_agent && !is_buyer;
+            const type = order.is_incoming
+                ? ObjectUtils.getPropertyValue(order, ['advert_details', 'type'])
+                : order.type;
 
-            if (
-                (is_buyer_confirmed && (is_agent_buyer || is_client_seller)) ||
-                (is_pending && (is_agent_seller || is_client_buyer))
-            ) {
+            // show notifications for:
+            // 1. buy orders that are pending buyer payment, or
+            // 2. sell orders that are pending seller confirmation
+            if (type === 'buy' ? order.status === 'pending' : order.status === 'buyer-confirmed') {
                 p2p_notification_count++;
             }
         });

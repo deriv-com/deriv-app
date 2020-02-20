@@ -6,8 +6,8 @@
     .modal-root,
     .dc-mobile-drawer__wrapper {
         /* Break the flow */
-        position: absolute;
-        top: 0px;
+        position: absolute !important;
+        top: 0px !important;
 
         /* Give them all the available space */
         width: 100%;
@@ -17,7 +17,7 @@
         margin: 0;
 
         /* Allow them to scroll down the document */
-        overflow-y: hidden;
+        overflow-y: hidden !important;
     }
     .body {
         /* Sending body at the bottom of the stack */

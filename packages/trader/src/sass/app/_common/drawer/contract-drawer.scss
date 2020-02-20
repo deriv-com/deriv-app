@@ -123,6 +123,7 @@ $header-height: 4em;
             text-transform: none;
             margin-bottom: 4px;
             color: var(--text-general);
+            white-space: nowrap;
         }
         &__value {
             font-size: 1em;

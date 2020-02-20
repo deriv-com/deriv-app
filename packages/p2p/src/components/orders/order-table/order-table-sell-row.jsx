@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from 'Components/i18next';
 
-const SellOrderRowComponent = React.memo(({ data, is_agent, onOpenDetails, style }) => {
+const SellOrderRowComponent = React.memo(({ data, onOpenDetails, style }) => {
     const {
         display_transaction_amount,
         display_offer_amount,
         display_status,
-        order_id,
+        id,
         order_purchase_datetime,
         offer_currency,
         transaction_currency,
@@ -25,12 +25,12 @@ const SellOrderRowComponent = React.memo(({ data, is_agent, onOpenDetails, style
             onClick={() => onOpenDetails(data)}
             style={style}
             className={classNames('orders__table-row', {
-                'orders__table-row--attention': (!is_agent && is_buyer_confirmed) || (is_agent && is_pending),
+                'orders__table-row--attention': is_buyer_confirmed,
             })}
         >
             <Table.Row>
                 <Table.Cell>
-                    {localize('Sell')} {order_id}
+                    {localize('Sell')} {id}
                 </Table.Cell>
                 <Table.Cell>{order_purchase_datetime}</Table.Cell>
                 <Table.Cell
@@ -42,26 +42,12 @@ const SellOrderRowComponent = React.memo(({ data, is_agent, onOpenDetails, style
                 >
                     {display_status}
                 </Table.Cell>
-                {is_agent && (
-                    <Table.Cell>
-                        {display_transaction_amount} {transaction_currency}
-                    </Table.Cell>
-                )}
-                {is_agent && (
-                    <Table.Cell>
-                        {display_offer_amount} {offer_currency}
-                    </Table.Cell>
-                )}
-                {!is_agent && (
-                    <Table.Cell>
-                        {display_offer_amount} {offer_currency}
-                    </Table.Cell>
-                )}
-                {!is_agent && (
-                    <Table.Cell>
-                        {display_transaction_amount} {transaction_currency}
-                    </Table.Cell>
-                )}
+                <Table.Cell>
+                    {display_offer_amount} {offer_currency}
+                </Table.Cell>
+                <Table.Cell>
+                    {display_transaction_amount} {transaction_currency}
+                </Table.Cell>
             </Table.Row>
         </div>
     );
@@ -72,9 +58,8 @@ SellOrderRowComponent.propTypes = {
         display_offer_amount: PropTypes.string,
         display_status: PropTypes.string,
         display_transaction_amount: PropTypes.string,
-        is_agent: PropTypes.bool,
         offer_currency: PropTypes.string,
-        order_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         order_purchase_datetime: PropTypes.string,
         transaction_currency: PropTypes.string,
     }),

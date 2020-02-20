@@ -37,22 +37,22 @@ const FormatMessage = ({ message }) => {
     switch (title) {
         case key_words[0]: {
             // Bought
-            title_color = 'blue';
+            title_color = 'info';
             break;
         }
         case key_words[1]: {
             // Sold
-            title_color = 'red';
+            title_color = 'error';
             break;
         }
         case key_words[2]: {
             // Profit amount
-            value_color = 'green';
+            value_color = 'success';
             break;
         }
         case key_words[3]: {
             // Loss amount
-            value_color = 'red';
+            value_color = 'error';
             break;
         }
         default: {
@@ -62,11 +62,11 @@ const FormatMessage = ({ message }) => {
 
     return (
         <p>
-            <span className={classnames({ [`journal__table--bold journal__table--${title_color}`]: title_color })}>
+            <span className={classnames({ [`journal__table--bold journal__${title_color}`]: title_color })}>
                 {title}
             </span>
             <span>:</span>
-            <span className={classnames({ [`journal__table--bold journal__table--${value_color}`]: value_color })}>
+            <span className={classnames({ [`journal__table--bold journal__${value_color}`]: value_color })}>
                 {value}
             </span>
         </p>

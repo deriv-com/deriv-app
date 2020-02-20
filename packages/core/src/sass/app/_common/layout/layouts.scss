@@ -28,6 +28,9 @@
         overscroll-behavior: none;
         z-index: 2;
     }
+    .modal-root {
+        height: 100% !important;
+    }
 }
 
 /* enable temporary landscape blocker UI in landscape */

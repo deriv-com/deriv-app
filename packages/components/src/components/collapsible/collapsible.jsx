@@ -2,6 +2,13 @@ import classNames from 'classnames';
 import React, { useState, useEffect, Children } from 'react';
 import { positionPropType } from './utils';
 import ArrowButton from './arrow-button.jsx';
+import { useSwipeable } from 'react-swipeable';
+
+const swipe_config = {
+    delta: 100,
+    trackTouch: true,
+    trackMouse: true,
+};
 
 const Collapsible = ({ as, is_collapsed, position = 'top', children }) => {
     const [is_open, expand] = useState(!is_collapsed);
@@ -9,9 +16,17 @@ const Collapsible = ({ as, is_collapsed, position = 'top', children }) => {
     const toggleExpand = () => expand(!is_open);
     const arrow_button = <ArrowButton is_open={is_open} position={position} onClick={toggleExpand} />;
     const CustomTag = as || 'div';
+    const swipe_handlers = useSwipeable({
+        onSwipedUp: () => !is_open && should_show_collapsible && expand(true),
+        onSwipedDown: () => is_open && should_show_collapsible && expand(false),
+        ...swipe_config,
+    });
+
     useEffect(() => setShouldShowCollapsible(Children.toArray(children).some(({ props }) => 'collapsible' in props)));
+
     return (
         <CustomTag
+            {...swipe_handlers}
             className={classNames('dc-collapsible', {
                 'dc-collapsible--is-expanded': is_open,
                 'dc-collapsible--is-collapsed': !is_open,

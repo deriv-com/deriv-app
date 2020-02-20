@@ -13,6 +13,7 @@ import Toolbar from './components/toolbar.jsx';
 import RootStore from './stores';
 import GTM from './utils/gtm';
 import './assets/sass/app.scss';
+import SettingsExtensions from './components/settings-extensions.jsx';
 
 class App extends React.Component {
     constructor(props) {
@@ -147,8 +148,9 @@ class App extends React.Component {
                     <MainContent />
                     <RunPanel />
                     <QuickStrategy />
-                    <FooterExtension />
                     <Audio />
+                    <FooterExtension />
+                    <SettingsExtensions />
                 </div>
             </Provider>
         );

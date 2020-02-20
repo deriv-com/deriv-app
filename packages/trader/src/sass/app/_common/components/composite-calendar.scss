@@ -36,6 +36,7 @@
                 height: 32px;
                 background-color: var(--fill-normal);
                 border: 1px solid var(--border-normal);
+                appearance: none;
 
                 &:hover {
                     border-color: var(--border-hover);
@@ -98,7 +99,6 @@
             }
             &-today {
                 width: 100%;
-                margin-top: 40px;
             }
         }
         &__radio-group {

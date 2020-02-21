@@ -21,6 +21,7 @@ class DBotStore extends DBotStoreInterface {
         this.toolbar = store.toolbar;
         this.toggleStrategyModal = store.toggleStrategyModal;
         this.handleFileChange = store.handleFileChange;
+        this.bot_settings = store.bot_settings;
     }
 
     static setInstance(store) {

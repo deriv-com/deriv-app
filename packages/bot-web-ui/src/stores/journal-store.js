@@ -1,6 +1,8 @@
+import React from 'react';
 import { observable, action, computed } from 'mobx';
 import { localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared/utils/date';
+import { Button, Icon } from '@deriv/components';
 import { message_types } from '@deriv/bot-skeleton';
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { storeSetting, getSetting } from '../utils/settings';
@@ -50,8 +52,38 @@ export default class JournalStore {
     pushMessage(message, message_type, className) {
         const date = formatDate(this.getServerTime());
         const time = formatDate(this.getServerTime(), 'HH:mm:ss [GMT]');
+        const unique_id = Blockly.utils.genUid();
 
-        this.unfiltered_messages.unshift({ date, time, message, message_type, className });
+        this.unfiltered_messages.unshift({ date, time, message, message_type, className, unique_id });
+
+        const random_num = Math.floor(Math.random() * 100);
+        if (random_num % 3 === 0) {
+            this.unfiltered_messages.unshift({
+                date,
+                time,
+                message_type: message_types.COMPONENT,
+                message: <img src='https://miro.medium.com/max/356/1*EnF9uIN_u2_X7ey24lB7Tg.png' />,
+                unique_id: Blockly.utils.genUid(),
+            });
+        } else if (random_num % 3 === 1) {
+            this.unfiltered_messages.unshift({
+                date,
+                time,
+                message_type: message_types.COMPONENT,
+                message: (
+                    <div className='test'>
+                        <Button
+                            id='test__button'
+                            text={localize('Click to win!')}
+                            icon={<Icon icon='IcCashierDeposit' className='run-panel__button--icon' color='active' />}
+                            has_effect
+                            green
+                        />
+                    </div>
+                ),
+                unique_id: Blockly.utils.genUid(),
+            });
+        }
     }
 
     @computed
@@ -59,7 +91,9 @@ export default class JournalStore {
         // filter messages based on filtered-checkbox
         return this.unfiltered_messages.filter(
             message =>
-                !this.checked_filters.length || this.checked_filters.some(filter => message.message_type === filter)
+                !this.checked_filters.length ||
+                this.checked_filters.some(filter => message.message_type === filter) ||
+                message.message_type === message_types.COMPONENT
         );
 
         // return [{

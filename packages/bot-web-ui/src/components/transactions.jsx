@@ -47,9 +47,11 @@ class Transactions extends React.PureComponent {
                                         case transaction_elements.DIVIDER: {
                                             const { data: run_id } = element;
                                             return (
-                                                <div key={run_id} className='transactions__divider'>
-                                                    <div className='transactions__divider-line' />
-                                                </div>
+                                                <CSSTransition key={run_id} timeout={500}>
+                                                    <div key={run_id} className='transactions__divider'>
+                                                        <div className='transactions__divider-line' />
+                                                    </div>
+                                                </CSSTransition>
                                             );
                                         }
                                         default: {

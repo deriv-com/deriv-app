@@ -114,19 +114,23 @@ const Journal = ({ filtered_messages, ...props }) => {
             <ThemedScrollbars autoHide style={{ height: 'calc(100% - 42px)' }}>
                 <div className='journal__item-list'>
                     {filtered_messages.length ? (
-                        filtered_messages.map((item, index) => {
-                            const { date, time, message, message_type, className } = item;
-                            const date_el = DateItem({ date, time });
+                        <TransitionGroup>
+                            {filtered_messages.map(item => {
+                                const { date, time, message, message_type, className, unique_id } = item;
+                                const date_el = DateItem({ date, time });
 
-                            return (
-                                <div className='journal__item' key={`${date}${time}__${index}`}>
-                                    <div className='journal__item-content'>
-                                        {getJournalItemContent(message, message_type, className)}
-                                    </div>
-                                    <div className='journal__text-datetime'>{date_el}</div>
-                                </div>
-                            );
-                        })
+                                return (
+                                    <CSSTransition key={unique_id} timeout={500} classNames='list__animation'>
+                                        <div className='journal__item'>
+                                            <div className='journal__item-content'>
+                                                {getJournalItemContent(message, message_type, className)}
+                                            </div>
+                                            <div className='journal__text-datetime'>{date_el}</div>
+                                        </div>
+                                    </CSSTransition>
+                                );
+                            })}
+                        </TransitionGroup>
                     ) : (
                         <div className='journal-empty__container'>
                             <div className='journal-empty'>

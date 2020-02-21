@@ -37,15 +37,25 @@
 }
 
 //animation
-.list__animation {
-    &-enter {
-        height: 0;
-        transform: translateX(200%);
+.list {
+    &__animation {
+        &-enter {
+            height: 0;
+            transform: translateX(200%);
 
-        &-active {
-            height: 55px;
-            transform: translateX(0%);
-            transition: height 500ms, transform 500ms;
+            &-active {
+                height: auto;
+                transform: translateX(0%);
+                transition: height 500ms, transform 500ms;
+            }
+        }
+        &-exit {
+            opacity: 1;
+
+            &-active {
+                opacity: 0;
+                transition: opacity 200ms;
+            }
         }
     }
 }

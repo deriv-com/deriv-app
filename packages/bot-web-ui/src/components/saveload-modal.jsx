@@ -36,7 +36,7 @@ const SaveLoadModal = ({
                 onSubmit={is_save_modal ? values => onConfirmSave(values) : values => onLoadClick(values)}
             >
                 {({ values: { is_local, save_as_collection }, setFieldValue }) => (
-                    <Form>
+                    <Form id='db-file-upload-form'>
                         <div className='modal__content'>
                             <div className='modal__content-row'>
                                 <RadioGroup

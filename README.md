@@ -51,7 +51,7 @@ All packages must contain the following scripts to perform the stated actions:
 | Package param | Command             | Description                                                                                   |
 | :-----------: | ------------------- |:---------------------------------------------------------------------------------------------:|
 | ✅            | `start`             | Runs complete test and build suite and starts the dev server.                                 |
-| ✅            | `serve`             | Runs build suite and starts the dev server.                                                   |
+| ✅            | `serve`             | Runs build suite and starts the dev server. When serving `core`, takes optional `open` value as argument to open specific page. (e.g: `npm run serve core --open=bot`)      |
 | ✅            | `build`             | Runs build suite and outputs the result into `dist`. Takes optional `base` value as argument. |
 | ✅            | `prettify`          | Runs `prettify` script packages(s) to format code as per the specs of the package.            |
 | ✅            | `test`              | Runs the test suite with eslint, and stylelint.                                               |
@@ -125,6 +125,7 @@ There is a 4th type of release: releasing npm registry packages (currently `@der
 
 ## PR Guidelines
 1. Use the `developer 1|developer 2/task_name` format for PR titles. (e.g.: `dev1|dev2/fixed_emoji_issue`, `dev1/added_superfast_jellyfish`)
+    - Optional square bracket tag (e.g. `[WIP]`) can be at the end.
 2. Use the appropriate package labels available on the repo to indicate which packages your PR modifies.
 3. Use Draft PRs if you don't mean to request for reviews yet. [Read more here.](https://github.blog/2019-02-14-introducing-draft-pull-requests/)
 

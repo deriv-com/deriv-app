@@ -2,7 +2,8 @@ import { localize } from '@deriv/translations';
 
 export default {
     text: [
-        localize('This block displays a modal window with a given message.'),
-        localize('Strategy execution is being paused until user clicks "OK"'),
+        localize(
+            'This block displays a dialog box with a customised message. When the dialog box is displayed, your strategy is paused and will only resume after you click "OK".'
+        ),
     ],
 };

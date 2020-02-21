@@ -8,6 +8,7 @@
     &__footer {
         width: 100%;
         background: var(--general-main-1);
+        border-top: 2px solid var(--border-disabled);
         display: flex;
         align-items: center;
         position: absolute;

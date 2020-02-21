@@ -166,7 +166,9 @@ class ContractDrawer extends Component {
                     )}
                 </DesktopWrapper>
                 <MobileWrapper>
-                    {!!is_sold && <Collapsible.ArrowButton position='top' onClick={this.toggleContractAuditDrawer} />}
+                    {!!is_sold && (
+                        <Collapsible.ArrowButton position='bottom' onClick={this.toggleContractAuditDrawer} />
+                    )}
                     <ContractCard contract_info={contract_info}>
                         <ContractCardHeader>
                             <div className={classNames('contract-card__grid', 'contract-card__grid-underlying-trade')}>

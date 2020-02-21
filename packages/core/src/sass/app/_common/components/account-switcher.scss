@@ -78,7 +78,7 @@
             transform: rotate(180deg);
         }
     }
-    &:hover:not(.show) {
+    &:hover:not(.show):not(&--is-disabled) {
         background: var(--state-hover);
 
         .symbols {
@@ -89,6 +89,9 @@
         .acc-info__balance {
             color: var(--text-profit-success);
         }
+    }
+    &--is-disabled {
+        cursor: not-allowed;
     }
     &--show {
         .acc-info__select-arrow {

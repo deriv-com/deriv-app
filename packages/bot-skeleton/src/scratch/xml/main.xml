@@ -56,7 +56,7 @@
       <block type="trade_again"></block>
     </statement>
   </block>
-  <block type="before_purchase" x="0" y="576">
+  <block type="before_purchase" x="0" y="480">
     <statement name="BEFOREPURCHASE_STACK">
       <block type="purchase">
         <field name="PURCHASE_LIST"></field>

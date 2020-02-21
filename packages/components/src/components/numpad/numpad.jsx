@@ -99,10 +99,11 @@ const Numpad = ({
                 value={default_value}
                 render={render}
                 onChange={v => {
-                    if (!isFloat(v)) {
+                    const amount = formatNumber(v);
+                    if (!isFloat(amount)) {
                         setFloat(false);
                     }
-                    setValue(v);
+                    setValue(amount);
                 }}
                 min={min}
                 max={max}

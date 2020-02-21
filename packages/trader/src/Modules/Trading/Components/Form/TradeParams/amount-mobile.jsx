@@ -21,8 +21,8 @@ const Basis = ({
 }) => {
     const user_currency_decimal_places = CurrencyUtils.getDecimalPlaces(currency);
     const onNumberChange = num => setSelectedAmount(basis, num);
-    const setBasisAndAmount = value => {
-        const amount = !isNaN(value) ? Number(value).toFixed(user_currency_decimal_places) : value;
+    const formatAmount = value => (!isNaN(value) ? Number(value).toFixed(user_currency_decimal_places) : value);
+    const setBasisAndAmount = amount => {
         const on_change_obj = {};
 
         // Check for any duration changes in Duration trade params Tab before sending onChange object
@@ -42,6 +42,7 @@ const Basis = ({
         <div className='trade-params__amount-keypad'>
             <Numpad
                 value={selected_basis}
+                format={formatAmount}
                 onSubmit={setBasisAndAmount}
                 currency={currency}
                 is_currency

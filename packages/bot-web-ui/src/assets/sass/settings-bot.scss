@@ -1,0 +1,7 @@
+.bot-settings {
+    &__restart-options {
+        > .dc-checkbox + .dc-checkbox {
+            margin-top: 8px;
+        }
+    }
+}

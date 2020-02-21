@@ -39,7 +39,7 @@ export default class JournalStore {
     @action.bound
     onNotify(data) {
         const { message, className } = data;
-        this.pushMessage(`[Notfiy] : ${message}`, message_types.NOTIFY, className);
+        this.pushMessage(message, message_types.NOTIFY, className);
 
         const { sound } = data;
         if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
@@ -55,35 +55,6 @@ export default class JournalStore {
         const unique_id = Blockly.utils.genUid();
 
         this.unfiltered_messages.unshift({ date, time, message, message_type, className, unique_id });
-
-        const random_num = Math.floor(Math.random() * 100);
-        if (random_num % 3 === 0) {
-            this.unfiltered_messages.unshift({
-                date,
-                time,
-                message_type: message_types.COMPONENT,
-                message: <img src='https://miro.medium.com/max/356/1*EnF9uIN_u2_X7ey24lB7Tg.png' />,
-                unique_id: Blockly.utils.genUid(),
-            });
-        } else if (random_num % 3 === 1) {
-            this.unfiltered_messages.unshift({
-                date,
-                time,
-                message_type: message_types.COMPONENT,
-                message: (
-                    <div className='test'>
-                        <Button
-                            id='test__button'
-                            text={localize('Click to win!')}
-                            icon={<Icon icon='IcCashierDeposit' className='run-panel__button--icon' color='active' />}
-                            has_effect
-                            green
-                        />
-                    </div>
-                ),
-                unique_id: Blockly.utils.genUid(),
-            });
-        }
     }
 
     @computed
@@ -95,40 +66,6 @@ export default class JournalStore {
                 this.checked_filters.some(filter => message.message_type === filter) ||
                 message.message_type === message_types.COMPONENT
         );
-
-        // return [{
-        //     message_type: message_types.NOTIFY,
-        //     date: "2020-03-19",
-        //     time: "09:32:59 GMT",
-        //     message: "THis is a Notfiy Message!!!",
-        //     className: 'journal__text--success',
-        // },{
-        //     message_type: message_types.SUCCESS,
-        //     date: "2020-03-19",
-        //     time: "09:35:59 GMT",
-        //     message: "Bought: Win payout if AUD Index after 5 ticks is strictly higher than entry spot. (ID: 146165110128)",
-        // }, {
-        //     message_type: message_types.ERROR,
-        //     date: "2020-03-19",
-        //     time: "09:37:59 GMT",
-        //     message: "Error! GG!",
-        // },{
-        //     message_type: message_types.COMPONENT,
-        //     date: "2020-03-19",
-        //     time: "09:39:59 GMT",
-        //     message: <img src="https://miro.medium.com/max/356/1*EnF9uIN_u2_X7ey24lB7Tg.png" />,
-        // },{
-        //     message_type: message_types.COMPONENT,
-        //     date: "2020-03-19",
-        //     time: "09:40:59 GMT",
-        //     message: <div className='test'><Button
-        //                 id='test__button'
-        //                 text={localize('Run bot')}
-        //                 icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
-        //                 has_effect
-        //                 green
-        //             /></div>,
-        // }];
     }
 
     @action.bound

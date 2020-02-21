@@ -5,8 +5,10 @@ import { Checkbox, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { message_types } from '@deriv/bot-skeleton';
+import JournalLoader from './journal-loading.jsx';
 import { connect } from '../stores/connect';
 import '../assets/sass/journal.scss';
+import { contract_stages } from '../constants/contract-stage';
 
 const DateItem = ({ date, time }) => {
     return (
@@ -107,7 +109,7 @@ const getJournalItemContent = (message, type, className) => {
     }
 };
 
-const Journal = ({ filtered_messages, ...props }) => {
+const Journal = ({ filtered_messages, contract_stage, ...props }) => {
     return (
         <div className='journal run-panel-tab__content'>
             <Tools {...props} />
@@ -132,22 +134,33 @@ const Journal = ({ filtered_messages, ...props }) => {
                             })}
                         </TransitionGroup>
                     ) : (
-                        <div className='journal-empty__container'>
-                            <div className='journal-empty'>
-                                <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
-                                <h4 className='journal-empty__header'>
-                                    {localize('There are no messages to display')}
-                                </h4>
-                                <div className='journal-empty__message'>
-                                    <span>{localize('Here are the possible reasons:')}</span>
-                                    <ul className='journal-empty__list'>
-                                        <li>{localize('The bot is not running')}</li>
-                                        <li>{localize('The stats are cleared')}</li>
-                                        <li>{localize('All messages are filtered out')}</li>
-                                    </ul>
+                        <>
+                            {contract_stage.index >= contract_stages.STARTING.index ? (
+                                <JournalLoader />
+                            ) : (
+                                <div className='journal-empty__container'>
+                                    <div className='journal-empty'>
+                                        <Icon
+                                            icon='IcBox'
+                                            className='journal-empty__icon'
+                                            size={64}
+                                            color='secondary'
+                                        />
+                                        <h4 className='journal-empty__header'>
+                                            {localize('There are no messages to display')}
+                                        </h4>
+                                        <div className='journal-empty__message'>
+                                            <span>{localize('Here are the possible reasons:')}</span>
+                                            <ul className='journal-empty__list'>
+                                                <li>{localize('The bot is not running')}</li>
+                                                <li>{localize('The stats are cleared')}</li>
+                                                <li>{localize('All messages are filtered out')}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            )}
+                        </>
                     )}
                 </div>
             </ThemedScrollbars>
@@ -157,13 +170,15 @@ const Journal = ({ filtered_messages, ...props }) => {
 
 Journal.propTypes = {
     checked_filters: PropTypes.array,
+    contract_stage: PropTypes.object,
     filtered_messages: PropTypes.array,
     filterMessage: PropTypes.func,
     filters: PropTypes.array,
 };
 
-export default connect(({ journal }) => ({
+export default connect(({ journal, run_panel }) => ({
     checked_filters: journal.checked_filters,
+    contract_stage: run_panel.contract_stage,
     filterMessage: journal.filterMessage,
     filters: journal.filters,
     filtered_messages: journal.filtered_messages,

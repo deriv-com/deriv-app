@@ -9,6 +9,7 @@ const concatenate = (number, default_value) => default_value.toString().concat(n
 
 const Numpad = ({
     className,
+    currency,
     is_regular,
     is_currency,
     label,
@@ -22,9 +23,9 @@ const Numpad = ({
     format,
     onValueChange,
 }) => {
-    const [is_float, setFloat] = React.useState(false);
+    const isFloat = v => String(v).match(/\./);
+    const [is_float, setFloat] = React.useState(isFloat(value));
     const [default_value, setValue] = React.useState(value);
-    const isFloat = v => v % 1 !== 0;
     const formatNumber = v => (typeof format === 'function' ? format(v) : v);
 
     const onSelect = num => {
@@ -83,10 +84,6 @@ const Numpad = ({
     });
 
     React.useEffect(() => {
-        if (value) setValue(value);
-    }, [value]);
-
-    React.useEffect(() => {
         if (onValueChange) onValueChange(default_value);
     }, [default_value]);
     return (
@@ -97,6 +94,7 @@ const Numpad = ({
             })}
         >
             <StepInput
+                currency={currency}
                 pip_size={pip_size}
                 value={default_value}
                 render={render}

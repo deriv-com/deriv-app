@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import Input from 'Components/input/input.jsx';
 import Button from 'Components/button/button.jsx';
 
@@ -8,7 +9,7 @@ const getDecimals = val => {
     return array_value && array_value.length > 1 ? array_value[1].length : 0;
 };
 
-const StepInput = ({ max, min, value, onChange, render, pip_size = 0 }) => {
+const StepInput = ({ max, min, value, onChange, render, pip_size = 0, currency }) => {
     const is_gt_max = parseFloat(value) + 1 > max;
     const is_lt_min = parseFloat(value) - 1 < min;
 
@@ -22,8 +23,9 @@ const StepInput = ({ max, min, value, onChange, render, pip_size = 0 }) => {
             increment_value = min;
         } else {
             const decimal_places = value ? getDecimals(value) : 0;
+            const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
 
-            if (decimal_places) {
+            if (is_crypto || (!currency && decimal_places)) {
                 const new_value = parseFloat(+value) + parseFloat(1 * 10 ** (0 - decimal_places));
                 increment_value = parseFloat(new_value).toFixed(decimal_places);
             } else {
@@ -44,8 +46,9 @@ const StepInput = ({ max, min, value, onChange, render, pip_size = 0 }) => {
             increment_value = min;
         } else {
             const decimal_places = value ? getDecimals(value) : 0;
+            const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
 
-            if (decimal_places) {
+            if (is_crypto || (!currency && decimal_places)) {
                 const new_value = parseFloat(+value) - parseFloat(1 * 10 ** (0 - decimal_places));
                 increment_value = parseFloat(new_value).toFixed(decimal_places);
             } else {

@@ -99,7 +99,36 @@ $MIN_HEIGHT_FLOATING: calc(
         transition: background-color 0.1s ease-in;
         text-decoration: none;
     }
+    &--grouped {
+        .dc-vertical-tab__header {
+            padding-left: 4.4rem;
+
+            &--highlight {
+                z-index: -1;
+            }
+            &--active {
+                padding-left: 4.8rem;
+            }
+        }
+    }
     &__header {
+        &__icon.dc-vertical-tab__header__icon--active {
+            margin-right: 2rem;
+        }
+    }
+    &__header-group {
+        &-chevron {
+            position: absolute;
+            right: 2.4rem;
+            transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+
+            &--invert {
+                transform: rotate(180deg);
+            }
+        }
+    }
+    &__header,
+    &__header-group {
         @include typeface(--paragraph-center-bold-black, none);
         line-height: 1.5;
         color: var(--text-general);
@@ -128,6 +157,7 @@ $MIN_HEIGHT_FLOATING: calc(
             font-weight: bold;
         }
         &--highlight {
+            // This selector has a `transition` property that's set inline
             position: absolute;
             display: block;
             content: '';
@@ -138,7 +168,6 @@ $MIN_HEIGHT_FLOATING: calc(
             height: 41px;
             transform: translate3d(0, 0, 0);
             z-index: 0;
-            transition: transform 0.25s ease;
         }
         &--new {
             font-size: 1rem;

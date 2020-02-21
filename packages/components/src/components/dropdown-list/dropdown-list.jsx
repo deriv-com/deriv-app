@@ -7,25 +7,81 @@ import ThemedScrollbars from 'Components/themed-scrollbars';
 const trackHorizontal = props => <div {...props} style={{ display: 'none' }} />;
 const thumbHorizontal = props => <div {...props} style={{ display: 'none' }} />;
 
+const ListItem = ({ is_active, item, child_ref, onItemSelection, is_object_list }) => {
+    return (
+        <div
+            ref={child_ref}
+            // onMouseDown ensures the click handler runs before the onBlur event of Input
+            onMouseDown={() => onItemSelection(item)}
+            className={classNames('dc-dropdown-list__item', {
+                'dc-dropdown-list__item--active': is_active,
+            })}
+            value={is_object_list ? item.value : null}
+        >
+            {is_object_list ? item.component || item.text : item}
+        </div>
+    );
+};
+
 const ListItems = React.forwardRef((props, ref) => {
     const { active_index, list_items, is_object_list, onItemSelection, not_found_text } = props;
+    const is_grouped_list = list_items.some(list_item => !!list_item.group);
+
+    if (is_grouped_list) {
+        const groups = {};
+
+        list_items.forEach(list_item => {
+            const group = list_item.group || '?';
+            if (!groups[group]) {
+                groups[group] = [];
+            }
+            groups[group].push(list_item);
+        });
+
+        const group_names = Object.keys(groups);
+        let item_idx = -1;
+
+        return (
+            <>
+                {group_names.map((group_name, group_idx) => {
+                    const group = groups[group_name];
+                    const has_separator = !!group_names[group_idx + 1];
+                    return (
+                        <React.Fragment key={`group${group_idx}`}>
+                            <div className='dc-dropdown-list__group-header'>{group_name}</div>
+                            {group.map(item => {
+                                item_idx++;
+                                return (
+                                    <ListItem
+                                        key={item_idx}
+                                        item={item}
+                                        is_active={item_idx === active_index}
+                                        onItemSelection={onItemSelection}
+                                        is_object_list={is_object_list}
+                                        child_ref={item_idx === active_index ? ref : null}
+                                    />
+                                );
+                            })}
+                            {has_separator && <div className='dc-dropdown-list__separator' />}
+                        </React.Fragment>
+                    );
+                })}
+            </>
+        );
+    }
 
     return (
         <>
             {list_items.length ? (
-                list_items.map((item, idx) => (
-                    <div
-                        ref={idx === active_index ? ref : null}
-                        key={idx}
-                        // onMouseDown ensures the click handler runs before the onBlur event of Input
-                        onMouseDown={() => onItemSelection(item)}
-                        className={classNames('dc-dropdown-list__item', {
-                            'dc-dropdown-list__item--active': idx === active_index,
-                        })}
-                        value={is_object_list ? item.value : null}
-                    >
-                        {is_object_list ? item.text : item}
-                    </div>
+                list_items.map((item, item_idx) => (
+                    <ListItem
+                        key={item_idx}
+                        item={item}
+                        is_active={item_idx === active_index}
+                        onItemSelection={onItemSelection}
+                        is_object_list={is_object_list}
+                        child_ref={item_idx === active_index ? ref : null}
+                    />
                 ))
             ) : (
                 <div className={'dc-dropdown-list__item'}>{not_found_text}</div>

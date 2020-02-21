@@ -11,18 +11,6 @@
     background-color: var(--general-main-1);
     border-bottom: 1px solid var(--general-section-1);
 
-    &:after {
-        position: absolute;
-        opacity: 0;
-        pointer-events: none;
-        top: -1px;
-        z-index: 2;
-        left: 0;
-        width: 100%;
-        height: calc(100% + 2px);
-        content: '';
-        background-color: var(--overlay-outside-dialog);
-    }
     &--is-disabled:after {
         opacity: 1;
         pointer-events: auto;

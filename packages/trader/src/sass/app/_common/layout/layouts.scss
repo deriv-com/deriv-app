@@ -1,5 +1,18 @@
 /** @define app-contents; weak */
 .app-contents {
+    margin: $HEADER_HEIGHT 0 $FOOTER_HEIGHT;
+    height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
+    overflow: hidden;
+    backface-visibility: hidden;
+    background-color: var(--general-main-1);
+
+    &--is-disabled:after {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    &--is-route-modal {
+        background-color: var(--overlay-outside-dialog);
+    }
     &--show-positions-drawer:not(&--is-mobile) {
         .trade-container {
             .chart-container {

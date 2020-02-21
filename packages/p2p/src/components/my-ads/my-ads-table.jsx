@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Dialog, Table } from '@deriv/components';
+import { Button, Dialog, Loading, Table } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { requestWS } from 'Utils/websocket';
@@ -13,7 +13,7 @@ const headers = [
     { text: localize('Limits') },
     { text: localize('Price') },
     { text: localize('Payment method') },
-    { text: localize('Actions') },
+    { text: '' }, // empty header
 ];
 
 const type = {
@@ -25,7 +25,7 @@ const RowComponent = React.memo(({ data, row_actions, style }) => (
     <div style={style}>
         <Table.Row>
             <Table.Cell>
-                {type[data.type]} {data.offer_id}
+                {type[data.type]} {data.id}
             </Table.Cell>
             <Table.Cell>
                 {data.display_available_amount} {data.offer_currency}
@@ -39,14 +39,11 @@ const RowComponent = React.memo(({ data, row_actions, style }) => (
             <Table.Cell>{data.display_payment_method}</Table.Cell>
             <Table.Cell>
                 <Button
+                    className='deriv-p2p__button--right-aligned'
                     secondary
                     small
-                    onClick={() => row_actions.onClickEdit(data)}
-                    className='p2p-my-ads__table-button'
+                    onClick={() => row_actions.onClickDelete(data.id)}
                 >
-                    {localize('Edit')}
-                </Button>
-                <Button secondary small onClick={() => row_actions.onClickDelete(data.offer_id)}>
                     {localize('Delete')}
                 </Button>
             </Table.Cell>
@@ -64,6 +61,7 @@ export class MyAdsTable extends React.Component {
     is_mounted = false;
 
     state = {
+        is_loading: true,
         items: [],
         selected_ad_id: '',
         show_popup: false,
@@ -74,7 +72,7 @@ export class MyAdsTable extends React.Component {
     componentDidMount() {
         this.is_mounted = true;
 
-        requestWS({ p2p_agent_offers: 1 }).then(response => {
+        requestWS({ p2p_advertiser_adverts: 1 }).then(response => {
             if (this.is_mounted) {
                 this.setState({ items: response, is_loading: false });
             }
@@ -85,8 +83,8 @@ export class MyAdsTable extends React.Component {
         this.is_mounted = false;
     }
 
-    onClickDelete = offer_id => {
-        this.setState({ selected_ad_id: offer_id, show_popup: true });
+    onClickDelete = id => {
+        this.setState({ selected_ad_id: id, show_popup: true });
     };
 
     onClickCancel = () => {
@@ -94,12 +92,12 @@ export class MyAdsTable extends React.Component {
     };
 
     onClickConfirm = showError => {
-        requestWS({ p2p_offer_update: 1, offer_id: this.state.selected_ad_id, is_active: 0 }).then(response => {
+        requestWS({ p2p_advert_update: 1, id: this.state.selected_ad_id, is_active: 0 }).then(response => {
             if (response.error) {
                 showError({ error_message: response.error.message });
             } else {
                 // remove the deleted ad from the list of items
-                const updated_items = this.state.items.filter(ad => ad.offer_id !== response.p2p_offer_update.offer_id);
+                const updated_items = this.state.items.filter(ad => ad.id !== response.p2p_advert_update.id);
                 this.setState({ items: updated_items, show_popup: false });
             }
         });
@@ -118,22 +116,27 @@ export class MyAdsTable extends React.Component {
                             ))}
                         </Table.Row>
                     </Table.Header>
-                    <Table.Body>
-                        <InfiniteLoaderList
-                            // screen size - header size - footer size - page overlay header - page overlay content padding -
-                            // tabs height - padding of tab content - toggle height - toggle margin - table header height
-                            initial_height={
-                                'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 2.4rem - 50px - 1.6rem - 52px)'
-                            }
-                            items={items}
-                            row_actions={{
-                                onClickDelete: this.onClickDelete,
-                                onClickEdit: this.props.onClickEdit,
-                            }}
-                            RenderComponent={RowComponent}
-                            RowLoader={MyAdsLoader}
-                        />
-                    </Table.Body>
+                    {this.state.is_loading ? (
+                        <Loading is_fullscreen={false} />
+                    ) : (
+                        <Table.Body>
+                            {items.length ? (
+                                <InfiniteLoaderList
+                                    // screen size - header size - footer size - page overlay header - page overlay content padding -
+                                    // tabs height - padding of tab content - toggle height - toggle margin - table header height
+                                    initial_height={
+                                        'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 2.4rem - 50px - 1.6rem - 52px)'
+                                    }
+                                    items={items}
+                                    row_actions={{ onClickDelete: this.onClickDelete }}
+                                    RenderComponent={RowComponent}
+                                    RowLoader={MyAdsLoader}
+                                />
+                            ) : (
+                                <div className='deriv-p2p__empty'>{localize("You haven't posted any ads yet.")}</div>
+                            )}
+                        </Table.Body>
+                    )}
                 </Table>
                 {this.state.show_popup && (
                     <div className='orders__dialog'>
@@ -154,7 +157,3 @@ export class MyAdsTable extends React.Component {
         );
     }
 }
-
-MyAdsTable.propTypes = {
-    onClickEdit: PropTypes.func,
-};

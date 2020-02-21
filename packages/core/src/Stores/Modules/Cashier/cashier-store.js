@@ -1,8 +1,9 @@
-import { action, observable, toJS } from 'mobx';
+import { action, computed, observable, toJS } from 'mobx';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import BinarySocket from '_common/base/socket_base';
 import { localize } from '@deriv/translations';
+import AppRoutes from 'Constants/routes';
 import { WS } from 'Services';
 import BaseStore from '../../base-store';
 import { getMT5AccountDisplay } from '../../Helpers/client';
@@ -85,7 +86,7 @@ export default class CashierStore extends BaseStore {
     @observable is_p2p_visible = false;
     @observable p2p_notification_count = 0;
     @observable p2p_order_list = [];
-    @observable is_p2p_agent = false;
+    @observable is_p2p_advertiser = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -113,6 +114,16 @@ export default class CashierStore extends BaseStore {
         [this.config.payment_agent.container]: 'payment_agent_withdraw',
     };
 
+    @computed
+    get is_payment_agent_visible() {
+        return !!(this.config.payment_agent.filtered_list.length || this.config.payment_agent.agents.length);
+    }
+
+    @computed
+    get is_payment_agent_transfer_visible() {
+        return this.config.payment_agent_transfer.is_payment_agent;
+    }
+
     @action.bound
     async init() {
         // show p2p if:
@@ -121,10 +132,10 @@ export default class CashierStore extends BaseStore {
         // 3. p2p call does not return error code `PermissionDenied`
         await BinarySocket.wait('authorize');
         if (!this.is_p2p_visible && !this.root_store.client.is_virtual) {
-            const agent_error = ObjectUtils.getPropertyValue(await WS.p2pAgentInfo(), ['error', 'code']);
-            if (agent_error === 'PermissionDenied') return;
+            const advertiser_error = ObjectUtils.getPropertyValue(await WS.p2pAdvertiserInfo(), ['error', 'code']);
+            if (advertiser_error === 'PermissionDenied') return;
 
-            this.is_p2p_agent = !agent_error;
+            this.is_p2p_advertiser = !advertiser_error;
             this.setIsP2pVisible(true);
             WS.p2pSubscribe({ p2p_order_list: 1, subscribe: 1 }, this.setP2pOrderList);
         }
@@ -141,6 +152,9 @@ export default class CashierStore extends BaseStore {
 
         this.is_populating_values = true;
 
+        // cashier inits once and tries to stay active until switching account
+        // since cashier calls take a long time to respond or display in iframe
+        // so we don't have any unmount function here and everything gets reset on switch instead
         this.disposeSwitchAccount();
         this.onSwitchAccount(this.accountSwitcherListener);
 
@@ -170,7 +184,7 @@ export default class CashierStore extends BaseStore {
             } else {
                 // it's a single order from p2p_order_info
                 const idx_order_to_update = this.p2p_order_list.findIndex(
-                    order => order.order_id === order_response.p2p_order_info.order_id
+                    order => order.id === order_response.p2p_order_info.id
                 );
                 const updated_orders = [...this.p2p_order_list];
                 // if it's a new order, add it to the top of the list
@@ -192,18 +206,14 @@ export default class CashierStore extends BaseStore {
         let p2p_notification_count = 0;
 
         orders.forEach(order => {
-            const is_buyer = order.type === 'buy';
-            const is_buyer_confirmed = order.status === 'buyer-confirmed';
-            const is_pending = order.status === 'pending';
-            const is_agent_buyer = this.is_p2p_agent && is_buyer;
-            const is_agent_seller = this.is_p2p_agent && !is_buyer;
-            const is_client_buyer = !this.is_p2p_agent && is_buyer;
-            const is_client_seller = !this.is_p2p_agent && !is_buyer;
+            const type = order.is_incoming
+                ? ObjectUtils.getPropertyValue(order, ['advert_details', 'type'])
+                : order.type;
 
-            if (
-                (is_buyer_confirmed && (is_agent_buyer || is_client_seller)) ||
-                (is_pending && (is_agent_seller || is_client_buyer))
-            ) {
+            // show notifications for:
+            // 1. buy orders that are pending buyer payment, or
+            // 2. sell orders that are pending seller confirmation
+            if (type === 'buy' ? order.status === 'pending' : order.status === 'buyer-confirmed') {
                 p2p_notification_count++;
             }
         });
@@ -214,6 +224,9 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setIsP2pVisible(is_p2p_visible) {
         this.is_p2p_visible = is_p2p_visible;
+        if (!is_p2p_visible && window.location.pathname.startsWith(AppRoutes.cashier_p2p)) {
+            this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+        }
     }
 
     @action.bound
@@ -459,19 +472,15 @@ export default class CashierStore extends BaseStore {
         this.onRemount = this.onMountPaymentAgentList;
         await this.onMountCommon();
 
-        if (!this.config.payment_agent.list.length) {
-            const payment_agent_list = await BinarySocket.wait('paymentagent_list');
-            if (!this.config.payment_agent.list.length) {
-                this.setPaymentAgentList(payment_agent_list);
-            }
-        }
-
-        this.filterPaymentAgentList();
         this.setLoading(false);
     }
 
     @action.bound
     async getPaymentAgentList() {
+        if (this.config.payment_agent.list.length) {
+            return BinarySocket.wait('paymentagent_list');
+        }
+
         const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
         const currency = this.root_store.client.currency;
         return WS.paymentAgentList(residence, currency);
@@ -546,6 +555,9 @@ export default class CashierStore extends BaseStore {
         } else {
             this.config.payment_agent.filtered_list = this.config.payment_agent.list;
         }
+        if (!this.is_payment_agent_visible && window.location.pathname.startsWith(AppRoutes.cashier_pa)) {
+            this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+        }
     }
 
     @action.bound
@@ -565,12 +577,16 @@ export default class CashierStore extends BaseStore {
         this.setReceipt({});
 
         if (!this.config.payment_agent.agents.length) {
-            const payment_agent_list = this.config.payment_agent.list.length
-                ? await BinarySocket.wait('paymentagent_list')
-                : await this.getPaymentAgentList();
+            const payment_agent_list = await this.getPaymentAgentList();
             payment_agent_list.paymentagent_list.list.forEach(payment_agent => {
                 this.addPaymentAgent(payment_agent);
             });
+            if (
+                !payment_agent_list.paymentagent_list.list.length &&
+                window.location.pathname.startsWith(AppRoutes.cashier_pa)
+            ) {
+                this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+            }
         }
 
         this.setLoading(false);
@@ -672,20 +688,22 @@ export default class CashierStore extends BaseStore {
             this.setHasNoAccountsBalance(false);
         }
 
-        if (!this.config.account_transfer.accounts_list.length || has_updated_account_balance) {
-            const transfer_between_accounts = await WS.transferBetweenAccounts();
-            if (transfer_between_accounts.error) {
-                this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
-                this.setLoading(false);
-                return;
-            }
-            if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
-                return;
-            }
-            this.sortAccountsTransfer(transfer_between_accounts);
-        } else if (!this.canDoAccountTransfer(this.config.account_transfer.accounts_list)) {
+        const transfer_between_accounts =
+            !this.config.account_transfer.accounts_list.length || has_updated_account_balance
+                ? await WS.transferBetweenAccounts()
+                : await WS.authorized.cache.transferBetweenAccounts({ accounts: 'all' }); // load from cache to get the latest updates
+
+        if (transfer_between_accounts.error) {
+            this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
+            this.setLoading(false);
             return;
         }
+
+        if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
+            return;
+        }
+
+        this.sortAccountsTransfer(transfer_between_accounts);
         this.setTransferFee();
         this.setMinimumFee();
         this.setTransferLimit();
@@ -918,7 +936,7 @@ export default class CashierStore extends BaseStore {
         await this.onMountCommon();
 
         if (!this.config.payment_agent_transfer.transfer_limit.min_withdrawal) {
-            const response = await BinarySocket.wait('paymentagent_list');
+            const response = await this.getPaymentAgentList();
             const current_payment_agent = this.getCurrentPaymentAgent(response);
             this.setMinMaxPaymentAgentTransfer(current_payment_agent);
         }
@@ -940,6 +958,9 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsPaymentAgent(is_payment_agent) {
+        if (!is_payment_agent && window.location.pathname.startsWith(AppRoutes.cashier_pa_transfer)) {
+            this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+        }
         this.config.payment_agent_transfer.is_payment_agent = !!is_payment_agent;
     }
 
@@ -998,14 +1019,9 @@ export default class CashierStore extends BaseStore {
         this.is_populating_values = false;
         this.setIsP2pVisible(false);
 
+        this.init();
         this.onRemount();
 
         return Promise.resolve();
-    }
-
-    @action.bound
-    onUnmount() {
-        this.disposePreSwitchAccount();
-        this.disposeSwitchAccount();
     }
 }

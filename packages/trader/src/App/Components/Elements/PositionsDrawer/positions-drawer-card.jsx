@@ -159,12 +159,7 @@ const PositionsDrawerCard = ({
                         'positions-drawer-card--green': profit_loss > 0 && !result,
                         'positions-drawer-card--red': profit_loss < 0 && !result,
                     })}
-                    to={{
-                        pathname: `/contract/${id}`,
-                        state: {
-                            // from_table_row: true,
-                        },
-                    }}
+                    to={`/contract/${id}`}
                 >
                     {contract_info.underlying ? contract_el : loader_el}
                 </NavLink>

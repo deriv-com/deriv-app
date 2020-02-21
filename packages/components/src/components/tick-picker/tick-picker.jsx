@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import throttle from 'lodash.throttle';
+import { useSwipeable } from 'react-swipeable';
 import Button from 'Components/button/button.jsx';
 import Icon from '../icon';
+
+const THROTTLE_INTERVAL_TIME = 100;
 
 const TickPicker = ({
     default_value,
@@ -38,13 +42,30 @@ const TickPicker = ({
         if (onValueChange) onValueChange(tick_value);
     }, [tick_value]);
 
+    const throttledSwipeHandler = throttle(
+        ({ dir }) => {
+            if (dir.toLowerCase() === 'up') {
+                handleIncrease();
+            }
+            if (dir.toLowerCase() === 'down') {
+                handleDecrease();
+            }
+        },
+        THROTTLE_INTERVAL_TIME,
+        { trailing: true, leading: false }
+    );
+
+    const swipe_handlers = useSwipeable({
+        onSwiping: throttledSwipeHandler,
+    });
+
     return (
         <div className='dc-tick-picker'>
             <div className='dc-tick-picker__calculation'>
                 <Button rounded className='operator' onClick={handleDecrease}>
                     <Icon icon='IcMinus' custom_color='var(--text-prominent)' />
                 </Button>
-                <div className='dc-tick-picker__holder'>
+                <div className='dc-tick-picker__holder' {...swipe_handlers}>
                     <span className='dc-tick-picker__holder--large'>{normalizedTick(tick_value)}</span>
                     <span className='dc-tick-picker__holder--small'>
                         {tick_value === 1 ? singular_label : plural_label}

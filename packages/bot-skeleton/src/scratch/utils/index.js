@@ -4,6 +4,7 @@ import BlockConversion from '../backward-compatibility';
 import { config } from '../../constants/config';
 import { observer as globalObserver } from '../../utils/observer';
 import { removeLimitedBlocks } from '../../utils/workspace';
+import DBotStore from '../dbot-store';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
 
@@ -120,10 +121,12 @@ export const load = (block_string, drop_event, showIncompatibleStrategyDialog) =
             Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
         );
 
-        if (xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true') {
-            loadBlocks(xml, drop_event, event_group);
+        const processed_xml = removeRestartBlocks(xml);
+
+        if (processed_xml.hasAttribute('collection') && processed_xml.getAttribute('collection') === 'true') {
+            loadBlocks(processed_xml, drop_event, event_group);
         } else {
-            loadWorkspace(xml, event_group);
+            loadWorkspace(processed_xml, event_group);
         }
 
         // Set user disabled state on all disabled blocks. This ensures we don't change the disabled
@@ -390,4 +393,48 @@ export const updateDisabledBlocks = (workspace, event) => {
 
 export const emptyTextValidator = input => {
     return !input || input === "''";
+};
+
+const removeRestartBlocks = xml => {
+    const cleaned_xml = xml;
+    const { bot_settings } = DBotStore.instance;
+
+    // Find fields and update stores based on their values, also delete them.
+    cleaned_xml.querySelectorAll('field').forEach(el_field => {
+        switch (el_field.getAttribute('name')) {
+            case 'TIME_MACHINE_ENABLED': {
+                const is_checked = el_field.textContent !== 'FALSE';
+                bot_settings.setRestartOnBuySellError(is_checked);
+                break;
+            }
+            case 'RESTARTONERROR': {
+                const is_checked = el_field.textContent !== 'FALSE';
+                bot_settings.setRestartOnLastTradeError(is_checked);
+                break;
+            }
+            default:
+                break;
+        }
+    });
+
+    // Remove restart blocks in reverse (lower hanging blocks are nested deeply).
+    const el_blocks = Array.from(cleaned_xml.querySelectorAll('block')).reverse();
+    el_blocks.forEach(el_block => {
+        switch (el_block.getAttribute('type')) {
+            case 'trade_definition_restartbuysell': {
+                const el_next = el_block.parentNode;
+                el_next.parentNode.removeChild(el_next);
+                break;
+            }
+            case 'trade_definition_restartonerror': {
+                const el_next = el_block.parentNode;
+                el_next.parentNode.removeChild(el_next);
+                break;
+            }
+            default:
+                break;
+        }
+    });
+
+    return cleaned_xml;
 };

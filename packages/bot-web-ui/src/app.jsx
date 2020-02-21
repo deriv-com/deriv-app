@@ -9,11 +9,11 @@ import MainContent from './components/main-content.jsx';
 import NotificationMessages from './components/notification-messages.jsx';
 import QuickStrategy from './components/quick-strategy.jsx';
 import RunPanel from './components/run-panel.jsx';
+import SettingsExtensions from './components/settings-extensions.jsx';
 import Toolbar from './components/toolbar.jsx';
 import RootStore from './stores';
 import GTM from './utils/gtm';
 import './assets/sass/app.scss';
-import SettingsExtensions from './components/settings-extensions.jsx';
 
 class App extends React.Component {
     constructor(props) {

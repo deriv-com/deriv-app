@@ -1,5 +1,4 @@
 import { localize } from '@deriv/translations';
-import { setBlockTextColor } from '../../../../utils';
 
 Blockly.Blocks.block_holder = {
     init() {
@@ -7,8 +6,13 @@ Blockly.Blocks.block_holder = {
     },
     definition() {
         return {
-            message0: localize('Ignore %1 %2'),
+            message0: '%1 %2 %3',
             args0: [
+                {
+                    type: 'field_label',
+                    text: 'Ignore %1 %2',
+                    class: 'blocklyTextRootBlockHeader',
+                },
                 {
                     type: 'input_dummy',
                 },
@@ -32,9 +36,6 @@ Blockly.Blocks.block_holder = {
                 'Use this block if you want some instructions to be ignored when your bot runs. Instructions within this block won’t be executed.'
             ),
         };
-    },
-    onchange(event) {
-        setBlockTextColor(this, event);
     },
 };
 

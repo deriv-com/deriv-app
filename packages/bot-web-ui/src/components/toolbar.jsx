@@ -93,6 +93,9 @@ const WorkspaceGroup = ({
     toggleSaveLoadModal,
 }) => (
     <div className='toolbar__group toolbar__group-btn'>
+        <Popover alignment='bottom' message={localize('Reset')} zIndex={popover_zindex.TOOLBAR}>
+            <Icon icon='IcReset' id='db-toolbar__reset-button' className='toolbar__icon' onClick={onResetClick} />
+        </Popover>
         <Popover alignment='bottom' message={localize('Import')} zIndex={popover_zindex.TOOLBAR}>
             <Icon
                 icon='IcFolderOpen'
@@ -100,9 +103,6 @@ const WorkspaceGroup = ({
                 className='toolbar__icon'
                 onClick={() => toggleSaveLoadModal(false)}
             />
-        </Popover>
-        <Popover alignment='bottom' message={localize('Reset')} zIndex={popover_zindex.TOOLBAR}>
-            <Icon icon='IcNewFile' id='db-toolbar__reset-button' className='toolbar__icon' onClick={onResetClick} />
         </Popover>
         <Popover alignment='bottom' message={localize('Save')} zIndex={popover_zindex.TOOLBAR}>
             <Icon
@@ -195,21 +195,23 @@ const Toolbar = props => {
                 <div className='toolbar__section'>
                     {is_stop_button_visible ? (
                         <Button
-                            className='toolbar__btn'
+                            className='db-toolbar__stop-button'
                             is_disabled={is_stop_button_disabled}
                             text={localize('Stop bot')}
                             icon={<Icon icon='IcPause' className='run-panel__button--icon' color='active' />}
                             onClick={onStopButtonClick}
                             has_effect
                             primary
+                            large
                         />
                     ) : (
                         <Button
-                            className='toolbar__btn'
+                            className='db-toolbar__run-button'
                             text={localize('Run bot')}
                             icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
                             onClick={onRunButtonClick}
                             has_effect
+                            large
                             green
                         />
                     )}

@@ -25,7 +25,7 @@ const Orders = ({ orders, params }) => {
 
     React.useEffect(() => {
         if (order_details) {
-            const updated_order = orders.find(order => order.order_id === order_details.order_id);
+            const updated_order = orders.find(order => order.id === order_details.id);
             if (updated_order.status !== order_details.status) {
                 const updated_order_info = new OrderInfo(updated_order);
                 setDetails(updated_order_info);

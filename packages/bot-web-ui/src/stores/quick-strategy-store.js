@@ -257,8 +257,41 @@ export default class QuickStrategyStore {
         const submarket = contracts_for.getSubmarketBySymbol(symbol);
         const trade_type_categories = await contracts_for.getTradeTypeCategories(market, submarket, symbol);
 
+        const filtered_trade_type_categories = [];
+
         for (let i = 0; i < trade_type_categories.length; i++) {
-            const trade_type_category = trade_type_categories[i]; // e.g. ['Up/Down', 'callput']
+            const trade_type_category = trade_type_categories[i];
+            // eslint-disable-next-line no-await-in-loop
+            const trade_types = await contracts_for.getTradeTypeByTradeCategory(
+                market,
+                submarket,
+                symbol,
+                trade_type_category[1]
+            );
+
+            // TODO: Temporary filtering of barrier + prediction types. Should later
+            // render more inputs for these types. We should only filter out trade type
+            // categories which only feature prediction/barrier trade types. e.g.
+            // in Digits category, users can still purchase Even/Odd types.
+            let hidden_categories = 0;
+
+            for (let j = 0; j < trade_types.length; j++) {
+                const trade_type = trade_types[j];
+                const has_barrier = config.BARRIER_TRADE_TYPES.includes(trade_type.value);
+                const has_prediction = config.PREDICTION_TRADE_TYPES.includes(trade_type.value);
+
+                if (has_barrier || has_prediction) {
+                    hidden_categories++;
+                }
+            }
+
+            if (hidden_categories < trade_types.length) {
+                filtered_trade_type_categories.push(trade_type_category);
+            }
+        }
+
+        for (let i = 0; i < filtered_trade_type_categories.length; i++) {
+            const trade_type_category = filtered_trade_type_categories[i]; // e.g. ['Up/Down', 'callput']
             // eslint-disable-next-line no-await-in-loop
             const trade_types = await contracts_for.getTradeTypeByTradeCategory(
                 market,
@@ -268,12 +301,18 @@ export default class QuickStrategyStore {
             );
 
             trade_types.forEach(trade_type => {
-                trade_type_options.push({
-                    text: trade_type.name,
-                    value: trade_type.value,
-                    group: trade_type_category[0],
-                    icon: trade_type.icon,
-                });
+                const has_barrier = config.BARRIER_TRADE_TYPES.includes(trade_type.value);
+                const has_prediction = config.PREDICTION_TRADE_TYPES.includes(trade_type.value);
+
+                // TODO: Render extra inputs for barrier + prediction types.
+                if (!has_barrier && !has_prediction) {
+                    trade_type_options.push({
+                        text: trade_type.name,
+                        value: trade_type.value,
+                        group: trade_type_category[0],
+                        icon: trade_type.icon,
+                    });
+                }
             });
         }
 

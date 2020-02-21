@@ -141,22 +141,14 @@ $category-colours: (
         cursor: pointer;
         border-top: 1px solid $lightgrey;
 
+        &:hover {
+            background-color: var(--general-hover);
+        }
+        #{$toolbox}__category--selected {
+            background-color: var(--general-active);
+        }
         &:last-of-type {
             border-bottom: 1px solid $lightgrey;
-        }
-
-        @each $category, $colour in $category-colours {
-            #{$toolbox}__category {
-                &--#{$category} {
-                    &:hover:not(#{$toolbox}__category--selected) {
-                        background-image: linear-gradient(to right, $white 25%, transparentize($colour, 0.8) 100%);
-                    }
-                }
-                &--#{$category}#{$toolbox}__category--selected {
-                    background-color: transparentize($colour, 0.9);
-                    transition: background-color 0.25s ease;
-                }
-            }
         }
     }
     &__separator {

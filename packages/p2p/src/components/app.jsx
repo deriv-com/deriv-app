@@ -34,7 +34,7 @@ class App extends Component {
             active_index: 0,
             orders: [],
             parameters: null,
-            is_agent: false,
+            is_advertiser: false,
         };
     }
 
@@ -42,22 +42,22 @@ class App extends Component {
         this.setState({ active_index: path[path_name], parameters: params });
     };
 
-    handleTabClick = () => {
-        this.setState({ parameters: null });
+    handleTabClick = idx => {
+        this.setState({ active_index: idx, parameters: null });
     };
 
-    setIsAgent = async () => {
-        const agent_info = await requestWS({ p2p_agent_info: 1 });
+    setIsAdvertiser = async () => {
+        const advertiser_info = await requestWS({ p2p_advertiser_info: 1 });
 
-        /* if there is no error means its an agent else its a client */
-        if (!agent_info.error) {
-            await this.setState({ agent_id: agent_info.p2p_agent_info.agent_id, is_agent: true });
+        /* if there is no error means it's an advertiser else it's a client */
+        if (!advertiser_info.error) {
+            await this.setState({ advertiser_id: advertiser_info.p2p_advertiser_info.id, is_advertiser: true });
         }
         return true;
     };
 
     componentDidMount() {
-        this.setIsAgent();
+        this.setIsAdvertiser();
         if (this.props.p2p_order_list.length) {
             this.setState({ orders: getModifiedP2POrderList(this.props.p2p_order_list) });
         }
@@ -93,42 +93,27 @@ class App extends Component {
                     currency,
                     local_currency_config,
                     residence,
-                    agent_id: this.state.agent_id,
-                    is_agent: this.state.is_agent,
+                    advertiser_id: this.state.advertiser_id,
+                    is_advertiser: this.state.is_advertiser,
                     email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                 }}
             >
                 <main className={classNames('deriv-p2p', className)}>
-                    {this.state.is_agent ? (
-                        <Tabs onTabItemClick={this.handleTabClick} active_index={active_index} top>
-                            <div label={localize('Buy/Sell')}>
-                                <BuySell navigate={this.redirectTo} params={parameters} />
-                            </div>
-                            <div count={notification_count} label={localize('Incoming orders')}>
-                                <Orders navigate={this.redirectTo} orders={orders} params={parameters} />
-                            </div>
-                            <div label={localize('My ads')}>
-                                <MyAds navigate={this.redirectTo} params={parameters} />
-                            </div>
-                            {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
-                            {/* <div label={localize('My profile')}>
-                                <MyProfile navigate={this.redirectTo} params={parameters} />
-                            </div> */}
-                        </Tabs>
-                    ) : (
-                        <Tabs onTabItemClick={this.handleTabClick} active_index={active_index} top>
-                            <div label={localize('Buy/Sell')}>
-                                <BuySell navigate={this.redirectTo} params={parameters} />
-                            </div>
-                            <div count={notification_count} label={localize('My Orders')}>
-                                <Orders navigate={this.redirectTo} orders={orders} params={parameters} />
-                            </div>
-                            {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
-                            {/* <div label={localize('My profile')}>
-                                <MyProfile navigate={this.redirectTo} params={parameters} />
-                            </div> */}
-                        </Tabs>
-                    )}
+                    <Tabs onTabItemClick={this.handleTabClick} active_index={active_index} top>
+                        <div label={localize('Buy/Sell')}>
+                            <BuySell navigate={this.redirectTo} params={parameters} />
+                        </div>
+                        <div count={notification_count} label={localize('Orders')}>
+                            <Orders navigate={this.redirectTo} orders={orders} params={parameters} />
+                        </div>
+                        <div label={localize('My ads')}>
+                            <MyAds navigate={this.redirectTo} params={parameters} />
+                        </div>
+                        {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
+                        {/* <div label={localize('My profile')}>
+                            <MyProfile navigate={this.redirectTo} params={parameters} />
+                        </div> */}
+                    </Tabs>
                 </main>
             </Dp2pProvider>
         );

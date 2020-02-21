@@ -236,30 +236,11 @@ export default class ActiveSymbols {
     }
 
     isSymbolClosed(symbol_name) {
-        let symbol = false;
-
-        Object.keys(this.processed_symbols).some(market_name => {
-            const market = this.processed_symbols[market_name];
-
-            return Object.keys(market.submarkets).some(submarket_name => {
-                const submarket = market.submarkets[submarket_name];
-
-                return Object.keys(submarket.symbols).some(curr_symbol_name => {
-                    if (symbol_name === curr_symbol_name) {
-                        symbol = submarket.symbols[curr_symbol_name];
-                        return true;
-                    }
-
-                    return false;
-                });
-            });
-        });
-
-        if (symbol) {
-            return !symbol.is_active;
-        }
-
-        return true;
+        return this.active_symbols.some(
+            active_symbol =>
+                active_symbol.symbol === symbol_name &&
+                (!active_symbol.exchange_is_open || active_symbol.is_trading_suspended)
+        );
     }
 
     sortDropdownOptions = (dropdown_options, closedFunc) => {

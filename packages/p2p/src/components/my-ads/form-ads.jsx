@@ -271,7 +271,7 @@ class FormAds extends Component {
             advertiser_notes: [
                 v => !!v,
                 v => v.length < 400,
-                v => /^[\p{L}\p{Nd}\s'.,:;()@#/-]{1,500}$/u.exec(v) !== null,
+                v => /^[\p{L}\p{Nd}\s'.,:;()@#+/-]{1,300}$/u.exec(v) !== null,
             ],
             max_transaction: [
                 v => !!v,
@@ -341,9 +341,12 @@ class FormAds extends Component {
         const note_messages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('{{field_name}} has exceeded maximum length', { field_name }),
-            localize("{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -.,'#@():;", {
-                field_name,
-            }),
+            localize(
+                "{{field_name}} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;",
+                {
+                    field_name,
+                }
+            ),
         ];
 
         const errors = {};

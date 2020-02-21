@@ -140,8 +140,8 @@ Blockly.JavaScript.trade_definition = block => {
     const trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
     const contract_type = contract_type_block.getFieldValue('TYPE_LIST');
     const candle_interval = candle_interval_block.getFieldValue('CANDLEINTERVAL_LIST');
-    const should_restart_on_error = bot_settings.should_restart_on_last_trade_error ? 'TRUE' : 'FALSE';
-    const should_restart_on_buy_sell = bot_settings.should_restart_on_buy_sell_error ? 'TRUE' : 'FALSE';
+    const should_restart_on_error = bot_settings.should_restart_on_last_trade_error ? 'true' : 'false';
+    const should_restart_on_buy_sell = bot_settings.should_restart_on_buy_sell_error ? 'true' : 'false';
 
     const { opposites } = config;
     const contract_type_list =
@@ -158,8 +158,8 @@ Blockly.JavaScript.trade_definition = block => {
           symbol              : '${symbol}',
           contractTypes       : ${JSON.stringify(contract_type_list)},
           candleInterval      : '${candle_interval || 'FALSE'}',
-          shouldRestartOnError: '${should_restart_on_error}',
-          timeMachineEnabled  : '${should_restart_on_buy_sell}',
+          shouldRestartOnError: ${should_restart_on_error},
+          timeMachineEnabled  : ${should_restart_on_buy_sell},
         });
         ${initialization.trim()}
     };

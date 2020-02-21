@@ -3,7 +3,7 @@ import MediaDescription from './media-description.jsx';
 import MediaHeading from './media-heading.jsx';
 import MediaIcon from './media-icon.jsx';
 
-const Media = props => <div className='media'>{props.children}</div>;
+const Media = props => <div className='dc-media'>{props.children}</div>;
 
 Media.Description = MediaDescription;
 Media.Heading = MediaHeading;

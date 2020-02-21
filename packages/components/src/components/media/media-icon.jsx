@@ -3,7 +3,7 @@ import React from 'react';
 
 const MediaIcon = ({ id, is_enabled, enabled, disabled }) => {
     const Icon = is_enabled ? enabled : disabled;
-    return <Icon id={id} className='media__icon' />;
+    return <Icon id={id} className='dc-media__icon' />;
 };
 
 MediaIcon.propTypes = {

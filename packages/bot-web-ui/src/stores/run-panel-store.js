@@ -197,7 +197,7 @@ export default class RunPanelStore {
         observer.register('bot.contract', contract_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
         observer.register('ui.log.error', this.onError);
-        observer.register('Error', this.onError);
+        observer.register('Error', e => this.onError(e.message));
         observer.register('ui.log.notify', journal.onNotify);
     }
 

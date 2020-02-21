@@ -9,8 +9,7 @@
 
     &__footer {
         text-align: center;
-        height: 152px;
-        margin: 16px 0;
+        margin-top: 16px;
     }
     &__buttons {
         display: inline-flex !important;
@@ -29,6 +28,11 @@
     &__animation {
         height: 64px;
         margin: 0 16px;
+    }
+    &-tab {
+        &__content {
+            height: calc(100vh - 310.39px);
+        }
     }
 }
 

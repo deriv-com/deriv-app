@@ -20,7 +20,7 @@ class Transactions extends React.PureComponent {
     render() {
         const { elements } = this.props;
         return (
-            <div className='transactions'>
+            <div className='transactions run-panel-tab__content'>
                 <div className='transactions__header'>
                     <span className='transactions__header-column transactions__header-spot'>
                         {localize('Entry/Exit spot')}
@@ -30,7 +30,7 @@ class Transactions extends React.PureComponent {
                     </span>
                 </div>
                 <div className='transactions__content'>
-                    <ThemedScrollbars autoHide style={{ height: 'var(--drawer-scroll-height)' }}>
+                    <ThemedScrollbars autoHide>
                         {elements.length ? (
                             <TransitionGroup>
                                 {elements.map(element => {

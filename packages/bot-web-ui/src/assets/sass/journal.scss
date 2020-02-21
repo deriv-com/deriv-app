@@ -17,7 +17,7 @@
             align-items: center;
             -webkit-box-pack: center;
             width: 345px;
-            margin-top: 40%;
+            margin-top: 50%;
         }
         &__header {
             font-size: 1.4rem;
@@ -40,108 +40,70 @@
             margin-left: 20px;
         }
     }
-    &__table {
-        display: block;
-        font-size: 10px;
+    &__item {
+        padding: 20px;
 
-        &--header {
-            position: fixed;
-            display: table;
-            font-size: 12px;
-            font-weight: bold;
-            line-height: 40px;
-            width: 100%;
-            border-bottom: 1px solid var(--border-normal);
+        &-list {
+            width: 350px;
         }
-        &--body {
-            &:before {
-                content: '';
-                display: block;
-                height: 40px;
+        &-content {
+            > * {
+                width: 100%;
             }
         }
-        &--th {
-            background-color: var(--general-main-1);
-            text-align: left;
-            padding-left: 16px;
+        &:nth-child(odd) {
+            background: var(--status-default);
+        }
+    }
+    &-tools {
+        &__container {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            border: solid 1px var(--general-section-1);
 
-            &:nth-child(1) {
-                width: 30%;
-            }
-            &:nth-child(2) {
-                width: 90%;
-            }
-            &-icon {
+            &-filter {
                 display: flex;
                 justify-content: space-between;
+                width: 85%;
+            }
+            &-download {
+                cursor: pointer;
+            }
+        }
+        &__text {
+            // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
+            font-size: var(--text-size--xxs) !important;
+        }
+    }
+    &__text {
+        font-size: var(--text-size-xxs);
+        line-height: 1.5;
+        display: inline;
 
-                > * {
-                    align-self: center;
-                }
-            }
+        &-time,
+        &-date {
+            display: inline;
         }
-        &--tr {
-            &:nth-child(odd) {
-                background: var(--general-main-1);
-            }
-            &:nth-child(even) {
-                background: var(--general-section-1);
-            }
+        &-datetime {
+            color: var(--text-less-prominent);
+            font-size: var(--text-size--xxxs);
+            margin-top: 6px;
         }
-        &--td {
-            height: 40px;
-            display: table-cell;
-            vertical-align: middle;
-            padding: 8px 0 8px 16px;
-            line-height: 16px;
-            word-break: break-word;
-
-            &:nth-child(1) {
-                width: 30%;
-            }
-            &:nth-child(2) {
-                width: 70%;
-            }
+        &--success {
+            color: var(--status-success);
         }
-        &--date,
-        &--time {
-            line-height: 1.4em;
+        &--info {
+            color: var(--status-info);
+        }
+        &--warn {
+            color: var(--status-warning);
+        }
+        &--error {
+            color: var(--status-danger);
         }
         &--bold {
-            font-weight: 700;
-        }
-    }
-    &__success {
-        color: var(--text-profit-success);
-    }
-    &__info {
-        color: var(--status-info);
-    }
-    &__warn {
-        color: var(--status-warning);
-    }
-    &__error {
-        color: var(--text-loss-danger);
-    }
-}
-
-.tools {
-    &__container {
-        display: flex;
-        justify-content: space-between;
-        padding: 15px;
-
-        &-filter {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-
-            .dc-checkbox__label {
-                font-size: var(--text-size--xxs);
-            }
-        }
-        &-download {
-            cursor: pointer;
+            font-weight: bold;
         }
     }
 }

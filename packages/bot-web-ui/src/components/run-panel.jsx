@@ -121,6 +121,7 @@ class RunPanel extends React.PureComponent {
                 is_open={this.props.is_drawer_open}
                 toggleDrawer={this.props.toggleDrawer}
                 footer={footer}
+                footerHeight={20}
             >
                 {content}
             </Drawer>

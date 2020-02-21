@@ -58,6 +58,9 @@
             }
         }
     }
+    &__content {
+        height: calc(100% - 42px);
+    }
     &__item {
         display: grid;
         font-size: 12px;

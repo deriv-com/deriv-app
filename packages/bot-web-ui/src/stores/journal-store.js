@@ -24,18 +24,20 @@ export default class JournalStore {
     @observable checked_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
 
     @action.bound
-    onLogSuccess(data) {
-        this.pushMessage(data, message_types.SUCCESS);
+    onLogSuccess(message) {
+        const message_string = typeof message === 'object' ? message.message : message;
+        this.pushMessage(message_string, message_types.SUCCESS);
     }
 
     @action.bound
-    onError(data) {
-        this.pushMessage(data, message_types.ERROR);
+    onError(message) {
+        this.pushMessage(message, message_types.ERROR);
     }
 
     @action.bound
     onNotify(data) {
-        this.pushMessage(data, message_types.NOTIFY);
+        const { message, className } = data;
+        this.pushMessage(`[Notfiy] : ${message}`, message_types.NOTIFY, className);
 
         const { sound } = data;
         if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
@@ -45,19 +47,11 @@ export default class JournalStore {
     }
 
     @action.bound
-    pushMessage(data, message_type) {
+    pushMessage(message, message_type, className) {
         const date = formatDate(this.getServerTime());
         const time = formatDate(this.getServerTime(), 'HH:mm:ss [GMT]');
 
-        let error_message = data;
-        let classname = '';
-        if (typeof data !== 'string') {
-            const { error, message } = data;
-            ({ className: classname } = data);
-            error_message = error && error.error ? error.error.message : message;
-        }
-
-        this.unfiltered_messages.unshift({ date, time, message: error_message, message_type, classname });
+        this.unfiltered_messages.unshift({ date, time, message, message_type, className });
     }
 
     @computed
@@ -67,6 +61,40 @@ export default class JournalStore {
             message =>
                 !this.checked_filters.length || this.checked_filters.some(filter => message.message_type === filter)
         );
+
+        // return [{
+        //     message_type: message_types.NOTIFY,
+        //     date: "2020-03-19",
+        //     time: "09:32:59 GMT",
+        //     message: "THis is a Notfiy Message!!!",
+        //     className: 'journal__text--success',
+        // },{
+        //     message_type: message_types.SUCCESS,
+        //     date: "2020-03-19",
+        //     time: "09:35:59 GMT",
+        //     message: "Bought: Win payout if AUD Index after 5 ticks is strictly higher than entry spot. (ID: 146165110128)",
+        // }, {
+        //     message_type: message_types.ERROR,
+        //     date: "2020-03-19",
+        //     time: "09:37:59 GMT",
+        //     message: "Error! GG!",
+        // },{
+        //     message_type: message_types.COMPONENT,
+        //     date: "2020-03-19",
+        //     time: "09:39:59 GMT",
+        //     message: <img src="https://miro.medium.com/max/356/1*EnF9uIN_u2_X7ey24lB7Tg.png" />,
+        // },{
+        //     message_type: message_types.COMPONENT,
+        //     date: "2020-03-19",
+        //     time: "09:40:59 GMT",
+        //     message: <div className='test'><Button
+        //                 id='test__button'
+        //                 text={localize('Run bot')}
+        //                 icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
+        //                 has_effect
+        //                 green
+        //             /></div>,
+        // }];
     }
 
     @action.bound

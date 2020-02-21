@@ -104,7 +104,7 @@ export default class ToolbarStore {
                 load({
                     block_string: workspace.cached_xml.main,
                     file_name: config.default_file_name,
-                    workspace: Blockly.derivWorkspace,
+                    workspace,
                 });
             },
             'reset'
@@ -120,10 +120,12 @@ export default class ToolbarStore {
 
     @action.bound
     onUndoClick(is_redo) {
+        Blockly.Events.setGroup('undo_clicked');
         Blockly.derivWorkspace.undo(is_redo);
         Blockly.svgResize(Blockly.derivWorkspace); // Called for CommentDelete event.
         this.setHasRedoStack();
         this.setHasUndoStack();
+        Blockly.Events.setGroup(false);
     }
 
     onZoomInOutClick = is_zoom_in => {

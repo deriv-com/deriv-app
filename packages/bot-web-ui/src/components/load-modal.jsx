@@ -64,7 +64,7 @@ const Recent = ({
                     </div>
                     <div className='load-recent__preview load__content-with-footer'>
                         <div className='load-recent__title'>{localize('Preview')}</div>
-                        <div id='load-recent__scratch' className='load-recent__preview-workspace'>
+                        <div id='load-recent__scratch' className='preview__workspace load-recent__preview-workspace'>
                             <WorkspaceControl {...props} />
                         </div>
                     </div>
@@ -126,7 +126,7 @@ const Local = ({
                 })}
             >
                 <div className='load-local__preview-title'>{localize('Preview')}</div>
-                <div id='load-local__scratch' className='load-local__preview-workspace'>
+                <div id='load-local__scratch' className='preview__workspace load-local__preview-workspace'>
                     <div className='load-local__preview-close'>
                         <Icon icon={'IcCross'} onClick={closePreview} />
                     </div>

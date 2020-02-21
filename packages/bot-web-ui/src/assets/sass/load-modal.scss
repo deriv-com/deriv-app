@@ -45,10 +45,11 @@ $modal_container_height: calc(100vh - 210px);
                 margin: 8px auto 0;
                 text-align: left;
                 opacity: 0;
-            }
-            &-explain--show {
-                opacity: 1;
-                width: fit-content;
+
+                &--show {
+                    opacity: 1;
+                    width: fit-content;
+                }
             }
         }
         &__explain {
@@ -132,16 +133,7 @@ $modal_container_height: calc(100vh - 210px);
             width: 65%;
 
             &-workspace {
-                padding: 15px;
-                position: relative;
-                border-radius: $BORDER_RADIUS;
-                border: solid 1px var(--border-normal);
-                height: 100%;
                 text-align: center;
-
-                .injectionDiv {
-                    pointer-events: none;
-                }
             }
             &-controls {
                 padding: 7px 5px;
@@ -209,18 +201,10 @@ $modal_container_height: calc(100vh - 210px);
                 display: none;
             }
             &-workspace {
-                height: 100%;
-                padding: 15px;
                 margin-top: 8px;
-                border-radius: $BORDER_RADIUS;
-                border: solid 1px var(--border-normal);
-                position: relative;
-
-                .injectionDiv {
-                    pointer-events: none;
-                }
             }
             &-close {
+                // TODO : Dark Theme
                 background-image: radial-gradient(at right top, $color_white 60%, transparent 90%);
                 position: absolute;
                 padding: 25px;
@@ -286,5 +270,17 @@ $modal_container_height: calc(100vh - 210px);
                 --fill-color3: #{$color-grey-10} !important;
             }
         }
+    }
+}
+
+.preview__workspace {
+    padding: 15px;
+    position: relative;
+    border-radius: $BORDER_RADIUS;
+    border: solid 1px var(--border-normal);
+    height: 100%;
+
+    .injectionDiv {
+        pointer-events: none;
     }
 }

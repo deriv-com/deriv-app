@@ -7,7 +7,7 @@ import { save_types } from '../constants/save-type';
  * @param {Blockly.Events} event // Blockly event object
  */
 export const saveWorkspaceToRecent = (save_type = save_types.UNSAVED, event = {}) => {
-    if (event.recordUndo === false || event.group === 'load_collections') {
+    if ((event.recordUndo === false || event.group === 'load_collections') && event.group !== 'undo_clicked') {
         return;
     }
 

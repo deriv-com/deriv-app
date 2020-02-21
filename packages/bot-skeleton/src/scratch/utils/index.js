@@ -123,7 +123,7 @@ export const load = ({
 
     try {
         const is_collection = xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true';
-        const event_group = is_collection ? 'load_collection' : `dbot-load${Date.now()}`;
+        const event_group = is_collection ? `load_collection${Date.now()}` : `dbot-load${Date.now()}`;
 
         Blockly.Events.setGroup(event_group);
         removeLimitedBlocks(

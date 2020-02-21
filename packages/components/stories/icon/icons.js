@@ -128,6 +128,7 @@ export const icons = {
         'IcPuzzle',
         'IcRedo',
         'IcReports',
+        'IcReset',
         'IcSave',
         'IcSearch',
         'IcSecurity',

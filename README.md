@@ -51,7 +51,7 @@ All packages must contain the following scripts to perform the stated actions:
 | Package param | Command             | Description                                                                                   |
 | :-----------: | ------------------- |:---------------------------------------------------------------------------------------------:|
 | ✅            | `start`             | Runs complete test and build suite and starts the dev server.                                 |
-| ✅            | `serve`             | Runs build suite and starts the dev server.                                                   |
+| ✅            | `serve`             | Runs build suite and starts the dev server. When serving `core`, takes optional `open` value as argument to open specific page. (e.g: `npm run serve core --open=bot`)      |
 | ✅            | `build`             | Runs build suite and outputs the result into `dist`. Takes optional `base` value as argument. |
 | ✅            | `prettify`          | Runs `prettify` script packages(s) to format code as per the specs of the package.            |
 | ✅            | `test`              | Runs the test suite with eslint, and stylelint.                                               |

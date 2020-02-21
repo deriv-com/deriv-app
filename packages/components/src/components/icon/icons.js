@@ -128,6 +128,7 @@ import './common/ic-purchase.svg';
 import './common/ic-puzzle.svg';
 import './common/ic-redo.svg';
 import './common/ic-reports.svg';
+import './common/ic-reset.svg';
 import './common/ic-save.svg';
 import './common/ic-search.svg';
 import './common/ic-security.svg';

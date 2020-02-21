@@ -96,6 +96,9 @@ const WorkspaceGroup = ({
     toggleSaveModal,
 }) => (
     <div className='toolbar__group toolbar__group-btn'>
+        <Popover alignment='bottom' message={localize('Reset')} zIndex={popover_zindex.TOOLBAR}>
+            <Icon icon='IcReset' id='db-toolbar__reset-button' className='toolbar__icon' onClick={onResetClick} />
+        </Popover>
         <Popover alignment='bottom' message={localize('Import')} zIndex={popover_zindex.TOOLBAR}>
             <Icon
                 icon='IcFolderOpen'
@@ -103,9 +106,6 @@ const WorkspaceGroup = ({
                 className='toolbar__icon'
                 onClick={toggleLoadModal}
             />
-        </Popover>
-        <Popover alignment='bottom' message={localize('Reset')} zIndex={popover_zindex.TOOLBAR}>
-            <Icon icon='IcNewFile' id='db-toolbar__reset-button' className='toolbar__icon' onClick={onResetClick} />
         </Popover>
         <Popover alignment='bottom' message={localize('Save')} zIndex={popover_zindex.TOOLBAR}>
             <Icon icon='IcSave' id='db-toolbar__save-button' className='toolbar__icon' onClick={toggleSaveModal} />

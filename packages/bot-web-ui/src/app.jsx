@@ -31,6 +31,7 @@ class App extends React.Component {
     setDBotEngineStores() {
         // DO NOT pass the rootstore in, if you need a prop define it in dbot-skeleton-store ans pass it through.
         const {
+            bot_settings,
             core: { client },
             flyout,
             toolbar,
@@ -39,7 +40,15 @@ class App extends React.Component {
         } = this.root_store;
         const { handleFileChange } = saveload;
         const { toggleStrategyModal } = quick_strategy;
-        this.dbot_store = { is_mobile: false, client, flyout, toolbar, toggleStrategyModal, handleFileChange };
+        this.dbot_store = {
+            is_mobile: false,
+            bot_settings,
+            client,
+            flyout,
+            toolbar,
+            toggleStrategyModal,
+            handleFileChange,
+        };
         this.api_helpers_store = { ws: this.root_store.ws, server_time: this.root_store.server_time };
     }
 

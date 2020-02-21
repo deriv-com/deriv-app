@@ -17,6 +17,7 @@ const AccountInfo = React.lazy(() =>
 export class AccountActions extends Component {
     shouldComponentUpdate(nextProps) {
         return (
+            nextProps.is_acc_switcher_disabled !== this.props.is_acc_switcher_disabled ||
             nextProps.balance !== this.props.balance ||
             nextProps.can_upgrade !== this.props.can_upgrade ||
             nextProps.can_upgrade_to !== this.props.can_upgrade_to ||
@@ -32,10 +33,12 @@ export class AccountActions extends Component {
 
     render() {
         const {
+            acc_switcher_disabled_message,
             balance,
             can_upgrade,
             currency,
             is_acc_switcher_on,
+            is_acc_switcher_disabled,
             is_logged_in,
             is_notifications_visible,
             is_virtual,
@@ -65,12 +68,14 @@ export class AccountActions extends Component {
                     </Popover>
                     <React.Suspense fallback={<div />}>
                         <AccountInfo
+                            acc_switcher_disabled_message={acc_switcher_disabled_message}
                             balance={
                                 typeof balance === 'undefined'
                                     ? balance
                                     : CurrencyUtils.formatMoney(currency, balance, true)
                             }
                             is_upgrade_enabled={can_upgrade}
+                            is_disabled={is_acc_switcher_disabled}
                             is_virtual={is_virtual}
                             currency={currency}
                             is_dialog_on={is_acc_switcher_on}
@@ -110,10 +115,12 @@ export class AccountActions extends Component {
 }
 
 AccountActions.propTypes = {
+    acc_switcher_disabled_message: PropTypes.any,
     balance: PropTypes.any,
     can_upgrade: PropTypes.any,
     can_upgrade_to: PropTypes.any,
     currency: PropTypes.any,
+    is_acc_switcher_disabled: PropTypes.any,
     is_acc_switcher_on: PropTypes.any,
     is_logged_in: PropTypes.any,
     is_notifications_visible: PropTypes.any,

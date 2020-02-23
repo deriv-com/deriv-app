@@ -56,7 +56,7 @@ class DBot {
 
             // Push main.xml to workspace and reset the undo stack.
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), this.workspace);
-            if (window_width < 1440) {
+            if (window_width < 1640) {
                 this.workspace.cleanUp();
             }
             this.workspace.clearUndo();

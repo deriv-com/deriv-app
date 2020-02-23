@@ -21,6 +21,7 @@ const Numpad = ({
     value,
     format,
     onValueChange,
+    onValidate,
 }) => {
     const [is_float, setFloat] = React.useState(false);
     const [default_value, setValue] = React.useState(value);
@@ -28,6 +29,11 @@ const Numpad = ({
     const formatNumber = v => (typeof format === 'function' ? format(v) : v);
 
     const onSelect = num => {
+        if (typeof onValidate === 'function') {
+            const passes = onValidate(concatenate(num, default_value));
+            if (!passes) return;
+        }
+
         switch (num) {
             // backspace
             case -1:
@@ -152,6 +158,7 @@ Numpad.propTypes = {
     max: PropTypes.number,
     min: PropTypes.number,
     onSubmit: PropTypes.func,
+    onValidate: PropTypes.func,
     pip_size: PropTypes.number,
     render: PropTypes.func,
     submit_label: PropTypes.string,

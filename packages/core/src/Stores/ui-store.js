@@ -95,6 +95,10 @@ export default class UIStore extends BaseStore {
     // UI Focus retention
     @observable current_focus = null;
 
+    // Mobile
+    @observable should_show_toast_error = false;
+    @observable mobile_toast_error = '';
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -501,5 +505,15 @@ export default class UIStore extends BaseStore {
     @action.bound
     setCurrentFocus(value) {
         this.current_focus = value;
+    }
+
+    @action.bound
+    setToastErrorVisibility(status) {
+        this.should_show_toast_error = status;
+    }
+
+    @action.bound
+    setToastErrorMessage(msg) {
+        this.mobile_toast_error = msg;
     }
 }

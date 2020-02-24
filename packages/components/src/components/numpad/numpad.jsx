@@ -137,9 +137,16 @@ const Numpad = ({
                 <Button
                     type='secondary'
                     has_effect
-                    className='dc-numpad__number'
+                    className={classNames('dc-numpad__number', {
+                        'dc-numpad__number--is-disabled': !default_value.toString().length,
+                    })}
                     onClick={() => {
-                        onSubmit(formatNumber(default_value));
+                        if (typeof onValidate === 'function') {
+                            onValidate(formatNumber(default_value));
+                            onSubmit(formatNumber(default_value));
+                        } else {
+                            onSubmit(formatNumber(default_value));
+                        }
                     }}
                     is_disabled={!default_value.toString().length}
                 >

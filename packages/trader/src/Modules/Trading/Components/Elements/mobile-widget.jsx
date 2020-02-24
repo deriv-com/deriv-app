@@ -2,6 +2,7 @@ import React from 'react';
 import { Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { getExpiryType, getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
 import TradeParamsModal from '../../Containers/trade-params-mobile.jsx';
 
@@ -11,6 +12,26 @@ class MobileWidget extends React.Component {
         this.state = {
             is_open: false,
         };
+    }
+
+    componentWillReact() {
+        this.assertDurationIsWithinBoundary();
+    }
+
+    assertDurationIsWithinBoundary() {
+        const { duration_min_max, duration, duration_unit, trade_store, onChange, onChangeUiStore } = this.props;
+
+        const contract_expiry_type = getExpiryType(trade_store);
+        const [min_value, max_value] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
+        if (contract_expiry_type === 'tick' && duration < min_value) {
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
+            onChange({ target: { name: 'duration', value: min_value } });
+        }
+
+        if (!(duration < min_value) && duration > max_value) {
+            onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
+            onChange({ target: { name: 'duration', value: max_value } });
+        }
     }
 
     toggleWidget = () => {
@@ -64,10 +85,14 @@ class MobileWidget extends React.Component {
     }
 }
 
-export default connect(({ modules }) => ({
+export default connect(({ modules, ui }) => ({
     amount: modules.trade.amount,
     basis: modules.trade.basis,
     currency: modules.trade.currency,
     duration: modules.trade.duration,
     duration_unit: modules.trade.duration_unit,
+    onChange: modules.trade.onChange,
+    onChangeUiStore: ui.onChangeUiStore,
+    duration_min_max: modules.trade.duration_min_max,
+    trade_store: modules.trade,
 }))(MobileWidget);

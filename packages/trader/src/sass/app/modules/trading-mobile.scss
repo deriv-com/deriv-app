@@ -110,4 +110,17 @@
             }
         }
     }
+    &__header {
+        @include mobile {
+            padding: 0.5rem 0;
+
+            &-label {
+                line-height: 2rem;
+            }
+            &-value {
+                line-height: 1.8rem;
+                font-size: 1.2rem;
+            }
+        }
+    }
 }

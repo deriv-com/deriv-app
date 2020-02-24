@@ -44,7 +44,7 @@ class Tabs extends Component {
                     })}
                 >
                     {React.Children.map(children, (child, index) => {
-                        const { count, label } = child.props;
+                        const { count, header_content, label } = child.props;
 
                         return (
                             <Tab
@@ -55,6 +55,7 @@ class Tabs extends Component {
                                 label={label}
                                 top={top}
                                 bottom={bottom}
+                                header_content={header_content}
                                 onClick={() => this.onTabItemClick(index)}
                             />
                         );

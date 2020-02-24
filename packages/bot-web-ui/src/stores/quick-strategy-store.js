@@ -1,6 +1,7 @@
 import { computed, observable, action } from 'mobx';
 import { localize } from '@deriv/translations';
 import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
+import GTM from '../utils/gtm';
 
 export default class QuickStrategyStore {
     constructor(root_store) {
@@ -143,6 +144,11 @@ export default class QuickStrategyStore {
         if (item !== field_map.selected) {
             field_map.setSelected(item);
         }
+    }
+
+    @action.bound
+    onScrollStopDropdownList(type) {
+        GTM.pushDataLayer({ event: `dbot_quick_strategy_scroll_${type}` });
     }
 
     @action.bound

@@ -22,7 +22,9 @@ class ModalElement extends React.PureComponent {
         }
         this.el.classList.add('dc-modal');
         this.state.modal_root.appendChild(this.el);
-        this.props.onMount();
+        if (typeof this.props.onMount === 'function') {
+            this.props.onMount();
+        }
     };
 
     componentWillUnmount = () => {
@@ -30,7 +32,9 @@ class ModalElement extends React.PureComponent {
             document.removeEventListener('mousedown', this.handleClickOutside);
         }
         this.state.modal_root.removeChild(this.el);
-        this.props.onUnmount();
+        if (typeof this.props.onUnmount === 'function') {
+            this.props.onUnmount();
+        }
     };
 
     handleClickOutside = event => {

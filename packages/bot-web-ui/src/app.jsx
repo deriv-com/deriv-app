@@ -34,11 +34,20 @@ class App extends React.Component {
             flyout,
             toolbar,
             quick_strategy,
-            saveload,
+            load_modal,
         } = this.root_store;
-        const { handleFileChange } = saveload;
+        const { handleFileChange } = load_modal;
         const { toggleStrategyModal } = quick_strategy;
-        this.dbot_store = { is_mobile: false, client, flyout, toolbar, toggleStrategyModal, handleFileChange };
+        const { onBotNameTyped } = toolbar;
+        this.dbot_store = {
+            is_mobile: false,
+            client,
+            flyout,
+            toolbar,
+            toggleStrategyModal,
+            handleFileChange,
+            onBotNameTyped,
+        };
         this.api_helpers_store = { ws: this.root_store.ws, server_time: this.root_store.server_time };
     }
 
@@ -120,7 +129,8 @@ class App extends React.Component {
      * Ensures inputs are closed when clicking on non-Blockly elements.
      */
     onClickOutsideBlockly = event => {
-        const is_click_outside_blockly = !event.path.some(el => el.classList && el.classList.contains('injectionDiv'));
+        const path = event.path || (event.composedPath && event.composedPath());
+        const is_click_outside_blockly = !path.some(el => el.classList && el.classList.contains('injectionDiv'));
         if (is_click_outside_blockly) {
             Blockly.hideChaff(/* allowToolbox */ false);
         }

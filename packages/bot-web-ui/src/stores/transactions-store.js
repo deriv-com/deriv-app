@@ -91,7 +91,8 @@ export default class TransactionsStore {
 
     @action.bound
     onClickOutsideTransaction(event) {
-        const is_transaction_click = event.path.some(
+        const path = event.path || (event.composedPath && event.composedPath());
+        const is_transaction_click = path.some(
             el => el.classList && el.classList.contains('transactions__item-wrapper')
         );
         if (!is_transaction_click) {

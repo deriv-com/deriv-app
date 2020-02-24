@@ -264,6 +264,7 @@ export const config = {
     workspaces: {
         flyoutWorkspacesStartScale: 0.7,
         mainWorkspaceStartScale: 0.9,
+        previewWorkspaceStartScale: 0.6,
     },
     strategies: {
         martingale: {
@@ -293,4 +294,5 @@ export const config = {
         toolbar: '5',
         run_panel_tooltips: '5',
     },
+    default_file_name: localize('Untitled Bot'),
 };

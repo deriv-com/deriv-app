@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { AssetInformation, ChartTitle } from 'Modules/SmartChart';
 import { isEnded } from 'Stores/Modules/Contract/Helpers/logic';
@@ -14,7 +15,7 @@ const TradeInfo = ({ markers_array }) => {
     const { tick_stream, tick_count } = latest_tick_contract.contract_info;
     return (
         <span className='recent-trade-info'>
-            Tick {Math.max(tick_stream.length - 1, 0)}/{tick_count}
+            {localize('Tick')} {Math.max(tick_stream.length - 1, 0)}/{tick_count}
         </span>
     );
 };

@@ -141,7 +141,7 @@ export default class CommonStore extends BaseStore {
         let route_to_item_idx = -1;
         const route_to_item = this.app_routing_history.find((history_item, idx) => {
             const parent_path = history_item.pathname.split('/')[1];
-            const platform_parent_paths = [AppRoutes.mt5.split('/')[1], AppRoutes.bot.split('/')[1]];
+            const platform_parent_paths = [AppRoutes.mt5, AppRoutes.bot, AppRoutes.trade].map(i => i.split('/')[1]); // map full path to just base path (`/mt5/abc` -> `mt5`)
             if (history_item.action === 'PUSH' && platform_parent_paths.includes(parent_path)) {
                 route_to_item_idx = idx;
                 return true;

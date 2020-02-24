@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { getPlatformHeader, getPlatformIcon } from 'Utils/PlatformSwitcher';
 import { PlatformDropdown } from './platform-dropdown.jsx';
 import 'Sass/app/_common/components/platform-switcher.scss';
@@ -24,14 +25,15 @@ class PlatformSwitcher extends React.PureComponent {
                 className={classNames(
                     'platform-switcher',
                     { 'platform-switcher--active': this.state.is_open },
-                    { 'platform-switcher--is-mobile': this.props.is_mobile }
+                    { 'platform-switcher--is-mobile': isMobile() }
                 )}
-                onClick={this.toggleDrawer}
+                // TODO: Remove below once we support other platforms in responsive design
+                onClick={isDesktop() ? this.toggleDrawer : null}
             >
                 <Icon className='platform-switcher__icon' icon={getPlatformIcon()} size={32} />
                 <h1 className='platform-switcher__header'>{getPlatformHeader()}</h1>
                 <p className='platform-switcher__label'>{localize('BETA')}</p>
-                <Icon className='platform-switcher__arrow' icon='IcChevronDownBold' />
+                {isDesktop() && <Icon className='platform-switcher__arrow' icon='IcChevronDownBold' />}
             </div>
             <CSSTransition
                 mountOnEnter

@@ -43,4 +43,12 @@
     &--active &__arrow {
         transform: rotate(180deg);
     }
+    @include mobile {
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-tap-highlight-color: transparent;
+    }
 }

@@ -37,7 +37,12 @@ export default class JournalStore {
     @action.bound
     onNotify(data) {
         const { message, className } = data;
-        this.pushMessage(message, message_types.NOTIFY, className);
+        let message_string = message;
+
+        if (typeof message === 'boolean') {
+            message_string = message.toString();
+        }
+        this.pushMessage(message_string, message_types.NOTIFY, className);
 
         const { sound } = data;
         if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {

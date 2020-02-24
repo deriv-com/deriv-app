@@ -20,7 +20,6 @@ export const message_types = Object.freeze({
     ERROR: 'error',
     NOTIFY: 'notify',
     SUCCESS: 'success',
-    BUTTON: 'button',
 });
 
 export const error_types = Object.freeze({

@@ -102,8 +102,6 @@ class ModalElement extends React.PureComponent {
 
 ModalElement.defaultProps = {
     has_close_icon: true,
-    onMount: () => {},
-    onUnmount: () => {},
 };
 
 ModalElement.propTypes = {

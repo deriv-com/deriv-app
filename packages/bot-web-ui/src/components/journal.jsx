@@ -1,11 +1,11 @@
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import ContentLoader from 'react-content-loader';
 import { Checkbox, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { message_types } from '@deriv/bot-skeleton';
-import JournalLoader from './journal-loading.jsx';
 import { connect } from '../stores/connect';
 import '../assets/sass/journal.scss';
 import { contract_stages } from '../constants/contract-stage';
@@ -108,6 +108,20 @@ const getJournalItemContent = (message, type, className) => {
             return <></>;
     }
 };
+
+const JournalLoader = () => (
+    <ContentLoader
+        className='journal__loader'
+        speed={3}
+        width={350}
+        height={92}
+        primaryColor={'var(--general-section-1)'}
+        secondaryColor={'var(--general-hover)'}
+    >
+        <rect x='15' y='15' rx='5' ry='5' width='305' height='40' />
+        <rect x='15' y='60' rx='5' ry='5' width='180' height='7' />
+    </ContentLoader>
+);
 
 const Journal = ({ filtered_messages, contract_stage, ...props }) => {
     return (

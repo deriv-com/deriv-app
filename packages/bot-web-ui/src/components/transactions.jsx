@@ -4,7 +4,6 @@ import { PropTypes } from 'prop-types';
 import React from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Transaction from './transaction.jsx';
-import TransactionsLoader from './transactions-loading.jsx';
 import { transaction_elements } from '../constants/transactions';
 import { connect } from '../stores/connect';
 import '../assets/sass/transactions.scss';
@@ -65,7 +64,7 @@ class Transactions extends React.PureComponent {
                         ) : (
                             <>
                                 {contract_stage.index >= contract_stages.STARTING.index ? (
-                                    <TransactionsLoader />
+                                    <Transaction contract={null} />
                                 ) : (
                                     <div className='transactions-empty__container'>
                                         <div className='transactions-empty'>

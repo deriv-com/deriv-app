@@ -51,7 +51,7 @@
                 width: 100%;
             }
         }
-        &:nth-child(odd) {
+        &:nth-child(even) {
             background: var(--status-default);
         }
     }
@@ -105,5 +105,9 @@
         &--bold {
             font-weight: bold;
         }
+    }
+    &__loader {
+        width: 350px;
+        height: 90px;
     }
 }

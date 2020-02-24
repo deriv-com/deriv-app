@@ -22,6 +22,9 @@
      */
     text-transform: none !important;
 
+    * {
+        pointer-events: none;
+    }
     &__text,
     &__icon {
         @include typeface(--paragraph-center-bold-black, unset);

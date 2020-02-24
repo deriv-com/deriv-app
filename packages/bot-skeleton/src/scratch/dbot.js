@@ -29,9 +29,8 @@ class DBot {
             ApiHelpers.setInstance(api_helpers_store);
             DBotStore.setInstance(store);
             const window_width = window.innerWidth;
-            let workspaceScale = 1;
+            let workspaceScale = 0.9;
             const { handleFileChange, onBotNameTyped } = DBotStore.instance;
-
             if (window_width < 1640) {
                 const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
                 const zoom_scale = scratch_div_width / window_width;

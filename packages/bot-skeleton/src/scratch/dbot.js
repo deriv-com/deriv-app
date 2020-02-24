@@ -30,7 +30,6 @@ class DBot {
             DBotStore.setInstance(store);
             const window_width = window.innerWidth;
             let workspaceScale = 1;
-
             const { handleFileChange, onBotNameTyped } = DBotStore.instance;
 
             if (window_width < 1640) {

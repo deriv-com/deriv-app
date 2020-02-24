@@ -10,17 +10,24 @@ import '../assets/sass/journal.scss';
 const DateItem = ({ date, time }) => {
     return (
         <div>
-            <span className='journal__table--date'> {date} </span>
-            <span className='journal__table--time'> {time} </span>
+            <span className='journal__table--date'>{date}</span>
+            <span className='journal__table--time'>{time}</span>
         </div>
     );
 };
 
 const FormatMessage = ({ message }) => {
+    if (React.isValidElement(message)) {
+        return message;
+    }
+    if (typeof message === 'object') {
+        return JSON.stringify(message);
+    }
     if (typeof message !== 'string') {
         return message;
     }
 
+    // TODO: Below won't work for localised strings.
     const key_words = ['Bought', 'Sold', 'Profit amount', 'Loss amount'];
     const messages = message.split(':');
 

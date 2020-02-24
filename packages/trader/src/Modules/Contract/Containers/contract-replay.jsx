@@ -8,7 +8,6 @@ import { localize } from '@deriv/translations';
 import { FadeWrapper } from 'App/Components/Animations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
-import AppRoutes from 'Constants/routes';
 import { SmartChart } from 'Modules/SmartChart';
 import { connect } from 'Stores/connect';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
@@ -30,7 +29,13 @@ class ContractReplay extends React.Component {
         this.props.onUnmount();
     }
 
-    onClickClose = () => this.props.routeBackInApp(this.props.history);
+    onClickClose = () => {
+        this.setState({ is_visible: false });
+        const is_from_table_row = !ObjectUtils.isEmptyObject(this.props.location.state)
+            ? this.props.location.state.from_table_row
+            : false;
+        return is_from_table_row ? this.props.history.goBack() : this.props.routeBackInApp(this.props.history);
+    };
 
     render() {
         const {

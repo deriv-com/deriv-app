@@ -21,9 +21,10 @@ class Virtual extends React.Component {
                 {this.props.has_real_account ? (
                     <React.Fragment>
                         <p className='cashier__paragraph cashier__text'>
-                            <Localize i18n_default_text='You need to switch to a real money account to use this feature.' />
-                            <br />
-                            <Localize i18n_default_text='You can do this by selecting a real account from the Account Switcher.' />
+                            <Localize
+                                i18n_default_text='You need to switch to a real money account to use this feature.<0/>You can do this by selecting a real account from the Account Switcher.'
+                                components={[<br key={0} />]}
+                            />
                         </p>
                         <div className='cashier__account-switch-icon' />
                     </React.Fragment>

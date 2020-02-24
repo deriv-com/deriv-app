@@ -1,3 +1,4 @@
+import { localize } from '@deriv/translations';
 import PendingPromise from '../../utils/pending-promise';
 import { config } from '../../constants/config';
 
@@ -88,29 +89,37 @@ export default class ActiveSymbols {
         }, {});
     }
 
-    async getAssetOptions() {
-        await this.retrieveActiveSymbols();
-        const all_market_options = {};
+    /**
+     * Retrieves all symbols and returns an array of symbol objects consisting of symbol and their linked market + submarket.
+     * @returns {Array} Symbols and their submarkets + markets.
+     */
+    getAllSymbols() {
+        const all_symbols = [];
 
         Object.keys(this.processed_symbols).forEach(market_name => {
-            const { submarkets } = this.processed_symbols[market_name];
-            Object.keys(submarkets).forEach(key => {
-                const submarket = submarkets[key];
-                all_market_options[submarket.display_name] = this.getAllSymbolDropdownOptions(submarket);
+            const market = this.processed_symbols[market_name];
+            const { submarkets } = market;
+
+            Object.keys(submarkets).forEach(submarket_name => {
+                const submarket = submarkets[submarket_name];
+                const { symbols } = submarket;
+
+                Object.keys(symbols).forEach(symbol_name => {
+                    const symbol = symbols[symbol_name];
+
+                    all_symbols.push({
+                        market: market_name,
+                        market_display: market.display_name,
+                        submarket: submarket_name,
+                        submarket_display: submarket.display_name,
+                        symbol: symbol_name,
+                        symbol_display: symbol.display_name,
+                    });
+                });
             });
         });
 
-        return all_market_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : all_market_options;
-    }
-
-    // eslint-disable-next-line class-methods-use-this
-    getAllSymbolDropdownOptions(submarket) {
-        return Object.keys(submarket.symbols).map(key => {
-            return {
-                name: submarket.symbols[key].display_name,
-                value: key,
-            };
-        });
+        return all_symbols;
     }
 
     async getMarketDropdownOptions() {
@@ -118,11 +127,29 @@ export default class ActiveSymbols {
         const market_options = [];
 
         Object.keys(this.processed_symbols).forEach(market_name => {
-            const market = this.processed_symbols[market_name];
-            market_options.push([market.display_name, market_name]);
+            const { display_name } = this.processed_symbols[market_name];
+            const market_display_name =
+                display_name + (this.isMarketClosed(market_name) ? ` ${localize('(Closed)')}` : '');
+            market_options.push([market_display_name, market_name]);
         });
 
-        return market_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : market_options;
+        if (market_options.length === 0) {
+            return config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
+        }
+
+        const has_closed_markets = market_options.some(market_option => this.isMarketClosed(market_option[1]));
+
+        if (has_closed_markets) {
+            const sorted_options = this.sortDropdownOptions(market_options, this.isMarketClosed);
+
+            if (this.isMarketClosed('forex')) {
+                return sorted_options.sort(a => (a[1] === 'synthetic_index' ? -1 : 1));
+            }
+
+            return sorted_options;
+        }
+
+        return market_options;
     }
 
     async getSubmarketDropdownOptions(market) {
@@ -135,11 +162,18 @@ export default class ActiveSymbols {
             const { submarkets } = market_obj;
 
             Object.keys(submarkets).forEach(submarket_name => {
-                submarket_options.push([submarkets[submarket_name].display_name, submarket_name]);
+                const { display_name } = submarkets[submarket_name];
+                const submarket_display_name =
+                    display_name + (this.isSubmarketClosed(submarket_name) ? ` ${localize('(Closed)')}` : '');
+                submarket_options.push([submarket_display_name, submarket_name]);
             });
         }
 
-        return submarket_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : submarket_options;
+        if (submarket_options.length === 0) {
+            return config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
+        }
+
+        return this.sortDropdownOptions(submarket_options, this.isSubmarketClosed);
     }
 
     async getSymbolDropdownOptions(submarket) {
@@ -152,7 +186,10 @@ export default class ActiveSymbols {
                 if (submarket_name === submarket) {
                     const { symbols } = submarkets[submarket_name];
                     Object.keys(symbols).forEach(symbol_name => {
-                        accumulator.push([symbols[symbol_name].display_name, symbol_name]);
+                        const { display_name } = symbols[symbol_name];
+                        const symbol_display_name =
+                            display_name + (this.isSymbolClosed(symbol_name) ? ` ${localize('(Closed)')}` : '');
+                        accumulator.push([symbol_display_name, symbol_name]);
                     });
                 }
             });
@@ -160,6 +197,67 @@ export default class ActiveSymbols {
             return accumulator;
         }, []);
 
-        return symbol_options.length === 0 ? config.NOT_AVAILABLE_DROPDOWN_OPTIONS : symbol_options;
+        if (symbol_options.length === 0) {
+            return config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
+        }
+
+        return this.sortDropdownOptions(symbol_options, this.isSymbolClosed);
     }
+
+    isMarketClosed(market_name) {
+        const market = this.processed_symbols[market_name];
+
+        if (!market) {
+            return true;
+        }
+
+        return Object.keys(market.submarkets).every(submarket_name => this.isSubmarketClosed(submarket_name));
+    }
+
+    isSubmarketClosed(submarket_name) {
+        const market_name = Object.keys(this.processed_symbols).find(name => {
+            const market = this.processed_symbols[name];
+            return Object.keys(market.submarkets).includes(submarket_name);
+        });
+
+        if (!market_name) {
+            return true;
+        }
+
+        const market = this.processed_symbols[market_name];
+        const submarket = market.submarkets[submarket_name];
+
+        if (!submarket) {
+            return true;
+        }
+
+        const { symbols } = submarket;
+        return Object.keys(symbols).every(symbol_name => this.isSymbolClosed(symbol_name));
+    }
+
+    isSymbolClosed(symbol_name) {
+        return this.active_symbols.some(
+            active_symbol =>
+                active_symbol.symbol === symbol_name &&
+                (!active_symbol.exchange_is_open || active_symbol.is_trading_suspended)
+        );
+    }
+
+    sortDropdownOptions = (dropdown_options, closedFunc) => {
+        const options = [...dropdown_options];
+
+        options.sort((a, b) => {
+            const is_a_closed = closedFunc.call(this, a[1]);
+            const is_b_closed = closedFunc.call(this, b[1]);
+
+            if (is_a_closed && !is_b_closed) {
+                return 1;
+            } else if (is_a_closed === is_b_closed) {
+                return 0;
+            }
+            return -1;
+        });
+
+        return options;
+    };
 }

@@ -76,6 +76,13 @@
                 grid-template-columns: repeat(4, 1fr);
                 grid-gap: 16px;
             }
+            .dc-numpad__increment,
+            .dc-numpad__decrement {
+                .btn__text {
+                    font-size: 3rem;
+                    font-weight: normal;
+                }
+            }
             .dc-numpad__number {
                 border-radius: 2.4rem;
                 background-color: var(--general-section-2);

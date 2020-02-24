@@ -3,8 +3,10 @@ import { localize } from '@deriv/translations';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { config } from '@deriv/bot-skeleton';
 import Dialog from './dialog.jsx';
-import SaveLoadModal from './saveload-modal.jsx';
+import LoadModal from './load-modal.jsx';
+import SaveModal from './save-modal.jsx';
 import TradeAnimation from './trade-animation.jsx';
 import { tabs_title } from '../constants/bot-contents';
 import { popover_zindex } from '../constants/z-indexes';
@@ -71,7 +73,7 @@ const BotNameBox = ({ onBotNameTyped, file_name }) => (
                                         submitForm();
                                     }}
                                     label={localize('Bot name')}
-                                    placeholder={localize('Untitled Bot')}
+                                    placeholder={config.default_file_name}
                                     trailing_icon={<Icon icon='IcEdit' />}
                                 />
                             )}
@@ -90,27 +92,23 @@ const WorkspaceGroup = ({
     onSortClick,
     onUndoClick,
     onZoomInOutClick,
-    toggleSaveLoadModal,
+    toggleLoadModal,
+    toggleSaveModal,
 }) => (
     <div className='toolbar__group toolbar__group-btn'>
+        <Popover alignment='bottom' message={localize('Reset')} zIndex={popover_zindex.TOOLBAR}>
+            <Icon icon='IcReset' id='db-toolbar__reset-button' className='toolbar__icon' onClick={onResetClick} />
+        </Popover>
         <Popover alignment='bottom' message={localize('Import')} zIndex={popover_zindex.TOOLBAR}>
             <Icon
                 icon='IcFolderOpen'
                 id='db-toolbar__import-button'
                 className='toolbar__icon'
-                onClick={() => toggleSaveLoadModal(false)}
+                onClick={toggleLoadModal}
             />
-        </Popover>
-        <Popover alignment='bottom' message={localize('Reset')} zIndex={popover_zindex.TOOLBAR}>
-            <Icon icon='IcNewFile' id='db-toolbar__reset-button' className='toolbar__icon' onClick={onResetClick} />
         </Popover>
         <Popover alignment='bottom' message={localize('Save')} zIndex={popover_zindex.TOOLBAR}>
-            <Icon
-                icon='IcSave'
-                id='db-toolbar__save-button'
-                className='toolbar__icon'
-                onClick={() => toggleSaveLoadModal(true)}
-            />
+            <Icon icon='IcSave' id='db-toolbar__save-button' className='toolbar__icon' onClick={toggleSaveModal} />
         </Popover>
         <div className='vertical-divider' />
         <Popover alignment='bottom' message={localize('Undo')} zIndex={popover_zindex.TOOLBAR}>
@@ -195,38 +193,39 @@ const Toolbar = props => {
                 <div className='toolbar__section'>
                     {is_stop_button_visible ? (
                         <Button
-                            className='toolbar__btn'
+                            className='db-toolbar__stop-button'
                             is_disabled={is_stop_button_disabled}
                             text={localize('Stop bot')}
                             icon={<Icon icon='IcPause' className='run-panel__button--icon' color='active' />}
                             onClick={onStopButtonClick}
                             has_effect
                             primary
+                            large
                         />
                     ) : (
                         <Button
-                            className='toolbar__btn'
+                            className='db-toolbar__run-button'
                             text={localize('Run bot')}
                             icon={<Icon icon='IcPlay' className='run-panel__button--icon' color='active' />}
                             onClick={onRunButtonClick}
                             has_effect
+                            large
                             green
                         />
                     )}
                     <TradeAnimation className='toolbar__animation' should_show_overlay={true} />
                 </div>
             )}
-            <SaveLoadModal />
-            {is_dialog_open && (
-                <Dialog
-                    title={localize('Are you sure?')}
-                    is_open={is_dialog_open}
-                    onOkButtonClick={onOkButtonClick}
-                    onCancelButtonClick={onCancelButtonClick}
-                >
-                    {localize('Any unsaved changes will be lost.')}
-                </Dialog>
-            )}
+            <SaveModal />
+            <LoadModal />
+            <Dialog
+                title={localize('Are you sure?')}
+                is_open={is_dialog_open}
+                onOkButtonClick={onOkButtonClick}
+                onCancelButtonClick={onCancelButtonClick}
+            >
+                {localize('Any unsaved changes will be lost.')}
+            </Dialog>
         </div>
     );
 };
@@ -259,7 +258,7 @@ Toolbar.propTypes = {
     toggleSaveLoadModal: PropTypes.func,
 };
 
-export default connect(({ main_content, run_panel, saveload, toolbar }) => ({
+export default connect(({ main_content, run_panel, save_modal, load_modal, toolbar }) => ({
     active_tab: main_content.active_tab,
     file_name: toolbar.file_name,
     has_redo_stack: toolbar.has_redo_stack,
@@ -284,5 +283,6 @@ export default connect(({ main_content, run_panel, saveload, toolbar }) => ({
     onToolboxToggle: toolbar.onToolboxToggle,
     onUndoClick: toolbar.onUndoClick,
     onZoomInOutClick: toolbar.onZoomInOutClick,
-    toggleSaveLoadModal: saveload.toggleSaveLoadModal,
+    toggleLoadModal: load_modal.toggleLoadModal,
+    toggleSaveModal: save_modal.toggleSaveModal,
 }))(Toolbar);

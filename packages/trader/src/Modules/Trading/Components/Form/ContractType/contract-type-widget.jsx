@@ -18,6 +18,13 @@ class ContractTypeWidget extends React.PureComponent {
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
 
+    componentDidUpdate() {
+        if (this.props.list.length !== this.state.list.length && !this.state.on_input_change) {
+            // reset internal list state when contracts list is changed in store (on contracts_for response)
+            this.setState({ list: this.props.list });
+        }
+    }
+
     handleSelect = (item, e) => {
         if (e.target.id !== 'info-icon') {
             this.setState(
@@ -78,7 +85,7 @@ class ContractTypeWidget extends React.PureComponent {
     };
 
     onChangeInput = list => {
-        this.setState({ list });
+        this.setState({ on_input_change: true, list });
     };
 
     render() {

@@ -27,7 +27,7 @@ Blockly.Toolbox.prototype.init = function() {
     const el_toolbox_header = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__header');
     const el_toolbox_title = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__title');
 
-    el_toolbox_title.textContent = localize('Blocks Menu');
+    el_toolbox_title.textContent = localize('Blocks menu');
     el_toolbox_header.appendChild(el_toolbox_title);
     this.HtmlDiv.appendChild(el_toolbox_header);
 
@@ -82,7 +82,7 @@ Blockly.Toolbox.prototype.populate_ = function(newTree) {
     const { toggleStrategyModal } = DBotStore.instance;
     if (toggleStrategyModal) {
         const quick_strat_btn = document.createElement('BUTTON');
-        quick_strat_btn.innerHTML = localize('Quick Strategy');
+        quick_strat_btn.innerHTML = localize('Quick strategy');
         quick_strat_btn.className = 'toolbox__button btn effect btn--primary btn__medium';
         quick_strat_btn.id = 'gtm-quick-strategy';
         quick_strat_btn.onclick = toggleStrategyModal;

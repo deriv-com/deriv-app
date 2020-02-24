@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React, { useState, useEffect, Children } from 'react';
+import { useSwipeable } from 'react-swipeable';
 import { positionPropType } from './utils';
 import ArrowButton from './arrow-button.jsx';
-import { useSwipeable } from 'react-swipeable';
 
 const swipe_config = {
     delta: 100,

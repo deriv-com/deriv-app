@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import UiLoader from '../ui-loader';
+import UiLoader from '../ui-loader.jsx';
 
 class Lazy extends React.PureComponent {
     render() {

@@ -80,7 +80,6 @@
         &__title {
             @include typeface(--title-left-bold-black);
             color: var(--text-prominent);
-            height: 100%;
             line-height: 24px;
             padding: 1.2rem 1.6rem;
             display: flex;

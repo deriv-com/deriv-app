@@ -41,7 +41,7 @@ class App extends React.Component {
         const { handleFileChange } = saveload;
         const { toggleStrategyModal } = quick_strategy;
         this.dbot_store = {
-            is_mobile: false,
+            is_mobile: false, // TODO: Use isMobile from @deriv/shared/utils/screen once available.
             bot_settings,
             client,
             flyout,

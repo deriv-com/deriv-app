@@ -16,7 +16,7 @@
     "deploy:folder": "f () { npm run build:travis && npm run build:local $1 && lerna exec --scope @deriv/core -- npm run deploy:folder $@ ;}; f",
     "prettify": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run --silent prettify ;}; f",
     "publish:p2p": "f () { lerna publish from-package ;}; f",
-    "serve": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run serve ;}; f",
+    "serve": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run serve $npm_config_open;}; f",
     "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
     "test": "f () { lerna exec --scope=@deriv/${1:-'*'} --parallel -- npm run test ;}; f",
     "test:eslint": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:eslint ;}; f",

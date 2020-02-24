@@ -3,8 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'Stores/connect';
 
-const POPUP_ERROR_TIMEOUT = 1500;
-
 class ToastErrorPopup extends React.Component {
     constructor(props) {
         super(props);
@@ -27,7 +25,7 @@ class ToastErrorPopup extends React.Component {
             <ToastError
                 is_open={this.props.should_show_toast_error}
                 onClose={() => this.props.setToastErrorVisibility(false)}
-                timeout={POPUP_ERROR_TIMEOUT}
+                timeout={this.props.mobile_toast_timeout}
             >
                 {this.props.mobile_toast_error}
             </ToastError>,
@@ -40,4 +38,5 @@ export default connect(({ ui }) => ({
     should_show_toast_error: ui.should_show_toast_error,
     setToastErrorVisibility: ui.setToastErrorVisibility,
     mobile_toast_error: ui.mobile_toast_error,
+    mobile_toast_timeout: ui.mobile_toast_timeout,
 }))(ToastErrorPopup);

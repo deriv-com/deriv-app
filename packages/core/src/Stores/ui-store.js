@@ -98,6 +98,7 @@ export default class UIStore extends BaseStore {
     // Mobile
     @observable should_show_toast_error = false;
     @observable mobile_toast_error = '';
+    @observable mobile_toast_timeout = 1500;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -513,7 +514,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    setToastErrorMessage(msg) {
+    setToastErrorMessage(msg, timeout = 1500) {
+        this.mobile_toast_timeout = timeout;
         this.mobile_toast_error = msg;
     }
 }

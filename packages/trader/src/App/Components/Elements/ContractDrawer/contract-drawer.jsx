@@ -165,7 +165,10 @@ class ContractDrawer extends Component {
                     )}
                 </DesktopWrapper>
                 <MobileWrapper>
-                    <SwipeableContractDrawer onSwipedUp={this.onSwipedUp} onSwipedDown={this.onSwipedDown}>
+                    <SwipeableContractDrawer
+                        onSwipedUp={is_sold ? this.onSwipedUp : undefined}
+                        onSwipedDown={is_sold ? this.onSwipedDown : undefined}
+                    >
                         {!!is_sold && (
                             <Collapsible.ArrowButton
                                 onClick={this.toggleContractAuditDrawer}

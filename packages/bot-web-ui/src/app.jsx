@@ -56,6 +56,7 @@ class App extends React.Component {
         this.registerCurrencyReaction();
         this.registerOnAccountSwitch();
         this.registerClickOutsideBlockly();
+        this.registerBeforeUnload();
     }
 
     componentWillUnmount() {
@@ -64,6 +65,10 @@ class App extends React.Component {
         }
 
         this.disposeReactions();
+
+        // Ensure account switch is re-enabled.
+        const { ui } = this.root_store.core;
+        ui.setAccountSwitcherDisabledMessage(false);
     }
 
     /**
@@ -135,6 +140,16 @@ class App extends React.Component {
         window.addEventListener('click', this.onClickOutsideBlockly);
     }
 
+    onBeforeUnload = event => {
+        if (this.root_store.run_panel.is_stop_button_visible) {
+            event.returnValue = true;
+        }
+    };
+
+    registerBeforeUnload() {
+        window.addEventListener('beforeunload', this.onBeforeUnload);
+    }
+
     /**
      * Dispose Mobx reactions & event listeners.
      */
@@ -146,6 +161,7 @@ class App extends React.Component {
             this.disposeSwitchAccountListener();
         }
         window.removeEventListener('click', this.onClickOutsideBlockly);
+        window.removeEventListener('beforeunload', this.onBeforeUnload);
     }
 
     render() {

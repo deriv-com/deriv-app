@@ -22,7 +22,7 @@
      */
     text-transform: none !important;
 
-    * {
+    > * {
         pointer-events: none;
     }
     &__text,

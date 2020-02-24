@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
+import { localize } from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { requestWS } from 'Utils/websocket';
@@ -21,7 +22,7 @@ export class SellTable extends React.Component {
     componentDidMount() {
         this.is_mounted = true;
 
-        requestWS({ p2p_offer_list: 1, type: 'sell' }).then(response => {
+        requestWS({ p2p_advert_list: 1, counterparty_type: 'sell' }).then(response => {
             if (this.is_mounted) {
                 if (!response.error) {
                     this.setState({ items: response, is_loading: false });
@@ -46,7 +47,7 @@ export class SellTable extends React.Component {
 
         if (api_error_message) return <TableError message={api_error_message} />;
 
-        return (
+        return items.length ? (
             <InfiniteLoaderList
                 // screen size - header size - footer size - page overlay header - page overlay content padding -
                 // tabs height - padding+margin of tab content - toggle height - table header height
@@ -55,6 +56,10 @@ export class SellTable extends React.Component {
                 RenderComponent={Row}
                 RowLoader={BuySellRowLoader}
             />
+        ) : (
+            <div className='deriv-p2p__empty'>
+                {localize("No ads yet. If someone posts an ad, you'll see it here.")}
+            </div>
         );
     }
 }

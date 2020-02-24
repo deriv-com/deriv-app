@@ -21,6 +21,7 @@ class Header extends React.Component {
 
     render() {
         const {
+            acc_switcher_disabled_message,
             balance,
             can_upgrade,
             can_upgrade_to,
@@ -28,6 +29,7 @@ class Header extends React.Component {
             enableApp,
             header_extension,
             is_acc_switcher_on,
+            is_acc_switcher_disabled,
             is_app_disabled,
             is_dark_mode,
             is_logged_in,
@@ -100,6 +102,7 @@ class Header extends React.Component {
                         )}
                         <div className='acc-info__container'>
                             <AccountActions
+                                acc_switcher_disabled_message={acc_switcher_disabled_message}
                                 balance={balance}
                                 can_upgrade_to={can_upgrade_to}
                                 currency={currency}
@@ -107,6 +110,7 @@ class Header extends React.Component {
                                 disableApp={disableApp}
                                 enableApp={enableApp}
                                 is_acc_switcher_on={is_acc_switcher_on}
+                                is_acc_switcher_disabled={is_acc_switcher_disabled}
                                 is_notifications_visible={is_notifications_visible}
                                 is_logged_in={is_logged_in}
                                 is_virtual={is_virtual}
@@ -127,12 +131,14 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
+    acc_switcher_disabled_message: PropTypes.string,
     balance: PropTypes.string,
     can_upgrade: PropTypes.bool,
     can_upgrade_to: PropTypes.string,
     currency: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
+    is_acc_switcher_disabled: PropTypes.bool,
     is_acc_switcher_on: PropTypes.bool,
     is_app_disabled: PropTypes.bool,
     is_dark_mode: PropTypes.bool,
@@ -149,6 +155,7 @@ Header.propTypes = {
 };
 
 export default connect(({ client, ui }) => ({
+    acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     balance: client.balance,
     can_upgrade: client.can_upgrade,
     can_upgrade_to: client.can_upgrade_to,
@@ -159,6 +166,7 @@ export default connect(({ client, ui }) => ({
     is_virtual: client.is_virtual,
     enableApp: ui.enableApp,
     header_extension: ui.header_extension,
+    is_acc_switcher_disabled: ui.is_account_switcher_disabled,
     is_acc_switcher_on: ui.is_accounts_switcher_on,
     is_dark_mode: ui.is_dark_mode_on,
     is_app_disabled: ui.is_app_disabled,

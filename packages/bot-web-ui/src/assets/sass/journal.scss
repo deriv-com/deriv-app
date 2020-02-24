@@ -17,7 +17,7 @@
             align-items: center;
             -webkit-box-pack: center;
             width: 345px;
-            margin-top: 50%;
+            margin-top: 40%;
         }
         &__header {
             font-size: 1.4rem;
@@ -110,15 +110,18 @@
         &--bold {
             font-weight: 700;
         }
-        &--red {
-            color: var(--text-loss-danger);
-        }
-        &--green {
-            color: var(--text-profit-success);
-        }
-        &--blue {
-            color: var(--status-info);
-        }
+    }
+    &__success {
+        color: var(--text-profit-success);
+    }
+    &__info {
+        color: var(--status-info);
+    }
+    &__warn {
+        color: var(--status-warning);
+    }
+    &__error {
+        color: var(--text-loss-danger);
     }
 }
 
@@ -130,8 +133,8 @@
 
         &-filter {
             display: flex;
-            justify-content: space-between;
-            width: 85%;
+            justify-content: space-around;
+            width: 100%;
 
             .dc-checkbox__label {
                 font-size: var(--text-size--xxs);

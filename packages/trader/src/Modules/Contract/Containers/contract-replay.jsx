@@ -8,7 +8,6 @@ import { localize } from '@deriv/translations';
 import { FadeWrapper } from 'App/Components/Animations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
-import AppRoutes from 'Constants/routes';
 import { SmartChart } from 'Modules/SmartChart';
 import { connect } from 'Stores/connect';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
@@ -30,13 +29,12 @@ class ContractReplay extends React.Component {
         this.props.onUnmount();
     }
 
-    // TODO: [history-routing] handle going back as per user actions
     onClickClose = () => {
         this.setState({ is_visible: false });
         const is_from_table_row = !ObjectUtils.isEmptyObject(this.props.location.state)
             ? this.props.location.state.from_table_row
             : false;
-        return this.props.history.push(is_from_table_row ? this.props.history.goBack() : AppRoutes.trade);
+        return is_from_table_row ? this.props.history.goBack() : this.props.routeBackInApp(this.props.history);
     };
 
     render() {
@@ -120,10 +118,11 @@ ContractReplay.propTypes = {
 };
 
 export default withRouter(
-    connect(({ modules, ui }) => {
+    connect(({ common, modules, ui }) => {
         const contract_replay = modules.contract_replay;
         const contract_store = contract_replay.contract_store;
         return {
+            routeBackInApp: common.routeBackInApp,
             contract_info: contract_store.contract_info,
             is_digit_contract: contract_store.is_digit_contract,
             is_sell_requested: contract_replay.is_sell_requested,

@@ -15,17 +15,20 @@ class Routes extends React.Component {
             this.initial_route = this.props.location.pathname;
         }
 
-        this.unlisten_to_change = this.props.history.listen(route_to => {
-            if (this.initial_route.split('/')[1] !== route_to.pathname.split('/')[1]) {
-                this.props.setRoutedInternally(true);
-
-                if (typeof this.unlisten_to_change === 'function') {
-                    this.unlisten_to_change();
-                    this.unlisten_to_change = null;
-                    this.initial_route = null;
-                }
-            }
+        this.props.addRouteHistoryItem({ ...this.props.history.location, action: 'PUSH' });
+        this.unlisten_to_change = this.props.history.listen((route_to, action) => {
+            if (action === 'PUSH') this.props.addRouteHistoryItem({ ...route_to, action });
         });
+
+        this.props.setAppRouterHistory(this.props.history);
+    }
+
+    componentWillUnmount() {
+        if (typeof this.unlisten_to_change === 'function') {
+            this.unlisten_to_change();
+            this.unlisten_to_change = null;
+            this.initial_route = null;
+        }
     }
 
     render() {
@@ -60,6 +63,7 @@ export default withRouter(
         is_logged_in: client.is_logged_in,
         error: common.error,
         has_error: common.has_error,
-        setRoutedInternally: common.setRoutedInternally,
+        setAppRouterHistory: common.setAppRouterHistory,
+        addRouteHistoryItem: common.addRouteHistoryItem,
     }))(Routes)
 );

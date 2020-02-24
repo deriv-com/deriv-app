@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import Icon from 'Components/icon';
+import Counter from 'Components/counter';
+import Icon from 'Components/icon/icon.jsx';
 
 const HeaderIcon = ({ icon, is_active }) => (
     <Icon
@@ -20,6 +21,7 @@ const VerticalTabHeader = ({ children, className, is_floating, is_routed, item, 
     const handleClick = () => onChange(item);
     const id = `dt_${label}_link`;
     const is_disabled = !!item.is_disabled;
+    const count = item.count || 0;
 
     return is_routed ? (
         <NavLink
@@ -36,6 +38,7 @@ const VerticalTabHeader = ({ children, className, is_floating, is_routed, item, 
         >
             <HeaderIcon icon={item.icon} is_active={is_active} />
             <Header text={label} />
+            {!!count && <Counter count={count} className='dc-vertical-tab__header__counter' />}
             {children}
         </NavLink>
     ) : (

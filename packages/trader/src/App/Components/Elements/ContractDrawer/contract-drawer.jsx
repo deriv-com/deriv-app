@@ -1,10 +1,9 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
-import { Button, Collapsible, DesktopWrapper, Div100vhContainer, MobileWrapper, Icon, Money } from '@deriv/components';
+import { Button, Collapsible, DesktopWrapper, MobileWrapper, Icon, Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import ContractAudit from 'App/Components/Elements/ContractAudit';
@@ -32,14 +31,7 @@ import ContractCardBody from './contract-card-body.jsx';
 import ContractCardFooter from './contract-card-footer.jsx';
 import ContractCardHeader from './contract-card-header.jsx';
 import ContractCard from './contract-card.jsx';
-
-const ContractAuditCardWrapper = ({ children }) =>
-    ReactDOM.createPortal(
-        <Div100vhContainer className='contract-audit-card' height_offset='220px'>
-            {children}
-        </Div100vhContainer>,
-        document.getElementById('dt_contract_replay_container')
-    );
+import { CollapsibleContractAudit, CollapsibleContractDrawer } from './collapsible-components.jsx';
 
 class ContractDrawer extends Component {
     state = {
@@ -52,8 +44,15 @@ class ContractDrawer extends Component {
     };
 
     toggleContractAuditDrawer = () => {
-        this.setState({ should_show_contract_audit: !this.state.should_show_contract_audit });
+        this.setState(state => ({ should_show_contract_audit: !state.should_show_contract_audit }));
     };
+
+    onSwipedDown = () => this.setState({ should_show_contract_audit: false });
+    onSwipedUp = () => this.setState({ should_show_contract_audit: true });
+
+    get is_collapsed() {
+        return !this.state.should_show_contract_audit;
+    }
 
     getBodyContent() {
         const { buy_price, currency, exit_tick_display_value, is_sold, payout, profit } = this.props.contract_info;
@@ -166,101 +165,117 @@ class ContractDrawer extends Component {
                     )}
                 </DesktopWrapper>
                 <MobileWrapper>
-                    {!!is_sold && (
-                        <Collapsible.ArrowButton position='bottom' onClick={this.toggleContractAuditDrawer} />
-                    )}
-                    <ContractCard contract_info={contract_info}>
-                        <ContractCardHeader>
-                            <div className={classNames('contract-card__grid', 'contract-card__grid-underlying-trade')}>
-                                <div id='dt_underlying_label' className='contract-card__underlying-name'>
-                                    <Icon
-                                        icon={
-                                            contract_info.underlying
-                                                ? `IcUnderlying${contract_info.underlying}`
-                                                : 'IcUnknown'
-                                        }
-                                        width={40}
-                                        height={34}
-                                    />
-                                    <span className='contract-card__symbol'>{contract_info.display_name}</span>
-                                </div>
-                                <div id='dt_contract_type_label' className='contract-card__type'>
-                                    <ContractTypeCell
-                                        type={contract_info.contract_type}
-                                        is_high_low={Shortcode.isHighLow({ shortcode: contract_info.shortcode })}
-                                    />
-                                </div>
-                            </div>
-                        </ContractCardHeader>
-                        <div className='contract-card__body-wrapper contract-card__separator'>
-                            <ContractCardBody>
-                                <div className='contract-card__grid'>
-                                    <ProfitLossCardContent
-                                        pl_value={+profit}
-                                        payout={getIndicativePrice(contract_info)}
-                                        currency={currency}
-                                        is_sold={!!is_sold}
-                                        status={this.props.status}
-                                    />
-                                    <div className='pl-card'>
-                                        <div className='purchase-price-container'>
-                                            <span className='contract-card__grid-label'>
-                                                {localize('Purchase price:')}
-                                            </span>
-                                            <span id='dt_purchase_price_label' className='contract-card__grid-value'>
-                                                <Money currency={currency} amount={buy_price} />
-                                            </span>
-                                        </div>
-                                        <div className='potential-payout-container'>
-                                            <span className='contract-card__grid-label'>
-                                                {localize('Potential payout:')}
-                                            </span>
-                                            <span id='dt_potential_payout_label' className='contract-card__grid-value'>
-                                                <Money currency={currency} amount={payout} />
-                                            </span>
-                                        </div>
+                    <CollapsibleContractDrawer onSwipedUp={this.onSwipedUp} onSwipedDown={this.onSwipedDown}>
+                        {!!is_sold && (
+                            <Collapsible.ArrowButton
+                                onClick={this.toggleContractAuditDrawer}
+                                is_collapsed={this.is_collapsed}
+                            />
+                        )}
+                        <ContractCard contract_info={contract_info}>
+                            <ContractCardHeader>
+                                <div
+                                    className={classNames(
+                                        'contract-card__grid',
+                                        'contract-card__grid-underlying-trade'
+                                    )}
+                                >
+                                    <div id='dt_underlying_label' className='contract-card__underlying-name'>
+                                        <Icon
+                                            icon={
+                                                contract_info.underlying
+                                                    ? `IcUnderlying${contract_info.underlying}`
+                                                    : 'IcUnknown'
+                                            }
+                                            width={40}
+                                            height={34}
+                                        />
+                                        <span className='contract-card__symbol'>{contract_info.display_name}</span>
+                                    </div>
+                                    <div id='dt_contract_type_label' className='contract-card__type'>
+                                        <ContractTypeCell
+                                            type={contract_info.contract_type}
+                                            is_high_low={Shortcode.isHighLow({ shortcode: contract_info.shortcode })}
+                                        />
                                     </div>
                                 </div>
-                            </ContractCardBody>
-                            <div className='contract-card__status'>
-                                {is_sold ? (
-                                    <ResultStatusIcon is_contract_won={getDisplayStatus(contract_info) === 'won'} />
-                                ) : (
-                                    <ProgressSliderMobile
-                                        is_loading={false}
-                                        start_time={contract_info.purchase_time}
-                                        expiry_time={contract_info.date_expiry}
-                                        current_tick={getTick()}
-                                        ticks_count={contract_info.tick_count}
-                                    />
-                                )}
-                            </div>
-                        </div>
-                        <ContractCardFooter>
-                            <CSSTransition
-                                in={!!isValidToSell(contract_info)}
-                                timeout={250}
-                                classNames={{
-                                    enter: 'contract-card__sell-button--enter',
-                                    enterDone: 'contract-card__sell-button--enter-done',
-                                    exit: 'contract-card__sell-button--exit',
-                                }}
-                                unmountOnExit
-                            >
-                                <div className='contract-card__sell-button'>
-                                    <Button
-                                        className={classNames('btn--sell', {
-                                            'btn--loading': is_sell_requested,
-                                        })}
-                                        is_disabled={!isValidToSell(contract_info) || is_sell_requested}
-                                        text={localize('Sell contract')}
-                                        onClick={() => onClickSell(contract_info.contract_id)}
-                                        secondary
-                                    />
+                            </ContractCardHeader>
+                            <div className='contract-card__body-wrapper contract-card__separator'>
+                                <ContractCardBody>
+                                    <div className='contract-card__grid'>
+                                        <ProfitLossCardContent
+                                            pl_value={+profit}
+                                            payout={getIndicativePrice(contract_info)}
+                                            currency={currency}
+                                            is_sold={!!is_sold}
+                                            status={this.props.status}
+                                        />
+                                        <div className='pl-card'>
+                                            <div className='purchase-price-container'>
+                                                <span className='contract-card__grid-label'>
+                                                    {localize('Purchase price:')}
+                                                </span>
+                                                <span
+                                                    id='dt_purchase_price_label'
+                                                    className='contract-card__grid-value'
+                                                >
+                                                    <Money currency={currency} amount={buy_price} />
+                                                </span>
+                                            </div>
+                                            <div className='potential-payout-container'>
+                                                <span className='contract-card__grid-label'>
+                                                    {localize('Potential payout:')}
+                                                </span>
+                                                <span
+                                                    id='dt_potential_payout_label'
+                                                    className='contract-card__grid-value'
+                                                >
+                                                    <Money currency={currency} amount={payout} />
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ContractCardBody>
+                                <div className='contract-card__status'>
+                                    {is_sold ? (
+                                        <ResultStatusIcon is_contract_won={getDisplayStatus(contract_info) === 'won'} />
+                                    ) : (
+                                        <ProgressSliderMobile
+                                            is_loading={false}
+                                            start_time={contract_info.purchase_time}
+                                            expiry_time={contract_info.date_expiry}
+                                            current_tick={getTick()}
+                                            ticks_count={contract_info.tick_count}
+                                        />
+                                    )}
                                 </div>
-                            </CSSTransition>
-                        </ContractCardFooter>
-                    </ContractCard>
+                            </div>
+                            <ContractCardFooter>
+                                <CSSTransition
+                                    in={!!isValidToSell(contract_info)}
+                                    timeout={250}
+                                    classNames={{
+                                        enter: 'contract-card__sell-button--enter',
+                                        enterDone: 'contract-card__sell-button--enter-done',
+                                        exit: 'contract-card__sell-button--exit',
+                                    }}
+                                    unmountOnExit
+                                >
+                                    <div className='contract-card__sell-button'>
+                                        <Button
+                                            className={classNames('btn--sell', {
+                                                'btn--loading': is_sell_requested,
+                                            })}
+                                            is_disabled={!isValidToSell(contract_info) || is_sell_requested}
+                                            text={localize('Sell contract')}
+                                            onClick={() => onClickSell(contract_info.contract_id)}
+                                            secondary
+                                        />
+                                    </div>
+                                </CSSTransition>
+                            </ContractCardFooter>
+                        </ContractCard>
+                    </CollapsibleContractDrawer>
                     <CSSTransition
                         in={this.state.should_show_contract_audit}
                         timeout={100}
@@ -271,7 +286,7 @@ class ContractDrawer extends Component {
                         }}
                         unmountOnExit
                     >
-                        <ContractAuditCardWrapper>
+                        <CollapsibleContractAudit onSwipedDown={this.onSwipedDown}>
                             <ContractAudit
                                 contract_info={contract_info}
                                 contract_end_time={getEndTime(contract_info)}
@@ -283,7 +298,7 @@ class ContractDrawer extends Component {
                                 exit_spot={exit_spot}
                                 has_result={!!is_sold}
                             />
-                        </ContractAuditCardWrapper>
+                        </CollapsibleContractAudit>
                     </CSSTransition>
                 </MobileWrapper>
             </React.Fragment>
@@ -301,6 +316,7 @@ class ContractDrawer extends Component {
 
     render() {
         if (!this.props.contract_info) return null;
+
         const body_content = (
             <React.Fragment>
                 {this.props.contract_info.status ? (
@@ -312,6 +328,7 @@ class ContractDrawer extends Component {
                 )}
             </React.Fragment>
         );
+
         return (
             <div
                 id='dt_contract_drawer'

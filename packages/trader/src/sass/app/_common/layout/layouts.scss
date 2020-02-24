@@ -34,6 +34,23 @@
             }
         }
     }
+    &--is-mobile {
+        .trade-container {
+            .chart-container {
+                .cq-top-ui-widgets {
+                    .recent-trade-info {
+                        position: absolute;
+                        left: 230px;
+                        color: var(--text-general);
+                        top: 15px;
+                        font-weight: bold;
+                        font-size: 1.6rem;
+                        line-height: 2.4rem;
+                    }
+                }
+            }
+        }
+    }
 }
 
 $FLOATING_HEADER_HEIGHT: 41px;

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import Icon from 'Components/icon/icon.jsx';
 import Body from './modal-body.jsx';
+import Icon from 'Components/icon/icon.jsx';
 import Footer from './modal-footer.jsx';
 
 class ModalElement extends React.PureComponent {
@@ -22,6 +22,9 @@ class ModalElement extends React.PureComponent {
         }
         this.el.classList.add('dc-modal');
         this.state.modal_root.appendChild(this.el);
+        if (typeof this.props.onMount === 'function') {
+            this.props.onMount();
+        }
     };
 
     componentWillUnmount = () => {
@@ -29,10 +32,14 @@ class ModalElement extends React.PureComponent {
             document.removeEventListener('mousedown', this.handleClickOutside);
         }
         this.state.modal_root.removeChild(this.el);
+        if (typeof this.props.onUnmount === 'function') {
+            this.props.onUnmount();
+        }
     };
 
     handleClickOutside = event => {
-        if (this.props.has_close_icon && this.wrapper_ref && !event.path.some(el => el === this.wrapper_ref)) {
+        const path = event.path || (event.composedPath && event.composedPath());
+        if (this.props.has_close_icon && this.wrapper_ref && !path.some(el => el === this.wrapper_ref)) {
             this.props.toggleModal();
         }
     };
@@ -122,6 +129,8 @@ ModalElement.propTypes = {
     header: PropTypes.node,
     id: PropTypes.string,
     is_open: PropTypes.bool,
+    onMount: PropTypes.func,
+    onUnmount: PropTypes.func,
     small: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     toggleModal: PropTypes.func,
@@ -135,6 +144,8 @@ const Modal = ({
     is_open,
     has_close_icon,
     height,
+    onMount,
+    onUnmount,
     small,
     is_vertical_bottom,
     is_vertical_centered,
@@ -167,6 +178,8 @@ const Modal = ({
             toggleModal={toggleModal}
             has_close_icon={has_close_icon}
             height={height}
+            onMount={onMount}
+            onUnmount={onUnmount}
             small={small}
             width={width}
         >
@@ -193,6 +206,8 @@ Modal.propTypes = {
     is_vertical_bottom: PropTypes.bool,
     is_vertical_centered: PropTypes.bool,
     is_vertical_top: PropTypes.bool,
+    onMount: PropTypes.func,
+    onUnmount: PropTypes.func,
     small: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     toggleModal: PropTypes.func,

@@ -27,7 +27,7 @@ Blockly.Toolbox.prototype.init = function() {
     const el_toolbox_header = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__header');
     const el_toolbox_title = goog.dom.createDom(goog.dom.TagName.DIV, 'toolbox__title');
 
-    el_toolbox_title.textContent = localize('Blocks Menu');
+    el_toolbox_title.textContent = localize('Blocks menu');
     el_toolbox_header.appendChild(el_toolbox_title);
     this.HtmlDiv.appendChild(el_toolbox_header);
 

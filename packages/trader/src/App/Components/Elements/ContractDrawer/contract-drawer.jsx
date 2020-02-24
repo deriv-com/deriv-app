@@ -31,7 +31,7 @@ import ContractCardBody from './contract-card-body.jsx';
 import ContractCardFooter from './contract-card-footer.jsx';
 import ContractCardHeader from './contract-card-header.jsx';
 import ContractCard from './contract-card.jsx';
-import { CollapsibleContractAudit, CollapsibleContractDrawer } from './collapsible-components.jsx';
+import { SwipeableContractAudit, SwipeableContractDrawer } from './swipeable-components.jsx';
 
 class ContractDrawer extends Component {
     state = {
@@ -165,7 +165,7 @@ class ContractDrawer extends Component {
                     )}
                 </DesktopWrapper>
                 <MobileWrapper>
-                    <CollapsibleContractDrawer onSwipedUp={this.onSwipedUp} onSwipedDown={this.onSwipedDown}>
+                    <SwipeableContractDrawer onSwipedUp={this.onSwipedUp} onSwipedDown={this.onSwipedDown}>
                         {!!is_sold && (
                             <Collapsible.ArrowButton
                                 onClick={this.toggleContractAuditDrawer}
@@ -275,7 +275,7 @@ class ContractDrawer extends Component {
                                 </CSSTransition>
                             </ContractCardFooter>
                         </ContractCard>
-                    </CollapsibleContractDrawer>
+                    </SwipeableContractDrawer>
                     <CSSTransition
                         in={this.state.should_show_contract_audit}
                         timeout={100}
@@ -286,7 +286,7 @@ class ContractDrawer extends Component {
                         }}
                         unmountOnExit
                     >
-                        <CollapsibleContractAudit onSwipedDown={this.onSwipedDown}>
+                        <SwipeableContractAudit onSwipedDown={this.onSwipedDown}>
                             <ContractAudit
                                 contract_info={contract_info}
                                 contract_end_time={getEndTime(contract_info)}
@@ -298,7 +298,7 @@ class ContractDrawer extends Component {
                                 exit_spot={exit_spot}
                                 has_result={!!is_sold}
                             />
-                        </CollapsibleContractAudit>
+                        </SwipeableContractAudit>
                     </CSSTransition>
                 </MobileWrapper>
             </React.Fragment>

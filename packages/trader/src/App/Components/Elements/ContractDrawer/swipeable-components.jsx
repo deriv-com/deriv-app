@@ -4,9 +4,9 @@ import ReactDOM from 'react-dom';
 import { Div100vhContainer, SwipeableWrapper } from '@deriv/components';
 
 /**
- * Collapsible components with swipe gestures for mobile views
+ * Swipeable components
  */
-export const CollapsibleContractAudit = ({ children, onSwipedDown }) => {
+export const SwipeableContractAudit = ({ children, onSwipedDown }) => {
     const swipe_handlers = SwipeableWrapper.useSwipeable({
         onSwipedDown,
     });
@@ -21,12 +21,12 @@ export const CollapsibleContractAudit = ({ children, onSwipedDown }) => {
     );
 };
 
-CollapsibleContractAudit.propTypes = {
+SwipeableContractAudit.propTypes = {
     children: PropTypes.node,
     onSwipedDown: PropTypes.func,
 };
 
-export const CollapsibleContractDrawer = ({ children, onSwipedDown, onSwipedUp }) => {
+export const SwipeableContractDrawer = ({ children, onSwipedDown, onSwipedUp }) => {
     const swipe_handlers = SwipeableWrapper.useSwipeable({
         onSwipedDown,
         onSwipedUp,
@@ -35,7 +35,7 @@ export const CollapsibleContractDrawer = ({ children, onSwipedDown, onSwipedUp }
     return <div {...swipe_handlers}>{children}</div>;
 };
 
-CollapsibleContractDrawer.propTypes = {
+SwipeableContractDrawer.propTypes = {
     children: PropTypes.node,
     onSwipedDown: PropTypes.func,
     onSwipedUp: PropTypes.func,

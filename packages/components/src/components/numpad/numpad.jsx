@@ -48,7 +48,7 @@ const Numpad = ({
 
                 break;
             default:
-                if (default_value === 0) {
+                if (String(default_value) === '0') {
                     setValue(concatenate(num, ''));
                 } else {
                     const regex = /(?:\d+\.)(\d+)$/;

@@ -29,7 +29,7 @@ const Numpad = ({
     const formatNumber = v => (typeof format === 'function' ? format(v) : v);
 
     const onSelect = num => {
-        if (typeof onValidate === 'function') {
+        if (typeof onValidate === 'function' && default_value !== '') {
             const passes = onValidate(concatenate(num, default_value));
             if (!passes) return;
         }
@@ -138,7 +138,9 @@ const Numpad = ({
                     type='secondary'
                     has_effect
                     className={classNames('dc-numpad__number', {
-                        'dc-numpad__number--is-disabled': !default_value.toString().length,
+                        'dc-numpad__number--is-disabled':
+                            !default_value.toString().length ||
+                            (typeof onValidate === 'function' ? !onValidate(default_value) : false),
                     })}
                     onClick={() => {
                         if (typeof onValidate === 'function') {

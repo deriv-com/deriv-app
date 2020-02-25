@@ -37,8 +37,9 @@
 
 #  aaron-binary
 #  ashkanx
+#  brandon-binary
 #  kelly-binary
-#  Mahboobeh-binary
+#  mahdiaryayi-fs
 #  mahdipourziaei-binary
 #  mustofa-binary
 #  negar-binary
@@ -68,7 +69,7 @@
 #  Used for approving all relevant changes to Bot
 #
 #   - aaron-binary
-#   - Mahboobeh-binary
+#   - brandon-binary
 #   - sam-binary
 
 
@@ -79,7 +80,6 @@
 #
 #   - aaron-binary
 #   - mahdipourziaei-binary
-#   - negar-binary
 
 
 # ==============================================================
@@ -98,7 +98,7 @@
 # ==============================================================
 #  Used for approving all relevant changes to Shared/Components
 #
-#   - Mahboobeh-binary
+#   - aaron-binary
 #   - oskar-binary
 #   - reza-fs
 #   - zaki-binary
@@ -110,6 +110,7 @@
 #  Used for approving all relevant changes to Trader
 #
 #   - kelly-binary
+#   - mahdiaryayi-fs
 #   - mahdipourziaei-binary
 #   - negarn
 #   - oskar-binary

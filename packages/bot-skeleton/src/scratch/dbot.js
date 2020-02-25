@@ -5,8 +5,10 @@ import { hasAllRequiredBlocks, updateDisabledBlocks } from './utils';
 import main_xml from './xml/main.xml';
 import toolbox_xml from './xml/toolbox.xml';
 import DBotStore from './dbot-store';
+import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
 import { onWorkspaceResize } from '../utils/workspace';
 import { config } from '../constants/config';
+import { save_types } from '../constants/save-type';
 import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
 import { observer as globalObserver } from '../utils/observer';
@@ -27,10 +29,12 @@ class DBot {
             ApiHelpers.setInstance(api_helpers_store);
             DBotStore.setInstance(store);
 
+            const { handleFileChange, onBotNameTyped } = DBotStore.instance;
+
             const el_scratch_div = document.getElementById('scratch_div');
             this.workspace = Blockly.inject(el_scratch_div, {
                 grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
-                media: `${__webpack_public_path__}media/`, // eslint-disable-line
+                media: `${__webpack_public_path__}media/`,
                 toolbox: toolbox_xml,
                 trashcan: true,
                 zoom: { wheel: true, startScale: config.workspaces.mainWorkspaceStartScale },
@@ -39,6 +43,7 @@ class DBot {
             this.workspace.cached_xml = { main: main_xml, toolbox: toolbox_xml };
             Blockly.derivWorkspace = this.workspace;
 
+            this.workspace.addChangeListener(event => saveWorkspaceToRecent(save_types.UNSAVED, event));
             this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
             this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
             this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
@@ -49,19 +54,24 @@ class DBot {
             this.addBeforeRunFunction(this.checkForRequiredBlocks.bind(this));
 
             // Push main.xml to workspace and reset the undo stack.
-            Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(main_xml), this.workspace);
+            const recent_files = getSavedWorkspaces();
+            this.workspace.current_strategy_id = Blockly.utils.genUid();
+            let strategy_to_load = main_xml;
+            let file_name = config.default_file_name;
+            if (recent_files) {
+                const latest_file = recent_files[0];
+                strategy_to_load = latest_file.xml;
+                file_name = latest_file.name;
+                Blockly.derivWorkspace.current_strategy_id = latest_file.id;
+            }
+            Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy_to_load), this.workspace);
+            onBotNameTyped(file_name);
             this.workspace.clearUndo();
-
-            const { handleFileChange } = DBotStore.instance;
-            const drop_zone = document.body;
 
             window.addEventListener('resize', () => onWorkspaceResize());
             window.dispatchEvent(new Event('resize'));
-            drop_zone.addEventListener('dragover', DBot.handleDragOver);
-
-            if (handleFileChange) {
-                drop_zone.addEventListener('drop', handleFileChange);
-            }
+            window.addEventListener('dragover', DBot.handleDragOver);
+            window.addEventListener('drop', e => DBot.handleDropOver(e, handleFileChange));
 
             // disable overflow
             el_scratch_div.parentNode.style.overflow = 'hidden';
@@ -395,6 +405,22 @@ class DBot {
         event.stopPropagation();
         event.preventDefault();
         event.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
+    }
+
+    static handleDropOver(event, handleFileChange) {
+        const main_workspace_dom = document.getElementById('scratch_div');
+        const local_drag_zone = document.getElementById('import_dragndrop');
+
+        if (main_workspace_dom.contains(event.target)) {
+            handleFileChange(event);
+        } else if (local_drag_zone && local_drag_zone.contains(event.target)) {
+            handleFileChange(event, false);
+        } else {
+            event.stopPropagation();
+            event.preventDefault();
+            event.dataTransfer.effectAllowed = 'none';
+            event.dataTransfer.dropEffect = 'none';
+        }
     }
 }
 

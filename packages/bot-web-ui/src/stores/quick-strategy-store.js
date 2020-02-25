@@ -1,6 +1,7 @@
 import { computed, observable, action } from 'mobx';
 import { localize } from '@deriv/translations';
 import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
+import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 
 export default class QuickStrategyStore {
     constructor(root_store) {
@@ -216,10 +217,11 @@ export default class QuickStrategyStore {
             }
         });
 
-        load(Blockly.Xml.domToText(strategy_dom));
+        const file_name = strategies[strategy_name].label;
+        const workspace = Blockly.derivWorkspace;
+        load({ block_string: Blockly.Xml.domToText(strategy_dom), file_name, workspace, from: save_types.UNSAVED });
 
         if (button === 'run') {
-            const workspace = Blockly.derivWorkspace;
             const trade_definition_block = workspace.getTradeDefinitionBlock();
 
             workspace.waitForBlockEvent(trade_definition_block.id, Blockly.Events.BLOCK_CREATE).then(() => {

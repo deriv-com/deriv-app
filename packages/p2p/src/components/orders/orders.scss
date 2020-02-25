@@ -101,13 +101,25 @@
             cursor: pointer;
             padding-left: 1rem;
 
+            &--attention {
+                background: var(--button-tertiary-hover);
+            }
             &:hover {
                 background: var(--general-hover);
             }
         }
-        &-id {
-            color: var(--brand-red-coral);
+        &-cell {
             font-weight: bold;
+
+            &--primary {
+                color: var(--brand-red-coral);
+            }
+            &--success {
+                color: var(--text-profit-success);
+            }
+            &--disabled {
+                color: var(--text-less-prominent);
+            }
         }
     }
 }

@@ -24,7 +24,8 @@
             background-color: var(--text-profit-success);
             border-color: var(--text-profit-success);
         }
-        &--won, &--lost {
+        &--won,
+        &--lost {
             color: $COLOR_WHITE;
         }
     }
@@ -69,7 +70,8 @@
                 opacity: 1;
                 transform: translateY(-3px);
             }
-            &--enter, &--exit {
+            &--enter,
+            &--exit {
                 opacity: 0;
                 transform: translateY(0);
             }
@@ -79,7 +81,8 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-            &--enter, &--exit {
+            &--enter,
+            &--exit {
                 opacity: 0;
                 transform: translateY(-8px);
             }
@@ -146,7 +149,8 @@
         &--won {
             background-color: var(--text-profit-success);
         }
-        &--won, &--lost {
+        &--won,
+        &--lost {
             /* postcss-bem-linter: ignore */
             p {
                 color: var(--text-colored-background);

@@ -1,192 +1,215 @@
-import CurrencyUtils        from '@deriv/shared/utils/currency';
-import RawMarkerMaker       from './Helpers/raw-marker-maker.jsx';
-import Svg2Canvas           from './Helpers/svg2canvas';
-import { CURRENCY_SYMBOLS } from './Constants/currency_symbols';
-import { get_color }        from './Helpers/colors';
-import { shadowed_text }    from './Helpers/text';
-import {
-    draw_vertical_labelled_line,
-    draw_barrier_line_to_icon,
-    draw_barrier_line,
-    draw_line,
-}                           from './Helpers/lines';
-import {
-    calc_scale,
-    calc_opacity,
-}                           from './Helpers/calculations';
-import * as ICONS           from '../icons';
+import CurrencyUtils from '@deriv/shared/utils/currency';
+import { localize } from '@deriv/translations';
+import RawMarkerMaker from './Helpers/raw-marker-maker.jsx';
+import { getColor, getOpacity } from './Helpers/colors';
+import { calculateScale } from './Helpers/calculations';
+import Canvas from './Helpers/canvas';
+import * as ICONS from '../icons';
 
-const NonTickContract = RawMarkerMaker(({
-    ctx: context,
-    points: [start, expiry, entry, reset_time, exit],
-    is_last_contract,
-    prices: [barrier, entry_tick_top, exit_tick_top], // TODO: support two barrier contracts
-    is_dark_theme,
-    granularity,
-    currency,
-    contract_info: {
-        is_sold,
-        status,
-        profit,
-    },
-}) => {
-    /** @type {CanvasRenderingContext2D} */
-    const ctx = context;
+const NonTickContract = RawMarkerMaker(
+    ({
+        ctx,
+        points: [start, expiry, entry, exit, current_spot, reset_time],
+        should_highlight_contract,
+        prices: [barrier, entry_tick_top, exit_tick_top], // TODO: support two barrier contracts
+        is_dark_theme,
+        granularity,
+        currency,
+        contract_info: { is_sold, status, profit, is_hover },
+    }) => {
+        ctx.save();
 
-    // the y value reported for candles is not accurate
-    if (granularity !== 0) {
-        if (entry) { entry.top = entry_tick_top; }
-        if (exit) { exit.top = exit_tick_top; }
-    }
+        const CURRENCY_SYMBOLS = {
+            AUD: '\u0041\u0024',
+            EUR: '\u20AC',
+            GBP: '\u00A3',
+            JPY: '\u00A5',
+            USD: '\u0024',
+            BTC: '\u0042',
+            BCH: '\ue901',
+            ETH: '\u0045',
+            ETC: '\ue900',
+            LTC: '\u004c',
+            UST: '\ue903',
+        };
 
-    const foreground_color = `${get_color({ is_dark_theme, status: 'fg' })}${is_last_contract ? '' : '66'}`;
-    const background_color = get_color({ is_dark_theme, status: 'bg' });
-    const color_based_on_status = `${get_color({ status, is_dark_theme, profit })}${is_last_contract ? '' : '66'}`;
+        // the y value reported for candles is not accurate
+        if (granularity !== 0) {
+            if (entry) {
+                entry.top = entry_tick_top;
+            }
+            if (exit) {
+                exit.top = exit_tick_top;
+            }
+        }
 
-    const scale = calc_scale(start.zoom);
-    const canvas_height = (ctx.canvas.height / window.devicePixelRatio);
+        const layer = is_hover ? 1 : 0;
+        const opacity = getOpacity(should_highlight_contract);
+        const scale = calculateScale(start.zoom);
+        const canvas_height = ctx.canvas.height / window.devicePixelRatio;
 
-    ctx.save();
-    ctx.strokeStyle = foreground_color;
-    ctx.fillStyle = background_color;
+        const foreground_color = getColor('fg', is_dark_theme).concat(opacity);
+        const background_color = getColor('bg', is_dark_theme).concat(opacity);
+        const status_color = getColor(status, is_dark_theme, profit);
+        const status_color_with_opacity = status_color.concat(opacity);
 
-    const show_profit = is_last_contract && !is_sold && profit && start.visible && barrier;
-    const opacity = is_sold ? calc_opacity(start.left, expiry.left) : '';
+        const show_profit = should_highlight_contract && !is_sold && profit && start.visible && barrier;
 
-    if (barrier) {
-        barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
-    }
+        if (barrier) {
+            barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
+        }
 
-    const has_reset_time = reset_time && reset_time.epoch;
-    const should_draw_vertical_line = is_last_contract && !is_sold;
-    if (should_draw_vertical_line) {
-        if (start.visible) {
-            ctx.fillStyle = foreground_color;
-            draw_vertical_labelled_line({
+        const has_reset_time = reset_time && reset_time.epoch;
+        const should_draw_vertical_line = should_highlight_contract && !is_sold;
+        if (should_draw_vertical_line) {
+            if (start.visible) {
+                Canvas.drawVerticalLabelledLine(layer, [
+                    ctx,
+                    [start.left, canvas_height - 50],
+                    start.zoom,
+                    localize('Buy Time'),
+                    ICONS.BUY_SELL.withColorOnSpecificPaths({
+                        0: { fill: background_color },
+                        1: { fill: foreground_color },
+                    }),
+                    'dashed',
+                    foreground_color,
+                    foreground_color,
+                ]);
+            }
+
+            if (has_reset_time) {
+                Canvas.drawVerticalLabelledLine(layer, [
+                    ctx,
+                    [reset_time.left, canvas_height - 50],
+                    reset_time.zoom,
+                    localize('Reset Time'),
+                    ICONS.RESET.withColor(foreground_color, background_color),
+                    'dashed',
+                    foreground_color,
+                    foreground_color,
+                ]);
+            }
+
+            if (expiry.visible) {
+                Canvas.drawVerticalLabelledLine(layer, [
+                    ctx,
+                    [expiry.left, canvas_height - 50],
+                    expiry.zoom,
+                    localize('Sell Time'),
+                    ICONS.BUY_SELL.withColorOnSpecificPaths({
+                        0: { fill: background_color },
+                        1: { fill: status_color_with_opacity },
+                    }),
+                    'solid',
+                    status_color_with_opacity,
+                    status_color_with_opacity,
+                ]);
+            }
+        }
+
+        const is_reset_barrier_expired = has_reset_time && entry_tick_top !== barrier;
+
+        // barrier line
+        if (barrier && entry && (start.visible || expiry.visible || Math.sign(start.left) !== Math.sign(expiry.left))) {
+            if (is_reset_barrier_expired) {
+                if (is_sold) {
+                    Canvas.drawLine(layer, [
+                        ctx,
+                        [reset_time.left, entry_tick_top, reset_time.left, barrier],
+                        'dashed',
+                        foreground_color,
+                    ]);
+                }
+                Canvas.drawBarrierLine(layer, [
+                    ctx,
+                    [start.left, entry_tick_top, reset_time.left, entry_tick_top],
+                    'dashed',
+                    foreground_color,
+                    background_color,
+                ]);
+                Canvas.drawBarrierLine(layer, [
+                    ctx,
+                    [reset_time.left, barrier, expiry.left, barrier],
+                    'solid',
+                    status_color_with_opacity,
+                    background_color,
+                ]);
+            } else {
+                Canvas.drawBarrierLine(layer, [
+                    ctx,
+                    [start.left, barrier, entry.left, barrier],
+                    'dashed',
+                    foreground_color,
+                    background_color,
+                ]);
+                Canvas.drawBarrierLine(layer, [
+                    ctx,
+                    [entry.left, barrier, expiry.left, barrier],
+                    'solid',
+                    status_color_with_opacity,
+                    background_color,
+                ]);
+            }
+        }
+
+        if (should_highlight_contract && !is_sold) {
+            if (is_reset_barrier_expired) {
+                const points = [reset_time.left, reset_time.top, current_spot.left, current_spot.top];
+                Canvas.drawShade(layer, [ctx, points, status_color]);
+            } else {
+                const points = [entry.left, entry.top, current_spot.left, current_spot.top];
+
+                // The default value if entry doesn't exists is 0, this prevents it from rendering
+                // if it doesn't have the entry data from the api.
+                if (entry.left !== 0 && entry.top !== 0) {
+                    Canvas.drawShade(layer, [ctx, points, status_color]);
+                }
+            }
+        }
+
+        // entry markers
+        if (granularity === 0 && entry && entry.visible) {
+            Canvas.drawSVG(layer, [
                 ctx,
-                text    : 'Buy\nTime',
-                position: {
-                    zoom: start.zoom,
-                    left: start.left,
-                    top : canvas_height - 50,
-                },
-                line_style: 'dashed',
-                icon      : ICONS.BUY_SELL.with_color_on_specific_paths({
+                ICONS.ENTRY_SPOT.withColorOnSpecificPaths({
                     0: { fill: background_color },
                     1: { fill: foreground_color },
                 }),
-            });
+                [entry.left, entry.top],
+                entry.zoom,
+            ]);
         }
 
-        if (has_reset_time) {
-            ctx.fillStyle = foreground_color;
-            draw_vertical_labelled_line({
-                ctx,
-                text    : 'Reset\nTime',
-                position: {
-                    zoom: reset_time.zoom,
-                    left: reset_time.left,
-                    top : canvas_height - 50,
-                },
-                line_style: 'dashed',
-                icon      : ICONS.RESET.with_color(foreground_color, background_color),
-            });
+        // show the profit
+        if (show_profit) {
+            const symbol = CURRENCY_SYMBOLS[currency] || '';
+            const decimal_places = CurrencyUtils.getDecimalPlaces(currency);
+            const sign = profit < 0 ? '-' : profit > 0 ? '+' : ' '; // eslint-disable-line
+            const text = `${sign}${symbol}${Math.abs(profit).toFixed(decimal_places)}`;
+
+            Canvas.drawText(layer, [ctx, [start.left, barrier - 28 * scale], text, scale, status_color_with_opacity]);
         }
-
-        if (expiry.visible) {
-            ctx.strokeStyle = color_based_on_status;
-            draw_vertical_labelled_line({
-                ctx,
-                text    : 'Sell\nTime',
-                position: {
-                    zoom: expiry.zoom,
-                    left: expiry.left,
-                    top : canvas_height - 50,
-                },
-                line_style: 'solid',
-                icon      : ICONS.BUY_SELL.with_color_on_specific_paths({
-                    0: { fill: background_color },
-                    1: { fill: color_based_on_status },
-                }),
-            });
-        }
-    }
-
-    const is_reset_barrier_expired = has_reset_time && entry_tick_top !== barrier;
-
-    // barrier line
-    if ((barrier && entry) && (
-        start.visible
-        || expiry.visible
-        || Math.sign(start.left) !== Math.sign(expiry.left)
-    )) {
-        ctx.fillStyle = background_color;
-        if (is_reset_barrier_expired) {
-            ctx.strokeStyle = foreground_color;
-            draw_barrier_line({ ctx, start, exit: reset_time, barrier: entry_tick_top, line_style: 'dashed' });
-
-            draw_line({
-                ctx,
-                start     : { left: reset_time.left, top: entry_tick_top },
-                end       : { left: reset_time.left, top: barrier },
-                line_style: 'dashed',
-            });
-
-            ctx.strokeStyle = color_based_on_status;
-            draw_barrier_line({ ctx, start: reset_time, exit: expiry, barrier });
-        } else {
-            ctx.strokeStyle = color_based_on_status;
-            draw_barrier_line({ ctx, start, exit: entry, barrier, line_style: 'dashed' });
-            draw_barrier_line({ ctx, start: entry, exit: expiry, barrier, line_style: 'solid' });
-        }
-    }
-
-    // entry markers
-    if (granularity === 0 && entry && entry.visible) {
-        Svg2Canvas.render({
-            ctx,
-            position: entry,
-            icon    : ICONS.ENTRY_SPOT.with_color_on_specific_paths({
+        // status marker
+        if (exit && exit.visible && is_sold) {
+            // Draw a line from barrier to icon.
+            const icon = ICONS.END.withColorOnSpecificPaths({
                 0: { fill: background_color },
-                1: { fill: is_reset_barrier_expired ? foreground_color : color_based_on_status },
-            }),
-        });
-    }
+                1: { fill: status_color_with_opacity },
+            });
 
-    // start-time marker
-    if (start.visible && barrier) {
-        // Draw dot at end of barrier
-        ctx.beginPath();
-        ctx.arc(start.left - 1 * scale, barrier.top - 9 * scale, 3 * scale, 0, Math.PI * 2);
-        ctx.fill();
-    }
-    // show the profit
-    if (show_profit) {
-        const symbol = CURRENCY_SYMBOLS[currency] || '';
-        const decimal_places = CurrencyUtils.getDecimalPlaces(currency);
-        const sign = profit < 0 ? '-' : profit > 0 ? '+' : ' '; // eslint-disable-line
-        const text = `${sign}${symbol}${Math.abs(profit).toFixed(decimal_places)}`;
-        shadowed_text({
-            ctx,
-            scale,
-            text,
-            is_dark_theme,
-            left: start.left,
-            top : barrier - 28 * scale,
-        });
-    }
-    // status marker
-    if (expiry.visible && is_sold) {
-        // Draw a line from barrier to icon.
-        const icon = ICONS.END.with_color_on_specific_paths({
-            0: { fill: background_color + (is_sold ? opacity : '') },
-            1: { fill: color_based_on_status },
-        });
+            Canvas.drawLine(layer, [
+                ctx,
+                [exit.left, barrier, exit.left, exit.top],
+                'dashed',
+                status_color_with_opacity,
+            ]);
+            Canvas.drawSVG(layer, [ctx, icon, [exit.left, exit.top], exit.zoom]);
+        }
 
-        ctx.strokeStyle = color_based_on_status;
-        draw_barrier_line_to_icon({ ctx, exit: expiry, barrier, icon });
+        Canvas.render();
+        ctx.restore();
     }
-    ctx.restore();
-});
+);
 
 export default NonTickContract;

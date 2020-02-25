@@ -1,4 +1,4 @@
-import { expect }               from 'chai';
+import { expect } from 'chai';
 import { isButtonSelected } from '../helpers.js';
 
 describe('ToggleButton:Helpers', () => {

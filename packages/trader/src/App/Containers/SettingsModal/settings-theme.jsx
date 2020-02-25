@@ -1,9 +1,9 @@
-import classNames    from 'classnames';
-import React         from 'react';
-import { Localize }  from '@deriv/translations';
-import DarkModeIcon  from 'Assets/SvgComponents/settings/img-theme-dark.svg';
+import classNames from 'classnames';
+import React from 'react';
+import { Localize } from '@deriv/translations';
+import DarkModeIcon from 'Assets/SvgComponents/settings/img-theme-dark.svg';
 import LightModeIcon from 'Assets/SvgComponents/settings/img-theme-light.svg';
-import { connect }   from 'Stores/connect';
+import { connect } from 'Stores/connect';
 
 const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor, pushDataLayer }) => {
     const darkOnClick = () => {
@@ -35,9 +35,10 @@ const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor,
                             })}
                             onClick={darkOnClick}
                         />
-                        <p className={classNames('theme-select-settings__option__title', {
-                            'theme-select-settings__option__title--selected': is_dark_mode,
-                        })}
+                        <p
+                            className={classNames('theme-select-settings__option__title', {
+                                'theme-select-settings__option__title--selected': is_dark_mode,
+                            })}
                         >
                             <Localize i18n_default_text='Dark' />
                         </p>
@@ -49,9 +50,10 @@ const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor,
                             })}
                             onClick={lightOnClick}
                         />
-                        <p className={classNames('theme-select-settings__option__title', {
-                            'theme-select-settings__option__title--selected': !is_dark_mode,
-                        })}
+                        <p
+                            className={classNames('theme-select-settings__option__title', {
+                                'theme-select-settings__option__title--selected': !is_dark_mode,
+                            })}
                         >
                             <Localize i18n_default_text='Light' />
                         </p>
@@ -62,11 +64,9 @@ const ThemeSelectSettings = ({ is_dark_mode, toggleDarkMode, updateBarrierColor,
     );
 };
 
-export default connect(({ ui, modules, gtm }) => (
-    {
-        is_dark_mode      : ui.is_dark_mode_on,
-        toggleDarkMode    : ui.toggleDarkMode,
-        updateBarrierColor: modules.trade.updateBarrierColor,
-        pushDataLayer     : gtm.pushDataLayer,
-    }
-))(ThemeSelectSettings);
+export default connect(({ ui, modules, gtm }) => ({
+    is_dark_mode: ui.is_dark_mode_on,
+    toggleDarkMode: ui.toggleDarkMode,
+    updateBarrierColor: modules.trade.updateBarrierColor,
+    pushDataLayer: gtm.pushDataLayer,
+}))(ThemeSelectSettings);

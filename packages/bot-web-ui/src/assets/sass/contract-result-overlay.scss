@@ -1,0 +1,60 @@
+@keyframes animate-fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.db-contract-card__result {
+    $contract_result: &;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: $BORDER_RADIUS;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    box-sizing: border-box;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--overlay-inside-dialog);
+    animation: animate-fade-in 0.3s;
+
+    &:hover {
+        background: 0;
+
+        #{$contract_result}-caption {
+            opacity: 0;
+        }
+    }
+    &-caption {
+        display: flex;
+        align-items: center;
+        transition: opacity 0.25s linear;
+        font-weight: bold;
+        font-size: 16px;
+    }
+    &-icon {
+        margin-left: 10px;
+    }
+    &--won {
+        background-image: $COLOR_LIGHT_GREEN_GRADIENT; // TODO: Update when gradients are added.
+
+        > #{$contract_result}-caption {
+            color: var(--text-profit-success);
+        }
+    }
+    &--lost {
+        background-image: $COLOR_LIGHT_RED_GRADIENT; // TODO: Update when gradients are added.
+
+        > #{$contract_result}-caption {
+            color: var(--text-loss-danger);
+        }
+    }
+}

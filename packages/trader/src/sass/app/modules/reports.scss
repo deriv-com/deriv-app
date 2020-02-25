@@ -61,17 +61,22 @@ $side-padding: 1.2em;
     }
     &__row {
         /*                     icon   refId tr_time  transaction cred/debt  balance */
-        grid-template-columns: 0.8fr  1.2fr 1fr      0.8fr         1fr        1fr;
+        grid-template-columns: 0.8fr 1.2fr 1fr 0.8fr 1fr 1fr;
 
-        &--detail {
+        // we need higher specificity than just &--detail here
+        // because otherwise table styling will override statement styling on first load
+        /* postcss-bem-linter: ignore */
+        &.statement__row--detail {
             overflow: hidden;
             max-height: 63px;
+            height: 63px;
             display: flex;
             align-items: center;
             padding: 0;
             justify-content: center;
             background-color: var(--general-section-1);
 
+            /* postcss-bem-linter: ignore */
             &-text {
                 padding: 1.12em;
             }
@@ -79,8 +84,12 @@ $side-padding: 1.2em;
         .date {
             text-align: left;
         }
+        .table__cell {
+            height: 63px;
+        }
     }
-    .amount, .balance {
+    .amount,
+    .balance {
         justify-content: flex-end;
     }
     .amount {
@@ -160,10 +169,12 @@ $side-padding: 1.2em;
         vertical-align: middle;
     }
     &__amount {
-        &--sell, &--deposit {
+        &--sell,
+        &--deposit {
             color: var(--text-profit-success);
         }
-        &--buy, &--withdrawal {
+        &--buy,
+        &--withdrawal {
             color: var(--text-loss-danger);
         }
     }
@@ -212,12 +223,15 @@ $side-padding: 1.2em;
     }
     &__row {
         /*                     icon   refId buy_time  buy_price sell_time  sell_price profit/loss */
-        grid-template-columns: 0.8fr  1.2fr 1fr       0.8fr     1fr        1fr        1fr;
+        grid-template-columns: 0.8fr 1.2fr 1fr 0.8fr 1fr 1fr 1fr;
     }
-    .buy_price, .sell_price, .profit_loss {
+    .buy_price,
+    .sell_price,
+    .profit_loss {
         justify-content: flex-end;
     }
-    .sell_time, .purchase_time {
+    .sell_time,
+    .purchase_time {
         text-align: left;
     }
 }
@@ -256,7 +270,8 @@ $side-padding: 1.2em;
             width: 16px;
             height: 16px;
 
-            &-complete, &-complete:after {
+            &-complete,
+            &-complete:after {
                 display: none;
             }
             &:after {
@@ -290,10 +305,13 @@ $side-padding: 1.2em;
     }
     &__row {
         /*                     icon   refId buy_price  potential_payout potential_profit  indicative_price rem_time */
-        grid-template-columns: 0.8fr  1.2fr 1fr        1fr            1fr               1fr              1fr;
+        grid-template-columns: 0.8fr 1.2fr 1fr 1fr 1fr 1fr 1fr;
         width: 100%;
     }
-    .buy_price, .payout, .indicative, .profit {
+    .buy_price,
+    .payout,
+    .indicative,
+    .profit {
         justify-content: flex-end;
     }
     .type {

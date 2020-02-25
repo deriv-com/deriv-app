@@ -18,7 +18,7 @@ program
  * Common
  */
 
-const packages_with_translations = ['bot', 'trader', 'core'];
+const packages_with_translations = ['bot-skeleton', 'bot-web-ui', 'trader', 'core'];
 const globs = ['**/*.js', '**/*.jsx'];
 const getKeyHash = (string) => crc32(string);
 

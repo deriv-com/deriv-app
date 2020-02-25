@@ -15,7 +15,7 @@
         left: -1px;
         width: calc(100% + 2px);
         height: calc(100% + 2px);
-        max-height: 140px;
+        max-height: 100%;
         border-radius: $BORDER_RADIUS;
         z-index: 2;
         display: flex;
@@ -23,13 +23,16 @@
         justify-content: center;
         background-color: var(--overlay-inside-dialog);
 
-        &--won, &--won:after {
+        &--won,
+        &--won:after {
             background-image: var(--gradient-success);
         }
-        &--lost, &--lost:after {
+        &--lost,
+        &--lost:after {
             background-image: var(--gradient-danger);
         }
-        &--waiting, &--waiting:after {
+        &--waiting,
+        &--waiting:after {
             background-image: var(--gradient-warning);
         }
         &:hover {
@@ -47,7 +50,8 @@
             border-radius: $BORDER_RADIUS;
             z-index: 2;
         }
-        &--enter, &--exit {
+        &--enter,
+        &--exit {
             opacity: 0;
         }
         &--enter-done {
@@ -87,7 +91,8 @@
             opacity: 1;
             transform: translateY(0);
         }
-        &--enter, &--exit {
+        &--enter,
+        &--exit {
             opacity: 0;
             transform: translateY(-16px);
         }
@@ -130,7 +135,8 @@
             padding: 0 8px;
         }
     }
-    &__purchase, &__payout {
+    &__purchase,
+    &__payout {
         &-label {
             text-transform: none;
             font-size: 1rem;
@@ -198,7 +204,8 @@
             width: 16px;
             height: 16px;
 
-            &-complete, &-complete:after {
+            &-complete,
+            &-complete:after {
                 display: none;
             }
             &:after {
@@ -266,7 +273,8 @@
             opacity: 1;
             transform: translateY(0);
         }
-        &--enter, &--exit {
+        &--enter,
+        &--exit {
             opacity: 0;
             transform: translateY(-8px);
         }

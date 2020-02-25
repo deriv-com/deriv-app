@@ -1,11 +1,11 @@
-import classNames           from 'classnames';
-import PropTypes            from 'prop-types';
-import React                from 'react';
-import { withRouter }       from 'react-router-dom';
-import { CSSTransition }    from 'react-transition-group';
-import { Icon }             from '@deriv/components';
-import { localize }         from '@deriv/translations';
-import { isBot, isMT5 }     from 'Utils/PlatformSwitcher';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { CSSTransition } from 'react-transition-group';
+import { Icon } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import { isBot, isMT5 } from 'Utils/PlatformSwitcher';
 import { PlatformDropdown } from './platform-dropdown.jsx';
 import 'Sass/app/_common/components/platform-switcher.scss';
 
@@ -16,25 +16,20 @@ class PlatformSwitcher extends React.PureComponent {
     }
 
     toggleDrawer = () => this.setState(state => ({ is_open: !state.is_open }));
-    closeDrawer  = () => this.setState({ is_open: false });
+    closeDrawer = () => this.setState({ is_open: false });
 
     render = () => (
         <React.Fragment>
             <div
-                className={classNames(
-                    'platform_switcher',
-                    { 'platform_switcher--active': this.state.is_open }
-                )}
+                className={classNames('platform_switcher', { 'platform_switcher--active': this.state.is_open })}
                 onClick={this.toggleDrawer}
             >
                 <Icon
                     className='platform_switcher__icon'
-                    icon={ (isBot() ? 'IcBrandDbot' : (isMT5() ? 'IcBrandDmt5' : 'IcBrandDtrader')) }
+                    icon={isBot() ? 'IcBrandDbot' : isMT5() ? 'IcBrandDmt5' : 'IcBrandDtrader'}
                     size={32}
                 />
-                <h1 className='platform_switcher__header'>
-                    { (isBot() ? 'DBot' : (isMT5() ? 'DMT5' : 'DTrader')) }
-                </h1>
+                <h1 className='platform_switcher__header'>{isBot() ? 'DBot' : isMT5() ? 'DMT5' : 'DTrader'}</h1>
                 <p className='platform_switcher__label'>{localize('BETA')}</p>
                 <Icon className='platform_switcher__arrow' icon='IcChevronDownBold' />
             </div>
@@ -45,10 +40,7 @@ class PlatformSwitcher extends React.PureComponent {
                 timeout={this.state.is_open ? 0 : 250}
                 unmountOnExit
             >
-                <PlatformDropdown
-                    platform_config={this.props.platform_config}
-                    closeDrawer={this.closeDrawer}
-                />
+                <PlatformDropdown platform_config={this.props.platform_config} closeDrawer={this.closeDrawer} />
             </CSSTransition>
         </React.Fragment>
     );

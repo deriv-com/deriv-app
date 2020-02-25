@@ -1,7 +1,7 @@
-import classNames           from 'classnames';
+import classNames from 'classnames';
 import React, { Component } from 'react';
-import PropTypes            from 'prop-types';
-import Tab                  from './tab.jsx';
+import PropTypes from 'prop-types';
+import Tab from './tab.jsx';
 
 class Tabs extends Component {
     constructor(props) {
@@ -25,29 +25,21 @@ class Tabs extends Component {
     }
 
     render() {
-        const {
-            children,
-            className,
-            top,
-            bottom,
-            fit_content,
-        } = this.props;
+        const { children, className, top, bottom, fit_content } = this.props;
         const { active_index } = this.state;
         const tab_width = (100 / children.length).toFixed(2);
 
         return (
             <div
-                className={
-                    classNames('dc-tabs', {
-                        [`dc-tabs dc-tabs--${className}`]: className,
-                    },
-                    )}
+                className={classNames('dc-tabs', {
+                    [`dc-tabs dc-tabs--${className}`]: className,
+                })}
                 style={{ '--tab-width': `${tab_width}%` }}
             >
-                <ul className={
-                    classNames('dc-tabs__list', {
-                        'dc-tabs__list--top'        : top,
-                        'dc-tabs__list--bottom'     : bottom,
+                <ul
+                    className={classNames('dc-tabs__list', {
+                        'dc-tabs__list--top': top,
+                        'dc-tabs__list--bottom': bottom,
                         'dc-tabs__list--fit-content': fit_content,
                     })}
                 >
@@ -66,10 +58,10 @@ class Tabs extends Component {
                             />
                         );
                     })}
-                    <span className={
-                        classNames('dc-tabs__active-line', {
-                            'dc-tabs__active-line--top'        : top,
-                            'dc-tabs__active-line--bottom'     : bottom,
+                    <span
+                        className={classNames('dc-tabs__active-line', {
+                            'dc-tabs__active-line--top': top,
+                            'dc-tabs__active-line--bottom': bottom,
                             'dc-tabs__active-line--fit-content': fit_content,
                         })}
                     />

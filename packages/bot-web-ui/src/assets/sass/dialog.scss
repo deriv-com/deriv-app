@@ -1,0 +1,31 @@
+/**
+* @define bot-dialog
+**/
+.bot-dialog {
+    &__content {
+        display: flex;
+        flex-direction: column;
+        font-size: 14px;
+        padding: 16px;
+    }
+    &__header {
+        font-weight: 700;
+        text-align: left;
+        margin-bottom: 16px;
+    }
+    &__text {
+        text-align: left;
+        line-height: 40px;
+    }
+    &__footer {
+        align-self: flex-end;
+        justify-content: flex-end;
+        display: flex;
+    }
+    &__cancel {
+        margin: 1.6rem 1.6rem 0 0 !important;
+    }
+    &__ok {
+        margin-top: 1.6rem;
+    }
+}

@@ -18,7 +18,8 @@
         &--hide {
             display: none;
         }
-        &--enter, &--exit {
+        &--enter,
+        &--exit {
             transform: translateY(50px);
             opacity: 0;
             pointer-events: none;
@@ -55,6 +56,7 @@
             padding: 1.2rem 1.6rem;
             display: flex;
             align-items: center;
+            height: 100%;
         }
         &__section {
             flex-grow: 1;

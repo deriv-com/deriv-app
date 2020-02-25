@@ -1,12 +1,10 @@
 // import PropTypes        from 'prop-types';
-import React                  from 'react';
-import { Formik }             from 'formik';
-import {
-    Button,
-    Dropdown }                from '@deriv/components';
-import { connect }            from 'Stores/connect';
-import { localize }           from '@deriv/translations';
-import { WS }                 from 'Services/ws-methods';
+import React from 'react';
+import { Formik } from 'formik';
+import { Button, Dropdown } from '@deriv/components';
+import { connect } from 'Stores/connect';
+import { localize } from '@deriv/translations';
+import { WS } from 'Services/ws-methods';
 import {
     account_turnover_list,
     education_level_list,
@@ -16,38 +14,36 @@ import {
     income_source_list,
     net_income_list,
     occupation_list,
-    source_of_wealth_list }   from './financial-information-list';
-import DemoMessage            from '../../ErrorMessages/DemoMessage';
-import LoadErrorMessage       from '../../ErrorMessages/LoadErrorMessage';
+    source_of_wealth_list,
+} from './financial-information-list';
+import DemoMessage from '../../ErrorMessages/DemoMessage';
+import LoadErrorMessage from '../../ErrorMessages/LoadErrorMessage';
 import FormSubmitErrorMessage from '../../ErrorMessages/FormSubmitErrorMessage';
 
-import {
-    FormBody,
-    FormSubHeader,
-    FormFooter }             from '../../../Components/layout-components.jsx';
-import { LeaveConfirm }      from '../../../Components/leave-confirm.jsx';
-import Loading               from '../../../../../templates/app/components/loading.jsx';
+import { FormBody, FormSubHeader, FormFooter } from '../../../Components/layout-components.jsx';
+import { LeaveConfirm } from '../../../Components/leave-confirm.jsx';
+import Loading from '../../../../../templates/app/components/loading.jsx';
 
 class FinancialAssessment extends React.Component {
     state = {
-        is_loading         : true,
-        show_form          : true,
-        income_source      : '',
-        employment_status  : '',
+        is_loading: true,
+        show_form: true,
+        income_source: '',
+        employment_status: '',
         employment_industry: '',
-        occupation         : '',
-        source_of_wealth   : '',
-        education_level    : '',
-        net_income         : '',
-        estimated_worth    : '',
-        account_turnover   : '',
+        occupation: '',
+        source_of_wealth: '',
+        education_level: '',
+        net_income: '',
+        estimated_worth: '',
+        account_turnover: '',
     };
 
     componentDidMount() {
         if (this.props.is_virtual) {
             this.setState({ is_loading: false });
         } else {
-            WS.authorized.storage.getFinancialAssessment().then((data) => {
+            WS.authorized.storage.getFinancialAssessment().then(data => {
                 if (data.error) {
                     this.setState({ api_initial_load_error: data.error.message });
                     return;
@@ -57,10 +53,10 @@ class FinancialAssessment extends React.Component {
         }
     }
 
-    onSubmit = (values, { setSubmitting, setStatus })  => {
+    onSubmit = (values, { setSubmitting, setStatus }) => {
         setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
-        WS.setFinancialAssessment(values).then((data) => {
+        WS.setFinancialAssessment(values).then(data => {
             this.setState({ is_btn_loading: false });
             if (data.error) {
                 setStatus({ msg: data.error.message });
@@ -71,7 +67,7 @@ class FinancialAssessment extends React.Component {
             }
             setSubmitting(false);
         });
-    }
+    };
 
     validateFields = values => {
         this.setState({ is_submit_success: false });
@@ -137,10 +133,13 @@ class FinancialAssessment extends React.Component {
                 }) => (
                     <>
                         <LeaveConfirm onDirty={this.showForm} />
-                        { show_form && (
+                        {show_form && (
                             <form className='account-form' onSubmit={handleSubmit}>
                                 <FormBody scroll_offset='80px'>
-                                    <FormSubHeader title={localize('Financial information')} subtitle={`(${localize('All fields are required')})`} />
+                                    <FormSubHeader
+                                        title={localize('Financial information')}
+                                        subtitle={`(${localize('All fields are required')})`}
+                                    />
                                     <fieldset className='account-form__fieldset'>
                                         <Dropdown
                                             placeholder={localize('Source of income')}
@@ -259,15 +258,26 @@ class FinancialAssessment extends React.Component {
                                         type='submit'
                                         is_disabled={
                                             isSubmitting ||
-                                            !!((errors.income_source || !values.income_source) ||
-                                            (errors.employment_status || !values.employment_status) ||
-                                            (errors.employment_industry || !values.employment_industry) ||
-                                            (errors.occupation || !values.occupation) ||
-                                            (errors.source_of_wealth || !values.source_of_wealth) ||
-                                            (errors.education_level || !values.education_level) ||
-                                            (errors.net_income || !values.net_income) ||
-                                            (errors.estimated_worth || !values.estimated_worth) ||
-                                            (errors.account_turnover || !values.account_turnover))
+                                            !!(
+                                                errors.income_source ||
+                                                !values.income_source ||
+                                                errors.employment_status ||
+                                                !values.employment_status ||
+                                                errors.employment_industry ||
+                                                !values.employment_industry ||
+                                                errors.occupation ||
+                                                !values.occupation ||
+                                                errors.source_of_wealth ||
+                                                !values.source_of_wealth ||
+                                                errors.education_level ||
+                                                !values.education_level ||
+                                                errors.net_income ||
+                                                !values.net_income ||
+                                                errors.estimated_worth ||
+                                                !values.estimated_worth ||
+                                                errors.account_turnover ||
+                                                !values.account_turnover
+                                            )
                                         }
                                         has_effect
                                         is_loading={is_btn_loading}
@@ -287,10 +297,8 @@ class FinancialAssessment extends React.Component {
 }
 
 // FinancialAssessment.propTypes = {};
-export default connect(
-    ({ client, ui }) => ({
-        is_virtual               : client.is_virtual,
-        removeNotificationMessage: ui.removeNotificationMessage,
-        removeNotificationByKey  : ui.removeNotificationByKey,
-    }),
-)(FinancialAssessment);
+export default connect(({ client, ui }) => ({
+    is_virtual: client.is_virtual,
+    removeNotificationMessage: ui.removeNotificationMessage,
+    removeNotificationByKey: ui.removeNotificationByKey,
+}))(FinancialAssessment);

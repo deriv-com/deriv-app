@@ -6,9 +6,10 @@ import { localize } from '@deriv/translations';
 import routes from 'Constants/routes';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import PositionsModalCard from 'App/Components/Elements/PositionsDrawer/positions-modal-card.jsx';
+import { connect } from 'Stores/connect';
 import TogglePositions from './toggle-positions.jsx';
 
-class TogglePositionsMobile extends React.PureComponent {
+class TogglePositionsMobile extends React.Component {
     constructor(props) {
         super(props);
 
@@ -108,5 +109,6 @@ class TogglePositionsMobile extends React.PureComponent {
         );
     }
 }
-
-export default TogglePositionsMobile;
+// TODO: Needs to be connected to store due to issue with trade-header-extensions not updating all_positions prop
+// Fixes issue with positions not updated in positions modal
+export default connect(() => ({}))(TogglePositionsMobile);

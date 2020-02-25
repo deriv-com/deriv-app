@@ -13,7 +13,7 @@ const RelativeDatepicker = ({ onChange, min_date, max_date, title }) => {
     };
 
     const min_date_moment = toMoment()
-        .add(min_date || 1, 'd')
+        .add(min_date || 0, 'd')
         .format('YYYY-MM-DD');
     const max_date_moment = max_date
         ? toMoment()

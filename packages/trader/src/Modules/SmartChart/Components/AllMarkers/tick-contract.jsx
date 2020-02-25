@@ -37,7 +37,6 @@ const TickContract = RawMarkerMaker(
         const background_color = getColor('bg', is_dark_theme);
         const status_color = getColor(status, is_dark_theme, profit);
         const status_color_with_opacity = status_color.concat(opacity);
-        console.log(status_color_with_opacity);
 
         const has_reset_time = reset_time && reset_time.epoch;
         const should_draw_vertical_line = should_highlight_contract && !is_sold;

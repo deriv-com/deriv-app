@@ -15,20 +15,20 @@ const CanvasElements = (() => {
         @param {String} line_style
     */
     const Line = (ctx, points, line_style, stroke_style) => {
+        if (stroke_style) ctx.strokeStyle = stroke_style;
         ctx.beginPath();
         ctx.setLineDash(MARKER_LINE_STYLE[line_style]);
         ctx.moveTo(points[0], points[1]);
         ctx.lineTo(points[2], points[3]);
-        if (stroke_style) ctx.strokeStyle = stroke_style;
         ctx.stroke();
     };
 
     const Circle = (ctx, points, radius, line_style, stroke_style, fill_style) => {
+        if (stroke_style) ctx.strokeStyle = stroke_style;
+        if (fill_style) ctx.fillStyle = fill_style;
         ctx.beginPath();
         ctx.setLineDash(MARKER_LINE_STYLE[line_style]);
         ctx.arc(points[0], points[1], radius, 0, Math.PI * 2);
-        if (stroke_style) ctx.strokeStyle = stroke_style;
-        if (fill_style) ctx.fillStyle = fill_style;
         ctx.fill();
         ctx.stroke();
     };

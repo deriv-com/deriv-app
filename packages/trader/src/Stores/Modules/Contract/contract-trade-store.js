@@ -84,27 +84,27 @@ export default class ContractTradeStore extends BaseStore {
             .filter(m => m)
             .map(m => toJS(m));
 
-        const cloned_markers = [...markers];
-
         // The following contains logic to should highlight on chart.
-        const is_hover_index = cloned_markers.findIndex(marker => marker.contract_info.is_hover);
-        const is_not_sold_index = cloned_markers.findIndex(marker => !marker.contract_info.is_sold);
+        const is_hover_index = markers.findIndex(marker => marker.contract_info.is_hover);
+        const is_not_sold_index = markers.findIndex(marker => !marker.contract_info.is_sold);
 
-        if (cloned_markers.length) {
-            cloned_markers.map(marker => (marker.should_highlight_contract = false));
+        if (markers.length) {
+            markers.map(marker => (marker.should_highlight_contract = false));
+
             if (is_hover_index !== -1) {
-                cloned_markers[is_hover_index].should_highlight_contract = true;
-                cloned_markers[is_hover_index].should_redraw = true;
+                markers[is_hover_index].should_highlight_contract = true;
+                markers.sort((a, b) => a.should_highlight_contract - b.should_highlight_contract);
+                markers.map(marker => (marker.should_redraw = true));
             } else if (is_not_sold_index !== -1) {
-                cloned_markers[is_not_sold_index].should_highlight_contract = true;
-                cloned_markers[is_not_sold_index].should_redraw = true;
+                markers[is_not_sold_index].should_highlight_contract = true;
+                markers[is_not_sold_index].should_redraw = true;
             } else {
-                cloned_markers[cloned_markers.length - 1].should_highlight_contract = true;
-                cloned_markers[cloned_markers.length - 1].should_redraw = true;
+                markers[markers.length - 1].should_highlight_contract = true;
+                markers.map(marker => (marker.should_redraw = true));
             }
         }
 
-        return cloned_markers.sort((a, b) => a.should_highlight_contract - b.should_highlight_contract);
+        return markers;
     }
 
     @action.bound

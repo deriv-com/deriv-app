@@ -5,7 +5,6 @@ import BlockConversion from '../backward-compatibility';
 import { config } from '../../constants/config';
 import { observer as globalObserver } from '../../utils/observer';
 import { removeLimitedBlocks } from '../../utils/workspace';
-import DBotStore from '../dbot-store';
 import { saveWorkspaceToRecent } from '../../utils/local-storage';
 
 export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;

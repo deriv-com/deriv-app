@@ -40,6 +40,8 @@ class App extends React.Component {
         } = this.root_store;
         const { handleFileChange } = load_modal;
         const { toggleStrategyModal } = quick_strategy;
+        const { onBotNameTyped } = toolbar;
+
         this.dbot_store = {
             is_mobile: false, // TODO: Use isMobile from @deriv/shared/utils/screen once available.
             bot_settings,

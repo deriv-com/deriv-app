@@ -39,15 +39,26 @@
             .chart-container {
                 .cq-top-ui-widgets {
                     .recent-trade-info {
-                        position: absolute;
-                        left: 230px;
-                        color: var(--text-general);
-                        top: 15px;
                         font-weight: bold;
+                        position: absolute;
                         font-size: 1.6rem;
                         line-height: 2.4rem;
+                        color: var(--text-general);
+                        @media (min-width: 360px) and (max-width: #{$tablet-width - 1}) {
+                            left: 245px;
+                            top: 14px;
+                        }
+                        @media (max-width: 359px) {
+                            left: 27px;
+                            top: 52px;
+                        }
                     }
                 }
+            }
+        }
+        .cq-chart-title {
+            > .cq-menu-btn {
+                padding: 0.4rem;
             }
         }
     }

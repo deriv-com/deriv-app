@@ -51,7 +51,7 @@ class ContractDrawer extends Component {
     onSwipedUp = () => this.setState({ should_show_contract_audit: true });
 
     get is_collapsed() {
-        return !this.state.should_show_contract_audit;
+        return this.state.should_show_contract_audit;
     }
 
     getBodyContent() {

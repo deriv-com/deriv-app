@@ -126,10 +126,12 @@ const Markers = ({ markers_array, is_dark_theme, granularity, currency }) =>
                 is_dark_theme={is_dark_theme}
                 granularity={granularity}
                 currency={currency}
+                should_redraw={marker.should_redraw}
                 {...marker}
             />
         );
     });
+
 const ChartMarkers = connect(({ modules, ui, client }) => ({
     markers_array: modules.contract_trade.markers_array,
     is_digit_contract: modules.contract_trade.is_digit_contract,

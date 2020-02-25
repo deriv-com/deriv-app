@@ -84,29 +84,27 @@ export default class ContractTradeStore extends BaseStore {
             .filter(m => m)
             .map(m => toJS(m));
 
+        const cloned_markers = [...markers];
+
         // The following contains logic to should highlight on chart.
-        if (markers.length) {
-            let should_highlight_contract_index;
+        const is_hover_index = cloned_markers.findIndex(marker => marker.contract_info.is_hover);
+        const is_not_sold_index = cloned_markers.findIndex(marker => !marker.contract_info.is_sold);
 
-            for (let index = markers.length - 1; index >= 0; index--) {
-                if (!markers[index].contract_info.is_sold) {
-                    should_highlight_contract_index = index;
-                    break;
-                } else {
-                    should_highlight_contract_index = markers.length - 1;
-                }
+        if (cloned_markers.length) {
+            cloned_markers.map(marker => (marker.should_highlight_contract = false));
+            if (is_hover_index !== -1) {
+                cloned_markers[is_hover_index].should_highlight_contract = true;
+                cloned_markers[is_hover_index].should_redraw = true;
+            } else if (is_not_sold_index !== -1) {
+                cloned_markers[is_not_sold_index].should_highlight_contract = true;
+                cloned_markers[is_not_sold_index].should_redraw = true;
+            } else {
+                cloned_markers[cloned_markers.length - 1].should_highlight_contract = true;
+                cloned_markers[cloned_markers.length - 1].should_redraw = true;
             }
-
-            markers.map((marker, index) => {
-                if (marker.contract_info.is_hover) {
-                    should_highlight_contract_index = index;
-                }
-            });
-
-            markers[should_highlight_contract_index].should_highlight_contract = true;
         }
 
-        return markers;
+        return cloned_markers.sort((a, b) => a.should_highlight_contract - b.should_highlight_contract);
     }
 
     @action.bound

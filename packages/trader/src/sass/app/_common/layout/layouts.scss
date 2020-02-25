@@ -30,6 +30,9 @@
             .chart-container {
                 width: 100%;
 
+                .ciq-navigation-widget {
+                    transform: translate3d(248px, 0, 0);
+                }
                 .cq-top-ui-widgets {
                     transform: translate3d(248px, 0, 0);
                 }
@@ -139,10 +142,13 @@
                         top: 75px;
                     }
                     .stx_jump_today.home > svg {
-                        top: 6px;
+                        top: 10px;
                         left: 8px;
                         padding: 0;
                         position: absolute;
+                    }
+                    .ciq-navigation-widget {
+                        transition: transform 0.25s ease;
                     }
                     .cq-bottom-ui-widgets {
                         bottom: 30px !important;
@@ -220,7 +226,7 @@
                 bottom: 15px;
                 left: calc(45% - 150px);
             }
-            div.cq-chart-controls {
+            .info-box div.cq-chart-controls {
                 box-shadow: none;
             }
             // TODO: enable asset information
@@ -230,7 +236,7 @@
             //     left: 0;
             // }
             div.stx_jump_today.home > svg {
-                top: 6px;
+                top: 10px;
                 left: 8px;
                 padding: 0;
                 position: absolute;
@@ -264,6 +270,9 @@
                 transform: translate3d(0, 0, 0);
             }
         }
+        .ciq-navigation-widget {
+            transform: translate3d(0, 0, 0);
+        }
     }
     .ciq-chart {
         .cq-top-ui-widgets,
@@ -280,6 +289,9 @@
         }
         .cq-chart-controls {
             transition: max-width 0.25s ease, transform 0.25s ease;
+        }
+        .ciq-navigation-widget {
+            transition: transform 0.25s ease;
         }
     }
     .chartContainer {

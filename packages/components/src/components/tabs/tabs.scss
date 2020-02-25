@@ -17,12 +17,11 @@
 
         &--top {
             order: 0;
+            border-bottom: 1px solid var(--general-section-1);
         }
         &--bottom {
             order: 1;
-        }
-        &--fit-content {
-            width: fit-content;
+            border-top: 1px solid var(--general-section-1);
         }
         &:not(&--header-fit-content) {
             justify-content: center;
@@ -38,12 +37,6 @@
         &__counter {
             margin-left: 1rem;
             vertical-align: middle;
-        }
-        &--top {
-            border-bottom: 1px solid var(--general-section-1);
-        }
-        &--bottom {
-            border-top: 1px solid var(--general-section-1);
         }
         &--header-fit-content {
             padding: 0px 24px;
@@ -73,9 +66,6 @@
         }
         &--bottom {
             bottom: 34px;
-        }
-        &--fit-content {
-            width: 120px;
         }
         &:not(&--header-fit-content) {
             width: var(--tab-width);

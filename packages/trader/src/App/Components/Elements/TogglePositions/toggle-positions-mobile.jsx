@@ -99,7 +99,7 @@ class TogglePositionsMobile extends React.Component {
                             <BinaryLink
                                 onClick={this.togglePositions}
                                 className='btn btn--secondary btn__large positions-modal__footer-btn'
-                                to={routes.reports}
+                                to={routes.positions}
                             >
                                 <span className='btn__text'>{localize('Go to Reports')}</span>
                             </BinaryLink>

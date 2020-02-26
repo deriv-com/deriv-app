@@ -19,7 +19,7 @@ const ControlWidgets = ({ updateChartType, updateGranularity }) => (
         <StudyLegend searchInputClassName='data-hj-whitelist' />
         <Comparison searchInputClassName='data-hj-whitelist' />
         <DrawTools />
-        <Views searchInputClassName='data-hj-whitelist' />
+        <Views portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
         <Share />
         <Timeperiod onChange={updateGranularity} />
         <ChartSize />

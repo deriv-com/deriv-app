@@ -140,11 +140,15 @@ export default withRouter(
 // CHART -----------------------------------------
 
 class Chart extends React.Component {
+    get is_bottom_widget_visible() {
+        return isDesktop() && this.props.is_digit_contract;
+    }
+
     render() {
         return (
             <SmartChart
                 barriers={this.props.barriers_array}
-                bottomWidgets={this.props.is_digit_contract && isDesktop() ? ChartBottomWidgets : null}
+                bottomWidgets={this.is_bottom_widget_visible ? ChartBottomWidgets : null}
                 chartControlsWidgets={null}
                 chartType={this.props.chart_type}
                 endEpoch={this.props.end_epoch}
@@ -173,7 +177,7 @@ class Chart extends React.Component {
                         key={marker.react_key}
                         marker_config={marker.marker_config}
                         marker_content_props={marker.content_config}
-                        is_bottom_widget_visible={isDesktop() && this.props.is_digit_contract}
+                        is_bottom_widget_visible={this.is_bottom_widget_visible}
                     />
                 ))}
             </SmartChart>

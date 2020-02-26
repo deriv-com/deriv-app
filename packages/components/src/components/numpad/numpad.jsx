@@ -25,8 +25,9 @@ const Numpad = ({
 }) => {
     const formatNumber = v => (typeof format === 'function' ? format(v) : v);
     const isFloat = v => String(v).match(/\./);
-    const [is_float, setFloat] = React.useState(isFloat(value));
-    const [default_value, setValue] = React.useState(formatNumber(value));
+    const formatted_value = formatNumber(value);
+    const [is_float, setFloat] = React.useState(isFloat(formatted_value));
+    const [default_value, setValue] = React.useState(formatted_value);
 
     const onSelect = num => {
         switch (num) {
@@ -101,9 +102,7 @@ const Numpad = ({
                 format={format}
                 onChange={v => {
                     const amount = formatNumber(v);
-                    if (!isFloat(amount)) {
-                        setFloat(false);
-                    }
+                    setFloat(isFloat(amount));
                     setValue(amount);
                 }}
                 min={min}

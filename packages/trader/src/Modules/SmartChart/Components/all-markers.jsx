@@ -158,6 +158,7 @@ const shadowed_text = ({ ctx, is_dark_theme, text, left, top, scale }) => {
 const TickContract = RawMarkerMaker(
     ({
         ctx: context,
+        canvas_height: canvas_fixed_height,
         points: [start, ...ticks],
         prices: [barrier], // TODO: support two barrier contracts
         is_last_contract,
@@ -190,10 +191,11 @@ const TickContract = RawMarkerMaker(
         const draw_start_line = is_last_contract && start.visible && !is_sold;
         const scale = calc_scale(start.zoom);
 
-        const canvas_height = ctx.canvas.height / window.devicePixelRatio;
+        const canvas_height = canvas_fixed_height / window.devicePixelRatio;
         if (barrier) {
             barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
         }
+
         if (draw_start_line) {
             render_label({
                 ctx,
@@ -207,7 +209,7 @@ const TickContract = RawMarkerMaker(
                 ctx.lineTo(start.left - 1 * scale, barrier - 34 * scale);
                 ctx.moveTo(start.left - 1 * scale, barrier + 4 * scale);
             }
-            ctx.lineTo(start.left - 1 * scale, ctx.canvas.height);
+            ctx.lineTo(start.left - 1 * scale, canvas_fixed_height);
             ctx.stroke();
         }
 
@@ -328,6 +330,7 @@ const currency_symbols = {
 const NonTickContract = RawMarkerMaker(
     ({
         ctx: context,
+        canvas_height: canvas_fixed_height,
         points: [start, expiry, entry, exit],
         is_last_contract,
         prices: [barrier, entry_tick_top, exit_tick_top], // TODO: support two barrier contracts
@@ -367,7 +370,7 @@ const NonTickContract = RawMarkerMaker(
         const scale = calc_scale(start.zoom);
         const opacity = is_sold ? calc_opacity(start.left, expiry.left) : '';
 
-        const canvas_height = ctx.canvas.height / window.devicePixelRatio;
+        const canvas_height = canvas_fixed_height / window.devicePixelRatio;
         if (barrier) {
             barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
         }
@@ -389,7 +392,7 @@ const NonTickContract = RawMarkerMaker(
                 ctx.lineTo(start.left - 1 * scale, barrier - (show_profit ? 38 : 20) * scale);
                 ctx.moveTo(start.left - 1 * scale, barrier + 4 * scale);
             }
-            ctx.lineTo(start.left - 1 * scale, ctx.canvas.height);
+            ctx.lineTo(start.left - 1 * scale, canvas_fixed_height);
             ctx.stroke();
         }
         // barrier line

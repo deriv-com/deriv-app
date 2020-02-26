@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { DesktopWrapper, MobileWrapper, PageOverlay, SwipeableWrapper } from '@deriv/components';
+import { DesktopWrapper, Div100vhContainer, MobileWrapper, PageOverlay, SwipeableWrapper } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
@@ -57,8 +57,17 @@ class ContractReplay extends React.Component {
                 className='contract-details-wrapper'
                 keyname='contract-details-wrapper'
             >
-                <PageOverlay header={localize('Contract details')} onClickClose={this.onClickClose}>
-                    <div id='dt_contract_replay_container' className='trade-container__replay'>
+                {isMobile() && <NotificationMessages />}
+                <PageOverlay
+                    id='dt_contract_replay_container'
+                    header={localize('Contract details')}
+                    onClickClose={this.onClickClose}
+                >
+                    <Div100vhContainer
+                        className='trade-container__replay'
+                        is_disabled={isDesktop()}
+                        height_offset='80px' // * 80px = header + contract details header heights in mobile
+                    >
                         <ContractDrawer
                             contract_info={contract_info}
                             is_dark_theme={is_dark_theme}
@@ -68,7 +77,7 @@ class ContractReplay extends React.Component {
                         />
                         <React.Suspense fallback={<div />}>
                             <div className='replay-chart__container'>
-                                <NotificationMessages />
+                                {isDesktop() && <NotificationMessages />}
                                 <ChartLoader is_dark={is_dark_theme} is_visible={is_chart_loading} />
                                 <DesktopWrapper>
                                     <ReplayChart />
@@ -86,7 +95,7 @@ class ContractReplay extends React.Component {
                                 </MobileWrapper>
                             </div>
                         </React.Suspense>
-                    </div>
+                    </Div100vhContainer>
                 </PageOverlay>
             </FadeWrapper>
         );
@@ -131,11 +140,15 @@ export default withRouter(
 // CHART -----------------------------------------
 
 class Chart extends React.Component {
+    get is_bottom_widget_visible() {
+        return isDesktop() && this.props.is_digit_contract;
+    }
+
     render() {
         return (
             <SmartChart
                 barriers={this.props.barriers_array}
-                bottomWidgets={this.props.is_digit_contract && isDesktop() ? ChartBottomWidgets : null}
+                bottomWidgets={this.is_bottom_widget_visible ? ChartBottomWidgets : null}
                 chartControlsWidgets={null}
                 chartType={this.props.chart_type}
                 endEpoch={this.props.end_epoch}
@@ -164,7 +177,7 @@ class Chart extends React.Component {
                         key={marker.react_key}
                         marker_config={marker.marker_config}
                         marker_content_props={marker.content_config}
-                        is_bottom_widget_visible={isDesktop() && this.props.is_digit_contract}
+                        is_bottom_widget_visible={this.is_bottom_widget_visible}
                     />
                 ))}
             </SmartChart>

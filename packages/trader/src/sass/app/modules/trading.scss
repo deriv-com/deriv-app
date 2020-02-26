@@ -429,3 +429,17 @@
         transform: translate(0.8rem, 0);
     }
 }
+
+/** @define popup-root */
+@include mobile {
+    .popup-root {
+        width: 100vw;
+        height: 100vh;
+
+        /* postcss-bem-linter: ignore */
+        .dc-toast-error {
+            z-index: 9999;
+            top: 2em;
+        }
+    }
+}

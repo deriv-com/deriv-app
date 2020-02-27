@@ -27,7 +27,6 @@ class TradeParamsModal extends React.Component {
         const { amount, duration, duration_unit } = this.props;
         const getDefaultDuration = makeGetDefaultDuration(duration, duration_unit);
 
-        this.is_mounted = false;
         this.state = {
             trade_param_tab_idx: 0,
             duration_tab_idx: undefined,

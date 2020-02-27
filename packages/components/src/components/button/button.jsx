@@ -4,6 +4,8 @@ import React from 'react';
 import ButtonLoading from './button_loading.jsx';
 import Icon from '../icon';
 
+const ButtonGroup = ({ children }) => <div className='btn__group'>{children}</div>;
+
 const Button = ({
     children,
     className = '',
@@ -88,5 +90,7 @@ Button.propTypes = {
     text: PropTypes.string,
     wrapperClassName: PropTypes.string,
 };
+
+Button.Group = ButtonGroup;
 
 export default Button;

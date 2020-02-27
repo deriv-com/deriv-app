@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from '../icon';
+import Icon from 'Components/icon/icon.jsx';
 
 class PageOverlay extends React.Component {
     render() {
-        const { children, header, onClickClose } = this.props;
+        const { children, header, id, onClickClose } = this.props;
 
         return (
-            <div className='dc-page-overlay'>
+            <div id={id} className='dc-page-overlay'>
                 {header && (
                     <div className='dc-page-overlay__header'>
                         <div className='dc-page-overlay__header-wrapper'>
@@ -34,6 +34,7 @@ PageOverlay.defaultProps = {
 PageOverlay.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     onClickClose: PropTypes.func,
 };
 

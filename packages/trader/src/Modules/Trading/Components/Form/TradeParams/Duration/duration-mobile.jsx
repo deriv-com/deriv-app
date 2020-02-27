@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
 
@@ -100,9 +100,30 @@ const Numbers = ({
     trade_duration,
     selected_duration,
     setSelectedDuration,
+    setToastErrorMessage,
+    setToastErrorVisibility,
 }) => {
     const { value: duration_unit } = duration_unit_option;
     const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry, duration_unit);
+
+    const validateDuration = value => {
+        if (value < min || value > max) {
+            setToastErrorMessage(
+                <Localize
+                    i18n_default_text='Should be between {{min}} and {{max}}'
+                    values={{
+                        min,
+                        max,
+                    }}
+                />
+            );
+            setToastErrorVisibility(true);
+            return false;
+        }
+
+        setToastErrorVisibility(false);
+        return true;
+    };
 
     const setDuration = duration => {
         const on_change_obj = {};
@@ -133,19 +154,22 @@ const Numbers = ({
                 submit_label={submit_label}
                 min={min}
                 max={max}
+                onValidate={validateDuration}
                 onValueChange={onNumberChange}
             />
         </div>
     );
 };
 
-const NumpadWrapper = connect(({ modules }) => ({
+const NumpadWrapper = connect(({ modules, ui }) => ({
     duration_min_max: modules.trade.duration_min_max,
     trade_duration: modules.trade.duration,
     trade_duration_unit: modules.trade.duration_unit,
     trade_basis: modules.trade.basis,
     trade_amount: modules.trade.amount,
     onChangeMultiple: modules.trade.onChangeMultiple,
+    setToastErrorMessage: ui.setToastErrorMessage,
+    setToastErrorVisibility: ui.setToastErrorVisibility,
 }))(Numbers);
 
 const Duration = ({

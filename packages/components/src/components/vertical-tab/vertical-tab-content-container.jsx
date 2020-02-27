@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Icon from 'Components/icon';
+import Icon from 'Components/icon/icon.jsx';
 
 const Content = ({ is_routed, items, selected }) => {
     const selected_item = items.find(item => item.label === selected.label);

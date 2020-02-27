@@ -25,6 +25,7 @@ export default class UIStore extends BaseStore {
     @observable is_dark_mode_on = false;
     @observable is_settings_modal_on = false;
     @observable is_accounts_switcher_on = false;
+    @observable account_switcher_disabled_message = '';
 
     @observable has_only_forward_starting_contracts = false;
 
@@ -94,6 +95,11 @@ export default class UIStore extends BaseStore {
 
     // UI Focus retention
     @observable current_focus = null;
+
+    // Mobile
+    @observable should_show_toast_error = false;
+    @observable mobile_toast_error = '';
+    @observable mobile_toast_timeout = 1500;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -182,6 +188,11 @@ export default class UIStore extends BaseStore {
         return this.screen_width <= MAX_TABLET_WIDTH;
     }
 
+    @computed
+    get is_account_switcher_disabled() {
+        return !!this.account_switcher_disabled_message;
+    }
+
     @action.bound
     setRouteModal() {
         this.is_route_modal_on = true;
@@ -205,6 +216,16 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleAccountsDialog() {
         this.is_accounts_switcher_on = !this.is_accounts_switcher_on;
+    }
+
+    @action.bound
+    setAccountSwitcherDisabledMessage(message) {
+        if (message) {
+            this.is_accounts_switcher_on = false;
+            this.account_switcher_disabled_message = message;
+        } else {
+            this.account_switcher_disabled_message = '';
+        }
     }
 
     @action.bound
@@ -501,5 +522,16 @@ export default class UIStore extends BaseStore {
     @action.bound
     setCurrentFocus(value) {
         this.current_focus = value;
+    }
+
+    @action.bound
+    setToastErrorVisibility(status) {
+        this.should_show_toast_error = status;
+    }
+
+    @action.bound
+    setToastErrorMessage(msg, timeout = 1500) {
+        this.mobile_toast_timeout = timeout;
+        this.mobile_toast_error = msg;
     }
 }

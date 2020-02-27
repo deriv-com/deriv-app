@@ -14,7 +14,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 34px;
+        min-height: 34px;
         padding: 0.4rem 0.8rem;
         @include typeface(--paragraph-center-normal-black);
         color: var(--text-colored-background);

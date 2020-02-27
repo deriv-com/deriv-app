@@ -98,16 +98,19 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 display: none;
             }
             @include mobile {
-                height: 214px;
+                height: fit-content;
                 border-bottom-right-radius: $BORDER_RADIUS;
                 border-top-right-radius: $BORDER_RADIUS;
                 width: calc(100% - 1.6rem);
                 margin-left: 0.8rem;
+                margin-bottom: 0.8rem;
 
                 .contract-card__grid-underlying-trade,
-                .contract-card__footer-wrapper,
-                .pl-card {
-                    grid-template-columns: 1.5fr 1fr 1fr;
+                .contract-card__footer-wrapper {
+                    grid-template-columns: 1fr 1fr 0.7fr;
+                }
+                &--with-collapsible-btn {
+                    padding-top: 0;
                 }
             }
         }
@@ -165,7 +168,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 }
             }
             @include mobile {
-                height: calc(100vh - 216px);
+                flex: 1;
                 margin-left: unset;
 
                 .drag-price {
@@ -178,7 +181,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
         @include mobile {
             display: flex;
             flex-direction: column-reverse;
-            height: 100vh;
+            height: 100%;
+            padding-bottom: 0;
         }
     }
     @include mobile {

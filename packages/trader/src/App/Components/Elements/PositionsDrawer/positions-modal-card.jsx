@@ -10,7 +10,7 @@ import { localize } from '@deriv/translations';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractTypeCell from './contract-type-cell.jsx';
 import ProgressSliderMobile from './ProgressSliderMobile';
-import ResultOverlay from './result-overlay.jsx';
+import ResultMobile from './result-mobile.jsx';
 
 const PositionsModalCard = ({
     className,
@@ -33,22 +33,22 @@ const PositionsModalCard = ({
     type,
 }) => {
     const loader_el = (
-        <div className='positions-drawer-modal__content-loader'>
+        <div className='positions-modal-card__content-loader'>
             <PositionsCardLoader speed={2} />
         </div>
     );
     const fallback_result = profit_loss < 0 ? 'lost' : 'won';
     const contract_el = (
         <React.Fragment>
-            <div className={classNames('positions-drawer-modal__grid', 'positions-drawer-modal__grid-header')}>
-                <div className='positions-drawer-modal__underlying-name'>
+            <div className={classNames('positions-modal-card__grid', 'positions-modal-card__grid-header')}>
+                <div className='positions-modal-card__underlying-name'>
                     <Icon
                         icon={contract_info.underlying ? `IcUnderlying${contract_info.underlying}` : 'IcUnknown'}
                         size={34}
                     />
-                    <span className='positions-drawer-modal__symbol'>{contract_info.display_name}</span>
+                    <span className='positions-modal-card__symbol'>{contract_info.display_name}</span>
                 </div>
-                <div className='positions-drawer-modal__type'>
+                <div className='positions-modal-card__type'>
                     <ContractTypeCell
                         type={type}
                         is_high_low={Shortcode.isHighLow({ shortcode: contract_info.shortcode })}
@@ -58,13 +58,13 @@ const PositionsModalCard = ({
                     in={!!is_valid_to_sell}
                     timeout={250}
                     classNames={{
-                        enter: 'positions-drawer-modal__sell-button--enter',
-                        enterDone: 'positions-drawer-modal__sell-button--enter-done',
-                        exit: 'positions-drawer-modal__sell-button--exit',
+                        enter: 'positions-modal-card__sell-button--enter',
+                        enterDone: 'positions-modal-card__sell-button--enter-done',
+                        exit: 'positions-modal-card__sell-button--exit',
                     }}
                     unmountOnExit
                 >
-                    <div className='positions-drawer-modal__sell-button'>
+                    <div className='positions-modal-card__sell-button'>
                         <Button
                             id={`dt_drawer_card_${id}_button`}
                             className={classNames('btn--sell', {
@@ -78,46 +78,46 @@ const PositionsModalCard = ({
                     </div>
                 </CSSTransition>
             </div>
-            <div className={classNames('positions-drawer-modal__grid', 'positions-drawer-modal__grid-body')}>
-                <div className={classNames('positions-drawer-modal__grid-profit-payout')}>
+            <div className={classNames('positions-modal-card__grid', 'positions-modal-card__grid-body')}>
+                <div className={classNames('positions-modal-card__grid-profit-payout')}>
                     <div
                         className={classNames(
-                            'positions-drawer-modal__profit-loss',
-                            'positions-drawer-modal__profit-loss-label'
+                            'positions-modal-card__profit-loss',
+                            'positions-modal-card__profit-loss-label'
                         )}
                     >
                         {result ? localize('Profit/Loss:') : localize('Potential profit/loss:')}
                     </div>
                     <div
                         className={classNames(
-                            'positions-drawer-modal__indicative',
-                            'positions-drawer-modal__indicative-label'
+                            'positions-modal-card__indicative',
+                            'positions-modal-card__indicative-label'
                         )}
                     >
                         {!result ? localize('Indicative price:') : localize('Payout:')}
                     </div>
                     <div
-                        className={classNames('positions-drawer-modal__profit-loss', {
-                            'positions-drawer-modal__profit-loss--is-crypto': CurrencyUtils.isCryptocurrency(currency),
-                            'positions-drawer-modal__profit-loss--negative': profit_loss < 0,
-                            'positions-drawer-modal__profit-loss--positive': profit_loss > 0,
+                        className={classNames('positions-modal-card__profit-loss', {
+                            'positions-modal-card__profit-loss--is-crypto': CurrencyUtils.isCryptocurrency(currency),
+                            'positions-modal-card__profit-loss--negative': profit_loss < 0,
+                            'positions-modal-card__profit-loss--positive': profit_loss > 0,
                         })}
                     >
                         <Money amount={Math.abs(profit_loss)} currency={currency} />
                         <div
-                            className={classNames('positions-drawer-modal__indicative--movement', {
-                                'positions-drawer-modal__indicative--movement-complete': !!result,
+                            className={classNames('positions-modal-card__indicative--movement', {
+                                'positions-modal-card__indicative--movement-complete': !!result,
                             })}
                         >
                             {status === 'profit' && <Icon icon='IcProfit' />}
                             {status === 'loss' && <Icon icon='IcLoss' />}
                         </div>
                     </div>
-                    <div className='positions-drawer-modal__indicative'>
+                    <div className='positions-modal-card__indicative'>
                         <Money amount={sell_price || indicative} currency={currency} />
                         <div
-                            className={classNames('positions-drawer-modal__indicative--movement', {
-                                'positions-drawer-modal__indicative--movement-complete': !!result,
+                            className={classNames('positions-modal-card__indicative--movement', {
+                                'positions-modal-card__indicative--movement-complete': !!result,
                             })}
                         >
                             {status === 'profit' && <Icon icon='IcProfit' />}
@@ -125,16 +125,16 @@ const PositionsModalCard = ({
                         </div>
                     </div>
                 </div>
-                <div className={classNames('positions-drawer-modal__grid-price-payout')}>
-                    <div className='positions-drawer-modal__purchase-price'>
-                        <span className='positions-drawer-modal__purchase-label'>{localize('Purchase price:')}</span>
-                        <span className='positions-drawer-modal__purchase-value'>
+                <div className={classNames('positions-modal-card__grid-price-payout')}>
+                    <div className='positions-modal-card__purchase-price'>
+                        <span className='positions-modal-card__purchase-label'>{localize('Purchase price:')}</span>
+                        <span className='positions-modal-card__purchase-value'>
                             <Money amount={contract_info.buy_price} currency={currency} />
                         </span>
                     </div>
-                    <div className='positions-drawer-modal__payout-price'>
-                        <span className='positions-drawer-modal__payout-label'>{localize('Potential payout:')}</span>
-                        <span className='positions-drawer-modal__payout-value'>
+                    <div className='positions-modal-card__payout-price'>
+                        <span className='positions-modal-card__payout-label'>{localize('Potential payout:')}</span>
+                        <span className='positions-modal-card__payout-value'>
                             {contract_info.payout ? (
                                 <Money amount={contract_info.payout} currency={currency} />
                             ) : (
@@ -145,15 +145,17 @@ const PositionsModalCard = ({
                 </div>
 
                 {result || !!contract_info.is_sold ? (
-                    <div
-                        className={classNames(
-                            'positions-progress-slider-mobile--completed',
-                            'positions-drawer-modal__progress'
-                        )}
+                    <ResultMobile
+                        contract_id={id}
+                        is_unsupported={is_unsupported}
+                        is_visible={!!contract_info.is_sold}
+                        onClickRemove={onClickRemove}
+                        onClick={() => toggleUnsupportedContractModal(true)}
+                        result={result || fallback_result}
                     />
                 ) : (
                     <ProgressSliderMobile
-                        className='positions-drawer-modal__progress'
+                        className='positions-modal-card__progress'
                         is_loading={is_loading}
                         start_time={contract_info.date_start}
                         expiry_time={contract_info.date_expiry}
@@ -166,25 +168,16 @@ const PositionsModalCard = ({
     );
 
     return (
-        <div id={`dt_drawer_card_${id}`} className={classNames('positions-drawer-modal__wrapper', className)}>
-            {/* TODO: Discuss about this overlay on mobile */}
-            <ResultOverlay
-                contract_id={id}
-                is_unsupported={is_unsupported}
-                is_visible={!!contract_info.is_sold}
-                onClickRemove={onClickRemove}
-                onClick={() => toggleUnsupportedContractModal(true)}
-                result={result || fallback_result}
-            />
+        <div id={`dt_drawer_card_${id}`} className={classNames('positions-modal-card__wrapper', className)}>
             {/* TODO: Discuss about this navlink on mobile */}
-            <div className={classNames('positions-drawer-modal')}>
+            <div className={classNames('positions-modal-card')}>
                 {contract_info.underlying ? contract_el : loader_el}
             </div>
             {/* {is_unsupported ? (
                 <div
-                    className={classNames('positions-drawer-modal', {
-                        // 'positions-drawer-modal--green': profit_loss > 0 && !result,
-                        // 'positions-drawer-modal--red': profit_loss < 0 && !result,
+                    className={classNames('positions-modal-card', {
+                        // 'positions-modal-card--green': profit_loss > 0 && !result,
+                        // 'positions-modal-card--red': profit_loss < 0 && !result,
                     })}
                     onClick={() => toggleUnsupportedContractModal(true)}
                 >
@@ -192,9 +185,9 @@ const PositionsModalCard = ({
                 </div>
             ) : (
                 <NavLink
-                    className={classNames('positions-drawer-modal', {
-                        // 'positions-drawer-modal--green': profit_loss > 0 && !result,
-                        // 'positions-drawer-modal--red': profit_loss < 0 && !result,
+                    className={classNames('positions-modal-card', {
+                        // 'positions-modal-card--green': profit_loss > 0 && !result,
+                        // 'positions-modal-card--red': profit_loss < 0 && !result,
                     })}
                     to={{
                         pathname: `/contract/${id}`,

@@ -6,8 +6,8 @@
     .modal-root,
     .dc-mobile-drawer__wrapper {
         /* Break the flow */
-        position: absolute;
-        top: 0px;
+        position: absolute !important;
+        top: 0px !important;
 
         /* Give them all the available space */
         width: 100%;
@@ -17,7 +17,7 @@
         margin: 0;
 
         /* Allow them to scroll down the document */
-        overflow-y: hidden;
+        overflow-y: hidden !important;
     }
     .body {
         /* Sending body at the bottom of the stack */
@@ -74,18 +74,6 @@
     backface-visibility: hidden;
     background-color: var(--general-main-1);
 
-    &:after {
-        z-index: 1;
-        position: absolute;
-        opacity: 0;
-        pointer-events: none;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        content: '';
-        background-color: var(--overlay-outside-dialog);
-    }
     &--is-disabled:after {
         opacity: 1;
         pointer-events: auto;
@@ -96,12 +84,14 @@
     @include mobile {
         // no footer:
         margin-bottom: 0;
-        height: calc(100vh - #{$HEADER_HEIGHT});
+        height: calc(100vh - #{$MOBILE_HEADER_HEIGHT});
         position: relative;
+        margin-top: $MOBILE_HEADER_HEIGHT;
 
         .ciq-menu {
             position: absolute;
             top: 0;
+            margin: 0.8rem;
         }
         .cq-symbol-select-btn {
             padding: 0.3rem 0.9rem;
@@ -128,6 +118,37 @@
             height: 100%;
             z-index: 1;
             top: 0;
+        }
+        .contract-details-wrapper {
+            height: inherit;
+            position: relative;
+        }
+        .contract-audit-card {
+            position: absolute;
+            transform: translate3d(0, 15%, 0);
+            opacity: 0;
+            width: calc(100vw - 16px);
+            height: calc(100vh - #{$MOBILE_HEADER_HEIGHT} - 202px);
+            background-color: var(--general-section-1);
+            z-index: 999;
+            margin: 0.8rem;
+            border-radius: 4px;
+            transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s;
+
+            .contract-audit__wrapper {
+                margin: 0.8rem;
+                height: 100%;
+                max-height: calc(100% - 16px);
+            }
+            &--enter,
+            &--exit {
+                transform: translate3d(0, 15%, 0);
+                opacity: 0;
+            }
+            &--enterDone {
+                transform: translate3d(0, 0, 0);
+                opacity: 1;
+            }
         }
     }
 }

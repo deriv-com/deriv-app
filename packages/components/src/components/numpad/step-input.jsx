@@ -9,11 +9,10 @@ const getDecimals = val => {
     return array_value && array_value.length > 1 ? array_value[1].length : 0;
 };
 
-const StepInput = ({ max, min, value, onChange, render, pip_size = 0, currency, format }) => {
-    const formatNumber = v => (typeof format === 'function' ? format(v) : v);
+const StepInput = ({ max, min, value, onChange, render, pip_size = 0, currency }) => {
     const getSmallestScale = () => {
         const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
-        const decimal_places = Number.isFinite(+value) ? getDecimals(formatNumber(value)) : 0;
+        const decimal_places = Number.isFinite(+value) ? getDecimals(value) : 0;
         if (is_crypto || (!currency && decimal_places)) {
             return parseFloat(1 * 10 ** (0 - decimal_places));
         }
@@ -21,8 +20,8 @@ const StepInput = ({ max, min, value, onChange, render, pip_size = 0, currency, 
     };
 
     const smallest_scale = getSmallestScale();
-    const is_gt_max = Number.isFinite(+max) && +value + smallest_scale >= +max;
-    const is_lt_min = Number.isFinite(+min) && +value - smallest_scale <= +min;
+    const is_gt_max = Number.isFinite(+max) && +value + smallest_scale > +max;
+    const is_lt_min = Number.isFinite(+min) && +value - smallest_scale < +min;
 
     const increment = () => {
         if (is_gt_max) return;
@@ -33,7 +32,7 @@ const StepInput = ({ max, min, value, onChange, render, pip_size = 0, currency, 
         if (Number.isNaN(parsed_value)) {
             increment_value = min;
         } else {
-            const decimal_places = Number.isFinite(+value) ? getDecimals(formatNumber(value)) : 0;
+            const decimal_places = Number.isFinite(+value) ? getDecimals(value) : 0;
             const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
 
             if (is_crypto || (!currency && decimal_places)) {
@@ -56,7 +55,7 @@ const StepInput = ({ max, min, value, onChange, render, pip_size = 0, currency, 
         if (Number.isNaN(parsed_value)) {
             increment_value = min;
         } else {
-            const decimal_places = Number.isFinite(+value) ? getDecimals(formatNumber(value)) : 0;
+            const decimal_places = Number.isFinite(+value) ? getDecimals(value) : 0;
             const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
 
             if (is_crypto || (!currency && decimal_places)) {

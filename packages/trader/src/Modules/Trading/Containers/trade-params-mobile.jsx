@@ -146,9 +146,18 @@ const TradeParamsMobile = ({
     h_duration,
     d_duration,
 }) => {
+    const durations = {
+        t_duration,
+        s_duration,
+        m_duration,
+        h_duration,
+        d_duration,
+    };
     const getDurationText = () => {
-        const duration = duration_units_list.find(d => d.value === duration_unit);
-        return `${duration_value} ${duration && duration.text}`;
+        const duration = duration_units_list[duration_tab_idx || 0];
+        const selected_duration_value = durations[`${duration.value}_duration`];
+
+        return `${selected_duration_value} ${duration && duration.text}`;
     };
 
     const getAmountText = () => {

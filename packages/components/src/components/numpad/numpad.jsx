@@ -69,6 +69,11 @@ const Numpad = ({
         }
     };
 
+    const getDecimals = val => {
+        const array_value = typeof val === 'string' ? val.split('.') : val.toString().split('.');
+        return array_value && array_value.length > 1 ? array_value[1].length : 0;
+    };
+
     const chop = () => {
         if (default_value.toString().slice(-1) === '.') {
             setFloat(false);
@@ -99,9 +104,8 @@ const Numpad = ({
                 pip_size={pip_size}
                 value={default_value}
                 render={render}
-                format={format}
                 onChange={v => {
-                    const amount = formatNumber(v);
+                    const amount = Number(v).toFixed(getDecimals(default_value));
                     setFloat(isFloat(amount));
                     setValue(amount);
                 }}

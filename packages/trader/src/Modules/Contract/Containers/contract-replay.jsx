@@ -57,7 +57,9 @@ class ContractReplay extends React.Component {
                 className='contract-details-wrapper'
                 keyname='contract-details-wrapper'
             >
-                {isMobile() && <NotificationMessages />}
+                <MobileWrapper>
+                    <NotificationMessages />
+                </MobileWrapper>
                 <PageOverlay
                     id='dt_contract_replay_container'
                     header={localize('Contract details')}
@@ -77,7 +79,9 @@ class ContractReplay extends React.Component {
                         />
                         <React.Suspense fallback={<div />}>
                             <div className='replay-chart__container'>
-                                {isDesktop() && <NotificationMessages />}
+                                <DesktopWrapper>
+                                    <NotificationMessages />
+                                </DesktopWrapper>
                                 <ChartLoader is_dark={is_dark_theme} is_visible={is_chart_loading} />
                                 <DesktopWrapper>
                                     <ReplayChart />

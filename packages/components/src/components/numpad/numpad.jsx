@@ -143,6 +143,7 @@ const Numpad = ({
                             (typeof onValidate === 'function' ? !onValidate(default_value) : false),
                     })}
                     onClick={() => {
+                        if (!default_value.toString().length) return;
                         if (typeof onValidate === 'function') {
                             onValidate(formatNumber(default_value));
                             onSubmit(formatNumber(default_value));

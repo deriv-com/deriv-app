@@ -14,7 +14,12 @@ class ContractAudit extends React.PureComponent {
         const IconExitTime = <Icon icon='IcContractExitTime' color={is_profit ? 'green' : 'red'} size={24} />;
         return (
             <div className='contract-audit__wrapper'>
-                <ThemedScrollbars style={{ width: '100%', height: '100%' }} autoHide>
+                <ThemedScrollbars
+                    style={{ width: '100%', height: '100%' }}
+                    autoHide
+                    onScrollStart={this.props.onScrollStart}
+                    onScrollStop={this.props.onScrollStop}
+                >
                     <div id='dt_id_label' className='contract-audit__grid'>
                         <ContractAuditItem
                             icon={<Icon icon='IcContractId' size={24} />}

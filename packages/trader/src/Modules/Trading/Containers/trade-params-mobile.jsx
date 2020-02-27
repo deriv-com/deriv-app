@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Modal } from '@deriv/components';
+import { Tabs, Modal, Money } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
@@ -81,6 +81,7 @@ class TradeParamsModal extends React.Component {
     isVisible = component_key => this.props.form_components.includes(component_key);
 
     render() {
+        const { currency, duration_units_list } = this.props;
         return (
             <React.Fragment>
                 <ToastErrorPopup />
@@ -98,6 +99,7 @@ class TradeParamsModal extends React.Component {
                 >
                     <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='48px'>
                         <TradeParamsMobile
+                            currency={currency}
                             toggleModal={this.props.toggleModal}
                             isVisible={this.isVisible}
                             setTradeParamTabIdx={this.setTradeParamTabIdx}
@@ -112,6 +114,7 @@ class TradeParamsModal extends React.Component {
                             payout_value={this.state.payout_value}
                             duration_unit={this.state.curr_duration_unit}
                             duration_value={this.state.curr_duration_value}
+                            duration_units_list={duration_units_list}
                             // duration
                             setSelectedDuration={this.setSelectedDuration}
                             t_duration={this.state.t_duration}
@@ -127,17 +130,20 @@ class TradeParamsModal extends React.Component {
     }
 }
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ client, modules, ui }) => ({
     amount: modules.trade.amount,
     form_components: modules.trade.form_components,
+    currency: client.currency,
     duration: modules.trade.duration,
     duration_unit: modules.trade.duration_unit,
+    duration_units_list: modules.trade.duration_units_list,
     expiry_type: modules.trade.expiry_type,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
 }))(TradeParamsModal);
 
 const TradeParamsMobile = ({
+    currency,
     toggleModal,
     isVisible,
     setAmountTabIdx,
@@ -146,6 +152,7 @@ const TradeParamsMobile = ({
     trade_param_tab_idx,
     setDurationTabIdx,
     duration_unit,
+    duration_units_list,
     duration_value,
     duration_tab_idx,
     // amount
@@ -159,47 +166,78 @@ const TradeParamsMobile = ({
     m_duration,
     h_duration,
     d_duration,
-}) => (
-    <Tabs
-        active_index={trade_param_tab_idx}
-        className='trade-params-duration-amount'
-        onTabItemClick={setTradeParamTabIdx}
-        top
-    >
-        {isVisible('duration') && (
-            <div label={localize('Duration')}>
-                <DurationMobile
-                    toggleModal={toggleModal}
-                    amount_tab_idx={amount_tab_idx}
-                    duration_tab_idx={duration_tab_idx}
-                    setDurationTabIdx={setDurationTabIdx}
-                    setSelectedDuration={setSelectedDuration}
-                    t_duration={t_duration}
-                    s_duration={s_duration}
-                    m_duration={m_duration}
-                    h_duration={h_duration}
-                    d_duration={d_duration}
-                    stake_value={stake_value}
-                    payout_value={payout_value}
-                />
-            </div>
-        )}
-        {isVisible('amount') && (
-            <div label={localize('Amount')}>
-                <AmountMobile
-                    duration_unit={duration_unit}
-                    duration_value={duration_value}
-                    toggleModal={toggleModal}
-                    amount_tab_idx={amount_tab_idx}
-                    setAmountTabIdx={setAmountTabIdx}
-                    setSelectedAmount={setSelectedAmount}
-                    stake_value={stake_value}
-                    payout_value={payout_value}
-                />
-            </div>
-        )}
-    </Tabs>
-);
+}) => {
+    const getDurationText = () => {
+        const duration = duration_units_list.find(d => d.value === duration_unit);
+        return `${duration_value} ${duration && duration.text}`;
+    };
+
+    const getAmountText = () => {
+        return <Money currency={currency} amount={amount_tab_idx === 1 ? payout_value : stake_value} />;
+    };
+
+    const getHeaderContent = tab_key => {
+        switch (tab_key) {
+            case 'duration':
+                return (
+                    <div className='trade-params__header'>
+                        <div className='trade-params__header-label'>{localize('Duration')}</div>
+                        <div className='trade-params__header-value'>{getDurationText()}</div>
+                    </div>
+                );
+            case 'amount':
+                return (
+                    <div className='trade-params__header'>
+                        <div className='trade-params__header-label'>{localize('Amount')}</div>
+                        <div className='trade-params__header-value'>{getAmountText()}</div>
+                    </div>
+                );
+            default:
+                return null;
+        }
+    };
+    return (
+        <Tabs
+            active_index={trade_param_tab_idx}
+            className='trade-params-duration-amount'
+            onTabItemClick={setTradeParamTabIdx}
+            top
+        >
+            {isVisible('duration') && (
+                <div header_content={getHeaderContent('duration')}>
+                    <DurationMobile
+                        toggleModal={toggleModal}
+                        amount_tab_idx={amount_tab_idx}
+                        duration_tab_idx={duration_tab_idx}
+                        setDurationTabIdx={setDurationTabIdx}
+                        setSelectedDuration={setSelectedDuration}
+                        t_duration={t_duration}
+                        s_duration={s_duration}
+                        m_duration={m_duration}
+                        h_duration={h_duration}
+                        d_duration={d_duration}
+                        stake_value={stake_value}
+                        payout_value={payout_value}
+                    />
+                </div>
+            )}
+            {isVisible('amount') && (
+                <div header_content={getHeaderContent('amount')}>
+                    <AmountMobile
+                        duration_unit={duration_unit}
+                        duration_value={duration_value}
+                        toggleModal={toggleModal}
+                        amount_tab_idx={amount_tab_idx}
+                        setAmountTabIdx={setAmountTabIdx}
+                        setSelectedAmount={setSelectedAmount}
+                        stake_value={stake_value}
+                        payout_value={payout_value}
+                    />
+                </div>
+            )}
+        </Tabs>
+    );
+};
 
 export const LastDigitMobile = connect(({ modules }) => ({
     form_components: modules.trade.form_components,

@@ -359,14 +359,32 @@ $side-padding: 1.2em;
                 background: $color-yellow;
             }
         }
-        &__minutes,
-        &__seconds,
-        &__hours,
-        &__days {
+        &__seconds {
+            color: $color-green-1;
+
+            &__background {
+                background: $color-green-1;
+            }
+        }
+        &__minutes {
             color: $color-blue-1;
 
             &__background {
                 background: $color-blue-1;
+            }
+        }
+        &__hours {
+            color: $COLOR_BLUE;
+
+            &__background {
+                background: $COLOR_BLUE;
+            }
+        }
+        &__days {
+            color: $color-purple;
+
+            &__background {
+                background: $color-purple;
             }
         }
     }

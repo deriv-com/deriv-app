@@ -14,6 +14,7 @@
         line-height: 35px;
         display: flex;
         justify-content: center;
+        position: relative;
 
         &--top {
             order: 0;
@@ -65,10 +66,10 @@
         transition: all ease-in-out 0.3s;
 
         &--top {
-            top: 34px;
+            bottom: 0px;
         }
         &--bottom {
-            bottom: 34px;
+            bottom: 0px;
         }
         &--fit-content {
             width: 120px;

@@ -91,7 +91,7 @@
         &__actions {
             display: flex;
             padding: 16px;
-            border-top: 2px solid var(--general-section-1);
+            border-top: 2px solid var(--border-disabled);
 
             > * {
                 flex: 1;
@@ -105,7 +105,7 @@
             padding: 16px 16px 24px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            border-bottom: 2px solid var(--general-section-1);
+            border-bottom: 2px solid var(--border-disabled);
         }
         &__radio {
             display: flex;
@@ -121,7 +121,7 @@
                 display: none;
             }
             &-circle {
-                border: 2px solid var(--border-normal);
+                border: 2px solid var(--text-general);
                 border-radius: 50%;
                 box-shadow: 0 0 1px 0 var(--shadow-menu);
                 width: 16px;
@@ -133,7 +133,7 @@
                 &--selected {
                     border-width: 4px;
                     border-color: var(--brand-red-coral);
-                    background: var(--text-prominent);
+                    background: $color-white;
                 }
             }
             &-label {

@@ -9,6 +9,8 @@
     z-index: 999;
     overflow: auto;
     transition: opacity 0.2s;
+    opacity: 0;
+    pointer-events: none;
     background: var(--general-section-2);
     // transform here would break fixed header
 

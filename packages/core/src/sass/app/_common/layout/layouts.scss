@@ -6,8 +6,8 @@
     .modal-root,
     .dc-mobile-drawer__wrapper {
         /* Break the flow */
-        position: absolute !important;
-        top: 0px !important;
+        position: fixed !important;
+        top: 0 !important;
 
         /* Give them all the available space */
         width: 100%;

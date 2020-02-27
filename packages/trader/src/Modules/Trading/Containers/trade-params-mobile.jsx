@@ -27,6 +27,7 @@ class TradeParamsModal extends React.Component {
         const { amount, duration, duration_unit } = this.props;
         const getDefaultDuration = makeGetDefaultDuration(duration, duration_unit);
 
+        this.is_mounted = false;
         this.state = {
             trade_param_tab_idx: 0,
             duration_tab_idx: undefined,
@@ -43,6 +44,22 @@ class TradeParamsModal extends React.Component {
             stake_value: amount,
             payout_value: amount,
         };
+    }
+
+    // Fix to prevent iOS from zooming in erratically on quick taps
+    preventIOSZoom = event => {
+        if (event.touches.length > 1) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    };
+
+    componentDidMount() {
+        document.addEventListener('touchstart', event => this.preventIOSZoom(event), { passive: false });
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('touchstart', event => this.preventIOSZoom(event));
     }
 
     setTradeParamTabIdx = trade_param_tab_idx => this.setState({ trade_param_tab_idx });

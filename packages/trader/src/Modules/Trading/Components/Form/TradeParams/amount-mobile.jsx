@@ -14,22 +14,22 @@ const Basis = ({
     setSelectedAmount,
     onChangeMultiple,
     currency,
+    trade_amount,
     trade_basis,
     trade_duration,
     trade_duration_unit,
 }) => {
     const user_currency_decimal_places = CurrencyUtils.getDecimalPlaces(currency);
     const onNumberChange = num => setSelectedAmount(basis, num);
-
-    const setBasisAndAmount = value => {
-        const amount = !isNaN(value) ? Number(value).toFixed(user_currency_decimal_places) : value;
+    const formatAmount = value => (!isNaN(value) ? Number(value).toFixed(user_currency_decimal_places) : value);
+    const setBasisAndAmount = amount => {
         const on_change_obj = {};
 
         // Check for any duration changes in Duration trade params Tab before sending onChange object
         if (duration_unit !== trade_duration_unit) on_change_obj.duration_unit = duration_unit;
         if (duration_value !== trade_duration) on_change_obj.duration = duration_value;
 
-        if (selected_basis !== amount || basis !== trade_basis) {
+        if (amount !== trade_amount || basis !== trade_basis) {
             on_change_obj.basis = basis;
             on_change_obj.amount = amount;
         }
@@ -42,14 +42,16 @@ const Basis = ({
         <div className='trade-params__amount-keypad'>
             <Numpad
                 value={selected_basis}
+                format={formatAmount}
                 onSubmit={setBasisAndAmount}
+                currency={currency}
                 is_currency
                 render={({ value: v, className }) => {
                     return <div className={className}>{v}</div>;
                 }}
                 pip_size={user_currency_decimal_places}
                 min={0}
-                max={1000}
+                max={Math.pow(10, CurrencyUtils.AMOUNT_MAX_LENGTH) - 1}
                 submit_label={localize('OK')}
                 onValueChange={onNumberChange}
             />
@@ -59,6 +61,7 @@ const Basis = ({
 
 const AmountWrapper = connect(({ modules, client }) => ({
     onChangeMultiple: modules.trade.onChangeMultiple,
+    trade_amount: modules.trade.amount,
     trade_basis: modules.trade.basis,
     trade_duration_unit: modules.trade.duration_unit,
     trade_duration: modules.trade.duration,

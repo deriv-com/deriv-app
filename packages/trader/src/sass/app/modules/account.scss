@@ -140,7 +140,7 @@ $MIN_HEIGHT_FLOATING: calc(
             padding: 16px 24px;
             align-items: center;
             justify-content: flex-end;
-            z-index: 999;
+            z-index: 4;
             border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
             border-top: 1px solid var(--general-section-1);
             border-width: 1px;

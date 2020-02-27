@@ -26,11 +26,12 @@ export const getMarketName = underlying => (underlying ? getMarketNamesMap()[und
 export const getTradeTypeName = category => (category ? getContractConfig()[category.toUpperCase()].name : null);
 
 export const getContractDurationType = longcode => {
-    const duration_pattern = new RegExp('ticks|seconds|minutes|hours');
+    const duration_pattern = new RegExp('ticks|tick|seconds|minutes|minute|hour|hours');
     const extracted = duration_pattern.exec(longcode);
-    if (extracted != null) {
+    if (extracted !== null) {
         const duration_type = extracted[0];
-        return duration_type[0].toUpperCase() + duration_type.slice(1);
+        const duration_text = duration_type[0].toUpperCase() + duration_type.slice(1);
+        return duration_text.endsWith('s') ? duration_text : `${duration_text}s`;
     }
     return 'Days';
 };

@@ -24,6 +24,9 @@
         &--wrapper {
             text-decoration: none;
         }
+        @include mobile {
+            border-radius: $BORDER_RADIUS;
+        }
     }
     &__row {
         display: flex;
@@ -52,6 +55,10 @@
             font-weight: bold;
             color: var(--text-prominent);
             line-height: 2rem;
+
+            @include mobile {
+                font-size: 1.2rem;
+            }
         }
     }
 }

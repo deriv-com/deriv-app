@@ -1,14 +1,15 @@
 import React from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { NavLink } from 'react-router-dom';
 import { Icon, Div100vhContainer, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import routes from 'Constants/routes';
+import { BinaryLink } from 'App/Components/Routes';
 import EmptyPortfolioMessage from 'Modules/Reports/Components/empty-portfolio-message.jsx';
 import PositionsModalCard from 'App/Components/Elements/PositionsDrawer/positions-modal-card.jsx';
+import { connect } from 'Stores/connect';
 import TogglePositions from './toggle-positions.jsx';
 
-class TogglePositionsMobile extends React.PureComponent {
+class TogglePositionsMobile extends React.Component {
     constructor(props) {
         super(props);
 
@@ -95,12 +96,13 @@ class TogglePositionsMobile extends React.PureComponent {
                             {is_empty || error ? <EmptyPortfolioMessage error={error} /> : body_content}
                         </div>
                         <div className='positions-modal__footer'>
-                            <NavLink
+                            <BinaryLink
+                                onClick={this.togglePositions}
                                 className='btn btn--secondary btn__large positions-modal__footer-btn'
-                                to={routes.reports}
+                                to={routes.positions}
                             >
                                 <span className='btn__text'>{localize('Go to Reports')}</span>
-                            </NavLink>
+                            </BinaryLink>
                         </div>
                     </Div100vhContainer>
                 </Modal>
@@ -108,5 +110,6 @@ class TogglePositionsMobile extends React.PureComponent {
         );
     }
 }
-
-export default TogglePositionsMobile;
+// TODO: Needs to be connected to store due to issue with trade-header-extensions not updating all_positions prop
+// Fixes issue with positions not updated in positions modal
+export default connect(() => ({}))(TogglePositionsMobile);

@@ -22,6 +22,7 @@ const Numpad = ({
     value,
     format,
     onValueChange,
+    onValidate,
 }) => {
     const formatNumber = v => (typeof format === 'function' ? format(v) : v);
     const isFloat = v => String(v).match(/\./);
@@ -30,6 +31,11 @@ const Numpad = ({
     const [default_value, setValue] = React.useState(formatted_value);
 
     const onSelect = num => {
+        if (typeof onValidate === 'function' && default_value !== '') {
+            const passes = onValidate(concatenate(num, default_value));
+            if (!passes) return;
+        }
+
         switch (num) {
             // backspace
             case -1:
@@ -134,9 +140,19 @@ const Numpad = ({
                 <Button
                     type='secondary'
                     has_effect
-                    className='dc-numpad__number'
+                    className={classNames('dc-numpad__number', {
+                        'dc-numpad__number--is-disabled':
+                            !default_value.toString().length ||
+                            (typeof onValidate === 'function' ? !onValidate(default_value) : false),
+                    })}
                     onClick={() => {
-                        onSubmit(formatNumber(default_value));
+                        if (!default_value.toString().length) return;
+                        if (typeof onValidate === 'function') {
+                            onValidate(formatNumber(default_value));
+                            onSubmit(formatNumber(default_value));
+                        } else {
+                            onSubmit(formatNumber(default_value));
+                        }
                     }}
                     is_disabled={!default_value.toString().length}
                 >
@@ -155,6 +171,7 @@ Numpad.propTypes = {
     max: PropTypes.number,
     min: PropTypes.number,
     onSubmit: PropTypes.func,
+    onValidate: PropTypes.func,
     pip_size: PropTypes.number,
     render: PropTypes.func,
     submit_label: PropTypes.string,

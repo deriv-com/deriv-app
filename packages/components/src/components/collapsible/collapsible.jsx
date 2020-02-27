@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React, { useState, useEffect, Children } from 'react';
+import { useSwipeable } from 'react-swipeable';
 import { positionPropType } from './utils';
 import ArrowButton from './arrow-button.jsx';
-import { useSwipeable } from 'react-swipeable';
 
 const swipe_config = {
     delta: 100,
@@ -10,26 +10,40 @@ const swipe_config = {
     trackMouse: true,
 };
 
-const Collapsible = ({ as, is_collapsed, position = 'top', children }) => {
+const Collapsible = ({ as, is_collapsed, position = 'top', children, onClick }) => {
     const [is_open, expand] = useState(!is_collapsed);
     const [should_show_collapsible, setShouldShowCollapsible] = useState(false);
-    const toggleExpand = () => expand(!is_open);
-    const arrow_button = <ArrowButton is_open={is_open} position={position} onClick={toggleExpand} />;
-    const CustomTag = as || 'div';
+
+    const toggleExpand = () => {
+        const new_state = !is_open;
+        expand(new_state);
+        if (typeof onClick === 'function') {
+            onClick(new_state); // pass new state in a callback function
+        }
+    };
+
+    useEffect(() => {
+        expand(!is_collapsed);
+        setShouldShowCollapsible(Children.toArray(children).some(({ props }) => 'collapsible' in props));
+    }, [is_collapsed]);
+
+    useEffect(() => setShouldShowCollapsible(Children.toArray(children).some(({ props }) => 'collapsible' in props)));
+
     const swipe_handlers = useSwipeable({
         onSwipedUp: () => !is_open && should_show_collapsible && expand(true),
         onSwipedDown: () => is_open && should_show_collapsible && expand(false),
         ...swipe_config,
     });
 
-    useEffect(() => setShouldShowCollapsible(Children.toArray(children).some(({ props }) => 'collapsible' in props)));
-
+    const arrow_button = <ArrowButton is_collapsed={!is_open} position={position} onClick={toggleExpand} />;
+    const CustomTag = as || 'div';
     return (
         <CustomTag
             {...swipe_handlers}
             className={classNames('dc-collapsible', {
                 'dc-collapsible--is-expanded': is_open,
                 'dc-collapsible--is-collapsed': !is_open,
+                'dc-collapsible--has-collapsible-btn': should_show_collapsible,
             })}
         >
             {should_show_collapsible && position === 'top' && arrow_button}

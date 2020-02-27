@@ -1,10 +1,16 @@
 import { localize } from '@deriv/translations';
-import { setBlockTextColor } from '../../../../utils';
 
 Blockly.Blocks.useless_block = {
     init() {
         this.jsonInit({
-            message0: localize('Conversion Helper Block'),
+            message0: '%1',
+            args0: [
+                {
+                    type: 'field_label',
+                    text: localize('Conversion Helper Block'),
+                    class: 'blocklyTextRootBlockHeader',
+                },
+            ],
             colour: Blockly.Colours.RootBlock.colour,
             colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
             colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
@@ -13,9 +19,6 @@ Blockly.Blocks.useless_block = {
             nextStatement: null,
             previousStatement: null,
         });
-    },
-    onchange(event) {
-        setBlockTextColor(this, event);
     },
 };
 

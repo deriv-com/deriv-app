@@ -6,7 +6,7 @@
     .modal-root,
     .dc-mobile-drawer__wrapper {
         /* Break the flow */
-        position: fixed !important;
+        position: absolute !important;
         top: 0 !important;
 
         /* Give them all the available space */
@@ -18,6 +18,11 @@
 
         /* Allow them to scroll down the document */
         overflow-y: hidden !important;
+
+        /* -webkit-touch-callout only is supported on iOS webkit engine, thus it should apply iOS only styles */
+        @supports (-webkit-touch-callout: none) {
+            position: fixed !important;
+        }
     }
     .body {
         /* Sending body at the bottom of the stack */

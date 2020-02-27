@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ChartMode, Comparison, DrawTools, Share, StudyLegend, Timeperiod, Views } from 'Modules/SmartChart';
+import { ChartMode, Comparison, DrawTools, Share, StudyLegend, Views } from 'Modules/SmartChart';
 
 const ControlWidgets = ({ updateChartType, updateGranularity }) => (
     <React.Fragment>

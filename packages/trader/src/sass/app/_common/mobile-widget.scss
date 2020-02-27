@@ -10,6 +10,7 @@
     justify-content: space-between;
     align-items: center;
     margin: 0 0 0.8rem;
+    flex: 1;
 
     &__amount {
         @include typeface(--paragraph-center-bold-black);
@@ -22,6 +23,14 @@
     &__type {
         @include typeface(--paragraph-center-normal-black);
         color: var(--text-less-prominent);
+    }
+    &__wrapper {
+        display: flex;
+
+        .mobile-widget:last-child:not(:only-child) {
+            margin-left: 0.8rem;
+            flex: unset;
+        }
     }
 }
 

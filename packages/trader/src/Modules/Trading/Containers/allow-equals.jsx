@@ -14,12 +14,7 @@ const AllowEquals = ({ onChange, is_allow_equal, className }) => {
 
     return (
         <div className={classNames('allow-equals', 'mobile-widget', className)}>
-            <Checkbox
-                label={localize('Allow Equal')}
-                value={is_allow_equal}
-                name='is_equal'
-                onChange={handleOnChange}
-            />
+            <Checkbox label={localize('Equals')} value={is_allow_equal} name='is_equal' onChange={handleOnChange} />
             <p className='allow-equals__subtitle'>
                 <Localize i18n_default_text='Win payout if exit spot is also equal to entry spot.' />
             </p>

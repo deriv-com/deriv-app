@@ -70,7 +70,7 @@ class Trade extends React.Component {
                     </React.Suspense>
 
                     {/* Remove Test component for debugging below for production release */}
-                    <Test />
+                    {/* <Test /> */}
                 </Div100vhContainer>
                 <div className={form_wrapper_class}>
                     {this.props.is_market_closed && <MarketIsClosedOverlay />}
@@ -148,6 +148,7 @@ class ChartTradeClass extends React.Component {
                 chartControlsWidgets={isDesktop() ? ChartControlWidgets : null}
                 chartStatusListener={v => this.props.setChartStatus(!v)}
                 chartType={this.props.chart_type}
+                enabledNavigationWidget={isDesktop()}
                 id='trade'
                 isMobile={isMobile()}
                 maxTick={isMobile() ? 8 : undefined}

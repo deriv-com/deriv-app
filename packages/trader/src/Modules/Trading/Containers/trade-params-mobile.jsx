@@ -6,6 +6,7 @@ import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mob
 import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile.jsx';
 // import Barrier                        from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
+import ToastErrorPopup from 'Modules/Trading/Containers/toast-error-popup.jsx';
 import 'Sass/app/modules/trading-mobile.scss';
 import Div100vhContainer from '@deriv/components/src/components/div100vh-container';
 
@@ -64,44 +65,47 @@ class TradeParamsModal extends React.Component {
 
     render() {
         return (
-            <Modal
-                id='dt_trade_parameters_mobile'
-                className='trade-params'
-                enableApp={this.props.enableApp}
-                is_open={this.props.is_open}
-                is_vertical_top
-                header={<div />}
-                disableApp={this.props.disableApp}
-                toggleModal={this.props.toggleModal}
-                height='auto'
-                width='calc(100vw - 32px)'
-            >
-                <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='48px'>
-                    <TradeParamsMobile
-                        toggleModal={this.props.toggleModal}
-                        isVisible={this.isVisible}
-                        setTradeParamTabIdx={this.setTradeParamTabIdx}
-                        trade_param_tab_idx={this.state.trade_param_tab_idx}
-                        setDurationTabIdx={this.setDurationTabIdx}
-                        duration_tab_idx={this.state.duration_tab_idx}
-                        setAmountTabIdx={this.setAmountTabIdx}
-                        amount_tab_idx={this.state.amount_tab_idx}
-                        // amount
-                        setSelectedAmount={this.setSelectedAmount}
-                        stake_value={this.state.stake_value}
-                        payout_value={this.state.payout_value}
-                        duration_unit={this.state.curr_duration_unit}
-                        duration_value={this.state.curr_duration_value}
-                        // duration
-                        setSelectedDuration={this.setSelectedDuration}
-                        t_duration={this.state.t_duration}
-                        s_duration={this.state.s_duration}
-                        m_duration={this.state.m_duration}
-                        h_duration={this.state.h_duration}
-                        d_duration={this.state.d_duration}
-                    />
-                </Div100vhContainer>
-            </Modal>
+            <React.Fragment>
+                <ToastErrorPopup />
+                <Modal
+                    id='dt_trade_parameters_mobile'
+                    className='trade-params'
+                    enableApp={this.props.enableApp}
+                    is_open={this.props.is_open}
+                    is_vertical_top
+                    header={<div />}
+                    disableApp={this.props.disableApp}
+                    toggleModal={this.props.toggleModal}
+                    height='auto'
+                    width='calc(100vw - 32px)'
+                >
+                    <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='48px'>
+                        <TradeParamsMobile
+                            toggleModal={this.props.toggleModal}
+                            isVisible={this.isVisible}
+                            setTradeParamTabIdx={this.setTradeParamTabIdx}
+                            trade_param_tab_idx={this.state.trade_param_tab_idx}
+                            setDurationTabIdx={this.setDurationTabIdx}
+                            duration_tab_idx={this.state.duration_tab_idx}
+                            setAmountTabIdx={this.setAmountTabIdx}
+                            amount_tab_idx={this.state.amount_tab_idx}
+                            // amount
+                            setSelectedAmount={this.setSelectedAmount}
+                            stake_value={this.state.stake_value}
+                            payout_value={this.state.payout_value}
+                            duration_unit={this.state.curr_duration_unit}
+                            duration_value={this.state.curr_duration_value}
+                            // duration
+                            setSelectedDuration={this.setSelectedDuration}
+                            t_duration={this.state.t_duration}
+                            s_duration={this.state.s_duration}
+                            m_duration={this.state.m_duration}
+                            h_duration={this.state.h_duration}
+                            d_duration={this.state.d_duration}
+                        />
+                    </Div100vhContainer>
+                </Modal>
+            </React.Fragment>
         );
     }
 }

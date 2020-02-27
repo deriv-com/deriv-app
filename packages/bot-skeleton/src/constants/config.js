@@ -243,6 +243,7 @@ export const config = {
     NOT_AVAILABLE_DROPDOWN_OPTIONS: [[localize('Not available'), 'na']],
     NOT_AVAILABLE_DURATIONS: [{ display: localize('Not available'), unit: 'na', min: 0 }],
     BARRIER_TRADE_TYPES: ['higherlower', 'touchnotouch', 'endsinout', 'staysinout', 'callputspread'],
+    PREDICTION_TRADE_TYPES: ['matchesdiffers', 'overunder', 'highlowticks'],
     DIGIT_CATEGORIES: ['digits', 'highlowticks'],
     INDEPEDENT_BLOCKS: ['block_holder', 'tick_analysis', 'loader', 'procedures_defreturn', 'procedures_defnoreturn'],
     bbResult: [
@@ -263,6 +264,7 @@ export const config = {
     workspaces: {
         flyoutWorkspacesStartScale: 0.7,
         mainWorkspaceStartScale: 0.9,
+        previewWorkspaceStartScale: 0.6,
     },
     strategies: {
         martingale: {
@@ -292,4 +294,5 @@ export const config = {
         toolbar: '5',
         run_panel_tooltips: '5',
     },
+    default_file_name: localize('Untitled Bot'),
 };

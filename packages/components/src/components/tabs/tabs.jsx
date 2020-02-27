@@ -12,35 +12,34 @@ class Tabs extends Component {
 
     onTabItemClick = index => {
         this.setState({ active_index: index });
-
-        if (typeof this.props.onTabItemClick === 'function') {
-            this.props.onTabItemClick(index);
-        }
     };
 
     componentDidUpdate(prev_props, prev_state) {
-        if (this.props.active_index && prev_state.active_index !== this.props.active_index) {
-            this.setState({ active_index: this.props.active_index || 0 });
+        if (this.props.active_index !== -1 && prev_state.active_index !== this.state.active_index) {
+            this.setState({ active_index: this.state.active_index || 0 });
+
+            if (typeof this.props.onTabItemClick === 'function') {
+                this.props.onTabItemClick(this.state.active_index);
+            }
         }
     }
 
     render() {
         const { children, className, top, bottom, fit_content } = this.props;
         const { active_index } = this.state;
-        const tab_width = (100 / children.length).toFixed(2);
+        const tab_width = fit_content ? '150px' : `${(100 / children.length).toFixed(2)}%`;
 
         return (
             <div
                 className={classNames('dc-tabs', {
                     [`dc-tabs dc-tabs--${className}`]: className,
                 })}
-                style={{ '--tab-width': `${tab_width}%` }}
+                style={{ '--tab-width': `${tab_width}` }}
             >
                 <ul
                     className={classNames('dc-tabs__list', {
                         'dc-tabs__list--top': top,
                         'dc-tabs__list--bottom': bottom,
-                        'dc-tabs__list--fit-content': fit_content,
                     })}
                 >
                     {children.map((child, index) => {

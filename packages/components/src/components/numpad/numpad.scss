@@ -89,10 +89,10 @@ $SQUARE_SIZE: 48px;
         text-align: left !important;
 
         &--is-disabled {
-            background-color: var(--general-disabled);
+            background-color: var(--general-disabled) !important;
 
             .btn__text {
-                color: var(--text-disabled);
+                color: var(--text-disabled) !important;
             }
         }
         &--r3 {

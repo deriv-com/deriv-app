@@ -45,7 +45,7 @@ class Trade extends React.Component {
                 {/* Div100vhContainer is workaround for browsers on devices
                     with toolbars covering screen height,
                     using css vh is not returning correct screen height */}
-                <Div100vhContainer className='chart-container' is_disabled={isDesktop()} height_offset='260px'>
+                <Div100vhContainer className='chart-container' is_disabled={isDesktop()} height_offset='249px'>
                     <DesktopWrapper>
                         <NotificationMessages />
                     </DesktopWrapper>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { Localize, localize } from '@deriv/translations';
+import { addComma } from '@deriv/shared/utils/currency';
 import { connect } from 'Stores/connect';
 import { getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
 
@@ -113,7 +114,7 @@ const Numbers = ({
                     i18n_default_text='Should be between {{min}} and {{max}}'
                     values={{
                         min,
-                        max,
+                        max: addComma(max, 0, false),
                     }}
                 />
             );

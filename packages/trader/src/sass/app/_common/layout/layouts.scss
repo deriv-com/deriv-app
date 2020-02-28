@@ -169,7 +169,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
     padding: 0 0.8rem;
     display: flex;
     flex-direction: column;
-    height: 214px;
+    height: 202px;
     position: relative;
 
     &__content-loader {
@@ -177,7 +177,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         height: 100%;
         width: 100%;
         left: 0;
-        bottom: 0.4rem;
+        bottom: -0.8rem;
 
         svg {
             height: 100%;

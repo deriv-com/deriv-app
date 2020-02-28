@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { Tabs, Modal, Money } from '@deriv/components';
 import { connect } from 'Stores/connect';
@@ -83,7 +84,12 @@ class TradeParamsModal extends React.Component {
         const { currency, duration_units_list } = this.props;
         return (
             <React.Fragment>
-                <ToastErrorPopup />
+                <ToastErrorPopup
+                    portal_id={this.props.is_open ? 'modal_root' : 'deriv_app'}
+                    className={classNames('trade-params__error-popup', {
+                        'trade-params__error-popup--has-numpad': this.props.is_open,
+                    })}
+                />
                 <Modal
                     id='dt_trade_parameters_mobile'
                     className='trade-params'

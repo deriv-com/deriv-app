@@ -143,10 +143,11 @@ const Numpad = ({
                     className={classNames('dc-numpad__number', {
                         'dc-numpad__number--is-disabled':
                             !default_value.toString().length ||
+                            (min && formatNumber(default_value) < min) ||
                             (typeof onValidate === 'function' ? !onValidate(default_value) : false),
                     })}
                     onClick={() => {
-                        if (!default_value.toString().length) return;
+                        if (!default_value.toString().length || (min && formatNumber(default_value) < min)) return;
                         if (typeof onValidate === 'function') {
                             onValidate(formatNumber(default_value));
                             onSubmit(formatNumber(default_value));
@@ -154,7 +155,7 @@ const Numpad = ({
                             onSubmit(formatNumber(default_value));
                         }
                     }}
-                    is_disabled={!default_value.toString().length}
+                    is_disabled={!default_value.toString().length || (min && formatNumber(default_value) < min)}
                 >
                     {submit_label}
                 </Button>

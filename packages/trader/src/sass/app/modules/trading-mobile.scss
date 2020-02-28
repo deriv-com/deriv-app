@@ -38,6 +38,16 @@
 
 /** @define trade-params; weak */
 .trade-params {
+    &__error-popup {
+        top: 12rem !important;
+        opacity: 0.8;
+        z-index: 2 !important;
+
+        &--has-numpad {
+            z-index: 9999 !important;
+            top: 0.8rem !important;
+        }
+    }
     &__duration {
         &-tickpicker {
             height: 328px;

@@ -178,7 +178,7 @@ class CompositeCalendarMobile extends React.PureComponent {
                     />
                 </div>
                 <MobileDialog
-                    portal_element_id='deriv_app'
+                    portal_element_id='modal_root'
                     title={localize('Please select duration')}
                     visible={open}
                     onClose={() => this.setState({ open: false })}

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tabs, Numpad } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { localize } from '@deriv/translations';
-import CurrencyUtils from '@deriv/shared/utils/currency';
+import { Localize, localize } from '@deriv/translations';
+import CurrencyUtils, { addComma } from '@deriv/shared/utils/currency';
 import { connect } from 'Stores/connect';
 
 const Basis = ({
@@ -18,6 +18,8 @@ const Basis = ({
     trade_basis,
     trade_duration,
     trade_duration_unit,
+    setToastErrorMessage,
+    setToastErrorVisibility,
 }) => {
     const user_currency_decimal_places = CurrencyUtils.getDecimalPlaces(currency);
     const onNumberChange = num => setSelectedAmount(basis, num);
@@ -37,6 +39,31 @@ const Basis = ({
         if (!ObjectUtils.isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
         toggleModal();
     };
+    const min = basis === 'payout' ? CurrencyUtils.getMinPayout(currency) : CurrencyUtils.getMinWithdrawal(currency);
+    const max = Math.pow(10, CurrencyUtils.AMOUNT_MAX_LENGTH) - 1;
+    const validateDuration = value => {
+        const selected_value = parseFloat(value.toString());
+        if (isNaN(selected_value) || selected_value < min || selected_value > max) {
+            setToastErrorMessage(
+                <Localize
+                    i18n_default_text='Should be between {{min}} and {{max}}'
+                    values={{
+                        min,
+                        max: addComma(
+                            max,
+                            CurrencyUtils.getDecimalPlaces(currency),
+                            CurrencyUtils.isCryptocurrency(currency)
+                        ),
+                    }}
+                />
+            );
+            setToastErrorVisibility(true);
+            return false;
+        }
+
+        setToastErrorVisibility(false);
+        return true;
+    };
 
     return (
         <div className='trade-params__amount-keypad'>
@@ -50,8 +77,9 @@ const Basis = ({
                     return <div className={className}>{v}</div>;
                 }}
                 pip_size={user_currency_decimal_places}
-                min={0}
-                max={Math.pow(10, CurrencyUtils.AMOUNT_MAX_LENGTH) - 1}
+                min={min}
+                max={max}
+                onValidate={validateDuration}
                 submit_label={localize('OK')}
                 onValueChange={onNumberChange}
             />
@@ -59,13 +87,15 @@ const Basis = ({
     );
 };
 
-const AmountWrapper = connect(({ modules, client }) => ({
+const AmountWrapper = connect(({ modules, client, ui }) => ({
     onChangeMultiple: modules.trade.onChangeMultiple,
     trade_amount: modules.trade.amount,
     trade_basis: modules.trade.basis,
     trade_duration_unit: modules.trade.duration_unit,
     trade_duration: modules.trade.duration,
     currency: client.currency,
+    setToastErrorMessage: ui.setToastErrorMessage,
+    setToastErrorVisibility: ui.setToastErrorVisibility,
 }))(Basis);
 
 const Amount = ({

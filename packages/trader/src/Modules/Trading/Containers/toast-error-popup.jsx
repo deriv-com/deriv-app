@@ -3,36 +3,27 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'Stores/connect';
 
-class ToastErrorPopup extends React.Component {
-    constructor(props) {
-        super(props);
-        this.el = document.createElement('div');
-        this.state = {
-            popup_root: document.getElementById('popup_root'),
-        };
-    }
-
-    componentDidMount() {
-        this.state.popup_root.appendChild(this.el);
-    }
-
-    componentWillUnmount() {
-        this.state.popup_root.removeChild(this.el);
-    }
-
-    render() {
-        return ReactDOM.createPortal(
-            <ToastError
-                is_open={this.props.should_show_toast_error}
-                onClose={() => this.props.setToastErrorVisibility(false)}
-                timeout={this.props.mobile_toast_timeout}
-            >
-                {this.props.mobile_toast_error}
-            </ToastError>,
-            this.el
-        );
-    }
-}
+const ToastErrorPopup = ({
+    className,
+    portal_id,
+    should_show_toast_error,
+    setToastErrorVisibility,
+    mobile_toast_error,
+    mobile_toast_timeout,
+}) => {
+    if (!document.getElementById(portal_id)) return null;
+    return ReactDOM.createPortal(
+        <ToastError
+            className={className}
+            is_open={should_show_toast_error}
+            onClose={() => setToastErrorVisibility(false)}
+            timeout={mobile_toast_timeout}
+        >
+            {mobile_toast_error}
+        </ToastError>,
+        document.getElementById(portal_id)
+    );
+};
 
 export default connect(({ ui }) => ({
     should_show_toast_error: ui.should_show_toast_error,

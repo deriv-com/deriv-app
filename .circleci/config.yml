@@ -45,12 +45,6 @@ commands:
           key: node-{{ checksum "package-lock.json" }}
           paths:
             - "node_modules"
-  npm_install:
-    description: "Install npm modules"
-    steps:
-      - run:
-          name: Bootstrap
-          command: npm run bootstrap
   build:
     description: "Build"
     steps:
@@ -104,37 +98,28 @@ commands:
           command: |
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
             docker push ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
-  k8s_deploy_staging:
+  k8s_deploy:
     description: "Deploy to k8s cluster"
+    parameters:
+      k8s_svc_name:
+        type: string
+        default: "staging-deriv-app"
     steps:
       - k8s/install-kubectl
       - run:
           name: Deploying to k8s cluster for service deriv-app
           command: |
             echo $CA_CRT | base64 --decode > ca.crt
-            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/staging-deriv-app staging-deriv-app=${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
-  k8s_deploy_production:
-    description: "Deploy to k8s cluster"
-    steps:
-      - k8s/install-kubectl
-      - run:
-          name: Deploying to k8s cluster for service deriv-app
-          command: |
-            echo $CA_CRT | base64 --decode > ca.crt
-            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/production-deriv-app production-deriv-app=${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
+            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/<< parameters.k8s_svc_name >> << parameters.k8s_svc_name >>=${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
 
 jobs:
-  mock:
+  test:
     docker:
       - image: circleci/node:11.15.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
-      - compress
-      - upload_artifact  # uploading the built code to s3 to create a backup of key services separate from Kubernetes deployment
-      - upload_checksum  # uploading compressed artifact checksum to cross match artifact fingerprint
-      - docker
   release_staging:
     docker:
       - image: circleci/node:11.15.0-stretch
@@ -143,7 +128,6 @@ jobs:
       - npm_install_from_cache
       - build
       - docker
-      - k8s_deploy_staging
   release_production:
     docker:
       - image: circleci/node:11.15.0-stretch
@@ -155,16 +139,33 @@ jobs:
       - upload_artifact  # uploading the built code to s3 to create a backup of key services separate from Kubernetes deployment
       - upload_checksum  # uploading compressed artifact checksum to cross match artifact fingerprint
       - docker
-      - k8s_deploy_production
+  deploy_staging:
+    docker:
+      - image: circleci/node:11.15.0-stretch
+    steps:
+      - k8s_deploy      
+  deploy_production:
+    docker:
+      - image: circleci/node:11.15.0-stretch
+    steps:
+      - k8s_deploy:
+          k8s_svc_name: "production-deriv-app"
 
 workflows:
-  test:
+  build_and_push_dev:
     jobs:
-      - mock:
-          context: binary-frontend-deploy
+      - test:
+          #filters:
+          #  only: /^dev/
   release_staging:
     jobs:
       - release_staging:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^staging.*/
+      - deploy_staging:
           filters:
             branches:
               ignore: /.*/
@@ -179,3 +180,9 @@ workflows:
             tags:
               only: /^production.*/
           context: binary-frontend-artifact-upload  # using context to retrieve shared secret from circle ci
+      - deploy_production:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^production.*/

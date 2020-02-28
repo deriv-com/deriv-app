@@ -154,7 +154,7 @@ jobs:
 workflows:
   build_and_push_dev:
     jobs:
-      - test:
+      - test
           #filters:
           #  only: /^dev/
   release_staging:

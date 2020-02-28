@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   k8s: circleci/kubernetes@0.7.0
+  s3: circleci/aws-s3@1.0.13
 commands:
   git_checkout_from_cache:
     description: "Git checkout and save cache"
@@ -30,13 +31,26 @@ commands:
           key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
+  npm_install_from_cache:
+    description: "npm install and save cache"
+    steps:
+      - restore_cache:
+          keys:
+            - node-{{ checksum "package-lock.json" }}
+            - node-
+      - run:
+          name: Install npm packages
+          command: npm run bootstrap
+      - save_cache:
+          key: node-{{ checksum "package-lock.json" }}
+          paths:
+            - "node_modules"
   npm_install:
     description: "Install npm modules"
     steps:
       - run:
           name: Bootstrap
           command: npm run bootstrap
-
   build:
     description: "Build"
     steps:
@@ -46,7 +60,37 @@ commands:
       - run:
           name: "build core"
           command: node_modules/lerna/cli.js exec --scope @deriv/core -- npm run build
-
+  compress:
+    description: "Compress"
+    steps:
+      - run:
+          name: "Compress"
+          command: |
+            pushd packages/core/dist/
+            tar -cvf artifact.tar *
+            mv artifact.tar ${OLDPWD}/
+      - run:
+          name: "Tag commit id as artifact identifer"
+          command: echo "${CIRCLE_TAG}" > artifact-info.txt
+  upload_artifact:
+    description: "upload build artifact to s3 bucket"
+    steps:
+      - s3/copy:
+          from: artifact.tar
+          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/'
+          aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
+          aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
+          aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
+          arguments: '--metadata "{\"x-amz-artifact-id\": \"${CIRCLE_TAG}\" }"'
+  upload_checksum:
+    description: "upload artifact checksum to s3"
+    steps:
+      - s3/copy:
+          from: artifact-info.txt
+          to: 's3://${CONTEXT_ARTIFACT_S3_BUCKET}/${CIRCLE_PROJECT_REPONAME}/'
+          aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
+          aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
+          aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
   docker:
     description: "Build and Push image to docker hub"
     steps:
@@ -69,7 +113,6 @@ commands:
           command: |
             echo $CA_CRT | base64 --decode > ca.crt
             kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/staging-deriv-app staging-deriv-app=${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
-
   k8s_deploy_production:
     description: "Deploy to k8s cluster"
     steps:
@@ -80,29 +123,45 @@ commands:
             echo $CA_CRT | base64 --decode > ca.crt
             kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/production-deriv-app production-deriv-app=${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
 
-
 jobs:
+  mock:
+    docker:
+      - image: circleci/node:11.15.0-stretch
+    steps:
+      - git_checkout_from_cache
+      - npm_install_from_cache
+      - build
+      - compress
+      - upload_artifact  # uploading the built code to s3 to create a backup of key services separate from Kubernetes deployment
+      - upload_checksum  # uploading compressed artifact checksum to cross match artifact fingerprint
+      - docker
   release_staging:
     docker:
       - image: circleci/node:11.15.0-stretch
     steps:
       - git_checkout_from_cache
-      - npm_install
+      - npm_install_from_cache
       - build
       - docker
       - k8s_deploy_staging
-
   release_production:
     docker:
       - image: circleci/node:11.15.0-stretch
     steps:
       - git_checkout_from_cache
-      - npm_install
+      - npm_install_from_cache
       - build
+      - compress
+      - upload_artifact  # uploading the built code to s3 to create a backup of key services separate from Kubernetes deployment
+      - upload_checksum  # uploading compressed artifact checksum to cross match artifact fingerprint
       - docker
       - k8s_deploy_production
 
 workflows:
+  test:
+    jobs:
+      - mock:
+          context: binary-frontend-deploy
   release_staging:
     jobs:
       - release_staging:
@@ -119,4 +178,4 @@ workflows:
               ignore: /.*/
             tags:
               only: /^production.*/
-
+          context: binary-frontend-artifact-upload  # using context to retrieve shared secret from circle ci

@@ -156,7 +156,8 @@ workflows:
     jobs:
       - test:
           filters:
-            only: /^dev/
+            branches:
+              only: /^dev/
   release_staging:
     jobs:
       - release_staging:

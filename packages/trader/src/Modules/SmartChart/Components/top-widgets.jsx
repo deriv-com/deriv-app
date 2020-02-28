@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactDOM from 'react-dom';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { AssetInformation, ChartTitle } from 'Modules/SmartChart';
 import { isEnded } from 'Stores/Modules/Contract/Helpers/logic';
+import { isDigitContract } from 'Stores/Modules/Contract/Helpers/digits';
 
 const TradeInfo = ({ markers_array }) => {
     const latest_tick_contract = markers_array[markers_array.length - 1];
@@ -12,10 +15,11 @@ const TradeInfo = ({ markers_array }) => {
     const is_ended = isEnded(latest_tick_contract.contract_info);
     if (is_ended) return null;
 
-    const { tick_stream, tick_count } = latest_tick_contract.contract_info;
+    const { contract_type, tick_stream, tick_count } = latest_tick_contract.contract_info;
+    const current_tick = isDigitContract(contract_type) ? tick_stream.length : Math.max(tick_stream.length - 1, 0);
     return (
         <span className='recent-trade-info'>
-            {localize('Tick')} {Math.max(tick_stream.length - 1, 0)}/{tick_count}
+            {localize('Tick')} {current_tick}/{tick_count}
         </span>
     );
 };
@@ -24,19 +28,37 @@ const RecentTradeInfo = connect(({ modules }) => ({
     markers_array: modules.contract_trade.markers_array,
 }))(TradeInfo);
 
-const TopWidgets = ({ InfoBox, is_mobile, is_title_enabled = true, onSymbolChange }) => {
+const TopWidgets = ({ InfoBox, is_mobile, is_title_enabled = true, onSymbolChange, y_axis_width, theme }) => {
+    const ChartTitleLocal = (
+        <ChartTitle
+            enabled={is_title_enabled}
+            onChange={onSymbolChange}
+            searchInputClassName='data-hj-whitelist'
+            isNestedList={is_mobile}
+            portalNodeId={is_mobile ? 'deriv_app' : undefined}
+        />
+    );
+
+    const portal = ReactDOM.createPortal(
+        <div className={`smartcharts-${theme}`}>
+            <div
+                className='top-widgets-portal'
+                style={{
+                    width: `calc(100% - ${y_axis_width ? y_axis_width + 5 : 0}px)`,
+                }}
+            >
+                {ChartTitleLocal}
+                <RecentTradeInfo />
+            </div>
+        </div>,
+        document.getElementById('app_contents')
+    );
+
     return (
         <React.Fragment>
             {InfoBox}
-            <ChartTitle
-                enabled={is_title_enabled}
-                onChange={onSymbolChange}
-                searchInputClassName='data-hj-whitelist'
-                isNestedList={is_mobile}
-                portalNodeId={is_mobile ? 'deriv_app' : undefined}
-                containerId={is_mobile ? 'app_contents' : undefined}
-            />
-            {is_mobile && <RecentTradeInfo />}
+            <MobileWrapper>{portal}</MobileWrapper>
+            <DesktopWrapper>{ChartTitleLocal}</DesktopWrapper>
             <AssetInformation />
         </React.Fragment>
     );

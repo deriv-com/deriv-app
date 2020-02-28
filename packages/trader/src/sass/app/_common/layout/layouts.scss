@@ -35,25 +35,22 @@
         }
     }
     &--is-mobile {
-        .trade-container {
-            .chart-container {
-                .cq-top-ui-widgets {
-                    .recent-trade-info {
-                        font-weight: bold;
-                        position: absolute;
-                        font-size: 1.6rem;
-                        line-height: 2.4rem;
-                        color: var(--text-general);
-                        @media (min-width: 360px) and (max-width: #{$tablet-width - 1}) {
-                            left: 245px;
-                            top: 14px;
-                        }
-                        @media (max-width: 359px) {
-                            left: 27px;
-                            top: 52px;
-                        }
-                    }
-                }
+        .top-widgets-portal {
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            z-index: 1;
+
+            .recent-trade-info {
+                font-weight: bold;
+                min-width: 8rem;
+                font-size: 1.6rem;
+                line-height: 2.4rem;
+                margin-left: 0.8rem;
+                color: var(--text-general);
             }
         }
         .cq-chart-title {

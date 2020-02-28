@@ -9,6 +9,7 @@ const concatenate = (number, default_value) => default_value.toString().concat(n
 
 const Numpad = ({
     className,
+    currency,
     is_regular,
     is_currency,
     label,
@@ -23,10 +24,11 @@ const Numpad = ({
     onValueChange,
     onValidate,
 }) => {
-    const [is_float, setFloat] = React.useState(false);
-    const [default_value, setValue] = React.useState(value);
-    const isFloat = v => v % 1 !== 0;
     const formatNumber = v => (typeof format === 'function' ? format(v) : v);
+    const isFloat = v => String(v).match(/\./);
+    const formatted_value = formatNumber(value);
+    const [is_float, setFloat] = React.useState(isFloat(formatted_value));
+    const [default_value, setValue] = React.useState(formatted_value);
 
     const onSelect = num => {
         if (typeof onValidate === 'function' && default_value !== '') {
@@ -53,7 +55,7 @@ const Numpad = ({
 
                 break;
             default:
-                if (default_value === 0) {
+                if (String(default_value) === '0') {
                     setValue(concatenate(num, ''));
                 } else {
                     const regex = /(?:\d+\.)(\d+)$/;
@@ -73,6 +75,11 @@ const Numpad = ({
         }
     };
 
+    const getDecimals = val => {
+        const array_value = typeof val === 'string' ? val.split('.') : val.toString().split('.');
+        return array_value && array_value.length > 1 ? array_value[1].length : 0;
+    };
+
     const chop = () => {
         if (default_value.toString().slice(-1) === '.') {
             setFloat(false);
@@ -89,10 +96,6 @@ const Numpad = ({
     });
 
     React.useEffect(() => {
-        if (value) setValue(value);
-    }, [value]);
-
-    React.useEffect(() => {
         if (onValueChange) onValueChange(default_value);
     }, [default_value]);
     return (
@@ -103,14 +106,14 @@ const Numpad = ({
             })}
         >
             <StepInput
+                currency={currency}
                 pip_size={pip_size}
                 value={default_value}
                 render={render}
                 onChange={v => {
-                    if (!isFloat(v)) {
-                        setFloat(false);
-                    }
-                    setValue(v);
+                    const amount = Number(v).toFixed(getDecimals(default_value));
+                    setFloat(isFloat(amount));
+                    setValue(amount);
                 }}
                 min={min}
                 max={max}

@@ -19,10 +19,9 @@ class Reports extends React.Component {
     onClickClose = () => this.props.routeBackInApp(this.props.history);
 
     getRoutedReport() {
-        const route = this.props.routes.find(r => r.path === this.props.location.pathname);
-        if (!route) {
-            return null;
-        }
+        const { routes } = this.props;
+        const route = routes.find(r => r.path === this.props.location.pathname || r.path === r.default) || routes[0];
+        if (!route) return null;
 
         const Content = route.component;
         return <Content component_icon={route.icon_component} />;

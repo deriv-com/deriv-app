@@ -47,17 +47,8 @@ class ContractDrawer extends Component {
         this.setState(state => ({ should_show_contract_audit: !state.should_show_contract_audit }));
     };
 
-    onSwipedDown = () => {
-        if (!this.state.is_user_scroll) {
-            this.setState({ should_show_contract_audit: false });
-        }
-    };
-
+    onSwipedDown = () => this.setState({ should_show_contract_audit: false });
     onSwipedUp = () => this.setState({ should_show_contract_audit: true });
-
-    onScrollStart = () => this.setState({ is_user_scroll: true });
-
-    onScrollStop = () => this.setState({ is_user_scroll: false });
 
     get is_collapsed() {
         return this.state.should_show_contract_audit;
@@ -298,7 +289,7 @@ class ContractDrawer extends Component {
                         }}
                         unmountOnExit
                     >
-                        <SwipeableContractAudit onSwipedDown={this.onSwipedDown}>
+                        <SwipeableContractAudit>
                             <ContractAudit
                                 contract_info={contract_info}
                                 contract_end_time={getEndTime(contract_info)}
@@ -309,8 +300,6 @@ class ContractDrawer extends Component {
                                 duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                                 exit_spot={exit_spot}
                                 has_result={!!is_sold}
-                                onScrollStart={this.onScrollStart}
-                                onScrollStop={this.onScrollStop}
                             />
                         </SwipeableContractAudit>
                     </CSSTransition>

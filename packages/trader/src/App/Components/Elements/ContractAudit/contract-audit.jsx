@@ -7,16 +7,6 @@ import { getBarrierLabel, getBarrierValue, isDigitType } from 'App/Components/El
 import ContractAuditItem from './contract-audit-item.jsx';
 
 class ContractAudit extends React.PureComponent {
-    ref = React.createRef();
-
-    onScroll = () => {
-        const is_at_top = this.ref.current.getScrollTop() <= 0;
-
-        if (is_at_top) {
-            this.props.onScrollStop();
-        }
-    };
-
     render() {
         const { contract_end_time, contract_info, duration, duration_unit, exit_spot, has_result } = this.props;
         if (!has_result) return null;
@@ -24,13 +14,7 @@ class ContractAudit extends React.PureComponent {
         const IconExitTime = <Icon icon='IcContractExitTime' color={is_profit ? 'green' : 'red'} size={24} />;
         return (
             <div className='contract-audit__wrapper'>
-                <ThemedScrollbars
-                    list_ref={this.ref}
-                    style={{ width: '100%', height: '100%' }}
-                    autoHide
-                    onScrollStart={this.props.onScrollStart}
-                    onScroll={this.onScroll}
-                >
+                <ThemedScrollbars style={{ width: '100%', height: '100%' }} autoHide>
                     <div id='dt_id_label' className='contract-audit__grid'>
                         <ContractAuditItem
                             icon={<Icon icon='IcContractId' size={24} />}

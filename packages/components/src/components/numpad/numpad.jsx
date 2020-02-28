@@ -31,8 +31,9 @@ const Numpad = ({
     const [default_value, setValue] = React.useState(formatted_value);
 
     const onSelect = num => {
+        console.warn(num, default_value);
         if (typeof onValidate === 'function' && default_value !== '') {
-            const passes = onValidate(concatenate(num, default_value));
+            const passes = formatNumber(default_value) <= 0 ? true : onValidate(concatenate(num, default_value));
             if (!passes) return;
         }
 
@@ -130,7 +131,14 @@ const Numpad = ({
                     type='secondary'
                     has_effect
                     className='dc-numpad__number'
-                    onClick={() => onSelect(-1)}
+                    onClick={() => {
+                        if (typeof onValidate === 'function') {
+                            onSelect(-1);
+                            onValidate(formatNumber(default_value));
+                        } else {
+                            onSelect(-1);
+                        }
+                    }}
                     is_disabled={!default_value.toString().length}
                 >
                     ⌫
@@ -147,7 +155,9 @@ const Numpad = ({
                             (typeof onValidate === 'function' ? !onValidate(default_value) : false),
                     })}
                     onClick={() => {
-                        if (!default_value.toString().length || (min && formatNumber(default_value) < min)) return;
+                        if (!default_value.toString().length) return;
+                        if (min && formatNumber(default_value) < min) return;
+                        else if (!min && formatNumber(default_value) < 1) return;
                         if (typeof onValidate === 'function') {
                             onValidate(formatNumber(default_value));
                             onSubmit(formatNumber(default_value));

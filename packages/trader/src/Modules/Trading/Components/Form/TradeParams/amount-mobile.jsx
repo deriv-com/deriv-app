@@ -2,7 +2,7 @@ import React from 'react';
 import { Tabs, Numpad } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { Localize, localize } from '@deriv/translations';
-import CurrencyUtils, { addComma } from '@deriv/shared/utils/currency';
+import CurrencyUtils from '@deriv/shared/utils/currency';
 import { connect } from 'Stores/connect';
 
 const Basis = ({
@@ -39,24 +39,10 @@ const Basis = ({
         if (!ObjectUtils.isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
         toggleModal();
     };
-    const min = basis === 'payout' ? CurrencyUtils.getMinPayout(currency) : CurrencyUtils.getMinWithdrawal(currency);
-    const max = Math.pow(10, CurrencyUtils.AMOUNT_MAX_LENGTH) - 1;
-    const validateDuration = value => {
+    const validateAmount = value => {
         const selected_value = parseFloat(value.toString());
-        if (isNaN(selected_value) || selected_value < min || selected_value > max) {
-            setToastErrorMessage(
-                <Localize
-                    i18n_default_text='Should be between {{min}} and {{max}}'
-                    values={{
-                        min,
-                        max: addComma(
-                            max,
-                            CurrencyUtils.getDecimalPlaces(currency),
-                            CurrencyUtils.isCryptocurrency(currency)
-                        ),
-                    }}
-                />
-            );
+        if (isNaN(selected_value) || selected_value < 1 || value.toString().length < 1) {
+            setToastErrorMessage(<Localize i18n_default_text='Should not be 0 or empty' />);
             setToastErrorVisibility(true);
             return false;
         }
@@ -77,9 +63,7 @@ const Basis = ({
                     return <div className={className}>{v}</div>;
                 }}
                 pip_size={user_currency_decimal_places}
-                min={min}
-                max={max}
-                onValidate={validateDuration}
+                onValidate={validateAmount}
                 submit_label={localize('OK')}
                 onValueChange={onNumberChange}
             />

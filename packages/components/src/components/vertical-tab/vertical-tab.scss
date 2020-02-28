@@ -1,30 +1,49 @@
-$BOTTOM_SPACING_REQUIRED: 31px; // Spacing between end of the container and Footer (including shadow)
-$MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING_REQUIRED});
+$MIN_HEIGHT_FULL_SCREEN: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT});
+
+$FLOATING_PADDING: 2.4rem;
+$FLOATING_HEADER_HEIGHT: 41px;
+$MIN_HEIGHT_FLOATING: calc(
+    100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - #{$FLOATING_HEADER_HEIGHT} - #{$FLOATING_PADDING}
+);
 
 .dc-vertical-tab {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     border-radius: $BORDER_RADIUS;
-    background-color: var(--general-section-1);
     height: 100%;
 
-    &__content-container {
+    &:not(&--floating) {
+        background-color: var(--general-section-1);
+    }
+    &--floating {
+        justify-content: center;
+    }
+    &__content-container,
+    &__content-inner {
         position: relative;
         height: 100%;
         width: 100%;
         display: flex;
+    }
+    &__content-container {
         flex-flow: column nowrap;
         flex-grow: 1;
     }
     &--full-screen {
-        min-height: $MIN_HEIGHT;
+        min-height: $MIN_HEIGHT_FULL_SCREEN;
+        width: 100%;
 
         // .dc-vertical-tab__tab {
         //     min-width: 15%;
         // }
     }
-    &:not(.dc-vertical-tab--full-screen) {
+    &--full-screen.dc-vertical-tab--floating {
+        min-height: $MIN_HEIGHT_FLOATING;
+    }
+    &:not(.dc-vertical-tab--full-screen):not(.dc-vertical-tab--floating) {
+        // height: 600px;
+
         .dc-vertical-tab__content {
             padding: 2.4rem;
         }
@@ -57,6 +76,19 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         border-radius: $BORDER_RADIUS 0 0 $BORDER_RADIUS;
         background-color: var(--general-section-1);
         position: relative;
+
+        &--floating {
+            min-width: 256px;
+            padding: 0.8rem;
+            border-radius: #{$BORDER_RADIUS * 2};
+            position: sticky;
+            top: calc(2.4rem + 41px); // 41px for the header of PageOverlay
+
+            .dc-vertical-tab__header--highlight {
+                width: calc(100% - 1.6rem);
+                border-radius: $BORDER_RADIUS;
+            }
+        }
     }
     &__header-title {
         @include typeface(--title-center-bold-black, none);
@@ -67,7 +99,36 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         transition: background-color 0.1s ease-in;
         text-decoration: none;
     }
+    &--grouped {
+        .dc-vertical-tab__header {
+            padding-left: 4.4rem;
+
+            &--highlight {
+                z-index: -1;
+            }
+            &--active {
+                padding-left: 4.8rem;
+            }
+        }
+    }
     &__header {
+        &__icon.dc-vertical-tab__header__icon--active {
+            margin-right: 2rem;
+        }
+    }
+    &__header-group {
+        &-chevron {
+            position: absolute;
+            right: 2.4rem;
+            transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+
+            &--invert {
+                transform: rotate(180deg);
+            }
+        }
+    }
+    &__header,
+    &__header-group {
         @include typeface(--paragraph-center-bold-black, none);
         line-height: 1.5;
         color: var(--text-general);
@@ -96,6 +157,7 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
             font-weight: bold;
         }
         &--highlight {
+            // This selector has a `transition` property that's set inline
             position: absolute;
             display: block;
             content: '';
@@ -106,7 +168,6 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
             height: 41px;
             transform: translate3d(0, 0, 0);
             z-index: 0;
-            transition: transform 0.25s ease;
         }
         &--new {
             font-size: 1rem;
@@ -116,6 +177,9 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
             background-color: var(--text-loss-danger);
             color: var(--general-main-1);
             border-radius: 8px;
+        }
+        &--floating {
+            border-radius: $BORDER_RADIUS;
         }
     }
     &__content {
@@ -130,9 +194,18 @@ $MIN_HEIGHT: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT} - #{$BOTTOM_SPACING
         position: relative;
         background-color: var(--general-main-1);
 
+        &-side-note {
+            min-width: 256px;
+            margin-left: 2.4rem;
+        }
         &.dc-vertical-tab:not(.dc-vertical-tab--full-screen) {
             padding: 2.4rem;
             height: 100%;
+        }
+        &--floating {
+            max-width: 952px;
+            min-width: 672px;
+            margin-left: 2.4rem;
         }
     }
 }

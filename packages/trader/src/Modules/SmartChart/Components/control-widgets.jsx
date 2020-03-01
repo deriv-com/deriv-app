@@ -1,27 +1,19 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-    ChartSize,
-    ChartTypes,
-    Comparison,
-    CrosshairToggle,
-    DrawTools,
-    Share,
-    StudyLegend,
-    Timeperiod,
-    Views,
-} from 'Modules/SmartChart';
+import { ChartSize, ChartMode, Comparison, DrawTools, Share, StudyLegend, Views } from 'Modules/SmartChart';
 
 const ControlWidgets = ({ updateChartType, updateGranularity }) => (
     <React.Fragment>
-        <CrosshairToggle />
-        <ChartTypes onChange={updateChartType} />
+        <ChartMode
+            portalNodeId='modal_root'
+            onChartType={type => updateChartType(type)}
+            onGranularity={granularity => updateGranularity(granularity)}
+        />
         <StudyLegend searchInputClassName='data-hj-whitelist' />
         <Comparison searchInputClassName='data-hj-whitelist' />
         <DrawTools />
         <Views searchInputClassName='data-hj-whitelist' />
-        <Share />
-        <Timeperiod onChange={updateGranularity} />
+        <Share portalNodeId='modal_root' />
         <ChartSize />
     </React.Fragment>
 );

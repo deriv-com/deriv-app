@@ -57,6 +57,7 @@ class TogglePositionsMobile extends React.Component {
                                 key={portfolio_position.id}
                                 currency={currency}
                                 toggleUnsupportedContractModal={toggleUnsupportedContractModal}
+                                togglePositions={this.togglePositions}
                                 {...portfolio_position}
                             />
                         </CSSTransition>

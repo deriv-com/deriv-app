@@ -12,6 +12,7 @@ const Numpad = ({
     currency,
     is_regular,
     is_currency,
+    is_submit_disabled,
     label,
     max = 9999999,
     min = 0,
@@ -32,14 +33,7 @@ const Numpad = ({
 
     const onSelect = num => {
         if (typeof onValidate === 'function' && default_value !== '') {
-            let passes = false;
-            const zero_decimal_strings = ['0.0000000', '0.000000', '0.00000', '0.0000', '0.000', '0.00', '0.0', '0.'];
-            const is_formatted_zero = zero_value => zero_decimal_strings.includes(zero_value.toString());
-            if (is_currency) {
-                passes = is_formatted_zero(default_value) || onValidate(concatenate(num, default_value));
-            } else {
-                passes = onValidate(concatenate(num, default_value));
-            }
+            const passes = onValidate(concatenate(num, default_value));
             if (!passes) return;
         }
 
@@ -107,6 +101,7 @@ const Numpad = ({
         if (onValueChange) onValueChange(default_value);
     }, [default_value]);
 
+    const has_error = !onValidate(default_value) || onValidate(default_value) === 'error';
     return (
         <div
             className={classNames('dc-numpad', className, {
@@ -115,6 +110,7 @@ const Numpad = ({
             })}
         >
             <StepInput
+                className={has_error ? 'dc-numpad__input-field--has-error' : null}
                 currency={currency}
                 pip_size={pip_size}
                 value={default_value}
@@ -164,6 +160,7 @@ const Numpad = ({
                     has_effect
                     className={classNames('dc-numpad__number', {
                         'dc-numpad__number--is-disabled':
+                            is_submit_disabled ||
                             !default_value.toString().length ||
                             (min && formatNumber(default_value) < min) ||
                             (typeof onValidate === 'function' ? !onValidate(default_value) : false),
@@ -178,7 +175,11 @@ const Numpad = ({
                             onSubmit(formatNumber(default_value));
                         }
                     }}
-                    is_disabled={!default_value.toString().length || (min && formatNumber(default_value) < min)}
+                    is_disabled={
+                        is_submit_disabled ||
+                        !default_value.toString().length ||
+                        (min && formatNumber(default_value) < min)
+                    }
                 >
                     {submit_label}
                 </Button>
@@ -192,6 +193,7 @@ Numpad.propTypes = {
     format: PropTypes.func,
     is_currency: PropTypes.bool,
     is_regular: PropTypes.bool,
+    is_submit_disabled: PropTypes.bool,
     max: PropTypes.number,
     min: PropTypes.number,
     onSubmit: PropTypes.func,

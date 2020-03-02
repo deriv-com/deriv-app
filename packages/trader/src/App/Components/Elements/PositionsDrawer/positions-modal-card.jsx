@@ -2,8 +2,9 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-// import { NavLink } from 'react-router-dom'; // TODO: Change this after making decision of nav link on mobile
 import { Button, Icon, Money } from '@deriv/components';
+import { getContractPath } from 'App/Components/Routes/helpers';
+import { BinaryLink } from 'App/Components/Routes';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import Shortcode from 'Modules/Reports/Helpers/shortcode';
 import { localize } from '@deriv/translations';
@@ -29,6 +30,7 @@ const PositionsModalCard = ({
     result,
     sell_price,
     status,
+    togglePositions,
     toggleUnsupportedContractModal,
     type,
 }) => {
@@ -169,36 +171,22 @@ const PositionsModalCard = ({
 
     return (
         <div id={`dt_drawer_card_${id}`} className={classNames('positions-modal-card__wrapper', className)}>
-            {/* TODO: Discuss about this navlink on mobile */}
-            <div className={classNames('positions-modal-card')}>
-                {contract_info.underlying ? contract_el : loader_el}
-            </div>
-            {/* {is_unsupported ? (
+            {is_unsupported ? (
                 <div
-                    className={classNames('positions-modal-card', {
-                        // 'positions-modal-card--green': profit_loss > 0 && !result,
-                        // 'positions-modal-card--red': profit_loss < 0 && !result,
-                    })}
+                    className={classNames('positions-modal-card')}
                     onClick={() => toggleUnsupportedContractModal(true)}
                 >
                     {contract_info.underlying ? contract_el : loader_el}
                 </div>
             ) : (
-                <NavLink
-                    className={classNames('positions-modal-card', {
-                        // 'positions-modal-card--green': profit_loss > 0 && !result,
-                        // 'positions-modal-card--red': profit_loss < 0 && !result,
-                    })}
-                    to={{
-                        pathname: `/contract/${id}`,
-                        state: {
-                            // from_table_row: true,
-                        },
-                    }}
+                <BinaryLink
+                    onClick={togglePositions}
+                    className={classNames('positions-modal-card')}
+                    to={getContractPath(id)}
                 >
                     {contract_info.underlying ? contract_el : loader_el}
-                </NavLink>
-            )} */}
+                </BinaryLink>
+            )}
         </div>
     );
 };

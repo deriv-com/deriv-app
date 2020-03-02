@@ -1,15 +1,17 @@
 import React from 'react';
-import { Tabs, Numpad } from '@deriv/components';
+import { Tabs, Money, Numpad } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { Localize, localize } from '@deriv/translations';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { connect } from 'Stores/connect';
 
 const Basis = ({
+    setAmountError,
     duration_unit,
     duration_value,
     toggleModal,
     basis,
+    has_duration_error,
     selected_basis,
     setSelectedAmount,
     onChangeMultiple,
@@ -31,8 +33,8 @@ const Basis = ({
         const on_change_obj = {};
 
         // Check for any duration changes in Duration trade params Tab before sending onChange object
-        if (duration_unit !== trade_duration_unit) on_change_obj.duration_unit = duration_unit;
-        if (duration_value !== trade_duration) on_change_obj.duration = duration_value;
+        if (duration_unit !== trade_duration_unit && !has_duration_error) on_change_obj.duration_unit = duration_unit;
+        if (duration_value !== trade_duration && !has_duration_error) on_change_obj.duration = duration_value;
 
         if (amount !== trade_amount || basis !== trade_basis) {
             on_change_obj.basis = basis;
@@ -46,17 +48,22 @@ const Basis = ({
     const min_amount = parseFloat(zero_decimals.toString().replace(/.$/, '1'));
 
     const validateAmount = value => {
+        const localized_message = <Localize i18n_default_text='Should not be 0 or empty' />;
         const selected_value = parseFloat(value.toString());
-        if (value.toString() === '0.') {
-            setToastErrorMessage(<Localize i18n_default_text='Should not be 0 or empty' />);
+
+        if (value.toString() === '0.' || selected_value === 0) {
+            setToastErrorMessage(localized_message, 2000);
             setToastErrorVisibility(true);
-            return true;
+            setAmountError(true);
+            return 'error';
         } else if (selected_value < min_amount || value.toString().length < 1) {
-            setToastErrorMessage(<Localize i18n_default_text='Should not be 0 or empty' />);
+            setToastErrorMessage(localized_message, 2000);
             setToastErrorVisibility(true);
+            setAmountError(true);
             return false;
         }
         setToastErrorVisibility(false);
+        setAmountError(false);
         return true;
     };
 
@@ -70,7 +77,11 @@ const Basis = ({
                 min={min_amount}
                 is_currency
                 render={({ value: v, className }) => {
-                    return <div className={className}>{v}</div>;
+                    return (
+                        <div className={className}>
+                            {!!v && (v > 0 ? <Money currency={currency} amount={v} should_format={false} /> : v)}
+                        </div>
+                    );
                 }}
                 pip_size={user_currency_decimal_places}
                 onValidate={validateAmount}
@@ -98,7 +109,9 @@ const Amount = ({
     basis,
     duration_value,
     duration_unit,
+    has_duration_error,
     amount_tab_idx,
+    setAmountError,
     setAmountTabIdx,
     setSelectedAmount,
     stake_value,
@@ -119,7 +132,9 @@ const Amount = ({
                                         toggleModal={toggleModal}
                                         duration_value={duration_value}
                                         duration_unit={duration_unit}
+                                        has_duration_error={has_duration_error}
                                         basis={basis_option.value}
+                                        setAmountError={setAmountError}
                                         selected_basis={stake_value}
                                         setSelectedAmount={setSelectedAmount}
                                     />
@@ -132,7 +147,9 @@ const Amount = ({
                                         toggleModal={toggleModal}
                                         duration_value={duration_value}
                                         duration_unit={duration_unit}
+                                        has_duration_error={has_duration_error}
                                         basis={basis_option.value}
+                                        setAmountError={setAmountError}
                                         selected_basis={payout_value}
                                         setSelectedAmount={setSelectedAmount}
                                     />

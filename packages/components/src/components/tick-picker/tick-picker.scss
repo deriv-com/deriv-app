@@ -36,7 +36,7 @@
             height: 48px;
 
             .btn__text {
-                transform: scale(1.5);
+                transform: scale(2);
             }
         }
     }
@@ -52,6 +52,17 @@
             span {
                 color: var(--text-prominent);
                 font-size: 1.6rem;
+            }
+        }
+        &--is-disabled {
+            pointer-events: none;
+
+            .btn {
+                background-color: var(--general-disabled);
+
+                .btn__text {
+                    color: var(--text-disabled);
+                }
             }
         }
     }

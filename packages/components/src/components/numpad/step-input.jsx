@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import CurrencyUtils from '@deriv/shared/utils/currency';
@@ -9,7 +10,7 @@ const getDecimals = val => {
     return array_value && array_value.length > 1 ? array_value[1].length : 0;
 };
 
-const StepInput = ({ max, min, value, onChange, render, pip_size = 0, currency }) => {
+const StepInput = ({ className, max, min, value, onChange, render, pip_size = 0, currency }) => {
     const getSmallestScale = () => {
         const is_crypto = !!currency && CurrencyUtils.isCryptocurrency(currency);
         const decimal_places = Number.isFinite(+value) ? getDecimals(value) : 0;
@@ -76,7 +77,7 @@ const StepInput = ({ max, min, value, onChange, render, pip_size = 0, currency }
                 {render &&
                     render({
                         value,
-                        className: 'dc-numpad__input-field',
+                        className: classNames('dc-numpad__input-field', className),
                     })}
             </React.Fragment>
             {!render && <Input className='dc-numpad__input-field' name='amount' value={value} readOnly />}
@@ -86,6 +87,7 @@ const StepInput = ({ max, min, value, onChange, render, pip_size = 0, currency }
 };
 
 StepInput.propTypes = {
+    className: PropTypes.string,
     max: PropTypes.number,
     min: PropTypes.number,
     onChange: PropTypes.func,

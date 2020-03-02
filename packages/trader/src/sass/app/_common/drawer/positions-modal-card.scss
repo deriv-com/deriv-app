@@ -7,6 +7,9 @@
     text-decoration: none;
     position: relative;
     color: var(--text-general);
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
 
     &__result {
         &--enter,

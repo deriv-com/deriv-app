@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { useState } from 'react';
 import throttle from 'lodash.throttle';
 import { useSwipeable } from 'react-swipeable';
@@ -8,6 +9,7 @@ const THROTTLE_INTERVAL_TIME = 100;
 
 const TickPicker = ({
     default_value,
+    is_submit_disabled,
     min_value,
     max_value,
     onSubmit,
@@ -75,7 +77,11 @@ const TickPicker = ({
                     <Icon icon='IcAdd' custom_color='var(--text-prominent)' />
                 </Button>
             </div>
-            <div className='dc-tick-picker__submit-wrapper'>
+            <div
+                className={classNames('dc-tick-picker__submit-wrapper', {
+                    'dc-tick-picker__submit-wrapper--is-disabled': is_submit_disabled,
+                })}
+            >
                 <Button rounded onClick={handleClick}>
                     {submit_label}
                 </Button>

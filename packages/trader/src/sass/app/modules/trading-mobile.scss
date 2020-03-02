@@ -1,3 +1,15 @@
+/** @define allow-equals; weak */
+.allow-equals {
+    &__subtitle {
+        font-size: 1rem;
+        font-weight: normal;
+    }
+    .dc-checkbox__label {
+        font-weight: bold;
+        color: var(--text-prominent);
+    }
+}
+
 /** @define dc-modal; weak */
 .dc-modal {
     &__container_trade-params {
@@ -141,6 +153,11 @@
             &-value {
                 line-height: 1.8rem;
                 font-size: 1.2rem;
+
+                &--has-error {
+                    color: var(--status-danger);
+                    font-weight: bold;
+                }
             }
         }
     }

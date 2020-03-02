@@ -83,6 +83,11 @@
                     font-size: 3rem;
                     font-weight: normal;
                 }
+                &[disabled] {
+                    .btn__text {
+                        color: var(--text-disabled);
+                    }
+                }
             }
             .dc-numpad__number {
                 border-radius: 2.4rem;
@@ -94,9 +99,6 @@
                 line-height: 1.75;
                 color: var(--text-prominent);
                 text-align: left !important;
-                user-select: none;
-                -webkit-touch-callout: none;
-                -webkit-tap-highlight-color: transparent;
 
                 .btn__text {
                     font-size: 1.8rem;
@@ -109,6 +111,17 @@
             .dc-numpad__ok {
                 .dc-numpad__number {
                     height: 100%;
+                }
+            }
+            .dc-numpad__bkspace {
+                .dc-numpad__number {
+                    &[disabled] {
+                        background-color: var(--general-disabled);
+
+                        .btn__text {
+                            color: var(--text-disabled);
+                        }
+                    }
                 }
             }
             /* iPhone SE screen height fixes due to UI space restrictions */

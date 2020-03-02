@@ -39,14 +39,22 @@ const Basis = ({
         if (!ObjectUtils.isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
         toggleModal();
     };
+    const zero_decimals = Number('0').toFixed(CurrencyUtils.getDecimalPlaces(currency));
+    const min_amount = parseFloat(zero_decimals.toString().replace(/.$/, '1'));
+
     const validateAmount = value => {
         const selected_value = parseFloat(value.toString());
-        if (isNaN(selected_value) || selected_value < 1 || value.toString().length < 1) {
+        if (value.toString() === '0.') {
+            console.warn(selected_value);
+            setToastErrorMessage(<Localize i18n_default_text='Should not be 0 or empty' />);
+            setToastErrorVisibility(true);
+            return true;
+        } else if (selected_value < min_amount || value.toString().length < 1) {
+            console.warn(selected_value, min_amount);
             setToastErrorMessage(<Localize i18n_default_text='Should not be 0 or empty' />);
             setToastErrorVisibility(true);
             return false;
         }
-
         setToastErrorVisibility(false);
         return true;
     };
@@ -58,6 +66,7 @@ const Basis = ({
                 format={formatAmount}
                 onSubmit={setBasisAndAmount}
                 currency={currency}
+                min={min_amount}
                 is_currency
                 render={({ value: v, className }) => {
                     return <div className={className}>{v}</div>;

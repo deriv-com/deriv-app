@@ -7,6 +7,8 @@ import StepInput from './step-input.jsx';
 
 const concatenate = (number, default_value) => default_value.toString().concat(number);
 
+let buttonPressTimer;
+
 const Numpad = ({
     className,
     currency,
@@ -31,9 +33,15 @@ const Numpad = ({
     const [default_value, setValue] = React.useState(formatted_value);
 
     const onSelect = num => {
-        console.warn(num, default_value);
         if (typeof onValidate === 'function' && default_value !== '') {
-            const passes = formatNumber(default_value) <= 0 ? true : onValidate(concatenate(num, default_value));
+            let passes = false;
+            const zero_decimal_strings = ['0.0000000', '0.000000', '0.00000', '0.0000', '0.000', '0.00', '0.0', '0.'];
+            const is_formatted_zero = zero_value => zero_decimal_strings.includes(zero_value.toString());
+            if (is_currency) {
+                passes = is_formatted_zero(default_value) || onValidate(concatenate(num, default_value));
+            } else {
+                passes = onValidate(concatenate(num, default_value));
+            }
             if (!passes) return;
         }
 
@@ -42,6 +50,7 @@ const Numpad = ({
             case -1:
                 chop();
                 break;
+
             // detecting floating point
             case '.':
                 if (is_float) {
@@ -99,6 +108,7 @@ const Numpad = ({
     React.useEffect(() => {
         if (onValueChange) onValueChange(default_value);
     }, [default_value]);
+
     return (
         <div
             className={classNames('dc-numpad', className, {
@@ -113,8 +123,14 @@ const Numpad = ({
                 render={render}
                 onChange={v => {
                     const amount = Number(v).toFixed(getDecimals(default_value));
-                    setFloat(isFloat(amount));
-                    setValue(amount);
+                    if (typeof onValidate === 'function') {
+                        setFloat(isFloat(amount));
+                        setValue(amount);
+                        onValidate(formatNumber(default_value));
+                    } else {
+                        setFloat(isFloat(amount));
+                        setValue(amount);
+                    }
                 }}
                 min={min}
                 max={max}
@@ -157,7 +173,6 @@ const Numpad = ({
                     onClick={() => {
                         if (!default_value.toString().length) return;
                         if (min && formatNumber(default_value) < min) return;
-                        else if (!min && formatNumber(default_value) < 1) return;
                         if (typeof onValidate === 'function') {
                             onValidate(formatNumber(default_value));
                             onSubmit(formatNumber(default_value));

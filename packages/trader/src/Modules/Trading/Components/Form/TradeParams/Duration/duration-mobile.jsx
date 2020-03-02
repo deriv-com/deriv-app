@@ -108,7 +108,7 @@ const Numbers = ({
     const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry, duration_unit);
 
     const validateDuration = value => {
-        if (value < min || value > max) {
+        if (value.toString().length < 1 || parseInt(value) < min || parseInt(value) > max) {
             setToastErrorMessage(
                 <Localize
                     i18n_default_text='Should be between {{min}} and {{max}}'

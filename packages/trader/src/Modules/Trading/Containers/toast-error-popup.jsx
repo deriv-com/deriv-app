@@ -1,5 +1,6 @@
+import classNames from 'classnames';
 import { ToastError } from '@deriv/components';
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'Stores/connect';
 
@@ -40,3 +41,30 @@ export default connect(({ ui }) => ({
     mobile_toast_error: ui.mobile_toast_error,
     mobile_toast_timeout: ui.mobile_toast_timeout,
 }))(ToastErrorPopup);
+
+export const NetworkStatusToastError = ({ status, portal_id, message }) => {
+    if (!document.getElementById(portal_id) || !message) return null;
+
+    const [is_open, setIsOpen] = useState(false);
+
+    if (!is_open && status !== 'online') {
+        setIsOpen(true); // open if status === 'blinker' or 'offline'
+    } else if (is_open && status === 'online') {
+        setTimeout(() => {
+            setIsOpen(false);
+        }, 1500);
+    }
+
+    return ReactDOM.createPortal(
+        <ToastError
+            className={classNames({
+                'dc-toast-error--blinker': status === 'blinker',
+            })}
+            is_open={is_open}
+            timeout={0}
+        >
+            {message}
+        </ToastError>,
+        document.getElementById(portal_id)
+    );
+};

@@ -5,8 +5,9 @@ import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import { connect } from 'Stores/connect';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
-import Test from './test.jsx';
+// import Test from './test.jsx';
 import { ChartBottomWidgets, ChartControlWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
+import { NetworkStatusToastError } from './toast-error-popup.jsx';
 import FormLayout from '../Components/Form/form-layout.jsx';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 
@@ -49,6 +50,13 @@ class Trade extends React.Component {
                     <DesktopWrapper>
                         <NotificationMessages />
                     </DesktopWrapper>
+                    <MobileWrapper>
+                        <NetworkStatusToastError
+                            portal_id='deriv_app'
+                            status={this.props.network_status.class}
+                            message={this.props.network_status.tooltip}
+                        />
+                    </MobileWrapper>
                     <React.Suspense
                         fallback={<ChartLoader is_dark={this.props.is_dark_theme} is_visible={!this.props.symbol} />}
                     >
@@ -57,14 +65,18 @@ class Trade extends React.Component {
                             <ChartTrade />
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <ChartLoader is_visible={this.props.is_chart_loading} />
-                            {this.props.show_digits_stats ? (
-                                <SwipeableWrapper>
-                                    <DigitsWidget digits={this.state.digits} tick={this.state.tick} />
-                                    <ChartTrade bottomWidgets={this.bottomWidgets} />
-                                </SwipeableWrapper>
-                            ) : (
-                                <ChartTrade />
+                            <ChartLoader is_visible={this.props.is_chart_loading || !is_trade_enabled} />
+                            {is_trade_enabled && (
+                                <React.Fragment>
+                                    {this.props.show_digits_stats ? (
+                                        <SwipeableWrapper>
+                                            <DigitsWidget digits={this.state.digits} tick={this.state.tick} />
+                                            <ChartTrade bottomWidgets={this.bottomWidgets} />
+                                        </SwipeableWrapper>
+                                    ) : (
+                                        <ChartTrade />
+                                    )}
+                                </React.Fragment>
                             )}
                         </MobileWrapper>
                     </React.Suspense>
@@ -81,7 +93,7 @@ class Trade extends React.Component {
     }
 }
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules, ui, common }) => ({
     form_components: modules.trade.form_components,
     is_chart_loading: modules.trade.is_chart_loading,
     is_market_closed: modules.trade.is_market_closed,
@@ -91,6 +103,7 @@ export default connect(({ modules, ui }) => ({
     onUnmount: modules.trade.onUnmount,
     purchase_info: modules.trade.purchase_info,
     NotificationMessages: ui.notification_messages_ui,
+    network_status: common.network_status,
 }))(Trade);
 
 // CHART (ChartTrade)--------------------------------------------------------
@@ -163,7 +176,7 @@ class ChartTradeClass extends React.Component {
                 requestSubscribe={this.props.wsSubscribe}
                 settings={this.props.settings}
                 symbol={this.props.symbol}
-                topWidgets={this.topWidgets}
+                topWidgets={this.props.is_trade_enabled ? this.topWidgets : null}
                 isConnectionOpened={this.props.is_socket_opened}
                 clearChart={false}
                 importedLayout={this.props.chart_layout}
@@ -193,6 +206,7 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
         is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
         is_ended: modules.contract_trade.last_contract.is_ended,
     },
+    is_trade_enabled: modules.trade.is_trade_enabled,
     main_barrier: modules.trade.main_barrier_flattened,
     show_digits_stats: modules.trade.show_digits_stats,
     contract_type: modules.trade.contract_type,

@@ -51,7 +51,7 @@ class NotificationMessages extends React.Component {
                         ))}
                 </TransitionGroup>
             </div>,
-            document.getElementById('popup_root')
+            document.getElementById('modal_root')
         );
 
         return (

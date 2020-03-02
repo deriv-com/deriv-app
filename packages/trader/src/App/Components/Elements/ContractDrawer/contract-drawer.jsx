@@ -289,7 +289,7 @@ class ContractDrawer extends Component {
                         }}
                         unmountOnExit
                     >
-                        <SwipeableContractAudit onSwipedDown={this.onSwipedDown}>
+                        <SwipeableContractAudit>
                             <ContractAudit
                                 contract_info={contract_info}
                                 contract_end_time={getEndTime(contract_info)}

@@ -5,7 +5,7 @@ import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import { connect } from 'Stores/connect';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
-// import Test from './test.jsx';
+import Test from './test.jsx';
 import { ChartBottomWidgets, ChartControlWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
 import { NetworkStatusToastError } from './toast-error-popup.jsx';
 import FormLayout from '../Components/Form/form-layout.jsx';
@@ -82,7 +82,9 @@ class Trade extends React.Component {
                     </React.Suspense>
 
                     {/* Remove Test component for debugging below for production release */}
-                    {/* <Test /> */}
+                    <DesktopWrapper>
+                        <Test />
+                    </DesktopWrapper>
                 </Div100vhContainer>
                 <div className={form_wrapper_class}>
                     {this.props.is_market_closed && <MarketIsClosedOverlay />}

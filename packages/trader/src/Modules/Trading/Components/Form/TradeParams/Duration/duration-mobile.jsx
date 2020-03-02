@@ -141,7 +141,10 @@ const Numbers = ({
         toggleModal();
     };
 
-    const onNumberChange = num => setSelectedDuration(duration_unit, num);
+    const onNumberChange = num => {
+        setSelectedDuration(duration_unit, num);
+        validateDuration(num);
+    };
 
     return (
         <div className='trade-params__amount-keypad'>

@@ -22,7 +22,10 @@ const Basis = ({
     setToastErrorVisibility,
 }) => {
     const user_currency_decimal_places = CurrencyUtils.getDecimalPlaces(currency);
-    const onNumberChange = num => setSelectedAmount(basis, num);
+    const onNumberChange = num => {
+        setSelectedAmount(basis, num);
+        validateAmount(num);
+    };
     const formatAmount = value => (!isNaN(value) ? Number(value).toFixed(user_currency_decimal_places) : value);
     const setBasisAndAmount = amount => {
         const on_change_obj = {};
@@ -45,12 +48,10 @@ const Basis = ({
     const validateAmount = value => {
         const selected_value = parseFloat(value.toString());
         if (value.toString() === '0.') {
-            console.warn(selected_value);
             setToastErrorMessage(<Localize i18n_default_text='Should not be 0 or empty' />);
             setToastErrorVisibility(true);
             return true;
         } else if (selected_value < min_amount || value.toString().length < 1) {
-            console.warn(selected_value, min_amount);
             setToastErrorMessage(<Localize i18n_default_text='Should not be 0 or empty' />);
             setToastErrorVisibility(true);
             return false;

@@ -89,7 +89,7 @@
     @include mobile {
         // no footer:
         margin-bottom: 0;
-        height: calc(100vh - #{$MOBILE_HEADER_HEIGHT});
+        height: calc(100% - #{$MOBILE_HEADER_HEIGHT});
         position: relative;
         margin-top: $MOBILE_HEADER_HEIGHT;
 

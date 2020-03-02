@@ -34,6 +34,31 @@
             }
         }
     }
+    &--is-mobile {
+        .top-widgets-portal {
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            z-index: 1;
+
+            .recent-trade-info {
+                font-weight: bold;
+                min-width: 8rem;
+                font-size: 1.6rem;
+                line-height: 2.4rem;
+                margin-left: 0.8rem;
+                color: var(--text-general);
+            }
+        }
+        .cq-chart-title {
+            > .cq-menu-btn {
+                padding: 0.4rem;
+            }
+        }
+    }
 }
 
 $FLOATING_HEADER_HEIGHT: 41px;

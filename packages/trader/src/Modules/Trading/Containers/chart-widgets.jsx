@@ -29,9 +29,23 @@ export const DigitsWidget = connect(({ modules }) => ({
 ));
 
 // Chart widgets passed into SmartCharts
-export const ChartTopWidgets = connect(({ modules }) => ({
+export const ChartTopWidgets = connect(({ modules, ui }) => ({
     onSymbolChange: modules.trade.onChange,
-}))(({ onSymbolChange }) => <TopWidgets is_mobile={isMobile()} onSymbolChange={symbolChange(onSymbolChange)} />);
+    theme: ui.is_dark_mode_on ? 'dark' : 'light',
+}))(({ onSymbolChange, charts_ref, theme }) => {
+    let yAxiswidth;
+    if (charts_ref && charts_ref.chart) {
+        yAxiswidth = charts_ref.chart.yAxiswidth;
+    }
+    return (
+        <TopWidgets
+            is_mobile={isMobile()}
+            onSymbolChange={symbolChange(onSymbolChange)}
+            theme={theme}
+            y_axis_width={yAxiswidth}
+        />
+    );
+});
 
 export const ChartBottomWidgets = ({ digits, tick }) => (
     <BottomWidgets Digits={<DigitsWidget digits={digits} tick={tick} />} />

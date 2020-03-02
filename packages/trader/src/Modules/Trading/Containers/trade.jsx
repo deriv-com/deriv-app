@@ -123,6 +123,9 @@ const ChartMarkers = connect(({ modules, ui, client }) => ({
 
 class ChartTradeClass extends React.Component {
     bottomWidgets = ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />;
+    topWidgets = ({ ...props }) => {
+        return <ChartTopWidgets charts_ref={this.charts_ref} {...props} />;
+    };
 
     componentDidMount() {
         performance.mark('smart-charts-mounted');
@@ -141,6 +144,7 @@ class ChartTradeClass extends React.Component {
 
         return (
             <SmartChart
+                ref={ref => (this.charts_ref = ref)}
                 barriers={barriers}
                 bottomWidgets={show_digits_stats && isDesktop() ? this.bottomWidgets : this.props.bottomWidgets}
                 crosshairState={isMobile() ? 0 : undefined}
@@ -159,7 +163,7 @@ class ChartTradeClass extends React.Component {
                 requestSubscribe={this.props.wsSubscribe}
                 settings={this.props.settings}
                 symbol={this.props.symbol}
-                topWidgets={ChartTopWidgets}
+                topWidgets={this.topWidgets}
                 isConnectionOpened={this.props.is_socket_opened}
                 clearChart={false}
                 importedLayout={this.props.chart_layout}

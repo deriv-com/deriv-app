@@ -105,7 +105,7 @@ const Numpad = ({
         const contextMenuHandler = e => e.preventDefault();
         const touchHandler = () => {
             const timer_id = setTimeout(() => {
-                setValue(0);
+                setValue(min ?? '');
                 clearTimeout(timer_id);
                 backspace_ref.current.removeEventListener('contextmenu', contextMenuHandler);
             }, long_touch_timeout);

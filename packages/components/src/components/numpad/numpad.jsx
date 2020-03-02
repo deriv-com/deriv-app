@@ -7,8 +7,6 @@ import StepInput from './step-input.jsx';
 
 const concatenate = (number, default_value) => default_value.toString().concat(number);
 
-let buttonPressTimer;
-
 const Numpad = ({
     className,
     currency,

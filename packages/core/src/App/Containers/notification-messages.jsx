@@ -23,36 +23,36 @@ class NotificationMessages extends React.Component {
             top: bounds && bounds.top + 8,
         };
 
+        const notifications = notification_messages
+            .filter(message => !marked_notifications.includes(message.key))
+            .slice(0, max_display_notifications);
+
         const portal = ReactDOM.createPortal(
             <div className='notification-messages' style={style}>
                 <TransitionGroup component='div'>
-                    {notification_messages
-                        .filter(message => !marked_notifications.includes(message.key))
-                        .slice(0, max_display_notifications)
-                        .map((notification, idx) => (
-                            <CSSTransition
-                                appear
-                                key={idx}
-                                in={!!notification.header}
-                                timeout={150}
-                                classNames={{
-                                    appear: 'notification--enter',
-                                    enter: 'notification--enter',
-                                    enterDone: 'notification--enter-done',
-                                    exit: 'notification--exit',
-                                }}
-                                unmountOnExit
-                            >
-                                <Notification
-                                    data={notification}
-                                    removeNotificationMessage={removeNotificationMessage}
-                                />
-                            </CSSTransition>
-                        ))}
+                    {notifications.map((notification, idx) => (
+                        <CSSTransition
+                            appear
+                            key={idx}
+                            in={!!notification.header}
+                            timeout={150}
+                            classNames={{
+                                appear: 'notification--enter',
+                                enter: 'notification--enter',
+                                enterDone: 'notification--enter-done',
+                                exit: 'notification--exit',
+                            }}
+                            unmountOnExit
+                        >
+                            <Notification data={notification} removeNotificationMessage={removeNotificationMessage} />
+                        </CSSTransition>
+                    ))}
                 </TransitionGroup>
             </div>,
-            document.getElementById('modal_root')
+            document.getElementById('deriv_app')
         );
+
+        if (notifications.length === 0) return null;
 
         return (
             <div ref={this.setRef} className='notification-messages-bounds'>

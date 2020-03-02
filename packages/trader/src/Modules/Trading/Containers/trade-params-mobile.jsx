@@ -45,6 +45,22 @@ class TradeParamsModal extends React.Component {
         };
     }
 
+    // Fix to prevent iOS from zooming in erratically on quick taps
+    preventIOSZoom = event => {
+        if (event.touches.length > 1) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    };
+
+    componentDidMount() {
+        document.addEventListener('touchstart', event => this.preventIOSZoom(event), { passive: false });
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('touchstart', event => this.preventIOSZoom(event));
+    }
+
     setTradeParamTabIdx = trade_param_tab_idx => this.setState({ trade_param_tab_idx });
 
     setDurationTabIdx = duration_tab_idx => this.setState({ duration_tab_idx });

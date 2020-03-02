@@ -82,9 +82,9 @@ class Trade extends React.Component {
                     </React.Suspense>
 
                     {/* Remove Test component for debugging below for production release */}
-                    <DesktopWrapper>
+                    {/* <DesktopWrapper>
                         <Test />
-                    </DesktopWrapper>
+                    </DesktopWrapper> */}
                 </Div100vhContainer>
                 <div className={form_wrapper_class}>
                     {this.props.is_market_closed && <MarketIsClosedOverlay />}

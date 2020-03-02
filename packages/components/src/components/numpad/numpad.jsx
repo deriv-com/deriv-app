@@ -6,13 +6,14 @@ import NumberGrid from './number-grid.jsx';
 import StepInput from './step-input.jsx';
 
 const concatenate = (number, default_value) => default_value.toString().concat(number);
-
+const backspace_ref = React.createRef();
 const Numpad = ({
     className,
     currency,
     is_regular,
     is_currency,
     label,
+    long_touch_timeout = 0,
     max = 9999999,
     min = 0,
     pip_size,
@@ -95,9 +96,30 @@ const Numpad = ({
         }
     });
 
+    React.useEffect(() => onValueChange?.(default_value), [default_value]);
+
+    /**
+     * Add Long Touch Handler
+     */
     React.useEffect(() => {
-        if (onValueChange) onValueChange(default_value);
-    }, [default_value]);
+        const contextMenuHandler = e => e.preventDefault();
+        const touchHandler = () => {
+            const timer_id = setTimeout(() => {
+                setValue(0);
+                clearTimeout(timer_id);
+                backspace_ref.current.removeEventListener('contextmenu', contextMenuHandler);
+            }, long_touch_timeout);
+        };
+
+        backspace_ref.current.addEventListener('touchstart', touchHandler);
+        backspace_ref.current.addEventListener('contextmenu', contextMenuHandler);
+
+        return () => {
+            backspace_ref.current.removeEventListener('touchstart', touchHandler);
+            backspace_ref.current.removeEventListener('contextmenu', contextMenuHandler);
+        };
+    });
+
     return (
         <div
             className={classNames('dc-numpad', className, {
@@ -125,7 +147,7 @@ const Numpad = ({
                     .
                 </Button>
             )}
-            <div className='dc-numpad__bkspace'>
+            <div className='dc-numpad__bkspace' ref={backspace_ref}>
                 <Button
                     type='secondary'
                     has_effect
@@ -168,6 +190,7 @@ Numpad.propTypes = {
     format: PropTypes.func,
     is_currency: PropTypes.bool,
     is_regular: PropTypes.bool,
+    long_touch_timeout: PropTypes.number,
     max: PropTypes.number,
     min: PropTypes.number,
     onSubmit: PropTypes.func,

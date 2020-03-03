@@ -36,6 +36,8 @@
         .dc-toast-error {
             top: 4.8rem;
             z-index: 3;
+            width: fit-content;
+            margin: auto;
         }
     }
     .modal-root {

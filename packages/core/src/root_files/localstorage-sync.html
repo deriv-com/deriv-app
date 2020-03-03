@@ -6,13 +6,12 @@
         <meta name='referrer' content='origin' />
         <script>
             window.addEventListener('message', function(message) {
-                var restricted_origins = [
+                var allowed_origins = [
                     'https://smarttrader.deriv.app', 
                     'https://smarttrader-staging.deriv.app'
                 ];
 
-                // TODO: Remove always true condition.
-                if (true || restricted_origins.includes(message.origin)) {
+                if (allowed_origins.includes(message.origin)) {
                     switch (message.data.key) {
                         case 'active_loginid': 
                         case 'client.accounts': {

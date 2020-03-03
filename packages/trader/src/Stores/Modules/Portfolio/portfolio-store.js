@@ -269,9 +269,15 @@ export default class PortfolioStore extends BaseStore {
     }
 
     @action.bound
+    networkStatusChangeListener(is_online) {
+        this.is_loading = !is_online;
+    }
+
+    @action.bound
     onMount() {
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
+        this.onNetworkStatusChange(this.networkStatusChangeListener);
         this.onLogout(this.logoutListener);
         if (this.positions.length === 0) {
             // TODO: Optimise the way is_logged_in changes are detected for "logging in" and "already logged on" states

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Icon, PageOverlay } from '@deriv/components';
+import { PageOverlay } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { localize } from '@deriv/translations';
 import { FadeWrapper } from 'App/Components/Animations';
@@ -81,16 +81,6 @@ class ContractReplay extends React.Component {
                         />
                         <React.Suspense fallback={<div />}>
                             <div className='replay-chart__container'>
-                                <div className='vertical-tab__action-bar'>
-                                    <div
-                                        id='dt_contract_replay_close_icon'
-                                        className='vertical-tab__action-bar-wrapper'
-                                        key={localize('Close')}
-                                        onClick={this.goBackToTrade}
-                                    >
-                                        <Icon className='vertical-tab__action-bar--icon' icon='IcCross' />
-                                    </div>
-                                </div>
                                 <NotificationMessages />
                                 <ChartLoader is_dark={is_dark_theme} is_visible={is_chart_loading} />
                                 {contract_info.underlying && (

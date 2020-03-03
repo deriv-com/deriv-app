@@ -130,14 +130,6 @@ export const getUnsupportedContracts = () => ({
         name: localize('Only Downs'),
         position: 'bottom',
     },
-    MULTUP: {
-        name: localize('Up'),
-        position: 'top',
-    },
-    MULTDOWN: {
-        name: localize('Down'),
-        position: 'bottom',
-    },
 });
 
 export const getSupportedContracts = is_high_low => ({

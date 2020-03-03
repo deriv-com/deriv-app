@@ -101,9 +101,9 @@ export default class TradeStore extends BaseStore {
     @observable take_profit;
     @observable has_stop_loss = false;
     @observable has_take_profit = false;
-    @observable has_deal_cancellation = false;
+    @observable has_cancellation = false;
     @observable commission = 0;
-    @observable deal_cancellation_price = 0;
+    @observable cancellation_price = 0;
     @observable hovered_contract_type;
 
     addTickByProposal = () => null;
@@ -185,7 +185,7 @@ export default class TradeStore extends BaseStore {
             }
         );
         reaction(
-            () => [this.has_deal_cancellation, this.has_stop_loss, this.has_take_profit],
+            () => [this.has_cancellation, this.has_stop_loss, this.has_take_profit],
             () => {
                 this.validation_errors = {};
             }
@@ -769,13 +769,13 @@ export default class TradeStore extends BaseStore {
         };
 
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
-            const { commission, deal_cancellation } = this.proposal_info.MULTUP;
-            // commission and deal_cancellation.ask_price is the same for MULTUP/MULTDOWN
+            const { commission, cancellation } = this.proposal_info.MULTUP;
+            // commission and cancellation.ask_price is the same for MULTUP/MULTDOWN
             if (commission) {
                 this.commission = commission;
             }
-            if (deal_cancellation) {
-                this.deal_cancellation_price = this.proposal_info.MULTUP.deal_cancellation.ask_price;
+            if (cancellation) {
+                this.cancellation_price = this.proposal_info.MULTUP.cancellation.ask_price;
             }
         }
 

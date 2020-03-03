@@ -7,18 +7,18 @@ import { localize } from '@deriv/translations';
 import ContractCardBody from 'App/Components/Elements/ContractCard/contract-card-body.jsx';
 import ContractCardItem from 'App/Components/Elements/ContractCard/contract-card-item.jsx';
 import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-orders';
-import { getDealCancellationPrice, getIndicativePrice } from 'Stores/Modules/Contract/Helpers/logic';
+import { getCancellationPrice, getIndicativePrice } from 'Stores/Modules/Contract/Helpers/logic';
 
 const MultiplierCardBody = ({ contract_info, currency, status }) => {
     const { buy_price, is_sold, profit, multiplier, limit_order } = contract_info;
 
     const { take_profit, stop_loss } = getLimitOrderAmount(limit_order);
-    const deal_cancellation_price = getDealCancellationPrice(contract_info);
+    const cancellation_price = getCancellationPrice(contract_info);
 
     return (
         <ContractCardBody>
             <ContractCardItem header={localize('Stake:')}>
-                <Money amount={buy_price - deal_cancellation_price} currency={currency} />
+                <Money amount={buy_price - cancellation_price} currency={currency} />
             </ContractCardItem>
             <ContractCardItem
                 header={is_sold ? localize('Profit/Loss') : localize('Potential profit/loss:')}
@@ -42,11 +42,7 @@ const MultiplierCardBody = ({ contract_info, currency, status }) => {
                 {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
             </ContractCardItem>
             <ContractCardItem header={localize('Deal cancel. fee:')}>
-                {deal_cancellation_price ? (
-                    <Money amount={deal_cancellation_price} currency={currency} />
-                ) : (
-                    <strong>-</strong>
-                )}
+                {cancellation_price ? <Money amount={cancellation_price} currency={currency} /> : <strong>-</strong>}
             </ContractCardItem>
             <ContractCardItem header={localize('Stop loss:')}>
                 {stop_loss ? (

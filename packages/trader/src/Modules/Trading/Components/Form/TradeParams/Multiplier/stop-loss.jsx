@@ -9,7 +9,7 @@ import PopoverMessageCheckbox from 'Modules/Trading/Components/Elements/popover-
 const StopLoss = ({
     amount,
     currency,
-    has_deal_cancellation,
+    has_cancellation,
     has_stop_loss,
     is_single_currency,
     should_show_stop_loss_warning,
@@ -24,14 +24,14 @@ const StopLoss = ({
             const new_val = e.target.value;
             onChangeMultiple({
                 [e.target.name]: new_val,
-                ...(new_val ? { has_deal_cancellation: false } : {}),
+                ...(new_val ? { has_cancellation: false } : {}),
             });
         } else {
             onChange(e);
         }
     };
 
-    const should_show_popover = has_deal_cancellation && should_show_stop_loss_warning;
+    const should_show_popover = has_cancellation && should_show_stop_loss_warning;
 
     const checkbox_tooltip_label = (
         <PopoverMessageCheckbox
@@ -86,7 +86,7 @@ export default connect(({ modules, client, ui }) => ({
     is_single_currency: client.is_single_currency,
     amount: modules.trade.amount,
     currency: modules.trade.currency,
-    has_deal_cancellation: modules.trade.has_deal_cancellation,
+    has_cancellation: modules.trade.has_cancellation,
     has_stop_loss: modules.trade.has_stop_loss,
     onChange: modules.trade.onChange,
     onChangeMultiple: modules.trade.onChangeMultiple,

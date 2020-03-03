@@ -67,9 +67,9 @@ export const getIndicativePrice = contract_info =>
         ? getFinalPrice(contract_info)
         : +contract_info.bid_price || null;
 
-export const getDealCancellationPrice = contract_info => {
-    const { deal_cancellation: { ask_price: deal_cancellation_price = 0 } = {} } = contract_info;
-    return deal_cancellation_price;
+export const getCancellationPrice = contract_info => {
+    const { cancellation: { ask_price: cancellation_price = 0 } = {} } = contract_info;
+    return cancellation_price;
 };
 
 export const getLastTickFromTickStream = (tick_stream = []) => tick_stream[tick_stream.length - 1] || {};
@@ -93,8 +93,8 @@ export const isUserSold = contract_info => contract_info.status === 'sold';
 
 export const isValidToCancel = contract_info => !!contract_info.is_valid_to_cancel;
 
-export const isDealCancellationExpired = contract_info =>
-    !!(contract_info.deal_cancellation.date_expiry < ServerTime.get().unix());
+export const isCancellationExpired = contract_info =>
+    !!(contract_info.cancellation.date_expiry < ServerTime.get().unix());
 
 export const isValidToSell = contract_info =>
     !isEnded(contract_info) && !isUserSold(contract_info) && +contract_info.is_valid_to_sell === 1;
@@ -135,9 +135,9 @@ export const getBuyPrice = modules_store => {
     const { contract_replay, portfolio } = modules_store;
     const contract_id = portfolio.active_positions_drawer_dialog_id;
     const contract_info = contract_replay.getContractById(contract_id).contract_info;
-    const deal_cancellation_price = getDealCancellationPrice(contract_info);
+    const cancellation_price = getCancellationPrice(contract_info);
 
-    return contract_info.buy_price - deal_cancellation_price;
+    return contract_info.buy_price - cancellation_price;
 };
 
 /**

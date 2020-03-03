@@ -21,7 +21,7 @@ class PurchaseFieldset extends React.PureComponent {
             basis,
             buy_info,
             currency,
-            has_deal_cancellation,
+            has_cancellation,
             // index,
             info,
             index,
@@ -74,7 +74,7 @@ class PurchaseFieldset extends React.PureComponent {
                         basis={basis}
                         currency={currency}
                         proposal_info={info}
-                        has_deal_cancellation={has_deal_cancellation}
+                        has_cancellation={has_cancellation}
                         has_increased={info.has_increased}
                         is_loading={is_loading}
                         is_multiplier={is_multiplier}
@@ -128,7 +128,7 @@ PurchaseFieldset.propTypes = {
     basis: PropTypes.string,
     buy_info: PropTypes.object,
     currency: PropTypes.string,
-    has_deal_cancellation: PropTypes.bool,
+    has_cancellation: PropTypes.bool,
     index: PropTypes.number,
     info: PropTypes.object,
     is_disabled: PropTypes.bool,

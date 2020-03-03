@@ -41,11 +41,11 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     };
 
     const commission = proposal.commission;
-    const deal_cancellation = proposal.deal_cancellation;
+    const cancellation = proposal.cancellation;
 
     return {
         commission,
-        deal_cancellation,
+        cancellation,
         id: proposal.id || '',
         has_error: !!response.error,
         has_error_details: !!getProposalErrorField(response),
@@ -73,8 +73,8 @@ export const createProposalRequests = store => {
 
 const setProposalMultiplier = (store, obj_multiplier) => {
     obj_multiplier.multiplier = store.multiplier;
-    // TODO: add support for different deal_cancellation time once API is ready
-    obj_multiplier.deal_cancellation = store.has_deal_cancellation ? '1h' : 0;
+    // TODO: add support for different cancellation time once API is ready
+    obj_multiplier.cancellation = store.has_cancellation ? '1h' : 0;
 
     obj_multiplier.limit_order = {};
 

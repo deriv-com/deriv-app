@@ -363,7 +363,7 @@ $side-padding: 1.2em;
 /** @define open-positions-multiplier; weak */
 .open-positions-multiplier {
     .open-positions__row {
-        /*                     icon   stake multiplier deal_cancellation take_profit  stop_loss potential_profit_loss */
+        /*                     icon   stake multiplier cancellation take_profit  stop_loss potential_profit_loss */
         grid-template-columns: 0.7fr 1fr 0.7fr 1fr 1fr 1fr 1fr;
     }
 }

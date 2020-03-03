@@ -7,21 +7,21 @@ import { connect } from 'Stores/connect';
 import PopoverMessageCheckbox from 'Modules/Trading/Components/Elements/popover-message-checkbox.jsx';
 
 const CancelDeal = ({
-    has_deal_cancellation,
+    has_cancellation,
     has_stop_loss,
     onChangeMultiple,
-    should_show_deal_cancellation_warning,
-    toggleDealCancellationWarning,
+    should_show_cancellation_warning,
+    toggleCancellationWarning,
 }) => {
     const changeValue = () => {
         // e.target.checked is not reliable, we have to toggle its previous value
-        const new_val = !has_deal_cancellation;
+        const new_val = !has_cancellation;
         onChangeMultiple({
-            has_deal_cancellation: new_val,
+            has_cancellation: new_val,
             ...(!new_val
                 ? {
                       // reset deal cancellation price
-                      deal_cancellation_price: 0,
+                      cancellation_price: 0,
                   }
                 : {
                       // unchecked Stop loss
@@ -30,15 +30,15 @@ const CancelDeal = ({
         });
     };
 
-    const should_show_popover = has_stop_loss && should_show_deal_cancellation_warning;
+    const should_show_popover = has_stop_loss && should_show_cancellation_warning;
 
     const input = (
         <Checkbox
-            id='dt_deal_cancellation-checkbox_input'
+            id='dt_cancellation-checkbox_input'
             onChange={changeValue}
-            name='has_deal_cancellation'
+            name='has_cancellation'
             label={localize('Deal cancellation')}
-            defaultChecked={has_deal_cancellation}
+            defaultChecked={has_cancellation}
         />
     );
 
@@ -53,10 +53,10 @@ const CancelDeal = ({
                         margin={2}
                         message={
                             <PopoverMessageCheckbox
-                                defaultChecked={!should_show_deal_cancellation_warning}
+                                defaultChecked={!should_show_cancellation_warning}
                                 message={localize('You may choose either stop loss or deal cancellation.')}
-                                name='should_show_deal_cancellation_warning'
-                                onChange={() => toggleDealCancellationWarning()}
+                                name='should_show_cancellation_warning'
+                                onChange={() => toggleCancellationWarning()}
                             />
                         }
                     >
@@ -68,7 +68,7 @@ const CancelDeal = ({
                 <Popover
                     alignment='left'
                     icon='info'
-                    id='dt_deal_cancellation-checkbox__tooltip'
+                    id='dt_cancellation-checkbox__tooltip'
                     message={localize('Allows you to cancel this deal (within 1 hour) to avoid loss.')}
                     margin={210}
                 />
@@ -78,17 +78,17 @@ const CancelDeal = ({
 };
 
 CancelDeal.propTypes = {
-    has_deal_cancellation: PropTypes.bool,
+    has_cancellation: PropTypes.bool,
     has_stop_loss: PropTypes.bool,
     onChangeMultiple: PropTypes.func,
-    should_show_deal_cancellation_warning: PropTypes.bool,
-    toggleDealCancellationWarning: PropTypes.func,
+    should_show_cancellation_warning: PropTypes.bool,
+    toggleCancellationWarning: PropTypes.func,
 };
 
 export default connect(({ modules, ui }) => ({
-    has_deal_cancellation: modules.trade.has_deal_cancellation,
+    has_cancellation: modules.trade.has_cancellation,
     has_stop_loss: modules.trade.has_stop_loss,
     onChangeMultiple: modules.trade.onChangeMultiple,
-    should_show_deal_cancellation_warning: ui.should_show_deal_cancellation_warning,
-    toggleDealCancellationWarning: ui.toggleDealCancellationWarning,
+    should_show_cancellation_warning: ui.should_show_cancellation_warning,
+    toggleCancellationWarning: ui.toggleCancellationWarning,
 }))(CancelDeal);

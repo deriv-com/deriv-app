@@ -7,11 +7,7 @@ import RemainingTime from 'App/Containers/remaining-time.jsx';
 import { isValidToCancel } from 'Stores/Modules/Contract/Helpers/logic';
 
 const MultiplierCloseActions = ({ className, onClickCancel, onClickSell, contract_info, is_sell_requested }) => {
-    const {
-        contract_id,
-        deal_cancellation: { date_expiry: deal_cancellation_date_expiry } = {},
-        profit,
-    } = contract_info;
+    const { contract_id, cancellation: { date_expiry: cancellation_date_expiry } = {}, profit } = contract_info;
 
     const is_valid_to_cancel = isValidToCancel(contract_info);
 
@@ -36,9 +32,7 @@ const MultiplierCloseActions = ({ className, onClickCancel, onClickSell, contrac
                     secondary
                 >
                     {localize('Cancel')}
-                    {deal_cancellation_date_expiry && (
-                        <RemainingTime end_time={deal_cancellation_date_expiry} format='mm:ss' />
-                    )}
+                    {cancellation_date_expiry && <RemainingTime end_time={cancellation_date_expiry} format='mm:ss' />}
                 </Button>
             )}
         </React.Fragment>

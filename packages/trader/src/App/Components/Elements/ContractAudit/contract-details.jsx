@@ -5,8 +5,8 @@ import { localize } from '@deriv/translations';
 import { epochToMoment, toGMTFormat } from 'Utils/Date';
 import { getBarrierLabel, getBarrierValue, isDigitType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import {
-    getDealCancellationPrice,
-    isDealCancellationExpired,
+    getCancellationPrice,
+    isCancellationExpired,
     isUserCancelled,
     isEnded,
 } from 'Stores/Modules/Contract/Helpers/logic';
@@ -29,11 +29,11 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
 
     const is_profit = profit >= 0;
 
-    const deal_cancellation_price = getDealCancellationPrice(contract_info);
+    const cancellation_price = getCancellationPrice(contract_info);
 
     const getLabel = () => {
         if (isUserCancelled(contract_info)) return localize('Deal cancellation (executed)');
-        if (isDealCancellationExpired(contract_info)) return localize('Deal cancellation (expired)');
+        if (isCancellationExpired(contract_info)) return localize('Deal cancellation (expired)');
         if (isEnded(contract_info)) return localize('Deal cancellation');
         return localize('Deal cancellation (active)');
     };
@@ -55,12 +55,12 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                         label={localize('Commission')}
                         value={<Money amount={commission} currency={currency} />}
                     />
-                    {!!deal_cancellation_price && (
+                    {!!cancellation_price && (
                         <ContractAuditItem
-                            id='dt_deal_cancellation_label'
+                            id='dt_cancellation_label'
                             icon={<Icon icon='IcContractSafeguard' size={24} />}
                             label={getLabel()}
-                            value={<Money amount={deal_cancellation_price} currency={currency} />}
+                            value={<Money amount={cancellation_price} currency={currency} />}
                         />
                     )}
                 </React.Fragment>

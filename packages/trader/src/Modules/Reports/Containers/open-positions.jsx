@@ -142,9 +142,9 @@ class OpenPositions extends React.Component {
                 if (portfolio_pos.contract_info) {
                     profit += portfolio_pos.contract_info.profit;
 
-                    if (portfolio_pos.contract_info.deal_cancellation) {
-                        ask_price += portfolio_pos.contract_info.deal_cancellation.ask_price || 0;
-                        buy_price -= portfolio_pos.contract_info.deal_cancellation.ask_price;
+                    if (portfolio_pos.contract_info.cancellation) {
+                        ask_price += portfolio_pos.contract_info.cancellation.ask_price || 0;
+                        buy_price -= portfolio_pos.contract_info.cancellation.ask_price;
                     }
                 }
             });
@@ -156,7 +156,7 @@ class OpenPositions extends React.Component {
             };
 
             if (ask_price > 0) {
-                totals.contract_info.deal_cancellation = {
+                totals.contract_info.cancellation = {
                     ask_price,
                 };
             }

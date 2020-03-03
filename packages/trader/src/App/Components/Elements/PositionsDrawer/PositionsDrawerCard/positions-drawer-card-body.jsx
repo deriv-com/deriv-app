@@ -5,13 +5,13 @@ import { Icon, Money } from '@deriv/components';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { localize } from '@deriv/translations';
 import { getLimitOrderAmount } from 'Stores/Modules/Contract/Helpers/limit-orders';
-import { getDealCancellationPrice, getIndicativePrice } from 'Stores/Modules/Contract/Helpers/logic';
+import { getCancellationPrice, getIndicativePrice } from 'Stores/Modules/Contract/Helpers/logic';
 
 const MultiplierCardBody = ({ contract_info, currency, status }) => {
     const { buy_price, is_sold, profit, multiplier, limit_order } = contract_info;
 
     const { take_profit, stop_loss } = getLimitOrderAmount(limit_order);
-    const deal_cancellation_price = getDealCancellationPrice(contract_info);
+    const cancellation_price = getCancellationPrice(contract_info);
 
     return (
         <>
@@ -19,7 +19,7 @@ const MultiplierCardBody = ({ contract_info, currency, status }) => {
                 <div className='positions-drawer-card__item'>
                     <span className='positions-drawer-card__item-label'>{localize('Stake:')}</span>
                     <span className='positions-drawer-card__item-value'>
-                        <Money amount={buy_price - deal_cancellation_price} currency={currency} />
+                        <Money amount={buy_price - cancellation_price} currency={currency} />
                     </span>
                 </div>
                 <div className='positions-drawer-card__item'>
@@ -57,8 +57,8 @@ const MultiplierCardBody = ({ contract_info, currency, status }) => {
                 <div className='positions-drawer-card__item'>
                     <span className='positions-drawer-card__item-label'>{localize('Deal cancel. fee:')}</span>
                     <span className='positions-drawer-card__item-value'>
-                        {deal_cancellation_price ? (
-                            <Money amount={deal_cancellation_price} currency={currency} />
+                        {cancellation_price ? (
+                            <Money amount={cancellation_price} currency={currency} />
                         ) : (
                             <strong>-</strong>
                         )}

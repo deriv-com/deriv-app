@@ -21,7 +21,7 @@ export default class UIStore extends BaseStore {
     // Take profit, Stop loss & Deal cancellation checkbox
     @observable should_show_take_profit_warning = true;
     @observable should_show_stop_loss_warning = true;
-    @observable should_show_deal_cancellation_warning = true;
+    @observable should_show_cancellation_warning = true;
 
     // Extensions
     @observable footer_extension = undefined;
@@ -129,7 +129,7 @@ export default class UIStore extends BaseStore {
             // 'is_purchase_lock_on',
             'should_show_stop_loss_warning',
             'should_show_take_profit_warning',
-            'should_show_deal_cancellation_warning',
+            'should_show_cancellation_warning',
         ];
 
         super({ root_store, local_storage_properties, store_name });
@@ -498,8 +498,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleDealCancellationWarning(state_change = !this.should_show_deal_cancellation_warning) {
-        this.should_show_deal_cancellation_warning = state_change;
+    toggleCancellationWarning(state_change = !this.should_show_cancellation_warning) {
+        this.should_show_cancellation_warning = state_change;
     }
 
     @action.bound

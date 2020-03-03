@@ -27,7 +27,7 @@ class TradeParams extends React.Component {
                 {this.isVisible('multiplier') && <Multiplier key={'multiplier'} />}
                 {this.isVisible('take_profit') && <TakeProfit key={'take_profit'} />}
                 {this.isVisible('stop_loss') && <StopLoss key={'stop_loss'} />}
-                {this.isVisible('deal_cancellation') && <CancelDeal key={'deal_cancellation'} />}
+                {this.isVisible('cancellation') && <CancelDeal key={'cancellation'} />}
             </React.Fragment>
         );
     }

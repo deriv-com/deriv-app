@@ -201,8 +201,8 @@ export const getMultiplierOpenPositionsColumnsTemplate = currency => [
                 return <Money amount={cell_value} currency={currency} />;
             }
             if (row_obj.contract_info) {
-                const { ask_price: deal_cancellation_price = 0 } = row_obj.contract_info.deal_cancellation || {};
-                return <Money amount={row_obj.contract_info.buy_price - deal_cancellation_price} currency={currency} />;
+                const { ask_price: cancellation_price = 0 } = row_obj.contract_info.cancellation || {};
+                return <Money amount={row_obj.contract_info.buy_price - cancellation_price} currency={currency} />;
             }
             return '';
         },
@@ -215,10 +215,10 @@ export const getMultiplierOpenPositionsColumnsTemplate = currency => [
     },
     {
         title: localize('Deal cancellation'),
-        col_index: 'deal_cancellation',
+        col_index: 'cancellation',
         renderCellContent: ({ row_obj }) => {
-            if (row_obj.contract_info && row_obj.contract_info.deal_cancellation) {
-                return <Money amount={row_obj.contract_info.deal_cancellation.ask_price} currency={currency} />;
+            if (row_obj.contract_info && row_obj.contract_info.cancellation) {
+                return <Money amount={row_obj.contract_info.cancellation.ask_price} currency={currency} />;
             }
             return '-';
         },

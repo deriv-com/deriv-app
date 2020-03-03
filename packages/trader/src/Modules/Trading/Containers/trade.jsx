@@ -66,17 +66,13 @@ class Trade extends React.Component {
                         </DesktopWrapper>
                         <MobileWrapper>
                             <ChartLoader is_visible={this.props.is_chart_loading || !is_trade_enabled} />
-                            {is_trade_enabled && (
-                                <React.Fragment>
-                                    {this.props.show_digits_stats ? (
-                                        <SwipeableWrapper>
-                                            <DigitsWidget digits={this.state.digits} tick={this.state.tick} />
-                                            <ChartTrade bottomWidgets={this.bottomWidgets} />
-                                        </SwipeableWrapper>
-                                    ) : (
-                                        <ChartTrade />
-                                    )}
-                                </React.Fragment>
+                            {this.props.show_digits_stats && is_trade_enabled ? (
+                                <SwipeableWrapper>
+                                    <DigitsWidget digits={this.state.digits} tick={this.state.tick} />
+                                    <ChartTrade bottomWidgets={this.bottomWidgets} />
+                                </SwipeableWrapper>
+                            ) : (
+                                <ChartTrade />
                             )}
                         </MobileWrapper>
                     </React.Suspense>

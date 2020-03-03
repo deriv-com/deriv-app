@@ -1,11 +1,17 @@
 import React from 'react';
 
-const SmartTraderIFrame = () => (
-    <iframe
-        id='localstorage-sync'
-        src='https://aaron-binary3.binary.sx/br_ls-sync/localstorage-sync.html'
-        style={{ display: 'none', visibility: 'hidden' }}
-    />
-);
+const SmartTraderIFrame = () => {
+    let url;
+
+    if (/^staging\.deriv\.app$/i.test(window.location.hostname)) {
+        url = 'https://smarttrader-staging.deriv.app/localstorage-sync.html';
+    } else if (/^deriv\.app$/i.test(window.location.hostname)) {
+        url = 'https://smarttrader.deriv.app/localstorage-sync.html';
+    } else {
+        return null;
+    }
+
+    return <iframe id='localstorage-sync' src={url} style={{ display: 'none', visibility: 'hidden' }} />;
+};
 
 export default SmartTraderIFrame;

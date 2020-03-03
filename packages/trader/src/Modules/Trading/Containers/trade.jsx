@@ -45,7 +45,12 @@ class Trade extends React.Component {
                 {/* Div100vhContainer is workaround for browsers on devices
                     with toolbars covering screen height,
                     using css vh is not returning correct screen height */}
-                <Div100vhContainer className='chart-container' is_disabled={isDesktop()} height_offset='260px'>
+                <Div100vhContainer
+                    id='chart_container'
+                    className='chart-container'
+                    is_disabled={isDesktop()}
+                    height_offset='260px'
+                >
                     <DesktopWrapper>
                         <NotificationMessages />
                     </DesktopWrapper>
@@ -70,9 +75,7 @@ class Trade extends React.Component {
                     </React.Suspense>
 
                     {/* Remove Test component for debugging below for production release */}
-                    {/* <DesktopWrapper>
-                        <Test />
-                    </DesktopWrapper> */}
+                    <Test />
                 </Div100vhContainer>
                 <div className={form_wrapper_class}>
                     {this.props.is_market_closed && <MarketIsClosedOverlay />}

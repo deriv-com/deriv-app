@@ -90,7 +90,7 @@ class TradeParamsModal extends React.Component {
         return (
             <React.Fragment>
                 <ToastErrorPopup
-                    portal_id={this.props.is_open ? 'modal_root' : 'deriv_app'}
+                    portal_id={this.props.is_open ? 'modal_root' : null}
                     className={classNames('trade-params__error-popup', {
                         'trade-params__error-popup--has-numpad': this.props.is_open,
                     })}

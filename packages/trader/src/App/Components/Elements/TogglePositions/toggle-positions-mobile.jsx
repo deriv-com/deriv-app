@@ -78,7 +78,7 @@ class TogglePositionsMobile extends React.Component {
                     toggleModal={this.togglePositions}
                     id='dt_mobile_positions'
                     is_vertical_top
-                    has_close_icon={false}
+                    has_close_icon
                     enableApp={this.props.enableApp}
                     disableApp={this.props.disableApp}
                     width='calc(100vw - 32px)'
@@ -102,7 +102,7 @@ class TogglePositionsMobile extends React.Component {
                                 className='btn btn--secondary btn__large positions-modal__footer-btn'
                                 to={routes.positions}
                             >
-                                <span className='btn__text'>{localize('Go to Reports')}</span>
+                                <span className='btn__text'>{localize('View more')}</span>
                             </BinaryLink>
                         </div>
                     </Div100vhContainer>

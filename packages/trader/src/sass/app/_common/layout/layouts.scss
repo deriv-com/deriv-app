@@ -436,6 +436,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
     &-dark,
     &-light {
         @include mobile {
+            /* postcss-bem-linter: ignore */
             .cq-dialog-portal {
                 .cq-dialog {
                     max-width: calc(100% - 36px);

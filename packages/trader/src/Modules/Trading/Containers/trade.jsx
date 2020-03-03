@@ -60,8 +60,8 @@ class Trade extends React.Component {
                             <ChartTrade />
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <ChartLoader is_visible={this.props.is_chart_loading} />
-                            {this.props.show_digits_stats ? (
+                            <ChartLoader is_visible={this.props.is_chart_loading || !is_trade_enabled} />
+                            {this.props.show_digits_stats && is_trade_enabled ? (
                                 <SwipeableWrapper>
                                     <DigitsWidget digits={this.state.digits} tick={this.state.tick} />
                                     <ChartTrade bottomWidgets={this.bottomWidgets} />
@@ -166,7 +166,7 @@ class ChartTradeClass extends React.Component {
                 requestSubscribe={this.props.wsSubscribe}
                 settings={this.props.settings}
                 symbol={this.props.symbol}
-                topWidgets={this.topWidgets}
+                topWidgets={this.props.is_trade_enabled ? this.topWidgets : null}
                 isConnectionOpened={this.props.is_socket_opened}
                 clearChart={false}
                 importedLayout={this.props.chart_layout}
@@ -196,6 +196,7 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
         is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
         is_ended: modules.contract_trade.last_contract.is_ended,
     },
+    is_trade_enabled: modules.trade.is_trade_enabled,
     main_barrier: modules.trade.main_barrier_flattened,
     show_digits_stats: modules.trade.show_digits_stats,
     contract_type: modules.trade.contract_type,

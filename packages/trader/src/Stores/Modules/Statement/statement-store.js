@@ -139,6 +139,11 @@ export default class StatementStore extends BaseStore {
     }
 
     @action.bound
+    networkStatusChangeListener(is_online) {
+        this.is_loading = !is_online;
+    }
+
+    @action.bound
     async onMount() {
         this.assertHasValidCache(
             this.client_loginid,
@@ -148,6 +153,7 @@ export default class StatementStore extends BaseStore {
         );
         this.client_loginid = this.root_store.client.loginid;
         this.onSwitchAccount(this.accountSwitcherListener);
+        this.onNetworkStatusChange(this.networkStatusChangeListener);
         await WS.wait('authorize');
         this.fetchNextBatch(true);
     }

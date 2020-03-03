@@ -10,19 +10,6 @@ import { connect } from 'Stores/connect';
 import TogglePositions from './toggle-positions.jsx';
 
 class TogglePositionsMobile extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            is_positions_visible: false,
-        };
-    }
-
-    togglePositions = () =>
-        this.setState({
-            is_positions_visible: !this.state.is_positions_visible,
-        });
-
     render() {
         const {
             all_positions,
@@ -69,13 +56,13 @@ class TogglePositionsMobile extends React.Component {
         return (
             <React.Fragment>
                 <TogglePositions
-                    is_open={this.state.is_positions_visible}
-                    togglePositions={this.togglePositions}
+                    is_open={this.props.is_positions_drawer_on}
+                    togglePositions={this.props.togglePositionsDrawer}
                     positions_count={this.props.active_positions_count}
                 />
                 <Modal
-                    is_open={this.state.is_positions_visible}
-                    toggleModal={this.togglePositions}
+                    is_open={this.props.is_positions_drawer_on}
+                    toggleModal={this.props.togglePositionsDrawer}
                     id='dt_mobile_positions'
                     is_vertical_top
                     has_close_icon
@@ -89,7 +76,7 @@ class TogglePositionsMobile extends React.Component {
                                 <Icon icon='IcPortfolio' className='positions-modal__title-icon' />
                                 {localize('Recent Positions')}
                             </span>
-                            <div className='positions-modal__close-btn' onClick={this.togglePositions}>
+                            <div className='positions-modal__close-btn' onClick={this.props.togglePositionsDrawer}>
                                 <Icon icon='IcMinusBold' />
                             </div>
                         </div>
@@ -98,7 +85,7 @@ class TogglePositionsMobile extends React.Component {
                         </div>
                         <div className='positions-modal__footer'>
                             <BinaryLink
-                                onClick={this.togglePositions}
+                                onClick={this.props.togglePositionsDrawer}
                                 className='btn btn--secondary btn__large positions-modal__footer-btn'
                                 to={routes.positions}
                             >
@@ -113,4 +100,7 @@ class TogglePositionsMobile extends React.Component {
 }
 // TODO: Needs to be connected to store due to issue with trade-header-extensions not updating all_positions prop
 // Fixes issue with positions not updated in positions modal
-export default connect(() => ({}))(TogglePositionsMobile);
+export default connect(({ ui }) => ({
+    togglePositionsDrawer: ui.togglePositionsDrawer,
+    is_positions_drawer_on: ui.is_positions_drawer_on,
+}))(TogglePositionsMobile);

@@ -29,4 +29,16 @@
         transform: scale(1, 1);
         opacity: 1;
     }
+    &--blinker {
+        animation: blinking 0.4s alternate infinite;
+    }
+}
+
+@keyframes blinking {
+    40% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }

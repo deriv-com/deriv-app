@@ -9,13 +9,13 @@ import { connect } from 'Stores/connect';
 import ContractReplay from './contract-replay.jsx';
 
 class Contract extends React.Component {
-    componentWillUnmount() {
-        this.props.disableRouteMode();
-        this.props.removeErrorMessage();
+    componentDidMount() {
+        this.props.onMount(+this.props.match.params.contract_id, this.props.history);
     }
 
-    componentDidMount() {
-        this.props.enableRouteMode();
+    componentWillUnmount() {
+        this.props.removeErrorMessage();
+        this.props.onUnmount();
     }
 
     render() {
@@ -51,23 +51,23 @@ class Contract extends React.Component {
 }
 
 Contract.propTypes = {
-    disableRouteMode: PropTypes.func,
-    enableRouteMode: PropTypes.func,
     error_message: PropTypes.string,
     has_error: PropTypes.bool,
     history: PropTypes.object,
     is_mobile: PropTypes.bool,
     match: PropTypes.object,
+    onMount: PropTypes.func,
+    onUnmount: PropTypes.func,
     removeErrorMessage: PropTypes.func,
     symbol: PropTypes.string,
 };
 
 export default withRouter(
     connect(({ modules, ui }) => ({
-        disableRouteMode: ui.disableRouteModal,
-        enableRouteMode: ui.setRouteModal,
         error_message: modules.contract_replay.error_message,
         has_error: modules.contract_replay.has_error,
+        onMount: modules.contract_replay.setAccountSwitcherListener,
+        onUnmount: modules.contract_replay.removeAccountSwitcherListener,
         removeErrorMessage: modules.contract_replay.removeErrorMessage,
         symbol: modules.contract_replay.contract_info.underlying,
         is_mobile: ui.is_mobile,

@@ -2,6 +2,7 @@ import { action, observable } from 'mobx';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
+import AppRoutes from 'Constants/routes';
 import ContractStore from './contract-store';
 import { getContractUpdate } from './Helpers/logic';
 import { contractCancelled, contractSold } from '../Portfolio/Helpers/portfolio-notifications';
@@ -240,4 +241,25 @@ export default class ContractReplayStore extends BaseStore {
         this.root_store.modules.contract_trade.validation_errors.contract_update_stop_loss = [];
         this.root_store.modules.contract_trade.validation_errors.contract_update_take_profit = [];
     }
+
+    setAccountSwitcherListener = (contract_id, history) => {
+        this.onSwitchAccount(() => this.accountSwitcherListener(contract_id, history));
+    };
+
+    accountSwitcherListener = (contract_id, history) => {
+        // if contract had an error on the previous account
+        // try fetching it again for the new account
+        // in case it belongs to this account
+        if (this.has_error) {
+            this.removeErrorMessage();
+            this.onMount(contract_id);
+        } else {
+            history.push(AppRoutes.reports);
+        }
+        return Promise.resolve();
+    };
+
+    removeAccountSwitcherListener = () => {
+        this.disposeSwitchAccount();
+    };
 }

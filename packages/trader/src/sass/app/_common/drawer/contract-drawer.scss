@@ -4,12 +4,8 @@ $header-height: 4em;
     width: $POSITIONS_DRAWER_WIDTH;
     // removing 2px below for borders
     height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - 2px - (#{$POSITIONS_DRAWER_MARGIN} * 4));
-    margin-top: #{$POSITIONS_DRAWER_MARGIN * 2};
-    position: absolute;
     z-index: 2;
     padding: 8px;
-    top: 0;
-    left: 4px;
     box-sizing: border-box;
     will-change: transform, opacity;
     transition: opacity 0.3s ease, transform 0.3s ease;

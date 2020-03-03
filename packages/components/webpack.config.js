@@ -28,6 +28,7 @@ module.exports = {
         loading: 'Components/loading',
         modal: 'Components/modal',
         money: 'Components/money',
+        'page-overlay': 'Components/page-overlay',
         'password-input': 'Components/password-input',
         'password-meter': 'Components/password-meter',
         popover: 'Components/popover',

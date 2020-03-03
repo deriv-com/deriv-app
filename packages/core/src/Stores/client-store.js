@@ -883,6 +883,7 @@ export default class ClientStore extends BaseStore {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
         this.root_store.ui.removeAllNotificationMessages();
+        this.syncWithSmartTrader(this.loginid, this.accounts);
     }
 
     @action.bound
@@ -1194,13 +1195,12 @@ export default class ClientStore extends BaseStore {
         if (iframe_window) {
             let origin;
 
-            // ^staging\.deriv\.app$
             if (/^staging\.deriv\.app$/i.test(window.location.hostname)) {
                 origin = 'https://smarttrader-staging.deriv.app';
             } else if (/^deriv\.app$/i.test(window.location.hostname)) {
                 origin = 'https://smarttrader.deriv.app';
             } else {
-                origin = '*'; // TODO: RETURN HERE.
+                return;
             }
 
             // Keep client.accounts in sync (in case user wasn't logged in).

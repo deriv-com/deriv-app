@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { ToastError } from '@deriv/components';
+import { MobileWrapper, ToastError } from '@deriv/components';
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'Stores/connect';
@@ -42,7 +42,7 @@ export default connect(({ ui }) => ({
     mobile_toast_timeout: ui.mobile_toast_timeout,
 }))(ToastErrorPopup);
 
-export const NetworkStatusToastError = ({ status, portal_id, message }) => {
+const NetworkStatusToastError = ({ status, portal_id, message }) => {
     if (!document.getElementById(portal_id) || !message) return null;
 
     const [is_open, setIsOpen] = useState(false);
@@ -56,15 +56,23 @@ export const NetworkStatusToastError = ({ status, portal_id, message }) => {
     }
 
     return ReactDOM.createPortal(
-        <ToastError
-            className={classNames({
-                'dc-toast-error--blinker': status === 'blinker',
-            })}
-            is_open={is_open}
-            timeout={0}
-        >
-            {message}
-        </ToastError>,
+        <MobileWrapper>
+            <ToastError
+                className={classNames({
+                    'dc-toast-error--blinker': status === 'blinker',
+                })}
+                is_open={is_open}
+                timeout={0}
+            >
+                {message}
+            </ToastError>
+        </MobileWrapper>,
         document.getElementById(portal_id)
     );
 };
+
+export const NetworkStatusToastErrorPopup = connect(({ common }) => ({
+    network_status: common.network_status,
+}))(({ network_status }) => (
+    <NetworkStatusToastError portal_id='deriv_app' message={network_status.tooltip} status={network_status.class} />
+));

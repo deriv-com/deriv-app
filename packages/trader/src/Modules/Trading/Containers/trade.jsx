@@ -7,7 +7,6 @@ import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 import Test from './test.jsx';
 import { ChartBottomWidgets, ChartControlWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
-import { NetworkStatusToastError } from './toast-error-popup.jsx';
 import FormLayout from '../Components/Form/form-layout.jsx';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 
@@ -50,13 +49,6 @@ class Trade extends React.Component {
                     <DesktopWrapper>
                         <NotificationMessages />
                     </DesktopWrapper>
-                    <MobileWrapper>
-                        <NetworkStatusToastError
-                            portal_id='deriv_app'
-                            status={this.props.network_status.class}
-                            message={this.props.network_status.tooltip}
-                        />
-                    </MobileWrapper>
                     <React.Suspense
                         fallback={<ChartLoader is_dark={this.props.is_dark_theme} is_visible={!this.props.symbol} />}
                     >
@@ -91,7 +83,7 @@ class Trade extends React.Component {
     }
 }
 
-export default connect(({ modules, ui, common }) => ({
+export default connect(({ modules, ui }) => ({
     form_components: modules.trade.form_components,
     is_chart_loading: modules.trade.is_chart_loading,
     is_market_closed: modules.trade.is_market_closed,
@@ -101,7 +93,6 @@ export default connect(({ modules, ui, common }) => ({
     onUnmount: modules.trade.onUnmount,
     purchase_info: modules.trade.purchase_info,
     NotificationMessages: ui.notification_messages_ui,
-    network_status: common.network_status,
 }))(Trade);
 
 // CHART (ChartTrade)--------------------------------------------------------

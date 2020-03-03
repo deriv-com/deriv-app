@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Deriv</title>
+        <meta charset='utf-8' />
+        <meta name='referrer' content='origin' />
+        <script>
+            window.addEventListener('message', function(message) {
+                var restricted_origins = [
+                    'https://smarttrader.deriv.app', 
+                    'https://smarttrader-staging.deriv.app'
+                ];
+
+                // TODO: Remove always true condition.
+                if (true || restricted_origins.includes(message.origin)) {
+                    switch (message.data.key) {
+                        case 'active_loginid': 
+                        case 'client.accounts': {
+                            if (localstorage.getItem(message.data.key) !== message.data.value) {
+                                localStorage.setItem(message.data.key, message.data.value);
+                            }
+                            break;
+                        }
+                    }
+                }
+            });
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

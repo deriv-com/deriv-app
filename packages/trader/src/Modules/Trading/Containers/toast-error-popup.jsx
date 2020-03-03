@@ -81,8 +81,13 @@ NetworkStatusToastError.propTypes = {
     message: PropTypes.string,
 };
 
-export const NetworkStatusToastErrorPopup = connect(({ common }) => ({
+export const NetworkStatusToastErrorPopup = connect(({ common, ui }) => ({
+    is_positions_drawer_on: ui.is_positions_drawer_on,
     network_status: common.network_status,
-}))(({ network_status }) => (
-    <NetworkStatusToastError portal_id='deriv_app' message={network_status.tooltip} status={network_status.class} />
+}))(({ is_positions_drawer_on, network_status }) => (
+    <NetworkStatusToastError
+        portal_id={is_positions_drawer_on ? 'modal_root' : 'deriv_app'}
+        message={network_status.tooltip}
+        status={network_status.class}
+    />
 ));

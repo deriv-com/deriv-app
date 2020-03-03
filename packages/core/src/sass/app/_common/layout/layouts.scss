@@ -32,16 +32,18 @@
         /* Making the wrapper stack above the body */
         overscroll-behavior: none;
         z-index: 2;
-
+    }
+    .modal-root {
+        height: 100% !important;
+    }
+    .deriv-app,
+    .modal-root {
         .dc-toast-error {
             top: 4.8rem;
             z-index: 3;
             width: fit-content;
             margin: auto;
         }
-    }
-    .modal-root {
-        height: 100% !important;
     }
 }
 

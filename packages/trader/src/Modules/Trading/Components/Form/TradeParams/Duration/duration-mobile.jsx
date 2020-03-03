@@ -129,7 +129,7 @@ const Numbers = ({
                 }}
             />
         );
-        if (parseInt(value) < min || parseInt(value) > max) {
+        if (parseInt(value) < min || parseInt(selected_duration) > max) {
             setToastErrorMessage(localized_message, 2000);
             setToastErrorVisibility(true);
             setDurationError(true);

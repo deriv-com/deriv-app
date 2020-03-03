@@ -51,9 +51,7 @@ class Trade extends React.Component {
                     is_disabled={isDesktop()}
                     height_offset='260px'
                 >
-                    <DesktopWrapper>
-                        <NotificationMessages />
-                    </DesktopWrapper>
+                    <NotificationMessages />
                     <React.Suspense
                         fallback={<ChartLoader is_dark={this.props.is_dark_theme} is_visible={!this.props.symbol} />}
                     >

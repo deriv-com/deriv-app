@@ -5,6 +5,9 @@
             .chart-container {
                 width: 100%;
 
+                .ciq-navigation-widget {
+                    transform: translate3d(248px, 0, 0);
+                }
                 .cq-top-ui-widgets {
                     transform: translate3d(248px, 0, 0);
                 }
@@ -146,10 +149,13 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         top: 75px;
                     }
                     .stx_jump_today.home > svg {
-                        top: 6px;
+                        top: 10px;
                         left: 8px;
                         padding: 0;
                         position: absolute;
+                    }
+                    .ciq-navigation-widget {
+                        transition: transform 0.25s ease;
                     }
                     .cq-bottom-ui-widgets {
                         bottom: 30px !important;
@@ -272,7 +278,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 bottom: 15px;
                 left: calc(45% - 150px);
             }
-            div.cq-chart-controls {
+            .info-box div.cq-chart-controls {
                 box-shadow: none;
             }
             // TODO: enable asset information
@@ -282,7 +288,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
             //     left: 0;
             // }
             div.stx_jump_today.home > svg {
-                top: 6px;
+                top: 10px;
                 left: 8px;
                 padding: 0;
                 position: absolute;
@@ -315,6 +321,9 @@ $FLOATING_HEADER_HEIGHT: 41px;
             .info-box {
                 transform: translate3d(0, 0, 0);
             }
+        }
+        .ciq-navigation-widget {
+            transform: translate3d(0, 0, 0);
         }
     }
     .ciq-chart {
@@ -357,6 +366,9 @@ $FLOATING_HEADER_HEIGHT: 41px;
         }
         .cq-chart-controls {
             transition: max-width 0.25s ease, transform 0.25s ease;
+        }
+        .ciq-navigation-widget {
+            transform: translate3d(0, 0, 0);
         }
     }
     .chartContainer {
@@ -416,5 +428,19 @@ $FLOATING_HEADER_HEIGHT: 41px;
         transform: translate3d(calc(100% + 1.6em), 0, 0);
         opacity: 0;
         pointer-events: none;
+    }
+}
+
+/** @define smartcharts; weak */
+.smartcharts {
+    &-dark,
+    &-light {
+        @include mobile {
+            .cq-dialog-portal {
+                .cq-dialog {
+                    max-width: calc(100% - 36px);
+                }
+            }
+        }
     }
 }

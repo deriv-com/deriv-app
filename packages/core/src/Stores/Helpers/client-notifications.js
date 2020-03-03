@@ -1,7 +1,7 @@
 import React from 'react';
+import { Button } from '@deriv/components';
 import { WS } from 'Services';
 import { formatDate } from 'Utils/Date';
-import { Button } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
@@ -110,7 +110,7 @@ export const clientNotifications = (ui = {}) => {
                                 target='_blank'
                                 href={urlFor('contact', undefined, undefined, true)}
                             >
-                                <Button secondary medium text={localize('Contact Us')}></Button>
+                                <Button secondary medium text={localize('Contact Us')} />
                             </a>
                         </React.Fragment>,
                     ]}
@@ -144,7 +144,7 @@ export const clientNotifications = (ui = {}) => {
                                 target='_blank'
                                 href={urlFor('contact', undefined, undefined, true)}
                             >
-                                <Button secondary medium text={localize('Contact Us')}></Button>
+                                <Button secondary medium text={localize('Contact Us')} />
                             </a>
                         </React.Fragment>,
                     ]}

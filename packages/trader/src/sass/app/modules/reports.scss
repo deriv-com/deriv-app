@@ -313,7 +313,12 @@ $side-padding: 1.2em;
     .buy_price,
     .sell_price,
     .profit_loss {
-        justify-content: flex-end;
+        @include desktop {
+            justify-content: flex-end;
+        }
+        @include mobile {
+            justify-content: center;
+        }
     }
     .sell_time,
     .purchase_time {

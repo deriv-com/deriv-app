@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import { MobileWrapper, ToastError } from '@deriv/components';
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
@@ -42,6 +43,9 @@ export default connect(({ ui }) => ({
     mobile_toast_timeout: ui.mobile_toast_timeout,
 }))(ToastErrorPopup);
 
+/**
+ * Network status Toast components
+ */
 const NetworkStatusToastError = ({ status, portal_id, message }) => {
     if (!document.getElementById(portal_id) || !message) return null;
 
@@ -69,6 +73,12 @@ const NetworkStatusToastError = ({ status, portal_id, message }) => {
         </MobileWrapper>,
         document.getElementById(portal_id)
     );
+};
+
+NetworkStatusToastError.propTypes = {
+    portal_id: PropTypes.string,
+    status: PropTypes.string,
+    message: PropTypes.string,
 };
 
 export const NetworkStatusToastErrorPopup = connect(({ common }) => ({

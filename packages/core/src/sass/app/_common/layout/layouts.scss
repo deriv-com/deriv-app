@@ -101,6 +101,7 @@
         height: calc(100% - #{$MOBILE_HEADER_HEIGHT});
         position: relative;
         margin-top: $MOBILE_HEADER_HEIGHT;
+        overflow-y: auto;
 
         .ciq-menu {
             top: 0;

@@ -39,6 +39,7 @@
             @include typeface(--title-left-bold-black, none);
             color: var(--text-prominent);
             line-height: 1.5em;
+            margin-bottom: 0.8rem;
         }
         &--paragraph {
             @include typeface(--paragraph-left-normal-black, none);
@@ -133,6 +134,9 @@
                     display: flex;
                     justify-content: space-between;
                 }
+                @include mobile {
+                    margin-right: unset;
+                }
             }
         }
         &--heading {
@@ -149,6 +153,10 @@
     }
     .notification-messages {
         top: calc(-4.8rem + 16px);
+    }
+    @include mobile {
+        margin-top: 2.4rem;
+        padding: 0 1.6rem;
     }
 }
 
@@ -207,6 +215,10 @@
     margin-top: 2.4em;
     display: flex;
     justify-content: space-around;
+
+    @include mobile {
+        flex-direction: column;
+    }
 }
 
 .mt5-account-card {
@@ -341,6 +353,13 @@
             width: 122px;
             height: 32px;
             color: var(--text-prominent);
+        }
+    }
+    @include mobile {
+        width: 100%;
+
+        &:not(:last-child) {
+            margin-bottom: 2.4rem;
         }
     }
 }

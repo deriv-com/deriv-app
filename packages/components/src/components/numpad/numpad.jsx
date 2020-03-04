@@ -104,7 +104,7 @@ const Numpad = ({
     /**
      * Add Long Touch Handler
      */
-    // Resets always clears value to 0
+    // Resets always clears value to 0 if no reset_value is set
     const clearValue = () => setValue(reset_value || 0);
     const backspaceLongPress = useLongPress(clearValue, long_press_interval);
 

@@ -27,13 +27,12 @@ class PlatformSwitcher extends React.PureComponent {
                     { 'platform-switcher--active': this.state.is_open },
                     { 'platform-switcher--is-mobile': isMobile() }
                 )}
-                // TODO: Remove below once we support other platforms in responsive design
-                onClick={isDesktop() ? this.toggleDrawer : null}
+                onClick={this.toggleDrawer}
             >
                 <Icon className='platform-switcher__icon' icon={getPlatformIcon()} size={32} />
                 <h1 className='platform-switcher__header'>{getPlatformHeader()}</h1>
                 <p className='platform-switcher__label'>{localize('BETA')}</p>
-                {isDesktop() && <Icon className='platform-switcher__arrow' icon='IcChevronDownBold' />}
+                <Icon className='platform-switcher__arrow' icon='IcChevronDownBold' />
             </div>
             <CSSTransition
                 mountOnEnter

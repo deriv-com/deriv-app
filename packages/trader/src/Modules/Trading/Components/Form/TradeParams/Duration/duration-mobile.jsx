@@ -134,6 +134,10 @@ const Numbers = ({
             setToastErrorVisibility(true);
             setDurationError(true);
             return 'error';
+        } else if (parseInt(value) > max) {
+            setToastErrorMessage(localized_message, 2000);
+            setToastErrorVisibility(true);
+            return 'error';
         } else if (value.toString().length < 1) {
             setToastErrorMessage(localized_message, 2000);
             setToastErrorVisibility(true);

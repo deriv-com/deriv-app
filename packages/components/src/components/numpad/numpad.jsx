@@ -12,6 +12,7 @@ const Numpad = ({
     currency,
     is_regular,
     is_currency,
+    is_submit_disabled,
     label,
     max = 9999999,
     min = 0,
@@ -41,6 +42,7 @@ const Numpad = ({
             case -1:
                 chop();
                 break;
+
             // detecting floating point
             case '.':
                 if (is_float) {
@@ -98,6 +100,8 @@ const Numpad = ({
     React.useEffect(() => {
         if (onValueChange) onValueChange(default_value);
     }, [default_value]);
+
+    const has_error = !onValidate(default_value) || onValidate(default_value) === 'error';
     return (
         <div
             className={classNames('dc-numpad', className, {
@@ -106,14 +110,21 @@ const Numpad = ({
             })}
         >
             <StepInput
+                className={has_error ? 'dc-numpad__input-field--has-error' : null}
                 currency={currency}
                 pip_size={pip_size}
                 value={default_value}
                 render={render}
                 onChange={v => {
                     const amount = Number(v).toFixed(getDecimals(default_value));
-                    setFloat(isFloat(amount));
-                    setValue(amount);
+                    if (typeof onValidate === 'function') {
+                        setFloat(isFloat(amount));
+                        setValue(amount);
+                        onValidate(formatNumber(default_value));
+                    } else {
+                        setFloat(isFloat(amount));
+                        setValue(amount);
+                    }
                 }}
                 min={min}
                 max={max}
@@ -130,7 +141,14 @@ const Numpad = ({
                     type='secondary'
                     has_effect
                     className='dc-numpad__number'
-                    onClick={() => onSelect(-1)}
+                    onClick={() => {
+                        if (typeof onValidate === 'function') {
+                            onSelect(-1);
+                            onValidate(formatNumber(default_value));
+                        } else {
+                            onSelect(-1);
+                        }
+                    }}
                     is_disabled={!default_value.toString().length}
                 >
                     ⌫
@@ -142,11 +160,14 @@ const Numpad = ({
                     has_effect
                     className={classNames('dc-numpad__number', {
                         'dc-numpad__number--is-disabled':
+                            is_submit_disabled ||
                             !default_value.toString().length ||
+                            (min && formatNumber(default_value) < min) ||
                             (typeof onValidate === 'function' ? !onValidate(default_value) : false),
                     })}
                     onClick={() => {
                         if (!default_value.toString().length) return;
+                        if (min && formatNumber(default_value) < min) return;
                         if (typeof onValidate === 'function') {
                             onValidate(formatNumber(default_value));
                             onSubmit(formatNumber(default_value));
@@ -154,7 +175,11 @@ const Numpad = ({
                             onSubmit(formatNumber(default_value));
                         }
                     }}
-                    is_disabled={!default_value.toString().length}
+                    is_disabled={
+                        is_submit_disabled ||
+                        !default_value.toString().length ||
+                        (min && formatNumber(default_value) < min)
+                    }
                 >
                     {submit_label}
                 </Button>
@@ -168,6 +193,7 @@ Numpad.propTypes = {
     format: PropTypes.func,
     is_currency: PropTypes.bool,
     is_regular: PropTypes.bool,
+    is_submit_disabled: PropTypes.bool,
     max: PropTypes.number,
     min: PropTypes.number,
     onSubmit: PropTypes.func,

@@ -117,7 +117,10 @@ class PurchaseFieldset extends React.PureComponent {
                         </div>
                     </div>
                 </DesktopWrapper>
-                <MobileWrapper>{purchase_button}</MobileWrapper>
+                <MobileWrapper>
+                    {is_proposal_error && <div className='btn-purchase__error'>{info.message}</div>}
+                    {purchase_button}
+                </MobileWrapper>
             </Fieldset>
         );
     }

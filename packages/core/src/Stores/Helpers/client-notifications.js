@@ -132,10 +132,10 @@ export const clientNotifications = (ui = {}) => {
         },
         mf_retail: {
             key: 'mf_retail',
-            header: localize('Binary options trading disabled'),
+            header: localize('Digital options trading disabled'),
             message: isMobile() ? (
                 <Localize
-                    i18n_default_text='Binary Options Trading has been disabled on your account. Kindly contact customer support for assistance.<0/>'
+                    i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact customer support for assistance.<0/>'
                     components={[
                         <React.Fragment key={0}>
                             <br />
@@ -151,7 +151,7 @@ export const clientNotifications = (ui = {}) => {
                 />
             ) : (
                 <Localize
-                    i18n_default_text='Binary Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
+                    i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
                     components={[
                         <a
                             key={0}

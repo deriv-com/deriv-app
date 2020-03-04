@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import Button from 'Components/button/button.jsx';
 import NumberGrid from './number-grid.jsx';
@@ -30,6 +30,18 @@ const Numpad = ({
     const [is_float, setFloat] = React.useState(isFloat(formatted_value));
     const [default_value, setValue] = React.useState(formatted_value);
 
+    useEffect(() => {
+        if (formatted_value !== formatNumber(default_value)) {
+            updateValue(value);
+            setFloat(isFloat(value));
+        }
+    }, [value]);
+
+    const updateValue = val => {
+        setValue(val);
+        if (onValueChange) onValueChange(val);
+    };
+
     const onSelect = num => {
         if (typeof onValidate === 'function' && default_value !== '') {
             const passes = onValidate(concatenate(num, default_value));
@@ -48,15 +60,15 @@ const Numpad = ({
                 }
                 setFloat(true);
                 if (default_value.length === 0) {
-                    setValue(concatenate(num, '0'));
+                    updateValue(concatenate(num, '0'));
                 } else {
-                    setValue(concatenate(num, default_value));
+                    updateValue(concatenate(num, default_value));
                 }
 
                 break;
             default:
                 if (String(default_value) === '0') {
-                    setValue(concatenate(num, ''));
+                    updateValue(concatenate(num, ''));
                 } else {
                     const regex = /(?:\d+\.)(\d+)$/;
                     const matches = regex.exec(default_value);
@@ -65,11 +77,11 @@ const Numpad = ({
                         matches.forEach((match, groupIndex) => {
                             const pip_size_allowed = groupIndex === 1 && match.length < pip_size && is_float;
                             if (pip_size_allowed) {
-                                setValue(concatenate(num, default_value));
+                                updateValue(concatenate(num, default_value));
                             }
                         });
                     } else if (concatenate(num, default_value) <= max) {
-                        setValue(concatenate(num, default_value));
+                        updateValue(concatenate(num, default_value));
                     }
                 }
         }
@@ -84,7 +96,7 @@ const Numpad = ({
         if (default_value.toString().slice(-1) === '.') {
             setFloat(false);
         }
-        setValue(default_value.toString().slice(0, -1));
+        updateValue(default_value.toString().slice(0, -1));
     };
 
     const is_default_enabled = ![!!is_regular, !!is_currency].includes(true);
@@ -95,9 +107,6 @@ const Numpad = ({
         }
     });
 
-    React.useEffect(() => {
-        if (onValueChange) onValueChange(default_value);
-    }, [default_value]);
     return (
         <div
             className={classNames('dc-numpad', className, {
@@ -113,7 +122,7 @@ const Numpad = ({
                 onChange={v => {
                     const amount = Number(v).toFixed(getDecimals(default_value));
                     setFloat(isFloat(amount));
-                    setValue(amount);
+                    updateValue(amount);
                 }}
                 min={min}
                 max={max}

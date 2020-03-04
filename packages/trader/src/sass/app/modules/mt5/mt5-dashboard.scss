@@ -200,13 +200,29 @@
             justify-content: center;
         }
     }
+    @include mobile {
+        height: 100%;
+        width: 700px;
 
-    .mt5-compare-account--hint {
-        color: var(--text-less-prominent);
-        font-size: 12px;
-        line-height: 1.5em;
-        width: 100%;
-        padding: 1.6em 6.4em 2.4em 6.4em;
+        &__data {
+            padding: 0 0.8rem;
+
+            &__row {
+                grid-template-columns: 1.1fr 1fr 1fr 1fr;
+            }
+        }
+    }
+}
+
+.mt5-compare-account--hint {
+    color: var(--text-less-prominent);
+    font-size: 12px;
+    line-height: 1.5em;
+    width: 100%;
+    padding: 1.6em 6.4em 2.4em 6.4em;
+
+    @include mobile {
+        padding: 1.6rem;
     }
 }
 
@@ -356,7 +372,7 @@
         }
     }
     @include mobile {
-        width: 100%;
+        width: calc(100vw - 3.2rem);
 
         &:not(:last-child) {
             margin-bottom: 2.4rem;

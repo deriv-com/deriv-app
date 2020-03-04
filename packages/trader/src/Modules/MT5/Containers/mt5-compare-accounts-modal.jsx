@@ -1,4 +1,4 @@
-import { Button, Popover, Modal } from '@deriv/components';
+import { Button, Popover, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import React from 'react';
 import DataTable from 'App/Components/Elements/DataTable';
 import UILoader from 'App/Components/Elements/ui-loader.jsx';
@@ -158,6 +158,12 @@ const compareAccountsData = [
     },
 ];
 
+const MT5CompareAccountHint = () => (
+    <p className='mt5-compare-account--hint'>
+        <Localize i18n_default_text='Note: At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
+    </p>
+);
+
 const ModalContent = () => (
     <div className='mt5-compare-accounts'>
         <DataTable
@@ -168,9 +174,9 @@ const ModalContent = () => (
             custom_width={'100%'}
             getRowSize={index => (index + 1 === compareAccountsData.length ? 120 : 40)}
         />
-        <p className='mt5-compare-account--hint'>
-            <Localize i18n_default_text='Note: At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
-        </p>
+        <DesktopWrapper>
+            <MT5CompareAccountHint />
+        </DesktopWrapper>
     </div>
 );
 
@@ -184,19 +190,33 @@ const CompareAccountsModal = ({ disableApp, enableApp, is_compare_accounts_visib
             tertiary
         />
         <React.Suspense fallback={<UILoader />}>
-            <Modal
-                className='mt5-dashboard__compare-accounts'
-                disableApp={disableApp}
-                enableApp={enableApp}
-                is_open={is_compare_accounts_visible}
-                title={localize('Compare accounts')}
-                toggleModal={toggleCompareAccounts}
-                type='button'
-                height='595px'
-                width='904px'
-            >
-                <ModalContent />
-            </Modal>
+            <DesktopWrapper>
+                <Modal
+                    className='mt5-dashboard__compare-accounts'
+                    disableApp={disableApp}
+                    enableApp={enableApp}
+                    is_open={is_compare_accounts_visible}
+                    title={localize('Compare accounts')}
+                    toggleModal={toggleCompareAccounts}
+                    type='button'
+                    height='595px'
+                    width='904px'
+                >
+                    <ModalContent />
+                </Modal>
+            </DesktopWrapper>
+            <MobileWrapper>
+                <MobileDialog
+                    portal_element_id='deriv_app'
+                    title={localize('Compare accounts')}
+                    wrapper_classname='mt5-dashboard__compare-accounts'
+                    visible={is_compare_accounts_visible}
+                    onClose={toggleCompareAccounts}
+                    footer={<MT5CompareAccountHint />}
+                >
+                    <ModalContent />
+                </MobileDialog>
+            </MobileWrapper>
         </React.Suspense>
     </div>
 );

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Icon from 'Components/icon/icon.jsx';
@@ -8,6 +8,16 @@ import Div100vhContainer from '../div100vh-container';
 
 const MobileDialog = props => {
     const { title, visible, children, portal_element_id, wrapper_classname, footer } = props;
+
+    const footer_ref = useRef(false);
+    const [footer_height, setHeight] = useState(0);
+    useEffect(() => {
+        if (footer_ref.current && !footer_height) {
+            setHeight(footer_ref.current.offsetHeight);
+        } else {
+            footer_ref.current = true;
+        }
+    }, [footer]);
 
     const checkVisibility = () => {
         if (props.visible) {
@@ -62,7 +72,10 @@ const MobileDialog = props => {
                             <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
                         </div>
                     </div>
-                    <div className='dc-mobile-dialog__content'>
+                    <div
+                        className='dc-mobile-dialog__content'
+                        style={footer_height ? { height: `calc(100vh - ${footer_height}px - 64px)` } : undefined}
+                    >
                         <div
                             className={classNames({
                                 [`dc-mobile-dialog__${wrapper_classname}`]: wrapper_classname,
@@ -71,7 +84,11 @@ const MobileDialog = props => {
                             {children}
                         </div>
                     </div>
-                    {footer && <div className='dc-mobile-dialog__footer'>{footer}</div>}
+                    {footer && (
+                        <div ref={footer_ref} className='dc-mobile-dialog__footer'>
+                            {footer}
+                        </div>
+                    )}
                 </Div100vhContainer>
             </div>
         </CSSTransition>,

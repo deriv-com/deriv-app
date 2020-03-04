@@ -432,11 +432,13 @@ $FLOATING_HEADER_HEIGHT: 41px;
 }
 
 /** @define smartcharts; weak */
+/* postcss-bem-linter: ignore */
 .smartcharts {
     &-dark,
     &-light {
         @include mobile {
             .cq-dialog-portal {
+                /* postcss-bem-linter: ignore */
                 .cq-dialog {
                     max-width: calc(100% - 36px);
                 }

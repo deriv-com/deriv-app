@@ -2,9 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { NavLink } from 'react-router-dom';
 import { Icon } from '@deriv/components';
-import { getContractPath } from 'App/Components/Routes/helpers';
 import { localize } from '@deriv/translations';
 
 class ResultMobile extends React.PureComponent {
@@ -16,7 +14,7 @@ class ResultMobile extends React.PureComponent {
     };
 
     render() {
-        const { contract_id, is_visible, result } = this.props;
+        const { is_visible, result } = this.props;
         const is_contract_won = result === 'won';
         return (
             <React.Fragment>
@@ -30,11 +28,7 @@ class ResultMobile extends React.PureComponent {
                     }}
                     unmountOnExit
                 >
-                    <NavLink
-                        className='positions-modal-card__caption-wrapper'
-                        to={getContractPath(contract_id)}
-                        onClick={this.handleClick}
-                    >
+                    <div className='positions-modal-card__caption-wrapper'>
                         <span
                             className={classNames('positions-modal-card__caption', {
                                 'positions-modal-card__caption--won': is_contract_won,
@@ -57,7 +51,7 @@ class ResultMobile extends React.PureComponent {
                                 </React.Fragment>
                             )}
                         </span>
-                    </NavLink>
+                    </div>
                 </CSSTransition>
             </React.Fragment>
         );
@@ -65,7 +59,6 @@ class ResultMobile extends React.PureComponent {
 }
 
 ResultMobile.propTypes = {
-    contract_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     is_unsupported: PropTypes.bool,
     is_visible: PropTypes.bool,
     onClick: PropTypes.func,

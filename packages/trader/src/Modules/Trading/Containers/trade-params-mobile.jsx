@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { Tabs, Modal, Money } from '@deriv/components';
 import { connect } from 'Stores/connect';
@@ -31,6 +32,8 @@ class TradeParamsModal extends React.Component {
             trade_param_tab_idx: 0,
             duration_tab_idx: undefined,
             amount_tab_idx: undefined,
+            has_amount_error: false,
+            has_duration_error: false,
             // duration unit values
             curr_duration_unit: duration_unit,
             curr_duration_value: duration,
@@ -77,13 +80,21 @@ class TradeParamsModal extends React.Component {
         });
     };
 
+    setAmountError = has_error => this.setState({ has_amount_error: has_error });
+    setDurationError = has_error => this.setState({ has_duration_error: has_error });
+
     isVisible = component_key => this.props.form_components.includes(component_key);
 
     render() {
         const { currency, duration_units_list } = this.props;
         return (
             <React.Fragment>
-                <ToastErrorPopup />
+                <ToastErrorPopup
+                    portal_id={this.props.is_open ? 'modal_root' : null}
+                    className={classNames('trade-params__error-popup', {
+                        'trade-params__error-popup--has-numpad': this.props.is_open,
+                    })}
+                />
                 <Modal
                     id='dt_trade_parameters_mobile'
                     className='trade-params'
@@ -114,8 +125,12 @@ class TradeParamsModal extends React.Component {
                             duration_unit={this.state.curr_duration_unit}
                             duration_value={this.state.curr_duration_value}
                             duration_units_list={duration_units_list}
+                            has_amount_error={this.state.has_amount_error}
+                            setAmountError={this.setAmountError}
                             // duration
                             setSelectedDuration={this.setSelectedDuration}
+                            has_duration_error={this.state.has_duration_error}
+                            setDurationError={this.setDurationError}
                             t_duration={this.state.t_duration}
                             s_duration={this.state.s_duration}
                             m_duration={this.state.m_duration}
@@ -154,11 +169,15 @@ const TradeParamsMobile = ({
     duration_units_list,
     duration_value,
     duration_tab_idx,
+    has_amount_error,
+    has_duration_error,
     // amount
+    setAmountError,
     setSelectedAmount,
     stake_value,
     payout_value,
     // duration
+    setDurationError,
     setSelectedDuration,
     t_duration,
     s_duration,
@@ -171,7 +190,8 @@ const TradeParamsMobile = ({
 }) => {
     const getDurationText = () => {
         const duration = duration_units_list.find(d => d.value === duration_unit);
-        return `${duration_value} ${duration && duration.text}`;
+        return `${duration_value} ${duration &&
+            (duration_value > 1 ? localize(duration.text) : localize(duration.text.slice(0, -1)))}`;
     };
 
     const getAmountText = () => {
@@ -187,14 +207,26 @@ const TradeParamsMobile = ({
                 return (
                     <div className='trade-params__header'>
                         <div className='trade-params__header-label'>{localize('Duration')}</div>
-                        <div className='trade-params__header-value'>{getDurationText()}</div>
+                        <div
+                            className={classNames('trade-params__header-value', {
+                                'trade-params__header-value--has-error': has_duration_error,
+                            })}
+                        >
+                            {has_duration_error ? localize('Error') : getDurationText()}
+                        </div>
                     </div>
                 );
             case 'amount':
                 return (
                     <div className='trade-params__header'>
                         <div className='trade-params__header-label'>{localize('Amount')}</div>
-                        <div className='trade-params__header-value'>{getAmountText()}</div>
+                        <div
+                            className={classNames('trade-params__header-value', {
+                                'trade-params__header-value--has-error': has_amount_error,
+                            })}
+                        >
+                            {has_amount_error ? localize('Error') : getAmountText()}
+                        </div>
                     </div>
                 );
             default:
@@ -216,6 +248,8 @@ const TradeParamsMobile = ({
                         duration_tab_idx={duration_tab_idx}
                         setDurationTabIdx={setDurationTabIdx}
                         setSelectedDuration={setSelectedDuration}
+                        setDurationError={setDurationError}
+                        has_amount_error={has_amount_error}
                         t_duration={t_duration}
                         s_duration={s_duration}
                         m_duration={m_duration}
@@ -234,7 +268,9 @@ const TradeParamsMobile = ({
                         toggleModal={toggleModal}
                         amount_tab_idx={amount_tab_idx}
                         setAmountTabIdx={setAmountTabIdx}
+                        has_duration_error={has_duration_error}
                         setSelectedAmount={setSelectedAmount}
+                        setAmountError={setAmountError}
                         stake_value={stake_value}
                         payout_value={payout_value}
                     />

@@ -4,6 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared/utils/screen';
+import { getDecimalPlaces } from '@deriv/shared/utils/currency';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -95,6 +96,7 @@ class Header extends React.Component {
                             <div
                                 className={classNames('acc-info__preloader', {
                                     'acc-info__preloader--no-currency': !currency,
+                                    'acc-info__preloader--is-crypto': getDecimalPlaces(currency) > 2,
                                 })}
                             >
                                 <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={isMobile()} speed={3} />

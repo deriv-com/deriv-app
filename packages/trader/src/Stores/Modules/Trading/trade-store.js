@@ -690,13 +690,7 @@ export default class TradeStore extends BaseStore {
             if (error_id) {
                 this.setValidationErrorMessages(error_id, [response.error.message]);
             }
-            // TODO remove this once there is a proper API call for getting min/max stake/payout
-            if (this.root_store.ui.is_mobile) {
-                this.root_store.ui.setToastErrorMessage(response.error.message, 0);
-                this.root_store.ui.setToastErrorVisibility(true);
-            }
         } else {
-            this.root_store.ui.setToastErrorVisibility(false);
             this.validateAllProperties();
         }
 

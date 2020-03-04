@@ -67,10 +67,15 @@ class CompositeCalendarMobile extends React.PureComponent {
     }
 
     selectCustomDateRange() {
-        const { from, to, selected_date_range } = this.state;
+        const { selected_date_range } = this.state;
+        const today = toMoment().format('DD MMM YYYY');
+        let { from, to } = this.state;
+
+        from = from || to || today;
+        to = to || today;
 
         const date_range = Object.assign(selected_date_range, {
-            label: `${this.state.from} - ${this.state.to}`,
+            label: `${from} - ${to}`,
         });
 
         this.props.onChange(

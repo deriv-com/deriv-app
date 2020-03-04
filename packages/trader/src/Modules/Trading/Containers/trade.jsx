@@ -6,7 +6,13 @@ import { connect } from 'Stores/connect';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 import Test from './test.jsx';
-import { ChartBottomWidgets, ChartControlWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
+import {
+    ChartBottomWidgets,
+    ChartControlWidgets,
+    ChartToolbarWidgets,
+    ChartTopWidgets,
+    DigitsWidget,
+} from './chart-widgets.jsx';
 import FormLayout from '../Components/Form/form-layout.jsx';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 
@@ -169,6 +175,7 @@ class ChartTradeClass extends React.Component {
                 topWidgets={this.props.is_trade_enabled ? this.topWidgets : null}
                 isConnectionOpened={this.props.is_socket_opened}
                 clearChart={false}
+                toolbarWidget={isMobile() ? ChartToolbarWidgets : null}
                 importedLayout={this.props.chart_layout}
                 onExportLayout={this.props.exportLayout}
                 shouldFetchTradingTimes={!this.props.end_epoch}

@@ -110,7 +110,7 @@ export const clientNotifications = (ui = {}) => {
                                 target='_blank'
                                 href={urlFor('contact', undefined, undefined, true)}
                             >
-                                <Button secondary medium text={localize('Contact Us')}></Button>
+                                <Button secondary medium text={localize('Contact Us')} />
                             </a>
                         </React.Fragment>,
                     ]}
@@ -144,7 +144,7 @@ export const clientNotifications = (ui = {}) => {
                                 target='_blank'
                                 href={urlFor('contact', undefined, undefined, true)}
                             >
-                                <Button secondary medium text={localize('Contact Us')}></Button>
+                                <Button secondary medium text={localize('Contact Us')} />
                             </a>
                         </React.Fragment>,
                     ]}

@@ -38,7 +38,6 @@
             position: absolute;
             @include mobile {
                 left: 1.6rem;
-                width: calc(100vw - 3.2rem) !important;
             }
         }
         &--hide {
@@ -66,6 +65,9 @@
             min-width: 400px;
             max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
             max-width: 90vw;
+        }
+        @include mobile {
+            width: calc(100vw - 3.2rem) !important;
         }
     }
     /** @define dc-modal-header */

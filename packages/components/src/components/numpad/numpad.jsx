@@ -6,7 +6,7 @@ import NumberGrid from './number-grid.jsx';
 import StepInput from './step-input.jsx';
 
 const concatenate = (number, default_value) => default_value.toString().concat(number);
-
+const backspace_ref = React.createRef();
 const Numpad = ({
     className,
     currency,
@@ -14,6 +14,7 @@ const Numpad = ({
     is_currency,
     is_submit_disabled,
     label,
+    long_touch_timeout = 0,
     max = 9999999,
     min = 0,
     pip_size,
@@ -97,11 +98,35 @@ const Numpad = ({
         }
     });
 
+    React.useEffect(() => onValueChange?.(default_value), [default_value]);
+
+    /**
+     * Add Long Touch Handler
+     */
     React.useEffect(() => {
-        if (onValueChange) onValueChange(default_value);
-    }, [default_value]);
+        // if (onValueChange) onValueChange(default_value);
+        // }, [default_value]);
+
+        const contextMenuHandler = e => e.preventDefault();
+        const touchHandler = () => {
+            const timer_id = setTimeout(() => {
+                setValue(min ?? '');
+                clearTimeout(timer_id);
+                backspace_ref.current.removeEventListener('contextmenu', contextMenuHandler);
+            }, long_touch_timeout);
+        };
+
+        backspace_ref.current.addEventListener('touchstart', touchHandler);
+        backspace_ref.current.addEventListener('contextmenu', contextMenuHandler);
+
+        return () => {
+            backspace_ref.current.removeEventListener('touchstart', touchHandler);
+            backspace_ref.current.removeEventListener('contextmenu', contextMenuHandler);
+        };
+    });
 
     const has_error = !onValidate(default_value) || onValidate(default_value) === 'error';
+
     return (
         <div
             className={classNames('dc-numpad', className, {
@@ -136,7 +161,7 @@ const Numpad = ({
                     .
                 </Button>
             )}
-            <div className='dc-numpad__bkspace'>
+            <div className='dc-numpad__bkspace' ref={backspace_ref}>
                 <Button
                     type='secondary'
                     has_effect
@@ -194,6 +219,7 @@ Numpad.propTypes = {
     is_currency: PropTypes.bool,
     is_regular: PropTypes.bool,
     is_submit_disabled: PropTypes.bool,
+    long_touch_timeout: PropTypes.number,
     max: PropTypes.number,
     min: PropTypes.number,
     onSubmit: PropTypes.func,

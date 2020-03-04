@@ -211,6 +211,7 @@ PositionsModalCard.propTypes = {
     result: PropTypes.string,
     sell_time: PropTypes.number,
     status: PropTypes.string,
+    togglePositions: PropTypes.func,
     toggleUnsupportedContractModal: PropTypes.func,
     type: PropTypes.string,
 };

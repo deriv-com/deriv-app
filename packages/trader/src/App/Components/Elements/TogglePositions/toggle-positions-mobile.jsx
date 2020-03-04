@@ -18,6 +18,7 @@ class TogglePositionsMobile extends React.Component {
             is_empty,
             onClickSell,
             onClickRemove,
+            togglePositionsDrawer,
             toggleUnsupportedContractModal,
         } = this.props;
         // Show only 5 most recent open contracts
@@ -44,7 +45,7 @@ class TogglePositionsMobile extends React.Component {
                                 key={portfolio_position.id}
                                 currency={currency}
                                 toggleUnsupportedContractModal={toggleUnsupportedContractModal}
-                                togglePositions={this.togglePositions}
+                                togglePositions={togglePositionsDrawer}
                                 {...portfolio_position}
                             />
                         </CSSTransition>

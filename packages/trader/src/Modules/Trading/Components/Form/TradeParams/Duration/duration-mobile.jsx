@@ -134,6 +134,7 @@ const Numbers = ({
         if (trade_duration !== duration || trade_duration_unit !== duration_unit) {
             on_change_obj.duration_unit = duration_unit;
             on_change_obj.duration = duration;
+            on_change_obj.expiry_type = 'duration';
         }
 
         if (!ObjectUtils.isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
@@ -289,7 +290,7 @@ const Duration = ({
                                         onChange={handleRelativeChange}
                                         min={min}
                                         max={max}
-                                        title='Pick an end date'
+                                        title={localize('Pick an end date')}
                                     />
                                 </div>
                             );

@@ -398,6 +398,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     addNotificationMessage(notification) {
+        if (!notification) return;
         if (!this.notification_messages.find(item => item.header === notification.header)) {
             this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
             if (!excluded_notifications.includes(notification.key)) {
@@ -419,7 +420,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    removeNotificationMessage({ key }) {
+    removeNotificationMessage({ key } = {}) {
+        if (!key) return;
         this.notification_messages = this.notification_messages.filter(n => n.key !== key);
         // Add notification messages to LocalStore when user closes, check for redundancy
         const active_loginid = LocalStore.get('active_loginid');

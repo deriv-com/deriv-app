@@ -134,7 +134,7 @@ class OpenPositions extends React.Component {
                         'View all active trades on your account that can still incur a profit or a loss.'
                     )}
                 />
-                {(is_loading && active_positions.length === 0) || is_empty ? (
+                {is_loading || active_positions.length === 0 || is_empty ? (
                     <PlaceholderComponent
                         is_loading={is_loading || !active_positions}
                         is_empty={is_empty}

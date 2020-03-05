@@ -50,9 +50,7 @@ const Redirect = ({
             break;
         }
         case 'add_account': {
-            fetchResidenceList().then(() => {
-                openRealAccountSignup();
-            });
+            fetchResidenceList().then(openRealAccountSignup);
             break;
         }
         default:

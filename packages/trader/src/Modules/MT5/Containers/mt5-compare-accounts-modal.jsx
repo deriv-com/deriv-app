@@ -1,5 +1,5 @@
 import { Button, Popover, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import React from 'react';
+import React, { useState } from 'react';
 import DataTable from 'App/Components/Elements/DataTable';
 import UILoader from 'App/Components/Elements/ui-loader.jsx';
 import { localize, Localize } from '@deriv/translations';
@@ -24,11 +24,28 @@ const compareAccountsColumns = [
     },
 ];
 
+const MT5AttributeDescriberModal = ({ is_visible, toggleModal, message }) => (
+    <Modal is_open={is_visible} small toggleModal={toggleModal}>
+        <Modal.Body>{message}</Modal.Body>
+        <Modal.Footer>
+            <Button has_effect text={localize('OK')} onClick={toggleModal} primary />
+        </Modal.Footer>
+    </Modal>
+);
+
 const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
+    const [is_visible, setIsVisible] = useState(false);
+    const toggleModal = () => setIsVisible(!is_visible);
+
     return tooltip ? (
         <React.Fragment>
-            <p className='mt5-attribute-describer'>{name}</p>
+            <p className='mt5-attribute-describer' onClick={toggleModal}>
+                {name}
+            </p>
             <Popover alignment='right' icon='counter' counter={counter} message={tooltip} />
+            <MobileWrapper>
+                <MT5AttributeDescriberModal toggleModal={toggleModal} is_visible={is_visible} message={tooltip} />
+            </MobileWrapper>
         </React.Fragment>
     ) : (
         <p className='mt5-attribute-describer'>{name}</p>

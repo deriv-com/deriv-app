@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop, isMobile } from '@deriv/shared/utils/screen';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { getPlatformHeader, getPlatformIcon } from 'Utils/PlatformSwitcher';
 import { PlatformDropdown } from './platform-dropdown.jsx';
 import 'Sass/app/_common/components/platform-switcher.scss';

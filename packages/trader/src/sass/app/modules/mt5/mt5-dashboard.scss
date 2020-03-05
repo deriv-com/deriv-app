@@ -403,6 +403,10 @@
     &__main-form,
     &__investor-wrapper {
         margin-top: 2.4rem;
+
+        @include mobile {
+            padding-bottom: 8rem;
+        }
     }
     &__investor-wrapper {
         .mt5-password-manager--paragraph:first-child {

@@ -7,6 +7,7 @@ import {
     DesktopWrapper,
     MobileWrapper,
     PageOverlay,
+    ThemedScrollbars,
 } from '@deriv/components';
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
@@ -254,7 +255,14 @@ class MT5PasswordManagerModal extends React.Component {
                         <MainPasswordManager />
                     </div>
                     <div label={localize('Investor password')}>
-                        <InvestorPasswordManager />
+                        <DesktopWrapper>
+                            <InvestorPasswordManager />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 80px)' }}>
+                                <InvestorPasswordManager />
+                            </ThemedScrollbars>
+                        </MobileWrapper>
                     </div>
                 </Tabs>
             </div>

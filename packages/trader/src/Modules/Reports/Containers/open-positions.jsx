@@ -84,7 +84,7 @@ const OpenPositionsTable = ({
 
 class OpenPositions extends React.Component {
     state = {
-        active_index: 0,
+        active_index: this.props.is_multiplier ? 1 : 0,
     };
 
     componentDidMount() {
@@ -92,9 +92,6 @@ class OpenPositions extends React.Component {
 
         const { getPositionById, onClickCancel, onClickSell } = this.props;
         this.getActionColumns = getActionColumns({ getPositionById, onClickCancel, onClickSell });
-
-        const { is_multiplier } = this.props;
-        this.setState({ active_index: is_multiplier ? 1 : 0 });
     }
 
     componentWillUnmount() {

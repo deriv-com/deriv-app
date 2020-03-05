@@ -109,7 +109,7 @@
     "react": "~16.8.6",
     "react-dom": "~16.8.6",
     "react-dropzone": "^9.0.0",
-    "react-pose": "^4.0.8",
+    "react-pose": "^4.0.10",
     "react-router-dom": "^5.1.2",
     "react-tiny-popover": "^3.4.5",
     "react-transition-group": "^4.2.2",

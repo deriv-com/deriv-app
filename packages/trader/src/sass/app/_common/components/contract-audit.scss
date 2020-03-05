@@ -1,5 +1,5 @@
 /** @define contract-audit; */
-$HEIGHT: calc(100vh - 32.6em);
+$HEIGHT: calc(100vh - 34em);
 
 .contract-audit {
     &__wrapper {
@@ -22,7 +22,7 @@ $HEIGHT: calc(100vh - 32.6em);
         }
         /* postcss-bem-linter: ignore */
         .dc-tabs {
-            height: inherit;
+            height: 100%;
             grid-template-rows: 1fr 20fr;
         }
     }

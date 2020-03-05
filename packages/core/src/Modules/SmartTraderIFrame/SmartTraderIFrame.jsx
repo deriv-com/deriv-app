@@ -11,7 +11,14 @@ const SmartTraderIFrame = () => {
         return null;
     }
 
-    return <iframe id='localstorage-sync' src={url} style={{ display: 'none', visibility: 'hidden' }} />;
+    return (
+        <iframe
+            id='localstorage-sync'
+            src={url}
+            style={{ display: 'none', visibility: 'hidden' }}
+            sandbox='allow-same-origin allow-scripts'
+        />
+    );
 };
 
 export default SmartTraderIFrame;

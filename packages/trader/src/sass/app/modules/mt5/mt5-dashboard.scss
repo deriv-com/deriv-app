@@ -382,7 +382,8 @@
 
 .mt5-password-manager {
     margin: 5.6rem auto 0;
-    width: 400px;
+    max-width: 400px;
+    width: 100%;
 
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
@@ -409,7 +410,8 @@
         }
     }
     &__investor-form {
-        width: 300px;
+        width: 100%;
+        max-width: 300px;
         margin: 2.4em auto 0;
     }
     &__actions {
@@ -419,6 +421,10 @@
     }
     &--button {
         margin-top: 1.6rem;
+    }
+    @include mobile {
+        padding: 0 1.6rem;
+        margin-top: 2.4rem;
     }
 }
 

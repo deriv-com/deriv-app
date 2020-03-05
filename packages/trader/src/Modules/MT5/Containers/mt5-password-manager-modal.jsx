@@ -1,4 +1,13 @@
-import { Modal, Tabs, PasswordInput, PasswordMeter, Button } from '@deriv/components';
+import {
+    Modal,
+    Tabs,
+    PasswordInput,
+    PasswordMeter,
+    Button,
+    DesktopWrapper,
+    MobileWrapper,
+    PageOverlay,
+} from '@deriv/components';
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -238,31 +247,47 @@ class MT5PasswordManagerModal extends React.Component {
             );
         };
 
+        const MTTPasswordManagerTabContent = () => (
+            <div className='mt5-password-manager'>
+                <Tabs top>
+                    <div label={localize('Main password')}>
+                        <MainPasswordManager />
+                    </div>
+                    <div label={localize('Investor password')}>
+                        <InvestorPasswordManager />
+                    </div>
+                </Tabs>
+            </div>
+        );
+
         return (
             <React.Suspense fallback={<UILoader />}>
-                <Modal
-                    className='mt5-password-manager__modal'
-                    disableApp={disableApp}
-                    enableApp={enableApp}
-                    is_open={is_visible}
-                    title={localize('Manage your DMT5 {{account_title}} account password', {
-                        account_title: selected_account,
-                    })}
-                    toggleModal={toggleModal}
-                    height='688px'
-                    width='904px'
-                >
-                    <div className='mt5-password-manager'>
-                        <Tabs top>
-                            <div label={localize('Main password')}>
-                                <MainPasswordManager />
-                            </div>
-                            <div label={localize('Investor password')}>
-                                <InvestorPasswordManager />
-                            </div>
-                        </Tabs>
-                    </div>
-                </Modal>
+                <DesktopWrapper>
+                    <Modal
+                        className='mt5-password-manager__modal'
+                        disableApp={disableApp}
+                        enableApp={enableApp}
+                        is_open={is_visible}
+                        title={localize('Manage your DMT5 {{account_title}} account password', {
+                            account_title: selected_account,
+                        })}
+                        toggleModal={toggleModal}
+                        height='688px'
+                        width='904px'
+                    >
+                        <MTTPasswordManagerTabContent />
+                    </Modal>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <PageOverlay
+                        is_open={is_visible}
+                        portal_id='deriv_app'
+                        header={localize('Manage password')}
+                        onClickClose={toggleModal}
+                    >
+                        <MTTPasswordManagerTabContent />
+                    </PageOverlay>
+                </MobileWrapper>
             </React.Suspense>
         );
     }

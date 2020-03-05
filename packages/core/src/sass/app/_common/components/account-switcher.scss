@@ -124,6 +124,9 @@
         &:not(:last-child) {
             margin-right: 1em;
         }
+        @include mobile {
+            height: 2.8rem !important;
+        }
     }
 }
 
@@ -425,6 +428,10 @@
     & .btn {
         display: flex;
         align-items: center;
+
+        @include mobile {
+            height: 2.8rem !important;
+        }
     }
 }
 

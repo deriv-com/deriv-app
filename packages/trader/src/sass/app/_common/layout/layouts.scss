@@ -370,6 +370,34 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .ciq-navigation-widget {
             transform: translate3d(0, 0, 0);
         }
+        .ciq-toolbar-widget {
+            @include mobile {
+                background: transparent;
+                border-width: 0;
+                bottom: 2.8rem;
+
+                /* postcss-bem-linter: ignore */
+                .ciq-chart-mode {
+                    background: var(--general-section-1);
+                    padding: 0.4rem 0.2rem;
+                    width: 4rem;
+                    height: 4rem;
+                    display: flex;
+                    border-radius: 50%;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 0.8rem;
+
+                    &__menu__timeperiod {
+                        top: 0.8rem;
+                        left: 0.8rem;
+                    }
+                    &__menu > .ic-icon {
+                        top: 0.6rem;
+                    }
+                }
+            }
+        }
     }
     .chartContainer {
         background: transparent;
@@ -441,6 +469,40 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 /* postcss-bem-linter: ignore */
                 .cq-dialog {
                     max-width: calc(100% - 36px);
+                }
+            }
+            /** @define ciq-chart-mode; weak */
+            .ciq-chart-mode {
+                /* postcss-bem-linter: ignore */
+                &__section__item {
+                    /* postcss-bem-linter: ignore */
+                    .cq-interval {
+                        display: grid;
+                        padding: 1.6rem;
+                        grid-template-columns: 1fr;
+
+                        /* postcss-bem-linter: ignore */
+                        &__content {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr 1fr;
+                            padding-top: 16px;
+                        }
+                        /* postcss-bem-linter: ignore */
+                        &__item {
+                            width: 100% !important;
+                            margin: 0;
+
+                            /* postcss-bem-linter: ignore */
+                            .tooltip {
+                                display: none;
+                            }
+                        }
+                        /* postcss-bem-linter: ignore */
+                        &__info {
+                            margin-top: 0.4rem;
+                            padding-left: 0.2rem;
+                        }
+                    }
                 }
             }
         }

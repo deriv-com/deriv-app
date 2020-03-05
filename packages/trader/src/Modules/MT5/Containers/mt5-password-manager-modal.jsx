@@ -259,7 +259,7 @@ class MT5PasswordManagerModal extends React.Component {
                             <InvestorPasswordManager />
                         </DesktopWrapper>
                         <MobileWrapper>
-                            <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 80px)' }}>
+                            <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 120px)' }}>
                                 <InvestorPasswordManager />
                             </ThemedScrollbars>
                         </MobileWrapper>

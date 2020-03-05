@@ -515,7 +515,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get residence() {
         // TODO Instead of return residence from each individual loginid, set in once in login, this is bound by user.
-        return this.accounts[this.loginid].residence;
+        return this.accounts[this.loginid]?.residence ?? '';
     }
 
     @computed

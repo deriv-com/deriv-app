@@ -376,6 +376,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 border-width: 0;
                 bottom: 2.8rem;
 
+                /* postcss-bem-linter: ignore */
                 .ciq-chart-mode {
                     background: var(--general-section-1);
                     padding: 0.4rem 0.2rem;
@@ -392,7 +393,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         left: 0.8rem;
                     }
                     &__menu > .ic-icon {
-                        top: 0.2rem;
+                        top: 0.6rem;
                     }
                 }
             }
@@ -468,6 +469,40 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 /* postcss-bem-linter: ignore */
                 .cq-dialog {
                     max-width: calc(100% - 36px);
+                }
+            }
+            /** @define ciq-chart-mode; weak */
+            .ciq-chart-mode {
+                /* postcss-bem-linter: ignore */
+                &__section__item {
+                    /* postcss-bem-linter: ignore */
+                    .cq-interval {
+                        display: grid;
+                        padding: 1.6rem;
+                        grid-template-columns: 1fr;
+
+                        /* postcss-bem-linter: ignore */
+                        &__content {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr 1fr;
+                            padding-top: 16px;
+                        }
+                        /* postcss-bem-linter: ignore */
+                        &__item {
+                            width: 100% !important;
+                            margin: 0;
+
+                            /* postcss-bem-linter: ignore */
+                            .tooltip {
+                                display: none;
+                            }
+                        }
+                        /* postcss-bem-linter: ignore */
+                        &__info {
+                            margin-top: 0.4rem;
+                            padding-left: 0.2rem;
+                        }
+                    }
                 }
             }
         }

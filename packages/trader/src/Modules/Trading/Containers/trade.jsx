@@ -151,6 +151,9 @@ class ChartTradeClass extends React.Component {
         // smartcharts only way to refresh active-symbols is to reset the connection.
         // const is_socket_opened = this.props.is_socket_opened && !should_refresh;
 
+        // max ticks to display for mobile view for tick chart
+        const max_ticks = this.props.granularity === 0 ? 8 : 24;
+
         return (
             <SmartChart
                 ref={ref => (this.charts_ref = ref)}
@@ -164,7 +167,7 @@ class ChartTradeClass extends React.Component {
                 enabledNavigationWidget={isDesktop()}
                 id='trade'
                 isMobile={isMobile()}
-                maxTick={isMobile() ? 8 : undefined}
+                maxTick={isMobile() ? max_ticks : undefined}
                 granularity={this.props.granularity}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}

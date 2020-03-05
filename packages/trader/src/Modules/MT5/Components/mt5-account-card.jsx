@@ -85,7 +85,11 @@ const MT5AccountCard = ({
                 )}
                 {existing_data && (
                     <div className='mt5-account-card__manage'>
-                        <Button onClick={isDesktop() ? onClickFund : toggleModal} type='button' secondary>
+                        <Button
+                            onClick={isDesktop() || type.category === 'demo' ? onClickFund : toggleModal}
+                            type='button'
+                            secondary
+                        >
                             {type.category === 'real' && <Localize i18n_default_text='Fund transfer' />}
                             {type.category === 'demo' && <Localize i18n_default_text='Top up' />}
                         </Button>

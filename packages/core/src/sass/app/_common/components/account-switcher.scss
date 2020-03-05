@@ -40,6 +40,9 @@
             &:before {
                 display: none;
             }
+            &--is-crypto {
+                width: 100%;
+            }
         }
     }
     &__container {
@@ -55,6 +58,9 @@
         justify-content: center;
         position: relative;
         margin-right: 0.8rem;
+        user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-tap-highlight-color: transparent;
     }
     &__id {
         pointer-events: none;
@@ -86,13 +92,16 @@
             transform: rotate(180deg);
         }
     }
-    &:hover:not(.show):not(&--is-disabled) {
-        background: var(--state-hover);
+    @include desktop {
+        &:hover:not(.show):not(&--is-disabled) {
+            background: var(--state-hover);
 
-        .symbols {
-            background: transparent;
+            .symbols {
+                background: transparent;
+            }
         }
     }
+
     &--is-virtual {
         .acc-info__balance {
             color: var(--text-profit-success);
@@ -114,6 +123,9 @@
 
         &:not(:last-child) {
             margin-right: 1em;
+        }
+        @include mobile {
+            height: 2.8rem !important;
         }
     }
 }
@@ -416,6 +428,10 @@
     & .btn {
         display: flex;
         align-items: center;
+
+        @include mobile {
+            height: 2.8rem !important;
+        }
     }
 }
 

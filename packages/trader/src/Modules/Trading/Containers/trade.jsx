@@ -6,7 +6,13 @@ import { connect } from 'Stores/connect';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
 import Test from './test.jsx';
-import { ChartBottomWidgets, ChartControlWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets.jsx';
+import {
+    ChartBottomWidgets,
+    ChartControlWidgets,
+    ChartToolbarWidgets,
+    ChartTopWidgets,
+    DigitsWidget,
+} from './chart-widgets.jsx';
 import FormLayout from '../Components/Form/form-layout.jsx';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 
@@ -49,7 +55,7 @@ class Trade extends React.Component {
                     id='chart_container'
                     className='chart-container'
                     is_disabled={isDesktop()}
-                    height_offset='260px'
+                    height_offset='249px'
                 >
                     <NotificationMessages />
                     <React.Suspense
@@ -145,6 +151,9 @@ class ChartTradeClass extends React.Component {
         // smartcharts only way to refresh active-symbols is to reset the connection.
         // const is_socket_opened = this.props.is_socket_opened && !should_refresh;
 
+        // max ticks to display for mobile view for tick chart
+        const max_ticks = this.props.granularity === 0 ? 8 : 24;
+
         return (
             <SmartChart
                 ref={ref => (this.charts_ref = ref)}
@@ -158,7 +167,7 @@ class ChartTradeClass extends React.Component {
                 enabledNavigationWidget={isDesktop()}
                 id='trade'
                 isMobile={isMobile()}
-                maxTick={isMobile() ? 8 : undefined}
+                maxTick={isMobile() ? max_ticks : undefined}
                 granularity={this.props.granularity}
                 requestAPI={this.props.wsSendRequest}
                 requestForget={this.props.wsForget}
@@ -169,6 +178,7 @@ class ChartTradeClass extends React.Component {
                 topWidgets={this.props.is_trade_enabled ? this.topWidgets : null}
                 isConnectionOpened={this.props.is_socket_opened}
                 clearChart={false}
+                toolbarWidget={isMobile() ? ChartToolbarWidgets : null}
                 importedLayout={this.props.chart_layout}
                 onExportLayout={this.props.exportLayout}
                 shouldFetchTradingTimes={!this.props.end_epoch}

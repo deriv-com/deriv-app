@@ -1,71 +1,111 @@
 import React from 'react';
-import { Tabs, Numpad } from '@deriv/components';
+import { Tabs, Money, Numpad } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import { connect } from 'Stores/connect';
 
-const Basis = ({
-    duration_unit,
-    duration_value,
-    toggleModal,
-    basis,
-    selected_basis,
-    setSelectedAmount,
-    onChangeMultiple,
-    currency,
-    trade_amount,
-    trade_basis,
-    trade_duration,
-    trade_duration_unit,
-}) => {
-    const user_currency_decimal_places = CurrencyUtils.getDecimalPlaces(currency);
-    const onNumberChange = num => setSelectedAmount(basis, num);
-    const formatAmount = value => (!isNaN(value) ? Number(value).toFixed(user_currency_decimal_places) : value);
-    const setBasisAndAmount = amount => {
-        const on_change_obj = {};
+class Basis extends React.Component {
+    setAmountErrorState = state => this.props.setAmountError(state);
 
-        // Check for any duration changes in Duration trade params Tab before sending onChange object
-        if (duration_unit !== trade_duration_unit) on_change_obj.duration_unit = duration_unit;
-        if (duration_value !== trade_duration) on_change_obj.duration = duration_value;
+    render() {
+        const {
+            duration_unit,
+            duration_value,
+            toggleModal,
+            basis,
+            has_duration_error,
+            selected_basis,
+            setSelectedAmount,
+            onChangeMultiple,
+            currency,
+            trade_amount,
+            trade_basis,
+            trade_duration,
+            trade_duration_unit,
+            setToastErrorMessage,
+            setToastErrorVisibility,
+        } = this.props;
+        const user_currency_decimal_places = CurrencyUtils.getDecimalPlaces(currency);
+        const onNumberChange = num => {
+            setSelectedAmount(basis, num);
+            validateAmount(num);
+        };
+        const formatAmount = value => (!isNaN(value) ? Number(value).toFixed(user_currency_decimal_places) : value);
+        const setBasisAndAmount = amount => {
+            const on_change_obj = {};
 
-        if (amount !== trade_amount || basis !== trade_basis) {
-            on_change_obj.basis = basis;
-            on_change_obj.amount = amount;
-        }
+            // Check for any duration changes in Duration trade params Tab before sending onChange object
+            if (duration_unit !== trade_duration_unit && !has_duration_error)
+                on_change_obj.duration_unit = duration_unit;
+            if (duration_value !== trade_duration && !has_duration_error) on_change_obj.duration = duration_value;
 
-        if (!ObjectUtils.isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
-        toggleModal();
-    };
+            if (amount !== trade_amount || basis !== trade_basis) {
+                on_change_obj.basis = basis;
+                on_change_obj.amount = amount;
+            }
 
-    return (
-        <div className='trade-params__amount-keypad'>
-            <Numpad
-                value={selected_basis}
-                format={formatAmount}
-                onSubmit={setBasisAndAmount}
-                currency={currency}
-                is_currency
-                render={({ value: v, className }) => {
-                    return <div className={className}>{v}</div>;
-                }}
-                pip_size={user_currency_decimal_places}
-                min={0}
-                max={Math.pow(10, CurrencyUtils.AMOUNT_MAX_LENGTH) - 1}
-                submit_label={localize('OK')}
-                onValueChange={onNumberChange}
-            />
-        </div>
-    );
-};
+            if (!ObjectUtils.isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
+            toggleModal();
+        };
+        const zero_decimals = Number('0').toFixed(CurrencyUtils.getDecimalPlaces(currency));
+        const min_amount = parseFloat(zero_decimals.toString().replace(/.$/, '1'));
 
-const AmountWrapper = connect(({ modules, client }) => ({
+        const validateAmount = value => {
+            const localized_message = <Localize i18n_default_text='Should not be 0 or empty' />;
+            const selected_value = parseFloat(value.toString());
+
+            if (value.toString() === '0.' || selected_value === 0) {
+                setToastErrorMessage(localized_message, 2000);
+                setToastErrorVisibility(true);
+                this.setAmountErrorState(true);
+                return 'error';
+            } else if (selected_value < min_amount || value.toString().length < 1) {
+                setToastErrorMessage(localized_message, 2000);
+                setToastErrorVisibility(true);
+                this.setAmountErrorState(true);
+                return false;
+            }
+            setToastErrorVisibility(false);
+            this.setAmountErrorState(false);
+            return true;
+        };
+
+        return (
+            <div className='trade-params__amount-keypad'>
+                <Numpad
+                    value={selected_basis}
+                    format={formatAmount}
+                    onSubmit={setBasisAndAmount}
+                    currency={currency}
+                    min={min_amount}
+                    is_currency
+                    render={({ value: v, className }) => {
+                        return (
+                            <div className={className}>
+                                {!!v && (v > 0 ? <Money currency={currency} amount={v} should_format={false} /> : v)}
+                            </div>
+                        );
+                    }}
+                    pip_size={user_currency_decimal_places}
+                    onValidate={validateAmount}
+                    submit_label={localize('OK')}
+                    onValueChange={onNumberChange}
+                />
+            </div>
+        );
+    }
+}
+
+const AmountWrapper = connect(({ modules, client, ui }) => ({
     onChangeMultiple: modules.trade.onChangeMultiple,
     trade_amount: modules.trade.amount,
     trade_basis: modules.trade.basis,
     trade_duration_unit: modules.trade.duration_unit,
     trade_duration: modules.trade.duration,
     currency: client.currency,
+    setToastErrorMessage: ui.setToastErrorMessage,
+    setToastErrorVisibility: ui.setToastErrorVisibility,
 }))(Basis);
 
 const Amount = ({
@@ -74,7 +114,9 @@ const Amount = ({
     basis,
     duration_value,
     duration_unit,
+    has_duration_error,
     amount_tab_idx,
+    setAmountError,
     setAmountTabIdx,
     setSelectedAmount,
     stake_value,
@@ -95,7 +137,9 @@ const Amount = ({
                                         toggleModal={toggleModal}
                                         duration_value={duration_value}
                                         duration_unit={duration_unit}
+                                        has_duration_error={has_duration_error}
                                         basis={basis_option.value}
+                                        setAmountError={setAmountError}
                                         selected_basis={stake_value}
                                         setSelectedAmount={setSelectedAmount}
                                     />
@@ -108,7 +152,9 @@ const Amount = ({
                                         toggleModal={toggleModal}
                                         duration_value={duration_value}
                                         duration_unit={duration_unit}
+                                        has_duration_error={has_duration_error}
                                         basis={basis_option.value}
+                                        setAmountError={setAmountError}
                                         selected_basis={payout_value}
                                         setSelectedAmount={setSelectedAmount}
                                     />

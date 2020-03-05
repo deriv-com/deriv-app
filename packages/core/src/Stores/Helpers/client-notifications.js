@@ -1,7 +1,7 @@
 import React from 'react';
+import { Button } from '@deriv/components';
 import { WS } from 'Services';
 import { formatDate } from 'Utils/Date';
-import { Button } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { isMobile } from '@deriv/shared/utils/screen';
 import { getRiskAssessment, isAccountOfType, shouldAcceptTnc, shouldCompleteTax } from '_common/base/client_base';
@@ -110,7 +110,7 @@ export const clientNotifications = (ui = {}) => {
                                 target='_blank'
                                 href={urlFor('contact', undefined, undefined, true)}
                             >
-                                <Button secondary medium text={localize('Contact Us')}></Button>
+                                <Button secondary medium text={localize('Contact Us')} />
                             </a>
                         </React.Fragment>,
                     ]}
@@ -132,10 +132,10 @@ export const clientNotifications = (ui = {}) => {
         },
         mf_retail: {
             key: 'mf_retail',
-            header: localize('Binary options trading disabled'),
+            header: localize('Digital options trading disabled'),
             message: isMobile() ? (
                 <Localize
-                    i18n_default_text='Binary Options Trading has been disabled on your account. Kindly contact customer support for assistance.<0/>'
+                    i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact customer support for assistance.<0/>'
                     components={[
                         <React.Fragment key={0}>
                             <br />
@@ -144,14 +144,14 @@ export const clientNotifications = (ui = {}) => {
                                 target='_blank'
                                 href={urlFor('contact', undefined, undefined, true)}
                             >
-                                <Button secondary medium text={localize('Contact Us')}></Button>
+                                <Button secondary medium text={localize('Contact Us')} />
                             </a>
                         </React.Fragment>,
                     ]}
                 />
             ) : (
                 <Localize
-                    i18n_default_text='Binary Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
+                    i18n_default_text='Digital Options Trading has been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
                     components={[
                         <a
                             key={0}

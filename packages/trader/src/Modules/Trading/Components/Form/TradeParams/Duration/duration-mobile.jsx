@@ -2,6 +2,7 @@ import React from 'react';
 import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { Localize, localize } from '@deriv/translations';
+import { addComma } from '@deriv/shared/utils/currency';
 import { connect } from 'Stores/connect';
 import { getDurationMinMaxValues } from 'Stores/Modules/Trading/Helpers/duration';
 
@@ -25,56 +26,66 @@ const updateAmountChanges = (obj, stake_value, payout_value, basis, trade_basis,
     }
 };
 
-const Ticks = ({
-    basis_option,
-    toggleModal,
-    onChangeMultiple,
-    duration_min_max,
-    trade_duration,
-    trade_basis,
-    trade_amount,
-    trade_duration_unit,
-    payout_value,
-    stake_value,
-    selected_duration,
-    setSelectedDuration,
-}) => {
-    const [min_tick, max_tick] = getDurationMinMaxValues(duration_min_max, 'tick', 't');
+class Ticks extends React.Component {
+    componentDidMount() {
+        this.props.setDurationError(false);
+    }
 
-    const setTickDuration = value => {
-        const { value: duration } = value.target;
-        const on_change_obj = {};
+    render() {
+        const {
+            basis_option,
+            toggleModal,
+            onChangeMultiple,
+            duration_min_max,
+            has_amount_error,
+            trade_duration,
+            trade_basis,
+            trade_amount,
+            trade_duration_unit,
+            payout_value,
+            stake_value,
+            selected_duration,
+            setSelectedDuration,
+        } = this.props;
 
-        // check for any amount changes from Amount trade params tab before submitting onChange object
-        updateAmountChanges(on_change_obj, stake_value, payout_value, basis_option, trade_basis, trade_amount);
+        const [min_tick, max_tick] = getDurationMinMaxValues(duration_min_max, 'tick', 't');
 
-        if (trade_duration !== duration || trade_duration_unit !== 't') {
-            on_change_obj.duration_unit = 't';
-            on_change_obj.duration = duration;
-        }
+        const setTickDuration = value => {
+            const { value: duration } = value.target;
+            const on_change_obj = {};
 
-        if (!ObjectUtils.isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
-        toggleModal();
-    };
+            // check for any amount changes from Amount trade params tab before submitting onChange object
+            if (!has_amount_error)
+                updateAmountChanges(on_change_obj, stake_value, payout_value, basis_option, trade_basis, trade_amount);
 
-    const onTickChange = tick => setSelectedDuration('t', tick);
-    const should_reset_tick_value = trade_duration_unit === 't' && trade_duration >= min_tick;
-    const tick_duration = trade_duration < min_tick && selected_duration < min_tick ? min_tick : selected_duration;
-    return (
-        <div className='trade-params__duration-tickpicker'>
-            <TickPicker
-                default_value={should_reset_tick_value ? trade_duration : tick_duration}
-                submit_label={submit_label}
-                max_value={max_tick}
-                min_value={min_tick}
-                onSubmit={setTickDuration}
-                onValueChange={onTickChange}
-                singular_label={localize('Tick')}
-                plural_label={localize('Ticks')}
-            />
-        </div>
-    );
-};
+            if (trade_duration !== duration || trade_duration_unit !== 't') {
+                on_change_obj.duration_unit = 't';
+                on_change_obj.duration = duration;
+            }
+
+            if (!ObjectUtils.isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
+            toggleModal();
+        };
+
+        const onTickChange = tick => setSelectedDuration('t', tick);
+        const should_reset_tick_value = trade_duration_unit === 't' && trade_duration >= min_tick;
+        const tick_duration = trade_duration < min_tick && selected_duration < min_tick ? min_tick : selected_duration;
+        return (
+            <div className='trade-params__duration-tickpicker'>
+                <TickPicker
+                    default_value={should_reset_tick_value ? trade_duration : tick_duration}
+                    submit_label={submit_label}
+                    max_value={max_tick}
+                    min_value={min_tick}
+                    onSubmit={setTickDuration}
+                    onValueChange={onTickChange}
+                    singular_label={localize('Tick')}
+                    plural_label={localize('Ticks')}
+                />
+            </div>
+        );
+    }
+}
 
 const TicksWrapper = connect(({ modules }) => ({
     duration_min_max: modules.trade.duration_min_max,
@@ -86,11 +97,13 @@ const TicksWrapper = connect(({ modules }) => ({
 }))(Ticks);
 
 const Numbers = ({
+    setDurationError,
     basis_option,
     toggleModal,
     onChangeMultiple,
     duration_min_max,
     duration_unit_option,
+    has_amount_error,
     contract_expiry = 'intraday',
     payout_value,
     stake_value,
@@ -107,21 +120,33 @@ const Numbers = ({
     const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry, duration_unit);
 
     const validateDuration = value => {
-        if (value < min || value > max) {
-            setToastErrorMessage(
-                <Localize
-                    i18n_default_text='Should be between {{min}} and {{max}}'
-                    values={{
-                        min,
-                        max,
-                    }}
-                />
-            );
+        const localized_message = (
+            <Localize
+                i18n_default_text='Should be between {{min}} and {{max}}'
+                values={{
+                    min,
+                    max: addComma(max, 0, false),
+                }}
+            />
+        );
+        if (parseInt(value) < min || parseInt(selected_duration) > max) {
+            setToastErrorMessage(localized_message, 2000);
             setToastErrorVisibility(true);
+            setDurationError(true);
+            return 'error';
+        } else if (parseInt(value) > max) {
+            setToastErrorMessage(localized_message, 2000);
+            setToastErrorVisibility(true);
+            return 'error';
+        } else if (value.toString().length < 1) {
+            setToastErrorMessage(localized_message, 2000);
+            setToastErrorVisibility(true);
+            setDurationError(true);
             return false;
         }
 
         setToastErrorVisibility(false);
+        setDurationError(false);
         return true;
     };
 
@@ -129,7 +154,8 @@ const Numbers = ({
         const on_change_obj = {};
 
         // check for any amount changes from Amount trade params tab before submitting onChange object
-        updateAmountChanges(on_change_obj, stake_value, payout_value, basis_option, trade_basis, trade_amount);
+        if (!has_amount_error)
+            updateAmountChanges(on_change_obj, stake_value, payout_value, basis_option, trade_basis, trade_amount);
 
         if (trade_duration !== duration || trade_duration_unit !== duration_unit) {
             on_change_obj.duration_unit = duration_unit;
@@ -140,7 +166,10 @@ const Numbers = ({
         toggleModal();
     };
 
-    const onNumberChange = num => setSelectedDuration(duration_unit, num);
+    const onNumberChange = num => {
+        setSelectedDuration(duration_unit, num);
+        validateDuration(num);
+    };
 
     return (
         <div className='trade-params__amount-keypad'>
@@ -179,7 +208,9 @@ const Duration = ({
     duration_unit,
     duration_tab_idx,
     duration_min_max,
+    has_amount_error,
     setDurationTabIdx,
+    setDurationError,
     t_duration,
     s_duration,
     m_duration,
@@ -222,8 +253,10 @@ const Duration = ({
                                 <div label={duration_unit_option.text} key={duration_unit_option.value}>
                                     <TicksWrapper
                                         basis_option={selected_basis_option()}
+                                        has_amount_error={has_amount_error}
                                         toggleModal={toggleModal}
                                         selected_duration={t_duration}
+                                        setDurationError={setDurationError}
                                         setSelectedDuration={setSelectedDuration}
                                         stake_value={stake_value}
                                         payout_value={payout_value}
@@ -235,9 +268,11 @@ const Duration = ({
                                 <div label={duration_unit_option.text} key={duration_unit_option.value}>
                                     <NumpadWrapper
                                         basis_option={selected_basis_option()}
+                                        has_amount_error={has_amount_error}
                                         toggleModal={toggleModal}
                                         duration_unit_option={duration_unit_option}
                                         selected_duration={s_duration}
+                                        setDurationError={setDurationError}
                                         setSelectedDuration={setSelectedDuration}
                                         stake_value={stake_value}
                                         payout_value={payout_value}
@@ -249,9 +284,11 @@ const Duration = ({
                                 <div label={duration_unit_option.text} key={duration_unit_option.value}>
                                     <NumpadWrapper
                                         basis_option={selected_basis_option()}
+                                        has_amount_error={has_amount_error}
                                         toggleModal={toggleModal}
                                         duration_unit_option={duration_unit_option}
                                         selected_duration={m_duration}
+                                        setDurationError={setDurationError}
                                         setSelectedDuration={setSelectedDuration}
                                         stake_value={stake_value}
                                         payout_value={payout_value}
@@ -263,9 +300,11 @@ const Duration = ({
                                 <div label={duration_unit_option.text} key={duration_unit_option.value}>
                                     <NumpadWrapper
                                         basis_option={selected_basis_option()}
+                                        has_amount_error={has_amount_error}
                                         toggleModal={toggleModal}
                                         duration_unit_option={duration_unit_option}
                                         selected_duration={h_duration}
+                                        setDurationError={setDurationError}
                                         setSelectedDuration={setSelectedDuration}
                                         stake_value={stake_value}
                                         payout_value={payout_value}
@@ -277,10 +316,12 @@ const Duration = ({
                                 <div label={duration_unit_option.text} key={duration_unit_option.value}>
                                     <NumpadWrapper
                                         basis_option={selected_basis_option()}
+                                        has_amount_error={has_amount_error}
                                         toggleModal={toggleModal}
                                         duration_unit_option={duration_unit_option}
                                         contract_expiry='daily'
                                         selected_duration={d_duration}
+                                        setDurationError={setDurationError}
                                         setSelectedDuration={setSelectedDuration}
                                         stake_value={stake_value}
                                         payout_value={payout_value}

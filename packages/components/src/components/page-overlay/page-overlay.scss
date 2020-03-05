@@ -1,10 +1,27 @@
 .dc-page-overlay {
-    @include mobile {
-        display: flex;
-        flex-direction: column;
+    &-portal {
+        position: absolute;
         height: 100%;
-    }
+        width: 100%;
+        top: $HEADER_HEIGHT;
+        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+        background-color: var(--general-main-2);
 
+        @include mobile {
+            top: $MOBILE_HEADER_HEIGHT;
+        }
+    }
+    &--enter,
+    &--exit {
+        transform: translateY(50px);
+        opacity: 0;
+        pointer-events: none;
+    }
+    &--enter-done {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
     &__header {
         position: sticky;
         top: 0;
@@ -47,6 +64,7 @@
     &__content {
         padding: 2.4rem 0 0;
         display: flex;
+        background-color: var(--general-main-1);
 
         &-side-note {
             min-width: 256px;
@@ -65,5 +83,10 @@
         @include mobile {
             width: 100%;
         }
+    }
+    @include mobile {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
 }

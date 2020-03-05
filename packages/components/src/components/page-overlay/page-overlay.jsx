@@ -1,13 +1,21 @@
+import classNames from 'classnames';
 import React from 'react';
+import ReactDOM from 'react-dom';
+import { CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
 import Icon from 'Components/icon/icon.jsx';
 
 class PageOverlay extends React.Component {
     render() {
-        const { children, header, id, onClickClose } = this.props;
+        const { children, header, id, onClickClose, portal_id, is_open } = this.props;
 
-        return (
-            <div id={id} className='dc-page-overlay'>
+        const el_page_overlay = (
+            <div
+                id={id}
+                className={classNames('dc-page-overlay', {
+                    'dc-page-overlay-portal': !!portal_id,
+                })}
+            >
                 {header && (
                     <div className='dc-page-overlay__header'>
                         <div className='dc-page-overlay__header-wrapper'>
@@ -24,6 +32,28 @@ class PageOverlay extends React.Component {
                 <div className='dc-page-overlay__content'>{children}</div>
             </div>
         );
+
+        if (portal_id) {
+            return ReactDOM.createPortal(
+                <CSSTransition
+                    appear
+                    in={is_open}
+                    timeout={250}
+                    classNames={{
+                        appear: 'dc-page-overlay--enter',
+                        enter: 'dc-page-overlay--enter',
+                        enterDone: 'dc-page-overlay--enter-done',
+                        exit: 'dc-page-overlay--exit',
+                    }}
+                    unmountOnExit
+                >
+                    {el_page_overlay}
+                </CSSTransition>,
+                document.getElementById(portal_id)
+            );
+        }
+
+        return <>{el_page_overlay}</>;
     }
 }
 
@@ -36,6 +66,8 @@ PageOverlay.propTypes = {
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     onClickClose: PropTypes.func,
+    portal_id: PropTypes.string,
+    is_open: PropTypes.bool,
 };
 
 export default PageOverlay;

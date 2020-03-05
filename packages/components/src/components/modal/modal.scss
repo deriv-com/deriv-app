@@ -38,6 +38,7 @@
             position: absolute;
             @include mobile {
                 left: 1.6rem;
+                width: calc(100vw - 4.8rem) !important;
             }
         }
         &--hide {
@@ -67,7 +68,7 @@
             max-width: 90vw;
         }
         @include mobile {
-            width: calc(100vw - 3.2rem) !important;
+            width: calc(100vw - 4.8rem) !important;
         }
     }
     /** @define dc-modal-header */

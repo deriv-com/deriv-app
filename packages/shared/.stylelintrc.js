@@ -31,7 +31,7 @@ module.exports = {
         'function-name-case': 'lower',
         'function-parentheses-space-inside': 'never-single-line',
         'function-url-quotes': 'always',
-        indentation: 4,
+        indentation: null,
         'max-empty-lines': 1,
         'media-feature-colon-space-after': 'always',
         'media-feature-colon-space-before': 'never',

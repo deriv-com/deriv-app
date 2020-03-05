@@ -1,8 +1,9 @@
-import { action, observable, toJS } from 'mobx';
+import { action, computed, observable, toJS } from 'mobx';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import BinarySocket from '_common/base/socket_base';
 import { localize } from '@deriv/translations';
+import AppRoutes from 'Constants/routes';
 import { WS } from 'Services';
 import BaseStore from '../../base-store';
 import { getMT5AccountDisplay } from '../../Helpers/client';
@@ -103,7 +104,7 @@ export default class CashierStore extends BaseStore {
     };
 
     active_container = this.config.deposit.container;
-    current_client;
+    onRemount = () => {};
     is_populating_values = false;
 
     containers = [this.config.deposit.container, this.config.withdraw.container];
@@ -112,6 +113,16 @@ export default class CashierStore extends BaseStore {
         [this.config.withdraw.container]: 'payment_withdraw',
         [this.config.payment_agent.container]: 'payment_agent_withdraw',
     };
+
+    @computed
+    get is_payment_agent_visible() {
+        return !!(this.config.payment_agent.filtered_list.length || this.config.payment_agent.agents.length);
+    }
+
+    @computed
+    get is_payment_agent_transfer_visible() {
+        return this.config.payment_agent_transfer.is_payment_agent;
+    }
 
     @action.bound
     async init() {
@@ -131,17 +142,8 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    resetValuesIfNeeded() {
-        if (this.current_client && this.current_client !== this.root_store.client.loginid) {
-            this.onAccountSwitch();
-        }
-        this.current_client = this.root_store.client.loginid;
-    }
-
-    @action.bound
     async onMountCommon() {
         await BinarySocket.wait('authorize');
-        this.resetValuesIfNeeded();
 
         // avoid calling this again
         if (this.is_populating_values) {
@@ -149,6 +151,12 @@ export default class CashierStore extends BaseStore {
         }
 
         this.is_populating_values = true;
+
+        // cashier inits once and tries to stay active until switching account
+        // since cashier calls take a long time to respond or display in iframe
+        // so we don't have any unmount function here and everything gets reset on switch instead
+        this.disposeSwitchAccount();
+        this.onSwitchAccount(this.accountSwitcherListener);
 
         // we need to see if client's country has PA
         // if yes, we can show the PA tab in cashier
@@ -216,11 +224,15 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setIsP2pVisible(is_p2p_visible) {
         this.is_p2p_visible = is_p2p_visible;
+        if (!is_p2p_visible && window.location.pathname.startsWith(AppRoutes.cashier_p2p)) {
+            this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+        }
     }
 
     @action.bound
     async onMount(verification_code) {
         const current_container = this.active_container;
+        this.onRemount = this.onMount;
         await this.onMountCommon();
 
         if (this.containers.indexOf(this.active_container) === -1) {
@@ -238,7 +250,11 @@ export default class CashierStore extends BaseStore {
         // if session has timed out reset everything
         this.setIframeUrl('');
 
-        if (this.active_container === this.config.withdraw.container && !verification_code) {
+        if (
+            (this.active_container === this.config.withdraw.container && !verification_code) ||
+            this.root_store.client.is_virtual
+        ) {
+            // if virtual, clear everything and don't proceed further
             // if no verification code, we should request again
             return;
         }
@@ -453,21 +469,18 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountPaymentAgentList() {
         this.setLoading(true);
+        this.onRemount = this.onMountPaymentAgentList;
         await this.onMountCommon();
 
-        if (!this.config.payment_agent.list.length) {
-            const payment_agent_list = await BinarySocket.wait('paymentagent_list');
-            if (!this.config.payment_agent.list.length) {
-                this.setPaymentAgentList(payment_agent_list);
-            }
-        }
-
-        this.filterPaymentAgentList();
         this.setLoading(false);
     }
 
     @action.bound
     async getPaymentAgentList() {
+        if (this.config.payment_agent.list.length) {
+            return BinarySocket.wait('paymentagent_list');
+        }
+
         const residence = this.root_store.client.accounts[this.root_store.client.loginid].residence;
         const currency = this.root_store.client.currency;
         return WS.paymentAgentList(residence, currency);
@@ -542,6 +555,9 @@ export default class CashierStore extends BaseStore {
         } else {
             this.config.payment_agent.filtered_list = this.config.payment_agent.list;
         }
+        if (!this.is_payment_agent_visible && window.location.pathname.startsWith(AppRoutes.cashier_pa)) {
+            this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+        }
     }
 
     @action.bound
@@ -553,6 +569,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountPaymentAgentWithdraw() {
         this.setLoading(true);
+        this.onRemount = this.onMountPaymentAgentWithdraw;
         await this.onMountCommon();
 
         this.setIsWithdraw(true);
@@ -560,12 +577,16 @@ export default class CashierStore extends BaseStore {
         this.setReceipt({});
 
         if (!this.config.payment_agent.agents.length) {
-            const payment_agent_list = this.config.payment_agent.list.length
-                ? await BinarySocket.wait('paymentagent_list')
-                : await this.getPaymentAgentList();
+            const payment_agent_list = await this.getPaymentAgentList();
             payment_agent_list.paymentagent_list.list.forEach(payment_agent => {
                 this.addPaymentAgent(payment_agent);
             });
+            if (
+                !payment_agent_list.paymentagent_list.list.length &&
+                window.location.pathname.startsWith(AppRoutes.cashier_pa)
+            ) {
+                this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+            }
         }
 
         this.setLoading(false);
@@ -651,6 +672,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountAccountTransfer() {
         this.setLoading(true);
+        this.onRemount = this.onMountAccountTransfer;
         await this.onMountCommon();
         await BinarySocket.wait('website_status');
 
@@ -666,20 +688,22 @@ export default class CashierStore extends BaseStore {
             this.setHasNoAccountsBalance(false);
         }
 
-        if (!this.config.account_transfer.accounts_list.length || has_updated_account_balance) {
-            const transfer_between_accounts = await WS.transferBetweenAccounts();
-            if (transfer_between_accounts.error) {
-                this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
-                this.setLoading(false);
-                return;
-            }
-            if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
-                return;
-            }
-            this.sortAccountsTransfer(transfer_between_accounts);
-        } else if (!this.canDoAccountTransfer(this.config.account_transfer.accounts_list)) {
+        const transfer_between_accounts =
+            !this.config.account_transfer.accounts_list.length || has_updated_account_balance
+                ? await WS.transferBetweenAccounts()
+                : await WS.authorized.cache.transferBetweenAccounts({ accounts: 'all' }); // load from cache to get the latest updates
+
+        if (transfer_between_accounts.error) {
+            this.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
+            this.setLoading(false);
             return;
         }
+
+        if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
+            return;
+        }
+
+        this.sortAccountsTransfer(transfer_between_accounts);
         this.setTransferFee();
         this.setMinimumFee();
         this.setTransferLimit();
@@ -908,10 +932,11 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountPaymentAgentTransfer() {
         this.setLoading(true);
+        this.onRemount = this.onMountPaymentAgentTransfer;
         await this.onMountCommon();
 
         if (!this.config.payment_agent_transfer.transfer_limit.min_withdrawal) {
-            const response = await BinarySocket.wait('paymentagent_list');
+            const response = await this.getPaymentAgentList();
             const current_payment_agent = this.getCurrentPaymentAgent(response);
             this.setMinMaxPaymentAgentTransfer(current_payment_agent);
         }
@@ -933,6 +958,9 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     setIsPaymentAgent(is_payment_agent) {
+        if (!is_payment_agent && window.location.pathname.startsWith(AppRoutes.cashier_pa_transfer)) {
+            this.root_store.common.routeTo(AppRoutes.cashier_deposit);
+        }
         this.config.payment_agent_transfer.is_payment_agent = !!is_payment_agent;
     }
 
@@ -976,7 +1004,7 @@ export default class CashierStore extends BaseStore {
         this.setErrorMessage('');
     };
 
-    onAccountSwitch() {
+    accountSwitcherListener() {
         [this.config.withdraw.container, this.config.payment_agent.container].forEach(container => {
             this.clearVerification(container);
         });
@@ -990,5 +1018,10 @@ export default class CashierStore extends BaseStore {
         this.config.payment_agent_transfer = new ConfigPaymentAgentTransfer();
         this.is_populating_values = false;
         this.setIsP2pVisible(false);
+
+        this.init();
+        this.onRemount();
+
+        return Promise.resolve();
     }
 }

@@ -518,6 +518,8 @@ export default class ClientStore extends BaseStore {
         if (this.accounts[this.loginid]) {
             return this.accounts[this.loginid].residence;
         }
+
+        return '';
     }
 
     @computed

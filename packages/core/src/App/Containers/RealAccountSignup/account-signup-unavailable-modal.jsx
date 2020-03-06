@@ -6,7 +6,7 @@ const AccountSignupUnavailableModal = ({ is_visible, toggleModal }) => (
     <Modal is_open={is_visible} small toggleModal={toggleModal}>
         <Modal.Body>
             {localize(
-                'Account creation are currently unavailable for mobile. To add an account, please login with your computer.'
+                'Account creation is currently unavailable for mobile. Please log in with your computer to create a new account.'
             )}
         </Modal.Body>
         <Modal.Footer>

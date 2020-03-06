@@ -180,11 +180,11 @@ const Numbers = ({
                     return <div className={className}>{v}</div>;
                 }}
                 pip_size={0}
-                long_press_interval={350}
                 submit_label={submit_label}
                 min={min}
                 max={max}
-                reset_value={min}
+                reset_press_interval={350}
+                reset_value=''
                 onValidate={validateDuration}
                 onValueChange={onNumberChange}
             />

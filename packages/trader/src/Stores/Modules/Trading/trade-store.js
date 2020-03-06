@@ -2,6 +2,7 @@ import debounce from 'lodash.debounce';
 import { action, computed, observable, reaction, runInAction, toJS } from 'mobx';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
+import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
@@ -426,7 +427,7 @@ export default class TradeStore extends BaseStore {
                             // and then set the chart view to the start_time
                             // draw the start time line and show longcode then mount contract
                             // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
-                            this.root_store.ui.openPositionsDrawer();
+                            if (isDesktop()) this.root_store.ui.openPositionsDrawer();
                             this.proposal_info = {};
                             WS.forgetAll('proposal');
                             this.purchase_info = response;

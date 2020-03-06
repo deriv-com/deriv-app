@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 export const useLongPress = (callback = () => {}, ms = 300) => {
     const [startLongPress, setStartLongPress] = useState(false);
+
     const preventDefaults = e => {
         e.preventDefault();
         e.stopPropagation();

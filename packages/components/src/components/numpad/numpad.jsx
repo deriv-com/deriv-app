@@ -14,7 +14,7 @@ const Numpad = ({
     is_currency,
     is_submit_disabled,
     label,
-    long_press_interval,
+    reset_press_interval,
     reset_value,
     max = 9999999,
     min = 0,
@@ -100,13 +100,16 @@ const Numpad = ({
     });
 
     React.useEffect(() => onValueChange?.(default_value), [default_value]);
+    const is_backspace_disabled = !default_value.toString().length;
 
     /**
      * Add Long Touch Handler
      */
-    // Resets always clears value to 0 if no reset_value is set
-    const clearValue = () => setValue(reset_value || 0);
-    const backspaceLongPress = useLongPress(clearValue, long_press_interval);
+    const clearValue = () => {
+        if (is_float) setFloat(false);
+        setValue(reset_value || '');
+    };
+    const backspaceLongPress = useLongPress(clearValue, reset_press_interval);
 
     const has_error = !onValidate(default_value) || onValidate(default_value) === 'error';
 
@@ -158,7 +161,7 @@ const Numpad = ({
                             onSelect(-1);
                         }
                     }}
-                    is_disabled={!default_value.toString().length}
+                    is_disabled={is_backspace_disabled}
                 >
                     ⌫
                 </Button>
@@ -203,7 +206,7 @@ Numpad.propTypes = {
     is_currency: PropTypes.bool,
     is_regular: PropTypes.bool,
     is_submit_disabled: PropTypes.bool,
-    long_press_interval: PropTypes.number,
+    reset_press_interval: PropTypes.number,
     max: PropTypes.number,
     min: PropTypes.number,
     onSubmit: PropTypes.func,

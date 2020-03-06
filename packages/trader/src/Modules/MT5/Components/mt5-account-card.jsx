@@ -136,7 +136,9 @@ const MT5AccountCard = ({
                         type='button'
                         primary
                     >
-                        <Localize i18n_default_text='Create account' />
+                        <Localize
+                            i18n_default_text={type.category === 'real' ? 'Add real account' : 'Add demo account'}
+                        />
                     </Button>
                 )}
             </div>

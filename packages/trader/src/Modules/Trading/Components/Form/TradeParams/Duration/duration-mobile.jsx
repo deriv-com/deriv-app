@@ -183,6 +183,8 @@ const Numbers = ({
                 submit_label={submit_label}
                 min={min}
                 max={max}
+                reset_press_interval={350}
+                reset_value=''
                 onValidate={validateDuration}
                 onValueChange={onNumberChange}
             />

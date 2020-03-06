@@ -49,8 +49,8 @@
         margin-left: 4px;
     }
     &__wrapper {
-        padding: 0.8em;
-        margin: 0 1em 1em;
+        padding: 0.8rem;
+        margin: 0 1rem 1rem;
         border-radius: $BORDER_RADIUS;
         transition: transform 0.25s ease, opacity 0.25s linear;
         position: relative;
@@ -96,12 +96,16 @@
     &__sell-button {
         justify-self: end;
         align-self: center;
+
+        .btn--sell {
+            height: 3.2rem !important;
+        }
     }
     &__purchase,
     &__payout {
         &-label {
             text-transform: none;
-            font-size: 1rem;
+            font-size: 0.8rem;
             font-weight: normal;
             white-space: nowrap;
             max-width: 90px;
@@ -121,7 +125,7 @@
         }
     }
     &__type {
-        font-size: 1.2em;
+        font-size: 1.2rem;
         display: flex;
         justify-content: flex-start;
         font-weight: bold;
@@ -140,9 +144,13 @@
         margin-left: 0.5rem;
         font-size: 1em;
         line-height: 1.5;
+        /* iPhone SE screen height fixes due to UI space restrictions */
+        @media only screen and (max-height: 480px) {
+            font-size: 0.9rem;
+        }
     }
     &__indicative {
-        font-size: 1.2em;
+        font-size: 1.2rem;
         font-weight: bold;
         display: flex;
         justify-content: flex-start;
@@ -150,7 +158,7 @@
         color: var(--text-general);
 
         &-label {
-            font-size: 1em;
+            font-size: 0.8rem;
             font-weight: normal;
             margin-bottom: 4px;
             white-space: nowrap;
@@ -180,7 +188,7 @@
         margin: 0.2rem auto;
     }
     &__profit-loss {
-        font-size: 1.2em;
+        font-size: 1.2rem;
         text-align: center;
         display: flex;
         justify-content: flex-start;
@@ -188,12 +196,16 @@
         font-weight: bold;
 
         &-label {
-            font-size: 1em;
+            font-size: 0.8rem;
             margin-bottom: 4px;
             font-weight: normal;
             white-space: nowrap;
             max-width: 90px;
             color: var(--text-general);
+            /* iPhone SE screen height fixes due to UI space restrictions */
+            @media only screen and (max-height: 480px) {
+                font-size: 0.8rem;
+            }
         }
         &--is-crypto {
             margin-left: -6px;
@@ -234,7 +246,7 @@
 
     &__type-wrapper {
         margin: 0;
-        padding: 0.5em 0.3em;
+        padding: 0.5rem 0.3rem;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -246,7 +258,7 @@
         }
     }
     &__type-label {
-        width: 3.8em;
+        width: 3.8rem;
         line-height: 1.5;
         text-align: left;
     }
@@ -255,4 +267,5 @@
 /** @define remaining-time; */
 .remaining-time {
     display: inline;
+    font-size: 0.9rem;
 }

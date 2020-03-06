@@ -4,9 +4,9 @@ import classNames from 'classnames';
 import Button from 'Components/button/button.jsx';
 import NumberGrid from './number-grid.jsx';
 import StepInput from './step-input.jsx';
+import { useLongPress } from './numpad';
 
 const concatenate = (number, default_value) => default_value.toString().concat(number);
-
 const Numpad = ({
     className,
     currency,
@@ -14,6 +14,8 @@ const Numpad = ({
     is_currency,
     is_submit_disabled,
     label,
+    reset_press_interval,
+    reset_value,
     max = 9999999,
     min = 0,
     pip_size,
@@ -97,11 +99,20 @@ const Numpad = ({
         }
     });
 
-    React.useEffect(() => {
-        if (onValueChange) onValueChange(default_value);
-    }, [default_value]);
+    React.useEffect(() => onValueChange?.(default_value), [default_value]);
+    const is_backspace_disabled = !default_value.toString().length;
+
+    /**
+     * Add Long Touch Handler
+     */
+    const clearValue = () => {
+        if (is_float) setFloat(false);
+        setValue(reset_value || '');
+    };
+    const backspaceLongPress = useLongPress(clearValue, reset_press_interval);
 
     const has_error = !onValidate(default_value) || onValidate(default_value) === 'error';
+
     return (
         <div
             className={classNames('dc-numpad', className, {
@@ -138,6 +149,7 @@ const Numpad = ({
             )}
             <div className='dc-numpad__bkspace'>
                 <Button
+                    {...backspaceLongPress}
                     type='secondary'
                     has_effect
                     className='dc-numpad__number'
@@ -149,7 +161,7 @@ const Numpad = ({
                             onSelect(-1);
                         }
                     }}
-                    is_disabled={!default_value.toString().length}
+                    is_disabled={is_backspace_disabled}
                 >
                     ⌫
                 </Button>
@@ -194,12 +206,14 @@ Numpad.propTypes = {
     is_currency: PropTypes.bool,
     is_regular: PropTypes.bool,
     is_submit_disabled: PropTypes.bool,
+    reset_press_interval: PropTypes.number,
     max: PropTypes.number,
     min: PropTypes.number,
     onSubmit: PropTypes.func,
     onValidate: PropTypes.func,
     pip_size: PropTypes.number,
     render: PropTypes.func,
+    reset_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     submit_label: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };

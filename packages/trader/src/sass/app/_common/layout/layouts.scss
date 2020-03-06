@@ -59,6 +59,9 @@
         .cq-chart-title {
             > .cq-menu-btn {
                 padding: 0.4rem;
+                user-select: none;
+                -webkit-touch-callout: none;
+                -webkit-tap-highlight-color: transparent;
             }
         }
     }

@@ -25,6 +25,7 @@ export const DrawTools = React.lazy(load('DrawTools'));
 export const Share = React.lazy(load('Share'));
 export const StudyLegend = React.lazy(load('StudyLegend'));
 export const Views = React.lazy(load('Views'));
+export const ToolbarWidget = React.lazy(load('ToolbarWidget'));
 
 export const FastMarker = React.lazy(load('FastMarker'));
 export const RawMarker = React.lazy(load('RawMarker'));

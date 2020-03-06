@@ -140,7 +140,7 @@
     "react-tiny-popover": "^4.0.0",
     "react-transition-group": "^2.5.0",
     "react-window": "^1.8.4",
-    "smartcharts-beta": "^0.8.0-betam.4",
+    "smartcharts-beta": "^0.8.0-betam.6",
     "url-polyfill": "^1.1.5",
     "web-push-notifications": "^3.2.15"
   }

@@ -73,6 +73,17 @@
         &--button {
             height: 4em;
         }
+        @include mobile {
+            flex-direction: column;
+            padding: 0.8rem;
+
+            &--heading {
+                margin-bottom: 0.8rem;
+            }
+            &--button {
+                width: 27rem;
+            }
+        }
     }
     &__accounts-display {
         margin-bottom: 2.4em;

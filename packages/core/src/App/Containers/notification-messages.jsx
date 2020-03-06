@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared/utils/screen';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { connect } from 'Stores/connect';
 import Notification, { max_display_notifications } from '../Components/Elements/NotificationMessage';
 import 'Sass/app/_common/components/notification-message.scss';

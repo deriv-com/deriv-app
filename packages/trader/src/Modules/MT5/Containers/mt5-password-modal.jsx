@@ -3,6 +3,7 @@ import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
+import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 
@@ -77,7 +78,10 @@ const MT5PasswordModal = ({
     const closeOpenSuccess = () => {
         disableMt5PasswordModal();
         closeDialogs();
-        history.push(routes.cashier_acc_transfer);
+        if (isDesktop()) {
+            // TODO: remove this check when Cashier is supported in mobile
+            history.push(routes.cashier_acc_transfer);
+        }
     };
 
     const IconType = () => getIconFromType(account_type.type);
@@ -168,7 +172,7 @@ const MT5PasswordModal = ({
                     // message={error_message}
                     icon={<IconType />}
                     icon_size='xlarge'
-                    text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('Ok')}
+                    text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('OK')}
                     has_cancel={account_type.category === 'real'}
                 />
             </Modal>

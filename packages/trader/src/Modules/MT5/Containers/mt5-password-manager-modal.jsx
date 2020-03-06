@@ -252,7 +252,14 @@ class MT5PasswordManagerModal extends React.Component {
             <div className='mt5-password-manager'>
                 <Tabs top>
                     <div label={localize('Main password')}>
-                        <MainPasswordManager />
+                        <DesktopWrapper>
+                            <MainPasswordManager />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <ThemedScrollbars autoHide style={{ height: 'calc(100vh - 120px)' }}>
+                                <MainPasswordManager />
+                            </ThemedScrollbars>
+                        </MobileWrapper>
                     </div>
                     <div label={localize('Investor password')}>
                         <DesktopWrapper>

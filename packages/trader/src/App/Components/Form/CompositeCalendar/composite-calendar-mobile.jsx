@@ -186,7 +186,9 @@ class CompositeCalendarMobile extends React.PureComponent {
                     portal_element_id='modal_root'
                     title={localize('Please select duration')}
                     visible={open}
+                    has_content_scroll
                     onClose={() => this.setState({ open: false })}
+                    content_height_offset='94px'
                     footer={this.getMobileFooter()}
                 >
                     <div className='composite-calendar-modal'>

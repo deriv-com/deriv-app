@@ -27,8 +27,8 @@
             .popover {
                 display: none;
             }
-            .tooltip:before,
-            .tooltip:after {
+            .dc-tooltip:before,
+            .dc-tooltip:after {
                 display: none;
             }
         }
@@ -37,8 +37,8 @@
         .popover {
             display: none;
         }
-        .tooltip:before,
-        .tooltip:after {
+        .dc-tooltip:before,
+        .dc-tooltip:after {
             display: none;
         }
     }

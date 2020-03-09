@@ -335,7 +335,7 @@
         display: flex;
         justify-content: space-between;
 
-        .btn {
+        .dc-btn {
             @include typeface(--small-center-bold-black, none);
             margin: 0 1em;
             width: 122px;

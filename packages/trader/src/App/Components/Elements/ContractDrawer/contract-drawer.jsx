@@ -116,8 +116,8 @@ class ContractDrawer extends Component {
                         >
                             <div className='contract-card__sell-button'>
                                 <Button
-                                    className={classNames('btn--sell', {
-                                        'btn--loading': is_sell_requested,
+                                    className={classNames('dc-btn--sell', {
+                                        'dc-btn--loading': is_sell_requested,
                                     })}
                                     is_disabled={!isValidToSell(contract_info) || is_sell_requested}
                                     text={localize('Sell contract')}

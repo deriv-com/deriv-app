@@ -8,13 +8,13 @@ class Checkbox extends React.Component {
         super(props);
 
         this.state = {
-            checked: props.defaultChecked,
+            checked: props.defaultChecked || props.value,
         };
     }
 
     static getDerivedStateFromProps(nextProps, state) {
-        if (state.checked !== nextProps.defaultChecked) {
-            return { checked: nextProps.defaultChecked };
+        if (state.checked !== nextProps.defaultChecked || state.checked !== nextProps.value) {
+            return { checked: nextProps.defaultChecked || nextProps.value };
         }
         return null;
     }

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, MobileDialog, Button } from '@deriv/components';
+import { Icon, MobileDialog, Button, Div100vhContainer } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import DatePicker from 'App/Components/Form/DatePicker';
 import InputField from 'App/Components/Form/InputField/input-field.jsx';
@@ -181,7 +181,9 @@ class CompositeCalendarMobile extends React.PureComponent {
                     portal_element_id='modal_root'
                     title={localize('Please select duration')}
                     visible={open}
+                    has_content_scroll
                     onClose={() => this.setState({ open: false })}
+                    content_height_offset='94px'
                     footer={this.getMobileFooter()}
                 >
                     <div className='composite-calendar-modal'>

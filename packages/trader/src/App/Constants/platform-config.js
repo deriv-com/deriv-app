@@ -8,7 +8,7 @@ const platform_config = [
     {
         icon: 'IcBrandDtrader',
         title: localize('DTrader'),
-        description: localize('Start trading now with a powerful, yet easy-to-use platform.'),
+        description: localize('A whole new trading experience on a powerful yet easy to use platform.'),
         [key]: routes.trade,
     },
     {

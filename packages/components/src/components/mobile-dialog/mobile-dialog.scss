@@ -37,6 +37,12 @@
             transform: translateY(0);
         }
     }
+    &__container {
+        &--has-scroll {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+    }
     &__content {
         margin-top: 0.4rem;
         box-sizing: border-box;

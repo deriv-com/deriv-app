@@ -237,7 +237,12 @@
             flex: 1;
         }
         &-wrapper {
-            padding: 0.4em 0.8em 0;
+            padding: 0.4rem 0.8rem 0;
+        }
+        &-container {
+            height: auto;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
     }
     &__accounts {

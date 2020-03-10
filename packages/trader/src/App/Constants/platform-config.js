@@ -14,13 +14,13 @@ const platform_config = [
     {
         icon: 'IcBrandDbot',
         title: localize('DBot'),
-        description: localize('Automate your trading ideas without coding.'),
+        description: localize('Automated trading at your fingertips. No coding needed.'),
         href: '/bot',
     },
     {
         icon: 'IcBrandDmt5',
         title: localize('DMT5'),
-        description: localize('Trade with the platform of choice for professionals.'),
+        description: localize('The platform of choice for professionals worldwide.'),
         [key]: routes.mt5,
     },
 ];

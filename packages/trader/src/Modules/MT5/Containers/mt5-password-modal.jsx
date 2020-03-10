@@ -1,15 +1,15 @@
-import { Icon, PasswordInput, Modal, PasswordMeter } from '@deriv/components';
+import { Icon, PasswordInput, Modal, PasswordMeter, MobileWrapper } from '@deriv/components';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { withRouter } from 'react-router';
 import { isDesktop } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
-
 import routes from 'Constants/routes';
 import { connect } from 'Stores/connect';
 import { validPassword, validLength } from 'Utils/Validator/declarative-validation-rules';
+import { FundTransferUnavailableModal } from '../Components/mt5-account-card.jsx';
 import FormSubmitButton from '../Components/mt5-form-submit-button.jsx';
 import 'Sass/app/modules/mt5/mt5.scss';
 
@@ -78,15 +78,22 @@ const MT5PasswordModal = ({
     const closeOpenSuccess = () => {
         disableMt5PasswordModal();
         closeDialogs();
+
+        // TODO: remove this check when Cashier is supported in mobile
         if (isDesktop()) {
-            // TODO: remove this check when Cashier is supported in mobile
             history.push(routes.cashier_acc_transfer);
+        } else if (account_type.category === 'real') {
+            setIsVisible(true);
         }
     };
 
     const IconType = () => getIconFromType(account_type.type);
     const should_show_password = is_mt5_password_modal_enabled && !has_mt5_error && !is_mt5_success_dialog_enabled;
     const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
+
+    // TODO: remove these when Cashier is supported in mobile
+    const [is_visible, setIsVisible] = useState(false);
+    const toggleModal = () => setIsVisible(!is_visible);
 
     return (
         <React.Fragment>
@@ -176,6 +183,10 @@ const MT5PasswordModal = ({
                     has_cancel={account_type.category === 'real'}
                 />
             </Modal>
+            <MobileWrapper>
+                {/* TODO: remove this modal when Cashier is supported in mobile */}
+                <FundTransferUnavailableModal is_visible={is_visible} toggleModal={toggleModal} />
+            </MobileWrapper>
         </React.Fragment>
     );
 };

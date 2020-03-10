@@ -5,7 +5,7 @@ import { localize, Localize } from '@deriv/translations';
 import { Mt5AccountCopy } from './mt5-account-copy.jsx';
 import { getMT5WebTerminalLink } from '../Helpers/constants';
 
-const FundTransferUnavailableModal = ({ is_visible, toggleModal }) => (
+export const FundTransferUnavailableModal = ({ is_visible, toggleModal }) => (
     <Modal is_open={is_visible} small toggleModal={toggleModal}>
         <Modal.Body>
             {localize('Fund transfers are currently unavailable for mobile. Please log in with your computer.')}

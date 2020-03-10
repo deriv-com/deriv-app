@@ -47,10 +47,12 @@
     }
 }
 
-/* enable temporary landscape blocker UI in landscape */
-@include mobile-landscape {
-    /** @define landscape-blocker; weak */
-    .landscape-blocker {
+/** @define landscape-blocker; weak */
+.landscape-blocker {
+    display: none;
+
+    /* enable temporary landscape blocker UI in landscape */
+    @include mobile-landscape {
         position: fixed;
         top: 0;
         left: 0;
@@ -65,7 +67,6 @@
         font-size: 1.6rem;
         z-index: 9999;
         font-weight: bold;
-        display: none;
 
         &--keyboard-visible {
             display: none !important;

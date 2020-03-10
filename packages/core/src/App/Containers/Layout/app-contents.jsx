@@ -12,6 +12,7 @@ const AppContents = ({
     children,
     identifyEvent,
     is_app_disabled,
+    is_mt5_page,
     is_positions_drawer_on,
     is_route_modal_on,
     pageView,
@@ -44,6 +45,7 @@ const AppContents = ({
                 'app-contents--is-disabled': is_app_disabled,
                 'app-contents--is-mobile': isMobile(),
                 'app-contents--is-route-modal': is_route_modal_on,
+                'app-contents--is-mt5-page': is_mt5_page,
             })}
         >
             <MobileWrapper>{children}</MobileWrapper>
@@ -62,6 +64,7 @@ AppContents.propTypes = {
     children: PropTypes.any,
     is_app_disabled: PropTypes.bool,
     is_logged_in: PropTypes.bool,
+    is_mt5_page: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     pwa_prompt_event: PropTypes.object,
@@ -78,6 +81,7 @@ export default withRouter(
         is_route_modal_on: ui.is_route_modal_on,
         pageView: segment.pageView,
         pwa_prompt_event: ui.pwa_prompt_event,
+        is_mt5_page: ui.is_mt5_page,
         // setPWAPromptEvent     : ui.setPWAPromptEvent,
     }))(AppContents)
 );

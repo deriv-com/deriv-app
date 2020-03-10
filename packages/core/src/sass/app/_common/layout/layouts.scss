@@ -106,8 +106,10 @@
         height: calc(100% - #{$MOBILE_HEADER_HEIGHT});
         position: relative;
         margin-top: $MOBILE_HEADER_HEIGHT;
-        overflow-y: auto;
 
+        &--is-mt5-page {
+            overflow-y: auto;
+        }
         .ciq-menu {
             top: 0;
             margin: 0.8rem;

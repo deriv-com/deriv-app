@@ -59,6 +59,9 @@
         .cq-chart-title {
             > .cq-menu-btn {
                 padding: 0.4rem;
+                user-select: none;
+                -webkit-touch-callout: none;
+                -webkit-tap-highlight-color: transparent;
             }
         }
     }
@@ -387,13 +390,18 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     justify-content: center;
                     align-items: center;
                     margin: 0.8rem;
+                    opacity: 0.75;
 
-                    &__menu__timeperiod {
-                        top: 0.8rem;
-                        left: 0.8rem;
-                    }
-                    &__menu > .ic-icon {
-                        top: 0.6rem;
+                    &__menu {
+                        left: 1.2rem;
+
+                        &__timeperiod {
+                            top: 0.8rem;
+                            left: 0.8rem;
+                        }
+                        & > .ic-icon {
+                            top: 0.6rem;
+                        }
                     }
                 }
             }
@@ -471,6 +479,16 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     max-width: calc(100% - 36px);
                 }
             }
+            /** @define ciq-chart-type; weak */
+            .ciq-chart-type {
+                &__item {
+                    /* postcss-bem-linter: ignore */
+                    .sc-tooltip,
+                    .tooltip {
+                        display: none;
+                    }
+                }
+            }
             /** @define ciq-chart-mode; weak */
             .ciq-chart-mode {
                 /* postcss-bem-linter: ignore */
@@ -493,6 +511,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                             margin: 0;
 
                             /* postcss-bem-linter: ignore */
+                            .sc-tooltip,
                             .tooltip {
                                 display: none;
                             }

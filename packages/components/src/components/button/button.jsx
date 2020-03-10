@@ -29,6 +29,7 @@ const Button = ({
     secondary,
     small,
     tertiary,
+    ...props
 }) => {
     const classes = classNames(
         'btn',
@@ -53,6 +54,7 @@ const Button = ({
             disabled={is_disabled}
             tabIndex={tabIndex || '0'}
             type={is_submit_success ? 'button' : type || 'submit'}
+            {...props}
         >
             {icon && <div className='btn__icon'>{icon}</div>}
             {text && !(is_loading || is_submit_success) && (

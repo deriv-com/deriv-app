@@ -8,12 +8,12 @@ import { AssetInformation, ChartTitle } from 'Modules/SmartChart';
 import { isEnded } from 'Stores/Modules/Contract/Helpers/logic';
 import { isDigitContract } from 'Stores/Modules/Contract/Helpers/digits';
 
-const TradeInfo = ({ markers_array }) => {
+const TradeInfo = ({ markers_array, granularity }) => {
     const latest_tick_contract = markers_array[markers_array.length - 1];
     if (!latest_tick_contract || !latest_tick_contract.contract_info.tick_stream) return null;
 
     const is_ended = isEnded(latest_tick_contract.contract_info);
-    if (is_ended) return null;
+    if (is_ended || granularity !== 0) return null;
 
     const { contract_type, tick_stream, tick_count } = latest_tick_contract.contract_info;
     const current_tick = isDigitContract(contract_type) ? tick_stream.length : Math.max(tick_stream.length - 1, 0);
@@ -25,6 +25,7 @@ const TradeInfo = ({ markers_array }) => {
 };
 
 const RecentTradeInfo = connect(({ modules }) => ({
+    granularity: modules.contract_trade.granularity,
     markers_array: modules.contract_trade.markers_array,
 }))(TradeInfo);
 

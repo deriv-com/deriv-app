@@ -65,7 +65,12 @@ const MobileDialog = props => {
             unmountOnExit
         >
             <div className='dc-mobile-dialog' onClick={handleClick}>
-                <Div100vhContainer height_offset='8px'>
+                <Div100vhContainer
+                    className={classNames('dc-mobile-dialog__container', {
+                        'dc-mobile-dialog__container--has-scroll': props.has_content_scroll,
+                    })}
+                    height_offset={props.content_height_offset || '8px'}
+                >
                     <div className='dc-mobile-dialog__header'>
                         <h2 className='dc-mobile-dialog__title'>{title}</h2>
                         <div className='icons btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
@@ -97,8 +102,10 @@ const MobileDialog = props => {
 };
 
 MobileDialog.propTypes = {
+    content_height_offset: PropTypes.string,
     children: PropTypes.any,
     onClose: PropTypes.func,
+    has_content_scroll: PropTypes.bool,
     portal_element_id: PropTypes.string.isRequired,
     title: PropTypes.string,
     visible: PropTypes.bool,

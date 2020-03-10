@@ -6,11 +6,38 @@ import PropTypes from 'prop-types';
 import Icon from 'Components/icon/icon.jsx';
 
 class PageOverlay extends React.Component {
+    ref = React.createRef();
+
+    componentDidMount = () => {
+        if (this.props.portal_id) {
+            document.addEventListener('mousedown', this.handleClickOutside);
+        }
+    };
+
+    componentWillUnmount = () => {
+        if (this.props.portal_id) {
+            document.removeEventListener('mousedown', this.handleClickOutside);
+        }
+    };
+
+    handleClickOutside = event => {
+        const path = event.path || (event.composedPath && event.composedPath());
+        if (
+            this.props.portal_id &&
+            this.props.is_open &&
+            this.ref.current &&
+            !path.some(el => el === this.ref.current)
+        ) {
+            this.props.onClickClose();
+        }
+    };
+
     render() {
         const { children, header, id, onClickClose, portal_id, is_open } = this.props;
 
         const el_page_overlay = (
             <div
+                ref={this.ref}
                 id={id}
                 className={classNames('dc-page-overlay', {
                     'dc-page-overlay-portal': !!portal_id,

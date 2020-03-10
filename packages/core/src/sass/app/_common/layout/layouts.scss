@@ -65,7 +65,11 @@
         font-size: 1.6rem;
         z-index: 9999;
         font-weight: bold;
+        display: none;
 
+        &--keyboard-visible {
+            display: none !important;
+        }
         &__icon {
             width: 59px;
             height: 64px;
@@ -75,7 +79,7 @@
             line-height: 1.4;
         }
         @include touch-device {
-            display: flex !important;
+            display: flex;
         }
     }
 }

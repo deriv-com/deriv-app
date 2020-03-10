@@ -97,7 +97,7 @@ class NotificationsDialog extends React.Component {
                                                 ) : (
                                                     <Button
                                                         className={classNames(
-                                                            'btn--secondary',
+                                                            'dc-btn--secondary',
                                                             'notifications-item__cta-button'
                                                         )}
                                                         onClick={item.action.onClick}

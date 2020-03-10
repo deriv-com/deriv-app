@@ -22,17 +22,16 @@
      */
     text-transform: none !important;
 
-    > * {
-        pointer-events: none;
-    }
     &__text,
     &__icon {
         @include typeface(--paragraph-center-bold-black, unset);
         color: var(--text-general);
         display: flex;
+        pointer-events: none;
     }
     &__icon {
         padding-right: 0.8rem;
+        pointer-events: none;
     }
     &:not([disabled]):hover {
         text-decoration: none;

@@ -10,6 +10,7 @@ cache:
 stages:
   - setup
   - test
+  - deploy
 
 setup:
   stage: setup
@@ -18,3 +19,16 @@ setup:
 test_all:
   stage: test
   script: npm run test
+
+pages:
+  stage: deploy
+  only:
+    refs:
+      - merge_requests
+  script:
+  - "npm run deploy:folder br_$CI_COMMIT_REF_SLUG"
+  - "mkdir -p ./public/br_$CI_COMMIT_REF_SLUG"
+  - "cp -r ./packages/core/dist/. ./public/br_$CI_COMMIT_REF_SLUG"
+  artifacts:
+    paths:
+    - public

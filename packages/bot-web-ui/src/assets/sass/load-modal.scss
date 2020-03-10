@@ -1,9 +1,16 @@
 $modal_container_height: calc(100vh - 210px);
 
-.load {
+.dc-modal {
     &__container {
-        padding: 15px 5px;
+        &_modal {
+            &--load {
+                opacity: 0;
+            }
+        }
     }
+}
+
+.load {
     &__content-with-footer {
         max-height: calc(100vh - 280px);
         display: flex;
@@ -153,9 +160,9 @@ $modal_container_height: calc(100vh - 210px);
             }
         }
         &__footer {
-            position: absolute;
-            bottom: 0;
-            right: 25px;
+            > button {
+                float: right;
+            }
         }
     }
     &-local {

@@ -21,6 +21,7 @@ const QuickStrategyForm = ({
     onChangeDropdownItem,
     onChangeInputValue,
     onHideDropdownList,
+    onScrollStopDropdownList,
     symbol_dropdown,
     trade_type_dropdown,
     validateQuickStrategy,
@@ -56,6 +57,7 @@ const QuickStrategyForm = ({
                                         onItemSelection={({ value }) => {
                                             onChangeDropdownItem('symbol', value, setFieldValue);
                                         }}
+                                        onScrollStop={() => onScrollStopDropdownList('symbol')}
                                     />
                                 )}
                             </Field>
@@ -76,6 +78,7 @@ const QuickStrategyForm = ({
                                         onItemSelection={({ value }) => {
                                             onChangeDropdownItem('trade-type', value, setFieldValue);
                                         }}
+                                        onScrollStop={() => onScrollStopDropdownList('trade-type')}
                                     />
                                 )}
                             </Field>
@@ -96,6 +99,7 @@ const QuickStrategyForm = ({
                                         onItemSelection={({ value }) => {
                                             onChangeDropdownItem('duration-unit', value, setFieldValue);
                                         }}
+                                        onScrollStop={() => onScrollStopDropdownList('duration-unit')}
                                     />
                                 )}
                             </Field>
@@ -246,7 +250,7 @@ const QuickStrategyForm = ({
                         <div className='quick-strategy__form-footer'>
                             <Button.Group>
                                 <Button
-                                    id='quick-strategy__button-edit'
+                                    id='db-quick-strategy__button-edit'
                                     text={localize('Create & Edit')}
                                     is_disabled={!is_submit_enabled}
                                     secondary
@@ -257,7 +261,7 @@ const QuickStrategyForm = ({
                                     }}
                                 />
                                 <Button
-                                    id='quick-strategy__button-run'
+                                    id='db-quick-strategy__button-run'
                                     text={localize('Run')}
                                     is_disabled={!is_submit_enabled || is_stop_button_visible}
                                     primary
@@ -307,6 +311,7 @@ const QuickStrategy = props => {
         onChangeDropdownItem,
         onChangeInputValue,
         onHideDropdownList,
+        onScrollStopDropdownList,
         validateQuickStrategy,
         symbol_dropdown,
         trade_type_dropdown,
@@ -352,6 +357,7 @@ const QuickStrategy = props => {
                                             onChangeDropdownItem={onChangeDropdownItem}
                                             onChangeInputValue={onChangeInputValue}
                                             onHideDropdownList={onHideDropdownList}
+                                            onScrollStopDropdownList={onScrollStopDropdownList}
                                             validateQuickStrategy={validateQuickStrategy}
                                             symbol_dropdown={symbol_dropdown_options}
                                             trade_type_dropdown={trade_type_dropdown_options}
@@ -381,6 +387,7 @@ QuickStrategy.propTypes = {
     onChangeInputValue: PropTypes.func,
     onChangeSymbolInput: PropTypes.func,
     onHideDropdownList: PropTypes.func,
+    onScrollStopDropdownList: PropTypes.func,
     setActiveTabIndex: PropTypes.func,
     symbol_dropdown: PropTypes.array,
     toggleStrategyModal: PropTypes.func,
@@ -402,6 +409,7 @@ export default connect(({ run_panel, quick_strategy }) => ({
     onChangeInputValue: quick_strategy.onChangeInputValue,
     onChangeSymbolInput: quick_strategy.onChangeSymbolInput,
     onHideDropdownList: quick_strategy.onHideDropdownList,
+    onScrollStopDropdownList: quick_strategy.onScrollStopDropdownList,
     setActiveTabIndex: quick_strategy.setActiveTabIndex,
     symbol_dropdown: quick_strategy.symbol_dropdown,
     toggleStrategyModal: quick_strategy.toggleStrategyModal,

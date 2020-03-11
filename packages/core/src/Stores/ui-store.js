@@ -18,6 +18,7 @@ export default class UIStore extends BaseStore {
     @observable is_cashier_visible = false;
     @observable is_history_tab_active = false;
 
+    // TODO: [cleanup ui-store]
     // Take profit, Stop loss & Deal cancellation checkbox
     @observable should_show_take_profit_warning = true;
     @observable should_show_stop_loss_warning = true;

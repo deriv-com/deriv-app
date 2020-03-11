@@ -7,7 +7,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
 import { DesktopWrapper } from '@deriv/components';
 import { initializeTranslations } from '@deriv/translations';
-import { isTouchDevice, isTablet } from '@deriv/shared/utils/screen';
 import Client from '_common/base/client_base';
 import WS from 'Services/ws-methods';
 import { MobxProvider } from 'Stores/connect';
@@ -45,26 +44,30 @@ const App = ({ root_store }) => {
     return (
         <Router basename={has_base ? `/${base}` : null}>
             <MobxProvider store={root_store}>
-                <Header />
-                <ErrorBoundary>
-                    <AppContents>
-                        {/* TODO: [trader-remove-client-base] */}
-                        <Routes passthrough={platform_passthrough} />
-                        <Prompt when={true} message={interceptAcrossBot} />
-                        <Lazy
-                            ctor={() =>
-                                import(/* webpackChunkName: "push-notification" */ './Containers/push-notification.jsx')
-                            }
-                            should_load={!root_store.ui.is_loading}
-                            has_progress={false}
-                        />
-                    </AppContents>
-                </ErrorBoundary>
-                <DesktopWrapper>
-                    <Footer />
-                </DesktopWrapper>
-                <AppModals url_action_param={url_params.get('action')} />
-                <SmartTraderIFrame />
+                <React.Fragment>
+                    <Header />
+                    <ErrorBoundary>
+                        <AppContents>
+                            {/* TODO: [trader-remove-client-base] */}
+                            <Routes passthrough={platform_passthrough} />
+                            <Prompt when={true} message={interceptAcrossBot} />
+                            <Lazy
+                                ctor={() =>
+                                    import(
+                                        /* webpackChunkName: "push-notification" */ './Containers/push-notification.jsx'
+                                    )
+                                }
+                                should_load={!root_store.ui.is_loading}
+                                has_progress={false}
+                            />
+                        </AppContents>
+                    </ErrorBoundary>
+                    <DesktopWrapper>
+                        <Footer />
+                    </DesktopWrapper>
+                    <AppModals url_action_param={url_params.get('action')} />
+                    <SmartTraderIFrame />
+                </React.Fragment>
             </MobxProvider>
         </Router>
     );

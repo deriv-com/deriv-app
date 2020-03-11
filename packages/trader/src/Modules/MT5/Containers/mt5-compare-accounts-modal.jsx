@@ -1,28 +1,8 @@
-import { Button, Popover, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
+import { Button, Popover, Modal, DesktopWrapper, MobileDialog, MobileWrapper, Table } from '@deriv/components';
 import React, { useState } from 'react';
-import DataTable from 'App/Components/Elements/DataTable';
 import UILoader from 'App/Components/Elements/ui-loader.jsx';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-
-const compareAccountsColumns = [
-    {
-        title: '',
-        col_index: 'attribute',
-    },
-    {
-        title: <Localize i18n_default_text='Standard' />,
-        col_index: 'standard',
-    },
-    {
-        title: <Localize i18n_default_text='Advanced' />,
-        col_index: 'advanced',
-    },
-    {
-        title: <Localize i18n_default_text='Synthetic Indices' />,
-        col_index: 'synthetic',
-    },
-];
 
 const MT5AttributeDescriberModal = ({ is_visible, toggleModal, message }) => (
     <Modal is_open={is_visible} small toggleModal={toggleModal}>
@@ -183,14 +163,27 @@ const MT5CompareAccountHint = () => (
 
 const ModalContent = () => (
     <div className='mt5-compare-accounts'>
-        <DataTable
-            className='mt5-compare-accounts__data'
-            data_source={compareAccountsData}
-            columns={compareAccountsColumns}
-            custom_height={700}
-            custom_width={'100%'}
-            getRowSize={index => (index + 1 === compareAccountsData.length ? 120 : 40)}
-        />
+        <Table fixed>
+            <Table.Header>
+                <Table.Row>
+                    <Table.Head fixed>{localize('')}</Table.Head>
+                    <Table.Head>{localize('Standard')}</Table.Head>
+                    <Table.Head>{localize('Advanced')}</Table.Head>
+                    <Table.Head>{localize('Synthetic Indices')}</Table.Head>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                {compareAccountsData.map((row, i) => (
+                    <Table.Row key={i}>
+                        {Object.keys(row).map((col, j) => (
+                            <Table.Cell key={j} fixed={j === 0}>
+                                {row[col]}
+                            </Table.Cell>
+                        ))}
+                    </Table.Row>
+                ))}
+            </Table.Body>
+        </Table>
         <DesktopWrapper>
             <MT5CompareAccountHint />
         </DesktopWrapper>
@@ -216,7 +209,7 @@ const CompareAccountsModal = ({ disableApp, enableApp, is_compare_accounts_visib
                     title={localize('Compare accounts')}
                     toggleModal={toggleCompareAccounts}
                     type='button'
-                    height='595px'
+                    height='580px'
                     width='904px'
                 >
                     <ModalContent />

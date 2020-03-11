@@ -399,6 +399,7 @@
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);
+        margin-bottom: 2.4rem;
     }
     &--error-message {
         @include typeface(--paragraph-left-normal-black, none);
@@ -406,10 +407,8 @@
         margin-bottom: 1em;
     }
     &--hint {
-        //@include typeface(--xsmall-left-normal-black, none);
-        font-size: 12px;
+        @include typeface(--small-left-normal-black, none);
         color: var(--text-less-prominent);
-        padding: 1.333em 0;
     }
     &__main-form,
     &__investor-wrapper {
@@ -440,6 +439,12 @@
     @include mobile {
         padding: 0 1.6rem;
         margin-top: 2.4rem;
+    }
+    .multistep__header {
+        margin: 0 0 2.4rem 0;
+    }
+    .multistep__component {
+        text-align: center;
     }
 }
 

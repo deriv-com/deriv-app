@@ -5,8 +5,9 @@ import { Prompt } from 'react-router';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
+import { DesktopWrapper } from '@deriv/components';
 import { initializeTranslations } from '@deriv/translations';
-import { DesktopWrapper } from '@deriv/shared/utils/screen';
+import { isTouchDevice, isTablet } from '@deriv/shared/utils/screen';
 import Client from '_common/base/client_base';
 import WS from 'Services/ws-methods';
 import { MobxProvider } from 'Stores/connect';
@@ -47,7 +48,7 @@ const App = ({ root_store }) => {
                 {root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice) ? (
                     <Lazy
                         ctor={() => import(/* webpackChunkName: "work-in-progress" */ './Containers/Wip')}
-                        should_load={root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice)}
+                        should_load={root_store.ui.is_mobile || (isTablet() && isTouchDevice())}
                         has_progress={true}
                     />
                 ) : (

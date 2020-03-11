@@ -22,6 +22,8 @@
         top: 0;
         transform: translateY(0px);
         transition: transform 0.25s ease;
+        display: flex;
+        flex-wrap: wrap;
 
         &__platform {
             position: relative;

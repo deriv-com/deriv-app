@@ -24,7 +24,7 @@ const platform_config = [
         icon: 'IcBrandSmarttrader',
         title: localize('SmartTrader'),
         description: localize("Trade the world's market with a simple and familiar platform"),
-        link_to: routes.smarttrader,
+        href: routes.smarttrader,
     },
 ];
 

@@ -118,6 +118,11 @@ const DropdownList = React.forwardRef((props, ref) => {
                     autoHeight
                     autoHide
                     autoHeightMax={220} // As specified by design spec
+                    onScrollStop={() => {
+                        if (typeof props.onScrollStop === 'function') {
+                            props.onScrollStop();
+                        }
+                    }}
                     renderTrackHorizontal={trackHorizontal}
                     renderThumbHorizontal={thumbHorizontal}
                 >

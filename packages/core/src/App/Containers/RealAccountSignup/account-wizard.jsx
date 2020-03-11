@@ -73,7 +73,7 @@ class AccountWizard extends React.Component {
 
     componentDidMount() {
         this.fetchFromStorage();
-        if (!this.residence_list.length) {
+        if (!this.residence_list?.length) {
             const items = this.state.items.slice(0);
             this.getCountryCode().then(phone_idd => {
                 items[1].form_value.phone = phone_idd || '';

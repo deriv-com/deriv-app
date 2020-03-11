@@ -6,9 +6,11 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
 import { initializeTranslations } from '@deriv/translations';
+import { DesktopWrapper } from '@deriv/shared/utils/screen';
 import Client from '_common/base/client_base';
 import WS from 'Services/ws-methods';
 import { MobxProvider } from 'Stores/connect';
+import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
 import Footer from './Containers/Layout/footer.jsx';
@@ -42,27 +44,38 @@ const App = ({ root_store }) => {
     return (
         <Router basename={has_base ? `/${base}` : null}>
             <MobxProvider store={root_store}>
-                <React.Fragment>
-                    <Header />
-                    <ErrorBoundary>
-                        <AppContents>
-                            {/* TODO: [trader-remove-client-base] */}
-                            <Routes passthrough={platform_passthrough} />
-                            <Prompt when={true} message={interceptAcrossBot} />
-                            <Lazy
-                                ctor={() =>
-                                    import(
-                                        /* webpackChunkName: "push-notification" */ './Containers/push-notification.jsx'
-                                    )
-                                }
-                                should_load={!root_store.ui.is_loading}
-                                has_progress={false}
-                            />
-                        </AppContents>
-                    </ErrorBoundary>
-                    {!root_store.ui.is_mobile && <Footer />}
-                    <AppModals url_action_param={url_params.get('action')} />
-                </React.Fragment>
+                {root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice) ? (
+                    <Lazy
+                        ctor={() => import(/* webpackChunkName: "work-in-progress" */ './Containers/Wip')}
+                        should_load={root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice)}
+                        has_progress={true}
+                    />
+                ) : (
+                    <React.Fragment>
+                        <Header />
+                        <ErrorBoundary>
+                            <AppContents>
+                                {/* TODO: [trader-remove-client-base] */}
+                                <Routes passthrough={platform_passthrough} />
+                                <Prompt when={true} message={interceptAcrossBot} />
+                                <Lazy
+                                    ctor={() =>
+                                        import(
+                                            /* webpackChunkName: "push-notification" */ './Containers/push-notification.jsx'
+                                        )
+                                    }
+                                    should_load={!root_store.ui.is_loading}
+                                    has_progress={false}
+                                />
+                            </AppContents>
+                        </ErrorBoundary>
+                        <DesktopWrapper>
+                            <Footer />
+                        </DesktopWrapper>
+                        <AppModals url_action_param={url_params.get('action')} />
+                        <SmartTraderIFrame />
+                    </React.Fragment>
+                )}
             </MobxProvider>
         </Router>
     );

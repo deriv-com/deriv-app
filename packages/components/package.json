@@ -112,7 +112,7 @@
     "react-dom": "~16.8.6",
     "react-drag-drawer": "^3.3.3",
     "react-dropzone": "^9.0.0",
-    "react-pose": "^4.0.8",
+    "react-pose": "^4.0.10",
     "react-router-dom": "^5.1.2",
     "react-swipeable": "^5.5.1",
     "react-tiny-popover": "^3.4.5",

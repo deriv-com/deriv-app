@@ -1,0 +1,35 @@
+image: node:11.15.0
+
+cache:
+  untracked: true
+  key: "$CI_COMMIT_REF_SLUG"
+  paths:
+    - node_modules/
+    - packages/*/node_modules
+
+stages:
+  - setup
+  - test
+  - deploy
+
+setup:
+  stage: setup
+  script: npm run bootstrap
+
+test_all:
+  stage: test
+  script: npm run test
+
+pages:
+  stage: deploy
+  only:
+    refs:
+      - merge_requests
+  script:
+  - "npm run deploy:folder br_$CI_COMMIT_REF_SLUG"
+  - "mkdir -p ./public && find ./public/* -maxdepth 0 -name 'br_*' -prune -o -exec rm -rf '{}' ';' && rm -rf ./public/br_$CI_COMMIT_REF_SLUG && mkdir -p ./public/br_$CI_COMMIT_REF_SLUG" # Reset deployment folder
+  - "cp -r ./packages/core/dist/. ./public/br_$CI_COMMIT_REF_SLUG"
+  - "cp -r ./packages/core/dist/. ./public/"
+  artifacts:
+    paths:
+    - public

@@ -200,6 +200,7 @@ class Autocomplete extends React.PureComponent {
             list_items,
             autoComplete,
             onHideDropdownList,
+            onScrollStop,
             ...otherProps
         } = this.props;
 
@@ -248,6 +249,7 @@ class Autocomplete extends React.PureComponent {
                     list_items={this.state.filtered_items}
                     // Autocomplete must use the `text` property and not the `value`, however DropdownList provides access to both
                     onItemSelection={this.onItemSelection}
+                    onScrollStop={onScrollStop}
                     not_found_text={this.props.not_found_text}
                 />
             </div>

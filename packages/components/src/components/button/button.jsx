@@ -60,7 +60,7 @@ const Button = ({
             )}
             {is_loading && <ButtonLoading />}
             {is_submit_success && <Icon icon='IcCheckmark' color='active' size={24} />}
-            <span className={classNames('dc-btn__text', classNameSpan)}>{!text && children}</span>
+            {!text && children && <span className={classNames('dc-btn__text', classNameSpan)}>{children}</span>}
         </button>
     );
     const wrapper = <div className={wrapperClassName}>{button}</div>;

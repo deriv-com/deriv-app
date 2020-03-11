@@ -2,6 +2,7 @@ import { computed, observable, action } from 'mobx';
 import { localize } from '@deriv/translations';
 import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
+import GTM from '../utils/gtm';
 
 export default class QuickStrategyStore {
     constructor(root_store) {
@@ -421,6 +422,10 @@ export default class QuickStrategyStore {
 
         return errors;
     }
+
+    onScrollStopDropdownList = type => {
+        GTM.pushDataLayer({ event: `dbot_quick_strategy_scroll_${type}` });
+    };
 
     getSizeDesc = index => {
         switch (index) {

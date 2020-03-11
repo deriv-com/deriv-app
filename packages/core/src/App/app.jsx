@@ -45,38 +45,26 @@ const App = ({ root_store }) => {
     return (
         <Router basename={has_base ? `/${base}` : null}>
             <MobxProvider store={root_store}>
-                {root_store.ui.is_mobile || (root_store.ui.is_tablet && isTouchDevice) ? (
-                    <Lazy
-                        ctor={() => import(/* webpackChunkName: "work-in-progress" */ './Containers/Wip')}
-                        should_load={root_store.ui.is_mobile || (isTablet() && isTouchDevice())}
-                        has_progress={true}
-                    />
-                ) : (
-                    <React.Fragment>
-                        <Header />
-                        <ErrorBoundary>
-                            <AppContents>
-                                {/* TODO: [trader-remove-client-base] */}
-                                <Routes passthrough={platform_passthrough} />
-                                <Prompt when={true} message={interceptAcrossBot} />
-                                <Lazy
-                                    ctor={() =>
-                                        import(
-                                            /* webpackChunkName: "push-notification" */ './Containers/push-notification.jsx'
-                                        )
-                                    }
-                                    should_load={!root_store.ui.is_loading}
-                                    has_progress={false}
-                                />
-                            </AppContents>
-                        </ErrorBoundary>
-                        <DesktopWrapper>
-                            <Footer />
-                        </DesktopWrapper>
-                        <AppModals url_action_param={url_params.get('action')} />
-                        <SmartTraderIFrame />
-                    </React.Fragment>
-                )}
+                <Header />
+                <ErrorBoundary>
+                    <AppContents>
+                        {/* TODO: [trader-remove-client-base] */}
+                        <Routes passthrough={platform_passthrough} />
+                        <Prompt when={true} message={interceptAcrossBot} />
+                        <Lazy
+                            ctor={() =>
+                                import(/* webpackChunkName: "push-notification" */ './Containers/push-notification.jsx')
+                            }
+                            should_load={!root_store.ui.is_loading}
+                            has_progress={false}
+                        />
+                    </AppContents>
+                </ErrorBoundary>
+                <DesktopWrapper>
+                    <Footer />
+                </DesktopWrapper>
+                <AppModals url_action_param={url_params.get('action')} />
+                <SmartTraderIFrame />
             </MobxProvider>
         </Router>
     );

@@ -7,7 +7,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
 import { DesktopWrapper } from '@deriv/components';
 import { initializeTranslations } from '@deriv/translations';
-import { isTouchDevice, isTablet } from '@deriv/shared/utils/screen';
 import Client from '_common/base/client_base';
 import WS from 'Services/ws-methods';
 import { MobxProvider } from 'Stores/connect';

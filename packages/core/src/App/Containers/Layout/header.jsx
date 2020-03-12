@@ -16,6 +16,8 @@ import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Prel
 import routes from 'Constants/routes';
 
 class Header extends React.Component {
+    toggle_menu_drawer_ref = React.createRef();
+
     onClickDeposit = () => {
         this.props.history.push(routes.cashier_deposit);
     };
@@ -68,6 +70,7 @@ class Header extends React.Component {
                         </DesktopWrapper>
                         <MobileWrapper>
                             <ToggleMenuDrawer
+                                ref={this.toggle_menu_drawer_ref}
                                 enableApp={enableApp}
                                 disableApp={disableApp}
                                 logoutClient={logoutClient}
@@ -78,6 +81,7 @@ class Header extends React.Component {
                                     <PlatformSwitcher
                                         is_mobile
                                         platform_config={filterPlatformsForClients(platform_config)}
+                                        toggleDrawer={this.toggle_menu_drawer_ref.current?.toggleDrawer}
                                     />
                                 }
                             />

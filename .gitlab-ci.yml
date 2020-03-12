@@ -15,7 +15,7 @@ setup:
     paths:
       - node_modules/
       - packages/*/node_modules
-    expire_in: 20 mins
+    expire_in: 1 day
 
 test_all:
   stage: test

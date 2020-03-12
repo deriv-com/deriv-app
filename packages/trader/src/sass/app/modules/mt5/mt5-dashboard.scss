@@ -176,6 +176,14 @@
     font-size: 14px;
     font-weight: bold;
     color: var(--text-general);
+
+    .counter {
+        color: var(--brand-red-coral);
+        font-size: 1rem;
+        font-weight: bold;
+        line-height: 1.43;
+        vertical-align: top;
+    }
 }
 
 .mt5-compare-accounts {

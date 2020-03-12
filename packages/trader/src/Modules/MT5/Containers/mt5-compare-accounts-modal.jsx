@@ -21,8 +21,13 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
         <React.Fragment>
             <p className='mt5-attribute-describer' onClick={toggleModal}>
                 {name}
+                <MobileWrapper>
+                    <span className='counter'>{counter}</span>
+                </MobileWrapper>
             </p>
-            <Popover alignment='right' icon='counter' counter={counter} message={tooltip} />
+            <DesktopWrapper>
+                <Popover alignment='right' icon='counter' counter={counter} message={tooltip} />
+            </DesktopWrapper>
             <MobileWrapper>
                 <MT5AttributeDescriberModal toggleModal={toggleModal} is_visible={is_visible} message={tooltip} />
             </MobileWrapper>

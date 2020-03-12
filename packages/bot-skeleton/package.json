@@ -22,7 +22,7 @@
     "prettify": "prettier --write \"./src/**/*.{js,jsx,scss}\"",
     "precommit": "lint-staged",
     "test": "npm run test:eslint && npm run test:mocha",
-    "test:mocha": "",
+    "test:mocha": "echo \"No test:mocha specified\"",
     "test:eslint": "eslint ./src",
     "test:stylelint": "echo \"No test:stylelint specified\"",
     "deploy": "echo \"No deploy specified\"",

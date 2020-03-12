@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
 import Notification, { max_display_notifications } from '../Components/Elements/NotificationMessage';
 import 'Sass/app/_common/components/notification-message.scss';
@@ -19,15 +21,19 @@ class NotificationMessages extends React.Component {
     render() {
         const { marked_notifications, notification_messages, removeNotificationMessage } = this.props;
         const { bounds } = this.state;
-        const style = {
-            top: bounds && bounds.top + 8,
-        };
+        const style = isMobile()
+            ? {
+                  top: bounds && bounds.top + 8,
+              }
+            : null;
 
         const notifications = notification_messages
             .filter(message => !marked_notifications.includes(message.key))
             .slice(0, max_display_notifications);
 
-        const portal = ReactDOM.createPortal(
+        if (notifications.length === 0) return null;
+
+        const content = (
             <div className='notification-messages' style={style}>
                 <TransitionGroup component='div'>
                     {notifications.map((notification, idx) => (
@@ -48,16 +54,20 @@ class NotificationMessages extends React.Component {
                         </CSSTransition>
                     ))}
                 </TransitionGroup>
-            </div>,
-            document.getElementById('deriv_app')
+            </div>
         );
 
-        if (notifications.length === 0) return null;
+        const portal = ReactDOM.createPortal(content, document.getElementById('deriv_app'));
 
         return (
-            <div ref={this.setRef} className='notification-messages-bounds'>
-                {portal}
-            </div>
+            <React.Fragment>
+                <DesktopWrapper>{content}</DesktopWrapper>
+                <MobileWrapper>
+                    <div ref={this.setRef} className='notification-messages-bounds'>
+                        {portal}
+                    </div>
+                </MobileWrapper>
+            </React.Fragment>
         );
     }
 }

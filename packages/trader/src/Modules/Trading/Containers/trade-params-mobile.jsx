@@ -35,8 +35,8 @@ class TradeParamsModal extends React.Component {
             has_amount_error: false,
             has_duration_error: false,
             // duration unit values
-            curr_duration_unit: undefined,
-            curr_duration_value: undefined,
+            curr_duration_unit: duration_unit,
+            curr_duration_value: duration,
             t_duration: getDefaultDuration('t'),
             s_duration: getDefaultDuration('s'),
             m_duration: getDefaultDuration('m'),
@@ -108,7 +108,7 @@ class TradeParamsModal extends React.Component {
                     width='calc(100vw - 32px)'
                 >
                     <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='48px'>
-                        <TradeParamsMobile
+                        <TradeParamsMobileWrapper
                             currency={currency}
                             toggleModal={this.props.toggleModal}
                             isVisible={this.isVisible}
@@ -184,6 +184,9 @@ const TradeParamsMobile = ({
     m_duration,
     h_duration,
     d_duration,
+    // basis
+    basis_list,
+    basis,
 }) => {
     const getDurationText = () => {
         const duration = duration_units_list.find(d => d.value === duration_unit);
@@ -192,7 +195,10 @@ const TradeParamsMobile = ({
     };
 
     const getAmountText = () => {
-        return <Money currency={currency} amount={amount_tab_idx === 1 ? payout_value : stake_value} />;
+        const has_selected_tab_idx = typeof amount_tab_idx !== 'undefined';
+        const active_index = has_selected_tab_idx ? amount_tab_idx : basis_list.findIndex(b => b.value === basis);
+
+        return <Money currency={currency} amount={active_index === 1 ? payout_value : stake_value} />;
     };
 
     const getHeaderContent = tab_key => {
@@ -273,6 +279,11 @@ const TradeParamsMobile = ({
         </Tabs>
     );
 };
+
+const TradeParamsMobileWrapper = connect(({ modules }) => ({
+    basis_list: modules.trade.basis_list,
+    basis: modules.trade.basis,
+}))(TradeParamsMobile);
 
 export const LastDigitMobile = connect(({ modules }) => ({
     form_components: modules.trade.form_components,

@@ -160,6 +160,7 @@ const Numbers = ({
         if (trade_duration !== duration || trade_duration_unit !== duration_unit) {
             on_change_obj.duration_unit = duration_unit;
             on_change_obj.duration = duration;
+            on_change_obj.expiry_type = 'duration';
         }
 
         if (!ObjectUtils.isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
@@ -223,6 +224,13 @@ const Duration = ({
     stake_value,
     payout_value,
 }) => {
+    const duration_values = {
+        t_duration,
+        s_duration,
+        m_duration,
+        h_duration,
+        d_duration,
+    };
     const has_selected_tab_idx = typeof duration_tab_idx !== 'undefined';
     const active_index = has_selected_tab_idx
         ? duration_tab_idx
@@ -240,14 +248,15 @@ const Duration = ({
         return trade_basis;
     };
 
+    const onTabChange = index => {
+        setDurationTabIdx(index);
+        const { value: unit } = duration_units_list[index];
+        setSelectedDuration(unit, duration_values[`${unit}_duration`]);
+    };
+
     return (
         <div>
-            <Tabs
-                active_index={active_index}
-                onTabItemClick={num => setDurationTabIdx(num)}
-                single_tab_has_no_label
-                top
-            >
+            <Tabs active_index={active_index} onTabItemClick={num => onTabChange(num)} single_tab_has_no_label top>
                 {duration_units_list.map(duration_unit_option => {
                     switch (duration_unit_option.value) {
                         case 't':
@@ -332,7 +341,7 @@ const Duration = ({
                                         onChange={handleRelativeChange}
                                         min={min}
                                         max={max}
-                                        title='Pick an end date'
+                                        title={localize('Pick an end date')}
                                     />
                                 </div>
                             );

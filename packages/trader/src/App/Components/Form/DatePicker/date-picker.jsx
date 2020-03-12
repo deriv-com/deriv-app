@@ -83,6 +83,19 @@ class DatePicker extends React.Component {
         this.setState({ is_datepicker_visible });
     };
 
+    onSelectCalendarNative = selected_date => {
+        let value = selected_date;
+        if (!isDateValid(value)) {
+            value = '';
+        }
+        this.setState(
+            {
+                value: value ? formatDate(value, 'DD MMM YYYY') : value,
+            },
+            this.updateStore
+        );
+    };
+
     onChangeInput = e => {
         const value = e.target.value;
         const formatted_value = formatDate(addDays(toMoment(), value), 'DD MMM YYYY');
@@ -222,7 +235,7 @@ class DatePicker extends React.Component {
                             }
                             window.setTimeout(iosClearDefault, 0);
 
-                            this.onSelectCalendar(e.target.value);
+                            this.onSelectCalendarNative(e.target.value);
                         }}
                     />
                     <label className='datepicker-native__overlay' htmlFor={this.props.name}>

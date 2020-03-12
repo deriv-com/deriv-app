@@ -74,6 +74,28 @@
                 }
             }
         }
+        &--is-selected {
+            .digits__digit-display {
+                &-value,
+                &-percentage {
+                    color: $color-white;
+                }
+            }
+            .progress__bg {
+                fill: $color-blue-2;
+            }
+        }
+        &--is-selectable {
+            pointer-events: auto;
+
+            &:focus,
+            &:active,
+            &:hover {
+                .progress__bg {
+                    fill: $color-blue-2;
+                }
+            }
+        }
         &-display-value {
             transition: transform 0.25s linear;
             position: absolute;

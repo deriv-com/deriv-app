@@ -18,6 +18,8 @@ const DigitsWrapper = ({
     is_digit_contract,
     is_ended,
     is_trade_page,
+    onDigitChange,
+    selected_digit,
     ...props
 }) => {
     const has_contract = contract_info.date_start;
@@ -63,8 +65,8 @@ const DigitsWrapper = ({
             is_trade_page={is_trade_page}
             status={status}
             tick={tick}
-            onSelect={props.onDigitChange}
-            selected_digit={props.selected_digit}
+            onDigitChange={onDigitChange}
+            selected_digit={selected_digit}
             onLastDigitSpot={props.onLastDigitSpot}
         />
     );

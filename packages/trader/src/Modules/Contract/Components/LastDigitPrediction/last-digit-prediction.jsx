@@ -35,6 +35,12 @@ class LastDigitPrediction extends React.Component {
         9: { left: 6 + this.props.dimension * 4, top: 8 },
     };
 
+    handleSelect = digit_value => {
+        if (digit_value !== this.props.selected_digit && typeof this.props.onDigitChange === 'function') {
+            this.props.onDigitChange({ target: { name: 'last_digit', value: digit_value } });
+        }
+    };
+
     getBarrier = num => {
         const { barrier, contract_type } = this.props;
 
@@ -63,6 +69,7 @@ class LastDigitPrediction extends React.Component {
             is_ended,
             is_trade_page,
             tick,
+            selected_digit,
             status,
         } = this.props;
         const digits_array = Object.keys(digits_info)
@@ -112,8 +119,8 @@ class LastDigitPrediction extends React.Component {
                         latest_digit={is_trade_page ? latest_digit : last_contract_digit}
                         value={idx}
                         onLastDigitSpot={this.props.onLastDigitSpot}
-                        onSelect={this.props.onDigitChange}
-                        selected_digit={this.props.selected_digit}
+                        onSelect={this.handleSelect}
+                        selected_digit={selected_digit}
                     />
                 ))}
                 <LastDigitPointer is_lost={is_lost} is_trade_page={is_trade_page} is_won={is_won} position={position} />

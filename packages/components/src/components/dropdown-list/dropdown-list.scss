@@ -19,8 +19,20 @@
         transform: scale(1, 1);
         opacity: 1;
     }
+    &__group {
+        &-header {
+            padding: 0.6rem;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--brand-red-coral);
+            height: 3.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
     &__item {
-        height: 40px;
+        min-height: 40px;
         display: flex;
         align-items: center;
         padding: 1rem 1.6rem;
@@ -33,9 +45,18 @@
         &--active {
             background-color: var(--state-active);
         }
+        &-icon {
+            margin-right: 8px;
+        }
         &--disabled {
             color: var(--text-disabled);
             cursor: not-allowed;
         }
+    }
+    &__separator {
+        display: flex;
+        width: calc(100% - 3.2rem);
+        border-bottom: 1px solid var(--border-normal);
+        margin: 1.6rem;
     }
 }

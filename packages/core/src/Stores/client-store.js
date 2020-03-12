@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { action, computed, observable, runInAction, when, reaction } from 'mobx';
+import { action, computed, observable, runInAction, when, reaction, toJS } from 'mobx';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import { requestLogout, WS } from 'Services';
@@ -60,7 +60,7 @@ export default class ClientStore extends BaseStore {
 
     @observable local_currency_config = {
         currency: '',
-        decimal_places: '',
+        decimal_places: undefined,
     };
 
     is_mt5_account_list_updated = false;
@@ -352,6 +352,7 @@ export default class ClientStore extends BaseStore {
         this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
         LocalStore.set('active_loginid', loginid);
+        this.syncWithSmartTrader(loginid, toJS(this.accounts));
         this.loginid = loginid;
     }
 
@@ -459,7 +460,6 @@ export default class ClientStore extends BaseStore {
     realAccountSignup(form_values) {
         return new Promise(async (resolve, reject) => {
             form_values.residence = this.residence;
-            form_values.salutation = 'Mr'; // TODO remove this once the api for salutation is optional.
             const response = await WS.newAccountReal(form_values);
             if (!response.error) {
                 await this.accountRealReaction(response);
@@ -498,14 +498,13 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     createCryptoAccount(crr) {
-        const { date_of_birth, first_name, last_name, salutation } = this.account_settings;
+        const { date_of_birth, first_name, last_name } = this.account_settings;
         const residence = this.residence;
 
         return new Promise(async (resolve, reject) => {
             const response = await WS.newAccountReal({
                 first_name,
                 last_name,
-                salutation,
                 residence,
                 currency: crr,
                 date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
@@ -522,7 +521,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get residence() {
         // TODO Instead of return residence from each individual loginid, set in once in login, this is bound by user.
-        return this.accounts[this.loginid].residence;
+        return this.accounts[this.loginid]?.residence ?? '';
     }
 
     @computed
@@ -890,6 +889,7 @@ export default class ClientStore extends BaseStore {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
         this.root_store.ui.removeAllNotificationMessages();
+        this.syncWithSmartTrader(this.loginid, this.accounts);
     }
 
     @action.bound
@@ -1203,6 +1203,29 @@ export default class ClientStore extends BaseStore {
             return changeable_fields;
         }
         return [];
+    }
+
+    @action.bound
+    syncWithSmartTrader(active_loginid, client_accounts) {
+        const iframe_window = document.getElementById('localstorage-sync');
+        if (iframe_window) {
+            let origin;
+
+            if (/^staging\.deriv\.app$/i.test(window.location.hostname)) {
+                origin = 'https://smarttrader-staging.deriv.app';
+            } else if (/^deriv\.app$/i.test(window.location.hostname)) {
+                origin = 'https://smarttrader.deriv.app';
+            } else {
+                return;
+            }
+
+            // Keep client.accounts in sync (in case user wasn't logged in).
+            iframe_window.contentWindow.postMessage(
+                { key: 'client.accounts', value: JSON.stringify(client_accounts) },
+                origin
+            );
+            iframe_window.contentWindow.postMessage({ key: 'active_loginid', value: active_loginid }, origin);
+        }
     }
 
     @computed

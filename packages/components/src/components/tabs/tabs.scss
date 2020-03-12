@@ -13,16 +13,14 @@
         width: 100%;
         line-height: 35px;
         display: flex;
-        justify-content: center;
 
         &--top {
             order: 0;
+            border-bottom: 1px solid var(--general-section-1);
         }
         &--bottom {
             order: 1;
-        }
-        &--fit-content {
-            width: fit-content;
+            border-top: 1px solid var(--general-section-1);
         }
     }
     &__item {
@@ -34,15 +32,8 @@
         color: var(--text-general);
 
         &__counter {
-            display: inline-flex;
             margin-left: 1rem;
             vertical-align: middle;
-        }
-        &--top {
-            border-bottom: 1px solid var(--general-section-1);
-        }
-        &--bottom {
-            border-top: 1px solid var(--general-section-1);
         }
         &:not(.dc-tabs__active) {
             cursor: pointer;
@@ -67,9 +58,6 @@
         }
         &--bottom {
             bottom: 34px;
-        }
-        &--fit-content {
-            width: 120px;
         }
     }
 }

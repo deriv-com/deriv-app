@@ -27,9 +27,11 @@
         @include typeface(--paragraph-center-bold-black, unset);
         color: var(--text-general);
         display: flex;
+        pointer-events: none;
     }
     &__icon {
         padding-right: 0.8rem;
+        pointer-events: none;
     }
     &:not([disabled]):hover {
         text-decoration: none;
@@ -145,6 +147,11 @@
         animation: buttonEffect 0.4s;
         animation-fill-mode: forwards;
         display: block;
+    }
+    &__group {
+        .btn + .btn {
+            margin-left: 8px;
+        }
     }
     /* TODO: confirm this button with designer are we still using this? */
     /* postcss-bem-linter: ignore */

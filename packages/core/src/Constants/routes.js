@@ -33,8 +33,10 @@ const routes = {
     cashier_withdrawal: '/cashier/withdrawal',
     cashier_pa: '/cashier/payment-agent',
     cashier_acc_transfer: '/cashier/account-transfer',
-    cashier_dp2p: '/cashier/dp2p',
+    cashier_p2p: '/cashier/p2p',
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
 };
+
+export const routing_control_key = 'routing_control';
 
 export default routes;

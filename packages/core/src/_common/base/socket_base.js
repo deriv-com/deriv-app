@@ -241,9 +241,7 @@ const BinarySocketBase = (() => {
 
     const tncApproval = () => deriv_api.send({ tnc_approval: '1' });
 
-    const p2pOfferList = () => deriv_api.send({ p2p_offer_list: 1 });
-
-    const p2pAgentInfo = () => deriv_api.send({ p2p_agent_info: 1 });
+    const p2pAdvertiserInfo = () => deriv_api.send({ p2p_advertiser_info: 1 });
 
     // subscribe method export for P2P use only
     // so that subscribe remains private
@@ -282,8 +280,7 @@ const BinarySocketBase = (() => {
         mt5PasswordChange,
         newAccountVirtual,
         newAccountReal,
-        p2pAgentInfo,
-        p2pOfferList,
+        p2pAdvertiserInfo,
         p2pSubscribe,
         profitTable,
         statement,

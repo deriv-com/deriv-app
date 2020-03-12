@@ -31,8 +31,8 @@ const map_payment_method = {
     bank_transfer: localize('Bank transfer'),
 };
 
-const getModifiedP2POfferList = response => {
-    // only show active offers
+const getModifiedP2PAdvertList = (response, is_original) => {
+    // only show active adverts
     const filtered_list = response.list.filter(offer => !!+offer.is_active);
 
     const length = filtered_list.length;
@@ -49,15 +49,19 @@ const getModifiedP2POfferList = response => {
             'fractional_digits',
         ]);
 
-        const available_amount = +filtered_list[i].amount - +filtered_list[i].amount_used;
+        const available_amount = +filtered_list[i].remaining_amount;
         const offer_amount = +filtered_list[i].amount;
-        const min_transaction = +filtered_list[i].min_amount;
-        const max_transaction = +filtered_list[i].max_amount;
+        const min_transaction = +filtered_list[i].min_order_amount; // for advertiser usage in offer creation/update
+        const max_transaction = +filtered_list[i].max_order_amount; // for advertiser usage in offer creation/update
+        const min_available = +filtered_list[i].min_order_amount_limit; // for client usage in order creation
+        const max_available = +filtered_list[i].max_order_amount_limit; // for client usage in order creation
         const price_rate = +filtered_list[i].rate;
-        const payment_method = filtered_list[i].method;
+        const payment_method = filtered_list[i].payment_method;
 
         modified_response[i] = {
             available_amount,
+            min_available,
+            max_available,
             max_transaction,
             min_transaction,
             offer_amount,
@@ -67,17 +71,19 @@ const getModifiedP2POfferList = response => {
             price_rate,
             transaction_currency,
             transaction_currency_decimals,
-            advertiser_name: filtered_list[i].agent_name,
-            advertiser_id: filtered_list[i].agent_id,
-            advertiser_notes: filtered_list[i].offer_description,
+            advertiser_name: ObjectUtils.getPropertyValue(filtered_list[i], ['advertiser_details', 'name']),
+            advertiser_id: ObjectUtils.getPropertyValue(filtered_list[i], ['advertiser_details', 'id']),
+            advertiser_notes: filtered_list[i].description,
             display_available_amount: formatMoney(offer_currency, available_amount),
-            display_max_transaction: formatMoney(offer_currency, max_transaction),
-            display_min_transaction: formatMoney(offer_currency, min_transaction),
+            display_max_available: formatMoney(offer_currency, max_available), // for displaying limit fields in buy/sell and ads table
+            display_min_available: formatMoney(offer_currency, min_available), // for displaying limit fields in buy/sell and ads table
             display_offer_amount: formatMoney(offer_currency, offer_amount),
             display_payment_method: map_payment_method[payment_method] || payment_method,
             display_price_rate: formatMoney(transaction_currency, price_rate),
-            offer_id: filtered_list[i].offer_id,
-            type: filtered_list[i].type,
+            id: filtered_list[i].id,
+            // for view in my ads tab (advertiser perspective), we should show the original type of the ad
+            // for view in buy/sell table (client perspective), we should show the counter-party type
+            type: is_original ? filtered_list[i].type : filtered_list[i].counterparty_type,
         };
     }
     return modified_response;
@@ -91,7 +97,7 @@ const getModifiedP2POrder = response => {
     const price_rate = +response.rate;
     const transaction_amount = +response.price;
     const payment_method = map_payment_method.bank_transfer; // TODO: [p2p-replace-with-api] add payment method to order details once API has it
-    // const payment_method = response.method;
+    // const payment_method = response.payment_method;
 
     return {
         offer_amount,
@@ -99,25 +105,26 @@ const getModifiedP2POrder = response => {
         price_rate,
         transaction_amount,
         transaction_currency,
-        advertiser_name: response.agent_name,
-        advertiser_notes: response.offer_description,
+        advertiser_name: ObjectUtils.getPropertyValue(response, ['advertiser_details', 'name']),
+        advertiser_notes: ObjectUtils.getPropertyValue(response, ['advert_details', 'description']),
         display_offer_amount: formatMoney(offer_currency, offer_amount),
         display_payment_method: map_payment_method[payment_method] || payment_method,
         display_price_rate: formatMoney(offer_currency, price_rate),
         display_transaction_amount: formatMoney(transaction_currency, transaction_amount),
         order_expiry_millis: convertToMillis(response.expiry_time),
-        order_id: response.order_id,
+        id: response.id,
         order_purchase_datetime: getFormattedDateString(new Date(convertToMillis(response.created_time))),
         status: response.status,
-        type: response.type,
+        type: response.is_incoming ? ObjectUtils.getPropertyValue(response, ['advert_details', 'type']) : response.type,
     };
 };
 
-const getModifiedP2POrderList = response => {
+export const getModifiedP2POrderList = response => {
     const modified_response = [];
-    response.list.forEach((list_item, idx) => {
+    response.forEach((list_item, idx) => {
         modified_response[idx] = getModifiedP2POrder(list_item);
     });
+
     return modified_response;
 };
 
@@ -132,10 +139,11 @@ export const requestWS = async request => {
 const getModifiedResponse = response => {
     let modified_response = response;
 
-    if (response.p2p_offer_list) {
-        modified_response = getModifiedP2POfferList(response.p2p_offer_list);
-    } else if (response.p2p_order_list) {
-        modified_response = getModifiedP2POrderList(response.p2p_order_list);
+    if (response.p2p_advert_list || response.p2p_advertiser_adverts) {
+        modified_response = getModifiedP2PAdvertList(
+            response.p2p_advert_list || response.p2p_advertiser_adverts,
+            response.p2p_advertiser_adverts
+        );
     } else if (response.p2p_order_info) {
         modified_response = getModifiedP2POrder(response.p2p_order_info);
     }

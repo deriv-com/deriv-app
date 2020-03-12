@@ -11,7 +11,12 @@ import { popover_zindex } from '../constants/z-indexes';
 
 const TransactionIconWithText = ({ icon, title, message, className }) => (
     <React.Fragment>
-        <Popover className={classNames(className, 'transactions__icon')} alignment='left' message={title}>
+        <Popover
+            className={classNames(className, 'transactions__icon')}
+            alignment='left'
+            message={title}
+            zIndex={popover_zindex.TRANSACTION}
+        >
             {icon}
         </Popover>
         {message}
@@ -128,7 +133,12 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
             </div>
             <div className='transactions__cell transactions__entry-spot'>
                 <React.Fragment>
-                    <Popover className='transactions__icon' alignment='left' message={localize('Entry spot')}>
+                    <Popover
+                        zIndex={popover_zindex.TRANSACTION}
+                        className='transactions__icon'
+                        alignment='left'
+                        message={localize('Entry spot')}
+                    >
                         <Icon icon='IcContractEntrySpot' />
                     </Popover>
                     {contract.entry_tick || <TransactionFieldLoader />}
@@ -136,7 +146,12 @@ const Transaction = ({ active_transaction_id, contract, setActiveTransactionId }
             </div>
             <div className='transactions__cell transactions__exit-spot'>
                 <React.Fragment>
-                    <Popover className='transactions__icon' alignment='left' message={localize('Exit spot')}>
+                    <Popover
+                        zIndex={popover_zindex.TRANSACTION}
+                        className='transactions__icon'
+                        alignment='left'
+                        message={localize('Exit spot')}
+                    >
                         <Icon icon='IcContractExitSpot' />
                     </Popover>
                     {contract.exit_tick || <TransactionFieldLoader />}

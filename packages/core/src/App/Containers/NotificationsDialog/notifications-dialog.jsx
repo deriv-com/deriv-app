@@ -84,6 +84,7 @@ class NotificationsDialog extends React.Component {
                                             <React.Fragment>
                                                 {item.action.route ? (
                                                     <BinaryLink
+                                                        onClick={this.props.toggleDialog}
                                                         className={classNames(
                                                             'btn',
                                                             'btn--secondary',

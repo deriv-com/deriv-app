@@ -1,8 +1,20 @@
+import clone from 'clone';
 import JSInterpreter from 'js-interpreter';
 import { createScope } from './cliTools';
 import Interface from '../Interface';
 import { unrecoverable_errors } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
+
+JSInterpreter.prototype.takeStateSnapshot = function() {
+    const newStateStack = clone(this.stateStack, undefined, undefined, undefined, true);
+    return newStateStack;
+};
+
+JSInterpreter.prototype.restoreStateSnapshot = function(snapshot) {
+    this.stateStack = clone(snapshot, undefined, undefined, undefined, true);
+    this.global = this.stateStack[0].scope;
+    this.initFunc_(this, this.global);
+};
 
 const botInitialized = bot => bot && bot.tradeEngine.options;
 const botStarted = bot => botInitialized(bot) && bot.tradeEngine.tradeOptions;
@@ -10,7 +22,7 @@ const shouldRestartOnError = (bot, errorName = '') =>
     !unrecoverable_errors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 
 const shouldStopOnError = (bot, errorName = '') => {
-    const stopErrors = ['SellNotAvailable'];
+    const stopErrors = ['SellNotAvailableCustom'];
     if (stopErrors.includes(errorName) && botInitialized(bot)) {
         return true;
     }
@@ -99,7 +111,7 @@ export default class Interpreter {
 
                 if (shouldStopOnError(this.bot, e.name)) {
                     globalObserver.emit('ui.log.error', e.message);
-                    this.stop();
+                    globalObserver.emit('bot.click_stop');
                     return;
                 }
 
@@ -161,16 +173,31 @@ export default class Interpreter {
     }
 
     createAsync(interpreter, func) {
-        return interpreter.createAsyncFunction((...args) => {
+        const asyncFunc = (...args) => {
             const callback = args.pop();
 
-            func(...args.map(arg => interpreter.pseudoToNative(arg)))
+            // Workaround for unknown number of args
+            const reversed_args = args.slice().reverse();
+            const first_defined_arg_idx = reversed_args.findIndex(arg => arg !== undefined);
+
+            // Remove extra undefined args from end of the args
+            const function_args = first_defined_arg_idx < 0 ? [] : reversed_args.slice(first_defined_arg_idx).reverse();
+            // End of workaround
+
+            func(...function_args.map(arg => interpreter.pseudoToNative(arg)))
                 .then(rv => {
                     callback(interpreter.nativeToPseudo(rv));
                     this.loop();
                 })
                 .catch(e => this.$scope.observer.emit('Error', e));
-        });
+        };
+
+        // TODO: This is a workaround, create issue on original repo, once fixed
+        // remove this. We don't know how many args are going to be passed, so we
+        // assume a max of 100.
+        const MAX_ACCEPTABLE_FUNC_ARGS = 100;
+        Object.defineProperty(asyncFunc, 'length', { value: MAX_ACCEPTABLE_FUNC_ARGS + 1 });
+        return interpreter.createAsyncFunction(asyncFunc);
     }
 
     hasStarted() {

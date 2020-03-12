@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { observable, action } from 'mobx';
 import { config } from '@deriv/bot-skeleton';
+import GTM from '../utils/gtm';
 
 export default class FlyoutStore {
     block_listeners = [];
@@ -113,9 +114,13 @@ export default class FlyoutStore {
         const block_svg_root = block.getSvgRoot();
 
         this.block_listeners.push(
-            Blockly.bindEventWithChecks_(block_svg_root, 'mousedown', null, event =>
-                blockly_flyout.blockMouseDown_(block)(event)
-            ),
+            Blockly.bindEventWithChecks_(block_svg_root, 'mousedown', null, event => {
+                GTM.pushDataLayer({
+                    event: 'dbot_drag_block',
+                    block_type: block.type,
+                });
+                blockly_flyout.blockMouseDown_(block)(event);
+            }),
             Blockly.bindEvent_(block_svg_root, 'mouseout', block, block.removeSelect),
             Blockly.bindEvent_(block_svg_root, 'mouseover', block, block.addSelect)
         );
@@ -163,7 +168,8 @@ export default class FlyoutStore {
         }
 
         const toolbox = workspace.getToolbox();
-        const is_flyout_click = event.path.some(el => el.classList && el.classList.contains('flyout'));
+        const path = event.path || (event.composedPath && event.composedPath());
+        const is_flyout_click = path.some(el => el.classList && el.classList.contains('flyout'));
         const is_search_focus = this.root_store.toolbar.is_search_focus;
         const isToolboxClick = () => toolbox.HtmlDiv.contains(event.target);
 

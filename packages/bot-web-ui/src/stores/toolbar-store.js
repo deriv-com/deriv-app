@@ -1,6 +1,5 @@
 import { observable, action } from 'mobx';
-import { localize } from '@deriv/translations';
-import { scrollWorkspace, runGroupedEvents } from '@deriv/bot-skeleton';
+import { scrollWorkspace, runGroupedEvents, load, config } from '@deriv/bot-skeleton';
 import { tabs_title } from '../constants/bot-contents';
 
 export default class ToolbarStore {
@@ -12,7 +11,7 @@ export default class ToolbarStore {
     @observable is_toolbox_open = false;
     @observable is_search_focus = false;
     @observable is_search_loading = false;
-    @observable file_name = localize('Untitled Bot');
+    @observable file_name = config.default_file_name;
     @observable has_undo_stack = false;
     @observable has_redo_stack = false;
 
@@ -59,6 +58,7 @@ export default class ToolbarStore {
 
     @action.bound
     onSearch({ search }) {
+        this.is_search_focus = true;
         if (this.is_toolbox_open && search !== '') {
             this.onToolboxToggle();
         }
@@ -95,18 +95,22 @@ export default class ToolbarStore {
 
     @action.bound
     onResetOkButtonClick() {
-        const workspace = Blockly.derivWorkspace;
-
         runGroupedEvents(
             false,
             () => {
+                const workspace = Blockly.derivWorkspace;
                 workspace.clear();
-                Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.blocksXmlStr), workspace);
+                workspace.current_strategy_id = Blockly.utils.genUid();
+                load({
+                    block_string: workspace.cached_xml.main,
+                    file_name: config.default_file_name,
+                    workspace,
+                });
             },
             'reset'
         );
 
-        this.file_name = localize('Untitled Bot');
+        this.file_name = config.default_file_name;
         this.is_dialog_open = false;
     }
 
@@ -116,10 +120,12 @@ export default class ToolbarStore {
 
     @action.bound
     onUndoClick(is_redo) {
+        Blockly.Events.setGroup('undo_clicked');
         Blockly.derivWorkspace.undo(is_redo);
         Blockly.svgResize(Blockly.derivWorkspace); // Called for CommentDelete event.
         this.setHasRedoStack();
         this.setHasUndoStack();
+        Blockly.Events.setGroup(false);
     }
 
     onZoomInOutClick = is_zoom_in => {

@@ -3,6 +3,7 @@ import { Provider } from 'mobx-react';
 import React from 'react';
 import { runIrreversibleEvents, ApiHelpers, DBot, ServerTime } from '@deriv/bot-skeleton';
 import './public-path'; // Leave this here! OK boss!
+import Audio from './components/audio.jsx';
 import FooterExtension from './components/footer-extension.jsx';
 import MainContent from './components/main-content.jsx';
 import NotificationMessages from './components/notification-messages.jsx';
@@ -33,11 +34,20 @@ class App extends React.Component {
             flyout,
             toolbar,
             quick_strategy,
-            saveload,
+            load_modal,
         } = this.root_store;
-        const { handleFileChange } = saveload;
+        const { handleFileChange } = load_modal;
         const { toggleStrategyModal } = quick_strategy;
-        this.dbot_store = { is_mobile: false, client, flyout, toolbar, toggleStrategyModal, handleFileChange };
+        const { onBotNameTyped } = toolbar;
+        this.dbot_store = {
+            is_mobile: false,
+            client,
+            flyout,
+            toolbar,
+            toggleStrategyModal,
+            handleFileChange,
+            onBotNameTyped,
+        };
         this.api_helpers_store = { ws: this.root_store.ws, server_time: this.root_store.server_time };
     }
 
@@ -45,6 +55,8 @@ class App extends React.Component {
         DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store);
         this.registerCurrencyReaction();
         this.registerOnAccountSwitch();
+        this.registerClickOutsideBlockly();
+        this.registerBeforeUnload();
     }
 
     componentWillUnmount() {
@@ -53,7 +65,10 @@ class App extends React.Component {
         }
 
         this.disposeReactions();
-        this.disposeOnAccountSwitch();
+
+        // Ensure account switch is re-enabled.
+        const { ui } = this.root_store.core;
+        ui.setAccountSwitcherDisabledMessage(false);
     }
 
     /**
@@ -111,7 +126,32 @@ class App extends React.Component {
     };
 
     /**
-     * Dispose the reactions
+     * Ensures inputs are closed when clicking on non-Blockly elements.
+     */
+    onClickOutsideBlockly = event => {
+        const path = event.path || (event.composedPath && event.composedPath());
+        const is_click_outside_blockly = !path.some(el => el.classList && el.classList.contains('injectionDiv'));
+        if (is_click_outside_blockly) {
+            Blockly.hideChaff(/* allowToolbox */ false);
+        }
+    };
+
+    registerClickOutsideBlockly() {
+        window.addEventListener('click', this.onClickOutsideBlockly);
+    }
+
+    onBeforeUnload = event => {
+        if (this.root_store.run_panel.is_stop_button_visible) {
+            event.returnValue = true;
+        }
+    };
+
+    registerBeforeUnload() {
+        window.addEventListener('beforeunload', this.onBeforeUnload);
+    }
+
+    /**
+     * Dispose Mobx reactions & event listeners.
      */
     disposeReactions() {
         if (typeof this.disposeCurrencyReaction === 'function') {
@@ -120,6 +160,8 @@ class App extends React.Component {
         if (typeof this.disposeSwitchAccountListener === 'function') {
             this.disposeSwitchAccountListener();
         }
+        window.removeEventListener('click', this.onClickOutsideBlockly);
+        window.removeEventListener('beforeunload', this.onBeforeUnload);
     }
 
     render() {
@@ -132,6 +174,7 @@ class App extends React.Component {
                     <RunPanel />
                     <QuickStrategy />
                     <FooterExtension />
+                    <Audio />
                 </div>
             </Provider>
         );

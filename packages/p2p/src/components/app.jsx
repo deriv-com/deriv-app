@@ -1,10 +1,11 @@
 import classNames from 'classnames';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ObjectUtils from '@deriv/shared/utils/object';
 import { Tabs } from '@deriv/components';
 import { Dp2pProvider } from 'Components/context/dp2p-context';
 import ServerTime from 'Utils/server-time';
-import { init, requestWS, subscribeWS } from 'Utils/websocket';
+import { init, requestWS, getModifiedP2POrderList } from 'Utils/websocket';
 import { localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
@@ -33,7 +34,7 @@ class App extends Component {
             active_index: 0,
             orders: [],
             parameters: null,
-            is_agent: false,
+            is_advertiser: false,
         };
     }
 
@@ -41,58 +42,40 @@ class App extends Component {
         this.setState({ active_index: path[path_name], parameters: params });
     };
 
-    handleTabClick = () => {
-        this.setState({ parameters: null });
+    handleTabClick = idx => {
+        this.setState({ active_index: idx, parameters: null });
     };
 
-    setIsAgent = async () => {
-        const agent_info = await requestWS({ p2p_agent_info: 1 });
+    setIsAdvertiser = async () => {
+        const advertiser_info = await requestWS({ p2p_advertiser_info: 1 });
 
-        /* if there is no error means its an agent else its a client */
-        if (!agent_info.error) {
-            this.setState({ agent_id: agent_info.p2p_agent_info.agent_id, is_agent: true });
+        /* if there is no error means it's an advertiser else it's a client */
+        if (!advertiser_info.error) {
+            await this.setState({ advertiser_id: advertiser_info.p2p_advertiser_info.id, is_advertiser: true });
         }
-    };
-
-    // API will send p2p_order_list first as a list of all orders
-    // then each subscription response for a single updated order will come as p2p_order_info
-    handleOrderListResponse = order_response => {
-        if (Array.isArray(order_response)) {
-            // it's an array of orders from p2p_order_list
-            this.setState({ orders: order_response });
-        } else {
-            // it's a single order from p2p_order_info
-            const idx_order_to_update = this.state.orders.findIndex(
-                order => order.order_id === order_response.order_id
-            );
-            const updated_orders = [...this.state.orders];
-            // if it's a new order, add it to the top of the list
-            if (idx_order_to_update < 0) {
-                updated_orders.unshift(order_response);
-            } else {
-                // otherwise, update the correct order
-                updated_orders[idx_order_to_update] = order_response;
-            }
-            // trigger re-rendering by setting orders again
-            this.setState({ orders: updated_orders });
-        }
+        return true;
     };
 
     componentDidMount() {
-        this.setIsAgent();
-
-        subscribeWS({ p2p_order_list: 1, subscribe: 1 }, this.handleOrderListResponse);
+        this.setIsAdvertiser();
+        if (this.props.p2p_order_list.length) {
+            this.setState({ orders: getModifiedP2POrderList(this.props.p2p_order_list) });
+        }
     }
 
-    componentWillUnmount = () => {
-        requestWS({ forget_all: 'p2p_order' });
-    };
+    componentDidUpdate(prev_props) {
+        if (prev_props.p2p_order_list !== this.props.p2p_order_list) {
+            this.setState({ orders: getModifiedP2POrderList(this.props.p2p_order_list) });
+        }
+    }
 
     render() {
         const { active_index, orders, parameters } = this.state;
         const {
             className,
             client: { currency, local_currency_config, is_virtual, residence },
+            custom_strings,
+            notification_count,
         } = this.props;
 
         // TODO: remove allowed_currency check once we publish this to everyone
@@ -110,44 +93,27 @@ class App extends Component {
                     currency,
                     local_currency_config,
                     residence,
-                    agent_id: this.state.agent_id,
-                    is_agent: this.state.is_agent,
-                    email_domain: this.props.custom_strings.email_domain || 'deriv.com',
+                    advertiser_id: this.state.advertiser_id,
+                    is_advertiser: this.state.is_advertiser,
+                    email_domain: ObjectUtils.getPropertyValue(custom_strings, 'email_domain') || 'deriv.com',
                 }}
             >
                 <main className={classNames('deriv-p2p', className)}>
-                    {this.state.is_agent ? (
-                        <Tabs onTabItemClick={this.handleTabClick} active_index={active_index} top>
-                            <div label={localize('Buy/Sell')}>
-                                <BuySell navigate={this.redirectTo} params={parameters} />
-                            </div>
-                            {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
-                            <div label={localize('Incoming orders')}>
-                                <Orders navigate={this.redirectTo} orders={orders} params={parameters} />
-                            </div>
-                            <div label={localize('My ads')}>
-                                <MyAds navigate={this.redirectTo} params={parameters} />
-                            </div>
-                            {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
-                            {/* <div label={localize('My profile')}>
-                                <MyProfile navigate={this.redirectTo} params={parameters} />
-                            </div> */}
-                        </Tabs>
-                    ) : (
-                        <Tabs onTabItemClick={this.handleTabClick} active_index={active_index} top>
-                            <div label={localize('Buy/Sell')}>
-                                <BuySell navigate={this.redirectTo} params={parameters} />
-                            </div>
-                            {/* TODO: [p2p-replace-with-api] Add 'count' prop to this div for notification counter */}
-                            <div label={localize('My Orders')}>
-                                <Orders navigate={this.redirectTo} orders={orders} params={parameters} />
-                            </div>
-                            {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
-                            {/* <div label={localize('My profile')}>
-                                <MyProfile navigate={this.redirectTo} params={parameters} />
-                            </div> */}
-                        </Tabs>
-                    )}
+                    <Tabs onTabItemClick={this.handleTabClick} active_index={active_index} top>
+                        <div label={localize('Buy/Sell')}>
+                            <BuySell navigate={this.redirectTo} params={parameters} />
+                        </div>
+                        <div count={notification_count} label={localize('Orders')}>
+                            <Orders navigate={this.redirectTo} orders={orders} params={parameters} />
+                        </div>
+                        <div label={localize('My ads')}>
+                            <MyAds navigate={this.redirectTo} params={parameters} />
+                        </div>
+                        {/* TODO [p2p-uncomment] uncomment this when profile is ready */}
+                        {/* <div label={localize('My profile')}>
+                            <MyProfile navigate={this.redirectTo} params={parameters} />
+                        </div> */}
+                    </Tabs>
                 </main>
             </Dp2pProvider>
         );
@@ -168,6 +134,8 @@ App.propTypes = {
         residence: PropTypes.string.isRequired,
     }),
     lang: PropTypes.string,
+    notification_count: PropTypes.number,
+    p2p_order_list: PropTypes.array,
     websocket_api: PropTypes.object.isRequired,
 };
 

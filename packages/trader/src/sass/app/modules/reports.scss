@@ -6,10 +6,6 @@ $side-padding: 1.2em;
 
 /** @define reports; weak */
 .reports {
-    margin: 16px;
-    box-shadow: 18px 8px 8px var(--shadow-menu);
-    border-radius: 4px;
-
     &__meta {
         width: 100%;
         display: flex;
@@ -32,10 +28,6 @@ $side-padding: 1.2em;
             position: relative;
             display: flex;
         }
-    }
-    &__inset_header {
-        box-shadow: inset 0 -1px 0 0 var(--general-section-1);
-        margin-bottom: 24px;
     }
     .unknown-icon {
         margin-left: 8px;
@@ -63,21 +55,29 @@ $side-padding: 1.2em;
         /*                     icon   refId tr_time  transaction cred/debt  balance */
         grid-template-columns: 0.8fr 1.2fr 1fr 0.8fr 1fr 1fr;
 
-        &--detail {
+        // we need higher specificity than just &--detail here
+        // because otherwise table styling will override statement styling on first load
+        /* postcss-bem-linter: ignore */
+        &.statement__row--detail {
             overflow: hidden;
             max-height: 63px;
+            height: 63px;
             display: flex;
             align-items: center;
             padding: 0;
             justify-content: center;
             background-color: var(--general-section-1);
 
+            /* postcss-bem-linter: ignore */
             &-text {
                 padding: 1.12em;
             }
         }
         .date {
             text-align: left;
+        }
+        .table__cell {
+            height: 63px;
         }
     }
     .amount,

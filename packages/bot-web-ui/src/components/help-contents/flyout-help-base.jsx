@@ -10,9 +10,18 @@ import FlyoutImage from './flyout-img.jsx';
 import FlyoutBlock from '../flyout-block.jsx';
 import { connect } from '../../stores/connect';
 
-const HelpBase = ({ block_node, block_type, help_string, is_search_flyout, onBackClick, onSequenceClick, title }) => {
-    const { display_name } = Blockly.Blocks[block_type].meta();
-    const block_help_component = help_string && help_content_config[block_type];
+const HelpBase = ({
+    block_node,
+    block_type,
+    help_string,
+    is_search_flyout,
+    onBackClick,
+    onSequenceClick,
+    should_next_disable,
+    should_previous_disable,
+    title,
+}) => {
+    const block_help_component = help_string && help_content_config(__webpack_public_path__)[block_type];
     let text_count = 0;
 
     return (
@@ -26,7 +35,7 @@ const HelpBase = ({ block_node, block_type, help_string, is_search_flyout, onBac
                     <Button
                         className='flyout__button-add'
                         has_effect
-                        id={`gtm-${display_name.replace(/\s/gi, '-')}`}
+                        id={`db-flyout-help__add--${block_type}`}
                         onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}
                         primary
                         text={localize('Add')}
@@ -64,17 +73,19 @@ const HelpBase = ({ block_node, block_type, help_string, is_search_flyout, onBac
                 <div className='flyout__help-footer'>
                     <Button
                         className='flyout__button-previous'
-                        has_effect
+                        secondary
                         onClick={() => onSequenceClick(false)}
                         text={localize('Previous')}
                         type='button'
+                        is_disabled={should_previous_disable}
                     />
                     <Button
                         className='flyout__button-next'
-                        has_effect
-                        onClick={() => onSequenceClick(false)}
+                        secondary
+                        onClick={() => onSequenceClick(true)}
                         text={localize('Next')}
                         type='button'
+                        is_disabled={should_next_disable}
                     />
                 </div>
             )}
@@ -89,6 +100,8 @@ HelpBase.propTypes = {
     is_search_flyout: PropTypes.bool,
     onBackClick: PropTypes.func,
     onSequenceClick: PropTypes.func,
+    should_next_disable: PropTypes.bool,
+    should_previous_disable: PropTypes.bool,
     title: PropTypes.string,
 };
 
@@ -99,5 +112,7 @@ export default connect(({ flyout, flyout_help }) => ({
     is_search_flyout: flyout.is_search_flyout,
     onBackClick: flyout_help.onBackClick,
     onSequenceClick: flyout_help.onSequenceClick,
+    should_next_disable: flyout_help.should_next_disable,
+    should_previous_disable: flyout_help.should_previous_disable,
     title: flyout_help.title,
 }))(HelpBase);

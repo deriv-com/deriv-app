@@ -103,23 +103,23 @@ export const getUnsupportedContracts = () => ({
         position: 'bottom',
     },
     LBFLOATCALL: {
-        name: localize('Close-Low'),
+        name: localize('Close-to-Low'),
         position: 'top',
     },
     LBFLOATPUT: {
-        name: localize('High-Close'),
+        name: localize('High-to-Close'),
         position: 'top',
     },
     LBHIGHLOW: {
-        name: localize('High-Low'),
+        name: localize('High-to-Low'),
         position: 'top',
     },
     CALLSPREAD: {
-        name: localize('Call Spread'),
+        name: localize('Spread Up'),
         position: 'top',
     },
     PUTSPREAD: {
-        name: localize('Put Spread'),
+        name: localize('Spread Down'),
         position: 'bottom',
     },
     RUNHIGH: {
@@ -128,6 +128,14 @@ export const getUnsupportedContracts = () => ({
     },
     RUNLOW: {
         name: localize('Only Downs'),
+        position: 'bottom',
+    },
+    MULTUP: {
+        name: localize('Up'),
+        position: 'top',
+    },
+    MULTDOWN: {
+        name: localize('Down'),
         position: 'bottom',
     },
 });

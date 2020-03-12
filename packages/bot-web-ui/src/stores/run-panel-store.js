@@ -45,7 +45,7 @@ export default class RunPanelStore {
     @action.bound
     onRunButtonClick = () => {
         const { core, contract_card } = this.root_store;
-        const { client } = core;
+        const { client, ui } = core;
 
         if (!client.is_logged_in) {
             this.showLoginDialog();
@@ -58,6 +58,12 @@ export default class RunPanelStore {
             RunPanelStore.unregisterBotListeners();
             return;
         }
+
+        ui.setAccountSwitcherDisabledMessage(
+            localize(
+                'Account switching is disabled while your bot is running. Please stop your bot before switching accounts.'
+            )
+        );
 
         this.is_running = true;
         this.toggleDrawer(true);
@@ -72,10 +78,13 @@ export default class RunPanelStore {
     onStopButtonClick() {
         this.dbot.stopBot();
         this.is_running = false;
+
+        const { ui } = this.root_store.core;
+
         if (this.error_type) {
             // when user click stop button when there is a error but bot is retrying
             this.setContractStage(contract_stages.NOT_RUNNING);
-            this.error_type = undefined;
+            ui.setAccountSwitcherDisabledMessage(false);
         } else if (this.has_open_contract) {
             // when user click stop button when bot is running
             this.setContractStage(contract_stages.IS_STOPPING);
@@ -83,6 +92,11 @@ export default class RunPanelStore {
             // when user click stop button before bot start running
             this.setContractStage(contract_stages.NOT_RUNNING);
             RunPanelStore.unregisterBotListeners();
+            ui.setAccountSwitcherDisabledMessage(false);
+        }
+
+        if (this.error_type) {
+            this.error_type = undefined;
         }
     }
 
@@ -115,6 +129,10 @@ export default class RunPanelStore {
     @action.bound
     setActiveTabIndex(index) {
         this.active_index = index;
+
+        if (this.active_index !== 1) {
+            this.root_store.transactions.setActiveTransactionId(null);
+        }
     }
     // #endregion
 
@@ -181,13 +199,13 @@ export default class RunPanelStore {
 
         observer.register('bot.running', this.onBotRunningEvent);
         observer.register('bot.stop', this.onBotStopEvent);
+        observer.register('bot.click_stop', this.onStopButtonClick);
         observer.register('bot.trade_again', this.onBotTradeAgain);
         observer.register('contract.status', this.onContractStatusEvent);
         observer.register('contract.status', summary.onContractStatusEvent);
         observer.register('bot.contract', this.onBotContractEvent);
         observer.register('bot.contract', contract_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
-        observer.register('ui.log.success', journal.onLogSuccess);
         observer.register('ui.log.error', this.onError);
         observer.register('Error', this.onError);
         observer.register('ui.log.notify', journal.onNotify);
@@ -206,14 +224,20 @@ export default class RunPanelStore {
             this.error_type = undefined;
         } else if (this.error_type === error_types.UNRECOVERABLE_ERRORS) {
             // When error happens and its recoverable_errors, bot should stop
-            this.setContractStage(contract_stages.NOT_RUNNING);
+            const { ui } = this.root_store.core;
             this.error_type = undefined;
             this.is_running = false;
+
+            this.setContractStage(contract_stages.NOT_RUNNING);
+            ui.setAccountSwitcherDisabledMessage(false);
             RunPanelStore.unregisterBotListeners();
         } else if (this.has_open_contract) {
             // When bot was running and it closes now
             this.setContractStage(contract_stages.CONTRACT_CLOSED);
             RunPanelStore.unregisterBotListeners();
+
+            const { ui } = this.root_store.core;
+            ui.setAccountSwitcherDisabledMessage(false);
         }
         this.has_open_contract = false;
     }
@@ -283,7 +307,6 @@ export default class RunPanelStore {
         observer.unregisterAll('bot.trade_again');
         observer.unregisterAll('contract.status');
         observer.unregisterAll('bot.contract');
-        observer.unregisterAll('ui.log.success');
         observer.unregisterAll('ui.log.error');
         observer.unregisterAll('Error');
         observer.unregisterAll('ui.log.notify');

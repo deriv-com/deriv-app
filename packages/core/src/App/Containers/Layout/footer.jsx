@@ -60,7 +60,6 @@ export default withRouter(
         is_positions_drawer_on: ui.is_positions_drawer_on,
         is_settings_modal_on: ui.is_settings_modal_on,
         disableApp: ui.disableApp,
-        show_positions_toggle: ui.show_positions_toggle,
         togglePositionsDrawer: ui.togglePositionsDrawer, // TODO: Remove positions drawer logic from UI store
         toggleSettingsModal: ui.toggleSettingsModal,
     }))(Footer)

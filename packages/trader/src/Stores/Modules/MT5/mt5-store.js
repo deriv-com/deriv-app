@@ -255,6 +255,7 @@ export default class MT5Store extends BaseStore {
         const response = await this.openAccount(mt5_password);
         if (!response.error) {
             WS.authorized.storage.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
+            WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
             runInAction(() => {
                 this.setMt5Account(response.mt5_new_account);
                 this.is_mt5_password_modal_enabled = false;

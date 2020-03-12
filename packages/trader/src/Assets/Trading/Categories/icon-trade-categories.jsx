@@ -122,7 +122,7 @@ const IconTradeCategory = ({ category, className }) => {
                             <Icon icon='IcTradetypeAsianu' className='category-type' color='brand' />
                         </div>
                         <div className='category-wrapper'>
-                            <Icon con='IcTradetypeAsiand' className='category-type' color='brand' />
+                            <Icon icon='IcTradetypeAsiand' className='category-type' color='brand' />
                         </div>
                     </React.Fragment>
                 );
@@ -130,22 +130,82 @@ const IconTradeCategory = ({ category, className }) => {
             case 'lb_call':
                 IconCategory = (
                     <div className='category-wrapper'>
-                        <Icon className='category-type' color='brand' type='lbfloatcall' />
+                        <Icon icon='IcTradetypeLbcall' className='category-type' color='brand' />
                     </div>
                 );
                 break;
             case 'lb_put':
                 IconCategory = (
                     <div className='category-wrapper'>
-                        <Icon className='category-type' color='brand' type='lbfloatput' />
+                        <Icon icon='IcTradetypeLbput' className='category-type' color='brand' />
                     </div>
                 );
                 break;
             case 'lb_high_low':
                 IconCategory = (
                     <div className='category-wrapper'>
-                        <Icon className='category-type' color='brand' type='lbhighlow' />
+                        <Icon icon='IcTradetypeLbhighlow' className='category-type' color='brand' />
                     </div>
+                );
+                break;
+            case 'run_high_low':
+                IconCategory = (
+                    <React.Fragment>
+                        <div className='category-wrapper'>
+                            <Icon icon='IcTradetypeRunhigh' className='category-type' color='brand' />
+                        </div>
+                        <div className='category-wrapper'>
+                            <Icon icon='IcTradetypeRunlow' className='category-type' color='brand' />
+                        </div>
+                    </React.Fragment>
+                );
+                break;
+            case 'reset':
+                IconCategory = (
+                    <React.Fragment>
+                        <div className='category-wrapper'>
+                            <Icon icon='IcTradetypeResetcall' className='category-type' color='brand' />
+                        </div>
+                        <div className='category-wrapper'>
+                            <Icon icon='IcTradetypeResetput' className='category-type' color='brand' />
+                        </div>
+                    </React.Fragment>
+                );
+                break;
+            case 'tick_high_low':
+                IconCategory = (
+                    <React.Fragment>
+                        <div className='category-wrapper'>
+                            <Icon icon='IcTradetypeTickhigh' className='category-type' color='brand' />
+                        </div>
+                        <div className='category-wrapper'>
+                            <Icon icon='IcTradetypeTicklow' className='category-type' color='brand' />
+                        </div>
+                    </React.Fragment>
+                );
+                break;
+            case 'callputspread':
+                IconCategory = (
+                    <React.Fragment>
+                        <div className='category-wrapper'>
+                            <Icon icon='IcTradetypeCallspread' className='category-type' color='brand' />
+                        </div>
+                        <div className='category-wrapper'>
+                            <Icon icon='IcTradetypePutspread' className='category-type' color='brand' />
+                        </div>
+                    </React.Fragment>
+                );
+                break;
+            case 'multiplier':
+                IconCategory = (
+                    <React.Fragment>
+                        <div className='category-wrapper'>
+                            <Icon icon='IcTradetypeMultup' className='category-type' color='brand' />
+                        </div>
+                        <div className='category-wrapper'>
+                            <Icon icon='IcTradetypeMultdown' className='category-type' color='brand' />
+                        </div>
+                    </React.Fragment>
                 );
                 break;
             default:

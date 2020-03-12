@@ -2,7 +2,6 @@ import { Table } from '@deriv/components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { BuySellRowLoader } from 'Components/buy-sell/row.jsx';
-import Dp2pContext from 'Components/context/dp2p-context';
 import { localize } from 'Components/i18next';
 import { InfiniteLoaderList } from 'Components/table/infinite-loader-list.jsx';
 import BuyOrderRowComponent from './order-table-buy-row.jsx';
@@ -11,7 +10,6 @@ import OrderInfo from '../order-info';
 
 const OrderTable = ({ orders, showDetails }) => {
     const [order_list, setOrderList] = React.useState([]);
-    const { is_agent } = React.useContext(Dp2pContext);
 
     React.useEffect(() => {
         const modified_list = orders.map(list => new OrderInfo(list));
@@ -20,9 +18,9 @@ const OrderTable = ({ orders, showDetails }) => {
 
     const Row = row_props =>
         row_props.data.is_buyer ? (
-            <BuyOrderRowComponent {...row_props} is_agent={is_agent} onOpenDetails={showDetails} />
+            <BuyOrderRowComponent {...row_props} onOpenDetails={showDetails} />
         ) : (
-            <SellOrderRowComponent {...row_props} is_agent={is_agent} onOpenDetails={showDetails} />
+            <SellOrderRowComponent {...row_props} onOpenDetails={showDetails} />
         );
 
     return (
@@ -39,13 +37,16 @@ const OrderTable = ({ orders, showDetails }) => {
             <Table.Body>
                 {order_list.length ? (
                     <InfiniteLoaderList
+                        // screen size - header size - footer size - page overlay header - page overlay content padding -
+                        // tabs height - padding of tab content - table header height
+                        initial_height={'calc(100vh - 48px - 36px - 41px - 2.4rem - 36px - 2.4rem - 52px)'}
                         items={order_list}
                         item_size={72}
                         RenderComponent={Row}
                         RowLoader={BuySellRowLoader}
                     />
                 ) : (
-                    <div className='orders__empty'>{localize('No orders found')}</div>
+                    <div className='deriv-p2p__empty'>{localize("You haven't made or received any orders yet.")}</div>
                 )}
             </Table.Body>
         </Table>

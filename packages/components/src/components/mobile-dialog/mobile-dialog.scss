@@ -51,6 +51,10 @@
         z-index: 1;
         background: var(--general-section-2);
         transition: all 0.2s ease-out;
+
+        > div {
+            height: 100%;
+        }
     }
     &__header {
         box-sizing: border-box;

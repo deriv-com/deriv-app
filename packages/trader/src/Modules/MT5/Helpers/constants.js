@@ -17,4 +17,13 @@ const getPlatformMt5DownloadLink = () => {
     }
 };
 
-export { getPlatformMt5DownloadLink };
+const getMT5WebTerminalLink = category => {
+    switch (category) {
+        case 'demo':
+            return 'https://trade.mql5.com/trade?servers=Binary.com-Demo&trade_server=Binary.com-Demo';
+        default:
+            return 'https://trade.mql5.com/trade?servers=Binary.com-Server&trade_server=Binary.com-Server'; // Real
+    }
+};
+
+export { getPlatformMt5DownloadLink, getMT5WebTerminalLink };

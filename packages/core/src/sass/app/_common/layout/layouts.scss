@@ -47,10 +47,12 @@
     }
 }
 
-/* enable temporary landscape blocker UI in landscape */
-@include mobile-landscape {
-    /** @define landscape-blocker; weak */
-    .landscape-blocker {
+/** @define landscape-blocker; weak */
+.landscape-blocker {
+    display: none;
+
+    /* enable temporary landscape blocker UI in landscape */
+    @include mobile-landscape {
         position: fixed;
         top: 0;
         left: 0;
@@ -66,6 +68,9 @@
         z-index: 9999;
         font-weight: bold;
 
+        &--keyboard-visible {
+            display: none !important;
+        }
         &__icon {
             width: 59px;
             height: 64px;
@@ -75,7 +80,7 @@
             line-height: 1.4;
         }
         @include touch-device {
-            display: flex !important;
+            display: flex;
         }
     }
 }
@@ -102,6 +107,9 @@
         position: relative;
         margin-top: $MOBILE_HEADER_HEIGHT;
 
+        &--is-mt5-page {
+            overflow-y: auto;
+        }
         .ciq-menu {
             top: 0;
             margin: 0.8rem;

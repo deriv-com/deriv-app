@@ -22,6 +22,9 @@ class Tabs extends Component {
                 this.props.onTabItemClick(this.state.active_index);
             }
         }
+        if (this.props.active_index !== prev_props.active_index) {
+            this.setState({ active_index: this.props.active_index });
+        }
     }
 
     render() {

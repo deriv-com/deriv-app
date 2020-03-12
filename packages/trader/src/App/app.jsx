@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { isMobile } from '@deriv/shared/utils/screen';
 import Lazy from 'App/Containers/Lazy';
 import Routes from 'App/Containers/Routes/routes.jsx';
 import TradeHeaderExtensions from 'App/Containers/trade-header-extensions.jsx';
@@ -19,6 +20,32 @@ class App extends React.Component {
         } = props;
         this.root_store = initStore(root_store, WS, client_base);
     }
+
+    componentDidMount() {
+        if (isMobile()) {
+            /* Prevent from showing Landscape blocker UI when keyboard is visible */
+            this.el_landscape_blocker = document.getElementById('landscape_blocker');
+            document.addEventListener('focus', this.onFocus, true);
+            document.addEventListener('touchstart', this.onTouchStart, true);
+        }
+    }
+
+    componentWillUnmount() {
+        if (isMobile()) {
+            document.removeEventListener('focus', this.onFocus);
+            document.removeEventListener('touchstart', this.onTouchStart);
+        }
+    }
+
+    onFocus = () => {
+        this.el_landscape_blocker.classList.add('landscape-blocker--keyboard-visible');
+    };
+
+    onTouchStart = () => {
+        if (document.activeElement.tagName !== 'INPUT') {
+            this.el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
+        }
+    };
 
     render() {
         return (

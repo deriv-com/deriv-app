@@ -1,8 +1,20 @@
-import { Money, Button } from '@deriv/components';
-import React from 'react';
-import { Localize } from '@deriv/translations';
+import { Money, Button, Modal, MobileWrapper } from '@deriv/components';
+import React, { useState } from 'react';
+import { isDesktop } from '@deriv/shared/utils/screen';
+import { localize, Localize } from '@deriv/translations';
 import { Mt5AccountCopy } from './mt5-account-copy.jsx';
-import { getPlatformMt5DownloadLink } from '../Helpers/constants';
+import { getMT5WebTerminalLink } from '../Helpers/constants';
+
+export const FundTransferUnavailableModal = ({ is_visible, toggleModal }) => (
+    <Modal is_open={is_visible} small toggleModal={toggleModal}>
+        <Modal.Body>
+            {localize('Fund transfers are currently unavailable for mobile. Please log in with your computer.')}
+        </Modal.Body>
+        <Modal.Footer>
+            <Button has_effect text={localize('OK')} onClick={toggleModal} primary />
+        </Modal.Footer>
+    </Modal>
+);
 
 const MT5AccountCard = ({
     commission_message,
@@ -18,6 +30,10 @@ const MT5AccountCard = ({
     onPasswordManager,
 }) => {
     const IconComponent = icon || (() => null);
+
+    const [is_visible, setIsVisible] = useState(false);
+
+    const toggleModal = () => setIsVisible(!is_visible);
 
     return (
         <div className='mt5-account-card'>
@@ -69,7 +85,11 @@ const MT5AccountCard = ({
                 )}
                 {existing_data && (
                     <div className='mt5-account-card__manage'>
-                        <Button onClick={onClickFund} type='button' secondary>
+                        <Button
+                            onClick={isDesktop() || type.category === 'demo' ? onClickFund : toggleModal}
+                            type='button'
+                            secondary
+                        >
                             {type.category === 'real' && <Localize i18n_default_text='Fund transfer' />}
                             {type.category === 'demo' && <Localize i18n_default_text='Top up' />}
                         </Button>
@@ -100,11 +120,11 @@ const MT5AccountCard = ({
                     <a
                         className='btn mt5-account-card__account-selection mt5-account-card__account-selection--primary'
                         type='button'
-                        href={getPlatformMt5DownloadLink()}
+                        href={getMT5WebTerminalLink(type.category)}
                         target='_blank'
                         rel='noopener noreferrer'
                     >
-                        <Localize i18n_default_text='Download' />
+                        <Localize i18n_default_text='Trade on web terminal' />
                     </a>
                 )}
                 {!existing_data && !has_mt5_account && (
@@ -116,10 +136,15 @@ const MT5AccountCard = ({
                         type='button'
                         primary
                     >
-                        <Localize i18n_default_text='Create account' />
+                        <Localize
+                            i18n_default_text={type.category === 'real' ? 'Add real account' : 'Add demo account'}
+                        />
                     </Button>
                 )}
             </div>
+            <MobileWrapper>
+                <FundTransferUnavailableModal is_visible={is_visible} toggleModal={toggleModal} />
+            </MobileWrapper>
         </div>
     );
 };

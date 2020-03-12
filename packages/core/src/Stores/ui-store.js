@@ -101,6 +101,8 @@ export default class UIStore extends BaseStore {
     @observable mobile_toast_error = '';
     @observable mobile_toast_timeout = 1500;
 
+    @observable is_mt5_page = false;
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {

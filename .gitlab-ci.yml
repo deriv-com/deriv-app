@@ -22,7 +22,9 @@ test_all:
   only:
     refs:
       - merge_requests
-  script: npm run test
+  script:
+    - npm run build:travis
+    - npm run test
   dependencies:
     - setup
 

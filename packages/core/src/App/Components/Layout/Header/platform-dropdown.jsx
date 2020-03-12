@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -37,7 +36,6 @@ class PlatformDropdown extends React.PureComponent {
 
     render() {
         const { platform_config, closeDrawer } = this.props;
-        console.log(platform_config);
 
         const platform_dropdown = (
             <div className='platform_dropdown'>

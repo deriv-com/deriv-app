@@ -14,10 +14,16 @@ stages:
 
 setup:
   stage: setup
+  only:
+    refs:
+      - merge_requests
   script: npm run bootstrap
 
 test_all:
   stage: test
+  only:
+    refs:
+      - merge_requests
   script: npm run test
 
 pages:

@@ -16,7 +16,9 @@ const DigitDisplay = ({
     is_max,
     is_min,
     is_won,
+    onSelect,
     latest_digit,
+    selected_digit,
     status,
     stats,
     value,
@@ -60,9 +62,11 @@ const DigitDisplay = ({
                 is_latest={is_latest}
                 is_lost={is_lost}
                 is_selected={is_selected}
+                selected_digit={selected_digit}
                 is_won={is_won}
                 percentage={percentage}
                 value={value}
+                onSelect={onSelect}
             />
         </div>
     );

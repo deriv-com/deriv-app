@@ -14,20 +14,37 @@ export const DigitsWidget = connect(({ modules }) => ({
     display_status: modules.contract_trade.last_contract.display_status,
     is_digit_contract: modules.contract_trade.last_contract.is_digit_contract,
     is_ended: modules.contract_trade.last_contract.is_ended,
+    selected_digit: modules.trade.last_digit,
+    onDigitChange: modules.trade.onChange,
     underlying: modules.trade.symbol,
-}))(({ contract_info, digits, digits_info, display_status, is_digit_contract, is_ended, tick, underlying }) => (
-    <Digits
-        contract_info={contract_info}
-        digits_array={digits}
-        digits_info={digits_info}
-        display_status={display_status}
-        is_digit_contract={is_digit_contract}
-        is_ended={is_ended}
-        is_trade_page
-        tick={tick}
-        underlying={underlying}
-    />
-));
+}))(
+    ({
+        contract_info,
+        digits,
+        digits_info,
+        display_status,
+        is_digit_contract,
+        is_ended,
+        onDigitChange,
+        selected_digit,
+        tick,
+        underlying,
+    }) => (
+        <Digits
+            contract_info={contract_info}
+            digits_array={digits}
+            digits_info={digits_info}
+            display_status={display_status}
+            is_digit_contract={is_digit_contract}
+            is_ended={is_ended}
+            onDigitChange={onDigitChange}
+            is_trade_page
+            tick={tick}
+            selected_digit={selected_digit}
+            underlying={underlying}
+        />
+    )
+);
 
 // Chart widgets passed into SmartCharts
 export const ChartTopWidgets = connect(({ modules, ui }) => ({

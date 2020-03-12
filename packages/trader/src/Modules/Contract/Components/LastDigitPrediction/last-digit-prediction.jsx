@@ -112,6 +112,8 @@ class LastDigitPrediction extends React.Component {
                         latest_digit={is_trade_page ? latest_digit : last_contract_digit}
                         value={idx}
                         onLastDigitSpot={this.props.onLastDigitSpot}
+                        onSelect={this.props.onDigitChange}
+                        selected_digit={this.props.selected_digit}
                     />
                 ))}
                 <LastDigitPointer is_lost={is_lost} is_trade_page={is_trade_page} is_won={is_won} position={position} />

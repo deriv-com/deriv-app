@@ -63,6 +63,8 @@ const DigitsWrapper = ({
             is_trade_page={is_trade_page}
             status={status}
             tick={tick}
+            onSelect={props.onDigitChange}
+            selected_digit={props.selected_digit}
             onLastDigitSpot={props.onLastDigitSpot}
         />
     );

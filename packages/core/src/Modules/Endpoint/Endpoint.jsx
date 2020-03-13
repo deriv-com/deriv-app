@@ -55,6 +55,17 @@ const Endpoint = () => (
     >
         {({ errors, isSubmitting, touched, values }) => (
             <Form style={{ width: '30vw', minWidth: '300px', margin: '20vh auto' }}>
+                <h1
+                    style={{
+                        fontWeight: 'bold',
+                        color: 'var(--text-prominent)',
+                        marginBottom: '1.6rem',
+                        fontSize: 'var(--text-size-s)',
+                        lineHeight: 'normal',
+                    }}
+                >
+                    Change API endpoint
+                </h1>
                 <InputField name='server' label='Server' hint='e.g. frontend.binaryws.com' />
                 <InputField
                     name='app_id'

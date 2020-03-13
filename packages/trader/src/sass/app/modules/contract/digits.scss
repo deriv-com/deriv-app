@@ -88,6 +88,12 @@
         &--is-selectable {
             pointer-events: auto;
 
+            .digits__digit-display {
+                &-value,
+                &-percentage {
+                    color: $color-white;
+                }
+            }
             &:focus,
             &:active,
             &:hover {

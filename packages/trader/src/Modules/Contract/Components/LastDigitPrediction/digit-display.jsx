@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper } from '@deriv/components';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { Bounce } from 'App/Components/Animations';
 import Digit from './digit.jsx';
 import DigitSpot from './digit-spot.jsx';
@@ -16,7 +17,9 @@ const DigitDisplay = ({
     is_max,
     is_min,
     is_won,
+    onSelect,
     latest_digit,
+    selected_digit,
     status,
     stats,
     value,
@@ -32,13 +35,21 @@ const DigitDisplay = ({
         onLastDigitSpot({ spot, is_lost, is_selected_winning, is_latest, is_won });
     }
 
+    const is_digit_selectable = isMobile() && typeof onSelect === 'function' && !status;
+    const is_digit_selected = isMobile() && value === selected_digit && !status;
     return (
         <div
             className={classNames('digits__digit', {
                 'digits__digit--latest': is_latest,
                 'digits__digit--win': is_won && is_latest,
                 'digits__digit--loss': is_lost && is_latest,
+                'digits__digit--is-selectable': is_digit_selectable,
+                'digits__digit--is-selected': is_digit_selected,
             })}
+            onClick={() => {
+                if (!is_digit_selectable) return;
+                onSelect(value);
+            }}
         >
             <LastDigitStat is_min={is_min} is_max={is_max} is_selected={is_selected} percentage={percentage} />
             <DesktopWrapper>

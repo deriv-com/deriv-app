@@ -88,15 +88,15 @@
         &--is-selectable {
             pointer-events: auto;
 
-            .digits__digit-display {
-                &-value,
-                &-percentage {
-                    color: $color-white;
-                }
-            }
             &:focus,
             &:active,
             &:hover {
+                .digits__digit-display {
+                    &-value,
+                    &-percentage {
+                        color: $color-white;
+                    }
+                }
                 .progress__bg {
                     fill: $color-blue-2;
                 }

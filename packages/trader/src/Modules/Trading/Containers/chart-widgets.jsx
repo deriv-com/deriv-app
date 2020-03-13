@@ -17,6 +17,7 @@ export const DigitsWidget = connect(({ modules }) => ({
     selected_digit: modules.trade.last_digit,
     onDigitChange: modules.trade.onChange,
     underlying: modules.trade.symbol,
+    trade_type: modules.trade.contract_type,
 }))(
     ({
         contract_info,
@@ -28,6 +29,7 @@ export const DigitsWidget = connect(({ modules }) => ({
         onDigitChange,
         selected_digit,
         tick,
+        trade_type,
         underlying,
     }) => (
         <Digits
@@ -40,6 +42,7 @@ export const DigitsWidget = connect(({ modules }) => ({
             onDigitChange={onDigitChange}
             is_trade_page
             tick={tick}
+            trade_type={trade_type}
             selected_digit={selected_digit}
             underlying={underlying}
         />

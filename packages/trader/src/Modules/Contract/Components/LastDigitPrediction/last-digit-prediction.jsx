@@ -36,6 +36,7 @@ class LastDigitPrediction extends React.Component {
     };
 
     handleSelect = digit_value => {
+        if (!this.is_selectable_digit_type) return;
         if (digit_value !== this.props.selected_digit && typeof this.props.onDigitChange === 'function') {
             this.props.onDigitChange({ target: { name: 'last_digit', value: digit_value } });
         }
@@ -58,6 +59,10 @@ class LastDigitPrediction extends React.Component {
 
     get offset() {
         return isMobile() ? this.digit_offset_mobile : this.digit_offset;
+    }
+
+    get is_selectable_digit_type() {
+        return isMobile() ? this.props.trade_type !== 'even_odd' : false;
     }
 
     render() {
@@ -119,8 +124,8 @@ class LastDigitPrediction extends React.Component {
                         latest_digit={is_trade_page ? latest_digit : last_contract_digit}
                         value={idx}
                         onLastDigitSpot={this.props.onLastDigitSpot}
-                        onSelect={this.handleSelect}
-                        selected_digit={selected_digit}
+                        onSelect={this.is_selectable_digit_type ? this.handleSelect : null}
+                        selected_digit={this.is_selectable_digit_type ? selected_digit : false}
                     />
                 ))}
                 <LastDigitPointer is_lost={is_lost} is_trade_page={is_trade_page} is_won={is_won} position={position} />
@@ -135,6 +140,9 @@ LastDigitPrediction.propTypes = {
     digits_info: PropTypes.object,
     is_ended: PropTypes.bool,
     status: PropTypes.string,
+    trade_type: PropTypes.string,
+    onDigitChange: PropTypes.func,
+    selected_digit: PropTypes.number,
 };
 
 export default observer(LastDigitPrediction);

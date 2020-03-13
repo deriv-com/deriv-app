@@ -1,11 +1,19 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Swipeable } from 'react-swipeable';
 import Icon from 'Components/icon';
 
-const SwipeableWrapper = ({ children, className, ...props }) => {
+const SwipeableWrapper = ({ children, className, onChange, ...props }) => {
     const [active_index, setActiveIndex] = useState(0);
+
+    useEffect(() => {
+        if (onChange) onChange(active_index);
+        return () => {
+            // Makes an empty callback when unmounted so that we can reset
+            if (onChange) onChange();
+        };
+    }, [active_index]);
 
     const swipedLeft = () => {
         const is_reached_end = active_index + 1 === React.Children.toArray(children).length;

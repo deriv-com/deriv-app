@@ -29,7 +29,15 @@ const RecentTradeInfo = connect(({ modules }) => ({
     markers_array: modules.contract_trade.markers_array,
 }))(TradeInfo);
 
-const TopWidgets = ({ InfoBox, is_mobile, is_title_enabled = true, onSymbolChange, y_axis_width, theme }) => {
+const TopWidgets = ({
+    InfoBox,
+    is_mobile,
+    is_title_enabled = true,
+    onSymbolChange,
+    y_axis_width,
+    theme,
+    is_digits_widget_active,
+}) => {
     const ChartTitleLocal = (
         <ChartTitle
             enabled={is_title_enabled}
@@ -49,7 +57,7 @@ const TopWidgets = ({ InfoBox, is_mobile, is_title_enabled = true, onSymbolChang
                 }}
             >
                 {ChartTitleLocal}
-                <RecentTradeInfo />
+                {!is_digits_widget_active && <RecentTradeInfo />}
             </div>
         </div>,
         document.getElementById('app_contents')

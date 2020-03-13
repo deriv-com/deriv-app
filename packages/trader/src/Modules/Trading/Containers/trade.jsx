@@ -39,6 +39,12 @@ class Trade extends React.Component {
         return null; // render nothing for bottom widgets on chart in mobile
     };
 
+    onChangeSwipeableIndex = index => {
+        this.setState({
+            is_digits_widget_active: index === 0,
+        });
+    };
+
     render() {
         const { NotificationMessages } = this.props;
         const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
@@ -68,9 +74,12 @@ class Trade extends React.Component {
                         <MobileWrapper>
                             <ChartLoader is_visible={this.props.is_chart_loading || !is_trade_enabled} />
                             {this.props.show_digits_stats && is_trade_enabled ? (
-                                <SwipeableWrapper>
+                                <SwipeableWrapper onChange={this.onChangeSwipeableIndex}>
                                     <DigitsWidget digits={this.state.digits} tick={this.state.tick} />
-                                    <ChartTrade bottomWidgets={this.bottomWidgets} />
+                                    <ChartTrade
+                                        bottomWidgets={this.bottomWidgets}
+                                        is_digits_widget_active={this.state.is_digits_widget_active}
+                                    />
                                 </SwipeableWrapper>
                             ) : (
                                 <ChartTrade />
@@ -133,7 +142,14 @@ const ChartMarkers = connect(({ modules, ui, client }) => ({
 class ChartTradeClass extends React.Component {
     bottomWidgets = ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />;
     topWidgets = ({ ...props }) => {
-        return <ChartTopWidgets charts_ref={this.charts_ref} {...props} />;
+        const { is_digits_widget_active } = this.props;
+        return (
+            <ChartTopWidgets
+                charts_ref={this.charts_ref}
+                is_digits_widget_active={is_digits_widget_active}
+                {...props}
+            />
+        );
     };
 
     componentDidMount() {

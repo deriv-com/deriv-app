@@ -28,7 +28,8 @@ const Basis = ({
         setSelectedAmount(basis, num);
         validateAmount(num);
     };
-    const formatAmount = value => (!isNaN(value) ? Number(value).toFixed(user_currency_decimal_places) : value);
+    const formatAmount = value =>
+        !isNaN(value) && value !== '' ? Number(value).toFixed(user_currency_decimal_places) : value;
     const setBasisAndAmount = amount => {
         const on_change_obj = {};
 

@@ -35,7 +35,9 @@ pages:
       - merge_requests
   script:
   - "npm run deploy:folder br_$CI_COMMIT_REF_SLUG"
-  - "mkdir -p ./public && find ./public/* -maxdepth 0 -name 'br_*' -prune -o -exec rm -rf '{}' ';' && rm -rf ./public/br_$CI_COMMIT_REF_SLUG && mkdir -p ./public/br_$CI_COMMIT_REF_SLUG" # Reset deployment folder
+  - "mkdir -p ./public"
+  - "test -e /pages/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/public/ && cp -r /pages/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME/public/. ./public/"
+  - "find ./public/* -maxdepth 0 -name 'br_*' -prune -o -exec rm -rf '{}' ';' && rm -rf ./public/br_$CI_COMMIT_REF_SLUG && mkdir -p ./public/br_$CI_COMMIT_REF_SLUG" # Reset deployment folder
   - "cp -r ./packages/core/dist/. ./public/br_$CI_COMMIT_REF_SLUG"
   - "cp -r ./packages/core/dist/. ./public/"
   dependencies:

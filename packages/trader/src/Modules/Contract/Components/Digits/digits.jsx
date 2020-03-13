@@ -18,6 +18,9 @@ const DigitsWrapper = ({
     is_digit_contract,
     is_ended,
     is_trade_page,
+    onDigitChange,
+    selected_digit,
+    trade_type,
     ...props
 }) => {
     const has_contract = contract_info.date_start;
@@ -63,6 +66,9 @@ const DigitsWrapper = ({
             is_trade_page={is_trade_page}
             status={status}
             tick={tick}
+            trade_type={trade_type}
+            onDigitChange={onDigitChange}
+            selected_digit={selected_digit}
             onLastDigitSpot={props.onLastDigitSpot}
         />
     );
@@ -162,6 +168,9 @@ Digits.propTypes = {
     is_digit_contract: PropTypes.bool,
     is_ended: PropTypes.bool,
     is_trade_page: PropTypes.bool,
+    trade_type: PropTypes.string,
+    onDigitChange: PropTypes.func,
+    selected_digit: PropTypes.number,
 };
 
 export default Digits;

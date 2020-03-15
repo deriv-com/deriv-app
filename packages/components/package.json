@@ -67,6 +67,7 @@
     "css-hot-loader": "^1.4.4",
     "css-loader": "^3.1.0",
     "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^6.0.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-binary": "^1.0.2",

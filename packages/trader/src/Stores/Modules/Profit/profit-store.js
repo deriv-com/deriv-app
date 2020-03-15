@@ -171,9 +171,9 @@ export default class ProfitTableStore extends BaseStore {
 
     @action.bound
     handleDateChange(date_values) {
-        Object.keys(date_values).forEach(key => {
-            this[`date_${key}`] = date_values[key];
-        });
+        this.date_from = date_values?.from ?? null;
+        this.date_to = date_values?.to ?? this.date_to;
+
         this.clearTable();
         this.fetchNextBatch();
     }

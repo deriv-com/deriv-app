@@ -28,7 +28,7 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
     return tooltip ? (
         <React.Fragment>
             <p className='mt5-attribute-describer'>{name}</p>
-            <Popover alignment='right' icon='counter' counter={counter} message={tooltip} />
+            <Popover alignment='right' icon='counter' counter={counter} message={tooltip} zIndex={9999} />
         </React.Fragment>
     ) : (
         <p className='mt5-attribute-describer'>{name}</p>

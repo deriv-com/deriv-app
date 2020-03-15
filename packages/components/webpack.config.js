@@ -37,6 +37,7 @@ module.exports = {
         tabs: 'Components/tabs',
         'themed-scrollbars': 'Components/themed-scrollbars',
         'toggle-switch': 'Components/toggle-switch',
+        'u-i-loader': 'Components/u-i-loader',
         'vertical-tab': 'Components/vertical-tab',
     },
     output: {

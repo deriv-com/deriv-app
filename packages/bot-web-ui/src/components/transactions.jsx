@@ -1,7 +1,9 @@
-import { ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { ThemedScrollbars } from '@deriv/components';
 import { PropTypes } from 'prop-types';
 import React from 'react';
+import { List, AutoSizer } from 'react-virtualized';
+import 'react-virtualized/styles.css';
 import Transaction from './transaction.jsx';
 import { transaction_elements } from '../constants/transactions';
 import { connect } from '../stores/connect';
@@ -15,9 +17,33 @@ class Transactions extends React.PureComponent {
     componentWillUnmount() {
         this.props.onUnmount();
     }
+    renderRow({ index, style }) {
+        switch (this.props.elements[index].type) {
+            case transaction_elements.CONTRACT: {
+                const contract = this.props.elements[index].data;
+                return (
+                    <div style={style} key={`${contract.reference_id}${index}`}>
+                        <Transaction contract={contract} style={style} />
+                    </div>
+                );
+            }
+            case transaction_elements.DIVIDER: {
+                const run_id = this.props.elements[index].data;
+                return (
+                    <div key={run_id} className='transactions__divider' style={style}>
+                        <div className='transactions__divider-line' />
+                    </div>
+                );
+            }
+            default: {
+                return null;
+            }
+        }
+    }
 
     render() {
         const { elements } = this.props;
+
         return (
             <div className='transactions'>
                 <div className='transactions__header'>
@@ -28,28 +54,33 @@ class Transactions extends React.PureComponent {
                         {localize('Buy price and P/L')}
                     </span>
                 </div>
-                <div className='transactions__content'>
-                    <ThemedScrollbars autoHide style={{ height: 'var(--drawer-scroll-height)' }}>
-                        {elements.map((element, index) => {
-                            switch (element.type) {
-                                case transaction_elements.CONTRACT: {
-                                    const contract = element.data;
-                                    return <Transaction key={`${contract.reference_id}${index}`} contract={contract} />;
-                                }
-                                case transaction_elements.DIVIDER: {
-                                    const run_id = element.data;
-                                    return (
-                                        <div key={run_id} className='transactions__divider'>
-                                            <div className='transactions__divider-line' />
-                                        </div>
-                                    );
-                                }
-                                default: {
-                                    return null;
-                                }
-                            }
-                        })}
-                    </ThemedScrollbars>
+                <div className='' style={{ height: 'calc(var(--drawer-scroll-height) - 7px)' }}>
+                    <AutoSizer>
+                        {({ width, height }) => (
+                            <React.Fragment>
+                                <ThemedScrollbars
+                                    style={{
+                                        height,
+                                        width,
+                                    }}
+                                    autoHide
+                                >
+                                    <List
+                                        ref={ref => (this.list_ref = ref)}
+                                        height={height}
+                                        rowCount={elements.length}
+                                        rowHeight={50}
+                                        rowRenderer={this.renderRow.bind(this)}
+                                        width={width}
+                                        handleScroll={({ target }) => {
+                                            const { scrollTop, scrollLeft } = target;
+                                            this.list_ref.Grid.handleScrollEvent({ scrollTop, scrollLeft });
+                                        }}
+                                    />
+                                </ThemedScrollbars>
+                            </React.Fragment>
+                        )}
+                    </AutoSizer>
                 </div>
             </div>
         );

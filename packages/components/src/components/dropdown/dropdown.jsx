@@ -127,9 +127,10 @@ class Dropdown extends React.Component {
     setWrapperRef = node => (this.wrapper_ref = node);
 
     handleClickOutside = event => {
+        const path = event.path || (event.composedPath && event.composedPath());
         if (
             this.wrapper_ref &&
-            (!this.wrapper_ref.contains(event.target) && !this.wrapper_ref.contains(event.path[0])) && // event.path[0] is the node that the event originated from, it does not need to walk the array
+            (!this.wrapper_ref.contains(event.target) && !this.wrapper_ref.contains(path[0])) && // path[0] is the node that the event originated from, it does not need to walk the array
             this.state.is_list_visible
         ) {
             if (typeof this.props.handleBlur === 'function') {

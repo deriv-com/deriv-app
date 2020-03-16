@@ -31,11 +31,10 @@ const RouteWithSubRoutes = route => {
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !ObjectUtils.isEmptyObject(default_subroute);
+            const pathname = location.pathname.replace(/^\/br_.*?\//, '/');
             result = (
                 <React.Fragment>
-                    {has_default_subroute && location.pathname === route.path && (
-                        <Redirect to={default_subroute.path} />
-                    )}
+                    {has_default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}
                     <route.component {...props} routes={route.routes} />
                 </React.Fragment>
             );

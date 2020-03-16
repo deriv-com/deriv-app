@@ -245,7 +245,7 @@ export default class TradeStore extends BaseStore {
         await WS.wait('authorize');
         await this.setActiveSymbols();
         runInAction(async () => {
-            await WS.contractsFor(this.symbol).then(async r => {
+            await WS.storage.contractsFor(this.symbol).then(async r => {
                 if (r.error && r.error.code === 'InvalidSymbol') {
                     await this.resetRefresh();
                     await this.setActiveSymbols();

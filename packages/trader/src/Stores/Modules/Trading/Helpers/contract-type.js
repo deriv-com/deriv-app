@@ -16,7 +16,7 @@ const ContractType = (() => {
     let has_only_forward_starting_contracts = false;
 
     const buildContractTypesConfig = symbol =>
-        WS.contractsFor(symbol).then(r => {
+        WS.storage.contractsFor(symbol).then(r => {
             const has_contracts = ObjectUtils.getPropertyValue(r, ['contracts_for']);
             has_only_forward_starting_contracts =
                 has_contracts && !r.contracts_for.available.find(contract => contract.start_type !== 'forward');

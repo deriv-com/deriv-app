@@ -127,7 +127,7 @@ class Dropdown extends React.Component {
     setWrapperRef = node => (this.wrapper_ref = node);
 
     handleClickOutside = event => {
-        const path = event.path || (event.composedPath && event.composedPath());
+        const path = event.path ?? event.composedPath?.();
         if (
             this.wrapper_ref &&
             (!this.wrapper_ref.contains(event.target) && !this.wrapper_ref.contains(path[0])) && // When component is isolated (e.g, iframe, shadow DOM) event.target refers to whole container not the component. path[0] is the node that the event originated from, it does not need to walk the array

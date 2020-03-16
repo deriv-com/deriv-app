@@ -83,7 +83,7 @@ Blockly.Toolbox.prototype.populate_ = function(newTree) {
     if (toggleStrategyModal) {
         const quick_strat_btn = document.createElement('BUTTON');
         quick_strat_btn.innerHTML = localize('Quick strategy');
-        quick_strat_btn.className = 'toolbox__button btn effect btn--primary btn__medium';
+        quick_strat_btn.className = 'toolbox__button dc-btn effect dc-btn--primary dc-btn__medium';
         quick_strat_btn.id = 'gtm-quick-strategy';
         quick_strat_btn.onclick = toggleStrategyModal;
 

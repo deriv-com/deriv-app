@@ -97,7 +97,7 @@ commands:
           name: Pushing Image to docker hub
           command: |
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-            docker push ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_SHA1}
+            docker push ${DOCKHUB_ORGANISATION}/deriv-app
   k8s_deploy:
     description: "Deploy to k8s cluster"
     parameters:

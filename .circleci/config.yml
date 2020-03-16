@@ -65,7 +65,7 @@ commands:
             mv artifact.tar ${OLDPWD}/
       - run:
           name: "Tag commit id as artifact identifer"
-          command: echo "${CIRCLE_SHA1}" > artifact-info.txt
+          command: echo "${CIRCLE_TAG}" > artifact-info.txt
   upload_artifact:
     description: "upload build artifact to s3 bucket"
     steps:
@@ -75,7 +75,7 @@ commands:
           aws-access-key-id: env_CONTEXT_ARTIFACT_S3_AWS_ACCESS_KEY_ID
           aws-secret-access-key: env_CONTEXT_ARTIFACT_S3_AWS_SECRET_ACCESS_KEY
           aws-region: env_CONTEXT_ARTIFACT_S3_AWS_REGION
-          arguments: '--metadata "{\"x-amz-artifact-id\": \"${CIRCLE_SHA1}\" }"'
+          arguments: '--metadata "{\"x-amz-artifact-id\": \"${CIRCLE_TAG}\" }"'
   upload_checksum:
     description: "upload artifact checksum to s3"
     steps:
@@ -92,7 +92,7 @@ commands:
       - run:
           name: Building docker image
           command: |
-            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_SHA1} -t ${DOCKHUB_ORGANISATION}/deriv-app:latest .
+            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG} -t ${DOCKHUB_ORGANISATION}/deriv-app:latest .
       - run:
           name: Pushing Image to docker hub
           command: |
@@ -110,7 +110,7 @@ commands:
           name: Deploying to k8s cluster for service deriv-app
           command: |
             echo $CA_CRT | base64 --decode > ca.crt
-            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/<< parameters.k8s_svc_name >> << parameters.k8s_svc_name >>=${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_SHA1}
+            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/<< parameters.k8s_svc_name >> << parameters.k8s_svc_name >>=${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG}
 
 jobs:
   test:
@@ -120,7 +120,6 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
-      - docker
   release_staging:
     docker:
       - image: circleci/node:11.15.0-stretch
@@ -156,10 +155,9 @@ workflows:
   build_and_push_dev:
     jobs:
       - test:
-          #filters:
-          #  branches:
-          #    only: /^dev/
-          context: binary-frontend-deploy
+          filters:
+            branches:
+              only: /^dev/
   release_staging:
     jobs:
       - release_staging:

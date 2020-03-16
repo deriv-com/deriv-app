@@ -92,7 +92,7 @@ commands:
       - run:
           name: Building docker image
           command: |
-            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG} .
+            docker build -t ${DOCKHUB_ORGANISATION}/deriv-app:${CIRCLE_TAG} -t ${DOCKHUB_ORGANISATION}/deriv-app:latest .
       - run:
           name: Pushing Image to docker hub
           command: |
@@ -120,6 +120,7 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
+      - docker
   release_staging:
     docker:
       - image: circleci/node:11.15.0-stretch
@@ -155,9 +156,10 @@ workflows:
   build_and_push_dev:
     jobs:
       - test:
-          filters:
-            branches:
-              only: /^dev/
+          #filters:
+          #  branches:
+          #    only: /^dev/
+          context: binary-frontend-deploy
   release_staging:
     jobs:
       - release_staging:

@@ -53,7 +53,7 @@ export const DigitsWidget = connect(({ modules }) => ({
 export const ChartTopWidgets = connect(({ modules, ui }) => ({
     onSymbolChange: modules.trade.onChange,
     theme: ui.is_dark_mode_on ? 'dark' : 'light',
-}))(({ onSymbolChange, charts_ref, theme }) => {
+}))(({ onSymbolChange, charts_ref, theme, is_digits_widget_active }) => {
     let yAxiswidth;
     if (charts_ref && charts_ref.chart) {
         yAxiswidth = charts_ref.chart.yAxiswidth;
@@ -61,6 +61,7 @@ export const ChartTopWidgets = connect(({ modules, ui }) => ({
     return (
         <TopWidgets
             is_mobile={isMobile()}
+            is_digits_widget_active={is_digits_widget_active}
             onSymbolChange={symbolChange(onSymbolChange)}
             theme={theme}
             y_axis_width={yAxiswidth}

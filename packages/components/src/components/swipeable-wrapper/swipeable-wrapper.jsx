@@ -8,10 +8,10 @@ const SwipeableWrapper = ({ children, className, onChange, ...props }) => {
     const [active_index, setActiveIndex] = useState(0);
 
     useEffect(() => {
-        if (onChange) onChange(active_index);
+        if (typeof onChange === 'function') onChange(active_index);
         return () => {
             // Makes an empty callback when unmounted so that we can reset
-            if (onChange) onChange();
+            if (typeof onChange === 'function') onChange();
         };
     }, [active_index]);
 

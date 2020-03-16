@@ -171,7 +171,7 @@ export default class ProfitTableStore extends BaseStore {
 
     @action.bound
     handleDateChange(date_values) {
-        this.date_from = date_values?.from ?? null;
+        this.date_from = date_values?.from ?? (date_values.is_batch ? null : this.date_from);
         this.date_to = date_values?.to ?? this.date_to;
 
         this.clearTable();

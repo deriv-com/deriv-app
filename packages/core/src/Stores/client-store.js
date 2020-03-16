@@ -23,6 +23,7 @@ export default class ClientStore extends BaseStore {
     @observable accounts = {};
     @observable pre_switch_broadcast = false;
     @observable switched = '';
+    @observable is_switching = false;
     @observable switch_broadcast = false;
     @observable initialized_broadcast = false;
     @observable currencies_list = {};
@@ -57,6 +58,7 @@ export default class ClientStore extends BaseStore {
         payment_withdraw: '',
         payment_agent_withdraw: '',
     };
+    @observable account_limits = {};
 
     @observable local_currency_config = {
         currency: '',
@@ -379,6 +381,19 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    getLimits() {
+        WS.authorized.storage.getLimits().then(data => {
+            runInAction(() => {
+                if (data.error) {
+                    this.account_limits = { api_initial_load_error: data.error.message };
+                } else {
+                    this.account_limits = { ...data.get_limits, is_loading: false };
+                }
+            });
+        });
+    }
+
+    @action.bound
     responsePayoutCurrencies(response) {
         const list = response.payout_currencies || response;
         this.currencies_list = buildCurrenciesList(list);
@@ -561,6 +576,7 @@ export default class ClientStore extends BaseStore {
         this.root_store.ui.removeAllNotificationMessages();
         this.setSwitched(loginid);
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
+        this.getLimits();
     }
 
     @action.bound
@@ -805,6 +821,7 @@ export default class ClientStore extends BaseStore {
             return;
         }
 
+        runInAction(() => (this.is_switching = true));
         sessionStorage.setItem('active_tab', '1');
         // set local storage
         this.root_store.gtm.setLoginFlag();
@@ -814,6 +831,7 @@ export default class ClientStore extends BaseStore {
         await BinarySocket.authorize(this.getToken());
         await this.init();
         this.broadcastAccountChange();
+        runInAction(() => (this.is_switching = false));
     }
 
     @action.bound

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { getUrlBase } from '_common/url';
 import { TogglePositions } from 'App/Components/Layout/Footer/toggle-positions.jsx';
 import AppRoutes from 'Constants/routes';
 import { connect } from 'Stores/connect';

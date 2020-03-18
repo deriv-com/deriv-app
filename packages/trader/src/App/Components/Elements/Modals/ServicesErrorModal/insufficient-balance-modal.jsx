@@ -15,6 +15,7 @@ const InsufficientBalanceModal = ({ history, is_virtual, is_visible, message, to
     >
         <Modal.Body>{message}</Modal.Body>
         <Modal.Footer>
+            {/* TODO: Add topping up mechanism for demo accounts after confirmation */}
             <Button
                 has_effect
                 text={is_virtual ? localize('OK') : localize('Deposit now')}

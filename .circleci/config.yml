@@ -171,7 +171,7 @@ workflows:
           #    ignore: /.*/
           #  tags:
           #    only: /^staging.*/
-          context: binary-frontend-artifact-upload  # using context to retrieve shared secret from circle ci
+          context: binary-frontend-deploy
       - deploy_staging:
           filters:
             branches:

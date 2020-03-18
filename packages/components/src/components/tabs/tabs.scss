@@ -24,8 +24,8 @@
         &--bottom {
             order: 1;
         }
-        @include mobile {
-            &--fit-content {
+        &--fit-content {
+            @include mobile {
                 width: fit-content;
             }
         }
@@ -78,8 +78,8 @@
         &--is-hidden {
             display: none;
         }
-        @include mobile {
-            &--fit-content {
+        &--fit-content {
+            @include mobile {
                 width: 120px;
             }
         }

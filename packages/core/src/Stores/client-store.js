@@ -645,7 +645,9 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            WS.authorized.storage.mt5LoginList().then(this.responseMt5LoginList);
+            // mt5 will get called on response of authorize so we should just wait for the response here
+            // we can't use .storage here because it mt5 response takes longer to return we will send the request twice
+            BinarySocket.wait('mt5_login_list').then(this.responseMt5LoginList);
             WS.authorized.storage.landingCompany(this.residence).then(this.responseLandingCompany);
             this.responseStatement(
                 await BinarySocket.send({

@@ -14,9 +14,10 @@
 
         .platform-dropdown__list {
             position: absolute;
-            top: 0;
+            top: -1.6rem;
             left: 0;
-            width: calc(295px - 1.6rem);
+            width: 295px;
+            padding-right: 1.6rem;
             background-color: var(--general-main-2);
             overflow-x: hidden;
             overflow-y: auto;
@@ -43,6 +44,10 @@
         top: 0;
         transform: translateY(0px);
         transition: transform 0.25s ease;
+        @include desktop() {
+            display: flex;
+            flex-wrap: wrap;
+        }
 
         &-platform {
             position: relative;
@@ -52,7 +57,7 @@
             text-decoration: none;
             margin: 2.4rem 1.6rem;
             padding: 2.4rem 1.6rem;
-            width: 302px;
+            width: 320px;
             border-radius: 0.8rem;
 
             &-icon {
@@ -88,6 +93,9 @@
             }
             &:not(.active):hover &__background {
                 opacity: 1;
+            }
+            @include mobile {
+                width: 302px;
             }
         }
     }

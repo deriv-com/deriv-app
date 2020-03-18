@@ -52,6 +52,13 @@ const App = ({ root_store }) => {
         };
 
         if (isMobile()) {
+            /**
+             * Adding `focus` and `focusout` event listeners to document here to detect for on-screen keyboard on mobile browsers
+             * and storing this value in UI-store to be used across the app stores.
+             *  - when document gets `focus` event - keyboard is visible
+             *  - when document gets `focusout` event - keyboard is hidden
+             * [TODO]: find an alternative solution to detect for on-screen keyboard
+             */
             document.addEventListener('focus', onFocus, true);
             document.addEventListener('focusout', onFocusOut, false);
         }

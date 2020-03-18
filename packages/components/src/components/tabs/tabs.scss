@@ -13,8 +13,10 @@
         width: 100%;
         line-height: 35px;
         display: flex;
-        justify-content: center;
         position: relative;
+        @include mobile {
+            justify-content: center;
+        }
 
         &--top {
             order: 0;
@@ -22,8 +24,10 @@
         &--bottom {
             order: 1;
         }
-        &--fit-content {
-            width: fit-content;
+        @include mobile {
+            &--fit-content {
+                width: fit-content;
+            }
         }
     }
     &__item {
@@ -66,16 +70,18 @@
         transition: all ease-in-out 0.3s;
 
         &--top {
-            bottom: 0px;
+            bottom: 0;
         }
         &--bottom {
-            bottom: 0px;
-        }
-        &--fit-content {
-            width: 120px;
+            bottom: 0;
         }
         &--is-hidden {
             display: none;
+        }
+        @include mobile {
+            &--fit-content {
+                width: 120px;
+            }
         }
     }
 }

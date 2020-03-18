@@ -382,13 +382,17 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     getLimits() {
-        WS.authorized.storage.getLimits().then(data => {
-            runInAction(() => {
-                if (data.error) {
-                    this.account_limits = { api_initial_load_error: data.error.message };
-                } else {
-                    this.account_limits = { ...data.get_limits, is_loading: false };
-                }
+        return new Promise(resolve => {
+            WS.authorized.storage.getLimits().then(data => {
+                runInAction(() => {
+                    if (data.error) {
+                        this.account_limits = { api_initial_load_error: data.error.message };
+                        resolve(data);
+                    } else {
+                        this.account_limits = { ...data.get_limits, is_loading: false };
+                        resolve(data);
+                    }
+                });
             });
         });
     }
@@ -576,7 +580,6 @@ export default class ClientStore extends BaseStore {
         this.root_store.ui.removeAllNotificationMessages();
         this.setSwitched(loginid);
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
-        this.getLimits();
     }
 
     @action.bound
@@ -831,6 +834,7 @@ export default class ClientStore extends BaseStore {
         await BinarySocket.authorize(this.getToken());
         await this.init();
         this.broadcastAccountChange();
+        this.getLimits();
         runInAction(() => (this.is_switching = false));
     }
 

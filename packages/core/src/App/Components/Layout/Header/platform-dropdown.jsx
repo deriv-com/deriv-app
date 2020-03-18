@@ -30,7 +30,7 @@ class PlatformDropdown extends React.PureComponent {
 
         const platform_dropdown = (
             <div className='platform-dropdown'>
-                <Div100vhContainer className='platform-dropdown__list' height_offset='238px' is_disabled={isDesktop()}>
+                <Div100vhContainer className='platform-dropdown__list' height_offset='168px' is_disabled={isDesktop()}>
                     {platform_config.map((platform, idx) => (
                         <BinaryLink
                             to={platform.link_to}

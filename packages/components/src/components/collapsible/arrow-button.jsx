@@ -5,8 +5,14 @@ import { positionPropType } from './utils';
 import Icon from '../icon';
 
 const IconArrow = props => <Icon width={30} height={9} icon='IcChevronUp' {...props} />;
+const IconArrowWithTitle = ({ title, ...props }) => (
+    <>
+        <span className='dc-collapsible__title'>{title}</span>
+        <Icon icon='IcChevronDown' {...props} />
+    </>
+);
 
-const ArrowButton = ({ is_collapsed, position, onClick }) => {
+const ArrowButton = ({ is_collapsed, position, onClick, title }) => {
     const [is_open, expand] = useState(!is_collapsed);
 
     const toggleExpand = () => {
@@ -23,7 +29,15 @@ const ArrowButton = ({ is_collapsed, position, onClick }) => {
     let icon_arrow;
     switch (position) {
         case 'top':
-            icon_arrow = (
+            icon_arrow = title ? (
+                <IconArrowWithTitle
+                    title={title}
+                    className={classNames('dc-collapsible__icon', {
+                        'dc-collapsible__icon--top': true,
+                        'dc-collapsible__icon--is-open': is_open,
+                    })}
+                />
+            ) : (
                 <IconArrow
                     className={classNames('dc-collapsible__icon', {
                         'dc-collapsible__icon--top': true,
@@ -33,7 +47,15 @@ const ArrowButton = ({ is_collapsed, position, onClick }) => {
             );
             break;
         default:
-            icon_arrow = (
+            icon_arrow = title ? (
+                <IconArrowWithTitle
+                    title={title}
+                    className={classNames('dc-collapsible__icon', {
+                        'dc-collapsible__icon--bottom': true,
+                        'dc-collapsible__icon--is-open': is_open,
+                    })}
+                />
+            ) : (
                 <IconArrow
                     className={classNames('dc-collapsible__icon', {
                         'dc-collapsible__icon--bottom': true,
@@ -53,6 +75,7 @@ const ArrowButton = ({ is_collapsed, position, onClick }) => {
 ArrowButton.propTypes = {
     is_open: PropTypes.bool,
     onClick: PropTypes.func,
+    title: PropTypes.string,
     ...positionPropType,
 };
 

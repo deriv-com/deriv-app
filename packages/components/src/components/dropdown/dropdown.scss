@@ -4,7 +4,7 @@
         font-size: var(--text-size-xs);
         transform: translate(0.5rem, -1rem) scale(0.75);
         z-index: 2;
-        color: var(--text-less-prominent);
+        color: var(--text-prominent);
         padding: 0 4px;
         background-color: var(--fill-normal);
         pointer-events: none;
@@ -227,6 +227,13 @@
         margin-top: 8px;
         min-width: 180px;
         width: 100%;
+
+        // hide native select element behind .dc-dropdown__label
+        .dc-native-select {
+            position: absolute;
+            top: 0;
+            opacity: 0;
+        }
     }
     &--has-placeholder {
         .dc-dropdown__display {

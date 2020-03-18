@@ -12,6 +12,7 @@ const AppContents = ({
     children,
     identifyEvent,
     is_app_disabled,
+    is_cashier_visible,
     is_mt5_page,
     is_positions_drawer_on,
     is_route_modal_on,
@@ -45,7 +46,7 @@ const AppContents = ({
                 'app-contents--is-disabled': is_app_disabled,
                 'app-contents--is-mobile': isMobile(),
                 'app-contents--is-route-modal': is_route_modal_on,
-                'app-contents--is-mt5-page': is_mt5_page,
+                'app-contents--is-scrollable': is_mt5_page || is_cashier_visible,
             })}
         >
             <MobileWrapper>{children}</MobileWrapper>
@@ -63,6 +64,7 @@ AppContents.propTypes = {
     addNotificationBar: PropTypes.func,
     children: PropTypes.any,
     is_app_disabled: PropTypes.bool,
+    is_cashier_visible: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_page: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
@@ -82,6 +84,7 @@ export default withRouter(
         pageView: segment.pageView,
         pwa_prompt_event: ui.pwa_prompt_event,
         is_mt5_page: ui.is_mt5_page,
+        is_cashier_visible: ui.is_cashier_visible,
         // setPWAPromptEvent     : ui.setPWAPromptEvent,
     }))(AppContents)
 );

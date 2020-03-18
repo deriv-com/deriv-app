@@ -1,20 +1,8 @@
-import { Money, Button, Modal, MobileWrapper } from '@deriv/components';
-import React, { useState } from 'react';
-import { isDesktop } from '@deriv/shared/utils/screen';
-import { localize, Localize } from '@deriv/translations';
+import { Money, Button } from '@deriv/components';
+import React from 'react';
+import { Localize } from '@deriv/translations';
 import { Mt5AccountCopy } from './mt5-account-copy.jsx';
 import { getMT5WebTerminalLink } from '../Helpers/constants';
-
-export const FundTransferUnavailableModal = ({ is_visible, toggleModal }) => (
-    <Modal is_open={is_visible} small toggleModal={toggleModal}>
-        <Modal.Body>
-            {localize('Fund transfers are currently unavailable for mobile. Please log in with your computer.')}
-        </Modal.Body>
-        <Modal.Footer>
-            <Button has_effect text={localize('OK')} onClick={toggleModal} primary />
-        </Modal.Footer>
-    </Modal>
-);
 
 const MT5AccountCard = ({
     commission_message,
@@ -30,10 +18,6 @@ const MT5AccountCard = ({
     onPasswordManager,
 }) => {
     const IconComponent = icon || (() => null);
-
-    const [is_visible, setIsVisible] = useState(false);
-
-    const toggleModal = () => setIsVisible(!is_visible);
 
     return (
         <div className='mt5-account-card'>
@@ -85,11 +69,7 @@ const MT5AccountCard = ({
                 )}
                 {existing_data && (
                     <div className='mt5-account-card__manage'>
-                        <Button
-                            onClick={isDesktop() || type.category === 'demo' ? onClickFund : toggleModal}
-                            type='button'
-                            secondary
-                        >
+                        <Button onClick={onClickFund} type='button' secondary>
                             {type.category === 'real' && <Localize i18n_default_text='Fund transfer' />}
                             {type.category === 'demo' && <Localize i18n_default_text='Top up' />}
                         </Button>
@@ -142,9 +122,6 @@ const MT5AccountCard = ({
                     </Button>
                 )}
             </div>
-            <MobileWrapper>
-                <FundTransferUnavailableModal is_visible={is_visible} toggleModal={toggleModal} />
-            </MobileWrapper>
         </div>
     );
 };

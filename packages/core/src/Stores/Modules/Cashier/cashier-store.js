@@ -1,4 +1,4 @@
-import { action, computed, observable, toJS } from 'mobx';
+import { action, computed, observable, toJS, runInAction } from 'mobx';
 import CurrencyUtils from '@deriv/shared/utils/currency';
 import ObjectUtils from '@deriv/shared/utils/object';
 import BinarySocket from '_common/base/socket_base';
@@ -902,12 +902,15 @@ export default class CashierStore extends BaseStore {
         } else {
             this.setReceiptTransfer({ amount: CurrencyUtils.formatMoney(currency, amount, true) });
             transfer_between_accounts.accounts.forEach(account => {
-                this.config.account_transfer.accounts_list.find(acc => account.loginid === acc.value).balance =
-                    account.balance;
+                runInAction(
+                    () =>
+                        (this.config.account_transfer.accounts_list.find(acc => account.loginid === acc.value).balance =
+                            account.balance)
+                );
                 if (account.loginid === this.config.account_transfer.selected_from.value) {
-                    this.config.account_transfer.selected_from.balance = account.balance;
+                    runInAction(() => (this.config.account_transfer.selected_from.balance = account.balance));
                 } else if (account.loginid === this.config.account_transfer.selected_to.value) {
-                    this.config.account_transfer.selected_to.balance = account.balance;
+                    runInAction(() => (this.config.account_transfer.selected_to.balance = account.balance));
                 }
                 // if one of the accounts was mt5
                 if (account.mt5_group) {

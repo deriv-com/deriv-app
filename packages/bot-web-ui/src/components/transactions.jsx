@@ -3,7 +3,6 @@ import { ThemedScrollbars } from '@deriv/components';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import { List, AutoSizer } from 'react-virtualized';
-import 'react-virtualized/styles.css';
 import Transaction from './transaction.jsx';
 import { transaction_elements } from '../constants/transactions';
 import { connect } from '../stores/connect';
@@ -17,7 +16,7 @@ class Transactions extends React.PureComponent {
     componentWillUnmount() {
         this.props.onUnmount();
     }
-    renderRow({ index, style }) {
+    renderRow = ({ index, style }) => {
         switch (this.props.elements[index].type) {
             case transaction_elements.CONTRACT: {
                 const contract = this.props.elements[index].data;
@@ -39,7 +38,12 @@ class Transactions extends React.PureComponent {
                 return null;
             }
         }
-    }
+    };
+
+    handleScroll = ({ target }) => {
+        const { scrollTop, scrollLeft } = target;
+        this.list_ref.Grid.handleScrollEvent({ scrollTop, scrollLeft });
+    };
 
     render() {
         const { elements } = this.props;
@@ -57,28 +61,28 @@ class Transactions extends React.PureComponent {
                 <div className='' style={{ height: 'calc(var(--drawer-scroll-height) - 7px)' }}>
                     <AutoSizer>
                         {({ width, height }) => (
-                            <React.Fragment>
-                                <ThemedScrollbars
+                            <ThemedScrollbars
+                                style={{
+                                    height,
+                                    width,
+                                }}
+                                onScroll={this.handleScroll}
+                                autoHide
+                            >
+                                <List
+                                    containerStyle={{ marginBottom: 117 }}
                                     style={{
-                                        height,
-                                        width,
+                                        overflowX: false,
+                                        overflowY: false,
                                     }}
-                                    autoHide
-                                >
-                                    <List
-                                        ref={ref => (this.list_ref = ref)}
-                                        height={height}
-                                        rowCount={elements.length}
-                                        rowHeight={50}
-                                        rowRenderer={this.renderRow.bind(this)}
-                                        width={width}
-                                        handleScroll={({ target }) => {
-                                            const { scrollTop, scrollLeft } = target;
-                                            this.list_ref.Grid.handleScrollEvent({ scrollTop, scrollLeft });
-                                        }}
-                                    />
-                                </ThemedScrollbars>
-                            </React.Fragment>
+                                    ref={ref => (this.list_ref = ref)}
+                                    height={height}
+                                    rowCount={elements.length}
+                                    rowHeight={50}
+                                    rowRenderer={this.renderRow}
+                                    width={width}
+                                />
+                            </ThemedScrollbars>
                         )}
                     </AutoSizer>
                 </div>

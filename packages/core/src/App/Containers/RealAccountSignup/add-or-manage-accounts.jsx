@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';
@@ -65,7 +66,7 @@ class AddOrManageAccounts extends React.Component {
 
     render() {
         return (
-            <ThemedScrollbars autoHide style={{ height: '100%' }}>
+            <ThemedScrollbars is_native={isMobile()} autoHide style={{ height: '100%' }}>
                 <div className='account-wizard add-or-manage'>
                     <div
                         className={classNames('add-crypto-currency', {

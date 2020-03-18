@@ -3,6 +3,7 @@ import { Icon, ThemedScrollbars } from '@deriv/components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik } from 'formik';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 import FormSubmitButton from './form-submit-button.jsx';
@@ -127,6 +128,7 @@ class CurrencySelector extends React.Component {
                 }) => (
                     <form onSubmit={handleSubmit} className='currency-selector'>
                         <ThemedScrollbars
+                            is_native={isMobile()}
                             autohide
                             style={{
                                 height: 'calc(100% - 50px)',

@@ -3,6 +3,7 @@ import { Icon, Input, ThemedScrollbars } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
+import { isMobile } from '@deriv/shared/utils/screen';
 import { localize, Localize } from '@deriv/translations';
 import { toMoment } from 'Utils/Date';
 import FormSubmitButton from './form-submit-button.jsx';
@@ -197,6 +198,7 @@ class PersonalDetails extends React.Component {
                             </p>
                             <div className='details-form__elements-container'>
                                 <ThemedScrollbars
+                                    is_native={isMobile()}
                                     autoHide
                                     style={{
                                         height: 'calc(100% - 16px)',

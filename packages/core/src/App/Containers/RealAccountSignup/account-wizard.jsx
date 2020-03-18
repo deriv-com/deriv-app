@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
+import { DesktopWrapper } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { toMoment } from 'Utils/Date';
@@ -240,7 +241,9 @@ class AccountWizard extends React.Component {
             return (
                 <div className='account-wizard'>
                     {!this.props.has_real_account && (
-                        <FormProgress steps={this.state.items} current_step={this.state.step} />
+                        <DesktopWrapper>
+                            <FormProgress steps={this.state.items} current_step={this.state.step} />
+                        </DesktopWrapper>
                     )}
                     {this.props.has_real_account && (
                         <div className='account-wizard__set-currency'>

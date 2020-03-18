@@ -89,6 +89,10 @@
         flex: 1 1 0; /* fix for Safari */
         width: 100%;
         padding: 0 2.4rem 3.2rem;
+
+        @include mobile {
+            height: calc(100vh - #{$MOBILE_HEADER_HEIGHT});
+        }
     }
     &__body {
         display: flex;

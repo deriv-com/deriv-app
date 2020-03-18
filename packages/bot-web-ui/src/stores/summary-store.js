@@ -22,9 +22,9 @@ export default class SummaryStore {
             case 'contract.purchase_received': {
                 const { buy } = contract_status;
                 this.summary.total_stake += buy.buy_price;
-                const is_virtual = this.root_store.core.client.is_virtual;
+                const { is_virtual } = this.root_store.core.client;
                 if (!is_virtual) {
-                    this.root_store.core.gtm.pushDataLayer({ buy_price: buy.buy_price });
+                    this.root_store.core.gtm.pushDataLayer({ event: 'dbot_purchase', buy_price: buy.buy_price });
                 }
                 break;
             }

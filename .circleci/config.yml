@@ -157,21 +157,21 @@ jobs:
           k8s_svc_name: "production-deriv-app"
 
 workflows:
-  build_and_push_dev:
-    jobs:
-      - test:
-          #filters:
-          #  branches:
-          #    only: /^dev/
-          context: binary-frontend-deploy
+  #build_and_push_dev:
+  #  jobs:
+  #    - test:
+  #        filters:
+  #          branches:
+  #            only: /^dev/
   release_staging:
     jobs:
       - release_staging:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^staging.*/
+          #filters:
+          #  branches:
+          #    ignore: /.*/
+          #  tags:
+          #    only: /^staging.*/
+          context: binary-frontend-artifact-upload  # using context to retrieve shared secret from circle ci
       - deploy_staging:
           filters:
             branches:

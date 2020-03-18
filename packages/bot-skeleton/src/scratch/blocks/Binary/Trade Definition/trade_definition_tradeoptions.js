@@ -363,7 +363,13 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {
         return {
-            AMOUNT: null,
+            AMOUNT: input => {
+                if (!Number(input) || Number(input) < 0) {
+                    this.error_message = localize('Amount must be a positive number');
+                    return true;
+                }
+                return false;
+            },
             DURATION: input => {
                 const input_number = Number(input);
 
